@@ -34,6 +34,7 @@ sealed trait ConstructorSeqMap[C <: Term with Subs[C],
 
   val introArgsVec: Vector[Int]
 
+  val numIntros: Int
   /**
     * converts a recursive definition built by [[RecursiveDefinition]] to a lambda
     */
@@ -74,6 +75,8 @@ object ConstructorSeqMap {
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeqMap[C, H, Func[H, C], FuncLike[H, C], HNil] {
     val introArgsVec: Vector[Int] = Vector()
+
+    val numIntros = 0
 
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
 
@@ -126,6 +129,8 @@ object ConstructorSeqMap {
                                 Func[ID, TI],
                                 C :: TIntros] {
     val introArgsVec: Vector[Int] = pattern.introArgs +: tail.introArgsVec
+
+    val numIntros = 1 + tail.numIntros
 
     def subs(x: Term, y: Term) =
       Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))

@@ -106,6 +106,14 @@ object LeanToTermMonix {
       throw new ApplnFailException(f, x)
     }
 
+  def applyOptFuncWit(fo: Option[Term], xo: Option[Term]): Option[Term] =
+    xo.flatMap{
+      (x) =>
+        fo.flatMap((f) => applyFuncWitOpt(f, x))
+    }.orElse{
+      fo.collect{case l: LambdaLike[u, v] => l.value}
+    }
+
   def applyFuncWitFold(ft: Task[Term], v: Vector[Term]): Task[Term] =
     v match {
       case Vector() => ft
@@ -115,6 +123,16 @@ object LeanToTermMonix {
                          ),
                          ys)
     }
+
+    def applyFuncOptWitFold(ft: Task[Option[Term]], v: Vector[Option[Term]]): Task[Option[Term]] =
+      v match {
+        case Vector() => ft
+        case x +: ys =>
+          applyFuncOptWitFold(ft.map(
+                             (f) => applyOptFuncWit(f, x)
+                           ),
+                           ys)
+      }
 
   def introsFold(ind: TermIndMod, p: Vector[Term]) =
     ind.intros.map((rule) => foldFunc(rule, p))

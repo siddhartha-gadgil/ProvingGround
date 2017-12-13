@@ -16,11 +16,12 @@ import HoTT.{Name => _, _}
 import trepplein._
 
 object LeanParser {
-  def splitVec[A](sizes: Vector[Int], vec: Vector[A]): Vector[Vector[A]] = sizes match {
-    case Vector() => Vector()
+  def splitVec[A](sizes: Vector[Int], vec: Vector[A]): (Vector[Vector[A]], Vector[A]) = sizes match {
+    case Vector() => (Vector(), vec)
     case n +: ms =>
       val (head, tail) = vec.splitAt(n)
-      head +: splitVec(ms, tail)
+      val (prev, residue) = splitVec(ms, tail)
+      (head +: prev, residue)
   }
 }
 
@@ -163,6 +164,16 @@ class LeanParser(mods: Vector[Modification]) {
           tail <- parseVec(ys, vars)
           // (tail, parse2) = p2
         } yield (head +: tail)
+    }
+
+  def parseOptVec(vec: Vector[(Expr, Int)], vars: Vector[Term], indices: Set[Int]): Task[Vector[Option[Term]]] =
+    vec match {
+      case Vector() => Task.pure(Vector())
+      case (x, m) +: ys =>
+        for {
+          tail <- parseOptVec(ys, vars, indices)
+          headOpt <- if (indices.contains(m)) parse(x, vars).map(Option(_)) else Task.pure(None)
+        } yield (headOpt +: tail)
     }
 
   def getValue(t: Term,
