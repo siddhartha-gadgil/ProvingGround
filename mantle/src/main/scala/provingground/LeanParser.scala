@@ -32,6 +32,7 @@ class LeanParser(mods: Vector[Modification]) {
     getRec,
     applyFuncWit,
     applyFuncWitFold,
+    applyFuncOptWitFold,
     isPropnFn,
     parseWork
   }
@@ -42,12 +43,57 @@ class LeanParser(mods: Vector[Modification]) {
 
   val termIndModMap: mMap[Name, TermIndMod] = mMap()
 
-  def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
-    parseWork += exp
+  def getMemTermIndMod(name: Name, exp: Expr) =
+    getTermIndMod(name)
+    .orElse(indModFromMod(name))
+    .getOrElse(
+      Task.raiseError(UnParsedException(exp))
+    )
+
     def getNamed(name: Name) =
       defnMap.get(name).map((t) => Task.pure(t))
     def getTermIndMod(name: Name) =
       termIndModMap.get(name).map((t) => Task.pure(t))
+
+  def recAppSkips(name: Name, args: Vector[Expr], exp: Expr, vars: Vector[Term]) : Task[Option[Term]] =
+    for {
+      indMod <- getMemTermIndMod(name, exp)
+      (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+      argsFmlyTerm <- parseVec(argsFmly, vars)
+      indOpt = indMod match {
+        case sm: SimpleIndMod => Some(sm.getInd(argsFmlyTerm.init))
+        case _ => None
+      }
+      resOpt : Option[Task[Option[Term]]] =
+        for { // Option
+          ind <- indOpt
+          recFnT = getRec(indMod, argsFmlyTerm)
+          (recDataExpr, ys) = xs.splitAt(ind.seqDom.numIntros)
+          (recArgsVec, residue) = LeanParser.splitVec(ind.seqDom.introArgsVec, ys)
+          indicesVec = recDataExpr.map(LeanInterface.varsUsed)
+          resOptTask : Task[Option[Term]] = for { // Task
+              recData <- parseVec(recDataExpr, vars)
+              withRecDataTask = applyFuncWitFold(recFnT, recData)
+              optParsedAllTask  = Task.sequence(
+                recArgsVec.zip(indicesVec).map {
+                case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices)
+              })
+              optParsedAll <- optParsedAllTask
+              withRecArgsOptTask =
+                applyFuncOptWitFold(withRecDataTask.map(Some(_)), optParsedAll.flatten)
+              withRecArgsOpt <- withRecArgsOptTask
+              residueTerms <- parseVec(residue, vars)
+              foldOpt = withRecArgsOpt.map((f) => applyFuncWitFold(Task.pure(f), residueTerms))
+              fold <- Task.sequence(foldOpt.toVector)
+            } yield fold.headOption
+      } yield resOptTask // Option
+      resFlat = Task.sequence(resOpt.toVector).map(_.headOption.flatten)
+      tsk <- resFlat
+  } yield tsk // Task
+
+  def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
+    parseWork += exp
+
     // pprint.log(s"Parsing $exp")
     // pprint.log(s"$parseWork")
     val resTask: Task[Term] = exp match {
@@ -68,18 +114,11 @@ class LeanParser(mods: Vector[Modification]) {
       case RecIterAp(name, args) =>
         pprint.log(s"Seeking RecIterAp $name, $args")
         for {
-          indMod <- getTermIndMod(name)
-            .orElse(indModFromMod(name))
-            .getOrElse(
-              Task.raiseError(UnParsedException(exp))
-            )
-          // (indMod, ltm0) = pair0
+          indMod <- getMemTermIndMod(name, exp)
           (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
           argsFmlyTerm <- parseVec(argsFmly, vars)
-          // (argsFmlyTerm, ltm1) = pair1
           recFnT = getRec(indMod, argsFmlyTerm)
           vec <- parseVec(xs, vars)
-          // (vec, ltm2) = pair2
           resTask = applyFuncWitFold(recFnT, vec)
           res <- resTask
         } yield res
@@ -88,9 +127,7 @@ class LeanParser(mods: Vector[Modification]) {
         // pprint.log(s"Applying $f to $a")
         for {
           func <- parse(f, vars)
-          // (func, ltm1) = p1
           arg <- parse(a, vars)
-          // (arg, ltm2) = p2
           res = applyFuncWit(func, arg)
           // _ = pprint.log(s"got result for $f($a)")
         } yield res
@@ -98,11 +135,9 @@ class LeanParser(mods: Vector[Modification]) {
         pprint.log(s"lambda $domain, $body")
         for {
           domTerm <- parse(domain.ty, vars)
-          // (domTerm, ltm1) = p1
           domTyp <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           value <- parse(body, x +: vars)
-          // (value, ltm2) = p2
         } yield
           value match {
             case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
@@ -118,13 +153,10 @@ class LeanParser(mods: Vector[Modification]) {
         pprint.log(s"pi $domain, $body")
         for {
           domTerm <- parse(domain.ty, vars)
-          // (domTerm, ltm1) = p1
           domTyp <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           value <- parse(body, x +: vars)
-          // (value, ltm2) = p2
           cod <- Task.eval(toTyp(value))
-          // dep =  cod.dependsOn(x)
         } yield
           if (LeanInterface.usesVar(body, 0))(PiDefn(x, cod))
           else (x.typ ->: cod)
@@ -132,13 +164,10 @@ class LeanParser(mods: Vector[Modification]) {
         pprint.log(s"let $domain, $value, $body")
         for {
           domTerm <- parse(domain.ty, vars)
-          // (domTerm, ltm1) = p1
           domTyp <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           valueTerm <- parse(value, vars)
-          // (valueTerm, ltm2) = p2
           bodyTerm <- parse(body, x +: vars)
-          // (bodyTerm, ltm3) = p3
         } yield (bodyTerm.replace(x, valueTerm))
       case e => Task.raiseError(UnParsedException(e))
     }
@@ -160,9 +189,7 @@ class LeanParser(mods: Vector[Modification]) {
       case x +: ys =>
         for {
           head <- parse(x, vars)
-          // (head, ltm1) = p1
           tail <- parseVec(ys, vars)
-          // (tail, parse2) = p2
         } yield (head +: tail)
     }
 
@@ -192,14 +219,12 @@ class LeanParser(mods: Vector[Modification]) {
   def withDefn(name: Name, exp: Expr): Task[Unit] =
     for {
       term <- parse(exp, Vector())
-      // (term, ltm) = pr
       _ = { defnMap += name -> term }
     } yield ()
 
   def withAxiom(name: Name, ty: Expr): Task[Unit] =
     for {
       typ <- parse(ty, Vector())
-      // (typ, ltm) = pr
       term = (name.toString) :: toTyp(typ)
       _    = { defnMap += name -> term }
     } yield ()

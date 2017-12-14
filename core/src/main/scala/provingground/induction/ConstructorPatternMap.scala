@@ -83,7 +83,7 @@ sealed trait ConstructorPatternMap[
                    f: => FuncLike[H, Cod]): H => Option[Cod]
   val univLevel: Int
 
-  val introArgs: Int
+
 }
 
 object ConstructorPatternMap {
@@ -95,8 +95,6 @@ object ConstructorPatternMap {
       extends ConstructorPatternMap[C, H, H, C, C] {
 
     val univLevel = 0
-
-    val introArgs = 0
 
     //    type ConstructorType = Term
 
@@ -274,7 +272,6 @@ object ConstructorPatternMap {
 
     val univLevel = math.max(head.univLevel, tail.univLevel)
 
-    val introArgs = 2 + head.introArgs
   }
 
   /**
@@ -329,7 +326,6 @@ object ConstructorPatternMap {
 
     val univLevel = head.univLevel
 
-    val introArgs = 1 + head.introArgs
   }
 
   /**
@@ -405,7 +401,6 @@ object ConstructorPatternMap {
 
     val univLevel = headlevel
 
-    val introArgs = 1 + headfibre(tail.Var).introArgs
   }
 
 }
@@ -428,6 +423,9 @@ sealed trait ConstructorShape[S <: HList,
                               H <: Term with Subs[H],
                               ConstructorType <: Term with Subs[
                                 ConstructorType]] {
+
+  val introArgs : Int
+
 
   /**
     * returns HoTT type of the introduction rule given the (inductive) type W (to be the head).
@@ -518,6 +516,8 @@ object ConstructorShape {
     */
   case class IdShape[H <: Term with Subs[H]]()
       extends ConstructorShape[HNil, H, H] {
+    val introArgs = 0
+
     def apply(tp: Typ[H]) = tp
 
     def mapper[C <: Term with Subs[C]] =
@@ -539,6 +539,8 @@ object ConstructorShape {
       tail: IterFuncShape[H, F],
       head: ConstructorShape[HS, H, HC])
       extends ConstructorShape[FuncConsShape.type :: HS, H, Func[F, HC]] {
+
+    val introArgs = 2 + head.introArgs
 
     def apply(tp: Typ[H]) = tail(tp) ->: head(tp)
 
@@ -571,6 +573,8 @@ object ConstructorShape {
       tail: Typ[T],
       head: ConstructorShape[HShape, H, HC])
       extends ConstructorShape[CnstFuncConsShape.type :: HShape, H, Func[T, HC]] {
+    val introArgs = 1 + head.introArgs
+
     def apply(tp: Typ[H]) = tail ->: head(tp)
 
     def mapper[Cod <: Term with Subs[Cod]] =
@@ -596,6 +600,8 @@ object ConstructorShape {
       extends ConstructorShape[CnstDepFuncConsShape.type :: HShape,
                                H,
                                FuncLike[T, HC]] {
+    lazy val introArgs = 1 + headfibre(tail.Var).introArgs
+
     def apply(W: Typ[H]): Typ[FuncLike[T, HC]] = {
       val a = tail.Var
       piDefn[T, HC](a)(headfibre(a)(W))

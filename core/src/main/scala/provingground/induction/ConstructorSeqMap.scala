@@ -32,9 +32,6 @@ sealed trait ConstructorSeqMap[C <: Term with Subs[C],
     */
   val W: Typ[H]
 
-  val introArgsVec: Vector[Int]
-
-  val numIntros: Int
   /**
     * converts a recursive definition built by [[RecursiveDefinition]] to a lambda
     */
@@ -74,9 +71,6 @@ object ConstructorSeqMap {
     */
   case class Empty[C <: Term with Subs[C], H <: Term with Subs[H]](W: Typ[H])
       extends ConstructorSeqMap[C, H, Func[H, C], FuncLike[H, C], HNil] {
-    val introArgsVec: Vector[Int] = Vector()
-
-    val numIntros = 0
 
     def recDefn(X: Typ[C]) = RecursiveDefinition.Empty(W, X)
 
@@ -128,9 +122,6 @@ object ConstructorSeqMap {
                                 Func[RD, TR],
                                 Func[ID, TI],
                                 C :: TIntros] {
-    val introArgsVec: Vector[Int] = pattern.introArgs +: tail.introArgsVec
-
-    val numIntros = 1 + tail.numIntros
 
     def subs(x: Term, y: Term) =
       Cons(cons.replace(x, y), pattern.subs(x, y), tail.subs(x, y))
@@ -270,7 +261,10 @@ object ConstructorSeqMapper {
   *
   *
   */
-trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
+sealed trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
+  val introArgsVec: Vector[Int]
+
+  val numIntros: Int
 
   /**
     * given a codomain, returns a `mapped` version, i.e. one with all the types needed for recursion and induction.
@@ -319,6 +313,11 @@ object ConstructorSeqDom {
     */
   case class Empty[H <: Term with Subs[H]]()
       extends ConstructorSeqDom[HNil, H, HNil] {
+        val introArgsVec: Vector[Int] = Vector()
+
+        val numIntros: Int = 0
+
+
     def mapped[C <: Term with Subs[C]](W: Typ[H]) =
       ConstructorSeqMap.Empty[C, H](W)
 
@@ -339,6 +338,11 @@ object ConstructorSeqDom {
       pattern: ConstructorShape[HShape, H, ConstructorType],
       tail: ConstructorSeqDom[TSS, H, TIntros])
       extends ConstructorSeqDom[HShape :: TSS, H, ConstructorType :: TIntros] {
+        val introArgsVec: Vector[Int] = pattern.introArgs +: tail.introArgsVec
+
+        val numIntros: Int = 1 + tail.numIntros
+
+
     def mapped[C <: Term with Subs[C]](W: Typ[H])
       : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {
         type RecType <: Term with Subs[RecType];
