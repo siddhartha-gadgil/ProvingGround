@@ -1158,6 +1158,21 @@ object HoTT {
       case _          => None
     }
 
+  def skipVars(t: Term, n: Int): Option[Term] =
+    if (n <= 0) Some(t)
+    else
+      t match {
+        case l: LambdaLike[u, v] => skipVars(l.value, n - 1)
+        case _                   => None
+      }
+
+  def skipApply(f: Term, x: Term, n: Int): Option[Term] =
+    f match {
+      case l: LambdaLike[u, v] =>
+        skipVars(l.value, n - 1).filter(_.indepOf(l.variable))
+      case _ => None
+    }
+
   /**
     * Terms that are functions or dependent functions,
     * is a scala function, but the apply is not directly defined -

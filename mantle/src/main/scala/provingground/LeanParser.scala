@@ -16,13 +16,15 @@ import HoTT.{Name => _, _}
 import trepplein._
 
 object LeanParser {
-  def splitVec[A](sizes: Vector[Int], vec: Vector[A]): (Vector[Vector[A]], Vector[A]) = sizes match {
-    case Vector() => (Vector(), vec)
-    case n +: ms =>
-      val (head, tail) = vec.splitAt(n)
-      val (prev, residue) = splitVec(ms, tail)
-      (head +: prev, residue)
-  }
+  def splitVec[A](sizes: Vector[Int],
+                  vec: Vector[A]): (Vector[Vector[A]], Vector[A]) =
+    sizes match {
+      case Vector() => (Vector(), vec)
+      case n +: ms =>
+        val (head, tail)    = vec.splitAt(n)
+        val (prev, residue) = splitVec(ms, tail)
+        (head +: prev, residue)
+    }
 }
 
 class LeanParser(mods: Vector[Modification]) {
@@ -45,51 +47,53 @@ class LeanParser(mods: Vector[Modification]) {
 
   def getMemTermIndMod(name: Name, exp: Expr) =
     getTermIndMod(name)
-    .orElse(indModFromMod(name))
-    .getOrElse(
-      Task.raiseError(UnParsedException(exp))
-    )
+      .orElse(indModFromMod(name))
+      .getOrElse(
+        Task.raiseError(UnParsedException(exp))
+      )
 
-    def getNamed(name: Name) =
-      defnMap.get(name).map((t) => Task.pure(t))
-    def getTermIndMod(name: Name) =
-      termIndModMap.get(name).map((t) => Task.pure(t))
+  def getNamed(name: Name) =
+    defnMap.get(name).map((t) => Task.pure(t))
+  def getTermIndMod(name: Name) =
+    termIndModMap.get(name).map((t) => Task.pure(t))
 
-  def recAppSkips(name: Name, args: Vector[Expr], exp: Expr, vars: Vector[Term]) : Task[Option[Term]] =
+  def recAppSkips(name: Name,
+                  args: Vector[Expr],
+                  exp: Expr,
+                  vars: Vector[Term]): Task[Option[Term]] =
     for {
       indMod <- getMemTermIndMod(name, exp)
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
       argsFmlyTerm <- parseVec(argsFmly, vars)
       indOpt = indMod match {
         case sm: SimpleIndMod => Some(sm.getInd(argsFmlyTerm.init))
-        case _ => None
+        case _                => None
       }
-      resOpt : Option[Task[Option[Term]]] =
-        for { // Option
-          ind <- indOpt
-          recFnT = getRec(indMod, argsFmlyTerm)
-          (recDataExpr, ys) = xs.splitAt(ind.seqDom.numIntros)
-          (recArgsVec, residue) = LeanParser.splitVec(ind.seqDom.introArgsVec, ys)
-          indicesVec = recDataExpr.map(LeanInterface.varsUsed)
-          resOptTask : Task[Option[Term]] = for { // Task
-              recData <- parseVec(recDataExpr, vars)
-              withRecDataTask = applyFuncWitFold(recFnT, recData)
-              optParsedAllTask  = Task.sequence(
-                recArgsVec.zip(indicesVec).map {
-                case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices)
-              })
-              optParsedAll <- optParsedAllTask
-              withRecArgsOptTask =
-                applyFuncOptWitFold(withRecDataTask.map(Some(_)), optParsedAll.flatten)
-              withRecArgsOpt <- withRecArgsOptTask
-              residueTerms <- parseVec(residue, vars)
-              foldOpt = withRecArgsOpt.map((f) => applyFuncWitFold(Task.pure(f), residueTerms))
-              fold <- Task.sequence(foldOpt.toVector)
-            } yield fold.headOption
+      resOpt: Option[Task[Option[Term]]] = for { // Option
+        ind <- indOpt
+        recFnT                = getRec(indMod, argsFmlyTerm)
+        (recDataExpr, ys)     = xs.splitAt(ind.seqDom.numIntros)
+        (recArgsVec, residue) = LeanParser.splitVec(ind.seqDom.introArgsVec, ys)
+        indicesVec            = recDataExpr.map(LeanInterface.varsUsed)
+        resOptTask: Task[Option[Term]] = for { // Task
+          recData <- parseVec(recDataExpr, vars)
+          withRecDataTask = applyFuncWitFold(recFnT, recData)
+          optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
+            case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices)
+          })
+          optParsedAll <- optParsedAllTask
+          withRecArgsOptTask = applyFuncOptWitFold(withRecDataTask.map(Some(_)),
+                                                   optParsedAll.flatten)
+          withRecArgsOpt <- withRecArgsOptTask
+          residueTerms   <- parseVec(residue, vars)
+          foldOpt = withRecArgsOpt.map((f) =>
+            applyFuncWitFold(Task.pure(f), residueTerms))
+          fold <- Task.sequence(foldOpt.toVector)
+        } yield fold.headOption
       } yield resOptTask // Option
       resFlat = Task.sequence(resOpt.toVector).map(_.headOption.flatten)
       tsk <- resFlat
-  } yield tsk // Task
+    } yield tsk // Task
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     parseWork += exp
@@ -127,7 +131,7 @@ class LeanParser(mods: Vector[Modification]) {
         // pprint.log(s"Applying $f to $a")
         for {
           func <- parse(f, vars)
-          arg <- parse(a, vars)
+          arg  <- parse(a, vars)
           res = applyFuncWit(func, arg)
           // _ = pprint.log(s"got result for $f($a)")
         } yield res
@@ -135,7 +139,7 @@ class LeanParser(mods: Vector[Modification]) {
         pprint.log(s"lambda $domain, $body")
         for {
           domTerm <- parse(domain.ty, vars)
-          domTyp <- Task.eval(toTyp(domTerm))
+          domTyp  <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           value <- parse(body, x +: vars)
         } yield
@@ -153,10 +157,10 @@ class LeanParser(mods: Vector[Modification]) {
         pprint.log(s"pi $domain, $body")
         for {
           domTerm <- parse(domain.ty, vars)
-          domTyp <- Task.eval(toTyp(domTerm))
+          domTyp  <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           value <- parse(body, x +: vars)
-          cod <- Task.eval(toTyp(value))
+          cod   <- Task.eval(toTyp(value))
         } yield
           if (LeanInterface.usesVar(body, 0))(PiDefn(x, cod))
           else (x.typ ->: cod)
@@ -164,10 +168,10 @@ class LeanParser(mods: Vector[Modification]) {
         pprint.log(s"let $domain, $value, $body")
         for {
           domTerm <- parse(domain.ty, vars)
-          domTyp <- Task.eval(toTyp(domTerm))
+          domTyp  <- Task.eval(toTyp(domTerm))
           x = domTyp.Var
           valueTerm <- parse(value, vars)
-          bodyTerm <- parse(body, x +: vars)
+          bodyTerm  <- parse(body, x +: vars)
         } yield (bodyTerm.replace(x, valueTerm))
       case e => Task.raiseError(UnParsedException(e))
     }
@@ -193,13 +197,16 @@ class LeanParser(mods: Vector[Modification]) {
         } yield (head +: tail)
     }
 
-  def parseOptVec(vec: Vector[(Expr, Int)], vars: Vector[Term], indices: Set[Int]): Task[Vector[Option[Term]]] =
+  def parseOptVec(vec: Vector[(Expr, Int)],
+                  vars: Vector[Term],
+                  indices: Set[Int]): Task[Vector[Option[Term]]] =
     vec match {
       case Vector() => Task.pure(Vector())
       case (x, m) +: ys =>
         for {
           tail <- parseOptVec(ys, vars, indices)
-          headOpt <- if (indices.contains(m)) parse(x, vars).map(Option(_)) else Task.pure(None)
+          headOpt <- if (indices.contains(m)) parse(x, vars).map(Option(_))
+          else Task.pure(None)
         } yield (headOpt +: tail)
     }
 

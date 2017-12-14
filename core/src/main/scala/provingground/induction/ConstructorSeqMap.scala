@@ -17,10 +17,10 @@ import shapeless.HList
   * @tparam InducType scala type of a function `ind_W, X`
   */
 sealed trait ConstructorSeqMap[C <: Term with Subs[C],
-                        H <: Term with Subs[H],
-                        RecType <: Term with Subs[RecType],
-                        InducType <: Term with Subs[InducType],
-                        Intros <: HList] {
+                               H <: Term with Subs[H],
+                               RecType <: Term with Subs[RecType],
+                               InducType <: Term with Subs[InducType],
+                               Intros <: HList] {
 
   /**
     * recursive definition function `rec_W, X` in raw form
@@ -261,7 +261,8 @@ object ConstructorSeqMapper {
   *
   *
   */
-sealed trait ConstructorSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList] {
+sealed trait ConstructorSeqDom[
+    SS <: HList, H <: Term with Subs[H], Intros <: HList] {
   val introArgsVec: Vector[Int]
 
   val numIntros: Int
@@ -313,10 +314,9 @@ object ConstructorSeqDom {
     */
   case class Empty[H <: Term with Subs[H]]()
       extends ConstructorSeqDom[HNil, H, HNil] {
-        val introArgsVec: Vector[Int] = Vector()
+    val introArgsVec: Vector[Int] = Vector()
 
-        val numIntros: Int = 0
-
+    val numIntros: Int = 0
 
     def mapped[C <: Term with Subs[C]](W: Typ[H]) =
       ConstructorSeqMap.Empty[C, H](W)
@@ -338,10 +338,9 @@ object ConstructorSeqDom {
       pattern: ConstructorShape[HShape, H, ConstructorType],
       tail: ConstructorSeqDom[TSS, H, TIntros])
       extends ConstructorSeqDom[HShape :: TSS, H, ConstructorType :: TIntros] {
-        val introArgsVec: Vector[Int] = pattern.introArgs +: tail.introArgsVec
+    val introArgsVec: Vector[Int] = pattern.introArgs +: tail.introArgsVec
 
-        val numIntros: Int = 1 + tail.numIntros
-
+    val numIntros: Int = 1 + tail.numIntros
 
     def mapped[C <: Term with Subs[C]](W: Typ[H])
       : ConstructorSeqMap[C, H, RecType, InducType, TIntros] forSome {

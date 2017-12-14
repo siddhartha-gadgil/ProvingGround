@@ -83,7 +83,6 @@ sealed trait ConstructorPatternMap[
                    f: => FuncLike[H, Cod]): H => Option[Cod]
   val univLevel: Int
 
-
 }
 
 object ConstructorPatternMap {
@@ -424,8 +423,7 @@ sealed trait ConstructorShape[S <: HList,
                               ConstructorType <: Term with Subs[
                                 ConstructorType]] {
 
-  val introArgs : Int
-
+  val introArgs: Int
 
   /**
     * returns HoTT type of the introduction rule given the (inductive) type W (to be the head).
