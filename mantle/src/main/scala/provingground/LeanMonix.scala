@@ -111,7 +111,14 @@ object LeanToTermMonix {
         fo.flatMap((f) => applyFuncWitOpt(f, x))
       }
       .orElse {
-        fo.collect { case l: LambdaLike[u, v] => l.value }
+        fo.collect {
+          case l: LambdaLike[u, v] =>
+            pprint.log("Skipped with lambda")
+            l.value
+          case fn: FuncLike[u, v] =>
+            pprint.log("skipped with function")
+            fn("_" :: fn.dom)
+        }
       }
 
   def applyFuncWitFold(ft: Task[Term], v: Vector[Term]): Task[Term] =
