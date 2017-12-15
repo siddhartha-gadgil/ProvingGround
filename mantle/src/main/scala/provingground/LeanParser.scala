@@ -57,6 +57,19 @@ class LeanParser(mods: Vector[Modification]) {
   def getTermIndMod(name: Name) =
     termIndModMap.get(name).map((t) => Task.pure(t))
 
+    def recApp(name: Name,
+                    args: Vector[Expr],
+                    exp: Expr,
+                    vars: Vector[Term]): Task[Term] =
+      for {
+        indMod <- getMemTermIndMod(name, exp)
+        (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+        argsFmlyTerm <- parseVec(argsFmly, vars)
+        recFnT = getRec(indMod, argsFmlyTerm)
+        vec <- parseVec(xs, vars)
+        res <- applyFuncWitFold(recFnT, vec)
+      } yield res
+
   def recAppSkips(name: Name,
                   args: Vector[Expr],
                   exp: Expr,
@@ -117,15 +130,7 @@ class LeanParser(mods: Vector[Modification]) {
       case Var(n)           => Task.pure(vars(n))
       case RecIterAp(name, args) =>
         pprint.log(s"Seeking RecIterAp $name, $args")
-        for {
-          indMod <- getMemTermIndMod(name, exp)
-          (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-          argsFmlyTerm <- parseVec(argsFmly, vars)
-          recFnT = getRec(indMod, argsFmlyTerm)
-          vec <- parseVec(xs, vars)
-          resTask = applyFuncWitFold(recFnT, vec)
-          res <- resTask
-        } yield res
+        recApp(name, args, exp, vars)
 
       case App(f, a) =>
         // pprint.log(s"Applying $f to $a")
