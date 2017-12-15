@@ -1169,7 +1169,8 @@ object HoTT {
   def skipApply(f: Term, x: Term, n: Int): Option[Term] =
     f match {
       case l: LambdaLike[u, v] =>
-        skipVars(l.value, n - 1).filter(_.indepOf(l.variable))
+        val canSkip = skipVars(l.value, n - 1).map(_.indepOf(l.variable)).getOrElse(false)
+        if (canSkip) Some(l.value) else None
       case _ => None
     }
 

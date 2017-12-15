@@ -252,14 +252,16 @@ object ConstructorPatternMap {
     def headData(data: Func[F, Func[TT, HR]], arg: F, f: => Func[H, C]): HR = {
       val g      = tail.induced(f)
       val recres = g(arg)
-      val result = data(arg)(recres)
+      val result = skipApply(data, arg, introArgs).map(
+        (x) => x.asInstanceOf[Func[TT, HR]]).getOrElse(data(arg))(recres)
       result
     }
 
     def headInducData(data: FuncLike[F, Func[DT, HI]],
                       arg: F,
                       f: => FuncLike[H, C]): HI = {
-      data(arg)(tail.inducedDep(f)(arg))
+                        skipApply(data, arg, introArgs).map(
+                          (x) => x.asInstanceOf[Func[DT, HI]]).getOrElse(data(arg))(tail.inducedDep(f)(arg))
     }
 
     // def apply(W: Typ[H]) =
@@ -313,12 +315,15 @@ object ConstructorPatternMap {
 
     //   type ConstructorType = Func[Term, head.ConstructorType]
 
+
     def headData(data: Func[T, HR], arg: T, f: => Func[H, Cod]): HR =
-      data(arg)
+      skipApply(data, arg, introArgs).map(
+          (x) => x.asInstanceOf[HR]).getOrElse(data(arg))
 
     def headInducData(data: FuncLike[T, HI],
                       arg: T,
-                      f: => FuncLike[H, Cod]): HI = data(arg)
+                      f: => FuncLike[H, Cod]): HI = skipApply(data, arg, introArgs).map(
+                        (x) => x.asInstanceOf[HI]).getOrElse(data(arg))
 
     // def apply(W: Typ[H]) = FuncTyp[T, HC](tail, head(W))
 
@@ -392,12 +397,14 @@ object ConstructorPatternMap {
     type HeadInducDataType = VV
 
     def headData(data: RecDataType, arg: T, f: => Func[H, C]): V = {
-      data(arg)
+      skipApply(data, arg, introArgs).map(
+        (x) => x.asInstanceOf[V]).getOrElse(data(arg))
     }
 
     def headInducData(data: InducDataType,
                       arg: T,
-                      f: => FuncLike[H, C]): HeadInducDataType = data(arg)
+                      f: => FuncLike[H, C]): HeadInducDataType = skipApply(data, arg, introArgs).map(
+                        (x) => x.asInstanceOf[VV]).getOrElse(data(arg))
 
     val univLevel = headlevel
 
