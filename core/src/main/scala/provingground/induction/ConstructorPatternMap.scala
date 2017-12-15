@@ -83,6 +83,8 @@ sealed trait ConstructorPatternMap[
                    f: => FuncLike[H, Cod]): H => Option[Cod]
   val univLevel: Int
 
+  val introArgs: Int
+
 }
 
 object ConstructorPatternMap {
@@ -94,6 +96,9 @@ object ConstructorPatternMap {
       extends ConstructorPatternMap[C, H, H, C, C] {
 
     val univLevel = 0
+
+    val introArgs: Int = 0
+
 
     //    type ConstructorType = Term
 
@@ -221,6 +226,9 @@ object ConstructorPatternMap {
 
     val headfibre = (t: F) => head
 
+    val introArgs: Int = 2 + head.introArgs
+
+
     //    type ConstructorType = Func[ArgType, head.ConstructorType]
 
     def recDataTyp(w: Typ[H], x: Typ[C]) =
@@ -245,18 +253,6 @@ object ConstructorPatternMap {
       val g      = tail.induced(f)
       val recres = g(arg)
       val result = data(arg)(recres)
-      // if (data.dom == arg.typ && data(arg).dom == recres.typ)
-      //   data(arg)(recres)
-      // else {
-      //   import translation.FansiShow._
-      //   println(
-      //     s"In $self,\n data = ${data.fansi} with domain ${data.dom.fansi}\n arg ${arg.fansi} with type ${arg.typ.fansi}")
-      //   println(
-      //     s"Recursive result ${recres.fansi} with typ ${recres.typ.fansi}")
-      //   println(s"domain of data(arg) is ${data(arg).dom.fansi}")
-      //   println(s"induced  function g = ${g}\n from f = ${f.fansi}")
-      //   ???
-      // }
       result
     }
 
@@ -298,6 +294,9 @@ object ConstructorPatternMap {
       CnstFncPtnMap(tail.subs(x, y), head.subs(x, y))
 
     val headfibre = (t: T) => head
+
+    val introArgs: Int = 1 + head.introArgs
+
 
     def recDataTyp(w: Typ[H], x: Typ[Cod]) = tail ->: head.recDataTyp(w, x)
 
@@ -356,6 +355,8 @@ object ConstructorPatternMap {
     //    type HeadType = U
 
     //  type Cod = C
+
+    lazy val introArgs = 1 + headfibre(tail.Var).introArgs
 
     def subs(x: Term, y: Term) = {
 

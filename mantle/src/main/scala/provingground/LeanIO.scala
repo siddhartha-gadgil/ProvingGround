@@ -1004,6 +1004,13 @@ object LeanInterface {
       case LocalConst(_, _, _) => false
     }
 
+  def finalValue(expr: Expr, varNum: Int) : Expr =
+    if (varNum <= 0) expr
+    else expr match {
+      case Lam(b, x) => finalValue(x, varNum - 1)
+      case _ => throw new Exception("cannot find final expression")
+    }
+
   def varsUsed(expr: Expr): Set[Int] =
     expr match {
       case Const(name, _) => Set()

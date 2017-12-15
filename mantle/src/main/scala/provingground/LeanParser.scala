@@ -25,6 +25,11 @@ object LeanParser {
         val (prev, residue) = splitVec(ms, tail)
         (head +: prev, residue)
     }
+
+    case class RecAppFailException(name: Name,
+                  args: Vector[Expr],
+                  exp: Expr,
+                  vars: Vector[Term]) extends Exception("Lean optimization failed")
 }
 
 class LeanParser(mods: Vector[Modification]) {
@@ -38,6 +43,7 @@ class LeanParser(mods: Vector[Modification]) {
     isPropnFn,
     parseWork
   }
+  import LeanInterface._
 
   parseWork.size
 
@@ -87,7 +93,11 @@ class LeanParser(mods: Vector[Modification]) {
         recFnT                = getRec(indMod, argsFmlyTerm)
         (recDataExpr, ys)     = xs.splitAt(ind.seqDom.numIntros)
         (recArgsVec, residue) = LeanParser.splitVec(ind.seqDom.introArgsVec, ys)
-        indicesVec            = recDataExpr.map(LeanInterface.varsUsed)
+        indicesVec            =
+            recDataExpr.zip(ind.seqDom.introArgsVec).map {
+              case (exp, n) => varsUsed(finalValue(exp, n))
+            }
+          // recDataExpr.map(LeanInterface.varsUsed) // FIXME: should look at final expression only
         resOptTask: Task[Option[Term]] = for { // Task
           recData <- parseVec(recDataExpr, vars)
           withRecDataTask = applyFuncWitFold(recFnT, recData)
@@ -115,8 +125,8 @@ class LeanParser(mods: Vector[Modification]) {
     // pprint.log(s"$parseWork")
     val resTask: Task[Term] = exp match {
       case Const(name, _) =>
-        pprint.log(s"Seeking constant: $name")
-        pprint.log(s"${defnMap.get(name).map(_.fansi)}")
+        // pprint.log(s"Seeking constant: $name")
+        // pprint.log(s"${defnMap.get(name).map(_.fansi)}")
         getNamed(name)
           .orElse {
             // pprint.log(s"deffromMod $name")
@@ -129,8 +139,9 @@ class LeanParser(mods: Vector[Modification]) {
       case Sort(_)          => Task.pure(Type)
       case Var(n)           => Task.pure(vars(n))
       case RecIterAp(name, args) =>
-        pprint.log(s"Seeking RecIterAp $name, $args")
-        recApp(name, args, exp, vars)
+        // pprint.log(s"Seeking RecIterAp $name, $args")
+        // recApp(name, args, exp, vars)
+        recAppSkips(name, args, exp, vars).map(_.getOrElse(throw new LeanParser.RecAppFailException(name, args, exp, vars)))
 
       case App(f, a) =>
         // pprint.log(s"Applying $f to $a")
@@ -141,7 +152,7 @@ class LeanParser(mods: Vector[Modification]) {
           // _ = pprint.log(s"got result for $f($a)")
         } yield res
       case Lam(domain, body) =>
-        pprint.log(s"lambda $domain, $body")
+        // pprint.log(s"lambda $domain, $body")
         for {
           domTerm <- parse(domain.ty, vars)
           domTyp  <- Task.eval(toTyp(domTerm))
@@ -159,7 +170,7 @@ class LeanParser(mods: Vector[Modification]) {
               else LambdaFixed(x, value)
           }
       case Pi(domain, body) =>
-        pprint.log(s"pi $domain, $body")
+        // pprint.log(s"pi $domain, $body")
         for {
           domTerm <- parse(domain.ty, vars)
           domTyp  <- Task.eval(toTyp(domTerm))
@@ -170,7 +181,7 @@ class LeanParser(mods: Vector[Modification]) {
           if (LeanInterface.usesVar(body, 0))(PiDefn(x, cod))
           else (x.typ ->: cod)
       case Let(domain, value, body) =>
-        pprint.log(s"let $domain, $value, $body")
+        // pprint.log(s"let $domain, $value, $body")
         for {
           domTerm <- parse(domain.ty, vars)
           domTyp  <- Task.eval(toTyp(domTerm))
@@ -186,8 +197,8 @@ class LeanParser(mods: Vector[Modification]) {
       _ = {
         parseWork -= exp
         pprint.log(s"parsed $exp")
-        if (isPropFmly(res.typ))
-          pprint.log(s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
+        // if (isPropFmly(res.typ))
+        //   pprint.log(s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
       }
     } yield if (isPropFmly(res.typ)) "_" :: (res.typ) else res
   }
