@@ -169,7 +169,7 @@ class LeanParser(mods: Vector[Modification]) {
       case RecIterAp(name, args) =>
         // pprint.log(s"Seeking RecIterAp $name, $args")
         // recApp(name, args, exp, vars)
-        recAppSkips(name, args, exp, vars).map(_.getOrElse(throw new LeanParser.RecAppFailException(name, args, exp, vars)))
+        recAppSkips(name, args, exp, vars).map(_.getOrElse(throw new Exception("RecAp failed")))
 
       case App(f, a) =>
         // pprint.log(s"Applying $f to $a")
