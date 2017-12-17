@@ -26,10 +26,38 @@ object LeanParser {
         (head +: prev, residue)
     }
 
-    case class RecAppFailException(name: Name,
-                  args: Vector[Expr],
-                  exp: Expr,
-                  vars: Vector[Term]) extends Exception("Lean optimization failed")
+  import upickle.default._, upickle.Js
+
+  import translation._, TermJson._
+
+  def jsDef(parser: LeanParser) =
+    {
+      val jsDefs = parser.defnMap.toVector.map{
+        case (name, term) =>
+          Js.Obj("name" -> Js.Str(name.toString), "term" -> termToJson(term).get)
+      }
+      Js.Arr(jsDefs : _*)
+    }
+
+  def jsTermIndMod(parser: LeanParser) = {
+    val jsIndMods = parser.termIndModMap.toVector map {
+      case (name, tim) =>
+        Js.Obj(
+          "name" -> Js.Str(name.toString),
+          "num-params" -> Js.Num(tim.numParams),
+          "is-propn" -> (if (tim.isPropn) Js.True else Js.False),
+          "intros" -> Js.Arr(tim.intros.map(termToJson(_).get) : _*)
+        )
+    }
+      Js.Arr(jsIndMods : _*)
+  }
+
+  def toJs(parser : LeanParser) =
+    Js.Obj(
+      "defns" -> jsDef(parser),
+      "indmods" -> jsTermIndMod(parser)
+    )
+
 }
 
 class LeanParser(mods: Vector[Modification]) {
