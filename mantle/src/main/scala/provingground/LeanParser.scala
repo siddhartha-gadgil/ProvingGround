@@ -26,6 +26,12 @@ object LeanParser {
         (head +: prev, residue)
     }
 
+  def getNextVarName(vecs: Vector[Term]) =
+    {
+      val lastName = vecs.headOption.collect{case sym: Symbolic => sym.name.toString}.getOrElse("'")
+      prefixedNextName(lastName)
+    }
+
   import upickle.default._, upickle.Js
 
   import translation._, TermJson._
@@ -73,11 +79,13 @@ class LeanParser(mods: Vector[Modification]) {
   }
   import LeanInterface._
 
-  parseWork.size
+  import LeanParser._
 
   val defnMap: mMap[Name, Term] = mMap()
 
   val termIndModMap: mMap[Name, TermIndMod] = mMap()
+
+  val parseMemo: mMap[(Expr, Vector[Term]), Term] = mMap()
 
   def getMemTermIndMod(name: Name, exp: Expr) =
     getTermIndMod(name)
@@ -147,88 +155,94 @@ class LeanParser(mods: Vector[Modification]) {
     } yield tsk // Task
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
-    parseWork += exp
+    val memParsed = parseMemo.get(exp -> vars)
+    memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
+    memParsed.
+      map(Task.pure(_)).
+      getOrElse{
+      parseWork += exp
 
-    // pprint.log(s"Parsing $exp")
-    // pprint.log(s"$parseWork")
-    val resTask: Task[Term] = exp match {
-      case Const(name, _) =>
-        // pprint.log(s"Seeking constant: $name")
-        // pprint.log(s"${defnMap.get(name).map(_.fansi)}")
-        getNamed(name)
-          .orElse {
-            // pprint.log(s"deffromMod $name")
-            defFromMod(name)
-          }
-          .getOrElse(
-            Task.raiseError(UnParsedException(exp))
-          )
-      case Sort(Level.Zero) => Task.pure(Prop)
-      case Sort(_)          => Task.pure(Type)
-      case Var(n)           => Task.pure(vars(n))
-      case RecIterAp(name, args) =>
-        // pprint.log(s"Seeking RecIterAp $name, $args")
-        // recApp(name, args, exp, vars)
-        recAppSkips(name, args, exp, vars).map(_.getOrElse(throw new Exception("RecAp failed")))
+      // pprint.log(s"Parsing $exp")
+      // pprint.log(s"$parseWork")
+      val resTask: Task[Term] = exp match {
+        case Const(name, _) =>
+          pprint.log(s"Seeking constant: $name")
+          pprint.log(s"${defnMap.get(name).map(_.fansi)}")
+          getNamed(name)
+            .orElse {
+              // pprint.log(s"deffromMod $name")
+              defFromMod(name)
+            }
+            .getOrElse(
+              Task.raiseError(UnParsedException(exp))
+            )
+        case Sort(Level.Zero) => Task.pure(Prop)
+        case Sort(_)          => Task.pure(Type)
+        case Var(n)           => Task.pure(vars(n))
+        case RecIterAp(name, args) =>
+          pprint.log(s"Seeking RecIterAp $name, $args")
+          recApp(name, args, exp, vars)
 
-      case App(f, a) =>
-        // pprint.log(s"Applying $f to $a")
-        for {
-          func <- parse(f, vars)
-          arg  <- parse(a, vars)
-          res = applyFuncWit(func, arg)
-          // _ = pprint.log(s"got result for $f($a)")
-        } yield res
-      case Lam(domain, body) =>
-        // pprint.log(s"lambda $domain, $body")
-        for {
-          domTerm <- parse(domain.ty, vars)
-          domTyp  <- Task.eval(toTyp(domTerm))
-          x = domTyp.Var
-          value <- parse(body, x +: vars)
-        } yield
-          value match {
-            case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
-              fn
-            case y if domain.prettyName.toString == "_" => y
-            case _ =>
-              if (!LeanInterface.usesVar(body, 0))
-                LambdaFixed("_" :: domTyp, value)
-              else if (value.typ.dependsOn(x)) LambdaTerm(x, value)
-              else LambdaFixed(x, value)
-          }
-      case Pi(domain, body) =>
-        // pprint.log(s"pi $domain, $body")
-        for {
-          domTerm <- parse(domain.ty, vars)
-          domTyp  <- Task.eval(toTyp(domTerm))
-          x = domTyp.Var
-          value <- parse(body, x +: vars)
-          cod   <- Task.eval(toTyp(value))
-        } yield
-          if (LeanInterface.usesVar(body, 0))(PiDefn(x, cod))
-          else (x.typ ->: cod)
-      case Let(domain, value, body) =>
-        // pprint.log(s"let $domain, $value, $body")
-        for {
-          domTerm <- parse(domain.ty, vars)
-          domTyp  <- Task.eval(toTyp(domTerm))
-          x = domTyp.Var
-          valueTerm <- parse(value, vars)
-          bodyTerm  <- parse(body, x +: vars)
-        } yield (bodyTerm.replace(x, valueTerm))
-      case e => Task.raiseError(UnParsedException(e))
-    }
-
-    for {
-      res <- resTask
-      _ = {
-        parseWork -= exp
-        pprint.log(s"parsed $exp")
-        // if (isPropFmly(res.typ))
-        //   pprint.log(s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
+        case App(f, a) =>
+          // pprint.log(s"Applying $f to $a")
+          for {
+            func <- parse(f, vars)
+            arg  <- parse(a, vars)
+            res = applyFuncWit(func, arg)
+            // _ = pprint.log(s"got result for $f($a)")
+          } yield res
+        case Lam(domain, body) =>
+          pprint.log(s"lambda $domain, $body")
+          for {
+            domTerm <- parse(domain.ty, vars)
+            domTyp  <- Task.eval(toTyp(domTerm))
+            x = getNextVarName(vars) :: domTyp
+            value <- parse(body, x +: vars)
+          } yield
+            value match {
+              case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
+                fn
+              case y if domain.prettyName.toString == "_" => y
+              case _ =>
+                if (!LeanInterface.usesVar(body, 0))
+                  LambdaFixed("_" :: domTyp, value)
+                else if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+                else LambdaFixed(x, value)
+            }
+        case Pi(domain, body) =>
+          pprint.log(s"pi $domain, $body")
+          for {
+            domTerm <- parse(domain.ty, vars)
+            domTyp  <- Task.eval(toTyp(domTerm))
+            x = getNextVarName(vars) :: domTyp
+            value <- parse(body, x +: vars)
+            cod   <- Task.eval(toTyp(value))
+          } yield
+            if (LeanInterface.usesVar(body, 0))(PiDefn(x, cod))
+            else (x.typ ->: cod)
+        case Let(domain, value, body) =>
+          pprint.log(s"let $domain, $value, $body")
+          for {
+            domTerm <- parse(domain.ty, vars)
+            domTyp  <- Task.eval(toTyp(domTerm))
+            x = getNextVarName(vars) :: domTyp
+            valueTerm <- parse(value, vars)
+            bodyTerm  <- parse(body, x +: vars)
+          } yield (bodyTerm.replace(x, valueTerm))
+        case e => Task.raiseError(UnParsedException(e))
       }
-    } yield if (isPropFmly(res.typ)) "_" :: (res.typ) else res
+
+      for {
+        res <- resTask
+        _ = {
+          parseWork -= exp
+          parseMemo += (exp, vars) -> res
+          pprint.log(s"parsed $exp")
+          if (isPropFmly(res.typ))
+            pprint.log(s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
+        }
+      } yield if (isPropFmly(res.typ)) "_" :: (res.typ) else res
+    }
   }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
