@@ -2898,6 +2898,12 @@ object HoTT {
       else name.dropRight(1) + (name.toCharArray.last + 1).toChar.toString
     }
 
+  def prefixedNextName(fullname: String) : String =
+    {
+      val (prefix, name) = fullname.splitAt(1)
+      prefix + nextName(name)
+    }
+
   /**
     * factory for variable names
     */
