@@ -26,41 +26,41 @@ object LeanParser {
         (head +: prev, residue)
     }
 
-  def getNextVarName(vecs: Vector[Term]) =
-    {
-      val lastName = vecs.headOption.collect{case sym: Symbolic => sym.name.toString}.getOrElse("'")
-      prefixedNextName(lastName)
-    }
+  def getNextVarName(vecs: Vector[Term]) = {
+    val lastName = vecs.headOption
+      .collect { case sym: Symbolic => sym.name.toString }
+      .getOrElse("'")
+    prefixedNextName(lastName)
+  }
 
   import upickle.default._, upickle.Js
 
   import translation._, TermJson._
 
-  def jsDef(parser: LeanParser) =
-    {
-      val jsDefs = parser.defnMap.toVector.map{
-        case (name, term) =>
-          Js.Obj("name" -> Js.Str(name.toString), "term" -> termToJson(term).get)
-      }
-      Js.Arr(jsDefs : _*)
+  def jsDef(parser: LeanParser) = {
+    val jsDefs = parser.defnMap.toVector.map {
+      case (name, term) =>
+        Js.Obj("name" -> Js.Str(name.toString), "term" -> termToJson(term).get)
     }
+    Js.Arr(jsDefs: _*)
+  }
 
   def jsTermIndMod(parser: LeanParser) = {
     val jsIndMods = parser.termIndModMap.toVector map {
       case (name, tim) =>
         Js.Obj(
-          "name" -> Js.Str(name.toString),
+          "name"       -> Js.Str(name.toString),
           "num-params" -> Js.Num(tim.numParams),
-          "is-propn" -> (if (tim.isPropn) Js.True else Js.False),
-          "intros" -> Js.Arr(tim.intros.map(termToJson(_).get) : _*)
+          "is-propn"   -> (if (tim.isPropn) Js.True else Js.False),
+          "intros"     -> Js.Arr(tim.intros.map(termToJson(_).get): _*)
         )
     }
-      Js.Arr(jsIndMods : _*)
+    Js.Arr(jsIndMods: _*)
   }
 
-  def toJs(parser : LeanParser) =
+  def toJs(parser: LeanParser) =
     Js.Obj(
-      "defns" -> jsDef(parser),
+      "defns"   -> jsDef(parser),
       "indmods" -> jsTermIndMod(parser)
     )
 
@@ -98,18 +98,18 @@ class LeanParser(mods: Vector[Modification]) {
   def getTermIndMod(name: Name) =
     termIndModMap.get(name).map((t) => Task.pure(t))
 
-    def recApp(name: Name,
-                    args: Vector[Expr],
-                    exp: Expr,
-                    vars: Vector[Term]): Task[Term] =
-      for {
-        indMod <- getMemTermIndMod(name, exp)
-        (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-        argsFmlyTerm <- parseVec(argsFmly, vars)
-        recFnT = getRec(indMod, argsFmlyTerm)
-        vec <- parseVec(xs, vars)
-        res <- applyFuncWitFold(recFnT, vec)
-      } yield res
+  def recApp(name: Name,
+             args: Vector[Expr],
+             exp: Expr,
+             vars: Vector[Term]): Task[Term] =
+    for {
+      indMod <- getMemTermIndMod(name, exp)
+      (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+      argsFmlyTerm <- parseVec(argsFmly, vars)
+      recFnT = getRec(indMod, argsFmlyTerm)
+      vec <- parseVec(xs, vars)
+      res <- applyFuncWitFold(recFnT, vec)
+    } yield res
 
   def recAppSkips(name: Name,
                   args: Vector[Expr],
@@ -152,9 +152,7 @@ class LeanParser(mods: Vector[Modification]) {
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
     memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
-    memParsed.
-      map(Task.pure(_)).
-      getOrElse{
+    memParsed.map(Task.pure(_)).getOrElse {
       parseWork += exp
 
       // pprint.log(s"Parsing $exp")
@@ -198,10 +196,11 @@ class LeanParser(mods: Vector[Modification]) {
               case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
                 fn
               case y if domain.prettyName.toString == "_" => y
-              case _ =>
-                if (!LeanInterface.usesVar(body, 0))
-                  LambdaFixed("_" :: domTyp, value)
-                else if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+              case _                                      =>
+                // if (!LeanInterface.usesVar(body, 0))
+                //   LambdaFixed("_" :: domTyp, value)
+                // else
+                if (value.typ.dependsOn(x)) LambdaTerm(x, value)
                 else LambdaFixed(x, value)
             }
         case Pi(domain, body) =>
@@ -234,9 +233,11 @@ class LeanParser(mods: Vector[Modification]) {
           parseMemo += (exp, vars) -> res
           pprint.log(s"parsed $exp")
           if (isPropFmly(res.typ))
-            pprint.log(s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
+            pprint.log(
+              s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
         }
-      } yield if (isPropFmly(res.typ)) "_" :: (res.typ) else res
+      } yield res
+      // if (isPropFmly(res.typ)) "_" :: (res.typ) else res
     }
   }
 

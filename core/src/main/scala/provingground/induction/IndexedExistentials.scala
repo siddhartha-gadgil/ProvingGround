@@ -4,7 +4,7 @@ import provingground._, HoTT._
 import shapeless._
 import scala.language.existentials
 
-sealed trait TypFamilyExst {
+sealed trait TypFamilyExst { typFmlyExst =>
   import TypFamilyPtn._
   type Fb <: Term with Subs[Fb]
   type Index <: HList
@@ -133,11 +133,11 @@ sealed trait TypFamilyExst {
               getIndexedConstructorShape(ft.codom)
                 .-->>:(IndexedIterFuncExst.getIterFuncShape(ft.dom), ind)
             case _ =>
-              println(cnstTyp)
-              println(pattern.getIndex(W, cnstTyp))
-              println(W)
-              println(pattern)
-              ???
+              // println(cnstTyp)
+              // println(pattern.getIndex(W, cnstTyp))
+              // println(W)
+              // println(pattern)
+              throw new TypFamilyExst.GetIndexedException(typFmlyExst, cnstTyp)
           }
         }
   }
@@ -189,6 +189,9 @@ sealed trait TypFamilyExst {
 }
 
 object TypFamilyExst {
+  case class GetIndexedException(typFamily: TypFamilyExst, cnstTyp: Typ[Term])
+      extends Exception("Could not get constructor shape")
+
   import TypFamilyPtn._
   def apply[Fib <: Term with Subs[Fib], In <: HList: TermList](
       tf: TypFamilyPtn[Term, Fib, In],

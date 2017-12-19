@@ -54,8 +54,8 @@ lazy val commonSettings = baseSettings ++ Seq(
     "com.lihaoyi"   %% "fansi"     % "0.2.4",
     "com.lihaoyi"   %% "upickle"   % "0.4.4",
     "com.chuusai"   %% "shapeless" % "2.3.2",
-    "org.typelevel" %% "cats-core" % "1.0.0-MF",
-    "io.monix"      %% "monix"     % "3.0.0-M1",
+    "org.typelevel" %% "cats-core" % "1.0.0-RC1",
+    "io.monix"      %% "monix"     % "3.0.0-M2",
     // "io.monix"      %% "monix-cats" % "2.3.0",
     "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
   ),

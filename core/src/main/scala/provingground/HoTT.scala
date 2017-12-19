@@ -1169,7 +1169,8 @@ object HoTT {
   def skipApply(f: Term, x: Term, n: Int): Option[Term] =
     f match {
       case l: LambdaLike[u, v] =>
-        val canSkip = skipVars(l.value, n - 1).map(_.indepOf(l.variable)).getOrElse(false)
+        val canSkip =
+          skipVars(l.value, n - 1).map(_.indepOf(l.variable)).getOrElse(false)
         if (canSkip) Some(l.value) else None
       case _ => None
     }
@@ -2898,11 +2899,10 @@ object HoTT {
       else name.dropRight(1) + (name.toCharArray.last + 1).toChar.toString
     }
 
-  def prefixedNextName(fullname: String) : String =
-    {
-      val (prefix, name) = fullname.splitAt(1)
-      prefix + nextName(name)
-    }
+  def prefixedNextName(fullname: String): String = {
+    val (prefix, name) = fullname.splitAt(1)
+    prefix + nextName(name)
+  }
 
   /**
     * factory for variable names

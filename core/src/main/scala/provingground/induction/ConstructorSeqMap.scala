@@ -372,7 +372,9 @@ case class IndTyp[SS <: HList, Intros <: HList](
 
   val typ = Type
 
-  def newobj = ??? // should not be using this as a variable
+  def newobj =
+    throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)")
 
   def subs(x: Term, y: Term) = IndTyp(name, seqDom.subs(x, y))
 
