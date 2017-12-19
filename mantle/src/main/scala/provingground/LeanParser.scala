@@ -329,7 +329,7 @@ class LeanParser(mods: Vector[Modification]) {
         indTyp = toTyp(indTypTerm)
         typF   = name.toString :: indTyp
         _      = { defnMap += name -> typF }
-        intros <- foldAxiomSeq(Vector(), ind.intros)
+        intros <- foldAxiomSeq(Vector(), ind.intros).map(_.reverse)
         // (intros, withIntros) = introsPair
         typValuePair <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePair match {
