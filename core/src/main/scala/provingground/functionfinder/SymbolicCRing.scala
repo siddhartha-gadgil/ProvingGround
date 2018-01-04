@@ -32,7 +32,7 @@ import spire.implicits._
   * * c x
   * * c Pi{(x -> k)}; no k is zero, there are either at least two terms or there is one term with k not 1.
   *
-  * 
+  *
   */
 class SymbolicCRing[A: Ring] { self =>
   val ring = implicitly[Ring[A]]
