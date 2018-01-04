@@ -2,6 +2,8 @@ package provingground.andrewscurtis
 
 import provingground.translation.StringParse._
 
+import cats.kernel._
+
 /*
  * Free group in n generators
  * An element is represented as a word in integers, together with rank of the corresponding group
@@ -27,6 +29,12 @@ object FreeGroups {
     else ('a' - n - 1).toChar.toString + '\u0305'.toString
 
   object Word {
+    implicit val freeGroup: Group[Word] =  new Group[Word]{
+      val empty = Word(List())
+      def combine(x: Word, y: Word) = x * y
+      def inverse(x: Word) = x.inv
+    }
+
 
     /**
       * sanity checker for listFromChars.
@@ -182,6 +190,8 @@ object FreeGroups {
       */
     def rmvtop(rank: Int) = Word(ls filter (_.abs < rank))
   }
+
+
 
   /**
     * weight of a word, for a generation process where we extend with some probability, picking letters at random.
