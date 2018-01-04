@@ -171,7 +171,11 @@ class SymbolicCRing[A: Ring] { self =>
     val typ = LocalTyp
 
     def subs(x: Term, y: Term) =
-      (atomize map (_.replace(x, y)))
+      if (multElems.size == 1)
+      PiTerm(
+        Map(multElems.head._1.replace(x, y) -> multElems.head._2)
+        )
+      else (atomize map (_.replace(x, y)))
         .reduceRight((a: LocalTerm, b: LocalTerm) => prod(a)(b))
 
     def newobj = LocalTyp.obj
@@ -431,7 +435,7 @@ class SymbolicCRing[A: Ring] { self =>
     def act(x: LocalTerm) = x match {
       case Literal(a) =>
         if (a == one) {
-          val x = LocalTyp.obj
+          val x = LocalTyp.Var
           lmbda(x)(x)
         } else
           AdditiveMorphism(multLiteral(a),
