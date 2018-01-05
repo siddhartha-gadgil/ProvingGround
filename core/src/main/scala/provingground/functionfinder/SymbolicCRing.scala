@@ -175,7 +175,8 @@ class SymbolicCRing[A: Ring] { self =>
         val (t, n) = multElems.head
         val s      = t.replace(x, y)
         s match {
-          case Literal(a) => reciprocal(Literal(ring.pow(a, -n)))
+          case Literal(a) =>
+            if (n >= 0) Literal(ring.pow(a, n)) else reciprocal(Literal(ring.pow(a, -n)))
           case u          => PiTerm(Map(u -> n))
         }
       } else
@@ -210,8 +211,8 @@ class SymbolicCRing[A: Ring] { self =>
     def *:(y: LocalTerm) = {
       import Reciprocal.{base, expo}
 
-      val ind = (multElems.get(base(y)) map (_ + expo(y))) getOrElse (expo(y))
-      PiTerm.purge(multElems + (base(y) -> ind))
+      // val ind = (multElems.get(base(y)) map (_ + expo(y))) getOrElse (expo(y))
+      PiTerm.reduce(multElems.toVector :+ (base(y) -> expo(y)))
     }
 
     val elems =
@@ -221,18 +222,21 @@ class SymbolicCRing[A: Ring] { self =>
   }
 
   object PiTerm {
-    def purge(elems: Map[LocalTerm, Int]) = {
-      val nontriv = elems filter ({ case (x, p) => p != 0 })
-      PiTerm.reduce(nontriv.toVector)
-    }
+    // def purge(elems: Map[LocalTerm, Int]) = {
+    //   val nontriv = elems filter ({ case (x, p) => p != 0 })
+    //   PiTerm.reduce(nontriv.toVector)
+    // }
 
     def reduce(vec: Vector[(LocalTerm, Int)]) = {
       val pairs = vec.groupBy(_._1).mapValues ((seq) => (seq.map(_._2).sum)).filter(_._2 != 0)
-      val elems = vec.toMap
-      val keys = elems.keySet
-      if (keys.isEmpty) Literal(one)
-      else if (keys.size > 1 || elems(keys.head) != 1) PiTerm(elems)
-      else keys.head
+      // val elems = vec.toMap
+      // val keys = elems.keySet
+      // if (keys.isEmpty) Literal(one)
+      // else if (keys.size > 1 || elems(keys.head) != 1) PiTerm(elems)
+      // else keys.head
+      if (pairs.isEmpty) Literal(one)
+      else if (pairs.size > 1 || pairs.head._2 != 1) PiTerm(pairs.toMap)
+      else pairs.head._1
     }
 
     def powList(x: LocalTerm, k: Int) = {
@@ -515,7 +519,7 @@ class SymbolicCRing[A: Ring] { self =>
           .reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
       case p: PiTerm => x *: p
       case `x`       => PiTerm(Map(base(x) -> 2 * expo(x)))
-      case _         => PiTerm(Map(base(x) -> expo(x), base(y) -> expo(y)))
+      case _         => PiTerm.reduce(Vector(base(x) -> expo(x), base(y) -> expo(y)))
     }
   }
 

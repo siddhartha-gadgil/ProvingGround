@@ -55,4 +55,32 @@ class NatRingSpec extends FlatSpec {
 
     assert((x + x) + y == (x + y) + x)
   }
+
+  "Symbolic Algebra" should "satisfy the tut tests" in {
+    val n = "n" :: NatTyp
+    val m = "m" :: NatTyp
+    val k = "k" :: NatTyp
+
+    assert(n + m == m + n)
+    assert((n + m) + k == n + (m + k))
+
+    assert{(n + n) + m == (n + m) + n}
+
+    assert{n * m == m * n}
+
+    assert(n* (m + k) == n * m + n * k)
+
+    assert(1 + (n + 2) == n + 3)
+
+    val fn = lmbda(n)(n * n)
+
+    assert(fn(3) == (9: Nat))
+
+    val mm = lmbda(n)(prod(n + 1))
+    val factorial = Rec(1: Nat, mm)
+
+    assert(factorial(5) == (120 : Nat))
+
+    assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
+  }
 }
