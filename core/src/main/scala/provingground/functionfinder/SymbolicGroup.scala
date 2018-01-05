@@ -40,6 +40,8 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
   object Literal extends ScalaSym[LocalTerm, A](self)
 
   case object inv extends Func[LocalTerm, LocalTerm] {
+    override val toString = "inv"
+
     val dom = self
 
     val codom = self
@@ -97,7 +99,8 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
     def act(y: LocalTerm) = y match {
       case Comb(u, v) =>
-        if (u == ia) v else Comb(Comb(a, u), v)
+        if (u == ia) v else Comb(a, Comb(u, v))
+      case `id` => a
       case p =>
         if (p == ia) id else Comb(a, p)
     }
@@ -117,12 +120,15 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
         s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
+      case `id` => HoTT.id(self)
       case Literal(a) => MultLiteral(a)
       case Comb(u, v) =>
         val x = self.Var
         x :-> mul(u)(mul(v)(x))
       case p => MultTerm(p)
     }
+
+    override val toString = "mul"
   }
 
   implicit val groupStructure: Group[LocalTerm] = new Group[LocalTerm] {

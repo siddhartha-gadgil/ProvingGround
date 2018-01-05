@@ -303,7 +303,7 @@ object ScalaRep {
     def subs(x: Term, y: Term) =
       if (x == this) y.asInstanceOf[RepTerm[A]]
       else {
-        def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym.subs(x, y))
+        def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
         symSubs(symbobj)(x, y)(name)
       }
   }
