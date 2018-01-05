@@ -195,9 +195,9 @@ class SymbolicCRing[A: Ring] { self =>
     }
 
     lazy val tail = multElems.head match {
-      case (x, k) if math.abs(k) == 1 => PiTerm.reduce(multElems.tail)
-      case (x, k) if k > 1            => PiTerm.reduce(multElems.tail + (x -> (k - 1)))
-      case (x, k) if k < -1           => PiTerm.reduce(multElems.tail + (x -> (k + 1)))
+      case (x, k) if math.abs(k) == 1 => PiTerm.reduce(multElems.tail.toVector)
+      case (x, k) if k > 1            => PiTerm.reduce(multElems.tail.toVector :+ (x -> (k - 1)))
+      case (x, k) if k < -1           => PiTerm.reduce(multElems.tail.toVector :+ (x -> (k + 1)))
     }
 
     val isComposite =
@@ -219,10 +219,12 @@ class SymbolicCRing[A: Ring] { self =>
   object PiTerm {
     def purge(elems: Map[LocalTerm, Int]) = {
       val nontriv = elems filter ({ case (x, p) => p != 0 })
-      PiTerm.reduce(nontriv)
+      PiTerm.reduce(nontriv.toVector)
     }
 
-    def reduce(elems: Map[LocalTerm, Int]) = {
+    def reduce(vec: Vector[(LocalTerm, Int)]) = {
+      val pairs = vec.groupBy(_._1).mapValues ((seq) => (seq.map(_._2).sum)).filter(_._2 != 0)
+      val elems = vec.toMap
       val keys = elems.keySet
       if (keys.isEmpty) Literal(one)
       else if (keys.size > 1 || elems(keys.head) != 1) PiTerm(elems)
