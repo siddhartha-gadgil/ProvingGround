@@ -40,8 +40,9 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
 
       def subs(x: Term, y: Term) = this
 
-      def newobj = throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)")
+      def newobj =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)")
 
       override def toString = "reciprocal"
     }
@@ -79,8 +80,7 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
     //   div(a, b)
 
     // Members declared in spire.algebra.MultiplicativeGroup
-    def div(x: LocalTerm,
-            y: LocalTerm): LocalTerm =
+    def div(x: LocalTerm, y: LocalTerm): LocalTerm =
       self.prod(x)(self.reciprocal(y))
   }
 }

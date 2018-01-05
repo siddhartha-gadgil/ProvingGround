@@ -11,6 +11,8 @@ import scala.util._
 import scala.language.implicitConversions
 import annotation.tailrec
 
+object QField extends SymbolicField[Rational]
+
 object NatRing extends SymbolicCRing[SafeLong] {
   override def toString = "Nat"
   val x                 = "x" :: LocalTyp
