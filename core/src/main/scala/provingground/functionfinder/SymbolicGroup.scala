@@ -121,7 +121,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
       case Comb(u, v) =>
         val x = self.Var
         x :-> mul(u)(mul(v)(x))
-      case p => FormalAppln(mul, p)
+      case p => MultTerm(p)
     }
   }
 
@@ -134,3 +134,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
   }
 }
+
+import andrewscurtis.FreeGroups._
+
+object FreeGroup extends SymbolicGroup[Word]
