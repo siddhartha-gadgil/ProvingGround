@@ -25,7 +25,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
   //
   // val mulBase : Func[LocalTerm, Func[LocalTerm, LocalTerm]] = opRep(mulFn)
 
-  val id = group.empty.term
+  val e = group.empty.term
 
   object Comb {
     def unapply(term: Term): Option[(LocalTerm, LocalTerm)] = term match {
@@ -100,9 +100,9 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
     def act(y: LocalTerm) = y match {
       case Comb(u, v) =>
         if (u == ia) v else Comb(a, Comb(u, v))
-      case `id` => a
+      case `e` => a
       case p =>
-        if (p == ia) id else Comb(a, p)
+        if (p == ia) e else Comb(a, p)
     }
   }
 
@@ -120,7 +120,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
         s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
-      case `id` => HoTT.id(self)
+      case `e` => HoTT.id(self)
       case Literal(a) => MultLiteral(a)
       case Comb(u, v) =>
         val x = self.Var
@@ -132,7 +132,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
   }
 
   implicit val groupStructure: Group[LocalTerm] = new Group[LocalTerm] {
-    val empty = id
+    val empty = e
 
     def combine(x: LocalTerm, y: LocalTerm) = mul(x)(y)
 
@@ -143,4 +143,6 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
 import andrewscurtis.FreeGroups._
 
-object FreeGroup extends SymbolicGroup[Word]
+object FreeGroup extends SymbolicGroup[Word]{
+  def word(s: String) = Literal(Word.fromString(s))
+}
