@@ -8,7 +8,7 @@ import spire.implicits._
 
 import FreeGroup._
 
-import andrewscurtis.FreeGroups._
+// import andrewscurtis.FreeGroups._
 
 import org.scalatest.FlatSpec
 
