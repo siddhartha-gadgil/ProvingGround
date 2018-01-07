@@ -116,7 +116,7 @@ object FreeGroups {
 
     override def toString = if (ls.isEmpty) "1" else toUnicode
 
-    def ++(that: Word) = Word(ls ++ that.ls)
+    def ++(that: Word) = Word(ls ++ that.ls).reduce
 
     /**
       * unicode representation.
@@ -124,7 +124,7 @@ object FreeGroups {
     def toUnicode = ((ls map (letterUnic(_))).foldLeft("")(_ + _))
 
     /**
-      * letter prepended to word
+      * letter prepended to word, not reduced
       */
     def +:(let: Int) = Word(let +: ls)
 
@@ -145,7 +145,7 @@ object FreeGroups {
       */
     def pow: Int => Word = {
       case 0          => Word(Vector())
-      case k if k > 0 => Word(Vector.fill(k)(ls).flatten)
+      case k if k > 0 => Word(Vector.fill(k)(ls).flatten).reduce
       case k if k < 0 => this.inv.pow(-k)
     }
 
@@ -162,7 +162,7 @@ object FreeGroups {
     /**
       * conjugate
       */
-    def conj(that: Word) = that.inv * this * that
+    def conj(that: Word) = (that.inv * this * that).reduce
 
     /**
       * conjugate
@@ -172,7 +172,7 @@ object FreeGroups {
     /**
       * conjugate by a generator (or its inverse)
       */
-    def conjGen(k: Int) = Word((-k) +: (ls :+ k)).reduce
+    def conjGen(k: Int) = Word((-k) +: (ls :+ (k))).reduce
 
     /**
       * conjugate by a generator (or its inverse).

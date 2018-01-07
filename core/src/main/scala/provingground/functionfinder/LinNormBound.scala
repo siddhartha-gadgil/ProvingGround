@@ -39,25 +39,26 @@ object LinNormBound {
   val y = "y" :: QTyp
 
   val l       = "l" :: FreeGroup ->: QTyp
-  val upbound = g :-> (x :-> leq(l(g))(x))
+  val upbound = g :~> (x :~> leq(l(g))(x))
 
   val pos = Pos(l(FreeGroup.e))
 
   val triangBound =
-    g :-> (h :-> (x :-> (y :-> (("b1" :: leq(l(g))(x)) :-> (("b2" :: leq(l(h))(
-      y)) :-> ("triangle-inequality" :: leq(l(g |+| h))(x + y)))))))
+    g :~> (h :~> (x :~> (y :~> (("b1" :: leq(l(g))(x)) :~> (("b2" :: leq(l(h))(
+      y)) :~> ("triangle-inequality" :: leq(l(g |+| h))(x + y)))))))
 
   val conjInv =
-    g :-> (
-      h :-> (
-          l(h) =:= (l(g |+| h |+| g.inverse))
+    g :~> (
+      h :~> (
+        "conjugacy-invariance" ::   (l(h) =:= (l(g |+| h |+| g.inverse)))
           )
         )
 
+
   val invBound =
-    g :-> (
-      x :-> (
-        ("hyp" :: leq(l(g))(x)) :-> (
+    g :~> (
+      x :~> (
+        ("hyp" :: leq(l(g))(x)) :~> (
           "inverse-invariance" :: leq(l(g.inverse))(x)
         )
       )
@@ -67,20 +68,20 @@ object LinNormBound {
     Word(Vector(n.toInt)))
 
   val genBound =
-    n :-> (
-      leq(l(gen(n)))(rat(1))
+    n :~> (
+      "generator-bound" :: leq(l(gen(n)))(rat(1))
     )
 
   val NtoQ = NatRing.incl(QField)
   val nr   = NtoQ(n)
-  val gn   = FreeGroup.power(g)(n)
+  // val gn   = FreeGroup.power(g)(n)
 
   val powerBound =
-    g :-> (
-      x :-> (
-        n :-> (
-          ("hyp" :: (leq(l(g))(x))) :-> (
-            "homogeneity" :: leq(l(gn))(x / nr)
+    g :~> (
+      x :~> (
+        n :~> (
+          ("hyp" :: (leq(l(FreeGroup.power(g)(n)))(x))) :~> (
+            "homogeneity" :: leq(l(g))(x / nr)
           )
         )
       )
@@ -96,12 +97,12 @@ object LinNormBound {
   }
 
   case class ConjGen(n: Int, pf: LinNormBound)
-      extends LinNormBound(n +: pf.word :+ (-n), pf.bound) {
+      extends LinNormBound(pf.word.conjGen(-n), pf.bound) {
     require(n != 0, "No generator with index 0")
 
     lazy val wit = {
       val g = if (n >0) gen(nat(n)) else gen(nat(-n)).inverse
-      val conjEq = conjInv(g)(el)
+      val conjEq = conjInv(g)(pf.el)
       transpEqL(bnd)(l(pf.el))(l(el))(conjEq)(pf.proof)
     }
   }

@@ -92,7 +92,7 @@ object NatRing extends SymbolicCRing[SafeLong] {
 
     val typ = dom ->: codom
 
-    def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term) = Rec(init.replace(x, y), g.replace(x, y))
     def newobj                 = this
 
     def act(x: LocalTerm) = x match {
@@ -115,7 +115,7 @@ object NatRing extends SymbolicCRing[SafeLong] {
 
     val depcodom = typFamily
 
-    def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term) = Induc(typFamily.replace(x, y), init.replace(x, y), g.replace(x, y))
     def newobj                 = this
 
     def act(x: LocalTerm) = x match {

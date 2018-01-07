@@ -83,7 +83,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
     val typ = self ->: self
 
-    def subs(x: Term, y: Term) = MultTerm(a.replace(x, y))
+    def subs(x: Term, y: Term) = mul(a.replace(x, y))
 
     def newobj =
       throw new IllegalArgumentException(
