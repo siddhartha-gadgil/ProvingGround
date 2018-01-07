@@ -19,7 +19,7 @@ class WordSpec extends FlatSpec {
   it should "allow concatenation of letters" in {
     val a      = Word(Vector(1, 2, -2, 3, -1, 1, -3, 1))
     val let    = -1
-    val result = Word(Vector(-1, 1, 2, -2, 3, -1, 1, -3, 1))
+    val result = Word(Vector(1, 2, -2, 3, -1, 1, -3, 1, -1))
     assert(a :+ (let) === result)
   }
 

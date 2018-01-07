@@ -16,6 +16,10 @@ FreeGroup.{Literal => elem, _}
 sealed abstract class LinNormBound(val word: Word, val bound: Rational) {
   val theorem = upbound(elem(word))(rat(bound))
 
+  val bnd = rat(bound)
+
+  val el = elem(word)
+
   val wit: Term
 
   lazy val proof = wit !: theorem
@@ -39,26 +43,22 @@ object LinNormBound {
 
   val pos = Pos(l(FreeGroup.e))
 
-  val triang =
+  val triangBound =
     g :-> (h :-> (x :-> (y :-> (("b1" :: leq(l(g))(x)) :-> (("b2" :: leq(l(h))(
-      y)) :-> ("axiom" :: leq(l(g |+| h))(x + y)))))))
+      y)) :-> ("triangle-inequality" :: leq(l(g |+| h))(x + y)))))))
 
-  val conjBound =
+  val conjInv =
     g :-> (
       h :-> (
-        x :-> (
-          ("hyp" :: (leq(l(h))(x))) :-> (
-            "axiom" :: (leq(l(g |+| h |+| g.inverse))(x))
+          l(h) =:= (l(g |+| h |+| g.inverse))
           )
         )
-      )
-    )
 
   val invBound =
     g :-> (
       x :-> (
         ("hyp" :: leq(l(g))(x)) :-> (
-          "axiom" :: leq(l(g.inverse))(x)
+          "inverse-invariance" :: leq(l(g.inverse))(x)
         )
       )
     )
@@ -80,7 +80,7 @@ object LinNormBound {
       x :-> (
         n :-> (
           ("hyp" :: (leq(l(g))(x))) :-> (
-            "axiom" :: leq(l(gn))(x / nr)
+            "homogeneity" :: leq(l(gn))(x / nr)
           )
         )
       )
@@ -89,7 +89,8 @@ object LinNormBound {
   case class Gen(n: Int) extends LinNormBound(Word(Vector(n)), 1) {
     require(n != 0, "No generator with index 0")
 
-    val wit = ???
+    val wit =
+      if (n > 0) genBound(nat(n)) else invBound(gen(nat(n)))(rat(1))(genBound(nat(-n)))
 
     override val toString = Word(Vector(n)).toString
   }
@@ -98,12 +99,17 @@ object LinNormBound {
       extends LinNormBound(n +: pf.word :+ (-n), pf.bound) {
     require(n != 0, "No generator with index 0")
 
-    lazy val wit = ???
+    lazy val wit = {
+      val g = if (n >0) gen(nat(n)) else gen(nat(-n)).inverse
+      val conjEq = conjInv(g)(el)
+      transpEqL(bnd)(l(pf.el))(l(el))(conjEq)(pf.proof)
+    }
   }
 
   case class Triang(pf1: LinNormBound, pf2: LinNormBound)
       extends LinNormBound(pf1.word ++ pf2.word, pf1.bound + pf2.bound){
-        lazy val wit = ???
+        lazy val wit =
+          triangBound(pf1.el)(pf2.el)(pf1.bnd)(pf2.bnd)(pf1.proof)(pf2.proof)
       }
 
   case class PowerBound(baseword: Word, n: Int, pf: LinNormBound)
@@ -111,7 +117,8 @@ object LinNormBound {
     require(pf.word == baseword.pow(n),
             s"The element ${pf.word} is not the ${n}th power of $baseword")
 
-    lazy val wit = ???
+    lazy val wit =
+      powerBound(el)(pf.bnd)(nat(n))(pf.proof)
   }
 
   // case object Empty extends LinNormBound(Word(Vector()), 0)
