@@ -20,7 +20,7 @@ class WordSpec extends FlatSpec {
     val a      = Word(Vector(1, 2, -2, 3, -1, 1, -3, 1))
     val let    = -1
     val result = Word(Vector(-1, 1, 2, -2, 3, -1, 1, -3, 1))
-    assert(a.::(let) === result)
+    assert(a :+ (let) === result)
   }
 
   it should "have an inverse" in {
@@ -31,7 +31,7 @@ class WordSpec extends FlatSpec {
 
   it should "raise to power" in {
     val a             = Word(Vector(1, 2, 2, -1, 2))
-    val power0        = Word(Nil)
+    val power0        = Word(Vector())
     val power2        = Word(Vector(1, 2, 2, -1, 2, 1, 2, 2, -1, 2))
     val inversepower2 = power2.inv
     assert(a.pow(0) === power0)
@@ -191,7 +191,7 @@ class PresentationSpec extends FlatSpec {
     val b      = Word(Vector(3, 2))
     val c      = Word(Vector(1, 3, -1))
     val p      = Presentation(Vector(a, b, c), 3)
-    val result = Presentation(Vector(Word(Nil), a, b, c), 3)
+    val result = Presentation(Vector(Word(Vector()), a, b, c), 3)
     assert(Presentation.ttzStab(p) === result)
   }
 

@@ -2,6 +2,8 @@ package provingground.functionfinder
 
 import provingground._, andrewscurtis.FreeGroups._
 
+import HoTT._
+
 import LinNormBound._
 
 import spire.implicits._
@@ -13,6 +15,10 @@ FreeGroup.{Literal => elem, _}
 
 sealed abstract class LinNormBound(val word: Word, val bound: Rational) {
   val theorem = upbound(elem(word))(rat(bound))
+
+  val wit: Term
+
+  lazy val proof = wit !: theorem
 
   def ++(that: LinNormBound) = Triang(this, that)
 
@@ -83,21 +89,29 @@ object LinNormBound {
   case class Gen(n: Int) extends LinNormBound(Word(Vector(n)), 1) {
     require(n != 0, "No generator with index 0")
 
+    val wit = ???
+
     override val toString = Word(Vector(n)).toString
   }
 
   case class ConjGen(n: Int, pf: LinNormBound)
       extends LinNormBound(n +: pf.word :+ (-n), pf.bound) {
     require(n != 0, "No generator with index 0")
+
+    lazy val wit = ???
   }
 
   case class Triang(pf1: LinNormBound, pf2: LinNormBound)
-      extends LinNormBound(pf1.word ++ pf2.word, pf1.bound + pf2.bound)
+      extends LinNormBound(pf1.word ++ pf2.word, pf1.bound + pf2.bound){
+        lazy val wit = ???
+      }
 
   case class PowerBound(baseword: Word, n: Int, pf: LinNormBound)
       extends LinNormBound(baseword, pf.bound / n) {
     require(pf.word == baseword.pow(n),
             s"The element ${pf.word} is not the ${n}th power of $baseword")
+
+    lazy val wit = ???
   }
 
   // case object Empty extends LinNormBound(Word(Vector()), 0)
