@@ -10,8 +10,7 @@ import spire.implicits._
 
 import spire.math._
 
-import NatRing.{Literal => nat, _}, QField.{Literal => rat, _},
-FreeGroup.{Literal => elem, _}
+import NatRing.{Literal => nat, _}, QField.{Literal => rat, _}, FreeGroup.{Literal => elem, _}
 
 sealed abstract class LinNormBound(val word: Word, val bound: Rational) {
   val theorem = upbound(elem(word))(rat(bound))
@@ -91,7 +90,7 @@ object LinNormBound {
     require(n != 0, "No generator with index 0")
 
     val wit =
-      if (n > 0) genBound(nat(n)) else invBound(gen(nat(n)))(rat(1))(genBound(nat(-n)))
+      if (n > 0) genBound(nat(n)) else invBound(gen(nat(-n)))(rat(1))(genBound(nat(-n)))
 
     override val toString = Word(Vector(n)).toString
   }
