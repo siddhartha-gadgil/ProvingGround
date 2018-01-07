@@ -17,14 +17,6 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
   type Op = Func[LocalTerm, Func[LocalTerm, LocalTerm]]
 
-  // val inv = ((x: A) => group.inverse(x)).term
-
-  // val mulFn : A => A => A = ((x: A) => ((y: A) =>  group.combine(x, y)))
-  //
-  // val opRep = rep -->: rep -->: rep
-  //
-  // val mulBase : Func[LocalTerm, Func[LocalTerm, LocalTerm]] = opRep(mulFn)
-
   val e = group.empty.term
 
   object Comb {
@@ -120,7 +112,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
         s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
-      case `e` => HoTT.id(self)
+      case `e`        => HoTT.id(self)
       case Literal(a) => MultLiteral(a)
       case Comb(u, v) =>
         val x = self.Var
@@ -139,10 +131,20 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
     def inverse(x: LocalTerm) = inv(x)
 
   }
+
+  val power = {
+    import NatRing._
+    val g                                          = "g" :: self
+    val n                                          = "n" :: NatTyp
+    val fng                                        = "f(n)(g)" :: self
+    val step                                       = n :-> (fng :-> mul(fng)(g))
+    val recFn: Func[NatRing.LocalTerm, RepTerm[A]] = Rec(e, step)
+    g :-> recFn
+  }
 }
 
 import andrewscurtis.FreeGroups._
 
-object FreeGroup extends SymbolicGroup[Word]{
+object FreeGroup extends SymbolicGroup[Word] {
   def word(s: String) = Literal(Word.fromString(s))
 }

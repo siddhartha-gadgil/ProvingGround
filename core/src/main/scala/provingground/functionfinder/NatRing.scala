@@ -11,7 +11,61 @@ import scala.util._
 import scala.language.implicitConversions
 import annotation.tailrec
 
-object QField extends SymbolicField[Rational]
+object QField extends SymbolicField[Rational] {
+  val QTyp = LocalTyp
+
+  // val nat =
+  //   (NatRing.LocalTyp.rep -->: LocalTyp.rep)((n: SafeLong) => Rational(n, 1))
+
+  val Pos = "Positive" :: LocalTyp ->: Type
+
+  val x = "x" :: LocalTyp
+
+  val y = "y" :: LocalTyp
+
+  val leq = x :~> (y :~> Pos(y - x))
+
+  val possum = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x + y))))
+
+  val posprod = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x * y))))
+
+  val dichotomy = x ~>: (Pos(x) || Pos(-x))
+
+  val posAndNegPos = x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
+
+  def posLiteral(a: Rational) = {
+    require(a >= 0, s"Rational number $a not positive")
+    "verified" :: Pos(Literal(a))
+  }
+
+  val z = "z" :: LocalTyp
+
+  val w = "w" :: LocalTyp
+
+  import IdentityTyp.transport
+
+  val transpEqL =
+    x :~> (
+      y :~> (z :~> (transport(w :-> (leq(w)(x)))(y)(z)))
+    ) !: x ~>: (
+      y ~>: (
+        z ~>: (
+          (y =:= z) ->: leq(y)(x) ->: leq(z)(x)
+        )
+      )
+    )
+
+  val transpEqR =
+    x :~> (
+      y :~> (z :~> (transport(w :-> (leq(x)(w)))(y)(z)))
+    ) !: x ~>: (
+      y ~>: (
+        z ~>: (
+          (y =:= z) ->: leq(x)(y) ->: leq(x)(z)
+        )
+      )
+    )
+}
 
 object NatRing extends SymbolicCRing[SafeLong] {
   override def toString = "Nat"
@@ -79,5 +133,13 @@ object NatRing extends SymbolicCRing[SafeLong] {
                                      init: U,
                                      g: FuncLike[Nat, FuncLike[U, U]]) =
       Induc(typFamily, init, g.asInstanceOf[FuncLike[Nat, Func[U, U]]])
+  }
+
+  def incl[A: CRing](r: SymbolicCRing[A]) = {
+    val base = implicitly[Ring[A]]
+    val n    = "n" :: LocalTyp
+    val fn   = "f(n)" :: r.LocalTyp
+    val step = n :-> (fn :-> r.sum(fn)(r.Literal(base.one)))
+    Rec(r.Literal(base.zero), step)
   }
 }

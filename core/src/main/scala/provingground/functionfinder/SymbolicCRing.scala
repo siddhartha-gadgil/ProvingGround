@@ -176,8 +176,9 @@ class SymbolicCRing[A: Ring] { self =>
         val s      = t.replace(x, y)
         s match {
           case Literal(a) =>
-            if (n >= 0) Literal(ring.pow(a, n)) else reciprocal(Literal(ring.pow(a, -n)))
-          case u          => PiTerm(Map(u -> n))
+            if (n >= 0) Literal(ring.pow(a, n))
+            else reciprocal(Literal(ring.pow(a, -n)))
+          case u => PiTerm(Map(u -> n))
         }
       } else
         (atomize map (_.replace(x, y)))
@@ -201,8 +202,10 @@ class SymbolicCRing[A: Ring] { self =>
 
     lazy val tail = multElems.head match {
       case (x, k) if math.abs(k) == 1 => PiTerm.reduce(multElems.tail.toVector)
-      case (x, k) if k > 1            => PiTerm.reduce(multElems.tail.toVector :+ (x -> (k - 1)))
-      case (x, k) if k < -1           => PiTerm.reduce(multElems.tail.toVector :+ (x -> (k + 1)))
+      case (x, k) if k > 1 =>
+        PiTerm.reduce(multElems.tail.toVector :+ (x -> (k - 1)))
+      case (x, k) if k < -1 =>
+        PiTerm.reduce(multElems.tail.toVector :+ (x -> (k + 1)))
     }
 
     val isComposite =
@@ -228,7 +231,10 @@ class SymbolicCRing[A: Ring] { self =>
     // }
 
     def reduce(vec: Vector[(LocalTerm, Int)]) = {
-      val pairs = vec.groupBy(_._1).mapValues ((seq) => (seq.map(_._2).sum)).filter(_._2 != 0)
+      val pairs = vec
+        .groupBy(_._1)
+        .mapValues((seq) => (seq.map(_._2).sum))
+        .filter(_._2 != 0)
       // val elems = vec.toMap
       // val keys = elems.keySet
       // if (keys.isEmpty) Literal(one)

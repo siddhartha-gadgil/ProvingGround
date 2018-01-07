@@ -30,7 +30,7 @@ object FreeGroups {
 
   object Word {
     implicit val freeGroup: Group[Word] = new Group[Word] {
-      val empty                     = Word(List())
+      val empty                     = Word(Vector())
       def combine(x: Word, y: Word) = x * y
       def inverse(x: Word)          = x.inv
     }
@@ -39,7 +39,7 @@ object FreeGroups {
       * sanity checker for listFromChars.
       * to add further checks later.
       */
-    def isParsable(s: List[Char]): Boolean = {
+    def isParsable(s: Vector[Char]): Boolean = {
       if (s.isEmpty) true
       else if ((s.head == '\u0305') || (s.head == '!')) false
       else true
@@ -48,18 +48,18 @@ object FreeGroups {
     /**
       * helper for fromString
       */
-    def listFromChars(s: List[Char]): List[Int] = {
+    def listFromChars(s: Vector[Char]): Vector[Int] = {
       require(
         isParsable(s),
         "The list of characters is not well formed and should not be parsed.")
       s match {
-        case Nil => List()
-        case x :: '\u0305' :: tail =>
-          (-(x - 'a' + 1)) :: listFromChars(tail)
-        case x :: '!' :: tail =>
-          (-(x - 'a' + 1)) :: listFromChars(tail)
-        case x :: tail =>
-          (x - 'a' + 1) :: listFromChars(tail)
+        case Vector() => Vector()
+        case x +: '\u0305' +: tail =>
+          (-(x - 'a' + 1)) +: listFromChars(tail)
+        case x +: '!' +: tail =>
+          (-(x - 'a' + 1)) +: listFromChars(tail)
+        case x +: tail =>
+          (x - 'a' + 1) +: listFromChars(tail)
       }
     }
 
@@ -67,14 +67,14 @@ object FreeGroups {
       * word from a string.
       */
     def fromString(s: String): Word =
-      if (s == "1") Word(List())
+      if (s == "1") Word(Vector())
       else
         Word(
           listFromChars(
             s.replace("!", "\u0305")
               .replace(" ", "")
               .replace(".", "")
-              .toList))
+              .toVector))
 
     /**
       * word from a string.
@@ -84,24 +84,24 @@ object FreeGroups {
     /**
       * the identity
       */
-    val e = Word(List())
+    val e = Word(Vector())
   }
 
   /**
     * A word in a free group.
     * @param ls letters of the words represented as integers; 1 represents a, -1 represents a^{-1}
     */
-  case class Word(ls: List[Int]) extends AnyVal {
+  case class Word(ls: Vector[Int]) extends AnyVal {
 
     /**
       * returns reduced form of a word
       */
     def reduce: Word = {
       ls match {
-        case x :: y :: zs if x == -y => Word(zs).reduce
-        case x :: ys =>
-          if (Word(ys).isReduced) x :: Word(ys).reduce
-          else (x :: Word(ys).reduce).reduce
+        case x +: y +: zs if x == -y => Word(zs).reduce
+        case x +: ys =>
+          if (Word(ys).isReduced) x +: Word(ys).reduce
+          else (x +: Word(ys).reduce).reduce
         case _ => this
       }
     }
@@ -116,6 +116,8 @@ object FreeGroups {
 
     override def toString = if (ls.isEmpty) "1" else toUnicode
 
+    def ++(that: Word) = Word(ls ++ that.ls)
+
     /**
       * unicode representation.
       */
@@ -124,7 +126,9 @@ object FreeGroups {
     /**
       * letter prepended to word
       */
-    def ::(let: Int) = Word(let :: ls)
+    def +:(let: Int) = Word(let +: ls)
+
+    def :+(let: Int) = Word(ls :+ let)
 
     /**
       * inverse
@@ -140,8 +144,8 @@ object FreeGroups {
       * returns this to kth power.
       */
     def pow: Int => Word = {
-      case 0          => Word(List())
-      case k if k > 0 => Word(List.fill(k)(ls).flatten)
+      case 0          => Word(Vector())
+      case k if k > 0 => Word(Vector.fill(k)(ls).flatten)
       case k if k < 0 => this.inv.pow(-k)
     }
 
@@ -168,7 +172,7 @@ object FreeGroups {
     /**
       * conjugate by a generator (or its inverse)
       */
-    def conjGen(k: Int) = Word((-k) :: (ls :+ k)).reduce
+    def conjGen(k: Int) = Word((-k) +: (ls :+ k)).reduce
 
     /**
       * conjugate by a generator (or its inverse).
@@ -206,7 +210,7 @@ object FreeGroups {
     * @param rels relations
     * @param rank number of generators.
     */
-  case class Presentation(rels: List[Word], rank: Int) {
+  case class Presentation(rels: Vector[Word], rank: Int) {
     require(maxgen <= rank, "There are more generators than the rank allows")
 
     /**
@@ -219,10 +223,10 @@ object FreeGroups {
       */
     def toPlainString = {
       val gens =
-        (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toList
+        (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toVector
           .mkString(",")
       val relstring =
-        (for (rel <- rels) yield rel.toPlainString).toList.mkString(",")
+        (for (rel <- rels) yield rel.toPlainString).toVector.mkString(",")
       s"<$gens; $relstring>"
     }
 
@@ -231,10 +235,10 @@ object FreeGroups {
       */
     def toUnicode = {
       val gens =
-        (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toList
+        (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toVector
           .mkString(",")
       val relstring =
-        (for (rel <- rels) yield rel.toUnicode).toList.mkString(",")
+        (for (rel <- rels) yield rel.toUnicode).toVector.mkString(",")
       s"<$gens; $relstring>"
     }
 
@@ -264,7 +268,7 @@ object FreeGroups {
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(i).inv else rels(i)
         }
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     /**
@@ -275,7 +279,7 @@ object FreeGroups {
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(k) * rels(l) else rels(i)
         }
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     def rtmultinv(k: Int, l: Int) = {
@@ -283,7 +287,7 @@ object FreeGroups {
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(k) * (rels(l).inv) else rels(i)
         }
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     /**
@@ -294,7 +298,7 @@ object FreeGroups {
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(l) * rels(k) else rels(i)
         }
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     def lftmultinv(k: Int, l: Int) = {
@@ -302,7 +306,7 @@ object FreeGroups {
         (0 to sz - 1) map { (i) =>
           if (i == k) (rels(l).inv) * rels(k) else rels(i)
         }
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     def transpose(k: Int, l: Int) = {
@@ -313,7 +317,7 @@ object FreeGroups {
       }
 
       val result = (0 to sz - 1) map (flipped)
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     /**
@@ -324,7 +328,7 @@ object FreeGroups {
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(k) ^^ l else rels(i)
         }
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     /**
@@ -335,30 +339,30 @@ object FreeGroups {
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(k) ^ rels(l) else rels(i)
         }
-      Presentation(result.toList, rank)
+      Presentation(result.toVector, rank)
     }
 
     /**
       * Andrews-Curtis stabilization
       */
-    def ACstab = Presentation(Word(List(rank + 1)) :: rels, rank + 1)
+    def ACstab = Presentation(Word(Vector(rank + 1)) +: rels, rank + 1)
 
     /**
       * Tietze stabilization.
       */
-    def ttzStab = Presentation(Word(List()) :: rels, rank)
+    def ttzStab = Presentation(Word(Vector()) +: rels, rank)
 
     /**
       * returns whether Andrews-Curtis stabilized.
       */
-    def ACstabilized = rels contains (Word(List(rank)))
+    def ACstabilized = rels contains (Word(Vector(rank)))
 
     /**
       * (unsafe) Andrews-Curtis destabilization.
       */
     def ACdestab = {
       val newrels =
-        rels filter ((w: Word) => w != Word(List(rank + 1))) map
+        rels filter ((w: Word) => w != Word(Vector(rank + 1))) map
           (_.rmvtop(rank))
       Presentation(newrels, rank - 1)
     }
@@ -371,27 +375,27 @@ object FreeGroups {
       */
     def fromString(s: String) = {
       val ss                      = s.replaceAll("[ <>]", "")
-      val genWord :: relWord :: _ = ss.split(";").toList
+      val genWord +: relWord +: _ = ss.split(";").toVector
       val rank                    = genWord.split(",").length
       val rels                    = relWord.split(",") map (Word.fromString(_))
-      Presentation(rels.toList, rank)
+      Presentation(rels.toVector, rank)
     }
 
     /**
       * gives presentation from rank and strings for words.
       */
     def apply(rank: Int, ws: String*): Presentation =
-      Presentation(ws.toList map (Word.fromString), rank)
+      Presentation(ws.toVector map (Word.fromString), rank)
 
     def balanced(ws: String*) = {
-      val rels = ws.toList map (Word.fromString(_))
+      val rels = ws.toVector map (Word.fromString(_))
       Presentation(rels, rels.length)
     }
 
-    val empty = Presentation(List(), 0)
+    val empty = Presentation(Vector(), 0)
 
     def trivial(n: Int) =
-      Presentation((1 to n).toList map ((i) => Word(List(i))), n)
+      Presentation((1 to n).toVector map ((i) => Word(Vector(i))), n)
 
     /**
       * moves implemented as functions
@@ -427,7 +431,7 @@ object FreeGroups {
   /*
    * Empty presentation
    */
-  val nullpres = Presentation(List(), 0)
+  val nullpres = Presentation(Vector(), 0)
 
   implicit def writeWord
     : _root_.provingground.translation.StringParse.WriteString[
