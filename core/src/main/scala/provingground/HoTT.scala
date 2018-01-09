@@ -2358,8 +2358,21 @@ object HoTT {
       }
   }
 
-  trait Equality[U <: Term with Subs[U]] extends Term with Subs[Equality[U]]{
+  trait Equality[U <: Term with Subs[U]] extends Term with Subs[Equality[U]]{self =>
     val typ: IdentityTyp[U]
+
+    import IdentityTyp._
+
+    val lhs = typ.lhs
+
+    val rhs = typ.rhs
+
+    lazy val sym = symm(typ)(self)
+
+    def &&(that: Equality[U]) = trans(typ)(this)(that)
+
+    def *:[V <: Term with Subs[V]](f: Func[U, V]) : Equality[V] =
+      induced(f)(lhs)(rhs)(self)
   }
 
   /**
@@ -2613,10 +2626,10 @@ object HoTT {
     }
 
     /**
-      * converse  of extensionality (function misnamed):
+      * equality induced by a (pure) function
       * term with type `x =y -> f(x) = f(y)` as function of `x` and `y`
       */
-    def extnslty[U <: Term with Subs[U], V <: Term with Subs[V]](
+    def induced[U <: Term with Subs[U], V <: Term with Subs[V]](
         f: Func[U, V]) = {
       val x         = f.dom.Var
       val y         = f.dom.Var

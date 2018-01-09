@@ -45,7 +45,7 @@ object Monoid {
 
   val x = "x" :: X
 
-  val extensionality = lambda(X)(lambda(Y)(lambda(f)(IdentityTyp.extnslty(f))))
+  val extensionality = lambda(X)(lambda(Y)(lambda(f)(IdentityTyp.induced(f))))
 
   val transfer = (X ~>:
     (Y ~>: (f ~>: (g ~>: (x ~>: ((f =:= g) ->: (f(x) =:= g(x)))))))).Var

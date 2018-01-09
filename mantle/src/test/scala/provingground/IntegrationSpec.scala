@@ -454,7 +454,7 @@ class IdentityTypeSpec extends FlatSpec {
     val assoc = indN_assoc(m :~> (k :~> add(m)(k).refl))(
       n :~> (pf :-> (m :~> (k :~>
         IdentityTyp
-          .extnslty(succ)(add(add(n)(m))(k))(add(n)(add(m)(k)))(pf(m)(k))))))
+          .induced(succ)(add(add(n)(m))(k))(add(n)(add(m)(k)))(pf(m)(k))))))
     assert(
       assoc.typ === (n ~>: (m ~>: (k ~>: (add(add(n)(m))(k) =:= add(n)(
         add(m)(k)))))))
