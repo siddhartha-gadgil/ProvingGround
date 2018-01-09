@@ -2341,6 +2341,27 @@ object HoTT {
         DepPair(first.replace(x, y), second.replace(x, y), fibers.replace(x, y))
   }
 
+  case class SymbEquality[+U <: Term with Subs[U]](name: AnySym, typ: IdentityTyp[U])
+      extends Equality[U]
+      with Symbolic {
+    override def toString = name.toString + " : (" + typ.toString + ")"
+
+    def newobj = SymbEquality(InnerSym[Term](this), typ)
+
+    def subs(x: Term, y: Term) =
+      if (x == this) y.asInstanceOf[Equality[U]]
+      else {
+        def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
+        symSubs(symbobj)(x, y)(name)
+        ???
+        // typ.replace(x, y).symbObj(name.subs(x, y))
+      }
+  }
+
+  trait Equality[+U <: Term with Subs[U]] extends Term with Subs[Equality[U]]{
+    val typ: IdentityTyp[U]
+  }
+
   /**
     * The identity type.
     *  This is the type `lhs = rhs`
