@@ -2341,7 +2341,8 @@ object HoTT {
         DepPair(first.replace(x, y), second.replace(x, y), fibers.replace(x, y))
   }
 
-  case class SymbEquality[U <: Term with Subs[U]](name: AnySym, typ: IdentityTyp[U])
+  case class SymbEquality[U <: Term with Subs[U]](name: AnySym,
+                                                  typ: IdentityTyp[U])
       extends Equality[U]
       with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
@@ -2351,14 +2352,16 @@ object HoTT {
     def subs(x: Term, y: Term) =
       if (x == this) y.asInstanceOf[Equality[U]]
       else {
-        def symbobj(sym: AnySym) : Equality[U] = (typ.replace(x, y) : IdentityTyp[U]).symbObj(sym)
+        def symbobj(sym: AnySym): Equality[U] =
+          (typ.replace(x, y): IdentityTyp[U]).symbObj(sym)
         symSubs(symbobj)(x, y)(name)
         // ???
         // typ.replace(x, y).symbObj(name.subs(x, y))
       }
   }
 
-  trait Equality[U <: Term with Subs[U]] extends Term with Subs[Equality[U]]{self =>
+  trait Equality[U <: Term with Subs[U]] extends Term with Subs[Equality[U]] {
+    self =>
     val typ: IdentityTyp[U]
 
     import IdentityTyp._
@@ -2371,10 +2374,10 @@ object HoTT {
 
     def &&(that: Equality[U]) = trans(typ)(this)(that)
 
-    def *:[V <: Term with Subs[V]](f: Func[U, V]) : Equality[V] =
+    def *:[V <: Term with Subs[V]](f: Func[U, V]): Equality[V] =
       induced(f)(lhs)(rhs)(self)
 
-    def lift[V<: Term with Subs[V]](f: Func[U, Typ[V]]) =
+    def lift[V <: Term with Subs[V]](f: Func[U, Typ[V]]) =
       transport(f)(lhs)(rhs)(self)
   }
 
@@ -2412,7 +2415,8 @@ object HoTT {
       * inductive definition on the identity type family
       */
     def induc[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
-        targetFmly: FuncLike[UU, FuncLike[UU, FuncLike[Equality[UU], Typ[V]]]]) =
+        targetFmly: FuncLike[UU,
+                             FuncLike[UU, FuncLike[Equality[UU], Typ[V]]]]) =
       IdentityTyp.induc(dom: Typ[UU], targetFmly)
   }
 

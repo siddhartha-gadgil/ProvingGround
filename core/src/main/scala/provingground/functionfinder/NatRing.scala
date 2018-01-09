@@ -12,20 +12,28 @@ import scala.language.implicitConversions
 import annotation.tailrec
 
 object QField extends SymbolicField[Rational] {
+  override def toString = "Q"
+
   val QTyp = LocalTyp
 
-
-
-  sealed trait PosWit extends Term with Subs[PosWit]{
-    val value : LocalTerm
+  sealed trait PosWit extends Term with Subs[PosWit] {
+    val value: LocalTerm
 
     lazy val typ = Pos(value)
 
     def +(that: PosWit) = PosWitSum(this, that)
   }
 
-  case class PosWitSum(a: PosWit, b: PosWit) extends PosWit{
+  case class PosWitSum(a: PosWit, b: PosWit) extends PosWit {
     lazy val value = a.value + b.value
+
+    def newobj = ???
+
+    def subs(x: Term, y: Term) = PosWitSum(a.replace(x, y), b.replace(x, y))
+  }
+
+  case class PosWitProd(a: PosWit, b: PosWit) extends PosWit {
+    lazy val value = a.value * b.value
 
     def newobj = ???
 
@@ -42,12 +50,12 @@ object QField extends SymbolicField[Rational] {
     def subs(x: Term, y: Term) =
       if (x == this) y.asInstanceOf[PosWit]
       else {
-        def symbobj(sym: AnySym) = (typ.replace(x, y) : Pos).symbObj(sym)
+        def symbobj(sym: AnySym) = (typ.replace(x, y): Pos).symbObj(sym)
         symSubs(symbobj)(x, y)(name)
       }
   }
 
-  case class Pos(value: LocalTerm) extends Typ[PosWit] with Subs[Pos]{
+  case class Pos(value: LocalTerm) extends Typ[PosWit] with Subs[Pos] {
     def subs(x: Term, y: Term) = Pos(value.replace(x, y))
 
     type Obj = PosWit
@@ -65,13 +73,17 @@ object QField extends SymbolicField[Rational] {
 
   lazy val leq = x :~> (y :~> Pos(y - x))
 
-  val possum = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x + y))))
+  // val possum = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x + y))))
+  //
+  // val posprod = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x * y))))
 
-  val posprod = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x * y))))
+  val dichotomy =
+    "positivity-dichotomy" :: (x ~>: (Pos(x) || Pos(-x)))
 
-  val dichotomy = x ~>: (Pos(x) || Pos(-x))
-
-  val posAndNegPos = x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
+  val posAndNegPos =
+    "positive-and-negation-positive" :: (
+      x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
+    )
 
   def posLiteral(a: Rational) = {
     require(a >= 0, s"Rational number $a not positive")
@@ -155,8 +167,9 @@ object NatRing extends SymbolicCRing[SafeLong] {
 
     val depcodom = typFamily
 
-    def subs(x: Term, y: Term) = Induc(typFamily.replace(x, y), init.replace(x, y), g.replace(x, y))
-    def newobj                 = this
+    def subs(x: Term, y: Term) =
+      Induc(typFamily.replace(x, y), init.replace(x, y), g.replace(x, y))
+    def newobj = this
 
     def act(x: LocalTerm) = x match {
       case Literal(n) => recDefn(n, init, h)

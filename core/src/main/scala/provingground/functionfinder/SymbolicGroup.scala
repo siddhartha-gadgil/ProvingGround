@@ -147,4 +147,6 @@ import andrewscurtis.FreeGroups._
 
 object FreeGroup extends SymbolicGroup[Word] {
   def word(s: String) = Literal(Word.fromString(s))
+
+  override def toString = "FreeGroup"
 }

@@ -124,7 +124,7 @@ class SymbolicCRing[A: Ring] { self =>
       */
     def fold(x: LocalTerm)(l: List[LocalTerm]): List[LocalTerm] =
       (x, l) match {
-        case (_, List()) => List(x)
+        case (_, List()) => if (x == Literal(ring.zero)) List() else List(x)
         case (_, head :: tail) =>
           (addReduce(x, head) map ((u: LocalTerm) => fold(u)(tail)))
             .getOrElse(head :: fold(x)(tail))
@@ -383,7 +383,7 @@ class SymbolicCRing[A: Ring] { self =>
     def act(y: LocalTerm) = {
       //      println(s"AddTerm($x) applied to $y")
       y match {
-        case Literal(a)                         =>
+        case Literal(a) =>
           if (a == zero) x
           else Comb(sum, Literal(a), x)
         case Comb(f, Literal(a), v) if f == sum => sum(Literal(a))(sum(x)(v))
@@ -458,10 +458,10 @@ class SymbolicCRing[A: Ring] { self =>
           val x = LocalTyp.Var
           lmbda(x)(x)
         } else if (a == zero) {
-            val x = LocalTyp.Var
-            lmbda(x)(Literal(zero))
-        }
-          else  AdditiveMorphism(multLiteral(a),
+          val x = LocalTyp.Var
+          lmbda(x)(Literal(zero))
+        } else
+          AdditiveMorphism(multLiteral(a),
                            (x: LocalTerm, y: LocalTerm) => sum(x)(y))
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))

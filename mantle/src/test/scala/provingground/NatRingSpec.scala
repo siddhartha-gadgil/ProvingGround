@@ -56,6 +56,9 @@ class NatRingSpec extends FlatSpec {
     assert((x + x) + y == (x + y) + x)
 
     assert((x + y) - x == y)
+
+    assert((-x) + Literal(0) == -x)
+    assert(2 - x == 2 - x + Literal(0))
   }
 
   "Symbolic Algebra" should "satisfy the tut tests" in {

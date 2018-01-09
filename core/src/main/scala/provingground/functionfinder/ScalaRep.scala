@@ -367,7 +367,9 @@ object ScalaRep {
     override def toString = value.toString
   }
 
-  case class ScalaSymbol[X](value: X) extends AtomicSym
+  case class ScalaSymbol[X](value: X) extends AtomicSym{
+    override val toString = value.toString
+  }
 
   case class SimpleRep[U <: Term with Subs[U], V](typ: Typ[U])
       extends ScalaRep[U, V] {

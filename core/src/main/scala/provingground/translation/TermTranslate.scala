@@ -38,7 +38,7 @@ object FansiTranslate {
           "{ ") ++ value ++ LightRed(" }"))
     } || universe >>> { (n) =>
       (LightCyan(Str(UnivSym)))
-    } || symName >>> ((s) => (Str(s))) ||
+    } || symName >>> ((s) => (Str(s))) || symString >>> ((s) => (Str(s))) ||
       prodTyp >>> { case (first, second) => (first ++ syms.Prod ++ second) } ||
       absPair >>> {
         case (first, second) => (Str("(") ++ first ++ " , " ++ second ++ ")")
@@ -75,6 +75,9 @@ object FansiTranslate {
           defnData.foldLeft(h) {
             case (head, d) => s"$head($d)"
           }
+      } ||
+      stringRep >>> {
+        (s) => s
       }
 
   /*import pprint._
@@ -169,6 +172,7 @@ object FansiShow {
   val fansiHandler: PartialFunction[Any, Tree] = {
     case t: Term     => Tree.Literal(FansiTranslate(t))
     case sym: AnySym => Tree.Literal(sym.toString)
+    case w : andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
   }
 
   val fansiPrint =

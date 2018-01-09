@@ -20,7 +20,8 @@ class LinearNormSpec extends FlatSpec{
     assert(
       lem.word == w &&
       lem.bound == 2 &&
-      lem.theorem == leq(l(elem(w)))(rat(2))
+      lem.theorem == leq(l(elem(w)))(rat(2)) &&
+      lem.proof.typ == lem.theorem
       , "Incorrect theorem proved")
   }
 }

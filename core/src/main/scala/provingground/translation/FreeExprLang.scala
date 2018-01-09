@@ -397,7 +397,8 @@ object SpecialTerms {
       IdentityTyp.InducFn(
         domain,
         target
-          .asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[v]]]]],
+          .asInstanceOf[FuncLike[u,
+                                 FuncLike[u, FuncLike[Equality[u], Typ[v]]]]],
         data.asInstanceOf[FuncLike[u, v]],
         a.asInstanceOf[u],
         b.asInstanceOf[u])

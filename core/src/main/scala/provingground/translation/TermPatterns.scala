@@ -249,6 +249,16 @@ object TermPatterns {
     case _ => None
   }
 
+  val symString = Pattern[Term, S] {
+    case sym: Symbolic with Term =>
+      Some(sym.name.toString)
+    case _ => None
+  }
+
+  val stringRep = Pattern[Term, S] {
+    case t => Some(t.toString)
+  }
+
   def termToExprRaw[E: ExprLang] = {
     import ExprLang._
     (formalAppln >> appln[E]) || (lambdaAppln >> lambda[E]) ||
@@ -360,7 +370,8 @@ object TermPatterns {
       // println("matching identity\n")
       val rf = idt.induc(
         depcodom
-          .asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
+          .asInstanceOf[
+            FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
       // println(s"got ind $rf")
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (depcodom, data))) =>
