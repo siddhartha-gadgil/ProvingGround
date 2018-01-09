@@ -13,7 +13,7 @@ import spire.math._
 import NatRing.{Literal => nat, _}, QField.{Literal => rat, _}, FreeGroup.{Literal => elem, _}
 
 sealed abstract class LinNormBound(val word: Word, val bound: Rational) {
-  val theorem = upbound(elem(word))(rat(bound))
+  lazy val theorem = upbound(elem(word))(rat(bound))
 
   val bnd = rat(bound)
 
@@ -52,11 +52,11 @@ object LinNormBound {
 
   val triangBound ={
     val b1 = "b1" :: leq(l(g))(x)
-    val b2 = "b2" :: leq(l(g))(x)
-    g :~> (h :~> (x :~> (y :~> (("b1" :: leq(l(g))(x)) :~> (("b2" :: leq(l(h))(
-      y)) :~>
-        // triang(g)(h) + b1 + b2
-      ("triangle-inequality" :: leq(l(g |+| h))(x + y))
+    val b2 = "b2" :: leq(l(h))(y)
+    val res = triang(g)(h) + b1 + b2 : PosWit
+    g :~> (h :~> (x :~> (y :~> (b1 :~> (b2 :~>
+        ((triang(g)(h) + b1 + b2 : PosWit) !: leq(l(g |+| h))(x + y))
+      // ("triangle-inequality" :: leq(l(g |+| h))(x + y))
     )))))
   }
 

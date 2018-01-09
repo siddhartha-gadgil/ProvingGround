@@ -19,13 +19,13 @@ object QField extends SymbolicField[Rational] {
   sealed trait PosWit extends Term with Subs[PosWit]{
     val value : LocalTerm
 
-    val typ = Pos(value)
+    lazy val typ = Pos(value)
 
     def +(that: PosWit) = PosWitSum(this, that)
   }
 
   case class PosWitSum(a: PosWit, b: PosWit) extends PosWit{
-    val value = a.value + b.value
+    lazy val value = a.value + b.value
 
     def newobj = ???
 
@@ -63,7 +63,7 @@ object QField extends SymbolicField[Rational] {
 
   val y = "y" :: LocalTyp
 
-  val leq = x :~> (y :~> Pos(y - x))
+  lazy val leq = x :~> (y :~> Pos(y - x))
 
   val possum = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x + y))))
 

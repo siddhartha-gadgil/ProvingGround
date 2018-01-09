@@ -147,6 +147,8 @@ class SymbolicCRing[A: Ring] { self =>
       * (optionally) returns a single term (w.r.t. +) after summing if simplification takes place.
       */
     def addReduce(x: LocalTerm, y: LocalTerm) = (x, y) match {
+      case (t, z) if z == Literal(zero) => Some(t)
+      case (z, t) if z == Literal(zero) => Some(t)
       case (LitProd(a, u), LitProd(b, v)) if u == v =>
         Some(LitProd(a + b, u))
       case (LitProd(a, u), v) if u == v =>
@@ -381,7 +383,9 @@ class SymbolicCRing[A: Ring] { self =>
     def act(y: LocalTerm) = {
       //      println(s"AddTerm($x) applied to $y")
       y match {
-        case Literal(a)                         => Comb(sum, Literal(a), x)
+        case Literal(a)                         =>
+          if (a == zero) x
+          else Comb(sum, Literal(a), x)
         case Comb(f, Literal(a), v) if f == sum => sum(Literal(a))(sum(x)(v))
         case s: SigmaTerm                       => x +: s
         case _ =>
@@ -453,8 +457,11 @@ class SymbolicCRing[A: Ring] { self =>
         if (a == one) {
           val x = LocalTyp.Var
           lmbda(x)(x)
-        } else
-          AdditiveMorphism(multLiteral(a),
+        } else if (a == zero) {
+            val x = LocalTyp.Var
+            lmbda(x)(Literal(zero))
+        }
+          else  AdditiveMorphism(multLiteral(a),
                            (x: LocalTerm, y: LocalTerm) => sum(x)(y))
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))
