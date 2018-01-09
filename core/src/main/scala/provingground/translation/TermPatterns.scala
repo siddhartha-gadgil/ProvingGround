@@ -360,7 +360,7 @@ object TermPatterns {
       // println("matching identity\n")
       val rf = idt.induc(
         depcodom
-          .asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Term, Typ[Term]]]]])
+          .asInstanceOf[FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
       // println(s"got ind $rf")
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (depcodom, data))) =>

@@ -2341,7 +2341,7 @@ object HoTT {
         DepPair(first.replace(x, y), second.replace(x, y), fibers.replace(x, y))
   }
 
-  case class SymbEquality[+U <: Term with Subs[U]](name: AnySym, typ: IdentityTyp[U])
+  case class SymbEquality[U <: Term with Subs[U]](name: AnySym, typ: IdentityTyp[U])
       extends Equality[U]
       with Symbolic {
     override def toString = name.toString + " : (" + typ.toString + ")"
@@ -2351,14 +2351,14 @@ object HoTT {
     def subs(x: Term, y: Term) =
       if (x == this) y.asInstanceOf[Equality[U]]
       else {
-        def symbobj(sym: AnySym) = typ.replace(x, y).symbObj(sym)
+        def symbobj(sym: AnySym) : Equality[U] = (typ.replace(x, y) : IdentityTyp[U]).symbObj(sym)
         symSubs(symbobj)(x, y)(name)
-        ???
+        // ???
         // typ.replace(x, y).symbObj(name.subs(x, y))
       }
   }
 
-  trait Equality[+U <: Term with Subs[U]] extends Term with Subs[Equality[U]]{
+  trait Equality[U <: Term with Subs[U]] extends Term with Subs[Equality[U]]{
     val typ: IdentityTyp[U]
   }
 
@@ -2366,10 +2366,10 @@ object HoTT {
     * The identity type.
     *  This is the type `lhs = rhs`
     */
-  case class IdentityTyp[+U <: Term with Subs[U]](dom: Typ[U], lhs: U, rhs: U)
-      extends Typ[Term]
+  case class IdentityTyp[U <: Term with Subs[U]](dom: Typ[U], lhs: U, rhs: U)
+      extends Typ[Equality[U]]
       with Subs[IdentityTyp[U]] {
-    type Obj = Term
+    type Obj = Equality[U]
 
     lazy val typ = Universe(max(univlevel(lhs.typ.typ), univlevel(rhs.typ.typ)))
 
@@ -2381,7 +2381,7 @@ object HoTT {
     def subs(x: Term, y: Term) =
       IdentityTyp(dom.replace(x, y), lhs.replace(x, y), rhs.replace(x, y))
 
-    def variable(name: AnySym) = SymbObj(name, this)
+    def variable(name: AnySym) = SymbEquality(name, this)
 
     override def toString = s"$lhs = $rhs"
 
@@ -2396,7 +2396,7 @@ object HoTT {
       * inductive definition on the identity type family
       */
     def induc[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
-        targetFmly: FuncLike[UU, FuncLike[UU, FuncLike[Term, Typ[V]]]]) =
+        targetFmly: FuncLike[UU, FuncLike[UU, FuncLike[Equality[UU], Typ[V]]]]) =
       IdentityTyp.induc(dom: Typ[UU], targetFmly)
   }
 
@@ -2404,7 +2404,7 @@ object HoTT {
     * the `reflexivity` term with type an equality `value = value`
     */
   case class Refl[U <: Term with Subs[U]](dom: Typ[U], value: U)
-      extends Term
+      extends Equality[U]
       with Subs[Refl[U]] {
     lazy val typ = IdentityTyp(dom, value, value)
 
@@ -2507,15 +2507,15 @@ object HoTT {
       */
     case class InducFn[U <: Term with Subs[U], V <: Term with Subs[V]](
         domain: Typ[U],
-        targetFmly: FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]],
+        targetFmly: FuncLike[U, FuncLike[U, FuncLike[Equality[U], Typ[V]]]],
         data: FuncLike[U, V],
         start: U,
         end: U)
         extends IndInducFuncLike[
-          Term,
+          Equality[U],
           V,
           Func[U, Func[U, Typ[Term]]],
-          FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]] { self =>
+          FuncLike[U, FuncLike[U, FuncLike[Equality[U], Typ[V]]]]] { self =>
       def newobj =
         throw new IllegalArgumentException(
           s"trying to use the constant $this as a variable (or a component of one)")
@@ -2551,7 +2551,7 @@ object HoTT {
 
       lazy val depcodom = p :-> targetFmly(start)(end)(p)
 
-      def act(t: Term) =
+      def act(t: Equality[U]) =
         if (start == end && t == Refl(domain, start)) data(start)
         else targetFmly(start)(end)(t).symbObj(ApplnSym(self, t))
     }
@@ -2561,7 +2561,7 @@ object HoTT {
       */
     def induc[U <: Term with Subs[U], V <: Term with Subs[V]](
         domain: Typ[U],
-        targetFmly: FuncLike[U, FuncLike[U, FuncLike[Term, Typ[V]]]]) = {
+        targetFmly: FuncLike[U, FuncLike[U, FuncLike[Equality[U], Typ[V]]]]) = {
 
       val a = domain.Var
 
@@ -2623,7 +2623,7 @@ object HoTT {
       val p         = IdentityTyp(f.dom, x, y).Var
       val typFamily = lambda(x)(lambda(y)(lmbda(p)((f(x) =:= f(y)))))
       val inducFn   = induc(f.dom, typFamily)
-      val image     = Refl(f.codom, f(x)): Term
+      val image     = Refl(f.codom, f(x)): Equality[V]
       val baseCase  = lambda(x)(image)
       inducFn(baseCase)
     }
