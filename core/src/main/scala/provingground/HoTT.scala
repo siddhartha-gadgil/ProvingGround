@@ -2373,6 +2373,9 @@ object HoTT {
 
     def *:[V <: Term with Subs[V]](f: Func[U, V]) : Equality[V] =
       induced(f)(lhs)(rhs)(self)
+
+    def lift[V<: Term with Subs[V]](f: Func[U, Typ[V]]) =
+      transport(f)(lhs)(rhs)(self)
   }
 
   /**
