@@ -42,9 +42,23 @@ object LinNormBound {
 
   val pos = Pos(l(FreeGroup.e))
 
-  val triangBound =
+  val triang =
+    "triangle-inequality" :: (
+      g ~>: (
+      h ~>: (
+         (leq(l(g |+| h))(l(g) + l(h)))
+    ))
+  )
+
+  val triangBound ={
+    val b1 = "b1" :: leq(l(g))(x)
+    val b2 = "b2" :: leq(l(g))(x)
     g :~> (h :~> (x :~> (y :~> (("b1" :: leq(l(g))(x)) :~> (("b2" :: leq(l(h))(
-      y)) :~> ("triangle-inequality" :: leq(l(g |+| h))(x + y)))))))
+      y)) :~>
+        // triang(g)(h) + b1 + b2
+      ("triangle-inequality" :: leq(l(g |+| h))(x + y))
+    )))))
+  }
 
   val conjInv =
     g :~> (

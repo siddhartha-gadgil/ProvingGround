@@ -14,10 +14,50 @@ import annotation.tailrec
 object QField extends SymbolicField[Rational] {
   val QTyp = LocalTyp
 
-  // val nat =
-  //   (NatRing.LocalTyp.rep -->: LocalTyp.rep)((n: SafeLong) => Rational(n, 1))
 
-  val Pos = "Positive" :: LocalTyp ->: Type
+
+  sealed trait PosWit extends Term with Subs[PosWit]{
+    val value : LocalTerm
+
+    val typ = Pos(value)
+
+    def +(that: PosWit) = PosWitSum(this, that)
+  }
+
+  case class PosWitSum(a: PosWit, b: PosWit) extends PosWit{
+    val value = a.value + b.value
+
+    def newobj = ???
+
+    def subs(x: Term, y: Term) = PosWitSum(a.replace(x, y), b.replace(x, y))
+  }
+
+  case class SymbPosWit(name: AnySym, value: LocalTerm)
+      extends PosWit
+      with Symbolic {
+    override def toString = name.toString + " : (" + typ.toString + ")"
+
+    def newobj = SymbPosWit(InnerSym[Term](this), value)
+
+    def subs(x: Term, y: Term) =
+      if (x == this) y.asInstanceOf[PosWit]
+      else {
+        def symbobj(sym: AnySym) = (typ.replace(x, y) : Pos).symbObj(sym)
+        symSubs(symbobj)(x, y)(name)
+      }
+  }
+
+  case class Pos(value: LocalTerm) extends Typ[PosWit] with Subs[Pos]{
+    def subs(x: Term, y: Term) = Pos(value.replace(x, y))
+
+    type Obj = PosWit
+
+    val typ = Type
+
+    def newobj = Pos(value.newobj)
+
+    def variable(sym: AnySym) = SymbPosWit(sym, value)
+  }
 
   val x = "x" :: LocalTyp
 
