@@ -26,7 +26,7 @@ sealed abstract class LinNormBound(val word: Word, val bound: Rational) {
 
   lazy val fullProof = lambdaClosure(expvars)(proof)
 
-  lazy val fullTheorem = piClosure(expvars)(theorem)
+  lazy val fullTheorem = fullProof.typ
 
   def ++(that: LinNormBound) = Triang(this, that)
 
