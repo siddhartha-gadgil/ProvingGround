@@ -2373,7 +2373,7 @@ object HoTT {
 
     lazy val sym = symm(typ)(self)
 
-    def &&(that: Equality[U]) = trans(typ)(this)(that)
+    def &&(that: Equality[U]) = trans(typ.dom)(lhs)(rhs)(that.rhs)(this)(that)
 
     def *:[V <: Term with Subs[V]](f: Func[U, V]): Equality[V] =
       induced(f)(lhs)(rhs)(self)

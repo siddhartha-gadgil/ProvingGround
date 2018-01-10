@@ -40,6 +40,26 @@ object QField extends SymbolicField[Rational] {
     def subs(x: Term, y: Term) = PosWitSum(a.replace(x, y), b.replace(x, y))
   }
 
+  case class PosLiteral(a: Rational) extends PosWit {
+    require(a >= 0, s"Rational number $a not positive")
+
+    val value = Literal(a)
+
+    def newobj = ???
+
+    def subs(x: Term, y: Term) = this
+  }
+
+  case object PosZero extends PosWit {
+
+    val value = Literal(0)
+
+    def newobj = ???
+
+    def subs(x: Term, y: Term) = this
+  }
+
+
   case class SymbPosWit(name: AnySym, value: LocalTerm)
       extends PosWit
       with Symbolic {
@@ -85,10 +105,6 @@ object QField extends SymbolicField[Rational] {
       x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
     )
 
-  def posLiteral(a: Rational) = {
-    require(a >= 0, s"Rational number $a not positive")
-    "verified" :: Pos(Literal(a))
-  }
 
   val z = "z" :: LocalTyp
 

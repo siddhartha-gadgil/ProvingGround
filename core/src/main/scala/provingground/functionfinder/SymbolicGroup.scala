@@ -179,8 +179,8 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
       lazy val step = n :~> (hyp :-> (self.rm(g) *: hyp ))
       lazy val gpf = Induc(gthm, base, step)
 
-      lazy val pf = g :~> gpf
-      lazy val thm = g ~>: (n ~>: gthm(n))
+      lazy val pf = g :~> (m :~> gpf)
+      lazy val thm = g ~>: (m ~>: (n ~>: gthm(n)))
     }
   }
 
