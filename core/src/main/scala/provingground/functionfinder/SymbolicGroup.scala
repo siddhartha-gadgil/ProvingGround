@@ -149,7 +149,44 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
     val recFn: Func[NatRing.LocalTerm, RepTerm[A]] = Rec(e, step)
     g :-> recFn
   }
+  object Theorems{
+    import NatRing.{Literal => nat, power => _, _}
+
+    lazy val n = "n" :: NatTyp
+    lazy val m = "m" :: NatTyp
+
+    lazy val g = "g" :: self
+    lazy val h = "h" :: self
+
+    object ConjPower{
+      lazy val ghthm = n :-> ((power(g |+| h |+| g.inverse)(n)) =:= (g |+| power(h)(n)  |+| g.inverse ))
+
+      lazy val hyp = "hyp" :: ghthm(n)
+      lazy val c= g |+| h |+| g.inverse
+      lazy val base = e.refl
+      lazy val step = n :~> (hyp :-> (self.rm(c) *: hyp ))
+      lazy val ghpf  = Induc(ghthm, base, step)
+      lazy val pf = g :~> (h :~> ghpf)
+      lazy val thm = g ~>: (h ~>: (n ~>: (ghthm(n)) ))
+    }
+
+    object PowerDistributive{
+      lazy val gthm = n :-> ((self.power(g)(m) |+| self.power(g)(n)) =:= self.power(g)(NatRing.sum(m)(n)) )
+
+      lazy val hyp = "hyp" :: gthm(n)
+
+      lazy val base = self.power(g)(m).refl
+      lazy val step = n :~> (hyp :-> (self.rm(g) *: hyp ))
+      lazy val gpf = Induc(gthm, base, step)
+
+      lazy val pf = g :~> gpf
+      lazy val thm = g ~>: (n ~>: gthm(n))
+    }
+  }
+
 }
+
+
 
 import andrewscurtis.FreeGroups._
 

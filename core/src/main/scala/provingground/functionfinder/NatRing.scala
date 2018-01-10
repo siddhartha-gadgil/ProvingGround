@@ -158,7 +158,7 @@ object NatRing extends SymbolicCRing[SafeLong] {
   case class Induc[U <: Term with Subs[U]](typFamily: Func[Nat, Typ[U]],
                                            init: U,
                                            g: FuncLike[Nat, Func[U, U]])
-      extends FuncLike[Nat, U] { self =>
+      extends FuncLike[Nat, U] with Subs[Induc[U]]{ self =>
     def h = (n: SafeLong) => g(Literal(n))
 
     val dom = NatTyp

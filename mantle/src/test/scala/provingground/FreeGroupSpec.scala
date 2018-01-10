@@ -66,4 +66,15 @@ class FreeGroupSpec extends FlatSpec{
     assert((power(g)(n) |+| g) == (power(g)(succ(n))))
   }
 
+  "Theorems for powers" should "have valid proofs" in {
+    import NatRing.{NatTyp}
+    val n = "n":: NatTyp
+
+    import Theorems._
+
+    assert(ConjPower.pf.typ == ConjPower.thm )
+
+    assert(PowerDistributive.pf.typ == PowerDistributive.thm )
+  }
+
 }
