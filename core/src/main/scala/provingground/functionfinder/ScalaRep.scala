@@ -296,7 +296,7 @@ object ScalaRep {
                                                           typ: Typ[U])
       extends RepTerm[A]
       with Symbolic {
-    override def toString = name.toString + " : (" + typ.toString + ")"
+    // override def toString = name.toString + " : (" + typ.toString + ")"
 
     def newobj = RepSymbObj(new InnerSym[RepTerm[A]](this), typ)
 

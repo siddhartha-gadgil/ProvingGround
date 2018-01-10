@@ -81,6 +81,8 @@ class SymbolicCRing[A: Ring] { self =>
     require(elems.size > 1,
             s"Cannot create Sigma term of set $elems with less than 2 elements")
 
+    override def toString = elems.mkString("(", " + ", ")")
+
     //    println(s"created sigma-term [$elems]")
 
     val op = sum
@@ -171,6 +173,12 @@ class SymbolicCRing[A: Ring] { self =>
       extends LocalTerm
       with FoldedTerm[LocalTerm] {
     val typ = LocalTyp
+
+    override def toString = {
+      multElems.toVector.map {
+        case (x, p) => if (p == 1) x.toString else s"$x^{$p}"
+      }.mkString("(", " * ", ")")
+    }
 
     def subs(x: Term, y: Term) =
       if (multElems.size == 1) {

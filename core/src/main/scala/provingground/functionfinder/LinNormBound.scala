@@ -51,29 +51,60 @@ object LinNormBound {
   val pos     = Pos(l(FreeGroup.e))
 
   // The axioms
-  val triang =
+  lazy val triang =
     "triangle-inequality" :: (
       g ~>: (h ~>: (
         (leq(l(g |+| h))(l(g) + l(h)))
       ))
     )
 
-  val conjInv =
-    g :~> (
-      h :~> (
-        "conjugacy-invariance" :: (l(h) =:= (l(g |+| h |+| g.inverse)))
+  lazy val conjInv =
+    "conjugacy-invariance" :: (
+    g ~>: (
+      h ~>: (
+         (l(h) =:= (l(g |+| h |+| g.inverse)))
       )
     )
+  )
 
-  val symmetry =
+  lazy val symmetry =
     "symmetry" :: g ~>: {
       l(g) =:= l(g.inverse)
     }
 
-  val expvars = Vector(l, triang, conjInv, symmetry)
+  lazy val powerBound =
+      "homogeneity" :: (
+      g ~>: (
+        x ~>: (
+          n ~>: (
+            ("hyp" :: (leq(l(FreeGroup.power(g)(n)))(x))) ~>: (
+                leq(l(g))(x / nr)
+            )
+          )
+        )
+      )
+    )
+
+    lazy val gen = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
+      Word(Vector(n.toInt)))
+
+
+
+    val NtoQ = NatRing.incl(QField)
+    val nr   = NtoQ(n)
+
+
+    lazy val genBound =
+      "generator-bound" :: (
+      n ~>: (
+          leq(l(gen(n)))(rat(1))
+      )
+    )
+
+  lazy val expvars = Vector(l, triang, conjInv, symmetry, powerBound, genBound)
 
   // Derived lemmas in HoTT
-  val triangBound = {
+  lazy val triangBound = {
     val b1  = "b1" :: leq(l(g))(x)
     val b2  = "b2" :: leq(l(h))(y)
     val res = triang(g)(h) + b1 + b2: PosWit
@@ -83,7 +114,7 @@ object LinNormBound {
     )))))
   }
 
-  val invBound = {
+  lazy val invBound = {
     val hyp = "hyp" :: (leq(l(g))(x))
     val bx  = y :-> leq(y)(x)
     g :~> (
@@ -96,33 +127,13 @@ object LinNormBound {
     )
   }
 
-  val gen = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
-    Word(Vector(n.toInt)))
 
-  val genBound =
-    n :~> (
-      "generator-bound" :: leq(l(gen(n)))(rat(1))
-    )
 
-  val NtoQ = NatRing.incl(QField)
-  val nr   = NtoQ(n)
-  // val gn   = FreeGroup.power(g)(n)
-
-  val powerBound =
-    g :~> (
-      x :~> (
-        n :~> (
-          ("hyp" :: (leq(l(FreeGroup.power(g)(n)))(x))) :~> (
-            "homogeneity" :: leq(l(g))(x / nr)
-          )
-        )
-      )
-    )
 
   case class Gen(n: Int) extends LinNormBound(Word(Vector(n)), 1) {
     require(n != 0, "No generator with index 0")
 
-    val wit =
+    lazy val wit =
       if (n > 0) genBound(nat(n))
       else invBound(gen(nat(-n)))(rat(1))(genBound(nat(-n)))
 

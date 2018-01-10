@@ -434,7 +434,7 @@ object HoTT {
   case class SymbObj[+U <: Term with Subs[U]](name: AnySym, typ: Typ[U])
       extends Term
       with Symbolic {
-    override def toString = name.toString + " : (" + typ.toString + ")"
+    // override def toString = name.toString + " : (" + typ.toString + ")"
 
     def newobj = SymbObj(InnerSym[Term](this), typ)
 
@@ -499,7 +499,7 @@ object HoTT {
     def variable(name: AnySym) =
       if (level == 0) SymbObj(name, this) else SymbTyp(name, level - 1)
 
-    override def toString = s"""${name.toString} : ${UnivSym}_$level"""
+    // override def toString = s"""${name.toString} : ${UnivSym}_$level"""
 
     def elem = this
 
@@ -1428,7 +1428,7 @@ object HoTT {
       }
     }
 
-    override def toString = s"""${name.toString} : (${typ.toString})"""
+    // override def toString = s"""${name.toString} : (${typ.toString})"""
   }
 
   /**
@@ -1504,7 +1504,7 @@ object HoTT {
     override def usesVar(t: Term) = t.dependsOn(variable) || value.usesVar(t)
 
     override def toString =
-      s"""(${variable.toString}) $MapsTo (${value.toString})"""
+      s"""(${variable.toString} :  ${variable.typ.toString}) $MapsTo (${value.toString})"""
 
     val dep: Boolean
 
@@ -1731,10 +1731,11 @@ object HoTT {
       extends AnySym {
     var outer = variable
 
-    override def toString = variable match {
-      case sym: Symbolic => sym.name.toString
-      case x             => x.toString
-    }
+    override def toString = variable.name.toString
+     // match {
+     //  case sym: Symbolic => sym.name.toString
+     //  case x             => x.toString
+    // }
 
     def subs(x: Term, y: Term) = {
       // val newvar = outer.replace(x, y) match {
@@ -2084,7 +2085,7 @@ object HoTT {
       }
     }
 
-    override def toString = s"""${name.toString} : (${typ.toString})"""
+    // override def toString = s"""${name.toString} : (${typ.toString})"""
   }
 
   /**
@@ -2116,7 +2117,7 @@ object HoTT {
       }
     }
 
-    override def toString = s"""${name.toString} : (${typ.toString})"""
+    // override def toString = s"""${name.toString} : (${typ.toString})"""
   }
 
   /** A dependent function defined by a scala funcion */
