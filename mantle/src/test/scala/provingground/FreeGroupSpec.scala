@@ -52,4 +52,18 @@ class FreeGroupSpec extends FlatSpec{
     assert((g.inverse |+| l.inverse |+| h |+| h.inverse |+| l |+| g ) == e)
   }
 
+  they  should "have corect inverse" in {
+    assert((g |+| h).inverse == (h.inverse |+| g.inverse))
+
+    assert((g |+| l).inverse == (l.inverse |+| g.inverse))
+
+    assert((l |+| h).inverse == (h.inverse |+| l.inverse))
+  }
+
+  "Power operation" should "simplify" in {
+    import NatRing.{NatTyp, succ}
+    val n = "n":: NatTyp
+    assert((power(g)(n) |+| g) == (power(g)(succ(n))))
+  }
+
 }

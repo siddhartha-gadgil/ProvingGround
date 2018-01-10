@@ -132,6 +132,14 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
   }
 
+  val g = "g" :: self
+
+  val h = "h" :: self
+
+  val lm = g :-> (h :-> (g |+| h))
+
+  val rm = g :-> (h :-> (h |+| g))
+
   val power = {
     import NatRing._
     val g                                          = "g" :: self
