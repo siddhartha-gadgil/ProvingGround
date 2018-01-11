@@ -31,13 +31,13 @@ import NatRing._
 
 ```scala
 scala> val n = "n" :: NatTyp
-n: provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]] = n : (Nat.Typ)
+n: provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]] = n
 
 scala> val m = "m" :: NatTyp
-m: provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]] = m : (Nat.Typ)
+m: provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]] = m
 
 scala> val k = "k" :: NatTyp
-k: provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]] = k : (Nat.Typ)
+k: provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]] = k
 ```
 
 Spire implicits let us use the addition and multiplication operations.
@@ -58,10 +58,10 @@ A sum gives a SigmaTerm, which only stores a set of terms being added.
 
 ```scala
 scala> n + m
-res0: provingground.functionfinder.NatRing.LocalTerm = SigmaTerm(Set(n : (Nat.Typ), m : (Nat.Typ)))
+res0: provingground.functionfinder.NatRing.LocalTerm = (n + m)
 
 scala> (n + m) + n
-res1: provingground.functionfinder.NatRing.LocalTerm = SigmaTerm(Set(m : (Nat.Typ), ((prod) (ScalaSymbol(2) : (Nat.Typ)) : ((Nat.Typ) → (Nat.Typ))) (n : (Nat.Typ)) : (Nat.Typ)))
+res1: provingground.functionfinder.NatRing.LocalTerm = (m + ((prod) (2)) (n))
 ```
 
 Addition is commutative and associative, even when it involves repeated terms.
@@ -91,10 +91,10 @@ res8: Boolean = true
 scala> assert{n * m == m * n}
 
 scala> n * (m * k)
-res10: provingground.functionfinder.NatRing.LocalTerm = PiTerm(Map(m : (Nat.Typ) -> 1, k : (Nat.Typ) -> 1, n : (Nat.Typ) -> 1))
+res10: provingground.functionfinder.NatRing.LocalTerm = (n * k * m)
 
 scala> n * (m + k)
-res11: provingground.functionfinder.NatRing.LocalTerm = SigmaTerm(Set(PiTerm(Map(n : (Nat.Typ) -> 1, m : (Nat.Typ) -> 1)), PiTerm(Map(n : (Nat.Typ) -> 1, k : (Nat.Typ) -> 1))))
+res11: provingground.functionfinder.NatRing.LocalTerm = ((n * m) + (n * k))
 
 scala> assert(n* (m + k) == n * m + n * k)
 ```
@@ -103,7 +103,7 @@ When literals are involved, the expresssions are simplified
 
 ```scala
 scala> 1 + (n + 2)
-res13: provingground.functionfinder.NatRing.LocalTerm = ((sum) (ScalaSymbol(3) : (Nat.Typ)) : ((Nat.Typ) → (Nat.Typ))) (n : (Nat.Typ)) : (Nat.Typ)
+res13: provingground.functionfinder.NatRing.LocalTerm = ((sum) (3)) (n)
 ```
 
 ### Symbolic definitions
@@ -115,15 +115,15 @@ scala> import HoTT._
 import HoTT._
 
 scala> val fn = lmbda(n)(n * n)
-fn: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.functionfinder.NatRing.LocalTerm] = (n : (Nat.Typ)) ↦ (PiTerm(Map(n : (Nat.Typ) -> 2)))
+fn: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.functionfinder.NatRing.LocalTerm] = (n :  Nat.Typ) ↦ ((n^{2}))
 
 scala> fn(3)
-res14: provingground.functionfinder.NatRing.LocalTerm = ScalaSymbol(9) : (Nat.Typ)
+res14: provingground.functionfinder.NatRing.LocalTerm = 9
 
 scala> assert(fn(3) == (9: Nat))
 
 scala> fn(k)
-res16: provingground.functionfinder.NatRing.LocalTerm = PiTerm(Map(k : (Nat.Typ) -> 2))
+res16: provingground.functionfinder.NatRing.LocalTerm = (k^{2})
 ```
 
 We have used an implicit conversion above to view `9` as a member of the type `Nat`
@@ -134,16 +134,16 @@ We can define a function f recursively on natural numbers, given the value `f(0)
 
 ```scala
 scala> val m = lmbda(n)(prod(n + 1))
-m: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.functionfinder.NatRing.LocalTerm,provingground.functionfinder.NatRing.LocalTerm]] = (n : (Nat.Typ)) ↦ ((provingground.HoTT$Typ$newname$2$@5ee451ff : (Nat.Typ)) ↦ (SigmaTerm(Set(provingground.HoTT$Typ$newname$2$@5ee451ff : (Nat.Typ), PiTerm(Map(n : (Nat.Typ) -> 1, provingground.HoTT$Typ$newname$2$@5ee451ff : (Nat.Typ) -> 1))))))
+m: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.functionfinder.NatRing.LocalTerm,provingground.functionfinder.NatRing.LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@3b225d01 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@3b225d01 + (n * provingground.HoTT$Typ$newname$2$@3b225d01))))
 
 scala> val factorial = Rec(1: Nat, m)
 factorial: provingground.functionfinder.NatRing.Rec[provingground.functionfinder.NatRing.LocalTerm] = <function1>
 
 scala> factorial(3)
-res17: provingground.functionfinder.NatRing.LocalTerm = ScalaSymbol(6) : (Nat.Typ)
+res17: provingground.functionfinder.NatRing.LocalTerm = 6
 
 scala> factorial(5)
-res18: provingground.functionfinder.NatRing.LocalTerm = ScalaSymbol(120) : (Nat.Typ)
+res18: provingground.functionfinder.NatRing.LocalTerm = 120
 
 scala> assert(factorial(5) == (120 : Nat))
 ```

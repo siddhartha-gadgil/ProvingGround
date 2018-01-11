@@ -51,7 +51,7 @@ scala> import NatInt.rep
 import NatInt.rep
 
 scala> 1.term
-res1: provingground.functionfinder.RepTerm[Int] = ScalaSymbol(1) : (NatInt)
+res1: provingground.functionfinder.RepTerm[Int] = 1
 ```
 
 ### Functions to FuncTerms
@@ -67,28 +67,28 @@ sum: provingground.HoTT.Func[provingground.functionfinder.RepTerm[Int],provinggr
 
 ```scala
 scala> sum(1.term)(2.term)
-res2: provingground.functionfinder.RepTerm[Int] = ScalaSymbol(3) : (NatInt)
+res2: provingground.functionfinder.RepTerm[Int] = 3
 ```
 
 
 ```scala
 scala> val n = "n" :: NatInt
-n: provingground.functionfinder.RepTerm[Int] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[Int]] = n : (NatInt)
+n: provingground.functionfinder.RepTerm[Int] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[Int]] = n
 
 scala> sum(n)(2.term)
-res3: provingground.functionfinder.RepTerm[Int] = ((<function1>) (n : (NatInt)) : ((NatInt) → (NatInt))) (ScalaSymbol(2) : (NatInt)) : (NatInt)
+res3: provingground.functionfinder.RepTerm[Int] = ((<function1>) (n)) (2)
 ```
 
 
 ```scala
 scala> val s = lmbda(n)(sum(n)(2.term))
-s: provingground.HoTT.Func[provingground.functionfinder.RepTerm[Int] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[Int]],provingground.functionfinder.RepTerm[Int]] = (n : (NatInt)) ↦ (((<function1>) (n : (NatInt)) : ((NatInt) → (NatInt))) (ScalaSymbol(2) : (NatInt)) : (NatInt))
+s: provingground.HoTT.Func[provingground.functionfinder.RepTerm[Int] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[Int]],provingground.functionfinder.RepTerm[Int]] = (n :  NatInt) ↦ (((<function1>) (n)) (2))
 ```
 
 
 ```scala
 scala> s(3.term)
-res4: provingground.functionfinder.RepTerm[Int] = ScalaSymbol(5) : (NatInt)
+res4: provingground.functionfinder.RepTerm[Int] = 5
 ```
 
 We will also define the product
@@ -102,5 +102,5 @@ prod: provingground.HoTT.Func[provingground.functionfinder.RepTerm[Int],provingg
 
 ```scala
 scala> prod(2.term)(4.term)
-res5: provingground.functionfinder.RepTerm[Int] = ScalaSymbol(8) : (NatInt)
+res5: provingground.functionfinder.RepTerm[Int] = 8
 ```
