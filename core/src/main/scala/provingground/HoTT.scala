@@ -2385,7 +2385,7 @@ object HoTT {
 
     val rhs = typ.rhs
 
-    lazy val sym = symm(typ)(self)
+    lazy val sym = symm(typ.dom)(lhs)(rhs)(self)
 
     def &&(that: Equality[U]) = trans(typ.dom)(lhs)(rhs)(that.rhs)(this)(that)
 
