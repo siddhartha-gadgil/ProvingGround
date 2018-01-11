@@ -367,7 +367,7 @@ object ScalaRep {
     override def toString = value.toString
   }
 
-  case class ScalaSymbol[X](value: X) extends AtomicSym{
+  case class ScalaSymbol[X](value: X) extends AtomicSym {
     override val toString = value.toString
   }
 

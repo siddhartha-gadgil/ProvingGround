@@ -76,8 +76,8 @@ object FansiTranslate {
             case (head, d) => s"$head($d)"
           }
       } ||
-      stringRep >>> {
-        (s) => s
+      stringRep >>> { (s) =>
+        s
       }
 
   /*import pprint._
@@ -170,9 +170,9 @@ object FansiShow {
   import pprint._
 
   val fansiHandler: PartialFunction[Any, Tree] = {
-    case t: Term     => Tree.Literal(FansiTranslate(t))
-    case sym: AnySym => Tree.Literal(sym.toString)
-    case w : andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
+    case t: Term                          => Tree.Literal(FansiTranslate(t))
+    case sym: AnySym                      => Tree.Literal(sym.toString)
+    case w: andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
   }
 
   val fansiPrint =

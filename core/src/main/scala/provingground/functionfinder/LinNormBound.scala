@@ -60,12 +60,12 @@ object LinNormBound {
 
   lazy val conjInv =
     "conjugacy-invariance" :: (
-    g ~>: (
-      h ~>: (
-         (l(h) =:= (l(g |+| h |+| g.inverse)))
+      g ~>: (
+        h ~>: (
+          (l(h) =:= (l(g |+| h |+| g.inverse)))
+        )
       )
     )
-  )
 
   lazy val symmetry =
     "symmetry" :: g ~>: {
@@ -73,31 +73,28 @@ object LinNormBound {
     }
 
   lazy val powerBound =
-      "homogeneity" :: (
+    "homogeneity" :: (
       g ~>: (
         x ~>: (
           n ~>: (
             ("hyp" :: (leq(l(FreeGroup.power(g)(n)))(x))) ~>: (
-                leq(l(g))(x / nr)
+              leq(l(g))(x / nr)
             )
           )
         )
       )
     )
 
-    lazy val gen = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
-      Word(Vector(n.toInt)))
+  lazy val gen = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
+    Word(Vector(n.toInt)))
 
+  val NtoQ = NatRing.incl(QField)
+  val nr   = NtoQ(n)
 
-
-    val NtoQ = NatRing.incl(QField)
-    val nr   = NtoQ(n)
-
-
-    lazy val genBound =
-      "generator-bound" :: (
+  lazy val genBound =
+    "generator-bound" :: (
       n ~>: (
-          leq(l(gen(n)))(rat(1))
+        leq(l(gen(n)))(rat(1))
       )
     )
 
@@ -126,9 +123,6 @@ object LinNormBound {
       )
     )
   }
-
-
-
 
   case class Gen(n: Int) extends LinNormBound(Word(Vector(n)), 1) {
     require(n != 0, "No generator with index 0")

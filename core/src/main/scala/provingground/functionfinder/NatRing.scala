@@ -59,7 +59,6 @@ object QField extends SymbolicField[Rational] {
     def subs(x: Term, y: Term) = this
   }
 
-
   case class SymbPosWit(name: AnySym, value: LocalTerm)
       extends PosWit
       with Symbolic {
@@ -104,7 +103,6 @@ object QField extends SymbolicField[Rational] {
     "positive-and-negation-positive" :: (
       x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
     )
-
 
   val z = "z" :: LocalTyp
 
@@ -174,7 +172,8 @@ object NatRing extends SymbolicCRing[SafeLong] {
   case class Induc[U <: Term with Subs[U]](typFamily: Func[Nat, Typ[U]],
                                            init: U,
                                            g: FuncLike[Nat, Func[U, U]])
-      extends FuncLike[Nat, U] with Subs[Induc[U]]{ self =>
+      extends FuncLike[Nat, U]
+      with Subs[Induc[U]] { self =>
     def h = (n: SafeLong) => g(Literal(n))
 
     val dom = NatTyp

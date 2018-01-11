@@ -175,9 +175,11 @@ class SymbolicCRing[A: Ring] { self =>
     val typ = LocalTyp
 
     override def toString = {
-      multElems.toVector.map {
-        case (x, p) => if (p == 1) x.toString else s"$x^{$p}"
-      }.mkString("(", " * ", ")")
+      multElems.toVector
+        .map {
+          case (x, p) => if (p == 1) x.toString else s"$x^{$p}"
+        }
+        .mkString("(", " * ", ")")
     }
 
     def subs(x: Term, y: Term) =
