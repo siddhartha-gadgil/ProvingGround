@@ -1932,9 +1932,23 @@ object HoTT {
   def composition[U <: Term with Subs[U],
                   V <: Term with Subs[V],
                   W <: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) = {
-    val x = g.dom.Var
-    LambdaFixed(x, f(g(x)))
+    // val x = g.dom.Var
+    // LambdaFixed(x, f(g(x)))
+    Composition(f, g)
   }
+
+  case class Composition[U <: Term with Subs[U],
+                  V <: Term with Subs[V],
+                  W <: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) extends Func[U, W] with Subs[Composition[U, V, W]]{
+                    val dom = g.dom
+                    val codom = f.codom
+                    val typ = dom ->: codom
+
+                    def newobj = ???
+                    def subs(x: Term, y: Term) = Composition(f.replace(x, y), g.replace(x, y))
+
+                    def act(a: U) = f(g(a))
+                  }
 
   /**
     * Sigma type defined using [[lmbda]], so with new variable created.
