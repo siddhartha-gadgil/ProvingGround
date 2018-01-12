@@ -91,10 +91,10 @@ res8: Boolean = true
 scala> assert{n * m == m * n}
 
 scala> n * (m * k)
-res10: provingground.functionfinder.NatRing.LocalTerm = (n * k * m)
+res10: provingground.functionfinder.NatRing.LocalTerm = (m * n * k)
 
 scala> n * (m + k)
-res11: provingground.functionfinder.NatRing.LocalTerm = ((n * m) + (n * k))
+res11: provingground.functionfinder.NatRing.LocalTerm = ((m * n) + (n * k))
 
 scala> assert(n* (m + k) == n * m + n * k)
 ```
@@ -134,7 +134,7 @@ We can define a function f recursively on natural numbers, given the value `f(0)
 
 ```scala
 scala> val m = lmbda(n)(prod(n + 1))
-m: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.functionfinder.NatRing.LocalTerm,provingground.functionfinder.NatRing.LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@3b225d01 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@3b225d01 + (n * provingground.HoTT$Typ$newname$2$@3b225d01))))
+m: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.HoTT.Func[provingground.functionfinder.NatRing.LocalTerm,provingground.functionfinder.NatRing.LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@15936672 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@15936672 + (provingground.HoTT$Typ$newname$2$@15936672 * n))))
 
 scala> val factorial = Rec(1: Nat, m)
 factorial: provingground.functionfinder.NatRing.Rec[provingground.functionfinder.NatRing.LocalTerm] = <function1>
