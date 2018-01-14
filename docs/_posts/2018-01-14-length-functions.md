@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Computer assistance in `Homogenous length functions`
+title: Computer assistance in _Homogenous length functions_
 date: 2018-01-14
 ---
 
