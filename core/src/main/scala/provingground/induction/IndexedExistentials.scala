@@ -124,7 +124,6 @@ sealed trait TypFamilyExst { typFmlyExst =>
         .getOrElse {
           cnstTyp match {
             case ft: FuncTyp[u, v] if (ft.dom.indepOf(W)) =>
-              // println(s"apparently ${ft.dom} is independent of $W")
               ft.dom ->>: getIndexedConstructorShape(ft.codom)
             case pd: PiDefn[u, v] if (pd.domain.indepOf(W)) =>
               pd.variable ~>>: getIndexedConstructorShape(pd.value)
@@ -133,10 +132,6 @@ sealed trait TypFamilyExst { typFmlyExst =>
               getIndexedConstructorShape(ft.codom)
                 .-->>:(IndexedIterFuncExst.getIterFuncShape(ft.dom), ind)
             case _ =>
-              // println(cnstTyp)
-              // println(pattern.getIndex(W, cnstTyp))
-              // println(W)
-              // println(pattern)
               throw new TypFamilyExst.GetIndexedException(typFmlyExst, cnstTyp)
           }
         }

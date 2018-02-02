@@ -19,6 +19,9 @@ scalaVersion in ThisBuild := scalaV
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+libraryDependencies += compilerPlugin("org.scalameta" % "semanticdb-scalac" % "2.1.2" cross CrossVersion.full)
+scalacOptions += "-Yrangepos"
+
 // javaOptions in Universal ++= Seq(
 //   // -J params will be added as jvm parameters
 //   "-J-Xmx4G",
