@@ -4,6 +4,8 @@ object Frankl{
   case class SetSystem(sets: Set[Set[Int]]){
     val size = sets.size
 
+    val properSize = if (sets.contains(Set[Int]())) size - 1 else size
+
     lazy val suppSet = sets.foldLeft[Set[Int]](Set())(_ union _)
 
     lazy val suppMaxOpt : Option[Int] =
@@ -12,15 +14,18 @@ object Frankl{
     def freq(k: Int) = sets.filter(_.contains(k)).size
 
     lazy val frequencies =
-      suppMaxOpt.map{
-        (suppMax) =>
-      (1 to suppMax).toVector.map((k) => (k, freq(k))).sortBy{case (k, n) => -n}
-    }.getOrElse(Vector())
+      suppSet.toVector.map((k) => (k, freq(k))).sortBy{case (k, n) => -n}
+
+    lazy val common = suppSet.filter((k) => size <= 2 * freq(k))
+
+    lazy val inAll = suppSet.filter((k) => freq(k) == properSize)
+
+    def proj(p: Int => Boolean) = SetSystem(sets.map(_.filter(p)))
 
     lazy val normalize = {
       val perm : Map[Int, Int] =
         {
-          frequencies.map(_._1).zipWithIndex.map{case (a, b) => (b + 1, a)}
+          frequencies.map(_._1).zipWithIndex.map{case (a, b) => (a, b +1)}
         }.toMap
       val permSets: Set[Set[Int]] = sets.map((s) => s.map(perm))
       SetSystem(permSets)
@@ -51,6 +56,8 @@ object Frankl{
       union(b).union(join(b))
 
     }
+
+    def quotAll(that: SetSystem) = proj((x) => !(that.inAll.contains(x)))
   }
 
   object SetSystem{
