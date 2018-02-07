@@ -58,6 +58,12 @@ object Frankl{
     }
 
     def quotAll(that: SetSystem) = proj((x) => !(that.inAll.contains(x)))
+
+    def conjFails(that: SetSystem) = join(that).size < quotAll(that).size
+
+    def conj2Fails(that: SetSystem) = join(that).size + 1 < quotAll(that).size
+
+    def conjMinFails(that: SetSystem) = join(that).size < quotAll(that).size.min(that.quotAll(this).size)
   }
 
   object SetSystem{
@@ -65,6 +71,8 @@ object Frankl{
 
 
     val trivial = SetSystem(Set(Set[Int]()))
+
+    val empty = SetSystem(Set[Set[Int]]())
 
     def buildWithAll(coll1: Set[SetSystem], coll2: Set[SetSystem], n: Int) : Set[SetSystem] =
       for {
@@ -76,13 +84,18 @@ object Frankl{
       Stream.from(0).map{
         (n) =>
           if (n == 0) Set[SetSystem](trivial)
-          else buildWithAll(allSystems.take(n).toSet.flatten, normalSystems.take(n).toSet.flatten, n)
+          else buildWithAll(allSystems.take(n).toSet.flatten + empty, normalSystems.take(n).toSet.flatten, n)
       }
+
+    def allTill(n: Int) = allSystems.take(n).flatten.distinct
+
+    def normalTill(n: Int) = normalSystems.take(n).flatten.distinct
 
     lazy val normalSystems =
       allSystems.map{
         (s) =>
           s.map(_.normalize)
       }
+
     }
 }
