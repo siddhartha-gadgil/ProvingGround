@@ -1,10 +1,16 @@
 package provingground
 
+import spire.math._
+import spire.implicits._
+import spire.algebra._
+
 object Frankl{
   case class SetSystem(sets: Set[Set[Int]]){
     val size = sets.size
 
-    val properSize = if (sets.contains(Set[Int]())) size - 1 else size
+    val neSets = sets.filter(!_.isEmpty)
+
+    val properSize = neSets.size
 
     lazy val suppSet = sets.foldLeft[Set[Int]](Set())(_ union _)
 
@@ -57,13 +63,30 @@ object Frankl{
 
     }
 
+    lazy val projFreqs =
+      {
+        val weightedElems =
+          for{
+            s <- neSets.toVector
+            scVec = s.toVector.map((x) => x -> Rational(1, (s.size * properSize)))
+            w <- scVec
+          } yield w
+        weightedElems.groupBy(_._1).mapValues((v) => v.map(_._2).foldLeft(Rational(0))(_ + _))
+
+      }
+
+    def freqExp(m: Map[Int, Rational]) =
+      suppSet.toVector.map((k) => freq(k) * m(k)).foldLeft(Rational(0))(_ + _)
+
+    lazy val franklProj = freqExp(projFreqs) * 2 >= size
+
     def quotAll(that: SetSystem) = proj((x) => !(that.inAll.contains(x)))
 
     def conjFails(that: SetSystem) = join(that).size < quotAll(that).size
 
     def conj2Fails(that: SetSystem) = join(that).size + 1 < quotAll(that).size
 
-    def conjMinFails(that: SetSystem) = join(that).size < quotAll(that).size.min(that.quotAll(this).size)
+    // def conjMinFails(that: SetSystem) = join(that).size < quotAll(that).size.min(that.quotAll(this).size)
   }
 
   object SetSystem{
