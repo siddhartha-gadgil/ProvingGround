@@ -3,6 +3,7 @@ package provingground
 import spire.math._
 import spire.implicits._
 import spire.algebra._
+import scala.util.Random
 
 object Frankl{
   case class SetSystem(sets: Set[Set[Int]]){
@@ -96,6 +97,16 @@ object Frankl{
     val trivial = SetSystem(Set(Set[Int]()))
 
     val empty = SetSystem(Set[Set[Int]]())
+
+    val rnd= new Random
+
+    def getRandom(n: Int, p: Double): SetSystem =
+      if (n == 0) {
+        if (rnd.nextDouble < p) trivial else empty
+      } else {
+        getRandom(n - 1, p).buildWith(getRandom(n - 1, p), n)
+      }
+
 
     def buildWithAll(coll1: Set[SetSystem], coll2: Set[SetSystem], n: Int) : Set[SetSystem] =
       for {
