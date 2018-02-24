@@ -5,30 +5,30 @@ import spire.implicits._
 import spire.algebra._
 
 object Frankl{
-  case class SetSystem(sets: Set[Set[Int]]){
-    val size = sets.size
+  case class SetSystem(sets: Set[Set[Int]]) extends AnyVal{
+    def size = sets.size
 
-    val neSets = sets.filter(!_.isEmpty)
+    def neSets = sets.filter(!_.isEmpty)
 
-    val properSize = neSets.size
+    def properSize = neSets.size
 
-    lazy val suppSet = sets.foldLeft[Set[Int]](Set())(_ union _)
+    def suppSet = sets.foldLeft[Set[Int]](Set())(_ union _)
 
-    lazy val suppMaxOpt : Option[Int] =
+    def suppMaxOpt : Option[Int] =
       if (suppSet.isEmpty) None else Some(suppSet.max)
 
     def freq(k: Int) = sets.filter(_.contains(k)).size
 
-    lazy val frequencies =
+    def frequencies =
       suppSet.toVector.map((k) => (k, freq(k))).sortBy{case (k, n) => -n}
 
-    lazy val common = suppSet.filter((k) => size <= 2 * freq(k))
+    def common = suppSet.filter((k) => size <= 2 * freq(k))
 
-    lazy val inAll = suppSet.filter((k) => freq(k) == properSize)
+    def inAll = suppSet.filter((k) => freq(k) == properSize)
 
     def proj(p: Int => Boolean) = SetSystem(sets.map(_.filter(p)))
 
-    lazy val normalize = {
+    def normalize = {
       val perm : Map[Int, Int] =
         {
           frequencies.map(_._1).zipWithIndex.map{case (a, b) => (a, b +1)}
@@ -46,7 +46,7 @@ object Frankl{
 
     def addElem(n: Int) = SetSystem(sets.map (_ + n))
 
-    lazy val isUnionClosed =
+    def isUnionClosed =
       {
         val notClosedBools =
           for {
@@ -63,7 +63,7 @@ object Frankl{
 
     }
 
-    lazy val projFreqs =
+    def projFreqs =
       {
         val weightedElems =
           for{
@@ -78,7 +78,7 @@ object Frankl{
     def freqExp(m: Map[Int, Rational]) =
       suppSet.toVector.map((k) => freq(k) * m(k)).foldLeft(Rational(0))(_ + _)
 
-    lazy val franklProj = freqExp(projFreqs) * 2 >= size
+    def franklProj = freqExp(projFreqs) * 2 >= size
 
     def quotAll(that: SetSystem) = proj((x) => !(that.inAll.contains(x)))
 
