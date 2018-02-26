@@ -151,7 +151,7 @@ class LeanParser(mods: Vector[Modification]) {
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
-    memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
+    // memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
     memParsed.map(Task.pure(_)).getOrElse {
       parseWork += exp
 
@@ -159,8 +159,8 @@ class LeanParser(mods: Vector[Modification]) {
       // pprint.log(s"$parseWork")
       val resTask: Task[Term] = exp match {
         case Const(name, _) =>
-          pprint.log(s"Seeking constant: $name")
-          pprint.log(s"${defnMap.get(name).map(_.fansi)}")
+          // pprint.log(s"Seeking constant: $name")
+          // pprint.log(s"${defnMap.get(name).map(_.fansi)}")
           getNamed(name)
             .orElse {
               // pprint.log(s"deffromMod $name")
@@ -173,7 +173,7 @@ class LeanParser(mods: Vector[Modification]) {
         case Sort(_)          => Task.pure(Type)
         case Var(n)           => Task.pure(vars(n))
         case RecIterAp(name, args) =>
-          pprint.log(s"Seeking RecIterAp $name, $args")
+          // pprint.log(s"Seeking RecIterAp $name, $args")
           recApp(name, args, exp, vars)
 
         case App(f, a) =>
@@ -185,7 +185,7 @@ class LeanParser(mods: Vector[Modification]) {
             // _ = pprint.log(s"got result for $f($a)")
           } yield res
         case Lam(domain, body) =>
-          pprint.log(s"lambda $domain, $body")
+          // pprint.log(s"lambda $domain, $body")
           for {
             domTerm <- parse(domain.ty, vars)
             domTyp  <- Task.eval(toTyp(domTerm))
@@ -204,7 +204,7 @@ class LeanParser(mods: Vector[Modification]) {
                 else LambdaFixed(x, value)
             }
         case Pi(domain, body) =>
-          pprint.log(s"pi $domain, $body")
+          // pprint.log(s"pi $domain, $body")
           for {
             domTerm <- parse(domain.ty, vars)
             domTyp  <- Task.eval(toTyp(domTerm))
@@ -215,7 +215,7 @@ class LeanParser(mods: Vector[Modification]) {
             if (LeanInterface.usesVar(body, 0))(PiDefn(x, cod))
             else (x.typ ->: cod)
         case Let(domain, value, body) =>
-          pprint.log(s"let $domain, $value, $body")
+          // pprint.log(s"let $domain, $value, $body")
           for {
             domTerm <- parse(domain.ty, vars)
             domTyp  <- Task.eval(toTyp(domTerm))
@@ -231,10 +231,10 @@ class LeanParser(mods: Vector[Modification]) {
         _ = {
           parseWork -= exp
           parseMemo += (exp, vars) -> res
-          pprint.log(s"parsed $exp")
-          if (isPropFmly(res.typ))
-            pprint.log(
-              s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
+          // pprint.log(s"parsed $exp")
+          // if (isPropFmly(res.typ))
+          //   pprint.log(
+          //     s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
         }
       } yield res
       // if (isPropFmly(res.typ)) "_" :: (res.typ) else res
@@ -280,14 +280,14 @@ class LeanParser(mods: Vector[Modification]) {
   def withDefn(name: Name, exp: Expr): Task[Unit] =
     for {
       term <- parse(exp, Vector())
-      _ = { defnMap += name -> term }
+      _ = {pprint.log(s"Defined $name"); defnMap += name -> term }
     } yield ()
 
   def withAxiom(name: Name, ty: Expr): Task[Unit] =
     for {
       typ <- parse(ty, Vector())
       term = (name.toString) :: toTyp(typ)
-      _    = { defnMap += name -> term }
+      _    = {pprint.log(s"Defined $name"); defnMap += name -> term }
     } yield ()
 
   def withAxiomSeq(axs: Vector[(Name, Expr)]): Task[Unit] =
@@ -310,7 +310,7 @@ class LeanParser(mods: Vector[Modification]) {
         typ <- parse(ty, Vector())
         // (typ, ltm1) = pr
         term = (name.toString) :: toTyp(typ)
-        _    = { defnMap += name -> term }
+        _    = {pprint.log(s"Defined $name"); defnMap += name -> term }
         res <- foldAxiomSeq(term +: accum, ys)
       } yield res
   }
@@ -324,7 +324,7 @@ class LeanParser(mods: Vector[Modification]) {
         // (indTypTerm, ltm1) = pr
         indTyp = toTyp(indTypTerm)
         typF   = name.toString :: indTyp
-        _      = { defnMap += name -> typF }
+        _      = { pprint.log(s"Defined $name"); defnMap += name -> typF }
         intros <- foldAxiomSeq(Vector(), ind.intros).map(_.reverse)
         // (intros, withIntros) = introsPair
         typValuePair <- getValue(typF, ind.numParams, Vector())
@@ -372,7 +372,7 @@ class LeanParser(mods: Vector[Modification]) {
 
   def defFromMod(name: Name): Option[Task[Term]] =
     findMod(name, mods).map { (mod) =>
-      pprint.log(s"Using ${mod.name}")
+      // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withMod(mod)
       } yield (defnMap(name))
@@ -380,7 +380,7 @@ class LeanParser(mods: Vector[Modification]) {
 
   def indModFromMod(name: Name): Option[Task[TermIndMod]] =
     findMod(name, mods).map { (mod) =>
-      pprint.log(s"Using ${mod.name}")
+      // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withMod(mod)
       } yield (termIndModMap(name))

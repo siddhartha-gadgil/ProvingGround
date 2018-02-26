@@ -35,6 +35,7 @@ object LeanToTermMonix {
 
   def feedWit(t: Term): Option[Term] = t match {
     case f: FuncLike[u, v] if (isProp(f.dom)) =>
+      pprint.log(s"feeding witness to ${t.fansi} of type ${t.typ.fansi}")
       Some(f("witness" :: f.dom))
     case _ => None
   }
@@ -44,8 +45,11 @@ object LeanToTermMonix {
     case (l: LambdaLike[u, v], pd: PiDefn[a, b]) if l.dom == pd.domain =>
       witUnify(l.value, pd.value.replace(pd.variable, l.variable))
         .map(lambda(l.variable)(_))
-    case (l: LambdaLike[u, v], tp) if isProp(l.dom) => witUnify(l.value, tp)
+    case (l: LambdaLike[u, v], tp) if isProp(l.dom) =>
+      pprint.log(s"unifying for ${l.fansi} with value type ${l.value.typ} to type ${tp.fansi}")
+      witUnify(l.value, tp)
     case (y, pd: PiDefn[u, v]) if isProp(pd.domain) =>
+      pprint.log(s"unifying for ${pd.fansi} with value type ${pd.value.typ} to type ${y}")
       witUnify(y, pd.value).map(lambda(pd.variable)(_))
     case (l: LambdaLike[u, v], tp) =>
       for {
@@ -90,7 +94,9 @@ object LeanToTermMonix {
       )
       .orElse(applyWitUnify(f, x))
       .orElse(
-        if (isProp(x.typ)) Some(f) else None
+        if (isProp(x.typ)) {
+          pprint.log(s"skipping application of ${x.fansi} to ${f.fansi} of typ ${f.typ.fansi}")
+          Some(f)} else None
       )
     for {
       res <- resTask
@@ -141,10 +147,10 @@ object LeanToTermMonix {
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
       case smp: SimpleIndMod =>
-        pprint.log(s"Getting rec using simple IndMod ${ind.name}")
+        // pprint.log(s"Getting rec using simple IndMod ${ind.name}")
         getRecSimple(smp, Task.pure(argsFmlyTerm))
       case indInd: IndexedIndMod =>
-        pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
+        // pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
         getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
@@ -302,8 +308,8 @@ object LeanToTermMonix {
     pprint.log(s"$parseWork")
     val resTask: Task[(Term, LeanToTermMonix)] = exp match {
       case Const(name, _) =>
-        pprint.log(s"Seeking constant: $name")
-        pprint.log(s"${ltm.defnMap.get(name).map(_.fansi)}")
+        // pprint.log(s"Seeking constant: $name")
+        // pprint.log(s"${ltm.defnMap.get(name).map(_.fansi)}")
         getNamed(name)
           .orElse {
             // pprint.log(s"deffromMod $name")
@@ -316,7 +322,7 @@ object LeanToTermMonix {
       case Sort(_)          => Task.pure(Type    -> ltm)
       case Var(n)           => Task.pure(vars(n) -> ltm)
       case RecIterAp(name, args) =>
-        pprint.log(s"Seeking RecIterAp $name, $args")
+        // pprint.log(s"Seeking RecIterAp $name, $args")
         for {
           pair0 <- getTermIndMod(name)
             .orElse(indModFromMod(name, ltm, mods))
@@ -345,7 +351,7 @@ object LeanToTermMonix {
           // _ = pprint.log(s"got result for $f($a)")
         } yield (res, ltm2)
       case Lam(domain, body) =>
-        pprint.log(s"lambda $domain, $body")
+        // pprint.log(s"lambda $domain, $body")
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
@@ -363,7 +369,7 @@ object LeanToTermMonix {
               else (LambdaFixed(x, value), ltm2)
           }
       case Pi(domain, body) =>
-        pprint.log(s"pi $domain, $body")
+        // pprint.log(s"pi $domain, $body")
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
@@ -375,7 +381,7 @@ object LeanToTermMonix {
           dep = cod.dependsOn(x)
         } yield if (dep) (PiDefn(x, cod), ltm2) else (x.typ ->: cod, ltm2)
       case Let(domain, value, body) =>
-        pprint.log(s"let $domain, $value, $body")
+        // pprint.log(s"let $domain, $value, $body")
         for {
           p1 <- parse(domain.ty, vars, ltm, mods)
           (domTerm, ltm1) = p1
@@ -393,7 +399,7 @@ object LeanToTermMonix {
       res <- resTask
       _ = {
         parseWork -= exp
-        pprint.log(s"parsed $exp")
+        // pprint.log(s"parsed $exp")
       }
     } yield res
   }
