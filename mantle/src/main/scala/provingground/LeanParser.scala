@@ -16,8 +16,8 @@ import HoTT.{Name => _, _}
 import trepplein._
 
 object LeanParser {
-  class ParseError(exp: Expr, vars: Vector[Term], error: Exception) extends Exception(error.toString){
-    def apl : Option[(Expr, Expr, ApplnFailException)] = (exp, error) match {
+  case class ParseException(exps: Vector[Expr], vars: Vector[Term], error: Exception) extends Exception(error.toString){
+    def apl : Option[(Expr, Expr, ApplnFailException)] = (exps.head, error) match {
       case (App(f, x), er: ApplnFailException) => Some((f, x, er))
       case _ => None
     }
@@ -252,8 +252,8 @@ class LeanParser(mods: Vector[Modification]) {
       // if (isPropFmly(res.typ)) "_" :: (res.typ) else res
     }
   }.onErrorRecoverWith{
-    case pe : ParseError => Task.raiseError(pe)
-    case error : Exception => Task.raiseError(new ParseError(exp, vars, error))
+    case pe : ParseException => Task.raiseError(ParseException(pe.exps :+ exp , pe.vars, pe.error))
+    case error : Exception => Task.raiseError(ParseException(Vector(exp), vars, error))
   }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
