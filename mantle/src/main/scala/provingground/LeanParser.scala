@@ -16,6 +16,13 @@ import HoTT.{Name => _, _}
 import trepplein._
 
 object LeanParser {
+  class ParseError(exp: Expr, vars: Vector[Term], error: Exception) extends Exception(error.toString){
+    def apl : Option[(Expr, Expr, ApplnFailException)] = (exp, error) match {
+      case (App(f, x), er: ApplnFailException) => Some((f, x, er))
+      case _ => None
+    }
+  }
+
   def splitVec[A](sizes: Vector[Int],
                   vec: Vector[A]): (Vector[Vector[A]], Vector[A]) =
     sizes match {
@@ -244,6 +251,9 @@ class LeanParser(mods: Vector[Modification]) {
       } yield res
       // if (isPropFmly(res.typ)) "_" :: (res.typ) else res
     }
+  }.onErrorRecoverWith{
+    case pe : ParseError => Task.raiseError(pe)
+    case error : Exception => Task.raiseError(new ParseError(exp, vars, error))
   }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
