@@ -28,7 +28,7 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.21")
 
 addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.4.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.2-RC2")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
 
 addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.6.0") // change to 0.6.0 for sbt 1.0
 
@@ -45,3 +45,13 @@ addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.6.0")
 // addSbtPlugin("org.lyranthe.sbt" % "partial-unification" % "1.0.0")
 
 // addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.9.0")
+
+
+// Plugins for trepplein
+
+resolvers += Classpaths.sbtPluginReleases
+logLevel := Level.Warn
+
+resolvers += Resolver.sbtPluginRepo("releases")
+// addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.2")
+// addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
