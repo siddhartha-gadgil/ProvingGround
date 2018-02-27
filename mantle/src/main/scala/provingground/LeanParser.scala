@@ -64,6 +64,9 @@ object LeanParser {
       "indmods" -> jsTermIndMod(parser)
     )
 
+  def apply(filename: String) : LeanParser =
+    new LeanParser(LeanInterface.getMods(filename))
+
 }
 
 class LeanParser(mods: Vector[Modification]) {
@@ -148,6 +151,8 @@ class LeanParser(mods: Vector[Modification]) {
       resFlat = Task.sequence(resOpt.toVector).map(_.headOption.flatten)
       tsk <- resFlat
     } yield tsk // Task
+
+  def get(name: String) = parse(Const(Name(name.split("\\.") : _*), Vector())).runAsync
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
@@ -317,10 +322,10 @@ class LeanParser(mods: Vector[Modification]) {
 
   def withMod(mod: Modification): Task[Unit] = mod match {
     case ind: IndMod =>
-      val isPropn = isPropnFn(ind.inductiveType.ty)
-      val name    = ind.inductiveType.name
+      val isPropn = isPropnFn(ind.ty)
+      val name    = ind.name
       for {
-        indTypTerm <- parse(ind.inductiveType.ty, Vector())
+        indTypTerm <- parse(ind.ty, Vector())
         // (indTypTerm, ltm1) = pr
         indTyp = toTyp(indTypTerm)
         typF   = name.toString :: indTyp
@@ -330,13 +335,13 @@ class LeanParser(mods: Vector[Modification]) {
         typValuePair <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePair match {
           case (typ: Typ[Term], params) =>
-            SimpleIndMod(ind.inductiveType.name,
+            SimpleIndMod(ind.name,
                          typF,
                          intros,
                          params.size,
                          isPropn)
           case (t, params) =>
-            IndexedIndMod(ind.inductiveType.name,
+            IndexedIndMod(ind.name,
                           typF,
                           intros,
                           params.size,
@@ -346,9 +351,9 @@ class LeanParser(mods: Vector[Modification]) {
       } yield ()
 
     case ax: AxiomMod =>
-      withAxiom(ax.name, ax.ax.ty)
+      withAxiom(ax.name, ax.ty)
     case df: DefMod =>
-      withDefn(df.name, df.defn.value)
+      withDefn(df.name, df.value)
     case QuotMod =>
       import quotient._
       val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>

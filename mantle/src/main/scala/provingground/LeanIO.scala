@@ -277,27 +277,27 @@ trait LeanParse { self =>
   def addDefnValOpt(name: Name, ty: Expr, value: Expr): LeanParse
 
   def toTermIndModTry(ind: IndMod): Try[TermIndMod] = {
-    val inductiveTypOpt = parseTyp(ind.inductiveType.ty, Vector())
-    val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
+    val inductiveTypOpt = parseTyp(ind.ty, Vector())
+    val isPropn         = LeanToTerm.isPropn(ind.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
-      val name = ind.inductiveType.name
+      val name = ind.name
       val typF = name.toString :: inductiveTyp
       val typValueOpt =
         LeanToTerm.getValue(typF, ind.numParams, Vector())
-      val withTypeName = addAxiom(name, ind.inductiveType.ty)
+      val withTypeName = addAxiom(name, ind.ty)
       val introsTry =
         withTypeName.parseSymVec(ind.intros, Vector())
       introsTry.flatMap { (intros) =>
         typValueOpt.map { (typValue) =>
           typValue match {
             case (typ: Typ[Term], params) =>
-              SimpleIndMod(ind.inductiveType.name,
+              SimpleIndMod(ind.name,
                            typF,
                            intros,
                            params.size,
                            isPropn)
             case (t, params) =>
-              IndexedIndMod(ind.inductiveType.name,
+              IndexedIndMod(ind.name,
                             typF,
                             intros,
                             params.size,
@@ -309,14 +309,14 @@ trait LeanParse { self =>
   }
 
   def toTermIndModOpt(ind: IndMod): Option[TermIndMod] = {
-    val inductiveTypOpt = parseTypOpt(ind.inductiveType.ty, Vector())
-    val isPropn         = LeanToTerm.isPropn(ind.inductiveType.ty)
+    val inductiveTypOpt = parseTypOpt(ind.ty, Vector())
+    val isPropn         = LeanToTerm.isPropn(ind.ty)
     inductiveTypOpt.flatMap { (inductiveTyp) =>
-      val name = ind.inductiveType.name
+      val name = ind.name
       val typF = name.toString :: inductiveTyp
       val typValueOpt =
         LeanToTerm.getValueOpt(typF, ind.numParams, Vector())
-      val withTypeName = addAxiomOpt(name, ind.inductiveType.ty)
+      val withTypeName = addAxiomOpt(name, ind.ty)
       val introsOpt = ind.intros.map {
         case (name, tp) =>
           withTypeName
@@ -329,13 +329,13 @@ trait LeanParse { self =>
         typValueOpt.map { (typValue) =>
           typValue match {
             case (typ: Typ[Term], params) =>
-              SimpleIndMod(ind.inductiveType.name,
+              SimpleIndMod(ind.name,
                            typF,
                            intros,
                            params.size,
                            isPropn)
             case (t, params) =>
-              IndexedIndMod(ind.inductiveType.name,
+              IndexedIndMod(ind.name,
                             typF,
                             intros,
                             params.size,
@@ -387,7 +387,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
     axs.foldLeft(self) { case (p, (n, v)) => p.addAxiomOpt(n, v) }
 
   def addIndMod(ind: IndMod): LeanToTerm = {
-    val withTypDef = addAxiomOpt(ind.name, ind.inductiveType.ty)
+    val withTypDef = addAxiomOpt(ind.name, ind.ty)
     val withAxioms = withTypDef.addAxioms(ind.intros)
     val indOpt     = withAxioms.toTermIndModTry(ind)
     indOpt
@@ -402,7 +402,7 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   }
 
   def addIndModOpt(ind: IndMod): LeanToTerm = {
-    val withTypDef = addAxiomOpt(ind.name, ind.inductiveType.ty)
+    val withTypDef = addAxiomOpt(ind.name, ind.ty)
     val withAxioms = withTypDef.addAxiomsOpt(ind.intros)
     val indOpt     = withAxioms.toTermIndModOpt(ind)
     indOpt
@@ -416,16 +416,16 @@ case class LeanToTerm(defnMap: Map[Name, Term],
   }
 
   def addAxiomMod(ax: AxiomMod): LeanToTerm =
-    addAxiom(ax.name, ax.ax.ty)
+    addAxiom(ax.name, ax.ty)
 
   def addDefMod(df: DefMod): LeanToTerm =
-    addDefnVal(df.name, df.defn.value, df.defn.ty)
+    addDefnVal(df.name, df.value, df.ty)
 
   def addAxiomModOpt(ax: AxiomMod): LeanToTerm =
-    addAxiomOpt(ax.name, ax.ax.ty)
+    addAxiomOpt(ax.name, ax.ty)
 
   def addDefModOpt(df: DefMod): LeanToTerm =
-    addDefnValOpt(df.name, df.defn.value, df.defn.ty)
+    addDefnValOpt(df.name, df.value, df.ty)
 
   def addQuotMod: LeanToTerm = {
     import quotient._
@@ -526,7 +526,7 @@ case class LeanToTermMut(defnMap: mMap[trepplein.Name, Term],
   }
 
   def addIndMod(ind: IndMod): LeanParse = {
-    putAxiom(ind.name, ind.inductiveType.ty)
+    putAxiom(ind.name, ind.ty)
     ind.intros.foreach { case (n, t) => putAxiom(n, t) }
     val indOpt = toTermIndModTry(ind)
     indOpt
@@ -537,7 +537,7 @@ case class LeanToTermMut(defnMap: mMap[trepplein.Name, Term],
   }
 
   def addIndModOpt(ind: IndMod): LeanParse = {
-    putAxiomOpt(ind.name, ind.inductiveType.ty)
+    putAxiomOpt(ind.name, ind.ty)
     ind.intros.foreach { case (n, t) => putAxiom(n, t) }
     val indOpt = toTermIndModOpt(ind)
     indOpt
@@ -548,16 +548,16 @@ case class LeanToTermMut(defnMap: mMap[trepplein.Name, Term],
   }
 
   def addAxiomMod(ax: AxiomMod): LeanParse =
-    addAxiom(ax.name, ax.ax.ty)
+    addAxiom(ax.name, ax.ty)
 
   def addDefMod(df: DefMod): LeanParse =
-    addDefnVal(df.name, df.defn.value, df.defn.ty)
+    addDefnVal(df.name, df.value, df.ty)
 
   def addAxiomModOpt(ax: AxiomMod): LeanParse =
-    addAxiomOpt(ax.name, ax.ax.ty)
+    addAxiomOpt(ax.name, ax.ty)
 
   def addDefModOpt(df: DefMod): LeanParse =
-    addDefnValOpt(df.name, df.defn.value, df.defn.ty)
+    addDefnValOpt(df.name, df.value, df.ty)
 
   def addQuotMod: LeanParse = {
     import quotient._
@@ -987,7 +987,7 @@ object LeanInterface {
     case Lam(b, x)           => consts(b.ty) ++ consts(x)
     case Pi(b, x)            => consts(b.ty) ++ consts(x)
     case Let(_, x, y)        => consts(x) ++ consts(y)
-    case LocalConst(_, _, _) => Vector()
+    case LocalConst(_, _) => Vector()
   }
 
   def usesVar(expr: Expr, index: Int, ignoreTypes: Boolean = false): Boolean =
@@ -1001,7 +1001,7 @@ object LeanInterface {
       case Pi(b, x) =>
         usesVar(x, index + 1) || ((!ignoreTypes) && usesVar(b.ty, index))
       case Let(_, x, y)        => usesVar(y, index + 1)
-      case LocalConst(_, _, _) => false
+      case LocalConst(_, _) => false
     }
 
   def varsUsed(expr: Expr): Set[Int] =
@@ -1015,7 +1015,7 @@ object LeanInterface {
       case Pi(b, x) =>
         varsUsed(x).map(_ + 1) union varsUsed(b.ty)
       case Let(_, x, y)        => varsUsed(y).map(_ + 1)
-      case LocalConst(_, _, _) => Set()
+      case LocalConst(_, _) => Set()
     }
 
   // crude implementation for exploring
@@ -1031,11 +1031,11 @@ object LeanInterface {
 
   def modSubExpr: Modification => Set[Expr] = {
     case df: DefMod =>
-      subExpr(df.defn.ty).toSet union subExpr(df.defn.value).toSet
+      subExpr(df.ty).toSet union subExpr(df.value).toSet
     case ax: AxiomMod =>
-      subExpr(ax.ax.ty).toSet
+      subExpr(ax.ty).toSet
     case ind: IndMod =>
-      val tyExprs = (subExpr(ind.inductiveType.ty)).toSet
+      val tyExprs = (subExpr(ind.ty)).toSet
       val introExprs =
         for {
           (_, ty) <- ind.intros
@@ -1054,12 +1054,12 @@ object LeanInterface {
   def defnNames(mods: Vector[Modification],
                 accum: Vector[Name] = Vector()): Vector[Name] = mods match {
     case Vector() => accum
-    case IndMod(ind, _, intros) +: tail =>
+    case IndMod(name, _, ty, numParams, intros) +: tail =>
       defnNames(
         tail,
-        ind.name +: Name.Str(ind.name, "rec") +: intros.map(_._1) ++: accum)
-    case DefMod(df) +: tail   => defnNames(tail, df.name +: accum)
-    case AxiomMod(ax) +: tail => defnNames(tail, ax.name +: accum)
+        name +: Name.Str(name, "rec") +: intros.map(_._1) ++: accum)
+    case DefMod(name, _, ty, value) +: tail   => defnNames(tail, name +: accum)
+    case AxiomMod(name, _, ty) +: tail => defnNames(tail, name +: accum)
     case QuotMod +: tail =>
       defnNames(tail,
                 Vector(Name("quot"),
@@ -1069,7 +1069,7 @@ object LeanInterface {
   }
 
   def defnExprs(mods: Vector[Modification]) = mods.collect {
-    case DefMod(df) => df.value
+    case DefMod(name, _, ty, value) => value
   }
 
   def getMods(filename: String) = {

@@ -377,7 +377,7 @@ lazy val normalform = (project in file("normalform"))
   .settings(jvmSettings: _*)
   .settings(nfSettings: _*)
 
-lazy val trepplein = (project in file("trepplein-local"))
+lazy val trepplein = (project in file("trepplein"))
 
 fork in run := true
 connectInput := true

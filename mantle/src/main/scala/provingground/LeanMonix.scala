@@ -492,10 +492,10 @@ object LeanToTermMonix {
               ltm: LeanToTermMonix,
               mods: Vector[Modification]): Task[LeanToTermMonix] = mod match {
     case ind: IndMod =>
-      val isPropn = isPropnFn(ind.inductiveType.ty)
-      val name    = ind.inductiveType.name
+      val isPropn = isPropnFn(ind.ty)
+      val name    = ind.name
       for {
-        pr <- parse(ind.inductiveType.ty, Vector(), ltm, mods)
+        pr <- parse(ind.ty, Vector(), ltm, mods)
         (indTypTerm, ltm1) = pr
         indTyp             = toTyp(indTypTerm)
         typF               = name.toString :: indTyp
@@ -508,13 +508,13 @@ object LeanToTermMonix {
         typValuePar <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePar match {
           case (typ: Typ[Term], params) =>
-            SimpleIndMod(ind.inductiveType.name,
+            SimpleIndMod(ind.name,
                          typF,
                          intros,
                          params.size,
                          isPropn)
           case (t, params) =>
-            IndexedIndMod(ind.inductiveType.name,
+            IndexedIndMod(ind.name,
                           typF,
                           intros,
                           params.size,
@@ -524,9 +524,9 @@ object LeanToTermMonix {
         LeanToTermMonix(withIntros.defnMap,
                         withIntros.termIndModMap + (ind.name -> indMod))
     case ax: AxiomMod =>
-      withAxiom(ax.name, ax.ax.ty, ltm, mods)
+      withAxiom(ax.name, ax.ty, ltm, mods)
     case df: DefMod =>
-      withDefn(df.name, df.defn.value, ltm, mods)
+      withDefn(df.name, df.value, ltm, mods)
     case QuotMod =>
       import quotient._
       val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
@@ -716,10 +716,10 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
     }
 
   def addAxiomMod(ax: AxiomMod): Task[LeanToTermMonix] =
-    addAxiom(ax.name, ax.ax.ty)
+    addAxiom(ax.name, ax.ty)
 
   def addDefMod(df: DefMod): Task[LeanToTermMonix] =
-    addDefnVal(df.name, df.defn.value, df.defn.ty)
+    addDefnVal(df.name, df.value, df.ty)
 
   def addQuotMod: Task[LeanToTermMonix] = {
     import quotient._
@@ -730,10 +730,10 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
   }
 
   def addIndMod(ind: IndMod): Task[LeanToTermMonix] = {
-    val name    = ind.inductiveType.name
-    val isPropn = isPropnFn(ind.inductiveType.ty)
+    val name    = ind.name
+    val isPropn = isPropnFn(ind.ty)
     for {
-      inductiveTyp <- parseTyp(ind.inductiveType.ty, Vector())
+      inductiveTyp <- parseTyp(ind.ty, Vector())
       withTypDef = addDefnMap(ind.name, name.toString :: inductiveTyp)
       namedIntros <- withTypDef.parseSymVec(ind.intros, Vector())
       intros = namedIntros.map(_._2)
@@ -742,13 +742,13 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       typValue <- getValue(typF, ind.numParams, Vector())
       indMod = typValue match {
         case (typ: Typ[Term], params) =>
-          SimpleIndMod(ind.inductiveType.name,
+          SimpleIndMod(ind.name,
                        typF,
                        intros,
                        params.size,
                        isPropn)
         case (t, params) =>
-          IndexedIndMod(ind.inductiveType.name,
+          IndexedIndMod(ind.name,
                         typF,
                         intros,
                         params.size,

@@ -14,13 +14,13 @@ final case class CompiledIndMod(indMod: IndMod, env: PreEnvironment)
   val tc = new TypeChecker(env.addNow(inductiveType.decl))
   import tc.NormalizedPis
 
-  def name: Name = inductiveType.name
+  def name: Name = name
 
   def univParams: Vector[Param] = inductiveType.univParams
-  val indTy                     = Const(inductiveType.name, univParams)
+  val indTy                     = Const(name, univParams)
 
   val ((params, indices), level) =
-    inductiveType.ty match {
+    ty match {
       case NormalizedPis(doms, Sort(lvl)) =>
         (doms.splitAt(numParams), lvl)
     }
@@ -38,7 +38,7 @@ final case class CompiledIndMod(indMod: IndMod, env: PreEnvironment)
           Binding(_,
                   NormalizedPis(
                     eps,
-                    Apps(recArgIndTy @ Const(inductiveType.name, _), recArgs)),
+                    Apps(recArgIndTy @ Const(name, _), recArgs)),
                   _),
           _,
           _) =>
@@ -166,7 +166,7 @@ final case class CompiledIndMod(indMod: IndMod, env: PreEnvironment)
       yield Axiom(i.name, univParams, i.ty, builtin = true)
 
   val decls
-    : Vector[Declaration] = Axiom(name, univParams, inductiveType.ty) +: introDecls :+ elimDecl
+    : Vector[Declaration] = Axiom(name, univParams, ty) +: introDecls :+ elimDecl
   val rules: Vector[ReductionRule] =
     if (kIntroRule.isDefined)
       kIntroRule.toVector
@@ -190,7 +190,7 @@ final case class IndMod(inductiveType: InductiveType,
                         numParams: Int,
                         intros: Vector[(Name, Expr)])
     extends Modification {
-  def name: Name = inductiveType.name
+  def name: Name = name
 
   def compile(env: PreEnvironment) = CompiledIndMod(this, env)
 }

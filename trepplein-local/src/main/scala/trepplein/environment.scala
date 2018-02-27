@@ -68,7 +68,7 @@ final case class DefMod(defn: Definition) extends Modification {
   val decls = Seq(defn)
 
   def compile(env: PreEnvironment) = new CompiledModification {
-    val height: Int = defn.value.constants.view
+    val height: Int = value.constants.view
       .flatMap(env.get)
       .collect { case d: Definition => d.height }
       .fold(0)(math.max) + 1
@@ -79,7 +79,7 @@ final case class DefMod(defn: Definition) extends Modification {
       Seq(
         ReductionRule(Vector[Binding](),
                       Const(defn.name, defn.univParams),
-                      defn.value,
+                      value,
                       List()))
   }
 }
