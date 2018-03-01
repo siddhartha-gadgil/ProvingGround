@@ -157,7 +157,7 @@ object CodeGen{
   import TermPatterns._
 
   val base = Translator.Empty[Term, String] || formalAppln >>> {
-    case (func, arg) => func ++ "(" ++ arg ++ ")"
+    case (func, arg) => s"$func($arg)"
   } || funcTyp >>> {
     case (dom, codom) =>
       s"""($dom ->: $codom)"""
@@ -175,7 +175,7 @@ object CodeGen{
       s"""($variable ++ $value)"""
   } || universe >>> { (n) =>
     if (n ==0) "Type" else s"""Universe($n)"""
-  } || symbolic >>> {case (s, typ) => s"""("$s" :: $typ)"""
+  } || symbolic >>> {case (s, typ) => s""" ("$s" :: $typ) """
   } || prodTyp >>> { case (first, second) => s"""ProdTyp($first, $second)"""
   } || pairTerm >>> {
       case (first, second) => s"""PairTerm($first, $second)"""
@@ -188,32 +188,33 @@ object CodeGen{
 
   import induction._
 
-  def gen(indNames: Vector[(Term, String)]) =
+  def gen(indNames: Vector[(Term, String)]) : Term => Option[String] =
           {
-            def prefix(s: String) = indNames.find(_._1 == s).map(_._2).getOrElse(s)
+            def indNamesCoded = indNames.map{case (t, name) => (gen(indNames)(t), name)}
+            def prefix(s: String) = indNamesCoded.find(_._1 == Some(s)).map(_._2).getOrElse(s)
             base || indRecFunc >>> {
             case (index, (dom, (codom, defnData))) =>
               defnData.foldLeft(
-                s"${prefix(dom)}${index.mkString("(", ")(", ")")}.rec($codom)") {
+                s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.rec($depcodom); rxyz})") {
                 case (head, d) => s"$head($d)"
               }
           } ||
           recFunc >>> {
             case (dom, (codom, defnData)) =>
-              defnData.foldLeft(s"${prefix(dom)}.rec($codom)") {
+              defnData.foldLeft(s"({val rxyz = ${prefix(dom)}.rec($codom); rxyz})") {
                 case (head, d) => s"$head($d)"
               }
           } ||
           indInducFunc >>> {
             case (index, (dom, (depcodom, defnData))) =>
-              val h = s"${prefix(dom)}${index.mkString("(", ")(", ")")}.induc($depcodom)"
+              val h = s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.induc($depcodom); rxyz})"
               defnData.foldLeft(h) {
                 case (head, d) => s"$head($d)"
               }
           } ||
           inducFunc >>> {
             case (dom, (depcodom, defnData)) =>
-              val h = s"${prefix(dom)}.induc($depcodom)"
+              val h = s"({val rxyz = ${prefix(dom)}.induc($codom); rxyz})"
               defnData.foldLeft(h) {
                 case (head, d) => s"$head($d)"
               }
