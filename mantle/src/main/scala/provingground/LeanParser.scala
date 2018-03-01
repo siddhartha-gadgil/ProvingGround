@@ -12,6 +12,7 @@ import translation.FansiShow._
 import scala.collection.mutable.{Set => mSet, Map => mMap}
 
 import HoTT.{Name => _, _}
+import math.max
 
 import trepplein._
 
@@ -371,6 +372,47 @@ class LeanParser(mods: Vector[Modification]) {
       }
       withAxiomSeq(axs)
   }
+
+  val allIntros = mods.collect{case ind: IndMod => ind.intros}.flatten
+
+  def findDefMod(name: Name) =
+    mods.collect{
+      case dm: DefMod if dm.name == name => dm
+      }.headOption
+
+  def findIndMod(name: Name) =
+    mods.collect{
+      case dm: IndMod if dm.name == name => dm
+      }.headOption
+
+  def findIntro(name: Name) : Option[Expr] =
+    allIntros.find(_._1 == name).map(_._2)
+
+  def findRecChildren(name: Name) : Option[Vector[Expr]] =
+    name match {
+      case Name.Str(prefix, "rec") =>
+        findIndMod(prefix).map((ind) => ind.ty +: ind.intros.map(_._2))
+      case _ => None
+    }
+
+  def findChildren(name: Name): Option[Vector[Expr]] =
+    findDefMod(name).map((dm) => Vector(dm.ty, dm.value)).
+    orElse(findIndMod(name).map ((ind) => Vector(ind.ty))).
+    orElse(findIntro(name).map((exp : Expr) => Vector(exp))).
+    orElse(findRecChildren(name))
+
+  def maxIndex(exp: Expr): Int = exp match {
+    case Sort(_) => 0
+    case Var(_) => 0
+    case App(f, x) => max(maxIndex(f), maxIndex(x))
+    case LocalConst(_, _) => 0
+    case Lam(domain, body) => max(maxIndex(domain.ty), maxIndex(body) + 1)
+    case Pi(domain, body) => max(maxIndex(domain.ty), maxIndex(body) + 1)
+    case Let(domain, value, body) => Vector(maxIndex(domain.ty), maxIndex(value), maxIndex(body) + 1).max
+    case Const(name, _) =>
+      findChildren(name).map((v) => v.map(maxIndex).max).getOrElse(throw new Exception(s"could not find name $name"))
+  }
+
 
   def modNames(mod: Modification): Vector[Name] = mod match {
     case ind: IndMod =>
