@@ -153,6 +153,75 @@ object TeXTranslate {
 
 }
 
+object CodeGen{
+  import TermPatterns._
+
+  val base = Translator.Empty[Term, String] || formalAppln >>> {
+    case (func, arg) => func ++ "(" ++ arg ++ ")"
+  } || funcTyp >>> {
+    case (dom, codom) =>
+      s"""($dom ->: $codom)"""
+  } || lambdaFixedTriple >>> {
+    case ((variable, typ), value) =>
+      s"""($variable :-> $value)"""
+  }  || lambdaTriple >>> {
+    case ((variable, typ), value) =>
+      s"""($variable :~> $value)"""
+  } || piTriple >>> {
+    case ((variable, typ), value) =>
+      s"""($variable ~>: $value)"""
+  } || sigmaTriple >>> {
+    case ((variable, typ), value) =>
+      s"""($variable ++ $value)"""
+  } || universe >>> { (n) =>
+    if (n ==0) "Type" else s"""Universe($n)"""
+  } || symbolic >>> {case (s, typ) => s"""("$s" :: $typ)"""
+  } || prodTyp >>> { case (first, second) => s"""ProdTyp($first, $second)"""
+  } || pairTerm >>> {
+      case (first, second) => s"""PairTerm($first, $second)"""
+  } || equation >>> { case (lhs, rhs) => s"$lhs =:= $rhs"
+  } || depPairTerm >>> {
+      case ((a, b), f) => s"DepPair($a, $b, $f)"
+  } || plusTyp >>> {
+      case (first, scnd) => s"""PlusTyp($first, $scnd)"""
+  }
+
+  import induction._
+
+  def gen(
+      inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
+      indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
+        (_) => None) =
+          base || indRecFunc >>> {
+            case (index, (dom, (codom, defnData))) =>
+              defnData.foldLeft(
+                s"rec($dom${index.mkString("(", ")(", ")")})($codom)") {
+                case (head, d) => s"$head($d)"
+              }
+          } ||
+          recFunc >>> {
+            case (dom, (codom, defnData)) =>
+              defnData.foldLeft(s"rec($dom)($codom)") {
+                case (head, d) => s"$head($d)"
+              }
+          } ||
+          indInducFunc >>> {
+            case (index, (dom, (depcodom, defnData))) =>
+              val h = s"induc($dom${index.mkString("(", ")(", ")")})($depcodom)"
+              defnData.foldLeft(h) {
+                case (head, d) => s"$head($d)"
+              }
+          } ||
+          inducFunc >>> {
+            case (dom, (depcodom, defnData)) =>
+              val h = s"induc($dom)($depcodom)"
+              defnData.foldLeft(h) {
+                case (head, d) => s"$head($d)"
+              }
+            }
+
+}
+
 trait FansiShow[-U] {
   def show(x: U): String
 }

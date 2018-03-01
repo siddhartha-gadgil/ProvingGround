@@ -37,6 +37,10 @@ object TermPatterns {
     case l: LambdaLike[u, v] => ((l.variable, l.variable.typ), l.value)
   }
 
+  val lambdaFixedTriple = Pattern.partial[Term, III] {
+    case l: LambdaFixed[u, v] => ((l.variable, l.variable.typ), l.value)
+  }
+
   /**
     * matches Pi-Types, returns in the pi-lambda form  with the HoTT-type of variable included.
     */
@@ -108,6 +112,14 @@ object TermPatterns {
     case p: AbsPair[u, v] => (p.first, p.second)
   }
 
+  val pairTerm = Pattern.partial[Term, II] {
+    case p: PairTerm[u, v] => (p.first, p.second)
+  }
+
+  val depPairTerm = Pattern.partial[Term, III]{
+    case p: DepPair[u, v] => ((p.first, p.second), p.fibers)
+  }
+
   /**
     * matches product types
     */
@@ -127,6 +139,12 @@ object TermPatterns {
     */
   val recFunc = Pattern.partial[Term, IIV] {
     case rf: RecFunc[u, v] => (rf.dom, (rf.codom, rf.defnData))
+  }
+
+  def recFuncApplied(inds: (Typ[Term] => Option[ConstructorSeqTL[_, _, _]])) =
+    Pattern[Term, Id]{
+    case rf: RecFunc[u, v] => buildRecDef(inds)(rf.dom, (rf.codom, rf.defnData))
+    case _ => None
   }
 
   /**
@@ -149,6 +167,19 @@ object TermPatterns {
           x :-> rf.depcodom(x)
       }
       (rf.dom, (fmly, rf.defnData))
+  }
+
+  def inducFuncApplied(inds: (Typ[Term] => Option[ConstructorSeqTL[_, Term, _]])) =
+    Pattern[Term, Id]{
+    case rf: InducFuncLike[u, v] =>
+    val fmly: Term = rf.depcodom match {
+      case t: Term => t
+      case _ =>
+        val x = rf.dom.Var
+        x :-> rf.depcodom(x)
+      }
+      buildIndDef(inds)(rf.dom, (fmly, rf.defnData))
+    case _ => None
   }
 
   /**
