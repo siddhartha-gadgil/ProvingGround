@@ -195,7 +195,7 @@ object CodeGen{
             base || indRecFunc >>> {
             case (index, (dom, (codom, defnData))) =>
               defnData.foldLeft(
-                s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.rec($depcodom); rxyz})") {
+                s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.rec($codom); rxyz})") {
                 case (head, d) => s"$head($d)"
               }
           } ||
@@ -214,7 +214,7 @@ object CodeGen{
           } ||
           inducFunc >>> {
             case (dom, (depcodom, defnData)) =>
-              val h = s"({val rxyz = ${prefix(dom)}.induc($codom); rxyz})"
+              val h = s"({val rxyz = ${prefix(dom)}.induc($depcodom); rxyz})"
               defnData.foldLeft(h) {
                 case (head, d) => s"$head($d)"
               }
