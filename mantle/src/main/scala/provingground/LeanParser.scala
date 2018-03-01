@@ -34,10 +34,15 @@ object LeanParser {
         (head +: prev, residue)
     }
 
-  def getNextVarName(vecs: Vector[Term]) = {
+  @annotation.tailrec
+  def shiftedName(n: Int, lastName: String = "'") : String =
+    if (n ==0) lastName
+    else shiftedName(n - 1, prefixedNextName(lastName))
+
+  def getNextVarName(vecs: Vector[Term], n: Int) = {
     val lastName = vecs.headOption
       .collect { case sym: Symbolic => sym.name.toString }
-      .getOrElse("'")
+      .getOrElse(shiftedName(n))
     prefixedNextName(lastName)
   }
 
@@ -202,7 +207,7 @@ class LeanParser(mods: Vector[Modification]) {
           for {
             domTerm <- parse(domain.ty, vars)
             domTyp  <- Task.eval(toTyp(domTerm))
-            x = getNextVarName(vars) :: domTyp
+            x = getNextVarName(vars, maxIndex(body)) :: domTyp
             value <- parse(body, x +: vars)
           } yield
             value match {
@@ -221,7 +226,7 @@ class LeanParser(mods: Vector[Modification]) {
           for {
             domTerm <- parse(domain.ty, vars)
             domTyp  <- Task.eval(toTyp(domTerm))
-            x = getNextVarName(vars) :: domTyp
+            x = getNextVarName(vars, maxIndex(body)) :: domTyp
             value <- parse(body, x +: vars)
             cod   <- Task.eval(toTyp(value))
           } yield
@@ -232,7 +237,7 @@ class LeanParser(mods: Vector[Modification]) {
           for {
             domTerm <- parse(domain.ty, vars)
             domTyp  <- Task.eval(toTyp(domTerm))
-            x = getNextVarName(vars) :: domTyp
+            x = getNextVarName(vars, maxIndex(body)) :: domTyp
             valueTerm <- parse(value, vars)
             bodyTerm  <- parse(body, x +: vars)
           } yield (bodyTerm.replace(x, valueTerm))
