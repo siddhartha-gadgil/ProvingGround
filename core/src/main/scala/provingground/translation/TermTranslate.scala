@@ -188,37 +188,37 @@ object CodeGen{
 
   import induction._
 
-  def gen(
-      inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
-      indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
-        (_) => None) =
-          base || indRecFunc >>> {
+  def gen(indNames: Vector[(Term, String)]) =
+          {
+            def prefix(s: String) = indNames.find(_._1 == s).map(_._2).getOrElse(s)
+            base || indRecFunc >>> {
             case (index, (dom, (codom, defnData))) =>
               defnData.foldLeft(
-                s"rec($dom${index.mkString("(", ")(", ")")})($codom)") {
+                s"${prefix(dom)}${index.mkString("(", ")(", ")")}.rec($codom)") {
                 case (head, d) => s"$head($d)"
               }
           } ||
           recFunc >>> {
             case (dom, (codom, defnData)) =>
-              defnData.foldLeft(s"rec($dom)($codom)") {
+              defnData.foldLeft(s"${prefix(dom)}.rec($codom)") {
                 case (head, d) => s"$head($d)"
               }
           } ||
           indInducFunc >>> {
             case (index, (dom, (depcodom, defnData))) =>
-              val h = s"induc($dom${index.mkString("(", ")(", ")")})($depcodom)"
+              val h = s"${prefix(dom)}${index.mkString("(", ")(", ")")}.induc($depcodom)"
               defnData.foldLeft(h) {
                 case (head, d) => s"$head($d)"
               }
           } ||
           inducFunc >>> {
             case (dom, (depcodom, defnData)) =>
-              val h = s"induc($dom)($depcodom)"
+              val h = s"${prefix(dom)}.induc($depcodom)"
               defnData.foldLeft(h) {
                 case (head, d) => s"$head($d)"
               }
             }
+      }
 
 }
 
