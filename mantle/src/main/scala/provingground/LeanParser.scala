@@ -80,6 +80,29 @@ object LeanParser {
   def apply(filename: String) : LeanParser =
     new LeanParser(LeanInterface.getMods(filename))
 
+    def applyFuncOptFold(ft: Task[Option[Term]],
+                            v: Vector[Option[Term]]): Task[Option[Term]] =
+      v match {
+        case Vector() => ft
+        case xo +: ys =>
+          applyFuncOptFold(ft.map(
+                                (fo) => fo.flatMap(
+                                  (f) =>
+                                    xo.flatMap((x) => applyFuncOpt(f, x)))
+                              ),
+                              ys)
+      }
+
+    def applyFuncFold(ft: Task[Term], v: Vector[Term]): Task[Term] =
+      v match {
+        case Vector() => ft
+        case x +: ys =>
+          applyFuncFold(ft.map(
+                             (f) => fold(f)(x)
+                           ),
+                           ys)
+      }
+
 }
 
 class LeanParser(mods: Vector[Modification]) {
@@ -87,9 +110,9 @@ class LeanParser(mods: Vector[Modification]) {
   import LeanToTermMonix.{
     RecIterAp,
     getRec,
-    applyFuncWit,
-    applyFuncWitFold,
-    applyFuncOptWitFold,
+    // applyFuncWit,
+    // applyFuncWitFold,
+    // applyFuncOptWitFold,
     isPropnFn,
     parseWork
   }
@@ -124,7 +147,8 @@ class LeanParser(mods: Vector[Modification]) {
       argsFmlyTerm <- parseVec(argsFmly, vars)
       recFnT = getRec(indMod, argsFmlyTerm)
       vec <- parseVec(xs, vars)
-      res <- applyFuncWitFold(recFnT, vec)
+      recFn <- recFnT
+      res = fold(recFn)(vec: _*)
     } yield res
 
   def recAppSkips(name: Name,
@@ -147,17 +171,18 @@ class LeanParser(mods: Vector[Modification]) {
         indicesVec            = recDataExpr.map(LeanInterface.varsUsed)
         resOptTask: Task[Option[Term]] = for { // Task
           recData <- parseVec(recDataExpr, vars)
-          withRecDataTask = applyFuncWitFold(recFnT, recData)
+          recFn <- recFnT
+          withRecDataTask = Task(fold(recFn)(recData: _*))
           optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
             case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices)
           })
           optParsedAll <- optParsedAllTask
-          withRecArgsOptTask = applyFuncOptWitFold(withRecDataTask.map(Some(_)),
+          withRecArgsOptTask = applyFuncOptFold(withRecDataTask.map(Some(_)),
                                                    optParsedAll.flatten)
           withRecArgsOpt <- withRecArgsOptTask
           residueTerms   <- parseVec(residue, vars)
           foldOpt = withRecArgsOpt.map((f) =>
-            applyFuncWitFold(Task.pure(f), residueTerms))
+            applyFuncFold(Task.pure(f), residueTerms))
           fold <- Task.sequence(foldOpt.toVector)
         } yield fold.headOption
       } yield resOptTask // Option
@@ -199,7 +224,7 @@ class LeanParser(mods: Vector[Modification]) {
           for {
             func <- parse(f, vars)
             arg  <- parse(a, vars)
-            res = applyFuncWit(func, arg)
+            res = fold(func)(arg)
             // _ = pprint.log(s"got result for $f($a)")
           } yield res
         case Lam(domain, body) =>
