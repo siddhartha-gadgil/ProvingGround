@@ -1,34 +1,53 @@
 ```scala
-@ val af = fail.apl.get._1
-af: trepplein.Expr = App(
-  App(
-    App(App(Const(Str(Str(, "monoid"), "mk"), Vector(Param(Str(, "u")))), Var(8)), Var(6)),
-    Var(5)
-  ),
-  Var(4)
-)
+@ failap.func
+res10: Term =
+  induc_{
+    eq(nat)(nat.succ('u))(nat.succ('v)) ;
+    ($mfii : nat) ↦
+      (_ : eq(nat)(nat.succ('u))($mfii)) ↦
+        (eq(nat)(nat.succ('u))($mfii) →
+          induc_{
+             nat ; ($knzw : nat) ↦ 𝒰  
+           }(false)(
+             ('u : nat) ↦
+              ('k : 𝒰 ) ↦
+                ((eq(nat)('u)('u) → false) → false)
+              )($mfii))
+            }(
+              (_ : eq(nat)(nat.succ('u))(nat.succ('u))) ↦
+                induc_{
+                   nat ; ($knzw : nat) ↦
+                    induc_{ nat ; ($knzw : nat) ↦ 𝒰  }(
+                      induc_{ nat ; ($knzw : nat) ↦ 𝒰  }(
+                        (false → false)
+                      )(
+                        ('j : nat) ↦ ('k : 𝒰 ) ↦ false
+                      )($knzw))(
+                        ('j : nat) ↦
+                          ('k : 𝒰 ) ↦
+                            induc_{
+                               nat ; ($knzw : nat) ↦ 𝒰  
+                             }(false)(
+                               ('j : nat) ↦
+                                ('k : 𝒰 ) ↦
+                                  ((eq(nat)('j)('j) → false) → false)
+                                )($knzw))($knzw) }((_ : false) ↦ _)(
+                                  ('j : nat) ↦
+                                    ('k : induc_{
+                                      nat ; ($knzw : nat) ↦ 𝒰  
+                                    }(induc_{
+                                       nat ; ($knzw : nat) ↦ 𝒰  
+                                     }((false → false))(('j : nat) ↦ ('k : 𝒰 ) ↦ false)('j))(
+                                       ('j : nat) ↦
+                                        ('k : 𝒰 ) ↦ induc_{
+                                          nat ; ($knzw : nat) ↦ 𝒰  }(false)(
+                                            ('j : nat) ↦
+                                              ('k : 𝒰 ) ↦
+                                                ((eq(nat)('j)('j) → false) → false)
+                                              )('j))('j)) ↦ (_b : (eq(nat)('j)('j) → false)) ↦ _)(nat.succ('u)))(_)(_)
 
-@ val af = fail.apl.get._3.func
-af: Term = monoid.mk('a)('c)('d)('e)
 
-@ val af = fail.apl.get._3.arg
-af: Term = 'f
+@ failap.func.typ
+res11: Typ[U] = ((eq(nat)('v)('v) → false) → false)
 
-@ val af = fail.apl.get._3.argType
-af: Typ[U] = ∏('f : 'a){ eq('a)('c('e)('f))('f) }
-
-@ val af = fail.apl.get._3.domOpt.get
-af: Typ[u] = ∏('e : 'a){ eq('a)('c('e)('e))('e) }
-
-@ parser.get("monoid.mk").value
-res13: Option[scala.util.Try[Term]] = Some(Success(monoid.mk))
-
-@ val mmk = parser.get("monoid.mk").value.get.get  
-mmk: Term = monoid.mk
-
-@ mmk.typ
-res15: Typ[U] = ∏('a : 𝒰 )
-{ ∏('b : ('a → ('a → 'a))){ ∏('c : ∏('c : 'a){ ∏('d : 'a){ ∏('e : 'a){ eq('a)('b('b('c)('d))('e))('b('c)('b('d)('e))) } } }
-){ ∏('d : 'a){
-   (∏('e : 'a){ eq('a)('b('d)('e))('e) } → (∏('f : 'a){ eq('a)('b('f)('d))('f) } → monoid('a))) } } } }
 ```

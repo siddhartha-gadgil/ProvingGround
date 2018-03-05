@@ -24,7 +24,7 @@ object LeanToTermMonix {
 
   def proofLift: (Term, Term) => Task[Term] = {
     case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
-      Task.pure(LambdaFixed(pt.variable, pt.value))
+      Task.pure(lmbda(pt.variable)(pt.value))
     case (w: Typ[u], tp: Typ[v]) => Task.eval { (w.Var) :-> tp }
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
@@ -184,7 +184,7 @@ object LeanToTermMonix {
               } else (indNew.recE(tp))
           }
         case pt: PiDefn[u, v] if ind.isPropn && pt.domain == indNew.typ =>
-          indNew.inducE(LambdaFixed(pt.variable, pt.value))
+          indNew.inducE(lmbda(pt.variable: Term)(pt.value))
         case tp: Typ[u] if (ind.isPropn) =>
           val x = tp.Var
           if (tp.dependsOn(x)) {
@@ -365,8 +365,9 @@ object LeanToTermMonix {
               fn -> ltm2
             case y if domain.prettyName.toString == "_" => y -> ltm2
             case _ =>
-              if (value.typ.dependsOn(x)) (LambdaTerm(x, value), ltm2)
-              else (LambdaFixed(x, value), ltm2)
+              (lambda(x)(value), ltm2)
+              // if (value.typ.dependsOn(x)) (LambdaTerm(x, value), ltm2)
+              // else (LambdaFixed(x, value), ltm2)
           }
       case Pi(domain, body) =>
         // pprint.log(s"pi $domain, $body")
@@ -633,8 +634,9 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
             case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) => fn
             case y if domain.prettyName.toString == "_"            => y
             case _ =>
-              if (value.typ.dependsOn(x)) LambdaTerm(x, value)
-              else LambdaFixed(x, value)
+              lambda(x)(value)
+              // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+              // else LambdaFixed(x, value)
           }
       case Pi(domain, body) =>
         for {

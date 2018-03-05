@@ -40,10 +40,14 @@ object LeanParser {
     else shiftedName(n - 1, prefixedNextName(lastName))
 
   def getNextVarName(vecs: Vector[Term], n: Int) = {
-    val lastName = vecs.headOption
+    val cleanVecs = vecs.filterNot(isWitness)
+    val lastName =
+      cleanVecs.headOption
       .collect { case sym: Symbolic => sym.name.toString }
       .getOrElse(shiftedName(n))
-    prefixedNextName(lastName)
+    val newName = prefixedNextName(lastName)
+    if (vecs.headOption.map(isWitness) == Some(true)) pprint.log(s"$vecs\n$cleanVecs\n$lastName; $newName")
+    newName
   }
 
   import upickle.default._, upickle.Js
@@ -110,9 +114,6 @@ class LeanParser(mods: Vector[Modification]) {
   import LeanToTermMonix.{
     RecIterAp,
     getRec,
-    // applyFuncWit,
-    // applyFuncWitFold,
-    // applyFuncOptWitFold,
     isPropnFn,
     parseWork
   }
@@ -146,7 +147,9 @@ class LeanParser(mods: Vector[Modification]) {
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
       argsFmlyTerm <- parseVec(argsFmly, vars)
       recFnT = getRec(indMod, argsFmlyTerm)
+      _ = pprint.log(s"$vars")
       vec <- parseVec(xs, vars)
+      _  = pprint.log(s"${vec.map(_.fansi)}")
       recFn <- recFnT
       res = fold(recFn)(vec: _*)
     } yield res
@@ -216,7 +219,8 @@ class LeanParser(mods: Vector[Modification]) {
         case Sort(_)          => Task.pure(Type)
         case Var(n)           => Task.pure(vars(n))
         case RecIterAp(name, args) =>
-          // pprint.log(s"Seeking RecIterAp $name, $args")
+          pprint.log(s"Seeking RecIterAp $name, $args, $vars")
+          pprint.log(s"${vars.headOption.map(isWitness)}")
           recApp(name, args, exp, vars)
 
         case App(f, a) =>
@@ -240,11 +244,9 @@ class LeanParser(mods: Vector[Modification]) {
                 fn
               case y if domain.prettyName.toString == "_" => y
               case _                                      =>
-                // if (!LeanInterface.usesVar(body, 0))
-                //   LambdaFixed("_" :: domTyp, value)
-                // else
-                if (value.typ.dependsOn(x)) LambdaTerm(x, value)
-                else LambdaFixed(x, value)
+                // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+                // else LambdaFixed(x, value)
+                lambda(x)(value)
             }
         case Pi(domain, body) =>
           // pprint.log(s"pi $domain, $body")
@@ -436,9 +438,11 @@ class LeanParser(mods: Vector[Modification]) {
     case Var(_) => 0
     case App(f, x) => max(maxIndex(f), maxIndex(x))
     case LocalConst(_, _) => 0
-    case Lam(domain, body) => max(maxIndex(domain.ty), maxIndex(body) + 1)
-    case Pi(domain, body) => max(maxIndex(domain.ty), maxIndex(body) + 1)
+    case Lam(domain, body) => max(maxIndex(domain.ty) + 1, maxIndex(body) + 1)
+    case Pi(domain, body) => max(maxIndex(domain.ty) + 1, maxIndex(body) + 1)
     case Let(domain, value, body) => Vector(maxIndex(domain.ty), maxIndex(value), maxIndex(body) + 1).max
+    case Const(name @ Name.Str(prefix, "rec"), _) =>
+      findRecChildren(name).map((v) => v.map(maxIndex).max * 2 + 1).getOrElse(throw new Exception(s"could not find name $name"))
     case Const(name, _) =>
       findChildren(name).map((v) => v.map(maxIndex).max).getOrElse(throw new Exception(s"could not find name $name"))
   }

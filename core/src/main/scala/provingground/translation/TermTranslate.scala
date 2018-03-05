@@ -51,27 +51,27 @@ object FansiTranslate {
       indRecFunc >>> {
         case (index, (dom, (codom, defnData))) =>
           defnData.foldLeft(
-            s"rec($dom${index.mkString("(", ")(", ")")})($codom)") {
+            s"rec_{ $dom ; $codom }") {
             case (head, d) => s"$head($d)"
           }
       } ||
       recFunc >>> {
         case (dom, (codom, defnData)) =>
-          defnData.foldLeft(s"rec($dom)($codom)") {
+          defnData.foldLeft(s"rec_{ $dom ; $codom }") {
             case (head, d) => s"$head($d)"
           }
       } ||
       indInducFunc >>> {
         case (index, (dom, (depcodom, defnData))) =>
           val h =
-            Str(s"induc($dom${index.mkString("(", ")(", ")")})($depcodom)")
+            Str(s"induc_{ $dom ; $depcodom }")
           defnData.foldLeft(h) {
             case (head, d) => s"$head($d)"
           }
       } ||
       inducFunc >>> {
         case (dom, (depcodom, defnData)) =>
-          val h = Str(s"induc($dom)($depcodom)")
+          val h = Str(s"induc_{ $dom ; $depcodom }")
           defnData.foldLeft(h) {
             case (head, d) => s"$head($d)"
           }
