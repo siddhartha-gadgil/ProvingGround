@@ -111,6 +111,18 @@ class InductionSpecTL extends FlatSpec {
     assert(ack(three)(one) == add(seven)(six))
   }
 
+  "Fibonacci numbers" should "be defined fine avoiding name clashes" in {
+    val m1 = "m1" :: Nat
+    val m2 = "m2" :: Nat
+
+    val recNNNN = NatInd.rec(Nat ->: Nat ->: Nat)
+    val fibn = "fib_aux(n,_,_)" :: Nat ->: Nat ->: Nat
+    val fib_aux = recNNNN(m1 :-> (m2 :-> m1))(n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(add(m1)(m2)) ))))
+    val fib = n :-> fib_aux(n)(zero)(one)
+
+    assert(fib(six) == eight)
+  }
+
   // Example: Lists
 
   val A  = "A" :: Type
