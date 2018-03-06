@@ -161,19 +161,29 @@ object HoTT {
   /**
     * returns x after modifying to avoid clashes of variables
     */
-  def avoidVars[U <: Term with Subs[U]](t: Term, x: U): U = x match {
+  def avoidVar[U <: Term with Subs[U]](t: Term, x: U): U = x match {
     case ll: LambdaFixed[u, v] =>
       if (t.dependsOn(ll.variable)) {
         val newvar = ll.variable.newobj
-        LambdaFixed(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar)))
+        LambdaFixed(newvar, avoidVar(t, ll.value.replace(ll.variable, newvar)))
           .asInstanceOf[U]
-      } else LambdaFixed(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
+      } else LambdaFixed(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
     case ll: LambdaLike[u, v] =>
       if (t.dependsOn(ll.variable)) {
         val newvar = ll.variable.newobj
-        LambdaTerm(newvar, avoidVars(t, ll.value.replace(ll.variable, newvar)))
+        LambdaTerm(newvar, avoidVar(t, ll.value.replace(ll.variable, newvar)))
           .asInstanceOf[U]
-      } else LambdaTerm(ll.variable, avoidVars(t, ll.value)).asInstanceOf[U]
+      } else LambdaTerm(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
+    case FormalAppln(func, arg) =>
+      applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
+    case fn: RecFunc[u, v] =>
+      val replacements =
+        fn.defnData.map{(d) => (d, avoidVar(t, d))}.filter{case (a, b) => a != b}
+        replacements.foldLeft[U](x){case (a, (b, c)) => a.replace(b, c)}
+    case fn: InducFuncLike[u, v] =>
+      val replacements =
+        fn.defnData.map{(d) => (d, avoidVar(t, d))}.filter{case (a, b) => a != b}
+        replacements.foldLeft[U](x){case (a, (b, c)) => a.replace(b, c)}
     case _ => x
   }
 
@@ -1521,10 +1531,10 @@ object HoTT {
         // assert(newvar != variable && arg.indepOf(newvar))
         // println(s"escaped variable $variable in $arg")
         val result =
-          avoidVars(arg, value).replace(variable, newvar).replace(newvar, arg)
+          avoidVar(arg, value).replace(variable, newvar).replace(newvar, arg)
         // if (result != value.replace(variable, arg)) println("Escaping needed")
         result
-      } else avoidVars(arg, value).replace(variable, arg)
+      } else avoidVar(arg, value).replace(variable, arg)
 
     override lazy val hashCode = {
       val newvar = variable.typ.symbObj(Name("hash"))
@@ -1541,11 +1551,11 @@ object HoTT {
 
     def subs(x: Term, y: Term): LambdaLike[X, Y] =
       if (variable.replace(x, y) == variable)
-        LambdaTerm(variable, avoidVars(x, value).replace(x, y))
+        LambdaTerm(variable, avoidVar(x, value).replace(x, y))
       else {
         val newvar = variable.replace(x, y)
         LambdaTerm(newvar,
-                   avoidVars(x, value).replace(variable, newvar).replace(x, y))
+                   avoidVar(x, value).replace(variable, newvar).replace(x, y))
       }
 
     //    private lazy val myv = variable.newobj
@@ -1645,11 +1655,11 @@ object HoTT {
 
     override def subs(x: Term, y: Term): LambdaFixed[X, Y] =
       if (variable.replace(x, y) == variable)
-        LambdaFixed(variable, avoidVars(x, value).replace(x, y))
+        LambdaFixed(variable, avoidVar(x, value).replace(x, y))
       else {
         val newvar = variable.newobj
         LambdaFixed(newvar.replace(x, y),
-                    avoidVars(x, value).replace(variable, newvar).replace(x, y))
+                    avoidVar(x, value).replace(variable, newvar).replace(x, y))
       }
   }
 
