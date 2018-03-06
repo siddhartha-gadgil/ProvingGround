@@ -1518,11 +1518,8 @@ object HoTT {
     def act(arg: X) =
       if (usesVar(arg)) {
         val newvar = variable.newobj
-        // assert(newvar != variable && arg.indepOf(newvar))
-        // println(s"escaped variable $variable in $arg")
         val result =
           avoidVars(arg, value).replace(variable, newvar).replace(newvar, arg)
-        // if (result != value.replace(variable, arg)) println("Escaping needed")
         result
       } else avoidVars(arg, value).replace(variable, arg)
 
@@ -1540,12 +1537,16 @@ object HoTT {
     }
 
     def subs(x: Term, y: Term): LambdaLike[X, Y] =
+      {
+        val xx = avoidVars(variable, x)
+        val yy = avoidVars(variable, y)
       if (variable.replace(x, y) == variable)
-        LambdaTerm(variable, avoidVars(x, value).replace(x, y))
+        LambdaTerm(variable, value.replace(xx, yy))
       else {
         val newvar = variable.replace(x, y)
         LambdaTerm(newvar,
-                   avoidVars(x, value).replace(variable, newvar).replace(x, y))
+                   value.replace(variable, newvar).replace(xx, yy))
+                 }
       }
 
     //    private lazy val myv = variable.newobj
@@ -1643,14 +1644,17 @@ object HoTT {
       LambdaFixed(newvar, value.replace(variable, newvar))
     }
 
-    override def subs(x: Term, y: Term): LambdaFixed[X, Y] =
+    override def subs(x: Term, y: Term): LambdaFixed[X, Y] ={
+      val xx = avoidVars(variable, x)
+      val yy = avoidVars(variable, y)
       if (variable.replace(x, y) == variable)
-        LambdaFixed(variable, avoidVars(x, value).replace(x, y))
+        LambdaFixed(variable, value.replace(xx, yy))
       else {
         val newvar = variable.newobj
-        LambdaFixed(newvar.replace(x, y),
-                    avoidVars(x, value).replace(variable, newvar).replace(x, y))
+        LambdaFixed(newvar.replace(xx, yy),
+                    value.replace(variable, newvar).replace(xx, yy))
       }
+    }
   }
 
   case class LambdaTypedFixed[X <: Term with Subs[X], Y <: Term with Subs[Y]](
