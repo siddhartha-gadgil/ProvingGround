@@ -179,12 +179,12 @@ object HoTT {
       applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
     case fn: RecFunc[u, v] =>
       val replacements =
-        fn.defnData.map{(d) => (d, avoidVar(t, d))}.filter{case (a, b) => a != b}
-        replacements.foldLeft[U](x){case (a, (b, c)) => a.replace(b, c)}
+        fn.defnData.map{(d) => avoidVar(t, d)}
+      fn.fromData(replacements).asInstanceOf[U]
     case fn: InducFuncLike[u, v] =>
-      val replacements =
-        fn.defnData.map{(d) => (d, avoidVar(t, d))}.filter{case (a, b) => a != b}
-        replacements.foldLeft[U](x){case (a, (b, c)) => a.replace(b, c)}
+    val replacements =
+      fn.defnData.map{(d) => avoidVar(t, d)}
+      fn.fromData(replacements).asInstanceOf[U]
     case _ => x
   }
 
@@ -597,6 +597,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
+      def fromData(data: Vector[Term]) = RecFn(codom, data.head.asInstanceOf[U])
+
       val typ = dom ->: codom
 
       def newobj =
@@ -623,6 +625,8 @@ object HoTT {
       val dom = Unit
 
       val defnData = Vector(data)
+
+      def fromData(data: Vector[Term]) = InducFn(depcodom, data.head.asInstanceOf[U])
 
       val typ = PiDefn(depcodom)
 
@@ -813,6 +817,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
+      def fromData(data: Vector[Term]) = RecFn(codom, data.head.asInstanceOf[Func[U, Func[V, W]]])
+
       lazy val typ = dom ->: codom
 
       def newobj =
@@ -850,6 +856,8 @@ object HoTT {
       lazy val dom = prod
 
       val defnData = Vector(data)
+
+      def fromData(data: Vector[Term]) = InducFn(targetFmly, data.head.asInstanceOf[FuncLike[U, FuncLike[V, W]]])
 
       val xy = prod.Var
 
@@ -1066,6 +1074,8 @@ object HoTT {
       * the definition data for all the introduction rules
       */
     val defnData: Vector[Term]
+
+    def fromData(data: Vector[Term]) : InducFuncLike[W, U]
 
     override def usesVar(t: Term) = defnData.exists(_.usesVar(t))
 
@@ -1289,6 +1299,8 @@ object HoTT {
       * definition data for all introduction  rules.
       */
     val defnData: Vector[Term]
+
+    def fromData(data: Vector[Term]) : RecFunc[W, U]
 
     override def usesVar(t: Term) = defnData.exists(_.usesVar(t))
 
@@ -2274,6 +2286,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
+      def fromData(data: Vector[Term]) = RecFn(codom, data.head.asInstanceOf[FuncLike[W, Func[U, V]]])
+
       def newobj =
         throw new IllegalArgumentException(
           s"trying to use the constant $this as a variable (or a component of one)")
@@ -2308,6 +2322,8 @@ object HoTT {
       lazy val dom = prod
 
       val defnData = Vector(data)
+
+      def fromData(data: Vector[Term]) = InducFn(targetFmly, data.head.asInstanceOf[FuncLike[W, FuncLike[U, V]]])
 
       val xy: AbsPair[W, U] = prod.Var
 
@@ -2527,6 +2543,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
+      def fromData(data: Vector[Term]) =RecFn(domain, target, data.head.asInstanceOf[Func[U, V]], start, end)
+
       lazy val typ = dom ->: codom
 
       def newobj =
@@ -2576,6 +2594,8 @@ object HoTT {
           s"trying to use the constant $this as a variable (or a component of one)")
 
       val defnData = Vector(data)
+
+      def fromData(data: Vector[Term]) = InducFn(domain, targetFmly, data.head.asInstanceOf[FuncLike[U, V]], start, end)
 
       lazy val domW = {
         val x = domain.Var
@@ -2750,6 +2770,9 @@ object HoTT {
         extends RecFunc[Term, W] {
       val defnData = Vector(firstCase, secondCase)
 
+      def fromData(data: Vector[Term]) =
+        RecFn(first, second, codom, data(0).asInstanceOf[Func[U, W]], data(1).asInstanceOf[Func[V, W]])
+
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == (first || second) =>
           firstCase(y.asInstanceOf[U])
@@ -2820,6 +2843,9 @@ object HoTT {
                                                secondCase: FuncLike[V, W])
         extends InducFuncLike[Term, W] {
       val defnData = Vector(firstCase, secondCase)
+
+      def fromData(data: Vector[Term]) =
+        InducFn(depcodom, firstCase.asInstanceOf[FuncLike[U, W]], secondCase.asInstanceOf[FuncLike[V, W]])
 
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == plustyp =>

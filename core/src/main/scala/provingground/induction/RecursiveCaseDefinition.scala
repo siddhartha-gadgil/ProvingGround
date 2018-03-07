@@ -13,6 +13,8 @@ import provingground._, HoTT._
 trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends RecFunc[H, C] { self =>
 
+  def fromData(data: Vector[Term]) : RecursiveDefinition[H, C]
+
   /**
     * the optional recursive definition if a case is matched
     */
@@ -52,6 +54,8 @@ object RecursiveDefinition {
       extends RecursiveDefinition[H, C] {
     val defnData = Vector()
 
+    def fromData(data: Vector[Term]) = this
+
     val typ = dom ->: codom
 
     def subs(x: Term, y: Term) = Empty(dom.replace(x, y), codom.replace(x, y))
@@ -89,6 +93,9 @@ object RecursiveDefinition {
     val typ = dom ->: codom
 
     val defnData = data +: tail.defnData
+
+    def fromData(data: Vector[Term]) =
+      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
 
     def dataSubs(that: RecursiveDefinition[H, C],
                  x: Term,
@@ -143,6 +150,8 @@ abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
 
   val defnData: Vector[Term]
 
+  def fromData(data: Vector[Term]) : IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+
   def caseFn(f: => IF)(arg: H): Option[C]
 
   case class Funcs(ind: Index) extends IndRecFunc[H, C, F] { fself =>
@@ -155,6 +164,8 @@ abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
     val codom = X
 
     val defnData = self.defnData
+
+    def fromData(data: Vector[Term]) = self.fromData(data).Funcs(ind)
 
     val typ = dom ->: codom
 
@@ -203,6 +214,8 @@ object IndexedRecursiveDefinition {
 
     val defnData = Vector()
 
+    def fromData(data: Vector[Term]) = this
+
     def caseFn(f: => IF)(arg: H): Option[C] = None
 
     def subs(x: Term, y: Term) =
@@ -232,6 +245,9 @@ object IndexedRecursiveDefinition {
     val family = tail.family
 
     val defnData = data +: tail.defnData
+
+    def fromData(data: Vector[Term]) =
+      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
 
     val W = tail.W
 

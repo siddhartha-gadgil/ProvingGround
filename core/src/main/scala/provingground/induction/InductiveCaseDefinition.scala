@@ -12,6 +12,8 @@ trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends InducFuncLike[H, C] { self =>
   val fibre: Func[H, Typ[C]]
 
+  def fromData(data: Vector[Term]) : InductiveDefinition[H, C]
+
   def dataSubs(that: InductiveDefinition[H, C],
                x: Term,
                y: Term): InductiveDefinition[H, C]
@@ -36,6 +38,8 @@ object InductiveDefinition {
     val typ = PiDefn(fibre)
 
     val defnData = Vector()
+
+    def fromData(data: Vector[Term]) = this
 
     def dataSubs(that: InductiveDefinition[H, C],
                  x: Term,
@@ -74,6 +78,9 @@ object InductiveDefinition {
     val depcodom = tail.depcodom
 
     val defnData = data +: tail.defnData
+
+    def fromData(data: Vector[Term]) =
+      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
 
     def dataSubs(that: InductiveDefinition[H, C],
                  x: Term,
@@ -117,6 +124,8 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
   val defnData: Vector[Term]
 
+  def fromData(data: Vector[Term]) : IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+
   val W: F
 
   val Xs: IDFT
@@ -133,6 +142,8 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
     val index = ind.terms
 
     val defnData = self.defnData
+
+    def fromData(data: Vector[Term]) = self.fromData(data).Funcs(ind)
 
     val fibre = family.typRestrict(Xs, ind)
 
@@ -184,6 +195,8 @@ object IndexedInductiveDefinition {
 
     val defnData = Vector()
 
+    def fromData(data: Vector[Term]) = this
+
     def caseFn(f: => IDF)(arg: H): Option[C] = None
 
     def subs(x: Term, y: Term) =
@@ -215,6 +228,9 @@ object IndexedInductiveDefinition {
     val W = tail.W
 
     val defnData = data +: tail.defnData
+
+    def fromData(data: Vector[Term]) =
+      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
 
     val Xs = tail.Xs
 
