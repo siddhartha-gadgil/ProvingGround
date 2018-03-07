@@ -153,6 +153,71 @@ object TeXTranslate {
 
 }
 
+case class CodeGen(indNames: Vector[(Term, String)] = Vector()){codegen =>
+  import CodeGen._
+
+  import TermPatterns._
+
+  def apply(t: Term) = termToCode(t)
+
+  val termToCode : Term => Option[String] =
+          {
+            def indNamesCoded = indNames.map{case (t, name) => (termToCode(t), name)}
+            def prefix(s: String) = indNamesCoded.find(_._1 == Some(s)).map(_._2).orElse(indName(s)).getOrElse(s)
+            base || indRecFunc >>> {
+            case (index, (dom, (codom, defnData))) =>
+              defnData.foldLeft(
+                s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.rec($codom); rxyz})") {
+                case (head, d) => s"$head($d)"
+              }
+          } ||
+          recFunc >>> {
+            case (dom, (codom, defnData)) =>
+              defnData.foldLeft(s"({val rxyz = ${prefix(dom)}.rec($codom); rxyz})") {
+                case (head, d) => s"$head($d)"
+              }
+          } ||
+          indInducFunc >>> {
+            case (index, (dom, (depcodom, defnData))) =>
+              val h = s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.induc($depcodom); rxyz})"
+              defnData.foldLeft(h) {
+                case (head, d) => s"$head($d)"
+              }
+          } ||
+          inducFunc >>> {
+            case (dom, (depcodom, defnData)) =>
+              val h = s"({val rxyz = ${prefix(dom)}.induc($depcodom); rxyz})"
+              defnData.foldLeft(h) {
+                case (head, d) => s"$head($d)"
+              }
+            }
+      }
+
+      import induction._
+
+      def iterFunc[O <: Term with Subs[O], F <: Term with Subs[F]](s: IterFuncShape[O, F]): Option[String] ={
+        import IterFuncShape._
+        s match {
+          case _ : IdIterShape[u] => Some("IterFuncShape.IdIterShape()")
+          case fs: FuncShape[u, v, w] =>
+            for {
+              tail <- codegen(fs.tail)
+              head <- iterFunc(fs.head)
+            } yield s"IterFuncShape.FuncShape($tail, $head)"
+        case fs: DepFuncShape[u, v, w] =>
+          for {
+            tail <- codegen(fs.tail)
+            x = fs.tail.Var
+            xv <- codegen(x)
+            headfibreVal <- iterFunc(fs.headfibre(x))
+          } yield s"IterFuncShape.DepFuncShape($tail, ($xv) => $headfibreVal)"
+
+
+        }
+      }
+
+}
+
 object CodeGen{
   import TermPatterns._
 
@@ -186,40 +251,11 @@ object CodeGen{
       case (first, scnd) => s"""PlusTyp($first, $scnd)"""
   }
 
-  import induction._
+  def getName(s: String) =
+    """"[^"]+"""".r.findFirstIn(s).map(_.dropRight(1).drop(1))
 
-  def gen(indNames: Vector[(Term, String)]) : Term => Option[String] =
-          {
-            def indNamesCoded = indNames.map{case (t, name) => (gen(indNames)(t), name)}
-            def prefix(s: String) = indNamesCoded.find(_._1 == Some(s)).map(_._2).getOrElse(s)
-            base || indRecFunc >>> {
-            case (index, (dom, (codom, defnData))) =>
-              defnData.foldLeft(
-                s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.rec($codom); rxyz})") {
-                case (head, d) => s"$head($d)"
-              }
-          } ||
-          recFunc >>> {
-            case (dom, (codom, defnData)) =>
-              defnData.foldLeft(s"({val rxyz = ${prefix(dom)}.rec($codom); rxyz})") {
-                case (head, d) => s"$head($d)"
-              }
-          } ||
-          indInducFunc >>> {
-            case (index, (dom, (depcodom, defnData))) =>
-              val h = s"({val rxyz= ${prefix(dom)}${index.mkString("(", ")(", ")")}.induc($depcodom); rxyz})"
-              defnData.foldLeft(h) {
-                case (head, d) => s"$head($d)"
-              }
-          } ||
-          inducFunc >>> {
-            case (dom, (depcodom, defnData)) =>
-              val h = s"({val rxyz = ${prefix(dom)}.induc($depcodom); rxyz})"
-              defnData.foldLeft(h) {
-                case (head, d) => s"$head($d)"
-              }
-            }
-      }
+  def indName(s: String) = getName(s).map((name) => s"${name}Ind")
+
 
 }
 

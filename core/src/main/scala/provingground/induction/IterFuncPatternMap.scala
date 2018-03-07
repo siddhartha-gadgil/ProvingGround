@@ -422,7 +422,7 @@ object IterFuncShape {
     }
 
     def subs(x: Term, y: Term) =
-      DepFuncShape(tail.replace(x, y), (t: TT) => headfibre(t).subs(x, y))
+      DepFuncShape(tail.replace(x, y), (t) => headfibre(t).subs(x, y))
 
     def mapper[C <: Term with Subs[C]] = {
       IterFuncMapper.depFuncIterMapper(headfibre(tail.Var).mapper)
