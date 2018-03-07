@@ -4,6 +4,7 @@ val n = "n" :: Nat
 val m = "m" :: Nat
 val P = "P" :: Nat ->: Type
 val x = "x" :: P(zero)
+val g = "g" :: (n ~>: P(succ(n)))
 
 val indNP = NatInd.induc(P)
 val natcases =
@@ -11,7 +12,7 @@ val natcases =
     n :~> {
       x :~> {
         g :~> {
-          (indNP(x)(m :~> (("_" :: P(m)  ) :~> (g(m)))))(n)}
+          (indNP(x)(m :~> (("_" :: P(m)  ) :-> (g(m)))))(n)}
         }
       }
     }
@@ -44,3 +45,5 @@ val natnoct =
         }
       }
     }
+
+val bug = natnoct(succ(p))(succ(q))
