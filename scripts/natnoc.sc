@@ -46,4 +46,4 @@ val natnoct =
       }
     }
 
-val bug = natnoct(succ(p))(succ(q))
+val bug = natnoct(A)(succ(p))(succ(q))
