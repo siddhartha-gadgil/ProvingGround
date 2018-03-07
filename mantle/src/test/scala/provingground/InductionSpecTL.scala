@@ -123,6 +123,56 @@ class InductionSpecTL extends FlatSpec {
     assert(fib(six) == eight)
   }
 
+  "No confusion for Nat" should "handle recursive bound-variable escapes" in {
+    val P = "P" :: Nat ->: Type
+    val x = "x" :: P(zero)
+    val g = "g" :: (n ~>: P(succ(n)))
+
+    val indNP = NatInd.induc(P)
+    val natcases =
+      P :~> {
+        n :~> {
+          x :~> {
+            g :~> {
+              (indNP(x)(m :~> (("_" :: P(m)  ) :-> (g(m)))))(n)}
+            }
+          }
+        }
+
+    val A = "A" :: Type
+    val eql = "eq" :: Nat ->: Nat ->: Type
+
+    val k = "k" :: Nat
+    val l = "l" :: Nat
+
+    val p = "p" :: Nat
+    val q = "q" :: Nat
+
+    val natnoct =
+      A :~> {
+        p :~> {
+          q :~> {
+            natcases(("_" :: Nat) :-> (Type: Typ[Term])  )(q){
+              natcases(("_" :: Nat) :-> (Type : Typ[Term]) )(p)(
+                A)(
+                  l :-> (A ->: A))
+            }{k :->
+              {
+              natcases(("_" :: Nat) :-> (Type : Typ[Term]) )(p)(
+                 A
+               )(
+                 l :->  ((eql(k)(l) ->: A) ->: A)  )
+              }
+            }
+            }
+          }
+        }
+
+    val succsucc = natnoct(A)(succ(p))(succ(q))
+
+    assert(succsucc == (eql(q)(p) ->: A) ->: A)
+  }
+
   // Example: Lists
 
   val A  = "A" :: Type
