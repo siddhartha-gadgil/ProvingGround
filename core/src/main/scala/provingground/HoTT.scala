@@ -124,7 +124,8 @@ object HoTT {
       Subs.hook(self.asInstanceOf[U], x, y)
 
       val res =
-        if (isWitness(x)) self.asInstanceOf[U with Subs[U]]
+        if (isWitness(x) || x == y) self.asInstanceOf[U with Subs[U]]
+        else if (self == x) y.asInstanceOf[U with Subs[U]]
         else
           (x, y) match {
             case (ab: AbsPair[u, v], cd: AbsPair[w, x])
@@ -163,13 +164,13 @@ object HoTT {
     */
   def avoidVar[U <: Term with Subs[U]](t: Term, x: U): U = x match {
     case ll: LambdaFixed[u, v] =>
-      if (t.dependsOn(ll.variable)) {
+      if (t == ll.variable) {
         val newvar = ll.variable.newobj
         LambdaFixed(newvar, avoidVar(t, ll.value.replace(ll.variable, newvar)))
           .asInstanceOf[U]
       } else LambdaFixed(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
     case ll: LambdaLike[u, v] =>
-      if (t.dependsOn(ll.variable)) {
+      if (t == ll.variable) {
         val newvar = ll.variable.newobj
         LambdaTerm(newvar, avoidVar(t, ll.value.replace(ll.variable, newvar)))
           .asInstanceOf[U]
@@ -1066,6 +1067,8 @@ object HoTT {
       */
     val defnData: Vector[Term]
 
+    override def usesVar(t: Term) = defnData.exists(_.usesVar(t))
+
     lazy val fullData = (dom, depcodom, defnData)
 
     override def hashCode = fullData.hashCode
@@ -1286,6 +1289,8 @@ object HoTT {
       * definition data for all introduction  rules.
       */
     val defnData: Vector[Term]
+
+    override def usesVar(t: Term) = defnData.exists(_.usesVar(t))
 
     lazy val fullData = (dom, codom, defnData)
 
@@ -2910,6 +2915,11 @@ object HoTT {
 
     def value: Term => Term = {
       case l: LambdaLike[_, _] => l.value
+    }
+
+    def defnData: Term => Vector[Term] = {
+      case rf: RecFunc[u, v] => rf.defnData
+      case rf : InducFuncLike[u, v] => rf.defnData
     }
   }
 
