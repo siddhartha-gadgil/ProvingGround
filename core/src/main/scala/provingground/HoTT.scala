@@ -692,7 +692,7 @@ object HoTT {
   var ignoreLevels = true
 
   /** The (usual) universes */
-  case class Universe(level: Int) extends Univ {
+  case class Universe(level: Int) extends Univ with Subs[Universe]{
     require(level >= 0)
 
     type Obj = Typ[Term]
