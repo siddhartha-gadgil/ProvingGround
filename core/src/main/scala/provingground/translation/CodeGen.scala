@@ -4,6 +4,8 @@ import provingground._, HoTT._
 
 import induction._
 
+import shapeless._
+
 import scala.meta.{Term => MTerm, Type => MType, _}
 
 case class CodeGen(indNames: Map[MTerm, MTerm] = Map()){codegen =>
@@ -74,10 +76,74 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map()){codegen =>
             headfibreVal <- iterFunc(fs.headfibre(x), typ)
           } yield
             q"val x =  $xv ; ${headfibreVal}.piShape($xv, $tail)"
-
-
         }
   }
+
+    def consShape[S <: HList,
+                              H <: Term with Subs[H],
+                              ConstructorType <: Term with Subs[
+                                ConstructorType]](shape : ConstructorShape[S, H, ConstructorType], typ: Typ[H]): Option[MTerm] = {
+                import ConstructorShape._
+                shape match {
+                  case _ : IdShape[H] =>
+                    Some(q"ConstructorShape.IdShape[H]()")
+                  case fc: FuncConsShape[hs, H, hc, f] =>
+                    val tailOpt = iterFunc(fc.tail, typ)
+                    val headOpt = consShape(fc.head, typ)
+                    for {
+                      tailCode <- tailOpt
+                      headCode <- headOpt
+                    } yield q"ConstructorShape.FuncConsShape($tailCode, $headCode)"
+                  case fc: CnstFuncConsShape[hs, H, a, b, c] =>
+                    val tailOpt = onTerm(fc.tail)
+                    val headOpt = consShape(fc.head, typ)
+                    for {
+                      tailCode <- tailOpt
+                      headCode <- headOpt
+                    } yield q"ConstructorShape.CnstFuncConsShape($tailCode, $headCode)"
+                case fc: CnstDepFuncConsShape[hs, H, a, b, c] =>
+                  val tailOpt = onTerm(fc.tail)
+                  val x = fc.tail.Var
+                  val headValOpt = consShape(fc.headfibre(x), typ)
+                  for {
+                    tailCode <- tailOpt
+                    headValCode <- headValOpt
+                    xv <- codegen(x)
+                  } yield q"val x = $xv; x ~>: $headValCode"
+              }
+
+        }
+
+      def consSeqDom[SS <: HList,
+                            H <: Term with Subs[H],
+                            Intros <: HList](seqDom: ConstructorSeqDom[SS, H, Intros], typ: Typ[H]) : Option[MTerm] = {
+              import ConstructorSeqDom._
+              val typOpt = onTerm(typ)
+              seqDom match {
+                case _ : Empty[H] =>
+                  for {
+                    typCode <- typOpt
+                  } yield q"ConstructorSeqDom.Empty.byTyp($typCode)"
+                case cons : Cons[a, b, H, c, d] =>
+                  val name = cons.name.toString
+                  val nameCode = name.parse[MTerm].get
+                  for {
+                    shapeCode <- consShape(cons.pattern, typ)
+                    tailCode <- consSeqDom(cons.tail, typ)
+                  } yield q"ConstructorSeqDom.Cons($nameCode, $shapeCode, $tailCode)"
+              }
+
+        }
+
+    def consSeq[SS <: HList,
+                            H <: Term with Subs[H],
+                            Intros <: HList](seq: ConstructorSeqTL[SS, H, Intros]) : Option[MTerm] = {
+                    for{
+                      typCode <- onTerm(seq.typ)
+                      domCode <- consSeqDom(seq.seqDom, seq.typ)
+                    } yield q"ConstructorSeqTL($domCode, $typCode)"
+        
+      }
 
 }
 

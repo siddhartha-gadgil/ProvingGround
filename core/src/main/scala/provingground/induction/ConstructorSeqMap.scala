@@ -326,6 +326,10 @@ object ConstructorSeqDom {
     def subs(x: Term, y: Term) = this
   }
 
+  object Empty{
+    def byTyp[H<: Term with Subs[H]](typ: Typ[H]) = Empty[H]
+  }
+
   /**
     * prepending an introduction rule, given `name` and `shape`.
     */

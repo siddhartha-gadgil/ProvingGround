@@ -524,7 +524,9 @@ object ConstructorShape {
     def subs(x: Term, y: Term) = this
   }
 
-  object FuncConsShape
+  object IdShape{
+    def byTyp[H<: Term with Subs[H]](typ: Typ[H]) = IdShape[H]
+  }
 
   /**
     * [[ConstructorShape]] corresponding to an introduction rule of the form
@@ -557,7 +559,6 @@ object ConstructorShape {
       FuncConsShape(tail.subs(x, y), head.subs(x, y))
   }
 
-  object CnstFuncConsShape
 
   /**
     * [[ConstructorShape]] corresponding to an introduction rule of the form
@@ -582,7 +583,6 @@ object ConstructorShape {
       CnstFuncConsShape(tail.replace(x, y), head.subs(x, y))
   }
 
-  object CnstDepFuncConsShape
 
   /**
     * [[ConstructorShape]] corresponding to an introduction rule of the form
