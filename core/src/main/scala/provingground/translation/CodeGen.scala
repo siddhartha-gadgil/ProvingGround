@@ -8,7 +8,7 @@ import shapeless._
 
 import scala.meta.{Term => MTerm, Type => MType, _}
 
-case class CodeGen(indNames: Map[MTerm, MTerm] = Map()) { codegen =>
+case class CodeGen(indNames: Map[MTerm, MTerm] = Map(), defns: PartialFunction[Term, MTerm] = Map()) { codegen =>
   import CodeGen._
 
   import TermPatterns._
@@ -18,7 +18,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map()) { codegen =>
   val onTerm: Term => Option[MTerm] = {
     def prefix(s: MTerm): MTerm =
       indNames.get(s).orElse(indName(s)).getOrElse(s.toString.parse[MTerm].get)
-    base || indRecFunc >>> {
+     Translator.Simple(defns.lift) || base || indRecFunc >>> {
       case (index, (dom, (codom, defnData))) =>
         val ind                 = s"${prefix(dom)}".parse[MTerm].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
