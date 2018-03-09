@@ -61,8 +61,12 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map()){codegen =>
 
       def iterFunc[O <: Term with Subs[O], F <: Term with Subs[F]](s: IterFuncShape[O, F], typ: Typ[O]): Option[MTerm] ={
         import IterFuncShape._
+        val typOpt = onTerm(typ)
         s match {
-          case _ : IdIterShape[u] => Some(q"IterFuncShape.IdIterShape.byTyp(typ)")
+          case _ : IdIterShape[u] =>
+            for {
+              typCode <- typOpt
+            } yield q"IterFuncShape.IdIterShape.byTyp($typCode)"
           case fs: FuncShape[u, O, w] =>
             for {
               tail <- codegen(fs.tail)
@@ -84,9 +88,12 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map()){codegen =>
                               ConstructorType <: Term with Subs[
                                 ConstructorType]](shape : ConstructorShape[S, H, ConstructorType], typ: Typ[H]): Option[MTerm] = {
                 import ConstructorShape._
+                val typOpt = onTerm(typ)
                 shape match {
                   case _ : IdShape[H] =>
-                    Some(q"ConstructorShape.IdShape[H]()")
+                    for {
+                      typCode <- typOpt
+                    } yield q"ConstructorShape.IdShape.byTyp($typCode)"
                   case fc: FuncConsShape[hs, H, hc, f] =>
                     val tailOpt = iterFunc(fc.tail, typ)
                     val headOpt = consShape(fc.head, typ)
@@ -125,7 +132,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map()){codegen =>
                     typCode <- typOpt
                   } yield q"ConstructorSeqDom.Empty.byTyp($typCode)"
                 case cons : Cons[a, b, H, c, d] =>
-                  val name = cons.name.toString
+                  val name = s"""HoTT.Name("${cons.name}")"""
                   val nameCode = name.parse[MTerm].get
                   for {
                     shapeCode <- consShape(cons.pattern, typ)
@@ -142,8 +149,13 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map()){codegen =>
                       typCode <- onTerm(seq.typ)
                       domCode <- consSeqDom(seq.seqDom, seq.typ)
                     } yield q"ConstructorSeqTL($domCode, $typCode)"
-        
+
       }
+
+  def fmtConsSeq[SS <: HList,
+                            H <: Term with Subs[H],
+                            Intros <: HList](seq: ConstructorSeqTL[SS, H, Intros]) =
+                              consSeq(seq).map((c) => org.scalafmt.Scalafmt.format(c.toString))
 
 }
 

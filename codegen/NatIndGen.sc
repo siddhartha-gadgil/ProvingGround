@@ -1,0 +1,1 @@
+val NatIndGen = ConstructorSeqTL(ConstructorSeqDom.Cons(HoTT.Name("0"), ConstructorShape.IdShape.byTyp("Nat" :: Type), ConstructorSeqDom.Cons(HoTT.Name("succ"), ConstructorShape.FuncConsShape(IterFuncShape.IdIterShape.byTyp("Nat" :: Type), ConstructorShape.IdShape.byTyp("Nat" :: Type)), ConstructorSeqDom.Empty.byTyp("Nat" :: Type))), "Nat" :: Type)

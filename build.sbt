@@ -60,6 +60,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "org.typelevel" %% "cats-core" % "1.0.0-RC1",
     "io.monix"      %% "monix"     % "3.0.0-M2",
     "org.scalameta" %% "scalameta" % "3.4.0",
+    "com.geirsson" %% "scalafmt-core" % "1.4.0",
     // "io.monix"      %% "monix-cats" % "2.3.0",
     "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
   ),
