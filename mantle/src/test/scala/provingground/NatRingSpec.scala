@@ -69,11 +69,11 @@ class NatRingSpec extends FlatSpec {
     assert(n + m == m + n)
     assert((n + m) + k == n + (m + k))
 
-    assert{(n + n) + m == (n + m) + n}
+    assert { (n + n) + m == (n + m) + n }
 
-    assert{n * m == m * n}
+    assert { n * m == m * n }
 
-    assert(n* (m + k) == n * m + n * k)
+    assert(n * (m + k) == n * m + n * k)
 
     assert(1 + (n + 2) == n + 3)
 
@@ -81,11 +81,11 @@ class NatRingSpec extends FlatSpec {
 
     assert(fn(3) == (9: Nat))
 
-    val mm = lmbda(n)(prod(n + 1))
+    val mm        = lmbda(n)(prod(n + 1))
     val factorial = Rec(1: Nat, mm)
 
-    assert(factorial(5) == (120 : Nat))
+    assert(factorial(5) == (120: Nat))
 
-    assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
+    assert { factorial(k + 2) == factorial(k) * (k + 2) * (k + 1) }
   }
 }

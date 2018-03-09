@@ -17,11 +17,15 @@ import math.max
 import trepplein._
 
 object LeanParser {
-  case class ParseException(exps: Vector[Expr], vars: Vector[Term], error: Exception) extends Exception(error.toString){
-    def apl : Option[(Expr, Expr, ApplnFailException)] = (exps.head, error) match {
-      case (App(f, x), er: ApplnFailException) => Some((f, x, er))
-      case _ => None
-    }
+  case class ParseException(exps: Vector[Expr],
+                            vars: Vector[Term],
+                            error: Exception)
+      extends Exception(error.toString) {
+    def apl: Option[(Expr, Expr, ApplnFailException)] =
+      (exps.head, error) match {
+        case (App(f, x), er: ApplnFailException) => Some((f, x, er))
+        case _                                   => None
+      }
   }
 
   def splitVec[A](sizes: Vector[Int],
@@ -35,18 +39,19 @@ object LeanParser {
     }
 
   @annotation.tailrec
-  def shiftedName(n: Int, lastName: String = "'") : String =
-    if (n ==0) lastName
+  def shiftedName(n: Int, lastName: String = "'"): String =
+    if (n == 0) lastName
     else shiftedName(n - 1, prefixedNextName(lastName))
 
   def getNextVarName(vecs: Vector[Term], n: Int) = {
     val cleanVecs = vecs.filterNot(isWitness)
     val lastName =
       cleanVecs.headOption
-      .collect { case sym: Symbolic => sym.name.toString }
-      .getOrElse(shiftedName(n))
+        .collect { case sym: Symbolic => sym.name.toString }
+        .getOrElse(shiftedName(n))
     val newName = prefixedNextName(lastName)
-    if (vecs.headOption.map(isWitness) == Some(true)) pprint.log(s"$vecs\n$cleanVecs\n$lastName; $newName")
+    if (vecs.headOption.map(isWitness) == Some(true))
+      pprint.log(s"$vecs\n$cleanVecs\n$lastName; $newName")
     newName
   }
 
@@ -81,42 +86,36 @@ object LeanParser {
       "indmods" -> jsTermIndMod(parser)
     )
 
-  def apply(filename: String) : LeanParser =
+  def apply(filename: String): LeanParser =
     new LeanParser(LeanInterface.getMods(filename))
 
-    def applyFuncOptFold(ft: Task[Option[Term]],
-                            v: Vector[Option[Term]]): Task[Option[Term]] =
-      v match {
-        case Vector() => ft
-        case xo +: ys =>
-          applyFuncOptFold(ft.map(
-                                (fo) => fo.flatMap(
-                                  (f) =>
-                                    xo.flatMap((x) => applyFuncOpt(f, x)))
-                              ),
-                              ys)
-      }
+  def applyFuncOptFold(ft: Task[Option[Term]],
+                       v: Vector[Option[Term]]): Task[Option[Term]] =
+    v match {
+      case Vector() => ft
+      case xo +: ys =>
+        applyFuncOptFold(
+          ft.map(
+            (fo) => fo.flatMap((f) => xo.flatMap((x) => applyFuncOpt(f, x)))
+          ),
+          ys)
+    }
 
-    def applyFuncFold(ft: Task[Term], v: Vector[Term]): Task[Term] =
-      v match {
-        case Vector() => ft
-        case x +: ys =>
-          applyFuncFold(ft.map(
-                             (f) => fold(f)(x)
-                           ),
-                           ys)
-      }
+  def applyFuncFold(ft: Task[Term], v: Vector[Term]): Task[Term] =
+    v match {
+      case Vector() => ft
+      case x +: ys =>
+        applyFuncFold(ft.map(
+                        (f) => fold(f)(x)
+                      ),
+                      ys)
+    }
 
 }
 
 class LeanParser(mods: Vector[Modification]) {
   import LeanParser._
-  import LeanToTermMonix.{
-    RecIterAp,
-    getRec,
-    isPropnFn,
-    parseWork
-  }
+  import LeanToTermMonix.{RecIterAp, getRec, isPropnFn, parseWork}
 
   import LeanParser._
 
@@ -147,9 +146,9 @@ class LeanParser(mods: Vector[Modification]) {
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
       argsFmlyTerm <- parseVec(argsFmly, vars)
       recFnT = getRec(indMod, argsFmlyTerm)
-      _ = pprint.log(s"$vars")
+      _      = pprint.log(s"$vars")
       vec <- parseVec(xs, vars)
-      _  = pprint.log(s"${vec.map(_.fansi)}")
+      _ = pprint.log(s"${vec.map(_.fansi)}")
       recFn <- recFnT
       res = fold(recFn)(vec: _*)
     } yield res
@@ -174,14 +173,14 @@ class LeanParser(mods: Vector[Modification]) {
         indicesVec            = recDataExpr.map(LeanInterface.varsUsed)
         resOptTask: Task[Option[Term]] = for { // Task
           recData <- parseVec(recDataExpr, vars)
-          recFn <- recFnT
+          recFn   <- recFnT
           withRecDataTask = Task(fold(recFn)(recData: _*))
           optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
             case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices)
           })
           optParsedAll <- optParsedAllTask
           withRecArgsOptTask = applyFuncOptFold(withRecDataTask.map(Some(_)),
-                                                   optParsedAll.flatten)
+                                                optParsedAll.flatten)
           withRecArgsOpt <- withRecArgsOptTask
           residueTerms   <- parseVec(residue, vars)
           foldOpt = withRecArgsOpt.map((f) =>
@@ -193,7 +192,8 @@ class LeanParser(mods: Vector[Modification]) {
       tsk <- resFlat
     } yield tsk // Task
 
-  def get(name: String) = parse(Const(Name(name.split("\\.") : _*), Vector())).runAsync
+  def get(name: String) =
+    parse(Const(Name(name.split("\\."): _*), Vector())).runAsync
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
@@ -284,9 +284,11 @@ class LeanParser(mods: Vector[Modification]) {
       } yield res
       // if (isPropFmly(res.typ)) "_" :: (res.typ) else res
     }
-  }.onErrorRecoverWith{
-    case pe : ParseException => Task.raiseError(ParseException(pe.exps :+ exp , pe.vars, pe.error))
-    case error : Exception => Task.raiseError(ParseException(Vector(exp), vars, error))
+  }.onErrorRecoverWith {
+    case pe: ParseException =>
+      Task.raiseError(ParseException(pe.exps :+ exp, pe.vars, pe.error))
+    case error: Exception =>
+      Task.raiseError(ParseException(Vector(exp), vars, error))
   }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =
@@ -328,14 +330,14 @@ class LeanParser(mods: Vector[Modification]) {
   def withDefn(name: Name, exp: Expr): Task[Unit] =
     for {
       term <- parse(exp, Vector())
-      _ = {pprint.log(s"Defined $name"); defnMap += name -> term }
+      _ = { pprint.log(s"Defined $name"); defnMap += name -> term }
     } yield ()
 
   def withAxiom(name: Name, ty: Expr): Task[Unit] =
     for {
       typ <- parse(ty, Vector())
       term = (name.toString) :: toTyp(typ)
-      _    = {pprint.log(s"Defined $name"); defnMap += name -> term }
+      _    = { pprint.log(s"Defined $name"); defnMap += name -> term }
     } yield ()
 
   def withAxiomSeq(axs: Vector[(Name, Expr)]): Task[Unit] =
@@ -358,7 +360,7 @@ class LeanParser(mods: Vector[Modification]) {
         typ <- parse(ty, Vector())
         // (typ, ltm1) = pr
         term = (name.toString) :: toTyp(typ)
-        _    = {pprint.log(s"Defined $name"); defnMap += name -> term }
+        _    = { pprint.log(s"Defined $name"); defnMap += name -> term }
         res <- foldAxiomSeq(term +: accum, ys)
       } yield res
   }
@@ -378,17 +380,9 @@ class LeanParser(mods: Vector[Modification]) {
         typValuePair <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePair match {
           case (typ: Typ[Term], params) =>
-            SimpleIndMod(ind.name,
-                         typF,
-                         intros,
-                         params.size,
-                         isPropn)
+            SimpleIndMod(ind.name, typF, intros, params.size, isPropn)
           case (t, params) =>
-            IndexedIndMod(ind.name,
-                          typF,
-                          intros,
-                          params.size,
-                          isPropn)
+            IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
         }
         _ = { termIndModMap += ind.name -> indMod }
       } yield ()
@@ -405,22 +399,22 @@ class LeanParser(mods: Vector[Modification]) {
       withAxiomSeq(axs)
   }
 
-  val allIntros = mods.collect{case ind: IndMod => ind.intros}.flatten
+  val allIntros = mods.collect { case ind: IndMod => ind.intros }.flatten
 
   def findDefMod(name: Name) =
-    mods.collect{
+    mods.collect {
       case dm: DefMod if dm.name == name => dm
-      }.headOption
+    }.headOption
 
   def findIndMod(name: Name) =
-    mods.collect{
+    mods.collect {
       case dm: IndMod if dm.name == name => dm
-      }.headOption
+    }.headOption
 
-  def findIntro(name: Name) : Option[Expr] =
+  def findIntro(name: Name): Option[Expr] =
     allIntros.find(_._1 == name).map(_._2)
 
-  def findRecChildren(name: Name) : Option[Vector[Expr]] =
+  def findRecChildren(name: Name): Option[Vector[Expr]] =
     name match {
       case Name.Str(prefix, "rec") =>
         findIndMod(prefix).map((ind) => ind.ty +: ind.intros.map(_._2))
@@ -428,25 +422,30 @@ class LeanParser(mods: Vector[Modification]) {
     }
 
   def findChildren(name: Name): Option[Vector[Expr]] =
-    findDefMod(name).map((dm) => Vector(dm.ty, dm.value)).
-    orElse(findIndMod(name).map ((ind) => Vector(ind.ty))).
-    orElse(findIntro(name).map((exp : Expr) => Vector(exp))).
-    orElse(findRecChildren(name))
+    findDefMod(name)
+      .map((dm) => Vector(dm.ty, dm.value))
+      .orElse(findIndMod(name).map((ind) => Vector(ind.ty)))
+      .orElse(findIntro(name).map((exp: Expr) => Vector(exp)))
+      .orElse(findRecChildren(name))
 
   def maxIndex(exp: Expr): Int = exp match {
-    case Sort(_) => 0
-    case Var(_) => 0
-    case App(f, x) => max(maxIndex(f), maxIndex(x))
-    case LocalConst(_, _) => 0
+    case Sort(_)           => 0
+    case Var(_)            => 0
+    case App(f, x)         => max(maxIndex(f), maxIndex(x))
+    case LocalConst(_, _)  => 0
     case Lam(domain, body) => max(maxIndex(domain.ty) + 1, maxIndex(body) + 1)
-    case Pi(domain, body) => max(maxIndex(domain.ty) + 1, maxIndex(body) + 1)
-    case Let(domain, value, body) => Vector(maxIndex(domain.ty), maxIndex(value), maxIndex(body) + 1).max
+    case Pi(domain, body)  => max(maxIndex(domain.ty) + 1, maxIndex(body) + 1)
+    case Let(domain, value, body) =>
+      Vector(maxIndex(domain.ty), maxIndex(value), maxIndex(body) + 1).max
     case Const(name @ Name.Str(prefix, "rec"), _) =>
-      findRecChildren(name).map((v) => v.map(maxIndex).max * 2 + 1).getOrElse(throw new Exception(s"could not find name $name"))
+      findRecChildren(name)
+        .map((v) => v.map(maxIndex).max * 2 + 1)
+        .getOrElse(throw new Exception(s"could not find name $name"))
     case Const(name, _) =>
-      findChildren(name).map((v) => v.map(maxIndex).max).getOrElse(throw new Exception(s"could not find name $name"))
+      findChildren(name)
+        .map((v) => v.map(maxIndex).max)
+        .getOrElse(throw new Exception(s"could not find name $name"))
   }
-
 
   def modNames(mod: Modification): Vector[Name] = mod match {
     case ind: IndMod =>

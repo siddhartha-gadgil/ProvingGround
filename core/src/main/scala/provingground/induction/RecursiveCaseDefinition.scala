@@ -13,7 +13,7 @@ import provingground._, HoTT._
 trait RecursiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends RecFunc[H, C] { self =>
 
-  def fromData(data: Vector[Term]) : RecursiveDefinition[H, C]
+  def fromData(data: Vector[Term]): RecursiveDefinition[H, C]
 
   /**
     * the optional recursive definition if a case is matched
@@ -95,7 +95,10 @@ object RecursiveDefinition {
     val defnData = data +: tail.defnData
 
     def fromData(data: Vector[Term]) =
-      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
+      DataCons(data.head.asInstanceOf[D],
+               defn,
+               tail.fromData(data.tail),
+               replacement)
 
     def dataSubs(that: RecursiveDefinition[H, C],
                  x: Term,
@@ -150,7 +153,8 @@ abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
 
   val defnData: Vector[Term]
 
-  def fromData(data: Vector[Term]) : IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+  def fromData(data: Vector[Term])
+    : IndexedRecursiveDefinition[H, F, C, Index, IF, IDF, IDFT]
 
   def caseFn(f: => IF)(arg: H): Option[C]
 
@@ -247,7 +251,10 @@ object IndexedRecursiveDefinition {
     val defnData = data +: tail.defnData
 
     def fromData(data: Vector[Term]) =
-      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
+      DataCons(data.head.asInstanceOf[D],
+               defn,
+               tail.fromData(data.tail),
+               replacement)
 
     val W = tail.W
 

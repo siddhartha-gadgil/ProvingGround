@@ -291,17 +291,9 @@ trait LeanParse { self =>
         typValueOpt.map { (typValue) =>
           typValue match {
             case (typ: Typ[Term], params) =>
-              SimpleIndMod(ind.name,
-                           typF,
-                           intros,
-                           params.size,
-                           isPropn)
+              SimpleIndMod(ind.name, typF, intros, params.size, isPropn)
             case (t, params) =>
-              IndexedIndMod(ind.name,
-                            typF,
-                            intros,
-                            params.size,
-                            isPropn)
+              IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
           }
         }
       }
@@ -329,17 +321,9 @@ trait LeanParse { self =>
         typValueOpt.map { (typValue) =>
           typValue match {
             case (typ: Typ[Term], params) =>
-              SimpleIndMod(ind.name,
-                           typF,
-                           intros,
-                           params.size,
-                           isPropn)
+              SimpleIndMod(ind.name, typF, intros, params.size, isPropn)
             case (t, params) =>
-              IndexedIndMod(ind.name,
-                            typF,
-                            intros,
-                            params.size,
-                            isPropn)
+              IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
           }
         }
       }
@@ -980,13 +964,13 @@ case class IndexedIndMod(name: Name,
 object LeanInterface {
 
   def consts(expr: Expr): Vector[Name] = expr match {
-    case Const(name, _)      => Vector(name)
-    case App(x, y)           => consts(x) ++ consts(y)
-    case Var(_)              => Vector()
-    case Sort(_)             => Vector()
-    case Lam(b, x)           => consts(b.ty) ++ consts(x)
-    case Pi(b, x)            => consts(b.ty) ++ consts(x)
-    case Let(_, x, y)        => consts(x) ++ consts(y)
+    case Const(name, _)   => Vector(name)
+    case App(x, y)        => consts(x) ++ consts(y)
+    case Var(_)           => Vector()
+    case Sort(_)          => Vector()
+    case Lam(b, x)        => consts(b.ty) ++ consts(x)
+    case Pi(b, x)         => consts(b.ty) ++ consts(x)
+    case Let(_, x, y)     => consts(x) ++ consts(y)
     case LocalConst(_, _) => Vector()
   }
 
@@ -1000,7 +984,7 @@ object LeanInterface {
         usesVar(x, index + 1) || ((!ignoreTypes) && usesVar(b.ty, index))
       case Pi(b, x) =>
         usesVar(x, index + 1) || ((!ignoreTypes) && usesVar(b.ty, index))
-      case Let(_, x, y)        => usesVar(y, index + 1)
+      case Let(_, x, y)     => usesVar(y, index + 1)
       case LocalConst(_, _) => false
     }
 
@@ -1014,7 +998,7 @@ object LeanInterface {
         varsUsed(x).map(_ + 1) union varsUsed(b.ty)
       case Pi(b, x) =>
         varsUsed(x).map(_ + 1) union varsUsed(b.ty)
-      case Let(_, x, y)        => varsUsed(y).map(_ + 1)
+      case Let(_, x, y)     => varsUsed(y).map(_ + 1)
       case LocalConst(_, _) => Set()
     }
 
@@ -1055,11 +1039,10 @@ object LeanInterface {
                 accum: Vector[Name] = Vector()): Vector[Name] = mods match {
     case Vector() => accum
     case IndMod(name, _, ty, numParams, intros) +: tail =>
-      defnNames(
-        tail,
-        name +: Name.Str(name, "rec") +: intros.map(_._1) ++: accum)
-    case DefMod(name, _, ty, value) +: tail   => defnNames(tail, name +: accum)
-    case AxiomMod(name, _, ty) +: tail => defnNames(tail, name +: accum)
+      defnNames(tail,
+                name +: Name.Str(name, "rec") +: intros.map(_._1) ++: accum)
+    case DefMod(name, _, ty, value) +: tail => defnNames(tail, name +: accum)
+    case AxiomMod(name, _, ty) +: tail      => defnNames(tail, name +: accum)
     case QuotMod +: tail =>
       defnNames(tail,
                 Vector(Name("quot"),

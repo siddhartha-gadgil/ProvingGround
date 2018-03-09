@@ -179,11 +179,15 @@ object HoTT {
       applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
     case fn: RecFunc[u, v] =>
       val replacements =
-        fn.defnData.map{(d) => avoidVar(t, d)}
+        fn.defnData.map { (d) =>
+          avoidVar(t, d)
+        }
       fn.fromData(replacements).asInstanceOf[U]
     case fn: InducFuncLike[u, v] =>
-    val replacements =
-      fn.defnData.map{(d) => avoidVar(t, d)}
+      val replacements =
+        fn.defnData.map { (d) =>
+          avoidVar(t, d)
+        }
       fn.fromData(replacements).asInstanceOf[U]
     case _ => x
   }
@@ -626,7 +630,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def fromData(data: Vector[Term]) = InducFn(depcodom, data.head.asInstanceOf[U])
+      def fromData(data: Vector[Term]) =
+        InducFn(depcodom, data.head.asInstanceOf[U])
 
       val typ = PiDefn(depcodom)
 
@@ -692,7 +697,7 @@ object HoTT {
   var ignoreLevels = true
 
   /** The (usual) universes */
-  case class Universe(level: Int) extends Univ with Subs[Universe]{
+  case class Universe(level: Int) extends Univ with Subs[Universe] {
     require(level >= 0)
 
     type Obj = Typ[Term]
@@ -817,7 +822,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def fromData(data: Vector[Term]) = RecFn(codom, data.head.asInstanceOf[Func[U, Func[V, W]]])
+      def fromData(data: Vector[Term]) =
+        RecFn(codom, data.head.asInstanceOf[Func[U, Func[V, W]]])
 
       lazy val typ = dom ->: codom
 
@@ -857,7 +863,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def fromData(data: Vector[Term]) = InducFn(targetFmly, data.head.asInstanceOf[FuncLike[U, FuncLike[V, W]]])
+      def fromData(data: Vector[Term]) =
+        InducFn(targetFmly, data.head.asInstanceOf[FuncLike[U, FuncLike[V, W]]])
 
       val xy = prod.Var
 
@@ -1075,7 +1082,7 @@ object HoTT {
       */
     val defnData: Vector[Term]
 
-    def fromData(data: Vector[Term]) : InducFuncLike[W, U]
+    def fromData(data: Vector[Term]): InducFuncLike[W, U]
 
     override def usesVar(t: Term) = defnData.exists(_.usesVar(t))
 
@@ -1300,7 +1307,7 @@ object HoTT {
       */
     val defnData: Vector[Term]
 
-    def fromData(data: Vector[Term]) : RecFunc[W, U]
+    def fromData(data: Vector[Term]): RecFunc[W, U]
 
     override def usesVar(t: Term) = defnData.exists(_.usesVar(t))
 
@@ -1564,18 +1571,16 @@ object HoTT {
       case _ => false
     }
 
-    def subs(x: Term, y: Term): LambdaLike[X, Y] =
-      {
-        val xx = avoidVar(variable, x)
-        val yy = avoidVar(variable, y)
+    def subs(x: Term, y: Term): LambdaLike[X, Y] = {
+      val xx = avoidVar(variable, x)
+      val yy = avoidVar(variable, y)
       if (variable.replace(x, y) == variable)
         LambdaTerm(variable, value.replace(xx, yy))
       else {
         val newvar = variable.replace(x, y)
-        LambdaTerm(newvar,
-                   value.replace(variable, newvar).replace(xx, yy))
-                 }
+        LambdaTerm(newvar, value.replace(variable, newvar).replace(xx, yy))
       }
+    }
 
     //    private lazy val myv = variable.newobj
 
@@ -1672,7 +1677,7 @@ object HoTT {
       LambdaFixed(newvar, value.replace(variable, newvar))
     }
 
-    override def subs(x: Term, y: Term): LambdaFixed[X, Y] ={
+    override def subs(x: Term, y: Term): LambdaFixed[X, Y] = {
       val xx = avoidVar(variable, x)
       val yy = avoidVar(variable, y)
       if (variable.replace(x, y) == variable)
@@ -1764,9 +1769,9 @@ object HoTT {
     var outer = variable
 
     override def toString = variable.name.toString
-     // match {
-     //  case sym: Symbolic => sym.name.toString
-     //  case x             => x.toString
+    // match {
+    //  case sym: Symbolic => sym.name.toString
+    //  case x             => x.toString
     // }
 
     def subs(x: Term, y: Term) = {
@@ -1970,17 +1975,19 @@ object HoTT {
   }
 
   case class Composition[U <: Term with Subs[U],
-                  V <: Term with Subs[V],
-                  W <: Term with Subs[W]](f: Func[V, W], g: Func[U, V]) extends Func[U, W] with Subs[Composition[U, V, W]]{
-                    val dom = g.dom
-                    val codom = f.codom
-                    val typ = dom ->: codom
+                         V <: Term with Subs[V],
+                         W <: Term with Subs[W]](f: Func[V, W], g: Func[U, V])
+      extends Func[U, W]
+      with Subs[Composition[U, V, W]] {
+    val dom   = g.dom
+    val codom = f.codom
+    val typ   = dom ->: codom
 
-                    def newobj = ???
-                    def subs(x: Term, y: Term) = Composition(f.replace(x, y), g.replace(x, y))
+    def newobj                 = ???
+    def subs(x: Term, y: Term) = Composition(f.replace(x, y), g.replace(x, y))
 
-                    def act(a: U) = f(g(a))
-                  }
+    def act(a: U) = f(g(a))
+  }
 
   /**
     * Sigma type defined using [[lmbda]], so with new variable created.
@@ -2286,7 +2293,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def fromData(data: Vector[Term]) = RecFn(codom, data.head.asInstanceOf[FuncLike[W, Func[U, V]]])
+      def fromData(data: Vector[Term]) =
+        RecFn(codom, data.head.asInstanceOf[FuncLike[W, Func[U, V]]])
 
       def newobj =
         throw new IllegalArgumentException(
@@ -2323,7 +2331,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def fromData(data: Vector[Term]) = InducFn(targetFmly, data.head.asInstanceOf[FuncLike[W, FuncLike[U, V]]])
+      def fromData(data: Vector[Term]) =
+        InducFn(targetFmly, data.head.asInstanceOf[FuncLike[W, FuncLike[U, V]]])
 
       val xy: AbsPair[W, U] = prod.Var
 
@@ -2543,7 +2552,8 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def fromData(data: Vector[Term]) =RecFn(domain, target, data.head.asInstanceOf[Func[U, V]], start, end)
+      def fromData(data: Vector[Term]) =
+        RecFn(domain, target, data.head.asInstanceOf[Func[U, V]], start, end)
 
       lazy val typ = dom ->: codom
 
@@ -2595,7 +2605,12 @@ object HoTT {
 
       val defnData = Vector(data)
 
-      def fromData(data: Vector[Term]) = InducFn(domain, targetFmly, data.head.asInstanceOf[FuncLike[U, V]], start, end)
+      def fromData(data: Vector[Term]) =
+        InducFn(domain,
+                targetFmly,
+                data.head.asInstanceOf[FuncLike[U, V]],
+                start,
+                end)
 
       lazy val domW = {
         val x = domain.Var
@@ -2771,7 +2786,11 @@ object HoTT {
       val defnData = Vector(firstCase, secondCase)
 
       def fromData(data: Vector[Term]) =
-        RecFn(first, second, codom, data(0).asInstanceOf[Func[U, W]], data(1).asInstanceOf[Func[V, W]])
+        RecFn(first,
+              second,
+              codom,
+              data(0).asInstanceOf[Func[U, W]],
+              data(1).asInstanceOf[Func[V, W]])
 
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == (first || second) =>
@@ -2845,7 +2864,9 @@ object HoTT {
       val defnData = Vector(firstCase, secondCase)
 
       def fromData(data: Vector[Term]) =
-        InducFn(depcodom, firstCase.asInstanceOf[FuncLike[U, W]], secondCase.asInstanceOf[FuncLike[V, W]])
+        InducFn(depcodom,
+                firstCase.asInstanceOf[FuncLike[U, W]],
+                secondCase.asInstanceOf[FuncLike[V, W]])
 
       def act(x: Term) = x match {
         case PlusTyp.FirstIncl(typ, y) if typ == plustyp =>
@@ -2944,8 +2965,8 @@ object HoTT {
     }
 
     def defnData: Term => Vector[Term] = {
-      case rf: RecFunc[u, v] => rf.defnData
-      case rf : InducFuncLike[u, v] => rf.defnData
+      case rf: RecFunc[u, v]       => rf.defnData
+      case rf: InducFuncLike[u, v] => rf.defnData
     }
   }
 

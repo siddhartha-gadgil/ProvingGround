@@ -116,7 +116,7 @@ object TermPatterns {
     case p: PairTerm[u, v] => (p.first, p.second)
   }
 
-  val depPairTerm = Pattern.partial[Term, III]{
+  val depPairTerm = Pattern.partial[Term, III] {
     case p: DepPair[u, v] => ((p.first, p.second), p.fibers)
   }
 
@@ -142,10 +142,11 @@ object TermPatterns {
   }
 
   def recFuncApplied(inds: (Typ[Term] => Option[ConstructorSeqTL[_, _, _]])) =
-    Pattern[Term, Id]{
-    case rf: RecFunc[u, v] => buildRecDef(inds)(rf.dom, (rf.codom, rf.defnData))
-    case _ => None
-  }
+    Pattern[Term, Id] {
+      case rf: RecFunc[u, v] =>
+        buildRecDef(inds)(rf.dom, (rf.codom, rf.defnData))
+      case _ => None
+    }
 
   /**
     * matches idexed recursively defined function, returns index, domain, codomain and definition data
@@ -169,18 +170,19 @@ object TermPatterns {
       (rf.dom, (fmly, rf.defnData))
   }
 
-  def inducFuncApplied(inds: (Typ[Term] => Option[ConstructorSeqTL[_, Term, _]])) =
-    Pattern[Term, Id]{
-    case rf: InducFuncLike[u, v] =>
-    val fmly: Term = rf.depcodom match {
-      case t: Term => t
-      case _ =>
-        val x = rf.dom.Var
-        x :-> rf.depcodom(x)
-      }
-      buildIndDef(inds)(rf.dom, (fmly, rf.defnData))
-    case _ => None
-  }
+  def inducFuncApplied(
+      inds: (Typ[Term] => Option[ConstructorSeqTL[_, Term, _]])) =
+    Pattern[Term, Id] {
+      case rf: InducFuncLike[u, v] =>
+        val fmly: Term = rf.depcodom match {
+          case t: Term => t
+          case _ =>
+            val x = rf.dom.Var
+            x :-> rf.depcodom(x)
+        }
+        buildIndDef(inds)(rf.dom, (fmly, rf.defnData))
+      case _ => None
+    }
 
   /**
     * matches indexed inductively defined function, returns index, domain, codomain and definition data

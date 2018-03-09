@@ -524,8 +524,8 @@ object ConstructorShape {
     def subs(x: Term, y: Term) = this
   }
 
-  object IdShape{
-    def byTyp[H<: Term with Subs[H]](typ: Typ[H]) = IdShape[H]
+  object IdShape {
+    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = IdShape[H]
   }
 
   /**
@@ -559,7 +559,6 @@ object ConstructorShape {
       FuncConsShape(tail.subs(x, y), head.subs(x, y))
   }
 
-
   /**
     * [[ConstructorShape]] corresponding to an introduction rule of the form
     * `A -> head` with `A` not dependent on the inductive type `W` being constructed
@@ -582,7 +581,6 @@ object ConstructorShape {
     def subs(x: Term, y: Term) =
       CnstFuncConsShape(tail.replace(x, y), head.subs(x, y))
   }
-
 
   /**
     * [[ConstructorShape]] corresponding to an introduction rule of the form

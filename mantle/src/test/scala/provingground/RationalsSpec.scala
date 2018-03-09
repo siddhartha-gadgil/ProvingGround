@@ -12,7 +12,7 @@ import org.scalatest.FlatSpec
 
 import QField.{LocalTyp => Q, Literal => rat, _}
 
-class RationalsSpec extends FlatSpec{
+class RationalsSpec extends FlatSpec {
   val x = "x" :: Q
 
   val y = "y" :: Q
@@ -24,7 +24,7 @@ class RationalsSpec extends FlatSpec{
   it should "cancel correctly" in {
     assert(x / x == rat(1))
 
-    assert(((x + 1) / (x * x)) == (1/x + 1 /(x * x) ) )
+    assert(((x + 1) / (x * x)) == (1 / x + 1 / (x * x)))
   }
 
   it should "substitute and simplify" in {
@@ -32,6 +32,6 @@ class RationalsSpec extends FlatSpec{
 
     assert(fn(rat(2)) == rat(3) / rat(4))
 
-    assert(fn(y - 2) == rat(1) - rat(1)/ y) 
+    assert(fn(y - 2) == rat(1) - rat(1) / y)
   }
 }

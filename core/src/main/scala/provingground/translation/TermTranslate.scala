@@ -50,8 +50,7 @@ object FansiTranslate {
       } ||
       indRecFunc >>> {
         case (index, (dom, (codom, defnData))) =>
-          defnData.foldLeft(
-            s"rec_{ $dom ; $codom }") {
+          defnData.foldLeft(s"rec_{ $dom ; $codom }") {
             case (head, d) => s"$head($d)"
           }
       } ||
@@ -152,7 +151,6 @@ object TeXTranslate {
       }
 
 }
-
 
 trait FansiShow[-U] {
   def show(x: U): String

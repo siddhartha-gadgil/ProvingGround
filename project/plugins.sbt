@@ -46,7 +46,6 @@ addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.6.0")
 
 // addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.9.0")
 
-
 // Plugins for trepplein
 
 resolvers += Classpaths.sbtPluginReleases

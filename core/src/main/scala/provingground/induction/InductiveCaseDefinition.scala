@@ -12,7 +12,7 @@ trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends InducFuncLike[H, C] { self =>
   val fibre: Func[H, Typ[C]]
 
-  def fromData(data: Vector[Term]) : InductiveDefinition[H, C]
+  def fromData(data: Vector[Term]): InductiveDefinition[H, C]
 
   def dataSubs(that: InductiveDefinition[H, C],
                x: Term,
@@ -80,7 +80,10 @@ object InductiveDefinition {
     val defnData = data +: tail.defnData
 
     def fromData(data: Vector[Term]) =
-      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
+      DataCons(data.head.asInstanceOf[D],
+               defn,
+               tail.fromData(data.tail),
+               replacement)
 
     def dataSubs(that: InductiveDefinition[H, C],
                  x: Term,
@@ -124,7 +127,8 @@ abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
   val defnData: Vector[Term]
 
-  def fromData(data: Vector[Term]) : IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
+  def fromData(data: Vector[Term])
+    : IndexedInductiveDefinition[H, F, C, Index, IF, IDF, IDFT]
 
   val W: F
 
@@ -230,7 +234,10 @@ object IndexedInductiveDefinition {
     val defnData = data +: tail.defnData
 
     def fromData(data: Vector[Term]) =
-      DataCons(data.head.asInstanceOf[D], defn, tail.fromData(data.tail), replacement)
+      DataCons(data.head.asInstanceOf[D],
+               defn,
+               tail.fromData(data.tail),
+               replacement)
 
     val Xs = tail.Xs
 

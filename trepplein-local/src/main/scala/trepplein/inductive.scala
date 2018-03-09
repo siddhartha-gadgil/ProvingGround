@@ -35,11 +35,10 @@ final case class CompiledIndMod(indMod: IndMod, env: PreEnvironment)
 
     val argInfos: List[ArgInfo] = arguments.map {
       case LocalConst(
-          Binding(_,
-                  NormalizedPis(
-                    eps,
-                    Apps(recArgIndTy @ Const(name, _), recArgs)),
-                  _),
+          Binding(
+            _,
+            NormalizedPis(eps, Apps(recArgIndTy @ Const(name, _), recArgs)),
+            _),
           _,
           _) =>
         require(recArgs.size >= numParams)
@@ -165,8 +164,7 @@ final case class CompiledIndMod(indMod: IndMod, env: PreEnvironment)
     for (i <- compiledIntros)
       yield Axiom(i.name, univParams, i.ty, builtin = true)
 
-  val decls
-    : Vector[Declaration] = Axiom(name, univParams, ty) +: introDecls :+ elimDecl
+  val decls: Vector[Declaration] = Axiom(name, univParams, ty) +: introDecls :+ elimDecl
   val rules: Vector[ReductionRule] =
     if (kIntroRule.isDefined)
       kIntroRule.toVector

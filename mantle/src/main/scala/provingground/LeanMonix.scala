@@ -46,10 +46,12 @@ object LeanToTermMonix {
       witUnify(l.value, pd.value.replace(pd.variable, l.variable))
         .map(lambda(l.variable)(_))
     case (l: LambdaLike[u, v], tp) if isProp(l.dom) =>
-      pprint.log(s"unifying for ${l.fansi} with value type ${l.value.typ} to type ${tp.fansi}")
+      pprint.log(
+        s"unifying for ${l.fansi} with value type ${l.value.typ} to type ${tp.fansi}")
       witUnify(l.value, tp)
     case (y, pd: PiDefn[u, v]) if isProp(pd.domain) =>
-      pprint.log(s"unifying for ${pd.fansi} with value type ${pd.value.typ} to type ${y}")
+      pprint.log(
+        s"unifying for ${pd.fansi} with value type ${pd.value.typ} to type ${y}")
       witUnify(y, pd.value).map(lambda(pd.variable)(_))
     case (l: LambdaLike[u, v], tp) =>
       for {
@@ -95,8 +97,10 @@ object LeanToTermMonix {
       .orElse(applyWitUnify(f, x))
       .orElse(
         if (isProp(x.typ)) {
-          pprint.log(s"skipping application of ${x.fansi} to ${f.fansi} of typ ${f.typ.fansi}")
-          Some(f)} else None
+          pprint.log(
+            s"skipping application of ${x.fansi} to ${f.fansi} of typ ${f.typ.fansi}")
+          Some(f)
+        } else None
       )
     for {
       res <- resTask
@@ -318,9 +322,9 @@ object LeanToTermMonix {
           .getOrElse(
             Task.raiseError(UnParsedException(exp))
           )
-      case Sort(Level.Zero) => Task.pure(Prop    -> ltm)
-      case Sort(_)          => Task.pure(Type    -> ltm)
-      case Var(n)           => Task.pure(vars(n) -> ltm)
+      case Sort(Level.Zero)      => Task.pure(Prop -> ltm)
+      case Sort(_)               => Task.pure(Type -> ltm)
+      case Var(n)                => Task.pure(vars(n) -> ltm)
       case RecIterAp(name, args) =>
         // pprint.log(s"Seeking RecIterAp $name, $args")
         for {
@@ -366,8 +370,8 @@ object LeanToTermMonix {
             case y if domain.prettyName.toString == "_" => y -> ltm2
             case _ =>
               (lambda(x)(value), ltm2)
-              // if (value.typ.dependsOn(x)) (LambdaTerm(x, value), ltm2)
-              // else (LambdaFixed(x, value), ltm2)
+            // if (value.typ.dependsOn(x)) (LambdaTerm(x, value), ltm2)
+            // else (LambdaFixed(x, value), ltm2)
           }
       case Pi(domain, body) =>
         // pprint.log(s"pi $domain, $body")
@@ -509,17 +513,9 @@ object LeanToTermMonix {
         typValuePar <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePar match {
           case (typ: Typ[Term], params) =>
-            SimpleIndMod(ind.name,
-                         typF,
-                         intros,
-                         params.size,
-                         isPropn)
+            SimpleIndMod(ind.name, typF, intros, params.size, isPropn)
           case (t, params) =>
-            IndexedIndMod(ind.name,
-                          typF,
-                          intros,
-                          params.size,
-                          isPropn)
+            IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
         }
       } yield
         LeanToTermMonix(withIntros.defnMap,
@@ -635,8 +631,8 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
             case y if domain.prettyName.toString == "_"            => y
             case _ =>
               lambda(x)(value)
-              // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
-              // else LambdaFixed(x, value)
+            // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+            // else LambdaFixed(x, value)
           }
       case Pi(domain, body) =>
         for {
@@ -744,17 +740,9 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       typValue <- getValue(typF, ind.numParams, Vector())
       indMod = typValue match {
         case (typ: Typ[Term], params) =>
-          SimpleIndMod(ind.name,
-                       typF,
-                       intros,
-                       params.size,
-                       isPropn)
+          SimpleIndMod(ind.name, typF, intros, params.size, isPropn)
         case (t, params) =>
-          IndexedIndMod(ind.name,
-                        typF,
-                        intros,
-                        params.size,
-                        isPropn)
+          IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
       }
     } yield
       LeanToTermMonix(withTypDef.defnMap ++ namedIntros,

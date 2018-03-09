@@ -363,7 +363,8 @@ object IterFuncMapper {
   * @tparam O scala type of terms of the type `W`
   * @tparam F scala type of the family eg `P: A -> W`
   */
-sealed trait IterFuncShape[O <: Term with Subs[O], F <: Term with Subs[F]] {shape =>
+sealed trait IterFuncShape[O <: Term with Subs[O], F <: Term with Subs[F]] {
+  shape =>
 
   /**
     * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
@@ -381,11 +382,9 @@ sealed trait IterFuncShape[O <: Term with Subs[O], F <: Term with Subs[F]] {shap
   def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
     DepFuncShape(dom, (t: TT) => shape.subs(variable, t))
 
-  def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
-        FuncShape(tail, shape)
-}
-
-
+    def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
+      FuncShape(tail, shape)
+  }
   // def mapped[C <: Term with Subs[C]] =
   //   mapper[O].mapper(this)
 }
@@ -402,7 +401,7 @@ object IterFuncShape {
     //  (shape: IterFuncShape[HeadTerm]) => IdIterPtnMap[O, C]
   }
 
-  object IdIterShape{
+  object IdIterShape {
     def byTyp[O <: Term with Subs[O]](typ: Typ[O]) = IdIterShape[O]
   }
 

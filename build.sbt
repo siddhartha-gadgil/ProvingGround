@@ -19,7 +19,8 @@ scalaVersion in ThisBuild := scalaV
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-libraryDependencies += compilerPlugin("org.scalameta" % "semanticdb-scalac" % "2.1.2" cross CrossVersion.full)
+libraryDependencies += compilerPlugin(
+  "org.scalameta" % "semanticdb-scalac" % "2.1.2" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
 
 // javaOptions in Universal ++= Seq(
@@ -53,14 +54,14 @@ lazy val commonSettings = baseSettings ++ Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
 //      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-    "org.typelevel" %% "spire"     % "0.14.1",
-    "com.lihaoyi"   %% "fansi"     % "0.2.4",
-    "com.lihaoyi"   %% "upickle"   % "0.4.4",
-    "com.chuusai"   %% "shapeless" % "2.3.2",
-    "org.typelevel" %% "cats-core" % "1.0.0-RC1",
-    "io.monix"      %% "monix"     % "3.0.0-M2",
-    "org.scalameta" %% "scalameta" % "3.4.0",
-    "com.geirsson" %% "scalafmt-core" % "1.4.0",
+    "org.typelevel" %% "spire"         % "0.14.1",
+    "com.lihaoyi"   %% "fansi"         % "0.2.4",
+    "com.lihaoyi"   %% "upickle"       % "0.4.4",
+    "com.chuusai"   %% "shapeless"     % "2.3.2",
+    "org.typelevel" %% "cats-core"     % "1.0.0-RC1",
+    "io.monix"      %% "monix"         % "3.0.0-M2",
+    "org.scalameta" %% "scalameta"     % "3.4.0",
+    "com.geirsson"  %% "scalafmt-core" % "1.4.0",
     // "io.monix"      %% "monix-cats" % "2.3.0",
     "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
   ),

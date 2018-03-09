@@ -116,8 +116,9 @@ class InductionSpecTL extends FlatSpec {
     val m2 = "m2" :: Nat
 
     val recNNNN = NatInd.rec(Nat ->: Nat ->: Nat)
-    val fibn = "fib_aux(n,_,_)" :: Nat ->: Nat ->: Nat
-    val fib_aux = recNNNN(m1 :-> (m2 :-> m1))(n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(add(m1)(m2)) ))))
+    val fibn    = "fib_aux(n,_,_)" :: Nat ->: Nat ->: Nat
+    val fib_aux = recNNNN(m1 :-> (m2 :-> m1))(
+      n :-> (fibn :-> (m1 :-> (m2 :-> fibn(m2)(add(m1)(m2))))))
     val fib = n :-> fib_aux(n)(zero)(one)
 
     assert(fib(six) == eight)
@@ -134,12 +135,13 @@ class InductionSpecTL extends FlatSpec {
         n :~> {
           x :~> {
             g :~> {
-              (indNP(x)(m :~> (("_" :: P(m)  ) :-> (g(m)))))(n)}
+              (indNP(x)(m :~> (("_" :: P(m)) :-> (g(m)))))(n)
             }
           }
         }
+      }
 
-    val A = "A" :: Type
+    val A   = "A" :: Type
     val eql = "eq" :: Nat ->: Nat ->: Type
 
     val k = "k" :: Nat
@@ -152,21 +154,19 @@ class InductionSpecTL extends FlatSpec {
       A :~> {
         p :~> {
           q :~> {
-            natcases(("_" :: Nat) :-> (Type: Typ[Term])  )(q){
-              natcases(("_" :: Nat) :-> (Type : Typ[Term]) )(p)(
-                A)(
-                  l :-> (A ->: A))
-            }{k :->
-              {
-              natcases(("_" :: Nat) :-> (Type : Typ[Term]) )(p)(
-                 A
-               )(
-                 l :->  ((eql(k)(l) ->: A) ->: A)  )
+            natcases(("_" :: Nat) :-> (Type: Typ[Term]))(q) {
+              natcases(("_" :: Nat) :-> (Type: Typ[Term]))(p)(A)(
+                l :-> (A ->: A))
+            } {
+              k :-> {
+                natcases(("_" :: Nat) :-> (Type: Typ[Term]))(p)(
+                  A
+                )(l :-> ((eql(k)(l) ->: A) ->: A))
               }
-            }
             }
           }
         }
+      }
 
     val succsucc = natnoct(A)(succ(p))(succ(q))
 
