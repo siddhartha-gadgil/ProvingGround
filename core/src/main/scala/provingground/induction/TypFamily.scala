@@ -105,12 +105,17 @@ object TestS { implicitly[TermList[Term :: HNil]] }
 sealed abstract class TypFamilyPtn[
     H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList] {
 
-  implicit val tlEvidence = implicitly[TermList[Index]]
+  val tlEvidence = implicitly[TermList[Index]]
 
   /**
     * optional index `a` given family `W` and type `W(a)`
     */
   def getIndex(w: F, typ: Typ[H]): Option[Index]
+
+  def ~>:[TT <: Term with Subs[TT]](variable: TT) =
+      TypFamilyPtn.DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
+                         (t: TT) => this.subs(variable, t))
+
 
   /**
     * type `W(a)` given the family `W` and index `a`

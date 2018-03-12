@@ -164,11 +164,11 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(), defns: PartialFunction[T
               } yield q"FuncTypFamily($headCode, $tailCode)"
           case ft : DepFuncTypFamily[a, H, b, c] =>
               val x = ft.head.Var
-              val fib = ft.tailfibre(x)
+              val tailVal = ft.tailfibre(x)
               for{
                 headCode <- onTerm(ft.head)
                 xv <- onTerm(x)
-                tailValCode <- typFamilyPtn(fib, typ)(fib.tlEvidence)
+                tailValCode <- typFamilyPtn(tailVal, typ)(tailVal.tlEvidence)
               } yield q"val x = $xv;FuncTypFamily($headCode, x ~>: $tailValCode)"
         }
 
