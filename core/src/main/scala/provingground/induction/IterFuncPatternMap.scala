@@ -440,7 +440,7 @@ object IterFuncShape {
     }
   }
 
-  trait Exst {
+  sealed trait Exst {
     // type O <: Term with Subs[O]
 
     type F <: Term with Subs[F]

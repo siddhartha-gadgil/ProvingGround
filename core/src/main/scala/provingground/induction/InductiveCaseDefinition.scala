@@ -8,7 +8,7 @@ import shapeless._
   * inductively defined dependent function, to be built by mixing in cases,
   * defaults to a formal application by itself
   */
-trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
+sealed trait InductiveDefinition[H <: Term with Subs[H], C <: Term with Subs[C]]
     extends InducFuncLike[H, C] { self =>
   val fibre: Func[H, Typ[C]]
 
@@ -115,7 +115,7 @@ import TermList.TermListOp
 /**
   * indexed version of [[InductiveDefinition]]
   */
-abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
+sealed abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],
                                           Index <: HList: TermList,

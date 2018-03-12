@@ -9,7 +9,7 @@ import shapeless._
 /**
   * Indexed version of [[IterFuncPtnMap]]
   */
-abstract class IndexedIterFuncPtnMap[H <: Term with Subs[H],
+sealed abstract class IndexedIterFuncPtnMap[H <: Term with Subs[H],
                                      Fb <: Term with Subs[Fb],
                                      Index <: HList: TermList,
                                      C <: Term with Subs[C],
@@ -491,7 +491,7 @@ object IndexedIterFuncShape {
 /**
   * bridge between [[IndexedIterFuncShape]] and [[IndexedIterFuncPtnMap]]
   */
-abstract class IndexedIterFuncPtnMapper[H <: Term with Subs[H],
+sealed abstract class IndexedIterFuncPtnMapper[H <: Term with Subs[H],
                                         Fb <: Term with Subs[Fb],
                                         Index <: HList: TermList,
                                         C <: Term with Subs[C],

@@ -182,7 +182,7 @@ import scala.language.existentials
 /**
   * given scala type of the codomain and a specific inductive type, lifts a [[ConstructorSeqDom]] to a [[ConstructorSeqMap]]
   */
-trait ConstructorSeqMapper[SS <: HList,
+sealed trait ConstructorSeqMapper[SS <: HList,
                            C <: Term with Subs[C],
                            H <: Term with Subs[H],
                            RecType <: Term with Subs[RecType],
@@ -484,7 +484,7 @@ object ConstructorSeqTL {
   /**
     * Wrapped existential version of [[ConstructorSeqTL]]
     */
-  trait Exst {
+  sealed trait Exst {
     type SS <: HList
     type Intros <: HList
 

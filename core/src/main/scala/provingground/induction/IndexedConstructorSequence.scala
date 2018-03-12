@@ -24,7 +24,7 @@ import shapeless._
   * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
   *
   */
-abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
+sealed abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
                                         H <: Term with Subs[H],
                                         RecType <: Term with Subs[RecType],
                                         InducType <: Term with Subs[InducType],
@@ -251,7 +251,7 @@ object IndexedConstructorSeqMap {
 /**
   * bride between [[IndexedConstructorSeqDom]] and [[IndexedConstructorSeqMap]]
   */
-abstract class IndexedConstructorSeqMapper[SS <: HList,
+sealed abstract class IndexedConstructorSeqMapper[SS <: HList,
                                            C <: Term with Subs[C],
                                            H <: Term with Subs[H],
                                            RecType <: Term with Subs[RecType],
@@ -402,7 +402,7 @@ object IndexedConstructorSeqMapper {
   * @tparam Intros the scala type of the introduction rules
   *
   */
-abstract class IndexedConstructorSeqDom[SS <: HList,
+sealed abstract class IndexedConstructorSeqDom[SS <: HList,
                                         H <: Term with Subs[H],
                                         F <: Term with Subs[F],
                                         Index <: HList: TermList,

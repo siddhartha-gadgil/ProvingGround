@@ -36,7 +36,7 @@ sealed trait TypFamilyExst { typFmlyExst =>
   }
   // Inner existentials
 
-  trait IndexedIterFuncExst {
+  sealed trait IndexedIterFuncExst {
     import IndexedIterFuncShape._
     // type O <: Term with Subs[O]
 
@@ -137,7 +137,7 @@ sealed trait TypFamilyExst { typFmlyExst =>
         }
   }
 
-  trait IndexedConstructorSeqExst {
+  sealed trait IndexedConstructorSeqExst {
     type SS <: HList
 
     type Intros <: HList

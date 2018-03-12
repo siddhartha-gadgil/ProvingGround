@@ -793,7 +793,7 @@ object ConstructorTypTL {
   /**
     * wrapped existential form of [[ConstructorTypTL]], to be used at runtime, translation etc where refined types are  unknown.
     */
-  trait Exst {
+  sealed trait Exst {
     type S <: HList
     type ConstructorType <: Term with Subs[ConstructorType]
 

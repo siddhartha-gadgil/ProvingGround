@@ -34,7 +34,7 @@ import shapeless._
   * this is used indirectly through [[IndexedConstructorSeqMap]]
   *
   */
-abstract class IndexedConstructorPatternMap[
+sealed abstract class IndexedConstructorPatternMap[
     Cod <: Term with Subs[Cod],
     ConstructorType <: Term with Subs[ConstructorType],
     H <: Term with Subs[H],
@@ -148,7 +148,7 @@ object IndexedConstructorPatternMap {
     }
   }
 
-  abstract class IndexedRecursiveConstructorPatternMap[
+  sealed abstract class IndexedRecursiveConstructorPatternMap[
       Cod <: Term with Subs[Cod],
       ArgType <: Term with Subs[ArgType],
       HeadConstructorType <: Term with Subs[HeadConstructorType],
@@ -527,7 +527,7 @@ object IndexedConstructorPatternMap {
   * @tparam Index scala type of the  index
   *
   */
-abstract class IndexedConstructorShape[S <: HList,
+sealed abstract class IndexedConstructorShape[S <: HList,
                                        H <: Term with Subs[H],
                                        Fb <: Term with Subs[Fb],
                                        ConstructorType <: Term with Subs[
@@ -863,7 +863,7 @@ object IndexedConstructorShape {
 /**
   * bridge between [[IndexedConstructorShape]] and [[IndexedConstructorPatternMap]]
   */
-abstract class IndexedConstructorPatternMapper[
+sealed abstract class IndexedConstructorPatternMapper[
     S <: HList,
     Cod <: Term with Subs[Cod],
     ConstructorType <: Term with Subs[ConstructorType],

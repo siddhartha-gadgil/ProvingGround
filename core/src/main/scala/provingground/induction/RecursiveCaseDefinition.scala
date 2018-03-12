@@ -137,7 +137,7 @@ import TermList.TermListOp
 /**
   * indexed version of [[RecursiveDefinition]]
   */
-abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
+sealed abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
                                           F <: Term with Subs[F],
                                           C <: Term with Subs[C],
                                           Index <: HList: TermList,
