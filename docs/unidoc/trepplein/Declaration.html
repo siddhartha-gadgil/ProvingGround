@@ -95,10 +95,6 @@
                         <a href="Apps$.html" title="">Apps</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="class" href="Axiom.html" title=""></a>
-                        <a href="Axiom.html" title="">Axiom</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
                         <a class="class" href="AxiomMod.html" title=""></a>
                         <a href="AxiomMod.html" title="">AxiomMod</a>
                       </li><li class="current-entities indented1">
@@ -131,7 +127,7 @@
                         <a href="Const.html" title="">Const</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="trait" href="" title=""></a>
+                        <a class="class" href="" title=""></a>
                         <a href="" title="">Declaration</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
@@ -141,10 +137,6 @@
                         <span class="separator"></span>
                         <a class="class" href="DefMod.html" title=""></a>
                         <a href="DefMod.html" title="">DefMod</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="class" href="Definition.html" title=""></a>
-                        <a href="Definition.html" title="">Definition</a>
                       </li><li class="current-entities indented1">
                         <a class="object" href="Doc$.html" title=""></a>
                         <a class="trait" href="Doc.html" title=""></a>
@@ -179,10 +171,6 @@
                         <a href="IndMod.html" title="">IndMod</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="class" href="InductiveType.html" title=""></a>
-                        <a href="InductiveType.html" title="">InductiveType</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
                         <a class="class" href="Infix.html" title=""></a>
                         <a href="Infix.html" title="">Infix</a>
                       </li><li class="current-entities indented1">
@@ -198,7 +186,7 @@
                         <a class="object" href="Lams$.html" title=""></a>
                         <a href="Lams$.html" title="">Lams</a>
                       </li><li class="current-entities indented1">
-                        <span class="separator"></span>
+                        <a class="object" href="Let$.html" title=""></a>
                         <a class="class" href="Let.html" title=""></a>
                         <a href="Let.html" title="">Let</a>
                       </li><li class="current-entities indented1">
@@ -209,6 +197,10 @@
                         <span class="separator"></span>
                         <a class="class" href="LibraryPrinter.html" title=""></a>
                         <a href="LibraryPrinter.html" title="">LibraryPrinter</a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="LinesParser$.html" title=""></a>
+                        <a href="LinesParser$.html" title="">LinesParser</a>
                       </li><li class="current-entities indented1">
                         <a class="object" href="LocalConst$.html" title=""></a>
                         <a class="class" href="LocalConst.html" title=""></a>
@@ -310,9 +302,9 @@
             </div>
           </div>
           <div id="content">
-            <body class="trait type">
+            <body class="class type">
       <div id="definition">
-        <div class="big-circle trait">t</div>
+        <div class="big-circle class">c</div>
         <p id="owner"><a href="index.html" class="extype" name="trepplein">trepplein</a></p>
         <h1>Declaration<span class="permalink">
       <a href="../trepplein/Declaration.html" title="Permalink">
@@ -324,11 +316,11 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Declaration</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">Declaration</span><span class="params">(<span name="name">name: <a href="Name.html" class="extype" name="trepplein.Name">Name</a></span>, <span name="univParams">univParams: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Level$$Param.html" class="extype" name="trepplein.Level.Param">Param</a>]</span>, <span name="ty">ty: <a href="Expr.html" class="extype" name="trepplein.Expr">Expr</a></span>, <span name="height">height: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>, <span name="builtin">builtin: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -337,13 +329,8 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div><div class="toggleContainer block">
-            <span class="toggle">
-              Known Subclasses
-            </span>
-            <div class="subClasses hiddenContent"><a href="Axiom.html" class="extype" name="trepplein.Axiom">Axiom</a>, <a href="Definition.html" class="extype" name="trepplein.Definition">Definition</a></div>
-          </div></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
         
 
       <div id="mbrsel">
@@ -368,7 +355,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="trepplein.Declaration"><span>Declaration</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="trepplein.Declaration"><span>Declaration</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -386,65 +373,33 @@
 
       <div id="template">
         <div id="allMembers">
-        
-
-        
-
-        <div class="values members">
-              <h3>Abstract Value Members</h3>
-              <ol><li name="trepplein.Declaration#name" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="name:trepplein.Name"></a><a id="name:Name"></a>
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="trepplein.Declaration#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(name:trepplein.Name,univParams:Vector[trepplein.Level.Param],ty:trepplein.Expr,height:Int,builtin:Boolean):trepplein.Declaration"></a><a id="&lt;init&gt;:Declaration"></a>
       <span class="permalink">
-      <a href="../trepplein/Declaration.html#name:trepplein.Name" title="Permalink">
+      <a href="../trepplein/Declaration.html#&lt;init&gt;(name:trepplein.Name,univParams:Vector[trepplein.Level.Param],ty:trepplein.Expr,height:Int,builtin:Boolean):trepplein.Declaration" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
+        <span class="modifier"></span>
+        <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">name</span><span class="result">: <a href="Name.html" class="extype" name="trepplein.Name">Name</a></span>
-      </span>
-      
-      
-    </li><li name="trepplein.Declaration#ty" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ty:trepplein.Expr"></a><a id="ty:Expr"></a>
-      <span class="permalink">
-      <a href="../trepplein/Declaration.html#ty:trepplein.Expr" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">ty</span><span class="result">: <a href="Expr.html" class="extype" name="trepplein.Expr">Expr</a></span>
-      </span>
-      
-      
-    </li><li name="trepplein.Declaration#univParams" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="univParams:Vector[trepplein.Level.Param]"></a><a id="univParams:Vector[Param]"></a>
-      <span class="permalink">
-      <a href="../trepplein/Declaration.html#univParams:Vector[trepplein.Level.Param]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">univParams</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="Level$$Param.html" class="extype" name="trepplein.Level.Param">Param</a>]</span>
+        <span class="name">Declaration</span><span class="params">(<span name="name">name: <a href="Name.html" class="extype" name="trepplein.Name">Name</a></span>, <span name="univParams">univParams: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Level$$Param.html" class="extype" name="trepplein.Level.Param">Param</a>]</span>, <span name="ty">ty: <a href="Expr.html" class="extype" name="trepplein.Expr">Expr</a></span>, <span name="height">height: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>, <span name="builtin">builtin: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span>
       </span>
       
       
     </li></ol>
             </div>
 
+        
+
+        
+
         <div class="values members">
-              <h3>Concrete Value Members</h3>
+              <h3>Value Members</h3>
               <ol>
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
@@ -494,22 +449,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="trepplein.Declaration#asAxiom" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="asAxiom:trepplein.Axiom"></a><a id="asAxiom:Axiom"></a>
-      <span class="permalink">
-      <a href="../trepplein/Declaration.html#asAxiom:trepplein.Axiom" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">asAxiom</span><span class="result">: <a href="Axiom.html" class="extype" name="trepplein.Axiom">Axiom</a></span>
-      </span>
-      
-      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -526,6 +465,54 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="trepplein.Declaration#builtin" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="builtin:Boolean"></a>
+      <span class="permalink">
+      <a href="../trepplein/Declaration.html#builtin:Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">builtin</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      
+    </li><li name="trepplein.Declaration#check" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="check(env:trepplein.PreEnvironment,tc:trepplein.TypeChecker):Unit"></a><a id="check(PreEnvironment,TypeChecker):Unit"></a>
+      <span class="permalink">
+      <a href="../trepplein/Declaration.html#check(env:trepplein.PreEnvironment,tc:trepplein.TypeChecker):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">check</span><span class="params">(<span name="env">env: <a href="PreEnvironment.html" class="extype" name="trepplein.PreEnvironment">PreEnvironment</a></span>, <span name="tc">tc: <a href="TypeChecker.html" class="extype" name="trepplein.TypeChecker">TypeChecker</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      
+    </li><li name="trepplein.Declaration#check" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="check(env:trepplein.PreEnvironment):Unit"></a><a id="check(PreEnvironment):Unit"></a>
+      <span class="permalink">
+      <a href="../trepplein/Declaration.html#check(env:trepplein.PreEnvironment):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">check</span><span class="params">(<span name="env">env: <a href="PreEnvironment.html" class="extype" name="trepplein.PreEnvironment">PreEnvironment</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -538,7 +525,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -562,26 +549,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
-      <span class="permalink">
-      <a href="../trepplein/Declaration.html#equals(x$1:Any):Boolean" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -623,25 +594,22 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
+    </li><li name="trepplein.Declaration#height" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="height:Int"></a>
       <span class="permalink">
-      <a href="../trepplein/Declaration.html#hashCode():Int" title="Permalink">
+      <a href="../trepplein/Declaration.html#height:Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">height</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
-                <span class="name">@native</span><span class="args">()</span>
-              
-        </dd></dl></div>
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
@@ -658,6 +626,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="trepplein.Declaration#name" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="name:trepplein.Name"></a><a id="name:Name"></a>
+      <span class="permalink">
+      <a href="../trepplein/Declaration.html#name:trepplein.Name" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">name</span><span class="result">: <a href="Name.html" class="extype" name="trepplein.Name">Name</a></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -670,7 +654,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -728,22 +712,38 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
+    </li><li name="trepplein.Declaration#ty" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ty:trepplein.Expr"></a><a id="ty:Expr"></a>
       <span class="permalink">
-      <a href="../trepplein/Declaration.html#toString():String" title="Permalink">
+      <a href="../trepplein/Declaration.html#ty:trepplein.Expr" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">ty</span><span class="result">: <a href="Expr.html" class="extype" name="trepplein.Expr">Expr</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      
+    </li><li name="trepplein.Declaration#univParams" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="univParams:Vector[trepplein.Level.Param]"></a><a id="univParams:Vector[Param]"></a>
+      <span class="permalink">
+      <a href="../trepplein/Declaration.html#univParams:Vector[trepplein.Level.Param]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">univParams</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Level$$Param.html" class="extype" name="trepplein.Level.Param">Param</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
@@ -822,8 +822,16 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>

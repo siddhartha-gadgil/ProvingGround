@@ -111,6 +111,10 @@ as well as serialization, formatted output, parsing, interface with  formal lang
 concrete languages including our implementation of HoTT are in this package.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li class="current-entities indented2">
+                        <a class="object" href="CodeGen$.html" title=""></a>
+                        <a class="class" href="CodeGen.html" title=""></a>
+                        <a href="CodeGen.html" title="">CodeGen</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="CompositeFunctors.html" title="lower priority Functor and Traverese type classes to be extended in Functors"></a>
                         <a href="CompositeFunctors.html" title="lower priority Functor and Traverese type classes to be extended in Functors">CompositeFunctors</a>
@@ -424,7 +428,7 @@ At the upper level are sentential phrases. We typically start with a tree that e
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -535,7 +539,7 @@ At the upper level are sentential phrases. We typically start with a tree that e
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Conjunction of sentential phrases." href="MathExpr$$ConjSP.html"><span class="name">ConjSP</span></a><span class="params">(<span name="sentences">sentences: <span class="extype" name="scala.Vector">Vector</span>[<a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Conjunction of sentential phrases." href="MathExpr$$ConjSP.html"><span class="name">ConjSP</span></a><span class="params">(<span name="sentences">sentences: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Conjunction of sentential phrases.</p>
@@ -567,7 +571,7 @@ At the upper level are sentential phrases. We typically start with a tree that e
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="A noun phrase that is a conjuction (and) of noun phrases." href="MathExpr$$ConjunctNP.html"><span class="name">ConjunctNP</span></a><span class="params">(<span name="nps">nps: <span class="extype" name="scala.Vector">Vector</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>]</span>)</span><span class="result"> extends <a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A noun phrase that is a conjuction (and) of noun phrases." href="MathExpr$$ConjunctNP.html"><span class="name">ConjunctNP</span></a><span class="params">(<span name="nps">nps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>]</span>)</span><span class="result"> extends <a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">A noun phrase that is a conjuction (and) of noun phrases.</p>
@@ -583,7 +587,7 @@ At the upper level are sentential phrases. We typically start with a tree that e
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="The core of a determiner phrase, which is a noun, a list of quant-terms or a noun followed by a list of quant-terms" href="MathExpr$$Core.html"><span class="name">Core</span></a><span class="params">(<span name="optNoun">optNoun: <span class="extype" name="scala.Option">Option</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>]</span>, <span name="quantterms">quantterms: <span class="extype" name="scala.Vector">Vector</span>[<a href="#QuantTerm=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.QuantTerm">QuantTerm</a>] = <span class="symbol">Vector()</span></span>)</span><span class="result"> extends <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="The core of a determiner phrase, which is a noun, a list of quant-terms or a noun followed by a list of quant-terms" href="MathExpr$$Core.html"><span class="name">Core</span></a><span class="params">(<span name="optNoun">optNoun: <span class="extype" name="scala.Option">Option</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>]</span>, <span name="quantterms">quantterms: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#QuantTerm=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.QuantTerm">QuantTerm</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result"> extends <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">The core of a determiner phrase, which is a noun, a list of quant-terms
@@ -601,7 +605,7 @@ or a noun followed by a list of quant-terms
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Determiner phrase: this is the main composite tree." href="MathExpr$$DP.html"><span class="name">DP</span></a><span class="params">(<span name="det">det: <a href="#Determiner=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.Determiner">Determiner</a></span>, <span name="adjectives">adjectives: <span class="extype" name="scala.Vector">Vector</span>[<a href="#AdjectivalPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.AdjectivalPhrase">AdjectivalPhrase</a>] = <span class="symbol">Vector()</span></span>, <span name="optNoun">optNoun: <span class="extype" name="scala.Option">Option</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>] = <span class="symbol">None</span></span>, <span name="quantTerms">quantTerms: <span class="extype" name="scala.Option">Option</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>] = <span class="symbol">None</span></span>, <span name="post">post: <span class="extype" name="scala.Vector">Vector</span>[<a href="#PostModifier=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.PostModifier">PostModifier</a>] = <span class="symbol">Vector()</span></span>)</span><span class="result"> extends <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Determiner phrase: this is the main composite tree." href="MathExpr$$DP.html"><span class="name">DP</span></a><span class="params">(<span name="det">det: <a href="#Determiner=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.Determiner">Determiner</a></span>, <span name="adjectives">adjectives: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#AdjectivalPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.AdjectivalPhrase">AdjectivalPhrase</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>, <span name="optNoun">optNoun: <span class="extype" name="scala.Option">Option</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">None</a></span></span></span>, <span name="quantTerms">quantTerms: <span class="extype" name="scala.Option">Option</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">None</a></span></span></span>, <span name="post">post: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#PostModifier=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.PostModifier">PostModifier</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result"> extends <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Determiner phrase: this is the main composite tree.</p>
@@ -633,7 +637,7 @@ or a noun followed by a list of quant-terms
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Disjunction of sentential phrases." href="MathExpr$$DisjSP.html"><span class="name">DisjSP</span></a><span class="params">(<span name="sentences">sentences: <span class="extype" name="scala.Vector">Vector</span>[<a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Disjunction of sentential phrases." href="MathExpr$$DisjSP.html"><span class="name">DisjSP</span></a><span class="params">(<span name="sentences">sentences: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Disjunction of sentential phrases.</p>
@@ -665,7 +669,7 @@ or a noun followed by a list of quant-terms
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="A noun phrase  that is a disjunction (or) of noun phrases." href="MathExpr$$DisjunctNP.html"><span class="name">DisjunctNP</span></a><span class="params">(<span name="nps">nps: <span class="extype" name="scala.Vector">Vector</span>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>]</span>)</span><span class="result"> extends <a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A noun phrase  that is a disjunction (or) of noun phrases." href="MathExpr$$DisjunctNP.html"><span class="name">DisjunctNP</span></a><span class="params">(<span name="nps">nps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a>]</span>)</span><span class="result"> extends <a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">A noun phrase  that is a disjunction (or) of noun phrases.</p>
@@ -880,7 +884,7 @@ or a noun followed by a list of quant-terms
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="MathExpr$$JJPP.html"><span class="name">JJPP</span></a><span class="params">(<span name="adj">adj: <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a></span>, <span name="pps">pps: <span class="extype" name="scala.Vector">Vector</span>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#AdjectivalPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.AdjectivalPhrase">AdjectivalPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="MathExpr$$JJPP.html"><span class="name">JJPP</span></a><span class="params">(<span name="adj">adj: <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a></span>, <span name="pps">pps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#AdjectivalPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.AdjectivalPhrase">AdjectivalPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -912,7 +916,7 @@ or a noun followed by a list of quant-terms
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="A Noun phrase as a single tree." href="MathExpr$$NP.html"><span class="name">NP</span></a><span class="params">(<span name="npv">npv: <span class="extype" name="scala.Vector">Vector</span>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A Noun phrase as a single tree." href="MathExpr$$NP.html"><span class="name">NP</span></a><span class="params">(<span name="npv">npv: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#NounPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.NounPhrase">NounPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">A Noun phrase as a single tree.</p>
@@ -1080,7 +1084,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="A single tree for a sentential phrase" href="MathExpr$$SP.html"><span class="name">SP</span></a><span class="params">(<span name="spv">spv: <span class="extype" name="scala.Vector">Vector</span>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A single tree for a sentential phrase" href="MathExpr$$SP.html"><span class="name">SP</span></a><span class="params">(<span name="spv">spv: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">A single tree for a sentential phrase
@@ -1146,7 +1150,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Sentential phrases connected by &quot;i.e., &quot; or &quot;so, &quot;." href="MathExpr$$ThatIsSP.html"><span class="name">ThatIsSP</span></a><span class="params">(<span name="sentences">sentences: <span class="extype" name="scala.Vector">Vector</span>[<a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Sentential phrases connected by &quot;i.e., &quot; or &quot;so, &quot;." href="MathExpr$$ThatIsSP.html"><span class="name">ThatIsSP</span></a><span class="params">(<span name="sentences">sentences: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a>]</span>)</span><span class="result"> extends <a href="#SententialPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.SententialPhrase">SententialPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Sentential phrases connected by &quot;i.e., &quot; or &quot;so, &quot;.</p>
@@ -1162,7 +1166,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Pronoun 'they' with (psoosibly empty) coreferences" href="MathExpr$$They.html"><span class="name">They</span></a><span class="params">(<span name="corefs">corefs: <span class="extype" name="scala.Vector">Vector</span>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Pronoun 'they' with (psoosibly empty) coreferences" href="MathExpr$$They.html"><span class="name">They</span></a><span class="params">(<span name="corefs">corefs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Pronoun 'they' with (psoosibly empty) coreferences
@@ -1195,7 +1199,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="A Verb phrase as a single tree" href="MathExpr$$VP.html"><span class="name">VP</span></a><span class="params">(<span name="vpv">vpv: <span class="extype" name="scala.Vector">Vector</span>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#VerbPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.VerbPhrase">VerbPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A Verb phrase as a single tree" href="MathExpr$$VP.html"><span class="name">VP</span></a><span class="params">(<span name="vpv">vpv: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#VerbPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.VerbPhrase">VerbPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">A Verb phrase as a single tree
@@ -1278,7 +1282,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="MathExpr$$VerbPP.html"><span class="name">VerbPP</span></a><span class="params">(<span name="verb">verb: <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a></span>, <span name="pps">pps: <span class="extype" name="scala.Vector">Vector</span>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#VerbPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.VerbPhrase">VerbPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="MathExpr$$VerbPP.html"><span class="name">VerbPP</span></a><span class="params">(<span name="verb">verb: <a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a></span>, <span name="pps">pps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="MathExpr.html" class="extype" name="provingground.translation.MathExpr">MathExpr</a>]</span>)</span><span class="result"> extends <a href="#VerbPhrase=provingground.translation.MathExpr" class="extmbr" name="provingground.translation.MathExpr.VerbPhrase">VerbPhrase</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -1383,7 +1387,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -1407,7 +1411,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -1515,7 +1519,7 @@ Unlike Naproche, we may also have pronouns.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -1718,7 +1722,7 @@ Unlike Naproche, we may also have pronouns.
 
         <div id="inheritedMembers">
         <div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>

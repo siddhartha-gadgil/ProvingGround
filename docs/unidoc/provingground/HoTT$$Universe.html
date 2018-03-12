@@ -163,6 +163,10 @@ Includes:
                         <a href="HoTT$$CodomSym.html" title="Symbol for co-domain of a symbolic function">CodomSym</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="HoTT$$Composition.html" title=""></a>
+                        <a href="HoTT$$Composition.html" title="">Composition</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="trait" href="HoTT$$ConstantTerm.html" title="Term invariant under substitution."></a>
                         <a href="HoTT$$ConstantTerm.html" title="Term invariant under substitution.">ConstantTerm</a>
                       </li><li class="current-entities indented2">
@@ -193,6 +197,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$DomSym.html" title="Symbol for domain of a symbolic function"></a>
                         <a href="HoTT$$DomSym.html" title="Symbol for domain of a symbolic function">DomSym</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="HoTT$$Equality.html" title=""></a>
+                        <a href="HoTT$$Equality.html" title="">Equality</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="HoTT$$Fold$.html" title="convenience methods to apply methods of special scala types such as functions without the compiler knowing that the object has the special type."></a>
@@ -363,6 +371,10 @@ Includes:
                         <a href="HoTT$$Subs.html" title="specify result of substitution a typical class is closed under substitution.">Subs</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="HoTT$$SymbEquality.html" title=""></a>
+                        <a href="HoTT$$SymbEquality.html" title="">SymbEquality</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="HoTT$$SymbObj.html" title="symbolic objects that are Terms but no more refined ie, not pairs, formal functions etc."></a>
                         <a href="HoTT$$SymbObj.html" title="symbolic objects that are Terms but no more refined ie, not pairs, formal functions etc.">SymbObj</a>
                       </li><li class="current-entities indented2">
@@ -452,7 +464,7 @@ Includes:
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Universe</span><span class="params">(<span name="level">level: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="HoTT$.html#Univ=provingground.HoTT.Typ[provingground.HoTT.Typ[provingground.HoTT.Term]]" class="extmbr" name="provingground.HoTT.Univ">Univ</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Universe</span><span class="params">(<span name="level">level: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="HoTT$.html#Univ=provingground.HoTT.Typ[provingground.HoTT.Typ[provingground.HoTT.Term]]" class="extmbr" name="provingground.HoTT.Univ">Univ</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.HoTT.Universe">Universe</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -461,7 +473,7 @@ Includes:
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]], <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]], <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.HoTT.Universe">Universe</a>], <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -750,7 +762,7 @@ for example a group type is this with product etc. dependent on this.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -792,7 +804,7 @@ for example a group type is this with product etc. dependent on this.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -930,7 +942,7 @@ for example a group type is this with product etc. dependent on this.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -1011,7 +1023,7 @@ Should throw exception when invoked for constants.
 can use {{innervar}} if one wants name unchanged.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
     </li><li name="provingground.HoTT.Subs#replace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]"></a><a id="replace(Term,Term):Typ[Typ[Term]]withSubs[Typ[Typ[Term]]]"></a>
+      <a id="replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]"></a><a id="replace(Term,Term):UniversewithSubs[Universe]"></a>
       <span class="permalink">
       <a href="../provingground/HoTT$$Universe.html#replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]" title="Permalink">
         <i class="material-icons"></i>
@@ -1022,7 +1034,7 @@ can use {{innervar}} if one wants name unchanged.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">replace</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]</span>
+        <span class="name">replace</span><span class="params">(<span name="x">x: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.Universe">Universe</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.HoTT.Universe">Universe</a>]</span>
       </span>
       
       <p class="shortcomment cmt">refine substitution so if x and y are both of certain forms such as
@@ -1343,9 +1355,9 @@ to avoid name clashes.
             </div><div class="parent" name="provingground.HoTT.Term">
               <h3>Inherited from <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></h3>
             </div><div class="parent" name="provingground.HoTT.Subs">
-              <h3>Inherited from <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]</h3>
+              <h3>Inherited from <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.HoTT.Universe">Universe</a>]</h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>

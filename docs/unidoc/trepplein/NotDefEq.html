@@ -95,10 +95,6 @@
                         <a href="Apps$.html" title="">Apps</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="class" href="Axiom.html" title=""></a>
-                        <a href="Axiom.html" title="">Axiom</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
                         <a class="class" href="AxiomMod.html" title=""></a>
                         <a href="AxiomMod.html" title="">AxiomMod</a>
                       </li><li class="current-entities indented1">
@@ -131,7 +127,7 @@
                         <a href="Const.html" title="">Const</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="trait" href="Declaration.html" title=""></a>
+                        <a class="class" href="Declaration.html" title=""></a>
                         <a href="Declaration.html" title="">Declaration</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
@@ -141,10 +137,6 @@
                         <span class="separator"></span>
                         <a class="class" href="DefMod.html" title=""></a>
                         <a href="DefMod.html" title="">DefMod</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
-                        <a class="class" href="Definition.html" title=""></a>
-                        <a href="Definition.html" title="">Definition</a>
                       </li><li class="current-entities indented1">
                         <a class="object" href="Doc$.html" title=""></a>
                         <a class="trait" href="Doc.html" title=""></a>
@@ -179,10 +171,6 @@
                         <a href="IndMod.html" title="">IndMod</a>
                       </li><li class="current-entities indented1">
                         <span class="separator"></span>
-                        <a class="class" href="InductiveType.html" title=""></a>
-                        <a href="InductiveType.html" title="">InductiveType</a>
-                      </li><li class="current-entities indented1">
-                        <span class="separator"></span>
                         <a class="class" href="Infix.html" title=""></a>
                         <a href="Infix.html" title="">Infix</a>
                       </li><li class="current-entities indented1">
@@ -198,7 +186,7 @@
                         <a class="object" href="Lams$.html" title=""></a>
                         <a href="Lams$.html" title="">Lams</a>
                       </li><li class="current-entities indented1">
-                        <span class="separator"></span>
+                        <a class="object" href="Let$.html" title=""></a>
                         <a class="class" href="Let.html" title=""></a>
                         <a href="Let.html" title="">Let</a>
                       </li><li class="current-entities indented1">
@@ -209,6 +197,10 @@
                         <span class="separator"></span>
                         <a class="class" href="LibraryPrinter.html" title=""></a>
                         <a href="LibraryPrinter.html" title="">LibraryPrinter</a>
+                      </li><li class="current-entities indented1">
+                        <span class="separator"></span>
+                        <a class="object" href="LinesParser$.html" title=""></a>
+                        <a href="LinesParser$.html" title="">LinesParser</a>
                       </li><li class="current-entities indented1">
                         <a class="object" href="LocalConst$.html" title=""></a>
                         <a class="class" href="LocalConst.html" title=""></a>
@@ -337,7 +329,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="DefEqRes.html" class="extype" name="trepplein.DefEqRes">DefEqRes</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="DefEqRes.html" class="extype" name="trepplein.DefEqRes">DefEqRes</a>, <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -449,14 +441,17 @@
       </a>
     </span>
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span title="gt4s: $amp" class="name">&amp;</span><span class="params">(<span name="that">that: ⇒ <a href="DefEqRes.html" class="extype" name="trepplein.DefEqRes">DefEqRes</a></span>)</span><span class="result">: <a href="DefEqRes.html" class="extype" name="trepplein.DefEqRes">DefEqRes</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefEqRes.html" class="extype" name="trepplein.DefEqRes">DefEqRes</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DefEqRes.html" class="extype" name="trepplein.DefEqRes">DefEqRes</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -533,7 +528,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -557,7 +552,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -630,7 +625,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -777,7 +772,7 @@
             </div><div class="parent" name="trepplein.DefEqRes">
               <h3>Inherited from <a href="DefEqRes.html" class="extype" name="trepplein.DefEqRes">DefEqRes</a></h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>

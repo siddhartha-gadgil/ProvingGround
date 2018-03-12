@@ -11,20 +11,19 @@ A system under development for (semi-)automated theorem proving, with foundation
 ## Implemented:
 
 * Most of Homotopy type theory.
-* Reinforcement learning abstractions.
-* Dynamics for learning in a domain-specific case - the andrews-curtis conjecture.
+* Symbolic Algebra integrated with HoTT.
+* Importing from the lean theorem prover.
+* Some non-trivial proofs as examples.
 * Most of the dynamics for learning with homotopy type theory.
-* An _akka-actor_ based system for continuous learning with tuning and communication.
-* Skeletons of:
-  * an akka-http server
-  * a play-framework server
-  * using stanford-corenlp tools.
+* Basic case for goal-driven discovery
+* An akka-http server, and integration with scala-js
+* Sketch for using stanford-corenlp tools to map to an intermediate (Naproche inspired) language.
 
 ## Documentation:
 
 There is not much besides the source.
 
-* The [website](http://siddhartha-gadgil.github.io/ProvingGround/) has the most current documentation, including _scaladocs_.
+* The [website](http://siddhartha-gadgil.github.io/ProvingGround/) has the most current documentation, including [http://siddhartha-gadgil.github.io/ProvingGround/unidoc/provingground/index.html](scaladocs).
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
 
@@ -44,6 +43,6 @@ The principal developer is Siddhartha Gadgil (Department of Mathematics, Indian 
 
 At present the main way to run the code is to load a console (for an alternative, visit the [website](http://siddhartha-gadgil.github.io/ProvingGround/)). For example, in the home of the project, run
 ```
-sbt mantle/test:run
+sbt mantle/run
 ```
 to pop up a nice console (Li Haoyi's ammonite repl), with many imports already in scope.

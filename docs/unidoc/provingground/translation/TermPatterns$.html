@@ -111,6 +111,10 @@ as well as serialization, formatted output, parsing, interface with  formal lang
 concrete languages including our implementation of HoTT are in this package.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li class="current-entities indented2">
+                        <a class="object" href="CodeGen$.html" title=""></a>
+                        <a class="class" href="CodeGen.html" title=""></a>
+                        <a href="CodeGen.html" title="">CodeGen</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="CompositeFunctors.html" title="lower priority Functor and Traverese type classes to be extended in Functors"></a>
                         <a href="CompositeFunctors.html" title="lower priority Functor and Traverese type classes to be extended in Functors">CompositeFunctors</a>
@@ -420,7 +424,7 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -566,7 +570,7 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">buildIndDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[_, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, _]] = <span class="symbol">(_) =&gt; None</span></span>)</span><span class="result">: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">buildIndDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[_, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, _]] = <span class="symbol"><span class="name"><a href="../../scala/index.html">(_) =&gt; None</a></span></span></span>)</span><span class="result">: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       <p class="shortcomment cmt">returns inductively defined function as function of domain, codomain and definition data</p><div class="fullcomment"><div class="comment cmt"><p>returns inductively defined function as function of domain, codomain and definition data</p></div><dl class="paramcmts block"><dt class="param">inds</dt><dd class="cmt"><p>inductive types defined (other than products etc)</p></dd></dl></div>
@@ -582,7 +586,8 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">buildIndIndDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/IndexedConstructorSeqDom.html" class="extype" name="provingground.induction.IndexedConstructorSeqDom">IndexedConstructorSeqDom</a>[_, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, _, _, _]] = <span class="symbol">(_) =&gt;<br />        None</span></span>)</span><span class="result">: (<span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]))) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">buildIndIndDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/IndexedConstructorSeqDom.html" class="extype" name="provingground.induction.IndexedConstructorSeqDom">IndexedConstructorSeqDom</a>[_, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, _, _, _]] = <span class="symbol"><span class="name"><a href="../../scala/index.html">(_) =&gt;
+        None</a></span></span></span>)</span><span class="result">: (<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]))) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       <p class="shortcomment cmt">returns indexed inductively defined function as function of domain, codomain and definition data</p><div class="fullcomment"><div class="comment cmt"><p>returns indexed inductively defined function as function of domain, codomain and definition data</p></div><dl class="paramcmts block"><dt class="param">inds</dt><dd class="cmt"><p>inductive types defined (other than equality)</p></dd></dl></div>
@@ -598,7 +603,8 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">buildIndRecDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/IndexedConstructorSeqDom.html" class="extype" name="provingground.induction.IndexedConstructorSeqDom">IndexedConstructorSeqDom</a>[_, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, _, _, _]] = <span class="symbol">(_) =&gt;<br />        None</span></span>)</span><span class="result">: (<span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]))) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">buildIndRecDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/IndexedConstructorSeqDom.html" class="extype" name="provingground.induction.IndexedConstructorSeqDom">IndexedConstructorSeqDom</a>[_, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, _, _, _]] = <span class="symbol"><span class="name"><a href="../../scala/index.html">(_) =&gt;
+        None</a></span></span></span>)</span><span class="result">: (<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]))) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       <p class="shortcomment cmt">returns indexed recursively defined function as function of domain, codomain and definition data</p><div class="fullcomment"><div class="comment cmt"><p>returns indexed recursively defined function as function of domain, codomain and definition data</p></div><dl class="paramcmts block"><dt class="param">inds</dt><dd class="cmt"><p>indexed inductive types defined (other than equality)</p></dd></dl></div>
@@ -614,7 +620,8 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">buildRecDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[_, _, _]] = <span class="symbol">(_) =&gt;<br />    None</span></span>)</span><span class="result">: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">buildRecDef</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[_, _, _]] = <span class="symbol"><span class="name"><a href="../../scala/index.html">(_) =&gt;
+    None</a></span></span></span>)</span><span class="result">: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       <p class="shortcomment cmt">returns recursively defined function as function of domain, codomain and definition data</p><div class="fullcomment"><div class="comment cmt"><p>returns recursively defined function as function of domain, codomain and definition data</p></div><dl class="paramcmts block"><dt class="param">inds</dt><dd class="cmt"><p>inductive types defined (other that products etc)</p></dd></dl></div>
@@ -630,7 +637,7 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -642,6 +649,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.translation.TermPatterns#depPairTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="depPairTerm:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.III]"></a><a id="depPairTerm:Pattern[Term,III]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#depPairTerm:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.III]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">depPairTerm</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#III[A]=(provingground.translation.Functors.II[A],cats.Id[A])" class="extmbr" name="provingground.translation.Functors.III">III</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -654,7 +677,7 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -886,6 +909,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
       
       <p class="shortcomment cmt">matches inductively defined function, returns domain, codomain and definition data
 </p>
+    </li><li name="provingground.translation.TermPatterns#inducFuncApplied" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="inducFuncApplied(inds:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;Option[provingground.induction.ConstructorSeqTL[_,provingground.HoTT.Term,_]]):provingground.translation.Translator.Pattern[provingground.HoTT.Term,cats.Id]"></a><a id="inducFuncApplied((Typ[Term])⇒Option[ConstructorSeqTL[_,Term,_]]):Pattern[Term,Id]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#inducFuncApplied(inds:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;Option[provingground.induction.ConstructorSeqTL[_,provingground.HoTT.Term,_]]):provingground.translation.Translator.Pattern[provingground.HoTT.Term,cats.Id]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">inducFuncApplied</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[_, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, _]]</span>)</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="cats.Id">Id</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
@@ -919,6 +958,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
       
       <p class="shortcomment cmt">matches lambda definitions
 </p>
+    </li><li name="provingground.translation.TermPatterns#lambdaFixedTriple" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambdaFixedTriple:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.III]"></a><a id="lambdaFixedTriple:Pattern[Term,III]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#lambdaFixedTriple:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.III]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambdaFixedTriple</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#III[A]=(provingground.translation.Functors.II[A],cats.Id[A])" class="extmbr" name="provingground.translation.Functors.III">III</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.TermPatterns#lambdaTriple" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lambdaTriple:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.III]"></a><a id="lambdaTriple:Pattern[Term,III]"></a>
       <span class="permalink">
@@ -948,7 +1003,7 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -990,6 +1045,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.translation.TermPatterns#pairTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pairTerm:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]"></a><a id="pairTerm:Pattern[Term,II]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#pairTerm:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pairTerm</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#II[A]=(cats.Id[A],cats.Id[A])" class="extmbr" name="provingground.translation.Functors.II">II</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.TermPatterns#piLam" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="piLam:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]"></a><a id="piLam:Pattern[Term,II]"></a>
       <span class="permalink">
@@ -1108,6 +1179,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
       
       <p class="shortcomment cmt">matches recursively defined function, returns domain, codomain and definition data
 </p>
+    </li><li name="provingground.translation.TermPatterns#recFuncApplied" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recFuncApplied(inds:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;Option[provingground.induction.ConstructorSeqTL[_,_,_]]):provingground.translation.Translator.Pattern[provingground.HoTT.Term,cats.Id]"></a><a id="recFuncApplied((Typ[Term])⇒Option[ConstructorSeqTL[_,_,_]]):Pattern[Term,Id]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#recFuncApplied(inds:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;Option[provingground.induction.ConstructorSeqTL[_,_,_]]):provingground.translation.Translator.Pattern[provingground.HoTT.Term,cats.Id]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recFuncApplied</span><span class="params">(<span name="inds">inds: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[_, _, _]]</span>)</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="cats.Id">Id</span>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.TermPatterns#refl" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="refl:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]"></a><a id="refl:Pattern[Term,II]"></a>
       <span class="permalink">
@@ -1208,6 +1295,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
       
       <p class="shortcomment cmt">matches  <code>Star</code>, the only element of the true type <code>Unit</code>, returns <code>() : Unit</code> if matched
 </p>
+    </li><li name="provingground.translation.TermPatterns#stringRep" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="stringRep:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.S]"></a><a id="stringRep:Pattern[Term,S]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#stringRep:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.S]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stringRep</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#S[A]=provingground.translation.Functors.C[A,String]" class="extmbr" name="provingground.translation.Functors.S">S</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.TermPatterns#symName" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="symName:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.S]"></a><a id="symName:Pattern[Term,S]"></a>
       <span class="permalink">
@@ -1225,6 +1328,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
       
       <p class="shortcomment cmt">matches a symbolic name, perhaps wrapped in <code>InnerSym</code>, returns the name as a <code>String</code>
 </p>
+    </li><li name="provingground.translation.TermPatterns#symString" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="symString:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.S]"></a><a id="symString:Pattern[Term,S]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#symString:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.S]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symString</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#S[A]=provingground.translation.Functors.C[A,String]" class="extmbr" name="provingground.translation.Functors.S">S</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.TermPatterns#symbolic" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="symbolic:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Named]"></a><a id="symbolic:Pattern[Term,Named]"></a>
       <span class="permalink">
@@ -1436,7 +1555,7 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
 
         <div id="inheritedMembers">
         <div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>

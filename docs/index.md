@@ -23,7 +23,7 @@ A system under development for (semi-)automated theorem proving, with foundation
 
 ## Documentation:
 
-In addition to the documentation on this site (see, in particular the [ScalaDocs](Scaladocs])), the following is available.
+In addition to the documentation on this site (see, in particular the [./unidoc/provingground/index.html](Scaladocs])), the following is available.
 
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
