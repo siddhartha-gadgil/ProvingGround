@@ -147,6 +147,33 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(), defns: PartialFunction[T
 
   }
 
+
+  def typFamilyPtn[
+      H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList](ptn: TypFamilyPtn[H, F, Index], typ: Typ[H]) : Option[MTerm] = {
+        import TypFamilyPtn._
+        val typOpt = onTerm(typ)
+        ptn match {
+          case _ : IdTypFamily[H] =>
+              for {
+                typCode <- typOpt
+              } yield q"IdTypFamily.byTyp($typCode)"
+          case ft : FuncTypFamily[a, H, b, c] =>
+              for{
+                headCode <- onTerm(ft.head)
+                tailCode <- typFamilyPtn(ft.tail, typ)(ft.tail.tlEvidence)
+              } yield q"FuncTypFamily($headCode, $tailCode)"
+          case ft : DepFuncTypFamily[a, H, b, c] =>
+              val x = ft.head.Var
+              val fib = ft.tailfibre(x)
+              for{
+                headCode <- onTerm(ft.head)
+                xv <- onTerm(x)
+                tailValCode <- typFamilyPtn(fib, typ)(fib.tlEvidence)
+              } yield q"val x = $xv;FuncTypFamily($headCode, x ~>: $tailValCode)"
+        }
+
+      }
+
   def fmtConsSeq[SS <: HList, H <: Term with Subs[H], Intros <: HList](
       seq: ConstructorSeqTL[SS, H, Intros]) =
     consSeq(seq).map((c) => org.scalafmt.Scalafmt.format(c.toString))

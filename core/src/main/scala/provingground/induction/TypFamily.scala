@@ -105,6 +105,8 @@ object TestS { implicitly[TermList[Term :: HNil]] }
 sealed abstract class TypFamilyPtn[
     H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList] {
 
+  implicit val tlEvidence = implicitly[TermList[Index]]
+
   /**
     * optional index `a` given family `W` and type `W(a)`
     */
@@ -167,6 +169,10 @@ object TypFamilyPtn {
     g.get(w)
 
   import TypFamilyMapper._
+
+  object IdTypFamily{
+    def byTyp[H<: Term with Subs[H]](typ: Typ[H]) = IdTypFamily[H]
+  }
 
   case class IdTypFamily[H <: Term with Subs[H]]()
       extends TypFamilyPtn[H, Typ[H], HNil] {
