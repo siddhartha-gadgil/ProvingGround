@@ -8,7 +8,8 @@ import shapeless._
 
 import scala.meta.{Term => MTerm, Type => MType, _}
 
-case class CodeGen(indNames: Map[MTerm, MTerm] = Map(), defns: PartialFunction[Term, MTerm] = Map()) { codegen =>
+case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
+                   defns: PartialFunction[Term, MTerm] = Map()) { codegen =>
   import CodeGen._
 
   import TermPatterns._
@@ -18,7 +19,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(), defns: PartialFunction[T
   val onTerm: Term => Option[MTerm] = {
     def prefix(s: MTerm): MTerm =
       indNames.get(s).orElse(indName(s)).getOrElse(s.toString.parse[MTerm].get)
-     Translator.Simple(defns.lift) || base || indRecFunc >>> {
+    Translator.Simple(defns.lift) || base || indRecFunc >>> {
       case (index, (dom, (codom, defnData))) =>
         val ind                 = s"${prefix(dom)}".parse[MTerm].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
@@ -147,32 +148,76 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(), defns: PartialFunction[T
 
   }
 
+  def typFamilyPtn[H <: Term with Subs[H],
+                   F <: Term with Subs[F],
+                   Index <: HList: TermList](ptn: TypFamilyPtn[H, F, Index],
+                                             typ: Typ[H]): Option[MTerm] = {
+    import TypFamilyPtn._
+    val typOpt = onTerm(typ)
+    ptn match {
+      case _: IdTypFamily[H] =>
+        for {
+          typCode <- typOpt
+        } yield q"IdTypFamily.byTyp($typCode)"
+      case ft: FuncTypFamily[a, H, b, c] =>
+        for {
+          headCode <- onTerm(ft.head)
+          tailCode <- typFamilyPtn(ft.tail, typ)(ft.tail.tlEvidence)
+        } yield q"FuncTypFamily($headCode, $tailCode)"
+      case ft: DepFuncTypFamily[a, H, b, c] =>
+        val x       = ft.head.Var
+        val tailVal = ft.tailfibre(x)
+        for {
+          headCode    <- onTerm(ft.head)
+          xv          <- onTerm(x)
+          tailValCode <- typFamilyPtn(tailVal, typ)(tailVal.tlEvidence)
+        } yield q"val x = $xv;FuncTypFamily($headCode, x ~>: $tailValCode)"
+    }
 
-  def typFamilyPtn[
-      H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList: TermList](ptn: TypFamilyPtn[H, F, Index], typ: Typ[H]) : Option[MTerm] = {
-        import TypFamilyPtn._
-        val typOpt = onTerm(typ)
-        ptn match {
-          case _ : IdTypFamily[H] =>
-              for {
-                typCode <- typOpt
-              } yield q"IdTypFamily.byTyp($typCode)"
-          case ft : FuncTypFamily[a, H, b, c] =>
-              for{
-                headCode <- onTerm(ft.head)
-                tailCode <- typFamilyPtn(ft.tail, typ)(ft.tail.tlEvidence)
-              } yield q"FuncTypFamily($headCode, $tailCode)"
-          case ft : DepFuncTypFamily[a, H, b, c] =>
-              val x = ft.head.Var
-              val tailVal = ft.tailfibre(x)
-              for{
-                headCode <- onTerm(ft.head)
-                xv <- onTerm(x)
-                tailValCode <- typFamilyPtn(tailVal, typ)(tailVal.tlEvidence)
-              } yield q"val x = $xv;FuncTypFamily($headCode, x ~>: $tailValCode)"
-        }
+  }
 
-      }
+  def index[Index](ind: Index): Option[MTerm] = {
+    import shapeless._
+    ind match {
+      case _: HNil => Some(q"HNil")
+      case (head: Term) :: tail =>
+        for {
+          headCode <- codegen(head)
+          tailCode <- index(tail)
+        } yield q"import shapeless._ ; $headCode :: $tailCode"
+      case _ => None
+    }
+  }
+
+  def indexedIterFunc[H <: Term with Subs[H],
+                      F <: Term with Subs[F],
+                      Fb <: Term with Subs[Fb],
+                      Index <: HList: TermList](
+      iterFunc: IndexedIterFuncShape[H, F, Fb, Index],
+      typ: Typ[H]): Option[MTerm] = {
+    import IndexedIterFuncShape._, iterFunc.family
+    val familyOpt = typFamilyPtn(family, typ)
+    iterFunc match {
+      case id: IdIterShape[H, Fb, Index] =>
+        for {
+          familyCode <- familyOpt
+          indexCode  <- index(id.index)
+        } yield q"IndexedIterFuncShape.IdIterShape($familyCode, $indexCode)"
+
+      case fc: FuncShape[a, b, H, Fb, Index] =>
+        for {
+          headCode <- codegen(fc.head)
+          tailCode <- indexedIterFunc(fc.tail, typ)
+        } yield q"IndexedIterFuncShape.FuncShape($headCode, $tailCode)"
+      case fs: DepFuncShape[u, H, w, Fb, Index] =>
+        for {
+          head <- codegen(fs.head)
+          x = fs.head.Var
+          xv           <- codegen(x)
+          tailfibreVal <- indexedIterFunc(fs.tailfibre(x), typ)
+        } yield q"val x =  $xv ; ${tailfibreVal}.piShape($xv, $head)"
+    }
+  }
 
   def fmtConsSeq[SS <: HList, H <: Term with Subs[H], Intros <: HList](
       seq: ConstructorSeqTL[SS, H, Intros]) =

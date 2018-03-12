@@ -34,7 +34,7 @@ object Subst {
   * chiefly subtypes of `Term` and `HList`s of these;
   *
   */
-trait TermList[A] extends Subst[A] {
+sealed trait TermList[A] extends Subst[A] {
 
   def terms(a: A): Vector[Term]
 }
@@ -113,9 +113,8 @@ sealed abstract class TypFamilyPtn[
   def getIndex(w: F, typ: Typ[H]): Option[Index]
 
   def ~>:[TT <: Term with Subs[TT]](variable: TT) =
-      TypFamilyPtn.DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
-                         (t: TT) => this.subs(variable, t))
-
+    TypFamilyPtn.DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
+                                  (t: TT) => this.subs(variable, t))
 
   /**
     * type `W(a)` given the family `W` and index `a`
@@ -175,8 +174,8 @@ object TypFamilyPtn {
 
   import TypFamilyMapper._
 
-  object IdTypFamily{
-    def byTyp[H<: Term with Subs[H]](typ: Typ[H]) = IdTypFamily[H]
+  object IdTypFamily {
+    def byTyp[H <: Term with Subs[H]](typ: Typ[H]) = IdTypFamily[H]
   }
 
   case class IdTypFamily[H <: Term with Subs[H]]()

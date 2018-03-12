@@ -310,10 +310,10 @@ object IndexedIterFuncPtnMap {
 /**
   * indexed version of [[IterFuncShape]]
   */
-abstract class IndexedIterFuncShape[H <: Term with Subs[H],
-                                    F <: Term with Subs[F],
-                                    Fb <: Term with Subs[Fb],
-                                    Index <: HList: TermList] {
+sealed abstract class IndexedIterFuncShape[H <: Term with Subs[H],
+                                           F <: Term with Subs[F],
+                                           Fb <: Term with Subs[Fb],
+                                           Index <: HList: TermList] {
 
   /**
     * returns the type corresponding to the pattern, such as A -> W, given the (inductive) type W,
@@ -324,6 +324,9 @@ abstract class IndexedIterFuncShape[H <: Term with Subs[H],
   def subs(x: Term, y: Term): IndexedIterFuncShape[H, F, Fb, Index]
 
   val family: TypFamilyPtn[H, Fb, Index]
+
+  def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
+    IndexedIterFuncShape.DepFuncShape(dom, (t: TT) => subs(variable, t))
 
   def mapper[C <: Term with Subs[C], IF <: Term with Subs[IF],
   IDF <: Term with Subs[IDF], IDFT <: Term with Subs[IDFT]](
