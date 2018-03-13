@@ -66,8 +66,8 @@ trait InductionImplicits {
       val fmly                                                        = g.get(W)
       val ind                                                         = fmly.getIndex(W, typ).get
       implicit val gs: TermList[Index] = g.subst
-
-      IndexedConstructorShape.IndexedIdShape(fmly, ind)
+      IndexedIterFuncShape.IdIterShape(fmly, ind)
+      // IndexedConstructorShape.IndexedIdShape(fmly, ind)
     }
   }
 
@@ -105,8 +105,12 @@ trait InductionImplicits {
     //     (iterHead).-->>:(IndexedConstructorShape.IndexedIdShape(fmly, ind))
     // }
 
-    def -->>:(that: IndexedIdShape[H, F, Index]) = {
-      IndexedFuncConsShape(IdIterShape[H], iterHead, that.index)
-    }
+    // def -->>:(that: IndexedIdShape[H, F, Index]) = {
+    //   IndexedFuncConsShape(IdIterShape[H], iterHead, that.index)
+    // }
+
+    def -->>:(that: IndexedIterFuncShape.IdIterShape[H, F, Index]) =
+      IndexedIndexedFuncConsShape(that, iterHead, that.index)
+
   }
 }

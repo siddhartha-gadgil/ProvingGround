@@ -150,7 +150,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
 
   def typFamilyPtn[H <: Term with Subs[H],
                    F <: Term with Subs[F],
-                   Index <: HList: TermList](ptn: TypFamilyPtn[H, F, Index],
+                   Index <: HList](ptn: TypFamilyPtn[H, F, Index],
                                              typ: Typ[H]): Option[MTerm] = {
     import TypFamilyPtn._
     val typOpt = onTerm(typ)
@@ -162,7 +162,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
       case ft: FuncTypFamily[a, H, b, c] =>
         for {
           headCode <- onTerm(ft.head)
-          tailCode <- typFamilyPtn(ft.tail, typ)(ft.tail.tlEvidence)
+          tailCode <- typFamilyPtn(ft.tail, typ)
         } yield q"FuncTypFamily($headCode, $tailCode)"
       case ft: DepFuncTypFamily[a, H, b, c] =>
         val x       = ft.head.Var
@@ -170,7 +170,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
         for {
           headCode    <- onTerm(ft.head)
           xv          <- onTerm(x)
-          tailValCode <- typFamilyPtn(tailVal, typ)(tailVal.tlEvidence)
+          tailValCode <- typFamilyPtn(tailVal, typ)
         } yield q"val x = $xv;FuncTypFamily($headCode, x ~>: $tailValCode)"
     }
 
@@ -192,7 +192,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
   def indexedIterFunc[H <: Term with Subs[H],
                       F <: Term with Subs[F],
                       Fb <: Term with Subs[Fb],
-                      Index <: HList: TermList](
+                      Index <: HList](
       iterFunc: IndexedIterFuncShape[H, F, Fb, Index],
       w: Fb): Option[MTerm] = {
     import IndexedIterFuncShape._, iterFunc.family
@@ -224,7 +224,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
                        H <: Term with Subs[H],
                        Fb <: Term with Subs[Fb],
                        ConstructorType <: Term with Subs[ConstructorType],
-                       Index <: HList: TermList](
+                       Index <: HList](
       shape: IndexedConstructorShape[S, H, Fb, ConstructorType, Index],
       w: Fb): Option[MTerm] = {
     import IndexedConstructorShape._
@@ -246,7 +246,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
       //   } yield q"IndexedConstructorShape.IndexedFuncConsShape($tailCode, $headCode, $indCode)"
       case fc: IndexedIndexedFuncConsShape[a, H, c, b, Fb, Index] =>
         for {
-          tailCode <- indexedIterFunc(fc.tail, ???)
+          tailCode <- indexedIterFunc(fc.tail, w)
           headCode <- indexedConsShape(fc.head, w)
           indCode  <- index(fc.ind)
         } yield
@@ -274,7 +274,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
   def indexedConsSeqDom[SS <: HList,
                         H <: Term with Subs[H],
                         F <: Term with Subs[F],
-                        Index <: HList: TermList,
+                        Index <: HList,
                         Intros <: HList](
       seqDom: IndexedConstructorSeqDom[SS, H, F, Index, Intros])
     : Option[MTerm] = {
