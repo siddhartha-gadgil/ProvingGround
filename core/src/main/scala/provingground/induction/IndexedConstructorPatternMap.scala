@@ -676,6 +676,7 @@ object IndexedConstructorShape {
 
   object IndexedFuncConsShape
 
+  @deprecated("wrong", "don't use")
   case class IndexedFuncConsShape[HShape <: HList,
                                   H <: Term with Subs[H],
                                   F <: Term with Subs[F],

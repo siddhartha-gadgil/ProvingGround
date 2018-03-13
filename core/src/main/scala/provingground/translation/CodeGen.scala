@@ -238,7 +238,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
         } yield
           q"IndexedConstructorShape.IndexedIdShape($familyCode, $indexCode)"
       case fc: IndexedFuncConsShape[a, H, Fb, b, c, Index] =>
-        ??? // this may be a meaningless case
+        ??? // wornd, deprecated case
       //   for {
       //     tailCode <- iterFunc(fc.tail, w)
       //     headCode <- indexedConsShape(fc.head, w)
