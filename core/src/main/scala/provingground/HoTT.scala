@@ -295,6 +295,9 @@ object HoTT {
     /** symbolic object with given name*/
     def ::(name: String) = symbObj(Name(name))
 
+    /** shortcut for symbolic object */
+    def sym(implicit name: sourcecode.Name) = ::(name.value)
+
     /**
       * new variable from a factory.
       */

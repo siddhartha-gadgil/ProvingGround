@@ -19,9 +19,12 @@ scalaVersion in ThisBuild := scalaV
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
+
 libraryDependencies += compilerPlugin(
   "org.scalameta" % "semanticdb-scalac" % "2.1.2" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
+scalacOptions += "-P:splain:all:true"
 
 // javaOptions in Universal ++= Seq(
 //   // -J params will be added as jvm parameters
@@ -62,7 +65,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "io.monix"      %% "monix"         % "3.0.0-M2",
     "org.scalameta" %% "scalameta"     % "3.4.0",
     "com.geirsson"  %% "scalafmt-core" % "1.4.0",
-    // "io.monix"      %% "monix-cats" % "2.3.0",
+    "com.lihaoyi" %% "sourcecode" % "0.1.4",
     "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
   ),
   scalacOptions in Compile ++= Seq("-unchecked",
