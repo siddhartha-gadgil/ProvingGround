@@ -110,7 +110,11 @@ So far these are all independent. We shall introduce terms as witnesses for the 
 
 ## Statement of lemma
 
-The main internal repetition trick is captured the bound $l((wy)^ns^{-1}t(zw^{-1})^n)\\leq n(l(y) + l(z)) + l(s^{-1}) + l(t)$. We define $c(n) = (wy)^ns^{-1}t(zw^{-1})^n$ and $f(n) = n(l(y) + l(z)) + l(s^{-1}) + l(t)$, so the lemms is $l(c(n))\leq(f(n))$. We encode this  below.
+The main internal repetition trick is captured the bound
+
+$$l((wy)^ns^{-1}t(zw^{-1})^n)\leq n(l(y) + l(z)) + l(s^{-1}) + l(t).$$
+
+We define $c(n) = (wy)^ns^{-1}t(zw^{-1})^n$ and $f(n) = n(l(y) + l(z)) + l(s^{-1}) + l(t)$, so the inequality is $l(c(n))\leq(f(n))$. We encode this  below as the _main lemma_.
 
 
 ```scala
@@ -133,10 +137,10 @@ scala> val r = incl(QField)
 r: provingground.functionfinder.NatRing.Rec[provingground.functionfinder.QField.LocalTerm] = <function1>
 
 scala> val f = n :-> (l(s.inverse) + l(t) + ((l(y) + l(z)) * r(n) ) )
-f: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.functionfinder.QField.LocalTerm] = (n :  Nat.Typ) ↦ (((l) (t) + (l) ((inv) (s)) + ((l) (z) * (<function1>) (n)) + ((<function1>) (n) * (l) (y))))
+f: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.functionfinder.QField.LocalTerm] = (n :  Nat.Typ) ↦ (((l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (z)) + ((l) (y) * (<function1>) (n))))
 
 scala> val lemma = n :-> (leq (l(c(n)) )(f(n) ) )
-lemma: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.functionfinder.QField.Pos] = (n :  Nat.Typ) ↦ (Pos((((<function1>) (n) * (l) (y)) + (l) (t) + (l) ((inv) (s)) + ((prod) (-1)) ((l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n)))))) + ((l) (z) * (<function1>) (n)))))
+lemma: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.functionfinder.QField.Pos] = (n :  Nat.Typ) ↦ (Pos((((l) (z) * (<function1>) (n)) + (l) (t) + ((prod) (-1)) ((l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n)))))) + ((l) (y) * (<function1>) (n)) + (l) ((inv) (s)))))
 ```
 
 ## Proving the lemma
@@ -149,7 +153,7 @@ scala> val d = n :-> (wy |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| zwbar)
 d: provingground.HoTT.Func[provingground.functionfinder.RepTerm[spire.math.SafeLong] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.SafeLong]],provingground.functionfinder.FreeGroup.LocalTerm] = (n :  Nat.Typ) ↦ (((mul) (w)) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))))))
 
 scala> val dIsc = FreeGroup.rm(s.inverse |+| t |+| zwbarn |+| zwbar) *: (PowerDistributive.pf(wy)(nat(1))(n))
-dIsc: provingground.HoTT.Equality[provingground.functionfinder.FreeGroup.LocalTerm] = (ind{($cosg :  FreeGroup) ↦ (($cosh :  FreeGroup) ↦ ($cosg = $cosh))(((mul) (w)) (((mul) (y)) ((<function1>) (n))))(((mul) ((<function1>) (n))) (((mul) (w)) (y)))}{($aaxm :  FreeGroup) ↦ (($aaxn :  FreeGroup) ↦ ((_ : ($aaxm = $aaxn) :  $aaxm = $aaxn) ↦ (((mul) ($aaxm)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))) = ((mul) ($aaxn)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))))))}(($aaxm :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($aaxm)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))))))) ((<function1>) (n) : (((mul) (w)) (((mul) (y)) ((<function...
+dIsc: provingground.HoTT.Equality[provingground.functionfinder.FreeGroup.LocalTerm] = (ind{($avmfh :  FreeGroup) ↦ (($avmfi :  FreeGroup) ↦ ($avmfh = $avmfi))(((mul) (w)) (((mul) (y)) ((<function1>) (n))))(((mul) ((<function1>) (n))) (((mul) (w)) (y)))}{($asaqk :  FreeGroup) ↦ (($asaql :  FreeGroup) ↦ ((_ : ($asaqk = $asaql) :  $asaqk = $asaql) ↦ (((mul) ($asaqk)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))) = ((mul) ($asaql)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))))))}(($asaqk :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($asaqk)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))))))) ((<function1>) (n) : (((mul) (w)) (((mul) (y...
 
 scala> assert(dIsc.typ == (d(n) =:= c(succ(n))))
 ```
@@ -164,7 +168,7 @@ scala> val lbIsld = conjInv(w)(y |+| c(n) |+| z)
 lbIsld: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[spire.math.Rational]] = ((conjugacy-invariance) (w)) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))) : ((l) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))) = (l) (((mul) (w)) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w))))))))))
 
 scala> val bIsc = lbIsld && (l *: dIsc)
-bIsc: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[spire.math.Rational] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.Rational]]] = ((ind{($grjk :  Q.Typ) ↦ (($grjl :  Q.Typ) ↦ ($grjk = $grjl))((l) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))))((l) (((mul) (w)) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w))))))))))}{($enrq :  Q.Typ) ↦ (($enrr :  Q.Typ) ↦ ((_ : ($enrq = $enrr) :  $enrq = $enrr) ↦ (($enrr = (l) (((mul) ((<function1>) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))))))) → ($e...
+bIsc: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[spire.math.Rational] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.Rational]]] = ((ind{($bkqqf :  Q.Typ) ↦ (($bkqqg :  Q.Typ) ↦ ($bkqqf = $bkqqg))((l) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))))((l) (((mul) (w)) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w))))))))))}{($azfuz :  Q.Typ) ↦ (($azfva :  Q.Typ) ↦ ((_ : ($azfuz = $azfva) :  $azfuz = $azfva) ↦ (($azfva = (l) (((mul) ((<function1>) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w)))))...
 
 scala> assert(bIsc.typ == (l(b(n)) =:= l(c(succ(n))) ))
 ```
@@ -181,7 +185,7 @@ We first assume the induction hypothesis.
 
 ```scala
 scala> val hyp = "hyp" :: lemma(n)
-hyp: provingground.functionfinder.QField.PosWit with provingground.HoTT.Subs[provingground.functionfinder.QField.PosWit] = hyp : (Pos((((l) (z) * (<function1>) (n)) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y)) + ((prod) (-1)) ((l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n)))))))))
+hyp: provingground.functionfinder.QField.PosWit with provingground.HoTT.Subs[provingground.functionfinder.QField.PosWit] = hyp : (Pos(((l) (t) + ((prod) (-1)) ((l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n)))))) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + (l) ((inv) (s)))))
 ```
 
 Next, we bound $l(b(n))$ (which we know is $l(c(n+ 1)))$ in terms of $l(c(n))$.
@@ -208,10 +212,10 @@ scala> val bnd = "bound" :: QField.LocalTyp
 bnd: provingground.functionfinder.RepTerm[spire.math.Rational] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[spire.math.Rational]] = bound
 
 scala> val cbnd = bIsc.lift(bnd :-> (leq(bnd)(f(succ(n)) ) ))
-cbnd: provingground.HoTT.Func[provingground.functionfinder.QField.PosWit,provingground.functionfinder.QField.PosWit] = (ind{($abhmp :  Q.Typ) ↦ (($abhmq :  Q.Typ) ↦ ($abhmp = $abhmq))((l) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))))((l) (((mul) ((<function1>) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w))))))))))}{($gykv :  Q.Typ) ↦ (($gykw :  Q.Typ) ↦ ((_ : ($gykv = $gykw) :  $gykv = $gykw) ↦ ((Pos(((l) (z) + ((l) (z) * (<function1>) (n)) + ((prod) (-1)) ($gykv) + (l) (y) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y))))) → (Pos(((l) (z) + ((l) (z) * (<function1>) (n)) + (l) (y) + (l) (t) + (l) ((inv) (s)) +...
+cbnd: provingground.HoTT.Func[provingground.functionfinder.QField.PosWit,provingground.functionfinder.QField.PosWit] = (ind{($dirld :  Q.Typ) ↦ (($dirle :  Q.Typ) ↦ ($dirld = $dirle))((l) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))))((l) (((mul) ((<function1>) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w))))))))))}{($bkzzk :  Q.Typ) ↦ (($bkzzl :  Q.Typ) ↦ ((_ : ($bkzzk = $bkzzl) :  $bkzzk = $bkzzl) ↦ ((Pos(((l) (t) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + ((prod) (-1)) ($bkzzk) + (l) ((inv) (s)) + (l) (y) + (l) (z)))) → (Pos((((prod) (-1)) ($bkzzl) + (l) (t) + ((<function1>) (n) * (l) (y)) + ((<fu...
 
 scala> val step = cbnd(lbnBounded)
-step: provingground.functionfinder.QField.PosWit = ((ind{($abhmp :  Q.Typ) ↦ (($abhmq :  Q.Typ) ↦ ($abhmp = $abhmq))((l) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))))((l) (((mul) ((<function1>) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w))))))))))}{($gykv :  Q.Typ) ↦ (($gykw :  Q.Typ) ↦ ((_ : ($gykv = $gykw) :  $gykv = $gykw) ↦ ((Pos(((l) (z) + ((l) (z) * (<function1>) (n)) + ((prod) (-1)) ($gykv) + (l) (y) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y))))) → (Pos(((l) (z) + ((l) (z) * (<function1>) (n)) + (l) (y) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y)) + ((prod) (-1)) ($gykw)))))))}(($gyk...
+step: provingground.functionfinder.QField.PosWit = ((ind{($dirld :  Q.Typ) ↦ (($dirle :  Q.Typ) ↦ ($dirld = $dirle))((l) (((mul) (y)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (z)))))))((l) (((mul) ((<function1>) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) (((mul) (z)) ((inv) (w))))))))))}{($bkzzk :  Q.Typ) ↦ (($bkzzl :  Q.Typ) ↦ ((_ : ($bkzzk = $bkzzl) :  $bkzzk = $bkzzl) ↦ ((Pos(((l) (t) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + ((prod) (-1)) ($bkzzk) + (l) ((inv) (s)) + (l) (y) + (l) (z)))) → (Pos((((prod) (-1)) ($bkzzl) + (l) (t) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + (l) ((inv) (s)) + (l) (y) + (l) (z))))))...
 
 scala> assert(step.typ == lemma(succ(n)))
 ```
@@ -250,10 +254,10 @@ c2: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[provinggrou
 We deduce using a theorem (in our code) about powers of conjugates that $x^n = s(wy)^ns^{-1} = t(zw^{-1})^nt^{-1}$.
 ```scala
 scala> val xnConjwyn = (pown *: c1) && ConjPower.pf(s)(wy)(n)
-xnConjwyn: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word]]] = ((ind{($afbza :  FreeGroup) ↦ (($afbzb :  FreeGroup) ↦ ($afbza = $afbzb))((<function1>) (n))((<function1>) (n))}{($aeujl :  FreeGroup) ↦ (($aeujm :  FreeGroup) ↦ ((_ : ($aeujl = $aeujm) :  $aeujl = $aeujm) ↦ (($aeujm = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))) → ($aeujl = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))))))}(($aeujl :  FreeGroup) ↦ (($aeush : ($aeujl = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))) :  $aeujl = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))) ↦ ($aeush : ($aeujl = (...
+xnConjwyn: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word]]] = ((ind{($dndjv :  FreeGroup) ↦ (($dndjw :  FreeGroup) ↦ ($dndjv = $dndjw))((<function1>) (n))((<function1>) (n))}{($dlxvi :  FreeGroup) ↦ (($dlxvj :  FreeGroup) ↦ ((_ : ($dlxvi = $dlxvj) :  $dlxvi = $dlxvj) ↦ (($dlxvj = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))) → ($dlxvi = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))))))}(($dlxvi :  FreeGroup) ↦ (($dlyjy : ($dlxvi = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))) :  $dlxvi = ((mul) (s)) (((mul) ((<function1>) (n))) ((inv) (s)))) ↦ ($dlyjy : ($dlxvi = (...
 
 scala> val xnConjzwbarn= (pown *: c2) && ConjPower.pf(t)(zwbar)(n)
-xnConjzwbarn: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word]]] = ((ind{($afwcq :  FreeGroup) ↦ (($afwcr :  FreeGroup) ↦ ($afwcq = $afwcr))((<function1>) (n))((<function1>) (n))}{($afojz :  FreeGroup) ↦ (($afoka :  FreeGroup) ↦ ((_ : ($afojz = $afoka) :  $afojz = $afoka) ↦ (($afoka = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))) → ($afojz = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))))))}(($afojz :  FreeGroup) ↦ (($afosv : ($afojz = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))) :  $afojz = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))) ↦ ($afosv : ($afojz ...
+xnConjzwbarn: provingground.HoTT.Equality[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word] with provingground.HoTT.Subs[provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word]]] = ((ind{($dozmt :  FreeGroup) ↦ (($dozmu :  FreeGroup) ↦ ($dozmt = $dozmu))((<function1>) (n))((<function1>) (n))}{($dnstm :  FreeGroup) ↦ (($dnstn :  FreeGroup) ↦ ((_ : ($dnstm = $dnstn) :  $dnstm = $dnstn) ↦ (($dnstn = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))) → ($dnstm = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))))))}(($dnstm :  FreeGroup) ↦ (($dntic : ($dnstm = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))) :  $dnstm = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))) ↦ ($dntic : ($dnstm ...
 
 scala> assert(xnConjwyn.typ == (pown(x) =:= (s |+| pown(wy)  |+| s.inverse  ) ) )
 
@@ -269,7 +273,7 @@ scala> val t2 = t |+| pown(zwbar)  |+| t.inverse
 t2: provingground.functionfinder.FreeGroup.LocalTerm = ((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))
 
 scala> val xnxnExpr = (FreeGroup.rm(pown(x)) *: xnConjwyn) && (FreeGroup.lm(t1) *: xnConjzwbarn)
-xnxnExpr: provingground.HoTT.Equality[provingground.functionfinder.FreeGroup.LocalTerm with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm]] = ((ind{($akpis :  FreeGroup) ↦ (($akpit :  FreeGroup) ↦ ($akpis = $akpit))(((mul) ((<function1>) (n))) ((<function1>) (n)))(((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) ((<function1>) (n)))))}{($aiyxu :  FreeGroup) ↦ (($aiyxv :  FreeGroup) ↦ ((_ : ($aiyxu = $aiyxv) :  $aiyxu = $aiyxv) ↦ (($aiyxv = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t))))))) → ($aiyxu = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t))))))))))}(($aiyxu :  FreeGroup) ↦ (($ai...
+xnxnExpr: provingground.HoTT.Equality[provingground.functionfinder.FreeGroup.LocalTerm with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm]] = ((ind{($dxysw :  FreeGroup) ↦ (($dxysx :  FreeGroup) ↦ ($dxysw = $dxysx))(((mul) ((<function1>) (n))) ((<function1>) (n)))(((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) ((<function1>) (n)))))}{($dszrf :  FreeGroup) ↦ (($dszrg :  FreeGroup) ↦ ((_ : ($dszrf = $dszrg) :  $dszrf = $dszrg) ↦ (($dszrg = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t))))))) → ($dszrf = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t))))))))))}(($dszrf :  FreeGroup) ↦ (($dt...
 
 scala> assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
 ```
@@ -277,7 +281,7 @@ scala> assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
 Using $x^nx^n = x^{2n}$, we get the formula $x^{2n} = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.
 ```scala
 scala> val x2nExpr =PowerDistributive.pf(x)(n)(n).sym && xnxnExpr
-x2nExpr: provingground.HoTT.Equality[provingground.functionfinder.FreeGroup.LocalTerm with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm] with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm]]] = ((ind{($amblw :  FreeGroup) ↦ (($amblx :  FreeGroup) ↦ ($amblw = $amblx))((<function1>) (((prod) (2)) (n)))(((mul) ((<function1>) (n))) ((<function1>) (n)))}{($alhpk :  FreeGroup) ↦ (($alhpl :  FreeGroup) ↦ ((_ : ($alhpk = $alhpl) :  $alhpk = $alhpl) ↦ (($alhpl = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t))))))) → ($alhpk = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul)...
+x2nExpr: provingground.HoTT.Equality[provingground.functionfinder.FreeGroup.LocalTerm with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm] with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm with provingground.HoTT.Subs[provingground.functionfinder.FreeGroup.LocalTerm]]] = ((ind{($eaoaf :  FreeGroup) ↦ (($eaoag :  FreeGroup) ↦ ($eaoaf = $eaoag))((<function1>) (((prod) (2)) (n)))(((mul) ((<function1>) (n))) ((<function1>) (n)))}{($dynxk :  FreeGroup) ↦ (($dynxl :  FreeGroup) ↦ ((_ : ($dynxk = $dynxl) :  $dynxk = $dynxl) ↦ (($dynxl = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t))))))) → ($dynxk = ((mul) (s)) (((mul) ((<function1>) (n))) (((mul)...
 
 scala> assert(x2nExpr.typ == (FreeGroup.power(x)(NatRing.prod(n)(nat(2))) =:= (s |+| c(n) |+| t.inverse)))
 ```
@@ -286,10 +290,10 @@ We now bound the length of the right hand side $s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$
 
 ```scala
 scala> val thmBound = f(n) + l(s) + l(t.inverse)
-thmBound: provingground.functionfinder.QField.LocalTerm = ((l) (s) + ((l) (z) * (<function1>) (n)) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y)) + (l) ((inv) (t)))
+thmBound: provingground.functionfinder.QField.LocalTerm = ((l) (t) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + (l) ((inv) (t)) + (l) ((inv) (s)) + (l) (s))
 
 scala> val exprBound = lemmaProof(n) + triang(s)(c(n)) + triang(s |+| c(n))(t.inverse)
-exprBound: provingground.functionfinder.QField.PosWitSum = PosWitSum(PosWitSum((<function1>) (n) : (Pos((((l) (z) * (<function1>) (n)) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y)) + ((prod) (-1)) ((l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n))))))))),((triangle-inequality) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n))))) : (Pos((((prod) (-1)) ((l) (((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n))))))) + (l) (s) + (l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n))))))))),((triangle-inequality) (((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n)...
+exprBound: provingground.functionfinder.QField.PosWitSum = PosWitSum(PosWitSum((<function1>) (n) : (Pos(((l) (t) + ((prod) (-1)) ((l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n)))))) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + (l) ((inv) (s))))),((triangle-inequality) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n))))) : (Pos((((prod) (-1)) ((l) (((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n))))))) + (l) (s) + (l) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n))))))))),((triangle-inequality) (((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((<function1>) (n)...
 
 scala> assert(exprBound.typ == leq(l(s |+| c(n) |+| t.inverse ))(thmBound))
 ```
@@ -298,7 +302,7 @@ We easily deduce the bound on $l(x^{2n})$ to complete the proof.
 
 ```scala
 scala> val thmProof = x2nExpr.sym.lift (g :-> leq(l(g))(thmBound))(exprBound)
-thmProof: provingground.functionfinder.QField.PosWit = ((ind{($bpxkw :  FreeGroup) ↦ (($bpxkx :  FreeGroup) ↦ ($bpxkw = $bpxkx))(((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))))))((<function1>) (((prod) (2)) (n)))}{($apcui :  FreeGroup) ↦ (($apcuj :  FreeGroup) ↦ ((_ : ($apcui = $apcuj) :  $apcui = $apcuj) ↦ ((Pos(((l) (s) + ((l) (z) * (<function1>) (n)) + ((prod) (-1)) ((l) ($apcui)) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y)) + (l) ((inv) (t))))) → (Pos(((l) (s) + ((l) (z) * (<function1>) (n)) + (l) (t) + (l) ((inv) (s)) + ((<function1>) (n) * (l) (y)) + ((prod) (-1)) ((l) ($apcuj)) + (l) ((inv) (t))))))))}(($apcui :  FreeGroup) ↦ (($axeam : (Pos(((l) (s) + ((prod) (-1)) ((l...
+thmProof: provingground.functionfinder.QField.PosWit = ((ind{($gbqsh :  FreeGroup) ↦ (($gbqsi :  FreeGroup) ↦ ($gbqsh = $gbqsi))(((mul) (s)) (((mul) ((<function1>) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((<function1>) (n))) ((inv) (t)))))))((<function1>) (((prod) (2)) (n)))}{($eeimz :  FreeGroup) ↦ (($eeina :  FreeGroup) ↦ ((_ : ($eeimz = $eeina) :  $eeimz = $eeina) ↦ ((Pos(((l) (t) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + (l) ((inv) (t)) + (l) ((inv) (s)) + (l) (s) + ((prod) (-1)) ((l) ($eeimz))))) → (Pos((((prod) (-1)) ((l) ($eeina)) + (l) (t) + ((<function1>) (n) * (l) (y)) + ((<function1>) (n) * (l) (z)) + (l) ((inv) (t)) + (l) ((inv) (s)) + (l) (s)))))))}(($eeimz :  FreeGroup) ↦ (($euzzj : (Pos(((l) (t) + ((l) (y) * (<func...
 
 scala> val x2n = FreeGroup.power(x)(NatRing.prod(n)(nat(2)))
 x2n: provingground.functionfinder.RepTerm[provingground.andrewscurtis.FreeGroups.Word] = (<function1>) (((prod) (2)) (n))
