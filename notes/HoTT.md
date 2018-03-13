@@ -33,7 +33,7 @@ import provingground._
 scala> import HoTT._
 import HoTT._
 
-scala> val A ="A" :: Type
+scala> val A = "A" :: Type
 A: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = A : 𝒰
 
 scala> A == Type.::("A")
@@ -44,7 +44,7 @@ We consider a symbolic object of the type _A_
 
 
 ```scala
-scala> val a ="a" :: A
+scala> val a = "a" :: A
 a: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = a : (A : 𝒰 )
 ```
 

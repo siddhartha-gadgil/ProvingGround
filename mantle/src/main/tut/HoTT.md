@@ -33,7 +33,7 @@ We have a family of universes, but mostly use the first one denoted by Type. Giv
 ```tut
 import provingground._
 import HoTT._
-val A ="A" :: Type
+val A = "A" :: Type
 A == Type.::("A")
 ```
 
@@ -41,7 +41,7 @@ We consider a symbolic object of the type _A_
 
 
 ```tut
-val a ="a" :: A
+val a = "a" :: A
 ```
 
 

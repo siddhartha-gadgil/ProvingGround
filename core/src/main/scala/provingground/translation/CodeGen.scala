@@ -194,11 +194,12 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
                       Fb <: Term with Subs[Fb],
                       Index <: HList: TermList](
       iterFunc: IndexedIterFuncShape[H, F, Fb, Index],
-      typ: Typ[H]): Option[MTerm] = {
+      w: Fb): Option[MTerm] = {
     import IndexedIterFuncShape._, iterFunc.family
-    val familyOpt = typFamilyPtn(family, typ)
     iterFunc match {
       case id: IdIterShape[H, Fb, Index] =>
+        val typ       = id.family.typ(w, id.index)
+        val familyOpt = typFamilyPtn(family, typ)
         for {
           familyCode <- familyOpt
           indexCode  <- index(id.index)
@@ -207,17 +208,97 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
       case fc: FuncShape[a, b, H, Fb, Index] =>
         for {
           headCode <- codegen(fc.head)
-          tailCode <- indexedIterFunc(fc.tail, typ)
+          tailCode <- indexedIterFunc(fc.tail, w)
         } yield q"IndexedIterFuncShape.FuncShape($headCode, $tailCode)"
       case fs: DepFuncShape[u, H, w, Fb, Index] =>
         for {
           head <- codegen(fs.head)
           x = fs.head.Var
           xv           <- codegen(x)
-          tailfibreVal <- indexedIterFunc(fs.tailfibre(x), typ)
+          tailfibreVal <- indexedIterFunc(fs.tailfibre(x), w)
         } yield q"val x =  $xv ; ${tailfibreVal}.piShape($xv, $head)"
     }
   }
+
+  def indexedConsShape[S <: HList,
+                       H <: Term with Subs[H],
+                       Fb <: Term with Subs[Fb],
+                       ConstructorType <: Term with Subs[ConstructorType],
+                       Index <: HList: TermList](
+      shape: IndexedConstructorShape[S, H, Fb, ConstructorType, Index],
+      w: Fb): Option[MTerm] = {
+    import IndexedConstructorShape._
+    shape match {
+      case id: IndexedIdShape[H, Fb, Index] =>
+        val typ       = id.family.typ(w, id.index)
+        val familyOpt = typFamilyPtn(shape.family, typ)
+        for {
+          familyCode <- familyOpt
+          indexCode  <- index(id.index)
+        } yield
+          q"IndexedConstructorShape.IndexedIdShape($familyCode, $indexCode)"
+      case fc: IndexedFuncConsShape[a, H, Fb, b, c, Index] =>
+        ??? // this may be a meaningless case
+      //   for {
+      //     tailCode <- iterFunc(fc.tail, w)
+      //     headCode <- indexedConsShape(fc.head, w)
+      //     indCode <- index(fc.ind)
+      //   } yield q"IndexedConstructorShape.IndexedFuncConsShape($tailCode, $headCode, $indCode)"
+      case fc: IndexedIndexedFuncConsShape[a, H, c, b, Fb, Index] =>
+        for {
+          tailCode <- indexedIterFunc(fc.tail, ???)
+          headCode <- indexedConsShape(fc.head, w)
+          indCode  <- index(fc.ind)
+        } yield
+          q"IndexedConstructorShape.IndexedIndexedFuncConsShape($tailCode, $headCode, $indCode)"
+      case fc: IndexedCnstFuncConsShape[a, b, H, Fb, c, Index] =>
+        for {
+          tailCode <- codegen(fc.tail)
+          headCode <- indexedConsShape(fc.head, w)
+        } yield
+          q"IndexedConstructorShape.IndexedCnstFuncConsShape($tailCode, $headCode)"
+      case fc: IndexedCnstDepFuncConsShape[a, b, H, Fb, c, Index] =>
+        val tailOpt    = onTerm(fc.tail)
+        val x          = fc.tail.Var
+        val headValOpt = indexedConsShape(fc.headfibre(x), w)
+        for {
+          tailCode    <- tailOpt
+          headValCode <- headValOpt
+          xv          <- codegen(x)
+        } yield q"val x = $xv; x ~>>: $headValCode"
+    }
+
+
+  }
+
+  def indexedConsSeqDom[SS <: HList,
+                        H <: Term with Subs[H],
+                        F <: Term with Subs[F],
+                        Index <: HList: TermList,
+                        Intros <: HList](
+      seqDom: IndexedConstructorSeqDom[SS, H, F, Index, Intros])
+    : Option[MTerm] = {
+    import IndexedConstructorSeqDom._
+    seqDom match {
+      case em : Empty[H, F, Index] =>
+        val typ = em.family.someTyp(em.W)
+        for {
+          WCode  <- codegen(em.W)
+          familyCode <- typFamilyPtn(em.family, typ)
+        } yield q"Empty($WCode, $familyCode)"
+      case cons: Cons[a, b, H, F, c, Index, d] =>
+        val name     = s"""HoTT.Name("${cons.name}")"""
+        val nameCode = name.parse[MTerm].get
+        for {
+          patternCode <- indexedConsShape(cons.pattern, seqDom.W)
+          tailCode <- indexedConsSeqDom(cons.tail)
+        } yield q"IndexedConstructorSeqDom.Cons($nameCode, $patternCode, $tailCode)"
+    }
+
+  }
+
+
+
 
   def fmtConsSeq[SS <: HList, H <: Term with Subs[H], Intros <: HList](
       seq: ConstructorSeqTL[SS, H, Intros]) =

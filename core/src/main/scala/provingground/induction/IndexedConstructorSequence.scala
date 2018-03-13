@@ -616,19 +616,7 @@ object IndexedConstructorSeqDom {
       Index,
       IF,
       IDF,
-      IDFT]) // : IndexedConstructorSeqMap[C,
-    //                            H,
-    //                            RecType,
-    //                            InducType,
-    //                            HNil,
-    //                            F,
-    //                            Index,
-    //                            IF,
-    //                            IDF,
-    //                            IDFT] forSome {
-    //   type RecType <: Term with Subs[RecType];
-    //   type InducType <: Term with Subs[InducType];
-    // }
+      IDFT]) 
     =
       IndexedConstructorSeqMap.Empty[C, H, F, Index, IF, IDF, IDFT](
         W,

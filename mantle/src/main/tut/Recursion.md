@@ -78,7 +78,7 @@ The natural numbers `Nat` are an inductive type with two constructors, `zero` an
 The method on constructors corresponding to function types we use if `-->>:`, which is used because the domain of the extension is also the type `Nat`. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.
 
 ```tut
-val Nat ="Nat" :: Type
+val Nat = "Nat" :: Type
 val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
 val List(zero, succ) = NatInd.intros
 ```
@@ -107,7 +107,7 @@ A more complicated example is addition of natural numbers.
 val recNNN = NatInd.rec(Nat ->: Nat)
 recNNN.typ
 val m = "m" :: Nat
-val addn ="add(n)" :: Nat ->: Nat
+val addn = "add(n)" :: Nat ->: Nat
 val add = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))) ) ) )
 add(two)(one)
 assert(add(two)(one) == three)
@@ -127,7 +127,7 @@ A recursively defined function `f` to a type `X` is specified by data:
 Note that `f(a)` does not make sense. Hence a different method, `->>:`, is used for such extensions.
 
 ```tut
-val A ="A" :: Type
+val A = "A" :: Type
 val ListA = "List(A)" :: Type
 val ListAInd = ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA ) =: ListA
 val List(nil, cons) = ListAInd.intros
@@ -150,7 +150,7 @@ Another interesting inductive type is a binary rooted tree. This is our first de
 We define the number of vertices recursively on this.
 
 ```tut
-val T ="Tree" :: Type
+val T = "Tree" :: Type
 val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
 val List(leaf, node) = TInd.intros
 import Fold._
@@ -179,7 +179,7 @@ The data for recursively defining `f` is also more complex.
 We define the number of leaves in such a tree recursively.
 
 ```tut
-val BT ="BinTree" :: Type
+val BT = "BinTree" :: Type
 val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
 val List(leaf, node) = BTInd.intros
 val recBTN = BTInd.rec(Nat)
@@ -386,7 +386,7 @@ val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat 
 val recVNN = VecNInd.rec(Nat)
 val List(vnilN, vconsN) = VecNInd.intros
 
-val k ="k" :: Nat
+val k = "k" :: Nat
 val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
 
 vsum(zero)(vnilN)

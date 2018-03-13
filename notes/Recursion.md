@@ -105,7 +105,7 @@ scala> assert(and(tt)(tt)== tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(
 The natural numbers `Nat` are an inductive type with two constructors, `zero` and `succ`, of types `Nat` and `Nat ->: Nat`, respectively.
 The method on constructors corresponding to function types we use if `-->>:`, which is used because the domain of the extension is also the type `Nat`. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.
 ```scala
-scala> val Nat ="Nat" :: Type
+scala> val Nat = "Nat" :: Type
 Nat: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Nat : 𝒰
 
 scala> val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
@@ -164,7 +164,7 @@ res16: provingground.HoTT.Typ[provingground.HoTT.Term] = ((Nat : 𝒰 ) → (Nat
 scala> val m = "m" :: Nat
 m: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = m : (Nat : 𝒰 )
 
-scala> val addn ="add(n)" :: Nat ->: Nat
+scala> val addn = "add(n)" :: Nat ->: Nat
 addn: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]] = add(n) : ((Nat : 𝒰 ) → (Nat : 𝒰 ))
 
 scala> val add = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))) ) ) )
@@ -192,7 +192,7 @@ A recursively defined function `f` to a type `X` is specified by data:
 Note that `f(a)` does not make sense. Hence a different method, `->>:`, is used for such extensions.
 
 ```scala
-scala> val A ="A" :: Type
+scala> val A = "A" :: Type
 A: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = A : 𝒰
 
 scala> val ListA = "List(A)" :: Type
@@ -236,7 +236,7 @@ res22: provingground.HoTT.Term = (succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ((su
 Another interesting inductive type is a binary rooted tree. This is our first description.
 We define the number of vertices recursively on this.
 ```scala
-scala> val T ="Tree" :: Type
+scala> val T = "Tree" :: Type
 T: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = Tree : 𝒰
 
 scala> val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
@@ -286,7 +286,7 @@ This involves more complex constructors, with an additional method `-|>:`.
 The data for recursively defining `f` is also more complex.
 We define the number of leaves in such a tree recursively.
 ```scala
-scala> val BT ="BinTree" :: Type
+scala> val BT = "BinTree" :: Type
 BT: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = BinTree : 𝒰
 
 scala> val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
@@ -572,7 +572,7 @@ scala> val List(vnilN, vconsN) = VecNInd.intros
 vnilN: provingground.HoTT.Term = nil : ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) (0 : (Nat : 𝒰 )) : 𝒰 )
 vconsN: provingground.HoTT.Term = cons : (∏(($l : (Nat : 𝒰 )) ↦ ((Nat : 𝒰 ) → (((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ($l : (Nat : 𝒰 )) : 𝒰 ) → ((Vec(Nat) : ((Nat : 𝒰 ) → (𝒰 _0))) ((succ : ((Nat : 𝒰 ) → (Nat : 𝒰 ))) ($l : (Nat : 𝒰 )) : (Nat : 𝒰 )) : 𝒰 )))))
 
-scala> val k ="k" :: Nat
+scala> val k = "k" :: Nat
 k: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = k : (Nat : 𝒰 )
 
 scala> val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
