@@ -27,6 +27,7 @@ package provingground
   * There are indexed versions of all these definitions, to work with indexed inductive type families.
   */
 package object induction {
+  import provingground._
   object implicits
       extends InductionImplicits
       with TermListImplicits

@@ -65,7 +65,7 @@ trait InductionImplicits {
     def :>(typ: Typ[H]) = {
       val fmly                                                        = g.get(W)
       val ind                                                         = fmly.getIndex(W, typ).get
-      implicit val gs: _root_.provingground.induction.TermList[Index] = g.subst
+      implicit val gs: TermList[Index] = g.subst
 
       IndexedConstructorShape.IndexedIdShape(fmly, ind)
     }
@@ -77,7 +77,7 @@ trait InductionImplicits {
       implicit val g: TypFamilyPtnGetter[F, H, Index]) {
     def W = wt._1
 
-    implicit val gs: _root_.provingground.induction.TermList[Index] = g.subst
+    implicit val gs: TermList[Index] = g.subst
 
     def typ = wt._2
 
