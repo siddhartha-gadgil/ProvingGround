@@ -177,6 +177,18 @@ object HoTT {
       } else LambdaTerm(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
     case FormalAppln(func, arg) =>
       applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
+    case pt: PairTerm[u, v] =>
+      PairTerm(avoidVar(t, pt.first), avoidVar(t, pt.second)).asInstanceOf[U]
+    case pt: ProdTyp[u, v] =>
+      ProdTyp(avoidVar(t, pt.first), avoidVar(t, pt.second)).asInstanceOf[U]
+    case pt: FuncTyp[u, v] =>
+      FuncTyp(avoidVar(t, pt.dom), avoidVar(t, pt.codom)).asInstanceOf[U]
+    case pt: PiDefn[u, v] =>
+      PiDefn(avoidVar(t, pt.variable), avoidVar(t, pt.value)).asInstanceOf[U]
+    case pt: SigmaTyp[u, v] =>
+        SigmaTyp(avoidVar(t, pt.fibers)).asInstanceOf[U]
+
+
     case fn: RecFunc[u, v] =>
       val replacements =
         fn.defnData.map { (d) =>
