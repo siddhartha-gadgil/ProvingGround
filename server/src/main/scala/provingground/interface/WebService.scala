@@ -40,7 +40,7 @@ import ammonite.ops._
 class AmmService(
     val scriptsDir: Path = pwd / "repl-scripts",
     val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
-  import ammonite.kernel._
+  // import ammonite.kernel._
 
   val initCommands =
     "import provingground._\nimport HoTT._\nimport induction.TLImplicits._\nimport shapeless._\n; repl.pprinter.bind(translation.FansiShow.simplePrint)"

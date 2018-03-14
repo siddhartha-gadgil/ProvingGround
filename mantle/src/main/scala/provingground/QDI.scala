@@ -26,11 +26,14 @@ object AmmRepl extends App {
 
 object amm {
   def apply(): Unit = {
-    val initCommands =
-      """import provingground._, HoTT._, induction._, translation._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
-    ammonite.Main(predefCode = s"$initCommands").run()
-
+    ammMain.run()
   }
+
+  val initCommands =
+    """import provingground._, HoTT._, induction._, translation._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
+
+
+  def ammMain = ammonite.Main(predefCode = s"$initCommands")
 }
 
 /**
