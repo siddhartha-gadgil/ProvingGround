@@ -3249,25 +3249,6 @@ object HoTT {
     override def subs(x: Term, y: Term) = this
   }
 
-/**
-  * allows substitution of a `Term` by another.
-  */
-trait Subst[A] {
-  def subst(a: A)(x: Term, y: Term): A
-}
-
-object Subst {
-  def apply[A: Subst]: Subst[A] = implicitly[Subst[A]]
-
-  implicit def funcSubst[A: Subst]: Subst[Term => A] =
-    new Subst[Term => A] {
-      def subst(f: Term => A)(x: Term, y: Term) =
-        (t: Term) => Subst[A].subst(f(t))(x, y)
-    }
-}
-
-
-
 
 
   // -----------------------------------------------
@@ -3305,6 +3286,31 @@ object Subst {
 import shapeless._, HoTT._
 
 /**
+  * allows substitution of a `Term` by another.
+  */
+trait Subst[A] {
+  def subst(a: A)(x: Term, y: Term): A
+}
+
+
+
+object Subst {
+  def apply[A: Subst]: Subst[A] = implicitly[Subst[A]]
+
+  implicit def funcSubst[A: Subst]: Subst[Term => A] =
+    new Subst[Term => A] {
+      def subst(f: Term => A)(x: Term, y: Term) =
+        (t: Term) => Subst[A].subst(f(t))(x, y)
+    }
+
+  case class Lambda[T <: Term with Subs[T], A](variable: T, value: A)(implicit s: Subst[A]) extends (T => A){
+    def apply(t: T) = s.subst(value)(variable, t)
+
+    override def toString = s"$variable ${UnicodeSyms.MapsTo} $value"
+  }
+}
+
+/**
   * allows substitution of a `Term` by another, as well as mapping to a vector of terms
   * chiefly subtypes of `Term` and `HList`s of these;
   *
@@ -3324,9 +3330,6 @@ object TermList extends TermListImplicits {
       def terms(a: U) = Vector(a)
     }
 
-  // implicit object UnitTermList extends TermList[Unit] {
-  //   def subst(a: Unit)(x: Term, y: Term) = a
-  // }
 
   implicit object HNilTermList extends TermList[HNil] {
     def subst(a: HNil)(x: Term, y: Term) = a

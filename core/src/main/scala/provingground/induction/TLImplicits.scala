@@ -96,19 +96,6 @@ trait InductionImplicits {
 
     import IndexedConstructorShape._
 
-    // def -->>:(tail: Typ[H]) = {
-    //   val fmly = g.get(W)
-    //   val ind = fmly
-    //     .getIndex(W, typ)
-    //     .get
-    //
-    //     (iterHead).-->>:(IndexedConstructorShape.IndexedIdShape(fmly, ind))
-    // }
-
-    // def -->>:(that: IndexedIdShape[H, F, Index]) = {
-    //   IndexedFuncConsShape(IdIterShape[H], iterHead, that.index)
-    // }
-
     def -->>:(that: IndexedIterFuncShape.IdIterShape[H, F, Index]) =
       IndexedIndexedFuncConsShape(that, iterHead, that.index)
 

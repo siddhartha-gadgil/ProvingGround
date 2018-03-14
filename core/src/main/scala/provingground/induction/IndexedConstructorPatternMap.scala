@@ -528,11 +528,11 @@ object IndexedConstructorPatternMap {
   *
   */
 sealed abstract class IndexedConstructorShape[S <: HList,
-                                       H <: Term with Subs[H],
-                                       Fb <: Term with Subs[Fb],
-                                       ConstructorType <: Term with Subs[
-                                         ConstructorType],
-                                       Index <: HList: TermList] {
+                                              H <: Term with Subs[H],
+                                              Fb <: Term with Subs[Fb],
+                                              ConstructorType <: Term with Subs[
+                                                ConstructorType],
+                                              Index <: HList: TermList] {
   val family: TypFamilyPtn[H, Fb, Index]
 
   /**
@@ -619,8 +619,16 @@ sealed abstract class IndexedConstructorShape[S <: HList,
     * returns dependent shape `tail ~>: this` where tail must be independent of the inductive type `W` being defined.
     */
   def ~>>:[T <: Term with Subs[T]](tailVar: T) = {
+    val fib = Subst.Lambda(tailVar, this){
+      new Subst[IndexedConstructorShape[S, H, Fb, ConstructorType, Index]] {
+      def subst(a: IndexedConstructorShape[S, H, Fb, ConstructorType, Index])(
+          x: Term,
+          y: Term) =
+        a.subs(x, y)
+    }
+    }
     val fibre = (t: T) => this.subs(tailVar, t)
-    IndexedCnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fibre)
+    IndexedCnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fib)
   }
 }
 
@@ -636,6 +644,7 @@ object IndexedConstructorShape {
 
     IndexedIdShape(family, index)
   }
+
 
   import IndexedConstructorPatternMapper._
 
