@@ -626,7 +626,6 @@ sealed abstract class IndexedConstructorShape[S <: HList,
   }
 }
 
-
 object IndexedConstructorShape {
   def get[H <: Term with Subs[H],
           F <: Term with Subs[F],

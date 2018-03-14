@@ -171,7 +171,8 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
           headCode    <- onTerm(ft.head)
           xv          <- onTerm(x)
           tailValCode <- typFamilyPtn(tailVal, typ)
-        } yield q"val x = $xv; TypFamilyPtn.DepFuncTypFamily($headCode, x ~>: $tailValCode)"
+        } yield
+          q"val x = $xv; TypFamilyPtn.DepFuncTypFamily($headCode, x ~>: $tailValCode)"
     }
 
   }

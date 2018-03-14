@@ -16,13 +16,20 @@ sealed trait TypFamilyExst { typFmlyExst =>
   implicit val subst: TermList[Index]
 
   def lambdaExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
-    TypFamilyExst(DepFuncTypFamily(dom, (t: TT) => pattern.subs(variable, t)),
+    TypFamilyExst(
+      variable ~>: pattern
+      // DepFuncTypFamily(dom, (t: TT) => pattern.subs(variable, t))
+    ,
                   variable :~> W)
 
   def ~>:[TT <: Term with Subs[TT]](variable: TT) =
-    TypFamilyExst(DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
-                                   (t: TT) => pattern.subs(variable, t)),
-                  variable :~> W)
+    TypFamilyExst(
+      variable ~>: pattern
+      // DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
+      //                              (t: TT) => pattern.subs(variable, t))
+      ,
+                  variable :~> W
+                )
 
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
     TypFamilyExst(FuncTypFamily(dom, pattern), dom.Var :-> W)
@@ -43,13 +50,13 @@ sealed trait TypFamilyExst { typFmlyExst =>
     type F <: Term with Subs[F]
 
     val shape: IndexedIterFuncShape[Term, F, Fb, Index]
-
-    def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
-      DepFuncShape(dom, (t: TT) => shape.subs(variable, t))
-    }
+    //
+    // def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
+    //   DepFuncShape(dom, (t: TT) => shape.subs(variable, t))
+    // }
 
     def piWrap[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
-      IndexedIterFuncExst(piShape(variable, dom))
+      IndexedIterFuncExst(shape.piShape(variable, dom))
 
     def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
       IndexedIterFuncExst(FuncShape(dom, shape))

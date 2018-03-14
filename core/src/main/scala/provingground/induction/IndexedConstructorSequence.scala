@@ -571,8 +571,8 @@ sealed abstract class IndexedConstructorSeqDom[SS <: HList,
     * prepend introduction rule
     */
   def |:[HShape <: HList, HC <: Term with Subs[HC]](
-      head: IndexedConstructor[HShape, H, F, HC, Index]) :
-      IndexedConstructorSeqDom[HShape :: SS, H, F, Index, HC :: Intros] =
+      head: IndexedConstructor[HShape, H, F, HC, Index])
+    : IndexedConstructorSeqDom[HShape :: SS, H, F, Index, HC :: Intros] =
     IndexedConstructorSeqDom.Cons(head.name, head.shape, this)
 
   def subs(x: Term, y: Term): IndexedConstructorSeqDom[SS, H, F, Index, Intros]

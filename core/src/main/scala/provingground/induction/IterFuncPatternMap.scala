@@ -380,11 +380,17 @@ sealed trait IterFuncShape[O <: Term with Subs[O], F <: Term with Subs[F]] {
   def subs(x: Term, y: Term): IterFuncShape[O, F]
 
   def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
-    DepFuncShape(dom, (t: TT) => shape.subs(variable, t))
+    import SubstInstances._
+    val fib = Subst.Lambda(variable, this)
+    DepFuncShape(dom, fib
+      // (t: TT) => shape.subs(variable, t)
+    )
 
-    def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
-      FuncShape(tail, shape)
   }
+
+
+      def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
+        FuncShape(tail, shape)
   // def mapped[C <: Term with Subs[C]] =
   //   mapper[O].mapper(this)
 }
@@ -447,12 +453,12 @@ object IterFuncShape {
 
     val shape: IterFuncShape[Term, F]
 
-    def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
-      DepFuncShape(dom, (t: TT) => shape.subs(variable, t))
-    }
+    // def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
+    //   DepFuncShape(dom, (t: TT) => shape.subs(variable, t))
+    // }
 
     def piWrap[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
-      Exst(piShape(variable, dom))
+      Exst(shape.piShape(variable, dom))
 
     def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
       Exst(FuncShape(dom, shape))

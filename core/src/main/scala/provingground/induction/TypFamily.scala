@@ -30,8 +30,8 @@ sealed abstract class TypFamilyPtn[
     val fib = Subst.Lambda(variable, this)
     TypFamilyPtn.DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
                                   fib //(t: TT) => this.subs(variable, t)
-                                )
-                                }
+    )
+  }
 
   /**
     * type `W(a)` given the family `W` and index `a`
@@ -314,7 +314,7 @@ object TypFamilyPtn {
         variable ~>: value
         // DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
         //                  (t: TT) => value.subs(variable, t))
-                       )
+      )
 
     def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
       Exst(FuncTypFamily(dom, value))
