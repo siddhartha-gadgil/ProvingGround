@@ -12,7 +12,6 @@ import scala.util.Try
 
 import translation.{FansiShow, TermLang => TL}
 
-
 /**
   * the shape of a type family.
   */
@@ -36,9 +35,9 @@ sealed abstract class TypFamilyPtn[
   def typ(w: F, index: Index): Typ[H]
 
   /**
-   * A type for some index, used to infer `H`
-   */
-  def someTyp(w: F) : Typ[H]
+    * A type for some index, used to infer `H`
+    */
+  def someTyp(w: F): Typ[H]
 
   def subs(x: Term, y: Term): TypFamilyPtn[H, F, Index]
 
@@ -103,7 +102,7 @@ object TypFamilyPtn {
 
     def typ(w: Typ[H], index: HNil): Typ[H] = w
 
-    def someTyp(w: Typ[H]) : Typ[H] = w
+    def someTyp(w: Typ[H]): Typ[H] = w
 
     def subs(x: Term, y: Term) = this
 
@@ -174,7 +173,7 @@ object TypFamilyPtn {
     def typ(w: Func[U, TF], index: (U :: TI)): Typ[H] =
       tail.typ(w(index.head), index.tail)
 
-    def someTyp(w: Func[U, TF]) : Typ[H] = tail.someTyp(w(head.Var))
+    def someTyp(w: Func[U, TF]): Typ[H] = tail.someTyp(w(head.Var))
 
     def subs(x: Term, y: Term) =
       FuncTypFamily(head.replace(x, y), tail.subs(x, y))
@@ -241,7 +240,7 @@ object TypFamilyPtn {
     def typ(w: FuncLike[U, TF], index: U :: TI): Typ[H] =
       tailfibre(index.head).typ(w(index.head), index.tail)
 
-    def someTyp(w: FuncLike[U, TF]) : Typ[H] = {
+    def someTyp(w: FuncLike[U, TF]): Typ[H] = {
       val x = head.Var
       tailfibre(x).someTyp(w(x))
     }

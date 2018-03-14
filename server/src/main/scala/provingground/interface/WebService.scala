@@ -82,7 +82,6 @@ $body
     prevCode = initCommands
   }
 
-
   import java.io.OutputStream
 
   class StringOutputStream extends OutputStream {

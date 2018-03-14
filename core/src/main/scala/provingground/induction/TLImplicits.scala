@@ -63,8 +63,8 @@ trait InductionImplicits {
     }
 
     def :>(typ: Typ[H]) = {
-      val fmly                                                        = g.get(W)
-      val ind                                                         = fmly.getIndex(W, typ).get
+      val fmly                         = g.get(W)
+      val ind                          = fmly.getIndex(W, typ).get
       implicit val gs: TermList[Index] = g.subst
       IndexedIterFuncShape.IdIterShape(fmly, ind)
       // IndexedConstructorShape.IndexedIdShape(fmly, ind)

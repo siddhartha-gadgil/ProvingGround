@@ -151,19 +151,19 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
   def typFamilyPtn[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    Index <: HList](ptn: TypFamilyPtn[H, F, Index],
-                                             typ: Typ[H]): Option[MTerm] = {
+                                   typ: Typ[H]): Option[MTerm] = {
     import TypFamilyPtn._
     val typOpt = onTerm(typ)
     ptn match {
       case _: IdTypFamily[H] =>
         for {
           typCode <- typOpt
-        } yield q"IdTypFamily.byTyp($typCode)"
+        } yield q"TypFamilyPtn.IdTypFamily.byTyp($typCode)"
       case ft: FuncTypFamily[a, H, b, c] =>
         for {
           headCode <- onTerm(ft.head)
           tailCode <- typFamilyPtn(ft.tail, typ)
-        } yield q"FuncTypFamily($headCode, $tailCode)"
+        } yield q"TypFamilyPtn.FuncTypFamily($headCode, $tailCode)"
       case ft: DepFuncTypFamily[a, H, b, c] =>
         val x       = ft.head.Var
         val tailVal = ft.tailfibre(x)
@@ -171,7 +171,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
           headCode    <- onTerm(ft.head)
           xv          <- onTerm(x)
           tailValCode <- typFamilyPtn(tailVal, typ)
-        } yield q"val x = $xv;FuncTypFamily($headCode, x ~>: $tailValCode)"
+        } yield q"val x = $xv; TypFamilyPtn.DepFuncTypFamily($headCode, x ~>: $tailValCode)"
     }
 
   }
@@ -268,7 +268,6 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
         } yield q"val x = $xv; x ~>>: $headValCode"
     }
 
-
   }
 
   def indexedConsSeqDom[SS <: HList,
@@ -280,25 +279,23 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
     : Option[MTerm] = {
     import IndexedConstructorSeqDom._
     seqDom match {
-      case em : Empty[H, F, Index] =>
+      case em: Empty[H, F, Index] =>
         val typ = em.family.someTyp(em.W)
         for {
-          WCode  <- codegen(em.W)
+          WCode      <- codegen(em.W)
           familyCode <- typFamilyPtn(em.family, typ)
-        } yield q"Empty($WCode, $familyCode)"
+        } yield q"IndexedConstructorSeqDom.Empty($WCode, $familyCode)"
       case cons: Cons[a, b, H, F, c, Index, d] =>
         val name     = s"""HoTT.Name("${cons.name}")"""
         val nameCode = name.parse[MTerm].get
         for {
           patternCode <- indexedConsShape(cons.pattern, seqDom.W)
-          tailCode <- indexedConsSeqDom(cons.tail)
-        } yield q"IndexedConstructorSeqDom.Cons($nameCode, $patternCode, $tailCode)"
+          tailCode    <- indexedConsSeqDom(cons.tail)
+        } yield
+          q"IndexedConstructorSeqDom.Cons($nameCode, $patternCode, $tailCode)"
     }
 
   }
-
-
-
 
   def fmtConsSeq[SS <: HList, H <: Term with Subs[H], Intros <: HList](
       seq: ConstructorSeqTL[SS, H, Intros]) =
@@ -315,7 +312,7 @@ object CodeGen {
         case (func, arg) => q"$func($arg)"
       } || funcTyp >>> {
       case (dom, codom) =>
-        q"""$dom ->: $codom"""
+        q"""($dom) ->: ($codom)"""
     } || lambdaFixedTriple >>> {
       case ((variable, typ), value) =>
         q"""$variable :-> $value"""
@@ -332,7 +329,8 @@ object CodeGen {
       if (n == 0) q"Type" else q"""Universe($n)"""
     } || symbolic >>> {
       case (s, typ) =>
-        s""" "$s" :: $typ """.parse[MTerm].get
+        val name = s""" "$s" """.parse[MTerm].get
+        q"$typ.symbObj(Name($name))"
     } || prodTyp >>> { case (first, second) => q"""ProdTyp($first, $second)""" } || pairTerm >>> {
       case (first, second)                  => q"""PairTerm($first, $second)"""
     } || equation >>> { case (lhs, rhs)     => q"$lhs =:= $rhs" } || depPairTerm >>> {

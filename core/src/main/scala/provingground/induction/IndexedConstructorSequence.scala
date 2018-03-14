@@ -24,16 +24,17 @@ import shapeless._
   * @tparam IDFT scala type of an iterated type family on the inductive type family, i.e.,  with codomain with terms of type `Typ[Cod]`
   *
   */
-sealed abstract class IndexedConstructorSeqMap[C <: Term with Subs[C],
-                                        H <: Term with Subs[H],
-                                        RecType <: Term with Subs[RecType],
-                                        InducType <: Term with Subs[InducType],
-                                        Intros <: HList,
-                                        F <: Term with Subs[F],
-                                        Index <: HList: TermList,
-                                        IF <: Term with Subs[IF],
-                                        IDF <: Term with Subs[IDF],
-                                        IDFT <: Term with Subs[IDFT]] {
+sealed abstract class IndexedConstructorSeqMap[
+    C <: Term with Subs[C],
+    H <: Term with Subs[H],
+    RecType <: Term with Subs[RecType],
+    InducType <: Term with Subs[InducType],
+    Intros <: HList,
+    F <: Term with Subs[F],
+    Index <: HList: TermList,
+    IF <: Term with Subs[IF],
+    IDF <: Term with Subs[IDF],
+    IDFT <: Term with Subs[IDFT]] {
 
   /**
     * the inductive type family
@@ -251,18 +252,18 @@ object IndexedConstructorSeqMap {
 /**
   * bride between [[IndexedConstructorSeqDom]] and [[IndexedConstructorSeqMap]]
   */
-sealed abstract class IndexedConstructorSeqMapper[SS <: HList,
-                                           C <: Term with Subs[C],
-                                           H <: Term with Subs[H],
-                                           RecType <: Term with Subs[RecType],
-                                           InducType <: Term with Subs[
-                                             InducType],
-                                           Intros <: HList,
-                                           F <: Term with Subs[F],
-                                           Index <: HList: TermList,
-                                           IF <: Term with Subs[IF],
-                                           IDF <: Term with Subs[IDF],
-                                           IDFT <: Term with Subs[IDFT]] {
+sealed abstract class IndexedConstructorSeqMapper[
+    SS <: HList,
+    C <: Term with Subs[C],
+    H <: Term with Subs[H],
+    RecType <: Term with Subs[RecType],
+    InducType <: Term with Subs[InducType],
+    Intros <: HList,
+    F <: Term with Subs[F],
+    Index <: HList: TermList,
+    IF <: Term with Subs[IF],
+    IDF <: Term with Subs[IDF],
+    IDFT <: Term with Subs[IDFT]] {
   def mapped(seqdom: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(
       W: F,
       family: TypFamilyPtn[H, F, Index]): IndexedConstructorSeqMap[C,
@@ -403,10 +404,10 @@ object IndexedConstructorSeqMapper {
   *
   */
 sealed abstract class IndexedConstructorSeqDom[SS <: HList,
-                                        H <: Term with Subs[H],
-                                        F <: Term with Subs[F],
-                                        Index <: HList: TermList,
-                                        Intros <: HList] {
+                                               H <: Term with Subs[H],
+                                               F <: Term with Subs[F],
+                                               Index <: HList: TermList,
+                                               Intros <: HList] {
 
   /**
     * the index family
@@ -605,19 +606,11 @@ object IndexedConstructorSeqDom {
                    Index <: HList: TermList](W: F,
                                              family: TypFamilyPtn[H, F, Index])
       extends IndexedConstructorSeqDom[HNil, H, F, Index, HNil] {
-    def mapped[
-        C <: Term with Subs[C],
-        IF <: Term with Subs[IF],
-        IDF <: Term with Subs[IDF],
-        IDFT <: Term with Subs[IDFT]](implicit fmlyMapper: TypFamilyMapper[
-      H,
-      F,
-      C,
-      Index,
-      IF,
-      IDF,
-      IDFT]) 
-    =
+    def mapped[C <: Term with Subs[C],
+               IF <: Term with Subs[IF],
+               IDF <: Term with Subs[IDF],
+               IDFT <: Term with Subs[IDFT]](
+        implicit fmlyMapper: TypFamilyMapper[H, F, C, Index, IF, IDF, IDFT]) =
       IndexedConstructorSeqMap.Empty[C, H, F, Index, IF, IDF, IDFT](
         W,
         fmlyMapper.mapper(family))

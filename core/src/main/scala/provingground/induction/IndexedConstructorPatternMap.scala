@@ -619,18 +619,13 @@ sealed abstract class IndexedConstructorShape[S <: HList,
     * returns dependent shape `tail ~>: this` where tail must be independent of the inductive type `W` being defined.
     */
   def ~>>:[T <: Term with Subs[T]](tailVar: T) = {
-    val fib = Subst.Lambda(tailVar, this){
-      new Subst[IndexedConstructorShape[S, H, Fb, ConstructorType, Index]] {
-      def subst(a: IndexedConstructorShape[S, H, Fb, ConstructorType, Index])(
-          x: Term,
-          y: Term) =
-        a.subs(x, y)
-    }
-    }
-    val fibre = (t: T) => this.subs(tailVar, t)
+    import SubstInstances._
+    val fib = Subst.Lambda(tailVar, this)
+    // val fibre = (t: T) => this.subs(tailVar, t)
     IndexedCnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fib)
   }
 }
+
 
 object IndexedConstructorShape {
   def get[H <: Term with Subs[H],
@@ -644,7 +639,6 @@ object IndexedConstructorShape {
 
     IndexedIdShape(family, index)
   }
-
 
   import IndexedConstructorPatternMapper._
 

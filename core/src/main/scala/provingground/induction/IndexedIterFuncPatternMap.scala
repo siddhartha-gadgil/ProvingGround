@@ -10,15 +10,15 @@ import shapeless._
   * Indexed version of [[IterFuncPtnMap]]
   */
 sealed abstract class IndexedIterFuncPtnMap[H <: Term with Subs[H],
-                                     Fb <: Term with Subs[Fb],
-                                     Index <: HList: TermList,
-                                     C <: Term with Subs[C],
-                                     F <: Term with Subs[F],
-                                     TT <: Term with Subs[TT],
-                                     DT <: Term with Subs[DT],
-                                     IF <: Term with Subs[IF],
-                                     IDF <: Term with Subs[IDF],
-                                     IDFT <: Term with Subs[IDFT]] {
+                                            Fb <: Term with Subs[Fb],
+                                            Index <: HList: TermList,
+                                            C <: Term with Subs[C],
+                                            F <: Term with Subs[F],
+                                            TT <: Term with Subs[TT],
+                                            DT <: Term with Subs[DT],
+                                            IF <: Term with Subs[IF],
+                                            IDF <: Term with Subs[IDF],
+                                            IDFT <: Term with Subs[IDFT]] {
 
   /**
     * the universe containing the type
@@ -492,15 +492,15 @@ object IndexedIterFuncShape {
   * bridge between [[IndexedIterFuncShape]] and [[IndexedIterFuncPtnMap]]
   */
 sealed abstract class IndexedIterFuncPtnMapper[H <: Term with Subs[H],
-                                        Fb <: Term with Subs[Fb],
-                                        Index <: HList: TermList,
-                                        C <: Term with Subs[C],
-                                        F <: Term with Subs[F],
-                                        TT <: Term with Subs[TT],
-                                        DT <: Term with Subs[DT],
-                                        IF <: Term with Subs[IF],
-                                        IDF <: Term with Subs[IDF],
-                                        IDFT <: Term with Subs[IDFT]] {
+                                               Fb <: Term with Subs[Fb],
+                                               Index <: HList: TermList,
+                                               C <: Term with Subs[C],
+                                               F <: Term with Subs[F],
+                                               TT <: Term with Subs[TT],
+                                               DT <: Term with Subs[DT],
+                                               IF <: Term with Subs[IF],
+                                               IDF <: Term with Subs[IDF],
+                                               IDFT <: Term with Subs[IDFT]] {
   def mapper(
       implicit fmlyMapper: TypFamilyMapper[H, Fb, C, Index, IF, IDF, IDFT])
     : IndexedIterFuncShape[H, F, Fb, Index] => IndexedIterFuncPtnMap[H,

@@ -183,11 +183,11 @@ import scala.language.existentials
   * given scala type of the codomain and a specific inductive type, lifts a [[ConstructorSeqDom]] to a [[ConstructorSeqMap]]
   */
 sealed trait ConstructorSeqMapper[SS <: HList,
-                           C <: Term with Subs[C],
-                           H <: Term with Subs[H],
-                           RecType <: Term with Subs[RecType],
-                           InducType <: Term with Subs[InducType],
-                           Intros <: HList] {
+                                  C <: Term with Subs[C],
+                                  H <: Term with Subs[H],
+                                  RecType <: Term with Subs[RecType],
+                                  InducType <: Term with Subs[InducType],
+                                  Intros <: HList] {
 
   /**
     * given scala type of the codomain and a specific inductive type, lifts a [[ConstructorSeqDom]] to a [[ConstructorSeqMap]]
@@ -302,8 +302,7 @@ object ConstructorSeqDom {
   implicit def consSeqDomSubst[SS <: HList,
                                H <: Term with Subs[H],
                                Intros <: HList]
-    : Subst[
-      ConstructorSeqDom[SS, H, Intros]] {} =
+    : Subst[ConstructorSeqDom[SS, H, Intros]] {} =
     new Subst[ConstructorSeqDom[SS, H, Intros]] {
       def subst(a: ConstructorSeqDom[SS, H, Intros])(x: Term, y: Term) =
         a.subs(x, y)
@@ -469,8 +468,7 @@ object ConstructorSeqTL {
   implicit def consSeqTLSubs[SS <: HList,
                              H <: Term with Subs[H],
                              Intros <: HList]
-    : Subst[
-      ConstructorSeqTL[SS, H, Intros]] {} =
+    : Subst[ConstructorSeqTL[SS, H, Intros]] {} =
     new Subst[ConstructorSeqTL[SS, H, Intros]] {
       def subst(a: ConstructorSeqTL[SS, H, Intros])(x: Term, y: Term) = {
         // pprint.log(s"substitution for inductive type definition ${a.typ}")

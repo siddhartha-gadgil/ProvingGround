@@ -138,12 +138,12 @@ import TermList.TermListOp
   * indexed version of [[RecursiveDefinition]]
   */
 sealed abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
-                                          F <: Term with Subs[F],
-                                          C <: Term with Subs[C],
-                                          Index <: HList: TermList,
-                                          IF <: Term with Subs[IF],
-                                          IDF <: Term with Subs[IDF],
-                                          IDFT <: Term with Subs[IDFT]] {
+                                                 F <: Term with Subs[F],
+                                                 C <: Term with Subs[C],
+                                                 Index <: HList: TermList,
+                                                 IF <: Term with Subs[IF],
+                                                 IDF <: Term with Subs[IDF],
+                                                 IDFT <: Term with Subs[IDFT]] {
   self =>
   val family: TypFamilyMap[H, F, C, Index, IF, IDF, IDFT]
 
