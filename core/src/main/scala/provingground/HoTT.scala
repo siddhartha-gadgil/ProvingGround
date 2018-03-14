@@ -3362,7 +3362,8 @@ trait SubstImplicits {
   implicit class SubstOp[A: Subst](a: A) {
     def subst(x: Term, y: Term) = implicitly[Subst[A]].subst(a)(x, y)
 
-    def ~->:(x: Term) = (y: Term) => implicitly[Subst[A]].subst(a)(x, y)
+    def ~->:(x: Term) = Subst.Lambda(x, a)
+      // (y: Term) => implicitly[Subst[A]].subst(a)(x, y)
   }
 }
 

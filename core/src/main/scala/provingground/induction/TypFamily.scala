@@ -25,9 +25,13 @@ sealed abstract class TypFamilyPtn[
     */
   def getIndex(w: F, typ: Typ[H]): Option[Index]
 
-  def ~>:[TT <: Term with Subs[TT]](variable: TT) =
+  def ~>:[TT <: Term with Subs[TT]](variable: TT) = {
+    import SubstInstances._
+    val fib = Subst.Lambda(variable, this)
     TypFamilyPtn.DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
-                                  (t: TT) => this.subs(variable, t))
+                                  fib //(t: TT) => this.subs(variable, t)
+                                )
+                                }
 
   /**
     * type `W(a)` given the family `W` and index `a`
@@ -307,8 +311,10 @@ object TypFamilyPtn {
 
     def ~>:[TT <: Term with Subs[TT]](variable: TT) =
       Exst(
-        DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
-                         (t: TT) => value.subs(variable, t)))
+        variable ~>: value
+        // DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
+        //                  (t: TT) => value.subs(variable, t))
+                       )
 
     def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
       Exst(FuncTypFamily(dom, value))

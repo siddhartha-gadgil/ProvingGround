@@ -4,7 +4,7 @@ import provingground._
 
 import HoTT._
 
-import induction.TLImplicits._
+import induction._, implicits._
 
 import shapeless._
 
@@ -16,6 +16,8 @@ object Lists {
   val nil :: cons :: HNil = ListAInd.intros
 
   import Nats._
+
+  val ListInd = A ~->: ListAInd
 
   val recLN = ListAInd.rec(Nat)
   val a     = "a" :: A

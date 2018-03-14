@@ -499,9 +499,11 @@ sealed trait ConstructorShape[S <: HList,
     * returns dependent shape `tail ~>: this` where tail must be independent of the inductive type `W` being defined.
     */
   def ~>:[T <: Term with Subs[T]](tailVar: T) = {
-    val fibre = (t: T) => this.subs(tailVar, t)
+    // val fibre = (t: T) => this.subs(tailVar, t)
+    import SubstInstances._
+    val fib = Subst.Lambda(tailVar, this)
 
-    CnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fibre)
+    CnstDepFuncConsShape(tailVar.typ.asInstanceOf[Typ[T]], fib)
   }
 }
 
