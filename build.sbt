@@ -218,7 +218,7 @@ lazy val server = (project in file("server"))
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-http"       % "10.0.0",
       "com.vmunier"       %% "scalajs-scripts" % "1.1.0",
-      "com.simianquant"   %% "ammonite-kernel" % "0.3.0",
+      // "com.simianquant"   %% "ammonite-kernel" % "0.3.0",
       "de.heikoseeberger" %% "akka-sse"        % "2.0.0",
       "com.typesafe.akka" %% "akka-actor"      % akkaV,
       "com.typesafe.akka" %% "akka-stream"     % akkaV,

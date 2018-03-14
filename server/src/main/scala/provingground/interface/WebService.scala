@@ -76,61 +76,12 @@ $body
   def saveObject(name: String, body: String) =
     write.over(objectsDir / s"${name}.scala", makeObject(name, clean(body)))
 
-  // implicit var kernel = ReplKernel()
-
-  // import scala.collection.mutable.ArrayBuffer
   var prevCode = ""
 
   def initKernel() = {
-
-    // kernel.process(initCommands)
-
     prevCode = initCommands
-
-    // println("initialized kernel")
-
   }
 
-  // initKernel()
-
-  // def newCode(s: String) =
-  //   if (s.startsWith(prevCode)) Some(s.drop(prevCode.length)) else None
-  //
-  // def useCode(s: String) =
-  //   newCode(s).getOrElse {
-  //     kernel = ReplKernel()
-  //     initKernel()
-  //     s
-  //   }
-
-  def kernelRes(inp: String)(
-      implicit ker: ReplKernel): Option[Either[String, Any]] =
-    ker.process(inp) map { resp =>
-      resp.toEither match {
-        case Right(evaluation) =>
-          Right(evaluation.value)
-        case Left(nel) =>
-          Left(nel.list.toList.map(_.msg).mkString(";"))
-      }
-    }
-
-  def kernelJS(res: Option[Either[String, Any]]) = {
-    import HoTT._
-    // val res = kernelRes(inp)
-    val base = res match {
-      case Some(Right(evaluation)) =>
-        evaluation match {
-          case t: Term =>
-            Js.Obj("result" -> Js.Str(evaluation.toString),
-                   "tex" ->
-                     Js.Str(TeXTranslate(t)))
-          case _ => Js.Obj("result" -> Js.Str(evaluation.toString))
-        }
-      case Some(Left(log)) => Js.Obj("log" -> Js.Str(log.toString))
-      case None            => Js.Obj("log" -> Js.Str("No response from kernel"))
-    }
-    base
-  }
 
   import java.io.OutputStream
 
@@ -199,29 +150,13 @@ $body
       path("kernel") {
         entity(as[String]) { d =>
           println(s"post received:\n$d")
-          // val code = useCode(d)
-          // println(s"processing code: \n$code")
-          // val res = kernelRes(code)
-          // println(res)
-          // res.foreach { e =>
-          //   e.foreach((_) => prevCode = d)
-          // }
+
           val result =
             replResult(d) match {
               case Right(z) => "--RESULT--\n" + z
               case Left(z)  => "--ERROR--\n" + z
             }
           complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, result))
-        // val js = kernelJS(res)
-        // val js = replResJS(d)
-        // println(js)
-        //Js.Obj("result" -> Js.Str("not implemented"))
-        //Js.Obj("response" -> Js.Str(res.toString))
-        // println(res)
-        // println(kernelJS(res).toString)
-        // TimeServer.buf = TimeServer.buf :+ res.toString
-        // println(s"Buffer: ${TimeServer.buf}")
-        // complete(HttpEntity(ContentTypes.`application/json`, json.write(js)))
         }
       }
     } ~
@@ -334,58 +269,3 @@ class AmmScriptServer(
   val route = htmlRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
 
 }
-
-// import akka.NotUsed
-// import akka.actor.ActorSystem
-// import akka.http.scaladsl.Http
-// import akka.http.scaladsl.model.StatusCodes.PermanentRedirect
-// import akka.http.scaladsl.server.Directives
-// import akka.stream.ActorMaterializer
-// import akka.stream.scaladsl.Source
-// import de.heikoseeberger.akkasse.{ EventStreamMarshalling, ServerSentEvent }
-// import java.time.LocalTime
-// import java.time.format.DateTimeFormatter
-// import scala.concurrent.duration.DurationInt
-//
-//
-//
-// object TimeServer {
-//
-//   var buf = Vector[String]()
-//"Success:" +
-//
-//   def route = {
-//     import Directives._
-//     import EventStreamMarshalling._
-//
-//
-//
-//   val src = Source
-//   .tick(100.millis, 100.millis, NotUsed)
-//   .mapConcat(_ => {
-//     val b = buf
-//     buf = Vector()
-//     b
-//   }).map (ServerSentEvent(_))
-//   .keepAlive(1.second, () => ServerSentEvent.heartbeat)
-//             //
-//             // .map(_ => LocalTime.now())
-//             // .map(_ => ServerSentEvent("this"))
-//             // .keepAlive(1.second, () => ServerSentEvent.heartbeat)
-//
-//
-//     def events =
-//       path("events") {
-//         get {
-//           complete {
-//             src
-//           }
-//         }
-//       }
-//
-//     events
-//   }
-//
-//   private def timeToServerSentEvent(time: LocalTime) =
-//     ServerSentEvent(DateTimeFormatter.ISO_LOCAL_TIME.format(time))
-// }

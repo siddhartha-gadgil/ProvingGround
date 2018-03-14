@@ -1,5 +1,5 @@
 ensimeJavaFlags in ThisBuild := Seq("-Xss2m",
-                                    "-Xmx2g",
+                                    "-Xmx1g",
                                     "-XX:MaxMetaspaceSize=512m")
 
-ensimeServerVersion in ThisBuild := "2.0.0-M4"
+ensimeServerVersion in ThisBuild := "2.0.0"
