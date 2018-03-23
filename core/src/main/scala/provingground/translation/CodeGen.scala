@@ -47,7 +47,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
     } || inducFunc >>> {
       case (dom, (codom, defnData)) =>
         val ind                 = s"${prefix(dom)}".parse[MTerm].get
-        val withImplicit: MTerm = q"val rxyz = ${ind}.rec($codom); rxyz"
+        val withImplicit: MTerm = q"val rxyz = ${ind}.induc($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
@@ -313,16 +313,16 @@ object CodeGen {
         case (func, arg) => q"$func($arg)"
       } || funcTyp >>> {
       case (dom, codom) =>
-        q"""($dom) ->: ($codom)"""
+        q"""FuncTyp($dom, $codom)"""
     } || lambdaFixedTriple >>> {
       case ((variable, typ), value) =>
-        q"""$variable :-> $value"""
+        q"""lmbda($variable)($value)"""
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-        q"""$variable :~> $value"""
+        q"""lambda($variable)($value)"""
     } || piTriple >>> {
       case ((variable, typ), value) =>
-        q"""$variable ~>: $value"""
+        q"""piDefn($variable)($value)"""
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
         q"""$variable ++ $value"""
@@ -342,6 +342,7 @@ object CodeGen {
 
   def getName(s: MTerm): Option[String] = s match {
     case q""" $name :: $typ """ => Some(name.toString)
+    case q""" $typ.symbObj(Name($name)) """ => Some(name.toString.replace("\"", "").trim)
     case _                      => None
   }
 

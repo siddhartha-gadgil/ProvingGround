@@ -1,0 +1,1 @@
+val mp = Type.symbObj(Name("A")) :~> (Type.symbObj(Name("B")) :~> (Type.symbObj(Name("A")).symbObj(Name("a")) :-> ((Type.symbObj(Name("A")) ->: Type.symbObj(Name("B"))).symbObj(Name("f")) :-> (Type.symbObj(Name("A")) ->: Type.symbObj(Name("B"))).symbObj(Name("f"))(Type.symbObj(Name("A")).symbObj(Name("a"))))))

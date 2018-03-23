@@ -3306,6 +3306,20 @@ object Subst {
   case class Lambda[T <: Term with Subs[T], A](variable: T, value: A)(implicit s: Subst[A]) extends (T => A){
     def apply(t: T) = s.subst(value)(variable, t)
 
+
+    override lazy val hashCode = {
+      val newvar = variable.typ.symbObj(Name("hash"))
+      val newval = s.subst(value)(variable, newvar)
+      41 * (variable.typ.hashCode + 41) + newval.hashCode
+    }
+
+    override def equals(that: Any) = that match {
+      case l: Lambda[u, v] if l.variable.typ == variable.typ =>
+        s.subst(value)(l.variable, variable) == value &&
+          s.subst(value)(variable, l.variable) == l.value
+      case _ => false
+    }
+
     override def toString = s"$variable ${UnicodeSyms.MapsTo} $value"
   }
 }
