@@ -1,5 +1,4 @@
-import library._, Nats._
-
+import library._, Nats._ 
 val DoubleEvenDOTpf = ({
   val rxyz = NatInd.induc(lmbda(Type.symbObj(Name("Nat")).symbObj(Name("n")))(FuncTyp(Type.symbObj(Name("Nat")), Type).symbObj(Name("isEven"))(({
     val rxyz = NatInd.rec(Type.symbObj(Name("Nat")))

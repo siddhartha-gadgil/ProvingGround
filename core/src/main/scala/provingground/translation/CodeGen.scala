@@ -21,7 +21,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
       indNames.get(s).orElse(indName(s)).getOrElse(s.toString.parse[MTerm].get)
     Translator.Simple(defns.lift) || base || indRecFunc >>> {
       case (index, (dom, (codom, defnData))) =>
-        val ind                 = s"${prefix(dom)}".parse[MTerm].get
+        val ind                 =   q"${prefix(dom)}" //s"${prefix(dom)}".parse[MTerm].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
         val withImplicit: MTerm = q"val rxyz = ${fullInd}.rec($codom); rxyz"
         defnData.foldLeft(withImplicit) {
@@ -30,7 +30,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
     } ||
     recFunc >>> {
       case (dom, (codom, defnData)) =>
-        val ind                 = s"${prefix(dom)}".parse[MTerm].get
+        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[MTerm].get
         val withImplicit: MTerm = q"val rxyz = ${ind}.rec($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
@@ -38,7 +38,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
     } ||
     indInducFunc >>> {
       case (index, (dom, (codom, defnData))) =>
-        val ind                 = s"${prefix(dom)}".parse[MTerm].get
+        val ind                 =  q"${prefix(dom)}" // s"${prefix(dom)}".parse[MTerm].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
         val withImplicit: MTerm = q"val rxyz = ${fullInd}.induc($codom); rxyz"
         defnData.foldLeft(withImplicit) {
@@ -46,7 +46,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
         }
     } || inducFunc >>> {
       case (dom, (codom, defnData)) =>
-        val ind                 = s"${prefix(dom)}".parse[MTerm].get
+        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[MTerm].get
         val withImplicit: MTerm = q"val rxyz = ${ind}.induc($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
@@ -129,8 +129,8 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
           typCode <- typOpt
         } yield q"ConstructorSeqDom.Empty.byTyp($typCode)"
       case cons: Cons[a, b, H, c, d] =>
-        val name     = s"""HoTT.Name("${cons.name}")"""
-        val nameCode = name.parse[MTerm].get
+        // val name     = s"""HoTT.Name("${cons.name}")"""
+        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})"""  // name.parse[MTerm].get
         for {
           shapeCode <- consShape(cons.pattern, typ)
           tailCode  <- consSeqDom(cons.tail, typ)
@@ -287,8 +287,8 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
           familyCode <- typFamilyPtn(em.family, typ)
         } yield q"IndexedConstructorSeqDom.Empty($WCode, $familyCode)"
       case cons: Cons[a, b, H, F, c, Index, d] =>
-        val name     = s"""HoTT.Name("${cons.name}")"""
-        val nameCode = name.parse[MTerm].get
+        // val name     = s"""HoTT.Name("${cons.name}")"""
+        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})"""//name.parse[MTerm].get
         for {
           patternCode <- indexedConsShape(cons.pattern, seqDom.W)
           tailCode    <- indexedConsSeqDom(cons.tail)
@@ -330,7 +330,7 @@ object CodeGen {
       if (n == 0) q"Type" else q"""Universe($n)"""
     } || symbolic >>> {
       case (s, typ) =>
-        val name = s""" "$s" """.parse[MTerm].get
+        val name =   Lit.String(s)// s""" "$s" """.parse[MTerm].get
         q"$typ.symbObj(Name($name))"
     } || prodTyp >>> { case (first, second) => q"""ProdTyp($first, $second)""" } || pairTerm >>> {
       case (first, second)                  => q"""PairTerm($first, $second)"""
@@ -347,6 +347,6 @@ object CodeGen {
   }
 
   def indName(s: MTerm): Option[MTerm] =
-    getName(s).map((name) => s"${name}Ind".parse[MTerm].get)
+    getName(s).map((name) => MTerm.Name(s"${name}Ind"))
 
 }
