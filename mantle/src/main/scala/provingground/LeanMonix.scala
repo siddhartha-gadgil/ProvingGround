@@ -203,7 +203,7 @@ object LeanToTermMonix {
                     argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
     def getInd(p: Vector[Term]) =
       TypFamilyExst
-        .getIndexedConstructorSeq(foldFunc(ind.typFP, p), introsFold(ind, p))
+        .getIndexedConstructorSeq(foldFunc(ind.typF, p), introsFold(ind, p))
         .value
     val newParamsTask = argsFmlyTerm map (_.init)
     newParamsTask.flatMap { (newParams) =>

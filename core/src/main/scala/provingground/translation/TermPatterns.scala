@@ -157,6 +157,14 @@ object TermPatterns {
   }
 
   /**
+   * special case for CodeGen
+   */
+   val idRecFunc = Pattern.partial[Term, VIIV] {
+     case rf: IndRecFunc[u, v, w] =>
+       (rf.index, (rf.dom, (rf.codom, rf.defnData)))
+   }
+
+  /**
     * matches inductively defined function, returns domain, codomain and definition data
     */
   val inducFunc = Pattern.partial[Term, IIV] {
@@ -346,7 +354,9 @@ object TermPatterns {
         None): (Vector[Term], (Term, (Term, Vector[Term]))) => Option[Term] = {
     case (Vector(start, finish),
           (idt: IdentityTyp[u], (codom: Typ[v], Vector(fn: Func[x, y])))) =>
-      val rf = idt.rec(codom)
+      val rf =
+        IdentityTyp.rec(idt.dom, codom)
+        // idt.rec(codom)
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (codom: Typ[v], data))) =>
       inds(dom) flatMap ((cs) => applyAll(Some(cs.recE(codom)), data ++ index))
@@ -401,11 +411,16 @@ object TermPatterns {
     case (Vector(start, finish),
           (idt: IdentityTyp[u], (depcodom, Vector(fn: FuncLike[x, y])))) =>
       // println("matching identity\n")
-      val rf = idt.induc(
-        depcodom
+      val rf =
+        // idt.induc(
+        // depcodom
+        //   .asInstanceOf[
+        //     FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
+        IdentityTyp.induc(
+          idt.dom,
+          depcodom
           .asInstanceOf[
-            FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
-      // println(s"got ind $rf")
+          FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (depcodom, data))) =>
       inds(dom) flatMap ((cs) =>

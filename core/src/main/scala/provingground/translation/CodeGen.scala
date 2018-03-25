@@ -6,48 +6,51 @@ import induction._
 
 import shapeless._
 
-import scala.meta.{Term => MTerm, Type => MType, _}
+import scala.meta
 
-case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
-                   defns: PartialFunction[Term, MTerm] = Map()) { codegen =>
+import scala.meta.{Term => _, Type => _, _}
+
+case class CodeGen(indNames: Map[meta.Term, meta.Term] = Map(),
+                   defns: PartialFunction[Term, meta.Term] = Map()) { codegen =>
   import CodeGen._
 
   import TermPatterns._
 
   def apply(t: Term) = onTerm(t)
 
-  val onTerm: Term => Option[MTerm] = {
-    def prefix(s: MTerm): MTerm =
-      indNames.get(s).orElse(indName(s)).getOrElse(s.toString.parse[MTerm].get)
+
+  val onTerm: Term => Option[meta.Term] = {
+    def prefix(s: meta.Term): meta.Term =
+      indNames.get(s).orElse(indName(s)).getOrElse(s.toString.parse[meta.Term].get)
     Translator.Simple(defns.lift) || base || indRecFunc >>> {
       case (index, (dom, (codom, defnData))) =>
-        val ind                 =   q"${prefix(dom)}" //s"${prefix(dom)}".parse[MTerm].get
+        val ind                 =   q"${prefix(dom)}" //s"${prefix(dom)}".parse[meta.Term].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
-        val withImplicit: MTerm = q"val rxyz = ${fullInd}.rec($codom); rxyz"
+        val withImplicit: meta.Term = q"val rxyz = ${fullInd}.rec($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
     } ||
     recFunc >>> {
       case (dom, (codom, defnData)) =>
-        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[MTerm].get
-        val withImplicit: MTerm = q"val rxyz = ${ind}.rec($codom); rxyz"
+        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[meta.Term].get
+        val withImplicit: meta.Term = q"val rxyz = ${ind}.rec($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
     } ||
     indInducFunc >>> {
       case (index, (dom, (codom, defnData))) =>
-        val ind                 =  q"${prefix(dom)}" // s"${prefix(dom)}".parse[MTerm].get
+        val ind                 =  q"${prefix(dom)}" // s"${prefix(dom)}".parse[meta.Term].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
-        val withImplicit: MTerm = q"val rxyz = ${fullInd}.induc($codom); rxyz"
+        val withImplicit: meta.Term = q"val rxyz = ${fullInd}.induc($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
     } || inducFunc >>> {
       case (dom, (codom, defnData)) =>
-        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[MTerm].get
-        val withImplicit: MTerm = q"val rxyz = ${ind}.induc($codom); rxyz"
+        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[meta.Term].get
+        val withImplicit: meta.Term = q"val rxyz = ${ind}.induc($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
@@ -56,7 +59,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
 
   def iterFunc[O <: Term with Subs[O], F <: Term with Subs[F]](
       s: IterFuncShape[O, F],
-      typ: Typ[O]): Option[MTerm] = {
+      typ: Typ[O]): Option[meta.Term] = {
     import IterFuncShape._
     val typOpt = onTerm(typ)
     s match {
@@ -83,7 +86,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
                 H <: Term with Subs[H],
                 ConstructorType <: Term with Subs[ConstructorType]](
       shape: ConstructorShape[S, H, ConstructorType],
-      typ: Typ[H]): Option[MTerm] = {
+      typ: Typ[H]): Option[meta.Term] = {
     import ConstructorShape._
     val typOpt = onTerm(typ)
     shape match {
@@ -120,7 +123,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
 
   def consSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList](
       seqDom: ConstructorSeqDom[SS, H, Intros],
-      typ: Typ[H]): Option[MTerm] = {
+      typ: Typ[H]): Option[meta.Term] = {
     import ConstructorSeqDom._
     val typOpt = onTerm(typ)
     seqDom match {
@@ -130,7 +133,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
         } yield q"ConstructorSeqDom.Empty.byTyp($typCode)"
       case cons: Cons[a, b, H, c, d] =>
         // val name     = s"""HoTT.Name("${cons.name}")"""
-        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})"""  // name.parse[MTerm].get
+        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})"""  // name.parse[meta.Term].get
         for {
           shapeCode <- consShape(cons.pattern, typ)
           tailCode  <- consSeqDom(cons.tail, typ)
@@ -140,7 +143,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
   }
 
   def consSeq[SS <: HList, H <: Term with Subs[H], Intros <: HList](
-      seq: ConstructorSeqTL[SS, H, Intros]): Option[MTerm] = {
+      seq: ConstructorSeqTL[SS, H, Intros]): Option[meta.Term] = {
     for {
       typCode <- onTerm(seq.typ)
       domCode <- consSeqDom(seq.seqDom, seq.typ)
@@ -151,7 +154,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
   def typFamilyPtn[H <: Term with Subs[H],
                    F <: Term with Subs[F],
                    Index <: HList](ptn: TypFamilyPtn[H, F, Index],
-                                   typ: Typ[H]): Option[MTerm] = {
+                                   typ: Typ[H]): Option[meta.Term] = {
     import TypFamilyPtn._
     val typOpt = onTerm(typ)
     ptn match {
@@ -177,7 +180,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
 
   }
 
-  def index[Index](ind: Index): Option[MTerm] = {
+  def index[Index](ind: Index): Option[meta.Term] = {
     import shapeless._
     ind match {
       case _: HNil => Some(q"HNil")
@@ -195,7 +198,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
                       Fb <: Term with Subs[Fb],
                       Index <: HList](
       iterFunc: IndexedIterFuncShape[H, F, Fb, Index],
-      w: Fb): Option[MTerm] = {
+      w: Fb): Option[meta.Term] = {
     import IndexedIterFuncShape._, iterFunc.family
     iterFunc match {
       case id: IdIterShape[H, Fb, Index] =>
@@ -227,7 +230,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
                        ConstructorType <: Term with Subs[ConstructorType],
                        Index <: HList](
       shape: IndexedConstructorShape[S, H, Fb, ConstructorType, Index],
-      w: Fb): Option[MTerm] = {
+      w: Fb): Option[meta.Term] = {
     import IndexedConstructorShape._
     shape match {
       case id: IndexedIdShape[H, Fb, Index] =>
@@ -277,7 +280,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
                         Index <: HList,
                         Intros <: HList](
       seqDom: IndexedConstructorSeqDom[SS, H, F, Index, Intros])
-    : Option[MTerm] = {
+    : Option[meta.Term] = {
     import IndexedConstructorSeqDom._
     seqDom match {
       case em: Empty[H, F, Index] =>
@@ -288,7 +291,7 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
         } yield q"IndexedConstructorSeqDom.Empty($WCode, $familyCode)"
       case cons: Cons[a, b, H, F, c, Index, d] =>
         // val name     = s"""HoTT.Name("${cons.name}")"""
-        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})"""//name.parse[MTerm].get
+        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})"""//name.parse[meta.Term].get
         for {
           patternCode <- indexedConsShape(cons.pattern, seqDom.W)
           tailCode    <- indexedConsSeqDom(cons.tail)
@@ -298,31 +301,63 @@ case class CodeGen(indNames: Map[MTerm, MTerm] = Map(),
 
   }
 
-  def fmtConsSeq[SS <: HList, H <: Term with Subs[H], Intros <: HList](
-      seq: ConstructorSeqTL[SS, H, Intros]) =
-    consSeq(seq).map((c) => org.scalafmt.Scalafmt.format(c.toString))
+  def termDefOpt(name: String, term: Term) =
+    onTerm(term).map(mkDef(name, _))
+
+  def termDefs(nts: (String, Term)*) = {
+    val defs = nts.map{case (name, term) => termDefOpt(name, term)}.toList.flatten
+    q"..$defs"
+  }
+
+  def termObjectOpt(name: String, term: Term) =
+    onTerm(term).map(mkDef(name, _))
+
 
 }
 
 object CodeGen {
+  def mkDef(name: String, code: meta.Term) =
+    {
+      val x = Pat.Var(meta.Term.Name(name))
+      q"val $x = $code"
+    }
+
+  def mkDefs(ncs : (String, meta.Term)*) = {
+    val defs = ncs.map{case (name, code) => mkDef(name, code)}.toList
+    q"..$defs"
+  }
+
+  def mkObject(name: String, code: meta.Term) =
+    {
+      val obj = meta.Term.Name(name)
+      q"object $obj {val __ =  $code}"
+    }
+
+
+
   import TermPatterns._
 
   val base =
-    Translator.Empty[Term, MTerm] ||
+    Translator.Empty[Term, meta.Term] ||
       formalAppln >>> {
-        case (func, arg) => q"$func($arg)"
+        case (func, arg) =>
+          q"$func($arg)"
       } || funcTyp >>> {
       case (dom, codom) =>
         q"""FuncTyp($dom, $codom)"""
+        // q"$dom ->: $codom"
     } || lambdaFixedTriple >>> {
       case ((variable, typ), value) =>
-        q"""lmbda($variable)($value)"""
+        // q"""lmbda($variable)($value)"""
+        q"""$variable :-> $value"""
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-        q"""lambda($variable)($value)"""
+        q"""$variable :~> $value"""
+        // q"""lambda($variable)($value)"""
     } || piTriple >>> {
       case ((variable, typ), value) =>
         q"""piDefn($variable)($value)"""
+        // q"""$variable ~>: $value"""
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
         q"""$variable ++ $value"""
@@ -330,23 +365,32 @@ object CodeGen {
       if (n == 0) q"Type" else q"""Universe($n)"""
     } || symbolic >>> {
       case (s, typ) =>
-        val name =   Lit.String(s)// s""" "$s" """.parse[MTerm].get
-        q"$typ.symbObj(Name($name))"
-    } || prodTyp >>> { case (first, second) => q"""ProdTyp($first, $second)""" } || pairTerm >>> {
+        val name =   Lit.String(s)// s""" "$s" """.parse[meta.Term].get
+        // q"$typ.symbObj(Name($name))"
+        q"$name :: $typ"
+    } || prodTyp >>> { case (first, second) => q"""ProdTyp($first, $second)"""
+    } || pairTerm >>> {
       case (first, second)                  => q"""PairTerm($first, $second)"""
-    } || equation >>> { case (lhs, rhs)     => q"$lhs =:= $rhs" } || depPairTerm >>> {
+    } || equation >>> { case (lhs, rhs)     => q"IdentityTyp.get($lhs, $rhs)"
+    } || depPairTerm >>> {
       case ((a, b), f)                      => q"DepPair($a, $b, $f)"
     } || plusTyp >>> {
       case (first, scnd) => q"""PlusTyp($first, $scnd)"""
+    } || firstIncl >>> {
+      case (typ, value) => q"PlusTyp.FirstIncl($typ, $value)"
+    } || secondIncl >>> {
+      case (typ, value) => q"PlusTyp.ScndIncl($typ, $value)"
+    } || refl >>> {
+      case (typ, term) => q"Refl($typ, $term)"
     }
 
-  def getName(s: MTerm): Option[String] = s match {
-    case q""" $name :: $typ """ => Some(name.toString)
+  def getName(s: meta.Term): Option[String] = s match {
+    case q""" $name :: $typ """ => Some(name.toString.replace("\"", "").trim)
     case q""" $typ.symbObj(Name($name)) """ => Some(name.toString.replace("\"", "").trim)
     case _                      => None
   }
 
-  def indName(s: MTerm): Option[MTerm] =
-    getName(s).map((name) => MTerm.Name(s"${name}Ind"))
+  def indName(s: meta.Term): Option[meta.Term] =
+    getName(s).map((name) => meta.Term.Name(s"${name}Ind"))
 
 }

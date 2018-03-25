@@ -755,6 +755,8 @@ sealed trait TermIndMod {
   val intros: Vector[Term]
   val numParams: Int
   val isPropn: Boolean
+
+  val typF : Term
   // val numParams = params.length
 
   // def proofRelevant(fib: Term): Option[Term] =
@@ -901,16 +903,16 @@ case class NoIndexedInducE(mod: IndexedIndMod,
 ) extends Exception("no final cod")
 
 case class IndexedIndMod(name: Name,
-                         typFP: Term,
+                         typF: Term,
                          intros: Vector[Term],
                          numParams: Int,
                          isPropn: Boolean)
     extends TermIndMod {
-  // val typF = foldFunc(typFP, params)
+  // val typF = foldFunc(typF, params)
 
   def getInd(p: Vector[Term]) =
     TypFamilyExst
-      .getIndexedConstructorSeq(foldFunc(typFP, p), introsFold(p))
+      .getIndexedConstructorSeq(foldFunc(typF, p), introsFold(p))
       .value
 
   import LeanToTerm.unifier

@@ -2482,6 +2482,7 @@ object HoTT {
     /**
       * recursive definition on the identity type family
       */
+      @deprecated("misleading since identity is an idexed family", "forever")
     def rec[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
         codom: Typ[V]) =
       IdentityTyp.rec(dom: Typ[UU], codom)
@@ -2489,6 +2490,7 @@ object HoTT {
     /**
       * inductive definition on the identity type family
       */
+      @deprecated("misleading since identity is an indexed family", "forever")
     def induc[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
         targetFmly: FuncLike[UU,
                              FuncLike[UU, FuncLike[Equality[UU], Typ[V]]]]) =
@@ -2542,6 +2544,11 @@ object HoTT {
   }
 
   object IdentityTyp {
+    def get[U <: Term with Subs[U]](lhs: U, rhs: U) =  {
+      require(lhs.typ == rhs.typ,
+              "mismatched types for equality " + lhs.typ + " and " + rhs.typ)
+      IdentityTyp(lhs.typ.asInstanceOf[Typ[U]], lhs, rhs)
+    }
 
     /**
       * recursive definition on identity type families
