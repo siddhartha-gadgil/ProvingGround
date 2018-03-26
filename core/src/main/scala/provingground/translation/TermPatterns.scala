@@ -151,18 +151,10 @@ object TermPatterns {
   /**
     * matches idexed recursively defined function, returns index, domain, codomain and definition data
     */
-  val indRecFunc = Pattern.partial[Term, VIIV] {
+  val indRecFunc = Pattern.partial[Term, IVIIV] {
     case rf: IndRecFunc[u, v, w] =>
-      (rf.index, (rf.dom, (rf.codom, rf.defnData)))
+      (rf.domW, (rf.index, (rf.dom, (rf.codom, rf.defnData))))
   }
-
-  /**
-   * special case for CodeGen
-   */
-   val idRecFunc = Pattern.partial[Term, VIIV] {
-     case rf: IndRecFunc[u, v, w] =>
-       (rf.index, (rf.dom, (rf.codom, rf.defnData)))
-   }
 
   /**
     * matches inductively defined function, returns domain, codomain and definition data
@@ -195,7 +187,7 @@ object TermPatterns {
   /**
     * matches indexed inductively defined function, returns index, domain, codomain and definition data
     */
-  val indInducFunc = Pattern.partial[Term, VIIV] {
+  val indInducFunc = Pattern.partial[Term, IVIIV] {
     case rf: IndInducFuncLike[u, v, w, z] =>
       // val fmly: Term = rf.depcodom match {
       //   case t: Term => t
@@ -203,7 +195,7 @@ object TermPatterns {
       //     val x = rf.dom.Var
       //     x :-> rf.depcodom(x)
       // }
-      (rf.index, (rf.dom, (rf.codXs, rf.defnData)))
+      (rf.domW, (rf.index, (rf.dom, (rf.codXs, rf.defnData))))
   }
 
   /**

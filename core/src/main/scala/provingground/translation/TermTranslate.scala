@@ -49,8 +49,8 @@ object FansiTranslate {
         case (first, scnd) => (first ++ LightRed(Str(" + ")) ++ scnd)
       } ||
       indRecFunc >>> {
-        case (index, (dom, (codom, defnData))) =>
-          defnData.foldLeft(s"rec_{ $dom ; $codom }") {
+        case (domW,(index, (dom, (codom, defnData)))) =>
+          defnData.foldLeft(s"rec_{ $domW ; $codom }") {
             case (head, d) => s"$head($d)"
           }
       } ||
@@ -61,9 +61,9 @@ object FansiTranslate {
           }
       } ||
       indInducFunc >>> {
-        case (index, (dom, (depcodom, defnData))) =>
+        case (domW, (index, (dom, (depcodom, defnData)))) =>
           val h =
-            Str(s"induc_{ $dom ; $depcodom }")
+            Str(s"induc_{ $domW ; $depcodom }")
           defnData.foldLeft(h) {
             case (head, d) => s"$head($d)"
           }
@@ -123,9 +123,9 @@ object TeXTranslate {
         case (first, scnd) => s"""$first \\oplus $scnd"""
       } ||
       indRecFunc >>> {
-        case (index, (dom, (codom, defnData))) =>
+        case (domW, (index, (dom, (codom, defnData)))) =>
           defnData.foldLeft(
-            s"rec($dom${index.mkString("(", ")(", ")")})($codom)") {
+            s"rec_{$domW ; ${index.mkString("(", ")(", ")")}}($codom)") {
             case (head, d) => s"$head($d)"
           }
       } ||
@@ -136,8 +136,8 @@ object TeXTranslate {
           }
       } ||
       indInducFunc >>> {
-        case (index, (dom, (depcodom, defnData))) =>
-          val h = s"induc($dom${index.mkString("(", ")(", ")")})($depcodom)"
+        case (domW, (index, (dom, (depcodom, defnData)))) =>
+          val h = s"induc_{$domW ; ${index.mkString("(", ")(", ")")}}($depcodom)"
           defnData.foldLeft(h) {
             case (head, d) => s"$head($d)"
           }
@@ -306,8 +306,12 @@ object JsonTranslate {
                  "second" -> second)
       } ||
       indRecFunc >>> {
-        case (index, (dom, (codom, defnData))) =>
-          Js.Obj("intro" -> Js.Str("indexed-rec-function"),
+        case (domW, (index, (dom, (codom, defnData)))) =>
+        pprint.log(index)
+        pprint.log(domW)
+        pprint.log(defnData)
+        Js.Obj("intro" -> Js.Str("indexed-rec-function"),
+                 "domW" -> domW,
                  "dom"   -> dom,
                  "codom" -> codom,
                  "data"  -> Js.Arr(defnData: _*),
@@ -321,9 +325,13 @@ object JsonTranslate {
                  "data"  -> Js.Arr(defnData: _*))
       } ||
       indInducFunc >>> {
-        case (index, (dom, (depcodom, defnData))) =>
+        case (domW, (index, (dom, (depcodom, defnData)))) =>
+          pprint.log(index)
+          pprint.log(domW)
+          pprint.log(defnData)
           Js.Obj("intro"    -> Js.Str("indexed-induc-function"),
                  "dom"      -> dom,
+                 "domW"     -> domW,
                  "depcodom" -> depcodom,
                  "data"     -> Js.Arr(defnData: _*),
                  "index"    -> Js.Arr(index: _*))

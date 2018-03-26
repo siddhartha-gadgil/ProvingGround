@@ -140,11 +140,11 @@ object TermJson {
       jsToOpt[Term, IIV]("inductive-function") {
         case (x, (y, v)) => buildIndDef(inds)(x, (y, v))
       } ||
-      jsToOpt[Term, VIIV]("indexed-recursive-function") {
-        case (w, (x, (y, v))) => buildIndRecDef(indexedInds)(w, (x, (y, v)))
+      jsToOpt[Term, IVIIV]("indexed-recursive-function") {
+        case (u, (w, (x, (y, v)))) => buildIndRecDef(indexedInds)(w, (x, (y, v)))
       } ||
-      jsToOpt[Term, VIIV]("indexed-inductive-function") {
-        case (w, (x, (y, v))) => buildIndIndDef(indexedInds)(w, (x, (y, v)))
+      jsToOpt[Term, IVIIV]("indexed-inductive-function") {
+        case (u, (w, (x, (y, v)))) => buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
   val jsonToTermBase =
@@ -212,16 +212,16 @@ object TermJson {
           val fn = buildIndDef()
           fn(a, (b, v))
       } ||
-      jsToOpt[Term, VIIV]("indexed-recursive-function") {
-        case (w, (a, (b, v))) =>
+      jsToOpt[Term, IVIIV]("indexed-recursive-function") {
+        case (u, (w, (a, (b, v)))) =>
           // println(s"building indexed recursive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn  = buildIndRecDef()
           val res = fn(w, (a, (b, v)))
           println(s"result: $res")
           res
       } ||
-      jsToOpt[Term, VIIV]("indexed-inductive-function") {
-        case (w, (a, (b, v))) =>
+      jsToOpt[Term, IVIIV]("indexed-inductive-function") {
+        case (u, (w, (a, (b, v)))) =>
           // println(s"building indexed inductive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn  = buildIndIndDef()
           val res = fn(w, (a, (b, v)))

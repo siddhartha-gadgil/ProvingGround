@@ -23,7 +23,7 @@ case class CodeGen(indNames: Map[meta.Term, meta.Term] = Map(),
     def prefix(s: meta.Term): meta.Term =
       indNames.get(s).orElse(indName(s)).getOrElse(s.toString.parse[meta.Term].get)
     Translator.Simple(defns.lift) || base || indRecFunc >>> {
-      case (index, (dom, (codom, defnData))) =>
+      case (domW, (index, (dom, (codom, defnData)))) =>
         val ind                 =   q"${prefix(dom)}" //s"${prefix(dom)}".parse[meta.Term].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
         val withImplicit: meta.Term = q"val rxyz = ${fullInd}.rec($codom); rxyz"
@@ -40,7 +40,7 @@ case class CodeGen(indNames: Map[meta.Term, meta.Term] = Map(),
         }
     } ||
     indInducFunc >>> {
-      case (index, (dom, (codom, defnData))) =>
+      case (domW, (index, (dom, (codom, defnData)))) =>
         val ind                 =  q"${prefix(dom)}" // s"${prefix(dom)}".parse[meta.Term].get
         val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
         val withImplicit: meta.Term = q"val rxyz = ${fullInd}.induc($codom); rxyz"

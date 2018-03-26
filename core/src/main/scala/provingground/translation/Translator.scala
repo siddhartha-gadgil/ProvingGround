@@ -177,6 +177,24 @@ object Translator {
   }
 
   /**
+      * A mixed junction given by splitting optionally to a given shape,
+      * and building from the same shape using both the input and its traslation.
+      *
+      * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
+      * These allow applying the recursive translator on the components.
+      */
+    // case class PolyJunction[I, O, X[_]: Traverse](split: I => Option[X[I]],
+    //                                           build: (X[I], X[O]) => Option[O])
+    //     extends Translator[I, O] {
+    //   def flip: X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
+    //   def recTranslate(leafMap: => (I => Option[O])) = {
+    //     def connect(xi: X[I]) = flip(implicitly[Functor[X]].map(xi)(leafMap))
+    //     (inp: I) =>
+    //       split(inp) flatMap (connect) flatMap (build)
+    //   }
+    // }
+
+  /**
     * like a [[Junction]] but tries several cases.
     */
   case class PolyJunction[I, O, X[_]: Traverse](
