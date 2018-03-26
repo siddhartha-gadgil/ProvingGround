@@ -10,7 +10,9 @@ import scala.meta
 
 import scala.meta.{Term => _, Type => _, _}
 
-case class CodeGen(indNames: Map[meta.Term, meta.Term] = Map(),
+case class CodeGen(
+    inducNames: Map[Term, meta.Term] = Map(),
+    indNames: Map[meta.Term, meta.Term] = Map(),
                    defns: PartialFunction[Term, meta.Term] = Map()) { codegen =>
   import CodeGen._
 
@@ -22,34 +24,57 @@ case class CodeGen(indNames: Map[meta.Term, meta.Term] = Map(),
   val onTerm: Term => Option[meta.Term] = {
     def prefix(s: meta.Term): meta.Term =
       indNames.get(s).orElse(indName(s)).getOrElse(s.toString.parse[meta.Term].get)
-    Translator.Simple(defns.lift) || base || indRecFunc >>> {
-      case (domW, (index, (dom, (codom, defnData)))) =>
-        val ind                 =   q"${prefix(dom)}" //s"${prefix(dom)}".parse[meta.Term].get
-        val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
-        val withImplicit: meta.Term = q"val rxyz = ${fullInd}.rec($codom); rxyz"
-        defnData.foldLeft(withImplicit) {
+
+    def prefixTerm(t: Term, s: meta.Term): meta.Term =
+      inducNames.get(t).orElse(indName(t)).getOrElse(s)
+    Translator.Simple(defns.lift) ||
+    base ||
+    indRecFunc :>>> {
+      case (
+        (tdomW, (tindex, (tdom, (tcodom, tdefnData)))) ,
+        (domW, (index, (dom, (codom, defnData))))
+        ) =>
+        val ind                 =   prefixTerm(tdomW, domW)
+        val inducHead = tdom match {
+          case idt : IdentityTyp[u] =>
+            q"IdentityTyp.induc($dom.dom, $codom)"
+          case _ =>
+            q"${ind}.rec($codom)"
+        }
+        val withImplicit: meta.Term = q"val rxyz = $inducHead; rxyz"
+        (defnData ++ index).foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
     } ||
-    recFunc >>> {
-      case (dom, (codom, defnData)) =>
-        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[meta.Term].get
+    recFunc :>>> {
+      case ((tdom, (_, _)) ,(dom, (codom, defnData))) =>
+        val ind                 = prefixTerm(tdom, dom) // q"${prefix(dom)}"
         val withImplicit: meta.Term = q"val rxyz = ${ind}.rec($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
     } ||
-    indInducFunc >>> {
-      case (domW, (index, (dom, (codom, defnData)))) =>
-        val ind                 =  q"${prefix(dom)}" // s"${prefix(dom)}".parse[meta.Term].get
-        val fullInd             = index.foldLeft(ind) { case (func, arg) => q"$func($arg)" }
-        val withImplicit: meta.Term = q"val rxyz = ${fullInd}.induc($codom); rxyz"
-        defnData.foldLeft(withImplicit) {
+    indInducFunc :>>> {
+      case (
+        (tdomW, (tindex, (tdom, (tcodom, tdefnData)))),
+        (domW, (index, (dom, (codom, defnData))))
+        ) =>
+        val ind = prefixTerm(tdomW, domW)
+        val inducHead = tdom match {
+          case idt : IdentityTyp[u] =>
+            q"IdentityTyp.induc($dom.dom, $codom)"
+          case _ =>
+            q"${ind}.induc($codom)"
+        }
+        val withImplicit: meta.Term = q"val rxyz = $inducHead; rxyz"
+        (defnData ++ index).foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
         }
-    } || inducFunc >>> {
-      case (dom, (codom, defnData)) =>
-        val ind                 = q"${prefix(dom)}" // s"${prefix(dom)}".parse[meta.Term].get
+    } || inducFunc :>>> {
+      case ((tdom, (_, _)) ,
+      (dom, (codom, defnData))
+      ) =>
+        val ind                 = prefixTerm(tdom, dom) //q"${prefix(dom)}"
         val withImplicit: meta.Term = q"val rxyz = ${ind}.induc($codom); rxyz"
         defnData.foldLeft(withImplicit) {
           case (head, d) => q"$head($d)"
@@ -390,7 +415,14 @@ object CodeGen {
     case _                      => None
   }
 
+  def getName(t: Term): Option[String] = t match {
+    case s: Symbolic => Some(s.name.toString)
+    case _ => None
+  }
+
   def indName(s: meta.Term): Option[meta.Term] =
     getName(s).map((name) => meta.Term.Name(s"${name}Ind"))
 
+  def indName(t: Term): Option[meta.Term] =
+    getName(t).map((name) => meta.Term.Name(s"${name}Ind"))
 }

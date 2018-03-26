@@ -158,13 +158,13 @@ sealed abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
     val typ = PiDefn(fibre)
 
     def newobj                 = ??? // should not be called
-    override lazy val hashCode = (outer, ind).hashCode
-
-    override def equals(that: Any) = that match {
-      case fn: IndexedInductiveDefinition[a, b, c, d, e, f, g]#Funcs =>
-        (outer, ind) == (fn.outer, fn.ind)
-      case _ => false
-    }
+    // override lazy val hashCode = (outer, ind).hashCode
+    //
+    // override def equals(that: Any) = that match {
+    //   case fn: IndexedInductiveDefinition[a, b, c, d, e, f, g]#Funcs =>
+    //     (outer, ind) == (fn.outer, fn.ind)
+    //   case _ => false
+    // }
 
     def act(arg: H) =
       caseFn(iterDepFunc)(arg) getOrElse

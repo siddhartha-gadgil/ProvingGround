@@ -175,13 +175,13 @@ sealed abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
 
     lazy val outer = self
 
-    override lazy val hashCode = (outer, ind).hashCode
-
-    override def equals(that: Any) = that match {
-      case fn: IndexedRecursiveDefinition[a, b, c, d, e, f, g]#Funcs =>
-        (outer, ind) == (fn.outer, fn.ind)
-      case _ => false
-    }
+    // override lazy val hashCode = (outer, ind).hashCode
+    //
+    // override def equals(that: Any) = that match {
+    //   case fn: IndexedRecursiveDefinition[a, b, c, d, e, f, g]#Funcs =>
+    //     (outer, ind) == (fn.outer, fn.ind)
+    //   case _ => false
+    // }
 
     def newobj = ??? // should not be called
 
