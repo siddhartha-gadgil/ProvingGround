@@ -177,26 +177,28 @@ object Translator {
   }
 
   /**
-      * A mixed junction given by splitting optionally to a given shape,
-      * and building from the same shape using both the input and its traslation.
-      *
-      * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
-      * These allow applying the recursive translator on the components.
-      */
-    case class MixedJunction[I, O, X[_]: Traverse](split: I => Option[X[I]],
-                                              build: (X[I], X[O]) => Option[O])
-        extends Translator[I, O] {
-      def flip: X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
-      def recTranslate(leafMap: => (I => Option[O])) = {
-        def connect(xi: X[I]) : Option[X[O]] = flip(implicitly[Functor[X]].map(xi)(leafMap))
-        (inp: I) =>
-          for {
-            xi <- split(inp)
-            xo <- connect(xi)
-            res <- build(xi, xo)
-          } yield res
-      }
+    * A mixed junction given by splitting optionally to a given shape,
+    * and building from the same shape using both the input and its traslation.
+    *
+    * The shape is functorial, typically made of tuples and lists, and Option gives a natural transformation.
+    * These allow applying the recursive translator on the components.
+    */
+  case class MixedJunction[I, O, X[_]: Traverse](
+      split: I => Option[X[I]],
+      build: (X[I], X[O]) => Option[O])
+      extends Translator[I, O] {
+    def flip: X[Option[O]] => Option[X[O]] = (xo) => xo.sequence
+    def recTranslate(leafMap: => (I => Option[O])) = {
+      def connect(xi: X[I]): Option[X[O]] =
+        flip(implicitly[Functor[X]].map(xi)(leafMap))
+      (inp: I) =>
+        for {
+          xi  <- split(inp)
+          xo  <- connect(xi)
+          res <- build(xi, xo)
+        } yield res
     }
+  }
 
   /**
     * like a [[Junction]] but tries several cases.
@@ -257,17 +259,17 @@ object Translator {
 
     def >>>[O](build: X[O] => O) = joinStrict(build)
 
-    def mixedJoin[O](build: (X[I], X[O]) => Option[O]) = MixedJunction(unapply, build)
+    def mixedJoin[O](build: (X[I], X[O]) => Option[O]) =
+      MixedJunction(unapply, build)
 
     def mixedJoinStrict[O](sbuild: (X[I], X[O]) => O) = {
-      def build(xi: X[I], xo: X[O]) : Option[O] = Some(sbuild(xi, xo))
+      def build(xi: X[I], xo: X[O]): Option[O] = Some(sbuild(xi, xo))
       mixedJoin(build)
     }
 
     def :>>[O](build: (X[I], X[O]) => Option[O]) = mixedJoin(build)
 
     def :>>>[O](build: (X[I], X[O]) => O) = mixedJoinStrict(build)
-
 
     def ||(that: Pattern[I, X]) = Pattern.OrElse(this, that)
   }

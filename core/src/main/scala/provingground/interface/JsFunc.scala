@@ -141,10 +141,12 @@ object TermJson {
         case (x, (y, v)) => buildIndDef(inds)(x, (y, v))
       } ||
       jsToOpt[Term, IVIIV]("indexed-recursive-function") {
-        case (u, (w, (x, (y, v)))) => buildIndRecDef(indexedInds)(w, (x, (y, v)))
+        case (u, (w, (x, (y, v)))) =>
+          buildIndRecDef(indexedInds)(w, (x, (y, v)))
       } ||
       jsToOpt[Term, IVIIV]("indexed-inductive-function") {
-        case (u, (w, (x, (y, v)))) => buildIndIndDef(indexedInds)(w, (x, (y, v)))
+        case (u, (w, (x, (y, v)))) =>
+          buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
   val jsonToTermBase =

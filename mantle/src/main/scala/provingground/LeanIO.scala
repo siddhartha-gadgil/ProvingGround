@@ -756,7 +756,7 @@ sealed trait TermIndMod {
   val numParams: Int
   val isPropn: Boolean
 
-  val typF : Term
+  val typF: Term
   // val numParams = params.length
 
   // def proofRelevant(fib: Term): Option[Term] =

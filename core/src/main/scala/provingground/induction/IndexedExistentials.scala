@@ -16,10 +16,9 @@ sealed trait TypFamilyExst { typFmlyExst =>
   implicit val subst: TermList[Index]
 
   def lambdaExst[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) =
-    TypFamilyExst(
-      variable ~>: pattern
-      // DepFuncTypFamily(dom, (t: TT) => pattern.subs(variable, t))
-    ,
+    TypFamilyExst(variable ~>: pattern
+                  // DepFuncTypFamily(dom, (t: TT) => pattern.subs(variable, t))
+                  ,
                   variable :~> W)
 
   def ~>:[TT <: Term with Subs[TT]](variable: TT) =
@@ -28,8 +27,8 @@ sealed trait TypFamilyExst { typFmlyExst =>
       // DepFuncTypFamily(variable.typ.asInstanceOf[Typ[TT]],
       //                              (t: TT) => pattern.subs(variable, t))
       ,
-                  variable :~> W
-                )
+      variable :~> W
+    )
 
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
     TypFamilyExst(FuncTypFamily(dom, pattern), dom.Var :-> W)

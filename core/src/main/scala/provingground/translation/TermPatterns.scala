@@ -263,11 +263,13 @@ object TermPatterns {
   /**
     * matches a symbolic name, perhaps wrapped in `InnerSym`, returns `Name`
     */
-  val symbolic = Pattern.partial[Term, Named] {
+  val symbolic = Pattern[Term, Named] {
     case sym: Symbolic with Term =>
       outerSym(sym).name match {
-        case Name(name) => (name, sym.typ)
+        case Name(name) => Some((name, sym.typ))
+        case _ => None
       }
+    case _ => None
   }(namedTrav)
 
   /**
@@ -348,7 +350,7 @@ object TermPatterns {
           (idt: IdentityTyp[u], (codom: Typ[v], Vector(fn: Func[x, y])))) =>
       val rf =
         IdentityTyp.rec(idt.dom, codom)
-        // idt.rec(codom)
+      // idt.rec(codom)
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (codom: Typ[v], data))) =>
       inds(dom) flatMap ((cs) => applyAll(Some(cs.recE(codom)), data ++ index))
@@ -411,8 +413,8 @@ object TermPatterns {
         IdentityTyp.induc(
           idt.dom,
           depcodom
-          .asInstanceOf[
-          FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
+            .asInstanceOf[
+              FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
       applyAll(Some(rf), Vector(fn, start, finish))
     case (index, (dom, (depcodom, data))) =>
       inds(dom) flatMap ((cs) =>

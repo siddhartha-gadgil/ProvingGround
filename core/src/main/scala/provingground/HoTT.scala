@@ -186,8 +186,7 @@ object HoTT {
     case pt: PiDefn[u, v] =>
       PiDefn(avoidVar(t, pt.variable), avoidVar(t, pt.value)).asInstanceOf[U]
     case pt: SigmaTyp[u, v] =>
-        SigmaTyp(avoidVar(t, pt.fibers)).asInstanceOf[U]
-
+      SigmaTyp(avoidVar(t, pt.fibers)).asInstanceOf[U]
 
     case fn: RecFunc[u, v] =>
       val replacements =
@@ -2482,7 +2481,7 @@ object HoTT {
     /**
       * recursive definition on the identity type family
       */
-      @deprecated("misleading since identity is an idexed family", "forever")
+    @deprecated("misleading since identity is an idexed family", "forever")
     def rec[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
         codom: Typ[V]) =
       IdentityTyp.rec(dom: Typ[UU], codom)
@@ -2490,7 +2489,7 @@ object HoTT {
     /**
       * inductive definition on the identity type family
       */
-      @deprecated("misleading since identity is an indexed family", "forever")
+    @deprecated("misleading since identity is an indexed family", "forever")
     def induc[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
         targetFmly: FuncLike[UU,
                              FuncLike[UU, FuncLike[Equality[UU], Typ[V]]]]) =
@@ -2544,7 +2543,7 @@ object HoTT {
   }
 
   object IdentityTyp {
-    def get[U <: Term with Subs[U]](lhs: U, rhs: U) =  {
+    def get[U <: Term with Subs[U]](lhs: U, rhs: U) = {
       require(lhs.typ == rhs.typ,
               "mismatched types for equality " + lhs.typ + " and " + rhs.typ)
       IdentityTyp(lhs.typ.asInstanceOf[Typ[U]], lhs, rhs)
@@ -3256,8 +3255,6 @@ object HoTT {
     override def subs(x: Term, y: Term) = this
   }
 
-
-
   // -----------------------------------------------
   // Deprecated code - old style type families.
 
@@ -3299,8 +3296,6 @@ trait Subst[A] {
   def subst(a: A)(x: Term, y: Term): A
 }
 
-
-
 object Subst {
   def apply[A: Subst]: Subst[A] = implicitly[Subst[A]]
 
@@ -3310,9 +3305,10 @@ object Subst {
         (t: Term) => Subst[A].subst(f(t))(x, y)
     }
 
-  case class Lambda[T <: Term with Subs[T], A](variable: T, value: A)(implicit s: Subst[A]) extends (T => A){
+  case class Lambda[T <: Term with Subs[T], A](variable: T, value: A)(
+      implicit s: Subst[A])
+      extends (T => A) {
     def apply(t: T) = s.subst(value)(variable, t)
-
 
     override lazy val hashCode = {
       val newvar = variable.typ.symbObj(Name("hash"))
@@ -3351,7 +3347,6 @@ object TermList extends TermListImplicits {
       def terms(a: U) = Vector(a)
     }
 
-
   implicit object HNilTermList extends TermList[HNil] {
     def subst(a: HNil)(x: Term, y: Term) = a
 
@@ -3384,7 +3379,7 @@ trait SubstImplicits {
     def subst(x: Term, y: Term) = implicitly[Subst[A]].subst(a)(x, y)
 
     def ~->:(x: Term) = Subst.Lambda(x, a)
-      // (y: Term) => implicitly[Subst[A]].subst(a)(x, y)
+    // (y: Term) => implicitly[Subst[A]].subst(a)(x, y)
   }
 }
 

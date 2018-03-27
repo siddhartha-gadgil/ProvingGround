@@ -476,4 +476,42 @@ class LeanParser(mods: Vector[Modification]) {
       } yield (termIndModMap(name))
     }
 
+  // code generation
+
+  lazy val allNames = mods.flatMap(modNames)
+
+  lazy val allIndNames = mods.collect { case ind: IndMod => ind.name }
+
+  import translation.CodeGen
+
+  lazy val codeGen =
+    CodeGen.objNames(allIndNames.map(_.toString), allNames.map(_.toString))
+
+  def defnCode =
+    defnMap.map {
+      case (name, code) => (name, codeGen(code))
+    }
+
+  def codeFromInd(ind: TermIndMod) = {
+    val p = getVariables(ind.numParams)(ind.typF).toVector
+    val codeOpt =
+      ind match {
+        case mod : SimpleIndMod =>
+          val seq =
+            ConstructorSeqTL
+            .getExst(toTyp(foldFunc(ind.typF, p)), LeanToTermMonix.introsFold(ind, p))
+            .value
+          codeGen.consSeq(seq)
+        case mod: IndexedIndMod =>
+          val indSeq =
+            TypFamilyExst
+              .getIndexedConstructorSeq(foldFunc(ind.typF, p), LeanToTermMonix.introsFold(ind, p))
+              .value
+          codeGen.indexedConsSeqDom(indSeq)
+       }
+       import scala.meta._
+       val cp = p.map(codeGen(_).get)
+       cp.foldRight(codeOpt.get){case (x, y) => q"Subst.Lambda($x, $y)"}
+  }
+
 }

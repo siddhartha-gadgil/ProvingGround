@@ -49,7 +49,7 @@ object FansiTranslate {
         case (first, scnd) => (first ++ LightRed(Str(" + ")) ++ scnd)
       } ||
       indRecFunc >>> {
-        case (domW,(index, (dom, (codom, defnData)))) =>
+        case (domW, (index, (dom, (codom, defnData)))) =>
           defnData.foldLeft(s"rec_{ $domW ; $codom }") {
             case (head, d) => s"$head($d)"
           }
@@ -137,7 +137,8 @@ object TeXTranslate {
       } ||
       indInducFunc >>> {
         case (domW, (index, (dom, (depcodom, defnData)))) =>
-          val h = s"induc_{$domW ; ${index.mkString("(", ")(", ")")}}($depcodom)"
+          val h =
+            s"induc_{$domW ; ${index.mkString("(", ")(", ")")}}($depcodom)"
           defnData.foldLeft(h) {
             case (head, d) => s"$head($d)"
           }
@@ -307,11 +308,11 @@ object JsonTranslate {
       } ||
       indRecFunc >>> {
         case (domW, (index, (dom, (codom, defnData)))) =>
-        pprint.log(index)
-        pprint.log(domW)
-        pprint.log(defnData)
-        Js.Obj("intro" -> Js.Str("indexed-rec-function"),
-                 "domW" -> domW,
+          pprint.log(index)
+          pprint.log(domW)
+          pprint.log(defnData)
+          Js.Obj("intro" -> Js.Str("indexed-rec-function"),
+                 "domW"  -> domW,
                  "dom"   -> dom,
                  "codom" -> codom,
                  "data"  -> Js.Arr(defnData: _*),

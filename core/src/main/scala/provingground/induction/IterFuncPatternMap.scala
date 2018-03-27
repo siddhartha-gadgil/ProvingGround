@@ -382,15 +382,15 @@ sealed trait IterFuncShape[O <: Term with Subs[O], F <: Term with Subs[F]] {
   def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
     import SubstInstances._
     val fib = Subst.Lambda(variable, this)
-    DepFuncShape(dom, fib
-      // (t: TT) => shape.subs(variable, t)
+    DepFuncShape(dom,
+                 fib
+                 // (t: TT) => shape.subs(variable, t)
     )
 
   }
 
-
-      def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
-        FuncShape(tail, shape)
+  def -|>:[TT <: Term with Subs[TT]](tail: Typ[TT]) =
+    FuncShape(tail, shape)
   // def mapped[C <: Term with Subs[C]] =
   //   mapper[O].mapper(this)
 }

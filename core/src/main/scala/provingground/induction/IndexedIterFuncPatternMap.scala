@@ -328,8 +328,9 @@ sealed abstract class IndexedIterFuncShape[H <: Term with Subs[H],
   def piShape[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
     import SubstInstances._
     val fib = Subst.Lambda(variable, this)
-    IndexedIterFuncShape.DepFuncShape(dom, fib
-      // (t: TT) => subs(variable, t)
+    IndexedIterFuncShape.DepFuncShape(dom,
+                                      fib
+                                      // (t: TT) => subs(variable, t)
     )
   }
 

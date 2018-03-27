@@ -214,7 +214,6 @@ object Functors extends CompositeFunctors {
     */
   type IVIIV[A] = (Id[A], VIIV[A])
 
-
   /**
     * triple `(Id(A), (Id(A), Id(A)))`
     */

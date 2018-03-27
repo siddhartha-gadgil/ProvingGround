@@ -157,7 +157,7 @@ sealed abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
     val typ = PiDefn(fibre)
 
-    def newobj                 = ??? // should not be called
+    def newobj = ??? // should not be called
     // override lazy val hashCode = (outer, ind).hashCode
     //
     // override def equals(that: Any) = that match {
