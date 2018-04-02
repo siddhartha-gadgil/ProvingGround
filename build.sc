@@ -26,7 +26,7 @@ val commonLibs = List(
   ivy"org.scala-lang.modules::scala-xml:1.0.5",
   ivy"org.typelevel::spire:0.14.1",
   ivy"com.lihaoyi::fansi:0.2.4",
-  ivy"com.lihaoyi::upickle:0.4.4",
+  ivy"com.lihaoyi::upickle:0.6.4",
   ivy"com.chuusai::shapeless:2.3.2",
   ivy"org.typelevel::cats-core:1.1.0",
   ivy"io.monix::monix:3.0.0-RC1",
