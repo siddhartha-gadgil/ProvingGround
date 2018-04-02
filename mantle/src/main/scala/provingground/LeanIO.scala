@@ -1067,10 +1067,10 @@ object LeanInterface {
 @deprecated("august 7, 2017", "use interfce via trepplein")
 object LeanIO {
   import LeanExportElem._
-  def readData(file: Path) = Data.readAll(read.lines(file))
+  def readData(file: Path) = Data.readAll(read.lines(file).toVector)
 
   def readDefs(file: Path) = {
-    val lines = read.lines(file)
+    val lines = read.lines(file).toVector
 
     val dat = Data.readAll(lines)
 
@@ -1099,6 +1099,6 @@ object LeanIO {
 
   def recallDefs(defDir: Path = pwd / 'data / 'leandefs) = {
     ls(defDir).toVector flatMap
-      ((f) => read.lines(f) map (_.split("\t").toList))
+      ((f) => read.lines(f).toVector.map (_.split("\t").toList))
   }
 }

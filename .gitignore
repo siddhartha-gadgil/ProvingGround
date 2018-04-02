@@ -49,6 +49,8 @@ RUNNING_PID
 
 target/
 
+out/
+
 .target/
 
 lib/*.jar

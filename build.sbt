@@ -56,7 +56,7 @@ lazy val commonSettings = baseSettings ++ Seq(
   libraryDependencies ++= Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
-//      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
+     "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
     "org.typelevel" %% "spire"         % "0.14.1",
     "com.lihaoyi"   %% "fansi"         % "0.2.4",
     "com.lihaoyi"   %% "upickle"       % "0.4.4",
@@ -65,8 +65,9 @@ lazy val commonSettings = baseSettings ++ Seq(
     "io.monix"      %% "monix"         % "3.0.0-RC1",
     "org.scalameta" %% "scalameta"     % "3.4.0",
     "com.geirsson"  %% "scalafmt-core" % "1.4.0",
-    "com.lihaoyi"   %% "sourcecode"    % "0.1.4",
-    "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full
+    "com.lihaoyi" %% "pprint"      % "0.5.3",
+    // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
+    "com.lihaoyi"   %% "sourcecode"    % "0.1.4"
   ),
   scalacOptions in Compile ++= Seq("-unchecked",
                                    "-deprecation",
@@ -86,8 +87,7 @@ assemblyMergeStrategy in assembly := {
 
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
-    // "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full,
-    // "com.lihaoyi"            %% "ammonite-ops"  % ammV,
+    "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
     "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
@@ -109,7 +109,6 @@ lazy val jvmSettings = Seq(
     // "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
     "org.slf4j"   % "slf4j-api"    % "1.7.16",
     "org.slf4j"   % "slf4j-simple" % "1.7.16",
-    "com.lihaoyi" %% "pprint"      % "0.5.1",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.13.+"
     // Native libraries are not included by default. add this if you want them (as of 0.7)
@@ -208,6 +207,7 @@ lazy val coreJS  = core.js
 
 lazy val server = (project in file("server"))
   .settings(commonSettings: _*)
+  .settings(jvmSettings: _*)
   .settings(
     name := "provingground-server",
     // scalaVersion := scalaV,
@@ -295,7 +295,7 @@ lazy val nlp = (project in file("nlp"))
       s"""object amm extends App { ammonite.Main("$nlpInitCommands").run() }""")
     Seq(file)
   }.taskValue)
-//        .settings(jvmSettings : _*)
+       .settings(jvmSettings : _*)
   .dependsOn(coreJVM)
 
 // lazy val translation = (project in file("translation"))
