@@ -8,12 +8,20 @@ import spire.algebra._
 
 import spire.implicits._
 
+import upickle.default._
+
 //import LinearStructure._
 
 //import scala.collection.parallel.immutable.ParVector
 
 object FiniteDistribution {
   val random = new scala.util.Random
+
+  implicit def rw[A : ReadWriter] : ReadWriter[FiniteDistribution[A]]=
+    readwriter[Vector[Weighted[A]]].bimap(
+      _.pmf,
+      FiniteDistribution(_)
+    )
 
   // choose default implementation
   //  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)

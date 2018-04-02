@@ -1010,6 +1010,12 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
   def pickle = write[PickledTermPopulation](pickledPopulation)
 }
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
+object PickledTermPopulation{
+  implicit def rw: RW[PickledTermPopulation] = macroRW
+}
+
 case class PickledTermPopulation(
     termsByType: Map[String, Vector[PickledWeighted]],
     types: Vector[PickledWeighted],

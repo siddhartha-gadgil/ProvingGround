@@ -20,11 +20,42 @@ sealed trait FreeExpr {
   def as[E](implicit l: ExprLang[E]): Option[E]
 }
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
 object FreeExpr {
+
+  implicit def rw: ReadWriter[FreeExpr] =
+    RW.merge(
+      Variable.rw,
+      TypVariable.rw,
+      AnonVar.rw,
+      MetaVar.rw,
+      FreeEquality.rw,
+      FreeAppln.rw,
+      FreeLambda.rw,
+      FreeEquality.rw,
+      FreeSigma.rw,
+      FreePi.rw,
+      FreePair.rw,
+      FreeIncl1.rw,
+      FreeProj1.rw,
+      FreeIncl2.rw,
+      FreeProj2.rw,
+      OrCases.rw,
+      Or.rw,
+      TT.rw,
+      FF.rw,
+      Numeral.rw,
+      Special.rw
+    )
 
   case class Variable(name: String, typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.variable(name, tp)) yield result
+  }
+
+  object Variable {
+    implicit def rw : RW[Variable] = macroRW
   }
 
   case class TypVariable(name: String, level: Int) extends FreeExpr {
@@ -32,40 +63,79 @@ object FreeExpr {
       l.typVariable(name, level)
   }
 
+  object TypVariable{
+  implicit def rw : RW[TypVariable] = macroRW
+  }
+
+
   case class AnonVar(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.anonVar(tp)) yield result
   }
+
+  object AnonVar {
+  implicit def rw : RW[AnonVar] = macroRW
+  }
+
 
   case class MetaVar(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.anonVar(tp)) yield result
   }
 
+  object MetaVar {
+  implicit def rw : RW[MetaVar] = macroRW
+  }
+
+
   case class FreeIncl1(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.incl1(tp)) yield result
   }
+
+  object FreeIncl1 {
+  implicit def rw : RW[FreeIncl1] = macroRW
+  }
+
 
   case class FreeIncl2(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- typ.as[E]; result <- l.incl2(tp)) yield result
   }
 
+  object FreeIncl2 {
+  implicit def rw : RW[FreeIncl1] = macroRW
+  }
+
+
   case class FreeProj1(xy: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- xy.as[E]; result <- l.proj1(tp)) yield result
   }
+
+  object FreeProj1 {
+    implicit def rw : RW[FreeProj1] = macroRW
+  }
+
 
   case class FreeProj2(xy: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (tp <- xy.as[E]; result <- l.proj2(tp)) yield result
   }
 
+  object FreeProj2 {
+    implicit def rw : RW[FreeProj2] = macroRW
+  }
+
+
   case class FreeLambda(variable: FreeExpr, value: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- variable.as[E]; y <- value.as[E]; result <- l.lambda(x, y))
         yield result
+  }
+
+  object FreeLambda {
+    implicit def rw: RW[FreeLambda] = macroRW
   }
 
   case class FreePi(variable: FreeExpr, value: FreeExpr) extends FreeExpr {
@@ -74,10 +144,18 @@ object FreeExpr {
         yield result
   }
 
+  object FreePi {
+    implicit def rw: RW[FreePi] = macroRW
+  }
+
   case class FreeAppln(func: FreeExpr, arg: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- func.as[E]; y <- arg.as[E]; result <- l.appln(x, y))
         yield result
+  }
+
+  object FreeAppln {
+    implicit def rw: RW[FreeAppln] = macroRW
   }
 
   case class FreeEquality(lhs: FreeExpr, rhs: FreeExpr) extends FreeExpr {
@@ -86,10 +164,18 @@ object FreeExpr {
         yield result
   }
 
+  object FreeEquality {
+    implicit def rw: RW[FreeEquality] = macroRW
+  }
+
   case class FreeSigma(variable: FreeExpr, value: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- variable.as[E]; y <- value.as[E]; result <- l.sigma(x, y))
         yield result
+  }
+
+  object FreeSigma {
+    implicit def rw: RW[FreeSigma] = macroRW
   }
 
   case class FreePair(first: FreeExpr, second: FreeExpr) extends FreeExpr {
@@ -98,10 +184,19 @@ object FreeExpr {
         yield result
   }
 
+  object FreePair {
+    implicit def rw: RW[FreePair] = macroRW
+  }
+
+
   case class OrCases(first: FreeExpr, second: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- first.as[E]; y <- second.as[E]; result <- l.orCases(x, y))
         yield result
+  }
+
+  object OrCases {
+    implicit def rw: RW[OrCases] = macroRW
   }
 
   case class Or(first: FreeExpr, second: FreeExpr) extends FreeExpr {
@@ -110,20 +205,36 @@ object FreeExpr {
         yield result
   }
 
+  object Or {
+    implicit def rw: RW[Or] = macroRW
+  }
+
   case object TT extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) = l.tt
+
+    implicit def rw: RW[TT.type] = macroRW
   }
 
   case object FF extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) = l.ff
+
+    implicit def rw: RW[FF.type] = macroRW
   }
 
   case object QED extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) = l.qed
+
+    implicit def rw: RW[QED.type] = macroRW
+
   }
 
   case class Numeral(n: Int) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) = l.numeral(n)
+  }
+
+  object Numeral{
+    implicit def rw: RW[Numeral] = macroRW
+
   }
 
   case class Special(name: String, typ: FreeExpr, args: List[FreeExpr])
@@ -134,6 +245,8 @@ object FreeExpr {
   object Special {
     import Functors._
     import Translator._
+
+    implicit def rw: RW[Special] = macroRW
 
     val pattern = Pattern.partial[FreeExpr, Coded] {
       case Special(name, typ, args) => (name, (typ, args))

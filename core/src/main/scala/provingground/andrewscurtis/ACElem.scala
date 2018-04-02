@@ -4,6 +4,8 @@ import provingground._, learning._
 
 import FreeGroups._
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
 // import Moves._
 
 /**
@@ -26,9 +28,17 @@ import ACElem._
 
 case class Param(rank: Int = 2, size: Int = 1000, wrdCntn: Double = 0.1)
 
+object Param{
+  implicit def rw: RW[Param] = macroRW
+}
+
 object ACElem {
   type Snap =
     SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
+
+  object Snap{
+    implicit def rw: RW[Snap] = macroRW
+  }
 
   def toPresentation(rank: Int, fdV: FiniteDistribution[Moves]) =
     fdV map ((v: Moves) => Moves.actOnTriv(rank)(v).get)
@@ -58,7 +68,11 @@ object ACElem {
   */
 case class ACThm(name: String, pres: Presentation, weight: Double, loops: Int)
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
 object ACThm {
+  implicit def rw: RW[ACThm] = macroRW
+
   val fromSnap = (snap: Snap) => {
     val rank = snap.param.rank
     val d    = toPresentation(rank, snap.state._2)

@@ -144,6 +144,8 @@ object ACFlowSaver {
 
   val snapd = wd / "ACSnaps"
 
+  import Snap._
+
   def snapFile(batch: Int) =
     snapd / (LocalDate.now.toString()) / batch.toString
 
@@ -160,7 +162,7 @@ object ACFlowSaver {
       .sortBy(_.toInt)
       .flatMap((filename: String) =>
         (read.lines(snapd / date / filename)).toStream)
-      .map(uread[Snap])
+      .map((s) => uread[Snap](s))
 
   def snapSource(date: String) = Src(snapStream(date))
   //  import Hub.Casbah._
@@ -366,7 +368,7 @@ object ACData {
     val target = wd / dir / s"${file}.acthms.csv"
     val l = (lines map ((n) => ((read.lines.iter(source)).take(n)).toVector))
       .getOrElse(read.lines(source))
-    val pmfs = l map (uread[Vector[(String, Double)]])
+    val pmfs = l map ((x) => uread[Vector[(String, Double)]](x))
     val tVec =
       pmfs map
         ((pmf => FiniteDistribution(pmf map ((xp) => Weighted(xp._1, xp._2)))))

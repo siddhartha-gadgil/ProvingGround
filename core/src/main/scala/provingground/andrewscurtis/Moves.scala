@@ -9,7 +9,21 @@ import provingground._, learning._
 //import FiniteDistribution._
 import FiniteDistributionLearner._
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
 object AtomicMove {
+  implicit def rw : RW[AtomicMove] =
+    RW.merge(
+      Id.rw,
+      Inv.rw,
+      RtMult.rw,
+      RtMultInv.rw,
+      LftMult.rw,
+      LftMultInv.rw,
+      Conj.rw,
+      Transpose.rw
+    )
+
   def actOnFDVertices(
       mf: AtomicMove,
       fdVertices: FiniteDistribution[Moves]): FiniteDistribution[Moves] =
@@ -145,6 +159,7 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
   override def toString = toPlainString
 }
 
+
 case object Id extends AtomicMove {
   def apply(pres: Presentation) = Some(pres)
   //  override def actOnMoves(moves: Moves) = Some(moves)
@@ -152,6 +167,8 @@ case object Id extends AtomicMove {
   override def movesDF
     : AdjDiffbleFunction[FiniteDistribution[Moves], FiniteDistribution[Moves]] =
     AdjDiffbleFunction.Id[FiniteDistribution[Moves]]
+
+  implicit def rw: RW[Inv] = macroRW
 }
 
 case class Inv(k: Int) extends AtomicMove {
@@ -161,12 +178,22 @@ case class Inv(k: Int) extends AtomicMove {
   }
 }
 
+object Inv {
+  implicit def rw: RW[Inv] = macroRW
+}
+
+
 case class RtMult(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz) Some(pres.rtmult(k, l))
     else None
   }
 }
+
+object RtMult {
+  implicit def rw: RW[RtMult] = macroRW
+}
+
 
 case class RtMultInv(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
@@ -176,6 +203,11 @@ case class RtMultInv(k: Int, l: Int) extends AtomicMove {
   }
 }
 
+object RtMultInv {
+  implicit def rw: RW[RtMultInv] = macroRW
+}
+
+
 case class LftMult(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz)
@@ -184,12 +216,21 @@ case class LftMult(k: Int, l: Int) extends AtomicMove {
   }
 }
 
+object LftMult {
+  implicit def rw: RW[LftMult] = macroRW
+}
+
+
 case class LftMultInv(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz)
       Some(pres.lftmult(k, l))
     else None
   }
+}
+
+object LftMultInv {
+  implicit def rw: RW[LftMultInv] = macroRW
 }
 
 case class Conj(k: Int, l: Int) extends AtomicMove {
@@ -200,12 +241,20 @@ case class Conj(k: Int, l: Int) extends AtomicMove {
   }
 }
 
+object Conj{
+  implicit def rw: RW[Conj] = macroRW
+}
+
 case class Transpose(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && math.abs(l) > 0 && k < pres.sz && math.abs(l) <= pres.rank)
       Some(pres.transpose(k, l))
     else None
   }
+}
+
+object Transpose{
+  implicit def rw: RW[Transpose] = macroRW
 }
 
 case class Moves(moves: List[AtomicMove]) extends AnyVal {
@@ -246,6 +295,8 @@ case class Moves(moves: List[AtomicMove]) extends AnyVal {
 }
 
 object Moves {
+  implicit def rw: RW[Moves] = macroRW
+
   def empty = Moves(List.empty)
 
   def apply(ws: String*) = fromString(ws).get

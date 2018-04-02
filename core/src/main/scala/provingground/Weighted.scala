@@ -4,6 +4,10 @@ import annotation.tailrec
 
 import scala.language.implicitConversions
 
+import upickle.default._
+
+import upickle.default.{ReadWriter => RW, macroRW}
+
 case class Weighted[T](elem: T, weight: Double) {
   def scale(s: Double) = Weighted(elem, weight * s)
 
@@ -14,6 +18,8 @@ object Weighted {
   @tailrec final def pick[T](dist: Traversable[Weighted[T]], t: Double): T =
     if (t - dist.head.weight < 0) dist.head.elem
     else pick(dist.tail, t - dist.head.weight)
+
+  implicit def rw [A: ReadWriter]: ReadWriter[Weighted[A]] = ???
 
   def sumWeigths[T](seq: Seq[Weighted[T]]) = seq.map(_.weight).sum
 
@@ -39,7 +45,12 @@ case class PickledWeighted(elem: String, weight: Double) {
   def map[S](f: String => S) = Weighted(f(elem), weight)
 }
 
+
+import upickle.default.{ReadWriter => RW, macroRW}
+
 object PickledWeighted {
   def pickle[T](wtd: Weighted[T]) =
     PickledWeighted(wtd.elem.toString, wtd.weight)
+
+  implicit def rw: RW[PickledWeighted] = macroRW
 }

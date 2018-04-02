@@ -4,6 +4,8 @@ import provingground.translation.StringParse._
 
 import cats.kernel._
 
+
+import upickle.default.{ReadWriter => RW, macroRW}
 /*
  * Free group in n generators
  * An element is represented as a word in integers, together with rank of the corresponding group
@@ -34,6 +36,8 @@ object FreeGroups {
       def combine(x: Word, y: Word) = x * y
       def inverse(x: Word)          = x.inv
     }
+
+    implicit def rw : RW[Word] = macroRW
 
     /**
       * sanity checker for listFromChars.
@@ -369,6 +373,8 @@ object FreeGroups {
   }
 
   object Presentation {
+
+    implicit def rw: RW[Presentation] = macroRW
 
     /**
       *  parses string to a presentation.

@@ -59,7 +59,7 @@ lazy val commonSettings = baseSettings ++ Seq(
      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
     "org.typelevel" %% "spire"         % "0.14.1",
     "com.lihaoyi"   %% "fansi"         % "0.2.4",
-    "com.lihaoyi"   %% "upickle"       % "0.4.4",
+    "com.lihaoyi"   %% "upickle"       % "0.6.4",
     "com.chuusai"   %% "shapeless"     % "2.3.2",
     "org.typelevel" %% "cats-core"     % "1.1.0",
     "io.monix"      %% "monix"         % "3.0.0-RC1",
@@ -183,7 +183,7 @@ lazy val client = project
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.1",
       "com.lihaoyi"  %%% "scalatags"   % "0.6.3",
-      "com.lihaoyi"  %%% "upickle"     % "0.4.4",
+      "com.lihaoyi"  %%% "upickle"     % "0.6.4",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"

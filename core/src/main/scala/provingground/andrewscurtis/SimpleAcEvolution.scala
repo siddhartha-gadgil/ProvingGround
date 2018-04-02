@@ -14,6 +14,8 @@ import LinearStructure._
 
 import upickle.default._
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
 //import com.github.nscala_time.time.Imports._
 
 /**
@@ -37,6 +39,10 @@ object SimpleAcEvolution {
         yield (PickledWeighted(write(v), p))).toVector
       PickledState(rank, pmfM, pmfV)
     }
+  }
+
+  object PickledState{
+    implicit def rw: RW[PickledState] = macroRW
   }
 
   case class PickledState(rank: Int,
@@ -145,6 +151,10 @@ object SimpleAcEvolution {
       val state = State(rank, unifMoves(rank), eVec)
       Path(rank, steps, wordCntn, size, scale, List(state), List(), id)
     }
+  }
+
+  object PickledPath{
+    implicit def rw: RW[PickledPath] = macroRW
   }
 
   case class PickledPath(rank: Int,

@@ -559,7 +559,7 @@ class SymbolicCRing[A: Ring] { self =>
   }
 }
 
-object SymbolicCRing extends LiteralParser {
+object SymbolicCRing  {
 
   def parse(typ: Typ[Term])(str: String): Option[Term] = typ match {
     case FuncTyp(a: SymbolicCRing[u], FuncTyp(b, c)) if a == b && b == c =>

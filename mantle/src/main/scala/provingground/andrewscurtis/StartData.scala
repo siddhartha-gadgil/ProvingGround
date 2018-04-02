@@ -23,6 +23,8 @@ import akka.stream.scaladsl._
 
 import StartData._
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
 /**
   * data for spawning and starting an andrews-curtis runner.
   */
@@ -62,7 +64,7 @@ case class StartData(name: String,
       .map(
         (docOpt) =>
           (docOpt flatMap
-            (_.getAs[String]("start-data") map (uread[List[StartData]])))
+            (_.getAs[String]("start-data") map ((s: String) => uread[List[StartData]](s))))
             .getOrElse(List()))
     val updatedStartsFut = prevStarts map (this :: _)
     val futDoc =
@@ -91,6 +93,8 @@ case class StartData(name: String,
 }
 
 object StartData {
+
+  implicit def rw: RW[StartData] = macroRW
 
   import spray.json._
 
