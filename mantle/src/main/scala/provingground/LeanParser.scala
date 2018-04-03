@@ -478,19 +478,23 @@ class LeanParser(mods: Vector[Modification]) {
 
   // code generation
 
-  def allNames = mods.flatMap(modNames)
+  def defNames = mods.collect {case df: DefMod => df.name}
 
   def allIndNames = mods.collect { case ind: IndMod => ind.name }
 
   import translation.CodeGen
 
   def codeGen =
-    CodeGen.objNames(allNames.map(_.toString), allIndNames.map(_.toString))
+    CodeGen.objNames(defNames.map(_.toString), allIndNames.map(_.toString))
 
   def defnCode =
-    defnMap.map {
-      case (name, term) => (name, codeGen(term))
-    }
+    (defNames.map {
+      (name) =>
+        for {
+          term <- defnMap.get(name)
+          code <- codeGen(term)
+        } yield (name, code)
+    }).flatten
 
   def codeFromInd(ind: TermIndMod) = {
     val p = getVariables(ind.numParams)(ind.typF).toVector

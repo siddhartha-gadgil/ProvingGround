@@ -90,6 +90,10 @@ object mantle extends SbtModule with JvmModule{
   def moduleDeps = Seq(core.jvm, trepplein)
 }
 
+object leanlib extends JvmModule{
+  def moduleDeps = Seq(core.jvm)
+}
+
 // object server extends ScalaModule{
 //   def scalaVersion = "2.12.4"
 //

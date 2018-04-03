@@ -18,13 +18,14 @@ case class LeanCodeGen(parser: LeanParser){
 package provingground.library
 import provingground._
 import HoTT._
+import induction._
 import implicits._
 import shapeless._
 """
 
-  def writeDefn(name: trepplein.Name, codeOpt: Option[meta.Term]) = {
-    val obj = CodeGen.mkObject(name.toString, codeOpt.get)
-    val file = base / name.toString
+  def writeDefn(name: trepplein.Name, code: meta.Term) = {
+    val obj = CodeGen.mkObject(name.toString, code)
+    val file = base / s"$name.scala"
     write.over(file, header)
 
     write.append(file, obj.toString)
@@ -32,8 +33,8 @@ import shapeless._
 
   def writeInduc(name: trepplein.Name, ind: TermIndMod) = {
     val code = codeFromInd(ind)
-    val obj = CodeGen.mkObject(name.toString, code)
-    val file = base / name.toString
+    val obj = CodeGen.mkObject(s"${name}Ind", code)
+    val file = base / s"${name}Ind.scala"
     write.over(file, header)
 
     write.append(file, obj.toString)

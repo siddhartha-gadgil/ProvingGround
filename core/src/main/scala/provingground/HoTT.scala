@@ -3325,6 +3325,14 @@ object Subst {
 
     override def toString = s"$variable ${UnicodeSyms.MapsTo} $value"
   }
+
+  object Lambda{
+    implicit def substInstance[T <: Term with Subs[T], A](implicit s: Subst[A]) : Subst[Lambda[T, A]] =
+      new Subst[Lambda[T, A]]{
+        def subst(l: Lambda[T, A])(x: Term, y: Term) =
+          Lambda(l.variable.replace(x, y), s.subst(l.value)(x, y))
+      }
+  }
 }
 
 /**
