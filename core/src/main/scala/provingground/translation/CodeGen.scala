@@ -415,10 +415,10 @@ object CodeGen {
     } || lambdaFixedTriple >>> {
       case ((variable, typ), value) =>
         // q"""lmbda($variable)($value)"""
-        q"""$variable :-> $value"""
+        q"""lmbda($variable)($value)"""
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-        q"""$variable :~> $value"""
+        q"""lambda($variable)($value)"""
       // q"""lambda($variable)($value)"""
     } || piTriple >>> {
       case ((variable, typ), value) =>

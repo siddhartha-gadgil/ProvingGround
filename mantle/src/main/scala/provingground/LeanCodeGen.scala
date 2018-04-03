@@ -14,8 +14,7 @@ case class LeanCodeGen(parser: LeanParser){
   val base = pwd / "leanlib" / "src"
 
   val header = // just write this to a file
-"""
-package provingground.library
+"""package provingground.library
 import provingground._
 import HoTT._
 import induction._
@@ -28,7 +27,7 @@ import shapeless._
     val file = base / s"$name.scala"
     write.over(file, header)
 
-    write.append(file, obj.toString)
+    write.append(file, obj.toString + "\n")
   }
 
   def writeInduc(name: trepplein.Name, ind: TermIndMod) = {
@@ -37,7 +36,7 @@ import shapeless._
     val file = base / s"${name}Ind.scala"
     write.over(file, header)
 
-    write.append(file, obj.toString)
+    write.append(file, obj.toString + "\n")
   }
 
   def save() = {
