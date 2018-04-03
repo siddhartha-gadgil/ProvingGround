@@ -252,6 +252,8 @@ object TermPatterns {
     case Universe(n) => n
   }
 
+  val propUniv = Pattern.check[Term](_ == Prop)
+
   /**
     * matches  `Prop`, the false  type, returns `() : Unit` if matched
     */

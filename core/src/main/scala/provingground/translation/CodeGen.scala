@@ -11,7 +11,7 @@ import scala.meta
 import scala.meta.{Term => _, Type => _, _}
 
 case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
-                   defns: PartialFunction[String, meta.Term] = Map()) {
+                   defns: Map[String, meta.Term] = Map()) {
   codegen =>
   import CodeGen._
 
@@ -354,7 +354,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
 }
 
 object CodeGen {
-  def escape(s: String) = s.replace(""".""", "DOT")
+  def escape(s: String) = s.replace(""".""", "$")
 
   def fromNames(indMap: Map[String, meta.Term],
                 termMap: Map[String, meta.Term] = Map()) = {
@@ -368,12 +368,12 @@ object CodeGen {
   def objNames(termNames: Vector[String], indNames: Vector[String]) = {
     val defnMap =
       termNames.map { (s) =>
-        val code = q"${meta.Term.Name(escape(s))}.__"
+        val code = q"${meta.Term.Name(escape(s))}.value"
         s -> code
       }.toMap
     val indMap =
       indNames.map { (s) =>
-        val code: meta.Term = q"${meta.Term.Name(escape(s) + "Ind")}.__"
+        val code: meta.Term = q"${meta.Term.Name(escape(s) + "Ind")}.value"
         s -> code
       }.toMap
     val inducNames: Term => Option[meta.Term] = {
@@ -395,7 +395,7 @@ object CodeGen {
 
   def mkObject(name: String, code: meta.Term) = {
     val obj = meta.Term.Name(escape(name))
-    q"object $obj {val __ =  $code}"
+    q"object $obj {val value =  $code}"
   }
 
   def mkIndObject(name: String, code: meta.Term) =
@@ -429,6 +429,8 @@ object CodeGen {
         q"""$variable ++ $value"""
     } || universe >>> { (n) =>
       if (n == 0) q"Type" else q"""Universe($n)"""
+    } || propUniv >>> {
+      case _ => q"Prop"
     } || symbolic >>> {
       case (s, typ) =>
         val name = Lit.String(s)

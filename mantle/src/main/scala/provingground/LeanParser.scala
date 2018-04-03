@@ -478,14 +478,14 @@ class LeanParser(mods: Vector[Modification]) {
 
   // code generation
 
-  lazy val allNames = mods.flatMap(modNames)
+  def allNames = mods.flatMap(modNames)
 
-  lazy val allIndNames = mods.collect { case ind: IndMod => ind.name }
+  def allIndNames = mods.collect { case ind: IndMod => ind.name }
 
   import translation.CodeGen
 
-  lazy val codeGen =
-    CodeGen.objNames(allIndNames.map(_.toString), allNames.map(_.toString))
+  def codeGen =
+    CodeGen.objNames(allNames.map(_.toString), allIndNames.map(_.toString))
 
   def defnCode =
     defnMap.map {
