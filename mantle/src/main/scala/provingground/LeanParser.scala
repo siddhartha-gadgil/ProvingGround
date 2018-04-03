@@ -489,7 +489,7 @@ class LeanParser(mods: Vector[Modification]) {
 
   def defnCode =
     defnMap.map {
-      case (name, code) => (name, codeGen(code))
+      case (name, term) => (name, codeGen(term))
     }
 
   def codeFromInd(ind: TermIndMod) = {
