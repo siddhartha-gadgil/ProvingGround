@@ -4,7 +4,7 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
-import Fold._ // for safety
+import Fold._
 object nat$decidable_eq$_main {
   val value = lambda("'ag" :: "nat" :: Type)(({
     val rxyz = pprodInd.value(piDefn("'aj" :: "nat" :: Type)(("decidable" :: FuncTyp(Prop, Type))(("eq" :: piDefn("'c" :: Type)(FuncTyp("'c" :: Prop, FuncTyp("'c" :: Prop, Prop))))("nat" :: Type)("'ag" :: "nat" :: Type)("'aj" :: "nat" :: Type))))(({

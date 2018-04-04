@@ -4,7 +4,6 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
-import Fold._ // for safety
 object nat$no_confusion_type {
   val value = lmbda("'k" :: Type)(lmbda("'l" :: "nat" :: Type)(lmbda("'m" :: "nat" :: Type)(({
     val rxyz = natInd.value.induc(lmbda("$vuyd" :: "nat" :: Type)(Type))

@@ -4,7 +4,6 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
-import Fold._ // for safety
 object nat$no_confusion {
   val value = lambda("'q" :: Type)(lambda("'r" :: "nat" :: Type)(lambda("'s" :: "nat" :: Type)(({
     val rxyz = eqInd.value("nat" :: Type)("'r" :: "nat" :: Type).induc(lambda("$xkoe" :: "nat" :: Type)(lmbda("_" :: ("eq" :: piDefn("'c" :: Type)(FuncTyp("'c" :: Prop, FuncTyp("'c" :: Prop, Prop))))("nat" :: Type)("'r" :: "nat" :: Type)("$xkoe" :: "nat" :: Type))(FuncTyp(("eq" :: piDefn("'c" :: Type)(FuncTyp("'c" :: Prop, FuncTyp("'c" :: Prop, Prop))))("nat" :: Type)("'r" :: "nat" :: Type)("$xkoe" :: "nat" :: Type), ({

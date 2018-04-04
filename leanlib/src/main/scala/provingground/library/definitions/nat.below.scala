@@ -4,7 +4,6 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
-import Fold._ // for safety
 object nat$below {
   val value = lmbda("'f" :: FuncTyp("nat" :: Type, Type))(({
     val rxyz = natInd.value.rec(Type)
