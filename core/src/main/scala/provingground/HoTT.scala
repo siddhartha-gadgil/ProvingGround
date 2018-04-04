@@ -162,7 +162,8 @@ object HoTT {
   /**
     * returns x after modifying to avoid clashes of variables
     */
-  def avoidVar[U <: Term with Subs[U]](t: Term, x: U): U = x match {
+  def avoidVar[U <: Term with Subs[U]](t: Term, x: U): U = {
+    x match {
     case ll: LambdaFixed[u, v] =>
       if (t == ll.variable) {
         val newvar = ll.variable.newobj
@@ -201,7 +202,8 @@ object HoTT {
         }
       fn.fromData(replacements).asInstanceOf[U]
     case _ => x
-  }
+    }
+  } //ensuring (_ == x, s"avoiding vars failed for $x")
 
   /**
     * Objects with simple substitution.

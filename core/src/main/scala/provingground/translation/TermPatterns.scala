@@ -163,8 +163,10 @@ object TermPatterns {
     case rf: InducFuncLike[u, v] =>
       val fmly: Term = rf.depcodom match {
         case t: Term => t
-        case _ =>
+        case s =>
+          pprint.log(s)
           val x = rf.dom.Var
+          pprint.log(rf.depcodom(x))
           x :-> rf.depcodom(x)
       }
       (rf.dom, (fmly, rf.defnData))
