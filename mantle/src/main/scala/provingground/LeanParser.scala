@@ -123,6 +123,12 @@ class LeanParser(mods: Vector[Modification]) {
 
   val termIndModMap: mMap[Name, TermIndMod] = mMap()
 
+  def update() = {
+    import library._
+    defnMap ++= LeanMemo.defMap
+    termIndModMap ++= LeanMemo.indMap
+  }
+
   val parseMemo: mMap[(Expr, Vector[Term]), Term] = mMap()
 
   def getMemTermIndMod(name: Name, exp: Expr) =

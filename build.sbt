@@ -248,6 +248,12 @@ lazy val server = (project in file("server"))
 val initCommands =
   """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
 
+lazy val leanlib =
+  (project in file("leanlib"))
+  .settings(commonSettings: _*)
+  .settings(jvmSettings: _*)
+  .dependsOn(coreJVM)
+
 lazy val mantle = (project in file("mantle"))
   .settings(
     name := "ProvingGround-mantle",
@@ -269,6 +275,7 @@ lazy val mantle = (project in file("mantle"))
   // .dependsOn(functionfinder)
   .dependsOn(server)
   .dependsOn(trepplein)
+  .dependsOn(leanlib)
   // .dependsOn(translation)
   .enablePlugins(SbtWeb, TutPlugin)
 //        dependsOn(deepwalk).

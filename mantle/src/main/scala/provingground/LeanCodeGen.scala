@@ -8,10 +8,21 @@ import trepplein._
 import scala.meta.{Term => _, Type => _, _}
 import ammonite.ops._
 
+object LeanCodeGen{
+  def nameCode(name: trepplein.Name) = {
+    val pieces =
+      name.toString.split('.').map(
+        (s) => Lit.String(s)
+      ).toList
+    q"trepplein.Name(..$pieces)"
+  }
+}
+
 case class LeanCodeGen(parser: LeanParser){
   import parser._
+  import LeanCodeGen._
 
-  val base = pwd / "leanlib" / "src"
+  val base = pwd / "leanlib" / "src" / "main" / "scala" / "provingground" / "library"
 
   val header = // just write this to a file
 """package provingground.library
@@ -21,6 +32,58 @@ import induction._
 import implicits._
 import shapeless._
 import Fold._ // for safety
+"""
+
+  def defMapCode =
+    {
+    val kvs =
+      defnMap.map{
+      case (name, term) =>
+        val termCode =
+          if (defNames.contains(name))
+            q"${meta.Term.Name(CodeGen.escape(name.toString))}.value"
+          else
+            codeGen(term).get
+        q"${nameCode(name)} -> $termCode"
+    }.toList
+    q"Map(..$kvs)"
+  }
+
+  def vecCode(v: Vector[Term]) = {
+    val codes = v.map((t) => codeGen(t).get).toList
+    q"Vector(..$codes)"
+  }
+
+  def indCode(m: TermIndMod) = {
+    val classCode = m match {
+      case _ : SimpleIndMod => meta.Term.Name("SimpleIndMod")
+      case _ : IndexedIndMod => meta.Term.Name("IndexedIndMod")
+    }
+    q"""$classCode(
+      ${nameCode(m.name)},
+      ${codeGen(m.typF).get},
+      ${vecCode(m.intros)},
+      ${Lit.Int(m.numParams)},
+      ${Lit.Boolean(m.isPropn)}
+    )"""
+  }
+
+  def indMapCode = {
+    val kvs =
+      termIndModMap.map{
+      case (name, m) =>
+        q"${nameCode(name)} -> ${indCode(m)}"
+    }.toList
+    q"Map(..$kvs)"
+
+  }
+
+  def memoObj =
+q"""
+object LeanMemo {
+  val defMap = $defMapCode
+  val indMap = $indMapCode
+}
 """
 
   def writeDefn(name: trepplein.Name, code: meta.Term) = {
@@ -43,6 +106,13 @@ import Fold._ // for safety
   def save() = {
     defnCode.foreach{case (name, code) => writeDefn(name, code)}
     termIndModMap.foreach{case (name, ind) => writeInduc(name, ind)}
+  }
+
+  def memo() = {
+    val file = pwd / "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala"
+    write.over(file, header+"\nimport interface._\n")
+
+    write.append(file, memoObj.toString + "\n")
   }
 
 

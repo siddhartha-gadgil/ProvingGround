@@ -87,11 +87,11 @@ object trepplein extends SbtModule{
 
 object mantle extends SbtModule with JvmModule{
   def baseDirectory = pwd / "mantle"
-  def moduleDeps = Seq(core.jvm, trepplein)
+  def moduleDeps = Seq(core.jvm, trepplein, leanlib)
 }
 
 object leanlib extends JvmModule{
-  def moduleDeps = Seq(core.jvm)
+  def moduleDeps = Seq(core.jvm, trepplein)
 }
 
 // object server extends ScalaModule{
