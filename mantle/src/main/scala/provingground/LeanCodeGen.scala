@@ -20,11 +20,12 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
+import Fold._ // for safety
 """
 
   def writeDefn(name: trepplein.Name, code: meta.Term) = {
     val obj = CodeGen.mkObject(name.toString, code)
-    val file = base / s"$name.scala"
+    val file = base / "definitions" / s"$name.scala"
     write.over(file, header)
 
     write.append(file, obj.toString + "\n")
@@ -33,7 +34,7 @@ import shapeless._
   def writeInduc(name: trepplein.Name, ind: TermIndMod) = {
     val code = codeFromInd(ind)
     val obj = CodeGen.mkObject(s"${name}Ind", code)
-    val file = base / s"${name}Ind.scala"
+    val file = base / "inductive-types" / s"${name}Ind.scala"
     write.over(file, header)
 
     write.append(file, obj.toString + "\n")

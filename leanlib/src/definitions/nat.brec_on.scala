@@ -1,10 +1,10 @@
-
 package provingground.library
 import provingground._
 import HoTT._
 import induction._
 import implicits._
 import shapeless._
+import Fold._ // for safety
 object nat$brec_on {
   val value = lambda("'s" :: FuncTyp("nat" :: Type, Type))(lambda("'t" :: "nat" :: Type)(lmbda("'u" :: piDefn("'u" :: "nat" :: Type)(FuncTyp(({
     val rxyz = natInd.value.rec(Type)

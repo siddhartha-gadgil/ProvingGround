@@ -1,10 +1,10 @@
-
 package provingground.library
 import provingground._
 import HoTT._
 import induction._
 import implicits._
 import shapeless._
+import Fold._ // for safety
 object pprod$fst {
   val value = lambda("'p" :: Type)(lambda("'q" :: Type)(({
     val rxyz = pprodInd.value("'p" :: Type)("'q" :: Type).rec("'p" :: Type)

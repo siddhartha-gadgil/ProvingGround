@@ -1,10 +1,10 @@
-
 package provingground.library
 import provingground._
 import HoTT._
 import induction._
 import implicits._
 import shapeless._
+import Fold._ // for safety
 object nat$cases_on {
   val value = lambda("'g" :: FuncTyp("nat" :: Type, Type))(lambda("'h" :: "nat" :: Type)(lmbda("'i" :: ("'g" :: FuncTyp("nat" :: Type, Type))("nat.zero" :: "nat" :: Type))(lmbda("'j" :: piDefn("'j" :: "nat" :: Type)(("'g" :: FuncTyp("nat" :: Type, Type))(("nat.succ" :: FuncTyp("nat" :: Type, "nat" :: Type))("'j" :: "nat" :: Type))))(({
     val rxyz = natInd.value.induc(lmbda("$vuyd" :: "nat" :: Type)(("'g" :: FuncTyp("nat" :: Type, Type))("$vuyd" :: "nat" :: Type)))
