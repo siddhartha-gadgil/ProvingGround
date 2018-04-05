@@ -276,6 +276,18 @@ object TermPatterns {
     case _ => None
   }(namedTrav)
 
+  val hashSymbolic = Pattern[Term, Named] {
+    case sym: Symbolic with Term =>
+      outerSym(sym).name match {
+        case Name(name) =>
+          if (sym == outerSym(sym))
+            Some((name, sym.typ))
+          else Some((s"${name}_${sym.hashCode.abs}", sym.typ))
+        case _ => None
+      }
+    case _ => None
+  }(namedTrav)
+
   /**
     * matches a symbolic name, perhaps wrapped in `InnerSym`, returns the name as a `String`
     */

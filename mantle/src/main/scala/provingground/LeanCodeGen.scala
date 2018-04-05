@@ -31,6 +31,7 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
+import Fold._
 """
 
   def defMapCode =

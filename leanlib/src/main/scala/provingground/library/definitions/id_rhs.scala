@@ -4,4 +4,5 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
-object id_rhs { val value = lambda("'b" :: Type)(lmbda("_" :: "'b" :: Type)("_" :: "'b" :: Type)) }
+import Fold._
+object id_rhs { val value = lambda("'b_529534912" :: Type)(lmbda("_" :: "'b_529534912" :: Type)("_" :: "'b_529534912" :: Type)) }

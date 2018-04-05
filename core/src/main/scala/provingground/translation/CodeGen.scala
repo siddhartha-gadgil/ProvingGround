@@ -159,6 +159,14 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
 
   }
 
+  def symCode(sym: AnySym): meta.Term =
+    sym match {
+      case sm : ApplnSym[u, v] =>
+        q"""ApplnSym(${codegen(sm.func).get}, ${codegen(sm.arg).get})"""
+      case s =>
+        Lit.String(s.toString)
+    }
+
   def consSeqDom[SS <: HList, H <: Term with Subs[H], Intros <: HList](
       seqDom: ConstructorSeqDom[SS, H, Intros],
       typ: Typ[H]): Option[meta.Term] = {
@@ -171,7 +179,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
         } yield q"ConstructorSeqDom.Empty.byTyp($typCode)"
       case cons: Cons[a, b, H, c, d] =>
         // val name     = s"""HoTT.Name("${cons.name}")"""
-        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})""" // name.parse[meta.Term].get
+        val nameCode = symCode(cons.name)  //q"""HoTT.Name(${Lit.String(cons.name.toString)})"""
         for {
           shapeCode <- consShape(cons.pattern, typ)
           tailCode  <- consSeqDom(cons.tail, typ)
@@ -329,7 +337,9 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
         } yield q"IndexedConstructorSeqDom.Empty($WCode, $familyCode)"
       case cons: Cons[a, b, H, F, c, Index, d] =>
         // val name     = s"""HoTT.Name("${cons.name}")"""
-        val nameCode = q"""HoTT.Name(${Lit.String(cons.name.toString)})""" //name.parse[meta.Term].get
+        val nameCode =
+          symCode(cons.name)
+          //q"""HoTT.Name(${Lit.String(cons.name.toString)})""" //name.parse[meta.Term].get
         for {
           patternCode <- indexedConsShape(cons.pattern, seqDom.W)
           tailCode    <- indexedConsSeqDom(cons.tail)
@@ -431,7 +441,7 @@ object CodeGen {
       if (n == 0) q"Type" else q"""Universe($n)"""
     } || propUniv >>> {
       case _ => q"Prop"
-    } || symbolic >>> {
+    } || hashSymbolic >>> {
       case (s, typ) =>
         val name = Lit.String(s)
         // q"$typ.symbObj(Name($name))"

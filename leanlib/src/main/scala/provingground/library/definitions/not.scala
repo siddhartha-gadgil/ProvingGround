@@ -4,4 +4,5 @@ import HoTT._
 import induction._
 import implicits._
 import shapeless._
-object not { val value = lmbda("'b" :: Prop)(FuncTyp("'b" :: Prop, "false" :: Prop)) }
+import Fold._
+object not { val value = lmbda("'b_1359021122" :: Prop)(FuncTyp("'b_1359021122" :: Prop, "false" :: Prop)) }
