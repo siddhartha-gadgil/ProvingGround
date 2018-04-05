@@ -1,0 +1,19 @@
+package provingground.library
+import provingground._
+import HoTT._
+import induction._
+import implicits._
+import shapeless._
+import Fold._
+object monoidInd {
+  val value = Subst.Lambda("$buifqre" :: Type, ConstructorSeqTL(ConstructorSeqDom.Cons(ApplnSym("monoid.mk" :: piDefn("'at" :: Type)(piDefn("'au" :: FuncTyp("'at" :: Type, FuncTyp("'at" :: Type, "'at" :: Type)))(piDefn("'av" :: piDefn("'av" :: "'at" :: Type)(piDefn("'aw" :: "'at" :: Type)(piDefn("'ax" :: "'at" :: Type)(("eq" :: piDefn("'c_896019176" :: Type)(FuncTyp("'c_896019176" :: Type, FuncTyp("'c_896019176" :: Type, Prop))))("'at" :: Type)(("'au" :: FuncTyp("'at" :: Type, FuncTyp("'at" :: Type, "'at" :: Type)))(("'au" :: FuncTyp("'at" :: Type, FuncTyp("'at" :: Type, "'at" :: Type)))("'av" :: "'at" :: Type)("'aw" :: "'at" :: Type))("'ax" :: "'at" :: Type))(("'au" :: FuncTyp("'at" :: Type, FuncTyp("'at" :: Type, "'at" :: Type)))("'av" :: "'at" :: Type)(("'au" :: FuncTyp("'at" :: Type, FuncTyp("'at" :: Type, "'at" :: Type)))("'aw" :: "'at" :: Type)("'ax" :: "'at" :: Type)))))))(piDefn("'aw" :: "'at" :: Type)(FuncTyp(piDefn("'ax" :: "'at" :: Type)(("eq" :: piDefn("'c_896019176" :: Type)(FuncTyp("'c_896019176" :: Type, FuncTyp("'c_896019176" :: Type, Prop))))("'at" :: Type)(("'au" :: FuncTyp("'at" :: Type, FuncTyp("'at" :: Type, "'at" :: Type)))("'aw" :: "'at" :: Type)("'ax" :: "'at" :: Type))("'ax" :: "'at" :: Type)), FuncTyp(piDefn("'ay" :: "'at" :: Type)(("eq" :: piDefn("'c_896019176" :: Type)(FuncTyp("'c_896019176" :: Type, FuncTyp("'c_896019176" :: Type, Prop))))("'at" :: Type)(("'au" :: FuncTyp("'at" :: Type, FuncTyp("'at" :: Type, "'at" :: Type)))("'ay" :: "'at" :: Type)("'aw" :: "'at" :: Type))("'ay" :: "'at" :: Type)), ("monoid" :: FuncTyp(Type, Type))("'at" :: Type))))))), "$buifqre" :: Type), {
+    val x = "$buigqhh" :: FuncTyp("$buifqre" :: Type, FuncTyp("$buifqre" :: Type, "$buifqre" :: Type))
+    x ~>: {
+      val x = "$buigqlz" :: piDefn("'av" :: "$buifqre" :: Type)(piDefn("'aw" :: "$buifqre" :: Type)(piDefn("'ax" :: "$buifqre" :: Type)(("eq" :: piDefn("'c_896019176" :: Type)(FuncTyp("'c_896019176" :: Type, FuncTyp("'c_896019176" :: Type, Prop))))("$buifqre" :: Type)(("$buigqhh" :: FuncTyp("$buifqre" :: Type, FuncTyp("$buifqre" :: Type, "$buifqre" :: Type)))(("$buigqhh" :: FuncTyp("$buifqre" :: Type, FuncTyp("$buifqre" :: Type, "$buifqre" :: Type)))("'av" :: "$buifqre" :: Type)("'aw" :: "$buifqre" :: Type))("'ax" :: "$buifqre" :: Type))(("$buigqhh" :: FuncTyp("$buifqre" :: Type, FuncTyp("$buifqre" :: Type, "$buifqre" :: Type)))("'av" :: "$buifqre" :: Type)(("$buigqhh" :: FuncTyp("$buifqre" :: Type, FuncTyp("$buifqre" :: Type, "$buifqre" :: Type)))("'aw" :: "$buifqre" :: Type)("'ax" :: "$buifqre" :: Type))))))
+      x ~>: {
+        val x = "$buigqte" :: "$buifqre" :: Type
+        x ~>: ConstructorShape.CnstFuncConsShape(piDefn("'ax" :: "$buifqre" :: Type)(("eq" :: piDefn("'c_896019176" :: Type)(FuncTyp("'c_896019176" :: Type, FuncTyp("'c_896019176" :: Type, Prop))))("$buifqre" :: Type)(("$buigqhh" :: FuncTyp("$buifqre" :: Type, FuncTyp("$buifqre" :: Type, "$buifqre" :: Type)))("$buigqte" :: "$buifqre" :: Type)("'ax" :: "$buifqre" :: Type))("'ax" :: "$buifqre" :: Type)), ConstructorShape.CnstFuncConsShape(piDefn("'ay" :: "$buifqre" :: Type)(("eq" :: piDefn("'c_896019176" :: Type)(FuncTyp("'c_896019176" :: Type, FuncTyp("'c_896019176" :: Type, Prop))))("$buifqre" :: Type)(("$buigqhh" :: FuncTyp("$buifqre" :: Type, FuncTyp("$buifqre" :: Type, "$buifqre" :: Type)))("'ay" :: "$buifqre" :: Type)("$buigqte" :: "$buifqre" :: Type))("'ay" :: "$buifqre" :: Type)), ConstructorShape.IdShape.byTyp(("monoid" :: FuncTyp(Type, Type))("$buifqre" :: Type))))
+      }
+    }
+  }, ConstructorSeqDom.Empty.byTyp(("monoid" :: FuncTyp(Type, Type))("$buifqre" :: Type))), ("monoid" :: FuncTyp(Type, Type))("$buifqre" :: Type)))
+}
