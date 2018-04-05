@@ -120,7 +120,7 @@ object TermJson {
       toJs(indRecFunc)("indexed-recursive-function") ||
       toJs(recFunc)("recursive-function") ||
       toJs(inducFunc)("inductive-function") ||
-      toJs(symbolic)("symbolic") ||
+      toJs(hashSymbolic)("symbolic") ||
       toJs(firstIncl)("first-inclusion") ||
       toJs(secondIncl)("second-inclusion") ||
       toJs(identityTyp)("equality") ||
