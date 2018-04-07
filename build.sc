@@ -77,7 +77,7 @@ object core extends Module{
 }
 
 object trepplein extends SbtModule{
-  def baseDirectory = pwd / 'trepplein
+  // def millsourcePath = pwd / 'trepplein
   def scalaVersion = scalaV
   def ivyDeps =
     Agg(
@@ -86,8 +86,14 @@ object trepplein extends SbtModule{
 }
 
 object mantle extends SbtModule with JvmModule{
-  def baseDirectory = pwd / "mantle"
   def moduleDeps = Seq(core.jvm, trepplein, leanlib)
+
+
+  object test extends Tests{
+    def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.1")
+    def testFrameworks = Seq("org.scalatest.tools.Framework")
+  }
+
 }
 
 object leanlib extends JvmModule{
