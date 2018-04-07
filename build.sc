@@ -90,6 +90,14 @@ object mantle extends SbtModule with JvmModule{
   def moduleDeps = Seq(core.jvm, trepplein, leanlib)
 }
 
+object mantletests extends JvmModule{
+  def moduleDeps = Seq(core.jvm, trepplein, leanlib, mantle)
+  def ivyDeps = T{
+    super.ivyDeps() ++ Agg(ivy"org.scalatest::scalatest:3.0.4")
+    }
+  def testFrameworks = Seq("org.scalatest.tools.Framework")
+}
+
 object leanlib extends JvmModule{
   def moduleDeps = Seq(core.jvm, trepplein)
 }

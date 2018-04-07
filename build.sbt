@@ -94,7 +94,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "org.scalactic" %% "scalactic" % "3.0.1",
-    "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+    "org.scalatest" %% "scalatest" % "3.0.4" % "test",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     // "org.mongodb"  %% "casbah" % "3.1.1",
@@ -272,14 +272,27 @@ lazy val mantle = (project in file("mantle"))
     Seq(file)
   }.taskValue)
   .dependsOn(coreJVM)
-  // .dependsOn(functionfinder)
   .dependsOn(server)
   .dependsOn(trepplein)
   .dependsOn(leanlib)
-  // .dependsOn(translation)
   .enablePlugins(SbtWeb, TutPlugin)
-//        dependsOn(deepwalk).
-//        dependsOn(exploring)
+
+lazy val tests = (project in file("mantletests"))
+  .settings(
+    name := "ProvingGround-tests",
+    // scalaJSProjects := Seq(client),
+    // pipelineStages in Assets := Seq(scalaJSPipeline)
+    //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
+  )
+  .settings(commonSettings: _*)
+  .settings(jvmSettings: _*)
+  .dependsOn(coreJVM)
+  .dependsOn(server)
+  .dependsOn(trepplein)
+  .dependsOn(leanlib)
+  .dependsOn(mantle)
+
+
 
 lazy val exploring = project
   .settings(name := "ProvingGround-exploring",
