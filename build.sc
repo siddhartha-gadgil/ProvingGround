@@ -31,7 +31,7 @@ trait JvmModule extends CommonModule {
 val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators:1.0.5",
   ivy"org.scala-lang.modules::scala-xml:1.0.5",
-  ivy"org.typelevel::spire:0.14.1",
+  ivy"org.typelevel::spire:0.15.0",
   ivy"com.lihaoyi::fansi:0.2.5",
   ivy"com.lihaoyi::upickle:0.6.4",
   ivy"com.chuusai::shapeless:2.3.3",

@@ -57,7 +57,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-    "org.typelevel" %% "spire"         % "0.14.1",
+    "org.typelevel" %% "spire"         % "0.15.0",
     "com.lihaoyi"   %% "fansi"         % "0.2.4",
     "com.lihaoyi"   %% "upickle"       % "0.6.4",
     "com.chuusai"   %% "shapeless"     % "2.3.2",
@@ -163,7 +163,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
-  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.14.1"),
+  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.15.0"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.NormalForm._"""
 )
