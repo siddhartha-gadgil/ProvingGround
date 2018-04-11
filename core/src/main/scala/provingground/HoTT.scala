@@ -194,16 +194,16 @@ object HoTT {
         fn.defnData.map { (d) =>
           avoidVar(t, d)
         }
-      fn.fromData(replacements).asInstanceOf[U]
+      fn.fromData(replacements).asInstanceOf[U]//.ensuring (_ == fn, s"avoiding var $t failed for recursive function $fn")
     case fn: InducFuncLike[u, v] =>
       val replacements =
         fn.defnData.map { (d) =>
           avoidVar(t, d)
         }
-      fn.fromData(replacements).asInstanceOf[U]
+      fn.fromData(replacements).asInstanceOf[U]//.ensuring (_ == fn, s"avoiding var $t failed for inductive function $fn")
     case _ => x
     }
-  } //ensuring (_ == x, s"avoiding vars failed for $x")
+  } //ensuring (_ == x, s"avoiding var $t failed for $x")
 
   /**
     * Objects with simple substitution.
@@ -2522,7 +2522,7 @@ object HoTT {
     /**
       * equality type 'term = rhs'
       */
-    def =:=(rhs: U) = {
+    def =:=(rhs: U): IdentityTyp[U] = {
       require(term.typ == rhs.typ,
               "mismatched types for equality " + term.typ + " and " + rhs.typ)
       IdentityTyp(term.typ.asInstanceOf[Typ[U]], term, rhs)
@@ -2758,6 +2758,7 @@ object HoTT {
 
   //	implicit def richTerm(term: Term with Subs[Term]) = RichTerm(term)
 
+  //	implicit def richTyp(typ: Typ[Term] with Subs[Typ[Term]]) = RichTerm(typ)
   //	implicit def richTyp(typ: Typ[Term] with Subs[Typ[Term]]) = RichTerm(typ)
 
   object PlusTyp {

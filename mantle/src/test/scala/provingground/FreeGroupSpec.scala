@@ -4,9 +4,11 @@ import provingground._
 
 import HoTT._
 
-import spire.implicits._
+// import spire.implicits._
 
 import FreeGroup._
+
+import cats.implicits._
 
 // import andrewscurtis.FreeGroups._
 

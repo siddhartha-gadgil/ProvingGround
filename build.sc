@@ -90,7 +90,7 @@ object mantle extends SbtModule with JvmModule{
 
 
   object test extends Tests{
-    def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.1")
+    def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
     def testFrameworks = Seq("org.scalatest.tools.Framework")
   }
 
