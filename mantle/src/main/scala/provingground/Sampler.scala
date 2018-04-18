@@ -40,14 +40,27 @@ object Sampler {
       getMultinomial(vec, ps, size)
     } else Map()
 
+  def getBucketSizes[A](xs: Vector[A],
+                        ps: Vector[Double],
+                        sample: Vector[Double]) : Map[A, Int] =
+      xs match {
+        case Vector() => throw new Exception("Empty bucket")
+        case Vector(x) => Map (x -> sample.size)
+        case head +: tail =>
+          val p = ps.head
+          val tailSample = sample.filter(_ > p).map((a) => a - p)
+          getBucketSizes(xs.tail, ps.tail, tailSample) + (head -> (sample.size - tailSample.size))
+      }
+
   def getMultinomial[A](xs: Vector[A],
                         ps: Vector[Double],
                         size: Int): Map[A, Int] =
     if (size == 0) Map()
     else {
-      // val mult = Multinomial(DenseVector(ps.toArray))
-      val samp : Map[Int, Int] = throw new Exception("calling code purged to avoid Breeze dependency")// mult.sample(size).groupBy(identity).mapValues(_.size)
-      samp map { case (j, m) => (xs(j), m) }
+      // // val mult = Multinomial(DenseVector(ps.toArray))
+      // val samp : Map[Int, Int] = mult.sample(size).groupBy(identity).mapValues(_.size)
+      // samp map { case (j, m) => (xs(j), m) }
+      getBucketSizes(xs, ps, (1 to size).toVector.map((_) => rand.nextDouble()))
     }
 
   def toFD[A](sample: Map[A, Int]) = {
@@ -86,6 +99,9 @@ object Sampler {
     }
   }
 
+  def binomial(n: Int, p: Double): Int =
+    (1 to n).map((_) => rand.nextDouble).filter(_ > p).size
+
   def sample[A](pd: ProbabilityDistribution[A], n: Int): Map[A, Int] =
     if (n < 1) Map()
     else
@@ -93,11 +109,11 @@ object Sampler {
         case FiniteDistribution(pmf) => fromPMF(pmf, n)
 
         case mx: Mixin[u] =>
-          val m : Int = throw new Exception("calling code purged to avoid Breeze dependency")// Binomial(n, mx.q).draw
+          val m : Int = binomial(n, mx.q)
           combine(sample(mx.first, n - m), sample(mx.second, m))
 
         case mx: MixinOpt[u] =>
-          val m : Int = throw new Exception("calling code purged to avoid Breeze dependency")// Binomial(n, mx.q).draw
+          val m : Int = binomial(n, mx.q)
           val optSample: Map[Option[u], Int] =
             Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
           val secondPreSample = for ((xo, n) <- optSample; x <- xo)
