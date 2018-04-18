@@ -5,8 +5,8 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import learning._
 
-import breeze.linalg.{Vector => _, _}
-import breeze.stats.distributions._
+// import breeze.linalg.{Vector => _, _}
+// import breeze.stats.distributions._
 
 // import breeze.plot._
 
@@ -45,8 +45,8 @@ object Sampler {
                         size: Int): Map[A, Int] =
     if (size == 0) Map()
     else {
-      val mult = Multinomial(DenseVector(ps.toArray))
-      val samp = mult.sample(size).groupBy(identity).mapValues(_.size)
+      // val mult = Multinomial(DenseVector(ps.toArray))
+      val samp : Map[Int, Int] = throw new Exception("calling code purged to avoid Breeze dependency")// mult.sample(size).groupBy(identity).mapValues(_.size)
       samp map { case (j, m) => (xs(j), m) }
     }
 
@@ -93,11 +93,11 @@ object Sampler {
         case FiniteDistribution(pmf) => fromPMF(pmf, n)
 
         case mx: Mixin[u] =>
-          val m = Binomial(n, mx.q).draw
+          val m : Int = throw new Exception("calling code purged to avoid Breeze dependency")// Binomial(n, mx.q).draw
           combine(sample(mx.first, n - m), sample(mx.second, m))
 
         case mx: MixinOpt[u] =>
-          val m = Binomial(n, mx.q).draw
+          val m : Int = throw new Exception("calling code purged to avoid Breeze dependency")// Binomial(n, mx.q).draw
           val optSample: Map[Option[u], Int] =
             Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
           val secondPreSample = for ((xo, n) <- optSample; x <- xo)

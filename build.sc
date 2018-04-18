@@ -55,8 +55,8 @@ val jvmLibs = List(
   ivy"com.typesafe.akka::akka-http:10.0.5",
   ivy"com.typesafe.akka::akka-http-spray-json:10.0.5",
   ivy"org.slf4j:slf4j-api:1.7.16",
-  ivy"org.slf4j:slf4j-simple:1.7.16",
-  ivy"org.scalanlp::breeze:0.13.+"
+  ivy"org.slf4j:slf4j-simple:1.7.16"//,
+  // ivy"org.scalanlp::breeze:0.13.2"
 )
 
 object core extends Module{
