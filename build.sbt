@@ -110,7 +110,7 @@ lazy val jvmSettings = Seq(
     "org.slf4j"   % "slf4j-api"    % "1.7.16",
     "org.slf4j"   % "slf4j-simple" % "1.7.16",
     // Last stable release
-    "org.scalanlp" %% "breeze" % "0.13.+"
+    "org.scalanlp" %% "breeze" % "0.13.2"
     // Native libraries are not included by default. add this if you want them (as of 0.7)
     // Native libraries greatly improve performance, but increase jar sizes.
     // It also packages various blas implementations, which have licenses that may or may not

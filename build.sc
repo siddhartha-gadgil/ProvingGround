@@ -44,7 +44,7 @@ val commonLibs = List(
 )
 
 val jvmLibs = List(
-  ivy"com.lihaoyi:::ammonite:1.1.0-12-f07633d",
+  ivy"com.lihaoyi:::ammonite:1.1.0",
   ivy"com.github.nscala-time::nscala-time:2.16.0",
   ivy"org.reactivemongo::reactivemongo:0.12.1",
   ivy"com.typesafe.akka::akka-actor:2.4.17",
