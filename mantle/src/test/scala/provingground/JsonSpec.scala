@@ -61,6 +61,11 @@ class JsonSpec extends FlatSpec {
     assert(checkBase(One))
   }
 
+  it should "be correct for Prop" in {
+    assert(checkBase(Prop))
+  }
+
+
   import library._, Nats._, Bools._, Vecs._
 
   def roundTrip(t: Term) =

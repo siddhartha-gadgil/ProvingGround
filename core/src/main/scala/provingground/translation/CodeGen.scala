@@ -458,6 +458,12 @@ object CodeGen {
       case (typ, value) => q"PlusTyp.ScndIncl($typ, $value)"
     } || refl >>> {
       case (typ, term) => q"Refl($typ, $term)"
+    } || star >>> {
+      (_) => q"Star"
+    } || zero >>> {
+      (_) => q"Zero"
+    }|| unit >>> {
+      (_) => q"Unit"
     }
 
   def getName(t: Term): Option[String] = t match {
