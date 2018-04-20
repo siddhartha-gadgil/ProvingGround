@@ -29,18 +29,18 @@ trait JvmModule extends CommonModule {
 
 
 val commonLibs = List(
-  ivy"org.scala-lang.modules::scala-parser-combinators:1.0.5",
-  ivy"org.scala-lang.modules::scala-xml:1.0.5",
-  ivy"org.typelevel::spire:0.15.0",
-  ivy"com.lihaoyi::fansi:0.2.5",
-  ivy"com.lihaoyi::upickle:0.6.4",
-  ivy"com.chuusai::shapeless:2.3.3",
-  ivy"org.typelevel::cats-core:1.1.0",
-  ivy"io.monix::monix:3.0.0-RC1",
-  ivy"org.scalameta::scalameta:3.4.0",
-  ivy"com.geirsson::scalafmt-core:1.4.0",
-  ivy"com.lihaoyi::pprint:0.5.3",
-  ivy"com.lihaoyi::sourcecode:0.1.4"
+  ivy"org.scala-lang.modules::scala-parser-combinators::1.0.5",
+  ivy"org.scala-lang.modules::scala-xml:1.1.0",
+  ivy"org.typelevel::spire::0.15.0",
+  ivy"com.lihaoyi::fansi::0.2.5",
+  ivy"com.lihaoyi::upickle::0.6.4",
+  ivy"com.chuusai::shapeless::2.3.3",
+  ivy"org.typelevel::cats-core::1.1.0",
+  ivy"io.monix::monix::3.0.0-RC1",
+  ivy"org.scalameta::scalameta::3.4.0",
+  ivy"com.geirsson::scalafmt-core::1.4.0",
+  ivy"com.lihaoyi::pprint::0.5.3",
+  ivy"com.lihaoyi::sourcecode::0.1.4"
 )
 
 val jvmLibs = List(

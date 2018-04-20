@@ -111,6 +111,8 @@ project/sbt-ui.sbt
 wiki/
 gh-pages/
 
+.metals/
+
 data/*.tsv
 
 # macOS
