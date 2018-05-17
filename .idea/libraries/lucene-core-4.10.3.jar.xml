@@ -1,0 +1,7 @@
+<component name="libraryTable">
+    <library name="lucene-core-4.10.3.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/apache/lucene/lucene-core/4.10.3/lucene-core-4.10.3.jar!/"/>
+        </CLASSES>
+    </library>
+</component>

@@ -1,0 +1,15 @@
+<project version="4">
+    <component name="ProjectModuleManager">
+        <modules>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/mill-build.iml" filepath="$PROJECT_DIR$/.idea_modules/mill-build.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/mantletests.iml" filepath="$PROJECT_DIR$/.idea_modules/mantletests.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/core.js.iml" filepath="$PROJECT_DIR$/.idea_modules/core.js.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/leanlib.iml" filepath="$PROJECT_DIR$/.idea_modules/leanlib.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/nlp.iml" filepath="$PROJECT_DIR$/.idea_modules/nlp.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/trepplein.iml" filepath="$PROJECT_DIR$/.idea_modules/trepplein.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/mantle.iml" filepath="$PROJECT_DIR$/.idea_modules/mantle.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/mantle.test.iml" filepath="$PROJECT_DIR$/.idea_modules/mantle.test.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/core.jvm.iml" filepath="$PROJECT_DIR$/.idea_modules/core.jvm.iml"/>
+        </modules>
+    </component>
+</project>

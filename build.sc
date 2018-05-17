@@ -108,6 +108,19 @@ object leanlib extends JvmModule{
   def moduleDeps = Seq(core.jvm, trepplein)
 }
 
+object nlp extends CommonModule with SbtModule{
+  def moduleDeps = Seq(core.jvm)
+
+  def ivyDeps = T{
+    super.ivyDeps() ++  Agg(
+      ivy"com.lihaoyi:::ammonite:1.1.0",
+      ivy"edu.stanford.nlp:stanford-corenlp:3.7.0",
+      ivy"edu.stanford.nlp:stanford-corenlp:3.7.0;classifier=models",
+      ivy"com.google.protobuf:protobuf-java:2.6.1"
+    )
+  }
+}
+
 // object server extends ScalaModule{
 //   def scalaVersion = "2.12.4"
 //
