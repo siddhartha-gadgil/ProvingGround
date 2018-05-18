@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jna-4.5.0.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/4.5.0/jna-4.5.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
