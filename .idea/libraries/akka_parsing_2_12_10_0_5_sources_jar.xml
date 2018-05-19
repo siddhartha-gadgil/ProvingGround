@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="akka-parsing_2.12-10.0.5-sources.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/typesafe/akka/akka-parsing_2.12/10.0.5/akka-parsing_2.12-10.0.5-sources.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
