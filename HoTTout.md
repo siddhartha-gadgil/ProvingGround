@@ -380,8 +380,6 @@ scala> Zero
 
 scala> Star !: Unit 
 res50: Term = Star
-
-scala>
 ```
 
 

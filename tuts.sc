@@ -22,13 +22,24 @@ import java.io._
 
 val outputStream = new ByteArrayOutputStream()
 
+val errorStream = new ByteArrayOutputStream()
+
 val inp = new ByteArrayInputStream(tutcode.getBytes)
 
-val ammrun = ammonite.Main.main0(List(), inp, outputStream, outputStream)
+val ammrun = ammonite.Main.main0(List(), inp, outputStream, errorStream)
 
 lazy val output = new String(outputStream.toByteArray, "UTF-8")
 
+lazy val errors = new String(errorStream.toByteArray, "UTF-8")
+
 val silly = """\[[0-9]+[A-Z]""".r
+
+val errs = silly.replaceAllIn(output
+  .replace("\u001b", ""), "")
+
+println(errors)
+
+// println(errs)
 
 val tutChunks =
   silly.replaceAllIn(output
@@ -47,6 +58,5 @@ val allChunks = spl.head.head +: textTail
 
 println(tutChunks.size)
 
-println(spl.head)
 
 write.over(pwd / "HoTTout.md", allChunks.mkString("","\n","\n"))

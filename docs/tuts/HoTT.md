@@ -30,27 +30,35 @@ The _core_ project contains code that is agnostic to how it is run. In particula
 We have a family of universes, but mostly use the first one denoted by Type. Given a type, we can construct symbolic objects of that type. We construct such a type _A_.
 
 
+
 ```scala
-scala> import provingground._
-import provingground._
+scala>  
 
-scala> import HoTT._
-import HoTT._
+scala> import provingground._ 
+import provingground._
 
-scala> val A = "A" :: Type
-A: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = A
+scala> import HoTT._ 
+import HoTT._
 
-scala> A == Type.::("A")
-res0: Boolean = true
+scala> val A = "A" :: Type 
+A: Typ[Term] with Subs[Typ[Term]] = A
+
+scala> A == Type.::("A") 
+res9: Boolean = true
 ```
+
+
 
 We consider a symbolic object of the type _A_
 
 
+
 ```scala
-scala> val a = "a" :: A
-a: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = a
+scala> val a = "a" :: A 
+a: Term with Subs[Term] = a
 ```
+
+
 
 
 ## Function types, lambdas, Identity
@@ -62,100 +70,128 @@ We can construct functions using λ's. Here, for the type _A_, we construct the 
 In this definition, two λ's are used, with the method _lmbda_ telling the TypecompilerType that the result is a (non-dependent) function.
 
 
+
 ```scala
-scala> val id = lambda(A)(lmbda(a)(a))
-id: provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]]] = (A :  𝒰 _0) ↦ ((a :  A) ↦ (a))
+scala> val id = lambda(A)(lmbda(a)(a)) 
+id: FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]] = (A :  𝒰 _0) ↦ ((a :  A) ↦ (a))
 ```
+
+
 
 
 The type of the identity function is a mixture of Pi-types and function types. Which of these to use is determined by checking dependence of the type of the value on the varaible in a λ-definition.
 
 
+
 ```scala
-scala> id.typ
-res1: provingground.HoTT.Typ[provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]]]] = A ~> (A) → (A)
+scala> id.typ 
+res12: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]]] = A ~> (A) → (A)
 
-scala> lmbda(a)(a).typ
-res2: provingground.HoTT.Typ[provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]]] = (A) → (A)
+scala> lmbda(a)(a).typ 
+res13: Typ[Func[Term with Subs[Term], Term with Subs[Term]]] = (A) → (A)
 
-scala> lmbda(a)(a).typ.dependsOn(A)
-res3: Boolean = true
+scala> lmbda(a)(a).typ.dependsOn(A) 
+res14: Boolean = true
 ```
+
+
 
 
 The lambdas have the same effect at runtime. It is checked if the type of the value depends on the variable.
 The result is either _LambdaFixed_ or _Lambda_ accordingly.
 
 
+
 ```scala
-scala> val indep = lmbda(a)(a)
-indep: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]] = (a :  A) ↦ (a)
+scala> val indep = lmbda(a)(a) 
+indep: Func[Term with Subs[Term], Term with Subs[Term]] = (a :  A) ↦ (a)
 
-scala> val dep = lambda(a)(a)
-dep: provingground.HoTT.FuncLike[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]] = (a :  A) ↦ (a)
+scala> val dep = lambda(a)(a) 
+dep: FuncLike[Term with Subs[Term], Term with Subs[Term]] = (a :  A) ↦ (a)
 
-scala> indep == dep
-res4: Boolean = true
+scala> indep == dep 
+res17: Boolean = true
 ```
+
+
 
 Note that we have alternative notation for lambdas, the maps to methods `:->` and `:~>`.
 For instance, we can define the identity using these.
 
+
 ```scala
 scala> assert(id == A :~> (a :-> a))
 ```
+
+
 
 ### Hygiene for λs
 
 A new variable object, which has the same toString, is created in making lambdas. This is to avoid name clashes.
 
 
+
 ```scala
-scala> val l = dep.asInstanceOf[LambdaFixed[Term, Term]]
-l: provingground.HoTT.LambdaFixed[provingground.HoTT.Term,provingground.HoTT.Term] = (a :  A) ↦ (a)
+scala> val l = dep.asInstanceOf[LambdaFixed[Term, Term]] 
+l: LambdaFixed[Term, Term] = (a :  A) ↦ (a)
 
-scala> l.variable
-res6: provingground.HoTT.Term = a
+scala> l.variable 
+res20: Term = a
 
-scala> l.variable == a
-res7: Boolean = false
+scala> l.variable == a 
+res21: Boolean = false
 ```
+
+
 
 ## Modus Ponens
 
 We construct Modus Ponens, as an object in Homotopy Type theory. Note that A ->: B is the function type A → B.
 
 
+
 ```scala
-scala> val B = "B" :: Type
-B: provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]] = B
+scala> val B = "B" :: Type 
+B: Typ[Term] with Subs[Typ[Term]] = B
 
-scala> val f = "f" :: (A ->: B)
-f: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]] = f
+scala>  
 
-scala> val mp = lambda(A)(lambda(B)(lmbda(a)(lmbda(f)(f(a)))))
-mp: provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]]]] = (A :  𝒰 _0) ↦ ((B :  𝒰 _0) ↦ ((a :  A) ↦ ((f :  (A) → (B)) ↦ ((f) (a)))))
+scala> val f = "f" :: (A ->: B) 
+f: Func[Term, Term] with Subs[Func[Term, Term]] = f
+
+scala>  
+
+scala> val mp = lambda(A)(lambda(B)(lmbda(a)(lmbda(f)(f(a))))) 
+mp: FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]] = (A :  𝒰 _0) ↦ ((B :  𝒰 _0) ↦ ((a :  A) ↦ ((f :  (A) → (B)) ↦ ((f) (a)))))
 ```
+
+
 
 The type of Modus Ponens is again a mixture of Pi-types and function types.
 
 
+
 ```scala
-scala> mp.typ
-res8: provingground.HoTT.Typ[provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.FuncLike[provingground.HoTT.Typ[provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]]]]] = A ~> B ~> (A) → (((A) → (B)) → (B))
+scala> mp.typ 
+res25: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]]] = A ~> B ~> (A) → (((A) → (B)) → (B))
 ```
+
+
 
 
 We can apply modus ponens with the roles of _A_ and _B_ reversed. This still works because variable clashes are avoided.
 
 
-```scala
-scala> val mpBA = mp(B)(A)
-mpBA: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.Func[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]],provingground.HoTT.Term]] = (a :  B) ↦ ((f :  (B) → (A)) ↦ ((f) (a)))
 
-scala> mpBA.typ == B ->: (B ->: A) ->: A
-res9: Boolean = true
+```scala
+scala> val mpBA = mp(B)(A) 
+mpBA: Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]] = (a :  B) ↦ ((f :  (B) → (A)) ↦ ((f) (a)))
+
+scala> mpBA.typ == B ->: (B ->: A) ->: A 
+res27: Boolean = true
 ```
+
+
 
 
 ### Equality of λs
@@ -163,16 +199,19 @@ res9: Boolean = true
 Lambdas do not depend on the name of the variable.
 
 
+
 ```scala
-scala> val aa = "aa" :: A
-aa: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = aa
+scala> val aa = "aa" :: A 
+aa: Term with Subs[Term] = aa
 
-scala> lmbda(aa)(aa) == lmbda(a)(a)
-res10: Boolean = true
+scala> lmbda(aa)(aa) == lmbda(a)(a) 
+res29: Boolean = true
 
-scala> (lmbda(aa)(aa))(a) == a
-res11: Boolean = true
+scala> (lmbda(aa)(aa))(a) == a 
+res30: Boolean = true
 ```
+
+
 
 
 ## Dependent types
@@ -180,10 +219,13 @@ res11: Boolean = true
 Given a type family, we can construct the corresponding Pi-types and Sigma-types. We start with a formal type family, which is just a symbolic object of the appropriate type.
 
 
+
 ```scala
-scala> val Bs = "B(_ : A)" :: (A ->: Type)
-Bs: provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]] with provingground.HoTT.Subs[provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]] = B(_ : A)
+scala> val Bs = "B(_ : A)" :: (A ->: Type) 
+Bs: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = B(_ : A)
 ```
+
+
 
 
 ### Pi-Types
@@ -193,10 +235,13 @@ In addition to the case class constructor, there is an agda/shapeless-like  conv
 Note that the !: method just claims and checks a type, and is useful (e.g. here) for documentation.
 
 
+
 ```scala
-scala> val fmly = (a !: A) ~>: (Bs(a) ->: A)
-fmly: provingground.HoTT.GenFuncTyp[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]] = a ~> ((B(_ : A)) (a)) → (A)
+scala> val fmly = (a !: A) ~>: (Bs(a) ->: A) 
+fmly: GenFuncTyp[Term, Func[Term, Term]] = a ~> ((B(_ : A)) (a)) → (A)
 ```
+
+
 
 
 ### Sigma-types
@@ -204,17 +249,23 @@ fmly: provingground.HoTT.GenFuncTyp[provingground.HoTT.Term,provingground.HoTT.F
 There is also a convenience method for defining Sigma types using λs.
 
 
+
 ```scala
-scala> Sgma(a !: A, Bs(a))
-res12: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
+scala> Sgma(a !: A, Bs(a)) 
+res33: SigmaTyp[Term, Term] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
 ```
 
 
 
+
+
+
 ```scala
-scala> Sgma(a !: A, Bs(a) ->: Bs(a) ->: A)
-res13: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Func[provingground.HoTT.Term,provingground.HoTT.Term]]] = ∑((a :  A) ↦ (((B(_ : A)) (a)) → (((B(_ : A)) (a)) → (A))))
+scala> Sgma(a !: A, Bs(a) ->: Bs(a) ->: A) 
+res34: SigmaTyp[Term, Func[Term, Func[Term, Term]]] = ∑((a :  A) ↦ (((B(_ : A)) (a)) → (((B(_ : A)) (a)) → (A))))
 ```
+
+
 
 
 ## Pair types
@@ -222,31 +273,37 @@ res13: provingground.HoTT.SigmaTyp[provingground.HoTT.Term,provingground.HoTT.Fu
 Like functions and dependent functions, pairs and dependent pairs can be handled together. The _mkPair_ function assignes the right type after checking dependence, choosing between pair types, pairs and dependent pairs.
 
 
+
 ```scala
-scala> val ba = "b(a)" :: Bs(a)
-ba: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = b(a)
+scala> val ba = "b(a)" :: Bs(a) 
+ba: Term with Subs[Term] = b(a)
 
-scala> val b = "b" :: B
-b: provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term] = b
+scala> val b = "b" :: B 
+b: Term with Subs[Term] = b
 
-scala> mkPair(A, B)
-res14: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] = ((A) , (B))
+scala> mkPair(A, B) 
+res37: AbsPair[Term, Term] = ((A) , (B))
 
-scala> mkPair(a, b)
-res15: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] = ((a) , (b))
+scala> mkPair(a, b) 
+res38: AbsPair[Term, Term] = ((a) , (b))
 
-scala> mkPair(a, b).typ
-res16: provingground.HoTT.Typ[U] forSome { type U >: _1.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U]; val _1: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] } = ((A) , (B))
+scala> mkPair(a, b).typ 
+res39: Typ[U] = ((A) , (B))
 
-scala> mkPair(a, ba).typ
-res17: provingground.HoTT.Typ[U] forSome { type U >: _1.type <: provingground.HoTT.Term with provingground.HoTT.Subs[U]; val _1: provingground.HoTT.AbsPair[provingground.HoTT.Term,provingground.HoTT.Term] } = ∑((a :  A) ↦ ((B(_ : A)) (a)))
+scala> mkPair(a, ba).typ 
+res40: Typ[U] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
 ```
 
 
+
+
+
 ```scala
-scala> mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]]
-res18: provingground.HoTT.ProdTyp[provingground.HoTT.Term,provingground.HoTT.Term] = ((A) , (B))
+scala> mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]] 
+res41: ProdTyp[Term, Term] = ((A) , (B))
 ```
+
+
 
 
 ## Plus types
@@ -254,22 +311,31 @@ res18: provingground.HoTT.ProdTyp[provingground.HoTT.Term,provingground.HoTT.Ter
 We can also construct the plus type _A plus B_, which comes with two inclusion functions.
 
 
+
 ```scala
-scala> val AplusB = PlusTyp(A, B)
-AplusB: provingground.HoTT.PlusTyp[provingground.HoTT.Term,provingground.HoTT.Term] = PlusTyp(A,B)
+scala> val AplusB = PlusTyp(A, B) 
+AplusB: PlusTyp[Term, Term] = PlusTyp(A,B)
 ```
 
 
-```scala
-scala> AplusB.incl1(a)
-res19: provingground.HoTT.PlusTyp.FirstIncl[provingground.HoTT.Term,provingground.HoTT.Term] = FirstIncl(PlusTyp(A,B),a)
-```
+
 
 
 ```scala
-scala> AplusB.incl2
-res20: provingground.HoTT.Func[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term],provingground.HoTT.PlusTyp.ScndIncl[provingground.HoTT.Term,provingground.HoTT.Term]] = ($kvgnk :  B) ↦ (ScndIncl(PlusTyp(A,B),$kvgnk))
+scala> AplusB.incl1(a) 
+res43: PlusTyp.FirstIncl[Term, Term] = FirstIncl(PlusTyp(A,B),a)
 ```
+
+
+
+
+
+```scala
+scala> AplusB.incl2 
+res44: Func[Term with Subs[Term], PlusTyp.ScndIncl[Term, Term]] = ($cn :  B) ↦ (ScndIncl(PlusTyp(A,B),$cn))
+```
+
+
 
 In the above, a λ was used, with a variable automatically generated. These have names starting with $ to avoid collision with user defined ones.
 
@@ -278,19 +344,25 @@ In the above, a λ was used, with a variable automatically generated. These have
 We have an identity type associated to a type _A_, with reflexivity giving terms of this type.
 
 
-```scala
-scala> val eqAa = IdentityTyp(A, a, a)
-eqAa: provingground.HoTT.IdentityTyp[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]] = a = a
 
-scala> val ref = Refl(A, a)
-ref: provingground.HoTT.Refl[provingground.HoTT.Term with provingground.HoTT.Subs[provingground.HoTT.Term]] = Refl(A,a)
+```scala
+scala> val eqAa = IdentityTyp(A, a, a) 
+eqAa: IdentityTyp[Term with Subs[Term]] = a = a
+
+scala> val ref = Refl(A, a) 
+ref: Refl[Term with Subs[Term]] = Refl(A,a)
 ```
 
 
+
+
+
 ```scala
-scala> ref.typ == eqAa
-res21: Boolean = true
+scala> ref.typ == eqAa 
+res47: Boolean = true
 ```
+
+
 
 
 ## The Unit and the  Nought
@@ -298,13 +370,19 @@ res21: Boolean = true
 Finally, we have the types corresponding to _True_ and _False_
 
 
+
 ```scala
-scala> Unit
-res22: provingground.HoTT.Unit.type = Unit
+scala> Unit 
+res48: Unit.type = Unit
 
-scala> Zero
-res23: provingground.HoTT.Zero.type = Zero
+scala> Zero 
+res49: Zero.type = Zero
 
-scala> Star !: Unit
-res24: provingground.HoTT.Term = Star
+scala> Star !: Unit 
+res50: Term = Star
+
+scala>
 ```
+
+
+
