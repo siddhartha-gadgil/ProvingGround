@@ -8,22 +8,10 @@ A system under development for (semi-)automated theorem proving, with foundation
 [![codecov.io](http://codecov.io/github/siddhartha-gadgil/ProvingGround/coverage.svg)](https://codecov.io/gh/siddhartha-gadgil/ProvingGround)
 [![Ohloh](http://www.ohloh.net/p/ProvingGround/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/ProvingGround)
 
-## Implemented:
-
-* Most of Homotopy type theory.
-* Symbolic Algebra integrated with HoTT.
-* Importing from the lean theorem prover.
-* Some non-trivial proofs as examples.
-* Most of the dynamics for learning with homotopy type theory.
-* Basic case for goal-driven discovery
-* An akka-http server, and integration with scala-js
-* Sketch for using stanford-corenlp tools to map to an intermediate (Naproche inspired) language.
 
 ## Documentation:
 
-There is not much besides the source.
-
-* The [website](http://siddhartha-gadgil.github.io/ProvingGround/) has the most current documentation, including [http://siddhartha-gadgil.github.io/ProvingGround/unidoc/provingground/index.html](scaladocs).
+* The main documentation is on the [website](http://siddhartha-gadgil.github.io/ProvingGround/) , including [http://siddhartha-gadgil.github.io/ProvingGround/scaladoc/provingground/index.html](scaladocs).
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
 

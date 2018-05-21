@@ -277,22 +277,6 @@ lazy val mantle = (project in file("mantle"))
   .dependsOn(leanlib)
   .enablePlugins(SbtWeb, TutPlugin)
 
-lazy val tests = (project in file("mantletests"))
-  .settings(
-    name := "ProvingGround-tests",
-    // scalaJSProjects := Seq(client),
-    // pipelineStages in Assets := Seq(scalaJSPipeline)
-    //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
-  )
-  .settings(commonSettings: _*)
-  .settings(jvmSettings: _*)
-  .dependsOn(coreJVM)
-  .dependsOn(server)
-  .dependsOn(trepplein)
-  .dependsOn(leanlib)
-  .dependsOn(mantle)
-
-
 
 lazy val exploring = project
   .settings(name := "ProvingGround-exploring",

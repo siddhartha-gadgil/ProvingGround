@@ -2,6 +2,27 @@ import $file.tuts, tuts._
 
 import ammonite.ops._
 
+println("Generating scaladocs")
+
+implicit val wd = pwd
+%%("mill", "jvmRoot.docs")
+
+val mathjax = """    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+jax: ["input/TeX", "output/HTML-CSS"],
+tex2jax: {
+  inlineMath: [ ['$', '$'] ],
+  displayMath: [ ['$$', '$$']],
+  processEscapes: true,
+  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+},
+messageStyle: "none",
+"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+"""
+
 def head(rel: String = "") =
 s"""<!DOCTYPE html>
 <html lang="en">
@@ -11,19 +32,17 @@ s"""<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>ProvingGround</title>
-    <link rel="icon" href="{{ site.baseurl }}/IIScLogo.jpg">
+    <link rel="icon" href="${rel}IIScLogo.jpg">
 
     <!-- Bootstrap -->
     <link href="$rel/css/bootstrap.min.css" rel="stylesheet">
 
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="${rel}css/zenburn.css">
+    <script src="${rel}js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 
+    $mathjax
   </head>
   <body>
 
@@ -54,6 +73,7 @@ s"""<!DOCTYPE html>
           </li>
       </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li> <a href="${rel}scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">Github repository</a> </li>
 
 
@@ -66,20 +86,25 @@ s"""<!DOCTYPE html>
     <div class="container">
 """
 
-val foot = s"""</div>
+def foot(rel: String) = s"""</div>
 <div class="container-fluid">
   <br><br><br>
   <div class="footer navbar-fixed-bottom bg-primary">
     <h4>
-    &nbsp;<a href="http://math.iisc.ac.in" target="_blank">&nbsp; Department of Mathematics,</a>
+    &nbsp;Developed by:
+    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
 
-    &nbsp;<a href="http://iisc.ac.in" target="_blank">Indian Institute of Science.</a>
   </h4>
 
   </div>
 
 
 </div>
+<script type="text/javascript" src="${rel}js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src='${rel}js/bootstrap.min.js'></script>
+</body>
+</html>
+
 """
 
 import $ivy.`com.atlassian.commonmark:commonmark:0.11.0`
@@ -129,7 +154,7 @@ case class Tut(name: String, content: String, optTitle: Option[String]){
 
 def getTut(p: Path) =
   {
-  val l = mkTut(p).split("\n").toVector
+  val l = mkTut(read(p)).split("\n").toVector
   val name = titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
   val content = fromMD(body(l).mkString("\n"))
   Tut(name, content, titleOpt(l))
@@ -148,15 +173,15 @@ def doc(s: String, rel: String, t: String = "") =
 s"""
 ${head(rel)}
 <h1 class="text-center">$t</h1>\n
-<div class="col-md-8">
+<div class="text-justify">
 $s
 
 </div>
-$foot
+${foot(rel)}
 """
 
 val home = doc(
-  fromMD(read(pwd / "docs" /"index.md")), "", "ProvingGround: Automated Theorem proving By learning")
+  fromMD(body(read.lines(pwd / "docs" /"index.md")).mkString("", "\n", "")), "", "ProvingGround: Automated Theorem proving by learning")
 
 println("writing site")
 

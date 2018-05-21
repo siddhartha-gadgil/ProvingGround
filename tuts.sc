@@ -1,18 +1,15 @@
 import ammonite.ops._
 
-println("Generating scaladocs")
+println("Assembling")
 
 implicit val wd = pwd
-%%("mill", "jvmRoot.docs")
+%%("mill", "mantle.assembly")
 
 val tutdir = pwd / 'mantle / 'src / 'main / 'tut
 
 val f = read(tutdir / "HoTT.md")
 
-def mkTut(p: Path): String = {
-  val f = read(p)
-
-  println(s"compiling tutorial ${p.name}")
+def mkTut(f: String): String = {
 
   val top =
   """
@@ -74,15 +71,17 @@ ${s.trim.dropRight(6).trim}
 
 val outdir = pwd / "docs" / "tuts"
 
-def compiledTuts = ls(tutdir).map{(p) =>
-  (p.name, mkTut(p))
-}
+// def compiledTuts = ls(tutdir).map{(p) =>
+//   (p.name, mkTut(p))
+// }
 
 // compiledTuts.foreach{
 //   case (name, content) => write.over(outdir / name, content)
 // }
 
-def writeMD = ls(tutdir).foreach((p) =>
-  write.over(outdir / p.name, mkTut(p)))
+def writeMD = ls(tutdir).foreach{(p) =>
+  println(s"compiling tutorial ${p.name}")
+  write.over(outdir / p.name, mkTut(read(p)))
+}
 
 // writeMD

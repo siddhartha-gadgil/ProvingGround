@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ProvingGround</title>
+    <link rel="icon" href="../IIScLogo.jpg">
+
+    <!-- Bootstrap -->
+    <link href="..//css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/zenburn.css">
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+        <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+jax: ["input/TeX", "output/HTML-CSS"],
+tex2jax: {
+  inlineMath: [ ['$', '$'] ],
+  displayMath: [ ['$$', '$$']],
+  processEscapes: true,
+  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+},
+messageStyle: "none",
+"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">ProvingGround</span>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html#">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Tutorials (notes)<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
+                <li><a href="../tuts/hott.html">HoTT</a></li>
+<li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li>
+<li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li>
+<li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li>
+<li><a href="../tuts/inductive-types.html">Inductive Types</a></li>
+<li><a href="../tuts/scalarep.html">ScalaRep</a></li>
+<li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+            </ul>
+          </li>
+      </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">Github repository</a> </li>
+
+
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+
+<h1 class="text-center">ScalaRep</h1>
+
+<div class="text-justify">
+<h2>Scala Representations</h2>
+<p>Scala objects are integrated with HoTT by using wrappers, combinators and implicit based convenience methods. In this note we look at the basic representations. The main power of this is to provide automatically (through implicits) types and scala bindings for functions from the basic ones.</p>
+<p>A more advanced form of Scala representations also makes symbolic algebra simplifications. The basic form should be used, for example, for group presentations, where simplifications are not expected.</p>
+<pre><code class="language-scala">scala&gt;    
+
+scala&gt; import provingground._ 
+
+import provingground._
+
+scala&gt; import HoTT._ 
+
+import HoTT._
+
+scala&gt; import functionfinder._ 
+
+import functionfinder._
+
+scala&gt; import ScalaRep._ 
+
+import ScalaRep._
+</code></pre>
+<p>We consider the type of Natural numbers formed from Integers. This is defined in ScalaRep as:</p>
+<pre><code class="language-scala">scala&gt; NatInt 
+
+res10: NatInt.type = NatInt
+</code></pre>
+<h3>Conversion using the term method</h3>
+<p>The term method converts a scala object, with scala type T say, into a Term, provided there is an implicit representation with scala type T.</p>
+<pre><code class="language-scala">scala&gt; import NatInt.rep 
+
+import NatInt.rep
+
+scala&gt; 1.term 
+
+res12: RepTerm[Int] = 1
+</code></pre>
+<h3>Functions to FuncTerms</h3>
+<p>Given the representation of Int, there are combinators that give representations of, for instance Int =&gt; Int =&gt; Int. Note also that the type of the resulting term is a type parameter of the scala representations, so we get a refined compile time type</p>
+<pre><code class="language-scala">scala&gt; val sum = ((n: Int) =&gt; (m: Int) =&gt; n + m).term 
+
+sum: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
+</code></pre>
+<pre><code class="language-scala">scala&gt; sum(1.term)(2.term) 
+
+res14: RepTerm[Int] = 3
+</code></pre>
+<pre><code class="language-scala">scala&gt; val n = &quot;n&quot; :: NatInt 
+
+n: RepTerm[Int] with Subs[RepTerm[Int]] = n
+
+scala&gt; sum(n)(2.term) 
+
+res16: RepTerm[Int] = ((&lt;function1&gt;) (n)) (2)
+</code></pre>
+<pre><code class="language-scala">scala&gt; val s = lmbda(n)(sum(n)(2.term)) 
+
+s: Func[RepTerm[Int] with Subs[RepTerm[Int]], RepTerm[Int]] = (n :  NatInt) ↦ (((&lt;function1&gt;) (n)) (2))
+</code></pre>
+<pre><code class="language-scala">scala&gt; s(3.term) 
+
+res18: RepTerm[Int] = 5
+</code></pre>
+<p>We will also define the product</p>
+<pre><code class="language-scala">scala&gt; val prod = ((n : Int) =&gt; (m: Int) =&gt; n * m).term 
+
+prod: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
+</code></pre>
+<pre><code class="language-scala">scala&gt; prod(2.term)(4.term) 
+
+res20: RepTerm[Int] = 8
+</code></pre>
+
+
+</div>
+</div>
+<div class="container-fluid">
+  <br><br><br>
+  <div class="footer navbar-fixed-bottom bg-primary">
+    <h4>
+    &nbsp;Developed by:
+    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
+
+  </h4>
+
+  </div>
+
+
+</div>
+<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src='../js/bootstrap.min.js'></script>
+</body>
+</html>
+
+

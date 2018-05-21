@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ProvingGround</title>
+    <link rel="icon" href="IIScLogo.jpg">
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="css/zenburn.css">
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+        <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+jax: ["input/TeX", "output/HTML-CSS"],
+tex2jax: {
+  inlineMath: [ ['$', '$'] ],
+  displayMath: [ ['$$', '$$']],
+  processEscapes: true,
+  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+},
+messageStyle: "none",
+"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">ProvingGround</span>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html#">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Tutorials (notes)<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
+                <li><a href="tuts/hott.html">HoTT</a></li>
+<li><a href="tuts/left-and-right-identities.html">Left and Right Identities</a></li>
+<li><a href="tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li>
+<li><a href="tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li>
+<li><a href="tuts/inductive-types.html">Inductive Types</a></li>
+<li><a href="tuts/scalarep.html">ScalaRep</a></li>
+<li><a href="tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+            </ul>
+          </li>
+      </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li> <a href="scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">Github repository</a> </li>
+
+
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+
+<h1 class="text-center">ProvingGround: Automated Theorem proving by learning</h1>
+
+<div class="text-justify">
+<p>This is a system under development for automated theorem proving. More concretely, we take as the goal of automated theorem proving <em>to equip computers with all the major capabilities used in discovering and proving mathematical results</em>.  Our goal is to complement the many software systems that are useful in doing mathematics, with a focus on missing capabilities.</p>
+<p>The one success of this project so far has been its role in the <a href="http://math.iisc.ac.in/~gadgil/presentations/HomogeneousLengths.html">Polymath 14 project</a>.</p>
+<h2>Foundations</h2>
+<p>The foundations we use are <strong>Homotopy Type Theory</strong> combined with symbolic algebra. This is crucial to our approach as the result is proofs that are not much more complex than real world mathematics - as illustrated, for example, in the <a href="tuts/internal-repetition-for-length-functions.html">PolyMath lemma</a>. Note that much of that note is the fully expanded proofs as reported by the system - the code describing the proofs is not long.</p>
+<p>The conciseness of HoTT proofs is not only of practical value, but is conceptually important as we base learning on the complexity of mathematical proofs.</p>
+<p>Much of the work done so far has been on the implementation of homotopy type theory in scala, with an attempt to capture in scala types significant amount of information about the HoTT types.</p>
+<h2>Learning and reflection</h2>
+<p>The system learns based on a generative model that not only matches the generated distribution with a desired one, but takes into account the complexity of the generative model. This allows one to judge whether newly discovered results are worthwhile.</p>
+<h2>Lean theorem prover interaction</h2>
+<p>Our goal is to interact with external systems. In particular, we have implemented interaction with the <em>lean theorem prover</em>, whereby the export format of <em>lean</em> is used (via trepplein) to generate code in our implementation of HoTT. This allows us to start with a library for learning as well as a target for natural lannguage processing.</p>
+<h2>Running</h2>
+<p>At present the best way to interact with the code is to use a console in either <code>mill</code> or <code>sbt</code> (the primary build tool is now <code>mill</code>). To pop up a console with most of the code in scope, install <code>mill</code> and run:</p>
+<pre><code>mill mantle.repl
+</code></pre>
+<p>A server to experiment with (or even use) various parts of the code will be available soon.</p>
+
+
+</div>
+</div>
+<div class="container-fluid">
+  <br><br><br>
+  <div class="footer navbar-fixed-bottom bg-primary">
+    <h4>
+    &nbsp;Developed by:
+    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
+
+  </h4>
+
+  </div>
+
+
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src='js/bootstrap.min.js'></script>
+</body>
+</html>
+
+

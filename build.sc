@@ -118,7 +118,7 @@ object jvmRoot extends CommonModule{
   val projects = Seq(core.jvm, leanlib, mantle, nlp)
 
   def sources = T.sources{
-    core.jvm.sources() ++ leanlib.sources() ++ mantle.sources() ++ nlp.sources()
+    core.jvm.sources() ++ leanlib.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources()
   }
 
   def ivyDeps = T{
@@ -133,6 +133,18 @@ object jvmRoot extends CommonModule{
     jar
   }
 }
+
+object exploring extends JvmModule{
+  def moduleDeps = Seq(core.jvm, mantle)
+}
+
+object realfunctions extends JvmModule
+
+object andrewscurtis extends JvmModule with SbtModule{
+  def moduleDeps = Seq(core.jvm, mantle)
+}
+
+object normalform extends CommonModule with SbtModule
 
 // object server extends ScalaModule{
 //   def scalaVersion = "2.12.4"
