@@ -127,9 +127,9 @@ object jvmRoot extends CommonModule{
 
   def moduleDeps = Seq(trepplein)
 
-  def docs = T.command(){
+  def docs() = T.command{
     def jar = docJar()
-    cp.over(jar / up / "javadoc", pwd / "docs" / "unidoc")
+    cp.over(jar.path / up / "javadoc", pwd / "docs" / "scaladoc")
     jar
   }
 }

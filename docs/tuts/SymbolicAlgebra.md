@@ -116,12 +116,12 @@ scala> assert{n * m == m * n}
 scala>  
 
 scala> n * (m * k) 
-res25: LocalTerm = (k * n * m)
+res25: LocalTerm = (n * k * m)
 
 scala>  
 
 scala> n * (m + k) 
-res26: LocalTerm = ((n * m) + (k * n))
+res26: LocalTerm = ((n * m) + (n * k))
 
 scala>  
 
@@ -179,7 +179,7 @@ We can define a function f recursively on natural numbers, given the value `f(0)
 
 ```scala
 scala> val m = lmbda(n)(prod(n + 1)) 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@e868c41 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@e868c41 + (provingground.HoTT$Typ$newname$2$@e868c41 * n))))
+m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@4f0a2a02 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@4f0a2a02 + (provingground.HoTT$Typ$newname$2$@4f0a2a02 * n))))
 
 scala> val factorial = Rec(1: Nat, m) 
 factorial: Rec[LocalTerm] = <function1>

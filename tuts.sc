@@ -1,4 +1,10 @@
 import ammonite.ops._
+
+println("Generating scaladocs")
+
+implicit val wd = pwd
+%%("mill", "jvmRoot.docs")
+
 val tutdir = pwd / 'mantle / 'src / 'main / 'tut
 
 val f = read(tutdir / "HoTT.md")
@@ -79,4 +85,4 @@ def compiledTuts = ls(tutdir).map{(p) =>
 def writeMD = ls(tutdir).foreach((p) =>
   write.over(outdir / p.name, mkTut(p)))
 
-writeMD
+// writeMD

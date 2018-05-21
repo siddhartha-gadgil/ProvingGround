@@ -715,13 +715,13 @@ A typical example is vectors, defined as a family indexed by their length.
 
 ```scala
 scala> val IndN = new IndexedConstructorPatterns(Nat ->: Types) 
-IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@d2af34d
+IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@457b01d3
 
 scala> val Vec = "Vec" :: Nat ->: Type 
 Vec: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = Vec
 
 scala> val VecPtn = new IndexedConstructorPatterns(Nat ->: Types) 
-VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@613fff9f
+VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@49fcf209
 
 scala> val VecFmly = VecPtn.Family(Vec) 
 VecFmly: VecPtn.Family = Family(Vec)
@@ -734,7 +734,7 @@ val VecInd = {"nil" ::: VecFmly.head(Vec(zero))} |:  {"cons" ::: n ~>>: (A ->>: 
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4055/1410190415@532827a2
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4069/1686879626@737e8c63
       ),
       cons,
       Vec
@@ -761,7 +761,7 @@ scala> val vn = "v_n" :: Vec(n)
 vn: Term with Subs[Term] = v_n
 
 scala> val recVN = VecInd.rec(Nat) 
-recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4055/1410190415@532827a2),cons,Vec)) :  $alnks ~> (A) → (((Vec) ($alnks)) → ((Nat) → (Nat)))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4055/1410190415@532827a2),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
+recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4069/1686879626@737e8c63),cons,Vec)) :  $alnks ~> (A) → (((Vec) ($alnks)) → ((Nat) → (Nat)))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4069/1686879626@737e8c63),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
 
 scala> val size = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m)))))) 
 size: Term = ($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m))))))) ((($alnjt_1) , ($alnjt_2)))))
@@ -803,7 +803,7 @@ val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat 
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4055/1410190415@2cb97508
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4069/1686879626@431634cd
       ),
       cons,
       Vec(Nat)
@@ -815,7 +815,7 @@ val VecNInd = {"nil" ::: VecNFmly.head(VecN(zero))} |:  {"cons" ::: n ~>>: (Nat 
 scala>  
 
 scala> val recVNN = VecNInd.rec(Nat) 
-recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4055/1410190415@2cb97508),cons,Vec(Nat))) :  $alxsn ~> (Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat)))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4055/1410190415@2cb97508),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
+recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4069/1686879626@431634cd),cons,Vec(Nat))) :  $alxsn ~> (Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat)))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4069/1686879626@431634cd),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
 
 scala> val List(vnilN, vconsN) = VecNInd.intros 
 vnilN: Term = nil
