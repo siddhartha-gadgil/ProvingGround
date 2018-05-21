@@ -114,6 +114,26 @@ object nlp extends CommonModule with SbtModule{
   }
 }
 
+object jvmRoot extends CommonModule{
+  val projects = Seq(core.jvm, leanlib, mantle, nlp)
+
+  def sources = T.sources{
+    core.jvm.sources() ++ leanlib.sources() ++ mantle.sources() ++ nlp.sources()
+  }
+
+  def ivyDeps = T{
+    core.jvm.ivyDeps() ++ leanlib.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
+  }
+
+  def moduleDeps = Seq(trepplein)
+
+  def docs = T.command(){
+    def jar = docJar()
+    cp.over(jar / up / "javadoc", pwd / "docs" / "unidoc")
+    jar
+  }
+}
+
 // object server extends ScalaModule{
 //   def scalaVersion = "2.12.4"
 //

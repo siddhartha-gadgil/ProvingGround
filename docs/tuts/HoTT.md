@@ -32,7 +32,7 @@ We have a family of universes, but mostly use the first one denoted by Type. Giv
 
 
 ```scala
-scala>  
+scala>    
 
 scala> import provingground._ 
 import provingground._
@@ -380,8 +380,6 @@ scala> Zero
 
 scala> Star !: Unit 
 res50: Term = Star
-
-scala>
 ```
 
 

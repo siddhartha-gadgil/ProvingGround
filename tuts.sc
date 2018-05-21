@@ -3,60 +3,80 @@ val tutdir = pwd / 'mantle / 'src / 'main / 'tut
 
 val f = read(tutdir / "HoTT.md")
 
-val top =
-"""
-repl.frontEnd() = ammonite.repl.AmmoniteFrontEnd()
-interp.colors() = ammonite.util.Colors.BlackWhite
-import ammonite.ops._
-interp.load.cp(pwd / 'out/'mantle/'assembly/'dest/"out.jar")
-repl.pprinter.bind(provingground.translation.FansiShow.simplePrint)
-repl.prompt() = "scala> "
-"""
+def mkTut(p: Path): String = {
+  val f = read(p)
 
-val spl = f.split("```tut").map(_.split("```").toVector).toVector
-val tutcode =
-  spl.tail.map(_(0))
-  .mkString(top,"// tutEnd","")
+  println(s"compiling tutorial ${p.name}")
 
-import java.io._
+  val top =
+  """
+  repl.frontEnd() = ammonite.repl.AmmoniteFrontEnd()
+  interp.colors() = ammonite.util.Colors.BlackWhite
+  import ammonite.ops._
+  interp.load.cp(pwd / 'out/'mantle/'assembly/'dest/"out.jar")
+  repl.pprinter.bind(provingground.translation.FansiShow.simplePrint)
+  repl.prompt() = "scala> "
+  """
 
-val outputStream = new ByteArrayOutputStream()
+  val spl = f.split("```tut").map(_.split("```").toVector).toVector
+  val tutcode =
+    spl.tail.map(_(0))
+    .mkString(top,"// tutEnd","")
 
-val errorStream = new ByteArrayOutputStream()
+  import java.io._
 
-val inp = new ByteArrayInputStream(tutcode.getBytes)
+  val outputStream = new ByteArrayOutputStream()
 
-val ammrun = ammonite.Main.main0(List(), inp, outputStream, errorStream)
+  val errorStream = new ByteArrayOutputStream()
 
-lazy val output = new String(outputStream.toByteArray, "UTF-8")
+  val inp = new ByteArrayInputStream(tutcode.getBytes)
 
-lazy val errors = new String(errorStream.toByteArray, "UTF-8")
+  val ammrun = ammonite.Main.main0(List(), inp, outputStream, errorStream)
 
-val silly = """\[[0-9]+[A-Z]""".r
+  lazy val output = new String(outputStream.toByteArray, "UTF-8")
 
-val errs = silly.replaceAllIn(output
-  .replace("\u001b", ""), "")
+  lazy val errors = new String(errorStream.toByteArray, "UTF-8")
 
-println(errors)
+  val silly = """\[[0-9]+[A-Z]""".r
 
-// println(errs)
+  val errs = silly.replaceAllIn(output
+    .replace("\u001b", ""), "")
 
-val tutChunks =
-  silly.replaceAllIn(output
-  .replace("\u001b", ""), "")
-  .split("repl.prompt\\(\\) = \"scala> \"")(1)
-  .split("""// tutEnd""").map((s) =>
+  println(errors)
+
+  // println(errs)
+
+  val tutChunks =
+    silly.replaceAllIn(output
+    .replace("\u001b", ""), "")
+    .split("repl.prompt\\(\\) = \"scala> \"")(1)
+    .split("""// tutEnd""").map((s) =>
 s"""```scala
 ${s.trim.dropRight(6).trim}
 ```
 """).toVector
 
-val textTail = tutChunks.zip(spl.tail.map(_(1))).map{case (a, b) => Vector(a, b)}.flatten
+  val textTail = tutChunks.zip(spl.tail.map(_(1))).map{case (a, b) => Vector(a, b)}.flatten
 
-val allChunks = spl.head.head +: textTail
-
-
-println(tutChunks.size)
+  val allChunks = spl.head.head +: textTail
 
 
-write.over(pwd / "HoTTout.md", allChunks.mkString("","\n","\n"))
+  println(tutChunks.size)
+
+  allChunks.mkString("", "\n", "\n")
+}
+
+val outdir = pwd / "docs" / "tuts"
+
+def compiledTuts = ls(tutdir).map{(p) =>
+  (p.name, mkTut(p))
+}
+
+// compiledTuts.foreach{
+//   case (name, content) => write.over(outdir / name, content)
+// }
+
+def writeMD = ls(tutdir).foreach((p) =>
+  write.over(outdir / p.name, mkTut(p)))
+
+writeMD
