@@ -182,13 +182,13 @@ scala&gt;
 
 scala&gt; n * (m * k) 
 
-res25: LocalTerm = (k * m * n)
+res25: LocalTerm = (n * m * k)
 
 scala&gt;  
 
 scala&gt; n * (m + k) 
 
-res26: LocalTerm = ((m * n) + (k * n))
+res26: LocalTerm = ((n * m) + (n * k))
 
 scala&gt;  
 
@@ -231,7 +231,7 @@ res33: LocalTerm = (k^{2})
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
 <pre><code class="language-scala">scala&gt; val m = lmbda(n)(prod(n + 1)) 
 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@70f0a393 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@70f0a393 + (n * provingground.HoTT$Typ$newname$2$@70f0a393))))
+m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@45eaa934 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@45eaa934 + (provingground.HoTT$Typ$newname$2$@45eaa934 * n))))
 
 scala&gt; val factorial = Rec(1: Nat, m) 
 
