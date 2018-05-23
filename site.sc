@@ -35,7 +35,7 @@ s"""<!DOCTYPE html>
     <link rel="icon" href="${rel}IIScLogo.jpg">
 
     <!-- Bootstrap -->
-    <link href="$rel/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${rel}css/bootstrap.min.css" rel="stylesheet">
 
 
     <link rel="stylesheet" href="${rel}css/zenburn.css">
