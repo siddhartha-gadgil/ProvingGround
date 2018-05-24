@@ -3,7 +3,7 @@ package provingground
 import scala.scalajs.js
 import org.scalajs.dom
 //import dom.html.{Map => _, _}
-import scalajs.js.annotation.JSExport
+import scalajs.js.annotation._
 import scalatags.JsDom.all._
 import scalatags.JsDom.all
 //import scala.util.Try
@@ -24,7 +24,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import org.scalajs.dom.ext._
 
-@JSExport
+@JSExportTopLevel("DeducerJS")
 object DeducerJS {
   def katex(f: String) = {
     val d = span.render

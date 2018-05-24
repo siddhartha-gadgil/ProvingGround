@@ -3,7 +3,7 @@ package provingground
 //import scala.scalajs.js
 import org.scalajs.dom
 //import dom.html
-import scalajs.js.annotation.JSExport
+import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
 import scala.scalajs.js
@@ -76,7 +76,7 @@ object ScalaJSExample {
   }
 }
 
-@JSExport
+@JSExportTopLevel("JsTest")
 object JsTest {
   @JSExport
   def jstest(): Unit = {

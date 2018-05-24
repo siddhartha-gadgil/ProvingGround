@@ -1,6 +1,8 @@
 import mill._, scalalib._, scalajslib._, define.Task
 import ammonite.ops._
 
+import coursier.maven.MavenRepository
+
 val scalaV = "2.12.4"
 
 val ammV = "1.1.0-12-f07633d"
@@ -145,6 +147,26 @@ object andrewscurtis extends JvmModule with SbtModule{
 }
 
 object normalform extends CommonModule with SbtModule
+
+object client extends CommonModule with ScalaJSModule with SbtModule{
+  def scalaJSVersion = "0.6.22"
+    def moduleDeps : Seq[ScalaJSModule] = Seq(core.js)
+
+    def platformSegment = "js"
+
+    import coursier.maven.MavenRepository
+
+    def repositories = super.repositories ++ Seq(
+      MavenRepository("http://amateras.sourceforge.jp/mvn/")
+    )
+
+    def ivyDeps = Agg(
+    ivy"org.scala-js::scalajs-dom::0.9.4",
+    ivy"com.lihaoyi::scalatags::0.6.7",
+    ivy"com.scalawarrior::scalajs-ace::0.0.4"
+  )
+
+}
 
 // object server extends ScalaModule{
 //   def scalaVersion = "2.12.4"

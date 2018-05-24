@@ -64,7 +64,7 @@ object WebServer {
       views.get(index).getOrElse(s"""<h2>No view with index <i>$name</i></h2>
       <div class="js-element" data-script="welcome"></div>
       <script type="text/javascript">
-        provingground.ProvingGroundJS().dynamic()
+        ProvingGroundJS.dynamic()
       </script>
 
       """)
@@ -95,7 +95,7 @@ object WebServer {
   val fdView = makePage("""
     <div id ="jsdiv"></div>
     <script type="text/javascript">
-    provingground.DeducerJS().main()
+    DeducerJS.main()
     </script>
     """)
 
@@ -115,7 +115,7 @@ object WebServer {
           <h2> Finite Distribution snapshot </h2>
         <div id="finite-distribution" style="overflow-y: auto; height: 300px;"></div>
         <script type="text/javascript">
-        provingground.ProvingGroundJS().showFD()
+         ProvingGroundJS.showFD()
         </script>
         """
     makePage(divs)
@@ -199,7 +199,7 @@ object WebServer {
   val dummy = """
     <div id ="dummy-space">The dummy space</div>
     <script type="text/javascript">
-      provingground.ProvingGroundJS().dummyUpdate()
+      ProvingGroundJS.dummyUpdate()
     </script>
     </html>
     """

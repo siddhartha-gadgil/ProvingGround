@@ -3,7 +3,7 @@ package provingground
 import scala.scalajs.js
 import org.scalajs.dom
 import dom.html.{Map => _, _}
-import scalajs.js.annotation.JSExport
+import scalajs.js.annotation._
 import scalatags.JsDom.all._
 import scalatags.JsDom.all
 import scala.util.Try
@@ -28,6 +28,7 @@ import org.scalajs.dom.ext._
 
 //import FreeExprLang.{readTerm, readDist}
 
+@JSExportTopLevel("ProvingGroundJS")
 object ProvingGroundJS {
   def main(): Unit = {
     val page = Try(dom.document.getElementById("page"))
