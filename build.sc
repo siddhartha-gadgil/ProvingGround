@@ -22,6 +22,10 @@ trait CommonModule extends ScalaModule{
       "-language:existentials")
 }
 
+trait CommonJSModule extends CommonModule with ScalaJSModule{
+  def scalaJSVersion = "0.6.22"
+}
+
 trait JvmModule extends CommonModule {
   def ivyDeps =
     T{
@@ -70,7 +74,7 @@ object core extends Module{
     // def ivyDeps = Agg(commonLibs: _*)
   }
 
-  object js extends ScalaJSModule with CommonModule with SbtModule{
+  object js extends CommonJSModule with SbtModule{
     // def scalaVersion = "2.12.4"
     def scalaJSVersion = "0.6.22"
     def millSourcePath = super.millSourcePath / up
@@ -88,7 +92,7 @@ object trepplein extends SbtModule{
 }
 
 object mantle extends SbtModule with JvmModule{
-  def moduleDeps = Seq(core.jvm, trepplein, leanlib)
+  def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
 
 
   object test extends Tests{
@@ -99,8 +103,16 @@ object mantle extends SbtModule with JvmModule{
 }
 
 
-object leanlib extends JvmModule{
-  def moduleDeps = Seq(core.jvm, trepplein)
+object leanlib extends Module{
+  object jvm extends CommonModule with SbtModule{
+    def millSourcePath = super.millSourcePath / up
+    def moduleDeps = Seq(core.jvm)
+  }
+
+  object js extends CommonJSModule with SbtModule{
+    def millSourcePath = super.millSourcePath / up
+    def moduleDeps = Seq(core.js)
+  }
 }
 
 object nlp extends CommonModule with SbtModule{
@@ -117,14 +129,14 @@ object nlp extends CommonModule with SbtModule{
 }
 
 object jvmRoot extends CommonModule{
-  val projects = Seq(core.jvm, leanlib, mantle, nlp)
+  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp)
 
   def sources = T.sources{
-    core.jvm.sources() ++ leanlib.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources()
+    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources()
   }
 
   def ivyDeps = T{
-    core.jvm.ivyDeps() ++ leanlib.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
+    core.jvm.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
   }
 
   def moduleDeps = Seq(trepplein)
@@ -148,9 +160,9 @@ object andrewscurtis extends JvmModule with SbtModule{
 
 object normalform extends CommonModule with SbtModule
 
-object client extends CommonModule with ScalaJSModule with SbtModule{
-  def scalaJSVersion = "0.6.22"
-    def moduleDeps : Seq[ScalaJSModule] = Seq(core.js)
+object client extends CommonJSModule with SbtModule{
+
+    def moduleDeps : Seq[ScalaJSModule] = Seq(core.js, leanlib.js)
 
     def platformSegment = "js"
 
