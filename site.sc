@@ -1,3 +1,5 @@
+#!/usr/bin/env amm
+
 import $file.tuts, tuts._
 
 import ammonite.ops._
@@ -77,7 +79,7 @@ s"""<!DOCTYPE html>
       </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="${rel}scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
-            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">Github repository</a> </li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank"><img src="${rel}GitHub-Mark-Light-32px.png" alt="Github"/ > </a></a> </li>
 
 
 
@@ -157,6 +159,7 @@ case class Tut(name: String, content: String, optTitle: Option[String]){
 
 def getTut(p: Path) =
   {
+  println(s"Compiling tutorial ${p.name}")
   val l = mkTut(read(p)).split("\n").toVector
   val name = titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
   val content = fromMD(body(l).mkString("\n"))

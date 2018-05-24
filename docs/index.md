@@ -26,7 +26,7 @@ Our goal is to interact with external systems. In particular, we have implemente
 
 ## Running
 
-At present the best way to interact with the code is to use a console in either `mill` or `sbt` (the primary build tool is now `mill`). To pop up a console with most of the code in scope, install `mill` and run:
+At present the best way to interact with the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)). To pop up a console with most of the code in scope, install [mill](https://www.lihaoyi.com/mill/) and run:
 ```
 mill mantle.repl
 ```

@@ -72,7 +72,7 @@ messageStyle: "none",
       </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
-            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">Github repository</a> </li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank"><img src="../GitHub-Mark-Light-32px.png" alt="Github"/ > </a></a> </li>
 
 
 
@@ -185,13 +185,13 @@ scala&gt;
 
 scala&gt; n * (m * k) 
 
-res25: LocalTerm = (n * k * m)
+res25: LocalTerm = (k * n * m)
 
 scala&gt;  
 
 scala&gt; n * (m + k) 
 
-res26: LocalTerm = ((n * m) + (n * k))
+res26: LocalTerm = ((n * m) + (k * n))
 
 scala&gt;  
 
@@ -234,7 +234,7 @@ res33: LocalTerm = (k^{2})
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
 <pre><code class="language-scala">scala&gt; val m = lmbda(n)(prod(n + 1)) 
 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@477946b0 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@477946b0 + (provingground.HoTT$Typ$newname$2$@477946b0 * n))))
+m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@61bea0d0 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@61bea0d0 + (n * provingground.HoTT$Typ$newname$2$@61bea0d0))))
 
 scala&gt; val factorial = Rec(1: Nat, m) 
 
@@ -262,6 +262,16 @@ scala&gt;
 
 scala&gt; assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
 </code></pre>
+<h3>Git Log</h3>
+<pre><code>commit d99230f560ec1a538b5bbfc73dc317809aab752e
+Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
+Date:   Wed May 23 12:53:26 2018 +0530
+
+    mathjax for site
+</code></pre>
+<ul>
+<li><strong>Branch</strong> : master</li>
+</ul>
 
 
 </div>

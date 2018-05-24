@@ -7,7 +7,9 @@ implicit val wd = pwd
 
 val tutdir = pwd / 'mantle / 'src / 'main / 'tut
 
-val f = read(tutdir / "HoTT.md")
+val gitLog = %%("git", "log", "-1").out.lines
+
+val gitBranch = %%("git", "symbolic-ref", "--short", "HEAD").out.lines.head
 
 def mkTut(f: String): String = {
 
@@ -66,7 +68,18 @@ ${s.trim.dropRight(6).trim}
 
   println(tutChunks.size)
 
-  allChunks.mkString("", "\n", "\n")
+  val gitrep =
+s"""
+### Git Log
+```
+${gitLog.mkString("\n")}
+```
+
+* __Branch__ : $gitBranch
+
+"""
+
+  allChunks.mkString("", "\n", gitrep)
 }
 
 val outdir = pwd / "docs" / "tuts"
