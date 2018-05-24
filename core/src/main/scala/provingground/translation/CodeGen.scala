@@ -10,8 +10,6 @@ import scala.meta
 
 import scala.meta.{Term => _, Type => _, _}
 
-import meta.Term.{Name => Nm, Apply => Ap, ApplyInfix => Ifx}
-
 case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
                    defns: Map[String, meta.Term] = Map()) {
   codegen =>
@@ -31,7 +29,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
               for {
                 fc <- prefixTermOpt(f)
                 xc <- onTerm(x)
-              } yield Ap(fc, List(xc))//q"$fc($xc)"
+              } yield q"$fc($xc)"
             case _ => None
           }
         )
@@ -419,71 +417,53 @@ object CodeGen {
     Translator.Empty[Term, meta.Term] ||
       formalAppln >>> {
         case (func, arg) =>
-          Ap(func, List(arg))//q"$func($arg)"
+          q"$func($arg)"
       } || funcTyp >>> {
       case (dom, codom) =>
-        Ap(Nm("FuncTyp"), List(dom, codom))//q"""FuncTyp($dom, $codom)"""
+        q"""FuncTyp($dom, $codom)"""
       // q"$dom ->: $codom"
     } || lambdaFixedTriple >>> {
       case ((variable, typ), value) =>
         // q"""lmbda($variable)($value)"""
-        Ap(Ap(Nm("lmbda"), List(variable)), List(value))//q"""lmbda($variable)($value)"""
+        q"""lmbda($variable)($value)"""
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-        Ap(Ap(Nm("lambda"), List(variable)), List(value))//q"""lambda($variable)($value)"""
+        q"""lambda($variable)($value)"""
       // q"""lambda($variable)($value)"""
     } || piTriple >>> {
       case ((variable, typ), value) =>
-        Ap(Ap(Nm("piDefn"), List(variable)), List(value))//q"""piDefn($variable)($value)"""
+        q"""piDefn($variable)($value)"""
       // q"""$variable ~>: $value"""
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
-        Ifx(variable, Nm("++"), List(), List(value))//q"""$variable ++ $value"""
+        q"""$variable ++ $value"""
     } || universe >>> { (n) =>
-      if (n == 0) Nm("Type")//q"Type"
-      else Ap(Nm("Universe"), List(Lit.Int(n)))//q"""Universe($n)"""
+      if (n == 0) q"Type" else q"""Universe($n)"""
     } || propUniv >>> {
-      case _ => Nm("Prop")//q"Prop"
+      case _ => q"Prop"
     } || hashSymbolic >>> {
       case (s, typ) =>
         val name = Lit.String(s)
-        Ap(
-          meta.Term.Select(typ, Nm("symbObj")),
-            List(Ap(Nm("Name"), List(name))
-          ))// q"$typ.symbObj(Name($name))"
-        // q"$name :: $typ"
-    } || prodTyp >>> {
-      case (first, second) => Ap(Nm("ProdTyp"), List(first, second))//q"""ProdTyp($first, $second)"""
-    } || pairTerm >>> {
-      case (first, second)                  => Ap(Nm("PairTerm"), List(first, second))//q"""PairTerm($first, $second)"""
-    } || equation >>> { case (lhs, rhs)     =>
-      Ap(
-        meta.Term.Select(Nm("IdentityTyp"), Nm("get")),
-          List(lhs, rhs)
-        )//q"IdentityTyp.get($lhs, $rhs)"
-    } || depPairTerm >>> {
-      case ((a, b), f)                      => Ap(Nm("DepPair"), List(a, b, f))//q"DepPair($a, $b, $f)"
+        // q"$typ.symbObj(Name($name))"
+        q"$name :: $typ"
+    } || prodTyp >>> { case (first, second) => q"""ProdTyp($first, $second)""" } || pairTerm >>> {
+      case (first, second)                  => q"""PairTerm($first, $second)"""
+    } || equation >>> { case (lhs, rhs)     => q"IdentityTyp.get($lhs, $rhs)" } || depPairTerm >>> {
+      case ((a, b), f)                      => q"DepPair($a, $b, $f)"
     } || plusTyp >>> {
-      case (first, scnd) => Ap(Nm("PlusTyp"), List(first, scnd))//q"""PlusTyp($first, $scnd)"""
+      case (first, scnd) => q"""PlusTyp($first, $scnd)"""
     } || firstIncl >>> {
-      case (typ, value) =>
-      Ap(
-        meta.Term.Select(Nm("PlusTyp"), Nm("FirstIncl")),
-          List(typ, value)
-        )//q"PlusTyp.FirstIncl($typ, $value)"
+      case (typ, value) => q"PlusTyp.FirstIncl($typ, $value)"
     } || secondIncl >>> {
-      case (typ, value) => Ap(
-        meta.Term.Select(Nm("PlusTyp"), Nm("ScndIncl")),
-          List(typ, value)
-        )//q"PlusTyp.ScndIncl($typ, $value)"
+      case (typ, value) => q"PlusTyp.ScndIncl($typ, $value)"
     } || refl >>> {
-      case (typ, term) => Ap(Nm("Refl"), List(typ, term))//q"Refl($typ, $term)"
+      case (typ, term) => q"Refl($typ, $term)"
     } || star >>> {
-      (_) => Nm("Star")//q"Star"
+      (_) => q"Star"
     } || zero >>> {
-      (_) => Nm("Zero")//q"Zero"
+      (_) => q"Zero"
     }|| unit >>> {
-      (_) => Nm("Unit")//q"Unit"
+      (_) => q"Unit"
     }
 
   def getName(t: Term): Option[String] = t match {
