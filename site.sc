@@ -29,8 +29,7 @@ messageStyle: "none",
 """
 
 def head(rel: String = "") =
-s"""<!DOCTYPE html>
-<html lang="en">
+s"""
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,8 +48,10 @@ s"""<!DOCTYPE html>
 
     $mathjax
   </head>
-  <body>
 
+"""
+  def nav(rel: String = "") =
+//    s"""
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -67,19 +68,20 @@ s"""<!DOCTYPE html>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li><a href="${rel}index.html#">Home</a></li>
+            <li><a href={s"${rel}index.html#"}>Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
-                ${tutList(rel)}
+                {tutList(rel)}
             </ul>
           </li>
       </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li> <a href="${rel}scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
-            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank"><img src="${rel}GitHub-Mark-Light-32px.png" alt="Github"/ > </a></a> </li>
+            <li> <a href={s"${rel}scaladoc/provingground/index.html"} target="_blank">ScalaDocs</a></li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
+            <img src={s"${rel}GitHub-Mark-Light-32px.png"} alt="Github"></img> </a> </li>
 
 
 
@@ -88,12 +90,13 @@ s"""<!DOCTYPE html>
       </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="container">
-"""
+// """
 
-def foot(rel: String) = s"""</div>
+def foot(rel: String) = //s"""
 <div class="container-fluid">
-  <br><br><br>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
   <div class="footer navbar-fixed-bottom bg-primary">
     <h4>
     &nbsp;Developed by:
@@ -105,12 +108,11 @@ def foot(rel: String) = s"""</div>
 
 
 </div>
-<script type="text/javascript" src="${rel}js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src='${rel}js/bootstrap.min.js'></script>
-</body>
-</html>
+<script type="text/javascript" src={s"${rel}js/jquery-2.1.4.min.js"}></script>
+<script type="text/javascript" src={s"${rel}js/bootstrap.min.js"}></script>
 
-"""
+
+//"""
 
 import $ivy.`com.atlassian.commonmark:commonmark:0.11.0`
 import org.commonmark.node._
@@ -171,19 +173,28 @@ lazy val allTuts = ls(tutdir).map(getTut)
 def tutList(rel: String)  =
     allTuts.map(
       (tut) =>
-        s"""<li><a href="${tut.url(rel)}">${tut.title}</a></li>"""
-      ).mkString("", "\n", "")
+        <li><a href={s"${tut.url(rel)}"}>{tut.title}</a></li>
+      )
 
 
 def doc(s: String, rel: String, t: String = "") =
 s"""
+<!DOCTYPE html>
+<html lang="en">
 ${head(rel)}
-<h1 class="text-center">$t</h1>\n
+<body>
+${nav(rel)}
+<div class="container">
+<h1 class="text-center">$t</h1>
+
 <div class="text-justify">
 $s
 
 </div>
+</div>
 ${foot(rel)}
+</body>
+</html>
 """
 
 val home = doc(

@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,9 +37,10 @@ messageStyle: "none",
        </script>
 
   </head>
-  <body>
 
-    <nav class="navbar navbar-default">
+
+<body>
+<nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -60,19 +62,14 @@ messageStyle: "none",
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
-                <li><a href="../tuts/hott.html">HoTT</a></li>
-<li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li>
-<li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li>
-<li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li>
-<li><a href="../tuts/inductive-types.html">Inductive Types</a></li>
-<li><a href="../tuts/scalarep.html">ScalaRep</a></li>
-<li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
             </ul>
           </li>
       </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
-            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank"><img src="../GitHub-Mark-Light-32px.png" alt="Github"/ > </a></a> </li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
+            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -80,9 +77,7 @@ messageStyle: "none",
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-
-    <div class="container">
-
+<div class="container">
 <h1 class="text-center">Inductive Types (old style)</h1>
 
 <div class="text-justify">
@@ -771,7 +766,7 @@ Further, the recursion and induction function only allow construction of (depend
 <p>A typical example is vectors, defined as a family indexed by their length.</p>
 <pre><code class="language-scala">scala&gt; val IndN = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@765b85dc
+IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@6d23562c
 
 scala&gt; val Vec = &quot;Vec&quot; :: Nat -&gt;: Type 
 
@@ -779,7 +774,7 @@ Vec: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = Vec
 
 scala&gt; val VecPtn = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@3eb4ab7d
+VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@3e8a99f1
 
 scala&gt; val VecFmly = VecPtn.Family(Vec) 
 
@@ -794,7 +789,7 @@ VecInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1531255516@39ac796c
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4224/1749717126@17fda43f
       ),
       cons,
       Vec
@@ -819,7 +814,7 @@ vn: Term with Subs[Term] = v_n
 
 scala&gt; val recVN = VecInd.rec(Nat) 
 
-recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1531255516@39ac796c),cons,Vec)) :  $alnks ~&gt; (A) → (((Vec) ($alnks)) → ((Nat) → (Nat)))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1531255516@39ac796c),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
+recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4224/1749717126@17fda43f),cons,Vec)) :  $alnks ~&gt; (A) → (((Vec) ($alnks)) → ((Nat) → (Nat)))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4224/1749717126@17fda43f),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
 
 scala&gt; val size = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m)))))) 
 
@@ -863,7 +858,7 @@ VecNInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1531255516@3677a1f7
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4224/1749717126@7ead5628
       ),
       cons,
       Vec(Nat)
@@ -876,7 +871,7 @@ scala&gt;
 
 scala&gt; val recVNN = VecNInd.rec(Nat) 
 
-recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1531255516@3677a1f7),cons,Vec(Nat))) :  $alxsn ~&gt; (Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat)))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1531255516@3677a1f7),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
+recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4224/1749717126@7ead5628),cons,Vec(Nat))) :  $alxsn ~&gt; (Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat)))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4224/1749717126@7ead5628),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
 
 scala&gt; val List(vnilN, vconsN) = VecNInd.intros 
 
@@ -927,11 +922,11 @@ res171: Term = (succ) ((succ) ((succ) (0)))
 scala&gt; assert(vsum(two)(v3) == three)
 </code></pre>
 <h3>Git Log</h3>
-<pre><code>commit d99230f560ec1a538b5bbfc73dc317809aab752e
+<pre><code>commit 5a2b7ad6e17d7f6e28a595761e2f76d71cdb8055
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Wed May 23 12:53:26 2018 +0530
+Date:   Sat May 26 10:03:50 2018 +0530
 
-    mathjax for site
+    cleaner html
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>
@@ -940,8 +935,10 @@ Date:   Wed May 23 12:53:26 2018 +0530
 
 </div>
 </div>
-<div class="container-fluid">
-  <br><br><br>
+ArrayBuffer(<div class="container-fluid">
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
   <div class="footer navbar-fixed-bottom bg-primary">
     <h4>
     &nbsp;Developed by:
@@ -952,10 +949,6 @@ Date:   Wed May 23 12:53:26 2018 +0530
   </div>
 
 
-</div>
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src='../js/bootstrap.min.js'></script>
+</div>, <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>, <script type="text/javascript" src="../js/bootstrap.min.js"></script>)
 </body>
 </html>
-
-
