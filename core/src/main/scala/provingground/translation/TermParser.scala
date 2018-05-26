@@ -6,6 +6,36 @@ import scala.util._
 
 import provingground.HoTT._
 
+case class HoTTParser(names: Map[String, Term] = Map()){
+  import fastparse._
+  val White = WhitespaceApi.Wrapper{
+  import fastparse.all._
+  NoTrace(" ".rep)
+  }
+  import fastparse.noApi._
+  import White._
+
+  val predefs : P[Term] =
+    P("Type").map((_) => Type : Term) |
+    P("Star").map((_) => Star : Term) |
+    P("Unit").map((_) => Unit : Term) |
+    P("Zero").map((_) => Zero : Term) |
+    P("Prop").map((_) => Prop : Term)
+
+  val named : P[Term] =
+    names.foldRight[P[Term]](predefs){
+      case ((name, term), parser) => P(name).map((_) => term) | parser
+    }
+
+  val str : P[String] =
+    (P("\"")~P(CharIn('a' to 'z').! | CharIn('A' to 'Z').!).rep~P("\"")).map(_.mkString(""))
+
+  val symbolic: P[Term] = P(str~P("::")~term).map{case (s, t) => s :: toTyp(t)}
+
+  val term : P[Term] = P(symbolic | named)
+}
+
+
 /**
   * @author gadgil
   * Simple parser to reverse the toString operation.

@@ -60,6 +60,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "org.typelevel" %%% "spire"         % "0.15.0",
     "com.lihaoyi"   %%% "fansi"         % "0.2.4",
     "com.lihaoyi"   %%% "upickle"       % "0.6.4",
+    "com.lihaoyi" %%% "fastparse" % "1.0.0",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
     "io.monix"      %%% "monix"         % "3.0.0-RC1",
