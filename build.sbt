@@ -80,7 +80,7 @@ lazy val commonSettings = baseSettings ++ Seq(
   testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
 )
 
-val akkaV = "2.4.17"
+val akkaV = "2.5.11"
 
 assemblyMergeStrategy in assembly := {
   case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
@@ -101,9 +101,9 @@ lazy val jvmSettings = Seq(
     // "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
-    "com.typesafe.akka" %% "akka-http"   % "10.0.5",
+    "com.typesafe.akka" %% "akka-http"   % "10.1.1",
     // "com.typesafe.akka" %% "akka-http" % akkaV,
-    "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.5",
+    "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.1",
 //    "com.lihaoyi" %% "upickle" % "0.3.4",
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,

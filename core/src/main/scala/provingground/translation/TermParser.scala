@@ -55,7 +55,7 @@ case class HoTTParser(names: Map[String, Term] = Map()){self =>
 
   val alphanum = alphachar ++ ('0' to '9') ++ Seq('.')
 
-  val str = (P(CharIn(alphachar).!)~P(CharsWhileIn(alphanum).?.!)).map{case (h, t) => h + t}
+  val str = (P(CharIn(alphachar).!)~P(CharIn(alphanum).rep.!)).map{case (h, t) => h + t.toString}
 
   val name : P[String] =
     P("\"" ~ str ~ "\"")
