@@ -32,10 +32,10 @@ import org.scalajs.dom.ext._
 object Client{
   @JSExport
   def main(): Unit = {
-    val div = dom.document.querySelector("#hott-scratch")
-    div.innerHTML = """<p> A hello from the client</p>"""
+   ScratchPad.load()
   }
 }
+
 
 // Older entery point, use "provingground"
 @JSExportTopLevel("ProvingGroundJS")

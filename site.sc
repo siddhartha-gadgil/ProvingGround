@@ -52,11 +52,16 @@ s"""
 
     <!-- Bootstrap -->
     <link href="${rel}css/bootstrap.min.css" rel="stylesheet">
+   |<link href="${rel}css/katex.min.css" rel="stylesheet">
+   |<link href="${rel}css/main.css" rel="stylesheet">
 
 
     <link rel="stylesheet" href="${rel}css/zenburn.css">
     <script src="${rel}js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+
+   |<script src="${rel}js/ace.js"></script>
+   |<script src="${rel}js/katex.min.js"></script>
 
     $mathjax
   </head>

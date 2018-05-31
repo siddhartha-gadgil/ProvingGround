@@ -1,0 +1,8 @@
+.editor {
+          height: 300px;
+          font-size: 14px;
+        }
+.view {
+  overflow-y: auto;
+  height: 300px;
+}
