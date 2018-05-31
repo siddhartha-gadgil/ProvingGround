@@ -18,7 +18,7 @@ import upickle.{Js, json}
 
 import scala.util.{Try, Success, Failure}
 
-import HoTT.{id => _, _}
+import HoTT.{id => _, _}, translation._
 
 @js.native
 object katex extends js.Object {
@@ -36,7 +36,6 @@ object ScratchPad{
             value := "Run (ctrl-B)",
             `class` := "btn btn-success").render
 
-        val logDiv = div().render
 
         val viewDiv = div(`class` := "view")().render
 
@@ -48,7 +47,6 @@ object ScratchPad{
               div(`class` := "panel-heading")(h3("HoTT Scratchpad")),
               ed,
               div(`class`:="panel-footer")(runButton)),
-            div("Logs:", logDiv),
             div(
               h3("Result:"),
               viewDiv)
@@ -59,7 +57,9 @@ object ScratchPad{
         editor.setTheme("ace/theme/chrome")
         editor.getSession().setMode("ace/mode/scala")
 
-        val parser = translation.HoTTParser()
+
+
+        val parser = HoTTParser()
 
         def compile(): Unit = {
           val text = editor.getValue
@@ -68,14 +68,18 @@ object ScratchPad{
             (_, _, s) =>
               div(
                 h3(`class` := "text-danger")("Error"),
-                div(s.toString)
+                div(s.traced.trace)
               ),
             (bl, _) =>
               div(`class` := "lead")(
                 h3(`class` := "text-success")("Success"),
                 bl.valueOpt.map{(t) =>
-                  div(p(s"Term: $t"),
-                  p(s"Type: ${t.typ}")
+                  val termSpan = span().render
+                  val typSpan = span().render
+                  termSpan.innerHTML = katex.renderToString(TeXTranslate(t))
+                  typSpan.innerHTML = katex.renderToString(TeXTranslate(t.typ))
+                  div(p("Term: ", termSpan),
+                  p("Type: ", typSpan)
                 )
               }.getOrElse(div("Empty block"))
                 )

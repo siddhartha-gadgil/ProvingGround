@@ -54,7 +54,7 @@ object LatexFormat extends TermRec[String] {
   def appln(func: String, arg: String): String = func + "(" + arg + ")"
 
   def arrow(dom: String, codom: String): String =
-    dom + " \to " + codom
+    dom + " \\to " + codom
 
   def lambda(variable: String, typ: String, value: String): String =
     s"($variable : $typ)" + " \\mapsto " + s"$value"
