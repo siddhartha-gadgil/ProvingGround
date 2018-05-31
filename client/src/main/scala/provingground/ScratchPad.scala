@@ -20,6 +20,12 @@ import scala.util.{Try, Success, Failure}
 
 import HoTT.{id => _, _}
 
+@js.native
+object katex extends js.Object {
+  def renderToString(texString: String): String = js.native
+}
+
+
 object ScratchPad{
   def load() : Unit = {
     Option(dom.document.querySelector("#hott-scratch")).map{
@@ -32,7 +38,7 @@ object ScratchPad{
 
         val logDiv = div().render
 
-        val viewDiv = div(`class` := "view")().render
+        val viewDiv = div(`class` := "view bg-info")().render
 
         val ed = div(id := "editor", `class` := "panel-body editor")
 
@@ -48,7 +54,7 @@ object ScratchPad{
               viewDiv)
           ).render
         )
-        
+
         val editor = ace.edit("editor")
         editor.setTheme("ace/theme/chrome")
         editor.getSession().setMode("ace/mode/scala")

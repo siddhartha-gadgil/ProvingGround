@@ -84,7 +84,7 @@ case class HoTTParser(names: Map[String, Term] = Map()){self =>
   ).map{case (x, y) => toTyp(x) ->: toTyp(y)}
 
   val piTyp = P(
-    simpleterm ~ "->:" ~ term
+    simpleterm ~ "~>:" ~ term
   ).map{case (x, y) => x ~>: toTyp(y)}
 
   val applnP = P(simpleterm ~ "(" ~term ~")").map{case (f, x) => applyFunc(f, x)}
@@ -110,6 +110,5 @@ case class HoTTParser(names: Map[String, Term] = Map()){self =>
         (self + dfn).block.map{(tail) => dfn +: tail}
       ) |
       P(stat~block~End).map {case (s, v) => s +: v} |
-      P(spc ~ "\n" ~ block) |
-      P("//" ~ CharPred(_ != '\n').rep ~ "\n" ~ block)
+      P(spc ~ "\n" ~ block) 
 }
