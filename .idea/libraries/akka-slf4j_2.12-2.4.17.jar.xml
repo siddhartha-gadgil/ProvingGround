@@ -1,7 +1,0 @@
-<component name="libraryTable">
-    <library name="akka-slf4j_2.12-2.4.17.jar">
-        <CLASSES>
-            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/typesafe/akka/akka-slf4j_2.12/2.4.17/akka-slf4j_2.12-2.4.17.jar!/"/>
-        </CLASSES>
-    </library>
-</component>

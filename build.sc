@@ -7,32 +7,6 @@ val scalaV = "2.12.4"
 
 val ammV = "1.1.0-12-f07633d"
 
-trait CommonModule extends ScalaModule{
-  def scalaVersion= scalaV
-  def ivyDeps = Agg(commonLibs: _*)
-  def version = "0.1-SNAPSHOT"
-  def organization = "in.ac.iisc"
-  def name = "ProvingGround"
-
-  def scalacOptions =
-    Seq("-Ypartial-unification",
-      "-unchecked",
-      "-deprecation",
-      "-feature",
-      "-language:existentials")
-}
-
-trait CommonJSModule extends CommonModule with ScalaJSModule{
-  def scalaJSVersion = "0.6.22"
-}
-
-trait JvmModule extends CommonModule {
-  def ivyDeps =
-    T{
-      super.ivyDeps() ++ Agg(jvmLibs: _*)
-    }
-}
-
 
 val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators::1.0.5",
@@ -49,6 +23,25 @@ val commonLibs = List(
   ivy"com.lihaoyi::sourcecode::0.1.4"
 )
 
+trait CommonModule extends ScalaModule{
+  def scalaVersion= scalaV
+  override def ivyDeps = Agg(commonLibs: _*)
+  def version = "0.1-SNAPSHOT"
+  def organization = "in.ac.iisc"
+  def name = "ProvingGround"
+
+  override def scalacOptions =
+    Seq("-Ypartial-unification",
+      "-unchecked",
+      "-deprecation",
+      "-feature",
+      "-language:existentials")
+}
+
+trait CommonJSModule extends CommonModule with ScalaJSModule{
+  def scalaJSVersion = "0.6.22"
+}
+
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:1.1.1",
   ivy"org.scalameta::scalameta:3.7.3",
@@ -62,23 +55,31 @@ val jvmLibs = List(
   ivy"com.typesafe.akka::akka-http:10.1.1",
   ivy"com.typesafe.akka::akka-http-spray-json:10.1.1",
   ivy"org.slf4j:slf4j-api:1.7.16",
-  ivy"org.slf4j:slf4j-simple:1.7.16"//,
-  // ivy"org.scalanlp::breeze:0.13.2"
+  ivy"org.slf4j:slf4j-simple:1.7.16"
 )
+
+
+
+trait JvmModule extends CommonModule {
+  override def ivyDeps =
+    T{
+      super.ivyDeps() ++ Agg(jvmLibs: _*)
+    }
+}
 
 object core extends Module{
 
 
   object jvm extends CommonModule with SbtModule{
     // def scalaVersion = "2.12.4"
-    def millSourcePath = super.millSourcePath / up
+    override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }
 
   object js extends CommonJSModule with SbtModule{
     // def scalaVersion = "2.12.4"
-    def scalaJSVersion = "0.6.22"
-    def millSourcePath = super.millSourcePath / up
+    override def scalaJSVersion = "0.6.22"
+    override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }
 }
@@ -86,18 +87,18 @@ object core extends Module{
 object trepplein extends SbtModule{
   // def millsourcePath = pwd / 'trepplein
   def scalaVersion = scalaV
-  def ivyDeps =
+  override def ivyDeps =
     Agg(
       ivy"com.github.scopt::scopt:3.7.0"
     )
 }
 
 object mantle extends SbtModule with JvmModule{
-  def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
+  override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
 
 
   object test extends Tests{
-    def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
+    override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
     def testFrameworks = Seq("org.scalatest.tools.Framework")
   }
 
@@ -106,20 +107,20 @@ object mantle extends SbtModule with JvmModule{
 
 object leanlib extends Module{
   object jvm extends CommonModule with SbtModule{
-    def millSourcePath = super.millSourcePath / up
-    def moduleDeps = Seq(core.jvm)
+    override def millSourcePath = super.millSourcePath / up
+    override def moduleDeps = Seq(core.jvm)
   }
 
   object js extends CommonJSModule with SbtModule{
-    def millSourcePath = super.millSourcePath / up
-    def moduleDeps = Seq(core.js)
+    override def millSourcePath = super.millSourcePath / up
+    override def moduleDeps = Seq(core.js)
   }
 }
 
 object nlp extends CommonModule with SbtModule{
-  def moduleDeps = Seq(core.jvm)
+  override def moduleDeps = Seq(core.jvm)
 
-  def ivyDeps = T{
+  override def ivyDeps = T{
     super.ivyDeps() ++  Agg(
       ivy"com.lihaoyi:::ammonite:1.1.1",
       ivy"edu.stanford.nlp:stanford-corenlp:3.7.0",
@@ -132,15 +133,15 @@ object nlp extends CommonModule with SbtModule{
 object jvmRoot extends CommonModule{
   val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp)
 
-  def sources = T.sources{
+  override def sources = T.sources{
     core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources()
   }
 
-  def ivyDeps = T{
+  override def ivyDeps = T{
     core.jvm.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
   }
 
-  def moduleDeps = Seq(trepplein)
+  override def moduleDeps = Seq(trepplein)
 
   def docs() = T.command{
     def jar = docJar()
@@ -150,34 +151,40 @@ object jvmRoot extends CommonModule{
 }
 
 object exploring extends JvmModule{
-  def moduleDeps = Seq(core.jvm, mantle)
+  override def moduleDeps = Seq(core.jvm, mantle)
 }
 
 object realfunctions extends JvmModule
 
 object andrewscurtis extends JvmModule with SbtModule{
-  def moduleDeps = Seq(core.jvm, mantle)
+  override def moduleDeps = Seq(core.jvm, mantle)
 }
 
 object normalform extends CommonModule with SbtModule
 
 object client extends CommonJSModule with SbtModule{
 
-    def moduleDeps : Seq[ScalaJSModule] = Seq(core.js, leanlib.js)
+  override def moduleDeps : Seq[ScalaJSModule] = Seq(core.js, leanlib.js)
 
     def platformSegment = "js"
 
     import coursier.maven.MavenRepository
 
-    def repositories = super.repositories ++ Seq(
+  override def repositories = super.repositories ++ Seq(
       MavenRepository("http://amateras.sourceforge.jp/mvn/")
     )
 
-    def ivyDeps = Agg(
+  override def ivyDeps = Agg(
     ivy"org.scala-js::scalajs-dom::0.9.4",
     ivy"com.lihaoyi::scalatags::0.6.7",
     ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )
+
+  def pack(): define.Command[PathRef] = T.command {
+    def js = fastOpt()
+    cp.over(js.path, pwd/ "docs" / "js" / "provingground.js")
+    js
+  }
 
 }
 

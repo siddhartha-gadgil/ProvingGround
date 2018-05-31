@@ -256,7 +256,7 @@ class AmmScriptServer(
   </div>
 
   <script>
-    provingground.CodeEditorJS().main()
+    CodeEditorJS.main()
     </script>
 
   </body>

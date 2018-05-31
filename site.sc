@@ -1,12 +1,24 @@
 #!/usr/bin/env amm
 
-import $file.tuts, tuts._
+import scala.xml.Elem
 
-import ammonite.ops._
+
+import scala.xml.NodeBuffer
+
+
+import ammonite.ops.{%%, _}
+
+implicit val wd = pwd
+
+println("packing client")
+
+%%("mill", "client.pack")
+
+import $file.tuts
+import tuts._
 
 println("Generating scaladocs")
 
-implicit val wd = pwd
 %%("mill", "jvmRoot.docs")
 
 val mathjax = """    <!-- mathjax config similar to math.stackexchange -->
@@ -50,7 +62,7 @@ s"""
   </head>
 
 """
-  def nav(rel: String = "") =
+  def nav(rel: String = ""): Elem =
 //    s"""
     <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -92,7 +104,7 @@ s"""
 
 // """
 
-def foot(rel: String) = //s"""
+def foot(rel: String): String = s"""
 <div class="container-fluid">
   <p>&nbsp;</p>
   <p>&nbsp;</p>
@@ -108,18 +120,17 @@ def foot(rel: String) = //s"""
 
 
 </div>
-<script type="text/javascript" src={s"${rel}js/jquery-2.1.4.min.js"}></script>
-<script type="text/javascript" src={s"${rel}js/bootstrap.min.js"}></script>
-
-
-//"""
+<script type="text/javascript" src="${rel}js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="${rel}js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${rel}js/provingground.js"></script>
+"""
 
 import $ivy.`com.atlassian.commonmark:commonmark:0.11.0`
 import org.commonmark.node._
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 
-def fromMD(s: String) = {
+def fromMD(s: String) : String = {
     val parser = Parser.builder().build()
     val document = parser.parse(s)
     val renderer = HtmlRenderer.builder().build()
@@ -198,7 +209,7 @@ ${foot(rel)}
 """
 
 val home = doc(
-  fromMD(body(read.lines(pwd / "docs" /"index.md")).mkString("", "\n", "")), "", "ProvingGround: Automated Theorem proving by learning")
+  fromMD(body(read.lines(pwd / "docs" /"index.md").toVector).mkString("", "\n", "")), "", "ProvingGround: Automated Theorem proving by learning")
 
 println("writing site")
 

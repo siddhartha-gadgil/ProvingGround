@@ -26,9 +26,11 @@ Our goal is to interact with external systems. In particular, we have implemente
 
 ## Running
 
-At present the best way to interact with the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)). To pop up a console with most of the code in scope, install [mill](https://www.lihaoyi.com/mill/) and run:
+At present the best way to interact with most of the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)). To pop up a console with most of the code in scope, install [mill](https://www.lihaoyi.com/mill/) and run:
 ```
 mill mantle.repl
 ```
 
-A server to experiment with (or even use) various parts of the code will be available soon.
+Limited experiments with the HoTT interface can be done in the editor below.
+
+<div id="hott-scratch"></div>

@@ -28,8 +28,10 @@ import org.scalajs.dom.ext._
 
 //import FreeExprLang.{readTerm, readDist}
 
+// Older entery point, use "provingground"
 @JSExportTopLevel("ProvingGroundJS")
 object ProvingGroundJS {
+  @JSExport
   def main(): Unit = {
     val page = Try(dom.document.getElementById("page"))
       .map(_.textContent)

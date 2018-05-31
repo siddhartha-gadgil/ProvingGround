@@ -3,7 +3,7 @@ package provingground
 //import scala.scalajs.js
 import org.scalajs.dom
 //import dom.html
-import scalajs.js.annotation.JSExport
+import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
 import scala.scalajs.js
@@ -24,9 +24,12 @@ import scala.util.{Try, Success, Failure}
 
 import HoTT.{id => _, _}
 
-object CodeEditorJS extends js.JSApp {
 
-  def main() = {
+@JSExportTopLevel("CodeEditorJS")
+object CodeEditorJS {
+
+  @JSExport
+  def main(): Unit = {
     val editDiv = dom.document
       .getElementById("edit-div")
       .asInstanceOf[org.scalajs.dom.html.Div]

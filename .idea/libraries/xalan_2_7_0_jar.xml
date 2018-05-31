@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="xalan-2.7.0.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/xalan/xalan/2.7.0/xalan-2.7.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
