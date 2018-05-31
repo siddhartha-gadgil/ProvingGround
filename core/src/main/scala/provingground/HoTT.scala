@@ -2067,7 +2067,7 @@ object HoTT {
     def subs(x: Term, y: Term) =
       PiDefn(variable.replace(x, y), value.replace(x, y))
 
-    override def toString = s"${variable} ~> $value"
+    override def toString = s"${variable} ~> ($value)"
   }
 
   /**

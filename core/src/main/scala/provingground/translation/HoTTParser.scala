@@ -16,9 +16,9 @@ object HoTTParser{
     def +:(s: Stat) = Block(s +: stats)
 
     def valueOpt : Option[Term] =
-      stats.lastOption.flatMap{
-        case Expr(t) => Some(t)
-        case _ => None
+      stats.lastOption.map{
+        case Expr(t) => t
+        case Defn(_, t) => t
       }
   }
 }
@@ -105,10 +105,11 @@ case class HoTTParser(names: Map[String, Term] = Map()){self =>
 
   val block: P[Block] =
     P(spc~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ block) |
+    (spc~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => Block(Vector())) |
     (spc ~ End).map((_) => Block(Vector())) |
       defn.flatMap((dfn) =>
         (self + dfn).block.map{(tail) => dfn +: tail}
       ) |
       P(stat~block~End).map {case (s, v) => s +: v} |
-      P(spc ~ "\n" ~ block) 
+      P(spc ~ "\n" ~ block)
 }

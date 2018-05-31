@@ -38,7 +38,7 @@ object ScratchPad{
 
         val logDiv = div().render
 
-        val viewDiv = div(`class` := "view bg-info")().render
+        val viewDiv = div(`class` := "view")().render
 
         val ed = div(id := "editor", `class` := "panel-body editor")
 
@@ -63,10 +63,27 @@ object ScratchPad{
 
         def compile(): Unit = {
           val text = editor.getValue
-          val result = h4(`class` := "text-primary")(parser.block.parse(text).toString)
+
+          val view = parser.block.parse(text).fold(
+            (_, _, s) =>
+              div(
+                h3(`class` := "text-danger")("Error"),
+                div(s.toString)
+              ),
+            (bl, _) =>
+              div(`class` := "lead")(
+                h3(`class` := "text-success")("Success"),
+                bl.valueOpt.map{(t) =>
+                  div(p(s"Term: $t"),
+                  p(s"Type: ${t.typ}")
+                )
+              }.getOrElse(div("Empty block"))
+                )
+              )
+          // val view = h4(`class` := "text-primary")(parser.block.parse(text).toString)
 
           viewDiv.innerHTML = ""
-          viewDiv.appendChild(result.render)
+          viewDiv.appendChild(view.render)
         }
 
         runButton.onclick = (event: dom.Event) => compile()
