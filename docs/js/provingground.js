@@ -3729,6 +3729,46 @@ function $m_Lprovingground_AndrewsCurtisJS$() {
   return $n_Lprovingground_AndrewsCurtisJS$
 }
 /** @constructor */
+function $c_Lprovingground_Client$() {
+  $c_O.call(this)
+}
+$c_Lprovingground_Client$.prototype = new $h_O();
+$c_Lprovingground_Client$.prototype.constructor = $c_Lprovingground_Client$;
+/** @constructor */
+function $h_Lprovingground_Client$() {
+  /*<skip>*/
+}
+$h_Lprovingground_Client$.prototype = $c_Lprovingground_Client$.prototype;
+$c_Lprovingground_Client$.prototype.main__V = (function() {
+  var div = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().querySelector("#hott-scratch");
+  div.innerHTML = "<p> A hello from the client</p>"
+});
+$c_Lprovingground_Client$.prototype.$$js$exported$meth$main__O = (function() {
+  this.main__V()
+});
+$c_Lprovingground_Client$.prototype.init___ = (function() {
+  $c_O.prototype.init___.call(this);
+  $n_Lprovingground_Client$ = this;
+  return this
+});
+$c_Lprovingground_Client$.prototype.main = (function() {
+  return this.$$js$exported$meth$main__O()
+});
+var $d_Lprovingground_Client$ = new $TypeData().initClass({
+  Lprovingground_Client$: 0
+}, false, "provingground.Client$", {
+  Lprovingground_Client$: 1,
+  O: 1
+});
+$c_Lprovingground_Client$.prototype.$classData = $d_Lprovingground_Client$;
+var $n_Lprovingground_Client$ = (void 0);
+function $m_Lprovingground_Client$() {
+  if ((!$n_Lprovingground_Client$)) {
+    $n_Lprovingground_Client$ = new $c_Lprovingground_Client$().init___()
+  };
+  return $n_Lprovingground_Client$
+}
+/** @constructor */
 function $c_Lprovingground_CodeEditorJS$() {
   $c_O.call(this)
 }
@@ -51230,6 +51270,7 @@ var $d_scm_ArrayBuffer = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_scm_ArrayBuffer.prototype.$classData = $d_scm_ArrayBuffer;
+$e.provingground = $m_Lprovingground_Client$();
 $e.CodeEditorJS = $m_Lprovingground_CodeEditorJS$();
 $e.DeducerJS = $m_Lprovingground_DeducerJS$();
 $e.JsTest = $m_Lprovingground_JsTest$();

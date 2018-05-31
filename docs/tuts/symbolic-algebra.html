@@ -180,13 +180,13 @@ scala&gt;
 
 scala&gt; n * (m * k) 
 
-res25: LocalTerm = (n * k * m)
+res25: LocalTerm = (m * n * k)
 
 scala&gt;  
 
 scala&gt; n * (m + k) 
 
-res26: LocalTerm = ((n * m) + (n * k))
+res26: LocalTerm = ((m * n) + (n * k))
 
 scala&gt;  
 
@@ -229,7 +229,7 @@ res33: LocalTerm = (k^{2})
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
 <pre><code class="language-scala">scala&gt; val m = lmbda(n)(prod(n + 1)) 
 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@5586e61d :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@5586e61d + (n * provingground.HoTT$Typ$newname$2$@5586e61d))))
+m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@5f4cb49b :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@5f4cb49b + (provingground.HoTT$Typ$newname$2$@5f4cb49b * n))))
 
 scala&gt; val factorial = Rec(1: Nat, m) 
 
@@ -258,11 +258,11 @@ scala&gt;
 scala&gt; assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
 </code></pre>
 <h3>Git Log</h3>
-<pre><code>commit 8415e3fcf33e0ace3fdaa59ab943fad45cff95f1
+<pre><code>commit fb4bf38b7cc5fe6a856a1b2d1d8a6e94fba373cd
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Wed May 30 16:06:55 2018 +0530
+Date:   Thu May 31 11:19:51 2018 +0530
 
-    tweak for scala-js; akka version
+    clean up, getting ready for code editor
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>
@@ -290,6 +290,9 @@ Date:   Wed May 30 16:06:55 2018 +0530
 <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/provingground.js"></script>
+<script>
+  provingground.main()
+</script>
 
 </body>
 </html>

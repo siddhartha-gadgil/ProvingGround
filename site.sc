@@ -123,6 +123,9 @@ def foot(rel: String): String = s"""
 <script type="text/javascript" src="${rel}js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="${rel}js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${rel}js/provingground.js"></script>
+<script>
+  provingground.main()
+</script>
 """
 
 import $ivy.`com.atlassian.commonmark:commonmark:0.11.0`

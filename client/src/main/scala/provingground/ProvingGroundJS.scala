@@ -28,6 +28,15 @@ import org.scalajs.dom.ext._
 
 //import FreeExprLang.{readTerm, readDist}
 
+@JSExportTopLevel("provingground")
+object Client{
+  @JSExport
+  def main(): Unit = {
+    val div = dom.document.querySelector("#hott-scratch")
+    div.innerHTML = """<p> A hello from the client</p>"""
+  }
+}
+
 // Older entery point, use "provingground"
 @JSExportTopLevel("ProvingGroundJS")
 object ProvingGroundJS {
