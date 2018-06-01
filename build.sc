@@ -22,7 +22,8 @@ val commonLibs = List(
   ivy"io.monix::monix::3.0.0-RC1",
   ivy"com.geirsson::scalafmt-core::1.4.0",
   ivy"com.lihaoyi::pprint::0.5.2",
-  ivy"com.lihaoyi::sourcecode::0.1.4"
+  ivy"com.lihaoyi::sourcecode::0.1.4",
+  ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
 trait CommonModule extends ScalaModule{
@@ -120,12 +121,11 @@ object leanlib extends Module{
   }
 }
 
-object nlp extends CommonModule with SbtModule{
+object nlp extends SbtModule with ServerModule{
   override def moduleDeps = Seq(core.jvm)
 
   override def ivyDeps = T{
     super.ivyDeps() ++  Agg(
-      ivy"com.lihaoyi:::ammonite:1.1.1",
       ivy"edu.stanford.nlp:stanford-corenlp:3.7.0",
       ivy"edu.stanford.nlp:stanford-corenlp:3.7.0;classifier=models",
       ivy"com.google.protobuf:protobuf-java:2.6.1"

@@ -4,5 +4,7 @@
         }
 .view {
   overflow-y: auto;
-  height: 300px;
+  height: 150px;
+  border-style: dotted;
+  border-width: 1px;
 }
