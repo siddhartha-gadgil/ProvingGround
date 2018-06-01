@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.12.4"
 
-val ammV = "1.1.0"
+val ammV = "1.1.1"
 
 // scalaOrganization in ThisBuild := "org.typelevel"
 
@@ -59,7 +59,7 @@ lazy val commonSettings = baseSettings ++ Seq(
      "org.scala-lang.modules" %% "scala-xml" % "1.1.0",
     "org.typelevel" %%% "spire"         % "0.15.0",
     "com.lihaoyi"   %%% "fansi"         % "0.2.4",
-    "com.lihaoyi"   %%% "upickle"       % "0.6.4",
+    "com.lihaoyi"   %%% "upickle"       % "0.6.6",
     "com.lihaoyi" %%% "fastparse" % "1.0.0",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
@@ -217,7 +217,7 @@ lazy val server = (project in file("server"))
     // triggers scalaJSPipeline when using compile or continuous compilation
     // compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-http"       % "10.0.0",
+      "com.typesafe.akka" %% "akka-http"       % "10.1.1",
       "com.vmunier"       %% "scalajs-scripts" % "1.1.0",
       "com.typesafe.akka" %% "akka-actor"  % akkaV,
       "com.typesafe.akka" %% "akka-stream" % akkaV,

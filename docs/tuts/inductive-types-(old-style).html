@@ -12,16 +12,16 @@
 
     <!-- Bootstrap -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-   |<link href="../css/katex.min.css" rel="stylesheet">
-   |<link href="../css/main.css" rel="stylesheet">
+   <link href="../css/katex.min.css" rel="stylesheet">
+   <link href="../css/main.css" rel="stylesheet">
 
 
     <link rel="stylesheet" href="../css/zenburn.css">
     <script src="../js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 
-   |<script src="../js/ace.js"></script>
-   |<script src="../js/katex.min.js"></script>
+   <script src="../js/ace.js"></script>
+   <script src="../js/katex.min.js"></script>
 
         <!-- mathjax config similar to math.stackexchange -->
 <script type="text/x-mathjax-config">
@@ -771,7 +771,7 @@ Further, the recursion and induction function only allow construction of (depend
 <p>A typical example is vectors, defined as a family indexed by their length.</p>
 <pre><code class="language-scala">scala&gt; val IndN = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@594b4f5d
+IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@39c8e8fe
 
 scala&gt; val Vec = &quot;Vec&quot; :: Nat -&gt;: Type 
 
@@ -779,7 +779,7 @@ Vec: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = Vec
 
 scala&gt; val VecPtn = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@866117a
+VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@35e0b23b
 
 scala&gt; val VecFmly = VecPtn.Family(Vec) 
 
@@ -794,7 +794,7 @@ VecInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@a36c40d
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1232141515@e69250f
       ),
       cons,
       Vec
@@ -819,7 +819,7 @@ vn: Term with Subs[Term] = v_n
 
 scala&gt; val recVN = VecInd.rec(Nat) 
 
-recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@a36c40d),cons,Vec)) :  $alnks ~&gt; ((A) → (((Vec) ($alnks)) → ((Nat) → (Nat))))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@a36c40d),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
+recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1232141515@e69250f),cons,Vec)) :  $alnks ~&gt; ((A) → (((Vec) ($alnks)) → ((Nat) → (Nat))))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1232141515@e69250f),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
 
 scala&gt; val size = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m)))))) 
 
@@ -863,7 +863,7 @@ VecNInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@344e1e4a
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1232141515@73531942
       ),
       cons,
       Vec(Nat)
@@ -876,7 +876,7 @@ scala&gt;
 
 scala&gt; val recVNN = VecNInd.rec(Nat) 
 
-recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@344e1e4a),cons,Vec(Nat))) :  $alxsn ~&gt; ((Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat))))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@344e1e4a),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
+recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1232141515@73531942),cons,Vec(Nat))) :  $alxsn ~&gt; ((Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat))))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1232141515@73531942),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
 
 scala&gt; val List(vnilN, vconsN) = VecNInd.intros 
 
@@ -927,11 +927,11 @@ res171: Term = (succ) ((succ) ((succ) (0)))
 scala&gt; assert(vsum(two)(v3) == three)
 </code></pre>
 <h3>Git Log</h3>
-<pre><code>commit ac0b3d1fc041bd9cfae3addbc3b35a6d7817ecce
+<pre><code>commit ab4b28e54cc3e9b6bcff3f67c93735f30c6f0387
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Thu May 31 21:08:15 2018 +0530
+Date:   Fri Jun 1 09:00:38 2018 +0530
 
-    latex in editor, including PiDefn
+    remarks, debug scratchpad; ServerModule
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>

@@ -1,9 +1,10 @@
 package provingground.interface
 // import example._
 
+import java.nio.charset.StandardCharsets
+
 import provingground._
 import translation._
-
 import akka.http.scaladsl.server.Directives
 // import shared.SharedMessages
 import akka.http.scaladsl.model._
@@ -98,32 +99,42 @@ $body
     def string: String = new String(bytes.toArray.map(_.toChar))
   }
 
+  import java.nio.charset.StandardCharsets
+
   def replResult(code: String) = {
-    import java.io._
+    import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
     val outputS = new ByteArrayOutputStream()
     val errLog  = new ByteArrayOutputStream()
     val infoLog = new ByteArrayOutputStream()
-
-    import java.nio.charset.StandardCharsets
-
-    val ammMain =
-      ammonite.Main(
-        predefCode =
-          "interp.colors() = ammonite.util.Colors.BlackWhite\n @ repl.frontEnd() = ammonite.repl.FrontEnd.JLineUnix\n @ repl.prompt() = \"\\nscala> \" ",
-        inputStream = new ByteArrayInputStream(
-          (code + "\nexit\n").getBytes(StandardCharsets.UTF_8)),
-        outputStream = outputS,
-        errorStream = errLog,
-        verboseOutput = false,
-        remoteLogging = false
-        // // infoStream = infoLog
-      )
+    val inpStream = new ByteArrayInputStream(
+      (code + "\nexit\n").getBytes(StandardCharsets.UTF_8))
 
     println(code)
 
-    ammMain.run()
+    val ammMain =
+      Console.withIn(inpStream){
+        Console.withErr(errLog){
+          Console.withOut(outputS){
+            ammonite.Main.main0(
+              args = List("--predef-code",
+                "interp.colors() = ammonite.util.Colors.BlackWhite\n"),
+              stdIn = inpStream,
+              stdOut = outputS,
+              stdErr = errLog
+            )
 
-    val output = new String(outputS.toByteArray, "UTF-8")
+          }
+        }
+      }
+
+     println("ran ammonite")
+
+    val silly = """\[[0-9]+[A-Z]""".r
+
+
+    val output = 
+      silly.replaceAllIn((new String(outputS.toByteArray, "UTF-8")).replace("\u001b", "") , "")
+
 
     val err = new String(errLog.toByteArray, "UTF-8")
 
@@ -199,7 +210,13 @@ $body
           complete(
             HttpEntity(ContentTypes.`text/plain(UTF-8)`, objTry.toString))
         }
-      }
+      } ~
+        get {
+          path("resources" / Remaining) { path =>
+             println("serving from resource: " + path)
+            getFromResource(path.toString)
+          }
+        }
 
 }
 

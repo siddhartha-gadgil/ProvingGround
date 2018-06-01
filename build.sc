@@ -197,8 +197,14 @@ trait ServerModule extends JvmModule{
 
        def jsout = client.fastOpt().path / up
 
+       cp.over(jsout / "out.js", jsout / "provingground-js-fastopt.js")
+
        (base ++ Seq(jsout, pwd / "docs")).map(PathRef(_))
      }
+}
+
+object server extends SbtModule with ServerModule {
+  override def moduleDeps = Seq(core.jvm)
 }
 
 // object server extends ScalaModule{
