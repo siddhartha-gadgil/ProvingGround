@@ -592,7 +592,7 @@ Namely to define the dependent function <code>f</code>, we must specify</p>
 <p>We define inductively a countdown function, giving the vector counting down from <code>n</code>.</p>
 <pre><code class="language-scala">scala&gt; val indNV = NatInd.induc(V) 
 
-indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0,Nat)) :  (Vec) (0)) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  $fmsr ~&gt; ((Vec) ($fmsr)) → ((Vec) ((succ) ($fmsr)))) ↦ (ind(Nat)(Vec)(InducSym(ConstructorDefn(IdW(),0,Nat)))(InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
+indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0,Nat)) :  (Vec) (0)) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  $fmsr ~&gt; (((Vec) ($fmsr)) → ((Vec) ((succ) ($fmsr))))) ↦ (ind(Nat)(Vec)(InducSym(ConstructorDefn(IdW(),0,Nat)))(InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
 
 scala&gt;  
 
@@ -666,7 +666,7 @@ The <em>induction step</em> for <code>n</code> is a term of type <code>isEven(do
 the <em>induction hypothesis</em>. Note that the induction hypothesis is a term of type <code>isEven(double(n))</code>.</p>
 <pre><code class="language-scala">scala&gt; val thmDoubleEven = n ~&gt;: isEven(double(n)) 
 
-thmDoubleEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; (isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))
+thmDoubleEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n)))
 
 scala&gt; val hyp = &quot;isEven(double(n))&quot; :: isEven(double(n)) 
 
@@ -699,7 +699,7 @@ scala&gt;
 
 scala&gt; val thmSuccEven = n ~&gt;: (succEven(n)) 
 
-thmSuccEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; PlusTyp((isEven) (n),(isEven) ((succ) (n)))
+thmSuccEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; (PlusTyp((isEven) (n),(isEven) ((succ) (n))))
 
 scala&gt;  
 
@@ -771,7 +771,7 @@ Further, the recursion and induction function only allow construction of (depend
 <p>A typical example is vectors, defined as a family indexed by their length.</p>
 <pre><code class="language-scala">scala&gt; val IndN = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@a30db64
+IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@594b4f5d
 
 scala&gt; val Vec = &quot;Vec&quot; :: Nat -&gt;: Type 
 
@@ -779,7 +779,7 @@ Vec: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = Vec
 
 scala&gt; val VecPtn = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@6096c6f6
+VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@866117a
 
 scala&gt; val VecFmly = VecPtn.Family(Vec) 
 
@@ -794,7 +794,7 @@ VecInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1971761233@6001ba2e
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@a36c40d
       ),
       cons,
       Vec
@@ -819,7 +819,7 @@ vn: Term with Subs[Term] = v_n
 
 scala&gt; val recVN = VecInd.rec(Nat) 
 
-recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1971761233@6001ba2e),cons,Vec)) :  $alnks ~&gt; (A) → (((Vec) ($alnks)) → ((Nat) → (Nat)))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1971761233@6001ba2e),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
+recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@a36c40d),cons,Vec)) :  $alnks ~&gt; ((A) → (((Vec) ($alnks)) → ((Nat) → (Nat))))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@a36c40d),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
 
 scala&gt; val size = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m)))))) 
 
@@ -863,7 +863,7 @@ VecNInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1971761233@648d4e1a
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@344e1e4a
       ),
       cons,
       Vec(Nat)
@@ -876,7 +876,7 @@ scala&gt;
 
 scala&gt; val recVNN = VecNInd.rec(Nat) 
 
-recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1971761233@648d4e1a),cons,Vec(Nat))) :  $alxsn ~&gt; (Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat)))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4244/1971761233@648d4e1a),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
+recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@344e1e4a),cons,Vec(Nat))) :  $alxsn ~&gt; ((Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat))))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3995/1784390343@344e1e4a),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
 
 scala&gt; val List(vnilN, vconsN) = VecNInd.intros 
 
@@ -927,11 +927,11 @@ res171: Term = (succ) ((succ) ((succ) (0)))
 scala&gt; assert(vsum(two)(v3) == three)
 </code></pre>
 <h3>Git Log</h3>
-<pre><code>commit 6160b60fc0a0129dc39284d6c94d84538926a24c
+<pre><code>commit ac0b3d1fc041bd9cfae3addbc3b35a6d7817ecce
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Thu May 31 12:13:50 2018 +0530
+Date:   Thu May 31 21:08:15 2018 +0530
 
-    build.sbt fixes multiple main classes
+    latex in editor, including PiDefn
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>

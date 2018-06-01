@@ -100,7 +100,25 @@ messageStyle: "none",
 <p>At present the best way to interact with most of the code is to use a console in either <a href="https://www.lihaoyi.com/mill/">mill</a> or <code>sbt</code> (the primary build tool is now <a href="https://www.lihaoyi.com/mill/">mill</a>). To pop up a console with most of the code in scope, install <a href="https://www.lihaoyi.com/mill/">mill</a> and run:</p>
 <pre><code>mill mantle.repl
 </code></pre>
-<p>Limited experiments with the HoTT interface can be done in the editor below.</p>
+<p>Some experiments with the HoTT interface can be done in the scratchpad below. Other illustrations and a server are coming soon.</p>
+<h2>HoTT scratchpad</h2>
+<p>The scratchpad below is a limited interpreter for our implementation of Homotopy Type Theory. At present it interprets</p>
+<ul>
+<li>HoTT expressions</li>
+<li><code>val</code> definitions</li>
+<li>inline comments</li>
+</ul>
+<p>As an example (which you may wish to copy paste), the definition of the term corresponding to <em>modus ponens</em> is below.</p>
+<pre><code class="language-scala">// View 'A' and 'B' as propositions
+val A = &quot;A&quot; :: Type
+val B = &quot;B&quot; :: Type
+
+val a = &quot;a&quot; :: A
+val f = &quot;f&quot; :: (A -&gt;: B) // the type A -&gt;: B corresponds to A =&gt; B
+
+// 'mp' proves A =&gt; ((A =&gt; B) =&gt; B)
+val mp = a :-&gt; (f :-&gt; f(a)) 
+</code></pre>
 <div id="hott-scratch"></div>
 
 

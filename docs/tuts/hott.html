@@ -136,7 +136,7 @@ id: FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term wit
 <p>The type of the identity function is a mixture of Pi-types and function types. Which of these to use is determined by checking dependence of the type of the value on the varaible in a λ-definition.</p>
 <pre><code class="language-scala">scala&gt; id.typ 
 
-res12: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]]] = A ~&gt; (A) → (A)
+res12: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]]] = A ~&gt; ((A) → (A))
 
 scala&gt; lmbda(a)(a).typ 
 
@@ -199,7 +199,7 @@ mp: FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Te
 <p>The type of Modus Ponens is again a mixture of Pi-types and function types.</p>
 <pre><code class="language-scala">scala&gt; mp.typ 
 
-res25: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]]] = A ~&gt; B ~&gt; (A) → (((A) → (B)) → (B))
+res25: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]]] = A ~&gt; (B ~&gt; ((A) → (((A) → (B)) → (B))))
 </code></pre>
 <p>We can apply modus ponens with the roles of <em>A</em> and <em>B</em> reversed. This still works because variable clashes are avoided.</p>
 <pre><code class="language-scala">scala&gt; val mpBA = mp(B)(A) 
@@ -235,7 +235,7 @@ Bs: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = B(_ : A)
 <p>Note that the !: method just claims and checks a type, and is useful (e.g. here) for documentation.</p>
 <pre><code class="language-scala">scala&gt; val fmly = (a !: A) ~&gt;: (Bs(a) -&gt;: A) 
 
-fmly: GenFuncTyp[Term, Func[Term, Term]] = a ~&gt; ((B(_ : A)) (a)) → (A)
+fmly: GenFuncTyp[Term, Func[Term, Term]] = a ~&gt; (((B(_ : A)) (a)) → (A))
 </code></pre>
 <h3>Sigma-types</h3>
 <p>There is also a convenience method for defining Sigma types using λs.</p>
@@ -321,11 +321,11 @@ scala&gt; Star !: Unit
 res50: Term = Star
 </code></pre>
 <h3>Git Log</h3>
-<pre><code>commit 6160b60fc0a0129dc39284d6c94d84538926a24c
+<pre><code>commit ac0b3d1fc041bd9cfae3addbc3b35a6d7817ecce
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Thu May 31 12:13:50 2018 +0530
+Date:   Thu May 31 21:08:15 2018 +0530
 
-    build.sbt fixes multiple main classes
+    latex in editor, including PiDefn
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>

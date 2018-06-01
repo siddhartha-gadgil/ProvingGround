@@ -93,7 +93,7 @@ case class HoTTParser(names: Map[String, Term] = Map()){self =>
 
   val term : P[Term] = P(symbolic | lmbdaP | lambdaP | applnP | funcTyp | piTyp | simpleterm)
 
-  val break = P(spc ~ (End | CharIn("\n;"))) | P("//" ~ CharPred(_ != '\n').rep ~ "\n")
+  val break = P(spc ~ (End | CharIn("\n;"))) | P("//" ~ CharPred(_ != '\n').rep ~ ("\n" | End))
 
   val spc = CharIn(" \t").rep
 

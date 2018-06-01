@@ -185,13 +185,13 @@ scala&gt;
 
 scala&gt; n * (m * k) 
 
-res25: LocalTerm = (k * n * m)
+res25: LocalTerm = (n * m * k)
 
 scala&gt;  
 
 scala&gt; n * (m + k) 
 
-res26: LocalTerm = ((n * m) + (k * n))
+res26: LocalTerm = ((n * m) + (n * k))
 
 scala&gt;  
 
@@ -234,7 +234,7 @@ res33: LocalTerm = (k^{2})
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
 <pre><code class="language-scala">scala&gt; val m = lmbda(n)(prod(n + 1)) 
 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@78c7b91b :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@78c7b91b + (provingground.HoTT$Typ$newname$2$@78c7b91b * n))))
+m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@5656cbf4 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@5656cbf4 + (provingground.HoTT$Typ$newname$2$@5656cbf4 * n))))
 
 scala&gt; val factorial = Rec(1: Nat, m) 
 
@@ -263,11 +263,11 @@ scala&gt;
 scala&gt; assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
 </code></pre>
 <h3>Git Log</h3>
-<pre><code>commit 6160b60fc0a0129dc39284d6c94d84538926a24c
+<pre><code>commit ac0b3d1fc041bd9cfae3addbc3b35a6d7817ecce
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Thu May 31 12:13:50 2018 +0530
+Date:   Thu May 31 21:08:15 2018 +0530
 
-    build.sbt fixes multiple main classes
+    latex in editor, including PiDefn
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>

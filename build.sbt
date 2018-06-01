@@ -219,32 +219,16 @@ lazy val server = (project in file("server"))
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-http"       % "10.0.0",
       "com.vmunier"       %% "scalajs-scripts" % "1.1.0",
-      // "com.simianquant"   %% "ammonite-kernel" % "0.3.0",
-      "de.heikoseeberger" %% "akka-sse"    % "2.0.0",
       "com.typesafe.akka" %% "akka-actor"  % akkaV,
       "com.typesafe.akka" %% "akka-stream" % akkaV,
       "com.github.scopt"  %% "scopt"       % "3.5.0"
     ),
     resources in Compile += (fastOptJS in (client, Compile)).value.data
-    // WebKeys.packagePrefix in Assets := "public/",
-    // managedClasspath in Runtime += (packageBin in Assets).value,
-    // Compile the project before generating Eclipse files, so that generated .scala or .class files for Twirl templates are present
 
-    // EclipseKeys.preTasks := Seq(compile in Compile)
   )
   .enablePlugins(JavaAppPackaging, UniversalPlugin)
   .dependsOn(coreJVM)
 
-// lazy val functionfinder = project
-//   .settings(commonSettings: _*)
-//   .settings(name := "ProvingGround-FunctionFinder")
-//   .dependsOn(coreJVM)
-
-// lazy val mizar = project
-//   .settings(commonSettings: _*)
-//   .settings(jvmSettings: _*)
-//   .settings(name := "Mizar-Parser",
-//             libraryDependencies += "com.lihaoyi" %% "fastparse" % "0.4.3")
 
 val initCommands =
   """import provingground._, HoTT._, induction._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""

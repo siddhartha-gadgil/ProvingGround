@@ -31,6 +31,28 @@ At present the best way to interact with most of the code is to use a console in
 mill mantle.repl
 ```
 
-Limited experiments with the HoTT interface can be done in the editor below.
+Some experiments with the HoTT interface can be done in the scratchpad below. Other illustrations and a server are coming soon.
+
+## HoTT scratchpad
+
+The scratchpad below is a limited interpreter for our implementation of Homotopy Type Theory. At present it interprets
+
+* HoTT expressions
+* `val` definitions
+* inline comments
+
+As an example (which you may wish to copy paste), the definition of the term corresponding to _modus ponens_ is below.
+
+```scala
+// View 'A' and 'B' as propositions
+val A = "A" :: Type
+val B = "B" :: Type
+
+val a = "a" :: A
+val f = "f" :: (A ->: B) // the type A ->: B corresponds to A => B
+
+// 'mp' proves A => ((A => B) => B)
+val mp = a :-> (f :-> f(a)) 
+```
 
 <div id="hott-scratch"></div>

@@ -596,7 +596,7 @@ Namely to define the dependent function <code>f</code>, we must specify</p>
 <p>We define inductively a countdown function, giving the vector counting down from <code>n</code>.</p>
 <pre><code class="language-scala">scala&gt; val indNV = NatInd.induc(V) 
 
-indNV: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (Vec) (0)) ↦ ((InducDataSym(succ) :  $foeq ~&gt; ((Vec) ($foeq)) → ((Vec) ((succ) ($foeq)))) ↦ (ind(Nat)(Vec)(InducDataSym(0))(InducDataSym(succ))))
+indNV: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (Vec) (0)) ↦ ((InducDataSym(succ) :  $foeq ~&gt; (((Vec) ($foeq)) → ((Vec) ((succ) ($foeq))))) ↦ (ind(Nat)(Vec)(InducDataSym(0))(InducDataSym(succ))))
 
 scala&gt;  
 
@@ -670,7 +670,7 @@ The <em>induction step</em> for <code>n</code> is a term of type <code>isEven(do
 the <em>induction hypothesis</em>. Note that the induction hypothesis is a term of type <code>isEven(double(n))</code>.</p>
 <pre><code class="language-scala">scala&gt; val thmDoubleEven = n ~&gt;: isEven(double(n)) 
 
-thmDoubleEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; (isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))
+thmDoubleEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n)))
 
 scala&gt; val hyp = &quot;isEven(double(n))&quot; :: isEven(double(n)) 
 
@@ -678,7 +678,7 @@ hyp: Term with Subs[Term] = isEven(double(n))
 
 scala&gt; val inducDoubleEven = NatInd.induc(n :-&gt; isEven(double(n))) 
 
-inducDoubleEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (isEven) (0)) ↦ ((InducDataSym(succ) :  $ajdqi ~&gt; ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($ajdqi))) → ((isEven) ((succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($ajdqi)))))) ↦ (ind(Nat)((n :  Nat) ↦ ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))))(InducDataSym(0))(InducDataSym(succ))))
+inducDoubleEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (isEven) (0)) ↦ ((InducDataSym(succ) :  $ajdqi ~&gt; (((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($ajdqi))) → ((isEven) ((succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($ajdqi))))))) ↦ (ind(Nat)((n :  Nat) ↦ ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))))(InducDataSym(0))(InducDataSym(succ))))
 
 scala&gt; val pfDoubleEven =
          inducDoubleEven(
@@ -707,7 +707,7 @@ scala&gt;
 
 scala&gt; val thmSuccEven = n ~&gt;: (succEven(n)) 
 
-thmSuccEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; PlusTyp((isEven) (n),(isEven) ((succ) (n)))
+thmSuccEven: GenFuncTyp[Term with Subs[Term], Term] = n ~&gt; (PlusTyp((isEven) (n),(isEven) ((succ) (n))))
 
 scala&gt;  
 
@@ -730,7 +730,7 @@ scala&gt;
 
 scala&gt; val inducSuccEven = NatInd.induc(succEven) 
 
-inducSuccEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  PlusTyp((isEven) (0),(isEven) ((succ) (0)))) ↦ ((InducDataSym(succ) :  $aknlv ~&gt; (PlusTyp((isEven) ($aknlv),(isEven) ((succ) ($aknlv)))) → (PlusTyp((isEven) ((succ) ($aknlv)),(isEven) ((succ) ((succ) ($aknlv)))))) ↦ (ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(InducDataSym(0))(InducDataSym(succ))))
+inducSuccEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  PlusTyp((isEven) (0),(isEven) ((succ) (0)))) ↦ ((InducDataSym(succ) :  $aknlv ~&gt; ((PlusTyp((isEven) ($aknlv),(isEven) ((succ) ($aknlv)))) → (PlusTyp((isEven) ((succ) ($aknlv)),(isEven) ((succ) ((succ) ($aknlv))))))) ↦ (ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(InducDataSym(0))(InducDataSym(succ))))
 
 scala&gt;  
 
@@ -774,7 +774,7 @@ scala&gt;
 
 scala&gt; val inducClaim = NatInd.induc(claim) 
 
-inducClaim: Func[Equality[Term], Func[FuncLike[Term, Func[Equality[Term], Equality[Term]]], FuncLike[Term, Equality[Term]]]] = (InducDataSym(0) : ((f) (0) = (f) (0)) :  (f) (0) = (f) (0)) ↦ ((InducDataSym(succ) :  $algte ~&gt; ((f) (0) = (f) ($algte)) → ((f) (0) = (f) ((succ) ($algte)))) ↦ (ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(InducDataSym(0) : ((f) (0) = (f) (0)))(InducDataSym(succ))))
+inducClaim: Func[Equality[Term], Func[FuncLike[Term, Func[Equality[Term], Equality[Term]]], FuncLike[Term, Equality[Term]]]] = (InducDataSym(0) : ((f) (0) = (f) (0)) :  (f) (0) = (f) (0)) ↦ ((InducDataSym(succ) :  $algte ~&gt; (((f) (0) = (f) ($algte)) → ((f) (0) = (f) ((succ) ($algte))))) ↦ (ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(InducDataSym(0) : ((f) (0) = (f) (0)))(InducDataSym(succ))))
 
 scala&gt;  
 
@@ -843,7 +843,7 @@ vn: Term with Subs[Term] = v_n
 
 scala&gt; val recVN = VecInd.rec(Nat) 
 
-recVN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $alraw ~&gt; (A) → (((Vec) ($alraw)) → ((Nat) → (Nat)))) ↦ (($alrar :  Nat) ↦ (rec{Vec($alrar)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
+recVN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $alraw ~&gt; ((A) → (((Vec) ($alraw)) → ((Nat) → (Nat))))) ↦ (($alrar :  Nat) ↦ (rec{Vec($alrar)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
 
 scala&gt; val size = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m)))))) 
 
@@ -905,7 +905,7 @@ scala&gt;
 
 scala&gt; val recVNN                  = VecNInd.rec(Nat) 
 
-recVNN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $altok ~&gt; (Nat) → (((Vec(Nat)) ($altok)) → ((Nat) → (Nat)))) ↦ (($altof :  Nat) ↦ (rec{Vec(Nat)($altof)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
+recVNN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $altok ~&gt; ((Nat) → (((Vec(Nat)) ($altok)) → ((Nat) → (Nat))))) ↦ (($altof :  Nat) ↦ (rec{Vec(Nat)($altof)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
 
 scala&gt; val vnilN :: vconsN :: HNil = VecNInd.intros 
 
@@ -956,11 +956,11 @@ res169: Term = (succ) ((succ) ((succ) (0)))
 scala&gt; assert(vsum(two)(v3) == three)
 </code></pre>
 <h3>Git Log</h3>
-<pre><code>commit 6160b60fc0a0129dc39284d6c94d84538926a24c
+<pre><code>commit ac0b3d1fc041bd9cfae3addbc3b35a6d7817ecce
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Thu May 31 12:13:50 2018 +0530
+Date:   Thu May 31 21:08:15 2018 +0530
 
-    build.sbt fixes multiple main classes
+    latex in editor, including PiDefn
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>

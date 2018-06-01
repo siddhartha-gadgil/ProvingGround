@@ -20,6 +20,7 @@ import scala.util.{Try, Success, Failure}
 
 import HoTT.{id => _, _}, translation._
 
+@JSGlobal
 @js.native
 object katex extends js.Object {
   def renderToString(texString: String): String = js.native

@@ -100,27 +100,27 @@ object TeXTranslate {
       case (func, arg) => func ++ "(" ++ arg ++ ")"
     } || funcTyp >>> {
       case (dom, codom) =>
-        s"""$dom \\to $codom"""
+        s"""($dom \\to $codom)"""
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-        s"""($variable : $typ) \\mapsto $value"""
+        s"""(($variable : $typ) \\mapsto $value)"""
     } || piTriple >>> {
       case ((variable, typ), value) =>
-        s"""\\prod\\limits_{$variable : $typ} $value"""
+        s"""(\\prod\\limits_{$variable : $typ} $value)"""
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
-        s"""\\sum\\limits_{$variable : $typ} $value"""
+        s"""(\\sum\\limits_{$variable : $typ} $value)"""
     } || universe >>> { (n) =>
       s"""\\mathcal{U}_$n"""
     } || symName >>> ((s) => s) ||
-      prodTyp >>> { case (first, second) => s"""$first \\times $second""" } ||
+      prodTyp >>> { case (first, second) => s"""($first \\times $second)""" } ||
       absPair >>> {
         case (first, second) => s"""($first, $second)"""
       } ||
       // identityTyp >>> {case ((dom, lhs), rhs) => (lhs ++ LightRed(" = ") ++ rhs ++ " (in " ++ dom ++ ")")} || // invoke if we want expanded equality
       equation >>> { case (lhs, rhs) => s"$lhs = $rhs" } ||
       plusTyp >>> {
-        case (first, scnd) => s"""$first \\oplus $scnd"""
+        case (first, scnd) => s"""($first \\oplus $scnd)"""
       } ||
       indRecFunc >>> {
         case (domW, (index, (dom, (codom, defnData)))) =>

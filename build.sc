@@ -1,6 +1,8 @@
-import mill._, scalalib._, scalajslib._, define.Task
+import mill._
+import scalalib._
+import scalajslib._
+import define.{Sources, Task}
 import ammonite.ops._
-
 import coursier.maven.MavenRepository
 
 val scalaV = "2.12.4"
@@ -55,7 +57,8 @@ val jvmLibs = List(
   ivy"com.typesafe.akka::akka-http:10.1.1",
   ivy"com.typesafe.akka::akka-http-spray-json:10.1.1",
   ivy"org.slf4j:slf4j-api:1.7.16",
-  ivy"org.slf4j:slf4j-simple:1.7.16"
+  ivy"org.slf4j:slf4j-simple:1.7.16",
+  ivy"com.github.scopt::scopt:3.5.0"
 )
 
 
@@ -188,6 +191,16 @@ object client extends CommonJSModule with SbtModule{
 
 }
 
+trait ServerModule extends JvmModule{
+     override def resources: Sources = T.sources {
+       def base: Seq[Path] = super.resources().map(_.path)
+
+       def jsout = client.fastOpt().path / up
+
+       (base ++ Seq(jsout, pwd / "docs")).map(PathRef(_))
+     }
+}
+
 // object server extends ScalaModule{
 //   def scalaVersion = "2.12.4"
 //
@@ -198,10 +211,6 @@ object client extends CommonJSModule with SbtModule{
 //     ivy"com.typesafe.akka::akka-stream:2.5.9"
 //   )
 //
-//   def resources = T.sources {
-//     def base : Seq[Path] = super.resources().map(_.path)
-//     def jsout = client.fastOpt().path / up
-//     (base ++ Seq(jsout)).map(PathRef(_))
 //   }
 // }
 //
