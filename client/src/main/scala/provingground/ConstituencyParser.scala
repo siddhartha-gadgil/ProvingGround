@@ -31,6 +31,7 @@ object ConstituencyParser {
       input(`type` := "button", value := "Parse", `class` := "btn btn-success").render
     val treeDiv = div(`class` := "view")().render
     val exprDiv = div(`class` := "language-scala view")().render
+    val depTreeDiv = div(`class` := "view")().render
     val logDiv  = div()().render
     val parseInput =
       input(`type` := "text", `class` := "form-control").render
@@ -53,6 +54,8 @@ object ConstituencyParser {
             pre(
               code(`class` := "language-scala")(expr)
             ).render)
+          val depTree = js.obj("deptree")
+          depTreeDiv.innerHTML = depTree.toString()
           g.hljs.highlightBlock(exprDiv)
           g.hljs.initHighlighting.called = false
           g.hljs.initHighlighting()
@@ -127,6 +130,9 @@ object ConstituencyParser {
         h4("Mathematical Expression"),
         p("an expression in a structure modelled on Naproche CNL"),
         exprDiv,
+        h4("Dependency parsed tree"),
+        p("not used at present"),
+        depTreeDiv,
         h3("Example Sentences"),
         exampleList
       )

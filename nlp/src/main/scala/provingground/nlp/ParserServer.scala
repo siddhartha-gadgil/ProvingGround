@@ -9,22 +9,24 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 
 import scala.util.Try
-
 import upickle.{Js, json}
-
 import StanfordParser._
 import TreeToMath._
-
+import edu.stanford.nlp.trees.Tree
 import org.scalafmt.Scalafmt.format
+
 import scala.io.StdIn
 
 object ParserServer extends App {
   def parseResult(txt: String) = {
-    val tree = texParse(txt)
-    val expr = mathExprTree(tree).get
+    val texParsed: TeXParsed = TeXParsed(txt)
+    val tree: Tree = texParsed.parsed
+    val expr: MathExpr = mathExprTree(tree).get
+    val proseTree: NlpProse.ProseTree = texParsed.proseTree
+    println(proseTree.view)
     val code =
       format(s"object ConstituencyParsed {$expr}").get
-    Js.Obj("tree" -> tree.pennString, "expr" -> code.toString)
+    Js.Obj("tree" -> tree.pennString, "expr" -> code.toString, "deptree" -> proseTree.view.replace("\n", "") )
   }
 
   implicit val system: ActorSystem = ActorSystem("provingground-nlp")

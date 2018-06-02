@@ -1,5 +1,7 @@
 package provingground.translation
 
+import scala.xml._
+
 /** Stanford dependency trees and associated methods */
 object NlpProse {
 
@@ -83,7 +85,7 @@ object NlpProse {
     /** The tree of all descendants of a node */
     def descTree(node: Token) = ProseTree(node, desc(offspring(node)))
 
-    lazy val subTrees = vertices.map(descTree)
+    lazy val subTrees: Set[ProseTree] = vertices.map(descTree)
 
     def treeAt(head: String) = subTrees.find(_.root.word == head)
 
@@ -129,10 +131,42 @@ object NlpProse {
       */
     lazy val labelMap = tree.groupBy(_.gov).mapValues((l) => l.map(_.deptype))
 
-    // Not clear what this method does
-    //  def intyps(e: DepRel) = {tree exists ((e.deptype).startsWith(_))
-    //    heirs filter intyps
-    //    }
+    def depView(depRel: DepRel) : Elem = {
+      val word = s"${depRel.dep.word}(${depRel.dep.idx})"
+      def childViews: Seq[Elem] =
+        offspring(depRel.dep).map{
+          (rel) =>
+            <li>{depView(rel)}</li>
+        }
+      <ul>
+        <li> <strong>Type:</strong> {depRel.deptype} </li>
+        <li>  <strong>Word:</strong> {word} </li>
+        <li> <strong> children:</strong>
+          <ul>
+            {childViews}
+          </ul>
+        </li>
+      </ul>
+    }
+
+    val heirsView = heirs.map{
+      (rel)  =>
+        <li>
+          {depView(rel)}
+        </li>
+    }
+
+    val pp = new scala.xml.PrettyPrinter(80, 4)
+    
+    val view =
+      pp.format(<ul>
+        <li><strong>Root:</strong> {root.word}</li>
+        <li><strong>Children:</strong>
+          <ul>
+            {heirsView}
+          </ul>
+        </li>
+      </ul>)
   }
 
   /** Find the string of multi-word expressions starting at a token */
