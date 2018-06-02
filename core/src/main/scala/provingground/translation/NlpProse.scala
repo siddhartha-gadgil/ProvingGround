@@ -140,15 +140,16 @@ object NlpProse {
         }
       val childList =
         offspring(depRel.dep).map(_.dep.word).mkString("[", ", ", "]")
-      <ul>
-        <div> dependency type: <strong>{depRel.deptype}</strong>  </div>
-        <div> word: <strong>{word}</strong>  </div>
-        <div> children: {childList}
+      <div>
+        <table>
+        <tr> <td>Word: </td> <td> <strong>{word}</strong> </td> </tr>
+        <tr> <td>Dep-Type: </td> <td> <strong> {depRel.deptype}</strong></td>  </tr>
+        <tr> <td>Children: </td> <td> {childList}</td> </tr>
+        </table>
           <ul>
             {childViews}
           </ul>
-        </div>
-      </ul>
+      </div>
     }
 
     val heirsView = heirs.map { (rel) =>
@@ -160,14 +161,14 @@ object NlpProse {
     val pp = new scala.xml.PrettyPrinter(80, 4)
 
     val view =
-      pp.format(<ul>
+      pp.format(<div>
         <div>root:<strong>{root.word}</strong> </div>
         <div>children:
           <ul>
             {heirsView}
           </ul>
         </div>
-      </ul>)
+      </div>)
   }
 
   /** Find the string of multi-word expressions starting at a token */
