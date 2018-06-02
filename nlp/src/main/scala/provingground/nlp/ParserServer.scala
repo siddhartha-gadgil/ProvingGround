@@ -24,7 +24,7 @@ object ParserServer extends App{
     val tree = texParse(txt)
     val expr = mathExprTree(tree)
     val code =
-      format(s"object ConstituencyParsed {$expr}")
+      format(s"object ConstituencyParsed {$expr}").get
     Js.Obj("tree" -> tree.pennString, "expr" -> code.toString)
   }
 
@@ -47,13 +47,13 @@ object ParserServer extends App{
         entity(as[String]) { txt =>
           println(s"parsing: $txt")
 
-          complete(
-            HttpEntity(ContentTypes.`application/json`, Js.Obj("tree" -> "tree", "expr" -> "expr").toString
-          ))
-          // val result =
-          //   parseResult(txt)
-          // println(s"Result:\n$result")
-          // complete(HttpEntity(ContentTypes.`application/json`, result.toString))
+          // complete(
+          //   HttpEntity(ContentTypes.`application/json`, Js.Obj("tree" -> "tree", "expr" -> "expr").toString
+          // ))
+          val result =
+            parseResult(txt)
+          println(s"Result:\n$result")
+          complete(HttpEntity(ContentTypes.`application/json`, result.toString))
         }
       }
     } ~ get {
@@ -76,7 +76,7 @@ val indexHTML =
     <link rel="stylesheet" href="/resources/css/main.css">
     <script src="/resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/resources/out.js" type="text/javascript" charset="utf-8"></script>
+
 
   </head>
   <body>
@@ -87,6 +87,7 @@ val indexHTML =
     <div id="constituency-parser"></div>
 
   </div>
+  <script src="/resources/out.js" type="text/javascript" charset="utf-8"></script>
   <script>
     parser.load()
   </script>

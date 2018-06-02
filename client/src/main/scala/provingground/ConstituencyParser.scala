@@ -24,19 +24,24 @@ import scala.io.StdIn
 
 @JSExportTopLevel("parser")
 object ConstituencyParser{
+  @JSExport
+  def load() : Unit = {
+
   val runButton =
-    input(`type` := "submit",
-      value := "Parse (ctrl-B)",
+    input(`type` := "button",
+      value := "Parse",
       `class` := "btn btn-success").render
   val treeDiv = div(`class` := "view")().render
-  val exprDiv = div(`class` := "view")().render
+  val exprDiv = div(`class` := "language-scala view")().render
   val logDiv = div()().render
   val parseInput =
     input(`type` := "text", `class` := "form-control").render
 
   def parse(txt: String) = {
+
     Ajax.post("/parse", txt).foreach { (xhr) =>
       {
+        logDiv.appendChild(p("button clicked").render)
         val answer = xhr.responseText
         logDiv.appendChild(pre(answer).render)
         val js = json.read(answer)
@@ -49,6 +54,9 @@ object ConstituencyParser{
           pre(
             code(`class` := "language-scala")(expr)
           ).render)
+        g.hljs.highlightBlock(exprDiv)
+        g.hljs.initHighlighting.called = false
+        g.hljs.initHighlighting()
       }
     }
   } //parse
@@ -57,11 +65,9 @@ object ConstituencyParser{
 
   val jsDiv =
     div(
-      form(
-      div(`class` := "form-group")(
       label("Sentence:"),
-      parseInput),
-      runButton),
+      parseInput,
+      runButton,
       logDiv,
       h4("Constituency parsed tree"),
       treeDiv,
@@ -69,14 +75,12 @@ object ConstituencyParser{
       exprDiv
     )
 
-  @JSExport
-  def load() : Unit = {
-    Option(dom.document.querySelector("#constituency-parser")).map{
-      (pdiv) =>
+    val pdiv= dom.document.querySelector("#constituency-parser")
+      // (pdiv) =>
         val parseDiv = pdiv.asInstanceOf[org.scalajs.dom.html.Div]
 
           parseDiv.appendChild(jsDiv.render)
 
-      } // option map
+      // } // option ma
     } // load
 }

@@ -33,7 +33,7 @@ object Client{
   @JSExport
   def main(): Unit = {
    ScratchPad.load()
-   ConstituencyParser.load()
+   // ConstituencyParser.load()
   }
 }
 
