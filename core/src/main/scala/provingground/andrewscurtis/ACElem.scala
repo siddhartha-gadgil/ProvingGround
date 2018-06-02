@@ -28,7 +28,7 @@ import ACElem._
 
 case class Param(rank: Int = 2, size: Int = 1000, wrdCntn: Double = 0.1)
 
-object Param{
+object Param {
   implicit def rw: RW[Param] = macroRW
 }
 
@@ -36,7 +36,7 @@ object ACElem {
   type Snap =
     SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
 
-  object Snap{
+  object Snap {
     implicit def rw: RW[Snap] = macroRW
   }
 

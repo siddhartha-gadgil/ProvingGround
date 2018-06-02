@@ -20,14 +20,17 @@ import scala.io.StdIn
 
 object ParserServer extends App {
   def parseResult(txt: String) = {
-    val texParsed: TeXParsed = TeXParsed(txt)
-    val tree: Tree = texParsed.parsed
-    val expr: MathExpr = mathExprTree(tree).get
+    val texParsed: TeXParsed          = TeXParsed(txt)
+    val tree: Tree                    = texParsed.parsed
+    val expr: MathExpr                = mathExprTree(tree).get
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
     println(proseTree.view)
     val code =
-      Try(format(s"object ConstituencyParsed {$expr}").get).getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
-    Js.Obj("tree" -> tree.pennString, "expr" -> code.toString, "deptree" -> proseTree.view.replace("\n", "") )
+      Try(format(s"object ConstituencyParsed {$expr}").get)
+        .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
+    Js.Obj("tree"    -> tree.pennString,
+           "expr"    -> code.toString,
+           "deptree" -> proseTree.view.replace("\n", ""))
   }
 
   implicit val system: ActorSystem = ActorSystem("provingground-nlp")
@@ -65,7 +68,7 @@ object ParserServer extends App {
         println("serving from resource: " + path)
         getFromResource(path.toString)
       }
-    }  ~
+    } ~
       path("halt") {
         keepAlive = false
         complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "shutting down"))
@@ -107,15 +110,14 @@ object ParserServer extends App {
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
   println(s"Server online at http://localhost:8080/\nExit from the web page")
 
-  while (keepAlive){
+  while (keepAlive) {
     Thread.sleep(10)
   }
 
   println("starting shutdown")
 
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ ⇒ system.terminate()) // and shutdown when done
-
+  bindingFuture
+    .flatMap(_.unbind()) // trigger unbinding from the port
+    .onComplete(_ ⇒ system.terminate()) // and shutdown when done
 
 }

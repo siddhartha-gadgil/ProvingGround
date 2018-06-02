@@ -484,7 +484,7 @@ class LeanParser(mods: Vector[Modification]) {
 
   // code generation
 
-  def defNames = mods.collect {case df: DefMod => df.name}
+  def defNames = mods.collect { case df: DefMod => df.name }
 
   def allIndNames = mods.collect { case ind: IndMod => ind.name }
 
@@ -494,34 +494,35 @@ class LeanParser(mods: Vector[Modification]) {
     CodeGen.objNames(defNames.map(_.toString), allIndNames.map(_.toString))
 
   def defnCode =
-    (defNames.map {
-      (name) =>
-        for {
-          term <- defnMap.get(name)
-          code <- codeGen(term)
-        } yield (name, code)
+    (defNames.map { (name) =>
+      for {
+        term <- defnMap.get(name)
+        code <- codeGen(term)
+      } yield (name, code)
     }).flatten
 
   def codeFromInd(ind: TermIndMod) = {
     val p = getVariables(ind.numParams)(ind.typF).toVector
     val codeOpt =
       ind match {
-        case mod : SimpleIndMod =>
+        case mod: SimpleIndMod =>
           val seq =
             ConstructorSeqTL
-            .getExst(toTyp(foldFunc(ind.typF, p)), LeanToTermMonix.introsFold(ind, p))
-            .value
+              .getExst(toTyp(foldFunc(ind.typF, p)),
+                       LeanToTermMonix.introsFold(ind, p))
+              .value
           codeGen.consSeq(seq)
         case mod: IndexedIndMod =>
           val indSeq =
             TypFamilyExst
-              .getIndexedConstructorSeq(foldFunc(ind.typF, p), LeanToTermMonix.introsFold(ind, p))
+              .getIndexedConstructorSeq(foldFunc(ind.typF, p),
+                                        LeanToTermMonix.introsFold(ind, p))
               .value
           codeGen.indexedConsSeqDom(indSeq)
-       }
-       import scala.meta._
-       val cp = p.map(codeGen(_).get)
-       cp.foldRight(codeOpt.get){case (x, y) => q"Subst.Lambda($x, $y)"}
+      }
+    import scala.meta._
+    val cp = p.map(codeGen(_).get)
+    cp.foldRight(codeOpt.get) { case (x, y) => q"Subst.Lambda($x, $y)" }
   }
 
 }

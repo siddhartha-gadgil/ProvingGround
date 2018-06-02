@@ -39,7 +39,7 @@ object WebServer {
   import Hub._
 
   // needed for the future flatMap/onComplete in the end
-  implicit val executionContext : scala.concurrent.ExecutionContextExecutor =
+  implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
 
   private val views: MutMap[String, String] = MutMap()

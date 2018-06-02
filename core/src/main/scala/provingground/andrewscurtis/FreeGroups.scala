@@ -4,7 +4,6 @@ import provingground.translation.StringParse._
 
 import cats.kernel._
 
-
 import upickle.default.{ReadWriter => RW, macroRW}
 /*
  * Free group in n generators
@@ -37,7 +36,7 @@ object FreeGroups {
       def inverse(x: Word)          = x.inv
     }
 
-    implicit def rw : RW[Word] = macroRW
+    implicit def rw: RW[Word] = macroRW
 
     /**
       * sanity checker for listFromChars.

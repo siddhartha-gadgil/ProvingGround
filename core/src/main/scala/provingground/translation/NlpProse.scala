@@ -131,14 +131,15 @@ object NlpProse {
       */
     lazy val labelMap = tree.groupBy(_.gov).mapValues((l) => l.map(_.deptype))
 
-    def depView(depRel: DepRel, parents: List[Token]) : Elem = {
+    def depView(depRel: DepRel, parents: List[Token]): Elem = {
       val word = s"${depRel.dep.word}(${depRel.dep.idx})"
       def childViews: Seq[Elem] =
-        offspring(depRel.dep).filter((t) => !parents.contains(t.dep)).map{
+        offspring(depRel.dep).filter((t) => !parents.contains(t.dep)).map {
           (rel) =>
             <li>{depView(rel, depRel.gov :: parents)}</li>
         }
-      val childList = offspring(depRel.dep).map(_.dep.word).mkString("[",", ", "]")
+      val childList =
+        offspring(depRel.dep).map(_.dep.word).mkString("[", ", ", "]")
       <ul>
         <div> dependency type: <strong>{depRel.deptype}</strong>  </div>
         <div> word: <strong>{word}</strong>  </div>
@@ -150,15 +151,14 @@ object NlpProse {
       </ul>
     }
 
-    val heirsView = heirs.map{
-      (rel)  =>
-        <li>
+    val heirsView = heirs.map { (rel) =>
+      <li>
           {depView(rel, List(root))}
         </li>
     }
 
     val pp = new scala.xml.PrettyPrinter(80, 4)
-    
+
     val view =
       pp.format(<ul>
         <div>root:<strong>{root.word}</strong> </div>

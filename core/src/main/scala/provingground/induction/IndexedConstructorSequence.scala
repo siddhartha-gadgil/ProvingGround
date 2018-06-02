@@ -594,8 +594,6 @@ object IndexedConstructorSeqDom {
       }
     }
 
-
-
   def get[H <: Term with Subs[H], F <: Term with Subs[F], Index <: HList](w: F)(
       implicit g: TypFamilyPtnGetter[F, H, Index]) = {
     val family = g.get(w)
@@ -623,20 +621,29 @@ object IndexedConstructorSeqDom {
     def subs(x: Term, y: Term) = Empty(W.replace(x, y), family.subs(x, y))
   }
 
-  object Cons{
+  object Cons {
     implicit def substIndConsSeqDomCons[TSS <: HList,
-                    HShape <: HList,
-                    H <: Term with Subs[H],
-                    F <: Term with Subs[F],
-                    HC <: Term with Subs[HC],
-                    Index <: HList: TermList,
-                    TIntro <: HList](implicit tl: TermList[Index]) :
-            Subst[IndexedConstructorSeqDom.Cons[TSS, HShape, H, F, HC, Index, TIntro]] =
-              new Subst[IndexedConstructorSeqDom.Cons[TSS, HShape, H, F, HC, Index, TIntro]]{
-                def subst(a: IndexedConstructorSeqDom.Cons[TSS, HShape, H, F, HC, Index, TIntro])(
-                  x: Term, y: Term
-                ) = a.subs(x, y)
-              }
+                                        HShape <: HList,
+                                        H <: Term with Subs[H],
+                                        F <: Term with Subs[F],
+                                        HC <: Term with Subs[HC],
+                                        Index <: HList: TermList,
+                                        TIntro <: HList](
+        implicit tl: TermList[Index]): Subst[
+      IndexedConstructorSeqDom.Cons[TSS, HShape, H, F, HC, Index, TIntro]] =
+      new Subst[
+        IndexedConstructorSeqDom.Cons[TSS, HShape, H, F, HC, Index, TIntro]] {
+        def subst(a: IndexedConstructorSeqDom.Cons[TSS,
+                                                   HShape,
+                                                   H,
+                                                   F,
+                                                   HC,
+                                                   Index,
+                                                   TIntro])(
+            x: Term,
+            y: Term
+        ) = a.subs(x, y)
+      }
   }
 
   case class Cons[TSS <: HList,

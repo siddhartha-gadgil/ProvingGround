@@ -42,15 +42,15 @@ object Sampler {
 
   def getBucketSizes[A](xs: Vector[A],
                         ps: Vector[Double],
-                        sample: Vector[Double]) : Map[A, Int] =
-      xs match {
-        case Vector() => throw new Exception("Empty bucket")
-        case Vector(x) => Map (x -> sample.size)
-        case head +: tail =>
-          val p = ps.head
-          val tailSample = sample.filter(_ > p).map((a) => a - p)
-          getBucketSizes(xs.tail, ps.tail, tailSample) + (head -> (sample.size - tailSample.size))
-      }
+                        sample: Vector[Double]): Map[A, Int] =
+    xs match {
+      case Vector()  => throw new Exception("Empty bucket")
+      case Vector(x) => Map(x -> sample.size)
+      case head +: tail =>
+        val p          = ps.head
+        val tailSample = sample.filter(_ > p).map((a) => a - p)
+        getBucketSizes(xs.tail, ps.tail, tailSample) + (head -> (sample.size - tailSample.size))
+    }
 
   def getMultinomial[A](xs: Vector[A],
                         ps: Vector[Double],
@@ -109,11 +109,11 @@ object Sampler {
         case FiniteDistribution(pmf) => fromPMF(pmf, n)
 
         case mx: Mixin[u] =>
-          val m : Int = binomial(n, mx.q)
+          val m: Int = binomial(n, mx.q)
           combine(sample(mx.first, n - m), sample(mx.second, m))
 
         case mx: MixinOpt[u] =>
-          val m : Int = binomial(n, mx.q)
+          val m: Int = binomial(n, mx.q)
           val optSample: Map[Option[u], Int] =
             Try(sample(mx.second, m)).getOrElse(Map(None -> 1))
           val secondPreSample = for ((xo, n) <- optSample; x <- xo)

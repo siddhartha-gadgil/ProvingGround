@@ -41,7 +41,7 @@ object SimpleAcEvolution {
     }
   }
 
-  object PickledState{
+  object PickledState {
     implicit def rw: RW[PickledState] = macroRW
   }
 
@@ -153,7 +153,7 @@ object SimpleAcEvolution {
     }
   }
 
-  object PickledPath{
+  object PickledPath {
     implicit def rw: RW[PickledPath] = macroRW
   }
 
