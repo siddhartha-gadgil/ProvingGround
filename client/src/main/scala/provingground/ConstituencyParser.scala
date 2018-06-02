@@ -22,32 +22,61 @@ import HoTT.{id => _, _}, translation._
 
 import scala.io.StdIn
 
+@JSExportTopLevel("parser")
 object ConstituencyParser{
+  val runButton =
+    input(`type` := "submit",
+      value := "Parse (ctrl-B)",
+      `class` := "btn btn-success").render
+  val treeDiv = div(`class` := "view")().render
+  val exprDiv = div(`class` := "view")().render
+  val logDiv = div()().render
+  val parseInput =
+    input(`type` := "text", `class` := "form-control").render
+
+  def parse(txt: String) = {
+    Ajax.post("/parse", txt).foreach { (xhr) =>
+      {
+        val answer = xhr.responseText
+        logDiv.appendChild(pre(answer).render)
+        val js = json.read(answer)
+        val tree = js.obj("tree").str.toString
+        treeDiv.innerHTML = ""
+        treeDiv.appendChild(pre(tree).render)
+        val expr = js.obj("expr").str.toString
+        exprDiv.innerHTML = ""
+        exprDiv.appendChild(
+          pre(
+            code(`class` := "language-scala")(expr)
+          ).render)
+      }
+    }
+  } //parse
+
+  runButton.onclick = (e: dom.Event) => parse(parseInput.value)
+
+  val jsDiv =
+    div(
+      form(
+      div(`class` := "form-group")(
+      label("Sentence:"),
+      parseInput),
+      runButton),
+      logDiv,
+      h4("Constituency parsed tree"),
+      treeDiv,
+      h4("Mathematical Expression"),
+      exprDiv
+    )
+
+  @JSExport
   def load() : Unit = {
     Option(dom.document.querySelector("#constituency-parser")).map{
       (pdiv) =>
         val parseDiv = pdiv.asInstanceOf[org.scalajs.dom.html.Div]
-        val runButton =
-          input(`type` := "submit",
-            value := "Parse (ctrl-B)",
-            `class` := "btn btn-success").render
-        val treeDiv = div(`class` := "view bg-secondary")().render
-        val exprDiv = div(`class` := "view bg-secondary")().render
-        val parseInput =
-          input(`type` := "text", `class` := "form-control").render
-        val jsDiv =
-          div(
-            form(
-            div(`class` := "form-group")(
-            label("Sentence:"),
-            parseInput),
-            runButton),
-            h4("Constituency parsed tree"),
-            treeDiv,
-            h4("Mathematical Expression"),
-            exprDiv
-          )
+
           parseDiv.appendChild(jsDiv.render)
-      }
-    }
+
+      } // option map
+    } // load
 }

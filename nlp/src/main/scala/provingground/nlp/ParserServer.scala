@@ -23,7 +23,8 @@ object ParserServer extends App{
   def parseResult(txt: String) = {
     val tree = texParse(txt)
     val expr = mathExprTree(tree)
-    val code = format(s"object {$expr}")
+    val code =
+      format(s"object ConstituencyParsed {$expr}")
     Js.Obj("tree" -> tree.pennString, "expr" -> code.toString)
   }
 
@@ -46,9 +47,13 @@ object ParserServer extends App{
         entity(as[String]) { txt =>
           println(s"parsing: $txt")
 
-          val result =
-            parseResult(txt)
-          complete(HttpEntity(ContentTypes.`application/json`, result.toString))
+          complete(
+            HttpEntity(ContentTypes.`application/json`, Js.Obj("tree" -> "tree", "expr" -> "expr").toString
+          ))
+          // val result =
+          //   parseResult(txt)
+          // println(s"Result:\n$result")
+          // complete(HttpEntity(ContentTypes.`application/json`, result.toString))
         }
       }
     } ~ get {
@@ -83,7 +88,7 @@ val indexHTML =
 
   </div>
   <script>
-    provingground.main()
+    parser.load()
   </script>
   </body>
 </html>
