@@ -49,7 +49,7 @@ object ConstituencyParser {
           treeDiv.innerHTML = ""
           treeDiv.appendChild(pre(tree).render)
           val expr =
-            js.obj("expr").str.toString.split("\n").drop(1).dropRight(1).mkString("\n")
+            js.obj("expr").str.toString.replace("\"\"\"", "").split("\n").drop(1).dropRight(1).mkString("\n")
           exprDiv.innerHTML = ""
           exprDiv.appendChild(
             pre(

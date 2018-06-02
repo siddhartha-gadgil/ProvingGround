@@ -32,6 +32,7 @@ sealed trait MathExpr
   *
   */
 object MathExpr {
+  val tq = "\"\"\""
 
   type T = Tree
 
@@ -90,10 +91,13 @@ object MathExpr {
     */
   case class NP(npv: Vector[MathExpr]) extends NounPhrase
 
-  case class NN(word: String) extends NounPhrase
+  case class NN(word: String) extends NounPhrase{
+    override def toString = s"NN($tq$word$tq)"
+  }
 
   case class Formula(text: String) extends NounPhrase {
     def dp = DP(Determiner.Zero, Vector(), Some(this))
+    override def toString = s"Formula($tq$text$tq)"
   }
 
   /**
@@ -117,7 +121,9 @@ object MathExpr {
     */
   case class VP(vpv: Vector[MathExpr]) extends VerbPhrase
 
-  case class VB(wrod: String) extends VerbPhrase
+  case class VB(word: String) extends VerbPhrase{
+    override def toString = s"VB($tq$word$tq)"
+  }
 
   /**
     * Negated verb phrase
@@ -174,7 +180,9 @@ object MathExpr {
   /**
     * A generic preposition
     */
-  case class Prep(word: String) extends Preposition
+  case class Prep(word: String) extends Preposition{
+    override def toString = s"Prep($tq$word$tq)"
+  }
 
   /**
     * Preposition - this is a closed class.
@@ -200,7 +208,9 @@ object MathExpr {
 
     case object This extends Determiner
 
-    case class Card(s: String) extends Determiner
+    case class Card(s: String) extends Determiner{
+      override def toString = s"Card($tq$s$tq)"
+    }
 
     def apply(s: String) = s.toLowerCase match {
       case "a"                    => A
@@ -235,7 +245,9 @@ object MathExpr {
     */
   case class AP(ap: T) extends AdjectivalPhrase
 
-  case class JJ(word: String) extends AdjectivalPhrase
+  case class JJ(word: String) extends AdjectivalPhrase{
+    override def toString = s"JJ($tq$word$tq)"
+  }
 
   case class JJPP(adj: MathExpr, pps: Vector[MathExpr]) extends AdjectivalPhrase
 
@@ -381,9 +393,15 @@ object MathExpr {
 }
 
 object FormalExpr {
-  case class FormalLeaf(s: String) extends MathExpr
+  import MathExpr._
 
-  case class FormalNode(s: String, children: Vector[MathExpr]) extends MathExpr
+  case class FormalLeaf(s: String) extends MathExpr{
+    override def toString = s"FormalLeaf($tq$s$tq)"
+  }
+
+  case class FormalNode(s: String, children: Vector[MathExpr]) extends MathExpr{
+    override def toString = s"FormalNode($tq$s$tq, $children)"
+  }
 
   import Translator.Pattern
 
@@ -446,15 +464,18 @@ object MathText {
 
   case class BiImplicationDefiniendum(name: String,
                                       variables: Vector[T],
-                                      formula: SententialPhrase)
-      extends MathExpr
+                                      formula: SententialPhrase) extends MathExpr{
+        override def toString = s"BiImplicationDefiniendum($tq$name$tq, $variables, $formula)"
+      }
 
   case class CopulaDefiniendumNP(definiendum: NounPhrase) extends NounPhrase
 
   case class CopulaDefiniendum(name: String,
                                variables: Vector[T],
                                lhs: NounPhrase)
-      extends MathExpr
+      extends MathExpr{
+        override def toString = s"CopulaDefiniendum($tq$name$tq, $variables, $lhs)"
+      }
 
   case class BiEquationalDefinitionSP(definiendum: BiEquationalDefinitionSP,
                                       definiens: SententialPhrase)
