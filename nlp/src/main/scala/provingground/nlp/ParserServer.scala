@@ -24,7 +24,7 @@ object ParserServer extends App {
     val tree: Tree                    = texParsed.parsed
     val expr: MathExpr                = mathExprTree(tree).get
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
-    println(proseTree.view)
+    // println(proseTree.view)
     val code =
       Try(format(s"object ConstituencyParsed {$expr}").get)
         .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
@@ -58,14 +58,15 @@ object ParserServer extends App {
             // ))
             val result =
               parseResult(txt)
-            println(s"Result:\n$result")
+            // println(s"Result:\n$result")
+            println("result sent to  browser")
             complete(
               HttpEntity(ContentTypes.`application/json`, result.toString))
           }
         }
       } ~ get {
       path("resources" / Remaining) { path =>
-        println("serving from resource: " + path)
+        // println("serving from resource: " + path)
         getFromResource(path.toString)
       }
     } ~
