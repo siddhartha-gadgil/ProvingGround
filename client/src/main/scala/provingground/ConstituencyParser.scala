@@ -65,10 +65,12 @@ object ConstituencyParser{
 
   val jsDiv =
     div(
+      form(
+        div(`class` := "form-group")(
       label("Sentence:"),
-      parseInput,
-      runButton,
-      logDiv,
+      parseInput),
+      runButton),
+      // logDiv,
       h4("Constituency parsed tree"),
       treeDiv,
       h4("Mathematical Expression"),

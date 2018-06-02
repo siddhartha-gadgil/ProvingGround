@@ -22,7 +22,7 @@ import scala.io.StdIn
 object ParserServer extends App{
   def parseResult(txt: String) = {
     val tree = texParse(txt)
-    val expr = mathExprTree(tree)
+    val expr = mathExprTree(tree).get
     val code =
       format(s"object ConstituencyParsed {$expr}").get
     Js.Obj("tree" -> tree.pennString, "expr" -> code.toString)
