@@ -1,6 +1,6 @@
 <project version="4">
     <component name="ScalaCompilerConfiguration">
-        <profile name="mill 1" modules="exploring,andrewscurtis,leanlib.jvm,nlp,normalform,jvmroot,mantle,realfunctions,mantle.test,core.jvm">
+        <profile name="mill 1" modules="exploring,andrewscurtis,server,leanlib.jvm,nlp,normalform,jvmroot,mantle,realfunctions,mantle.test,core.jvm">
             <parameters>
                 <parameter value="-Ypartial-unification"/>
                 <parameter value="-unchecked"/>
@@ -23,11 +23,11 @@
                 <parameter value="-language:existentials"/>
             </parameters>
             <plugins>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.4/scala-compiler-2.12.4.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.4/scala-library-2.12.4.jar"/>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.4/scala-reflect-2.12.4.jar"/>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.4/0.6.22/scalajs-compiler_2.12.4-0.6.22.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.4/scala-compiler-2.12.4.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.4/0.6.22/scalajs-compiler_2.12.4-0.6.22.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.4/scala-reflect-2.12.4.jar"/>
             </plugins>
         </profile>
         <profile name="mill 4" modules="core.js">
@@ -55,10 +55,10 @@
                 <parameter value="-language:existentials"/>
             </parameters>
             <plugins>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.4/scala-reflect-2.12.4.jar"/>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.4/0.6.22/scalajs-compiler_2.12.4-0.6.22.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.4/scala-compiler-2.12.4.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.4/scala-library-2.12.4.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.4/scala-reflect-2.12.4.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.4/0.6.22/scalajs-compiler_2.12.4-0.6.22.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
             </plugins>
         </profile>

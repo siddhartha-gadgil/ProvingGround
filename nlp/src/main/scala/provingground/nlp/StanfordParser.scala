@@ -1,17 +1,16 @@
 package provingground.translation
 import provingground._
-
 import edu.stanford.nlp.ling._
 import edu.stanford.nlp.process._
-
 import edu.stanford.nlp.trees._
-
 import edu.stanford.nlp.parser.lexparser._
 import edu.stanford.nlp.process.PTBTokenizer
 import edu.stanford.nlp.process.CoreLabelTokenFactory
 import edu.stanford.nlp.tagger.maxent._
 import java.io._
+
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 /**
   * Interface to the Stanford parser, handling (inline) TeX by separating tokenizing and POS tagging from parsing.
@@ -104,7 +103,7 @@ object StanfordParser {
     // lazy val mergeTagged =
     //     mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}
 
-    lazy val parsed = lp(mergeSubsTagged.asJava)
+    lazy val parsed: Tree = lp(mergeSubsTagged.asJava)
 
     lazy val gs = gsf.newGrammaticalStructure(parsed)
 
@@ -114,12 +113,12 @@ object StanfordParser {
 
     def token(w: IndexedWord) = Token(w.word, w.index)
 
-    lazy val typedDeps =
+    lazy val typedDeps: mutable.Buffer[DepRel] =
       tdl.asScala.map { (x) =>
         DepRel(token(x.gov), token(x.dep), x.reln.toString)
       }
 
-    lazy val proseTree = ProseTree(typedDeps.toList)
+    lazy val proseTree: ProseTree = ProseTree(typedDeps.toList)
   }
 
   val baseWordTags =

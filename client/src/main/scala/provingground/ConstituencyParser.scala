@@ -23,66 +23,75 @@ import HoTT.{id => _, _}, translation._
 import scala.io.StdIn
 
 @JSExportTopLevel("parser")
-object ConstituencyParser{
+object ConstituencyParser {
   @JSExport
-  def load() : Unit = {
+  def load(): Unit = {
 
-  val runButton =
-    input(`type` := "button",
-      value := "Parse",
-      `class` := "btn btn-success").render
-  val treeDiv = div(`class` := "view")().render
-  val exprDiv = div(`class` := "language-scala view")().render
-  val logDiv = div()().render
-  val parseInput =
-    input(`type` := "text", `class` := "form-control").render
+    val runButton =
+      input(`type` := "button", value := "Parse", `class` := "btn btn-success").render
+    val treeDiv = div(`class` := "view")().render
+    val exprDiv = div(`class` := "language-scala view")().render
+    val logDiv  = div()().render
+    val parseInput =
+      input(`type` := "text", `class` := "form-control").render
 
-  def parse(txt: String) = {
+    def parse(txt: String) = {
 
-    Ajax.post("/parse", txt).foreach { (xhr) =>
-      {
-        logDiv.appendChild(p("button clicked").render)
-        val answer = xhr.responseText
-        logDiv.appendChild(pre(answer).render)
-        val js = json.read(answer)
-        val tree = js.obj("tree").str.toString
-        treeDiv.innerHTML = ""
-        treeDiv.appendChild(pre(tree).render)
-        val expr = js.obj("expr").str.toString
-        exprDiv.innerHTML = ""
-        exprDiv.appendChild(
-          pre(
-            code(`class` := "language-scala")(expr)
-          ).render)
-        g.hljs.highlightBlock(exprDiv)
-        g.hljs.initHighlighting.called = false
-        g.hljs.initHighlighting()
+      Ajax.post("/parse", txt).foreach { (xhr) =>
+        {
+          logDiv.appendChild(p("button clicked").render)
+          val answer = xhr.responseText
+          logDiv.appendChild(pre(answer).render)
+          val js   = json.read(answer)
+          val tree = js.obj("tree").str.toString
+          treeDiv.innerHTML = ""
+          treeDiv.appendChild(pre(tree).render)
+          val expr =
+            js.obj("expr").str.toString.split("\n").drop(1).dropRight(1).mkString("\n")
+          exprDiv.innerHTML = ""
+          exprDiv.appendChild(
+            pre(
+              code(`class` := "language-scala")(expr)
+            ).render)
+          g.hljs.highlightBlock(exprDiv)
+          g.hljs.initHighlighting.called = false
+          g.hljs.initHighlighting()
+        }
       }
-    }
-  } //parse
+    } //parse
 
-  runButton.onclick = (e: dom.Event) => parse(parseInput.value)
+    runButton.onclick = (e: dom.Event) => parse(parseInput.value)
 
-  val jsDiv =
-    div(
-      form(
-        div(`class` := "form-group")(
-      label("Sentence:"),
-      parseInput),
-      runButton),
-      // logDiv,
-      h4("Constituency parsed tree"),
-      treeDiv,
-      h4("Mathematical Expression"),
-      exprDiv
-    )
+    val jsDiv =
+      div(
+        p(
+          """This is an interface for experimenting with the constituency parser based translation
+            |from sentences to mathematical expressions.
+            |Enter a sentence to parse. You will see:""".stripMargin),
+        ul(
+          li("the constituency parsed tree produced by the stanford parser"),
+          li("the mathematical expression to which it translates recursively")
+        ),
+        p("if some node/leaf fails to translate, it is translated to a ",
+          em("FormalNode"), " or ", em("FormalLeaf")
+        ),
+        p(strong("Warning: "), "occasionally the server may crash, so you will need to restart it."),
+        form(div(`class` := "form-group")(label("Sentence:"), parseInput),
+             runButton),
+        h4("Constituency parsed tree"),
+        p("the output of the stanford parser"),
+        treeDiv,
+        h4("Mathematical Expression"),
+        p("an expression in a structure modelled on Naproche CNL"),
+        exprDiv
+      )
 
-    val pdiv= dom.document.querySelector("#constituency-parser")
-      // (pdiv) =>
-        val parseDiv = pdiv.asInstanceOf[org.scalajs.dom.html.Div]
+    val pdiv = dom.document.querySelector("#constituency-parser")
+    // (pdiv) =>
+    val parseDiv = pdiv.asInstanceOf[org.scalajs.dom.html.Div]
 
-          parseDiv.appendChild(jsDiv.render)
+    parseDiv.appendChild(jsDiv.render)
 
-      // } // option ma
-    } // load
+    // } // option ma
+  } // load
 }

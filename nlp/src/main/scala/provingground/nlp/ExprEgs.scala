@@ -56,7 +56,7 @@ object ExprEgs {
       "$[A,B] = \\{e\\}$ if and only if $ab = ba, \\forall a \\in A, b \\in B$ if and only if $A \\subgroup C_G(B)$ if and only if $B \\subgroup C_G(A)$"
     )
 
-  def parse(s: String) = mathExpr(texParse(s))
+  def parse(s: String): Option[MathExpr] = mathExpr(texParse(s))
 
   def parseT(s: String) = mathExprTree(texParse(s))
 

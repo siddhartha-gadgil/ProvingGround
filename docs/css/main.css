@@ -8,3 +8,8 @@
   border-style: dotted;
   border-width: 1px;
 }
+pre {
+  background-color: black;
+  color: green;
+  font-weight: bold;
+}

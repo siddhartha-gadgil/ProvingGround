@@ -31,7 +31,13 @@ At present the best way to interact with most of the code is to use a console in
 mill mantle.repl
 ```
 
-Some experiments with the HoTT interface can be done in the scratchpad below. Other illustrations and a server are coming soon.
+To experiment with _natural language processing_, a basic server can be started by running
+```
+mill nlp.run
+```
+and going to `localhost:8080` on the browser.
+
+Some experiments with the HoTT interface can be done in the scratchpad below.  
 
 ## HoTT scratchpad
 
@@ -52,7 +58,7 @@ val a = "a" :: A
 val f = "f" :: (A ->: B) // the type A ->: B corresponds to A => B
 
 // 'mp' proves A => ((A => B) => B)
-val mp = a :-> (f :-> f(a)) 
+val mp = a :-> (f :-> f(a))
 ```
 
 <div id="hott-scratch"></div>
