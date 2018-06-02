@@ -138,14 +138,15 @@ object NlpProse {
           (rel) =>
             <li>{depView(rel)}</li>
         }
+      val childList = offspring(depRel.dep).map(_.dep.word).mkString("[",", ", "]")
       <ul>
-        <li> <strong>Type:</strong> {depRel.deptype} </li>
-        <li>  <strong>Word:</strong> {word} </li>
-        <li> <strong> children:</strong>
+        <div> dependency type: <strong>{depRel.deptype}</strong>  </div>
+        <div> word: <strong>{word}</strong>  </div>
+        <div> children: {childList}
           <ul>
             {childViews}
           </ul>
-        </li>
+        </div>
       </ul>
     }
 
@@ -160,12 +161,12 @@ object NlpProse {
     
     val view =
       pp.format(<ul>
-        <li><strong>Root:</strong> {root.word}</li>
-        <li><strong>Children:</strong>
+        <div>root:<strong>{root.word}</strong> </div>
+        <div>children:
           <ul>
             {heirsView}
           </ul>
-        </li>
+        </div>
       </ul>)
   }
 
