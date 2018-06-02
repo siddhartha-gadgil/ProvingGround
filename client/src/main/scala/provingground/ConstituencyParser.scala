@@ -26,6 +26,7 @@ import scala.io.StdIn
 object ConstituencyParser {
   @JSExport
   def load(): Unit = {
+    val haltButton =  input(`type` := "button", value := "Halt", `class` := "btn btn-danger pull-right").render
 
     val runButton =
       input(`type` := "button", value := "Parse", `class` := "btn btn-success").render
@@ -64,6 +65,8 @@ object ConstituencyParser {
     } //parse
 
     runButton.onclick = (e: dom.Event) => parse(parseInput.value)
+
+    haltButton.onclick = (e: dom.Event) => Ajax.get("halt")
 
     val assertions =
       Vector(
@@ -142,6 +145,9 @@ object ConstituencyParser {
     val parseDiv = pdiv.asInstanceOf[org.scalajs.dom.html.Div]
 
     parseDiv.appendChild(jsDiv.render)
+
+    val hDiv = dom.document.querySelector("#halt")
+    hDiv.appendChild(haltButton)
 
     // } // option ma
   } // load

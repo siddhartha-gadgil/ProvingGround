@@ -35,7 +35,7 @@ To experiment with _natural language processing_, a basic server can be started 
 ```
 mill nlp.run
 ```
-and going to `localhost:8080` on the browser.
+and going to `localhost:8080` on the browser. To experiment with the code, you can use the `--watch` flag so the system restarts after shutting down from the browser.
 
 Some experiments with the HoTT interface can be done in the scratchpad below.  
 

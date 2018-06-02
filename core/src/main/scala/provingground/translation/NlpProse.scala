@@ -131,12 +131,12 @@ object NlpProse {
       */
     lazy val labelMap = tree.groupBy(_.gov).mapValues((l) => l.map(_.deptype))
 
-    def depView(depRel: DepRel) : Elem = {
+    def depView(depRel: DepRel, parents: List[Token]) : Elem = {
       val word = s"${depRel.dep.word}(${depRel.dep.idx})"
       def childViews: Seq[Elem] =
-        offspring(depRel.dep).map{
+        offspring(depRel.dep).filter((t) => !parents.contains(t.dep)).map{
           (rel) =>
-            <li>{depView(rel)}</li>
+            <li>{depView(rel, depRel.gov :: parents)}</li>
         }
       val childList = offspring(depRel.dep).map(_.dep.word).mkString("[",", ", "]")
       <ul>
@@ -153,7 +153,7 @@ object NlpProse {
     val heirsView = heirs.map{
       (rel)  =>
         <li>
-          {depView(rel)}
+          {depView(rel, List(root))}
         </li>
     }
 
