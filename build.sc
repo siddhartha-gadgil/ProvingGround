@@ -6,7 +6,7 @@ import define.{Sources, Task}
 import ammonite.ops._
 import coursier.maven.MavenRepository
 
-val scalaV = "2.12.4"
+val scalaV = "2.12.6"
 
 val ammV = "1.1.0-12-f07633d"
 

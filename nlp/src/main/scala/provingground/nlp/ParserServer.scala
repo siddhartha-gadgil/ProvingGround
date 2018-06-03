@@ -53,9 +53,6 @@ object ParserServer extends App {
           entity(as[String]) { txt =>
             println(s"parsing: $txt")
 
-            // complete(
-            //   HttpEntity(ContentTypes.`application/json`, Js.Obj("tree" -> "tree", "expr" -> "expr").toString
-            // ))
             val result =
               parseResult(txt)
             // println(s"Result:\n$result")
@@ -77,36 +74,36 @@ object ParserServer extends App {
 
   val indexHTML =
     """
-<!DOCTYPE html>
-
-<html>
-  <head>
-    <title>ProvingGround: Natural language translation</title>
-    <link rel="icon" href="resources/IIScLogo.jpg">
-    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/katex.min.css">
-    <link rel="stylesheet" href="resources/css/main.css">
-    <script src="resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
-
-
-  </head>
-  <body>
-
-  <div class="container">
-    <div id="halt"></div>
-    <h2> ProvingGround: Natural language translation </h2>
-
-    <div id="constituency-parser"></div>
-
-  </div>
-  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
-  <script>
-    parser.load()
-  </script>
-  </body>
-</html>
-"""
+      |<!DOCTYPE html>
+      |
+      |<html>
+      |  <head>
+      |    <title>ProvingGround: Natural language translation</title>
+      |    <link rel="icon" href="resources/IIScLogo.jpg">
+      |    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+      |    <link rel="stylesheet" href="resources/css/katex.min.css">
+      |    <link rel="stylesheet" href="resources/css/main.css">
+      |    <script src="resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
+      |    <script src="resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+      |
+      |
+      |  </head>
+      |  <body>
+      |
+      |  <div class="container">
+      |    <div id="halt"></div>
+      |    <h2> ProvingGround: Natural language translation </h2>
+      |
+      |    <div id="constituency-parser"></div>
+      |
+      |  </div>
+      |  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
+      |  <script>
+      |    parser.load()
+      |  </script>
+      |  </body>
+      |</html>
+    """.stripMargin
 
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
   println(s"Server online at http://localhost:8080/\nExit from the web page")
