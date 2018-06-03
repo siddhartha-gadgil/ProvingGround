@@ -56,7 +56,7 @@ object ConstituencyParser {
               code(`class` := "language-scala")(expr)
             ).render)
           val depTree = js.obj("deptree")
-          depTreeDiv.innerHTML = depTree.toString().replace("\"", "")
+          depTreeDiv.innerHTML = depTree.toString().drop(1).dropRight(1)
           g.hljs.highlightBlock(exprDiv)
           g.hljs.initHighlighting.called = false
           g.hljs.initHighlighting()

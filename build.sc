@@ -8,7 +8,7 @@ import coursier.maven.MavenRepository
 
 val scalaV = "2.12.6"
 
-val ammV = "1.1.0-12-f07633d"
+val ammV = "1.1.0"
 
 
 val commonLibs = List(
@@ -40,6 +40,11 @@ trait CommonModule extends ScalaModule with ScalafmtModule {
       "-deprecation",
       "-feature",
       "-language:existentials")
+
+  override def compile = T{
+    reformat()
+    super.compile()
+      }
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule{

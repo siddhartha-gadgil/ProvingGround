@@ -106,7 +106,7 @@ object ParserServer extends App {
     """.stripMargin
 
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
-  println(s"Server online at http://localhost:8080/\nExit from the web page")
+  println(s"Server online at http://localhost:8080/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
 
   while (keepAlive) {
     Thread.sleep(10)

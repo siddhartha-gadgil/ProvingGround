@@ -13,3 +13,9 @@ pre {
   color: green;
   font-weight: bold;
 }
+
+
+td, th {
+  background-color: #fff !important;
+  padding: 2px  !important;
+}
