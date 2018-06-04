@@ -240,7 +240,3 @@ object Site{
   }
 
 }
-
-object QuickSite extends App{
-  Site.mkSite()
-}

@@ -34,32 +34,14 @@ object ParserService  {
            "deptree" -> proseTree.view.replace("\n", ""))
   }
 
-  implicit val system: ActorSystem = ActorSystem("provingground-nlp")
+  implicit val system: ActorSystem = ActorSystem("provingground")
   implicit val materializer = ActorMaterializer()
 
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
 
-  var keepAlive = true
-
-  val baseRoute =
-    get {
-      path("resources" / Remaining) { path =>
-        println("serving from resource: " + path)
-        getFromResource(path)
-      }
-    } ~ get {
-      path("docs" / Remaining) { path =>
-        println("serving from resource: " + path)
-        getFromFile(s"docs/$path")
-      }
-    } ~ path("halt") {
-      keepAlive = false
-      complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "shutting down"))
-    }
-
-
+  import MantleService._
 
   val parserRoute =
     (pathSingleSlash | path("index.html")) {
@@ -130,7 +112,7 @@ object ParserService  {
 
 }
 object ParserServer extends App {
-  import ParserService._
+  import ParserService._,  MantleService.keepAlive
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
   println(s"Server online at http://localhost:8080/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
 
