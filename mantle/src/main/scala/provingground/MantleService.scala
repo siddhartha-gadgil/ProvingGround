@@ -62,7 +62,7 @@ object MantleService{
       }
     }
 
-
+   val route = baseRoute ~ buildRoute ~ homeRoute
 }
 
 
@@ -74,5 +74,18 @@ object MantleServer extends  App {
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
 
+  import MantleService._
 
+  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
+  println(s"Server online at http://localhost:8080/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
+
+  while (keepAlive) {
+    Thread.sleep(10)
+  }
+
+  println("starting shutdown")
+
+  bindingFuture
+    .flatMap(_.unbind()) // trigger unbinding from the port
+    .onComplete(_ ⇒ system.terminate()) // and shutdown when done
 }
