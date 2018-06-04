@@ -11,6 +11,8 @@ object Amm{
     val inpStream = new ByteArrayInputStream(
       (code + "\nexit\n").getBytes(StandardCharsets.UTF_8))
 
+    pprint.log("ready to run ammonite")
+
     val ammMain =
       Console.withIn(inpStream){
         Console.withErr(errLog){

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,8 @@
    <script src="../js/ace.js"></script>
    <script src="../js/katex.min.js"></script>
 
-        <!-- mathjax config similar to math.stackexchange -->
+    
+<!-- mathjax config similar to math.stackexchange -->
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 jax: ["input/TeX", "output/HTML-CSS"],
@@ -40,10 +41,10 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-
+    
   </head>
 
-
+   
 <body>
 <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -66,15 +67,14 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
                 <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-            </ul>
-          </li>
-      </ul>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -89,7 +89,7 @@ messageStyle: "none",
 <h2>Recursion for inductive types</h2>
 <p>We illustrate construction of inductive types, and defining functions on them recursively.</p>
 <p>We begin with some imports. The import induction.TLImplicits gives the operations to construct inductive types.</p>
-<pre><code class="language-scala">scala&gt;    
+<pre><code class="language-scala">scala&gt;        
 
 scala&gt; import provingground._ 
 
@@ -137,17 +137,17 @@ ff: Term = false
 
 scala&gt; tt 
 
-res15: Term = true
+res13: Term = true
 
 scala&gt; ff 
 
-res16: Term = false
+res14: Term = false
 </code></pre>
 <p>The most important methods on an inductive structure are the <code>rec</code> method for making recursive definition on the inductive type,
 and the corresponding method for dependent functions. The rec method takes as arguments the data giving the definition for the various constructors.</p>
 <pre><code class="language-scala">scala&gt; BoolInd.rec(Bool) 
 
-res17: Func[Term, Func[Term, Func[Term, Term]]] = (RecDataSym(true) :  Boolean) ↦ ((RecDataSym(false) :  Boolean) ↦ (rec(Boolean)(Boolean)(RecDataSym(true))(RecDataSym(false))))
+res15: Func[Term, Func[Term, Func[Term, Term]]] = (RecDataSym(true) :  Boolean) ↦ ((RecDataSym(false) :  Boolean) ↦ (rec(Boolean)(Boolean)(RecDataSym(true))(RecDataSym(false))))
 
 scala&gt; val recBoolBool = BoolInd.rec(Bool) 
 
@@ -155,7 +155,7 @@ recBoolBool: Func[Term, Func[Term, Func[Term, Term]]] = (RecDataSym(true) :  Boo
 
 scala&gt; recBoolBool.typ 
 
-res19: Typ[Func[Term, Func[Term, Func[Term, Term]]]] = (Boolean) → ((Boolean) → ((Boolean) → (Boolean)))
+res17: Typ[Func[Term, Func[Term, Func[Term, Term]]]] = (Boolean) → ((Boolean) → ((Boolean) → (Boolean)))
 </code></pre>
 <p>We can define functions recursively using terms obtained from the <code>rec</code> method.
 In the case of Booleans, the arguments are just the value of the function at true and false. The result is a function <code>f: Bool -&gt;: X</code> for a type <code>X</code></p>
@@ -165,11 +165,11 @@ not: Func[Term, Term] = rec(Boolean)(Boolean)(false)(true)
 
 scala&gt; not(ff) 
 
-res21: Term = true
+res19: Term = true
 
 scala&gt; not(tt) 
 
-res22: Term = false
+res20: Term = false
 
 scala&gt; assert(not(ff) == tt &amp;&amp; not(tt) == ff)
 </code></pre>
@@ -184,7 +184,7 @@ recBBB: Func[Func[Term, Term], Func[Func[Term, Term], Func[Term, Func[Term, Term
 
 scala&gt; recBBB.typ 
 
-res26: Typ[Func[Func[Term, Term], Func[Func[Term, Term], Func[Term, Func[Term, Term]]]]] = ((Boolean) → (Boolean)) → (((Boolean) → (Boolean)) → ((Boolean) → ((Boolean) → (Boolean))))
+res24: Typ[Func[Func[Term, Term], Func[Func[Term, Term], Func[Term, Func[Term, Term]]]]] = ((Boolean) → (Boolean)) → (((Boolean) → (Boolean)) → ((Boolean) → ((Boolean) → (Boolean))))
 
 scala&gt; val and = recBBB(lmbda(b)(b))(lmbda(b)(ff)) 
 
@@ -192,19 +192,19 @@ and: Func[Term, Func[Term, Term]] = rec(Boolean)((Boolean) → (Boolean))((b :  
 
 scala&gt; and(tt)(tt) 
 
-res28: Term = true
+res26: Term = true
 
 scala&gt; and(tt)(ff) 
 
-res29: Term = false
+res27: Term = false
 
 scala&gt; and(ff)(ff) 
 
-res30: Term = false
+res28: Term = false
 
 scala&gt; and(ff)(tt) 
 
-res31: Term = false
+res29: Term = false
 
 scala&gt; assert(and(tt)(tt)== tt &amp;&amp; and(tt)(ff) == ff &amp;&amp; and(ff)(tt) == ff &amp;&amp; and(ff)(ff) == ff)
 </code></pre>
@@ -237,7 +237,7 @@ recNatBool: Func[Term, Func[Func[Term, Func[Term, Term]], Func[Term, Term]]] = (
 
 scala&gt; recNatBool.typ 
 
-res37: Typ[Func[Term, Func[Func[Term, Func[Term, Term]], Func[Term, Term]]]] = (Boolean) → (((Nat) → ((Boolean) → (Boolean))) → ((Nat) → (Boolean)))
+res35: Typ[Func[Term, Func[Func[Term, Func[Term, Term]], Func[Term, Term]]]] = (Boolean) → (((Nat) → ((Boolean) → (Boolean))) → ((Nat) → (Boolean)))
 
 scala&gt; val n = &quot;n&quot; :: Nat 
 
@@ -265,11 +265,11 @@ four: Term = (succ) ((succ) ((succ) ((succ) (0))))
 
 scala&gt; even(two) 
 
-res44: Term = true
+res42: Term = true
 
 scala&gt; even(three) 
 
-res45: Term = false
+res43: Term = false
 </code></pre>
 <p>A more complicated example is addition of natural numbers.</p>
 <pre><code class="language-scala">scala&gt; val recNNN = NatInd.rec(Nat -&gt;: Nat) 
@@ -278,7 +278,7 @@ recNNN: Func[Func[Term, Term], Func[Func[Term, Func[Func[Term, Term], Func[Term,
 
 scala&gt; recNNN.typ 
 
-res47: Typ[Func[Func[Term, Term], Func[Func[Term, Func[Func[Term, Term], Func[Term, Term]]], Func[Term, Func[Term, Term]]]]] = ((Nat) → (Nat)) → (((Nat) → (((Nat) → (Nat)) → ((Nat) → (Nat)))) → ((Nat) → ((Nat) → (Nat))))
+res45: Typ[Func[Func[Term, Term], Func[Func[Term, Func[Func[Term, Term], Func[Term, Term]]], Func[Term, Func[Term, Term]]]]] = ((Nat) → (Nat)) → (((Nat) → (((Nat) → (Nat)) → ((Nat) → (Nat)))) → ((Nat) → ((Nat) → (Nat))))
 
 scala&gt; val m = &quot;m&quot; :: Nat 
 
@@ -294,14 +294,14 @@ add: Func[Term, Func[Term, Term]] = rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m)
 
 scala&gt; add(two)(one) 
 
-res51: Term = (succ) ((succ) ((succ) (0)))
+res49: Term = (succ) ((succ) ((succ) (0)))
 
 scala&gt; assert(add(two)(one) == three) 
 
 
 scala&gt; add(two)(two) == four 
 
-res53: Boolean = true
+res51: Boolean = true
 </code></pre>
 <p>Lists of elements of a type <code>A</code> form an inductive type <code>ListA</code>, again with two constructors:</p>
 <ul>
@@ -345,7 +345,7 @@ recLN: Func[Term, Func[Func[Term, Func[Term, Func[Term, Term]]], Func[Term, Term
 
 scala&gt; recLN.typ 
 
-res59: Typ[Func[Term, Func[Func[Term, Func[Term, Func[Term, Term]]], Func[Term, Term]]]] = (Nat) → (((A) → ((List(A)) → ((Nat) → (Nat)))) → ((List(A)) → (Nat)))
+res57: Typ[Func[Term, Func[Func[Term, Func[Term, Func[Term, Term]]], Func[Term, Term]]]] = (Nat) → (((A) → ((List(A)) → ((Nat) → (Nat)))) → ((List(A)) → (Nat)))
 
 scala&gt; val a = &quot;a&quot; :: A 
 
@@ -365,11 +365,11 @@ size: Func[Term, Term] = rec(List(A))(Nat)(0)((_ :  A) ↦ ((_ :  List(A)) ↦ (
 
 scala&gt; size(nil) 
 
-res64: Term = 0
+res62: Term = 0
 
 scala&gt; size(cons(a)(cons(a)(nil))) 
 
-res65: Term = (succ) ((succ) (0))
+res63: Term = (succ) ((succ) (0))
 </code></pre>
 <p>Another interesting inductive type is a binary rooted tree. This is our first description.
 We define the number of vertices recursively on this.</p>
@@ -405,7 +405,7 @@ recTN: Func[Term, Func[Func[Term, Func[Term, Func[Term, Func[Term, Term]]]], Fun
 
 scala&gt; recTN.typ 
 
-res71: Typ[Func[Term, Func[Func[Term, Func[Term, Func[Term, Func[Term, Term]]]], Func[Term, Term]]]] = (Nat) → (((Tree) → ((Nat) → ((Tree) → ((Nat) → (Nat))))) → ((Tree) → (Nat)))
+res69: Typ[Func[Term, Func[Func[Term, Func[Term, Func[Term, Func[Term, Term]]]], Func[Term, Term]]]] = (Nat) → (((Tree) → ((Nat) → ((Tree) → ((Nat) → (Nat))))) → ((Tree) → (Nat)))
 
 scala&gt;  
 
@@ -427,7 +427,7 @@ scala&gt;
 
 scala&gt; vertices(t) 
 
-res75: Term = (succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) (0)))))))))
+res73: Term = (succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) (0)))))))))
 
 scala&gt;  
 
@@ -437,7 +437,7 @@ nine: Term = (succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((su
 
 scala&gt; vertices(t) == nine 
 
-res77: Boolean = true
+res75: Boolean = true
 
 scala&gt; assert(vertices(t) == nine)
 </code></pre>
@@ -472,7 +472,7 @@ recBTN: Func[Term, Func[Func[Func[Term, Term], Func[Func[Term, Term], Term]], Fu
 
 scala&gt; recBTN.typ 
 
-res83: Typ[Func[Term, Func[Func[Func[Term, Term], Func[Func[Term, Term], Term]], Func[Term, Term]]]] = (Nat) → ((((Boolean) → (BinTree)) → (((Boolean) → (Nat)) → (Nat))) → ((BinTree) → (Nat)))
+res81: Typ[Func[Term, Func[Func[Func[Term, Term], Func[Func[Term, Term], Term]], Func[Term, Term]]]] = (Nat) → ((((Boolean) → (BinTree)) → (((Boolean) → (Nat)) → (Nat))) → ((BinTree) → (Nat)))
 
 scala&gt; val f = &quot;f&quot; :: Bool -&gt;: BT 
 
@@ -488,7 +488,7 @@ leaves: Func[Term, Term] = rec(BinTree)(Nat)((succ) (0))((_ :  (Boolean) → (Bi
 
 scala&gt; leaves(leaf) 
 
-res87: Term = (succ) (0)
+res85: Term = (succ) (0)
 
 scala&gt; val b = &quot;b&quot; :: Bool 
 
@@ -504,7 +504,7 @@ recBBT: Func[Term, Func[Term, Func[Term, Term]]] = (RecDataSym(true) :  BinTree)
 
 scala&gt; recBBT.typ 
 
-res91: Typ[Func[Term, Func[Term, Func[Term, Term]]]] = (BinTree) → ((BinTree) → ((Boolean) → (BinTree)))
+res89: Typ[Func[Term, Func[Term, Func[Term, Term]]]] = (BinTree) → ((BinTree) → ((Boolean) → (BinTree)))
 
 scala&gt; val ttn = recBBT(leaf)(t) 
 
@@ -516,7 +516,7 @@ t2: Term = (node) (rec(Boolean)(BinTree)(leaf)((node) ((_ :  Boolean) ↦ (leaf)
 
 scala&gt; leaves(t2) 
 
-res94: Term = (succ) ((succ) ((succ) (0)))
+res92: Term = (succ) ((succ) ((succ) (0)))
 </code></pre>
 <p>As some expresssions are very long, we import a method &quot;FansiShow&quot; that prints in a more concise way.
 In the REPL, this gives coloured output using ANSI strings.</p>
@@ -535,14 +535,14 @@ double: Func[Term, Term] = rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((suc
 
 scala&gt; double(two) == four 
 
-res98: Boolean = true
+res96: Boolean = true
 
 scala&gt; assert(double(two) == four) 
 
 
 scala&gt; double(succ(n)) 
 
-res100: Term = (succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n)))
+res98: Term = (succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n)))
 </code></pre>
 <p>All our recursive definitions so far of functions <code>f</code> have ignored <code>n</code> in defining <code>f(succ(n))</code>,
 and are only in terms of <code>f(n)</code>. We see a more complex definition, the sum of numbers up to <code>n</code>.
@@ -553,11 +553,11 @@ sumTo: Func[Term, Term] = rec(Nat)(Nat)(0)((m :  Nat) ↦ ((n :  Nat) ↦ ((succ
 
 scala&gt; sumTo(one) 
 
-res102: Term = (succ) (0)
+res100: Term = (succ) (0)
 
 scala&gt; sumTo(three).fansi 
 
-res103: String = &quot;succ(succ(succ(succ(succ(succ(0))))))&quot;
+res101: String = &quot;succ(succ(succ(succ(succ(succ(0))))))&quot;
 
 scala&gt; val ten = succ(nine) 
 
@@ -565,7 +565,7 @@ ten: Term = (succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((suc
 
 scala&gt; sumTo(four) == ten 
 
-res105: Boolean = true
+res103: Boolean = true
 
 scala&gt; assert(sumTo(four) == ten)
 </code></pre>
@@ -596,7 +596,7 @@ Namely to define the dependent function <code>f</code>, we must specify</p>
 <p>We define inductively a countdown function, giving the vector counting down from <code>n</code>.</p>
 <pre><code class="language-scala">scala&gt; val indNV = NatInd.induc(V) 
 
-indNV: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (Vec) (0)) ↦ ((InducDataSym(succ) :  $foeq ~&gt; (((Vec) ($foeq)) → ((Vec) ((succ) ($foeq))))) ↦ (ind(Nat)(Vec)(InducDataSym(0))(InducDataSym(succ))))
+indNV: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (Vec) (0)) ↦ ((InducDataSym(succ) :  $ktgkm ~&gt; (((Vec) ($ktgkm)) → ((Vec) ((succ) ($ktgkm))))) ↦ (ind(Nat)(Vec)(InducDataSym(0))(InducDataSym(succ))))
 
 scala&gt;  
 
@@ -610,19 +610,19 @@ countdown: FuncLike[Term, Term] = ind(Nat)(Vec)(nil)((m :  Nat) ↦ ((v_m :  (Ve
 
 scala&gt; countdown(zero) 
 
-res113: Term = nil
+res111: Term = nil
 
 scala&gt; countdown(one) 
 
-res114: Term = (((cons) (0)) ((succ) (0))) (nil)
+res112: Term = (((cons) (0)) ((succ) (0))) (nil)
 
 scala&gt; countdown(one).fansi 
 
-res115: String = &quot;cons(0)(succ(0))(nil)&quot;
+res113: String = &quot;cons(0)(succ(0))(nil)&quot;
 
 scala&gt; countdown(three).fansi 
 
-res116: String = &quot;cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))&quot;
+res114: String = &quot;cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))&quot;
 
 scala&gt; assert(countdown(three) ==
          consv(two)(three)(
@@ -632,11 +632,11 @@ scala&gt; assert(countdown(three) ==
 
 scala&gt; countdown(zero) == nilv 
 
-res118: Boolean = true
+res116: Boolean = true
 
 scala&gt; countdown(nine).fansi 
 
-res119: String = &quot;cons(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(succ(succ(succ(succ(succ(succ(succ(succ(succ(0))))))))))(cons(succ(succ(succ(succ(succ(succ(succ(0))))))))(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(cons(succ(succ(succ(succ(succ(succ(0)))))))(succ(succ(succ(succ(succ(succ(succ(0))))))))(cons(succ(succ(succ(succ(succ(0))))))(succ(succ(succ(succ(succ(succ(0)))))))(cons(succ(succ(succ(succ(0)))))(succ(succ(succ(succ(succ(0))))))(cons(succ(succ(succ(0))))(succ(succ(succ(succ(0)))))(cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))))))))&quot;
+res117: String = &quot;cons(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(succ(succ(succ(succ(succ(succ(succ(succ(succ(0))))))))))(cons(succ(succ(succ(succ(succ(succ(succ(0))))))))(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(cons(succ(succ(succ(succ(succ(succ(0)))))))(succ(succ(succ(succ(succ(succ(succ(0))))))))(cons(succ(succ(succ(succ(succ(0))))))(succ(succ(succ(succ(succ(succ(0)))))))(cons(succ(succ(succ(succ(0)))))(succ(succ(succ(succ(succ(0))))))(cons(succ(succ(succ(0))))(succ(succ(succ(succ(0)))))(cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))))))))&quot;
 </code></pre>
 <p>We now illustrate a simple instance of using <em>propositions as proofs</em>.
 The type family <code>isEven : Nat -&gt;: Type</code> gives a type representing whether a natural number is even.
@@ -678,7 +678,7 @@ hyp: Term with Subs[Term] = isEven(double(n))
 
 scala&gt; val inducDoubleEven = NatInd.induc(n :-&gt; isEven(double(n))) 
 
-inducDoubleEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (isEven) (0)) ↦ ((InducDataSym(succ) :  $ajdqi ~&gt; (((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($ajdqi))) → ((isEven) ((succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($ajdqi))))))) ↦ (ind(Nat)((n :  Nat) ↦ ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))))(InducDataSym(0))(InducDataSym(succ))))
+inducDoubleEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (isEven) (0)) ↦ ((InducDataSym(succ) :  $lwvwe ~&gt; (((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($lwvwe))) → ((isEven) ((succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($lwvwe))))))) ↦ (ind(Nat)((n :  Nat) ↦ ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))))(InducDataSym(0))(InducDataSym(succ))))
 
 scala&gt; val pfDoubleEven =
          inducDoubleEven(
@@ -730,7 +730,7 @@ scala&gt;
 
 scala&gt; val inducSuccEven = NatInd.induc(succEven) 
 
-inducSuccEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  PlusTyp((isEven) (0),(isEven) ((succ) (0)))) ↦ ((InducDataSym(succ) :  $aknlv ~&gt; ((PlusTyp((isEven) ($aknlv),(isEven) ((succ) ($aknlv)))) → (PlusTyp((isEven) ((succ) ($aknlv)),(isEven) ((succ) ((succ) ($aknlv))))))) ↦ (ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(InducDataSym(0))(InducDataSym(succ))))
+inducSuccEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  PlusTyp((isEven) (0),(isEven) ((succ) (0)))) ↦ ((InducDataSym(succ) :  $lyfrr ~&gt; ((PlusTyp((isEven) ($lyfrr),(isEven) ((succ) ($lyfrr)))) → (PlusTyp((isEven) ((succ) ($lyfrr)),(isEven) ((succ) ((succ) ($lyfrr))))))) ↦ (ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(InducDataSym(0))(InducDataSym(succ))))
 
 scala&gt;  
 
@@ -768,19 +768,19 @@ hyp: Equality[Term] with Subs[Equality[Term]] = hypothesis : ((f) (0) = (f) (n))
 
 scala&gt; val step = hyp :-&gt; {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) } 
 
-step: Func[Equality[Term] with Subs[Equality[Term]], Equality[Term with Subs[Term]]] = (hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($algqt :  A) ↦ (($algqu :  A) ↦ ($algqt = $algqu))((f) (0))((f) (n))}{($alduw :  A) ↦ (($aldux :  A) ↦ ((_ : ($alduw = $aldux) :  $alduw = $aldux) ↦ (($aldux = (f) ((succ) (n))) → ($alduw = (f) ((succ) (n))))))}(($alduw :  A) ↦ (($alejm : ($alduw = (f) ((succ) (n))) :  $alduw = (f) ((succ) (n))) ↦ ($alejm : ($alduw = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))
+step: Func[Equality[Term] with Subs[Equality[Term]], Equality[Term with Subs[Term]]] = (hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($lyywp :  A) ↦ (($lyywq :  A) ↦ ($lyywp = $lyywq))((f) (0))((f) (n))}{($lywas :  A) ↦ (($lywat :  A) ↦ ((_ : ($lywas = $lywat) :  $lywas = $lywat) ↦ (($lywat = (f) ((succ) (n))) → ($lywas = (f) ((succ) (n))))))}(($lywas :  A) ↦ (($lywpi : ($lywas = (f) ((succ) (n))) :  $lywas = (f) ((succ) (n))) ↦ ($lywpi : ($lywas = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))
 
 scala&gt;  
 
 scala&gt; val inducClaim = NatInd.induc(claim) 
 
-inducClaim: Func[Equality[Term], Func[FuncLike[Term, Func[Equality[Term], Equality[Term]]], FuncLike[Term, Equality[Term]]]] = (InducDataSym(0) : ((f) (0) = (f) (0)) :  (f) (0) = (f) (0)) ↦ ((InducDataSym(succ) :  $algte ~&gt; (((f) (0) = (f) ($algte)) → ((f) (0) = (f) ((succ) ($algte))))) ↦ (ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(InducDataSym(0) : ((f) (0) = (f) (0)))(InducDataSym(succ))))
+inducClaim: Func[Equality[Term], Func[FuncLike[Term, Func[Equality[Term], Equality[Term]]], FuncLike[Term, Equality[Term]]]] = (InducDataSym(0) : ((f) (0) = (f) (0)) :  (f) (0) = (f) (0)) ↦ ((InducDataSym(succ) :  $lyyza ~&gt; (((f) (0) = (f) ($lyyza)) → ((f) (0) = (f) ((succ) ($lyyza))))) ↦ (ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(InducDataSym(0) : ((f) (0) = (f) (0)))(InducDataSym(succ))))
 
 scala&gt;  
 
 scala&gt; val pf = inducClaim(base)(n :~&gt; step) !: (n ~&gt;: (f(zero) =:= f(n))) 
 
-pf: FuncLike[Term with Subs[Term], Equality[Term]] = ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(Refl(A,(f) (0)))((n :  Nat) ↦ ((hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($almgz :  A) ↦ (($almha :  A) ↦ ($almgz = $almha))((f) (0))((f) (n))}{($alduw :  A) ↦ (($aldux :  A) ↦ ((_ : ($alduw = $aldux) :  $alduw = $aldux) ↦ (($aldux = (f) ((succ) (n))) → ($alduw = (f) ((succ) (n))))))}(($alduw :  A) ↦ (($alejm : ($alduw = (f) ((succ) (n))) :  $alduw = (f) ((succ) (n))) ↦ ($alejm : ($alduw = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))))
+pf: FuncLike[Term with Subs[Term], Equality[Term]] = ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(Refl(A,(f) (0)))((n :  Nat) ↦ ((hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($lzemv :  A) ↦ (($lzemw :  A) ↦ ($lzemv = $lzemw))((f) (0))((f) (n))}{($lywas :  A) ↦ (($lywat :  A) ↦ ((_ : ($lywas = $lywat) :  $lywas = $lywat) ↦ (($lywat = (f) ((succ) (n))) → ($lywas = (f) ((succ) (n))))))}(($lywas :  A) ↦ (($lywpi : ($lywas = (f) ((succ) (n))) :  $lywas = (f) ((succ) (n))) ↦ ($lywpi : ($lywas = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))))
 
 scala&gt;
 </code></pre>
@@ -834,7 +834,7 @@ scala&gt;
 
 scala&gt; vcons.typ.fansi 
 
-res148: String = &quot;\u001b[36m\u220f\u001b[93m(\u001b[39m$alrak\u001b[33m : \u001b[39mNat\u001b[93m)\u001b[91m{ \u001b[39m(A \u001b[91m\u2192\u001b[39m (Vec($alrak) \u001b[91m\u2192\u001b[39m Vec(succ($alrak))))\u001b[91m }\u001b[39m&quot;
+res146: String = &quot;\u001b\u220f\u001b(\u001b$lzjgg\u001b : \u001bNat\u001b)\u001b{ \u001b(A \u001b\u2192\u001b (Vec($lzjgg) \u001b\u2192\u001b Vec(succ($lzjgg))))\u001b }\u001b&quot;
 </code></pre>
 <p>We can define function recursively on vectors of all indices. For instance, we can define the size.</p>
 <pre><code class="language-scala">scala&gt; val vn = &quot;v_n&quot; :: Vec(n) 
@@ -843,15 +843,15 @@ vn: Term with Subs[Term] = v_n
 
 scala&gt; val recVN = VecInd.rec(Nat) 
 
-recVN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $alraw ~&gt; ((A) → (((Vec) ($alraw)) → ((Nat) → (Nat))))) ↦ (($alrar :  Nat) ↦ (rec{Vec($alrar)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
+recVN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $lzjgs ~&gt; ((A) → (((Vec) ($lzjgs)) → ((Nat) → (Nat))))) ↦ (($lzjgn :  Nat) ↦ (rec{Vec($lzjgn)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
 
 scala&gt; val size = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m)))))) 
 
-size: FuncLike[Term, Func[Term, Term]] = ($alrar :  Nat) ↦ (rec{Vec($alrar)}{Nat}(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m)))))))
+size: FuncLike[Term, Func[Term, Term]] = ($lzjgn :  Nat) ↦ (rec{Vec($lzjgn)}{Nat}(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m)))))))
 
 scala&gt; size(zero)(vnil) 
 
-res152: Term = 0
+res150: Term = 0
 
 scala&gt; val v1 = vcons(zero)(a)(vnil) 
 
@@ -859,7 +859,7 @@ v1: Term = (((cons) (0)) (a)) (nil)
 
 scala&gt; size(one)(v1) 
 
-res154: Term = (succ) (0)
+res152: Term = (succ) (0)
 
 scala&gt; assert(size(one)(v1) == one)
 </code></pre>
@@ -905,7 +905,7 @@ scala&gt;
 
 scala&gt; val recVNN                  = VecNInd.rec(Nat) 
 
-recVNN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $altok ~&gt; ((Nat) → (((Vec(Nat)) ($altok)) → ((Nat) → (Nat))))) ↦ (($altof :  Nat) ↦ (rec{Vec(Nat)($altof)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
+recVNN: Func[Term, Func[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  $lzlug ~&gt; ((Nat) → (((Vec(Nat)) ($lzlug)) → ((Nat) → (Nat))))) ↦ (($lzlub :  Nat) ↦ (rec{Vec(Nat)($lzlub)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
 
 scala&gt; val vnilN :: vconsN :: HNil = VecNInd.intros 
 
@@ -920,13 +920,13 @@ k: Term with Subs[Term] = k
 
 scala&gt; val vsum = recVNN(zero)(n :~&gt;(k :-&gt; (vnn :-&gt;(m :-&gt; (add(m)(k)) )))) 
 
-vsum: FuncLike[Term, Func[Term, Term]] = ($altof :  Nat) ↦ (rec{Vec(Nat)($altof)}{Nat}(0)((n :  Nat) ↦ ((k :  Nat) ↦ ((_ :  (Vec(Nat)) (n)) ↦ ((m :  Nat) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (k)))))))
+vsum: FuncLike[Term, Func[Term, Term]] = ($lzlub :  Nat) ↦ (rec{Vec(Nat)($lzlub)}{Nat}(0)((n :  Nat) ↦ ((k :  Nat) ↦ ((_ :  (Vec(Nat)) (n)) ↦ ((m :  Nat) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (k)))))))
 
 scala&gt;  
 
 scala&gt; vsum(zero)(vnilN) 
 
-res163: Term = 0
+res161: Term = 0
 
 scala&gt; val v2 = vconsN(zero)(two)(vnilN) 
 
@@ -934,7 +934,7 @@ v2: Term = (((cons) (0)) ((succ) ((succ) (0)))) (nil)
 
 scala&gt; vsum(one)(v2) 
 
-res165: Term = (succ) ((succ) (0))
+res163: Term = (succ) ((succ) (0))
 
 scala&gt; assert(vsum(one)(v2) == two) 
 
@@ -947,20 +947,26 @@ v3: Term = (((cons) ((succ) (0))) ((succ) (0))) ((((cons) (0)) ((succ) ((succ) (
 
 scala&gt; v3.fansi 
 
-res168: String = &quot;cons(succ(0))(succ(0))(cons(0)(succ(succ(0)))(nil))&quot;
+res166: String = &quot;cons(succ(0))(succ(0))(cons(0)(succ(succ(0)))(nil))&quot;
 
 scala&gt; vsum(two)(v3) 
 
-res169: Term = (succ) ((succ) ((succ) (0)))
+res167: Term = (succ) ((succ) ((succ) (0)))
 
-scala&gt; assert(vsum(two)(v3) == three)
+scala&gt; assert(vsum(two)(v3) == three) 
+
+
+scala&gt;  
+
+scala
 </code></pre>
-<h3>Git Log</h3>
-<pre><code>commit ab4b28e54cc3e9b6bcff3f67c93735f30c6f0387
+<h4>Git Log when running tutorial</h4>
+<pre><code>commit be7ffe1d9568b0d70a24d6c01ac64560ed5b43ba
+Merge: dd74ae6c 6f3b5fa5
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Fri Jun 1 09:00:38 2018 +0530
+Date:   Mon Jun 4 10:09:19 2018 +0530
 
-    remarks, debug scratchpad; ServerModule
+    Merge branch 'master' of https://github.com/siddhartha-gadgil/ProvingGround
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>
@@ -982,8 +988,6 @@ Date:   Fri Jun 1 09:00:38 2018 +0530
   </h4>
 
   </div>
-
-
 </div>
 <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
@@ -991,6 +995,7 @@ Date:   Fri Jun 1 09:00:38 2018 +0530
 <script>
   provingground.main()
 </script>
-
+   
 </body>
 </html>
+   

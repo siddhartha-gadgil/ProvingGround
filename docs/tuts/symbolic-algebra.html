@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,8 @@
    <script src="../js/ace.js"></script>
    <script src="../js/katex.min.js"></script>
 
-        <!-- mathjax config similar to math.stackexchange -->
+    
+<!-- mathjax config similar to math.stackexchange -->
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 jax: ["input/TeX", "output/HTML-CSS"],
@@ -40,10 +41,10 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-
+    
   </head>
 
-
+   
 <body>
 <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -66,15 +67,14 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
                 <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-            </ul>
-          </li>
-      </ul>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -101,7 +101,7 @@ messageStyle: "none",
 <li>a scala representation</li>
 <li>a (spire) ring structure on the underlying terms.</li>
 </ul>
-<pre><code class="language-scala">scala&gt;    
+<pre><code class="language-scala">scala&gt;        
 
 scala&gt; import provingground._ 
 
@@ -144,20 +144,20 @@ import spire.implicits._
 <p>A sum gives a SigmaTerm, which only stores a set of terms being added.</p>
 <pre><code class="language-scala">scala&gt; n + m 
 
-res15: LocalTerm = (n + m)
+res13: LocalTerm = (n + m)
 
 scala&gt; (n + m) + n 
 
-res16: LocalTerm = (m + ((prod) (2)) (n))
+res14: LocalTerm = (m + ((prod) (2)) (n))
 </code></pre>
 <p>Addition is commutative and associative, even when it involves repeated terms.</p>
 <pre><code class="language-scala">scala&gt; n + m == m + n 
 
-res17: Boolean = true
+res15: Boolean = true
 
 scala&gt; (n + m) + k == n + (m + k) 
 
-res18: Boolean = true
+res16: Boolean = true
 
 scala&gt; assert(n + m == m + n) 
 
@@ -169,14 +169,14 @@ scala&gt;
 
 scala&gt; (n + n) + m == (n + m) + n 
 
-res21: Boolean = true
+res19: Boolean = true
 
 scala&gt; assert{(n + n) + m == (n + m) + n}
 </code></pre>
 <p>Similarly, multiplication is commutative and associative, and distributes over addition. Multiplication gives Pi-terms with parameter a map to exponents.</p>
 <pre><code class="language-scala">scala&gt; n * m == m * n 
 
-res23: Boolean = true
+res21: Boolean = true
 
 scala&gt; assert{n * m == m * n} 
 
@@ -185,13 +185,13 @@ scala&gt;
 
 scala&gt; n * (m * k) 
 
-res25: LocalTerm = (k * n * m)
+res23: LocalTerm = (k * n * m)
 
 scala&gt;  
 
 scala&gt; n * (m + k) 
 
-res26: LocalTerm = ((n * m) + (k * n))
+res24: LocalTerm = ((n * m) + (k * n))
 
 scala&gt;  
 
@@ -200,7 +200,7 @@ scala&gt; assert(n* (m + k) == n * m + n * k)
 <p>When literals are involved, the expresssions are simplified</p>
 <pre><code class="language-scala">scala&gt; 1 + (n + 2) 
 
-res28: LocalTerm = ((sum) (3)) (n)
+res26: LocalTerm = ((sum) (3)) (n)
 </code></pre>
 <h3>Symbolic definitions</h3>
 <p>We can use the expressions from these functions in lambdas. For this we need correct substitution.</p>
@@ -216,7 +216,7 @@ scala&gt;
 
 scala&gt; fn(3) 
 
-res31: LocalTerm = 9
+res29: LocalTerm = 9
 
 scala&gt;  
 
@@ -227,14 +227,14 @@ scala&gt;
 
 scala&gt; fn(k) 
 
-res33: LocalTerm = (k^{2})
+res31: LocalTerm = (k^{2})
 </code></pre>
 <p>We have used an implicit conversion above to view <code>9</code> as a member of the type <code>Nat</code></p>
 <h3>Recursive definitions</h3>
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
 <pre><code class="language-scala">scala&gt; val m = lmbda(n)(prod(n + 1)) 
 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@3a619c40 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@3a619c40 + (n * provingground.HoTT$Typ$newname$2$@3a619c40))))
+m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@35a86255 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@35a86255 + (provingground.HoTT$Typ$newname$2$@35a86255 * n))))
 
 scala&gt; val factorial = Rec(1: Nat, m) 
 
@@ -244,11 +244,11 @@ scala&gt;
 
 scala&gt; factorial(3) 
 
-res36: LocalTerm = 6
+res34: LocalTerm = 6
 
 scala&gt; factorial(5) 
 
-res37: LocalTerm = 120
+res35: LocalTerm = 120
 
 scala&gt; assert(factorial(5) == (120 : Nat))
 </code></pre>
@@ -256,18 +256,24 @@ scala&gt; assert(factorial(5) == (120 : Nat))
 <p>If we apply a recursive function to a sum n+k with k a literal (say k = 2), then the result simplifies as much as possible by expanding tail recursively in the literal.</p>
 <pre><code class="language-scala">scala&gt; factorial(k + 2) == factorial(k) * (k + 2) * (k + 1) 
 
-res39: Boolean = true
+res37: Boolean = true
 
 scala&gt;  
 
-scala&gt; assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
-</code></pre>
-<h3>Git Log</h3>
-<pre><code>commit ab4b28e54cc3e9b6bcff3f67c93735f30c6f0387
-Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Fri Jun 1 09:00:38 2018 +0530
+scala&gt; assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)} 
 
-    remarks, debug scratchpad; ServerModule
+
+scala&gt;  
+
+scala
+</code></pre>
+<h4>Git Log when running tutorial</h4>
+<pre><code>commit be7ffe1d9568b0d70a24d6c01ac64560ed5b43ba
+Merge: dd74ae6c 6f3b5fa5
+Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
+Date:   Mon Jun 4 10:09:19 2018 +0530
+
+    Merge branch 'master' of https://github.com/siddhartha-gadgil/ProvingGround
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>
@@ -289,8 +295,6 @@ Date:   Fri Jun 1 09:00:38 2018 +0530
   </h4>
 
   </div>
-
-
 </div>
 <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
@@ -298,6 +302,7 @@ Date:   Fri Jun 1 09:00:38 2018 +0530
 <script>
   provingground.main()
 </script>
-
+   
 </body>
 </html>
+   

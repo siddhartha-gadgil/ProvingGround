@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,8 @@
    <script src="js/ace.js"></script>
    <script src="js/katex.min.js"></script>
 
-        <!-- mathjax config similar to math.stackexchange -->
+    
+<!-- mathjax config similar to math.stackexchange -->
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 jax: ["input/TeX", "output/HTML-CSS"],
@@ -40,10 +41,10 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-
+    
   </head>
 
-
+   
 <body>
 <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -66,15 +67,14 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
                 <li><a href="tuts/hott.html">HoTT</a></li><li><a href="tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="tuts/inductive-types.html">Inductive Types</a></li><li><a href="tuts/scalarep.html">ScalaRep</a></li><li><a href="tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-            </ul>
-          </li>
-      </ul>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-            <img src="GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+              <img src="GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -100,7 +100,11 @@ messageStyle: "none",
 <p>At present the best way to interact with most of the code is to use a console in either <a href="https://www.lihaoyi.com/mill/">mill</a> or <code>sbt</code> (the primary build tool is now <a href="https://www.lihaoyi.com/mill/">mill</a>). To pop up a console with most of the code in scope, install <a href="https://www.lihaoyi.com/mill/">mill</a> and run:</p>
 <pre><code>mill mantle.repl
 </code></pre>
-<p>Some experiments with the HoTT interface can be done in the scratchpad below. Other illustrations and a server are coming soon.</p>
+<p>To experiment with <em>natural language processing</em>, a basic server can be started by running</p>
+<pre><code>mill nlp.run
+</code></pre>
+<p>and going to <code>localhost:8080</code> on the browser. To experiment with the code, you can use the <code>--watch</code> flag so the system restarts after shutting down from the browser.</p>
+<p>Some experiments with the HoTT interface can be done in the scratchpad below.</p>
 <h2>HoTT scratchpad</h2>
 <p>The scratchpad below is a limited interpreter for our implementation of Homotopy Type Theory. At present it interprets</p>
 <ul>
@@ -117,7 +121,7 @@ val a = &quot;a&quot; :: A
 val f = &quot;f&quot; :: (A -&gt;: B) // the type A -&gt;: B corresponds to A =&gt; B
 
 // 'mp' proves A =&gt; ((A =&gt; B) =&gt; B)
-val mp = a :-&gt; (f :-&gt; f(a)) 
+val mp = a :-&gt; (f :-&gt; f(a))
 </code></pre>
 <div id="hott-scratch"></div>
 
@@ -137,8 +141,6 @@ val mp = a :-&gt; (f :-&gt; f(a))
   </h4>
 
   </div>
-
-
 </div>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -146,6 +148,7 @@ val mp = a :-&gt; (f :-&gt; f(a))
 <script>
   provingground.main()
 </script>
-
+   
 </body>
 </html>
+   

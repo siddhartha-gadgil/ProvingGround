@@ -15,13 +15,13 @@ def mkTut(f: String): String = {
 
   val top =
   """
-  repl.frontEnd() = ammonite.repl.AmmoniteFrontEnd()
-  interp.colors() = ammonite.util.Colors.BlackWhite
-  import ammonite.ops._
-  interp.load.cp(pwd / 'out/'mantle/'assembly/'dest/"out.jar")
-  repl.pprinter.bind(provingground.translation.FansiShow.simplePrint)
-  repl.prompt() = "scala> "
-  """
+    |  repl.frontEnd() = ammonite.repl.AmmoniteFrontEnd()
+    |  interp.colors() = ammonite.util.Colors.BlackWhite
+    |  import ammonite.ops._
+    |  interp.load.cp(pwd / 'out/'mantle/'assembly/'dest/"out.jar")
+    |  repl.pprinter.bind(provingground.translation.FansiShow.simplePrint)
+    |  repl.prompt() = "scala> "
+  """.stripMargin
 
   val spl = f.split("```tut").map(_.split("```").toVector).toVector
   val tutcode =

@@ -86,14 +86,14 @@
       
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
-homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
 in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
-    </li><li name="provingground.interface" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="interface"></a><a id="interface:interface"></a>
+    </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="induction"></a><a id="induction:induction"></a>
       <span class="permalink">
-      <a href="../provingground/index.html#interface" title="Permalink">
+      <a href="../provingground/index.html#induction" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -102,165 +102,69 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html"><span class="name">interface</span></a>
+        <a title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts) and of (dependent) functions on these by recursion and induction These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)." href="index.html"><span class="name">induction</span></a>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li class="current-entities indented2">
+      <p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points).</p><div class="fullcomment"><div class="comment cmt"><p>Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
+and of (dependent) functions on these by recursion and induction
+These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points). In HoTT,
+recursion and induction are applications of (dependent) functions <code>rec_W,X</code> and  <code>ind_W, Xs</code> to the <code><code>definition data</code></code>.</p><p>It is useful to capture information regarding inductive types and the recursion and induction functions in scala types. Our implementation
+is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> (without specifying the type)
+and <a href="ConstructorTL.html" class="extype" name="provingground.induction.ConstructorTL">ConstructorTL</a> including the specific type. The full definition is in <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
+scala type of the <code>rec_W,X</code> and <code>induc_W, Xs</code> functions depends on the scala type of the codomain <code>X</code> (or family <code>Xs</code>).
+To make these types visible, some type level calculations using  implicits are done, giving traits <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>
+and <a href="ConstructorSeqMap.html" class="extype" name="provingground.induction.ConstructorSeqMap">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
+single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="extype" name="provingground.induction.ConstructorSeqMapper">ConstructorSeqMapper</a> and <a href="ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.induction.ExstInducStruc" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ExstInducStruc"></a><a id="ExstInducStruc:ExstInducStruc"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/index.html#ExstInducStruc" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ExstInducStruc$.html"><span class="name">ExstInducStruc</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
+    </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="AmmRepl$.html" title=""></a>
-                        <a href="AmmRepl$.html" title="">AmmRepl</a>
-                      </li><li class="current-entities indented2">
+                        <a class="object" href="ExstInducStruc$$Base$.html" title=""></a>
+                        <a href="ExstInducStruc$$Base$.html" title="">Base</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="Blender.html" title=""></a>
-                        <a href="Blender.html" title="">Blender</a>
-                      </li><li class="current-entities indented2">
+                        <a class="class" href="" title=""></a>
+                        <a href="" title="">ConsSeqExst</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="FileName$.html" title=""></a>
-                        <a href="FileName$.html" title="">FileName</a>
-                      </li><li class="current-entities indented2">
+                        <a class="class" href="ExstInducStruc$$IndConsSeqExst.html" title=""></a>
+                        <a href="ExstInducStruc$$IndConsSeqExst.html" title="">IndConsSeqExst</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="Header$.html" title=""></a>
-                        <a href="Header$.html" title="">Header</a>
-                      </li><li class="current-entities indented2">
+                        <a class="class" href="ExstInducStruc$$LambdaInduc.html" title=""></a>
+                        <a href="ExstInducStruc$$LambdaInduc.html" title="">LambdaInduc</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="HttpServer$.html" title=""></a>
-                        <a href="HttpServer$.html" title="">HttpServer</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="IndexedIndMod.html" title=""></a>
-                        <a href="IndexedIndMod.html" title="">IndexedIndMod</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="JsFunc$.html" title=""></a>
-                        <a class="trait" href="JsFunc.html" title=""></a>
-                        <a href="JsFunc.html" title="">JsFunc</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="LeanCodeGen$.html" title=""></a>
-                        <a class="class" href="LeanCodeGen.html" title=""></a>
-                        <a href="LeanCodeGen.html" title="">LeanCodeGen</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="LeanContextException.html" title=""></a>
-                        <a href="LeanContextException.html" title="">LeanContextException</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="LeanExportElem$.html" title=""></a>
-                        <a class="trait" href="LeanExportElem.html" title=""></a>
-                        <a href="LeanExportElem.html" title="">LeanExportElem</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="LeanExprToTerm.html" title=""></a>
-                        <a href="LeanExprToTerm.html" title="">LeanExprToTerm</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="LeanIO$.html" title=""></a>
-                        <a href="LeanIO$.html" title="">LeanIO</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="LeanInterface$.html" title=""></a>
-                        <a href="LeanInterface$.html" title="">LeanInterface</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="LeanParse.html" title=""></a>
-                        <a href="LeanParse.html" title="">LeanParse</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="LeanParser$.html" title=""></a>
-                        <a class="class" href="LeanParser.html" title=""></a>
-                        <a href="LeanParser.html" title="">LeanParser</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="LeanToTerm$.html" title=""></a>
-                        <a class="class" href="LeanToTerm.html" title=""></a>
-                        <a href="LeanToTerm.html" title="">LeanToTerm</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="LeanToTermMonix$.html" title=""></a>
-                        <a class="class" href="LeanToTermMonix.html" title=""></a>
-                        <a href="LeanToTermMonix.html" title="">LeanToTermMonix</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="LeanToTermMut$.html" title=""></a>
-                        <a class="class" href="LeanToTermMut.html" title=""></a>
-                        <a href="LeanToTermMut.html" title="">LeanToTermMut</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="NewParseDiffersException.html" title=""></a>
-                        <a href="NewParseDiffersException.html" title="">NewParseDiffersException</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="NoConstantException.html" title=""></a>
-                        <a href="NoConstantException.html" title="">NoConstantException</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="NoIndexedInducE.html" title=""></a>
-                        <a href="NoIndexedInducE.html" title="">NoIndexedInducE</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="QDI$.html" title=""></a>
-                        <a href="QDI$.html" title="">QDI</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="RecFoldException.html" title=""></a>
-                        <a href="RecFoldException.html" title="">RecFoldException</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="RecFuncException.html" title=""></a>
-                        <a href="RecFuncException.html" title="">RecFuncException</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="ReflPickle$.html" title="Reflection based picking for case objects which are terms."></a>
-                        <a href="ReflPickle$.html" title="Reflection based picking for case objects which are terms.">ReflPickle</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="Sampler$.html" title=""></a>
-                        <a href="Sampler$.html" title="">Sampler</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ServerStart.html" title=""></a>
-                        <a href="ServerStart.html" title="">ServerStart</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="SimpleIndMod.html" title=""></a>
-                        <a href="SimpleIndMod.html" title="">SimpleIndMod</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="SvgPlot$.html" title=""></a>
-                        <a class="class" href="SvgPlot.html" title=""></a>
-                        <a href="SvgPlot.html" title="">SvgPlot</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="TermIndMod.html" title=""></a>
-                        <a href="TermIndMod.html" title="">TermIndMod</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="TermJson$.html" title=""></a>
-                        <a href="TermJson$.html" title="">TermJson</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="TermObj$.html" title=""></a>
-                        <a href="TermObj$.html" title="">TermObj</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="TermSampler$.html" title=""></a>
-                        <a class="class" href="TermSampler.html" title=""></a>
-                        <a href="TermSampler.html" title="">TermSampler</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="UnParsedException.html" title=""></a>
-                        <a href="UnParsedException.html" title="">UnParsedException</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="WebServer$.html" title=""></a>
-                        <a href="WebServer$.html" title="">WebServer</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="" title=""></a>
-                        <a href="" title="">amm</a>
+                        <a class="class" href="ExstInducStruc$$OrElse.html" title=""></a>
+                        <a href="ExstInducStruc$$OrElse.html" title="">OrElse</a>
                       </li>
               </ul>
             </div>
           </div>
           <div id="content">
-            <body class="object value">
+            <body class="class type">
       <div id="definition">
-        <div class="big-circle object">o</div>
-        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.interface">interface</a></p>
-        <h1>amm<span class="permalink">
-      <a href="../../provingground/interface/amm$.html" title="Permalink">
+        <div class="big-circle class">c</div>
+        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.induction">induction</a>.<a href="ExstInducStruc$.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></p>
+        <h1>ConsSeqExst<span class="permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -270,10 +174,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">amm</span>
+        <span class="name">ConsSeqExst</span><span class="tparams">[<span name="SS">SS &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="H">H &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.H">H</span>]</span>, <span name="Intros">Intros &lt;: <span class="extype" name="shapeless.HList">HList</span></span>]</span><span class="params">(<span name="cs">cs: <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[<span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.SS">SS</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.H">H</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.Intros">Intros</span>]</span>)</span><span class="result"> extends <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -282,7 +186,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -308,7 +212,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.interface.amm"><span>amm</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.induction.ExstInducStruc.ConsSeqExst"><span>ConsSeqExst</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.induction.ExstInducStruc"><span>ExstInducStruc</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -326,7 +230,26 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
       <div id="template">
         <div id="allMembers">
-        
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="provingground.induction.ExstInducStruc.ConsSeqExst#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(cs:provingground.induction.ConstructorSeqTL[SS,H,Intros]):provingground.induction.ExstInducStruc.ConsSeqExst[SS,H,Intros]"></a><a id="&lt;init&gt;:ConsSeqExst[SS,H,Intros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#&lt;init&gt;(cs:provingground.induction.ConstructorSeqTL[SS,H,Intros]):provingground.induction.ExstInducStruc.ConsSeqExst[SS,H,Intros]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ConsSeqExst</span><span class="params">(<span name="cs">cs: <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[<span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.SS">SS</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.H">H</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.Intros">Intros</span>]</span>)</span>
+      </span>
+      
+      
+    </li></ol>
+            </div>
 
         
 
@@ -338,7 +261,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -354,7 +277,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html###():Int" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -370,7 +293,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -383,42 +306,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.interface.amm#ammMain" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ammMain:ammonite.Main"></a><a id="ammMain:Main"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#ammMain:ammonite.Main" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">ammMain</span><span class="result">: <span class="extype" name="ammonite.Main">Main</span></span>
-      </span>
-      
-      
-    </li><li name="provingground.interface.amm#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply():Unit"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#apply():Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">apply</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      
-      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -434,7 +325,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#clone():Object" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -455,10 +346,26 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.induction.ExstInducStruc.ConsSeqExst#cs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="cs:provingground.induction.ConstructorSeqTL[SS,H,Intros]"></a><a id="cs:ConstructorSeqTL[SS,H,Intros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#cs:provingground.induction.ConstructorSeqTL[SS,H,Intros]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cs</span><span class="result">: <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>[<span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.SS">SS</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.H">H</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.Intros">Intros</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -471,26 +378,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#equals(x$1:Any):Boolean" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#finalize():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -512,7 +403,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#getClass():Class[_]" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -528,10 +419,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
+    </li><li name="provingground.induction.ExstInducStruc.ConsSeqExst#inducOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a><a id="inducOpt(Term,Term):Option[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#hashCode():Int" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -540,33 +431,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">inducOpt</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
-                <span class="name">@native</span><span class="args">()</span>
-              
-        </dd></dl></div>
-    </li><li name="provingground.interface.amm#initCommands" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="initCommands:String"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#initCommands:String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">initCommands</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst">ConsSeqExst</a> → <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -582,7 +454,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -598,7 +470,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#notify():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -617,7 +489,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#notifyAll():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -633,10 +505,42 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.induction.ExstInducStruc.ConsSeqExst#recOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]"></a><a id="recOpt[C&lt;:TermwithSubs[C]](Term,Typ[C]):Option[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recOpt</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.recOpt.C">C</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.recOpt.C">C</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst">ConsSeqExst</a> → <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
+    </li><li name="provingground.induction.ExstInducStruc.ConsSeqExst#subs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStruc.ConsSeqExst[SS,H,Intros]"></a><a id="subs(Term,Term):ConsSeqExst[SS,H,Intros]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStruc.ConsSeqExst[SS,H,Intros]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst">ConsSeqExst</a>[<span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.SS">SS</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.H">H</span>, <span class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst.Intros">Intros</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst">ConsSeqExst</a> → <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -649,26 +553,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#toString():String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#wait():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -690,7 +578,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -712,7 +600,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/amm$.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStruc$$ConsSeqExst.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -743,7 +631,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.induction.ExstInducStruc">
+              <h3>Inherited from <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

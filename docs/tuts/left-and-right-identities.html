@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,8 @@
    <script src="../js/ace.js"></script>
    <script src="../js/katex.min.js"></script>
 
-        <!-- mathjax config similar to math.stackexchange -->
+    
+<!-- mathjax config similar to math.stackexchange -->
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 jax: ["input/TeX", "output/HTML-CSS"],
@@ -40,10 +41,10 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-
+    
   </head>
 
-
+   
 <body>
 <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -66,15 +67,14 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header"><strong>Tutorials (notes)</strong></li>
                 <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-            </ul>
-          </li>
-      </ul>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -90,7 +90,7 @@ messageStyle: "none",
 and in practice there will be many blind allies.</p>
 <p>We start with some axioms for a Monoid, except that the left and right identities are not assumed equal. We show that they are equal.</p>
 <p>First, some imports</p>
-<pre><code class="language-scala">scala&gt;    
+<pre><code class="language-scala">scala&gt;        
 
 scala&gt; import provingground.{FiniteDistribution =&gt; FD, ProbabilityDistribution =&gt; PD, _} 
 
@@ -107,23 +107,23 @@ import learning._
 <p>A Monoid is axiomatized as a type <code>M</code> with equality <code>eqM</code> and an operation <code>op := _*_</code>. We consider the relevant objects and axioms.</p>
 <pre><code class="language-scala">scala&gt; dist1.entropyVec.mkString(&quot;\n&quot;, &quot;\n&quot;, &quot;\n&quot;) 
 
-res9: String = &quot;&quot;&quot;
+res7: String = &quot;&quot;&quot;
 Weighted(_*_,1.5849625007211563)
 Weighted(eqM,1.5849625007211563)
 Weighted(axiom[eqM(_*_(a)(e_r))(a)],4.392317422778761)
 Weighted(axiom[eqM(a)(a)],4.392317422778761)
-Weighted(axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))],4.392317422778761)
+Weighted(axiom[(eqM(a)(b) → eqM(b)(a))],4.392317422778761)
 Weighted(e_l,4.392317422778761)
 Weighted(axiom[eqM(_*_(e_l)(a))(a)],4.392317422778761)
 Weighted(e_r,4.392317422778761)
-Weighted(axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))],4.392317422778761)
+Weighted(axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))],4.392317422778761)
 &quot;&quot;&quot;
 </code></pre>
 <p>We use a <code>TermEvolver</code>, We first generate the types, which includes the theorems.
 The time has not been optimized here to avoid accidental biases.</p>
 <pre><code class="language-scala">scala&gt; val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0) 
 
-tv: TermEvolver = provingground.learning.TermEvolver@55888b48
+tv: TermEvolver = provingground.learning.TermEvolver@61576054
 
 scala&gt; val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8)) 
 
@@ -131,49 +131,49 @@ fdT: FiniteDistribution[HoTT.Typ[HoTT.Term]] = FiniteDistribution(
   Vector(
     Weighted(
       ((eqM) (((_*_) (e_l)) (e_l))) (((_*_) (((_*_) (e_r)) (e_r))) (e_l)),
-      1.9112879403319028E-5
+      1.9112879403319112E-5
     ),
     Weighted(((eqM) (((_*_) (e_l)) (e_l))) (((_*_) (e_r)) (e_l)), 0.0010982705587242979),
     Weighted(
       ((eqM) (((_*_) (e_l)) (e_l))) (((_*_) (((_*_) (e_l)) (e_l))) (e_l)),
-      1.9112879403319028E-5
+      1.9112879403319112E-5
     ),
     Weighted(((eqM) (((_*_) (e_l)) (e_r))) (((_*_) (e_r)) (e_r)), 0.001098270558724298),
     Weighted(
       ((eqM) (e_r)) (((_*_) (((_*_) (e_r)) (e_r))) (((_*_) (e_l)) (e_l))),
-      9.11389229405386E-6
+      9.113892294053897E-6
     ),
     Weighted(
       ((eqM) (((_*_) (e_r)) (e_l))) (((_*_) (((_*_) (e_r)) (e_l))) (e_r)),
-      1.9112879403319024E-5
+      1.911287940331911E-5
     ),
-    Weighted(((eqM) (((_*_) (e_l)) (e_r))) (((_*_) (e_r)) (e_l)), 0.0010982705587242979),
+    Weighted(((eqM) (((_*_) (e_l)) (e_r))) (((_*_) (e_r)) (e_l)), 0.001098270558724298),
     Weighted(
       ((eqM) (e_l)) (((_*_) (e_r)) (((_*_) (e_r)) (((_*_) (e_r)) (e_r)))),
-      2.2080912097728175E-6
+      2.208091209772834E-6
     ),
     Weighted(
       ((eqM) (((_*_) (e_r)) (e_r))) (((_*_) (e_l)) (((_*_) (e_r)) (e_l))),
-      1.3226352305986157E-5
+      1.322635230598622E-5
     ),
-    Weighted(((eqM) (e_l)) (((_*_) (e_l)) (((_*_) (e_l)) (e_r))), 2.2243076188824647E-4),
+    Weighted(((eqM) (e_l)) (((_*_) (e_l)) (((_*_) (e_l)) (e_r))), 2.2243076188824707E-4),
     Weighted(
       ((eqM) (e_l)) (((_*_) (e_l)) (((_*_) (((_*_) (e_l)) (e_r))) (e_l))),
-      5.863557578778775E-7
+      5.863557578778817E-7
     ),
     Weighted(
       ((eqM) (((_*_) (e_l)) (((_*_) (e_l)) (e_l)))) (((_*_) (e_r)) (e_l)),
-      1.0504450768866305E-5
+      1.0504450768866332E-5
     ),
     Weighted(
       ((eqM) (e_l)) (((_*_) (e_l)) (((_*_) (e_l)) (((_*_) (e_r)) (e_r)))),
-      2.208091209772817E-6
+      2.2080912097728336E-6
     ),
     Weighted(((eqM) (e_r)) (e_r), 0.16770029826173272),
     Weighted(((eqM) (((_*_) (e_l)) (e_l))) (((_*_) (e_l)) (e_r)), 0.001098270558724298),
     Weighted(
       ((eqM) (((_*_) (((_*_) (e_l)) (e_l))) (e_l))) (((_*_) (e_l)) (e_r)),
-      3.003288307213664E-6
+      3.0032883072136862E-6
     ),
     Weighted(
 ...
@@ -183,58 +183,58 @@ fdT: FiniteDistribution[HoTT.Typ[HoTT.Term]] = FiniteDistribution(
 
 fd: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
-    Weighted(axiom[eqM(_*_(a)(e_r))(a)], 0.03857142857142857),
-    Weighted(((eqM) (e_r)) (e_r), 0.003806821968151044),
-    Weighted((eqM) (((_*_) (e_r)) (e_r)), 8.855801048572368E-4),
-    Weighted(((_*_) (e_r)) (e_l), 0.003806821968151044),
-    Weighted(axiom[eqM(a)(a)], 0.03857142857142857),
+    Weighted(axiom[eqM(_*_(a)(e_r))(a)], 0.03857142857142856),
+    Weighted(((eqM) (e_r)) (e_r), 0.0038068219681510434),
+    Weighted((eqM) (((_*_) (e_r)) (e_r)), 8.855801048572367E-4),
+    Weighted(((_*_) (e_r)) (e_l), 0.0038068219681510434),
+    Weighted(axiom[eqM(a)(a)], 0.03857142857142856),
     Weighted(((eqM) (e_r)) (e_l), 0.003806821968151044),
-    Weighted(axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))], 0.03857142857142857),
-    Weighted((_*_) (((_*_) (e_l)) (e_l)), 8.855801048572368E-4),
-    Weighted(_*_, 0.27),
-    Weighted(((eqM) (e_l)) (e_l), 0.0038068219681510443),
-    Weighted((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (e_r), 0.003940271597629893),
+    Weighted(axiom[(eqM(a)(b) → eqM(b)(a))], 0.03857142857142856),
+    Weighted((_*_) (((_*_) (e_l)) (e_l)), 8.855801048572367E-4),
+    Weighted(_*_, 0.26999999999999996),
+    Weighted(((eqM) (e_l)) (e_l), 0.0038068219681510434),
+    Weighted((axiom[(eqM(a)(b) → eqM(b)(a))]) (e_r), 0.003940271597629892),
     Weighted(
-      (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (e_r)) (e_r)) ((axiom[eqM(a)(a)]) (e_r)),
-      2.492918527842088E-4
+      (((axiom[(eqM(a)(b) → eqM(b)(a))]) (e_r)) (e_r)) ((axiom[eqM(a)(a)]) (e_r)),
+      2.4929185278420876E-4
     ),
     Weighted(
-      (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (e_l)) (e_l)) ((axiom[eqM(a)(a)]) (e_l)),
-      2.492918527842088E-4
+      (((axiom[(eqM(a)(b) → eqM(b)(a))]) (e_l)) (e_l)) ((axiom[eqM(a)(a)]) (e_l)),
+      2.4929185278420876E-4
     ),
-    Weighted(((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (e_r)) (e_l), 5.438317097358635E-4),
-    Weighted((eqM) (e_r), 0.02642897788208435),
-    Weighted((axiom[eqM(_*_(e_l)(a))(a)]) (e_l), 0.003940271597629893),
-    Weighted(((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l)) (e_r), 5.438317097358635E-4),
-    Weighted((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l), 0.003940271597629893),
+    Weighted(((axiom[(eqM(a)(b) → eqM(b)(a))]) (e_r)) (e_l), 5.438317097358634E-4),
+    Weighted((eqM) (e_r), 0.026428977882084342),
+    Weighted((axiom[eqM(_*_(e_l)(a))(a)]) (e_l), 0.003940271597629892),
+    Weighted(((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l)) (e_r), 5.438317097358633E-4),
+    Weighted((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l), 0.003940271597629892),
     Weighted(
-      ($cvhlw :  M) ↦ (((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l)) (e_l)) ($cvhlw)) ((axiom[eqM(a)(a)]) (e_l))),
-      2.492918527842088E-4
+      ($cvhbo :  M) ↦ (((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l)) (e_l)) ($cvhbo)) ((axiom[eqM(a)(a)]) (e_l))),
+      2.4929185278420876E-4
     ),
     Weighted(
-      ($cvhju :  M) ↦ (((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (((_*_) (e_l)) (e_r))) (e_r)) ($cvhju)) ((axiom[eqM(_*_(e_l)(a))(a)]) (e_r))),
-      2.492918527842088E-4
+      ($cvgzm :  M) ↦ (((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (((_*_) (e_l)) (e_r))) (e_r)) ($cvgzm)) ((axiom[eqM(_*_(e_l)(a))(a)]) (e_r))),
+      2.4929185278420876E-4
     ),
-    Weighted((eqM) (((_*_) (e_r)) (e_l)), 8.855801048572368E-4),
-    Weighted(e_l, 0.03857142857142857),
+    Weighted((eqM) (((_*_) (e_r)) (e_l)), 8.855801048572367E-4),
+    Weighted(e_l, 0.03857142857142856),
     Weighted(
-      (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_l))) (e_l)) ((axiom[eqM(_*_(e_l)(a))(a)]) (e_l)),
-      2.492918527842088E-4
+      (((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_l))) (e_l)) ((axiom[eqM(_*_(e_l)(a))(a)]) (e_l)),
+      2.4929185278420876E-4
     ),
-    Weighted(((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (e_l)) (e_l), 5.438317097358635E-4),
-    Weighted((_*_) (((_*_) (e_r)) (e_r)), 8.855801048572368E-4),
+    Weighted(((axiom[(eqM(a)(b) → eqM(b)(a))]) (e_l)) (e_l), 5.438317097358634E-4),
+    Weighted((_*_) (((_*_) (e_r)) (e_r)), 8.855801048572367E-4),
     Weighted(
-      (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_r)) (e_r))) (e_r)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_r)),
-      2.492918527842088E-4
+      (((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_r)) (e_r))) (e_r)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_r)),
+      2.4929185278420876E-4
 ...
 
 scala&gt; fd.filter(_.typ == eqM(l)(op(l)(r))) 
 
-res13: FiniteDistribution[HoTT.Term] = FiniteDistribution(
+res11: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
     Weighted(
-      (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)),
-      2.492918527842088E-4
+      (((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)),
+      2.4929185278420876E-4
     )
   )
 )
@@ -245,7 +245,7 @@ tell us that this is one of the best results proved, along with one related by s
 We see that we get the proof.</p>
 <pre><code class="language-scala">scala&gt; val pf = fd.filter(_.typ == eqM(l)(op(l)(r))).supp.head 
 
-pf: HoTT.Term = (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))
+pf: HoTT.Term = (((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))
 
 scala&gt; val initt = TangVec(dist1, FD.unif(pf)) 
 
@@ -257,8 +257,8 @@ initt: TangVec[FiniteDistribution[HoTT.Term]] = TangVec(
       Weighted(_*_, 0.047619047619047616),
       Weighted(eqM, 0.047619047619047616),
       Weighted(axiom[eqM(a)(a)], 0.047619047619047616),
-      Weighted(axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))], 0.047619047619047616),
-      Weighted(axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))], 0.047619047619047616),
+      Weighted(axiom[(eqM(a)(b) → eqM(b)(a))], 0.047619047619047616),
+      Weighted(axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))], 0.047619047619047616),
       Weighted(axiom[eqM(_*_(e_l)(a))(a)], 0.047619047619047616),
       Weighted(axiom[eqM(_*_(a)(e_r))(a)], 0.047619047619047616),
       Weighted(eqM, 0.2857142857142857),
@@ -268,7 +268,7 @@ initt: TangVec[FiniteDistribution[HoTT.Term]] = TangVec(
   FiniteDistribution(
     Vector(
       Weighted(
-        (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)),
+        (((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)),
         1.0
       )
     )
@@ -280,63 +280,68 @@ scala&gt; val fdt = Truncate(tv.evolve(initt).vec , math.pow(0.1, 4))
 fdt: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
     Weighted(
-      ((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_l)) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))),
-      0.06628023644707162
+      ((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_l)) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))),
+      0.06628023644707164
     ),
     Weighted(
-      ((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_r)) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))),
-      0.06628023644707162
+      ((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_r)) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))),
+      0.06628023644707164
     ),
     Weighted(
-      ($cvpuq :  M) ↦ (((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (((_*_) (e_l)) (e_r))) (e_l)) ($cvpuq)) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (e_l)) (((_*_) (e_l)) (e_r))) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))))),
+      ($cvpkq :  M) ↦ (((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (((_*_) (e_l)) (e_r))) (e_l)) ($cvpkq)) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (e_l)) (((_*_) (e_l)) (e_r))) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l))))),
       0.0013066811853465038
     ),
     Weighted(
-      (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (e_l)) (((_*_) (e_l)) (e_r))) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))),
+      (((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (e_l)) (((_*_) (e_l)) (e_r))) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))),
       0.0013066811853465038
     ),
     Weighted(
-      ($cvpoy :  M) ↦ (((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) ($cvpoy)) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))),
+      ($cvpij :  M) ↦ (((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) ($cvpij)) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))),
       0.025244354566902594
     ),
     Weighted(
-      (_ :  ((eqM) (e_r)) ($cvpcs)) ↦ ((((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_r)) (e_l)) (((_*_) (e_l)) (e_r))) ($cvpdc)) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))),
-      0.0017240932306655259
-    ),
-    Weighted(
-      (((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)),
+      (((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)),
       0.81
     ),
     Weighted(
-      (((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_r)) ((((axiom[(eqM(a)(b) [91m→[39m eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))) ((axiom[eqM(_*_(e_l)(a))(a)]) (e_r)),
-      0.0013066811853465038
+      (_ :  ((eqM) (e_r)) ($cvpus)) ↦ ((((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_r)) (e_l)) (((_*_) (e_l)) (e_r))) ($cvpvc)) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))),
+      0.001724093230665527
     ),
     Weighted(
-      (((((axiom[(eqM(a)(b) [91m→[39m (eqM(b)(c) [91m→[39m eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_l)) ((((ax...
+      (((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_r)) ((((axiom[(eqM(a)(b) → eqM(b)(a))]) (((_*_) (e_l)) (e_r))) (e_l)) ((axiom[eqM(_*_(a)(e_r))(a)]) (e_l)))) ((axiom[eqM(_*_(e_l)(a))(a)]) (e_r)),
+      0.0013066811853465043
+    ),
+    Weighted(
+      (((((axiom[(eqM(a)(b) → (eqM(b)(c) → eqM(a)(c)))]) (e_l)) (((_*_) (e_l)) (e_r))) (e_l)) ((((ax...
 
 scala&gt; val tqs = fdt.map(_.typ).filter(fdT(_) &gt; 0).flatten 
 
 tqs: FiniteDistribution[HoTT.Typ[U] forSome { type U &gt;: x$1 &lt;: HoTT.Term with HoTT.Subs[U]; val x$1: HoTT.Term }] = FiniteDistribution(
   Vector(
     Weighted(((eqM) (((_*_) (e_l)) (e_r))) (e_l), 0.025244354566902594),
-    Weighted(((eqM) (e_l)) (e_l), 0.0013066811853465038),
-    Weighted(((eqM) (e_l)) (e_r), 0.0013066811853465038),
+    Weighted(((eqM) (e_l)) (e_l), 0.0013066811853465043),
+    Weighted(((eqM) (e_l)) (e_r), 0.0013066811853465043),
     Weighted(((eqM) (e_l)) (((_*_) (e_l)) (e_r)), 0.8113066811853465)
   )
 )
 
 scala&gt; tqs(eqM(l)(r)) 
 
-res18: Double = 0.0013066811853465038
+res16: Double = 0.0013066811853465043
+
+scala&gt;  
+
+scala
 </code></pre>
 <p>The steps of the proof in this case took less than <code>0.1</code> seconds. Of course in practice we assume other axioms and follow other paths.
 But hopefully the time taken is just a few seconds.</p>
-<h3>Git Log</h3>
-<pre><code>commit ab4b28e54cc3e9b6bcff3f67c93735f30c6f0387
+<h4>Git Log when running tutorial</h4>
+<pre><code>commit be7ffe1d9568b0d70a24d6c01ac64560ed5b43ba
+Merge: dd74ae6c 6f3b5fa5
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Fri Jun 1 09:00:38 2018 +0530
+Date:   Mon Jun 4 10:09:19 2018 +0530
 
-    remarks, debug scratchpad; ServerModule
+    Merge branch 'master' of https://github.com/siddhartha-gadgil/ProvingGround
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>
@@ -358,8 +363,6 @@ Date:   Fri Jun 1 09:00:38 2018 +0530
   </h4>
 
   </div>
-
-
 </div>
 <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
@@ -367,6 +370,7 @@ Date:   Fri Jun 1 09:00:38 2018 +0530
 <script>
   provingground.main()
 </script>
-
+   
 </body>
 </html>
+   

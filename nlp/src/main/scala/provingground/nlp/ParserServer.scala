@@ -104,6 +104,7 @@ object ParserService  {
       |    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
       |    <link rel="stylesheet" href="resources/css/katex.min.css">
       |    <link rel="stylesheet" href="resources/css/main.css">
+      |    <link rel="stylesheet" href="resources/css/nlp.css">
       |    <script src="resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
       |    <script src="resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
       |

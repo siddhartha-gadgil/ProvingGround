@@ -65,7 +65,8 @@ val jvmLibs = List(
   ivy"com.typesafe.akka::akka-http-spray-json:10.1.1",
   ivy"org.slf4j:slf4j-api:1.7.16",
   ivy"org.slf4j:slf4j-simple:1.7.16",
-  ivy"com.github.scopt::scopt:3.5.0"
+  ivy"com.github.scopt::scopt:3.5.0",
+  ivy"com.atlassian.commonmark:commonmark:0.11.0"
 )
 
 

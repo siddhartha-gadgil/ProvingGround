@@ -52,26 +52,25 @@ def head(rel: String = "") =
      |    <title>ProvingGround</title>
      |    <link rel="icon" href="${rel}IIScLogo.jpg">
      |
- |    <!-- Bootstrap -->
+     |    <!-- Bootstrap -->
      |    <link href="${rel}css/bootstrap.min.css" rel="stylesheet">
      |   <link href="${rel}css/katex.min.css" rel="stylesheet">
      |   <link href="${rel}css/main.css" rel="stylesheet">
      |
- |
- |    <link rel="stylesheet" href="${rel}css/zenburn.css">
+     |
+     |    <link rel="stylesheet" href="${rel}css/zenburn.css">
      |    <script src="${rel}js/highlight.pack.js"></script>
      |    <script>hljs.initHighlightingOnLoad();</script>
      |
- |   <script src="${rel}js/ace.js"></script>
+     |   <script src="${rel}js/ace.js"></script>
      |   <script src="${rel}js/katex.min.js"></script>
      |
- |    $mathjax
+     |    $mathjax
      |  </head>
      |
    """.stripMargin
 
   def nav(rel: String = ""): Elem =
-//    s"""
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -108,8 +107,6 @@ def head(rel: String = "") =
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-
-// """
 
 def foot(rel: String): String =
   s"""
