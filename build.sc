@@ -34,17 +34,21 @@ trait CommonModule extends ScalaModule with ScalafmtModule {
   def organization = "in.ac.iisc"
   def name = "ProvingGround"
 
+  def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0-M1")
+
   override def scalacOptions =
     Seq("-Ypartial-unification",
+      "-Yrangepos",
+      "-Xplugin-require:semanticdb",
       "-unchecked",
       "-deprecation",
       "-feature",
       "-language:existentials")
 
-  override def compile = T.command{
-    reformat()
-    super.compile()
-    }
+  // override def compile = T.command{
+  //   reformat()
+  //   super.compile()
+  //   }
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule{
