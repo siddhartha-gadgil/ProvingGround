@@ -4,6 +4,8 @@
       <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/github/nscala-time/nscala-time_2.12/2.16.0/nscala-time_2.12-2.16.0.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/github/nscala-time/nscala-time_2.12/2.16.0/nscala-time_2.12-2.16.0-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

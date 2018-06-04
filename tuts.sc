@@ -56,10 +56,13 @@ def mkTut(f: String): String = {
     .replace("\u001b", ""), "")
     .split("repl.prompt\\(\\) = \"scala> \"")(1)
     .split("""// tutEnd""").map((s) =>
-s"""```scala
-${s.trim.dropRight(6).trim}
-```
-""").toVector
+    s"""```scala
+       |${s.trim.dropRight(6).trim}
+       |```
+       |
+       |
+     """.stripMargin
+    ).toVector
 
   val textTail = tutChunks.zip(spl.tail.map(_(1))).map{case (a, b) => Vector(a, b)}.flatten
 
@@ -69,32 +72,25 @@ ${s.trim.dropRight(6).trim}
   println(tutChunks.size)
 
   val gitrep =
-s"""
-### Git Log
-```
-${gitLog.mkString("\n")}
-```
-
-* __Branch__ : $gitBranch
-
-"""
+    s"""
+       |#### Git Log when running tutorial
+       |```
+       |${gitLog.mkString("\n")}
+       |```
+       |
+       |* __Branch__ : $gitBranch
+       |
+     """.stripMargin
 
   allChunks.mkString("", "\n", gitrep)
-}
+  }
 
 val outdir = pwd / "docs" / "tuts"
 
-// def compiledTuts = ls(tutdir).map{(p) =>
-//   (p.name, mkTut(p))
-// }
-
-// compiledTuts.foreach{
-//   case (name, content) => write.over(outdir / name, content)
-// }
 
 def writeMD = ls(tutdir).foreach{(p) =>
   println(s"compiling tutorial ${p.name}")
   write.over(outdir / p.name, mkTut(read(p)))
 }
 
-// writeMD
+

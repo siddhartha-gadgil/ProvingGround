@@ -18,7 +18,7 @@ import scala.util.Try
 
 import scala.io.StdIn
 
-object ParserServer extends App {
+object ParserService  {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed = TeXParsed(txt)
     val tree: Tree = texParsed.parsed
@@ -27,11 +27,11 @@ object ParserServer extends App {
     println(proseTree.view)
     val code =
       Try(format(s"object ConstituencyParsed {$expr}").get).getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
-    Js.Obj("tree" -> tree.pennString, "expr" -> code.toString, "deptree" -> proseTree.view.replace("\n", "") )
+    Js.Obj("tree" -> tree.pennString, "expr" -> code.toString, "deptree" -> proseTree.view.replace("\n", ""))
   }
 
   implicit val system: ActorSystem = ActorSystem("provingground-nlp")
-  implicit val materializer        = ActorMaterializer()
+  implicit val materializer = ActorMaterializer()
 
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
@@ -39,7 +39,25 @@ object ParserServer extends App {
 
   var keepAlive = true
 
-  val route =
+  val baseRoute =
+    get {
+      path("resources" / Remaining) { path =>
+        println("serving from resource: " + path)
+        getFromResource(path)
+      }
+    } ~ get {
+      path("docs" / Remaining) { path =>
+        println("serving from resource: " + path)
+        getFromFile(s"docs/$path")
+      }
+    } ~ path("halt") {
+      keepAlive = false
+      complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "shutting down"))
+    }
+
+
+
+  val parserRoute =
     (pathSingleSlash | path("index.html")) {
       get {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, indexHTML))
@@ -54,56 +72,51 @@ object ParserServer extends App {
             //   HttpEntity(ContentTypes.`application/json`, Js.Obj("tree" -> "tree", "expr" -> "expr").toString
             // ))
             val result =
-              parseResult(txt)
+            parseResult(txt)
             println(s"Result:\n$result")
             complete(
               HttpEntity(ContentTypes.`application/json`, result.toString))
           }
         }
-      } ~ get {
-      path("resources" / Remaining) { path =>
-        println("serving from resource: " + path)
-        getFromResource(path.toString)
       }
-    }  ~
-      path("halt") {
-        keepAlive = false
-        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "shutting down"))
-      }
+  
+  val route = parserRoute ~ baseRoute
+
 
   val indexHTML =
-    """
-<!DOCTYPE html>
+    """<!DOCTYPE html>
+      |
+      |<html>
+      |  <head>
+      |    <title>ProvingGround: Natural language translation</title>
+      |    <link rel="icon" href="resources/IIScLogo.jpg">
+      |    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+      |    <link rel="stylesheet" href="resources/css/katex.min.css">
+      |    <link rel="stylesheet" href="resources/css/main.css">
+      |    <script src="resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
+      |    <script src="resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+      |
+      |
+      |  </head>
+      |  <body>
+      |
+      |  <div class="container">
+      |    <div id="halt"></div>
+      |    <h2> ProvingGround: Natural language translation </h2>
+      |
+      |    <div id="constituency-parser"></div>
+      |
+      |  </div>
+      |  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
+      |  <script>
+      |    parser.load()
+      |  </script>
+      |  </body>
+      |</html>""".stripMargin
 
-<html>
-  <head>
-    <title>ProvingGround: Natural language translation</title>
-    <link rel="icon" href="resources/IIScLogo.jpg">
-    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/katex.min.css">
-    <link rel="stylesheet" href="resources/css/main.css">
-    <script src="resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
-
-
-  </head>
-  <body>
-
-  <div class="container">
-    <div id="halt"></div>
-    <h2> ProvingGround: Natural language translation </h2>
-
-    <div id="constituency-parser"></div>
-
-  </div>
-  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
-  <script>
-    parser.load()
-  </script>
-  </body>
-</html>
-"""
-
+}
+object ParserServer extends App {
+  import ParserService._
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
   println(s"Server online at http://localhost:8080/\nExit from the web page")
 

@@ -18,7 +18,7 @@ object ScriptServer extends App {
 
   import ammonite.ops._
 
-  def path(s: String) = scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
+  def path(s: String): Path = scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
 
   implicit val pathRead: scopt.Read[Path] =
     scopt.Read.reads(path)

@@ -98,7 +98,7 @@ object trepplein extends SbtModule{
 }
 
 object mantle extends SbtModule with JvmModule{
-  override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
+  override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm, server)
 
 
   object test extends Tests{
@@ -122,7 +122,7 @@ object leanlib extends Module{
 }
 
 object nlp extends SbtModule with ServerModule{
-  override def moduleDeps = Seq(core.jvm)
+  override def moduleDeps = Seq(core.jvm, mantle)
 
   override def ivyDeps = T{
     super.ivyDeps() ++  Agg(
@@ -205,36 +205,6 @@ trait ServerModule extends JvmModule{
 
 object server extends SbtModule with ServerModule {
   override def moduleDeps = Seq(core.jvm)
-}
 
-// object server extends ScalaModule{
-//   def scalaVersion = "2.12.4"
-//
-//   def moduleDeps = Seq(shared.jvm)
-//
-//   def ivyDeps = Agg(
-//     ivy"com.typesafe.akka::akka-http:10.1.0-RC2",
-//     ivy"com.typesafe.akka::akka-stream:2.5.9"
-//   )
-//
-//   }
-// }
-//
-// object client extends ScalaJSModule {
-//   def scalaVersion = "2.12.4"
-//   def scalaJSVersion = "0.6.22"
-//   def moduleDeps : Seq[ScalaJSModule] = Seq(shared.js)
-//
-//   def platformSegment = "js"
-//
-//   import coursier.maven.MavenRepository
-//
-//   def repositories = super.repositories ++ Seq(
-//     MavenRepository("https://oss.sonatype.org/content/repositories/releases")
-//   )
-//
-//   def ivyDeps = Agg(
-//     ivy"org.scala-js::scalajs-dom::0.9.4"
-//   )
-//
-// }
+  override def mainClass = Some("provingground.interface.ScriptServer")
+}

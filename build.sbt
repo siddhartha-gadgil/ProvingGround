@@ -286,6 +286,7 @@ lazy val nlp = (project in file("nlp"))
   }.taskValue)
        .settings(jvmSettings : _*)
   .dependsOn(coreJVM)
+  .dependsOn(mantle)
 
 // lazy val translation = (project in file("translation"))
 //   .settings(name := "ProvingGround-Translation",

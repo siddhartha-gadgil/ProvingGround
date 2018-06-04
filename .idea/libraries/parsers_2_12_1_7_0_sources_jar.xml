@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="parsers_2.12-1.7.0-sources.jar">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/parsers_2.12/1.7.0/parsers_2.12-1.7.0-sources.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
