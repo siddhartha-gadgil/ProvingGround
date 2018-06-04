@@ -51,6 +51,12 @@ object MantleService{
       |   <li> <a href="build">Build</a> the web page.</li>
       |   <li> Link for proving coming soon. </li>
       |  </ul>
+      |  <p> Test below </p>
+      |  
+      |  <script type="text/javascript" src="resources/out.js"></script>
+      |  <script>
+      |   mantlemenu.add()
+      |  </script>
       |
     """.stripMargin
 

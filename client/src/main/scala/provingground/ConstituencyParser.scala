@@ -20,7 +20,6 @@ import scala.util.{Try, Success, Failure}
 
 import HoTT.{id => _, _}, translation._
 
-import scala.io.StdIn
 
 @JSExportTopLevel("parser")
 object ConstituencyParser {
