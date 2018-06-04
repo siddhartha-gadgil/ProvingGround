@@ -6,6 +6,12 @@ import define.{Sources, Task}
 import ammonite.ops._
 import coursier.maven.MavenRepository
 
+trait MetalsModule extends ScalaModule{
+  def msources = T{
+    allSourceFiles().map(_.path).mkString(java.io.File.pathSeparator)
+  }
+}
+
 val scalaV = "2.12.6"
 
 val ammV = "1.1.0"
@@ -27,7 +33,7 @@ val commonLibs = List(
   ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
-trait CommonModule extends ScalaModule with ScalafmtModule {
+trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def scalaVersion= scalaV
   override def ivyDeps = Agg(commonLibs: _*)
   def version = "0.1-SNAPSHOT"
