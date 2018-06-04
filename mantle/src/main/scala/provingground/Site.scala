@@ -49,7 +49,7 @@ object Site{
       |       </script>
     """.stripMargin
 
-  def head(rel: String = ""): String =
+  def head(relDocsPath: String = ""): String =
     s"""
        |<head>
        |    <meta charset="utf-8">
@@ -57,27 +57,27 @@ object Site{
        |    <meta name="viewport" content="width=device-width, initial-scale=1">
        |    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
        |    <title>ProvingGround</title>
-       |    <link rel="icon" href="${rel}IIScLogo.jpg">
+       |    <link rel="icon" href="${relDocsPath}IIScLogo.jpg">
        |
        |    <!-- Bootstrap -->
-       |    <link href="${rel}css/bootstrap.min.css" rel="stylesheet">
-       |   <link href="${rel}css/katex.min.css" rel="stylesheet">
-       |   <link href="${rel}css/main.css" rel="stylesheet">
+       |    <link href="${relDocsPath}css/bootstrap.min.css" rel="stylesheet">
+       |   <link href="${relDocsPath}css/katex.min.css" rel="stylesheet">
+       |   <link href="${relDocsPath}css/main.css" rel="stylesheet">
        |
        |
-       |    <link rel="stylesheet" href="${rel}css/zenburn.css">
-       |    <script src="${rel}js/highlight.pack.js"></script>
+       |    <link rel="stylesheet" href="${relDocsPath}css/zenburn.css">
+       |    <script src="${relDocsPath}js/highlight.pack.js"></script>
        |    <script>hljs.initHighlightingOnLoad();</script>
        |
-       |   <script src="${rel}js/ace.js"></script>
-       |   <script src="${rel}js/katex.min.js"></script>
+       |   <script src="${relDocsPath}js/ace.js"></script>
+       |   <script src="${relDocsPath}js/katex.min.js"></script>
        |
        |    $mathjax
        |  </head>
        |
    """.stripMargin
 
-  def nav(rel: String = ""): Elem =
+  def nav(relDocsPath: String = ""): Elem =
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -94,19 +94,19 @@ object Site{
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li><a href={s"${rel}index.html#"}>Home</a></li>
+            <li><a href={s"${relDocsPath}index.html#"}>Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                {tutList(rel)}
+                {tutList(relDocsPath)}
               </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li> <a href={s"${rel}scaladoc/provingground/index.html"} target="_blank">ScalaDocs</a></li>
+            <li> <a href={s"${relDocsPath}scaladoc/provingground/index.html"} target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-              <img src={s"${rel}GitHub-Mark-Light-32px.png"} alt="Github"></img> </a> </li>
+              <img src={s"${relDocsPath}GitHub-Mark-Light-32px.png"} alt="Github"></img> </a> </li>
 
 
 
@@ -115,7 +115,7 @@ object Site{
       </div><!-- /.container-fluid -->
     </nav>
 
-  def foot(rel: String): String =
+  def foot(relDocsPath: String): String =
     s"""
        |<div class="container-fluid">
        |  <p>&nbsp;</p>
@@ -130,9 +130,9 @@ object Site{
        |
        |  </div>
        |</div>
-       |<script type="text/javascript" src="${rel}js/jquery-2.1.4.min.js"></script>
-       |<script type="text/javascript" src="${rel}js/bootstrap.min.js"></script>
-       |<script type="text/javascript" src="${rel}js/provingground.js"></script>
+       |<script type="text/javascript" src="${relDocsPath}js/jquery-2.1.4.min.js"></script>
+       |<script type="text/javascript" src="${relDocsPath}js/bootstrap.min.js"></script>
+       |<script type="text/javascript" src="${relDocsPath}js/provingground.js"></script>
        |<script>
        |  provingground.main()
        |</script>
@@ -169,10 +169,10 @@ object Site{
 
     val target = pwd / "docs" / "tuts"/ s"$name.html"
 
-    def url(rel: String) = s"${rel}tuts/$name.html"
+    def url(relDocsPath: String) = s"${relDocsPath}tuts/$name.html"
 
     def content: String = fromMD(mkTut(rawContent))
-    
+
     def output: String =
       page(
         content,
@@ -192,20 +192,20 @@ object Site{
 
   lazy val allTuts: Seq[Tut] = ls(tutdir).map(getTut)
 
-  def tutList(rel: String): Seq[Elem] =
+  def tutList(relDocsPath: String): Seq[Elem] =
     allTuts.map(
       (tut) =>
-        <li><a href={s"${tut.url(rel)}"}>{tut.title}</a></li>
+        <li><a href={s"${tut.url(relDocsPath)}"}>{tut.title}</a></li>
     )
 
 
-  def page(s: String, rel: String, t: String = ""): String =
+  def page(s: String, relDocsPath: String, t: String = ""): String =
     s"""
        |<!DOCTYPE html>
        |<html lang="en">
-       |${head(rel)}
+       |${head(relDocsPath)}
        |<body>
-       |${nav(rel)}
+       |${nav(relDocsPath)}
        |<div class="container">
        |<h1 class="text-center">$t</h1>
        |
@@ -214,7 +214,7 @@ object Site{
        |
        |</div>
        |</div>
-       |${foot(rel)}
+       |${foot(relDocsPath)}
        |</body>
        |</html>
    """.stripMargin

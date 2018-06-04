@@ -15,6 +15,7 @@ import TreeToMath._
 import edu.stanford.nlp.trees.Tree
 import org.scalafmt.Scalafmt.format
 import scala.util.Try
+import scala.concurrent._
 
 import scala.io.StdIn
 
@@ -71,17 +72,17 @@ object ParserService  {
           entity(as[String]) { txt =>
             println(s"parsing: $txt")
 
-            val result =
-              parseResult(txt)
-            // println(s"Result:\n$result")
-            println("result sent to  browser")
-            complete(
-              HttpEntity(ContentTypes.`application/json`, result.toString))
+            val resultFut =
+              Future(parseResult(txt))
+            val responseFut = resultFut.map { (result) =>
+              println("result sent to  browser")
+              HttpEntity(ContentTypes.`application/json`, result.toString)
+            }
+            complete(responseFut)
           }
         }
       } ~ get {
       path("resources" / Remaining) { path =>
-        // println("serving from resource: " + path)
         getFromResource(path.toString)
       }
     } ~

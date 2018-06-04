@@ -11,7 +11,7 @@ A system under development for (semi-)automated theorem proving, with foundation
 
 ## Documentation:
 
-* The main documentation is on the [website](http://siddhartha-gadgil.github.io/ProvingGround/) , including [http://siddhartha-gadgil.github.io/ProvingGround/scaladoc/provingground/index.html](scaladocs).
+* The main documentation is on the [website](http://siddhartha-gadgil.github.io/ProvingGround/) , including [scaladocs](http://siddhartha-gadgil.github.io/ProvingGround/scaladoc/provingground/index.html).
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
 

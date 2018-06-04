@@ -29,7 +29,7 @@ object ProverTasks {
                   tv: TermEvolver,
                   cutoff: Double,
                   maxtime: FiniteDuration,
-                  vars: Vector[Term] = Vector()) =
+                  vars: Vector[Term] = Vector()): Task[FD[Typ[Term]]] =
     Truncate
       .task(tv.baseEvolveTyps(fd), cutoff, maxtime)
       .memoize
@@ -42,7 +42,7 @@ object ProverTasks {
                    tv: TermEvolver,
                    cutoff: Double,
                    maxtime: FiniteDuration,
-                   vars: Vector[Term] = Vector()) =
+                   vars: Vector[Term] = Vector()): Task[FD[Term]] =
     Truncate
       .task(tv.baseEvolve(fd), cutoff, maxtime)
       .memoize
@@ -56,7 +56,7 @@ object ProverTasks {
                       tv: TermEvolver,
                       cutoff: Double,
                       maxtime: FiniteDuration,
-                      vars: Vector[Term] = Vector()) =
+                      vars: Vector[Term] = Vector()): Task[FD[Term]] =
     Truncate
       .task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime)
       .memoize
@@ -64,7 +64,7 @@ object ProverTasks {
   /**
     * An entropy measure for parsimonious generation of terms inhabiting types.
     */
-  def h0(p: Double, q: Double) = {
+  def h0(p: Double, q: Double): Double = {
     require(q > 0, s"Entropy with p=$p, q = $q")
     -p / (q * log(q))
   }
@@ -73,13 +73,13 @@ object ProverTasks {
     * Exponent of an entropy measure for parsimonious generation of terms inhabiting types;
     * low values correspond to important terms, with the `scale` increasing sensitivity.
     */
-  def hExp(p: Double, q: Double, scale: Double) =
+  def hExp(p: Double, q: Double, scale: Double): Double =
     math.exp(-(h0(p, q) - 1) * scale)
 
   def prsmEntTask(termsTask: Task[FD[Term]],
                   typsTask: Task[FD[Typ[Term]]],
                   scale: Double,
-                  vars: Vector[Term] = Vector()) =
+                  vars: Vector[Term] = Vector()): Task[Vector[(Term, Double)]] =
     for {
       terms <- termsTask
       typs  <- typsTask
@@ -257,7 +257,7 @@ object ProverTasks {
                         goal: Typ[Term],
                         decay: Double = 1.0,
                         scale: Double = 1.0,
-                        vars: Vector[Term] = Vector()) = {
+                        vars: Vector[Term] = Vector()): Task[Option[Term]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vec: FD[Term]) = {
@@ -286,7 +286,7 @@ object ProverTasks {
                           maxtime: FiniteDuration,
                           decay: Double = 1.0,
                           scale: Double = 1.0,
-                          vars: Vector[Term] = Vector()) = {
+                          vars: Vector[Term] = Vector()): Task[Map[Typ[Term], Vector[(Term, (Int, Double))]]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vec: FD[Term]) = {
@@ -334,7 +334,7 @@ object ProverTasks {
                              goal: Typ[Term],
                              decay: Double = 1.0,
                              scale: Double = 1.0,
-                             vars: Vector[Term] = Vector()) = {
+                             vars: Vector[Term] = Vector()): Task[Option[(Term, Vector[Term])]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vecAc: (FD[Term], Vector[Term])) = {
@@ -368,7 +368,7 @@ object ProverTasks {
                                maxtime: FiniteDuration,
                                decay: Double = 1.0,
                                scale: Double = 1.0,
-                               vars: Vector[Term] = Vector()) = {
+                               vars: Vector[Term] = Vector()): Task[(Vector[(Term, Vector[(Term, Double)], (Int, Double))], FD[Term], FD[Typ[Term]])] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vecAc: (FD[Term], Vector[(Term, Double)])) = {
