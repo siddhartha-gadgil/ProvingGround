@@ -41,10 +41,10 @@ trait CommonModule extends ScalaModule with ScalafmtModule {
       "-feature",
       "-language:existentials")
 
-  override def compile = T{
+  override def compile = T.command{
     reformat()
     super.compile()
-      }
+    }
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule{

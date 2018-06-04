@@ -286,7 +286,8 @@ object ProverTasks {
                           maxtime: FiniteDuration,
                           decay: Double = 1.0,
                           scale: Double = 1.0,
-                          vars: Vector[Term] = Vector()): Task[Map[Typ[Term], Vector[(Term, (Int, Double))]]] = {
+                          vars: Vector[Term] = Vector())
+    : Task[Map[Typ[Term], Vector[(Term, (Int, Double))]]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vec: FD[Term]) = {
@@ -327,14 +328,15 @@ object ProverTasks {
           .mapValues(_.sortBy((tv) => (tv._2._1, -tv._2._2))))
   }
 
-  def theoremSearchTraceTask(fd: FD[Term],
-                             tv: TermEvolver,
-                             cutoff: Double,
-                             maxtime: FiniteDuration,
-                             goal: Typ[Term],
-                             decay: Double = 1.0,
-                             scale: Double = 1.0,
-                             vars: Vector[Term] = Vector()): Task[Option[(Term, Vector[Term])]] = {
+  def theoremSearchTraceTask(
+      fd: FD[Term],
+      tv: TermEvolver,
+      cutoff: Double,
+      maxtime: FiniteDuration,
+      goal: Typ[Term],
+      decay: Double = 1.0,
+      scale: Double = 1.0,
+      vars: Vector[Term] = Vector()): Task[Option[(Term, Vector[Term])]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vecAc: (FD[Term], Vector[Term])) = {
@@ -368,7 +370,10 @@ object ProverTasks {
                                maxtime: FiniteDuration,
                                decay: Double = 1.0,
                                scale: Double = 1.0,
-                               vars: Vector[Term] = Vector()): Task[(Vector[(Term, Vector[(Term, Double)], (Int, Double))], FD[Term], FD[Typ[Term]])] = {
+                               vars: Vector[Term] = Vector())
+    : Task[(Vector[(Term, Vector[(Term, Double)], (Int, Double))],
+            FD[Term],
+            FD[Typ[Term]])] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
     def spawn(d: Int)(vecAc: (FD[Term], Vector[(Term, Double)])) = {
