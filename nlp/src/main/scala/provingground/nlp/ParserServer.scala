@@ -20,14 +20,17 @@ import scala.io.StdIn
 
 object ParserService  {
   def parseResult(txt: String) = {
-    val texParsed: TeXParsed = TeXParsed(txt)
-    val tree: Tree = texParsed.parsed
-    val expr: MathExpr = mathExprTree(tree).get
+    val texParsed: TeXParsed          = TeXParsed(txt)
+    val tree: Tree                    = texParsed.parsed
+    val expr: MathExpr                = mathExprTree(tree).get
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
-    println(proseTree.view)
+    // println(proseTree.view)
     val code =
-      Try(format(s"object ConstituencyParsed {$expr}").get).getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
-    Js.Obj("tree" -> tree.pennString, "expr" -> code.toString, "deptree" -> proseTree.view.replace("\n", ""))
+      Try(format(s"object ConstituencyParsed {$expr}").get)
+        .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
+    Js.Obj("tree"    -> tree.pennString,
+           "expr"    -> code.toString,
+           "deptree" -> proseTree.view.replace("\n", ""))
   }
 
   implicit val system: ActorSystem = ActorSystem("provingground-nlp")
@@ -68,23 +71,31 @@ object ParserService  {
           entity(as[String]) { txt =>
             println(s"parsing: $txt")
 
-            // complete(
-            //   HttpEntity(ContentTypes.`application/json`, Js.Obj("tree" -> "tree", "expr" -> "expr").toString
-            // ))
             val result =
-            parseResult(txt)
-            println(s"Result:\n$result")
+              parseResult(txt)
+            // println(s"Result:\n$result")
+            println("result sent to  browser")
             complete(
               HttpEntity(ContentTypes.`application/json`, result.toString))
           }
         }
+      } ~ get {
+      path("resources" / Remaining) { path =>
+        // println("serving from resource: " + path)
+        getFromResource(path.toString)
       }
-  
+    } ~
+      path("halt") {
+        keepAlive = false
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "shutting down"))
+      }
+
   val route = parserRoute ~ baseRoute
 
 
   val indexHTML =
-    """<!DOCTYPE html>
+    """
+      |<!DOCTYPE html>
       |
       |<html>
       |  <head>
@@ -112,23 +123,23 @@ object ParserService  {
       |    parser.load()
       |  </script>
       |  </body>
-      |</html>""".stripMargin
+      |</html>
+    """.stripMargin
 
 }
 object ParserServer extends App {
   import ParserService._
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
-  println(s"Server online at http://localhost:8080/\nExit from the web page")
+  println(s"Server online at http://localhost:8080/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
 
-  while (keepAlive){
+  while (keepAlive) {
     Thread.sleep(10)
   }
 
   println("starting shutdown")
 
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ ⇒ system.terminate()) // and shutdown when done
-
+  bindingFuture
+    .flatMap(_.unbind()) // trigger unbinding from the port
+    .onComplete(_ ⇒ system.terminate()) // and shutdown when done
 
 }

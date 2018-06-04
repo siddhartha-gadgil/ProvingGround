@@ -1012,7 +1012,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
 
 import upickle.default.{ReadWriter => RW, macroRW}
 
-object PickledTermPopulation{
+object PickledTermPopulation {
   implicit def rw: RW[PickledTermPopulation] = macroRW
 }
 

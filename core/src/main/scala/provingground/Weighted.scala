@@ -19,7 +19,7 @@ object Weighted {
     if (t - dist.head.weight < 0) dist.head.elem
     else pick(dist.tail, t - dist.head.weight)
 
-  implicit def rw [A: ReadWriter]: ReadWriter[Weighted[A]] = ???
+  implicit def rw[A: ReadWriter]: ReadWriter[Weighted[A]] = ???
 
   def sumWeigths[T](seq: Seq[Weighted[T]]) = seq.map(_.weight).sum
 
@@ -44,7 +44,6 @@ object Weighted {
 case class PickledWeighted(elem: String, weight: Double) {
   def map[S](f: String => S) = Weighted(f(elem), weight)
 }
-
 
 import upickle.default.{ReadWriter => RW, macroRW}
 

@@ -17,7 +17,7 @@ import upickle.default._
 object FiniteDistribution {
   val random = new scala.util.Random
 
-  implicit def rw[A : ReadWriter] : ReadWriter[FiniteDistribution[A]]=
+  implicit def rw[A: ReadWriter]: ReadWriter[FiniteDistribution[A]] =
     readwriter[Vector[Weighted[A]]].bimap(
       _.pmf,
       FiniteDistribution(_)

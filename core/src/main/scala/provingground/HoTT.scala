@@ -164,44 +164,47 @@ object HoTT {
     */
   def avoidVar[U <: Term with Subs[U]](t: Term, x: U): U = {
     x match {
-    case ll: LambdaFixed[u, v] =>
-      if (t == ll.variable) {
-        val newvar = ll.variable.newobj
-        LambdaFixed(newvar, avoidVar(t, ll.value.replace(ll.variable, newvar)))
-          .asInstanceOf[U]
-      } else LambdaFixed(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
-    case ll: LambdaLike[u, v] =>
-      if (t == ll.variable) {
-        val newvar = ll.variable.newobj
-        LambdaTerm(newvar, avoidVar(t, ll.value.replace(ll.variable, newvar)))
-          .asInstanceOf[U]
-      } else LambdaTerm(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
-    case FormalAppln(func, arg) =>
-      applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
-    case pt: PairTerm[u, v] =>
-      PairTerm(avoidVar(t, pt.first), avoidVar(t, pt.second)).asInstanceOf[U]
-    case pt: ProdTyp[u, v] =>
-      ProdTyp(avoidVar(t, pt.first), avoidVar(t, pt.second)).asInstanceOf[U]
-    case pt: FuncTyp[u, v] =>
-      FuncTyp(avoidVar(t, pt.dom), avoidVar(t, pt.codom)).asInstanceOf[U]
-    case pt: PiDefn[u, v] =>
-      PiDefn(avoidVar(t, pt.variable), avoidVar(t, pt.value)).asInstanceOf[U]
-    case pt: SigmaTyp[u, v] =>
-      SigmaTyp(avoidVar(t, pt.fibers)).asInstanceOf[U]
+      case ll: LambdaFixed[u, v] =>
+        if (t == ll.variable) {
+          val newvar = ll.variable.newobj
+          LambdaFixed(newvar,
+                      avoidVar(t, ll.value.replace(ll.variable, newvar)))
+            .asInstanceOf[U]
+        } else LambdaFixed(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
+      case ll: LambdaLike[u, v] =>
+        if (t == ll.variable) {
+          val newvar = ll.variable.newobj
+          LambdaTerm(newvar, avoidVar(t, ll.value.replace(ll.variable, newvar)))
+            .asInstanceOf[U]
+        } else LambdaTerm(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
+      case FormalAppln(func, arg) =>
+        applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
+      case pt: PairTerm[u, v] =>
+        PairTerm(avoidVar(t, pt.first), avoidVar(t, pt.second)).asInstanceOf[U]
+      case pt: ProdTyp[u, v] =>
+        ProdTyp(avoidVar(t, pt.first), avoidVar(t, pt.second)).asInstanceOf[U]
+      case pt: FuncTyp[u, v] =>
+        FuncTyp(avoidVar(t, pt.dom), avoidVar(t, pt.codom)).asInstanceOf[U]
+      case pt: PiDefn[u, v] =>
+        PiDefn(avoidVar(t, pt.variable), avoidVar(t, pt.value)).asInstanceOf[U]
+      case pt: SigmaTyp[u, v] =>
+        SigmaTyp(avoidVar(t, pt.fibers)).asInstanceOf[U]
 
-    case fn: RecFunc[u, v] =>
-      val replacements =
-        fn.defnData.map { (d) =>
-          avoidVar(t, d)
-        }
-      fn.fromData(replacements).asInstanceOf[U]//.ensuring (_ == fn, s"avoiding var $t failed for recursive function $fn")
-    case fn: InducFuncLike[u, v] =>
-      val replacements =
-        fn.defnData.map { (d) =>
-          avoidVar(t, d)
-        }
-      fn.fromData(replacements).asInstanceOf[U]//.ensuring (_ == fn, s"avoiding var $t failed for inductive function $fn")
-    case _ => x
+      case fn: RecFunc[u, v] =>
+        val replacements =
+          fn.defnData.map { (d) =>
+            avoidVar(t, d)
+          }
+        fn.fromData(replacements)
+          .asInstanceOf[U] //.ensuring (_ == fn, s"avoiding var $t failed for recursive function $fn")
+      case fn: InducFuncLike[u, v] =>
+        val replacements =
+          fn.defnData.map { (d) =>
+            avoidVar(t, d)
+          }
+        fn.fromData(replacements)
+          .asInstanceOf[U] //.ensuring (_ == fn, s"avoiding var $t failed for inductive function $fn")
+      case _ => x
     }
   } //ensuring (_ == x, s"avoiding var $t failed for $x")
 
@@ -3329,9 +3332,10 @@ object Subst {
     override def toString = s"$variable ${UnicodeSyms.MapsTo} $value"
   }
 
-  object Lambda{
-    implicit def substInstance[T <: Term with Subs[T], A](implicit s: Subst[A]) : Subst[Lambda[T, A]] =
-      new Subst[Lambda[T, A]]{
+  object Lambda {
+    implicit def substInstance[T <: Term with Subs[T], A](
+        implicit s: Subst[A]): Subst[Lambda[T, A]] =
+      new Subst[Lambda[T, A]] {
         def subst(l: Lambda[T, A])(x: Term, y: Term) =
           Lambda(l.variable.replace(x, y), s.subst(l.value)(x, y))
       }

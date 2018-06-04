@@ -55,7 +55,7 @@ object FreeExpr {
   }
 
   object Variable {
-    implicit def rw : RW[Variable] = macroRW
+    implicit def rw: RW[Variable] = macroRW
   }
 
   case class TypVariable(name: String, level: Int) extends FreeExpr {
@@ -63,10 +63,9 @@ object FreeExpr {
       l.typVariable(name, level)
   }
 
-  object TypVariable{
-  implicit def rw : RW[TypVariable] = macroRW
+  object TypVariable {
+    implicit def rw: RW[TypVariable] = macroRW
   }
-
 
   case class AnonVar(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
@@ -74,9 +73,8 @@ object FreeExpr {
   }
 
   object AnonVar {
-  implicit def rw : RW[AnonVar] = macroRW
+    implicit def rw: RW[AnonVar] = macroRW
   }
-
 
   case class MetaVar(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
@@ -84,9 +82,8 @@ object FreeExpr {
   }
 
   object MetaVar {
-  implicit def rw : RW[MetaVar] = macroRW
+    implicit def rw: RW[MetaVar] = macroRW
   }
-
 
   case class FreeIncl1(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
@@ -94,9 +91,8 @@ object FreeExpr {
   }
 
   object FreeIncl1 {
-  implicit def rw : RW[FreeIncl1] = macroRW
+    implicit def rw: RW[FreeIncl1] = macroRW
   }
-
 
   case class FreeIncl2(typ: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
@@ -104,9 +100,8 @@ object FreeExpr {
   }
 
   object FreeIncl2 {
-  implicit def rw : RW[FreeIncl1] = macroRW
+    implicit def rw: RW[FreeIncl1] = macroRW
   }
-
 
   case class FreeProj1(xy: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
@@ -114,9 +109,8 @@ object FreeExpr {
   }
 
   object FreeProj1 {
-    implicit def rw : RW[FreeProj1] = macroRW
+    implicit def rw: RW[FreeProj1] = macroRW
   }
-
 
   case class FreeProj2(xy: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
@@ -124,9 +118,8 @@ object FreeExpr {
   }
 
   object FreeProj2 {
-    implicit def rw : RW[FreeProj2] = macroRW
+    implicit def rw: RW[FreeProj2] = macroRW
   }
-
 
   case class FreeLambda(variable: FreeExpr, value: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
@@ -188,7 +181,6 @@ object FreeExpr {
     implicit def rw: RW[FreePair] = macroRW
   }
 
-
   case class OrCases(first: FreeExpr, second: FreeExpr) extends FreeExpr {
     def as[E](implicit l: ExprLang[E]) =
       for (x <- first.as[E]; y <- second.as[E]; result <- l.orCases(x, y))
@@ -232,7 +224,7 @@ object FreeExpr {
     def as[E](implicit l: ExprLang[E]) = l.numeral(n)
   }
 
-  object Numeral{
+  object Numeral {
     implicit def rw: RW[Numeral] = macroRW
 
   }

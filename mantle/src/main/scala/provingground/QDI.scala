@@ -20,20 +20,20 @@ import StringParse._
 
 import com.github.nscala_time.time.Imports._
 
-object AmmRepl extends App {
-  amm()
-}
-
-object amm {
-  def apply(): Unit = {
-    ammMain.run()
-  }
-
-  val initCommands =
-    """import provingground._, HoTT._, induction._, translation._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
-
-  def ammMain = ammonite.Main(predefCode = s"$initCommands")
-}
+// object AmmRepl extends App {
+//   amm()
+// }
+//
+// object amm {
+//   def apply(): Unit = {
+//     ammMain.run()
+//   }
+//
+//   val initCommands =
+//     """import provingground._, HoTT._, induction._, translation._, ammonite.ops._, translation.FansiShow._; repl.pprinter.bind(fansiPrint)"""
+//
+//   def ammMain = ammonite.Main(predefCode = s"$initCommands")
+// }
 
 /**
   * @author gadgil

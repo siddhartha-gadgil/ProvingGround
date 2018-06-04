@@ -347,13 +347,12 @@ object JsonTranslate {
 
   import upickle.default._
 
-  implicit val TermWriter
-    : Writer[Term] =
-    readwriter[Js.Value].bimap[Term] (
+  implicit val TermWriter: Writer[Term] =
+    readwriter[Js.Value].bimap[Term](
       t =>
         termToJson(t).getOrElse(
           Js.Obj("intro" -> Js.Str("raw"), "text" -> Js.Str(t.toString))),
-          ???
+      ???
     )
 
   import provingground.translation.{TermLang => T}

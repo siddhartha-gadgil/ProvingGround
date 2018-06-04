@@ -30,9 +30,9 @@ object ConstituencyParser {
 
     val runButton =
       input(`type` := "button", value := "Parse", `class` := "btn btn-success").render
-    val treeDiv = div(`class` := "view")().render
-    val exprDiv = div(`class` := "language-scala view")().render
-    val depTreeDiv = div(`class` := "view")().render
+    val treeDiv = div(`class` := "panel-body view")().render
+    val exprDiv = div(`class` := "panel-body language-scala view")().render
+    val depTreeDiv = div(`class` := "panel-body view")().render
     val logDiv  = div()().render
     val parseInput =
       input(`type` := "text", `class` := "form-control").render
@@ -49,14 +49,14 @@ object ConstituencyParser {
           treeDiv.innerHTML = ""
           treeDiv.appendChild(pre(tree).render)
           val expr =
-            js.obj("expr").str.toString.split("\n").drop(1).dropRight(1).mkString("\n")
+            js.obj("expr").str.toString.replace("\"\"\"", "").split("\n").drop(1).dropRight(1).mkString("\n")
           exprDiv.innerHTML = ""
           exprDiv.appendChild(
             pre(
               code(`class` := "language-scala")(expr)
             ).render)
           val depTree = js.obj("deptree")
-          depTreeDiv.innerHTML = depTree.toString().replace("\"", "")
+          depTreeDiv.innerHTML = depTree.toString().drop(1).dropRight(1)
           g.hljs.highlightBlock(exprDiv)
           g.hljs.initHighlighting.called = false
           g.hljs.initHighlighting()
@@ -122,22 +122,27 @@ object ConstituencyParser {
           li("the mathematical expression to which it translates recursively.")
         ),
         p("If some node/leaf fails to translate, it is translated to a ",
-          em("FormalNode"), " or ", em("FormalLeaf")
+          code("FormalNode"), " or ", code("FormalLeaf")
         ),
         p(strong("Warning: "), "occasionally the server may crash, so you will need to restart it."),
         form(div(`class` := "form-group")(label("Sentence:"), parseInput),
              runButton),
-        h4("Constituency parsed tree"),
-        p("the output of the stanford parser"),
-        treeDiv,
-        h4("Mathematical Expression"),
-        p("an expression in a structure modelled on Naproche CNL"),
-        exprDiv,
-        h4("Dependency parsed tree"),
-        p("not used at present"),
-        depTreeDiv,
-        h3("Example Sentences"),
-        exampleList
+             p(),
+          div(`class` := "panel panel-primary")(
+           div(`class` := "panel-heading")(h4("Constituency parsed tree"),
+           p("the output of the stanford parser")),
+           treeDiv),
+          div(`class` := "panel panel-success")(
+            div(`class` := "panel-heading")(h4("Mathematical Expression"),
+           p("an expression in a structure modelled on Naproche CNL")),
+           exprDiv),
+           div(`class` := "panel panel-info")(
+            div(`class` := "panel-heading")(h4("Dependency parsed tree"),
+            p("not used at present")),
+            depTreeDiv),
+            p(),
+            h3("Example Sentences"),
+            exampleList
       )
 
     val pdiv = dom.document.querySelector("#constituency-parser")

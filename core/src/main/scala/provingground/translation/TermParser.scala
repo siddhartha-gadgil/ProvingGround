@@ -6,7 +6,6 @@ import scala.util._
 
 import provingground.HoTT._
 
-
 /**
   * @author gadgil
   * Simple parser to reverse the toString operation.

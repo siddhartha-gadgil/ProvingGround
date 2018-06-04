@@ -1,13 +1,14 @@
 import mill._
 import scalalib._
 import scalajslib._
+import mill.scalalib.scalafmt._
 import define.{Sources, Task}
 import ammonite.ops._
 import coursier.maven.MavenRepository
 
-val scalaV = "2.12.4"
+val scalaV = "2.12.6"
 
-val ammV = "1.1.0-12-f07633d"
+val ammV = "1.1.0"
 
 
 val commonLibs = List(
@@ -26,7 +27,7 @@ val commonLibs = List(
   ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
-trait CommonModule extends ScalaModule{
+trait CommonModule extends ScalaModule with ScalafmtModule {
   def scalaVersion= scalaV
   override def ivyDeps = Agg(commonLibs: _*)
   def version = "0.1-SNAPSHOT"
@@ -39,6 +40,11 @@ trait CommonModule extends ScalaModule{
       "-deprecation",
       "-feature",
       "-language:existentials")
+
+  override def compile = T{
+    reformat()
+    super.compile()
+      }
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule{

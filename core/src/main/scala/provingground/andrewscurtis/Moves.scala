@@ -12,7 +12,7 @@ import FiniteDistributionLearner._
 import upickle.default.{ReadWriter => RW, macroRW}
 
 object AtomicMove {
-  implicit def rw : RW[AtomicMove] =
+  implicit def rw: RW[AtomicMove] =
     RW.merge(
       Id.rw,
       Inv.rw,
@@ -159,7 +159,6 @@ sealed trait AtomicMove extends (Moves => Option[Moves]) {
   override def toString = toPlainString
 }
 
-
 case object Id extends AtomicMove {
   def apply(pres: Presentation) = Some(pres)
   //  override def actOnMoves(moves: Moves) = Some(moves)
@@ -182,7 +181,6 @@ object Inv {
   implicit def rw: RW[Inv] = macroRW
 }
 
-
 case class RtMult(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz) Some(pres.rtmult(k, l))
@@ -193,7 +191,6 @@ case class RtMult(k: Int, l: Int) extends AtomicMove {
 object RtMult {
   implicit def rw: RW[RtMult] = macroRW
 }
-
 
 case class RtMultInv(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
@@ -207,7 +204,6 @@ object RtMultInv {
   implicit def rw: RW[RtMultInv] = macroRW
 }
 
-
 case class LftMult(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
     if (k >= 0 && l >= 0 && k < pres.sz && l < pres.sz)
@@ -219,7 +215,6 @@ case class LftMult(k: Int, l: Int) extends AtomicMove {
 object LftMult {
   implicit def rw: RW[LftMult] = macroRW
 }
-
 
 case class LftMultInv(k: Int, l: Int) extends AtomicMove {
   def apply(pres: Presentation): Option[Presentation] = {
@@ -241,7 +236,7 @@ case class Conj(k: Int, l: Int) extends AtomicMove {
   }
 }
 
-object Conj{
+object Conj {
   implicit def rw: RW[Conj] = macroRW
 }
 
@@ -253,7 +248,7 @@ case class Transpose(k: Int, l: Int) extends AtomicMove {
   }
 }
 
-object Transpose{
+object Transpose {
   implicit def rw: RW[Transpose] = macroRW
 }
 

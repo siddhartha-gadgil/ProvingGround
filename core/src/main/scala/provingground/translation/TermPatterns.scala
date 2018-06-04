@@ -271,7 +271,7 @@ object TermPatterns {
     case sym: Symbolic with Term =>
       outerSym(sym).name match {
         case Name(name) => Some((name, sym.typ))
-        case _ => None
+        case _          => None
       }
     case _ => None
   }(namedTrav)

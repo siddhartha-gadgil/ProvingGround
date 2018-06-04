@@ -64,7 +64,8 @@ case class StartData(name: String,
       .map(
         (docOpt) =>
           (docOpt flatMap
-            (_.getAs[String]("start-data") map ((s: String) => uread[List[StartData]](s))))
+            (_.getAs[String]("start-data") map ((s: String) =>
+              uread[List[StartData]](s))))
             .getOrElse(List()))
     val updatedStartsFut = prevStarts map (this :: _)
     val futDoc =

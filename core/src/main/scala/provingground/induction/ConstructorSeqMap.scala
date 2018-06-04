@@ -400,6 +400,8 @@ case class ConstructorSeqTL[SS <: HList,
                             Intros <: HList](
     seqDom: ConstructorSeqDom[SS, H, Intros],
     typ: Typ[H]) {
+  def subs(x: Term, y: Term) =
+    ConstructorSeqTL(seqDom.subs(x, y), typ.replace(x, y))
 
   /**
     * Prepend to the sequence of introduction rules.

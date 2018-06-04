@@ -4,7 +4,7 @@
         }
 .view {
   overflow-y: auto;
-  height: 200px;
+  height: 300px;
   border-style: dotted;
   border-width: 1px;
 }
@@ -12,4 +12,10 @@ pre {
   background-color: black;
   color: green;
   font-weight: bold;
+}
+
+
+td, th {
+  background-color: #fff !important;
+  padding: 2px  !important;
 }

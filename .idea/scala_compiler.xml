@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
     <component name="ScalaCompilerConfiguration">
         <profile name="mill 1" modules="exploring,andrewscurtis,server,leanlib.jvm,nlp,normalform,jvmroot,mantle,realfunctions,mantle.test,core.jvm">
