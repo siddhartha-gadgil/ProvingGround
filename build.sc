@@ -7,8 +7,23 @@ import ammonite.ops._
 import coursier.maven.MavenRepository
 
 trait MetalsModule extends ScalaModule{
-  def msources = T{
-    allSourceFiles().map(_.path).mkString(java.io.File.pathSeparator)
+  def config = T{
+    def targDeps : Agg[eval.PathRef] = resolveDeps(transitiveIvyDeps, false)()
+
+    Map[String, String](
+      "sources" -> allSourceFiles().map(_.path).mkString(java.io.File.pathSeparator),
+      "unmanagedSourceDirectories" -> "",
+      "managedSourceDirectories" -> "",
+      "scalacOptions" -> scalacOptions().mkString(" "),
+      "classDirectory" -> compile().classes.path.toString,
+      "dependencyClasspath" ->
+        (targDeps
+          // ++ transitiveModuleDeps.millSourcePath.toString
+        ).mkString(java.io.File.pathSeparator),
+      "scalaVersion" -> scalaVersion(),
+      "sourceJars" ->
+        resolveDeps(transitiveIvyDeps, true)().mkString(java.io.File.pathSeparator)
+      )
   }
 }
 
