@@ -29,16 +29,13 @@ trait MetalsModule extends ScalaModule{
   }
 
   def metalsConfig() = T.command{
-    def props = new java.util.Properties()
     def outFile = pwd / ".metals" / "buildinfo" / RelPath(artifactName().toString) / "main.properties"
     def info = metalsBuildInfo()
-    info.foreach{
-      case (k, v) => props.setProperty(k, v)
-    }
-    def out = new ByteArrayOutputStream()
-    props.store(out, null)
-    write(outFile, out.toString())
-    info
+    def output = info.map{
+      case (k, v) => s"$k=$v"
+    }.mkString("\n")
+    write.over(outFile, output)
+    output
   }
 }
 
@@ -70,7 +67,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def organization = "in.ac.iisc"
   def name = "ProvingGround"
 
-  def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0-M1")
+  override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0-M1")
 
   override def scalacOptions =
     Seq("-Ypartial-unification",
