@@ -7,7 +7,9 @@ import ammonite.ops._
 import coursier.maven.MavenRepository
 
 trait MetalsModule extends ScalaModule{
-  def config = T{
+  import java.io._
+
+  def metalsBuildInfo = T{
     def targDeps : Agg[eval.PathRef] = resolveDeps(transitiveIvyDeps, false)()
 
     Map[String, String](
@@ -17,13 +19,26 @@ trait MetalsModule extends ScalaModule{
       "scalacOptions" -> scalacOptions().mkString(" "),
       "classDirectory" -> compile().classes.path.toString,
       "dependencyClasspath" ->
-        (targDeps
-          // ++ transitiveModuleDeps.millSourcePath.toString
-        ).mkString(java.io.File.pathSeparator),
+        (targDeps  ++
+          Task.traverse(moduleDeps)(_.sources)().flatten
+        ).map(_.path).mkString(java.io.File.pathSeparator),
       "scalaVersion" -> scalaVersion(),
       "sourceJars" ->
-        resolveDeps(transitiveIvyDeps, true)().mkString(java.io.File.pathSeparator)
+        resolveDeps(transitiveIvyDeps, true)().map(_.path).mkString(java.io.File.pathSeparator)
       )
+  }
+
+  def metalsConfig() = T.command{
+    def props = new java.util.Properties()
+    def outFile = pwd / ".metals" / "buildinfo" / RelPath(artifactName().toString) / "main.properties"
+    def info = metalsBuildInfo()
+    info.foreach{
+      case (k, v) => props.setProperty(k, v)
+    }
+    def out = new ByteArrayOutputStream()
+    props.store(out, null)
+    write(outFile, out.toString())
+    info
   }
 }
 
