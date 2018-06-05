@@ -3,18 +3,42 @@ import provingground._
 
 import edu.stanford.nlp._
 import simple._
-import edu.stanford.nlp.trees.Tree
+import edu.stanford.nlp.trees.{Tree, SimpleTreeFactory}
 import scala.collection.JavaConverters._
 
+import ujson._
+import upickle.default.{ReadWriter => RW, macroRW}
+
 object PennTrees {
+  def toJson(tree: Tree): Js.Value = tree match {
+    case Leaf(s) => Js.Obj("type" -> "leaf", "label" -> s)
+    case Node(s, children) =>
+      Js.Obj(
+        "type" -> "node",
+        "label" -> s,
+        "children" -> children.map(toJson))
+  }
+
+  import TreeModel.factory
+
+  def fromJson(js: Js.Value) : Tree =
+    js.obj("type").str match {
+      case "leaf" => factory.newLeaf(js.obj("label").str)
+      case "node" =>
+        factory.newTreeNode(
+          js.obj("label").str,
+          js.obj("children").arr.map(fromJson).asJava
+        )
+    }
+
   object Leaf {
-    def unapply(t: Tree) = {
+    def unapply(t: Tree) : Option[String] = {
       if (t.isLeaf) Some(t.value) else None
     }
   }
 
   object Node {
-    def unapply(t: Tree) = {
+    def unapply(t: Tree) : Option[(String, Vector[Tree])] = {
       if (t.isLeaf) None else Some((t.value, t.children().toVector))
     }
   }
@@ -111,15 +135,30 @@ object PennTrees {
       .newTreeNode("S", children.asJava: java.util.List[Tree])
 }
 
-sealed trait TreeModel
+sealed trait TreeModel{
+  def simpleTree : Tree
+}
+
 
 object TreeModel {
+  implicit def rw: RW[TreeModel] = macroRW
+
+  val factory = new SimpleTreeFactory()
+
   case class Leaf(value: String) extends TreeModel {
-    // override def toString = s"""Leaf("$value")"""
+    def simpleTree = factory.newLeaf(value)
+  }
+
+  object Leaf{
+    implicit def rw: RW[Leaf] = macroRW
   }
 
   case class Node(value: String, children: Vector[TreeModel])
       extends TreeModel {
-    // override def toString = s"""Node("$value", ${children})"""
+    def simpleTree = factory.newTreeNode(value, children.map(_.simpleTree).asJava)
+  }
+
+  object Node{
+    implicit def rw: RW[Node] = macroRW
   }
 }

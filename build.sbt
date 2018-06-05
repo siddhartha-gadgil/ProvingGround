@@ -144,6 +144,7 @@ lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.full,
     "com.lihaoyi"         %% "ammonite-ops"    % ammV,
+    "com.lihaoyi"   %% "upickle"       % "0.6.6",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",
     "com.google.protobuf" % "protobuf-java"    % "2.6.1"
