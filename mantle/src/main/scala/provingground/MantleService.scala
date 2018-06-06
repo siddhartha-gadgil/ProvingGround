@@ -46,13 +46,11 @@ object MantleService{
 
   val indexHTML =
     """
-      |
+      | <a href="halt" target="_blank" class="btn btn-danger pull-right">Halt</a>
       |  <ul>
       |   <li> <a href="build">Build</a> the web page.</li>
-      |   <li> Link for proving coming soon. </li>
+      |   <li> <a href="prover.html">Prover</a> experiments. </li>
       |  </ul>
-      |  <p> Test below </p>
-      |  
       |  <script type="text/javascript" src="resources/out.js"></script>
       |  <script>
       |   mantlemenu.add()
@@ -60,15 +58,33 @@ object MantleService{
       |
     """.stripMargin
 
-  val homeRoute =
+  val proverHTML =
+    """
+      | <a href="halt" target="_blank" class="btn btn-danger pull-right">Halt</a>
+      |
+      |  <div id="test-div"></div>
+      |  <script type="text/javascript" src="resources/out.js"></script>
+      |  <script>
+      |   mantlemenu.add()
+      |   prover.load()
+      |  </script>
+      |
+    """.stripMargin
+
+  val mantleRoute =
     get{
       (pathSingleSlash | path("index.html")) {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(indexHTML, "docs/", "ProvingGround : Server" )))
+          Site.page(indexHTML, "docs/", "ProvingGround Server" )))
+      }
+    } ~ get{
+      path("prover.html"){
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
+          Site.page(proverHTML, "docs/", "Prover Experimentaion" )))
       }
     }
 
-   val route = baseRoute ~ buildRoute ~ homeRoute
+   val route = baseRoute ~ buildRoute ~ mantleRoute
 }
 
 

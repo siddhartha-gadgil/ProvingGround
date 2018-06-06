@@ -8,6 +8,7 @@ import scala.scalajs.js
 import org.scalajs.dom
 import dom.ext._
 
+
 @JSExportTopLevel("mantlemenu")
 object MantleMenu {
   @JSExport
@@ -27,8 +28,16 @@ object MantleMenu {
 
     navDiv.appendChild(
       li(
+        a(href := "prover.html")("Prover")
+      ).render
+    )
+
+    navDiv.appendChild(
+      li(
         a(href := "index.html")("Home")
       ).render
     )
+
+
   }
 }
