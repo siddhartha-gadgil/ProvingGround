@@ -46,7 +46,7 @@ object MantleService{
 
   val indexHTML =
     """
-      | 
+      |
       |  <ul>
       |   <li> <a href="build" target="_blank">Build</a> the web page.</li>
       |   <li> <a href="prover.html">Prover</a> experiments. </li>
@@ -74,12 +74,12 @@ object MantleService{
     get{
       (pathSingleSlash | path("index.html")) {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(indexHTML, "docs/", "ProvingGround Server" , true)))
+          Site.page(indexHTML, "resources/", "ProvingGround Server" , true)))
       }
     } ~ get{
       path("prover.html"){
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(proverHTML, "docs/", "Prover Experimentaion" , true)))
+          Site.page(proverHTML, "resources/", "Prover Experimentaion" , true)))
       }
     }
 
