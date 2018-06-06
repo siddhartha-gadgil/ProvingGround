@@ -102,6 +102,13 @@ object Site{
                 {tutList(relDocsPath)}
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {postList(relDocsPath)}
+              </ul>
+            </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href={s"${relDocsPath}scaladoc/provingground/index.html"} target="_blank">ScalaDocs</a></li>
@@ -156,7 +163,7 @@ object Site{
 
   def topmatter(lines: Vector[String]) = if (withTop(lines))  Some(lines.tail.takeWhile((l) => !threeDash(l))) else None
 
-  def titleOpt(l: Vector[String]) =
+  def titleOpt(l: Vector[String]): Option[String] =
     for {
       tm <- topmatter(l)
       ln <- tm.find(_.startsWith("title: "))
@@ -190,12 +197,58 @@ object Site{
     Tut(name, rawContent, titleOpt(l))
   }
 
+
   lazy val allTuts: Seq[Tut] = ls(tutdir).map(getTut)
 
   def tutList(relDocsPath: String): Seq[Elem] =
     allTuts.map(
       (tut) =>
         <li><a href={s"${tut.url(relDocsPath)}"}>{tut.title}</a></li>
+    )
+
+  def dateOpt(l: Vector[String]): Option[(Int, Int, Int)] =
+    for {
+      tm <- topmatter(l)
+      m <- """date: (\d\d\d\d)-(\d\d)-(\d\d)""".r.findFirstMatchIn(tm.mkString("\n"))
+    } yield (m.group(1).toInt, m.group(2).toInt, m.group(3).toInt)
+
+  case class Post(name: String, content: String, optDate: Option[(Int, Int, Int)], optTitle: Option[String]){
+    val title = s"$dateString${optTitle.getOrElse(name)}"
+
+    val dateString = optDate.map{ case (y, m, d) => s"$y-$m-$d-"}.getOrElse("")
+
+
+    val target = pwd / "docs" / "posts"/ s"$name.html"
+
+    def url(relDocsPath: String) = s"${relDocsPath}posts/$name.html"
+
+    val date: (Int, Int, Int) = optDate.getOrElse((0, 0, 0))
+
+    def output: String =
+      page(
+        content,
+        "../",
+        title)
+
+    def save = write.over(target, output)
+  }
+
+  def getPost(p: Path): Post =
+  {
+    val l = ops.read.lines(p).toVector
+    val name = titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
+    val content = body(l).mkString("\n")
+    Post(name, content, dateOpt(l), titleOpt(l))
+  }
+
+  val postsDir = pwd / "jekyll" / "_posts"
+
+  lazy val allPosts: Seq[Post] = ls(postsDir).map(getPost).sortBy(_.date).reverse
+
+  def postList(relDocsPath: String): Seq[Elem] =
+    allPosts.map(
+      (post) =>
+        <li><a href={s"${post.url(relDocsPath)}"}>{post.title}</a></li>
     )
 
 
