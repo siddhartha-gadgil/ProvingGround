@@ -46,7 +46,7 @@ object MantleService{
 
   val indexHTML =
     """
-      | <a href="halt" target="_blank" class="btn btn-danger pull-right">Halt</a>
+      | 
       |  <ul>
       |   <li> <a href="build" target="_blank">Build</a> the web page.</li>
       |   <li> <a href="prover.html">Prover</a> experiments. </li>
@@ -60,9 +60,8 @@ object MantleService{
 
   val proverHTML =
     """
-      | <a href="halt" target="_blank" class="btn btn-danger pull-right">Halt Server</a>
       |
-      |  <div id="test-div"></div>
+      |  <div id="prover-div"></div>
       |  <script type="text/javascript" src="resources/out.js"></script>
       |  <script>
       |   mantlemenu.add()
@@ -75,12 +74,12 @@ object MantleService{
     get{
       (pathSingleSlash | path("index.html")) {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(indexHTML, "docs/", "ProvingGround Server" )))
+          Site.page(indexHTML, "docs/", "ProvingGround Server" , true)))
       }
     } ~ get{
       path("prover.html"){
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(proverHTML, "docs/", "Prover Experimentaion" )))
+          Site.page(proverHTML, "docs/", "Prover Experimentaion" , true)))
       }
     }
 

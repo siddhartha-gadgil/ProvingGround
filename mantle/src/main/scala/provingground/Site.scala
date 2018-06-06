@@ -253,7 +253,7 @@ object Site{
     )
 
 
-  def page(s: String, relDocsPath: String, t: String = ""): String =
+  def page(s: String, relDocsPath: String, t: String = "", haltButton: Boolean = false): String =
     s"""
        |<!DOCTYPE html>
        |<html lang="en">
@@ -261,6 +261,7 @@ object Site{
        |<body>
        |${nav(relDocsPath)}
        |<div class="container">
+       |${if (haltButton) """<a href="halt" target="_blank" class="btn btn-danger pull-right">Halt Server</a>""" else ""}
        |<h1 class="text-center">$t</h1>
        |
        |<div class="text-justify">
