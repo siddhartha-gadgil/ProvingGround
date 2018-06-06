@@ -60,7 +60,7 @@ object MantleService{
 
   val proverHTML =
     """
-      | <a href="halt" target="_blank" class="btn btn-danger pull-right">Halt</a>
+      | <a href="halt" target="_blank" class="btn btn-danger pull-right">Halt Server</a>
       |
       |  <div id="test-div"></div>
       |  <script type="text/javascript" src="resources/out.js"></script>

@@ -22,7 +22,7 @@ object MantleMenu {
 
     navDiv.appendChild(
       li(
-        a(href := "halt", target:="_blank")("Halt")
+        a(href := "halt", target:="_blank")("Halt Server")
       ).render
     )
 

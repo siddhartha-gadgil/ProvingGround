@@ -1,10 +1,7 @@
 package provingground.learning
 import provingground._
-
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
-
-import translation.{TermLang => TL}
-
+import translation.{TeXTranslate, TermLang => TL}
 import translation.Translator.unmatched
 
 import scala.language.existentials
@@ -52,7 +49,7 @@ object FineDeducer {
   def unif(vars: Term*)(terms: Term*)(axioms: Typ[Term]*) =
     FD.uniform(
       vars.toVector ++ terms ++ // axioms.map(lambdaClosure(vars.toVector)) ++
-        axioms.map((t) => s"axiom[${t.fansi}]" :: piClosure(vars.toVector)(t)))
+        axioms.map((t) => s"""axiom_{${TeXTranslate(t)}}""" :: piClosure(vars.toVector)(t)))
 
   /**
     * evolution by function application with  unification

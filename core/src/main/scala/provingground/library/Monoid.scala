@@ -168,7 +168,7 @@ object MonoidSimple {
 
   val r = "e_r" :: M
 
-  val op = "_*_" :: M ->: M ->: M
+  val op = "mul" :: M ->: M ->: M
 
   import FineDeducer.unif
 

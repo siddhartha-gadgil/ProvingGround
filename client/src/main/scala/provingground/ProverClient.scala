@@ -1,6 +1,7 @@
 package provingground
 
 import org.scalajs.dom
+
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
@@ -9,10 +10,14 @@ import org.scalajs.dom
 import dom.ext._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
-import provingground._, HoTT._, translation._, learning._
+import provingground._
+import HoTT._
+import translation._
+import learning._
 import ProverTasks._
+import monix.execution.CancelableFuture
 
-import scala.concurrent.duration._
+
 
 @JSExportTopLevel("prover")
 object ProverClient{
@@ -32,17 +37,29 @@ object ProverClient{
 
     val seekTask = {
       import library._, MonoidSimple._
+      import scala.concurrent.duration._
       theoremSearchTraceTask(dist1, tv, math.pow(10.0, -6), 3.minutes, eqM(l)(r), decay = 3)
     }
 
-    val seekFut = {
+    val seek: Task[Option[Term]] =  {
+      import library._, MonoidSimple._
+      import scala.concurrent.duration._
+      theoremSearchTask(dist1, tv, math.pow(10.0, -6), 3.minutes, eqM(l)(r), decay = 3)
+    }
+
+    val seekFut: CancelableFuture[Option[Term]] = {
       testDiv.appendChild(p("starting seek task").render)
-      seekTask.runAsync
+      seek.runAsync
     }
 
     seekFut.foreach{
-      case Some(t) => testDiv.appendChild(p(s"Found proof $t").render)
-      case None => testDiv.appendChild(p("could not find theorem").render)
+      case Some(t) =>
+        val termDiv = div(style := "overflow-x: auto;")().render
+        val typSpan = span().render
+        termDiv.innerHTML = katex.renderToString(TeXTranslate(t))
+        typSpan.innerHTML = katex.renderToString(TeXTranslate(t.typ))
+        testDiv.appendChild(div(h3("Found proof:"), termDiv, div(" of theorem: ", typSpan)).render)
+      case None => testDiv.appendChild(p("could not find proof of theorem").render)
     }
   }
 }
