@@ -1,6 +1,6 @@
 ---
 title: Stalling in the lean import - the problem case.
-date: 2017-12-7
+date: 2017-12-07
 layout: post
 ---
 

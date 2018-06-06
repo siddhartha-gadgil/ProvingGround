@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ProvingGround</title>
+    <link rel="icon" href="../IIScLogo.jpg">
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+   <link href="../css/katex.min.css" rel="stylesheet">
+   <link href="../css/main.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/zenburn.css">
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+   <script src="../js/ace.js"></script>
+   <script src="../js/katex.min.js"></script>
+
+    
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+jax: ["input/TeX", "output/HTML-CSS"],
+tex2jax: {
+  inlineMath: [ ['$', '$'] ],
+  displayMath: [ ['$$', '$$']],
+  processEscapes: true,
+  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+},
+messageStyle: "none",
+"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+    
+  </head>
+
+   
+<body>
+<nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">ProvingGround</span>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Tutorials (notes)<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+
+
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+<div class="container">
+<h1 class="text-center">Lean Import and Propositions</h1>
+
+<div class="text-justify">
+<p>Lean import takes enormously long to a large extent because of the burden of proof awareness.</p>
+<h2>The Example code</h2>
+<p>For instance, in mapping a <code>group</code> to a <code>semigroup</code>, we halted with the function application of:</p>
+<pre><code class="language-scala">@ f
+res93: Term =
+  (s : semigroup(A)) ↦
+    hes_mul.mk(A)(
+      rec(semigroup(A))((A → (A → A)))(
+        (m : (A → (A → A)))
+          ↦ (_ : ∏(x : A){ ∏(y : A){ ∏(z : A){ eq(A)(m(m(y)(z))(z))(m(y)(m(z)(z))) } } }) ↦
+            m
+            )(s)
+      )
+</code></pre>
+<p>on the argument (partly messed up during cleaning)</p>
+<pre><code class="language-scala">@ x
+res94: Term =
+  semigroup.mk(A)(
+    rec(group(A))(
+      (A → (A → A))
+    )(
+      (m : (A → (A → A))) ↦
+        (z : ∏(x : A){ ∏(y : A){ ∏(z : A){ eq(A)(m(m(x)(y))(z))(m(x)(m(y)(z))) } } }) ↦
+          (e : A) ↦
+            lid : ∏(b : A){ eq(A)(m(e)(b))(b) }) ↦
+              (rid : ∏(c : A){ eq(A)(m(c)(e))(c) }) ↦
+                (inv : (A → A)) ↦
+                  (invAxiom : ∏(w : A){ eq(A)(m(inv(w))(w))(e) }) ↦ m
+                ) (gp)
+              ) // multiplication for the semigroup
+                    (
+                      induc(group(A))
+                      ((gp : group(A)) ↦
+                        ∏(z : A){ ∏(x : A){ ∏(y : A){
+                          eq(A)(rec(group(A))((A → (A → A)))((m : (A → (A → A))) ↦
+                            (assoc : ∏(x : A){ ∏(y : A){ ∏(z : A){ eq(A)(m(m(x)(y))(z))(m(x)(m(y)(z))) } } }) ↦
+                              (e : A) ↦
+                                lid : ∏(b : A){ eq(A)(m(e)(b))(b) }) ↦
+                                  (rid : ∏(c : A){ eq(A)(m(c)(e))(c) }) ↦
+                                    (inv : (A → A)) ↦
+                                      (invAxiom : ∏(w : A){ eq(A)(m(inv(w))(w))(e) }) ↦ m)(gp)(
+                                        rec(group(A))((A → (A → A)))((m : (A → (A → A))) ↦
+                                          (assoc : ∏(x : A){ ∏(y : A){ ∏(z : A){ eq(A)(m(m(x)(y))(z))(m(x)(m(y)(z))) } } }) ↦
+                                            (e : A) ↦ lid : ∏(b : A){ eq(A)(m(e)(b))(b) }) ↦
+                                              (rid : ∏(c : A){ eq(A)(m(c)(e))(c) }) ↦ (inv : (A → A)) ↦
+                                                (invAxiom : ∏(w : A){ eq(A)(m(inv(w))(w))(e) }) ↦ m)(gp)(z)(x))
+                                                (y)
+                      )
+                        (
+                          rec(group(A))((A → (A → A)))((m : (A → (A → A))) ↦ (z : ∏(x : A){ ∏(y : A){ ∏(z : A){ eq(A)(m(m(x)(y))(z))(m(x)(m(y)(z))) } } }) ↦ (e : A) ↦ lid : ∏(b : A){ eq(A)(m(e)(b))(b) }) ↦ (rid : ∏(c : A){ eq(A)(m(c)(e))(c) }) ↦ (inv : (A → A)) ↦ (invAxiom : ∏(w : A){ eq(A)(m(inv(w))(w))(e) }) ↦ m
+                          )
+                            (gp)(z)
+                              (
+                                rec(group(A))((A → (A → A)))((m : (A → (A → A))) ↦ (z : ∏(x : A){ ∏(y : A){ ∏(z : A){ eq(A)(m(m(x)(y))(z))(m(x)(m(y)(z))) } } }) ↦ (e : A) ↦ lid : ∏(b : A){ eq(A)(m(e)(b))(b) }) ↦ (rid : ∏(c : A){ eq(A)(m(c)(e))(c) }) ↦ (inv : (A → A)) ↦ (invAxiom : ∏(w : A){ eq(A)(m(inv(w))(w))(e) }) ↦ m)(gp)(x)(y))) } } })(
+                                  (m : (A → (A → A))) ↦
+                                    (assoc :
+                                      ∏(x : A){ ∏(y : A){ ∏(z : A){ eq(A)(m(m(x)(y))(z))(m(x)(m(y)(z))) } } }) ↦
+                                        (e : A) ↦ (lid : ∏(b : A){ eq(A)(m(e)(b))(b) }) ↦
+                                          (rid : ∏(c : A){ eq(A)(m(c)(e))(c) }) ↦
+                                            (inv : (A → A)) ↦ (invAxiom : ∏(w : A){ eq(A)(m(inv(w))(w))(e) }) ↦ assoc)(gp)
+                                            )
+</code></pre>
+<p>Note that the type of the semigroup <code>mk</code> is:</p>
+<pre><code class="language-scala">@ parser.defnMap(Name(&quot;semigroup&quot;, &quot;mk&quot;))(A).typ
+res26: Typ[U] = ∏($f : (A → (A → A))){ (∏($g : A){ ∏($h : A){ ∏($i : A){ eq(A)($f($f($g)($h))($i))($f($g)($f($h)($i))) } } } → semigroup(A)) }
+</code></pre>
+<h2>Why so complicated</h2>
+<ul>
+<li>In Lean, all the structures are given as inductive types with a single introduction rule <code>mk</code>.</li>
+<li>To form the semigroup, we give to make a multiplication <code>m</code> and a proof of associativity of <code>m</code>.</li>
+<li>The multiplication is recursively defined, forgetting many parts of the structure.</li>
+<li>On the other hand, the associativity depends on the group structure (via <code>m</code>), so needs to be defined inductively.</li>
+<li>Even the family for the induction is complicated, as much as <code>m</code>.</li>
+</ul>
+<h2>Speeding up by witnesses</h2>
+<ul>
+<li>Associativity is propositional, as it is an iterated function ending in a proposition.</li>
+<li>Hence it is enough to have a witness.</li>
+<li>While parsing, can save precise terms but just return witnesses for propositions.</li>
+</ul>
+<h2>Update</h2>
+<ul>
+<li>Witnesses did not solve the problem.</li>
+<li>As data, here are the raw terms.</li>
+</ul>
+<pre><code class="language-scala">@ f
+res77: Term = ($btk : semigroup($amuwvdd)) ↦ has_mul.mk($amuwvdd)(rec(semigroup($amuwvdd))(($amuwvdd → ($amuwvdd → $amuwvdd)))(($btu : ($amuwvdd → ($amuwvdd → $amuwvdd))) ↦ ($crp : ∏($btv : $amuwvdd){ ∏($btw : $amuwvdd){ ∏($btx : $amuwvdd){ eq($amuwvdd)($btu($btu($btv)($btw))($btx))($btu($btv)($btu($btw)($btx))) } } }) ↦ $btu)($btk))
+
+@ x
+res88: Term = semigroup.mk($amuwvdd)(rec(group($amuwvdd))(($amuwvdd → ($amuwvdd → $amuwvdd)))(($eybvwn : ($amuwvdd → ($amuwvdd → $amuwvdd))) ↦ ($eybwui : ∏($eybvwo : $amuwvdd){ ∏($eybvwp : $amuwvdd){ ∏($eybvwq : $amuwvdd){ eq($amuwvdd)($eybvwn($eybvwn($eybvwo)($eybvwp))($eybvwq))($eybvwn($eybvwo)($eybvwn($eybvwp)($eybvwq))) } } }) ↦ ($eybwuj : $amuwvdd) ↦ ($eydpnp : ∏($eybwuk : $amuwvdd){ eq($amuwvdd)($eybvwn($eybwuj)($eybwuk))($eybwuk) }) ↦ ($eyfigv : ∏($eydpnq : $amuwvdd){ eq($amuwvdd)($eybvwn($eydpnq)($eybwuj))($eydpnq) }) ↦ ($eyfigx : ($amuwvdd → $amuwvdd)) ↦ ($fbqdvv : ∏($eyfigy : $amuwvdd){ eq($amuwvdd)($eybvwn($eyfigx($eyfigy))($eyfigy))($eybwuj) }) ↦ $eybvwn)($amuwvdf))(_)
+
+@ groupMk(A).typ
+res92: Typ[U] = ∏($g : (A → (A → A))){ (∏($h : A){ ∏($i : A){ ∏($j : A){ eq(A)($g($g($h)($i))($j))($g($h)($g($i)($j))) } } } → ∏($anr : A){ (∏($ans : A){ eq(A)($g($anr)($ans))($ans) } → (∏($dtzw : A){ eq(A)($g($dtzw)($anr))($dtzw) } → ∏($fmtd : (A → A)){ (∏($fmte : A){ eq(A)($g($fmtd($fmte))($fmte))($anr) } → group(A)) })) }) }
+
+@ semigroupMk(A).typ
+res94: Typ[U] = ∏($aoj : (A → (A → A))){ (∏($aok : A){ ∏($aol : A){ ∏($aom : A){ eq(A)($aoj($aoj($aok)($aol))($aom))($aoj($aok)($aoj($aol)($aom))) } } } → semigroup(A)) }
+</code></pre>
+<p>Recall that equality is defined with the based path induction principle, so even the first point is a parameter, not an index.</p>
+<pre><code class="language-scala">@ val eqMod = parser.termIndModMap (Name(&quot;eq&quot;))
+eqMod: TermIndMod = IndexedIndMod(Str(, &quot;eq&quot;), eq, Vector(eq.refl), 2, true)
+
+@ eqRefl.typ
+res97: Typ[U] = ∏($o : 𝒰 ){ ∏($p : $o){ eq($o)($p)($p) } }
+</code></pre>
+<ul>
+<li>Should see if the definitions in this form give trouble, or it is a perculiarity of lean parsing (e.g., running out of memory).</li>
+</ul>
+
+
+</div>
+</div>
+
+<div class="container-fluid">
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <div class="footer navbar-fixed-bottom bg-primary">
+    <h4>
+    &nbsp;Developed by:
+    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
+
+  </h4>
+
+  </div>
+</div>
+<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/provingground.js"></script>
+<script>
+  provingground.main()
+</script>
+   
+</body>
+</html>
+   

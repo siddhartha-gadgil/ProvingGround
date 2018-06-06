@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ProvingGround</title>
+    <link rel="icon" href="../IIScLogo.jpg">
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+   <link href="../css/katex.min.css" rel="stylesheet">
+   <link href="../css/main.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/zenburn.css">
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+   <script src="../js/ace.js"></script>
+   <script src="../js/katex.min.js"></script>
+
+    
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+jax: ["input/TeX", "output/HTML-CSS"],
+tex2jax: {
+  inlineMath: [ ['$', '$'] ],
+  displayMath: [ ['$$', '$$']],
+  processEscapes: true,
+  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+},
+messageStyle: "none",
+"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+    
+  </head>
+
+   
+<body>
+<nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">ProvingGround</span>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Tutorials (notes)<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+
+
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+<div class="container">
+<h1 class="text-center">On import from Lean Export format</h1>
+
+<div class="text-justify">
+<p>For the last few weeks/months, a focus of my work was to import from <em>lean theorem prover</em> using its export format. As I move away from this, its time to record some lessons.</p>
+<h3>Universes</h3>
+<ul>
+<li>Lean uses universe parametrizations.</li>
+<li>For the first time in my code, which universe mattered, with function application failing because the domain and the type of the argument differed in Universes.</li>
+<li>An unsafe hack of making universes equal was implemented.</li>
+<li>Eventually, this should be replaced by an appropriate unified <em>apply</em> function.</li>
+</ul>
+<h3>Propositions</h3>
+<ul>
+<li>Lean makes use of Propositions, which are at level <em>-1</em>.</li>
+<li>Some of the difficulty was in the way propositional witnesses are suppressed - just a pain with no lessons.</li>
+<li>But the main step was implementing propositional types: a universe <em>Prop</em>, symbolic types in this universe, and the definition that symbolic objects with type a proposition are all just named <em>witness</em>, and hence equal.</li>
+<li>This is in general a worthwhile optimization for equality and even function application.</li>
+</ul>
+<h3>Recursion paralysis</h3>
+<ul>
+<li>Lean uses a lot of recursion, going very deep.</li>
+<li>This uncovered some bugs in replacement (where it was trivial) which have been fixed.</li>
+<li>Nevertheless, recursion remains very slow. One can partly blame <em>lean export</em>, but it is worth trying to fix this.</li>
+<li>The key steps in recursion, including <em>replacement</em> and <em>equality</em>, are done without any concurrency or stack safety.</li>
+<li>One should presumably wrap and override these with, for example, <em>Task</em>.</li>
+</ul>
+
+
+</div>
+</div>
+
+<div class="container-fluid">
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <div class="footer navbar-fixed-bottom bg-primary">
+    <h4>
+    &nbsp;Developed by:
+    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
+
+  </h4>
+
+  </div>
+</div>
+<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/provingground.js"></script>
+<script>
+  provingground.main()
+</script>
+   
+</body>
+</html>
+   

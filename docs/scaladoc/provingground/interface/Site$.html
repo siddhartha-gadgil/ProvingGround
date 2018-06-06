@@ -180,6 +180,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="LeanToTermMut.html" title="">LeanToTermMut</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="MantleServer$.html" title=""></a>
+                        <a href="MantleServer$.html" title="">MantleServer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MantleService$.html" title=""></a>
+                        <a href="MantleService$.html" title="">MantleService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="NewParseDiffersException.html" title=""></a>
                         <a href="NewParseDiffersException.html" title="">NewParseDiffersException</a>
                       </li><li class="current-entities indented2">
@@ -202,10 +210,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="QDI$.html" title=""></a>
                         <a href="QDI$.html" title="">QDI</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="QuickSite$.html" title=""></a>
-                        <a href="QuickSite$.html" title="">QuickSite</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="RecFoldException.html" title=""></a>
@@ -346,7 +350,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.interface.Site.Tut" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.interface.Site.Post" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PostextendsProductwithSerializable"></a><a id="Post:Post"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#PostextendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Site$$Post.html"><span class="name">Post</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="content">content: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="optDate">optDate: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="optTitle">optTitle: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.Site.Tut" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TutextendsProductwithSerializable"></a><a id="Tut:Tut"></a>
       <span class="permalink">
       <a href="../../provingground/interface/Site$.html#TutextendsProductwithSerializable" title="Permalink">
@@ -418,6 +438,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.interface.Site#allPosts" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="allPosts:Seq[provingground.interface.Site.Post]"></a><a id="allPosts:Seq[Post]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#allPosts:Seq[provingground.interface.Site.Post]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">allPosts</span><span class="result">: <a href="../../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<a href="Site$$Post.html" class="extype" name="provingground.interface.Site.Post">Post</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.interface.Site#allTuts" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="allTuts:Seq[provingground.interface.Site.Tut]"></a><a id="allTuts:Seq[Tut]"></a>
       <span class="permalink">
@@ -506,6 +542,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.Site#dateOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="dateOpt(l:Vector[String]):Option[(Int,Int,Int)]"></a><a id="dateOpt(Vector[String]):Option[(Int,Int,Int)]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#dateOpt(l:Vector[String]):Option[(Int,Int,Int)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dateOpt</span><span class="params">(<span name="l">l: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Int">Int</span>)]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -577,9 +629,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.interface.Site#foot" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="foot(rel:String):String"></a><a id="foot(String):String"></a>
+      <a id="foot(relDocsPath:String):String"></a><a id="foot(String):String"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#foot(rel:String):String" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#foot(relDocsPath:String):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -588,7 +640,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">foot</span><span class="params">(<span name="rel">rel: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">foot</span><span class="params">(<span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       
@@ -627,6 +679,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.Site#getPost" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getPost(p:ammonite.ops.Path):provingground.interface.Site.Post"></a><a id="getPost(Path):Post"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#getPost(p:ammonite.ops.Path):provingground.interface.Site.Post" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getPost</span><span class="params">(<span name="p">p: <span class="extype" name="ammonite.ops.Path">Path</span></span>)</span><span class="result">: <a href="Site$$Post.html" class="extype" name="provingground.interface.Site.Post">Post</a></span>
+      </span>
+      
+      
     </li><li name="provingground.interface.Site#getTut" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="getTut(p:ammonite.ops.Path):provingground.interface.Site.Tut"></a><a id="getTut(Path):Tut"></a>
       <span class="permalink">
@@ -663,9 +731,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.interface.Site#head" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="head(rel:String):String"></a><a id="head(String):String"></a>
+      <a id="head(relDocsPath:String):String"></a><a id="head(String):String"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#head(rel:String):String" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#head(relDocsPath:String):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -674,7 +742,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">head</span><span class="params">(<span name="rel">rel: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">head</span><span class="params">(<span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       
@@ -759,9 +827,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.interface.Site#nav" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="nav(rel:String):scala.xml.Elem"></a><a id="nav(String):Elem"></a>
+      <a id="nav(relDocsPath:String):scala.xml.Elem"></a><a id="nav(String):Elem"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#nav(rel:String):scala.xml.Elem" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#nav(relDocsPath:String):scala.xml.Elem" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -770,7 +838,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">nav</span><span class="params">(<span name="rel">rel: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.xml.Elem">Elem</span></span>
+        <span class="name">nav</span><span class="params">(<span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.xml.Elem">Elem</span></span>
       </span>
       
       
@@ -845,9 +913,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.interface.Site#page" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="page(s:String,rel:String,t:String):String"></a><a id="page(String,String,String):String"></a>
+      <a id="page(s:String,relDocsPath:String,t:String):String"></a><a id="page(String,String,String):String"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#page(s:String,rel:String,t:String):String" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#page(s:String,relDocsPath:String,t:String):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -856,7 +924,39 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">page</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="rel">rel: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="t">t: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">page</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="t">t: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.Site#postList" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="postList(relDocsPath:String):Seq[scala.xml.Elem]"></a><a id="postList(String):Seq[Elem]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#postList(relDocsPath:String):Seq[scala.xml.Elem]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">postList</span><span class="params">(<span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="../../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="scala.xml.Elem">Elem</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.Site#postsDir" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="postsDir:ammonite.ops.Path"></a><a id="postsDir:Path"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#postsDir:ammonite.ops.Path" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">postsDir</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
       </span>
       
       
@@ -904,7 +1004,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">titleOpt</span><span class="params">(<span name="l">l: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+        <span class="name">titleOpt</span><span class="params">(<span name="l">l: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       
       
@@ -941,9 +1041,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.interface.Site#tutList" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="tutList(rel:String):Seq[scala.xml.Elem]"></a><a id="tutList(String):Seq[Elem]"></a>
+      <a id="tutList(relDocsPath:String):Seq[scala.xml.Elem]"></a><a id="tutList(String):Seq[Elem]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#tutList(rel:String):Seq[scala.xml.Elem]" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#tutList(relDocsPath:String):Seq[scala.xml.Elem]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -952,7 +1052,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">tutList</span><span class="params">(<span name="rel">rel: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="../../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="scala.xml.Elem">Elem</span>]</span>
+        <span class="name">tutList</span><span class="params">(<span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="../../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="scala.xml.Elem">Elem</span>]</span>
       </span>
       
       

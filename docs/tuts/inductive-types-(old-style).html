@@ -61,13 +61,20 @@ messageStyle: "none",
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="../index.html#">Home</a></li>
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">nullComputer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">nullTuning with Tensorflow</a></li><li><a href="../posts/lean-import-and-propositions.html">nullLean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">nullLevels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">nullImprovements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">nullLogic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">nullProver Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">nullOn import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">null&quot;Quasi-literate programming&quot;</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">nullStalling in the lean import - the problem case.</a></li>
               </ul>
             </li>
           </ul>
@@ -592,7 +599,7 @@ Namely to define the dependent function <code>f</code>, we must specify</p>
 <p>We define inductively a countdown function, giving the vector counting down from <code>n</code>.</p>
 <pre><code class="language-scala">scala&gt; val indNV = NatInd.induc(V) 
 
-indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0,Nat)) :  (Vec) (0)) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  $jbiwm ~&gt; (((Vec) ($jbiwm)) → ((Vec) ((succ) ($jbiwm))))) ↦ (ind(Nat)(Vec)(InducSym(ConstructorDefn(IdW(),0,Nat)))(InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
+indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0,Nat)) :  (Vec) (0)) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  $ipmcz ~&gt; (((Vec) ($ipmcz)) → ((Vec) ((succ) ($ipmcz))))) ↦ (ind(Nat)(Vec)(InducSym(ConstructorDefn(IdW(),0,Nat)))(InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
 
 scala&gt;  
 
@@ -754,13 +761,13 @@ hyp: Equality[Term] with Subs[Equality[Term]] = hypothesis : ((f) (0) = (f) (n))
 
 scala&gt; val step = hyp :-&gt; {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) } 
 
-step: Func[Equality[Term] with Subs[Equality[Term]], Equality[Term with Subs[Term]]] = (hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($kgzha :  A) ↦ (($kgzhb :  A) ↦ ($kgzha = $kgzhb))((f) (0))((f) (n))}{($kgwld :  A) ↦ (($kgwle :  A) ↦ ((_ : ($kgwld = $kgwle) :  $kgwld = $kgwle) ↦ (($kgwle = (f) ((succ) (n))) → ($kgwld = (f) ((succ) (n))))))}(($kgwld :  A) ↦ (($kgwzt : ($kgwld = (f) ((succ) (n))) :  $kgwld = (f) ((succ) (n))) ↦ ($kgwzt : ($kgwld = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))
+step: Func[Equality[Term] with Subs[Equality[Term]], Equality[Term with Subs[Term]]] = (hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($jvcnn :  A) ↦ (($jvcno :  A) ↦ ($jvcnn = $jvcno))((f) (0))((f) (n))}{($juzrq :  A) ↦ (($juzrr :  A) ↦ ((_ : ($juzrq = $juzrr) :  $juzrq = $juzrr) ↦ (($juzrr = (f) ((succ) (n))) → ($juzrq = (f) ((succ) (n))))))}(($juzrq :  A) ↦ (($jvagg : ($juzrq = (f) ((succ) (n))) :  $juzrq = (f) ((succ) (n))) ↦ ($jvagg : ($juzrq = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))
 
 scala&gt;  
 
 scala&gt; val pf = NatInd.induc(claim)(base)(n :~&gt; step) !: (n ~&gt;: (f(zero) =:= f(n))) 
 
-pf: FuncLike[Term with Subs[Term], Equality[Term]] = ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(Refl(A,(f) (0)))((n :  Nat) ↦ ((hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($khevd :  A) ↦ (($kheve :  A) ↦ ($khevd = $kheve))((f) (0))((f) (n))}{($kgwld :  A) ↦ (($kgwle :  A) ↦ ((_ : ($kgwld = $kgwle) :  $kgwld = $kgwle) ↦ (($kgwle = (f) ((succ) (n))) → ($kgwld = (f) ((succ) (n))))))}(($kgwld :  A) ↦ (($kgwzt : ($kgwld = (f) ((succ) (n))) :  $kgwld = (f) ((succ) (n))) ↦ ($kgwzt : ($kgwld = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))))
+pf: FuncLike[Term with Subs[Term], Equality[Term]] = ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(Refl(A,(f) (0)))((n :  Nat) ↦ ((hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($jvibq :  A) ↦ (($jvibr :  A) ↦ ($jvibq = $jvibr))((f) (0))((f) (n))}{($juzrq :  A) ↦ (($juzrr :  A) ↦ ((_ : ($juzrq = $juzrr) :  $juzrq = $juzrr) ↦ (($juzrr = (f) ((succ) (n))) → ($juzrq = (f) ((succ) (n))))))}(($juzrq :  A) ↦ (($jvagg : ($juzrq = (f) ((succ) (n))) :  $juzrq = (f) ((succ) (n))) ↦ ($jvagg : ($juzrq = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))))
 
 scala&gt;
 </code></pre>
@@ -771,7 +778,7 @@ Further, the recursion and induction function only allow construction of (depend
 <p>A typical example is vectors, defined as a family indexed by their length.</p>
 <pre><code class="language-scala">scala&gt; val IndN = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@40489238
+IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@b15343d
 
 scala&gt; val Vec = &quot;Vec&quot; :: Nat -&gt;: Type 
 
@@ -779,7 +786,7 @@ Vec: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = Vec
 
 scala&gt; val VecPtn = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@1e10f26f
+VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@21b6bd73
 
 scala&gt; val VecFmly = VecPtn.Family(Vec) 
 
@@ -794,7 +801,7 @@ VecInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3849/2001577464@7bbced70
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4553/1685591269@66cadb84
       ),
       cons,
       Vec
@@ -810,7 +817,7 @@ vcons: Term = cons
 
 scala&gt; vcons.typ.fansi 
 
-res147: String = &quot;\u001b\u220f\u001b(\u001b$khjng\u001b : \u001bNat\u001b)\u001b{ \u001b(A \u001b\u2192\u001b (Vec($khjng) \u001b\u2192\u001b Vec(succ($khjng))))\u001b }\u001b&quot;
+res147: String = &quot;\u001b\u220f\u001b(\u001b$jvmtt\u001b : \u001bNat\u001b)\u001b{ \u001b(A \u001b\u2192\u001b (Vec($jvmtt) \u001b\u2192\u001b Vec(succ($jvmtt))))\u001b }\u001b&quot;
 </code></pre>
 <p>We can define function recursively on vectors of all indices. For instance, we can define the size.</p>
 <pre><code class="language-scala">scala&gt; val vn = &quot;v_n&quot; :: Vec(n) 
@@ -819,11 +826,11 @@ vn: Term with Subs[Term] = v_n
 
 scala&gt; val recVN = VecInd.rec(Nat) 
 
-recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3849/2001577464@7bbced70),cons,Vec)) :  $khjon ~&gt; ((A) → (((Vec) ($khjon)) → ((Nat) → (Nat))))) ↦ (($khjno_1 :  Nat) ↦ (($khjno_2 :  (Vec) ($khjno_1)) ↦ ((rec(∑(($khjnm :  Nat) ↦ ((Vec) ($khjnm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3849/2001577464@7bbced70),cons,Vec)))) ((($khjno_1) , ($khjno_2)))))))
+recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4553/1685591269@66cadb84),cons,Vec)) :  $jvmva ~&gt; ((A) → (((Vec) ($jvmva)) → ((Nat) → (Nat))))) ↦ (($jvmub_1 :  Nat) ↦ (($jvmub_2 :  (Vec) ($jvmub_1)) ↦ ((rec(∑(($jvmtz :  Nat) ↦ ((Vec) ($jvmtz))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4553/1685591269@66cadb84),cons,Vec)))) ((($jvmub_1) , ($jvmub_2)))))))
 
 scala&gt; val size = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m)))))) 
 
-size: Term = ($khjno_1 :  Nat) ↦ (($khjno_2 :  (Vec) ($khjno_1)) ↦ ((rec(∑(($khjnm :  Nat) ↦ ((Vec) ($khjnm))))(Nat)(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m))))))) ((($khjno_1) , ($khjno_2)))))
+size: Term = ($jvmub_1 :  Nat) ↦ (($jvmub_2 :  (Vec) ($jvmub_1)) ↦ ((rec(∑(($jvmtz :  Nat) ↦ ((Vec) ($jvmtz))))(Nat)(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m))))))) ((($jvmub_1) , ($jvmub_2)))))
 
 scala&gt; size(zero)(vnil) 
 
@@ -863,7 +870,7 @@ VecNInd: VecPtn.iConstructorSeq.Cons = Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
         Nat,
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3849/2001577464@dee0f0e
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4553/1685591269@42ee9e4
       ),
       cons,
       Vec(Nat)
@@ -876,7 +883,7 @@ scala&gt;
 
 scala&gt; val recVNN = VecNInd.rec(Nat) 
 
-recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3849/2001577464@dee0f0e),cons,Vec(Nat))) :  $khtwi ~&gt; ((Nat) → (((Vec(Nat)) ($khtwi)) → ((Nat) → (Nat))))) ↦ (($khtvj_1 :  Nat) ↦ (($khtvj_2 :  (Vec(Nat)) ($khtvj_1)) ↦ ((rec(∑(($khtvh :  Nat) ↦ ((Vec(Nat)) ($khtvh))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3849/2001577464@dee0f0e),cons,Vec(Nat))))) ((($khtvj_1) , ($khtvj_2)))))))
+recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4553/1685591269@42ee9e4),cons,Vec(Nat))) :  $jvxcv ~&gt; ((Nat) → (((Vec(Nat)) ($jvxcv)) → ((Nat) → (Nat))))) ↦ (($jvxbw_1 :  Nat) ↦ (($jvxbw_2 :  (Vec(Nat)) ($jvxbw_1)) ↦ ((rec(∑(($jvxbu :  Nat) ↦ ((Vec(Nat)) ($jvxbu))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4553/1685591269@42ee9e4),cons,Vec(Nat))))) ((($jvxbw_1) , ($jvxbw_2)))))))
 
 scala&gt; val List(vnilN, vconsN) = VecNInd.intros 
 
@@ -891,7 +898,7 @@ k: Term with Subs[Term] = k
 
 scala&gt; val vsum = recVNN(zero)(n :~&gt;(k :-&gt; (vnn :-&gt;(m :-&gt; (add(m)(k)) )))) 
 
-vsum: Term = ($khtvj_1 :  Nat) ↦ (($khtvj_2 :  (Vec(Nat)) ($khtvj_1)) ↦ ((rec(∑(($khtvh :  Nat) ↦ ((Vec(Nat)) ($khtvh))))(Nat)(0)((n :  Nat) ↦ ((k :  Nat) ↦ ((_ :  (Vec(Nat)) (n)) ↦ ((m :  Nat) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (k))))))) ((($khtvj_1) , ($khtvj_2)))))
+vsum: Term = ($jvxbw_1 :  Nat) ↦ (($jvxbw_2 :  (Vec(Nat)) ($jvxbw_1)) ↦ ((rec(∑(($jvxbu :  Nat) ↦ ((Vec(Nat)) ($jvxbu))))(Nat)(0)((n :  Nat) ↦ ((k :  Nat) ↦ ((_ :  (Vec(Nat)) (n)) ↦ ((m :  Nat) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (k))))))) ((($jvxbw_1) , ($jvxbw_2)))))
 
 scala&gt;  
 
@@ -932,12 +939,12 @@ scala&gt;
 scala
 </code></pre>
 <h4>Git Log when running tutorial</h4>
-<pre><code>commit be7ffe1d9568b0d70a24d6c01ac64560ed5b43ba
-Merge: dd74ae6c 6f3b5fa5
+<pre><code>commit b2b7c9c2700c59457203b8fdd352733643df812e
 Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Mon Jun 4 10:09:19 2018 +0530
+Date:   Wed Jun 6 10:00:45 2018 +0530
 
-    Merge branch 'master' of https://github.com/siddhartha-gadgil/ProvingGround
+    testing monix, proving
+    bizarre errors in proving, perhaps due to memoization
 </code></pre>
 <ul>
 <li><strong>Branch</strong> : master</li>

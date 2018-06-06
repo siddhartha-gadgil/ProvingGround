@@ -210,12 +210,13 @@ object Site{
     for {
       tm <- topmatter(l)
       m <- """date: (\d\d\d\d)-(\d\d)-(\d\d)""".r.findFirstMatchIn(tm.mkString("\n"))
+      _ = println(m.group(0))
     } yield (m.group(1).toInt, m.group(2).toInt, m.group(3).toInt)
 
   case class Post(name: String, content: String, optDate: Option[(Int, Int, Int)], optTitle: Option[String]){
-    val title = s"$dateString${optTitle.getOrElse(name)}"
+    lazy val title = optTitle.getOrElse(name)
 
-    val dateString = optDate.map{ case (y, m, d) => s"$y-$m-$d-"}.getOrElse("")
+    lazy val dateString = optDate.map{ case (y, m, d) => s"$y-$m-$d-"}.getOrElse("")
 
 
     val target = pwd / "docs" / "posts"/ s"$name.html"
@@ -226,7 +227,7 @@ object Site{
 
     def output: String =
       page(
-        content,
+        fromMD(content),
         "../",
         title)
 
@@ -248,7 +249,7 @@ object Site{
   def postList(relDocsPath: String): Seq[Elem] =
     allPosts.map(
       (post) =>
-        <li><a href={s"${post.url(relDocsPath)}"}>{post.title}</a></li>
+        <li><a href={s"${post.url(relDocsPath)}"}>{post.dateString + post.title}</a></li>
     )
 
 
@@ -278,17 +279,22 @@ object Site{
   def mkSite() = {
     println("writing site")
 
-    pack()
-
-    mkDocs()
-
-    assemble()
+//    pack()
+//
+//    mkDocs()
+//
+//    assemble()
 
     write.over(pwd / "docs" / "index.html", home)
 
-    allTuts.foreach{(tut) =>
-      pprint.log(s"compiling tutorial ${tut.name}")
-      write.over(tut.target, tut.output)
+//    allTuts.foreach{(tut) =>
+//      pprint.log(s"compiling tutorial ${tut.name}")
+//      write.over(tut.target, tut.output)
+//    }
+
+    allPosts.foreach{(post) =>
+      pprint.log(s"saving post ${post.name} written on ${post.dateString}")
+      write.over(post.target, post.output)
     }
   }
 

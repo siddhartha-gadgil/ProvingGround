@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ProvingGround</title>
+    <link rel="icon" href="../IIScLogo.jpg">
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+   <link href="../css/katex.min.css" rel="stylesheet">
+   <link href="../css/main.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/zenburn.css">
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+   <script src="../js/ace.js"></script>
+   <script src="../js/katex.min.js"></script>
+
+    
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+jax: ["input/TeX", "output/HTML-CSS"],
+tex2jax: {
+  inlineMath: [ ['$', '$'] ],
+  displayMath: [ ['$$', '$$']],
+  processEscapes: true,
+  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+},
+messageStyle: "none",
+"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+    
+  </head>
+
+   
+<body>
+<nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">ProvingGround</span>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Tutorials (notes)<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+
+
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+<div class="container">
+<h1 class="text-center">Tuning with Tensorflow</h1>
+
+<div class="text-justify">
+<p>While the <em>discovery</em> process involves actual manipulation of terms, we refine using a <em>reflection</em> process, involving working with a large list of already discovered terms and their relations. The goal of this process is to efficiently encode mathematical knowledge, and especially to identify important theorems and concepts as well their relations.</p>
+<h1>The basic case: generating proofs.</h1>
+<p>Assume that we are given a distribution on <em>types</em> and we wish to find the <em>best</em> generating model.</p>
+<h2>Best model</h2>
+<ul>
+<li>
+<p>Best is based on:</p>
+<ul>
+<li><em>cross-entropy</em> between the mapped distribution from terms and the given distribution on types.</li>
+<li><em>cost</em> of generation, measured in terms of both the entropy of the initial distribution and the parameters involved in generating this.</li>
+<li>the generated distribution depends on the <em>cutoff</em>, which may be taken as part of the cost (though this may not work well with tuning).</li>
+</ul>
+</li>
+<li>
+<p>The model itself is:</p>
+<ul>
+<li>an initial distribution</li>
+<li>a recursive formula giving an evolved distribution,</li>
+<li>parameters for the recursive definition.</li>
+<li>a more sophisticated model may have vectors for terms and choosing etc based on linear transformations.</li>
+</ul>
+</li>
+</ul>
+<h2>The Tensorflow graph</h2>
+<p>We build this graph automatically, with a recursive definition. The entities are:</p>
+<ul>
+<li>
+<p>Variables</p>
+<ul>
+<li>for terms in the initial distribution,</li>
+<li>for parameters of the evolution,</li>
+<li>for various total probabilities, to be used in conditioning.</li>
+</ul>
+</li>
+<li>
+<p>Placeholders/constants: for the generated probabilities of types.</p>
+</li>
+<li>
+<p>Calculated expressions:</p>
+<ul>
+<li>the <em>final</em> (given cutoffs) probabilities of terms.</li>
+<li>for the <em>final</em> probabilities of types.</li>
+<li>for the actual total probabilities corresponding to the conditions.</li>
+<li>entropies and other costs for generation.</li>
+<li>cross-entropies or other matching measures.</li>
+<li>cost of mismatch of total probability for conditions.</li>
+</ul>
+</li>
+<li>
+<p>Optimization cost: combination of</p>
+<ul>
+<li>cost of generation</li>
+<li>matching measure,</li>
+<li>penalty for identities for total probabilities.</li>
+</ul>
+</li>
+<li>
+<p>Recursive definitions:</p>
+<ul>
+<li>expressions for terms,</li>
+<li>variables: should have new ones for <em>conditioning</em>, and perhaps also for discovered terms.</li>
+<li>weight of a term if it were to be introduced in the initial distribution, as a function of the term.</li>
+</ul>
+</li>
+<li>
+<p>Multi-stage discovery:</p>
+<ul>
+<li>get an expression for the weight of a new term in terms of earlier terms.</li>
+<li>by substitution, we get expressions in terms of the initial terms (as also the variables for the new terms).</li>
+<li>should also introduce <em>witnesses</em>.</li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+</div>
+
+<div class="container-fluid">
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <div class="footer navbar-fixed-bottom bg-primary">
+    <h4>
+    &nbsp;Developed by:
+    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
+
+  </h4>
+
+  </div>
+</div>
+<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/provingground.js"></script>
+<script>
+  provingground.main()
+</script>
+   
+</body>
+</html>
+   

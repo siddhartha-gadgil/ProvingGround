@@ -48,7 +48,7 @@ object MantleService{
     """
       | <a href="halt" target="_blank" class="btn btn-danger pull-right">Halt</a>
       |  <ul>
-      |   <li> <a href="build">Build</a> the web page.</li>
+      |   <li> <a href="build" target="_blank">Build</a> the web page.</li>
       |   <li> <a href="prover.html">Prover</a> experiments. </li>
       |  </ul>
       |  <script type="text/javascript" src="resources/out.js"></script>

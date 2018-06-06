@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ProvingGround</title>
+    <link rel="icon" href="../IIScLogo.jpg">
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+   <link href="../css/katex.min.css" rel="stylesheet">
+   <link href="../css/main.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/zenburn.css">
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+   <script src="../js/ace.js"></script>
+   <script src="../js/katex.min.js"></script>
+
+    
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+jax: ["input/TeX", "output/HTML-CSS"],
+tex2jax: {
+  inlineMath: [ ['$', '$'] ],
+  displayMath: [ ['$$', '$$']],
+  processEscapes: true,
+  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+},
+messageStyle: "none",
+"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+    
+  </head>
+
+   
+<body>
+<nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">ProvingGround</span>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Tutorials (notes)<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
+            <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+
+
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+<div class="container">
+<h1 class="text-center">Prover Components and Identities in a Monoid</h1>
+
+<div class="text-justify">
+<h3>Mathematical goal</h3>
+<p>Given a multiplication operation with left and right identities $e_l$ and $e_r$, it is a basic but non-trivial result that $e_l = e_r$. The proof is:</p>
+<ol>
+<li>from $e_l * x = x$ deduce $e_l * e_r = e_r$.</li>
+<li>from $x * e_r = x$ deduce $e_l * e_r = e_l$.</li>
+<li>(Lemma) by symmetry of equality, from (2) deduce $e_l = e_l * e_r$.</li>
+<li>(Theorem) by transitivity of equality, from (3) and (1) deduce $e_l = e_r$.</li>
+</ol>
+<h3>Deduction principles</h3>
+<p>The full proof has very low weight to be discovered directly. Finding the proof illustrates, and tests, some key principles.</p>
+<ul>
+<li>We must judge the value of intermediate results.</li>
+<li>A good way of doing this is comparing weights of terms and types.</li>
+<li>Use unified application of functions.</li>
+<li>Use truncation of recursively defined probability distributions.</li>
+</ul>
+<p>An earlier attempt, that sort of succeeded but took a couple of hours, was based on slowly tuning and using sampling. Subsequently, we used a hand-run version of the final method. Now all this has been encapsulated in code.</p>
+<p>This is purely a forward search, though crucially with <em>lemma discovery</em> along the way.</p>
+<h3>Script and results</h3>
+<p>Here is the ammonite script that finds a proof:</p>
+<pre><code class="language-scala">val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
+
+def seek(n: Double = 6) = {
+  val s = theoremSearchTask(dist1, tv, math.pow(10.0, -n), 3.minutes, eqM(l)(r), decay = 10)
+  val f = s.runAsync
+  f.foreach{
+    case Some(t) =&gt; println(s&quot;Found Proof ${t.fansi}\nfor Theorem ${t.typ.fansi}&quot;)
+    case None =&gt; println(&quot;could not find theorem&quot;)
+  }
+  f
+}
+</code></pre>
+<ul>
+<li>Running with <code>seek</code> outputs the proof.</li>
+<li>We can change the parameter <code>n</code>: the result is found for <code>n = 5.2</code> and bigger. As <code>n</code> becomes larger running becomes slow, but the result is still found for <code>n = 7</code> on <em>snark</em>, and even <code>n = 10</code> on <em>sparrow</em> (which has 20GB memory for the JVM).</li>
+</ul>
+<h3>What is a lemma?</h3>
+<p>A proposition is a type with a witness. We can associate to it two generation probabilities, <code>p</code> of the statement and <code>q</code> of proofs - obtained using the <em>term to type</em> map. We use a <em>parsimomy based entropy</em>,
+<code>h(p, q) = -p/ (q * log(q))</code> and give weights to lemmas based on this.</p>
+<p>We deduce consequences of lemmas, allocating resources depending on the weight.</p>
+<h3>Breadth first search</h3>
+<p>We use an abstract breadth first search method for goals based on a type <code>X</code>, using Monix Tasks. This depends on:</p>
+<ul>
+<li>An initial vector of tasks (allow this for the sake of recursion) : <code>tv: Task[Vector[Task[X]]]</code></li>
+<li>A goal function <code>X =&gt; Option[Y]</code></li>
+<li><code>spawn: Int =&gt; X =&gt; Task[Vector[Task[X]]]</code> for spawning new tasks</li>
+<li>a depth, used for recursion to prvent blowing up.</li>
+</ul>
+<p>At each stage, first we look if the goal is attained across all the tasks. If not, we spawn tasks from each task. If the set of spawned tasks in empty, we terminate with <code>None</code>. Otherwise we recurse, but incrementing depth.</p>
+<h3>Lemmas and theorems</h3>
+<p>Our first task is built using a <code>TermEvolver</code> to recursively define a probability distribution, and then evolving by <code>Truncate.task</code> with a cutoff. Lemmas are evaluated as above.</p>
+<p>For subsequent steps, we generate using the <em>derivative</em> component with a term evolver, with cutoff based on the weight of the lemma, and higher cutoffs at greater depth.</p>
+<h3>Further variations</h3>
+<p>At an abstract level, instead of searching for goals, we should consider:</p>
+<ul>
+<li>Branches where we assess and accumulate progress, continuing while there is progress.</li>
+<li>Flowing to refine generating distributions, parameters etc, again terminating when there is not enough progress.</li>
+<li>Blended instead of branched flows, for instance a gradient flow.</li>
+<li>Repeatedly looping with increased sensitivity, ensuring there is enough time.</li>
+<li>Generating streams such as an <code>Iterant</code> along with tasks.</li>
+<li>Treating time remaining as a resource, and using this to decide parameters.</li>
+</ul>
+<h4>Remarks</h4>
+<ul>
+<li>We can try to use the <em>result</em> to include not just the proof, but lemmas along the way. This will fit in a breadth-first search, but one where the <em>goal</em> function <em>p</em> can be modified in spawned processes.</li>
+<li>Even for backward reasoning etc, having modified goals in sub-processes is natural.</li>
+<li>We can replace <code>Vector[X]</code> by any Monad <code>F[X]</code>, with simple flows corresponding to the <code>Id</code> Monad.</li>
+<li>The <em>goal</em> function can really be a <em>not-enough-progress</em> function which returns <em>only</em> the accumuated successes (though this should not be used with branches).</li>
+<li>Simpler than modifying goals, we can modify the <em>state</em> - successfully used to trace the above proof.</li>
+</ul>
+<h3>Updates</h3>
+<ul>
+<li>There was a deficiency in the above version: <code>decay</code> was applied with power <code>depth</code>, which meant no decay at the first step.</li>
+<li>This has been corrected, so <code>decay</code> has power <code>depth + 1</code>; the default decay in the Monoid task was changed to <code>3</code></li>
+<li>Results still hold as above; but the correction allows modus ponens to be found.</li>
+</ul>
+
+
+</div>
+</div>
+
+<div class="container-fluid">
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <div class="footer navbar-fixed-bottom bg-primary">
+    <h4>
+    &nbsp;Developed by:
+    &nbsp;<a href="http://math.iisc.ac.in/~gadgil" target="_blank">&nbsp; Siddhartha Gadgil</a>
+
+  </h4>
+
+  </div>
+</div>
+<script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/provingground.js"></script>
+<script>
+  provingground.main()
+</script>
+   
+</body>
+</html>
+   
