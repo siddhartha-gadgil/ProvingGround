@@ -260,7 +260,7 @@ object ProverTasks {
                         vars: Vector[Term] = Vector()): Task[Option[Term]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
-    def spawn(d: Int)(vec: FD[Term]) = {
+    def spawn(d: Int)(vec: FD[Term]): Task[Vector[Task[FD[Term]]]] = {
       if (fd.total == 0) Task.pure(Vector())
       else
         dervecTasks(
@@ -290,7 +290,7 @@ object ProverTasks {
     : Task[Map[Typ[Term], Vector[(Term, (Int, Double))]]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
-    def spawn(d: Int)(vec: FD[Term]) = {
+    def spawn(d: Int)(vec: FD[Term]): Task[Vector[Task[FD[Term]]]] = {
       if (fd.total == 0) Task.pure(Vector())
       else
         dervecTasks(

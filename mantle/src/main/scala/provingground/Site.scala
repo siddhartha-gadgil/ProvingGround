@@ -279,18 +279,18 @@ object Site{
   def mkSite() = {
     println("writing site")
 
-//    pack()
-//
-//    mkDocs()
-//
-//    assemble()
+    pack()
+
+    mkDocs()
+
+    assemble()
 
     write.over(pwd / "docs" / "index.html", home)
 
-//    allTuts.foreach{(tut) =>
-//      pprint.log(s"compiling tutorial ${tut.name}")
-//      write.over(tut.target, tut.output)
-//    }
+    allTuts.foreach{(tut) =>
+      pprint.log(s"compiling tutorial ${tut.name}")
+      write.over(tut.target, tut.output)
+    }
 
     allPosts.foreach{(post) =>
       pprint.log(s"saving post ${post.name} written on ${post.dateString}")
