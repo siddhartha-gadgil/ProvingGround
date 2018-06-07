@@ -25,7 +25,7 @@ import HoTT.{id => _, _}, translation._
 object ConstituencyParser {
   @JSExport
   def load(): Unit = {
-    val haltButton =  input(`type` := "button", value := "Halt", `class` := "btn btn-danger pull-right").render
+    // val haltButton =  input(`type` := "button", value := "Halt", `class` := "btn btn-danger pull-right").render
 
     val runButton =
       input(`type` := "button", value := "Parse", `class` := "btn btn-success").render
@@ -65,7 +65,7 @@ object ConstituencyParser {
 
     runButton.onclick = (e: dom.Event) => parse(parseInput.value)
 
-    haltButton.onclick = (e: dom.Event) => Ajax.get("halt")
+    // haltButton.onclick = (e: dom.Event) => Ajax.get("halt")
 
     val assertions =
       Vector(
@@ -89,8 +89,8 @@ object ConstituencyParser {
         "$6$ is not the sum of distinct prime numbers",
         "$6$ is not the square of all primes",
         // "An abelian group is finitely generated if and only if the corresponding $Z$-module is finitely generated",
-        "$G$ is solvable if there exists $n in \\N$ such that $G^{(n)}=1$", //parsed
-        "there are $n,m\\in \\Z$ such that $xH = (gH)^n = g^nH$",
+        "$G$ is solvable if there exists $n in \\mathbb{N}$ such that $G^{(n)}=1$", //parsed
+        "there are $n,m\\in \\mathbb{Z}$ such that $xH = (gH)^n = g^nH$",
         // "Two quadratic forms over $k$ are equivalent if and only if they have the same rank",
         "Two quadratic forms over $k$ are equivalent if and only if they have the same rank", //experiment iff -> and
         "Two quadratic forms over $k$ are equivalent if and only if they have the same rank, same discriminant and same invariant $\\epsilon$",
@@ -101,9 +101,9 @@ object ConstituencyParser {
         "if $p$ is a prime number, the form deduced from $f$ by reduction modulo $p$ has a non-trivial zero, and this zero can be lifted to a p-adic zero",
         "the quadratic form $f$ represents zero in all the $Q_p$, and also in $R$",
         "if two diagrams $D_1$ and $D_2$ are related by a chain of Reidemeister moves, the complexes of graded abelian groups $C(D_1)$ and $C(D_2)$ are equivalent and homology groups $H(D_1)$ and $H(D_2)$ are isomorphic",
-        "$AB \\subgroup G$ if and only if $AB = BA$", //parsed
-        "$AB \\subgroup G$ and $AB = BA$", //experiment iff -> and; parsed
-        "$[A,B] = \\{e\\}$ if and only if $ab = ba, \\forall a \\in A, b \\in B$ if and only if $A \\subgroup C_G(B)$ if and only if $B \\subgroup C_G(A)$"
+        "$AB \\subset G$ if and only if $AB = BA$", //parsed
+        "$AB \\subset G$ and $AB = BA$", //experiment iff -> and; parsed
+        "$[A,B] = \\{e\\}$ if and only if $ab = ba, \\forall a \\in A, b \\in B$ if and only if $A \\subset C_G(B)$ if and only if $B \\subset C_G(A)$"
       )
 
     val exampleList = ul(
@@ -141,6 +141,8 @@ object ConstituencyParser {
             depTreeDiv),
             p(),
             h3("Example Sentences"),
+            p("Warning: Enter them in TeX notation, i.e, with dollars surrounding formulas."),
+            p(),
             exampleList
       )
 
@@ -150,8 +152,8 @@ object ConstituencyParser {
 
     parseDiv.appendChild(jsDiv.render)
 
-    val hDiv = dom.document.querySelector("#halt")
-    hDiv.appendChild(haltButton)
+    // val hDiv = dom.document.querySelector("#halt")
+    // hDiv.appendChild(haltButton)
 
     // } // option ma
   } // load

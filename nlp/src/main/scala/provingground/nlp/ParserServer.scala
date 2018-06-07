@@ -46,7 +46,12 @@ object ParserService  {
   val parserRoute =
     (pathSingleSlash | path("index.html")) {
       get {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, indexHTML))
+        complete(
+          HttpEntity(
+            ContentTypes.`text/html(UTF-8)`,
+            Site.page(mainHTML, "resources/", "ProvingGround: Natural language translation"  ,true)
+          )
+        )
       }
     } ~
       post {
@@ -67,13 +72,20 @@ object ParserService  {
       path("resources" / Remaining) { path =>
         getFromResource(path.toString)
       }
-    } ~
-      path("halt") {
-        keepAlive = false
-        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "shutting down"))
-      }
+    }
 
   val route = parserRoute ~ baseRoute
+
+  val mainHTML =
+    """
+      |
+      |    <div id="constituency-parser"></div>
+      |
+      |  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
+      |  <script>
+      |    parser.load()
+      |  </script>
+    """.stripMargin
 
 
   val indexHTML =
