@@ -59,6 +59,7 @@ object MantleService{
       |  <ul>
       |   <li> <a href="build" target="_blank">Build</a> the web page.</li>
       |   <li> <a href="prover.html">Prover</a> experiments. </li>
+      |   <li> <a href="scripts/index.html" target="_blank">Script Editor</a></li>
       |  </ul>
       |  <script type="text/javascript" src="resources/out.js"></script>
       |  <script>
@@ -106,16 +107,62 @@ object MantleServer extends  App {
 
   import MantleService._
 
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
-  println(s"Server online at http://localhost:8080/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
+  import ammonite.ops._
 
-  while (keepAlive) {
-    Thread.sleep(10)
+  def path(s: String): Path = scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
+
+  implicit val pathRead: scopt.Read[Path] =
+    scopt.Read.reads(path)
+
+  case class Config(
+                     scriptsDir: Path = pwd / "repl-scripts",
+                     objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
+                     host: String = "localhost",
+                     port: Int = 8080)
+
+  val config = Config()
+
+  val parser = new scopt.OptionParser[Config]("provingground-server") {
+    head("ProvingGround Server", "0.1")
+
+    opt[String]('i', "interface")
+      .action((x, c) => c.copy(host = x))
+      .text("server ip")
+    opt[Int]('p', "port")
+      .action((x, c) => c.copy(port = x))
+      .text("server port")
+    opt[Path]('s', "scripts")
+      .action((x, c) => c.copy(scriptsDir = x))
+      .text("scripts directory")
+    opt[Path]('o', "objects")
+      .action((x, c) => c.copy(objectsDir = x))
+      .text("created objects directory")
+
   }
 
-  println("starting shutdown")
+  val ammServer = new AmmScriptServer(config.scriptsDir, config.objectsDir)
 
-  bindingFuture
-    .flatMap(_.unbind()) // trigger unbinding from the port
-    .onComplete(_ ⇒ system.terminate()) // and shutdown when done
+
+  parser.parse(args, Config()) match {
+    case Some(config) =>
+
+      val bindingFuture =
+        Http().bindAndHandle(route ~ pathPrefix("scripts")(ammServer.route), config.host, config.port)
+
+      println(s"Server online at http://${config.host}:${config.port}/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
+
+      while (keepAlive) {
+        Thread.sleep(10)
+      }
+
+      println("starting shutdown")
+
+      bindingFuture
+        .flatMap(_.unbind()) // trigger unbinding from the port
+        .onComplete(_ => system.terminate()) // and shutdown when done
+
+    case None =>
+      system.terminate()
+  }
+
 }

@@ -168,7 +168,7 @@ object CodeEditorJS {
 
     def compile() = {
       val codetext = editor.getValue()
-      Ajax.post("/kernel", codetext).foreach { (xhr) =>
+      Ajax.post("./kernel", codetext).foreach { (xhr) =>
         {
           val answer = xhr.responseText
           logDiv.innerHTML = ""
@@ -202,10 +202,10 @@ object CodeEditorJS {
       if (e.ctrlKey && e.keyCode == 66) compile()
     }
 
-    def scriptListFut = Ajax.get("/list-scripts")
+    def scriptListFut = Ajax.get("./list-scripts")
 
     def loadScriptFut(name: String) =
-      Ajax.get(s"/script/$name").map { (xhr) =>
+      Ajax.get(s"./script/$name").map { (xhr) =>
         val resp = parseTry(xhr.responseText)
         showEither(resp.map((_) => s"loaded script $name"))
         resp.foreach { (sc) =>
@@ -213,7 +213,7 @@ object CodeEditorJS {
         }
       }
 
-    def insertObject(name: String) = Ajax.get(s"/load-object/$name").map {
+    def insertObject(name: String) = Ajax.get(s"./load-object/$name").map {
       (xhr) =>
         val resp = parseTry(xhr.responseText)
         showEither(resp.map((_) => s"loaded script $name"))
@@ -223,13 +223,13 @@ object CodeEditorJS {
     }
 
     def saveScript(name: String, body: String) =
-      Ajax.post(s"/save-script/$name", body).map { (xhr) =>
+      Ajax.post(s"./save-script/$name", body).map { (xhr) =>
         val resp = parseTry(xhr.responseText)
         showEither(resp)
       }
 
     def createObject(name: String, body: String) =
-      Ajax.post(s"/create-object/$name", body).map { (xhr) =>
+      Ajax.post(s"./create-object/$name", body).map { (xhr) =>
         val resp = parseTry(xhr.responseText)
         showEither(resp)
       }

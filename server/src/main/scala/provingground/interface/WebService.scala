@@ -111,6 +111,8 @@ $body
 
     println(code)
 
+    pprint.log("running ammonite")
+
     val ammMain =
       Console.withIn(inpStream){
         Console.withErr(errLog){
@@ -132,7 +134,7 @@ $body
     val silly = """\[[0-9]+[A-Z]""".r
 
 
-    val output = 
+    val output =
       silly.replaceAllIn((new String(outputS.toByteArray, "UTF-8")).replace("\u001b", "") , "")
 
 
@@ -226,7 +228,7 @@ class AmmScriptServer(
     val scriptsDir: Path = pwd / "repl-scripts",
     val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
   val htmlRoute = {
-    pathSingleSlash {
+    (pathSingleSlash | path("index.html")) {
       get {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, indexHTML))
       }

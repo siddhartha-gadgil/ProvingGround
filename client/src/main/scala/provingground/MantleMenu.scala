@@ -34,6 +34,12 @@ object MantleMenu {
 
     navDiv.appendChild(
       li(
+        a(href := "scripts/index.html", target:="_blank")("Script Editor")
+      ).render
+    )
+
+    navDiv.appendChild(
+      li(
         a(href := "index.html")("Home")
       ).render
     )
