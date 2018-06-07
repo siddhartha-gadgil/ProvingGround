@@ -14,27 +14,6 @@ import scala.util.Try
 
 import upickle.{Js, json}
 
-object BaseServer {
-
-  val route =
-    pathPrefix("assets" / Remaining) { file =>
-      // println(s"asset requested: assets/$file")
-      getFromResource("public/" + file)
-
-    } ~
-      pathPrefix("static" / Remaining) { file =>
-        // optionally compresses the response with Gzip or Deflate
-        // if the client accepts compressed responses
-        val f = new java.io.File("static/" + file)
-        // println("serving from file: " + f)
-        getFromFile(f)
-
-      } ~ path("resources" / Remaining) { path =>
-      // println("serving from resource: " + path)
-      getFromResource(path.toString)
-    }
-
-}
 
 import ammonite.ops._
 
@@ -218,8 +197,9 @@ class AmmScriptServer(
 
 <html>
   <head>
-    <title>Script Editor</title>
+    <title>ProvingGround Fiddle</title>
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
+    <link rel="icon" href="/resources/IIScLogo.jpg">
     <script src="/resources/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="/resources/katex.min.css">
     <script src="/resources/katex.min.js" type="text/javascript" charset="utf-8"></script>
@@ -245,7 +225,7 @@ class AmmScriptServer(
   <body>
 
   <div class="container">
-    <h2 class="text-center"> Proving Ground Script Editor </h2>
+    <h2 class="text-center"> ProvingGround Fiddle </h2>
 
 
     <div id="edit-div"></div>
@@ -262,7 +242,6 @@ class AmmScriptServer(
   val AmmServer = new AmmService(scriptsDir, objectsDir)
 
   val route = htmlRoute ~
-    // BaseServer.route ~
-    AmmServer.route // ~ TimeServer.route
+    AmmServer.route
 
 }

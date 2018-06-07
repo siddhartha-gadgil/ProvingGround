@@ -28,7 +28,7 @@ object ConstituencyParser {
     // val haltButton =  input(`type` := "button", value := "Halt", `class` := "btn btn-danger pull-right").render
 
     val runButton =
-      input(`type` := "button", value := "Parse", `class` := "btn btn-success").render
+      input(`type` := "button", value := "Parse (ctrl-B)", `class` := "btn btn-success").render
     val treeDiv = div(`class` := "panel-body view")().render
     val exprDiv = div(`class` := "panel-body language-scala view")().render
     val depTreeDiv = div(`class` := "panel-body view")().render
@@ -64,6 +64,10 @@ object ConstituencyParser {
     } //parse
 
     runButton.onclick = (e: dom.Event) => parse(parseInput.value)
+
+    dom.window.onkeydown = (e) => {
+      if (e.ctrlKey && e.keyCode == 66) parse(parseInput.value)
+    }
 
     // haltButton.onclick = (e: dom.Event) => Ajax.get("halt")
 

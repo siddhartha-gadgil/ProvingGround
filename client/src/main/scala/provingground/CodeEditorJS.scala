@@ -64,16 +64,16 @@ object CodeEditorJS {
 
     def filename = nameInp.value
 
-    val logDiv = div().render
+    val logDiv = div(`class` := "panel-body").render
 
-    val viewDiv = div(`class` := "view")().render
+    val viewDiv = div(`class` := "panel-body view")().render
 
     val ed = div(id := "editor", `class` := "panel-body editor")
 
     editDiv.appendChild(
       div(
         div(`class` := "panel panel-primary")(
-          div(`class` :="panel-heading")(h3("Scala ProvingGround Script")),
+          div(`class` :="panel-heading")(h4("Script:")),
           ed,
           div(`class` := "panel-footer clearfix")(label("script-name: "),
                                                   nameInp,
@@ -82,8 +82,12 @@ object CodeEditorJS {
                                                   loadButton,
                                                   runButton,
                                                   objButton)),
-        div(h4("Logs:"), logDiv),
-        div(h3("Output:"), viewDiv)
+        div(`class` := "panel panel-info")
+        (
+          div(`class` := "panel-heading")(h4("Logs:")),
+          logDiv),
+        div(`class` := "panel panel-default")(
+          div(`class` := "panel-heading")(h4("Output:")), viewDiv)
       ).render)
 
     val editor = ace.edit("editor")
@@ -169,9 +173,11 @@ object CodeEditorJS {
 
     def compile() = {
       val codetext = editor.getValue()
+      runButton.value = "Running..."
       Ajax.post("./kernel", codetext).foreach { (xhr) =>
         {
           val answer = xhr.responseText
+          runButton.value = "Run (ctrl-B)"
           logDiv.innerHTML = ""
           val view =
             if (answer.startsWith("--RESULT--\n"))
@@ -199,7 +205,7 @@ object CodeEditorJS {
 
     runButton.onclick = (event: dom.Event) => compile()
 
-    editDiv.onkeydown = (e) => {
+    dom.window.onkeydown = (e) => {
       if (e.ctrlKey && e.keyCode == 66) compile()
     }
 
