@@ -178,6 +178,8 @@ object nlp extends SbtModule with ServerModule{
       ivy"com.google.protobuf:protobuf-java:2.6.1"
     )
   }
+
+  override def mainClass = Some("provingground.interface.ParserServer")
 }
 
 object jvmRoot extends CommonModule{

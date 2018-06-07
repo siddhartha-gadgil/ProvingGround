@@ -72,7 +72,8 @@ object CodeEditorJS {
 
     editDiv.appendChild(
       div(
-        div(`class` := "panel panel-default")(
+        div(`class` := "panel panel-primary")(
+          div(`class` :="panel-heading")(h3("Scala ProvingGround Script")),
           ed,
           div(`class` := "panel-footer clearfix")(label("script-name: "),
                                                   nameInp,
@@ -81,8 +82,8 @@ object CodeEditorJS {
                                                   loadButton,
                                                   runButton,
                                                   objButton)),
-        div("Logs:", logDiv),
-        div("Output:", viewDiv)
+        div(h4("Logs:"), logDiv),
+        div(h3("Output:"), viewDiv)
       ).render)
 
     val editor = ace.edit("editor")
@@ -151,20 +152,20 @@ object CodeEditorJS {
       d
     }
 
-    def showLog(js: Js.Value) =
-      js.obj.get("log").foreach { (err) =>
-        logDiv.appendChild(pre(div(`class` := "text-danger")(err.str)).render)
-      }
-
-    def showResult(js: Js.Value) =
-      js.obj.get("result").foreach { (resp) =>
-        editorAppend(s"//result: $resp\n\n")
-        logDiv.innerHTML = ""
-      }
-
-    def showTeX(js: Js.Value) = js.obj.get("tex").foreach { (resp) =>
-      viewDiv.appendChild(katex(resp.str))
-    }
+    // def showLog(js: Js.Value) =
+    //   js.obj.get("log").foreach { (err) =>
+    //     logDiv.appendChild(pre(div(`class` := "text-danger")(err.str)).render)
+    //   }
+    //
+    // def showResult(js: Js.Value) =
+    //   js.obj.get("result").foreach { (resp) =>
+    //     editorAppend(s"//result: $resp\n\n")
+    //     logDiv.innerHTML = ""
+    //   }
+    //
+    // def showTeX(js: Js.Value) = js.obj.get("tex").foreach { (resp) =>
+    //   viewDiv.appendChild(katex(resp.str))
+    // }
 
     def compile() = {
       val codetext = editor.getValue()

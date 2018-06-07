@@ -41,7 +41,6 @@ import ammonite.ops._
 class AmmService(
     val scriptsDir: Path = pwd / "repl-scripts",
     val objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts") {
-  // import ammonite.kernel._
 
   val initCommands =
     "import provingground._\nimport HoTT._\nimport induction.TLImplicits._\nimport shapeless._\n; repl.pprinter.bind(translation.FansiShow.simplePrint)"
@@ -83,21 +82,6 @@ $body
     prevCode = initCommands
   }
 
-  import java.io.OutputStream
-
-  class StringOutputStream extends OutputStream {
-    private val bytes = collection.mutable.ArrayBuffer[Byte]()
-
-    def isEmpty = bytes.isEmpty
-
-    def reset = bytes.clear()
-
-    override def write(b: Int): Unit = {
-      bytes += b.toByte
-    }
-
-    def string: String = new String(bytes.toArray.map(_.toChar))
-  }
 
   import java.nio.charset.StandardCharsets
 
@@ -142,19 +126,12 @@ $body
 
     val info = new String(infoLog.toByteArray, "UTF-8")
 
-    println(
-      s"output (is this okay?) :\n${output}\n log: ${info}\n errors: ${err}")
+    pprint.log(output)
+    pprint.log(info)
+    pprint.log(err)
 
     if (err == "") Right(output)
     else Left("--INFO--\n" + info + err + "--OUTPUT--\n" + output)
-  }
-
-  def replResJS(code: String) = replResult(code) match {
-    case Right(res) =>
-      println(s"\n\nraw:\n$res")
-      println(s"\n\nJs.Str:\n${Js.Str(res)}")
-      Js.Obj("result" -> Js.Str(res))
-    case Left(log) => Js.Obj("log" -> Js.Str(log))
   }
 
   val route =
@@ -268,7 +245,7 @@ class AmmScriptServer(
   <body>
 
   <div class="container">
-    <h2> Proving Ground script editor </h2>
+    <h2 class="text-center"> Proving Ground Script Editor </h2>
 
 
     <div id="edit-div"></div>
@@ -284,6 +261,8 @@ class AmmScriptServer(
 
   val AmmServer = new AmmService(scriptsDir, objectsDir)
 
-  val route = htmlRoute ~ BaseServer.route ~ AmmServer.route // ~ TimeServer.route
+  val route = htmlRoute ~
+    // BaseServer.route ~
+    AmmServer.route // ~ TimeServer.route
 
 }
