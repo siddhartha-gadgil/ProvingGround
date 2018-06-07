@@ -1,11 +1,12 @@
 package provingground.interface
 
-import ammonite.ops, ops._
+import ammonite.ops
+import ops._
 import Tuts._
-
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 
+import scala.util.Try
 import scala.xml.Elem
 
 object Site{
@@ -198,13 +199,13 @@ object Site{
   }
 
 
-  lazy val allTuts: Seq[Tut] = ls(tutdir).map(getTut)
+  def allTuts: Seq[Tut] = ls(tutdir).map(getTut)
 
   def tutList(relDocsPath: String): Seq[Elem] =
-    allTuts.map(
+    Try{allTuts.map(
       (tut) =>
         <li><a href={s"${tut.url(relDocsPath)}"}>{tut.title}</a></li>
-    )
+    ) }.getOrElse(Vector())
 
   def dateOpt(l: Vector[String]): Option[(Int, Int, Int)] =
     for {
@@ -242,9 +243,10 @@ object Site{
     Post(name, content, dateOpt(l), titleOpt(l))
   }
 
-  val postsDir = pwd / "jekyll" / "_posts"
+  def postsDir = pwd / "jekyll" / "_posts"
 
-  lazy val allPosts: Seq[Post] = ls(postsDir).map(getPost).sortBy(_.date).reverse
+  def allPosts: Seq[Post] =
+    Try{ls(postsDir).map(getPost).sortBy(_.date).reverse}.getOrElse(Vector())
 
   def postList(relDocsPath: String): Seq[Elem] =
     allPosts.map(
@@ -274,10 +276,13 @@ object Site{
        |</html>
    """.stripMargin
 
-  val home = page(
+  def home = page(
     fromMD(body(ops.read.lines(pwd / "docs" /"index.md").toVector).mkString("", "\n", "")), "", "ProvingGround: Automated Theorem proving by learning")
 
-  def mkSite() = {
+  def mkHome() : Unit  =
+    write.over(pwd / "docs" / "index.html", home)
+
+  def mkSite(): Unit = {
     println("writing site")
 
     pack()
@@ -286,7 +291,7 @@ object Site{
 
     assemble()
 
-    write.over(pwd / "docs" / "index.html", home)
+     mkHome()
 
     allTuts.foreach{(tut) =>
       pprint.log(s"compiling tutorial ${tut.name}")

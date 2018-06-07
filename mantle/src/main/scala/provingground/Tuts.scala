@@ -5,11 +5,11 @@ import Amm._, ammonite.ops._
 object Tuts{
   implicit val wd = pwd
 
-  val tutdir = pwd / 'mantle / 'src / 'main / 'tut
+  def tutdir = pwd / 'mantle / 'src / 'main / 'tut
 
-  val gitLog = %%("git", "log", "-1").out.lines
+  def gitHash = %%("git", "rev-parse", "HEAD").out.lines.head
 
-  val gitBranch = %%("git", "symbolic-ref", "--short", "HEAD").out.lines.head
+  def gitBranch = %%("git", "symbolic-ref", "--short", "HEAD").out.lines.head
 
   def mkTut(f: String): String = {
     val top =
@@ -60,19 +60,13 @@ object Tuts{
     val gitrep =
       s"""
          |
-         |#### Git Log when running tutorial
-         |
-         |```
-         |${gitLog.mkString("\n")}
-         |```
-         |
-         |* __Branch__ : $gitBranch
+         |#### Git Log when running tutorial: $gitHash
          |
      """.stripMargin
 
     allChunks.mkString("", "\n", gitrep)
   }
 
-  val outdir = pwd / "docs" / "tuts"
+  def outdir = pwd / "docs" / "tuts"
 
 }

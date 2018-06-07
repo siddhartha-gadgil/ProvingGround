@@ -78,10 +78,12 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
       "-feature",
       "-language:existentials")
 
-  // override def compile = T.command{
-  //   reformat()
-  //   super.compile()
-  //   }
+  def bin() : define.Command[PathRef] = T.command {
+    def ass: PathRef = assembly()
+    def name: String = artifactName()
+    cp.over(ass.path, pwd/ "bin" / s"provinground-$name-SNAPSHOT")
+    ass
+  }
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule{
