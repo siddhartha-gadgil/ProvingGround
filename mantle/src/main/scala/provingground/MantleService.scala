@@ -21,12 +21,12 @@ object MantleService{
   val baseRoute =
     get {
       path("resources" / Remaining) { path =>
-        println("serving from resource: " + path)
+        // println("serving from resource: " + path)
         getFromResource(path)
       }
     } ~ get {
       path("docs" / Remaining) { path =>
-        println("serving from resource: " + path)
+        // println("serving from resource: " + path)
         getFromFile(s"docs/$path")
       }
     } ~ path("halt") {
@@ -90,6 +90,16 @@ object MantleService{
       path("prover.html"){
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
           Site.page(proverHTML, "resources/", "Prover Experimentaion" , true)))
+      }
+    } ~ post {
+      path("monoid-proof"){
+        pprint.log("seeking proof")
+        val resultFut =
+          MonoidServer.seekResultFut.map{
+            (js) =>
+              HttpEntity(ContentTypes.`application/json`, js.toString)
+        }
+        complete(resultFut)
       }
     }
 

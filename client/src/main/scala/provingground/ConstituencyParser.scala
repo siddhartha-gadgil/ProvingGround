@@ -38,7 +38,7 @@ object ConstituencyParser {
 
     def parse(txt: String) = {
 
-      Ajax.post("/parse", txt).foreach { (xhr) =>
+      Ajax.post("parse", txt).foreach { (xhr) =>
         {
           logDiv.appendChild(p("button clicked").render)
           val answer = xhr.responseText

@@ -16,10 +16,15 @@ import translation._
 import learning._
 import ProverTasks._
 import monix.execution.CancelableFuture
+import ujson._
+
 @JSExportTopLevel("prover")
 object ProverClient {
   @JSExport
   def load() = {
+    val runButton =
+      input(`type` := "button", value := "Query Server", `class` := "btn btn-success").render
+
     val proverDiv = dom.document.querySelector("#prover-div")
     proverDiv.appendChild(
       div(
@@ -34,9 +39,38 @@ object ProverClient {
             "Its statement must be simple compared to the proof, and moreover"),
           li("the difference in complexity should be enough given a significant cost for noting an additional lemma")
         ),
-        p("The example result we have is showing that if left and right identities exist, they are equal")
+        p("The example result we have is showing that if left and right identities exist, they are equal"),
+        runButton
       ).render
     )
+
+    def query() = {
+      Ajax.post("./monoid-proof").foreach { (xhr) =>
+        {
+
+          val answer = xhr.responseText
+          val js   = ujson.read(answer)
+          val proved = js.obj("proved").bool
+          if (proved)
+            {
+              val termDiv = div(style := "overflow-x: auto;")().render
+              val typDiv  = div(style := "overflow-x: auto;")().render
+              termDiv.innerHTML = katex.renderToString(js.obj("term").str)
+              typDiv.innerHTML = katex.renderToString(js.obj("type").str)
+              proverDiv.appendChild(
+                div(`class` := "border border-primary")(h2("From the server"),
+                  h3("Found proof:"), termDiv, h3(" of the theorem: "), typDiv).render)
+            }
+          else
+            proverDiv.appendChild(h3("could not find proof of theorem").render)
+          }
+        }
+      }
+
+      runButton.onclick = (e: dom.Event) => query()
+
+
+
 
     val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 
@@ -64,7 +98,11 @@ object ProverClient {
 
     val seekFut: CancelableFuture[Option[Term]] = {
       proverDiv.appendChild(
-        p("The search has been started (on the browser, so very slow)").render)
+        div(
+        p("""The search has been started on the browser, which is very slow.
+          You can query the server for much quicker computation.""")
+        ).render
+      )
       seek.runAsync
     }
 
@@ -75,10 +113,13 @@ object ProverClient {
         termDiv.innerHTML = katex.renderToString(TeXTranslate(t))
         typDiv.innerHTML = katex.renderToString(TeXTranslate(t.typ))
         proverDiv.appendChild(
-          div(h3("Found proof:"), termDiv, h3(" of the theorem: "), typDiv).render
+          div(`class` := "border border-primary")(h2("From the browser"),
+            h3("Found proof:"), termDiv, h3(" of the theorem: "), typDiv).render
         )
       case None =>
         proverDiv.appendChild(h3("could not find proof of theorem").render)
     }
+
+
   }
 }

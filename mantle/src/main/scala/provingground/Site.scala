@@ -233,7 +233,6 @@ object Site{
     for {
       tm <- topmatter(l)
       m <- """date: (\d\d\d\d)-(\d\d)-(\d\d)""".r.findFirstMatchIn(tm.mkString("\n"))
-      _ = println(m.group(0))
     } yield (m.group(1).toInt, m.group(2).toInt, m.group(3).toInt)
 
   case class Post(name: String, content: String, optDate: Option[(Int, Int, Int)], optTitle: Option[String]){
