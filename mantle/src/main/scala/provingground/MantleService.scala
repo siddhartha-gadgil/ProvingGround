@@ -39,11 +39,17 @@ object MantleService{
   val buildRoute =
     get {
       path("build") {
-        Future(
-          Try(Site.mkSite())
-            .getOrElse(pprint.log("Cannot build site, perhaps this is not run from the root of the repo"))
-        )
-        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "building site"))
+        val response: String =
+          Try(Site.mkHome()).map {
+            (_) =>
+              Future(
+                Try(Site.mkSite())
+                  .getOrElse(pprint.log("Cannot build site, perhaps this is not run from the root of the repo"))
+              )
+              "Building site"
+          }.getOrElse("Cannot build site, perhaps this is not run from the root of the repo")
+
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, response))
       }
     }
 

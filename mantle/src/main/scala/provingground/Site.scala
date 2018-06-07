@@ -188,6 +188,11 @@ object Site{
         title)
 
     def save = write.over(target, output)
+
+    def json: ujson.Js.Obj = {
+      import ujson._
+      Js.Obj("name" -> name, "title" -> title)
+    }
   }
 
   def getTut(p: Path): Tut =
@@ -205,7 +210,24 @@ object Site{
     Try{allTuts.map(
       (tut) =>
         <li><a href={s"${tut.url(relDocsPath)}"}>{tut.title}</a></li>
-    ) }.getOrElse(Vector())
+    ) }.orElse(
+      Try{
+        val jsArr = ujson.read(read(resource /"tut-list.json"))
+        jsArr.arr.map { (js) =>
+          pprint.log(js)
+          val name = js.obj("name").str
+          val title = js.obj("title").str
+          val url: String = s"${relDocsPath}tuts/$name.html"
+          <li>
+            <a href={url}>
+              {title}
+            </a>
+          </li>
+        }
+
+      }
+    )
+      .getOrElse(Vector())
 
   def dateOpt(l: Vector[String]): Option[(Int, Int, Int)] =
     for {
@@ -233,6 +255,11 @@ object Site{
         title)
 
     def save = write.over(target, output)
+
+    def json: ujson.Js.Obj = {
+      import ujson._
+      Js.Obj("name" -> name, "title" -> title, "date" -> dateString)
+    }
   }
 
   def getPost(p: Path): Post =
@@ -246,13 +273,30 @@ object Site{
   def postsDir = pwd / "jekyll" / "_posts"
 
   def allPosts: Seq[Post] =
-    Try{ls(postsDir).map(getPost).sortBy(_.date).reverse}.getOrElse(Vector())
+    ls(postsDir).map(getPost).sortBy(_.date).reverse
 
   def postList(relDocsPath: String): Seq[Elem] =
-    allPosts.map(
+    Try{allPosts.map(
       (post) =>
         <li><a href={s"${post.url(relDocsPath)}"}>{post.dateString + post.title}</a></li>
+    )}.orElse(
+      Try{
+        val jsArr = ujson.read(read(resource /"posts-list.json"))
+        jsArr.arr.map { (js) =>
+          pprint.log(js)
+          val name = js.obj("name").str
+          val dateString = js.obj("date").str
+          val title = js.obj("title").str
+          val url: String = s"${relDocsPath}posts/$name.html"
+          <li>
+            <a href={url}>
+              {dateString + title}
+            </a>
+          </li>
+        }
+      }
     )
+      .getOrElse(Vector())
 
 
   def page(s: String, relDocsPath: String, t: String = "", haltButton: Boolean = false): String =
@@ -282,8 +326,18 @@ object Site{
   def mkHome() : Unit  =
     write.over(pwd / "docs" / "index.html", home)
 
+  def mkLists() = {
+    val tutsJs = ujson.Js.Arr(allTuts.map(_.json) : _ *)
+    write.over(pwd / "docs" / "tut-list.json",
+      tutsJs.toString)
+    val postsJs = ujson.Js.Arr(allPosts.map(_.json) : _*)
+    write.over(pwd / "docs" / "posts-list.json", postsJs.toString())
+  }
+
   def mkSite(): Unit = {
     println("writing site")
+
+    mkLists()
 
     pack()
 
@@ -291,7 +345,7 @@ object Site{
 
     assemble()
 
-     mkHome()
+    mkHome()
 
     allTuts.foreach{(tut) =>
       pprint.log(s"compiling tutorial ${tut.name}")
