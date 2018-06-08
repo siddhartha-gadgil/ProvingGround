@@ -112,8 +112,14 @@ object ConstituencyParser {
         "$[A,B] = \\{e\\}$ if and only if $ab = ba, \\forall a \\in A, b \\in B$ if and only if $A \\subset C_G(B)$ if and only if $B \\subset C_G(A)$"
       )
 
-    val exampleList = ul(
-      assertions.map(li(_)): _*
+    def egSpan(t: String) = {
+      val cp = button(`class` := "btn btn-info")("copy").render
+      cp.onclick = (_) => parseInput.value = t
+      span(cp, span(" "), t)
+    }
+
+    val exampleList = ul(`class` := "list-group")(
+      assertions.map((t) => li(`class` := "list-group-item")(egSpan(t))): _*
     )
 
     val jsDiv =
@@ -147,7 +153,7 @@ object ConstituencyParser {
             depTreeDiv),
             p(),
             h3("Example Sentences"),
-            p("Warning: Enter them in TeX notation, i.e, with dollars surrounding formulas."),
+            p("Warning: Enter sentences in TeX notation, i.e, with dollars surrounding formulas. The copy button does this."),
             p(),
             exampleList
       )

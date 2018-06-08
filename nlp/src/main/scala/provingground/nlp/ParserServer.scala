@@ -153,7 +153,7 @@ parser.parse(args, Config()) match {
     val parserService = new ParserService(config.serverMode)
     import parserService._,  mantleService.keepAlive
 
-    val server = new MantleService(config.serverMode)
+    // val server = new MantleService(config.serverMode)
 
 
     val bindingFuture =
@@ -165,7 +165,7 @@ parser.parse(args, Config()) match {
 
     println(s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
 
-    while (server.keepAlive) {
+    while (keepAlive) {
       Thread.sleep(10)
     }
 
