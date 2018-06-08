@@ -57,6 +57,7 @@ object ProverClient {
               val typDiv  = div(style := "overflow-x: auto;")().render
               termDiv.innerHTML = katex.renderToString(js.obj("term").str)
               typDiv.innerHTML = katex.renderToString(js.obj("type").str)
+
               proverDiv.appendChild(
                 ul(`class` := "list-group")(
                   li(`class` := "list-group-item list-group-item-primary")("From the server:"),
@@ -65,6 +66,33 @@ object ProverClient {
                   li(`class` := "list-group-item list-group-item-success")("Proof"),
                   li(`class` := "list-group-item")(termDiv),
                 ).render)
+
+              val lemmaSeq = js.obj("lemmas").arr
+              def lemmaLI(lm: Js.Value) = {
+                val termDivL = div(style := "overflow-x: auto;")().render
+                val typDivL  = div(style := "overflow-x: auto;")().render
+                termDivL.innerHTML = katex.renderToString(js.obj("term").str)
+                typDivL.innerHTML = katex.renderToString(js.obj("type").str)
+                li(`class` := "list-group-item")(
+                  ul(`class` := "list-group")(
+                    li(`class` := "list-group-item list-group-item-info")("Lemma"),
+                    li(`class` := "list-group-item")(typDivL),
+                    li(`class` := "list-group-item list-group-item-success")("Proof"),
+                    li(`class` := "list-group-item")(termDivL),
+                  )
+                )
+              }
+            val lemmaLISeq  = lemmaSeq.map(lemmaLI)
+            proverDiv.appendChild(
+            div(
+              h3("Lemmas:"),
+              ul(`class` := "list-group")(
+                // li(`class` := "list-group-item list-group-item-warning")("Lemmas:"),
+                lemmaLISeq : _*
+              )
+            ).render
+          )
+
             }
           else
             proverDiv.appendChild(h3("could not find proof of theorem").render)
