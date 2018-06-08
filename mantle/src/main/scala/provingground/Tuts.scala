@@ -2,7 +2,7 @@ package provingground.interface
 
 import Amm._, ammonite.ops._
 
-object Tuts{
+object Tuts {
   implicit val wd = pwd
 
   def tutdir = pwd / 'mantle / 'src / 'main / 'tut
@@ -23,8 +23,9 @@ object Tuts{
     val spl = f.split("```tut").map(_.split("```").toVector).toVector
 
     val tutcode =
-      spl.tail.map(_(0))
-        .mkString(top,"// tutEnd","")
+      spl.tail
+        .map(_(0))
+        .mkString(top, "// tutEnd", "")
 
     pprint.log(tutcode)
 
@@ -35,27 +36,26 @@ object Tuts{
     val tutChunks =
       output
         .split("repl.prompt\\(\\) = \"scala> \"")(1)
-        .split("""// tutEnd""").map((s) =>
-        s"""```scala
+        .split("""// tutEnd""")
+        .map((s) => s"""```scala
            |${s.trim.dropRight(6).trim}
            |```
            |
        |
-     """.stripMargin
-      ).toVector
+     """.stripMargin)
+        .toVector
 
     pprint.log(tutChunks.size)
 
-    val tailTextChunks : Vector[String] = spl.tail.map((v) => v.applyOrElse[Int, String](1, (_) => ""))
+    val tailTextChunks: Vector[String] =
+      spl.tail.map((v) => v.applyOrElse[Int, String](1, (_) => ""))
 
     val textTail: Vector[String] =
-      tutChunks.zip(tailTextChunks)
+      tutChunks
+        .zip(tailTextChunks)
         .flatMap { case (a, b) => Vector(a, b) }
 
     val allChunks = spl.head.head +: textTail
-
-
-
 
     val gitrep =
       s"""

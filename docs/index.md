@@ -87,3 +87,14 @@ val mp = a :-> (f :-> f(a))
 ```
 
 <div id="hott-scratch"></div>
+
+## Contributors
+
+This project has _greatly_ benefited by contributions from
+
+* Dymtro Mitin
+* Tomoaki Hashizaki
+* Olivier Roland
+* Sayantan Khan
+
+The principal developer is [Siddhartha Gadgil](http://math.iisc.ac.in/~gadgil) (Department of Mathematics, Indian Institute of Science, Bangalore).

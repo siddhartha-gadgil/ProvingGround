@@ -9,15 +9,13 @@ import org.commonmark.renderer.html.HtmlRenderer
 import scala.util.Try
 import scala.xml.Elem
 
-object Site{
+object Site {
   implicit val wd = pwd
-
 
   def pack() = {
     pprint.log("packing client")
     %%("mill", "client.pack")
   }
-
 
   def mkDocs() = {
     pprint.log("generating scaladocs")
@@ -146,23 +144,24 @@ object Site{
        |</script>
    """.stripMargin
 
-
-
-  def fromMD(s: String) : String = {
-    val parser = Parser.builder().build()
+  def fromMD(s: String): String = {
+    val parser   = Parser.builder().build()
     val document = parser.parse(s)
     val renderer = HtmlRenderer.builder().build()
     renderer.render(document).replace("$<code>", "$").replace("</code>$", "$")
   }
 
-
   def threeDash(s: String) = s.trim == "---"
 
-  def withTop(l: Vector[String]) = (l.filter(threeDash).size == 2) && threeDash(l.head)
+  def withTop(l: Vector[String]) =
+    (l.filter(threeDash).size == 2) && threeDash(l.head)
 
-  def body(l: Vector[String]) = if (withTop(l)) l.tail.dropWhile((l) => !threeDash(l)).tail else l
+  def body(l: Vector[String]) =
+    if (withTop(l)) l.tail.dropWhile((l) => !threeDash(l)).tail else l
 
-  def topmatter(lines: Vector[String]) = if (withTop(lines))  Some(lines.tail.takeWhile((l) => !threeDash(l))) else None
+  def topmatter(lines: Vector[String]) =
+    if (withTop(lines)) Some(lines.tail.takeWhile((l) => !threeDash(l)))
+    else None
 
   def titleOpt(l: Vector[String]): Option[String] =
     for {
@@ -172,20 +171,17 @@ object Site{
 
   def filename(s: String) = s.toLowerCase.replaceAll("\\s", "-")
 
-  case class Tut(name: String, rawContent: String, optTitle: Option[String]){
+  case class Tut(name: String, rawContent: String, optTitle: Option[String]) {
     val title = optTitle.getOrElse(name)
 
-    val target = pwd / "docs" / "tuts"/ s"$name.html"
+    val target = pwd / "docs" / "tuts" / s"$name.html"
 
     def url(relDocsPath: String) = s"${relDocsPath}tuts/$name.html"
 
     def content: String = fromMD(mkTut(rawContent))
 
     def output: String =
-      page(
-        content,
-        "../",
-        title)
+      page(content, "../", title)
 
     def save = write.over(target, output)
 
@@ -195,63 +191,64 @@ object Site{
     }
   }
 
-  def getTut(p: Path): Tut =
-  {
+  def getTut(p: Path): Tut = {
     val l = ops.read.lines(p).toVector
-    val name = titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
+    val name =
+      titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
     val rawContent = body(l).mkString("\n")
     Tut(name, rawContent, titleOpt(l))
   }
 
-
   def allTuts: Seq[Tut] = ls(tutdir).map(getTut)
 
   def tutList(relDocsPath: String): Seq[Elem] =
-    Try{allTuts.map(
-      (tut) =>
-        <li><a href={s"${tut.url(relDocsPath)}"}>{tut.title}</a></li>
-    ) }.orElse(
-      Try{
-        val jsArr = ujson.read(read(resource /"tut-list.json"))
-        jsArr.arr.map { (js) =>
-          // pprint.log(js)
-          val name = js.obj("name").str
-          val title = js.obj("title").str
-          val url: String = s"${relDocsPath}tuts/$name.html"
-          <li>
+    Try {
+      allTuts.map(
+        (tut) => <li><a href={s"${tut.url(relDocsPath)}"}>{tut.title}</a></li>
+      )
+    }.orElse(
+        Try {
+          val jsArr = ujson.read(read(resource / "tut-list.json"))
+          jsArr.arr.map { (js) =>
+            // pprint.log(js)
+            val name        = js.obj("name").str
+            val title       = js.obj("title").str
+            val url: String = s"${relDocsPath}tuts/$name.html"
+            <li>
             <a href={url}>
               {title}
             </a>
           </li>
-        }
+          }
 
-      }
-    )
+        }
+      )
       .getOrElse(Vector())
 
   def dateOpt(l: Vector[String]): Option[(Int, Int, Int)] =
     for {
       tm <- topmatter(l)
-      m <- """date: (\d\d\d\d)-(\d\d)-(\d\d)""".r.findFirstMatchIn(tm.mkString("\n"))
+      m <- """date: (\d\d\d\d)-(\d\d)-(\d\d)""".r.findFirstMatchIn(
+        tm.mkString("\n"))
     } yield (m.group(1).toInt, m.group(2).toInt, m.group(3).toInt)
 
-  case class Post(name: String, content: String, optDate: Option[(Int, Int, Int)], optTitle: Option[String]){
+  case class Post(name: String,
+                  content: String,
+                  optDate: Option[(Int, Int, Int)],
+                  optTitle: Option[String]) {
     lazy val title = optTitle.getOrElse(name)
 
-    lazy val dateString = optDate.map{ case (y, m, d) => s"$y-$m-$d-"}.getOrElse("")
+    lazy val dateString =
+      optDate.map { case (y, m, d) => s"$y-$m-$d-" }.getOrElse("")
 
-
-    val target = pwd / "docs" / "posts"/ s"$name.html"
+    val target = pwd / "docs" / "posts" / s"$name.html"
 
     def url(relDocsPath: String) = s"${relDocsPath}posts/$name.html"
 
     val date: (Int, Int, Int) = optDate.getOrElse((0, 0, 0))
 
     def output: String =
-      page(
-        fromMD(content),
-        "../",
-        title)
+      page(fromMD(content), "../", title)
 
     def save = write.over(target, output)
 
@@ -261,10 +258,10 @@ object Site{
     }
   }
 
-  def getPost(p: Path): Post =
-  {
+  def getPost(p: Path): Post = {
     val l = ops.read.lines(p).toVector
-    val name = titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
+    val name =
+      titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
     val content = body(l).mkString("\n")
     Post(name, content, dateOpt(l), titleOpt(l))
   }
@@ -275,30 +272,35 @@ object Site{
     ls(postsDir).map(getPost).sortBy(_.date).reverse
 
   def postList(relDocsPath: String): Seq[Elem] =
-    Try{allPosts.map(
-      (post) =>
-        <li><a href={s"${post.url(relDocsPath)}"}>{post.dateString + post.title}</a></li>
-    )}.orElse(
-      Try{
-        val jsArr = ujson.read(read(resource /"posts-list.json"))
-        jsArr.arr.map { (js) =>
-          // pprint.log(js)
-          val name = js.obj("name").str
-          val dateString = js.obj("date").str
-          val title = js.obj("title").str
-          val url: String = s"${relDocsPath}posts/$name.html"
-          <li>
+    Try {
+      allPosts.map(
+        (post) =>
+          <li><a href={s"${post.url(relDocsPath)}"}>{post.dateString + post.title}</a></li>
+      )
+    }.orElse(
+        Try {
+          val jsArr = ujson.read(read(resource / "posts-list.json"))
+          jsArr.arr.map {
+            (js) =>
+              // pprint.log(js)
+              val name        = js.obj("name").str
+              val dateString  = js.obj("date").str
+              val title       = js.obj("title").str
+              val url: String = s"${relDocsPath}posts/$name.html"
+              <li>
             <a href={url}>
               {dateString + title}
             </a>
           </li>
+          }
         }
-      }
-    )
+      )
       .getOrElse(Vector())
 
-
-  def page(s: String, relDocsPath: String, t: String = "ProvingGround", haltButton: Boolean = false): String =
+  def page(s: String,
+           relDocsPath: String,
+           t: String = "ProvingGround",
+           haltButton: Boolean = false): String =
     s"""
        |<!DOCTYPE html>
        |<html lang="en">
@@ -306,7 +308,9 @@ object Site{
        |<body>
        |${nav(relDocsPath)}
        |<div class="container">
-       |${if (haltButton) """<a href="halt" target="_blank" class="btn btn-danger pull-right">Halt Server</a>""" else ""}
+       |${if (haltButton)
+         """<a href="halt" target="_blank" class="btn btn-danger pull-right">Halt Server</a>"""
+       else ""}
        |<h1 class="text-center">$t</h1>
        |
        |<div class="text-justify">
@@ -319,18 +323,35 @@ object Site{
        |</html>
    """.stripMargin
 
-  def home = page(
-    fromMD(body(ops.read.lines(pwd / "docs" /"index.md").toVector).mkString("", "\n", "")), "", "ProvingGround: Automated Theorem proving by learning")
+  def home =
+    page(fromMD(
+           body(ops.read.lines(pwd / "docs" / "index.md").toVector)
+             .mkString("", "\n", "")),
+         "",
+         "ProvingGround: Automated Theorem proving by learning")
 
-  def mkHome() : Unit  =
+  def mkHome(): Unit =
     write.over(pwd / "docs" / "index.html", home)
 
   def mkLists() = {
-    val tutsJs = ujson.Js.Arr(allTuts.map(_.json) : _ *)
-    write.over(pwd / "docs" / "tut-list.json",
-      tutsJs.toString)
-    val postsJs = ujson.Js.Arr(allPosts.map(_.json) : _*)
+    val tutsJs = ujson.Js.Arr(allTuts.map(_.json): _*)
+    write.over(pwd / "docs" / "tut-list.json", tutsJs.toString)
+    val postsJs = ujson.Js.Arr(allPosts.map(_.json): _*)
     write.over(pwd / "docs" / "posts-list.json", postsJs.toString())
+  }
+
+  def mkTuts() = {
+    allTuts.foreach { (tut) =>
+      pprint.log(s"compiling tutorial ${tut.name}")
+      write.over(tut.target, tut.output)
+    }
+  }
+
+  def mkPosts() = {
+    allPosts.foreach { (post) =>
+      pprint.log(s"saving post ${post.name} written on ${post.dateString}")
+      write.over(post.target, post.output)
+    }
   }
 
   def mkSite(): Unit = {
@@ -346,15 +367,9 @@ object Site{
 
     mkHome()
 
-    allTuts.foreach{(tut) =>
-      pprint.log(s"compiling tutorial ${tut.name}")
-      write.over(tut.target, tut.output)
-    }
+    mkTuts()
 
-    allPosts.foreach{(post) =>
-      pprint.log(s"saving post ${post.name} written on ${post.dateString}")
-      write.over(post.target, post.output)
-    }
+    mkPosts()
   }
 
 }

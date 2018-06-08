@@ -14,7 +14,6 @@ import scala.util.Try
 
 import upickle.{Js, json}
 
-
 import ammonite.ops._
 
 class AmmService(
@@ -61,7 +60,6 @@ $body
     prevCode = initCommands
   }
 
-
   import java.nio.charset.StandardCharsets
 
   def replResult(code: String) = {
@@ -77,12 +75,13 @@ $body
     pprint.log("running ammonite")
 
     val ammMain =
-      Console.withIn(inpStream){
-        Console.withErr(errLog){
-          Console.withOut(outputS){
+      Console.withIn(inpStream) {
+        Console.withErr(errLog) {
+          Console.withOut(outputS) {
             ammonite.Main.main0(
-              args = List("--predef-code",
-                "interp.colors() = ammonite.util.Colors.BlackWhite\n"),
+              args =
+                List("--predef-code",
+                     "interp.colors() = ammonite.util.Colors.BlackWhite\n"),
               stdIn = inpStream,
               stdOut = outputS,
               stdErr = errLog
@@ -92,14 +91,14 @@ $body
         }
       }
 
-     println("ran ammonite")
+    println("ran ammonite")
 
     val silly = """\[[0-9]+[A-Z]""".r
 
-
     val output =
-      silly.replaceAllIn((new String(outputS.toByteArray, "UTF-8")).replace("\u001b", "") , "")
-
+      silly.replaceAllIn(
+        (new String(outputS.toByteArray, "UTF-8")).replace("\u001b", ""),
+        "")
 
     val err = new String(errLog.toByteArray, "UTF-8")
 
@@ -147,9 +146,8 @@ $body
       } ~
       get {
         path("script" / Segment) { name =>
-          complete(
-            HttpEntity(ContentTypes.`text/plain(UTF-8)`,
-                       Try(script(name)).toString))
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`,
+                              Try(script(name)).toString))
         }
       } ~
       post {
@@ -169,12 +167,12 @@ $body
             HttpEntity(ContentTypes.`text/plain(UTF-8)`, objTry.toString))
         }
       } ~
-        get {
-          path("resources" / Remaining) { path =>
-             println("serving from resource: " + path)
-            getFromResource(path.toString)
-          }
+      get {
+        path("resources" / Remaining) { path =>
+          println("serving from resource: " + path)
+          getFromResource(path.toString)
         }
+      }
 
 }
 

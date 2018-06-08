@@ -13,15 +13,12 @@ object PennTrees {
   def toJson(tree: Tree): Js.Value = tree match {
     case Leaf(s) => Js.Obj("type" -> "leaf", "label" -> s)
     case Node(s, children) =>
-      Js.Obj(
-        "type" -> "node",
-        "label" -> s,
-        "children" -> children.map(toJson))
+      Js.Obj("type" -> "node", "label" -> s, "children" -> children.map(toJson))
   }
 
   import TreeModel.factory
 
-  def fromJson(js: Js.Value) : Tree =
+  def fromJson(js: Js.Value): Tree =
     js.obj("type").str match {
       case "leaf" => factory.newLeaf(js.obj("label").str)
       case "node" =>
@@ -32,13 +29,13 @@ object PennTrees {
     }
 
   object Leaf {
-    def unapply(t: Tree) : Option[String] = {
+    def unapply(t: Tree): Option[String] = {
       if (t.isLeaf) Some(t.value) else None
     }
   }
 
   object Node {
-    def unapply(t: Tree) : Option[(String, Vector[Tree])] = {
+    def unapply(t: Tree): Option[(String, Vector[Tree])] = {
       if (t.isLeaf) None else Some((t.value, t.children().toVector))
     }
   }
@@ -135,10 +132,9 @@ object PennTrees {
       .newTreeNode("S", children.asJava: java.util.List[Tree])
 }
 
-sealed trait TreeModel{
-  def simpleTree : Tree
+sealed trait TreeModel {
+  def simpleTree: Tree
 }
-
 
 object TreeModel {
   implicit def rw: RW[TreeModel] = macroRW
@@ -149,16 +145,17 @@ object TreeModel {
     def simpleTree = factory.newLeaf(value)
   }
 
-  object Leaf{
+  object Leaf {
     implicit def rw: RW[Leaf] = macroRW
   }
 
   case class Node(value: String, children: Vector[TreeModel])
       extends TreeModel {
-    def simpleTree = factory.newTreeNode(value, children.map(_.simpleTree).asJava)
+    def simpleTree =
+      factory.newTreeNode(value, children.map(_.simpleTree).asJava)
   }
 
-  object Node{
+  object Node {
     implicit def rw: RW[Node] = macroRW
   }
 }

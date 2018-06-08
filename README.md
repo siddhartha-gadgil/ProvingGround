@@ -22,10 +22,9 @@ This project has _greatly_ benefited by contributions from
 * Dymtro Mitin
 * Tomoaki Hashizaki
 * Olivier Roland
-* Ankit Jaiswal
 * Sayantan Khan
 
-The principal developer is Siddhartha Gadgil (Department of Mathematics, Indian Institute of Science, Bangalore).
+The principal developer is [Siddhartha Gadgil](http://math.iisc.ac.in/~gadgil) (Department of Mathematics, Indian Institute of Science, Bangalore).
 
 ## Running
 

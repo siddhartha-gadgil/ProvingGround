@@ -29,14 +29,13 @@ import org.scalajs.dom.ext._
 //import FreeExprLang.{readTerm, readDist}
 
 @JSExportTopLevel("provingground")
-object Client{
+object Client {
   @JSExport
   def main(): Unit = {
-   ScratchPad.load()
-   // ConstituencyParser.load()
+    ScratchPad.load()
+    // ConstituencyParser.load()
   }
 }
-
 
 // Older entery point, use "provingground"
 @JSExportTopLevel("ProvingGroundJS")

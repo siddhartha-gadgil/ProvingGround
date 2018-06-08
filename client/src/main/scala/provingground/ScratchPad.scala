@@ -26,77 +26,72 @@ object katex extends js.Object {
   def renderToString(texString: String): String = js.native
 }
 
+object ScratchPad {
+  def load(): Unit = {
+    Option(dom.document.querySelector("#hott-scratch")).map { (ediv) =>
+      val editDiv = ediv.asInstanceOf[org.scalajs.dom.html.Div]
+      val runButton =
+        input(`type` := "button",
+              value := "Run (ctrl-B)",
+              `class` := "btn btn-success").render
 
-object ScratchPad{
-  def load() : Unit = {
-    Option(dom.document.querySelector("#hott-scratch")).map{
-      (ediv) =>
-        val editDiv = ediv.asInstanceOf[org.scalajs.dom.html.Div]
-        val runButton =
-          input(`type` := "button",
-            value := "Run (ctrl-B)",
-            `class` := "btn btn-success").render
+      val viewDiv = div(`class` := "view")().render
 
+      val ed = div(id := "editor", `class` := "panel-body editor")
 
-        val viewDiv = div(`class` := "view")().render
+      editDiv.appendChild(
+        div(
+          div(`class` := "panel panel-primary")(
+            div(`class` := "panel-heading")(h3("HoTT Scratchpad")),
+            ed,
+            div(`class` := "panel-footer")(runButton)),
+          div(h3("Result:"), viewDiv)
+        ).render
+      )
 
-        val ed = div(id := "editor", `class` := "panel-body editor")
+      val editor = ace.edit("editor")
+      editor.setTheme("ace/theme/chrome")
+      editor.getSession().setMode("ace/mode/scala")
 
-        editDiv.appendChild(
-          div(
-            div(`class` := "panel panel-primary")(
-              div(`class` := "panel-heading")(h3("HoTT Scratchpad")),
-              ed,
-              div(`class`:="panel-footer")(runButton)),
-            div(
-              h3("Result:"),
-              viewDiv)
-          ).render
-        )
+      val parser = HoTTParser()
 
-        val editor = ace.edit("editor")
-        editor.setTheme("ace/theme/chrome")
-        editor.getSession().setMode("ace/mode/scala")
+      def compile(): Unit = {
+        val text = editor.getValue
 
-
-
-        val parser = HoTTParser()
-
-        def compile(): Unit = {
-          val text = editor.getValue
-
-          val view = parser.block.parse(text).fold(
+        val view = parser.block
+          .parse(text)
+          .fold(
             (_, _, s) =>
               div(
                 h3(`class` := "text-danger")("Error"),
                 div(s.traced.trace)
-              ),
+            ),
             (bl, _) =>
               div(`class` := "lead")(
                 h3(`class` := "text-success")("Success"),
-                bl.valueOpt.map{(t) =>
-                  val termSpan = span().render
-                  val typSpan = span().render
-                  termSpan.innerHTML = katex.renderToString(TeXTranslate(t))
-                  typSpan.innerHTML = katex.renderToString(TeXTranslate(t.typ))
-                  div(p("Term: ", termSpan),
-                  p("Type: ", typSpan)
-                )
-              }.getOrElse(div("Empty block"))
-                )
-              )
-          // val view = h4(`class` := "text-primary")(parser.block.parse(text).toString)
+                bl.valueOpt
+                  .map { (t) =>
+                    val termSpan = span().render
+                    val typSpan  = span().render
+                    termSpan.innerHTML = katex.renderToString(TeXTranslate(t))
+                    typSpan.innerHTML =
+                      katex.renderToString(TeXTranslate(t.typ))
+                    div(p("Term: ", termSpan), p("Type: ", typSpan))
+                  }
+                  .getOrElse(div("Empty block"))
+            )
+          )
+        // val view = h4(`class` := "text-primary")(parser.block.parse(text).toString)
 
-          viewDiv.innerHTML = ""
-          viewDiv.appendChild(view.render)
-        }
+        viewDiv.innerHTML = ""
+        viewDiv.appendChild(view.render)
+      }
 
-        runButton.onclick = (event: dom.Event) => compile()
+      runButton.onclick = (event: dom.Event) => compile()
 
-        editDiv.onkeydown = (e) => {
-          if (e.ctrlKey && e.keyCode == 66) compile()
-        }
-
+      editDiv.onkeydown = (e) => {
+        if (e.ctrlKey && e.keyCode == 66) compile()
+      }
 
     }
   }

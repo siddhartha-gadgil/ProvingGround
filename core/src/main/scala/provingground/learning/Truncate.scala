@@ -135,8 +135,7 @@ object Truncate {
                 val fibs =
                   baseFD.pmf.map {
                     case Weighted(a, p) =>
-                      task(f(a), epsilon / p, maxtime).map((fd) =>
-                        fd * p)
+                      task(f(a), epsilon / p, maxtime).map((fd) => fd * p)
                   }
                 val fibTask = Task.gatherUnordered(fibs)
                 fibTask.map(_.foldLeft(FD.empty[A])(_ ++ _).flatten)

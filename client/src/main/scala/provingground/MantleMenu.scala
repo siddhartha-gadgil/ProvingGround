@@ -7,8 +7,6 @@ import scalatags.JsDom.all._
 import scala.scalajs.js
 import org.scalajs.dom
 import dom.ext._
-
-
 @JSExportTopLevel("mantlemenu")
 object MantleMenu {
   @JSExport
@@ -16,13 +14,13 @@ object MantleMenu {
     val navDiv = dom.document.querySelector("#left-nav")
     navDiv.appendChild(
       li(
-        a(href := "build", target:="_blank")("Build")
+        a(href := "build", target := "_blank")("Build")
       ).render
     )
 
     navDiv.appendChild(
       li(
-        a(href := "halt", target:="_blank")("Halt Server")
+        a(href := "halt", target := "_blank")("Halt Server")
       ).render
     )
 
@@ -34,7 +32,7 @@ object MantleMenu {
 
     navDiv.appendChild(
       li(
-        a(href := "scripts/index.html", target:="_blank")("Fiddle")
+        a(href := "scripts/index.html", target := "_blank")("Fiddle")
       ).render
     )
 
@@ -43,7 +41,6 @@ object MantleMenu {
         a(href := "index.html")("Home")
       ).render
     )
-
 
   }
 }

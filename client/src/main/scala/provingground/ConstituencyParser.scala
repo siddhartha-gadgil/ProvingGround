@@ -19,8 +19,6 @@ import upickle.{Js, json}
 import scala.util.{Try, Success, Failure}
 
 import HoTT.{id => _, _}, translation._
-
-
 @JSExportTopLevel("parser")
 object ConstituencyParser {
   @JSExport
@@ -28,11 +26,13 @@ object ConstituencyParser {
     // val haltButton =  input(`type` := "button", value := "Halt", `class` := "btn btn-danger pull-right").render
 
     val runButton =
-      input(`type` := "button", value := "Parse (ctrl-B)", `class` := "btn btn-success").render
-    val treeDiv = div(`class` := "panel-body view")().render
-    val exprDiv = div(`class` := "panel-body language-scala view")().render
+      input(`type` := "button",
+            value := "Parse (ctrl-B)",
+            `class` := "btn btn-success").render
+    val treeDiv    = div(`class` := "panel-body view")().render
+    val exprDiv    = div(`class` := "panel-body language-scala view")().render
     val depTreeDiv = div(`class` := "panel-body view")().render
-    val logDiv  = div()().render
+    val logDiv     = div()().render
     val parseInput =
       input(`type` := "text", `class` := "form-control").render
 
@@ -50,7 +50,14 @@ object ConstituencyParser {
           treeDiv.innerHTML = ""
           treeDiv.appendChild(pre(tree).render)
           val expr =
-            js.obj("expr").str.toString.replace("\"\"\"", "").split("\n").drop(1).dropRight(1).mkString("\n")
+            js.obj("expr")
+              .str
+              .toString
+              .replace("\"\"\"", "")
+              .split("\n")
+              .drop(1)
+              .dropRight(1)
+              .mkString("\n")
           exprDiv.innerHTML = ""
           exprDiv.appendChild(
             pre(
@@ -124,8 +131,7 @@ object ConstituencyParser {
 
     val jsDiv =
       div(
-        p(
-          """This is an interface for experimenting with the constituency parser based translation
+        p("""This is an interface for experimenting with the constituency parser based translation
             |from sentences to mathematical expressions. Example sentences to try are at the end of this page.
             |Enter a sentence to parse. You will see:""".stripMargin),
         ul(
@@ -133,29 +139,33 @@ object ConstituencyParser {
           li("the mathematical expression to which it translates recursively.")
         ),
         p("If some node/leaf fails to translate, it is translated to a ",
-          code("FormalNode"), " or ", code("FormalLeaf")
-        ),
-        p(strong("Warning: "), "occasionally the server may crash, so you will need to restart it."),
+          code("FormalNode"),
+          " or ",
+          code("FormalLeaf")),
+        p(strong("Warning: "),
+          "occasionally the server may crash, so you will need to restart it."),
         form(div(`class` := "form-group")(label("Sentence:"), parseInput),
              runButton),
-             p(),
-          div(`class` := "panel panel-primary")(
-           div(`class` := "panel-heading")(h4("Constituency parsed tree"),
-           p("the output of the stanford parser")),
-           treeDiv),
-          div(`class` := "panel panel-success")(
-            div(`class` := "panel-heading")(h4("Mathematical Expression"),
-           p("an expression in a structure modelled on Naproche CNL")),
-           exprDiv),
-           div(`class` := "panel panel-info")(
-            div(`class` := "panel-heading")(h4("Dependency parsed tree"),
-            p("not used at present")),
-            depTreeDiv),
-            p(),
-            h3("Example Sentences"),
-            p("Warning: Enter sentences in TeX notation, i.e, with dollars surrounding formulas. The copy button does this."),
-            p(),
-            exampleList
+        p(),
+        div(`class` := "panel panel-primary")(
+          div(`class` := "panel-heading")(
+            h4("Constituency parsed tree"),
+            p("the output of the stanford parser")),
+          treeDiv),
+        div(`class` := "panel panel-success")(
+          div(`class` := "panel-heading")(
+            h4("Mathematical Expression"),
+            p("an expression in a structure modelled on Naproche CNL")),
+          exprDiv),
+        div(`class` := "panel panel-info")(
+          div(`class` := "panel-heading")(h4("Dependency parsed tree"),
+                                          p("not used at present")),
+          depTreeDiv),
+        p(),
+        h3("Example Sentences"),
+        p("Warning: Enter sentences in TeX notation, i.e, with dollars surrounding formulas. The copy button does this."),
+        p(),
+        exampleList
       )
 
     val pdiv = dom.document.querySelector("#constituency-parser")

@@ -23,8 +23,6 @@ import upickle.{Js, json}
 import scala.util.{Try, Success, Failure}
 
 import HoTT.{id => _, _}
-
-
 @JSExportTopLevel("CodeEditorJS")
 object CodeEditorJS {
 
@@ -73,7 +71,7 @@ object CodeEditorJS {
     editDiv.appendChild(
       div(
         div(`class` := "panel panel-primary")(
-          div(`class` :="panel-heading")(h4("Script:")),
+          div(`class` := "panel-heading")(h4("Script:")),
           ed,
           div(`class` := "panel-footer clearfix")(label("script-name: "),
                                                   nameInp,
@@ -81,13 +79,14 @@ object CodeEditorJS {
                                                   insertButton,
                                                   loadButton,
                                                   runButton,
-                                                  objButton)),
-        div(`class` := "panel panel-info")
-        (
+                                                  objButton)
+        ),
+        div(`class` := "panel panel-info")(
           div(`class` := "panel-heading")(h4("Logs:")),
           logDiv),
         div(`class` := "panel panel-default")(
-          div(`class` := "panel-heading")(h4("Output:")), viewDiv)
+          div(`class` := "panel-heading")(h4("Output:")),
+          viewDiv)
       ).render)
 
     val editor = ace.edit("editor")

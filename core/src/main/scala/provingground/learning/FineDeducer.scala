@@ -49,7 +49,8 @@ object FineDeducer {
   def unif(vars: Term*)(terms: Term*)(axioms: Typ[Term]*) =
     FD.uniform(
       vars.toVector ++ terms ++ // axioms.map(lambdaClosure(vars.toVector)) ++
-        axioms.map((t) => s"""axiom_{${TeXTranslate(t)}}""" :: piClosure(vars.toVector)(t)))
+        axioms.map((t) =>
+          s"""axiom_{${TeXTranslate(t)}}""" :: piClosure(vars.toVector)(t)))
 
   /**
     * evolution by function application with  unification

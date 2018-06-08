@@ -19,7 +19,7 @@ import scala.concurrent._
 
 import scala.io.StdIn
 
-class ParserService(serverMode: Boolean)  {
+class ParserService(serverMode: Boolean) {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
@@ -35,7 +35,7 @@ class ParserService(serverMode: Boolean)  {
   }
 
   implicit val system: ActorSystem = ActorSystem("provingground")
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer        = ActorMaterializer()
 
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
@@ -51,7 +51,10 @@ class ParserService(serverMode: Boolean)  {
         complete(
           HttpEntity(
             ContentTypes.`text/html(UTF-8)`,
-            Site.page(mainHTML, "resources/", "ProvingGround: Natural language translation"  ,!serverMode)
+            Site.page(mainHTML,
+                      "resources/",
+                      "ProvingGround: Natural language translation",
+                      !serverMode)
           )
         )
       }
@@ -89,7 +92,6 @@ class ParserService(serverMode: Boolean)  {
       |  </script>
     """.stripMargin
 
-
   val indexHTML =
     """
       |<!DOCTYPE html>
@@ -126,58 +128,56 @@ class ParserService(serverMode: Boolean)  {
 
 }
 object ParserServer extends App {
-  case class Config(
-                   host: String = "localhost",
-                   port: Int = 8080,
-                  serverMode: Boolean = false)
+  case class Config(host: String = "localhost",
+                    port: Int = 8080,
+                    serverMode: Boolean = false)
 
 // val config = Config()
 
-val parser = new scopt.OptionParser[Config]("provingground-server") {
-  head("ProvingGround Server", "0.1")
+  val parser = new scopt.OptionParser[Config]("provingground-server") {
+    head("ProvingGround Server", "0.1")
 
-  opt[String]('i', "interface")
-    .action((x, c) => c.copy(host = x))
-    .text("server ip")
-  opt[Int]('p', "port")
-    .action((x, c) => c.copy(port = x))
-    .text("server port")
-  opt[Unit]("server")
-  .action((x, c) => c.copy(serverMode = true))
-  .text("running in server mode")
-}
+    opt[String]('i', "interface")
+      .action((x, c) => c.copy(host = x))
+      .text("server ip")
+    opt[Int]('p', "port")
+      .action((x, c) => c.copy(port = x))
+      .text("server port")
+    opt[Unit]("server")
+      .action((x, c) => c.copy(serverMode = true))
+      .text("running in server mode")
+  }
 
+  parser.parse(args, Config()) match {
+    case Some(config) =>
+      val parserService = new ParserService(config.serverMode)
+      import parserService._, mantleService.keepAlive
 
-parser.parse(args, Config()) match {
-  case Some(config) =>
-    val parserService = new ParserService(config.serverMode)
-    import parserService._,  mantleService.keepAlive
+      // val server = new MantleService(config.serverMode)
 
-    // val server = new MantleService(config.serverMode)
+      val bindingFuture =
+        Http().bindAndHandle(route, config.host, config.port)
 
+      val exitMessage =
+        if (config.serverMode) "Kill process to exit"
+        else
+          "Exit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)"
 
-    val bindingFuture =
-      Http().bindAndHandle(route, config.host, config.port)
+      println(
+        s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
 
-    val exitMessage =
-      if (config.serverMode) "Kill process to exit"
-      else "Exit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)"
+      while (keepAlive) {
+        Thread.sleep(10)
+      }
 
-    println(s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
+      println("starting shutdown")
 
-    while (keepAlive) {
-      Thread.sleep(10)
-    }
+      bindingFuture
+        .flatMap(_.unbind()) // trigger unbinding from the port
+        .onComplete(_ => system.terminate()) // and shutdown when done
 
-    println("starting shutdown")
-
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when done
-
-  case None =>
-    println("invalid options")
-}
-
+    case None =>
+      println("invalid options")
+  }
 
 }

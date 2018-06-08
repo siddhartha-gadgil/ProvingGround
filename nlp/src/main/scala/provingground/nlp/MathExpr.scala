@@ -42,7 +42,7 @@ object MathExpr {
 
   type T = Tree
 
-  implicit def rwT : RW[T] =
+  implicit def rwT: RW[T] =
     readwriter[Js.Value].bimap[Tree](PennTrees.toJson, PennTrees.fromJson)
 
   /**
@@ -57,7 +57,7 @@ object MathExpr {
     */
   case class SP(spv: Vector[MathExpr]) extends SententialPhrase
 
-  object SP{
+  object SP {
     implicit def rw: RW[SP] = macroRW
   }
 
@@ -66,7 +66,7 @@ object MathExpr {
     */
   case class ConjuctSP(sps: SententialPhrase) extends SententialPhrase
 
-  object ConjuctSP{
+  object ConjuctSP {
     implicit def rw: RW[ConjuctSP] = macroRW
   }
 
@@ -75,16 +75,17 @@ object MathExpr {
     */
   case class DisjuctSP(sps: SententialPhrase) extends SententialPhrase
 
-  object DisjuctSP{
+  object DisjuctSP {
     implicit def rw: RW[DisjuctSP] = macroRW
   }
+
   /**
     * An if_then_ sentential phrase, translating to implies.
     */
   case class IfThen(premise: SententialPhrase, consequence: SententialPhrase)
       extends SententialPhrase
 
-  object IfThen{
+  object IfThen {
     implicit def rw: RW[IfThen] = macroRW
   }
 
@@ -94,7 +95,7 @@ object MathExpr {
   case class Iff(premise: SententialPhrase, consequence: SententialPhrase)
       extends SententialPhrase
 
-  object Iff{
+  object Iff {
     implicit def rw: RW[Iff] = macroRW
   }
 
@@ -103,7 +104,7 @@ object MathExpr {
     */
   case class It(coref: Option[MathExpr]) extends MathExpr
 
-  object It{
+  object It {
     implicit def rw: RW[It] = macroRW
   }
 
@@ -112,7 +113,7 @@ object MathExpr {
     */
   case class They(corefs: Vector[MathExpr]) extends MathExpr
 
-  object They{
+  object They {
     implicit def rw: RW[They] = macroRW
   }
 
@@ -127,7 +128,7 @@ object MathExpr {
     */
   case class NP(npv: Vector[MathExpr]) extends NounPhrase
 
-  object NP{
+  object NP {
     implicit def rw: RW[NP] = macroRW
   }
 
@@ -135,7 +136,7 @@ object MathExpr {
     override def toString = s"NN($tq$word$tq)"
   }
 
-  object NN{
+  object NN {
     implicit def rw: RW[NN] = macroRW
   }
 
@@ -144,7 +145,7 @@ object MathExpr {
     override def toString = s"Formula($tq$text$tq)"
   }
 
-  object Formula{
+  object Formula {
     implicit def rw: RW[Formula] = macroRW
   }
 
@@ -153,7 +154,7 @@ object MathExpr {
     */
   case class ConjunctNP(nps: Vector[NounPhrase]) extends NounPhrase
 
-  object ConjunctNP{
+  object ConjunctNP {
     implicit def rw: RW[ConjunctNP] = macroRW
   }
 
@@ -162,7 +163,7 @@ object MathExpr {
     */
   case class DisjunctNP(nps: Vector[NounPhrase]) extends NounPhrase
 
-  object DisjunctNP{
+  object DisjunctNP {
     implicit def rw: RW[DisjunctNP] = macroRW
   }
 
@@ -177,7 +178,7 @@ object MathExpr {
     */
   case class VP(vpv: Vector[MathExpr]) extends VerbPhrase
 
-  object VP{
+  object VP {
     implicit def rw: RW[VP] = macroRW
   }
 
@@ -185,7 +186,7 @@ object MathExpr {
     override def toString = s"VB($tq$word$tq)"
   }
 
-  object VB{
+  object VB {
     implicit def rw: RW[VB] = macroRW
   }
 
@@ -194,7 +195,7 @@ object MathExpr {
     */
   case class NegVP(vp: VerbPhrase) extends VerbPhrase
 
-  object NegVP{
+  object NegVP {
     implicit def rw: RW[NegVP] = macroRW
   }
 
@@ -203,7 +204,7 @@ object MathExpr {
     */
   case class VerbObj(vp: VerbPhrase, obj: NounPhrase) extends VerbPhrase
 
-  object VerbObj{
+  object VerbObj {
     implicit def rw: RW[VerbObj] = macroRW
   }
 
@@ -212,7 +213,7 @@ object MathExpr {
     */
   case class NPVP(np: NounPhrase, vp: VerbPhrase) extends SententialPhrase
 
-  object NPVP{
+  object NPVP {
     implicit def rw: RW[NPVP] = macroRW
   }
 
@@ -252,7 +253,7 @@ object MathExpr {
 
     case object Modulo extends Preposition
 
-    implicit def rw :RW[Preposition] = macroRW
+    implicit def rw: RW[Preposition] = macroRW
   }
 
   /**
@@ -262,7 +263,7 @@ object MathExpr {
     override def toString = s"Prep($tq$word$tq)"
   }
 
-  object Prep{
+  object Prep {
     implicit def rw: RW[Prep] = macroRW
   }
 
@@ -274,7 +275,7 @@ object MathExpr {
   type Preposition = MathExpr
 
   object Determiner {
-    implicit def rw :RW[Determiner] = macroRW
+    implicit def rw: RW[Determiner] = macroRW
 
     case object A extends Determiner
 
@@ -296,7 +297,7 @@ object MathExpr {
       override def toString = s"Card($tq$s$tq)"
     }
 
-    object Card{
+    object Card {
       implicit def rw: RW[Card] = macroRW
     }
 
@@ -333,7 +334,7 @@ object MathExpr {
     */
   case class AP(ap: T) extends AdjectivalPhrase
 
-  object AP{
+  object AP {
     implicit def rw: RW[AP] = macroRW
   }
 
@@ -341,13 +342,13 @@ object MathExpr {
     override def toString = s"JJ($tq$word$tq)"
   }
 
-  object JJ{
+  object JJ {
     implicit def rw: RW[JJ] = macroRW
   }
 
   case class JJPP(adj: MathExpr, pps: Vector[MathExpr]) extends AdjectivalPhrase
 
-  object JJPP{
+  object JJPP {
     implicit def rw: RW[JJPP] = macroRW
   }
 
@@ -358,9 +359,9 @@ object MathExpr {
   case class PP(negated: Boolean = false, prep: Preposition, np: NounPhrase)
       extends PostModifier
 
-  object PP{
-      implicit def rw: RW[PP] = macroRW
-    }
+  object PP {
+    implicit def rw: RW[PP] = macroRW
+  }
 
   /**
     * A quantterm (in the Naproche sense) - a variable or something more complex such as `n_k`.
@@ -374,7 +375,7 @@ object MathExpr {
     */
   case class Variable(variable: T) extends QuantTerm
 
-  object Variable{
+  object Variable {
     implicit def rw: RW[Variable] = macroRW
   }
 
@@ -389,7 +390,7 @@ object MathExpr {
     */
   case class SuchThat(condition: MathExpr) extends PostModifier
 
-  object SuchThat{
+  object SuchThat {
     implicit def rw: RW[SuchThat] = macroRW
   }
 
@@ -408,11 +409,9 @@ object MathExpr {
       this.copy(post = this.post :+ pp)
   }
 
-  object DP{
+  object DP {
     implicit def rw: RW[DP] = macroRW
   }
-
-
 
   /**
     * The core of a determiner phrase, which is a noun, a list of quant-terms
@@ -422,7 +421,7 @@ object MathExpr {
                   quantterms: Vector[QuantTerm] = Vector())
       extends MathExpr
 
-  object Core{
+  object Core {
     implicit def rw: RW[Core] = macroRW
   }
 
@@ -433,7 +432,7 @@ object MathExpr {
     */
   case class VerbAdj(vp: VerbPhrase, ap: AdjectivalPhrase) extends VerbPhrase
 
-  object VerbAdj{
+  object VerbAdj {
     implicit def rw: RW[VerbAdj] = macroRW
   }
 
@@ -447,7 +446,7 @@ object MathExpr {
     */
   case class VPIf(vp: VerbPhrase, ifc: MathExpr) extends MathExpr
 
-  object VPIf{
+  object VPIf {
     implicit def rw: RW[VPIf] = macroRW
   }
 
@@ -456,7 +455,7 @@ object MathExpr {
     */
   case class IsNoun(property: NounPhrase) extends VerbPhrase // case of VerbObj
 
-  object IsNoun{
+  object IsNoun {
     implicit def rw: RW[IsNoun] = macroRW
   }
 
@@ -465,16 +464,16 @@ object MathExpr {
     */
   case class IsAdj(coProperty: AdjectivalPhrase) extends VerbPhrase
 
-
-  object IsAdj{
+  object IsAdj {
     implicit def rw: RW[IsAdj] = macroRW
   }
+
   /**
     * are ... property given by a transitive adjective, e.e., independent.
     */
   case class AreAdj(coProperty: AdjectivalPhrase) extends VerbPhrase
 
-  object AreAdj{
+  object AreAdj {
     implicit def rw: RW[AreAdj] = macroRW
   }
 
@@ -485,29 +484,31 @@ object MathExpr {
     */
   case class IsAdjPrep(adj: AdjectivalPhrase, pp: PP) extends VerbPhrase
 
-  object IsAdjPrep{
+  object IsAdjPrep {
     implicit def rw: RW[IsAdjPrep] = macroRW
   }
+
   /**
     * is such that ... property
     */
   case class IsSuchThat(st: SuchThat) extends VerbPhrase
 
-  object IsSuchThat{
+  object IsSuchThat {
     implicit def rw: RW[IsSuchThat] = macroRW
   }
+
   /**
     * is ... property given by a prespositional phrase
     */
   case class IsPrep(pp: PP) extends VerbPhrase
 
-  object IsPrep{
+  object IsPrep {
     implicit def rw: RW[IsPrep] = macroRW
   }
 
   case class VerbPP(verb: MathExpr, pps: Vector[MathExpr]) extends VerbPhrase
 
-  object VerbPP{
+  object VerbPP {
     implicit def rw: RW[VerbPP] = macroRW
   }
 
@@ -516,7 +517,7 @@ object MathExpr {
     */
   case class ForAllSP(sentence: SententialPhrase) extends SententialPhrase
 
-  object ForAllSP{
+  object ForAllSP {
     implicit def rw: RW[ForAllSP] = macroRW
   }
 
@@ -528,7 +529,7 @@ object MathExpr {
                            unique: Boolean = false)
       extends SententialPhrase
 
-  object ExistentialSP{
+  object ExistentialSP {
     implicit def rw: RW[ExistentialSP] = macroRW
   }
 
@@ -537,7 +538,7 @@ object MathExpr {
     */
   case class NegSP(sentence: SententialPhrase) extends SententialPhrase
 
-  object NegSP{
+  object NegSP {
     implicit def rw: RW[NegSP] = macroRW
   }
 
@@ -547,7 +548,7 @@ object MathExpr {
   case class ConjSP(sentences: Vector[SententialPhrase])
       extends SententialPhrase
 
-  object ConjSP{
+  object ConjSP {
     implicit def rw: RW[ConjSP] = macroRW
   }
 
@@ -557,7 +558,7 @@ object MathExpr {
   case class DisjSP(sentences: Vector[SententialPhrase])
       extends SententialPhrase
 
-  object DisjSP{
+  object DisjSP {
     implicit def rw: RW[DisjSP] = macroRW
   }
 
@@ -567,12 +568,10 @@ object MathExpr {
   case class ThatIsSP(sentences: Vector[SententialPhrase])
       extends SententialPhrase
 
-  object ThatIsSP{
+  object ThatIsSP {
     implicit def rw: RW[ThatIsSP] = macroRW
   }
 }
-
-
 
 object FormalExpr {
   import MathExpr._
@@ -581,18 +580,16 @@ object FormalExpr {
     override def toString = s"FormalLeaf($tq$s$tq)"
   }
 
-  object FormalLeaf{
+  object FormalLeaf {
     implicit def rw: RW[FormalLeaf] = macroRW
   }
-
-
 
   case class FormalNode(s: String, children: Vector[MathExpr])
       extends MathExpr {
     override def toString = s"FormalNode($tq$s$tq, $children)"
   }
 
-  object FormalNode{
+  object FormalNode {
     implicit def rw: RW[FormalNode] = macroRW
   }
 
@@ -610,7 +607,7 @@ object FormalExpr {
 
   case class Vec(vec: Vector[MathExpr]) extends MathExpr
 
-  object Vec{
+  object Vec {
     implicit def rw: RW[Vec] = macroRW
   }
 
@@ -645,7 +642,7 @@ object Raw {
   val translator = Translator.Simple[Tree, MathExpr]((t: Tree) =>
     Some(Raw(PennTrees.model(t))))
 
-  implicit def rw :RW[Raw] = macroRW
+  implicit def rw: RW[Raw] = macroRW
 }
 
 sealed trait MathText
@@ -661,7 +658,7 @@ object MathText {
   case class BiImplicationDefiniendumSP(definiendum: SententialPhrase)
       extends SententialPhrase
 
-  object BiImplicationDefiniendumSP{
+  object BiImplicationDefiniendumSP {
     implicit def rw: RW[BiImplicationDefiniendumSP] = macroRW
   }
 
@@ -673,13 +670,13 @@ object MathText {
       s"BiImplicationDefiniendum($tq$name$tq, $variables, $formula)"
   }
 
-  object BiImplicationDefiniendum{
+  object BiImplicationDefiniendum {
     implicit def rw: RW[BiImplicationDefiniendum] = macroRW
   }
 
   case class CopulaDefiniendumNP(definiendum: NounPhrase) extends NounPhrase
 
-  object CopulaDefiniendumNP{
+  object CopulaDefiniendumNP {
     implicit def rw: RW[CopulaDefiniendumNP] = macroRW
   }
 
@@ -690,7 +687,7 @@ object MathText {
     override def toString = s"CopulaDefiniendum($tq$name$tq, $variables, $lhs)"
   }
 
-  object CopulaDefiniendum{
+  object CopulaDefiniendum {
     implicit def rw: RW[CopulaDefiniendum] = macroRW
   }
 
@@ -698,7 +695,7 @@ object MathText {
                                       definiens: SententialPhrase)
       extends SententialPhrase
 
-  object BiEquationalDefinitionSP{
+  object BiEquationalDefinitionSP {
     implicit def rw: RW[BiEquationalDefinitionSP] = macroRW
   }
 
@@ -706,7 +703,7 @@ object MathText {
                                 definiens: NounPhrase)
       extends SententialPhrase
 
-  object CopulaDefinitionSP{
+  object CopulaDefinitionSP {
     implicit def rw: RW[CopulaDefinitionSP] = macroRW
   }
 
@@ -714,7 +711,7 @@ object MathText {
                                     definiens: SententialPhrase)
       extends SententialPhrase
 
-  object BiEquationalDefinition{
+  object BiEquationalDefinition {
     implicit def rw: RW[BiEquationalDefinition] = macroRW
   }
 
@@ -722,13 +719,13 @@ object MathText {
                               definiens: NounPhrase)
       extends SententialPhrase
 
-  object CopulaDefinition{
+  object CopulaDefinition {
     implicit def rw: RW[CopulaDefinition] = macroRW
   }
 
   case class VariableType(variables: Vector[NounPhrase], typ: NounPhrase)
 
-  object VariableType{
+  object VariableType {
     implicit def rw: RW[VariableType] = macroRW
   }
 }

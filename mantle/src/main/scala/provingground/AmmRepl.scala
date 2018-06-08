@@ -2,7 +2,7 @@ package provingground.interface
 
 import java.nio.charset.StandardCharsets
 
-object Amm{
+object Amm {
   def replResult(code: String) = {
     import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
     val outputS = new ByteArrayOutputStream()
@@ -14,12 +14,13 @@ object Amm{
     pprint.log("ready to run ammonite")
 
     val ammMain =
-      Console.withIn(inpStream){
-        Console.withErr(errLog){
-          Console.withOut(outputS){
+      Console.withIn(inpStream) {
+        Console.withErr(errLog) {
+          Console.withOut(outputS) {
             ammonite.Main.main0(
-              args = List("--predef-code",
-                "interp.colors() = ammonite.util.Colors.BlackWhite\n"),
+              args =
+                List("--predef-code",
+                     "interp.colors() = ammonite.util.Colors.BlackWhite\n"),
               stdIn = inpStream,
               stdOut = outputS,
               stdErr = errLog
@@ -36,8 +37,7 @@ object Amm{
     println(rawOutput.split("\u001b"))
 
     val output =
-      silly.replaceAllIn(rawOutput.replace("\u001b", "") , "")
-
+      silly.replaceAllIn(rawOutput.replace("\u001b", ""), "")
 
     val err = new String(errLog.toByteArray, "UTF-8")
 

@@ -14,7 +14,7 @@ import upickle.{Js, json}
 import scala.util.Try
 import scala.concurrent._
 
-class MantleService(serverMode: Boolean){
+class MantleService(serverMode: Boolean) {
 
   var keepAlive = true
 
@@ -33,9 +33,10 @@ class MantleService(serverMode: Boolean){
       if (!serverMode) {
         keepAlive = false
         complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "Shutting down"))
-      }
-      else
-        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "Server mode: cannot shut down"))
+      } else
+        complete(
+          HttpEntity(ContentTypes.`text/plain(UTF-8)`,
+                     "Server mode: cannot shut down"))
     }
 
   import MantleServer.executionContext
@@ -44,14 +45,17 @@ class MantleService(serverMode: Boolean){
     get {
       path("build") {
         val response: String =
-          Try(Site.mkHome()).map {
-            (_) =>
+          Try(Site.mkHome())
+            .map { (_) =>
               Future(
                 Try(Site.mkSite())
-                  .getOrElse(pprint.log("Cannot build site, perhaps this is not run from the root of the repo"))
+                  .getOrElse(pprint.log(
+                    "Cannot build site, perhaps this is not run from the root of the repo"))
               )
               "Building site"
-          }.getOrElse("Cannot build site, perhaps this is not run from the root of the repo")
+            }
+            .getOrElse(
+              "Cannot build site, perhaps this is not run from the root of the repo")
 
         complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, response))
       }
@@ -88,35 +92,41 @@ class MantleService(serverMode: Boolean){
     """.stripMargin
 
   val mantleRoute =
-    get{
+    get {
       (pathSingleSlash | path("index.html")) {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(indexHTML, "resources/", "ProvingGround HoTT Server" , !serverMode)))
+        complete(
+          HttpEntity(ContentTypes.`text/html(UTF-8)`,
+                     Site.page(indexHTML,
+                               "resources/",
+                               "ProvingGround HoTT Server",
+                               !serverMode)))
       }
-    } ~ get{
-      path("prover.html"){
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(proverHTML, "resources/", "Prover Experimentation" , !serverMode)))
+    } ~ get {
+      path("prover.html") {
+        complete(
+          HttpEntity(ContentTypes.`text/html(UTF-8)`,
+                     Site.page(proverHTML,
+                               "resources/",
+                               "Prover Experimentation",
+                               !serverMode)))
       }
     } ~ post {
-      path("monoid-proof"){
+      path("monoid-proof") {
         pprint.log("seeking proof")
         val resultFut =
-          MonoidServer.seekResultFut.map{
-            (js) =>
-              HttpEntity(ContentTypes.`application/json`, js.toString)
-        }
+          MonoidServer.seekResultFut.map { (js) =>
+            HttpEntity(ContentTypes.`application/json`, js.toString)
+          }
         complete(resultFut)
       }
     }
 
-   val route = baseRoute ~ buildRoute ~ mantleRoute
+  val route = baseRoute ~ buildRoute ~ mantleRoute
 }
 
-
-object MantleServer extends  App {
+object MantleServer extends App {
   implicit val system: ActorSystem = ActorSystem("provingground")
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer        = ActorMaterializer()
 
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
@@ -126,17 +136,18 @@ object MantleServer extends  App {
 
   import ammonite.ops._
 
-  def path(s: String): Path = scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
+  def path(s: String): Path =
+    scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
 
   implicit val pathRead: scopt.Read[Path] =
     scopt.Read.reads(path)
 
   case class Config(
-                     scriptsDir: Path = pwd / "repl-scripts",
-                     objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
-                     host: String = "localhost",
-                     port: Int = 8080,
-                    serverMode: Boolean = false)
+      scriptsDir: Path = pwd / "repl-scripts",
+      objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
+      host: String = "localhost",
+      port: Int = 8080,
+      serverMode: Boolean = false)
 
   // val config = Config()
 
@@ -156,27 +167,29 @@ object MantleServer extends  App {
       .action((x, c) => c.copy(objectsDir = x))
       .text("created objects directory")
     opt[Unit]("server")
-    .action((x, c) => c.copy(serverMode = true))
-    .text("running in server mode")
+      .action((x, c) => c.copy(serverMode = true))
+      .text("running in server mode")
   }
-
 
   parser.parse(args, Config()) match {
     case Some(config) =>
-
       val ammServer = new AmmScriptServer(config.scriptsDir, config.objectsDir)
 
       val server = new MantleService(config.serverMode)
 
-
       val bindingFuture =
-        Http().bindAndHandle(server.route ~ pathPrefix("scripts")(ammServer.route), config.host, config.port)
+        Http().bindAndHandle(
+          server.route ~ pathPrefix("scripts")(ammServer.route),
+          config.host,
+          config.port)
 
       val exitMessage =
         if (config.serverMode) "Kill process to exit"
-        else "Exit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)"
+        else
+          "Exit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)"
 
-      println(s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
+      println(
+        s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
 
       while (server.keepAlive) {
         Thread.sleep(10)
