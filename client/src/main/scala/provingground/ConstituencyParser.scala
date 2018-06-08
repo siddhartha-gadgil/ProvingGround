@@ -37,11 +37,13 @@ object ConstituencyParser {
       input(`type` := "text", `class` := "form-control").render
 
     def parse(txt: String) = {
+      runButton.value = "Parsing..."
 
       Ajax.post("parse", txt).foreach { (xhr) =>
         {
           logDiv.appendChild(p("button clicked").render)
           val answer = xhr.responseText
+          runButton.value = "Parse (ctrl-B)"
           logDiv.appendChild(pre(answer).render)
           val js   = json.read(answer)
           val tree = js.obj("tree").str.toString

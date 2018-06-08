@@ -19,7 +19,7 @@ import scala.concurrent._
 
 import scala.io.StdIn
 
-object ParserService  {
+class ParserService(serverMode: Boolean)  {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
@@ -41,7 +41,9 @@ object ParserService  {
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
 
-  import MantleService._
+  val mantleService = new MantleService(serverMode)
+
+  import mantleService._
 
   val parserRoute =
     (pathSingleSlash | path("index.html")) {
@@ -49,7 +51,7 @@ object ParserService  {
         complete(
           HttpEntity(
             ContentTypes.`text/html(UTF-8)`,
-            Site.page(mainHTML, "resources/", "ProvingGround: Natural language translation"  ,true)
+            Site.page(mainHTML, "resources/", "ProvingGround: Natural language translation"  ,!serverMode)
           )
         )
       }
@@ -62,7 +64,7 @@ object ParserService  {
             val resultFut =
               Future(parseResult(txt))
             val responseFut = resultFut.map { (result) =>
-              println("result sent to  browser")
+              pprint.log("result sent to  browser")
               HttpEntity(ContentTypes.`application/json`, result.toString)
             }
             complete(responseFut)
@@ -124,18 +126,58 @@ object ParserService  {
 
 }
 object ParserServer extends App {
-  import ParserService._,  MantleService.keepAlive
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
-  println(s"Server online at http://localhost:8080/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
+  case class Config(
+                   host: String = "localhost",
+                   port: Int = 8080,
+                  serverMode: Boolean = false)
 
-  while (keepAlive) {
-    Thread.sleep(10)
-  }
+// val config = Config()
 
-  println("starting shutdown")
+val parser = new scopt.OptionParser[Config]("provingground-server") {
+  head("ProvingGround Server", "0.1")
 
-  bindingFuture
-    .flatMap(_.unbind()) // trigger unbinding from the port
-    .onComplete(_ ⇒ system.terminate()) // and shutdown when done
+  opt[String]('i', "interface")
+    .action((x, c) => c.copy(host = x))
+    .text("server ip")
+  opt[Int]('p', "port")
+    .action((x, c) => c.copy(port = x))
+    .text("server port")
+  opt[Unit]("server")
+  .action((x, c) => c.copy(serverMode = true))
+  .text("running in server mode")
+}
+
+
+parser.parse(args, Config()) match {
+  case Some(config) =>
+    val parserService = new ParserService(config.serverMode)
+    import parserService._,  mantleService.keepAlive
+
+    val server = new MantleService(config.serverMode)
+
+
+    val bindingFuture =
+      Http().bindAndHandle(route, config.host, config.port)
+
+    val exitMessage =
+      if (config.serverMode) "Kill process to exit"
+      else "Exit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)"
+
+    println(s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
+
+    while (server.keepAlive) {
+      Thread.sleep(10)
+    }
+
+    println("starting shutdown")
+
+    bindingFuture
+      .flatMap(_.unbind()) // trigger unbinding from the port
+      .onComplete(_ => system.terminate()) // and shutdown when done
+
+  case None =>
+    println("invalid options")
+}
+
 
 }

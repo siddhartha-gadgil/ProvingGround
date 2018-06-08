@@ -14,7 +14,7 @@ import upickle.{Js, json}
 import scala.util.Try
 import scala.concurrent._
 
-object MantleService{
+class MantleService(serverMode: Boolean){
 
   var keepAlive = true
 
@@ -30,8 +30,12 @@ object MantleService{
         getFromFile(s"docs/$path")
       }
     } ~ path("halt") {
-      keepAlive = false
-      complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "shutting down"))
+      if (!serverMode) {
+        keepAlive = false
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "Shutting down"))
+      }
+      else
+        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "Server mode: cannot shut down"))
     }
 
   import MantleServer.executionContext
@@ -84,12 +88,12 @@ object MantleService{
     get{
       (pathSingleSlash | path("index.html")) {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(indexHTML, "resources/", "ProvingGround Server" , true)))
+          Site.page(indexHTML, "resources/", "ProvingGround Server" , !serverMode)))
       }
     } ~ get{
       path("prover.html"){
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(proverHTML, "resources/", "Prover Experimentaion" , true)))
+          Site.page(proverHTML, "resources/", "Prover Experimentation" , !serverMode)))
       }
     } ~ post {
       path("monoid-proof"){
@@ -115,7 +119,7 @@ object MantleServer extends  App {
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
 
-  import MantleService._
+  // import MantleService._
 
   import ammonite.ops._
 
@@ -128,9 +132,10 @@ object MantleServer extends  App {
                      scriptsDir: Path = pwd / "repl-scripts",
                      objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
                      host: String = "localhost",
-                     port: Int = 8080)
+                     port: Int = 8080,
+                    serverMode: Boolean = false)
 
-  val config = Config()
+  // val config = Config()
 
   val parser = new scopt.OptionParser[Config]("provingground-server") {
     head("ProvingGround Server", "0.1")
@@ -147,21 +152,30 @@ object MantleServer extends  App {
     opt[Path]('o', "objects")
       .action((x, c) => c.copy(objectsDir = x))
       .text("created objects directory")
-
+    opt[Unit]("server")
+    .action((x, c) => c.copy(serverMode = true))
+    .text("running in server mode")
   }
-
-  val ammServer = new AmmScriptServer(config.scriptsDir, config.objectsDir)
 
 
   parser.parse(args, Config()) match {
     case Some(config) =>
 
+      val ammServer = new AmmScriptServer(config.scriptsDir, config.objectsDir)
+
+      val server = new MantleService(config.serverMode)
+
+
       val bindingFuture =
-        Http().bindAndHandle(route ~ pathPrefix("scripts")(ammServer.route), config.host, config.port)
+        Http().bindAndHandle(server.route ~ pathPrefix("scripts")(ammServer.route), config.host, config.port)
 
-      println(s"Server online at http://${config.host}:${config.port}/\nExit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)")
+      val exitMessage =
+        if (config.serverMode) "Kill process to exit"
+        else "Exit by clicking Halt on the web page (or 'curl localhost:8080/halt' from the command line)"
 
-      while (keepAlive) {
+      println(s"Server online at http://${config.host}:${config.port}/\n$exitMessage")
+
+      while (server.keepAlive) {
         Thread.sleep(10)
       }
 
@@ -172,7 +186,7 @@ object MantleServer extends  App {
         .onComplete(_ => system.terminate()) // and shutdown when done
 
     case None =>
-      system.terminate()
+      println("invalid options")
   }
 
 }

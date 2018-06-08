@@ -50,14 +50,14 @@ object Site{
       |       </script>
     """.stripMargin
 
-  def head(relDocsPath: String = ""): String =
+  def head(relDocsPath: String, t: String): String =
     s"""
        |<head>
        |    <meta charset="utf-8">
        |    <meta http-equiv="X-UA-Compatible" content="IE=edge">
        |    <meta name="viewport" content="width=device-width, initial-scale=1">
        |    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-       |    <title>ProvingGround</title>
+       |    <title>$t</title>
        |    <link rel="icon" href="${relDocsPath}IIScLogo.jpg">
        |
        |    <!-- Bootstrap -->
@@ -214,7 +214,7 @@ object Site{
       Try{
         val jsArr = ujson.read(read(resource /"tut-list.json"))
         jsArr.arr.map { (js) =>
-          pprint.log(js)
+          // pprint.log(js)
           val name = js.obj("name").str
           val title = js.obj("title").str
           val url: String = s"${relDocsPath}tuts/$name.html"
@@ -282,7 +282,7 @@ object Site{
       Try{
         val jsArr = ujson.read(read(resource /"posts-list.json"))
         jsArr.arr.map { (js) =>
-          pprint.log(js)
+          // pprint.log(js)
           val name = js.obj("name").str
           val dateString = js.obj("date").str
           val title = js.obj("title").str
@@ -298,11 +298,11 @@ object Site{
       .getOrElse(Vector())
 
 
-  def page(s: String, relDocsPath: String, t: String = "", haltButton: Boolean = false): String =
+  def page(s: String, relDocsPath: String, t: String = "ProvingGround", haltButton: Boolean = false): String =
     s"""
        |<!DOCTYPE html>
        |<html lang="en">
-       |${head(relDocsPath)}
+       |${head(relDocsPath, t)}
        |<body>
        |${nav(relDocsPath)}
        |<div class="container">

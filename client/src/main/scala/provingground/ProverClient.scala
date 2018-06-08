@@ -71,8 +71,8 @@ object ProverClient {
               def lemmaLI(lm: Js.Value) = {
                 val termDivL = div(style := "overflow-x: auto;")().render
                 val typDivL  = div(style := "overflow-x: auto;")().render
-                termDivL.innerHTML = katex.renderToString(js.obj("term").str)
-                typDivL.innerHTML = katex.renderToString(js.obj("type").str)
+                termDivL.innerHTML = katex.renderToString(lm.obj("term").str)
+                typDivL.innerHTML = katex.renderToString(lm.obj("type").str)
                 li(`class` := "list-group-item")(
                   ul(`class` := "list-group")(
                     li(`class` := "list-group-item list-group-item-info")("Lemma"),
