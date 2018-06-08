@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>HoTT</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -110,229 +110,292 @@ messageStyle: "none",
 <p>The <em>core</em> project contains code that is agnostic to how it is run. In particular this also compiles to scala-js.</p>
 <h3>Universes, Symbolic types</h3>
 <p>We have a family of universes, but mostly use the first one denoted by Type. Given a type, we can construct symbolic objects of that type. We construct such a type <em>A</em>.</p>
-<pre><code class="language-scala">scala&gt;        
+<pre><code class="language-scala">@        
 
-scala&gt; import provingground._ 
+@ import provingground._ 
 
 import provingground._
 
-scala&gt; import HoTT._ 
+@ import HoTT._ 
 
 import HoTT._
 
-scala&gt; val A = &quot;A&quot; :: Type 
+@ val A = &quot;A&quot; :: Type 
 
-A: Typ[Term] with Subs[Typ[Term]] = A
+A: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;A&quot;), 0)
 
-scala&gt; A == Type.::(&quot;A&quot;) 
+@ A == Type.::(&quot;A&quot;) 
 
-res7: Boolean = true
+res7: Boolean = t
 </code></pre>
 <p>We consider a symbolic object of the type <em>A</em></p>
-<pre><code class="language-scala">scala&gt; val a = &quot;a&quot; :: A 
+<pre><code class="language-scala">@ val a = &quot;a&quot; :: A 
 
-a: Term with Subs[Term] = a
+a: Term with Subs[Term] = SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;),
 </code></pre>
 <h2>Function types, lambdas, Identity</h2>
 <p>Given types A and B, we have the function type A → B. An element of this is a function from A to B.</p>
 <p>We can construct functions using λ's. Here, for the type <em>A</em>, we construct the identity on <em>A</em> using a lambda. We can then view this as a dependent function of <em>A</em>, giving the identity function.</p>
 <p>In this definition, two λ's are used, with the method <em>lmbda</em> telling the TypecompilerType that the result is a (non-dependent) function.</p>
-<pre><code class="language-scala">scala&gt; val id = lambda(A)(lmbda(a)(a)) 
+<pre><code class="language-scala">@ val id = lambda(A)(lmbda(a)(a)) 
 
-id: FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]] = (A :  𝒰 _0) ↦ ((a :  A) ↦ (a))
+id: FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]] = LambdaTerm(
+  SymbTyp(A, 0),
+  LambdaFixed(SymbObj(a, SymbTyp(A, 0)), SymbObj(a, SymbTyp(A, 0))
 </code></pre>
 <p>The type of the identity function is a mixture of Pi-types and function types. Which of these to use is determined by checking dependence of the type of the value on the varaible in a λ-definition.</p>
-<pre><code class="language-scala">scala&gt; id.typ 
+<pre><code class="language-scala">@ id.typ 
 
-res10: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]]] = A ~&gt; ((A) → (A))
+res10: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]]] = PiDefn(
+  SymbTyp(A, 0),
+  FuncTyp(SymbTyp(A, 0), SymbTyp(A, 0))
+)
 
-scala&gt; lmbda(a)(a).typ 
+@ lmbda(a)(a).typ 
 
-res11: Typ[Func[Term with Subs[Term], Term with Subs[Term]]] = (A) → (A)
+res11: Typ[Func[Term with Subs[Term], Term with Subs[Term]]] = FuncTyp(SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0))
 
-scala&gt; lmbda(a)(a).typ.dependsOn(A) 
+@ lmbda(a)(a).typ.dependsOn(A) 
 
-res12: Boolean = true
+res12: Boolean = t
 </code></pre>
 <p>The lambdas have the same effect at runtime. It is checked if the type of the value depends on the variable.
 The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
-<pre><code class="language-scala">scala&gt; val indep = lmbda(a)(a) 
+<pre><code class="language-scala">@ val indep = lmbda(a)(a) 
 
-indep: Func[Term with Subs[Term], Term with Subs[Term]] = (a :  A) ↦ (a)
+indep: Func[Term with Subs[Term], Term with Subs[Term]] = LambdaFixed(
+  SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)),
+  SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))
+)
 
-scala&gt; val dep = lambda(a)(a) 
+@ val dep = lambda(a)(a) 
 
-dep: FuncLike[Term with Subs[Term], Term with Subs[Term]] = (a :  A) ↦ (a)
+dep: FuncLike[Term with Subs[Term], Term with Subs[Term]] = LambdaFixed(
+  SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)),
+  SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))
+)
 
-scala&gt; indep == dep 
+@ indep == dep 
 
-res15: Boolean = true
+res15: Boolean = t
 </code></pre>
 <p>Note that we have alternative notation for lambdas, the maps to methods <code>:-&gt;</code> and <code>:~&gt;</code>.
 For instance, we can define the identity using these.</p>
-<pre><code class="language-scala">scala&gt; assert(id == A :~&gt; (a :-&gt; a))
+<pre><code class="language-scala">@ assert(id == A :~&gt; (a :-&gt; a))
 </code></pre>
 <h3>Hygiene for λs</h3>
 <p>A new variable object, which has the same toString, is created in making lambdas. This is to avoid name clashes.</p>
-<pre><code class="language-scala">scala&gt; val l = dep.asInstanceOf[LambdaFixed[Term, Term]] 
+<pre><code class="language-scala">@ val l = dep.asInstanceOf[LambdaFixed[Term, Term]] 
 
-l: LambdaFixed[Term, Term] = (a :  A) ↦ (a)
+l: LambdaFixed[Term, Term] = LambdaFixed(SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)))
 
-scala&gt; l.variable 
+@ l.variable 
 
-res18: Term = a
+res18: Term = SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))
 
-scala&gt; l.variable == a 
+@ l.variable == a 
 
-res19: Boolean = false
+res19: Boolean = fa
 </code></pre>
 <h2>Modus Ponens</h2>
 <p>We construct Modus Ponens, as an object in Homotopy Type theory. Note that A -&gt;: B is the function type A → B.</p>
-<pre><code class="language-scala">scala&gt; val B = &quot;B&quot; :: Type 
+<pre><code class="language-scala">@ val B = &quot;B&quot; :: Type 
 
-B: Typ[Term] with Subs[Typ[Term]] = B
+B: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;B&quot;), 0)
 
-scala&gt;  
+@  
 
-scala&gt; val f = &quot;f&quot; :: (A -&gt;: B) 
+@ val f = &quot;f&quot; :: (A -&gt;: B) 
 
-f: Func[Term, Term] with Subs[Func[Term, Term]] = f
+f: Func[Term, Term] with Subs[Func[Term, Term]] = SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;B&quot;), 0))
 
-scala&gt;  
+@  
 
-scala&gt; val mp = lambda(A)(lambda(B)(lmbda(a)(lmbda(f)(f(a))))) 
+@ val mp = lambda(A)(lambda(B)(lmbda(a)(lmbda(f)(f(a))))) 
 
-mp: FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]] = (A :  𝒰 _0) ↦ ((B :  𝒰 _0) ↦ ((a :  A) ↦ ((f :  (A) → (B)) ↦ ((f) (a)))))
+mp: FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]] = LambdaTerm(
+  SymbTyp(A, 0),
+  LambdaTerm(
+    SymbTyp(B, 0),
+    LambdaFixed(
+      SymbObj(a, SymbTyp(A, 0)),
+      LambdaFixed(
+        SymbolicFunc(f, SymbTyp(A, 0), SymbTyp(B, 0)),
+        SymbObj(ApplnSym(SymbolicFunc(f, SymbTyp(A, 0), SymbTyp(B, 0)), SymbObj(a, SymbTyp(A, 0))), SymbTyp(B, 0))
+      )
+    )
 </code></pre>
 <p>The type of Modus Ponens is again a mixture of Pi-types and function types.</p>
-<pre><code class="language-scala">scala&gt; mp.typ 
+<pre><code class="language-scala">@ mp.typ 
 
-res23: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]]] = A ~&gt; (B ~&gt; ((A) → (((A) → (B)) → (B))))
+res23: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]]] = PiDefn(
+  SymbTyp(A, 0),
+  PiDefn(SymbTyp(B, 0), FuncTyp(SymbTyp(A, 0), FuncTyp(FuncTyp(SymbTyp(A, 0), SymbTyp(B, 0)), SymbTyp(B, 0)))
 </code></pre>
 <p>We can apply modus ponens with the roles of <em>A</em> and <em>B</em> reversed. This still works because variable clashes are avoided.</p>
-<pre><code class="language-scala">scala&gt; val mpBA = mp(B)(A) 
+<pre><code class="language-scala">@ val mpBA = mp(B)(A) 
 
-mpBA: Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]] = (a :  B) ↦ ((f :  (B) → (A)) ↦ ((f) (a)))
+mpBA: Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]] = LambdaFixed(
+  SymbObj(a, SymbTyp(Name(&quot;B&quot;), 0)),
+  LambdaFixed(
+    SymbolicFunc(f, SymbTyp(Name(&quot;B&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)),
+    SymbObj(
+      ApplnSym(SymbolicFunc(f, SymbTyp(Name(&quot;B&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(a, SymbTyp(Name(&quot;B&quot;), 0))),
+      SymbTyp(Name(&quot;A&quot;), 0)
+    )
+  )
+)
 
-scala&gt; mpBA.typ == B -&gt;: (B -&gt;: A) -&gt;: A 
+@ mpBA.typ == B -&gt;: (B -&gt;: A) -&gt;: A 
 
-res25: Boolean = true
+res25: Boolean = t
 </code></pre>
 <h3>Equality of λs</h3>
 <p>Lambdas do not depend on the name of the variable.</p>
-<pre><code class="language-scala">scala&gt; val aa = &quot;aa&quot; :: A 
+<pre><code class="language-scala">@ val aa = &quot;aa&quot; :: A 
 
-aa: Term with Subs[Term] = aa
+aa: Term with Subs[Term] = SymbObj(Name(&quot;aa&quot;), SymbTyp(Name(&quot;A&quot;), 0))
 
-scala&gt; lmbda(aa)(aa) == lmbda(a)(a) 
+@ lmbda(aa)(aa) == lmbda(a)(a) 
 
 res27: Boolean = true
 
-scala&gt; (lmbda(aa)(aa))(a) == a 
+@ (lmbda(aa)(aa))(a) == a 
 
-res28: Boolean = true
+res28: Boolean = t
 </code></pre>
 <h2>Dependent types</h2>
 <p>Given a type family, we can construct the corresponding Pi-types and Sigma-types. We start with a formal type family, which is just a symbolic object of the appropriate type.</p>
-<pre><code class="language-scala">scala&gt; val Bs = &quot;B(_ : A)&quot; :: (A -&gt;: Type) 
+<pre><code class="language-scala">@ val Bs = &quot;B(_ : A)&quot; :: (A -&gt;: Type) 
 
-Bs: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = B(_ : A)
+Bs: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = SymbolicFunc(Name(&quot;B(_ : A)&quot;), SymbTyp(Name(&quot;A&quot;), 0), Universe(
 </code></pre>
 <h3>Pi-Types</h3>
 <p>In addition to the case class constructor, there is an agda/shapeless-like  convenience method for constructing Pi-types. Namely, given a type expression that depends on a varaible <em>a : A</em>, we can construct the Pi-type correspoding to the obtained λ-expression.</p>
 <p>Note that the !: method just claims and checks a type, and is useful (e.g. here) for documentation.</p>
-<pre><code class="language-scala">scala&gt; val fmly = (a !: A) ~&gt;: (Bs(a) -&gt;: A) 
+<pre><code class="language-scala">@ val fmly = (a !: A) ~&gt;: (Bs(a) -&gt;: A) 
 
-fmly: GenFuncTyp[Term, Func[Term, Term]] = a ~&gt; (((B(_ : A)) (a)) → (A))
+fmly: GenFuncTyp[Term, Func[Term, Term]] = PiDefn(
+  SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)),
+  FuncTyp(
+    SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;B(_ : A)&quot;), SymbTyp(Name(&quot;A&quot;), 0), Universe(0)), SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))), 0),
+    SymbTyp(Name(&quot;A&quot;), 0)
 </code></pre>
 <h3>Sigma-types</h3>
 <p>There is also a convenience method for defining Sigma types using λs.</p>
-<pre><code class="language-scala">scala&gt; Sgma(a !: A, Bs(a)) 
+<pre><code class="language-scala">@ Sgma(a !: A, Bs(a)) 
 
-res31: SigmaTyp[Term, Term] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
+res31: SigmaTyp[Term, Term] = SigmaTyp(
+  LambdaFixed(
+    SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)),
+    SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;B(_ : A)&quot;), SymbTyp(Name(&quot;A&quot;), 0), Universe(0)), SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))), 0)
 </code></pre>
-<pre><code class="language-scala">scala&gt; Sgma(a !: A, Bs(a) -&gt;: Bs(a) -&gt;: A) 
+<pre><code class="language-scala">@ Sgma(a !: A, Bs(a) -&gt;: Bs(a) -&gt;: A) 
 
-res32: SigmaTyp[Term, Func[Term, Func[Term, Term]]] = ∑((a :  A) ↦ (((B(_ : A)) (a)) → (((B(_ : A)) (a)) → (A))))
+res32: SigmaTyp[Term, Func[Term, Func[Term, Term]]] = SigmaTyp(
+  LambdaFixed(
+    SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)),
+    FuncTyp(
+      SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;B(_ : A)&quot;), SymbTyp(Name(&quot;A&quot;), 0), Universe(0)), SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))), 0),
+      FuncTyp(
+        SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;B(_ : A)&quot;), SymbTyp(Name(&quot;A&quot;), 0), Universe(0)), SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))), 0),
+        SymbTyp(Name(&quot;A&quot;), 0)
+      )
+    )
 </code></pre>
 <h2>Pair types</h2>
 <p>Like functions and dependent functions, pairs and dependent pairs can be handled together. The <em>mkPair</em> function assignes the right type after checking dependence, choosing between pair types, pairs and dependent pairs.</p>
-<pre><code class="language-scala">scala&gt; val ba = &quot;b(a)&quot; :: Bs(a) 
+<pre><code class="language-scala">@ val ba = &quot;b(a)&quot; :: Bs(a) 
 
-ba: Term with Subs[Term] = b(a)
+ba: Term with Subs[Term] = SymbObj(
+  Name(&quot;b(a)&quot;),
+  SymbTyp(
+    ApplnSym(SymbolicFunc(Name(&quot;B(_ : A)&quot;), SymbTyp(Name(&quot;A&quot;), 0), Universe(0)), SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;), 0))),
+    0
+  )
+)
 
-scala&gt; val b = &quot;b&quot; :: B 
+@ val b = &quot;b&quot; :: B 
 
-b: Term with Subs[Term] = b
+b: Term with Subs[Term] = SymbObj(Name(&quot;b&quot;), SymbTyp(Name(&quot;B&quot;), 0))
 
-scala&gt; mkPair(A, B) 
+@ mkPair(A, B) 
 
-res35: AbsPair[Term, Term] = ((A) , (B))
+res35: AbsPair[Term, Term] = ProdTyp(SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;B&quot;), 0))
 
-scala&gt; mkPair(a, b) 
+@ mkPair(a, b) 
 
-res36: AbsPair[Term, Term] = ((a) , (b))
+res36: AbsPair[Term, Term] = PairTerm(SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(Name(&quot;b&quot;), SymbTyp(Name(&quot;B&quot;), 0)))
 
-scala&gt; mkPair(a, b).typ 
+@ mkPair(a, b).typ 
 
-res37: Typ[U] = ((A) , (B))
+res37: Typ[U] = ProdTyp(SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;B&quot;), 0))
 
-scala&gt; mkPair(a, ba).typ 
+@ mkPair(a, ba).typ 
 
-res38: Typ[U] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
+res38: Typ[U] = SigmaTyp(
+  LambdaFixed(
+    SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0)),
+    SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;B(_ : A)&quot;), SymbTyp(Name(&quot;A&quot;), 0), Universe(0)), SymbObj(a, SymbTyp(Name(&quot;A&quot;), 0))), 0)
 </code></pre>
-<pre><code class="language-scala">scala&gt; mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]] 
+<pre><code class="language-scala">@ mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]] 
 
-res39: ProdTyp[Term, Term] = ((A) , (B))
+res39: ProdTyp[Term, Term] = ProdTyp(SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;B&quot;),
 </code></pre>
 <h2>Plus types</h2>
 <p>We can also construct the plus type <em>A plus B</em>, which comes with two inclusion functions.</p>
-<pre><code class="language-scala">scala&gt; val AplusB = PlusTyp(A, B) 
+<pre><code class="language-scala">@ val AplusB = PlusTyp(A, B) 
 
-AplusB: PlusTyp[Term, Term] = PlusTyp(A,B)
+AplusB: PlusTyp[Term, Term] = PlusTyp(SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;B&quot;),
 </code></pre>
-<pre><code class="language-scala">scala&gt; AplusB.incl1(a) 
+<pre><code class="language-scala">@ AplusB.incl1(a) 
 
-res41: PlusTyp.FirstIncl[Term, Term] = FirstIncl(PlusTyp(A,B),a)
+res41: PlusTyp.FirstIncl[Term, Term] = FirstIncl(
+  PlusTyp(SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;B&quot;), 0)),
+  SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;), 0)
 </code></pre>
-<pre><code class="language-scala">scala&gt; AplusB.incl2 
+<pre><code class="language-scala">@ AplusB.incl2 
 
-res42: Func[Term with Subs[Term], PlusTyp.ScndIncl[Term, Term]] = ($cn :  B) ↦ (ScndIncl(PlusTyp(A,B),$cn))
+res42: Func[Term with Subs[Term], PlusTyp.ScndIncl[Term, Term]] = LambdaFixed(
+  SymbObj($cn, SymbTyp(Name(&quot;B&quot;), 0)),
+  ScndIncl(PlusTyp(SymbTyp(Name(&quot;A&quot;), 0), SymbTyp(Name(&quot;B&quot;), 0)), SymbObj($cn, SymbTyp(Name(&quot;B&quot;), 0))
 </code></pre>
 <p>In the above, a λ was used, with a variable automatically generated. These have names starting with $ to avoid collision with user defined ones.</p>
 <h2>Identity type</h2>
 <p>We have an identity type associated to a type <em>A</em>, with reflexivity giving terms of this type.</p>
-<pre><code class="language-scala">scala&gt; val eqAa = IdentityTyp(A, a, a) 
+<pre><code class="language-scala">@ val eqAa = IdentityTyp(A, a, a) 
 
-eqAa: IdentityTyp[Term with Subs[Term]] = a = a
+eqAa: IdentityTyp[Term with Subs[Term]] = IdentityTyp(
+  SymbTyp(Name(&quot;A&quot;), 0),
+  SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;), 0)),
+  SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;), 0))
+)
 
-scala&gt; val ref = Refl(A, a) 
+@ val ref = Refl(A, a) 
 
-ref: Refl[Term with Subs[Term]] = Refl(A,a)
+ref: Refl[Term with Subs[Term]] = Refl(SymbTyp(Name(&quot;A&quot;), 0), SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;), 0
 </code></pre>
-<pre><code class="language-scala">scala&gt; ref.typ == eqAa 
+<pre><code class="language-scala">@ ref.typ == eqAa 
 
-res45: Boolean = true
+res45: Boolean = t
 </code></pre>
 <h2>The Unit and the  Nought</h2>
 <p>Finally, we have the types corresponding to <em>True</em> and <em>False</em></p>
-<pre><code class="language-scala">scala&gt; Unit 
+<pre><code class="language-scala">@ Unit 
 
 res46: Unit.type = Unit
 
-scala&gt; Zero 
+@ Zero 
 
 res47: Zero.type = Zero
 
-scala&gt; Star !: Unit 
+@ Star !: Unit 
 
 res48: Term = Star
 
-scala&gt;  
-
-scala
+@
 </code></pre>
-<h4>Git Log when running tutorial: a13ee9ce2a17b690e3638b1861cb51d6731f8cd1</h4>
+<h4>Git Log when running tutorial: 4d774d05affbeb6f1b3ac5915f80b81c1025bfe1</h4>
 
 
 </div>

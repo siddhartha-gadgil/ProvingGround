@@ -183,10 +183,10 @@ object nlp extends SbtModule with ServerModule{
 }
 
 object jvmRoot extends CommonModule{
-  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp)
+  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server)
 
   override def sources = T.sources{
-    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources()
+    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources() ++ server.sources()
   }
 
   override def ivyDeps = T{

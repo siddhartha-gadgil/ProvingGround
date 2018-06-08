@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>ScalaRep</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -97,79 +97,117 @@ messageStyle: "none",
 <h2>Scala Representations</h2>
 <p>Scala objects are integrated with HoTT by using wrappers, combinators and implicit based convenience methods. In this note we look at the basic representations. The main power of this is to provide automatically (through implicits) types and scala bindings for functions from the basic ones.</p>
 <p>A more advanced form of Scala representations also makes symbolic algebra simplifications. The basic form should be used, for example, for group presentations, where simplifications are not expected.</p>
-<pre><code class="language-scala">scala&gt;        
+<pre><code class="language-scala">@        
 
-scala&gt; import provingground._ 
+@ import provingground._ 
 
 import provingground._
 
-scala&gt; import HoTT._ 
+@ import HoTT._ 
 
 import HoTT._
 
-scala&gt; import functionfinder._ 
+@ import functionfinder._ 
 
 import functionfinder._
 
-scala&gt; import ScalaRep._ 
+@ import ScalaRep._ 
 
-import ScalaRep._
+import ScalaRe
 </code></pre>
 <p>We consider the type of Natural numbers formed from Integers. This is defined in ScalaRep as:</p>
-<pre><code class="language-scala">scala&gt; NatInt 
+<pre><code class="language-scala">@ NatInt 
 
-res8: NatInt.type = NatInt
+res8: NatInt.type = Nat
 </code></pre>
 <h3>Conversion using the term method</h3>
 <p>The term method converts a scala object, with scala type T say, into a Term, provided there is an implicit representation with scala type T.</p>
-<pre><code class="language-scala">scala&gt; import NatInt.rep 
+<pre><code class="language-scala">@ import NatInt.rep 
 
 import NatInt.rep
 
-scala&gt; 1.term 
+@ 1.term 
 
-res10: RepTerm[Int] = 1
+res10: RepTerm[Int] = RepSymbObj(ScalaSymbol(1), NatI
 </code></pre>
 <h3>Functions to FuncTerms</h3>
 <p>Given the representation of Int, there are combinators that give representations of, for instance Int =&gt; Int =&gt; Int. Note also that the type of the resulting term is a type parameter of the scala representations, so we get a refined compile time type</p>
-<pre><code class="language-scala">scala&gt; val sum = ((n: Int) =&gt; (m: Int) =&gt; n + m).term 
+<pre><code class="language-scala">@ val sum = ((n: Int) =&gt; (m: Int) =&gt; n + m).term 
 
-sum: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
+sum: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = ExtendedFunction(
+  ammonite.$sess.cmd11$$$Lambda$5208/471764274@52377844,
+  SimpleRep(NatInt),
+  FuncRep(SimpleRep(NatInt), SimpleRep(NatInt)
 </code></pre>
-<pre><code class="language-scala">scala&gt; sum(1.term)(2.term) 
+<pre><code class="language-scala">@ sum(1.term)(2.term) 
 
-res12: RepTerm[Int] = 3
+res12: RepTerm[Int] = RepSymbObj(ScalaSymbol(3), NatI
 </code></pre>
-<pre><code class="language-scala">scala&gt; val n = &quot;n&quot; :: NatInt 
+<pre><code class="language-scala">@ val n = &quot;n&quot; :: NatInt 
 
-n: RepTerm[Int] with Subs[RepTerm[Int]] = n
+n: RepTerm[Int] with Subs[RepTerm[Int]] = RepSymbObj(Name(&quot;n&quot;), NatInt)
 
-scala&gt; sum(n)(2.term) 
+@ sum(n)(2.term) 
 
-res14: RepTerm[Int] = ((&lt;function1&gt;) (n)) (2)
+res14: RepTerm[Int] = RepSymbObj(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        ExtendedFunction(
+          ammonite.$sess.cmd11$$$Lambda$5208/471764274@52377844,
+          SimpleRep(NatInt),
+          FuncRep(SimpleRep(NatInt), SimpleRep(NatInt))
+        ),
+        RepSymbObj(Name(&quot;n&quot;), NatInt)
+      ),
+      NatInt,
+      NatInt
+    ),
+    RepSymbObj(ScalaSymbol(2), NatInt)
+  ),
+  NatIn
 </code></pre>
-<pre><code class="language-scala">scala&gt; val s = lmbda(n)(sum(n)(2.term)) 
+<pre><code class="language-scala">@ val s = lmbda(n)(sum(n)(2.term)) 
 
-s: Func[RepTerm[Int] with Subs[RepTerm[Int]], RepTerm[Int]] = (n :  NatInt) ↦ (((&lt;function1&gt;) (n)) (2))
+s: Func[RepTerm[Int] with Subs[RepTerm[Int]], RepTerm[Int]] = LambdaFixed(
+  RepSymbObj(n, NatInt),
+  RepSymbObj(
+    ApplnSym(
+      SymbolicFunc(
+        ApplnSym(
+          ExtendedFunction(
+            provingground.functionfinder.ScalaRep$ExtendedFunction$$Lambda$5233/499833806@68019663,
+            SimpleRep(NatInt),
+            FuncRep(SimpleRep(NatInt), SimpleRep(NatInt))
+          ),
+          RepSymbObj(n, NatInt)
+        ),
+        NatInt,
+        NatInt
+      ),
+      RepSymbObj(ScalaSymbol(2), NatInt)
+    ),
+    NatInt
 </code></pre>
-<pre><code class="language-scala">scala&gt; s(3.term) 
+<pre><code class="language-scala">@ s(3.term) 
 
-res16: RepTerm[Int] = 5
+res16: RepTerm[Int] = RepSymbObj(ScalaSymbol(5), NatI
 </code></pre>
 <p>We will also define the product</p>
-<pre><code class="language-scala">scala&gt; val prod = ((n : Int) =&gt; (m: Int) =&gt; n * m).term 
+<pre><code class="language-scala">@ val prod = ((n : Int) =&gt; (m: Int) =&gt; n * m).term 
 
-prod: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
+prod: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = ExtendedFunction(
+  ammonite.$sess.cmd17$$$Lambda$5247/1958383932@763e9ac1,
+  SimpleRep(NatInt),
+  FuncRep(SimpleRep(NatInt), SimpleRep(NatInt)
 </code></pre>
-<pre><code class="language-scala">scala&gt; prod(2.term)(4.term) 
+<pre><code class="language-scala">@ prod(2.term)(4.term) 
 
-res18: RepTerm[Int] = 8
+res18: RepTerm[Int] = RepSymbObj(ScalaSymbol(8), NatInt)
 
-scala&gt;  
-
-scala
+@
 </code></pre>
-<h4>Git Log when running tutorial: a13ee9ce2a17b690e3638b1861cb51d6731f8cd1</h4>
+<h4>Git Log when running tutorial: 4d774d05affbeb6f1b3ac5915f80b81c1025bfe1</h4>
 
 
 </div>

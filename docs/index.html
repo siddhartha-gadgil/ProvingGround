@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>ProvingGround: Automated Theorem proving by learning</title>
     <link rel="icon" href="IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -105,13 +105,29 @@ messageStyle: "none",
 <h2>Lean theorem prover interaction</h2>
 <p>Our goal is to interact with external systems. In particular, we have implemented interaction with the <em>lean theorem prover</em>, whereby the export format of <em>lean</em> is used (via trepplein) to generate code in our implementation of HoTT. This allows us to start with a library for learning as well as a target for natural lannguage processing.</p>
 <h2>Running</h2>
+<h4>Servers</h4>
+<p>Two rudimentary servers are available as binaries, which you can download and run. You need Java 8 installed. In Unix systems you may need to run <code>chmod +x ...</code> to make the files executable.</p>
+<ul>
+<li><a href="http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-mantle-SNAPSHOT">ProvingGround HoTT Server</a></li>
+<li><a href="http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-nlp-SNAPSHOT">ProvingGround NLP Server</a></li>
+</ul>
+<p>Start one of these servers and visit <code>localhost:8080</code> on a browser to run. You can also specify the port by starting with a <code>-p</code> option.</p>
+<p>These will be frequently updated with new features.</p>
+<h4>From Source</h4>
 <p>At present the best way to interact with most of the code is to use a console in either <a href="https://www.lihaoyi.com/mill/">mill</a> or <code>sbt</code> (the primary build tool is now <a href="https://www.lihaoyi.com/mill/">mill</a>). To pop up a console with most of the code in scope, install <a href="https://www.lihaoyi.com/mill/">mill</a> and run:</p>
 <pre><code>mill mantle.repl
 </code></pre>
+<p>for the HoTT implementation etc, or</p>
+<pre><code>mill nlp.repl
+</code></pre>
+<p>for the natural language processing part.</p>
 <p>To experiment with <em>natural language processing</em>, a basic server can be started by running</p>
 <pre><code>mill nlp.run
 </code></pre>
 <p>and going to <code>localhost:8080</code> on the browser. To experiment with the code, you can use the <code>--watch</code> flag so the system restarts after shutting down from the browser.</p>
+<p>Similarly, one can experiment with a small part of the HoTT implementation by running</p>
+<pre><code>mill mantle.run
+</code></pre>
 <p>Some experiments with the HoTT interface can be done in the scratchpad below.</p>
 <h2>HoTT scratchpad</h2>
 <p>The scratchpad below is a limited interpreter for our implementation of Homotopy Type Theory. At present it interprets</p>

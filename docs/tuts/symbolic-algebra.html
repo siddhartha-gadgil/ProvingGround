@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>Symbolic algebra</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -109,173 +109,220 @@ messageStyle: "none",
 <li>a scala representation</li>
 <li>a (spire) ring structure on the underlying terms.</li>
 </ul>
-<pre><code class="language-scala">scala&gt;        
+<pre><code class="language-scala">@        
 
-scala&gt; import provingground._ 
+@ import provingground._ 
 
 import provingground._
 
-scala&gt; import functionfinder._ 
+@ import functionfinder._ 
 
 import functionfinder._
 
-scala&gt; import NatRing._ 
+@ import NatRing._ 
 
-import NatRing._
+import NatRin
 </code></pre>
-<pre><code class="language-scala">scala&gt; val n = &quot;n&quot; :: NatTyp 
+<pre><code class="language-scala">@ val n = &quot;n&quot; :: NatTyp 
 
-n: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = n
+n: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = RepSymbObj(Name(&quot;n&quot;), Nat.Typ)
 
-scala&gt; val m = &quot;m&quot; :: NatTyp 
+@ val m = &quot;m&quot; :: NatTyp 
 
-m: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = m
+m: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = RepSymbObj(Name(&quot;m&quot;), Nat.Typ)
 
-scala&gt; val k = &quot;k&quot; :: NatTyp 
+@ val k = &quot;k&quot; :: NatTyp 
 
-k: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = k
+k: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = RepSymbObj(Name(&quot;k&quot;), Nat.T
 </code></pre>
 <p>Spire implicits let us use the addition and multiplication operations.</p>
-<pre><code class="language-scala">scala&gt; import spire.math._ 
+<pre><code class="language-scala">@ import spire.math._ 
 
 import spire.math._
 
-scala&gt; import spire.algebra._ 
+@ import spire.algebra._ 
 
 import spire.algebra._
 
-scala&gt; import spire.implicits._ 
+@ import spire.implicits._ 
 
-import spire.implicits._
+import spire.implicit
 </code></pre>
 <h3>Addition and multiplication</h3>
 <p>A sum gives a SigmaTerm, which only stores a set of terms being added.</p>
-<pre><code class="language-scala">scala&gt; n + m 
+<pre><code class="language-scala">@ n + m 
 
-res13: LocalTerm = (n + m)
+res13: LocalTerm = SigmaTerm(Set(RepSymbObj(Name(&quot;n&quot;), Nat.Typ), RepSymbObj(Name(&quot;m&quot;), Nat.Typ)))
 
-scala&gt; (n + m) + n 
+@ (n + m) + n 
 
-res14: LocalTerm = (m + ((prod) (2)) (n))
+res14: LocalTerm = SigmaTerm(
+  Set(
+    RepSymbObj(Name(&quot;m&quot;), Nat.Typ),
+    RepSymbObj(
+      ApplnSym(
+        SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(SafeLongLong(2L)), Nat.Typ)), Nat.Typ, Nat.Typ),
+        RepSymbObj(Name(&quot;n&quot;), Nat.Typ)
+      ),
+      Nat.Typ
+    )
 </code></pre>
 <p>Addition is commutative and associative, even when it involves repeated terms.</p>
-<pre><code class="language-scala">scala&gt; n + m == m + n 
+<pre><code class="language-scala">@ n + m == m + n 
 
 res15: Boolean = true
 
-scala&gt; (n + m) + k == n + (m + k) 
+@ (n + m) + k == n + (m + k) 
 
 res16: Boolean = true
 
-scala&gt; assert(n + m == m + n) 
+@ assert(n + m == m + n) 
 
 
-scala&gt; assert((n + m) + k == n + (m + k)) 
+@ assert((n + m) + k == n + (m + k)) 
 
 
-scala&gt;  
+@  
 
-scala&gt; (n + n) + m == (n + m) + n 
+@ (n + n) + m == (n + m) + n 
 
 res19: Boolean = true
 
-scala&gt; assert{(n + n) + m == (n + m) + n}
+@ assert{(n + n) + m == (n + m) + n}
 </code></pre>
 <p>Similarly, multiplication is commutative and associative, and distributes over addition. Multiplication gives Pi-terms with parameter a map to exponents.</p>
-<pre><code class="language-scala">scala&gt; n * m == m * n 
+<pre><code class="language-scala">@ n * m == m * n 
 
 res21: Boolean = true
 
-scala&gt; assert{n * m == m * n} 
+@ assert{n * m == m * n} 
 
 
-scala&gt;  
+@  
 
-scala&gt; n * (m * k) 
+@ n * (m * k) 
 
-res23: LocalTerm = (n * k * m)
+res23: LocalTerm = PiTerm(
+  Map(RepSymbObj(Name(&quot;k&quot;), Nat.Typ) -&gt; 1, RepSymbObj(Name(&quot;n&quot;), Nat.Typ) -&gt; 1, RepSymbObj(Name(&quot;m&quot;), Nat.Typ) -&gt; 1)
+)
 
-scala&gt;  
+@  
 
-scala&gt; n * (m + k) 
+@ n * (m + k) 
 
-res24: LocalTerm = ((n * m) + (n * k))
+res24: LocalTerm = SigmaTerm(
+  Set(
+    PiTerm(Map(RepSymbObj(Name(&quot;n&quot;), Nat.Typ) -&gt; 1, RepSymbObj(Name(&quot;m&quot;), Nat.Typ) -&gt; 1)),
+    PiTerm(Map(RepSymbObj(Name(&quot;k&quot;), Nat.Typ) -&gt; 1, RepSymbObj(Name(&quot;n&quot;), Nat.Typ) -&gt; 1))
+  )
+)
 
-scala&gt;  
+@  
 
-scala&gt; assert(n* (m + k) == n * m + n * k)
+@ assert(n* (m + k) == n * m + n * k)
 </code></pre>
 <p>When literals are involved, the expresssions are simplified</p>
-<pre><code class="language-scala">scala&gt; 1 + (n + 2) 
+<pre><code class="language-scala">@ 1 + (n + 2) 
 
-res26: LocalTerm = ((sum) (3)) (n)
+res26: LocalTerm = RepSymbObj(
+  ApplnSym(
+    SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(SafeLongLong(3L)), Nat.Typ)), Nat.Typ, Nat.Typ),
+    RepSymbObj(Name(&quot;n&quot;), Nat.Typ)
+  ),
+  Nat.Ty
 </code></pre>
 <h3>Symbolic definitions</h3>
 <p>We can use the expressions from these functions in lambdas. For this we need correct substitution.</p>
-<pre><code class="language-scala">scala&gt; import HoTT._ 
+<pre><code class="language-scala">@ import HoTT._ 
 
 import HoTT._
 
-scala&gt; val fn = lmbda(n)(n * n) 
+@ val fn = lmbda(n)(n * n) 
 
-fn: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], LocalTerm] = (n :  Nat.Typ) ↦ ((n^{2}))
+fn: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], LocalTerm] = LambdaFixed(
+  RepSymbObj(n, Nat.Typ),
+  PiTerm(Map(RepSymbObj(n, Nat.Typ) -&gt; 2))
+)
 
-scala&gt;  
+@  
 
-scala&gt; fn(3) 
+@ fn(3) 
 
-res29: LocalTerm = 9
+res29: LocalTerm = RepSymbObj(ScalaSymbol(SafeLongLong(9L)), Nat.Typ)
 
-scala&gt;  
+@  
 
-scala&gt; assert(fn(3) == (9: Nat)) 
+@ assert(fn(3) == (9: Nat)) 
 
 
-scala&gt;  
+@  
 
-scala&gt; fn(k) 
+@ fn(k) 
 
-res31: LocalTerm = (k^{2})
+res31: LocalTerm = PiTerm(Map(RepSymbObj(Name(&quot;k&quot;), Nat.Typ) -&gt;
 </code></pre>
 <p>We have used an implicit conversion above to view <code>9</code> as a member of the type <code>Nat</code></p>
 <h3>Recursive definitions</h3>
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
-<pre><code class="language-scala">scala&gt; val m = lmbda(n)(prod(n + 1)) 
+<pre><code class="language-scala">@ val m = lmbda(n)(prod(n + 1)) 
 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@653b2865 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@653b2865 + (provingground.HoTT$Typ$newname$2$@653b2865 * n))))
+m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = LambdaFixed(
+  RepSymbObj(n, Nat.Typ),
+  LambdaFixed(
+    RepSymbObj(provingground.HoTT$Typ$newname$2$@7c2ec29d, Nat.Typ),
+    SigmaTerm(
+      Set(
+        RepSymbObj(provingground.HoTT$Typ$newname$2$@7c2ec29d, Nat.Typ),
+        PiTerm(Map(RepSymbObj(n, Nat.Typ) -&gt; 1, RepSymbObj(provingground.HoTT$Typ$newname$2$@7c2ec29d, Nat.Typ) -&gt; 1))
+      )
+    )
+  )
+)
 
-scala&gt; val factorial = Rec(1: Nat, m) 
+@ val factorial = Rec(1: Nat, m) 
 
-factorial: Rec[LocalTerm] = &lt;function1&gt;
+factorial: Rec[LocalTerm] = Rec(
+  RepSymbObj(ScalaSymbol(SafeLongLong(1L)), Nat.Typ),
+  LambdaFixed(
+    RepSymbObj(n, Nat.Typ),
+    LambdaFixed(
+      RepSymbObj(provingground.HoTT$Typ$newname$2$@7c2ec29d, Nat.Typ),
+      SigmaTerm(
+        Set(
+          RepSymbObj(provingground.HoTT$Typ$newname$2$@7c2ec29d, Nat.Typ),
+          PiTerm(Map(RepSymbObj(n, Nat.Typ) -&gt; 1, RepSymbObj(provingground.HoTT$Typ$newname$2$@7c2ec29d, Nat.Typ) -&gt; 1))
+        )
+      )
+    )
+  )
+)
 
-scala&gt;  
+@  
 
-scala&gt; factorial(3) 
+@ factorial(3) 
 
-res34: LocalTerm = 6
+res34: LocalTerm = RepSymbObj(ScalaSymbol(SafeLongLong(6L)), Nat.Typ)
 
-scala&gt; factorial(5) 
+@ factorial(5) 
 
-res35: LocalTerm = 120
+res35: LocalTerm = RepSymbObj(ScalaSymbol(SafeLongLong(120L)), Nat.Typ)
 
-scala&gt; assert(factorial(5) == (120 : Nat))
+@ assert(factorial(5) == (120 : Nat))
 </code></pre>
 <h3>Simplifying recursive functions</h3>
 <p>If we apply a recursive function to a sum n+k with k a literal (say k = 2), then the result simplifies as much as possible by expanding tail recursively in the literal.</p>
-<pre><code class="language-scala">scala&gt; factorial(k + 2) == factorial(k) * (k + 2) * (k + 1) 
+<pre><code class="language-scala">@ factorial(k + 2) == factorial(k) * (k + 2) * (k + 1) 
 
 res37: Boolean = true
 
-scala&gt;  
+@  
 
-scala&gt; assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)} 
+@ assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)} 
 
 
-scala&gt;  
-
-scala
+@
 </code></pre>
-<h4>Git Log when running tutorial: a13ee9ce2a17b690e3638b1861cb51d6731f8cd1</h4>
+<h4>Git Log when running tutorial: 4d774d05affbeb6f1b3ac5915f80b81c1025bfe1</h4>
 
 
 </div>

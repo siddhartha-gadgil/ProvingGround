@@ -60,10 +60,13 @@ class MantleService(serverMode: Boolean){
   val indexHTML =
     """
       |
+      | <p> This is a server to experiment with a few aspects of the ProvingGround project, as well as help with development. The natural
+      | language processing is on a separate server as it has a large additional dependency.</p>
       |  <ul>
-      |   <li> <a href="build" target="_blank">Build</a> the web page.</li>
-      |   <li> <a href="prover.html">Prover</a> experiments. </li>
-      |   <li> <a href="scripts/index.html" target="_blank">Script Editor</a></li>
+      |   <li> <a href="build" target="_blank">Build</a> the documentation page.</li>
+      |   <li> <a href="prover.html">Prover experiments</a>: currently one illustration of autonomous proving. </li>
+      |   <li> <a href="scripts/index.html" target="_blank">Fiddle</a>: an interpreter using the Ammonite REPL,
+      | with much of the code of the ProvingGround project in the class path.</li>
       |  </ul>
       |  <script type="text/javascript" src="resources/out.js"></script>
       |  <script>
@@ -88,7 +91,7 @@ class MantleService(serverMode: Boolean){
     get{
       (pathSingleSlash | path("index.html")) {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,
-          Site.page(indexHTML, "resources/", "ProvingGround Server" , !serverMode)))
+          Site.page(indexHTML, "resources/", "ProvingGround HoTT Server" , !serverMode)))
       }
     } ~ get{
       path("prover.html"){

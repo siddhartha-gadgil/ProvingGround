@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>Internal repetition for length functions</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -118,309 +118,964 @@ messageStyle: "none",
 <p>In the above paper, homogeneity is used to deduce a bound for $l(x)$, and on taking the limit we get $l(x) \leq \frac{l(y) + l(z)}{2}$.</p>
 <h2>Preliminaries</h2>
 <p>We start with some imports. This is a bit ugly due to avoiding variable name collisions.</p>
-<pre><code class="language-scala">scala&gt;        
+<pre><code class="language-scala">@        
 
-scala&gt; import provingground._, HoTT._ 
+@ import provingground._, HoTT._ 
 
 import provingground._, HoTT._
 
-scala&gt;  
+@  
 
-scala&gt; import functionfinder._, andrewscurtis.FreeGroups._ 
+@ import functionfinder._, andrewscurtis.FreeGroups._ 
 
 import functionfinder._, andrewscurtis.FreeGroups._
 
-scala&gt; import spire.implicits._ 
+@ import spire.implicits._ 
 
 import spire.implicits._
 
-scala&gt; 
-import NatRing.{ x=&gt;_,  Literal =&gt; nat, _}, QField.{w =&gt; _, x =&gt;_, y=&gt;_, z=&gt;_, Literal =&gt; rat, _}, FreeGroup.{Literal =&gt; elem, _} 
+@ import NatRing.{ x=&gt;_,  Literal =&gt; nat, _}, QField.{w =&gt; _, x =&gt;_, y=&gt;_, z=&gt;_, Literal =&gt; rat, _}, FreeGroup.{Literal =&gt; elem, _} 
 
 import NatRing.{ x=&gt;_,  Literal =&gt; nat, _}, QField.{w =&gt; _, x =&gt;_, y=&gt;_, z=&gt;_, Literal =&gt; rat, _}, FreeGroup.{Literal =&gt; elem, _}
 
-scala&gt; import Theorems.{PowerDistributive, ConjPower} 
+@ import Theorems.{PowerDistributive, ConjPower} 
 
-import Theorems.{PowerDistributive, ConjPower}
+import Theorems.{PowerDistributive, ConjPow
 </code></pre>
 <h2>The Setup</h2>
 <p>We introduce terms for the length function $l$, as well as <em>witnesses</em> for the assumptions on $l$.</p>
-<pre><code class="language-scala">scala&gt; val l = &quot;l&quot; :: FreeGroup -&gt;: QTyp 
+<pre><code class="language-scala">@ val l = &quot;l&quot; :: FreeGroup -&gt;: QTyp 
 
-l: Func[RepTerm[Word], RepTerm[spire.math.Rational]] with Subs[Func[RepTerm[Word], RepTerm[spire.math.Rational]]] = l
+l: Func[RepTerm[Word], RepTerm[spire.math.Rational]] with Subs[Func[RepTerm[Word], RepTerm[spire.math.Rational]]] = SymbolicFunc(
+  Name(&quot;l&quot;),
+  FreeGroup,
+  Q.Typ
+)
 
-scala&gt;  
+@  
 
-scala&gt; val g = &quot;g&quot; :: FreeGroup 
+@ val g = &quot;g&quot; :: FreeGroup 
 
-g: RepTerm[Word] with Subs[RepTerm[Word]] = g
+g: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;g&quot;), FreeGroup)
 
-scala&gt; val h = &quot;h&quot; :: FreeGroup 
+@ val h = &quot;h&quot; :: FreeGroup 
 
-h: RepTerm[Word] with Subs[RepTerm[Word]] = h
+h: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;h&quot;), FreeGroup)
 
-scala&gt; val n = &quot;n&quot; :: NatTyp 
+@ val n = &quot;n&quot; :: NatTyp 
 
-n: RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]] = n
+n: RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]] = RepSymbObj(Name(&quot;n&quot;), Nat.Typ)
 
-scala&gt;  
+@  
 
-scala&gt; val triang =
-         &quot;triangle-inequality&quot; :: (
-           g ~&gt;: (h ~&gt;: (
-             (leq(l(g |+| h))(l(g) + l(h)))
-           ))
-         ) 
+@ val triang =
+    &quot;triangle-inequality&quot; :: (
+      g ~&gt;: (h ~&gt;: (
+        (leq(l(g |+| h))(l(g) + l(h)))
+      ))
+    ) 
 
-triang: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], PosWit]] with Subs[FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], PosWit]]] = triangle-inequality
+triang: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], PosWit]] with Subs[FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], PosWit]]] = PiSymbolicFunc(
+  Name(&quot;triangle-inequality&quot;),
+  RepSymbObj(g, FreeGroup),
+  PiDefn(
+    RepSymbObj(h, FreeGroup),
+    Pos(
+      SigmaTerm(
+        Set(
+          RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(g, FreeGroup)), Q.Typ),
+          RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(h, FreeGroup)), Q.Typ),
+          RepSymbObj(
+            ApplnSym(
+              SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(-1), Q.Typ)), Q.Typ, Q.Typ),
+              RepSymbObj(
+                ApplnSym(
+                  SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                  RepSymbObj(
+                    ApplnSym(SymbolicFunc(ApplnSym(mul, RepSymbObj(g, FreeGroup)), FreeGroup, FreeGroup), RepSymbObj(h, FreeGroup)),
+                    FreeGroup
+...
 
-scala&gt;  
+@  
 
-scala&gt; val conjInv =
-         &quot;conjugacy-invariance&quot; :: (
-           g ~&gt;: (
-             h ~&gt;: (
-               (l(h) =:= (l(g |+| h |+| g.inverse)))
-             )
-           )
-         ) 
+@ val conjInv =
+    &quot;conjugacy-invariance&quot; :: (
+      g ~&gt;: (
+        h ~&gt;: (
+          (l(h) =:= (l(g |+| h |+| g.inverse)))
+        )
+      )
+    ) 
 
-conjInv: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], Equality[RepTerm[spire.math.Rational]]]] with Subs[FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], Equality[RepTerm[spire.math.Rational]]]]] = conjugacy-invariance
+conjInv: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], Equality[RepTerm[spire.math.Rational]]]] with Subs[FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], Equality[RepTerm[spire.math.Rational]]]]] = PiSymbolicFunc(
+  Name(&quot;conjugacy-invariance&quot;),
+  RepSymbObj(g, FreeGroup),
+  PiDefn(
+    RepSymbObj(h, FreeGroup),
+    IdentityTyp(
+      Q.Typ,
+      RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(h, FreeGroup)), Q.Typ),
+      RepSymbObj(
+        ApplnSym(
+          SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+          RepSymbObj(
+            ApplnSym(
+              SymbolicFunc(ApplnSym(mul, RepSymbObj(g, FreeGroup)), FreeGroup, FreeGroup),
+              RepSymbObj(
+                ApplnSym(
+                  SymbolicFunc(ApplnSym(mul, RepSymbObj(h, FreeGroup)), FreeGroup, FreeGroup),
+                  RepSymbObj(ApplnSym(inv, RepSymbObj(g, FreeGroup)), FreeGroup)
+...
 
-scala&gt;
+@
 </code></pre>
 <p>Next, we introduce variables for $x, y, z, s, t \in G$, where $s, t \in G$ are the elements so that the conjugacies $x \sim wy$ and $x \sim zw^{-1}$ are given by the equations  $x = swys^{-1}$ and $x = tzw^{-1}t^{-1}$.</p>
-<pre><code class="language-scala">scala&gt; val w = &quot;w&quot; :: FreeGroup 
+<pre><code class="language-scala">@ val w = &quot;w&quot; :: FreeGroup 
 
-w: RepTerm[Word] with Subs[RepTerm[Word]] = w
+w: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;w&quot;), FreeGroup)
 
-scala&gt; val y = &quot;y&quot; :: FreeGroup 
+@ val y = &quot;y&quot; :: FreeGroup 
 
-y: RepTerm[Word] with Subs[RepTerm[Word]] = y
+y: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;y&quot;), FreeGroup)
 
-scala&gt; val z = &quot;z&quot; :: FreeGroup 
+@ val z = &quot;z&quot; :: FreeGroup 
 
-z: RepTerm[Word] with Subs[RepTerm[Word]] = z
+z: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;z&quot;), FreeGroup)
 
-scala&gt; val s = &quot;s&quot; :: FreeGroup 
+@ val s = &quot;s&quot; :: FreeGroup 
 
-s: RepTerm[Word] with Subs[RepTerm[Word]] = s
+s: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;s&quot;), FreeGroup)
 
-scala&gt; val t = &quot;t&quot; :: FreeGroup 
+@ val t = &quot;t&quot; :: FreeGroup 
 
-t: RepTerm[Word] with Subs[RepTerm[Word]] = t
+t: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;t&quot;), FreeGro
 </code></pre>
 <p>So far these are all independent. We shall introduce terms as witnesses for the above equations later, as we first prove a lemma not involving $x$.</p>
 <h2>Statement of lemma</h2>
 <p>The main internal repetition trick is captured the bound</p>
 <p>$$l((wy)^ns^{-1}t(zw^{-1})^n)\leq n(l(y) + l(z)) + l(s^{-1}) + l(t).$$</p>
 <p>We define $c(n) = (wy)^ns^{-1}t(zw^{-1})^n$ and $f(n) = n(l(y) + l(z)) + l(s^{-1}) + l(t)$, so the inequality is $l(c(n))\leq(f(n))$. We encode this  below as the <em>main lemma</em>.</p>
-<pre><code class="language-scala">scala&gt; val wy = w |+| y 
+<pre><code class="language-scala">@ val wy = w |+| y 
 
-wy: LocalTerm = ((mul) (w)) (y)
+wy: LocalTerm = RepSymbObj(
+  ApplnSym(SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup, FreeGroup), RepSymbObj(Name(&quot;y&quot;), FreeGroup)),
+  FreeGroup
+)
 
-scala&gt; val zwbar = z |+| w.inverse 
+@ val zwbar = z |+| w.inverse 
 
-zwbar: LocalTerm = ((mul) (z)) ((inv) (w))
+zwbar: LocalTerm = RepSymbObj(
+  ApplnSym(
+    SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;z&quot;), FreeGroup)), FreeGroup, FreeGroup),
+    RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup)
+  ),
+  FreeGroup
+)
 
-scala&gt; val wyn = FreeGroup.power(wy)(n) 
+@ val wyn = FreeGroup.power(wy)(n) 
 
-wyn: RepTerm[Word] = (&lt;function1&gt;) (n)
+wyn: RepTerm[Word] = RepSymbObj(
+  ApplnSym(
+    Rec(
+      RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+      LambdaFixed(
+        RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+        LambdaFixed(
+          RepSymbObj(f(n)(g), FreeGroup),
+          RepSymbObj(
+            ApplnSym(
+              SymbolicFunc(ApplnSym(mul, RepSymbObj(f(n)(g), FreeGroup)), FreeGroup, FreeGroup),
+              RepSymbObj(
+                ApplnSym(
+                  SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup, FreeGroup),
+                  RepSymbObj(Name(&quot;y&quot;), FreeGroup)
+                ),
+                FreeGroup
+              )
+            ),
+            FreeGroup
+...
 
-scala&gt; val zwbarn = FreeGroup.power(zwbar)(n) 
+@ val zwbarn = FreeGroup.power(zwbar)(n) 
 
-zwbarn: RepTerm[Word] = (&lt;function1&gt;) (n)
+zwbarn: RepTerm[Word] = RepSymbObj(
+  ApplnSym(
+    Rec(
+      RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+      LambdaFixed(
+        RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+        LambdaFixed(
+          RepSymbObj(f(n)(g), FreeGroup),
+          RepSymbObj(
+            ApplnSym(
+              SymbolicFunc(ApplnSym(mul, RepSymbObj(f(n)(g), FreeGroup)), FreeGroup, FreeGroup),
+              RepSymbObj(
+                ApplnSym(
+                  SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;z&quot;), FreeGroup)), FreeGroup, FreeGroup),
+                  RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup)
+                ),
+                FreeGroup
+              )
+            ),
+            FreeGroup
+...
 
-scala&gt;  
+@  
 
-scala&gt; val c = n :-&gt; (wyn |+| s.inverse |+| t |+| zwbarn) // this is the function we have to bound. 
+@ val c = n :-&gt; (wyn |+| s.inverse |+| t |+| zwbarn) // this is the function we have to bound. 
 
-c: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = (n :  Nat.Typ) ↦ (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))
+c: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
+  RepSymbObj(n, Nat.Typ),
+  RepSymbObj(
+    ApplnSym(
+      SymbolicFunc(
+        ApplnSym(
+          mul,
+          RepSymbObj(
+            ApplnSym(
+              Rec(
+                RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+                LambdaFixed(
+                  RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                  LambdaFixed(
+                    RepSymbObj(f(n)(g), FreeGroup),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(ApplnSym(mul, RepSymbObj(f(n)(g), FreeGroup)), FreeGroup, FreeGroup),
+                        RepSymbObj(
+                          ApplnSym(
+...
 
-scala&gt;  
+@  
 
-scala&gt; val r = incl(QField) 
+@ val r = incl(QField) 
 
-r: Rec[LocalTerm] = &lt;function1&gt;
+r: Rec[LocalTerm] = Rec(
+  RepSymbObj(ScalaSymbol(0), Q.Typ),
+  LambdaFixed(
+    RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+    LambdaFixed(
+      RepSymbObj(f(n), Q.Typ),
+      RepSymbObj(
+        ApplnSym(SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ), RepSymbObj(f(n), Q.Typ)),
+        Q.Typ
+      )
+    )
+  )
+)
 
-scala&gt;  
+@  
 
-scala&gt; val f = n :-&gt; (l(s.inverse) + l(t) + ((l(y) + l(z)) * r(n) ) ) 
+@ val f = n :-&gt; (l(s.inverse) + l(t) + ((l(y) + l(z)) * r(n) ) ) 
 
-f: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = (n :  Nat.Typ) ↦ (((l) (t) + (l) ((inv) (s)) + ((&lt;function1&gt;) (n) * (l) (z)) + ((&lt;function1&gt;) (n) * (l) (y))))
+f: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
+  RepSymbObj(n, Nat.Typ),
+  SigmaTerm(
+    Set(
+      RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;t&quot;), FreeGroup)), Q.Typ),
+      RepSymbObj(
+        ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)),
+        Q.Typ
+      ),
+      PiTerm(
+        Map(
+          RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;z&quot;), FreeGroup)), Q.Typ) -&gt; 1,
+          RepSymbObj(
+            ApplnSym(
+              Rec(
+                RepSymbObj(ScalaSymbol(0), Q.Typ),
+                LambdaFixed(
+                  RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                  LambdaFixed(
+                    RepSymbObj(f(n), Q.Typ),
+...
 
-scala&gt;  
+@  
 
-scala&gt; val lemma = n :-&gt; (leq (l(c(n)) )(f(n) ) ) 
+@ val lemma = n :-&gt; (leq (l(c(n)) )(f(n) ) ) 
 
-lemma: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Pos] = (n :  Nat.Typ) ↦ (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((&lt;function1&gt;) (n) * (l) (z)) + ((prod) (-1)) ((l) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))) + (l) ((inv) (s)))))
+lemma: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Pos] = LambdaFixed(
+  RepSymbObj(n, Nat.Typ),
+  Pos(
+    SigmaTerm(
+      Set(
+        PiTerm(
+          Map(
+            RepSymbObj(
+              ApplnSym(
+                Rec(
+                  RepSymbObj(ScalaSymbol(0), Q.Typ),
+                  LambdaFixed(
+                    RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                    LambdaFixed(
+                      RepSymbObj(f(n), Q.Typ),
+                      RepSymbObj(
+                        ApplnSym(
+                          SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ),
+                          RepSymbObj(f(n), Q.Typ)
+                        ),
 </code></pre>
 <h2>Proving the lemma</h2>
 <p>Let $d(n) = (wy)(wy)^ns^{-1}t(zw^{-1})^n(zw)$. Note that by definition $g^{n+1} = g^n g$, so we need to prove $d(n) = c(n+1)$.
 We use $g^ng^m = g^{n+m}$ (proved in our code) to prove this. The proof is given by the term <code>dIsc</code>.</p>
-<pre><code class="language-scala">scala&gt; val d = n :-&gt; (wy |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| zwbar) 
+<pre><code class="language-scala">@ val d = n :-&gt; (wy |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| zwbar) 
 
-d: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = (n :  Nat.Typ) ↦ (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))
+d: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
+  RepSymbObj(n, Nat.Typ),
+  RepSymbObj(
+    ApplnSym(
+      SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup, FreeGroup),
+      RepSymbObj(
+        ApplnSym(
+          SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;y&quot;), FreeGroup)), FreeGroup, FreeGroup),
+          RepSymbObj(
+            ApplnSym(
+              SymbolicFunc(
+                ApplnSym(
+                  mul,
+                  RepSymbObj(
+                    ApplnSym(
+                      Rec(
+                        RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+                        LambdaFixed(
+                          RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                          LambdaFixed(
+...
 
-scala&gt; val dIsc = FreeGroup.rm(s.inverse |+| t |+| zwbarn |+| zwbar) *: (PowerDistributive.pf(wy)(nat(1))(n)) 
+@ val dIsc = FreeGroup.rm(s.inverse |+| t |+| zwbarn |+| zwbar) *: (PowerDistributive.pf(wy)(nat(1))(n)) 
 
-dIsc: Equality[LocalTerm] = (ind{($ebrti :  FreeGroup) ↦ (($ebrtj :  FreeGroup) ↦ ($ebrti = $ebrtj))(((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))))(((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))}{($dygel :  FreeGroup) ↦ (($dygem :  FreeGroup) ↦ ((_ : ($dygel = $dygem) :  $dygel = $dygem) ↦ (((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))) = ((mul) ($dygem)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))}(($dygel :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) ((&lt;function1&gt;) (n) : (((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))) : (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))
+dIsc: Equality[LocalTerm] = SymbEquality(
+  ApplnSym(
+    InducFn(
+      FreeGroup,
+      LambdaTerm(
+        RepSymbObj($dygku, FreeGroup),
+        LambdaTerm(
+          RepSymbObj($dygkv, FreeGroup),
+          LambdaFixed(
+            SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($dygku, FreeGroup), RepSymbObj($dygkv, FreeGroup))),
+            IdentityTyp(
+              FreeGroup,
+              RepSymbObj(
+                ApplnSym(
+                  SymbolicFunc(ApplnSym(mul, RepSymbObj($dygku, FreeGroup)), FreeGroup, FreeGroup),
+                  RepSymbObj(
+                    ApplnSym(
+                      SymbolicFunc(
+                        ApplnSym(mul, RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)),
+                        FreeGroup,
+...
 
-scala&gt; assert(dIsc.typ == (d(n) =:= c(succ(n))))
+@ assert(dIsc.typ == (d(n) =:= c(succ(n))))
 </code></pre>
 <p>Next, let $b(n) = y(wy)^ns^{-1}t(zw^{-1})^nz$ be the conjugacy-reduced form of $d(n)$. Using $d(n) = c(n+1)$ and conjugacy invariance, we show that $l(c(n+1)) = l(b(n))$. The term <code>bIsc</code> is the proof of <code>l(c(n+1)) = l(b(n))</code>.</p>
-<pre><code class="language-scala">scala&gt; val b = n :-&gt; (y |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| z) 
+<pre><code class="language-scala">@ val b = n :-&gt; (y |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| z) 
 
-b: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = (n :  Nat.Typ) ↦ (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z))))))
+b: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
+  RepSymbObj(n, Nat.Typ),
+  RepSymbObj(
+    ApplnSym(
+      SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;y&quot;), FreeGroup)), FreeGroup, FreeGroup),
+      RepSymbObj(
+        ApplnSym(
+          SymbolicFunc(
+            ApplnSym(
+              mul,
+              RepSymbObj(
+                ApplnSym(
+                  Rec(
+                    RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+                    LambdaFixed(
+                      RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                      LambdaFixed(
+                        RepSymbObj(f(n)(g), FreeGroup),
+                        RepSymbObj(
+                          ApplnSym(
+...
 
-scala&gt; val lbIsld = conjInv(w)(y |+| c(n) |+| z) 
+@ val lbIsld = conjInv(w)(y |+| c(n) |+| z) 
 
-lbIsld: Equality[RepTerm[spire.math.Rational]] = ((conjugacy-invariance) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) : ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) = (l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))
+lbIsld: Equality[RepTerm[spire.math.Rational]] = SymbEquality(
+  ApplnSym(
+    PiSymbolicFunc(
+      ApplnSym(
+        PiSymbolicFunc(
+          Name(&quot;conjugacy-invariance&quot;),
+          RepSymbObj(g, FreeGroup),
+          PiDefn(
+            RepSymbObj(h, FreeGroup),
+            IdentityTyp(
+              Q.Typ,
+              RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(h, FreeGroup)), Q.Typ),
+              RepSymbObj(
+                ApplnSym(
+                  SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                  RepSymbObj(
+                    ApplnSym(
+                      SymbolicFunc(ApplnSym(mul, RepSymbObj(g, FreeGroup)), FreeGroup, FreeGroup),
+                      RepSymbObj(
+                        ApplnSym(
+...
 
-scala&gt; val bIsc = lbIsld &amp;&amp; (l *: dIsc) 
+@ val bIsc = lbIsld &amp;&amp; (l *: dIsc) 
 
-bIsc: Equality[RepTerm[spire.math.Rational] with Subs[RepTerm[spire.math.Rational]]] = ((ind{($eqweg :  Q.Typ) ↦ (($eqweh :  Q.Typ) ↦ ($eqweg = $eqweh))((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))))((l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))}{($eflja :  Q.Typ) ↦ (($efljb :  Q.Typ) ↦ ((_ : ($eflja = $efljb) :  $eflja = $efljb) ↦ (($efljb = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) → ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))))}(($eflja :  Q.Typ) ↦ (($eflxq : ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) :  $eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) ↦ ($eflxq : ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))))) (((conjugacy-invariance) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) : ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) = (l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))) ((ind{($eqwej :  FreeGroup) ↦ (($eqwek :  FreeGroup) ↦ ($eqwej = $eqwek))(((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))(((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))}{($ebwap :  FreeGroup) ↦ (($ebwaq :  FreeGroup) ↦ ((_ : ($ebwap = $ebwaq) :  $ebwap = $ebwaq) ↦ ((l) ($ebwap) = (l) ($ebwaq))))}(($ebwap :  FreeGroup) ↦ (Refl(Q.Typ,(l) ($ebwap))))) ((ind{($ebrti :  FreeGroup) ↦ (($ebrtj :  FreeGroup) ↦ ($ebrti = $ebrtj))(((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))))(((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))}{($dygel :  FreeGroup) ↦ (($dygem :  FreeGroup) ↦ ((_ : ($dygel = $dygem) :  $dygel = $dygem) ↦ (((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))) = ((mul) ($dygem)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))}(($dygel :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) ((&lt;function1&gt;) (n) : (((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))) : (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) : ((l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))) = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))) : ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))
+bIsc: Equality[RepTerm[spire.math.Rational] with Subs[RepTerm[spire.math.Rational]]] = SymbEquality(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        InducFn(
+          Q.Typ,
+          LambdaTerm(
+            RepSymbObj($eflpj, Q.Typ),
+            LambdaTerm(
+              RepSymbObj($eflpk, Q.Typ),
+              LambdaFixed(
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($eflpj, Q.Typ), RepSymbObj($eflpk, Q.Typ))),
+                FuncTyp(
+                  IdentityTyp(
+                    Q.Typ,
+                    RepSymbObj($eflpk, Q.Typ),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                        RepSymbObj(
+...
 
-scala&gt; assert(bIsc.typ == (l(b(n)) =:= l(c(succ(n))) ))
+@ assert(bIsc.typ == (l(b(n)) =:= l(c(succ(n))) ))
 </code></pre>
 <p>With these preliminaries, we can prove the lemma by induction. First note the base case.</p>
-<pre><code class="language-scala">scala&gt; val baseCase = triang(inv(s))(t) !: (lemma(0)) 
+<pre><code class="language-scala">@ val baseCase = triang(inv(s))(t) !: (lemma(0)) 
 
-baseCase: PosWit = ((triangle-inequality) ((inv) (s))) (t) : (Pos((((prod) (-1)) ((l) (((mul) ((inv) (s))) (t))) + (l) ((inv) (s)) + (l) (t))))
+baseCase: PosWit = SymbPosWit(
+  ApplnSym(
+    PiSymbolicFunc(
+      ApplnSym(
+        PiSymbolicFunc(
+          Name(&quot;triangle-inequality&quot;),
+          RepSymbObj(g, FreeGroup),
+          PiDefn(
+            RepSymbObj(h, FreeGroup),
+            Pos(
+              SigmaTerm(
+                Set(
+                  RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(g, FreeGroup)), Q.Typ),
+                  RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(h, FreeGroup)), Q.Typ),
+                  RepSymbObj(
+                    ApplnSym(
+                      SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(-1), Q.Typ)), Q.Typ, Q.Typ),
+                      RepSymbObj(
+                        ApplnSym(
+                          SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
 </code></pre>
 <p>The induction step takes more work.
 We first assume the induction hypothesis.</p>
-<pre><code class="language-scala">scala&gt; val hyp = &quot;hyp&quot; :: lemma(n) 
+<pre><code class="language-scala">@ val hyp = &quot;hyp&quot; :: lemma(n) 
 
-hyp: PosWit with Subs[PosWit] = hyp : (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ((l) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))) + (l) ((inv) (s)))))
+hyp: PosWit with Subs[PosWit] = SymbPosWit(
+  Name(&quot;hyp&quot;),
+  SigmaTerm(
+    Set(
+      RepSymbObj(
+        ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)),
+        Q.Typ
+      ),
+      PiTerm(
+        Map(
+          RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;z&quot;), FreeGroup)), Q.Typ) -&gt; 1,
+          RepSymbObj(
+            ApplnSym(
+              Rec(
+                RepSymbObj(ScalaSymbol(0), Q.Typ),
+                LambdaFixed(
+                  RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                  LambdaFixed(
+                    RepSymbObj(f(n), Q.Typ),
+                    RepSymbObj(
 </code></pre>
 <p>Next, we bound $l(b(n))$ (which we know is $l(c(n+ 1)))$ in terms of $l(c(n))$.</p>
-<pre><code class="language-scala">scala&gt; val lbnBoundedlcnlylz = triang(y)(c(n)) + triang(y |+| c(n))(z) 
+<pre><code class="language-scala">@ val lbnBoundedlcnlylz = triang(y)(c(n)) + triang(y |+| c(n))(z) 
 
-lbnBoundedlcnlylz: PosWitSum = PosWitSum(((triangle-inequality) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))) : (Pos((((prod) (-1)) ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))))) + (l) (y) + (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))))),((triangle-inequality) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))))) (z) : (Pos((((prod) (-1)) ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z))))))) + (l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))) + (l) (z)))))
+lbnBoundedlcnlylz: PosWitSum = PosWitSum(
+  SymbPosWit(
+    ApplnSym(
+      PiSymbolicFunc(
+        ApplnSym(
+          PiSymbolicFunc(
+            Name(&quot;triangle-inequality&quot;),
+            RepSymbObj(g, FreeGroup),
+            PiDefn(
+              RepSymbObj(h, FreeGroup),
+              Pos(
+                SigmaTerm(
+                  Set(
+                    RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(g, FreeGroup)), Q.Typ),
+                    RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(h, FreeGroup)), Q.Typ),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(-1), Q.Typ)), Q.Typ, Q.Typ),
+                        RepSymbObj(
+                          ApplnSym(
+...
 
-scala&gt; assert(lbnBoundedlcnlylz.typ == (leq(l(b(n)))(l(c(n)) + l(y) + l(z))))
+@ assert(lbnBoundedlcnlylz.typ == (leq(l(b(n)))(l(c(n)) + l(y) + l(z))))
 </code></pre>
 <p>Now, using the induction hypothesis, we get a bound on $l(b(n))$.</p>
-<pre><code class="language-scala">scala&gt; val lbnBounded = lbnBoundedlcnlylz + hyp 
+<pre><code class="language-scala">@ val lbnBounded = lbnBoundedlcnlylz + hyp 
 
-lbnBounded: PosWitSum = PosWitSum(PosWitSum(((triangle-inequality) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))) : (Pos((((prod) (-1)) ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))))) + (l) (y) + (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))))),((triangle-inequality) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))))) (z) : (Pos((((prod) (-1)) ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z))))))) + (l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))) + (l) (z))))),hyp : (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ((l) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))) + (l) ((inv) (s))))))
+lbnBounded: PosWitSum = PosWitSum(
+  PosWitSum(
+    SymbPosWit(
+      ApplnSym(
+        PiSymbolicFunc(
+          ApplnSym(
+            PiSymbolicFunc(
+              Name(&quot;triangle-inequality&quot;),
+              RepSymbObj(g, FreeGroup),
+              PiDefn(
+                RepSymbObj(h, FreeGroup),
+                Pos(
+                  SigmaTerm(
+                    Set(
+                      RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(g, FreeGroup)), Q.Typ),
+                      RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(h, FreeGroup)), Q.Typ),
+                      RepSymbObj(
+                        ApplnSym(
+                          SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(-1), Q.Typ)), Q.Typ, Q.Typ),
+                          RepSymbObj(
+...
 
-scala&gt; assert(lbnBounded.typ == leq(l(b(n)) )(f(succ(n))) )
+@ assert(lbnBounded.typ == leq(l(b(n)) )(f(succ(n))) )
 </code></pre>
 <p>Next, we put together $l(c(n+1)) = l(b(n))$ and the bound on $l(b(n))$ to get the required bound on $l(c(n+1))$.</p>
-<pre><code class="language-scala">scala&gt; val bnd = &quot;bound&quot; :: QField.LocalTyp 
+<pre><code class="language-scala">@ val bnd = &quot;bound&quot; :: QField.LocalTyp 
 
-bnd: RepTerm[spire.math.Rational] with Subs[RepTerm[spire.math.Rational]] = bound
+bnd: RepTerm[spire.math.Rational] with Subs[RepTerm[spire.math.Rational]] = RepSymbObj(Name(&quot;bound&quot;), Q.Typ)
 
-scala&gt; val cbnd = bIsc.lift(bnd :-&gt; (leq(bnd)(f(succ(n)) ) )) 
+@ val cbnd = bIsc.lift(bnd :-&gt; (leq(bnd)(f(succ(n)) ) )) 
 
-cbnd: Func[PosWit, PosWit] = (ind{($gludp :  Q.Typ) ↦ (($gludq :  Q.Typ) ↦ ($gludp = $gludq))((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))))((l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))}{($erelh :  Q.Typ) ↦ (($ereli :  Q.Typ) ↦ ((_ : ($erelh = $ereli) :  $erelh = $ereli) ↦ ((Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (y) + (l) (z) + (l) ((inv) (s)) + ((prod) (-1)) ($erelh)))) → (Pos((((prod) (-1)) ($ereli) + (l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (y) + (l) (z) + (l) ((inv) (s))))))))}(($erelh :  Q.Typ) ↦ (($fclub : (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ($erelh) + (l) (y) + (l) (z) + (l) ((inv) (s))))) :  Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ($erelh) + (l) (y) + (l) (z) + (l) ((inv) (s))))) ↦ ($fclub : (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ($erelh) + (l) (y) + (l) (z) + (l) ((inv) (s))))))))) (((ind{($eqweg :  Q.Typ) ↦ (($eqweh :  Q.Typ) ↦ ($eqweg = $eqweh))((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))))((l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))}{($eflja :  Q.Typ) ↦ (($efljb :  Q.Typ) ↦ ((_ : ($eflja = $efljb) :  $eflja = $efljb) ↦ (($efljb = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) → ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))))}(($eflja :  Q.Typ) ↦ (($eflxq : ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) :  $eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) ↦ ($eflxq : ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))))) (((conjugacy-invariance) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) : ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) = (l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))) ((ind{($eqwej :  FreeGroup) ↦ (($eqwek :  FreeGroup) ↦ ($eqwej = $eqwek))(((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))(((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))}{($ebwap :  FreeGroup) ↦ (($ebwaq :  FreeGroup) ↦ ((_ : ($ebwap = $ebwaq) :  $ebwap = $ebwaq) ↦ ((l) ($ebwap) = (l) ($ebwaq))))}(($ebwap :  FreeGroup) ↦ (Refl(Q.Typ,(l) ($ebwap))))) ((ind{($ebrti :  FreeGroup) ↦ (($ebrtj :  FreeGroup) ↦ ($ebrti = $ebrtj))(((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))))(((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))}{($dygel :  FreeGroup) ↦ (($dygem :  FreeGroup) ↦ ((_ : ($dygel = $dygem) :  $dygel = $dygem) ↦ (((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))) = ((mul) ($dygem)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))}(($dygel :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) ((&lt;function1&gt;) (n) : (((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))) : (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) : ((l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))) = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))) : ((l) (((mul) (y)) (((mul) ((&lt;...
+cbnd: Func[PosWit, PosWit] = SymbolicFunc(
+  ApplnSym(
+    InducFn(
+      Q.Typ,
+      LambdaTerm(
+        RepSymbObj($erdkk, Q.Typ),
+        LambdaTerm(
+          RepSymbObj($erdkl, Q.Typ),
+          LambdaFixed(
+            SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($erdkk, Q.Typ), RepSymbObj($erdkl, Q.Typ))),
+            FuncTyp(
+              Pos(
+                SigmaTerm(
+                  Set(
+                    RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;y&quot;), FreeGroup)), Q.Typ),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                        RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)
+                      ),
+...
 
-scala&gt; val step = cbnd(lbnBounded) 
+@ val step = cbnd(lbnBounded) 
 
-step: PosWit = ((ind{($gludp :  Q.Typ) ↦ (($gludq :  Q.Typ) ↦ ($gludp = $gludq))((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))))((l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))}{($erelh :  Q.Typ) ↦ (($ereli :  Q.Typ) ↦ ((_ : ($erelh = $ereli) :  $erelh = $ereli) ↦ ((Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (y) + (l) (z) + (l) ((inv) (s)) + ((prod) (-1)) ($erelh)))) → (Pos((((prod) (-1)) ($ereli) + (l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (y) + (l) (z) + (l) ((inv) (s))))))))}(($erelh :  Q.Typ) ↦ (($fclub : (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ($erelh) + (l) (y) + (l) (z) + (l) ((inv) (s))))) :  Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ($erelh) + (l) (y) + (l) (z) + (l) ((inv) (s))))) ↦ ($fclub : (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ($erelh) + (l) (y) + (l) (z) + (l) ((inv) (s))))))))) (((ind{($eqweg :  Q.Typ) ↦ (($eqweh :  Q.Typ) ↦ ($eqweg = $eqweh))((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))))((l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))}{($eflja :  Q.Typ) ↦ (($efljb :  Q.Typ) ↦ ((_ : ($eflja = $efljb) :  $eflja = $efljb) ↦ (($efljb = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) → ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))))}(($eflja :  Q.Typ) ↦ (($eflxq : ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) :  $eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) ↦ ($eflxq : ($eflja = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))))) (((conjugacy-invariance) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) : ((l) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (z)))))) = (l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))))) ((ind{($eqwej :  FreeGroup) ↦ (($eqwek :  FreeGroup) ↦ ($eqwej = $eqwek))(((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))(((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))}{($ebwap :  FreeGroup) ↦ (($ebwaq :  FreeGroup) ↦ ((_ : ($ebwap = $ebwaq) :  $ebwap = $ebwaq) ↦ ((l) ($ebwap) = (l) ($ebwaq))))}(($ebwap :  FreeGroup) ↦ (Refl(Q.Typ,(l) ($ebwap))))) ((ind{($ebrti :  FreeGroup) ↦ (($ebrtj :  FreeGroup) ↦ ($ebrti = $ebrtj))(((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))))(((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))}{($dygel :  FreeGroup) ↦ (($dygem :  FreeGroup) ↦ ((_ : ($dygel = $dygem) :  $dygel = $dygem) ↦ (((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))) = ((mul) ($dygem)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))}(($dygel :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($dygel)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) ((&lt;function1&gt;) (n) : (((mul) (w)) (((mul) (y)) ((&lt;function1&gt;) (n))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (y)))) : (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))) = ((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w)))))))))) : ((l) (((mul) (w)) (((mul) (y)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))) = (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) (w)) (((mul) (y)) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) (((mul) (z)) ((inv) (w))))))))))) : ((l) (((mul) (y)) (((mul) ((...
+step: PosWit = SymbPosWit(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        InducFn(
+          Q.Typ,
+          LambdaTerm(
+            RepSymbObj($erdkk, Q.Typ),
+            LambdaTerm(
+              RepSymbObj($erdkl, Q.Typ),
+              LambdaFixed(
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($erdkk, Q.Typ), RepSymbObj($erdkl, Q.Typ))),
+                FuncTyp(
+                  Pos(
+                    SigmaTerm(
+                      Set(
+                        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;y&quot;), FreeGroup)), Q.Typ),
+                        RepSymbObj(
+                          ApplnSym(
+                            SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+...
 
-scala&gt; assert(step.typ == lemma(succ(n)))
+@ assert(step.typ == lemma(succ(n)))
 </code></pre>
 <p>Finally, the lemma is proved by induction.</p>
-<pre><code class="language-scala">scala&gt; val lemmaProof = Induc(lemma, baseCase, n :~&gt; (hyp :-&gt; step)) 
+<pre><code class="language-scala">@ val lemmaProof = Induc(lemma, baseCase, n :~&gt; (hyp :-&gt; step)) 
 
-lemmaProof: Induc[PosWit with Subs[PosWit]] = &lt;function1&gt;
+lemmaProof: Induc[PosWit with Subs[PosWit]] = Induc(
+  LambdaFixed(
+    RepSymbObj(n, Nat.Typ),
+    Pos(
+      SigmaTerm(
+        Set(
+          PiTerm(
+            Map(
+              RepSymbObj(
+                ApplnSym(
+                  Rec(
+                    RepSymbObj(ScalaSymbol(0), Q.Typ),
+                    LambdaFixed(
+                      RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                      LambdaFixed(
+                        RepSymbObj(f(n), Q.Typ),
+                        RepSymbObj(
+                          ApplnSym(
+                            SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ),
+                            RepSymbObj(f(n), Q.Typ)
+...
 
-scala&gt; assert(lemmaProof.typ == (n ~&gt;: (lemma(n))) )
+@ assert(lemmaProof.typ == (n ~&gt;: (lemma(n))) )
 </code></pre>
 <h2>Rest of the proof of the theorem</h2>
 <p>Some work remains, essentially to use symbolic algebra for equations such as $x^{2n} = x^nx^n$
 and to put together equations and inequalities. We introduce terms witnessing the hypotheses $x=swys^{-1}$ and $x=tzw^{-1}t^{-1}$</p>
-<pre><code class="language-scala">scala&gt; val x = &quot;x&quot; :: FreeGroup 
+<pre><code class="language-scala">@ val x = &quot;x&quot; :: FreeGroup 
 
-x: RepTerm[Word] with Subs[RepTerm[Word]] = x
+x: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;x&quot;), FreeGroup)
 
-scala&gt; val g = &quot;g&quot; :: FreeGroup 
+@ val g = &quot;g&quot; :: FreeGroup 
 
-g: RepTerm[Word] with Subs[RepTerm[Word]] = g
+g: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;g&quot;), FreeGroup)
 
-scala&gt; val pown = g :-&gt; FreeGroup.power(g)(n) 
+@ val pown = g :-&gt; FreeGroup.power(g)(n) 
 
-pown: Func[RepTerm[Word] with Subs[RepTerm[Word]], RepTerm[Word]] = (g :  FreeGroup) ↦ ((&lt;function1&gt;) (n))
+pown: Func[RepTerm[Word] with Subs[RepTerm[Word]], RepTerm[Word]] = LambdaFixed(
+  RepSymbObj(g, FreeGroup),
+  RepSymbObj(
+    ApplnSym(
+      Rec(
+        RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+        LambdaFixed(
+          RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+          LambdaFixed(
+            RepSymbObj(f(n)(g), FreeGroup),
+            RepSymbObj(
+              ApplnSym(SymbolicFunc(ApplnSym(mul, RepSymbObj(f(n)(g), FreeGroup)), FreeGroup, FreeGroup), RepSymbObj(g, FreeGroup)),
+              FreeGroup
+            )
+          )
+        )
+      ),
+      RepSymbObj(Name(&quot;n&quot;), Nat.Typ)
+    ),
+    FreeGroup
+...
 
-scala&gt;  
+@  
 
-scala&gt; val c1 = &quot;x ~ wy&quot; :: (x =:= (s |+| w |+| y |+| s.inverse)) 
+@ val c1 = &quot;x ~ wy&quot; :: (x =:= (s |+| w |+| y |+| s.inverse)) 
 
-c1: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[Word] with Subs[RepTerm[Word]]]] = x ~ wy : (x = ((mul) (s)) (((mul) (w)) (((mul) (y)) ((inv) (s)))))
+c1: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[Word] with Subs[RepTerm[Word]]]] = SymbEquality(
+  Name(&quot;x ~ wy&quot;),
+  IdentityTyp(
+    FreeGroup,
+    RepSymbObj(Name(&quot;x&quot;), FreeGroup),
+    RepSymbObj(
+      ApplnSym(
+        SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
+        RepSymbObj(
+          ApplnSym(
+            SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup, FreeGroup),
+            RepSymbObj(
+              ApplnSym(
+                SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;y&quot;), FreeGroup)), FreeGroup, FreeGroup),
+                RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)
+              ),
+              FreeGroup
+            )
+          ),
+          FreeGroup
+...
 
-scala&gt; val c2 = &quot;x ~ zw^{-1}&quot; :: (x =:= (t |+| z |+| w.inverse |+| t.inverse)) 
+@ val c2 = &quot;x ~ zw^{-1}&quot; :: (x =:= (t |+| z |+| w.inverse |+| t.inverse)) 
 
-c2: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[Word] with Subs[RepTerm[Word]]]] = x ~ zw^{-1} : (x = ((mul) (t)) (((mul) (z)) (((mul) ((inv) (w))) ((inv) (t)))))
+c2: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[Word] with Subs[RepTerm[Word]]]] = SymbEquality(
+  Name(&quot;x ~ zw^{-1}&quot;),
+  IdentityTyp(
+    FreeGroup,
+    RepSymbObj(Name(&quot;x&quot;), FreeGroup),
+    RepSymbObj(
+      ApplnSym(
+        SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;t&quot;), FreeGroup)), FreeGroup, FreeGroup),
+        RepSymbObj(
+          ApplnSym(
+            SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;z&quot;), FreeGroup)), FreeGroup, FreeGroup),
+            RepSymbObj(
+              ApplnSym(
+                SymbolicFunc(
+                  ApplnSym(mul, RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup)),
+                  FreeGroup,
+                  FreeGroup
+                ),
+                RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;t&quot;), FreeGroup)), FreeGroup)
+              ),
 </code></pre>
 <p>We deduce using a theorem (in our code) about powers of conjugates that $x^n = s(wy)^ns^{-1} = t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">scala&gt; val xnConjwyn = (pown *: c1) &amp;&amp; ConjPower.pf(s)(wy)(n) 
+<pre><code class="language-scala">@ val xnConjwyn = (pown *: c1) &amp;&amp; ConjPower.pf(s)(wy)(n) 
 
-xnConjwyn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = ((ind{($gqflz :  FreeGroup) ↦ (($gqfma :  FreeGroup) ↦ ($gqflz = $gqfma))((&lt;function1&gt;) (n))((&lt;function1&gt;) (n))}{($gozxm :  FreeGroup) ↦ (($gozxn :  FreeGroup) ↦ ((_ : ($gozxm = $gozxn) :  $gozxm = $gozxn) ↦ (($gozxn = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) → ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))))))}(($gozxm :  FreeGroup) ↦ (($gpamc : ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) :  $gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) ↦ ($gpamc : ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))))))) ((ind{($gpdez :  FreeGroup) ↦ (($gpdfa :  FreeGroup) ↦ ($gpdez = $gpdfa))(x)(((mul) (s)) (((mul) (w)) (((mul) (y)) ((inv) (s)))))}{($gnipk :  FreeGroup) ↦ (($gnipl :  FreeGroup) ↦ ((_ : ($gnipk = $gnipl) :  $gnipk = $gnipl) ↦ ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n))))}(($gnipk :  FreeGroup) ↦ (Refl(FreeGroup,(&lt;function1&gt;) (n))))) (x ~ wy : (x = ((mul) (s)) (((mul) (w)) (((mul) (y)) ((inv) (s)))))) : ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n)))) ((&lt;function1&gt;) (n) : ((&lt;function1&gt;) (n) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))) : ((&lt;function1&gt;) (n) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))
+xnConjwyn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = SymbEquality(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        InducFn(
+          FreeGroup,
+          LambdaTerm(
+            RepSymbObj($gmval, FreeGroup),
+            LambdaTerm(
+              RepSymbObj($gmvam, FreeGroup),
+              LambdaFixed(
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gmval, FreeGroup), RepSymbObj($gmvam, FreeGroup))),
+                FuncTyp(
+                  IdentityTyp(
+                    FreeGroup,
+                    RepSymbObj($gmvam, FreeGroup),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
+                        RepSymbObj(
+...
 
-scala&gt; val xnConjzwbarn= (pown *: c2) &amp;&amp; ConjPower.pf(t)(zwbar)(n) 
+@ val xnConjzwbarn= (pown *: c2) &amp;&amp; ConjPower.pf(t)(zwbar)(n) 
 
-xnConjzwbarn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = ((ind{($gsbox :  FreeGroup) ↦ (($gsboy :  FreeGroup) ↦ ($gsbox = $gsboy))((&lt;function1&gt;) (n))((&lt;function1&gt;) (n))}{($gquvq :  FreeGroup) ↦ (($gquvr :  FreeGroup) ↦ ((_ : ($gquvq = $gquvr) :  $gquvq = $gquvr) ↦ (($gquvr = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))) → ($gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))}(($gquvq :  FreeGroup) ↦ (($gqvkg : ($gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))) :  $gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))) ↦ ($gqvkg : ($gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))) ((ind{($gqydd :  FreeGroup) ↦ (($gqyde :  FreeGroup) ↦ ($gqydd = $gqyde))(x)(((mul) (t)) (((mul) (z)) (((mul) ((inv) (w))) ((inv) (t)))))}{($gqfmc :  FreeGroup) ↦ (($gqfmd :  FreeGroup) ↦ ((_ : ($gqfmc = $gqfmd) :  $gqfmc = $gqfmd) ↦ ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n))))}(($gqfmc :  FreeGroup) ↦ (Refl(FreeGroup,(&lt;function1&gt;) (n))))) (x ~ zw^{-1} : (x = ((mul) (t)) (((mul) (z)) (((mul) ((inv) (w))) ((inv) (t)))))) : ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n)))) ((&lt;function1&gt;) (n) : ((&lt;function1&gt;) (n) = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))) : ((&lt;function1&gt;) (n) = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))
+xnConjzwbarn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = SymbEquality(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        InducFn(
+          FreeGroup,
+          LambdaTerm(
+            RepSymbObj($gopym, FreeGroup),
+            LambdaTerm(
+              RepSymbObj($gopyn, FreeGroup),
+              LambdaFixed(
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gopym, FreeGroup), RepSymbObj($gopyn, FreeGroup))),
+                FuncTyp(
+                  IdentityTyp(
+                    FreeGroup,
+                    RepSymbObj($gopyn, FreeGroup),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;t&quot;), FreeGroup)), FreeGroup, FreeGroup),
+                        RepSymbObj(
+...
 
-scala&gt; assert(xnConjwyn.typ == (pown(x) =:= (s |+| pown(wy)  |+| s.inverse  ) ) ) 
+@ assert(xnConjwyn.typ == (pown(x) =:= (s |+| pown(wy)  |+| s.inverse  ) ) ) 
 
 
-scala&gt; assert(xnConjzwbarn.typ == (pown(x) =:= (t |+| pown(zwbar)  |+| t.inverse  ) ) )
+@ assert(xnConjzwbarn.typ == (pown(x) =:= (t |+| pown(zwbar)  |+| t.inverse  ) ) )
 </code></pre>
 <p>We use the above equations to show that $x^nx^n = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">scala&gt; val t1 = s |+| pown(wy)  |+| s.inverse 
+<pre><code class="language-scala">@ val t1 = s |+| pown(wy)  |+| s.inverse 
 
-t1: LocalTerm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))
+t1: LocalTerm = RepSymbObj(
+  ApplnSym(
+    SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
+    RepSymbObj(
+      ApplnSym(
+        SymbolicFunc(
+          ApplnSym(
+            mul,
+            RepSymbObj(
+              ApplnSym(
+                Rec(
+                  RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+                  LambdaFixed(
+                    RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                    LambdaFixed(
+                      RepSymbObj(f(n)(g), FreeGroup),
+                      RepSymbObj(
+                        ApplnSym(
+                          SymbolicFunc(ApplnSym(mul, RepSymbObj(f(n)(g), FreeGroup)), FreeGroup, FreeGroup),
+                          RepSymbObj(
+...
 
-scala&gt; val t2 = t |+| pown(zwbar)  |+| t.inverse 
+@ val t2 = t |+| pown(zwbar)  |+| t.inverse 
 
-t2: LocalTerm = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))
+t2: LocalTerm = RepSymbObj(
+  ApplnSym(
+    SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;t&quot;), FreeGroup)), FreeGroup, FreeGroup),
+    RepSymbObj(
+      ApplnSym(
+        SymbolicFunc(
+          ApplnSym(
+            mul,
+            RepSymbObj(
+              ApplnSym(
+                Rec(
+                  RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+                  LambdaFixed(
+                    RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                    LambdaFixed(
+                      RepSymbObj(f(n)(g), FreeGroup),
+                      RepSymbObj(
+                        ApplnSym(
+                          SymbolicFunc(ApplnSym(mul, RepSymbObj(f(n)(g), FreeGroup)), FreeGroup, FreeGroup),
+                          RepSymbObj(
+...
 
-scala&gt; val xnxnExpr = (FreeGroup.rm(pown(x)) *: xnConjwyn) &amp;&amp; (FreeGroup.lm(t1) *: xnConjzwbarn) 
+@ val xnxnExpr = (FreeGroup.rm(pown(x)) *: xnConjwyn) &amp;&amp; (FreeGroup.lm(t1) *: xnConjzwbarn) 
 
-xnxnExpr: Equality[LocalTerm with Subs[LocalTerm]] = ((ind{($hbava :  FreeGroup) ↦ (($hbavb :  FreeGroup) ↦ ($hbava = $hbavb))(((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ((&lt;function1&gt;) (n)))))}{($gwbtj :  FreeGroup) ↦ (($gwbtk :  FreeGroup) ↦ ((_ : ($gwbtj = $gwbtk) :  $gwbtj = $gwbtk) ↦ (($gwbtk = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) → ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))}(($gwbtj :  FreeGroup) ↦ (($gwchz : ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) :  $gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) ↦ ($gwchz : ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))) ((ind{($gwikm :  FreeGroup) ↦ (($gwikn :  FreeGroup) ↦ ($gwikm = $gwikn))((&lt;function1&gt;) (n))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))}{($gsbuk :  FreeGroup) ↦ (($gsbul :  FreeGroup) ↦ ((_ : ($gsbuk = $gsbul) :  $gsbuk = $gsbul) ↦ (((mul) ($gsbuk)) ((&lt;function1&gt;) (n)) = ((mul) ($gsbul)) ((&lt;function1&gt;) (n)))))}(($gsbuk :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($gsbuk)) ((&lt;function1&gt;) (n)))))) (((ind{($gqflz :  FreeGroup) ↦ (($gqfma :  FreeGroup) ↦ ($gqflz = $gqfma))((&lt;function1&gt;) (n))((&lt;function1&gt;) (n))}{($gozxm :  FreeGroup) ↦ (($gozxn :  FreeGroup) ↦ ((_ : ($gozxm = $gozxn) :  $gozxm = $gozxn) ↦ (($gozxn = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) → ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))))))}(($gozxm :  FreeGroup) ↦ (($gpamc : ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) :  $gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) ↦ ($gpamc : ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))))))) ((ind{($gpdez :  FreeGroup) ↦ (($gpdfa :  FreeGroup) ↦ ($gpdez = $gpdfa))(x)(((mul) (s)) (((mul) (w)) (((mul) (y)) ((inv) (s)))))}{($gnipk :  FreeGroup) ↦ (($gnipl :  FreeGroup) ↦ ((_ : ($gnipk = $gnipl) :  $gnipk = $gnipl) ↦ ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n))))}(($gnipk :  FreeGroup) ↦ (Refl(FreeGroup,(&lt;function1&gt;) (n))))) (x ~ wy : (x = ((mul) (s)) (((mul) (w)) (((mul) (y)) ((inv) (s)))))) : ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n)))) ((&lt;function1&gt;) (n) : ((&lt;function1&gt;) (n) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))) : ((&lt;function1&gt;) (n) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))) : (((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ((&lt;function1&gt;) (n))))))) ((ind{($hbavd :  FreeGroup) ↦ (($hbave :  FreeGroup) ↦ ($hbavd = $hbave))((&lt;function1&gt;) (n))(((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))}{($gtqqn :  FreeGroup) ↦ (($gtqqo :  FreeGroup) ↦ ((_ : ($gtqqn = $gtqqo) :  $gtqqn = $gtqqo) ↦ (((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ($gtqqn))) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ($gtqqo))))))}(($gtqqn :  FreeGroup) ↦ (Refl(FreeGroup,((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ($gtqqn))))))) (((ind{($gsbox :  FreeGroup) ↦ (($gsboy :  FreeGroup) ↦ ($gsbox = $gsboy))((&lt;function1&gt;) (n))((&lt;function1&gt;) (n))}{($gquvq :  FreeGroup) ↦ (($gquvr :  FreeGroup) ↦ ((_ : ($gquvq = $gquvr) :  $gquvq = $gquvr) ↦ (($gquvr = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))) → ($gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))}(($gquvq :  FreeGroup) ↦ (($gqvkg : ($gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))) :  $gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))) ↦ ($gqvkg : ($gquvq = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))) ((ind{($gqydd :  FreeGroup) ↦ (($gqyde :  FreeGroup) ↦ ($gqydd = $gqyde))(x)(((mul) (t)) (((mul) (z)) (((mul) ((inv) (w))) ((inv) (t)))))}{($gqfmc :  FreeGroup) ↦ (($gqfmd :  FreeGroup) ↦ ((_ : ($gqfmc = $gqfmd) :  $gqfmc = $gqfmd) ↦ ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n))))}(($gqfmc :  FreeGroup) ↦ (Refl(FreeGroup,(&lt;function1&gt;) (n))))) (x ~ zw^{-1} : (x = ((mul) (t)) (((mul) (z)) (((mul) ((inv) (w))) ((inv) (t)))))) : ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n)))) ((&lt;function1&gt;) (n) : ((&lt;function1&gt;) (n) = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))) : ((&lt;function1&gt;) (n) = ((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))) : (((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ((&lt;function1&gt;) (n)))) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))) : (((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))
+xnxnExpr: Equality[LocalTerm with Subs[LocalTerm]] = SymbEquality(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        InducFn(
+          FreeGroup,
+          LambdaTerm(
+            RepSymbObj($gtwwi, FreeGroup),
+            LambdaTerm(
+              RepSymbObj($gtwwj, FreeGroup),
+              LambdaFixed(
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gtwwi, FreeGroup), RepSymbObj($gtwwj, FreeGroup))),
+                FuncTyp(
+                  IdentityTyp(
+                    FreeGroup,
+                    RepSymbObj($gtwwj, FreeGroup),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
+                        RepSymbObj(
+...
 
-scala&gt; assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
+@ assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
 </code></pre>
 <p>Using $x^nx^n = x^{2n}$, we get the formula $x^{2n} = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">scala&gt; val x2nExpr =PowerDistributive.pf(x)(n)(n).sym &amp;&amp; xnxnExpr 
+<pre><code class="language-scala">@ val x2nExpr =PowerDistributive.pf(x)(n)(n).sym &amp;&amp; xnxnExpr 
 
-x2nExpr: Equality[LocalTerm with Subs[LocalTerm] with Subs[LocalTerm with Subs[LocalTerm]]] = ((ind{($hdqcj :  FreeGroup) ↦ (($hdqck :  FreeGroup) ↦ ($hdqcj = $hdqck))((&lt;function1&gt;) (((prod) (2)) (n)))(((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)))}{($hbpzo :  FreeGroup) ↦ (($hbpzp :  FreeGroup) ↦ ((_ : ($hbpzo = $hbpzp) :  $hbpzo = $hbpzp) ↦ (($hbpzp = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) → ($hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))}(($hbpzo :  FreeGroup) ↦ (($hbqoe : ($hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) :  $hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) ↦ ($hbqoe : ($hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))) ((ind{($hbtvm :  FreeGroup) ↦ (($hbtvn :  FreeGroup) ↦ ($hbtvm = $hbtvn))(((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)))((&lt;function1&gt;) (((prod) (2)) (n)))}{($hbedc :  FreeGroup) ↦ (($hbedd :  FreeGroup) ↦ ((_ : ($hbedc = $hbedd) :  $hbedc = $hbedd) ↦ ($hbedd = $hbedc)))}(($hbedc :  FreeGroup) ↦ (Refl(FreeGroup,$hbedc)))) ((&lt;function1&gt;) (n) : (((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)) = (&lt;function1&gt;) (((prod) (2)) (n)))) : ((&lt;function1&gt;) (((prod) (2)) (n)) = ((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n))))) (((ind{($hbava :  FreeGroup) ↦ (($hbavb :  FreeGroup) ↦ ($hbava = $hbavb))(((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ((&lt;function1&gt;) (n)))))}{($gwbtj :  FreeGroup) ↦ (($gwbtk :  FreeGroup) ↦ ((_ : ($gwbtj = $gwbtk) :  $gwbtj = $gwbtk) ↦ (($gwbtk = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) → ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))}(($gwbtj :  FreeGroup) ↦ (($gwchz : ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) :  $gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) ↦ ($gwchz : ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))) ((ind{($gwikm :  FreeGroup) ↦ (($gwikn :  FreeGroup) ↦ ($gwikm = $gwikn))((&lt;function1&gt;) (n))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))}{($gsbuk :  FreeGroup) ↦ (($gsbul :  FreeGroup) ↦ ((_ : ($gsbuk = $gsbul) :  $gsbuk = $gsbul) ↦ (((mul) ($gsbuk)) ((&lt;function1&gt;) (n)) = ((mul) ($gsbul)) ((&lt;function1&gt;) (n)))))}(($gsbuk :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($gsbuk)) ((&lt;function1&gt;) (n)))))) (((ind{($gqflz :  FreeGroup) ↦ (($gqfma :  FreeGroup) ↦ ($gqflz = $gqfma))((&lt;function1&gt;) (n))((&lt;function1&gt;) (n))}{($gozxm :  FreeGroup) ↦ (($gozxn :  FreeGroup) ↦ ((_ : ($gozxm = $gozxn) :  $gozxm = $gozxn) ↦ (($gozxn = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) → ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))))))}(($gozxm :  FreeGroup) ↦ (($gpamc : ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) :  $gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) ↦ ($gpamc : ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))))))) ((ind{($gpdez :  FreeGroup) ↦ (($gpdfa :  FreeGroup) ↦ ($gpdez = $gpdfa))(x)(((mul) (s)) (((mul) (w)) (((mul) (y)) ((inv) (s)))))}{($gnipk :  FreeGroup) ↦ (($gnipl :  FreeGroup) ↦ ((_ : ($gnipk = $gnipl) :  $gnipk = $gnipl) ↦ ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n))))}(($gnipk :  FreeGroup) ↦ (Refl(FreeGroup,(&lt;function1&gt;) (n))))) (x ~ wy : (x = ((mul) (s)) (((mul) (w)) (((mul) (y)) ((inv) (s)))))) : ((&lt;function1&gt;) (n) = (&lt;function1&gt;) (n)))) ((&lt;function1&gt;) (n) : ((&lt;function1&gt;) (n) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))) : ((&lt;function1&gt;) (n) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))) : (((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ((&lt;function1&gt;) (n))))))) ((ind{($hbavd :  FreeGroup) ↦ (($hbave :  FreeGroup) ↦ ($hbavd = $hbave))((&lt;function1&gt;) (n))(((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))}{($gtqqn :  FreeGroup) ↦ (($gtqqo :  FreeGroup) ↦ ((_ : ($gtqqn = $gtqqo) :  $gtqqn = $gtqqo) ↦ (((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ($gtqqn))) = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ($gtqqo))))))}(($gtqqn :  FreeGroup) ↦ (Refl(FreeGroup,((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ($gtqqn))))))) (((ind{($gsbox :  FreeGroup) ↦ (($gsboy :  FreeGroup) ↦ ($gsbox = $gsboy))((&lt;function1&gt;) (n))((&lt;function1&gt;) (n))}{($...
+x2nExpr: Equality[LocalTerm with Subs[LocalTerm] with Subs[LocalTerm with Subs[LocalTerm]]] = SymbEquality(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        InducFn(
+          FreeGroup,
+          LambdaTerm(
+            RepSymbObj($gzlch, FreeGroup),
+            LambdaTerm(
+              RepSymbObj($gzlci, FreeGroup),
+              LambdaFixed(
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gzlch, FreeGroup), RepSymbObj($gzlci, FreeGroup))),
+                FuncTyp(
+                  IdentityTyp(
+                    FreeGroup,
+                    RepSymbObj($gzlci, FreeGroup),
+                    RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
+                        RepSymbObj(
+...
 
-scala&gt; assert(x2nExpr.typ == (FreeGroup.power(x)(NatRing.prod(n)(nat(2))) =:= (s |+| c(n) |+| t.inverse)))
+@ assert(x2nExpr.typ == (FreeGroup.power(x)(NatRing.prod(n)(nat(2))) =:= (s |+| c(n) |+| t.inverse)))
 </code></pre>
 <p>We now bound the length of the right hand side $s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">scala&gt; val thmBound = f(n) + l(s) + l(t.inverse) 
+<pre><code class="language-scala">@ val thmBound = f(n) + l(s) + l(t.inverse) 
 
-thmBound: LocalTerm = ((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (s) + (l) ((inv) (t)) + (l) ((inv) (s)))
+thmBound: LocalTerm = SigmaTerm(
+  Set(
+    RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;s&quot;), FreeGroup)), Q.Typ),
+    RepSymbObj(
+      ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)),
+      Q.Typ
+    ),
+    PiTerm(
+      Map(
+        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;z&quot;), FreeGroup)), Q.Typ) -&gt; 1,
+        RepSymbObj(
+          ApplnSym(
+            Rec(
+              RepSymbObj(ScalaSymbol(0), Q.Typ),
+              LambdaFixed(
+                RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                LambdaFixed(
+                  RepSymbObj(f(n), Q.Typ),
+                  RepSymbObj(
+                    ApplnSym(SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ), RepSymbObj(f(n), Q.Typ)),
+...
 
-scala&gt; val exprBound = lemmaProof(n) + triang(s)(c(n)) + triang(s |+| c(n))(t.inverse) 
+@ val exprBound = lemmaProof(n) + triang(s)(c(n)) + triang(s |+| c(n))(t.inverse) 
 
-exprBound: PosWitSum = PosWitSum(PosWitSum((&lt;function1&gt;) (n) : (Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + ((prod) (-1)) ((l) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))) + (l) ((inv) (s))))),((triangle-inequality) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))) : (Pos((((prod) (-1)) ((l) (((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))))) + (l) (s) + (l) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))))))),((triangle-inequality) (((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n))))))) ((inv) (t)) : (Pos((((prod) (-1)) ((l) (((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))) + (l) (((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) ((&lt;function1&gt;) (n)))))) + (l) ((inv) (t))))))
+exprBound: PosWitSum = PosWitSum(
+  PosWitSum(
+    SymbPosWit(
+      ApplnSym(
+        Induc(
+          LambdaFixed(
+            RepSymbObj(n, Nat.Typ),
+            Pos(
+              SigmaTerm(
+                Set(
+                  PiTerm(
+                    Map(
+                      RepSymbObj(
+                        ApplnSym(
+                          Rec(
+                            RepSymbObj(ScalaSymbol(0), Q.Typ),
+                            LambdaFixed(
+                              RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+                              LambdaFixed(
+                                RepSymbObj(f(n), Q.Typ),
+...
 
-scala&gt; assert(exprBound.typ == leq(l(s |+| c(n) |+| t.inverse ))(thmBound))
+@ assert(exprBound.typ == leq(l(s |+| c(n) |+| t.inverse ))(thmBound))
 </code></pre>
 <p>We easily deduce the bound on $l(x^{2n})$ to complete the proof.</p>
-<pre><code class="language-scala">scala&gt; val thmProof = x2nExpr.sym.lift (g :-&gt; leq(l(g))(thmBound))(exprBound) 
+<pre><code class="language-scala">@ val thmProof = x2nExpr.sym.lift (g :-&gt; leq(l(g))(thmBound))(exprBound) 
 
-thmProof: PosWit = ((ind{($jboxe :  FreeGroup) ↦ (($jboxf :  FreeGroup) ↦ ($jboxe = $jboxf))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))((&lt;function1&gt;) (((prod) (2)) (n)))}{($hhkor :  FreeGroup) ↦ (($hhkos :  FreeGroup) ↦ ((_ : ($hhkor = $hhkos) :  $hhkor = $hhkos) ↦ ((Pos(((l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (s) + (l) ((inv) (t)) + (l) ((inv) (s)) + ((prod) (-1)) ((l) ($hhkor))))) → (Pos((((prod) (-1)) ((l) ($hhkos)) + (l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (s) + (l) ((inv) (t)) + (l) ((inv) (s))))))))}(($hhkor :  FreeGroup) ↦ (($hvxpf : (Pos((((prod) (-1)) ((l) ($hhkor)) + (l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (s) + (l) ((inv) (t)) + (l) ((inv) (s))))) :  Pos((((prod) (-1)) ((l) ($hhkor)) + (l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (s) + (l) ((inv) (t)) + (l) ((inv) (s))))) ↦ ($hvxpf : (Pos((((prod) (-1)) ((l) ($hhkor)) + (l) (t) + ((&lt;function1&gt;) (n) * (l) (y)) + ((l) (z) * (&lt;function1&gt;) (n)) + (l) (s) + (l) ((inv) (t)) + (l) ((inv) (s))))))))) ((ind{($irztm :  FreeGroup) ↦ (($irztn :  FreeGroup) ↦ ($irztm = $irztn))((&lt;function1&gt;) (((prod) (2)) (n)))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t)))))))}{($heajv :  FreeGroup) ↦ (($heajw :  FreeGroup) ↦ ((_ : ($heajv = $heajw) :  $heajv = $heajw) ↦ ($heajw = $heajv)))}(($heajv :  FreeGroup) ↦ (Refl(FreeGroup,$heajv)))) (((ind{($hdqcj :  FreeGroup) ↦ (($hdqck :  FreeGroup) ↦ ($hdqcj = $hdqck))((&lt;function1&gt;) (((prod) (2)) (n)))(((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)))}{($hbpzo :  FreeGroup) ↦ (($hbpzp :  FreeGroup) ↦ ((_ : ($hbpzo = $hbpzp) :  $hbpzo = $hbpzp) ↦ (($hbpzp = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) → ($hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))}(($hbpzo :  FreeGroup) ↦ (($hbqoe : ($hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) :  $hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) ↦ ($hbqoe : ($hbpzo = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))) ((ind{($hbtvm :  FreeGroup) ↦ (($hbtvn :  FreeGroup) ↦ ($hbtvm = $hbtvn))(((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)))((&lt;function1&gt;) (((prod) (2)) (n)))}{($hbedc :  FreeGroup) ↦ (($hbedd :  FreeGroup) ↦ ((_ : ($hbedc = $hbedd) :  $hbedc = $hbedd) ↦ ($hbedd = $hbedc)))}(($hbedc :  FreeGroup) ↦ (Refl(FreeGroup,$hbedc)))) ((&lt;function1&gt;) (n) : (((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)) = (&lt;function1&gt;) (((prod) (2)) (n)))) : ((&lt;function1&gt;) (((prod) (2)) (n)) = ((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n))))) (((ind{($hbava :  FreeGroup) ↦ (($hbavb :  FreeGroup) ↦ ($hbava = $hbavb))(((mul) ((&lt;function1&gt;) (n))) ((&lt;function1&gt;) (n)))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) ((&lt;function1&gt;) (n)))))}{($gwbtj :  FreeGroup) ↦ (($gwbtk :  FreeGroup) ↦ ((_ : ($gwbtj = $gwbtk) :  $gwbtj = $gwbtk) ↦ (($gwbtk = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) → ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))}(($gwbtj :  FreeGroup) ↦ (($gwchz : ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) :  $gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))) ↦ ($gwchz : ($gwbtj = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) (((mul) ((inv) (s))) (((mul) (t)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (t))))))))))) ((ind{($gwikm :  FreeGroup) ↦ (($gwikn :  FreeGroup) ↦ ($gwikm = $gwikn))((&lt;function1&gt;) (n))(((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s))))}{($gsbuk :  FreeGroup) ↦ (($gsbul :  FreeGroup) ↦ ((_ : ($gsbuk = $gsbul) :  $gsbuk = $gsbul) ↦ (((mul) ($gsbuk)) ((&lt;function1&gt;) (n)) = ((mul) ($gsbul)) ((&lt;function1&gt;) (n)))))}(($gsbuk :  FreeGroup) ↦ (Refl(FreeGroup,((mul) ($gsbuk)) ((&lt;function1&gt;) (n)))))) (((ind{($gqflz :  FreeGroup) ↦ (($gqfma :  FreeGroup) ↦ ($gqflz = $gqfma))((&lt;function1&gt;) (n))((&lt;function1&gt;) (n))}{($gozxm :  FreeGroup) ↦ (($gozxn :  FreeGroup) ↦ ((_ : ($gozxm = $gozxn) :  $gozxm = $gozxn) ↦ (($gozxn = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))) → ($gozxm = ((mul) (s)) (((mul) ((&lt;function1&gt;) (n))) ((inv) (s)))))))}(($gozxm :  FreeGroup) ↦ (($gpamc : ($gozxm = ((mul) (s)) (((mul) (...
+thmProof: PosWit = SymbPosWit(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        InducFn(
+          FreeGroup,
+          LambdaTerm(
+            RepSymbObj($hfdrs, FreeGroup),
+            LambdaTerm(
+              RepSymbObj($hfdrt, FreeGroup),
+              LambdaFixed(
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($hfdrs, FreeGroup), RepSymbObj($hfdrt, FreeGroup))),
+                FuncTyp(
+                  Pos(
+                    SigmaTerm(
+                      Set(
+                        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;s&quot;), FreeGroup)), Q.Typ),
+                        RepSymbObj(
+                          ApplnSym(
+                            SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+...
 
-scala&gt; val x2n = FreeGroup.power(x)(NatRing.prod(n)(nat(2))) 
+@ val x2n = FreeGroup.power(x)(NatRing.prod(n)(nat(2))) 
 
-x2n: RepTerm[Word] = (&lt;function1&gt;) (((prod) (2)) (n))
+x2n: RepTerm[Word] = RepSymbObj(
+  ApplnSym(
+    Rec(
+      RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+      LambdaFixed(
+        RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
+        LambdaFixed(
+          RepSymbObj(f(n)(g), FreeGroup),
+          RepSymbObj(
+            ApplnSym(
+              SymbolicFunc(ApplnSym(mul, RepSymbObj(f(n)(g), FreeGroup)), FreeGroup, FreeGroup),
+              RepSymbObj(Name(&quot;x&quot;), FreeGroup)
+            ),
+            FreeGroup
+          )
+        )
+      )
+    ),
+    RepSymbObj(
+      ApplnSym(
+...
 
-scala&gt; assert(thmProof.typ == leq(l(x2n))(thmBound )) 
+@ assert(thmProof.typ == leq(l(x2n))(thmBound )) 
 
 
-scala&gt;  
+@  
 
-scala&gt;  
-
-scala
+@
 </code></pre>
-<h4>Git Log when running tutorial: a13ee9ce2a17b690e3638b1861cb51d6731f8cd1</h4>
+<h4>Git Log when running tutorial: 4d774d05affbeb6f1b3ac5915f80b81c1025bfe1</h4>
 
 
 </div>

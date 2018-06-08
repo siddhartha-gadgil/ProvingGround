@@ -26,16 +26,41 @@ Our goal is to interact with external systems. In particular, we have implemente
 
 ## Running
 
+#### Servers
+
+Two rudimentary servers are available as binaries, which you can download and run. You need Java 8 installed. In Unix systems you may need to run `chmod +x ...` to make the files executable.
+
+* [ProvingGround HoTT Server](http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-mantle-SNAPSHOT)
+* [ProvingGround NLP Server](http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-nlp-SNAPSHOT)
+
+Start one of these servers and visit `localhost:8080` on a browser to run. You can also specify the port by starting with a `-p` option.
+
+These will be frequently updated with new features.
+
+#### From Source
+
 At present the best way to interact with most of the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)). To pop up a console with most of the code in scope, install [mill](https://www.lihaoyi.com/mill/) and run:
 ```
 mill mantle.repl
 ```
+
+for the HoTT implementation etc, or
+
+```
+mill nlp.repl
+```
+for the natural language processing part.
 
 To experiment with _natural language processing_, a basic server can be started by running
 ```
 mill nlp.run
 ```
 and going to `localhost:8080` on the browser. To experiment with the code, you can use the `--watch` flag so the system restarts after shutting down from the browser.
+
+Similarly, one can experiment with a small part of the HoTT implementation by running
+```
+mill mantle.run
+```
 
 Some experiments with the HoTT interface can be done in the scratchpad below.  
 

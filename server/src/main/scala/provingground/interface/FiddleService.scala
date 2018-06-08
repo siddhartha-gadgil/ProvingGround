@@ -226,6 +226,8 @@ class AmmScriptServer(
 
   <div class="container">
     <h2 class="text-center"> ProvingGround Fiddle </h2>
+    <p> Any commands entered below are run in an interpreter using the <a href="http://ammonite.io/">Ammonite REPL</a>, with the code of
+    the ProvingGround project, <em>excluding</em> the natural language processing component, in the class path.</p>
 
 
     <div id="edit-div"></div>

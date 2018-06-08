@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>Left and Right Identities</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -98,22 +98,22 @@ messageStyle: "none",
 and in practice there will be many blind allies.</p>
 <p>We start with some axioms for a Monoid, except that the left and right identities are not assumed equal. We show that they are equal.</p>
 <p>First, some imports</p>
-<pre><code class="language-scala">scala&gt;        
+<pre><code class="language-scala">@        
 
-scala&gt; import provingground.{FiniteDistribution =&gt; FD, ProbabilityDistribution =&gt; PD, _} 
+@ import provingground.{FiniteDistribution =&gt; FD, ProbabilityDistribution =&gt; PD, _} 
 
 import provingground.{FiniteDistribution =&gt; FD, ProbabilityDistribution =&gt; PD, _}
 
-scala&gt; import library._, MonoidSimple._ 
+@ import library._, MonoidSimple._ 
 
 import library._, MonoidSimple._
 
-scala&gt; import learning._ 
+@ import learning._ 
 
-import learning._
+import learnin
 </code></pre>
 <p>A Monoid is axiomatized as a type <code>M</code> with equality <code>eqM</code> and an operation <code>op := _*_</code>. We consider the relevant objects and axioms.</p>
-<pre><code class="language-scala">scala&gt; dist1.entropyVec.mkString(&quot;\n&quot;, &quot;\n&quot;, &quot;\n&quot;) 
+<pre><code class="language-scala">@ dist1.entropyVec.mkString(&quot;\n&quot;, &quot;\n&quot;, &quot;\n&quot;) 
 
 res7: String = &quot;&quot;&quot;
 Weighted(mul,1.5849625007211563)
@@ -125,225 +125,193 @@ Weighted(axiom_{eqM(mul(a)(e_r))(a)},4.392317422778761)
 Weighted(e_l,4.392317422778761)
 Weighted(axiom_{eqM(a)(a)},4.392317422778761)
 Weighted(e_r,4.392317422778761)
-&quot;&quot;&quot;
 </code></pre>
 <p>We use a <code>TermEvolver</code>, We first generate the types, which includes the theorems.
 The time has not been optimized here to avoid accidental biases.</p>
-<pre><code class="language-scala">scala&gt; val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0) 
+<pre><code class="language-scala">@ val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0) 
 
-tv: TermEvolver = provingground.learning.TermEvolver@75425e89
+tv: TermEvolver = provingground.learning.TermEvolver@30ae15cc
 
-scala&gt; val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8)) 
+@ val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8)) 
 
 fdT: FiniteDistribution[HoTT.Typ[HoTT.Term]] = FiniteDistribution(
   Vector(
     Weighted(
-      ((eqM) (((mul) (e_l)) (e_r))) (((mul) (e_r)) (((mul) (e_r)) (e_r))),
-      1.3226352305986195E-5
-    ),
-    Weighted(
-      ((eqM) (((mul) (e_r)) (e_l))) (((mul) (e_r)) (((mul) (e_l)) (e_l))),
-      1.3226352305986195E-5
-    ),
-    Weighted(
-      ((eqM) (e_l)) (((mul) (e_r)) (((mul) (e_r)) (((mul) (e_r)) (e_l)))),
-      2.208091209772824E-6
-    ),
-    Weighted(((eqM) (((mul) (((mul) (e_r)) (e_r))) (e_l))) (e_r), 3.0692886973115356E-4),
-    Weighted(
-      ((eqM) (e_r)) (((mul) (e_l)) (((mul) (((mul) (e_r)) (e_r))) (e_r))),
-      5.863557578778793E-7
-    ),
-    Weighted(
-      ((eqM) (((mul) (((mul) (e_r)) (e_r))) (e_r))) (((mul) (e_r)) (e_r)),
-      3.003288307213672E-6
-    ),
-    Weighted(
-      ((eqM) (((mul) (e_r)) (e_r))) (((mul) (e_l)) (((mul) (e_l)) (e_r))),
-      1.3226352305986196E-5
-    ),
-    Weighted(
-      ((eqM) (((mul) (e_l)) (e_r))) (((mul) (e_r)) (((mul) (e_l)) (e_l))),
-      1.3226352305986195E-5
-    ),
-    Weighted(
-      ((eqM) (((mul) (e_l)) (e_r))) (((mul) (((mul) (e_r)) (e_r))) (e_r)),
-      1.911287940331908E-5
-    ),
-    Weighted(
-      ((eqM) (e_l)) (((mul) (e_l)) (((mul) (((mul) (e_l)) (e_r))) (e_l))),
-      5.863557578778793E-7
-    ),
-    Weighted(((eqM) (((mul) (e_r)) (((mul) (e_r)) (e_l)))) (e_r), 7.58773141565172E-4),
-    Weighted(
-      ((eqM) (((mul) (((mul) (e_r)) (e_r))) (e_r))) (((mul) (e_l)) (e_l)),
-      3.003288307213672E-6
-    ),
-    Weighted(
-      ((eqM) (((mul) (e_l)) (e_l))) (((mul) (e_r)) (((mul) (e_r)) (e_l))),
-      1.3226352305986195E-5
-    ),
-    Weighted(
-...
+      SymbTyp(
+        ApplnSym(
+          SymbolicFunc(
+            ApplnSym(
+              SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
+              SymbObj(
+                ApplnSym(
+                  SymbolicFunc(
+                    ApplnSym(
+                      SymbolicFunc(Name(&quot;mul&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), SymbTyp(Name(&quot;M&quot;), 0))),
+                      SymbObj(Name(&quot;e_l&quot;), SymbTyp(Name(&quot;M&quot;), 0))
+                    ),
+                    SymbTyp(Name(&quot;M&quot;), 0),
+                    SymbTyp(Name(&quot;M&quot;), 0)
+                  ),
+                  SymbObj(Name(&quot;e_r&quot;), SymbTyp(Name(&quot;M&quot;), 0))
+                ),
 </code></pre>
 <p>We shall generate terms. Some experiments show that it is enough to generate with truncation <code>10^{-5}</code>.</p>
-<pre><code class="language-scala">scala&gt; val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5)) 
+<pre><code class="language-scala">@ val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5)) 
 
 fd: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
     Weighted(
-      (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)),
-      2.492918527842089E-4
-    ),
-    Weighted(axiom_{(eqM(a)(b) \to eqM(b)(a))}, 0.038571428571428555),
-    Weighted(((mul) (e_r)) (e_l), 0.0038068219681510434),
-    Weighted(((eqM) (e_r)) (e_r), 0.003806821968151043),
-    Weighted(((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (e_r)) (e_r), 5.438317097358634E-4),
-    Weighted(((eqM) (e_r)) (e_l), 0.003806821968151043),
-    Weighted((mul) (e_r), 0.026428977882084342),
-    Weighted(((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (e_r)) (e_l), 5.438317097358634E-4),
-    Weighted(axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}, 0.038571428571428555),
-    Weighted(((eqM) (e_l)) (e_l), 0.003806821968151044),
-    Weighted((mul) (((mul) (e_l)) (e_l)), 8.85580104857237E-4),
-    Weighted((eqM) (((mul) (e_r)) (e_l)), 8.85580104857237E-4),
-    Weighted((axiom_{eqM(mul(a)(e_r))(a)}) (e_r), 0.003940271597629893),
-    Weighted(axiom_{eqM(mul(e_l)(a))(a)}, 0.038571428571428555),
-    Weighted(mul, 0.2699999999999999),
-    Weighted((eqM) (e_r), 0.026428977882084342),
-    Weighted((axiom_{eqM(a)(a)}) (e_r), 0.003940271597629893),
-    Weighted(
-      ($dwcwp :  M) ↦ (((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (((mul) (e_l)) (e_r))) (e_l)) ($dwcwp)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))),
-      2.492918527842089E-4
-    ),
-    Weighted(
-      ($dwcqx :  M) ↦ (((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_r)) (e_r)) ($dwcqx)) ((axiom_{eqM(a)(a)}) (e_r))),
-      2.492918527842089E-4
-    ),
-    Weighted((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l), 0.003940271597629893),
-    Weighted(
-      (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (e_r)) (e_r)) ((axiom_{eqM(a)(a)}) (e_r)),
-      2.492918527842089E-4
-    ),
-    Weighted(
-      (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_l))) (e_l)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_l)),
-      2.492918527842089E-4
-    ),
-    Weighted(((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (e_l)) (e_r), 5.438317097358634E-4),
-    Weighted(axiom_{eqM(mul(a)(e_r))(a)}, 0.038571428571428555),
-    Weighted(
-      ((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (e_r),
-      5.438317097358634E-4
-    ),
+      SymbObj(
+        ApplnSym(
+          SymbolicFunc(
+            ApplnSym(
+              PiSymbolicFunc(
+                ApplnSym(
+                  PiSymbolicFunc(
+                    Name(&quot;axiom_{(eqM(a)(b) \\to eqM(b)(a))}&quot;),
+                    SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0)),
+                    PiDefn(
+                      SymbObj(b, SymbTyp(Name(&quot;M&quot;), 0)),
+                      FuncTyp(
+                        SymbTyp(
+                          ApplnSym(
+                            SymbolicFunc(
+                              ApplnSym(
+                                SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
 ...
 
-scala&gt; fd.filter(_.typ == eqM(l)(op(l)(r))) 
+@ fd.filter(_.typ == eqM(l)(op(l)(r))) 
 
 res11: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
     Weighted(
-      (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)),
-      2.492918527842089E-4
-    )
-  )
-)
+      SymbObj(
+        ApplnSym(
+          SymbolicFunc(
+            ApplnSym(
+              PiSymbolicFunc(
+                ApplnSym(
+                  PiSymbolicFunc(
+                    Name(&quot;axiom_{(eqM(a)(b) \\to eqM(b)(a))}&quot;),
+                    SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0)),
+                    PiDefn(
+                      SymbObj(b, SymbTyp(Name(&quot;M&quot;), 0)),
+                      FuncTyp(
+                        SymbTyp(
+                          ApplnSym(
+                            SymbolicFunc(
+                              ApplnSym(
+                                SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
 </code></pre>
 <p>We see that wee get a proof of a key lemma. Criteria, based on probabilities of statements and proofs,
 tell us that this is one of the best results proved, along with one related by symmetry and a pair that are not useful.</p>
 <p>A quick way to explore consequences of this discovered lemma is to use the derivative of the evolution.
 We see that we get the proof.</p>
-<pre><code class="language-scala">scala&gt; val pf = fd.filter(_.typ == eqM(l)(op(l)(r))).supp.head 
+<pre><code class="language-scala">@ val pf = fd.filter(_.typ == eqM(l)(op(l)(r))).supp.head 
 
-pf: HoTT.Term = (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))
+pf: HoTT.Term = SymbObj(
+  ApplnSym(
+    SymbolicFunc(
+      ApplnSym(
+        PiSymbolicFunc(
+          ApplnSym(
+            PiSymbolicFunc(
+              Name(&quot;axiom_{(eqM(a)(b) \\to eqM(b)(a))}&quot;),
+              SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0)),
+              PiDefn(
+                SymbObj(b, SymbTyp(Name(&quot;M&quot;), 0)),
+                FuncTyp(
+                  SymbTyp(
+                    ApplnSym(
+                      SymbolicFunc(
+                        ApplnSym(
+                          SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
+                          SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0))
+                        ),
+                        SymbTyp(Name(&quot;M&quot;), 0),
+...
 
-scala&gt; val initt = TangVec(dist1, FD.unif(pf)) 
+@ val initt = TangVec(dist1, FD.unif(pf)) 
 
 initt: TangVec[FiniteDistribution[HoTT.Term]] = TangVec(
   FiniteDistribution(
     Vector(
-      Weighted(e_l, 0.047619047619047616),
-      Weighted(e_r, 0.047619047619047616),
-      Weighted(mul, 0.047619047619047616),
-      Weighted(eqM, 0.047619047619047616),
-      Weighted(axiom_{eqM(a)(a)}, 0.047619047619047616),
-      Weighted(axiom_{(eqM(a)(b) \to eqM(b)(a))}, 0.047619047619047616),
-      Weighted(axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}, 0.047619047619047616),
-      Weighted(axiom_{eqM(mul(e_l)(a))(a)}, 0.047619047619047616),
-      Weighted(axiom_{eqM(mul(a)(e_r))(a)}, 0.047619047619047616),
-      Weighted(eqM, 0.2857142857142857),
-      Weighted(mul, 0.2857142857142857)
-    )
-  ),
-  FiniteDistribution(
-    Vector(
+      Weighted(SymbObj(Name(&quot;e_l&quot;), SymbTyp(Name(&quot;M&quot;), 0)), 0.047619047619047616),
+      Weighted(SymbObj(Name(&quot;e_r&quot;), SymbTyp(Name(&quot;M&quot;), 0)), 0.047619047619047616),
       Weighted(
-        (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)),
-        1.0
-      )
-    )
-  )
-)
+        SymbolicFunc(Name(&quot;mul&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), SymbTyp(Name(&quot;M&quot;), 0))),
+        0.047619047619047616
+      ),
+      Weighted(SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))), 0.047619047619047616),
+      Weighted(
+        PiSymbolicFunc(
+          Name(&quot;axiom_{eqM(a)(a)}&quot;),
+          SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0)),
+          SymbTyp(
+            ApplnSym(
+              SymbolicFunc(
+                ApplnSym(
+                  SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
+                  SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0))
+...
 
-scala&gt; val fdt = Truncate(tv.evolve(initt).vec , math.pow(0.1, 4)) 
+@ val fdt = Truncate(tv.evolve(initt).vec , math.pow(0.1, 4)) 
 
 fdt: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
     Weighted(
-      (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)),
-      0.81
-    ),
-    Weighted(
-      (((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_r)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)))) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r)),
-      0.0013066811853465036
-    ),
-    Weighted(
-      ((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_r)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))),
-      0.06628023644707164
-    ),
-    Weighted(
-      (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (e_l)) (((mul) (e_l)) (e_r))) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)))),
-      0.0013066811853465038
-    ),
-    Weighted(
-      ($dwmxl :  M) ↦ (((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (((mul) (e_l)) (e_r))) (e_l)) ($dwmxl)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (e_l)) (((mul) (e_l)) (e_r))) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))))),
-      0.0013066811853465038
-    ),
-    Weighted(
-      ($dwmtl :  M) ↦ (((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) ($dwmtl)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)))),
-      0.025244354566902594
-    ),
-    Weighted(
-      (((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (e_l)) (((mul) (e_l)) (e_r))) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))),
-      0.025244354566902594
-    ),
-    Weighted(
-      ((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_l)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))),
-      0.06628023644707164
-    ),
-    Weighted(
+      SymbObj(
+        ApplnSym(
+          SymbolicFunc(
+            ApplnSym(
+              PiSymbolicFunc(
+                ApplnSym(
+                  PiSymbolicFunc(
+                    Name(&quot;axiom_{(eqM(a)(b) \\to eqM(b)(a))}&quot;),
+                    SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0)),
+                    PiDefn(
+                      SymbObj(b, SymbTyp(Name(&quot;M&quot;), 0)),
+                      FuncTyp(
+                        SymbTyp(
+                          ApplnSym(
+                            SymbolicFunc(
+                              ApplnSym(
+                                SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
 ...
 
-scala&gt; val tqs = fdt.map(_.typ).filter(fdT(_) &gt; 0).flatten 
+@ val tqs = fdt.map(_.typ).filter(fdT(_) &gt; 0).flatten 
 
 tqs: FiniteDistribution[HoTT.Typ[U] forSome { type U &gt;: x$1 &lt;: HoTT.Term with HoTT.Subs[U]; val x$1: HoTT.Term }] = FiniteDistribution(
   Vector(
-    Weighted(((eqM) (((mul) (e_l)) (e_r))) (e_l), 0.025244354566902594),
-    Weighted(((eqM) (e_l)) (e_l), 0.0013066811853465036),
-    Weighted(((eqM) (e_l)) (e_r), 0.0013066811853465036),
-    Weighted(((eqM) (e_l)) (((mul) (e_l)) (e_r)), 0.8113066811853465)
-  )
-)
+    Weighted(
+      SymbTyp(
+        ApplnSym(
+          SymbolicFunc(
+            ApplnSym(
+              SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
+              SymbObj(
+                ApplnSym(
+                  SymbolicFunc(
+                    ApplnSym(
+                      SymbolicFunc(Name(&quot;mul&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), SymbTyp(Name(&quot;M&quot;), 0))),
+                      SymbObj(Name(&quot;e_l&quot;), SymbTyp(Name(&quot;M&quot;), 0))
+                    ),
+                    SymbTyp(Name(&quot;M&quot;), 0),
+                    SymbTyp(Name(&quot;M&quot;), 0)
+                  ),
+                  SymbObj(Name(&quot;e_r&quot;), SymbTyp(Name(&quot;M&quot;), 0))
+                ),
+...
 
-scala&gt; tqs(eqM(l)(r)) 
+@ tqs(eqM(l)(r)) 
 
-res16: Double = 0.0013066811853465036
+res16: Double = 0.0013066811853465038
 
-scala&gt;  
-
-scala
+@
 </code></pre>
 <p>The steps of the proof in this case took less than <code>0.1</code> seconds. Of course in practice we assume other axioms and follow other paths.
 But hopefully the time taken is just a few seconds.</p>
-<h4>Git Log when running tutorial: a13ee9ce2a17b690e3638b1861cb51d6731f8cd1</h4>
+<h4>Git Log when running tutorial: 4d774d05affbeb6f1b3ac5915f80b81c1025bfe1</h4>
 
 
 </div>

@@ -112,6 +112,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="Amm$.html" title="">Amm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="AmmScriptServer.html" title=""></a>
+                        <a href="AmmScriptServer.html" title="">AmmScriptServer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="AmmService.html" title=""></a>
+                        <a href="AmmService.html" title="">AmmService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="Blender.html" title=""></a>
                         <a href="Blender.html" title="">Blender</a>
                       </li><li class="current-entities indented2">
@@ -184,8 +192,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="MantleServer$.html" title="">MantleServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="MantleService$.html" title=""></a>
-                        <a href="MantleService$.html" title="">MantleService</a>
+                        <a class="class" href="MantleService.html" title=""></a>
+                        <a href="MantleService.html" title="">MantleService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonoidServer$.html" title=""></a>
+                        <a href="MonoidServer$.html" title="">MonoidServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="NewParseDiffersException.html" title=""></a>
@@ -204,8 +216,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ParserServer$.html" title="">ParserServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="ParserService$.html" title=""></a>
-                        <a href="ParserService$.html" title="">ParserService</a>
+                        <a class="class" href="ParserService.html" title=""></a>
+                        <a href="ParserService.html" title="">ParserService</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="QDI$.html" title=""></a>
@@ -226,6 +238,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="Sampler$.html" title=""></a>
                         <a href="Sampler$.html" title="">Sampler</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="ScriptServer$.html" title=""></a>
+                        <a href="ScriptServer$.html" title="">ScriptServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="ServerStart.html" title=""></a>
@@ -447,7 +463,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">lazy val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">allPosts</span><span class="result">: <a href="../../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<a href="Site$$Post.html" class="extype" name="provingground.interface.Site.Post">Post</a>]</span>
@@ -463,7 +479,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">lazy val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">allTuts</span><span class="result">: <a href="../../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<a href="Site$$Tut.html" class="extype" name="provingground.interface.Site.Tut">Tut</a>]</span>
@@ -731,9 +747,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.interface.Site#head" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="head(relDocsPath:String):String"></a><a id="head(String):String"></a>
+      <a id="head(relDocsPath:String,t:String):String"></a><a id="head(String,String):String"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#head(relDocsPath:String):String" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#head(relDocsPath:String,t:String):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -742,7 +758,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">head</span><span class="params">(<span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">head</span><span class="params">(<span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="t">t: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       
@@ -755,7 +771,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">home</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
@@ -823,6 +839,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">mkHome</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.Site#mkLists" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="mkLists():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#mkLists():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mkLists</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       
@@ -940,7 +972,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">page</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="t">t: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="haltButton">haltButton: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">page</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="relDocsPath">relDocsPath: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="t">t: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;ProvingGround&quot;</span></span>, <span name="haltButton">haltButton: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       
@@ -969,7 +1001,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">postsDir</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>

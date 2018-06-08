@@ -112,6 +112,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="Amm$.html" title="">Amm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="AmmScriptServer.html" title=""></a>
+                        <a href="AmmScriptServer.html" title="">AmmScriptServer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="AmmService.html" title=""></a>
+                        <a href="AmmService.html" title="">AmmService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="Blender.html" title=""></a>
                         <a href="Blender.html" title="">Blender</a>
                       </li><li class="current-entities indented2">
@@ -184,8 +192,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="" title="">MantleServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="MantleService$.html" title=""></a>
-                        <a href="MantleService$.html" title="">MantleService</a>
+                        <a class="class" href="MantleService.html" title=""></a>
+                        <a href="MantleService.html" title="">MantleService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonoidServer$.html" title=""></a>
+                        <a href="MonoidServer$.html" title="">MonoidServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="NewParseDiffersException.html" title=""></a>
@@ -204,8 +216,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ParserServer$.html" title="">ParserServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="ParserService$.html" title=""></a>
-                        <a href="ParserService$.html" title="">ParserService</a>
+                        <a class="class" href="ParserService.html" title=""></a>
+                        <a href="ParserService.html" title="">ParserService</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="QDI$.html" title=""></a>
@@ -226,6 +238,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="Sampler$.html" title=""></a>
                         <a href="Sampler$.html" title="">Sampler</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="ScriptServer$.html" title=""></a>
+                        <a href="ScriptServer$.html" title="">ScriptServer</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="ServerStart.html" title=""></a>
@@ -348,7 +364,26 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="allMembers">
         
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.interface.MantleServer.Config" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ConfigextendsProductwithSerializable"></a><a id="Config:Config"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/MantleServer$.html#ConfigextendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="MantleServer$$Config.html"><span class="name">Config</span></a><span class="params">(<span name="scriptsDir">scriptsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="symbol"><span class="name"><a href="../../ammonite/index.html">pwd / &quot;repl-scripts&quot;</a></span></span></span>, <span name="objectsDir">objectsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="defval" name='<span class="name"><a href="../../ammonite/index.html">pwd / &quot;core&quot; / &quot;src&quot; / &quot;main&quot; / &quot;scala&quot; / &quot;provingground&quot; / &quot;scripts&quot;</a></span>'>...</span></span>, <span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>, <span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li></ol>
+            </div>
 
         
 
@@ -444,22 +479,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.interface.MantleServer#bindingFuture" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="bindingFuture:scala.concurrent.Future[akka.http.scaladsl.Http.ServerBinding]"></a><a id="bindingFuture:Future[ServerBinding]"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/MantleServer$.html#bindingFuture:scala.concurrent.Future[akka.http.scaladsl.Http.ServerBinding]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">bindingFuture</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.http.scaladsl.Http.ServerBinding">ServerBinding</span>]</span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -728,6 +747,54 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.MantleServer#parser" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="parser:scopt.OptionParser[provingground.interface.MantleServer.Config]"></a><a id="parser:OptionParser[Config]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/MantleServer$.html#parser:scopt.OptionParser[provingground.interface.MantleServer.Config]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">parser</span><span class="result">: <span class="extype" name="scopt.OptionParser">OptionParser</span>[<a href="MantleServer$$Config.html" class="extype" name="provingground.interface.MantleServer.Config">Config</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.MantleServer#path" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="path(s:String):ammonite.ops.Path"></a><a id="path(String):Path"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/MantleServer$.html#path(s:String):ammonite.ops.Path" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">path</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.MantleServer#pathRead" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pathRead:scopt.Read[ammonite.ops.Path]"></a><a id="pathRead:Read[Path]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/MantleServer$.html#pathRead:scopt.Read[ammonite.ops.Path]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pathRead</span><span class="result">: <span class="extype" name="scopt.Read">Read</span>[<span class="extype" name="ammonite.ops.Path">Path</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
