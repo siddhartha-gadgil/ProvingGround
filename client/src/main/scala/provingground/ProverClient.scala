@@ -23,7 +23,7 @@ object ProverClient {
   @JSExport
   def load() = {
     val runButton =
-      input(`type` := "button", value := "Query Server", `class` := "btn btn-success").render
+      input(`type` := "button", value := "Query Server", `class` := "btn btn-primary").render
 
     val proverDiv = dom.document.querySelector("#prover-div")
     proverDiv.appendChild(
@@ -58,8 +58,13 @@ object ProverClient {
               termDiv.innerHTML = katex.renderToString(js.obj("term").str)
               typDiv.innerHTML = katex.renderToString(js.obj("type").str)
               proverDiv.appendChild(
-                div(`class` := "border border-primary")(h2("From the server"),
-                  h3("Found proof:"), termDiv, h3(" of the theorem: "), typDiv).render)
+                ul(`class` := "list-group")(
+                  li(`class` := "list-group-item list-group-item-primary")("From the server:"),
+                  li(`class` := "list-group-item list-group-item-info")("Theorem"),
+                  li(`class` := "list-group-item")(typDiv),
+                  li(`class` := "list-group-item list-group-item-success")("Proof"),
+                  li(`class` := "list-group-item")(termDiv),
+                ).render)
             }
           else
             proverDiv.appendChild(h3("could not find proof of theorem").render)
@@ -113,9 +118,13 @@ object ProverClient {
         termDiv.innerHTML = katex.renderToString(TeXTranslate(t))
         typDiv.innerHTML = katex.renderToString(TeXTranslate(t.typ))
         proverDiv.appendChild(
-          div(`class` := "border border-primary")(h2("From the browser"),
-            h3("Found proof:"), termDiv, h3(" of the theorem: "), typDiv).render
-        )
+                ul(`class` := "list-group")(
+                  li(`class` := "list-group-item list-group-item-primary")("From the browser:"),
+                  li(`class` := "list-group-item list-group-item-info")("Theorem"),
+                  li(`class` := "list-group-item")(typDiv),
+                  li(`class` := "list-group-item list-group-item-success")("Proof"),
+                  li(`class` := "list-group-item")(termDiv),
+                ).render)
       case None =>
         proverDiv.appendChild(h3("could not find proof of theorem").render)
     }

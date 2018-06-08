@@ -28,6 +28,7 @@ object MonoidServer{
   val seekResult : Task[Js.Value] =
     seek.map{
       case Some(t) =>
+        pprint.log("Found proof")
         Js.Obj(
           "proved" -> true,
           "term" -> TeXTranslate(t),
