@@ -75,9 +75,21 @@ class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext) {
 
   val route = parserRoute ~ baseRoute
 
+  val ammRoute =
+    (pathSingleSlash | path("index.html")) {
+      get {
+        complete(
+          HttpEntity(ContentTypes.`text/plain(UTF-8)`,
+          "Fiddle does not work from the NLP server, use the HOTT server"
+        )
+      )
+      }
+    }
+
+
   val mainHTML =
     """
-      |
+      |   <link rel="stylesheet" href="resources/css/nlp.css">
       |    <div id="constituency-parser"></div>
       |
       |  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
@@ -86,42 +98,18 @@ class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext) {
       |  </script>
     """.stripMargin
 
-  val indexHTML =
-    """
-      |<!DOCTYPE html>
-      |
-      |<html>
-      |  <head>
-      |    <title>ProvingGround: Natural language translation</title>
-      |    <link rel="icon" href="resources/IIScLogo.jpg">
-      |    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
-      |    <link rel="stylesheet" href="resources/css/katex.min.css">
-      |    <link rel="stylesheet" href="resources/css/main.css">
-      |    <link rel="stylesheet" href="resources/css/nlp.css">
-      |    <script src="resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
-      |    <script src="resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
-      |
-      |
-      |  </head>
-      |  <body>
-      |
-      |  <div class="container">
-      |    <div id="halt"></div>
-      |    <h2> ProvingGround: Natural language translation </h2>
-      |
-      |    <div id="constituency-parser"></div>
-      |
-      |  </div>
-      |  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
-      |  <script>
-      |    parser.load()
-      |  </script>
-      |  </body>
-      |</html>
-    """.stripMargin
+
 
 }
 object ParserServer extends App {
+
+  implicit val system: ActorSystem = ActorSystem("provingground")
+  implicit val materializer        = ActorMaterializer()
+
+  // needed for the future flatMap/onComplete in the end
+  implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
+    system.dispatcher
+
   import ammonite.ops._
 
   def path(s: String): Path =
@@ -159,26 +147,19 @@ object ParserServer extends App {
       .text("running in server mode")
   }
 
-  implicit val system: ActorSystem = ActorSystem("provingground")
-  implicit val materializer        = ActorMaterializer()
-
-  // needed for the future flatMap/onComplete in the end
-  implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
-    system.dispatcher
-
-
   parser.parse(args, Config()) match {
     case Some(config) =>
       val parserService = new ParserService(config.serverMode)
       import parserService._, mantleService.keepAlive
 
-      val ammServer = new AmmScriptServer(config.scriptsDir, config.objectsDir)
+
+
 
       val bindingFuture =
         Http().bindAndHandle(
           route ~
             pathPrefix("hott"){
-              mantleService.route ~ pathPrefix("scripts")(ammServer.route)
+              mantleService.route ~ pathPrefix("scripts")(ammRoute)
             },
             config.host, config.port)
 

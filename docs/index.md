@@ -34,6 +34,7 @@ Two rudimentary servers are available as binaries, which you can download and ru
 * [ProvingGround NLP Server](http://math.iisc.ac.in/~gadgil/proving-ground/bin/provinground-nlp-SNAPSHOT)
 
 Start one of these servers and visit `localhost:8080` on a browser to run. You can also specify the port by starting with a `-p` option.
+Note that the second server also includes most of the first server.
 
 These will be frequently updated with new features.
 
