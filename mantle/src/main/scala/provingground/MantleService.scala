@@ -14,7 +14,7 @@ import upickle.{Js, json}
 import scala.util.Try
 import scala.concurrent._
 
-class MantleService(serverMode: Boolean) {
+class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext) {
 
   var keepAlive = true
 
@@ -39,7 +39,7 @@ class MantleService(serverMode: Boolean) {
                      "Server mode: cannot shut down"))
     }
 
-  import MantleServer.executionContext
+  // import MantleServer.executionContext
 
   val buildRoute =
     get {

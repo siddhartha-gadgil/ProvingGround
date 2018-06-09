@@ -19,7 +19,7 @@ import scala.concurrent._
 
 import scala.io.StdIn
 
-class ParserService(serverMode: Boolean) {
+class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext) {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
@@ -34,12 +34,6 @@ class ParserService(serverMode: Boolean) {
            "deptree" -> proseTree.view.replace("\n", ""))
   }
 
-  implicit val system: ActorSystem = ActorSystem("provingground")
-  implicit val materializer        = ActorMaterializer()
-
-  // needed for the future flatMap/onComplete in the end
-  implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
-    system.dispatcher
 
   val mantleService = new MantleService(serverMode)
 
@@ -128,11 +122,22 @@ class ParserService(serverMode: Boolean) {
 
 }
 object ParserServer extends App {
-  case class Config(host: String = "localhost",
-                    port: Int = 8080,
-                    serverMode: Boolean = false)
+  import ammonite.ops._
 
-// val config = Config()
+  def path(s: String): Path =
+    scala.util.Try(Path(s)).getOrElse(pwd / RelPath(s))
+
+  implicit val pathRead: scopt.Read[Path] =
+    scopt.Read.reads(path)
+
+  case class Config(
+      scriptsDir: Path = pwd / "repl-scripts",
+      objectsDir: Path = pwd / "core" / "src" / "main" / "scala" / "provingground" / "scripts",
+      host: String = "localhost",
+      port: Int = 8080,
+      serverMode: Boolean = false)
+
+  // val config = Config()
 
   val parser = new scopt.OptionParser[Config]("provingground-server") {
     head("ProvingGround Server", "0.1")
@@ -143,20 +148,39 @@ object ParserServer extends App {
     opt[Int]('p', "port")
       .action((x, c) => c.copy(port = x))
       .text("server port")
+    opt[Path]('s', "scripts")
+      .action((x, c) => c.copy(scriptsDir = x))
+      .text("scripts directory")
+    opt[Path]('o', "objects")
+      .action((x, c) => c.copy(objectsDir = x))
+      .text("created objects directory")
     opt[Unit]("server")
       .action((x, c) => c.copy(serverMode = true))
       .text("running in server mode")
   }
+
+  implicit val system: ActorSystem = ActorSystem("provingground")
+  implicit val materializer        = ActorMaterializer()
+
+  // needed for the future flatMap/onComplete in the end
+  implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
+    system.dispatcher
+
 
   parser.parse(args, Config()) match {
     case Some(config) =>
       val parserService = new ParserService(config.serverMode)
       import parserService._, mantleService.keepAlive
 
-      // val server = new MantleService(config.serverMode)
+      val ammServer = new AmmScriptServer(config.scriptsDir, config.objectsDir)
 
       val bindingFuture =
-        Http().bindAndHandle(route, config.host, config.port)
+        Http().bindAndHandle(
+          route ~
+            pathPrefix("hott"){
+              mantleService.route ~ pathPrefix("scripts")(ammServer.route)
+            },
+            config.host, config.port)
 
       val exitMessage =
         if (config.serverMode) "Kill process to exit"

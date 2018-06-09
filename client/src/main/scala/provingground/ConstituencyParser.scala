@@ -23,8 +23,12 @@ import HoTT.{id => _, _}, translation._
 object ConstituencyParser {
   @JSExport
   def load(): Unit = {
-    // val haltButton =  input(`type` := "button", value := "Halt", `class` := "btn btn-danger pull-right").render
-
+    val navDiv = dom.document.querySelector("#left-nav")
+    navDiv.appendChild(
+      li(
+        a(href := "./hott/", target := "_blank")("HoTT Server")
+      ).render
+    )
     val runButton =
       input(`type` := "button",
             value := "Parse (ctrl-B)",
