@@ -24,7 +24,7 @@ object ProverClient {
   def load() = {
     val runButton =
       input(`type` := "button",
-            value := "Query Server",
+            value := "Ask Server for proof",
             `class` := "btn btn-primary").render
 
     val proverDiv = dom.document.querySelector("#prover-div")
@@ -47,9 +47,10 @@ object ProverClient {
     )
 
     def query() = {
+      runButton.value = "Server searching ..."
       Ajax.post("./monoid-proof").foreach { (xhr) =>
         {
-
+          runButton.value = "Ask Server for proof"
           val answer = xhr.responseText
           val js     = ujson.read(answer)
           val proved = js.obj("proved").bool

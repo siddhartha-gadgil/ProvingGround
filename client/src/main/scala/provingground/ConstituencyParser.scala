@@ -126,7 +126,12 @@ object ConstituencyParser {
     def egSpan(t: String) = {
       val cp = button(`class` := "btn btn-info")("copy").render
       cp.onclick = (_) => parseInput.value = t
-      span(cp, span(" "), t)
+      val pb = button(`class` := "btn btn-success")("parse").render
+      pb.onclick = (_) => {
+        parseInput.value = t
+        parse(t)
+      }
+      span(pb, span(" "), cp, span(" "), t)
     }
 
     val exampleList = ul(`class` := "list-group")(
