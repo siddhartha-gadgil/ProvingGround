@@ -19,7 +19,7 @@ import scala.concurrent._
 
 import scala.io.StdIn
 
-class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext) {
+class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: ActorMaterializer) {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed

@@ -128,12 +128,9 @@ class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: Act
       path("monoid-proof") {
         pprint.log("seeking proof")
         val pfFut = MonoidServer.seekResultFut
-        val resultFut =
-          pfFut.map { (js) =>
-            HttpEntity(ContentTypes.`application/json`, js.toString)
-          }
         pfFut.foreach((pf) => sseQueue.offer(pf.toString))
-        complete(resultFut)
+        complete(
+          HttpEntity(ContentTypes.`text/plain(UTF-8)`, "Server searching..."))
       }
     } ~ get {
       path("proof-source"){

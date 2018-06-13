@@ -17,6 +17,7 @@ object MonoidServer {
   val seek: Task[Option[(Term, Vector[Term])]] = {
     import library._, MonoidSimple._
     import scala.concurrent.duration._
+    pprint.log("seeking proof in task")
     theoremSearchTraceTask(dist1,
                            tv,
                            math.pow(10.0, -6),
