@@ -7,14 +7,18 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
+import akka.stream.scaladsl._
+import akka.http.scaladsl.model.sse.ServerSentEvent
+import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
+
 
 import scala.util.Try
 import upickle.{Js, json}
 
 import scala.util.Try
-import scala.concurrent._
+import scala.concurrent._, duration._
 
-class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext) {
+class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: ActorMaterializer) {
 
   var keepAlive = true
 
@@ -91,6 +95,16 @@ class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext) {
       |
     """.stripMargin
 
+  val (sseQueue, sseSource) =
+    Source.queue[String](10, akka.stream.OverflowStrategy.dropTail).
+      map((t) => ServerSentEvent(t))
+      .keepAlive(8.second, () => ServerSentEvent.heartbeat)
+      .toMat(BroadcastHub.sink[ServerSentEvent])(Keep.both)
+      .run()
+
+  // sseQueue.offer("Hello queue")
+
+
   val mantleRoute =
     get {
       (pathSingleSlash | path("index.html")) {
@@ -113,11 +127,17 @@ class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext) {
     } ~ post {
       path("monoid-proof") {
         pprint.log("seeking proof")
+        val pfFut = MonoidServer.seekResultFut
         val resultFut =
-          MonoidServer.seekResultFut.map { (js) =>
+          pfFut.map { (js) =>
             HttpEntity(ContentTypes.`application/json`, js.toString)
           }
+        pfFut.foreach((pf) => sseQueue.offer(pf.toString))
         complete(resultFut)
+      }
+    } ~ get {
+      path("proof-source"){
+        complete(sseSource)
       }
     }
 
@@ -132,7 +152,6 @@ object MantleServer extends App {
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
 
-  // import MantleService._
 
   import ammonite.ops._
 
