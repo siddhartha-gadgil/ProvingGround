@@ -11,14 +11,14 @@ import akka.stream.scaladsl._
 import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
 
-
 import scala.util.Try
 import upickle.{Js, json}
 
 import scala.util.Try
 import scala.concurrent._, duration._
 
-class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: ActorMaterializer) {
+class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext,
+                                         mat: ActorMaterializer) {
 
   var keepAlive = true
 
@@ -96,14 +96,14 @@ class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: Act
     """.stripMargin
 
   val (sseQueue, sseSource) =
-    Source.queue[String](10, akka.stream.OverflowStrategy.dropTail).
-      map((t) => ServerSentEvent(t))
+    Source
+      .queue[String](10, akka.stream.OverflowStrategy.dropTail)
+      .map((t) => ServerSentEvent(t))
       .keepAlive(8.second, () => ServerSentEvent.heartbeat)
       .toMat(BroadcastHub.sink[ServerSentEvent])(Keep.both)
       .run()
 
   // sseQueue.offer("Hello queue")
-
 
   val mantleRoute =
     get {
@@ -133,7 +133,7 @@ class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: Act
           HttpEntity(ContentTypes.`text/plain(UTF-8)`, "Server searching..."))
       }
     } ~ get {
-      path("proof-source"){
+      path("proof-source") {
         complete(sseSource)
       }
     }
@@ -148,7 +148,6 @@ object MantleServer extends App {
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext: scala.concurrent.ExecutionContextExecutor =
     system.dispatcher
-
 
   import ammonite.ops._
 

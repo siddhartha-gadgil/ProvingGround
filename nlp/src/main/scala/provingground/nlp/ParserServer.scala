@@ -19,7 +19,8 @@ import scala.concurrent._
 
 import scala.io.StdIn
 
-class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: ActorMaterializer) {
+class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext,
+                                         mat: ActorMaterializer) {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
@@ -33,7 +34,6 @@ class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: Act
            "expr"    -> code.toString,
            "deptree" -> proseTree.view.replace("\n", ""))
   }
-
 
   val mantleService = new MantleService(serverMode)
 
@@ -79,13 +79,12 @@ class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: Act
     (pathSingleSlash | path("index.html")) {
       get {
         complete(
-          HttpEntity(ContentTypes.`text/plain(UTF-8)`,
-          "Fiddle does not work from the NLP server, use the HOTT server"
+          HttpEntity(
+            ContentTypes.`text/plain(UTF-8)`,
+            "Fiddle does not work from the NLP server, use the HOTT server")
         )
-      )
       }
     }
-
 
   val mainHTML =
     """
@@ -97,8 +96,6 @@ class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext, mat: Act
       |    parser.load()
       |  </script>
     """.stripMargin
-
-
 
 }
 object ParserServer extends App {
@@ -152,16 +149,14 @@ object ParserServer extends App {
       val parserService = new ParserService(config.serverMode)
       import parserService._, mantleService.keepAlive
 
-
-
-
       val bindingFuture =
         Http().bindAndHandle(
           route ~
-            pathPrefix("hott"){
+            pathPrefix("hott") {
               mantleService.route ~ pathPrefix("scripts")(ammRoute)
             },
-            config.host, config.port)
+          config.host,
+          config.port)
 
       val exitMessage =
         if (config.serverMode) "Kill process to exit"

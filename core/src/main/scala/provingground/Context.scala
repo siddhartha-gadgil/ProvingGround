@@ -69,8 +69,7 @@ object Context {
     def exportTyp(t: Typ[Term]) = init.exportTyp(t)
   }
 
-  case class AppendIndDef(init: Context, defn : ExstInducStruc)
-      extends Context {
+  case class AppendIndDef(init: Context, defn: ExstInducStruc) extends Context {
     val valueOpt = None
 
     val constants = init.constants ++ defn.constants
@@ -150,6 +149,10 @@ trait Context {
 
   val inductiveDefns: Vector[ExstInducStruc]
 
+  lazy val inducStruct =
+    inductiveDefns.reverse
+      .foldRight[ExstInducStruc](ExstInducStruc.Base)(_ || _)
+
   def export(t: Term): Term
 
   def exportTyp(typ: Typ[Term]): Typ[Term]
@@ -179,14 +182,13 @@ trait Context {
   def introduce[U <: Term with Subs[U]](t: U, role: Role = Consider) =
     AppendTerm(this, t, role)
 
-  val valueOpt : Option[Term]
+  val valueOpt: Option[Term]
 
-  lazy val namedTerms : Map[AnySym, Term] =
-    (definitions.collect{
+  lazy val namedTerms: Map[AnySym, Term] =
+    (definitions.collect {
       case Defn(name: Symbolic, value) => (name.name -> value)
     } ++
-    constants.collect{
-      case const: Symbolic => const.name -> const
-    }
-   ).toMap
+      constants.collect {
+        case const: Symbolic => const.name -> const
+      }).toMap
 }

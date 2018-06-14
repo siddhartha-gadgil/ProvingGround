@@ -15,6 +15,8 @@ trait ExstInducStruc {
   def inducOpt(dom: Term, cod: Term): Option[Term]
 
   val constants: Vector[Term]
+
+  def ||(that: ExstInducStruc) = ExstInducStruc.OrElse(this, that)
 }
 
 object ExstInducStruc {
@@ -52,13 +54,18 @@ object ExstInducStruc {
           struct.subs(variable, value).inducOpt(dom, cod)
         case _ => None
       }
-    val constants = struct.constants.map(lambda(variable))
+
+    val constants =
+      struct.constants
+        .collect { case FormalAppln(f, a) if a == variable => f }
   }
 
   case class ConsSeqExst[SS <: HList, H <: Term with Subs[H], Intros <: HList](
-      cs: ConstructorSeqTL[SS, H, Intros], intros: Vector[Term]
+      cs: ConstructorSeqTL[SS, H, Intros],
+      intros: Vector[Term]
   ) extends ExstInducStruc {
-    def subs(x: Term, y: Term) = ConsSeqExst(cs.subs(x, y), intros.map(_.replace(x, y)))
+    def subs(x: Term, y: Term) =
+      ConsSeqExst(cs.subs(x, y), intros.map(_.replace(x, y)))
 
     def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]) =
       if (dom == cs.typ) Some(cs.recE(cod)) else None
@@ -66,21 +73,25 @@ object ExstInducStruc {
     def inducOpt(dom: Term, cod: Term): Option[Term] =
       if (dom == cs.typ) Some(cs.inducE(fm[H](cs.typ, cod))) else None
 
-
     val constants = cs.typ +: intros
   }
 
-  def get(typ: Term, intros: Vector[Term]) : ExstInducStruc =
+  def get(typ: Term, intros: Vector[Term]): ExstInducStruc =
     ConsSeqExst(
-      ConstructorSeqTL.getExst(toTyp(typ), intros).value, intros
+      ConstructorSeqTL.getExst(toTyp(typ), intros).value,
+      intros
     )
 
-  case class IndConsSeqExst[SS <: HList, H <: Term with Subs[H],
-  F <: Term with Subs[F], Index <: HList: TermList, Intros <: HList](
-      cs: IndexedConstructorSeqDom[SS, H, F, Index, Intros], intros: Vector[Term])
+  case class IndConsSeqExst[SS <: HList,
+                            H <: Term with Subs[H],
+                            F <: Term with Subs[F],
+                            Index <: HList: TermList,
+                            Intros <: HList](
+      cs: IndexedConstructorSeqDom[SS, H, F, Index, Intros],
+      intros: Vector[Term])
       extends ExstInducStruc {
     def subs(x: Term, y: Term): ExstInducStruc =
-      IndConsSeqExst(cs.subs(x,y), intros.map(_.replace(x, y)))
+      IndConsSeqExst(cs.subs(x, y), intros.map(_.replace(x, y)))
 
     def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]) =
       if (dom == cs.W) Some(cs.recE(cod)) else None
@@ -91,12 +102,12 @@ object ExstInducStruc {
     val constants = intros
   }
 
-  def getIndexed(typF: Term, intros: Vector[Term]) : ExstInducStruc =
-    {
-      val fmly = TypFamilyExst.getFamily(typF)
-      val indTyp = fmly.IndexedConstructorSeqExst.getIndexedConstructorSeq(intros).value
-      IndConsSeqExst(indTyp, intros)(fmly.subst)
-    }
+  def getIndexed(typF: Term, intros: Vector[Term]): ExstInducStruc = {
+    val fmly = TypFamilyExst.getFamily(typF)
+    val indTyp =
+      fmly.IndexedConstructorSeqExst.getIndexedConstructorSeq(intros).value
+    IndConsSeqExst(indTyp, intros)(fmly.subst)
+  }
 
   case object Base extends ExstInducStruc {
     def subs(x: Term, y: Term) = this

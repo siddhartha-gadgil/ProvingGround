@@ -49,70 +49,67 @@ object ProverClient {
     val sse = new dom.EventSource("./proof-source")
 
     sse.onmessage = (event: dom.MessageEvent) =>
-      if (event.data.toString.size > 0){
+      if (event.data.toString.size > 0) {
         runButton.value = "Ask Server for proof"
         val answer = event.data.toString
-          val js     = ujson.read(answer)
-          val proved = js.obj("proved").bool
-          if (proved) {
-            val termDiv = div(style := "overflow-x: auto;")().render
-            val typDiv  = div(style := "overflow-x: auto;")().render
-            termDiv.innerHTML = katex.renderToString(js.obj("term").str)
-            typDiv.innerHTML = katex.renderToString(js.obj("type").str)
+        val js     = ujson.read(answer)
+        val proved = js.obj("proved").bool
+        if (proved) {
+          val termDiv = div(style := "overflow-x: auto;")().render
+          val typDiv  = div(style := "overflow-x: auto;")().render
+          termDiv.innerHTML = katex.renderToString(js.obj("term").str)
+          typDiv.innerHTML = katex.renderToString(js.obj("type").str)
 
-            proverDiv.appendChild(
+          proverDiv.appendChild(
+            ul(`class` := "list-group")(
+              li(`class` := "list-group-item list-group-item-primary")(
+                "From the server via SSE:"),
+              li(`class` := "list-group-item list-group-item-info")("Theorem"),
+              li(`class` := "list-group-item")(typDiv),
+              li(`class` := "list-group-item list-group-item-success")("Proof"),
+              li(`class` := "list-group-item")(termDiv),
+            ).render)
+
+          val lemmaSeq = js.obj("lemmas").arr
+          def lemmaLI(lm: Js.Value) = {
+            val termDivL = div(style := "overflow-x: auto;")().render
+            val typDivL  = div(style := "overflow-x: auto;")().render
+            termDivL.innerHTML = katex.renderToString(lm.obj("term").str)
+            typDivL.innerHTML = katex.renderToString(lm.obj("type").str)
+            li(`class` := "list-group-item")(
               ul(`class` := "list-group")(
-                li(`class` := "list-group-item list-group-item-primary")(
-                  "From the server via SSE:"),
-                li(`class` := "list-group-item list-group-item-info")(
-                  "Theorem"),
-                li(`class` := "list-group-item")(typDiv),
+                li(`class` := "list-group-item list-group-item-info")("Lemma"),
+                li(`class` := "list-group-item")(typDivL),
                 li(`class` := "list-group-item list-group-item-success")(
                   "Proof"),
-                li(`class` := "list-group-item")(termDiv),
-              ).render)
-
-            val lemmaSeq = js.obj("lemmas").arr
-            def lemmaLI(lm: Js.Value) = {
-              val termDivL = div(style := "overflow-x: auto;")().render
-              val typDivL  = div(style := "overflow-x: auto;")().render
-              termDivL.innerHTML = katex.renderToString(lm.obj("term").str)
-              typDivL.innerHTML = katex.renderToString(lm.obj("type").str)
-              li(`class` := "list-group-item")(
-                ul(`class` := "list-group")(
-                  li(`class` := "list-group-item list-group-item-info")(
-                    "Lemma"),
-                  li(`class` := "list-group-item")(typDivL),
-                  li(`class` := "list-group-item list-group-item-success")(
-                    "Proof"),
-                  li(`class` := "list-group-item")(termDivL),
-                )
+                li(`class` := "list-group-item")(termDivL),
               )
-            }
-            val lemmaLISeq = lemmaSeq.map(lemmaLI)
-            proverDiv.appendChild(
-              div(
-                h3("Lemmas:"),
-                ul(`class` := "list-group")(
-                  // li(`class` := "list-group-item list-group-item-warning")("Lemmas:"),
-                  lemmaLISeq: _*
-                )
-              ).render
             )
+          }
+          val lemmaLISeq = lemmaSeq.map(lemmaLI)
+          proverDiv.appendChild(
+            div(
+              h3("Lemmas:"),
+              ul(`class` := "list-group")(
+                // li(`class` := "list-group-item list-group-item-warning")("Lemmas:"),
+                lemmaLISeq: _*
+              )
+            ).render
+          )
 
-          } else
-            proverDiv.appendChild(h3("could not find proof of theorem").render)
+        } else
+          proverDiv.appendChild(h3("could not find proof of theorem").render)
 
     }
 
     def query() = {
       runButton.value = "Asking Server"
-      Ajax.post("./monoid-proof")
-      .foreach { (xhr) =>
+      Ajax
+        .post("./monoid-proof")
+        .foreach { (xhr) =>
           runButton.value = xhr.responseText
-      }
+        }
     }
-
 
     runButton.onclick = (e: dom.Event) => query()
 
