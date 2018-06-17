@@ -276,7 +276,8 @@ object ProverTasks {
     }
     breadthFirstTask[FD[Term], Term](
       termsTask.map((fd) => Vector(Task.eval(fd))),
-      (findist: FD[Term]) => findist.supp.find(_.typ == goal),
+      (findist: FD[Term]) =>
+        findist.supp.filter(_.typ == goal).sortBy((x) => -findist(x)).headOption,
       spawn)
   }
 
@@ -359,7 +360,9 @@ object ProverTasks {
     breadthFirstTask[(FD[Term], Vector[Term]), (Term, Vector[Term])](
       termsTask.map((fd) => Vector(Task.eval((fd, Vector.empty[Term])))),
       (findistAc: (FD[Term], Vector[Term])) =>
-        findistAc._1.supp.find(_.typ == goal).map((t) => (t, findistAc._2)),
+        findistAc._1.supp
+        .filter(_.typ == goal).sortBy((x) => -findistAc._1(x)).headOption
+        .map((t) => (t, findistAc._2)),
       spawn
     )
   }
