@@ -5,6 +5,9 @@ import mill.scalalib.scalafmt._
 import define.{Sources, Task}
 import ammonite.ops._
 import coursier.maven.MavenRepository
+// import $ivy.`ch.epfl.scala::mill-bloop:1.0.0-M11`
+// import $ivy.`fun.valycorp::mill-ensime:0.0.1`
+
 
 trait MetalsModule extends ScalaModule{
   import java.io._
