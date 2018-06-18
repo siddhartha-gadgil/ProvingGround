@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="ujson_2.12-0.6.6.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.12/0.6.6/ujson_2.12-0.6.6.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.12/0.6.6/ujson_2.12-0.6.6-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

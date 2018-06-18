@@ -17,6 +17,7 @@
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/mantle.test.iml" filepath="$PROJECT_DIR$/.idea_modules/mantle.test.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/client.iml" filepath="$PROJECT_DIR$/.idea_modules/client.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/core.jvm.iml" filepath="$PROJECT_DIR$/.idea_modules/core.jvm.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/experiments.iml" filepath="$PROJECT_DIR$/.idea_modules/experiments.iml"/>
         </modules>
     </component>
 </project>

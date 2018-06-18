@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="SBT: ch.epfl.scala:mill-bloop_2.12:1.0.0-M11:jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/ch/epfl/scala/mill-bloop_2.12/1.0.0-M11/mill-bloop_2.12-1.0.0-M11.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/ch/epfl/scala/mill-bloop_2.12/1.0.0-M11/mill-bloop_2.12-1.0.0-M11-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

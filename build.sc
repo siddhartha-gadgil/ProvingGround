@@ -260,3 +260,20 @@ object server extends SbtModule with ServerModule {
 
   override def mainClass = Some("provingground.interface.ScriptServer")
 }
+
+object experiments extends CommonModule{
+  override def ivyDeps =
+    super.ivyDeps() ++ Agg(
+      ivy"org.platanios::tensorflow:0.2.2;classifier=linux-cpu-x86_64"
+    )
+}
+
+object deepwalk extends JvmModule{
+  override def ivyDeps =
+    super.ivyDeps() ++ Agg(
+      ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta",
+      ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta",
+      ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta",
+      ivy"org.nd4j:nd4j-native-platform:1.0.0-beta"
+    )
+}

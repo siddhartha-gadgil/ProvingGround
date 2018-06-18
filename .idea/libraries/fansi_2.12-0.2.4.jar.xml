@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="fansi_2.12-0.2.4.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

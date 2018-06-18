@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="commons-codec-1.10.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/commons-codec/commons-codec/1.10/commons-codec-1.10-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="scala-parser-combinators_2.12-1.0.5.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.5/scala-parser-combinators_2.12-1.0.5.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.5/scala-parser-combinators_2.12-1.0.5-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

@@ -120,3 +120,5 @@ data/*.tsv
 
 # macOS
 .DS_Store
+
+data/bird-sentences.txt

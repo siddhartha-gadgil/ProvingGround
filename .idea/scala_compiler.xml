@@ -1,65 +1,199 @@
 <project version="4">
     <component name="ScalaCompilerConfiguration">
-        <profile name="mill 1" modules="exploring,andrewscurtis,server,leanlib.jvm,nlp,normalform,jvmroot,mantle,realfunctions,mantle.test,core.jvm">
+        <profile name="mill 1" modules="exploring">
             <parameters>
                 <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
                 <parameter value="-unchecked"/>
                 <parameter value="-deprecation"/>
                 <parameter value="-feature"/>
                 <parameter value="-language:existentials"/>
             </parameters>
-            <plugins> </plugins>
+            <plugins>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
+            </plugins>
         </profile>
-        <profile name="mill 2" modules="trepplein">
+        <profile name="mill 2" modules="andrewscurtis,server">
+            <parameters>
+                <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
+                <parameter value="-unchecked"/>
+                <parameter value="-deprecation"/>
+                <parameter value="-feature"/>
+                <parameter value="-language:existentials"/>
+            </parameters>
+            <plugins>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+            </plugins>
+        </profile>
+        <profile name="mill 3" modules="nlp">
+            <parameters>
+                <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
+                <parameter value="-unchecked"/>
+                <parameter value="-deprecation"/>
+                <parameter value="-feature"/>
+                <parameter value="-language:existentials"/>
+            </parameters>
+            <plugins>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+            </plugins>
+        </profile>
+        <profile name="mill 4" modules="normalform">
+            <parameters>
+                <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
+                <parameter value="-unchecked"/>
+                <parameter value="-deprecation"/>
+                <parameter value="-feature"/>
+                <parameter value="-language:existentials"/>
+            </parameters>
+            <plugins>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+            </plugins>
+        </profile>
+        <profile name="mill 5" modules="jvmroot,mantle">
+            <parameters>
+                <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
+                <parameter value="-unchecked"/>
+                <parameter value="-deprecation"/>
+                <parameter value="-feature"/>
+                <parameter value="-language:existentials"/>
+            </parameters>
+            <plugins>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
+            </plugins>
+        </profile>
+        <profile name="mill 6" modules="mantle.test">
+            <parameters>
+                <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
+                <parameter value="-unchecked"/>
+                <parameter value="-deprecation"/>
+                <parameter value="-feature"/>
+                <parameter value="-language:existentials"/>
+            </parameters>
+            <plugins>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
+            </plugins>
+        </profile>
+        <profile name="mill 7" modules="leanlib.jvm,realfunctions,core.jvm,experiments">
+            <parameters>
+                <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
+                <parameter value="-unchecked"/>
+                <parameter value="-deprecation"/>
+                <parameter value="-feature"/>
+                <parameter value="-language:existentials"/>
+            </parameters>
+            <plugins>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
+            </plugins>
+        </profile>
+        <profile name="mill 8" modules="trepplein">
             <parameters> </parameters>
             <plugins> </plugins>
         </profile>
-        <profile name="mill 3" modules="leanlib.js">
+        <profile name="mill 9" modules="leanlib.js">
             <parameters>
                 <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
                 <parameter value="-unchecked"/>
                 <parameter value="-deprecation"/>
                 <parameter value="-feature"/>
                 <parameter value="-language:existentials"/>
             </parameters>
             <plugins>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.6/0.6.22/scalajs-compiler_2.12.6-0.6.22.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
             </plugins>
         </profile>
-        <profile name="mill 4" modules="core.js">
+        <profile name="mill 10" modules="core.js">
             <parameters>
                 <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
                 <parameter value="-unchecked"/>
                 <parameter value="-deprecation"/>
                 <parameter value="-feature"/>
                 <parameter value="-language:existentials"/>
             </parameters>
             <plugins>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"/>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.6/0.6.22/scalajs-compiler_2.12.6-0.6.22.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.6/0.6.22/scalajs-compiler_2.12.6-0.6.22.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
             </plugins>
         </profile>
-        <profile name="mill 5" modules="client">
+        <profile name="mill 11" modules="client">
             <parameters>
                 <parameter value="-Ypartial-unification"/>
+                <parameter value="-Yrangepos"/>
+                <parameter value="-Xplugin-require:semanticdb"/>
                 <parameter value="-unchecked"/>
                 <parameter value="-deprecation"/>
                 <parameter value="-feature"/>
                 <parameter value="-language:existentials"/>
             </parameters>
             <plugins>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
-                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.6/0.6.22/scalajs-compiler_2.12.6-0.6.22.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.6/4.0.0-M1/semanticdb-scalac_2.12.6-4.0.0-M1.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-compiler_2.12.6/0.6.22/scalajs-compiler_2.12.6-0.6.22.jar"/>
                 <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.12/0.5.2/pprint_2.12-0.5.2.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.1.3/sourcecode_2.12-0.1.3.jar"/>
+                <plugin path="/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.12/0.2.4/fansi_2.12-0.2.4.jar"/>
             </plugins>
         </profile>
     </component>

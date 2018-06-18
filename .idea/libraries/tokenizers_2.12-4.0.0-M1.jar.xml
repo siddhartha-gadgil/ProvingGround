@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="tokenizers_2.12-4.0.0-M1.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/tokenizers_2.12/4.0.0-M1/tokenizers_2.12-4.0.0-M1.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/tokenizers_2.12/4.0.0-M1/tokenizers_2.12-4.0.0-M1-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>
