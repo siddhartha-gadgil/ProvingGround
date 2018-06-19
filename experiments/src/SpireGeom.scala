@@ -32,6 +32,20 @@ class JetGeomDist(N: Int = 100, p: Double =  0.5){
       prob.zipWithIndex.map{
         case (x, n) => x + Jet.h[Double](n)
       }
+
+    def shifted(prob: Vector[Double], epsilon: Double = 0.1) =
+      {
+        val shift =
+          totalError(tangent(prob)).infinitesimal.toVector
+        prob.zip(shift).map{
+          case (x, t) => x - (epsilon * t)
+        }
+      }
+
+    @annotation.tailrec
+    def flowed(prob: Vector[Double], steps: Int = 10, epsilon: Double = 0.1) : Vector[Double] =
+      if (steps < 1) prob
+      else flowed(shifted(prob, epsilon), steps - 1, epsilon)
   }
 
 }
