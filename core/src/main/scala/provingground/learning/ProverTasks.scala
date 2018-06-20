@@ -50,6 +50,9 @@ object ProverTasks {
   /**
     * evolution of terms by the ''derivative'', as a  (task with value) finite distribution;
     * obtained by lazy recursive definition in [[TermEvolver]] and trunctation.
+    * @param fd  the distribution point
+    * @param tfd the tangent distribution
+    * @param tv the term evolver
     */
   def termdistDerTask(fd: FD[Term],
                       tfd: FD[Term],
@@ -76,6 +79,15 @@ object ProverTasks {
   def hExp(p: Double, q: Double, scale: Double): Double =
     math.exp(-(h0(p, q) - 1) * scale)
 
+  /**
+   * task to find proofs that are useful based on parsimony, i.e.,
+   * reducing relative entropy of the final result with a cost for the
+   * increase in entropy of the initial distribution.
+   *
+   * @param termsTask task for evolution of terms.
+   * @param typsTask task for evolution of types.
+   * @return task for proofs with, and sorted by, parsimonious entropies.
+   */
   def prsmEntTask(termsTask: Task[FD[Term]],
                   typsTask: Task[FD[Typ[Term]]],
                   scale: Double,
@@ -99,6 +111,50 @@ object ProverTasks {
         }
         .sortBy(_._2)
 
+        /**
+         * task to find proofs that are useful based on parsimony, i.e.,
+         * reducing relative entropy of the final result with a cost for the
+         * increase in entropy of the initial distribution.
+         * Also return terms and types
+         *
+         * @param termsTask task for evolution of terms.
+         * @param typsTask task for evolution of types.
+         * @return task for proofs with, and sorted by, parsimonious entropies.
+         */
+        def prsmEntMemoTask(termsTask: Task[FD[Term]],
+                        typsTask: Task[FD[Typ[Term]]],
+                        scale: Double,
+                        vars: Vector[Term] = Vector()
+                      ): Task[(Vector[(Term, Double)], Set[Term], Set[Typ[Term]])] =
+          for {
+            terms <- termsTask
+            typs  <- typsTask
+            thmsByPf = terms.map(_.typ)
+            thmsBySt = typs.filter(thmsByPf(_) > 0)
+            pfSet    = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
+            fullPfSet = pfSet.flatMap((pf) =>
+              partialLambdaClosures(vars)(pf).map((pf, _)))
+          } yield
+            (fullPfSet
+              .map {
+                case (pf, fullPf) =>
+                  (fullPf,
+                   hExp(thmsBySt(pf.typ),
+                        thmsByPf(pf.typ),
+                        scale * terms(pf) / thmsByPf(pf.typ)))
+              }.sortBy(_._2),
+              terms.support,
+              typs.support
+            )
+
+
+
+
+  /**
+   * bunch of tasks using newly discovered proofs by evolving along unit tangents.
+   * the cutoffs, viewed as resources, are allocated based on values of the new proofs.
+   * these tasks only return the tangent distributions
+   */
   def dervecTasks(base: FD[Term],
                   tv: TermEvolver,
                   termsTask: Task[FD[Term]],
@@ -123,6 +179,11 @@ object ProverTasks {
       }
     }
 
+  /**
+   * bunch of tasks using newly discovered proofs by evolving along unit tangents.
+   * the cutoffs, viewed as resources, are allocated based on values of the new proofs.
+   * these tasks return the tangent distributions as well as the path to get there.
+   */
   def dervecTraceTasks(base: FD[Term],
                        tv: TermEvolver,
                        termsTask: Task[FD[Term]],
@@ -156,6 +217,53 @@ object ProverTasks {
       }
     }
 
+    /**
+     * bunch of tasks using newly discovered proofs by evolving along unit tangents.
+     * the cutoffs, viewed as resources, are allocated based on values of the new proofs.
+     * these tasks return the tangent distributions as well as the path to get there.
+     */
+    def dervecMemoTasks(base: FD[Term],
+                         tv: TermEvolver,
+                         termsTask: Task[FD[Term]],
+                         typsTask: Task[FD[Typ[Term]]],
+                         maxtime: FiniteDuration,
+                         cutoff: Double,
+                         scale: Double,
+                         trace: Vector[Term],
+                         termSet: Set[Term],
+                         typSet: Set[Typ[Term]],
+                         vars: Vector[Term] = Vector())
+      : Task[Vector[Task[(FD[Term], Vector[Term], Set[Term], Set[Typ[Term]])]]] =
+      prsmEntMemoTask(termsTask, typsTask, scale, vars = vars).map {case (vec, newTerms, newTypes) =>
+        {
+          val scales = vec.collect {
+            case (v, p) if p > cutoff && cutoff / p > 0 && !(trace.contains(v)) =>
+              (v, cutoff / p)
+          }
+          val tot   = scales.map { case (_, x) => 1 / x }.sum
+          val ratio = max(tot * cutoff, 1.0)
+          // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
+          scales.map {
+            case (v, sc) =>
+              for {
+                fd <- termdistDerTask(base,
+                                      FD.unif(v),
+                                      tv,
+                                      sc * ratio,
+                                      maxtime,
+                                      vars)
+              } yield (fd, trace :+ v, termSet union newTerms, typSet union newTypes)
+          }
+        }
+      }
+
+
+    /**
+     * bunch of tasks using newly discovered proofs by evolving along unit tangents.
+     * the cutoffs, viewed as resources, are allocated based on values of the new proofs.
+     * these tasks return the tangent distributions as well as the path to get there,
+     * plus weights of proofs as they are found.
+     */
   def dervecWeightedTraceTasks(base: FD[Term],
                                tv: TermEvolver,
                                termsTask: Task[FD[Term]],
@@ -189,16 +297,12 @@ object ProverTasks {
       }
     }
 
-  def inTaskVec[X, Y](tv: Task[Vector[X]], p: X => Option[Y]): Task[Option[Y]] =
-    tv.flatMap {
-      case Vector() => Task.pure(None)
-      case x +: ys =>
-        Task.eval(p(x)).flatMap {
-          case Some(z) => Task.pure(Some(z))
-          case None    => inTaskVec(Task.eval(ys), p)
-        }
-    }
-
+    /**
+     * Looks for an element satisfying a predicate in a vector of tasks.
+     * @param tv task giving a vector of tasks giving elements of X.
+     * @param p an optional map, ie predicate+map
+     * @return task giving optional element satisying the predicate.
+     */
   def inTaskVecTask[X, Y](tv: Task[Vector[Task[X]]],
                           p: X => Option[Y]): Task[Option[Y]] =
     tv.flatMap {
@@ -210,6 +314,16 @@ object ProverTasks {
         }
     }
 
+  /**
+   * bread-first search for an element in `X` satisying a predicate-map `p`;
+   * each element of `X` can spawn a vector of elements in which we also search.
+   * Everything is wrapped in tasks.
+   *
+   * @param tv the initial vector in which we search
+   * @param p the predicate to be satisfied + map; actually an optional map.
+   * @param spawn new vectors in `X` spawned by an element in `X`, depeneding on the depth.
+   * @param depth the depth of the current recursive step.
+   */
   def breadthFirstTask[X, Y](tv: Task[Vector[Task[X]]],
                              p: X => Option[Y],
                              spawn: Int => X => Task[Vector[Task[X]]],
@@ -229,6 +343,18 @@ object ProverTasks {
     }
   }
 
+  /**
+   * bread-first accumulation of results;
+   * a typical example is interesting proofs, with X finite-distributions of terms.
+   * each element of `X` can spawn a vector of elements in which we also search.
+   * Everything is wrapped in tasks.
+   *
+   * @param tsk the initial element for the search
+   * @param results the result, depending on an element of `X` - also the depth,
+   * but this is used mainly for tracking.
+   * @param spawn new vectors in `X` spawned by an element in `X`, depeneding on the depth.
+   * @param depth the depth of the current recursive step.
+   */
   def branchedGatherTask[X, Y](tsk: Task[X],
                                results: Int => X => Task[Y],
                                combine: (Y, Y) => Y,
@@ -250,6 +376,11 @@ object ProverTasks {
     } yield comb
   }
 
+  /**
+   * breadth-first search for a term of a given type
+   *
+   * @return task giving an optional term of the type.
+   */
   def theoremSearchTask(fd: FD[Term],
                         tv: TermEvolver,
                         cutoff: Double,
@@ -281,6 +412,11 @@ object ProverTasks {
       spawn)
   }
 
+  /**
+   * breadth-first exploration to find alll interesting proofs.
+   *
+   * @return map from types to proofs with weights and steps
+   */
   def theoremsExploreTask(fd: FD[Term],
                           tv: TermEvolver,
                           cutoff: Double,
@@ -329,6 +465,13 @@ object ProverTasks {
           .mapValues(_.sortBy((tv) => (tv._2._1, -tv._2._2))))
   }
 
+
+  /**
+   * breadth-first search for a term of a given type, keeping track of the path
+   *
+   * @return task giving an optional term of the type together with a vector of
+   * proofs of lemmas.
+   */
   def theoremSearchTraceTask(
       fd: FD[Term],
       tv: TermEvolver,
@@ -340,7 +483,9 @@ object ProverTasks {
       vars: Vector[Term] = Vector()): Task[Option[(Term, Vector[Term])]] = {
     val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
     val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
-    def spawn(d: Int)(vecAc: (FD[Term], Vector[Term])) = {
+    def spawn(d: Int)(
+      vecAc: (FD[Term], Vector[Term])
+      )  : Task[Vector[Task[(FD[Term], Vector[Term])]]]= {
       val (vec, ac) = vecAc
       if (fd.total == 0) Task.pure(Vector())
       // pprint.log(s"spawning tasks from $vec")
@@ -367,6 +512,65 @@ object ProverTasks {
     )
   }
 
+  /**
+   * breadth-first search for a term of a given type, keeping track of the path
+   * and the distributions along the way
+   *
+   * @return task giving an optional term of the type together with a vector of
+   * proofs of lemmas.
+   */
+  def theoremSearchMemoTask(
+      fd: FD[Term],
+      tv: TermEvolver,
+      cutoff: Double,
+      maxtime: FiniteDuration,
+      goal: Typ[Term],
+      termSet: Set[Term],
+      typSet: Set[Typ[Term]],
+      decay: Double = 1.0,
+      scale: Double = 1.0,
+      vars: Vector[Term] = Vector()
+    ): Task[Option[(Term, Vector[Term], Set[Term], Set[Typ[Term]])]] = {
+    val typsTask  = typdistTask(fd, tv, cutoff, maxtime, vars)
+    val termsTask = termdistTask(fd, tv, cutoff, maxtime, vars)
+    def spawn(d: Int)(vecAc: (FD[Term], Vector[Term], Set[Term], Set[Typ[Term]])
+  ) : Task[Vector[Task[(FD[Term], Vector[Term], Set[Term], Set[Typ[Term]])]]] = {
+      val (vec, ac, termSet, typSet) = vecAc
+      if (fd.total == 0) Task.pure(Vector())
+      // pprint.log(s"spawning tasks from $vec")
+      else
+        dervecMemoTasks(
+          fd.safeNormalized,
+          tv,
+          Task.eval(vec),
+          typsTask,
+          maxtime,
+          cutoff * math.pow(decay, 1.0 + d.toDouble),
+          scale,
+          ac,
+          termSet,
+          typSet,
+          vars
+        )
+    }
+    breadthFirstTask[(FD[Term], Vector[Term], Set[Term], Set[Typ[Term]]),
+      (Term, Vector[Term], Set[Term], Set[Typ[Term]])](
+      termsTask.map((fd) => Vector(Task.eval((fd, Vector.empty[Term], termSet, typSet)))),
+      (findistAc: (FD[Term], Vector[Term], Set[Term], Set[Typ[Term]])) =>
+        findistAc._1.supp
+        .filter(_.typ == goal).sortBy((x) => -findistAc._1(x)).headOption
+        .map((t) => (t, findistAc._2, findistAc._3, findistAc._4)),
+      spawn
+    )
+  }
+
+
+  /**
+   * breadth-first exploration to find alll interesting proofs, keeping track
+   * of lemmas
+   *
+   * @return task for vector of proofs with lemmas and the corresponding theorems.
+   */
   def theoremsExploreTraceTask(fd: FD[Term],
                                tv: TermEvolver,
                                cutoff: Double,
