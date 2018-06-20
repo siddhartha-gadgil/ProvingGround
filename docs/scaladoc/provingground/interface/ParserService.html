@@ -365,9 +365,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.interface.ParserService#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(serverMode:Boolean):provingground.interface.ParserService"></a><a id="&lt;init&gt;:ParserService"></a>
+      <a id="&lt;init&gt;(serverMode:Boolean)(implicitec:scala.concurrent.ExecutionContext,implicitmat:akka.stream.ActorMaterializer):provingground.interface.ParserService"></a><a id="&lt;init&gt;:ParserService"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/ParserService.html#&lt;init&gt;(serverMode:Boolean):provingground.interface.ParserService" title="Permalink">
+      <a href="../../provingground/interface/ParserService.html#&lt;init&gt;(serverMode:Boolean)(implicitec:scala.concurrent.ExecutionContext,implicitmat:akka.stream.ActorMaterializer):provingground.interface.ParserService" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -376,7 +376,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ParserService</span><span class="params">(<span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span>
+        <span class="name">ParserService</span><span class="params">(<span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="mat">mat: <span class="extype" name="akka.stream.ActorMaterializer">ActorMaterializer</span></span>)</span>
       </span>
       
       
@@ -438,6 +438,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.interface.ParserService#ammRoute" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ammRoute:akka.http.scaladsl.server.Route"></a><a id="ammRoute:Route"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserService.html#ammRoute:akka.http.scaladsl.server.Route" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ammRoute</span><span class="result">: <span class="extype" name="akka.http.scaladsl.server.Route">Route</span></span>
+      </span>
+      
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -510,22 +526,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.interface.ParserService#executionContext" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="executionContext:scala.concurrent.ExecutionContextExecutor"></a><a id="executionContext:ExecutionContextExecutor"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/ParserService.html#executionContext:scala.concurrent.ExecutionContextExecutor" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">executionContext</span><span class="result">: <span class="extype" name="scala.concurrent.ExecutionContextExecutor">ExecutionContextExecutor</span></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -586,22 +586,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.interface.ParserService#indexHTML" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indexHTML:String"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/ParserService.html#indexHTML:String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">indexHTML</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      
-      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
@@ -647,22 +631,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">mantleService</span><span class="result">: <a href="MantleService.html" class="extype" name="provingground.interface.MantleService">MantleService</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.interface.ParserService#materializer" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="materializer:akka.stream.ActorMaterializer"></a><a id="materializer:ActorMaterializer"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/ParserService.html#materializer:akka.stream.ActorMaterializer" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">materializer</span><span class="result">: <span class="extype" name="akka.stream.ActorMaterializer">ActorMaterializer</span></span>
       </span>
       
       
@@ -784,22 +752,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.interface.ParserService#system" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="system:akka.actor.ActorSystem"></a><a id="system:ActorSystem"></a>
-      <span class="permalink">
-      <a href="../../provingground/interface/ParserService.html#system:akka.actor.ActorSystem" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">system</span><span class="result">: <span class="extype" name="akka.actor.ActorSystem">ActorSystem</span></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">

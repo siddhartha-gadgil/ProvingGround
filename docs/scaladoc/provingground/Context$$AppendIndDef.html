@@ -90,248 +90,86 @@ homotopy type theory (HoTT) as foundations and natural language processing.</p><
 in the <a href="functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="_root_">root</a></dd></dl></div>
-    </li><li name="provingground.andrewscurtis" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="andrewscurtis"></a><a id="andrewscurtis:andrewscurtis"></a>
+    </li><li name="provingground.Context" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Context"></a><a id="Context:Context"></a>
       <span class="permalink">
-      <a href="../provingground/index.html#andrewscurtis" title="Permalink">
+      <a href="../provingground/index.html#Context" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">package</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="andrewscurtis/index.html"><span class="name">andrewscurtis</span></a>
+        <a title="" href="Context$.html"><span class="name">Context</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.examples" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="examples"></a><a id="examples:examples"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#examples" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="examples/index.html"><span class="name">examples</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.functionfinder" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="functionfinder"></a><a id="functionfinder:functionfinder"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#functionfinder" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="functionfinder/index.html"><span class="name">functionfinder</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="induction"></a><a id="induction:induction"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#induction" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts) and of (dependent) functions on these by recursion and induction These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)." href="induction/index.html"><span class="name">induction</span></a>
-      </span>
-      
-      <p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
-and of (dependent) functions on these by recursion and induction
-These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points).</p><div class="fullcomment"><div class="comment cmt"><p>Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
-and of (dependent) functions on these by recursion and induction
-These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points). In HoTT,
-recursion and induction are applications of (dependent) functions <code>rec_W,X</code> and  <code>ind_W, Xs</code> to the <code><code>definition data</code></code>.</p><p>It is useful to capture information regarding inductive types and the recursion and induction functions in scala types. Our implementation
-is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="induction/ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> (without specifying the type)
-and <a href="induction/ConstructorTL.html" class="extype" name="provingground.induction.ConstructorTL">ConstructorTL</a> including the specific type. The full definition is in <a href="induction/ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
-scala type of the <code>rec_W,X</code> and <code>induc_W, Xs</code> functions depends on the scala type of the codomain <code>X</code> (or family <code>Xs</code>).
-To make these types visible, some type level calculations using  implicits are done, giving traits <a href="induction/ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>
-and <a href="induction/ConstructorSeqMap.html" class="extype" name="provingground.induction.ConstructorSeqMap">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
-single introduction rule. Traits <a href="induction/ConstructorSeqMapper.html" class="extype" name="provingground.induction.ConstructorSeqMapper">ConstructorSeqMapper</a> and <a href="induction/ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.interface" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="interface"></a><a id="interface:interface"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#interface" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="interface/index.html"><span class="name">interface</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="learning"></a><a id="learning:learning"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#learning" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="learning/index.html"><span class="name">learning</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.library" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="library"></a><a id="library:library"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#library" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="library/index.html"><span class="name">library</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.scratch" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="scratch"></a><a id="scratch:scratch"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#scratch" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="scratch/index.html"><span class="name">scratch</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.translation" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="translation"></a><a id="translation:translation"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#translation" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="Translation primarily using a functorial framework - see Translator$, for natural language processing as well as serialization, formatted output, parsing, interface with  formal languages etc." href="translation/index.html"><span class="name">translation</span></a>
-      </span>
-      
-      <p class="shortcomment cmt">Translation primarily using a functorial framework - see <a href="translation/Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
-as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><div class="fullcomment"><div class="comment cmt"><p>Translation primarily using a functorial framework - see <a href="translation/Translator$.html" class="extype" name="provingground.translation.Translator">Translator$</a>, for natural language processing
-as well as serialization, formatted output, parsing, interface with  formal languages etc.</p><p>Besides the <a href="translation/Translator.html" class="extype" name="provingground.translation.Translator">Translator</a> framework and helper typeclasses is <a href="translation/Functors$.html" class="extype" name="provingground.translation.Functors">Functors</a>, several structures for
-concrete languages including our implementation of HoTT are in this package.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li class="current-entities indented1">
+    </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="Base$.html" title=""></a>
-                        <a href="Base$.html" title="">Base</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="Context$.html" title=""></a>
-                        <a class="trait" href="" title=""></a>
-                        <a href="" title="">Context</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="FiniteDistribution$.html" title=""></a>
-                        <a class="class" href="FiniteDistribution.html" title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates."></a>
-                        <a href="FiniteDistribution.html" title="Finite distributions, often supposed to be probability distributions, but may also be tangents to this or intermediates.">FiniteDistribution</a>
-                      </li><li class="current-entities indented1">
+                        <a class="class" href="Context$$AppendConstant.html" title=""></a>
+                        <a href="Context$$AppendConstant.html" title="">AppendConstant</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="Frankl$.html" title=""></a>
-                        <a href="Frankl$.html" title="">Frankl</a>
-                      </li><li class="current-entities indented1">
+                        <a class="class" href="Context$$AppendDefn.html" title=""></a>
+                        <a href="Context$$AppendDefn.html" title="">AppendDefn</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$.html" title="Core of Homotopy Type Theory (HoTT) implementation."></a>
-                        <a href="HoTT$.html" title="Core of Homotopy Type Theory (HoTT) implementation.">HoTT</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="LinearStructure$.html" title=""></a>
-                        <a class="class" href="LinearStructure.html" title=""></a>
-                        <a href="LinearStructure.html" title="">LinearStructure</a>
-                      </li><li class="current-entities indented1">
+                        <a class="class" href="" title=""></a>
+                        <a href="" title="">AppendIndDef</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="MereProposition$.html" title=""></a>
-                        <a href="MereProposition$.html" title="">MereProposition</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="PickledWeighted$.html" title=""></a>
-                        <a class="class" href="PickledWeighted.html" title=""></a>
-                        <a href="PickledWeighted.html" title="">PickledWeighted</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="ProbabilityDistribution$.html" title=""></a>
-                        <a class="trait" href="ProbabilityDistribution.html" title="A probability distribution, from which we can pick values at random (the only abstract method)."></a>
-                        <a href="ProbabilityDistribution.html" title="A probability distribution, from which we can pick values at random (the only abstract method).">ProbabilityDistribution</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="Subst$.html" title=""></a>
-                        <a class="trait" href="Subst.html" title="allows substitution of a Term by another."></a>
-                        <a href="Subst.html" title="allows substitution of a Term by another.">Subst</a>
-                      </li><li class="current-entities indented1">
+                        <a class="class" href="Context$$AppendTerm.html" title=""></a>
+                        <a href="Context$$AppendTerm.html" title="">AppendTerm</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="SubstImplicits.html" title=""></a>
-                        <a href="SubstImplicits.html" title="">SubstImplicits</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="TermList$.html" title=""></a>
-                        <a class="trait" href="TermList.html" title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;"></a>
-                        <a href="TermList.html" title="allows substitution of a Term by another, as well as mapping to a vector of terms chiefly subtypes of Term and HLists of these;">TermList</a>
-                      </li><li class="current-entities indented1">
+                        <a class="class" href="Context$$AppendVariable.html" title=""></a>
+                        <a href="Context$$AppendVariable.html" title="">AppendVariable</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="TermListImplicits.html" title=""></a>
-                        <a href="TermListImplicits.html" title="">TermListImplicits</a>
-                      </li><li class="current-entities indented1">
-                        <a class="object" href="Weighted$.html" title=""></a>
-                        <a class="class" href="Weighted.html" title=""></a>
-                        <a href="Weighted.html" title="">Weighted</a>
+                        <a class="object" href="Context$$Assert$.html" title=""></a>
+                        <a href="Context$$Assert$.html" title="">Assert</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Context$$Consider$.html" title=""></a>
+                        <a href="Context$$Consider$.html" title="">Consider</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="Context$$Defn.html" title=""></a>
+                        <a href="Context$$Defn.html" title="">Defn</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Context$$Empty$.html" title=""></a>
+                        <a href="Context$$Empty$.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="Context$$Role.html" title=""></a>
+                        <a href="Context$$Role.html" title="">Role</a>
                       </li>
               </ul>
             </div>
           </div>
           <div id="content">
-            <body class="trait type">
+            <body class="class type">
       <div id="definition">
-        <a href="Context$.html" title="See companion object"><div class="big-circle trait-companion-object">t</div></a>
-        <p id="owner"><a href="index.html" class="extype" name="provingground">provingground</a></p>
-        <h1><a href="Context$.html" title="See companion object">Context</a><span class="permalink">
-      <a href="../provingground/Context.html" title="Permalink">
+        <div class="big-circle class">c</div>
+        <p id="owner"><a href="index.html" class="extype" name="provingground">provingground</a>.<a href="Context$.html" class="extype" name="provingground.Context">Context</a></p>
+        <h1>AppendIndDef<span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"><div>
-            Companion <a href="Context$.html" title="See companion object">object Context</a>
-          </div></span></h3>
+        <h3><span class="morelinks"></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">trait</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Context</span><span class="result"> extends <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+        <span class="name">AppendIndDef</span><span class="params">(<span name="init">init: <a href="Context.html" class="extype" name="provingground.Context">Context</a></span>, <span name="defn">defn: <a href="induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result"> extends <a href="Context.html" class="extype" name="provingground.Context">Context</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -340,13 +178,8 @@ concrete languages including our implementation of HoTT are in this package.
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div><div class="toggleContainer block">
-            <span class="toggle">
-              Known Subclasses
-            </span>
-            <div class="subClasses hiddenContent"><a href="Context$$AppendConstant.html" class="extype" name="provingground.Context.AppendConstant">AppendConstant</a>, <a href="Context$$AppendDefn.html" class="extype" name="provingground.Context.AppendDefn">AppendDefn</a>, <a href="Context$$AppendIndDef.html" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a>, <a href="Context$$AppendTerm.html" class="extype" name="provingground.Context.AppendTerm">AppendTerm</a>, <a href="Context$$AppendVariable.html" class="extype" name="provingground.Context.AppendVariable">AppendVariable</a>, <a href="Context$$Empty$.html" class="extype" name="provingground.Context.Empty">Empty</a></div>
-          </div></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Context.html" class="extype" name="provingground.Context">Context</a>, <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
         
 
       <div id="mbrsel">
@@ -371,7 +204,7 @@ concrete languages including our implementation of HoTT are in this package.
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.Context"><span>Context</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.Context.AppendIndDef"><span>AppendIndDef</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.Context"><span>Context</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -389,150 +222,38 @@ concrete languages including our implementation of HoTT are in this package.
 
       <div id="template">
         <div id="allMembers">
-        
-
-        
-
-        <div class="values members">
-              <h3>Abstract Value Members</h3>
-              <ol><li name="provingground.Context#constants" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="constants:Vector[provingground.HoTT.Term]"></a><a id="constants:Vector[Term]"></a>
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="provingground.Context.AppendIndDef#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(init:provingground.Context,defn:provingground.induction.ExstInducStruc):provingground.Context.AppendIndDef"></a><a id="&lt;init&gt;:AppendIndDef"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#constants:Vector[provingground.HoTT.Term]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#&lt;init&gt;(init:provingground.Context,defn:provingground.induction.ExstInducStruc):provingground.Context.AppendIndDef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
+        <span class="modifier"></span>
+        <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">constants</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.Context#definitions" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="definitions:Vector[provingground.Context.Defn[provingground.HoTT.Term]]"></a><a id="definitions:Vector[Defn[Term]]"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#definitions:Vector[provingground.Context.Defn[provingground.HoTT.Term]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">definitions</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Context$$Defn.html" class="extype" name="provingground.Context.Defn">Defn</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
-      </span>
-      
-      
-    </li><li name="provingground.Context#export" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="export(t:provingground.HoTT.Term):provingground.HoTT.Term"></a><a id="export(Term):Term"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#export(t:provingground.HoTT.Term):provingground.HoTT.Term" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">export</span><span class="params">(<span name="t">t: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.Context#exportTyp" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="exportTyp(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]"></a><a id="exportTyp(Typ[Term]):Typ[Term]"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#exportTyp(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">exportTyp</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.Context#inductiveDefns" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="inductiveDefns:Vector[provingground.induction.ExstInducStruc]"></a><a id="inductiveDefns:Vector[ExstInducStruc]"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#inductiveDefns:Vector[provingground.induction.ExstInducStruc]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">inductiveDefns</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.Context#terms" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="terms:Vector[provingground.HoTT.Term]"></a><a id="terms:Vector[Term]"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#terms:Vector[provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">terms</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.Context#valueOpt" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="valueOpt:Option[provingground.HoTT.Term]"></a><a id="valueOpt:Option[Term]"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#valueOpt:Option[provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">valueOpt</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.Context#variables" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="variables:Vector[provingground.HoTT.Term]"></a><a id="variables:Vector[Term]"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#variables:Vector[provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">variables</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">AppendIndDef</span><span class="params">(<span name="init">init: <a href="Context.html" class="extype" name="provingground.Context">Context</a></span>, <span name="defn">defn: <a href="induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span>
       </span>
       
       
     </li></ol>
             </div>
 
+        
+
+        
+
         <div class="values members">
-              <h3>Concrete Value Members</h3>
+              <h3>Value Members</h3>
               <ol>
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -548,7 +269,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html###():Int" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -564,7 +285,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -577,10 +298,10 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.Context#addConstant" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.Context#addConstant" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="addConstant[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](const:U):provingground.Context.AppendConstant[U]"></a><a id="addConstant[U&lt;:TermwithSubs[U]](U):AppendConstant[U]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#addConstant[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](const:U):provingground.Context.AppendConstant[U]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#addConstant[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](const:U):provingground.Context.AppendConstant[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -592,11 +313,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">addConstant</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Context.addConstant.U">U</span>]</span>]</span><span class="params">(<span name="const">const: <span class="extype" name="provingground.Context.addConstant.U">U</span></span>)</span><span class="result">: <a href="Context$$AppendConstant.html" class="extype" name="provingground.Context.AppendConstant">AppendConstant</a>[<span class="extype" name="provingground.Context.addConstant.U">U</span>]</span>
       </span>
       
-      
-    </li><li name="provingground.Context#addVariable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context#addVariable" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="addVariable[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](variable:U):provingground.Context.AppendConstant[U]"></a><a id="addVariable[U&lt;:TermwithSubs[U]](U):AppendConstant[U]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#addVariable[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](variable:U):provingground.Context.AppendConstant[U]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#addVariable[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](variable:U):provingground.Context.AppendConstant[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -608,11 +329,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">addVariable</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Context.addVariable.U">U</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.Context.addVariable.U">U</span></span>)</span><span class="result">: <a href="Context$$AppendConstant.html" class="extype" name="provingground.Context.AppendConstant">AppendConstant</a>[<span class="extype" name="provingground.Context.addVariable.U">U</span>]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -625,10 +346,10 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.Context#assert" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.Context#assert" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="assert(tp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.Context.AppendTerm[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="assert(Typ[Term]):AppendTerm[Typ[Term]]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#assert(tp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.Context.AppendTerm[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#assert(tp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.Context.AppendTerm[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -640,11 +361,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">assert</span><span class="params">(<span name="tp">tp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="Context$$AppendTerm.html" class="extype" name="provingground.Context.AppendTerm">AppendTerm</a>[<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.Context#assume" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context#assume" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="assume(tp:provingground.HoTT.Typ[provingground.HoTT.Term],text:String):provingground.Context.AppendConstant[provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]]"></a><a id="assume(Typ[Term],String):AppendConstant[TermwithSubs[Term]]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#assume(tp:provingground.HoTT.Typ[provingground.HoTT.Term],text:String):provingground.Context.AppendConstant[provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#assume(tp:provingground.HoTT.Typ[provingground.HoTT.Term],text:String):provingground.Context.AppendConstant[provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -656,11 +377,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">assume</span><span class="params">(<span name="tp">tp: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="text">text: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;assumption&quot;</span></span>)</span><span class="result">: <a href="Context$$AppendConstant.html" class="extype" name="provingground.Context.AppendConstant">AppendConstant</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#clone():Object" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -681,10 +402,26 @@ concrete languages including our implementation of HoTT are in this package.
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.Context#define" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.Context.AppendIndDef#constants" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="constants:Vector[provingground.HoTT.Term]"></a><a id="constants:Vector[Term]"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#constants:Vector[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">constants</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context#define" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="define[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.Term,value:U):provingground.Context.AppendDefn[U]"></a><a id="define[U&lt;:TermwithSubs[U]](Term,U):AppendDefn[U]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#define[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.Term,value:U):provingground.Context.AppendDefn[U]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#define[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.Term,value:U):provingground.Context.AppendDefn[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -696,11 +433,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">define</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Context.define.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="value">value: <span class="extype" name="provingground.Context.define.U">U</span></span>)</span><span class="result">: <a href="Context$$AppendDefn.html" class="extype" name="provingground.Context.AppendDefn">AppendDefn</a>[<span class="extype" name="provingground.Context.define.U">U</span>]</span>
       </span>
       
-      
-    </li><li name="provingground.Context#defineSym" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context#defineSym" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="defineSym[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.AnySym,value:U):provingground.Context.AppendDefn[U]"></a><a id="defineSym[U&lt;:TermwithSubs[U]](AnySym,U):AppendDefn[U]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#defineSym[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.AnySym,value:U):provingground.Context.AppendDefn[U]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#defineSym[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.AnySym,value:U):provingground.Context.AppendDefn[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -712,11 +449,43 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">defineSym</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Context.defineSym.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>, <span name="value">value: <span class="extype" name="provingground.Context.defineSym.U">U</span></span>)</span><span class="result">: <a href="Context$$AppendDefn.html" class="extype" name="provingground.Context.AppendDefn">AppendDefn</a>[<span class="extype" name="provingground.Context.defineSym.U">U</span>]</span>
       </span>
       
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context.AppendIndDef#definitions" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="definitions:Vector[provingground.Context.Defn[provingground.HoTT.Term]]"></a><a id="definitions:Vector[Defn[Term]]"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#definitions:Vector[provingground.Context.Defn[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">definitions</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Context$$Defn.html" class="extype" name="provingground.Context.Defn">Defn</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context.AppendIndDef#defn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="defn:provingground.induction.ExstInducStruc"></a><a id="defn:ExstInducStruc"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#defn:provingground.induction.ExstInducStruc" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">defn</span><span class="result">: <a href="induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>
+      </span>
+      
       
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -729,10 +498,10 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+    </li><li name="provingground.Context.AppendIndDef#export" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="export(t:provingground.HoTT.Term):provingground.HoTT.Term"></a><a id="export(Term):Term"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#export(t:provingground.HoTT.Term):provingground.HoTT.Term" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -741,14 +510,30 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">export</span><span class="params">(<span name="t">t: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context.AppendIndDef#exportTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="exportTyp(t:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]"></a><a id="exportTyp(Typ[Term]):Typ[Term]"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#exportTyp(t:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exportTyp</span><span class="params">(<span name="t">t: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#finalize():Unit" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -770,7 +555,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#getClass():Class[_]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -786,10 +571,10 @@ concrete languages including our implementation of HoTT are in this package.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.Context#given" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.Context#given" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="given[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](v:provingground.HoTT.Term):provingground.Context.AppendConstant[provingground.HoTT.Term]"></a><a id="given[U&lt;:TermwithSubs[U]](Term):AppendConstant[Term]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#given[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](v:provingground.HoTT.Term):provingground.Context.AppendConstant[provingground.HoTT.Term]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#given[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](v:provingground.HoTT.Term):provingground.Context.AppendConstant[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -801,30 +586,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">given</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Context.given.U">U</span>]</span>]</span><span class="params">(<span name="v">v: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="Context$$AppendConstant.html" class="extype" name="provingground.Context.AppendConstant">AppendConstant</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
-      <span class="permalink">
-      <a href="../provingground/Context.html#hashCode():Int" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
-                <span class="name">@native</span><span class="args">()</span>
-              
-        </dd></dl></div>
-    </li><li name="provingground.Context#inducStruct" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context#inducStruct" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="inducStruct:provingground.induction.ExstInducStruc"></a><a id="inducStruct:ExstInducStruc"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#inducStruct:provingground.induction.ExstInducStruc" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#inducStruct:provingground.induction.ExstInducStruc" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -836,11 +602,43 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">inducStruct</span><span class="result">: <a href="induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>
       </span>
       
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context.AppendIndDef#inductiveDefns" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="inductiveDefns:Vector[provingground.induction.ExstInducStruc]"></a><a id="inductiveDefns:Vector[ExstInducStruc]"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#inductiveDefns:Vector[provingground.induction.ExstInducStruc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">inductiveDefns</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>
+      </span>
       
-    </li><li name="provingground.Context#introduce" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context.AppendIndDef#init" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="init:provingground.Context"></a><a id="init:Context"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#init:provingground.Context" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">init</span><span class="result">: <a href="Context.html" class="extype" name="provingground.Context">Context</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.Context#introduce" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="introduce[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](t:U,role:provingground.Context.Role):provingground.Context.AppendTerm[U]"></a><a id="introduce[U&lt;:TermwithSubs[U]](U,Role):AppendTerm[U]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#introduce[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](t:U,role:provingground.Context.Role):provingground.Context.AppendTerm[U]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#introduce[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](t:U,role:provingground.Context.Role):provingground.Context.AppendTerm[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -852,11 +650,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">introduce</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Context.introduce.U">U</span>]</span>]</span><span class="params">(<span name="t">t: <span class="extype" name="provingground.Context.introduce.U">U</span></span>, <span name="role">role: <a href="Context$$Role.html" class="extype" name="provingground.Context.Role">Role</a> = <span class="symbol"><span class="name"><a href="Context$.html">Consider</a></span></span></span>)</span><span class="result">: <a href="Context$$AppendTerm.html" class="extype" name="provingground.Context.AppendTerm">AppendTerm</a>[<span class="extype" name="provingground.Context.introduce.U">U</span>]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -869,10 +667,10 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.Context#let" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.Context#let" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="let[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.Term,value:U):provingground.Context.AppendDefn[U]"></a><a id="let[U&lt;:TermwithSubs[U]](Term,U):AppendDefn[U]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#let[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.Term,value:U):provingground.Context.AppendDefn[U]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#let[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](name:provingground.HoTT.Term,value:U):provingground.Context.AppendDefn[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -884,11 +682,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">let</span><span class="tparams">[<span name="U">U &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.Context.let.U">U</span>]</span>]</span><span class="params">(<span name="name">name: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="value">value: <span class="extype" name="provingground.Context.let.U">U</span></span>)</span><span class="result">: <a href="Context$$AppendDefn.html" class="extype" name="provingground.Context.AppendDefn">AppendDefn</a>[<span class="extype" name="provingground.Context.let.U">U</span>]</span>
       </span>
       
-      
-    </li><li name="provingground.Context#namedTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context#namedTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="namedTerms:Map[provingground.HoTT.AnySym,provingground.HoTT.Term]"></a><a id="namedTerms:Map[AnySym,Term]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#namedTerms:Map[provingground.HoTT.AnySym,provingground.HoTT.Term]" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#namedTerms:Map[provingground.HoTT.AnySym,provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -900,11 +698,11 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="name">namedTerms</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -920,7 +718,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#notify():Unit" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -939,7 +737,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#notifyAll():Unit" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -958,7 +756,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -971,26 +769,58 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
+    </li><li name="provingground.Context.AppendIndDef#terms" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="terms:Vector[provingground.HoTT.Term]"></a><a id="terms:Vector[Term]"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#toString():String" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#terms:Vector[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">terms</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context.AppendIndDef#valueOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="valueOpt:None.type"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#valueOpt:None.type" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">valueOpt</span><span class="result">: <span class="extype" name="scala.None">None</span>.type</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
+    </li><li name="provingground.Context.AppendIndDef#variables" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="variables:Vector[provingground.HoTT.Term]"></a><a id="variables:Vector[Term]"></a>
+      <span class="permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#variables:Vector[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">variables</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.Context.AppendIndDef">AppendIndDef</a> → <a href="Context.html" class="extype" name="provingground.Context">Context</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#wait():Unit" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1012,7 +842,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1034,7 +864,7 @@ concrete languages including our implementation of HoTT are in this package.
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../provingground/Context.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../provingground/Context$$AppendIndDef.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1065,7 +895,17 @@ concrete languages including our implementation of HoTT are in this package.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.Context">
+              <h3>Inherited from <a href="Context.html" class="extype" name="provingground.Context">Context</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

@@ -378,7 +378,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ParserServer$$Config.html"><span class="name">Config</span></a><span class="params">(<span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>, <span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="ParserServer$$Config.html"><span class="name">Config</span></a><span class="params">(<span name="scriptsDir">scriptsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="symbol"><span class="name"><a href="../../ammonite/index.html">pwd / &quot;repl-scripts&quot;</a></span></span></span>, <span name="objectsDir">objectsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="defval" name='<span class="name"><a href="../../ammonite/index.html">pwd / &quot;core&quot; / &quot;src&quot; / &quot;main&quot; / &quot;scala&quot; / &quot;provingground&quot; / &quot;scripts&quot;</a></span>'>...</span></span>, <span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>, <span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -535,6 +535,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.interface.ParserServer#executionContext" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="executionContext:scala.concurrent.ExecutionContextExecutor"></a><a id="executionContext:ExecutionContextExecutor"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserServer$.html#executionContext:scala.concurrent.ExecutionContextExecutor" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">executionContext</span><span class="result">: <span class="extype" name="scala.concurrent.ExecutionContextExecutor">ExecutionContextExecutor</span></span>
+      </span>
+      
+      
     </li><li name="scala.App#executionStart" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="executionStart:Long"></a>
       <span class="permalink">
@@ -661,6 +677,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.ParserServer#materializer" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="materializer:akka.stream.ActorMaterializer"></a><a id="materializer:ActorMaterializer"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserServer$.html#materializer:akka.stream.ActorMaterializer" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">materializer</span><span class="result">: <span class="extype" name="akka.stream.ActorMaterializer">ActorMaterializer</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -731,6 +763,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.interface.ParserServer#path" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="path(s:String):ammonite.ops.Path"></a><a id="path(String):Path"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserServer$.html#path(s:String):ammonite.ops.Path" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">path</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.ParserServer#pathRead" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pathRead:scopt.Read[ammonite.ops.Path]"></a><a id="pathRead:Read[Path]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserServer$.html#pathRead:scopt.Read[ammonite.ops.Path]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pathRead</span><span class="result">: <span class="extype" name="scopt.Read">Read</span>[<span class="extype" name="ammonite.ops.Path">Path</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -747,6 +811,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.interface.ParserServer#system" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="system:akka.actor.ActorSystem"></a><a id="system:ActorSystem"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserServer$.html#system:akka.actor.ActorSystem" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">system</span><span class="result">: <span class="extype" name="akka.actor.ActorSystem">ActorSystem</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">

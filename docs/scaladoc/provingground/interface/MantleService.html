@@ -365,9 +365,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.interface.MantleService#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(serverMode:Boolean):provingground.interface.MantleService"></a><a id="&lt;init&gt;:MantleService"></a>
+      <a id="&lt;init&gt;(serverMode:Boolean)(implicitec:scala.concurrent.ExecutionContext,implicitmat:akka.stream.ActorMaterializer):provingground.interface.MantleService"></a><a id="&lt;init&gt;:MantleService"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/MantleService.html#&lt;init&gt;(serverMode:Boolean):provingground.interface.MantleService" title="Permalink">
+      <a href="../../provingground/interface/MantleService.html#&lt;init&gt;(serverMode:Boolean)(implicitec:scala.concurrent.ExecutionContext,implicitmat:akka.stream.ActorMaterializer):provingground.interface.MantleService" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -376,7 +376,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">MantleService</span><span class="params">(<span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span>
+        <span class="name">MantleService</span><span class="params">(<span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="mat">mat: <span class="extype" name="akka.stream.ActorMaterializer">ActorMaterializer</span></span>)</span>
       </span>
       
       
@@ -749,6 +749,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">route</span><span class="result">: <span class="extype" name="akka.http.scaladsl.server.Route">Route</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.MantleService#sseQueue" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sseQueue:akka.stream.scaladsl.SourceQueueWithComplete[String]"></a><a id="sseQueue:SourceQueueWithComplete[String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/MantleService.html#sseQueue:akka.stream.scaladsl.SourceQueueWithComplete[String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sseQueue</span><span class="result">: <span class="extype" name="akka.stream.scaladsl.SourceQueueWithComplete">SourceQueueWithComplete</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.MantleService#sseSource" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sseSource:akka.stream.scaladsl.Source[akka.http.scaladsl.model.sse.ServerSentEvent,akka.NotUsed]"></a><a id="sseSource:Source[ServerSentEvent,NotUsed]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/MantleService.html#sseSource:akka.stream.scaladsl.Source[akka.http.scaladsl.model.sse.ServerSentEvent,akka.NotUsed]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sseSource</span><span class="result">: <span class="extype" name="akka.stream.scaladsl.Source">Source</span>[<span class="extype" name="akka.http.scaladsl.model.sse.ServerSentEvent">ServerSentEvent</span>, <span class="extype" name="akka.NotUsed">NotUsed</span>]</span>
       </span>
       
       

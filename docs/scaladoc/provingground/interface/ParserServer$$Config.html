@@ -149,7 +149,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Config</span><span class="params">(<span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>, <span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Config</span><span class="params">(<span name="scriptsDir">scriptsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="symbol"><span class="name"><a href="../../ammonite/index.html">pwd / &quot;repl-scripts&quot;</a></span></span></span>, <span name="objectsDir">objectsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="defval" name='<span class="name"><a href="../../ammonite/index.html">pwd / &quot;core&quot; / &quot;src&quot; / &quot;main&quot; / &quot;scala&quot; / &quot;provingground&quot; / &quot;scripts&quot;</a></span>'>...</span></span>, <span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>, <span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -205,9 +205,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.interface.ParserServer.Config#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(host:String,port:Int,serverMode:Boolean):provingground.interface.ParserServer.Config"></a><a id="&lt;init&gt;:Config"></a>
+      <a id="&lt;init&gt;(scriptsDir:ammonite.ops.Path,objectsDir:ammonite.ops.Path,host:String,port:Int,serverMode:Boolean):provingground.interface.ParserServer.Config"></a><a id="&lt;init&gt;:Config"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/ParserServer$$Config.html#&lt;init&gt;(host:String,port:Int,serverMode:Boolean):provingground.interface.ParserServer.Config" title="Permalink">
+      <a href="../../provingground/interface/ParserServer$$Config.html#&lt;init&gt;(scriptsDir:ammonite.ops.Path,objectsDir:ammonite.ops.Path,host:String,port:Int,serverMode:Boolean):provingground.interface.ParserServer.Config" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -216,7 +216,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Config</span><span class="params">(<span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>, <span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span>
+        <span class="name">Config</span><span class="params">(<span name="scriptsDir">scriptsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="symbol"><span class="name"><a href="../../ammonite/index.html">pwd / &quot;repl-scripts&quot;</a></span></span></span>, <span name="objectsDir">objectsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="defval" name='<span class="name"><a href="../../ammonite/index.html">pwd / &quot;core&quot; / &quot;src&quot; / &quot;main&quot; / &quot;scala&quot; / &quot;provingground&quot; / &quot;scripts&quot;</a></span>'>...</span></span>, <span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>, <span name="serverMode">serverMode: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span>
       </span>
       
       
@@ -461,6 +461,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.ParserServer.Config#objectsDir" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="objectsDir:ammonite.ops.Path"></a><a id="objectsDir:Path"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserServer$$Config.html#objectsDir:ammonite.ops.Path" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">objectsDir</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
+      </span>
+      
+      
     </li><li name="provingground.interface.ParserServer.Config#port" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="port:Int"></a>
       <span class="permalink">
@@ -474,6 +490,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">port</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.ParserServer.Config#scriptsDir" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="scriptsDir:ammonite.ops.Path"></a><a id="scriptsDir:Path"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/ParserServer$$Config.html#scriptsDir:ammonite.ops.Path" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scriptsDir</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
       </span>
       
       
