@@ -65,7 +65,7 @@ import EvolverEquations._
 /**
   * variables for probabilities and equations for consistency
   */
-abstract class EvolverEquations[F](implicit field: Field[F]) {
+abstract class EvolverEquations[F](implicit val field: Field[F]) {
   val termSet: Set[Term]
 
   val typSet: Set[Typ[Term]]
@@ -99,23 +99,8 @@ abstract class EvolverEquations[F](implicit field: Field[F]) {
     */
   def isFuncP(context: Vector[Term]): F
 
-  def unApp: F
+  def isTypP(context: Vector[Term]): F
 
-  def appl: F
-
-  def lambdaWeight: F
-
-  def piWeight: F
-
-  def varWeight: F
-
-  def initContextProb(t: Term, context: Vector[Term]): F =
-    context match {
-      case Vector() => initProb(t)
-      case init :+ last =>
-        if (t == last) varWeight
-        else initContextProb(t, init) * (1 - varWeight)
-    }
 
   def totFinalProb(terms: Set[Term], context: Vector[Term]) =
     terms.map(finalProb(_, context)).foldRight[F](field.zero)(_ + _)
@@ -130,6 +115,10 @@ abstract class EvolverEquations[F](implicit field: Field[F]) {
 
   def isFuncProb(context: Vector[Term]): (F, F) =
     totFinalProb(termSetInContext(context).filter((t) => isFunc(t)), context) -> isFuncP(
+      context)
+
+  def isTypProb(context: Vector[Term]): (F, F) =
+    totFinalProb(termSetInContext(context).filter((t) => isTyp(t)), context) -> isTypP(
       context)
 
 }
