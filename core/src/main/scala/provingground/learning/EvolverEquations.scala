@@ -111,21 +111,36 @@ object EvolverEquations {
 import EvolverEquations._
 
 /**
-  * variables for probabilities and equations for consistency
-  */
-abstract class EvolverEquations[F](implicit val field: Field[F]) {
+ * Support for evolver
+ */
+trait EvolverSupport{
   val termSet: Set[Term]
 
   val typSet: Set[Typ[Term]]
 
-  lazy val allContexts: Vector[Vector[Term]] =
+  lazy val baseContexts: Vector[Vector[Term]] =
     termSet.toVector
       .flatMap(contextsOfTerm)
       .foldLeft[Vector[Vector[Term]]](Vector())(appendContext(_, _))
 
+  def inBaseContext(term: Term, context: Vector[Term]) =
+    projectSomeContext(baseContexts)(term, context)
+
   def termSetInContext(context: Vector[Term]) = termsInContext(termSet, context)
 
   def typSetInContext(context: Vector[Term]) = typsInContext(typSet, context)
+
+  lazy val contextTermSet : Vector[(Term, Vector[Term])] =
+    baseContexts.flatMap{
+      (ctx) => termSetInContext(ctx).toVector.map((t) => t -> ctx)
+    }
+
+}
+
+/**
+  * variables for probabilities and equations for consistency
+  */
+abstract class EvolverEquations[F](implicit val field: Field[F]) extends EvolverSupport {
 
   /**
     * probability of `t` in the initial distribution
