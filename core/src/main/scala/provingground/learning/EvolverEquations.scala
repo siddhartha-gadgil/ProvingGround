@@ -19,6 +19,33 @@ object EvolverEquations {
         }
     }
 
+  def termOptContext(term: Term, context: Vector[Term]): Option[Term] =
+    context match {
+      case Vector() => Some(term)
+      case init :+ last =>
+        termOptContext(term, init).collect {
+          case l: LambdaTerm[u, v] if l.variable.typ == last.typ =>
+            l.value.replace(l.variable, last)
+          case pd: PiDefn[u, v] if pd.variable.typ == last.typ =>
+            pd.value.replace(pd.variable, last)
+        }
+    }
+
+  @annotation.tailrec
+  def termInSomeContext(term: Term,
+                        contexts: Vector[Vector[Term]],
+                        accum: Option[(Term, Vector[Term])] = None)
+    : Option[(Term, Vector[Term])] =
+    if (accum.nonEmpty) accum
+    else
+      contexts match {
+        case Vector() => None
+        case head +: tail =>
+          termInSomeContext(term,
+                            tail,
+                            termOptContext(term, head).map((t) => t -> head))
+      }
+
   def typsInContext(typs: Set[Typ[Term]],
                     context: Vector[Term]): Set[Typ[Term]] =
     context match {
@@ -58,6 +85,27 @@ object EvolverEquations {
 
   def appendContext(ctxs: Vector[Vector[Term]], context: Vector[Term]) =
     if (ctxs.exists(equalContexts(_, context))) ctxs else ctxs :+ context
+
+  /**
+    * optionally project a term in the first context onto the second context
+    */
+  def projectContext(ctx1: Vector[Term], ctx2: Vector[Term])(
+      term: Term): Option[Term] = {
+    (ctx1, ctx2) match {
+      case (Vector(), Vector()) => Some(term)
+      case (head1 +: tail1, head2 +: tail2) =>
+        projectContext(tail1.map(_.replace(head1, head2)), tail2)(
+          term.replace(head1, head2))
+      case _ => None
+    }
+  }
+
+  def projectSomeContext(ctxs: Vector[Vector[Term]])(
+      term: Term,
+      context: Vector[Term]): Option[(Term, Vector[Term])] =
+    ctxs.find(equalContexts(_, context)).flatMap { (ctx2) =>
+      projectContext(context, ctx2)(term).map((t) => (t, ctx2))
+    }
 }
 
 import EvolverEquations._
@@ -100,7 +148,6 @@ abstract class EvolverEquations[F](implicit val field: Field[F]) {
   def isFuncP(context: Vector[Term]): F
 
   def isTypP(context: Vector[Term]): F
-
 
   def totFinalProb(terms: Set[Term], context: Vector[Term]) =
     terms.map(finalProb(_, context)).foldRight[F](field.zero)(_ + _)
