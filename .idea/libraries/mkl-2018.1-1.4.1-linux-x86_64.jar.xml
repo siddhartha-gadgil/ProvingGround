@@ -1,0 +1,7 @@
+<component name="libraryTable">
+    <library name="mkl-2018.1-1.4.1-linux-x86_64.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/mkl/2018.1-1.4.1/mkl-2018.1-1.4.1-linux-x86_64.jar!/"/>
+        </CLASSES>
+    </library>
+</component>

@@ -126,13 +126,13 @@ object DeducerJS {
              fill := "grey",
              fillOpacity := "0.1").render)
 
-      Ajax.get("../terms-data").onSuccess {
-        case xhr =>
+      Ajax.get("../terms-data").foreach {
+        xhr =>
           tableDiv.appendChild(
             fdView(read[Vector[(String, String, Double)]](xhr.responseText)))
       }
-      Ajax.get("../terms-time-series").onSuccess {
-        case xhr =>
+      Ajax.get("../terms-time-series").foreach {
+        xhr =>
           val tsList = read[List[(String, Vector[Double])]](xhr.responseText)
           svgLines(tsList).foreach((elem) => plot.appendChild(elem))
           val items =

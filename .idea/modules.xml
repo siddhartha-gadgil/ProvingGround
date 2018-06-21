@@ -14,7 +14,9 @@
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/jvmroot.iml" filepath="$PROJECT_DIR$/.idea_modules/jvmroot.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/mantle.iml" filepath="$PROJECT_DIR$/.idea_modules/mantle.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/realfunctions.iml" filepath="$PROJECT_DIR$/.idea_modules/realfunctions.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/deepwalk.iml" filepath="$PROJECT_DIR$/.idea_modules/deepwalk.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/mantle.test.iml" filepath="$PROJECT_DIR$/.idea_modules/mantle.test.iml"/>
+            <module fileurl="file://$PROJECT_DIR$/.idea_modules/andrewscurtis.test.iml" filepath="$PROJECT_DIR$/.idea_modules/andrewscurtis.test.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/client.iml" filepath="$PROJECT_DIR$/.idea_modules/client.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/core.jvm.iml" filepath="$PROJECT_DIR$/.idea_modules/core.jvm.iml"/>
             <module fileurl="file://$PROJECT_DIR$/.idea_modules/experiments.iml" filepath="$PROJECT_DIR$/.idea_modules/experiments.iml"/>

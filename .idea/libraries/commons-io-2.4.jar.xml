@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="commons-io-2.4.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

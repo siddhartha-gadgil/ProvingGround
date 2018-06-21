@@ -1,0 +1,7 @@
+<component name="libraryTable">
+    <library name="opencv-3.4.1-1.4.1-macosx-x86_64.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/3.4.1-1.4.1/opencv-3.4.1-1.4.1-macosx-x86_64.jar!/"/>
+        </CLASSES>
+    </library>
+</component>

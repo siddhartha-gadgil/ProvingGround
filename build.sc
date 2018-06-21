@@ -213,6 +213,11 @@ object realfunctions extends JvmModule
 
 object andrewscurtis extends JvmModule with SbtModule{
   override def moduleDeps = Seq(core.jvm, mantle)
+
+  object test extends Tests{
+    override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
+    def testFrameworks = Seq("org.scalatest.tools.Framework")
+  }
 }
 
 object normalform extends CommonModule with SbtModule

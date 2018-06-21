@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="imageio-tiff-3.1.1.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/twelvemonkeys/imageio/imageio-tiff/3.1.1/imageio-tiff-3.1.1.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/twelvemonkeys/imageio/imageio-tiff/3.1.1/imageio-tiff-3.1.1-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="snakeyaml-1.12.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/yaml/snakeyaml/1.12/snakeyaml-1.12.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/yaml/snakeyaml/1.12/snakeyaml-1.12-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="libfreenect-0.5.3-1.4.1.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/libfreenect/0.5.3-1.4.1/libfreenect-0.5.3-1.4.1.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/libfreenect/0.5.3-1.4.1/libfreenect-0.5.3-1.4.1-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

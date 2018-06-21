@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="t-digest-3.2.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/tdunning/t-digest/3.2/t-digest-3.2.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/tdunning/t-digest/3.2/t-digest-3.2-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

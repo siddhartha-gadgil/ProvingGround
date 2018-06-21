@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="machinist_sjs0.6_2.12-0.6.4.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/typelevel/machinist_sjs0.6_2.12/0.6.4/machinist_sjs0.6_2.12-0.6.4.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/typelevel/machinist_sjs0.6_2.12/0.6.4/machinist_sjs0.6_2.12-0.6.4-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+    <library name="lombok-1.16.20.jar">
+        <CLASSES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/projectlombok/lombok/1.16.20/lombok-1.16.20.jar!/"/>
+        </CLASSES>
+        <SOURCES>
+            <root url="jar:///home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/projectlombok/lombok/1.16.20/lombok-1.16.20-sources.jar!/"/>
+        </SOURCES>
+    </library>
+</component>
