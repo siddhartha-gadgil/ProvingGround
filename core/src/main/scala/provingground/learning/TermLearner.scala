@@ -8,23 +8,32 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 import monix.eval._
 
-/**
-  * Adding equations from a simple generative model to [[EvolverEquations]]
-  */
-abstract class TermLearner[F: Field] extends EvolverEquations[F] {
-  def unApp: F
-
-  def appl: F
-
-  def lambdaWeight: F
-
-  def piWeight: F
-
-  def varWeight: F
-
+trait ApplnInverse{
   def applInv(term: Term, context: Vector[Term]): Set[(ExstFunc, Term)]
 
   def unAppInv(term: Term, context: Vector[Term]): Set[(ExstFunc, Term)]
+}
+
+/**
+  * Adding equations from a simple generative model to [[EvolverEquations]]
+  */
+case class TermLearner[F: Field](supp: EvolverSupport,
+  prob: EvolverVariables => F, apInv: ApplnInverse
+  ) extends EvolverEquations[F](supp, prob) {
+  import EvolverVariables._
+
+  import apInv._
+
+  def unApp: F = prob(UnApp)
+
+  def appl: F = prob(Appl)
+
+  def lambdaWeight: F = prob(LambdaWeight)
+
+  def piWeight: F = prob(PiWeight)
+
+  def varWeight: F = prob(VarWeight)
+
 
   def initContextProb(t: Term, context: Vector[Term]): F =
     context match {

@@ -2,6 +2,7 @@ package provingground.learning
 import provingground._, HoTT._
 
 import spire.algebra._
+import spire.math._
 import spire.implicits._
 
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
@@ -130,39 +131,93 @@ trait EvolverSupport{
 
   def typSetInContext(context: Vector[Term]) = typsInContext(typSet, context)
 
-  lazy val contextTermSet : Vector[(Term, Vector[Term])] =
+  import EvolverVariables._
+
+  lazy val contextTermVec : Vector[(Term, Vector[Term])] =
     baseContexts.flatMap{
       (ctx) => termSetInContext(ctx).toVector.map((t) => t -> ctx)
+    }
+
+  lazy val variablesVector : Vector[EvolverVariables] =
+    Vector(Appl, UnApp, LambdaWeight, PiWeight, VarWeight) ++
+    termSet.toVector.map(InitProb(_)) ++
+    contextTermVec.map{case (t, ctx) => FinalProb(t, ctx)} ++
+    contextTermVec.collect{case (typ: Typ[Term], ctx) => HasTyp(typ, ctx)} ++
+    baseContexts.flatMap((ctx) => Vector(IsFuncP(ctx), IsTypP(ctx)))
+
+  lazy val variableIndex : Map[EvolverVariables, Int] = variablesVector.zipWithIndex.toMap
+
+  implicit val dim = JetDim(variablesVector.size)
+
+  implicit val jetField = implicitly[Field[Jet[Double]]]
+
+  def spireProb(p: Map[EvolverVariables, Double]) =
+    variablesVector.zipWithIndex.map{
+      case (v, n) =>
+        p.getOrElse(v, 0.0) + Jet.h[Double](n)
     }
 
 }
 
 /**
+ * Variables in an evolver; not all need to be used in a give case
+ */
+sealed trait EvolverVariables
+
+object EvolverVariables{
+  case class InitProb(term: Term) extends EvolverVariables
+
+  case class FinalProb(term: Term, context: Vector[Term]) extends EvolverVariables
+
+  case class HasTyp(typ: Typ[Term], context: Vector[Term]) extends EvolverVariables
+
+  case class IsFuncP(context: Vector[Term]) extends EvolverVariables
+
+  case class IsTypP(context: Vector[Term]) extends EvolverVariables
+
+  case object UnApp extends EvolverVariables
+
+  case object Appl extends EvolverVariables
+
+  case object LambdaWeight extends EvolverVariables
+
+  case object PiWeight extends EvolverVariables
+
+  case object VarWeight extends EvolverVariables
+}
+
+import EvolverVariables._
+
+/**
   * variables for probabilities and equations for consistency
   */
-abstract class EvolverEquations[F](implicit val field: Field[F]) extends EvolverSupport {
+class EvolverEquations[F](supp: EvolverSupport,
+  prob: EvolverVariables => F)(implicit val field: Field[F]) {
+
+  import supp._
+
 
   /**
     * probability of `t` in the initial distribution
     */
-  def initProb(t: Term): F
+  def initProb(t: Term): F = prob(InitProb(t))
 
   /**
     * probability of `t` in the final distribution given a context
     */
-  def finalProb(t: Term, context: Vector[Term]): F
+  def finalProb(t: Term, context: Vector[Term]): F = prob(FinalProb(t, context))
 
   /**
     * probability that a term has given type in the final distribution of a context
     */
-  def hasTyp(typ: Typ[Term], context: Vector[Term]): F
+  def hasTyp(typ: Typ[Term], context: Vector[Term]): F = prob(HasTyp(typ, context))
 
   /**
     * probability that a term is a function in the final distribution of a context
     */
-  def isFuncP(context: Vector[Term]): F
+  def isFuncP(context: Vector[Term]): F = prob(IsFuncP(context))
 
-  def isTypP(context: Vector[Term]): F
+  def isTypP(context: Vector[Term]): F = prob(IsTypP(context))
 
   def totFinalProb(terms: Set[Term], context: Vector[Term]) =
     terms.map(finalProb(_, context)).foldRight[F](field.zero)(_ + _)
