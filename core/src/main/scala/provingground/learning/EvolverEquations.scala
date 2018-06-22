@@ -112,12 +112,17 @@ object EvolverEquations {
 import EvolverEquations._
 
 /**
- * Support for evolver
- */
-trait EvolverSupport{
+  * Support for evolver
+  */
+trait EvolverSupport {
   val termSet: Set[Term]
 
   val typSet: Set[Typ[Term]]
+
+  val genTermSet: Set[Term]
+
+  lazy val thmSet: Set[Typ[Term]] =
+    termSet.map(_.typ).intersect(typSet).filterNot(isUniv)
 
   lazy val baseContexts: Vector[Vector[Term]] =
     termSet.toVector
@@ -133,43 +138,56 @@ trait EvolverSupport{
 
   import EvolverVariables._
 
-  lazy val contextTermVec : Vector[(Term, Vector[Term])] =
-    baseContexts.flatMap{
-      (ctx) => termSetInContext(ctx).toVector.map((t) => t -> ctx)
+  lazy val contextTermVec: Vector[(Term, Vector[Term])] =
+    baseContexts.flatMap { (ctx) =>
+      termSetInContext(ctx).toVector.map((t) => t -> ctx)
     }
 
-  lazy val variablesVector : Vector[EvolverVariables] =
+  lazy val variablesVector: Vector[EvolverVariables] =
     Vector(Appl, UnApp, LambdaWeight, PiWeight, VarWeight) ++
-    termSet.toVector.map(InitProb(_)) ++
-    contextTermVec.map{case (t, ctx) => FinalProb(t, ctx)} ++
-    contextTermVec.collect{case (typ: Typ[Term], ctx) => HasTyp(typ, ctx)} ++
-    baseContexts.flatMap((ctx) => Vector(IsFuncP(ctx), IsTypP(ctx)))
+      genTermSet.toVector.map(InitProb(_)) ++
+      contextTermVec.map { case (t, ctx)                  => FinalProb(t, ctx) } ++
+      contextTermVec.collect { case (typ: Typ[Term], ctx) => HasTyp(typ, ctx) } ++
+      baseContexts.flatMap((ctx) => Vector(IsFuncP(ctx), IsTypP(ctx)))
 
-  lazy val variableIndex : Map[EvolverVariables, Int] = variablesVector.zipWithIndex.toMap
+  lazy val variableIndex: Map[EvolverVariables, Int] =
+    variablesVector.zipWithIndex.toMap
 
   implicit val dim = JetDim(variablesVector.size)
 
   implicit val jetField = implicitly[Field[Jet[Double]]]
 
   def spireProb(p: Map[EvolverVariables, Double]) =
-    variablesVector.zipWithIndex.map{
+    variablesVector.zipWithIndex.map {
       case (v, n) =>
-        p.getOrElse(v, 0.0) + Jet.h[Double](n)
-    }
+        v -> (p.getOrElse(v, 0.0) + Jet.h[Double](n))
+    }.toMap
+
+  def spireLearner(p: Map[EvolverVariables, Double], apIn: ApplnInverse) =
+    TermLearner(this, spireProb(p), apIn)
 
 }
 
+
+trait ApplnInverse {
+  def applInv(term: Term, context: Vector[Term]): Set[(ExstFunc, Term)]
+
+  def unAppInv(term: Term, context: Vector[Term]): Set[(ExstFunc, Term)]
+}
+
 /**
- * Variables in an evolver; not all need to be used in a give case
- */
+  * Variables in an evolver; not all need to be used in a give case
+  */
 sealed trait EvolverVariables
 
-object EvolverVariables{
+object EvolverVariables {
   case class InitProb(term: Term) extends EvolverVariables
 
-  case class FinalProb(term: Term, context: Vector[Term]) extends EvolverVariables
+  case class FinalProb(term: Term, context: Vector[Term])
+      extends EvolverVariables
 
-  case class HasTyp(typ: Typ[Term], context: Vector[Term]) extends EvolverVariables
+  case class HasTyp(typ: Typ[Term], context: Vector[Term])
+      extends EvolverVariables
 
   case class IsFuncP(context: Vector[Term]) extends EvolverVariables
 
@@ -191,11 +209,10 @@ import EvolverVariables._
 /**
   * variables for probabilities and equations for consistency
   */
-class EvolverEquations[F](supp: EvolverSupport,
-  prob: EvolverVariables => F)(implicit val field: Field[F]) {
+class EvolverEquations[F](supp: EvolverSupport, prob: EvolverVariables => F)(
+    implicit val field: Field[F], trig: Trig[F]) {
 
   import supp._
-
 
   /**
     * probability of `t` in the initial distribution
@@ -210,7 +227,8 @@ class EvolverEquations[F](supp: EvolverSupport,
   /**
     * probability that a term has given type in the final distribution of a context
     */
-  def hasTyp(typ: Typ[Term], context: Vector[Term]): F = prob(HasTyp(typ, context))
+  def hasTyp(typ: Typ[Term], context: Vector[Term]): F =
+    prob(HasTyp(typ, context))
 
   /**
     * probability that a term is a function in the final distribution of a context
@@ -221,6 +239,8 @@ class EvolverEquations[F](supp: EvolverSupport,
 
   def totFinalProb(terms: Set[Term], context: Vector[Term]) =
     terms.map(finalProb(_, context)).foldRight[F](field.zero)(_ + _)
+
+  // The equations
 
   def totProbOne(context: Vector[Term]): F =
     totFinalProb(termSetInContext(context), context) - 1
@@ -237,5 +257,102 @@ class EvolverEquations[F](supp: EvolverSupport,
   def isTypProb(context: Vector[Term]): (F, F) =
     totFinalProb(termSetInContext(context).filter((t) => isTyp(t)), context) -> isTypP(
       context)
+
+  def contextConsistency(context: Vector[Term]) =
+    typSetInContext(context).map(
+      (typ) => hasTypProb(typ, context)
+    ).toVector :+ isFuncProb(context) :+ isTypProb(context)
+
+  lazy val consistencyEquation : Vector[(F, F)] =
+    baseContexts.flatMap(contextConsistency)
+
+  def proofProb(thm: Typ[Term]) =
+    totFinalProb(termSet.filter(_.typ == thm), Vector())
+
+  lazy val totThmProb =
+    totFinalProb(thmSet.map((t) => t : Term), Vector())
+
+  def thmProb(thm: Typ[Term]) =
+    finalProb(thm, Vector()) / totThmProb
+
+  lazy val kullbackLeibler =
+    thmSet.map{
+      (thm) => proofProb(thm) * log(proofProb(thm)/thmProb(thm))
+    }.fold(field.zero)(_ + _)
+
+  lazy val genEntropy =
+    genTermSet.map{(t) => -initProb(t) / log(initProb(t))}
+}
+
+/**
+  * Adding equations from a simple generative model to [[EvolverEquations]]
+  */
+case class TermLearner[F: Field : Trig](supp: EvolverSupport,
+                                 prob: EvolverVariables => F,
+                                 apInv: ApplnInverse)
+    extends EvolverEquations[F](supp, prob) {
+  import EvolverVariables._
+
+  import apInv._
+
+  def unApp: F = prob(UnApp)
+
+  def appl: F = prob(Appl)
+
+  def lambdaWeight: F = prob(LambdaWeight)
+
+  def piWeight: F = prob(PiWeight)
+
+  def varWeight: F = prob(VarWeight)
+
+  def initContextProb(t: Term, context: Vector[Term]): F =
+    context match {
+      case Vector() => initProb(t)
+      case init :+ last =>
+        if (t == last) varWeight
+        else initContextProb(t, init) * (1 - varWeight)
+    }
+
+  def fromAppl(t: Term, context: Vector[Term]): F =
+    applInv(t, context)
+      .map {
+        case (f, x) =>
+          (finalProb(f.term, context) / isFuncP(context)) *
+            (finalProb(x, context) / hasTyp(f.dom, context)) *
+            appl
+      }
+      .fold[F](field.zero)(_ + _)
+
+  def fromUnApp(t: Term, context: Vector[Term]): F =
+    unAppInv(t, context)
+      .map {
+        case (f, x) =>
+          (finalProb(f.term, context) / isFuncP(context)) *
+            finalProb(x, context) *
+            unApp
+      }
+      .fold[F](field.zero)(_ + _)
+
+  def fromIsland(t: Term, context: Vector[Term]): F =
+    t match {
+      case l: LambdaTerm[u, v] =>
+        finalProb(l.value, context :+ l.variable) *
+          finalProb(l.variable.typ, context) / isTypP(context)
+      case l: PiDefn[u, v] =>
+        (finalProb(l.value, context :+ l.variable) / isTypP(
+          context :+ l.variable)) *
+          finalProb(l.variable.typ, context) / isTypP(context)
+      case _ => field.zero
+    }
+
+  def recValue(t: Term, context: Vector[Term]): F =
+    initContextProb(t, context) + fromAppl(t, context) + fromUnApp(t, context) + fromIsland(
+      t,
+      context)
+
+  lazy val evolutionEquations : Vector[(F, F)] =
+    supp.contextTermVec.map{
+      case (t, context) => finalProb(t, context) -> recValue(t, context)
+    }
 
 }
