@@ -160,7 +160,7 @@ trait EvolverSupport {
   def spireProb(p: Map[EvolverVariables, Double]) =
     variablesVector.zipWithIndex.map {
       case (v, n) =>
-        v -> (p.getOrElse(v, 0.0) + Jet.h[Double](n))
+        v -> (p.getOrElse(v, 0.0) * exp(Jet.h[Double](n)))
     }.toMap
 
   def spireLearner(p: Map[EvolverVariables, Double], apIn: ApplnInverse) =
