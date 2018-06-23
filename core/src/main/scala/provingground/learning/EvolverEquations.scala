@@ -263,8 +263,11 @@ class EvolverEquations[F](supp: EvolverSupport, prob: EvolverVariables => F)(
       (typ) => hasTypProb(typ, context)
     ).toVector :+ isFuncProb(context) :+ isTypProb(context)
 
-  lazy val consistencyEquation : Vector[(F, F)] =
+  lazy val consistencyEquations : Vector[(F, F)] =
     baseContexts.flatMap(contextConsistency)
+
+  lazy val consistencyCost : F =
+    consistencyEquations.map{case (a, b) => ((a - b)/(a + b)) ** 2}.fold(field.zero)(_+ _)
 
   def proofProb(thm: Typ[Term]) =
     totFinalProb(termSet.filter(_.typ == thm), Vector())
@@ -275,13 +278,13 @@ class EvolverEquations[F](supp: EvolverSupport, prob: EvolverVariables => F)(
   def thmProb(thm: Typ[Term]) =
     finalProb(thm, Vector()) / totThmProb
 
-  lazy val kullbackLeibler =
+  lazy val kullbackLeibler : F =
     thmSet.map{
       (thm) => proofProb(thm) * log(proofProb(thm)/thmProb(thm))
     }.fold(field.zero)(_ + _)
 
-  lazy val genEntropy =
-    genTermSet.map{(t) => -initProb(t) / log(initProb(t))}
+  lazy val genEntropy : F =
+    genTermSet.map{(t) => -initProb(t) / log(initProb(t))}.fold(field.zero)(_ + _)
 }
 
 /**
@@ -354,5 +357,14 @@ case class TermLearner[F: Field : Trig](supp: EvolverSupport,
     supp.contextTermVec.map{
       case (t, context) => finalProb(t, context) -> recValue(t, context)
     }
+
+  lazy val evolutionCost : F =
+    evolutionEquations.map{case (a, b) => ((a - b)/(a + b)) ** 2}.fold(field.zero)(_+ _)
+
+  def cost(cnstWt: Double, evWt: Double, klWt: Double, hWt: Double) : F =
+    (consistencyCost  * cnstWt) +
+    (evolutionCost * evWt) +
+    (kullbackLeibler * klWt) +
+    (genEntropy * hWt)
 
 }
