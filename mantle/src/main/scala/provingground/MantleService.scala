@@ -100,7 +100,10 @@ class MantleService(serverMode: Boolean)(implicit ec: ExecutionContext,
       .queue[String](10, akka.stream.OverflowStrategy.dropTail)
       .map((t) => ServerSentEvent(t))
       .keepAlive(8.second, () => ServerSentEvent.heartbeat)
-      .preMaterialize()
+      .toMat(BroadcastHub.sink[ServerSentEvent])(Keep.both)
+      .run()
+
+  // sseQueue.offer("Hello queue")
 
   val mantleRoute =
     get {
