@@ -107,6 +107,9 @@ object EvolverEquations {
     ctxs.find(equalContexts(_, context)).flatMap { (ctx2) =>
       projectContext(context, ctx2)(term).map((t) => (t, ctx2))
     }
+
+  def sum[F](seq: Iterable[F])(implicit field: Field[F]) = seq.foldRight[F](field.zero)(_ + _)
+
 }
 
 import EvolverEquations._
@@ -238,12 +241,15 @@ class EvolverEquations[F](supp: EvolverSupport, prob: EvolverVariables => F)(
   def isTypP(context: Vector[Term]): F = prob(IsTypP(context))
 
   def totFinalProb(terms: Set[Term], context: Vector[Term]) =
-    terms.map(finalProb(_, context)).foldRight[F](field.zero)(_ + _)
+    sum(terms.map(finalProb(_, context)))
 
   // The equations
 
-  def totProbOne(context: Vector[Term]): F =
-    totFinalProb(termSetInContext(context), context) - 1
+  def totProbOne(context: Vector[Term]): (F, F) =
+    totFinalProb(termSetInContext(context), context) -> field.one
+
+  lazy val totInitProbOne =
+    sum(genTermSet.map(initProb)) -> field.one
 
   def hasTypProb(typ: Typ[Term], context: Vector[Term]): (F, F) =
     totFinalProb(termSetInContext(context).filter(_.typ == typ), context) -> hasTyp(
@@ -261,10 +267,10 @@ class EvolverEquations[F](supp: EvolverSupport, prob: EvolverVariables => F)(
   def contextConsistency(context: Vector[Term]) =
     typSetInContext(context).map(
       (typ) => hasTypProb(typ, context)
-    ).toVector :+ isFuncProb(context) :+ isTypProb(context)
+    ).toVector :+ isFuncProb(context) :+ isTypProb(context) :+ totProbOne(context)
 
   lazy val consistencyEquations : Vector[(F, F)] =
-    baseContexts.flatMap(contextConsistency)
+    baseContexts.flatMap(contextConsistency) :+ totInitProbOne
 
   lazy val consistencyCost : F =
     consistencyEquations.map{case (a, b) => ((a - b)/(a + b)) ** 2}.fold(field.zero)(_+ _)
