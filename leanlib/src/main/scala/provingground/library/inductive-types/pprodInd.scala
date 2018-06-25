@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object pprodInd {
-  val value = Subst.Lambda(
+  lazy val value = Subst.Lambda(
     "$buigwgj" :: Type,
     Subst.Lambda(
       "$buigwgk" :: Type,

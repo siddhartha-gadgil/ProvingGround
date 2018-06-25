@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object pprod$fst {
-  val value = lambda("'p_1335769311_7402319" :: Type)(
+  lazy val value = lambda("'p_1335769311_7402319" :: Type)(
     lambda("'q_1400071888_264607479" :: Type)(
       ({
         val rxyz = pprodInd

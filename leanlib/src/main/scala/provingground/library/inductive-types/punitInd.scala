@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object punitInd {
-  val value = ConstructorSeqTL(
+  lazy val value = ConstructorSeqTL(
     ConstructorSeqDom.Cons("punit.star",
                            ConstructorShape.IdShape.byTyp("punit" :: Type),
                            ConstructorSeqDom.Empty.byTyp("punit" :: Type)),

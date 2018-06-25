@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object nat$brec_on {
-  val value = lambda("'s_928955760_783326521" :: FuncTyp("nat" :: Type, Type))(lambda("'t_607759390_1043984436" :: "nat" :: Type)(lmbda("'u_1284612690_1754241356" :: piDefn("'u_1523983247_845669431" :: "nat" :: Type)(FuncTyp(({
+  lazy val value = lambda("'s_928955760_783326521" :: FuncTyp("nat" :: Type, Type))(lambda("'t_607759390_1043984436" :: "nat" :: Type)(lmbda("'u_1284612690_1754241356" :: piDefn("'u_1523983247_845669431" :: "nat" :: Type)(FuncTyp(({
     val rxyz = natInd.value.rec(Type)
     rxyz
   })("punit" :: Type)(lmbda("'h_159188406_1754517306" :: "nat" :: Type)(lmbda("'i_854809894_771231128" :: Type)(("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))(("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))(("'s_928955760_783326521" :: FuncTyp("nat" :: Type, Type))("'h_159188406_1754517306" :: "nat" :: Type))("'i_854809894_771231128" :: Type))("punit" :: Type))))("'u_1523983247_845669431" :: "nat" :: Type), ("'s_928955760_783326521" :: FuncTyp("nat" :: Type, Type))("'u_1523983247_845669431" :: "nat" :: Type))))(({

@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object has_one$one {
-  val value = lambda("'i_1335095821" :: Type)(
+  lazy val value = lambda("'i_1335095821" :: Type)(
     ({
       val rxyz =
         has_oneInd.value("'i_1335095821" :: Type).rec("'i_1335095821" :: Type)

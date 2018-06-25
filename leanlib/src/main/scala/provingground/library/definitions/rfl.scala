@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object rfl {
-  val value = lambda("'g_1834187940_1096554064" :: Type)(
+  lazy val value = lambda("'g_1834187940_1096554064" :: Type)(
     lambda("'h_1306408908_1310464732" :: "'g_1834187940_1096554064" :: Type)(
       "_" :: ("eq" :: piDefn("'c_359867196" :: Type)(
         FuncTyp("'c_359867196" :: Type,

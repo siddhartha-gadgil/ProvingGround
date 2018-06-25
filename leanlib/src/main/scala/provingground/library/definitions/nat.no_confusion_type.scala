@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object nat$no_confusion_type {
-  val value = lmbda("'k_549572857_1909003488" :: Type)(lmbda("'l_779096294_1814577956" :: "nat" :: Type)(lmbda("'m_899342415_613316750" :: "nat" :: Type)(({
+  lazy val value = lmbda("'k_549572857_1909003488" :: Type)(lmbda("'l_779096294_1814577956" :: "nat" :: Type)(lmbda("'m_899342415_613316750" :: "nat" :: Type)(({
     val rxyz = natInd.value.induc(lmbda("_" :: "nat" :: Type)(Type))
     rxyz
   })(({

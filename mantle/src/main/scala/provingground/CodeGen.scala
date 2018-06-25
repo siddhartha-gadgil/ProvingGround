@@ -405,7 +405,7 @@ object CodeGen {
 
   def mkObject(name: String, code: meta.Term) = {
     val obj = meta.Term.Name(escape(name))
-    q"object $obj {val value =  $code}"
+    q"object $obj {lazy val value =  $code}"
   }
 
   def mkIndObject(name: String, code: meta.Term) =

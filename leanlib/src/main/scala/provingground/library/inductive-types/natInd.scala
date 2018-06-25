@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object natInd {
-  val value = ConstructorSeqTL(
+  lazy val value = ConstructorSeqTL(
     ConstructorSeqDom.Cons(
       "nat.zero",
       ConstructorShape.IdShape.byTyp("nat" :: Type),

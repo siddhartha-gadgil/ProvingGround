@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object nat$decidable_eq$_main {
-  val value = lambda("'ag_1531296106_1797768165" :: "nat" :: Type)(({
+  lazy val value = lambda("'ag_1531296106_1797768165" :: "nat" :: Type)(({
     val rxyz = pprodInd.value(piDefn("'aj_470722926" :: "nat" :: Type)(("decidable" :: FuncTyp(Prop, Type))(("eq" :: piDefn("'c_761935938" :: Type)(FuncTyp("'c_761935938" :: Type, FuncTyp("'c_761935938" :: Type, Prop))))("nat" :: Type)("'ag_1531296106_1797768165" :: "nat" :: Type)("'aj_470722926" :: "nat" :: Type))))(({
       val rxyz = natInd.value.rec(Type)
       rxyz

@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object eqInd {
-  val value = Subst.Lambda(
+  lazy val value = Subst.Lambda(
     "$buijsiw" :: Type,
     Subst.Lambda(
       "$buijsix" :: "$buijsiw" :: Type,

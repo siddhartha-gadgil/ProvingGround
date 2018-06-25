@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object nat$below {
-  val value = lmbda("'f_2130154615_1119565184" :: FuncTyp("nat" :: Type, Type))(
+  lazy val value = lmbda("'f_2130154615_1119565184" :: FuncTyp("nat" :: Type, Type))(
     ({
       val rxyz = natInd.value.rec(Type)
       rxyz

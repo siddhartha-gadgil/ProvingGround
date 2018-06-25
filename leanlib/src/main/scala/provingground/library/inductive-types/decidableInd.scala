@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object decidableInd {
-  val value = Subst.Lambda(
+  lazy val value = Subst.Lambda(
     "$buifqpu" :: Prop,
     ConstructorSeqTL(
       ConstructorSeqDom.Cons(

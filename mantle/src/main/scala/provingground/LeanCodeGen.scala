@@ -51,6 +51,22 @@ import Fold._
     q"Map(..$kvs)"
   }
 
+  def defTaskMapCode = {
+    val kvs =
+      defnMap.map {
+        case (name, term) =>
+          val termCode =
+            if (defNames.contains(name))
+              q"${meta.Term.Name(CodeGen.escape(name.toString))}.value"
+            else
+              codeGen(term).get
+          q"${nameCode(name)} -> monix.eval.Task($termCode)"
+      }.toList
+    q"Map(..$kvs)"
+  }
+
+
+
   def vecCode(v: Vector[Term]) = {
     val codes = v.map((t) => codeGen(t).get).toList
     q"Vector(..$codes)"
@@ -80,11 +96,26 @@ import Fold._
 
   }
 
+  def indTaskMapCode = {
+    val kvs =
+      termIndModMap.map {
+        case (name, m) =>
+          q"${nameCode(name)} -> monix.eval.Task(${indCode(m)})"
+      }.toList
+    q"Map(..$kvs)"
+
+  }
+
   def memoObj =
     q"""
 object LeanMemo {
   val defMap = $defMapCode
+
   val indMap = $indMapCode
+
+  val defTaskMap = $defTaskMapCode
+
+  val indTaskMap = $indTaskMapCode
 }
 """
 

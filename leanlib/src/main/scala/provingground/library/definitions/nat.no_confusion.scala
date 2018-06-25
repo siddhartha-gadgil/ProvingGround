@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object nat$no_confusion {
-  val value = lambda("'q_1226506376_405887334" :: Type)(lambda("'r_1462003379_1148742581" :: "nat" :: Type)(lambda("'s_225085549_883624953" :: "nat" :: Type)(({
+  lazy val value = lambda("'q_1226506376_405887334" :: Type)(lambda("'r_1462003379_1148742581" :: "nat" :: Type)(lambda("'s_225085549_883624953" :: "nat" :: Type)(({
     val rxyz = eqInd.value("nat" :: Type)("'r_1462003379_1148742581" :: "nat" :: Type).induc(lambda("$xkoe_649370545_1028852438" :: "nat" :: Type)(lmbda("_" :: ("eq" :: piDefn("'c_1877223464" :: Type)(FuncTyp("'c_1877223464" :: Type, FuncTyp("'c_1877223464" :: Type, Prop))))("nat" :: Type)("'r_1462003379_1148742581" :: "nat" :: Type)("$xkoe_649370545_1028852438" :: "nat" :: Type))(FuncTyp(("eq" :: piDefn("'c_770038790" :: Type)(FuncTyp("'c_770038790" :: Type, FuncTyp("'c_770038790" :: Type, Prop))))("nat" :: Type)("'r_1462003379_1148742581" :: "nat" :: Type)("$xkoe_649370545_1028852438" :: "nat" :: Type), ({
       val rxyz = natInd.value.induc(lmbda("_" :: "nat" :: Type)(Type))
       rxyz

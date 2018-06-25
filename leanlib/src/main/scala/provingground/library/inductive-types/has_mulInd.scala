@@ -6,7 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object has_mulInd {
-  val value = Subst.Lambda(
+  lazy val value = Subst.Lambda(
     "$buijsie" :: Type,
     ConstructorSeqTL(
       ConstructorSeqDom.Cons(
