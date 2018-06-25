@@ -107,13 +107,13 @@ import Fold._
   def memoObj =
     q"""
 object LeanMemo {
-  val defMap = $defMapCode
+  def defMap = $defMapCode
 
-  val indMap = $indMapCode
+  def indMap = $indMapCode
 
-  val defTaskMap = $defTaskMapCode
+  def defTaskMap = $defTaskMapCode
 
-  val indTaskMap = $indTaskMapCode
+  def indTaskMap = $indTaskMapCode
 }
 """
 
