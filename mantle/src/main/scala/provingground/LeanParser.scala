@@ -113,7 +113,9 @@ object LeanParser {
 
 }
 
-class LeanParser(mods: Vector[Modification]) {
+class LeanParser(mods: Vector[Modification],
+                 defTaskMap: Map[Name, Task[Term]] = Map(),
+                 indTaskMap: Map[Name, Task[TermIndMod]] = Map()) {
   import LeanParser._
   import LeanToTermMonix.{RecIterAp, getRec, isPropnFn, parseWork}
 
@@ -139,9 +141,17 @@ class LeanParser(mods: Vector[Modification]) {
       )
 
   def getNamed(name: Name) =
-    defnMap.get(name).map((t) => Task.pure(t))
+    defTaskMap
+      .get(name)
+      .orElse(
+        defnMap.get(name).map((t) => Task.pure(t))
+      )
   def getTermIndMod(name: Name) =
-    termIndModMap.get(name).map((t) => Task.pure(t))
+    indTaskMap
+      .get(name)
+      .orElse(
+        termIndModMap.get(name).map((t) => Task.pure(t))
+      )
 
   def recApp(name: Name,
              args: Vector[Expr],

@@ -65,8 +65,6 @@ import Fold._
     q"Map(..$kvs)"
   }
 
-
-
   def vecCode(v: Vector[Term]) = {
     val codes = v.map((t) => codeGen(t).get).toList
     q"Vector(..$codes)"
