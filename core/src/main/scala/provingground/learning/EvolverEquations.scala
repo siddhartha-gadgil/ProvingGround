@@ -251,6 +251,9 @@ trait EvolverSupport {
   def spireLearner(p: Map[EvolverVariables, Double], apIn: ApplnInverse) =
     TermLearner(this, spireProb(p), apIn)
 
+  def klDiff[F: Field : Trig](p: F, q: F) =
+    p * log(p/q)
+
 }
 
 /**
@@ -460,9 +463,9 @@ class EvolverEquations[F](supp: EvolverSupport, prob: EvolverVariables => F)(
     * a cost associated to a lack of consistency of the probabilities.
     */
   lazy val consistencyCost: F =
-    consistencyEquations
-      .map { case (a, b) => ((a - b) / (a + b)) ** 2 }
-      .fold(field.zero)(_ + _)
+    sum(consistencyEquations
+      .map { case (a, b) => klDiff(a, b) })
+
 
   /**
     * total probability of the proof of a theorem
@@ -600,9 +603,11 @@ case class TermLearner[F: Field: Trig](supp: EvolverSupport,
     * cost due to mismatch in the recursive generation equations.
     */
   lazy val evolutionCost: F =
-    evolutionEquations
-      .map { case (a, b) => ((a - b) / (a + b)) ** 2 }
-      .fold(field.zero)(_ + _)
+    sum(
+      evolutionEquations
+      .map { case (a, b) => klDiff(a, b)}
+    )
+
 
   /**
     * the total cost, including consistency and entropies
