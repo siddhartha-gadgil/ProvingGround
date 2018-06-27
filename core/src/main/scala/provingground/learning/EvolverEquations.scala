@@ -8,6 +8,8 @@ import spire.implicits._
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 object EvolverEquations {
+  def klDiff[F: Field : Trig](p: F, q: F) =
+    p * log(p/q)
 
   /**
     * terms of the form `x :-> y` or `x ~>: y` imported into a context of the form
@@ -250,9 +252,6 @@ trait EvolverSupport {
     */
   def spireLearner(p: Map[EvolverVariables, Double], apIn: ApplnInverse) =
     TermLearner(this, spireProb(p), apIn)
-
-  def klDiff[F: Field : Trig](p: F, q: F) =
-    p * log(p/q)
 
 }
 
