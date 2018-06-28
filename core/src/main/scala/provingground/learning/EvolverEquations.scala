@@ -265,18 +265,77 @@ trait ApplnInverse {
 }
 
 object ApplnInverse {
-
   /**
     * inverts only formal applications
     */
   case object Formal extends ApplnInverse {
     def applInv(term: Term, context: Vector[Term]) =
       (for {
-        (f, x) <- FormalAppln.unapply(term)
+        tc <- termOptContext(term, context)
+        (f, x) <- FormalAppln.unapply(tc)
         fn     <- ExstFunc.opt(f)
       } yield (fn, x)).toSet
 
     def unAppInv(term: Term, context: Vector[Term]) = applInv(term, context)
+  }
+
+  case class OuterFromSupport(supp: Set[Term]){
+    val funcs : Set[ExstFunc] = supp.map(ExstFunc.opt).flatten
+
+    val byTyp : Map[Typ[Term], Set[Term]] =  supp.groupBy(_.typ)
+
+    val simpleApplnInvMap : Set[(Term, (ExstFunc, Term))] =
+      for {
+        fn <- funcs
+        x <- byTyp.getOrElse(fn.dom,  Set())
+        y <- fn(x)
+      } yield y -> (fn, x)
+
+    val unifApplnInvMap : Set[(Term, (ExstFunc, Term))] =
+      for {
+        fn <- funcs
+        x <- supp
+        y <- Unify.appln(fn.func, x)
+      } yield y -> (fn, x)
+
+    def applInv(term: Term) : Set[(ExstFunc, Term)] = simpleApplnInvMap.filter(_._1 == term).map(_._2)
+
+    def unAppInv(term: Term) : Set[(ExstFunc, Term)] = unifApplnInvMap.filter(_._1 == term).map(_._2)
+
+  }
+
+  case class Enumerate(supp: Set[Term], baseContexts: Set[Vector[Term]]) extends ApplnInverse{
+    /**
+      * set of terms in the basis contexts
+      */
+    lazy val contextTermSet: Set[(Term, Vector[Term])] =
+      baseContexts.flatMap { (ctx) =>
+        termsInContext(supp, ctx).map((t) => t -> ctx)
+      }
+
+    lazy val termsByBaseContext =
+      contextTermSet.groupBy(_._2).mapValues((s) => s.map(_._1))
+
+    lazy val outers =
+      termsByBaseContext.map{
+        case (ctx, supp) => ctx -> OuterFromSupport(supp)
+      }
+
+    def inBase(term: Term, context: Vector[Term]) =
+      projectSomeContext(baseContexts.toVector)(term, context)
+
+    def applInv(term: Term, context: Vector[Term]) =
+      inBase(term, context).map{
+        case (t, bc) =>
+          outers(bc).applInv(t)
+      }.getOrElse(Set.empty[(ExstFunc, Term)])
+
+
+    def unAppInv(term: Term, context: Vector[Term]) =
+      inBase(term, context).map{
+        case (t, bc) =>
+          outers(bc).unAppInv(t)
+      }.getOrElse(Set.empty[(ExstFunc, Term)])
   }
 }
 
