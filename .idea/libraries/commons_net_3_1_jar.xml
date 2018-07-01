@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="commons-net-3.1.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/commons-net/commons-net/3.1/commons-net-3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/commons-net/commons-net/3.1/commons-net-3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
