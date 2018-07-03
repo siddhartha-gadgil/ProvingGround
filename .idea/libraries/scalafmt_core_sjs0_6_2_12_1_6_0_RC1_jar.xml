@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="scalafmt-core_sjs0.6_2.12-1.6.0-RC1.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/geirsson/scalafmt-core_sjs0.6_2.12/1.6.0-RC1/scalafmt-core_sjs0.6_2.12-1.6.0-RC1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/geirsson/scalafmt-core_sjs0.6_2.12/1.6.0-RC1/scalafmt-core_sjs0.6_2.12-1.6.0-RC1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

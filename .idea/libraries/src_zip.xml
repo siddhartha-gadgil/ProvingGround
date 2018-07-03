@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="src.zip">
+    <CLASSES>
+      <root url="jar:///usr/lib/jvm/java-8-oracle/src.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

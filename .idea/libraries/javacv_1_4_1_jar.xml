@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="javacv-1.4.1.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacv/1.4.1/javacv-1.4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacv/1.4.1/javacv-1.4.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

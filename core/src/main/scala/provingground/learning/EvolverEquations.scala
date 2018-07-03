@@ -253,6 +253,17 @@ trait EvolverSupport {
   def spireLearner(p: Map[EvolverVariables, Double], apIn: ApplnInverse) =
     TermLearner(this, spireProb(p), apIn)
 
+  def spireUpdate(p: Map[EvolverVariables, Double], tang: Vector[Double]) =
+    variablesVector.zipWithIndex.map {
+      case (v, n) =>
+        v -> (p.getOrElse(v, 0.0) * exp(tang(n)))
+    }.toMap
+
+  def spireGradShifted(p: Map[EvolverVariables, Double], cost: Jet[Double], epsilon: Double) = {
+    val tang = cost.infinitesimal.toVector.map{(x) => -x * epsilon}
+    spireUpdate(p, tang)
+  }
+
 }
 
 /**
