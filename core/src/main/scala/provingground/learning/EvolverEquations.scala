@@ -8,8 +8,8 @@ import spire.implicits._
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
 object EvolverEquations {
-  def klDiff[F: Field : Trig](p: F, q: F) =
-    p * log(p/q)
+  def klDiff[F: Field: Trig](p: F, q: F) =
+    p * log(p / q)
 
   /**
     * terms of the form `x :-> y` or `x ~>: y` imported into a context of the form
@@ -259,8 +259,12 @@ trait EvolverSupport {
         v -> (p.getOrElse(v, 0.0) * exp(tang(n)))
     }.toMap
 
-  def spireGradShifted(p: Map[EvolverVariables, Double], cost: Jet[Double], epsilon: Double) = {
-    val tang = cost.infinitesimal.toVector.map{(x) => -x * epsilon}
+  def spireGradShifted(p: Map[EvolverVariables, Double],
+                       cost: Jet[Double],
+                       epsilon: Double) = {
+    val tang = cost.infinitesimal.toVector.map { (x) =>
+      -x * epsilon
+    }
     spireUpdate(p, tang)
   }
 
@@ -276,13 +280,14 @@ trait ApplnInverse {
 }
 
 object ApplnInverse {
+
   /**
     * inverts only formal applications
     */
   case object Formal extends ApplnInverse {
     def applInv(term: Term, context: Vector[Term]) =
       (for {
-        tc <- termOptContext(term, context)
+        tc     <- termOptContext(term, context)
         (f, x) <- FormalAppln.unapply(tc)
         fn     <- ExstFunc.opt(f)
       } yield (fn, x)).toSet
@@ -290,32 +295,36 @@ object ApplnInverse {
     def unAppInv(term: Term, context: Vector[Term]) = applInv(term, context)
   }
 
-  case class OuterFromSupport(supp: Set[Term]){
-    val funcs : Set[ExstFunc] = supp.map(ExstFunc.opt).flatten
+  case class OuterFromSupport(supp: Set[Term]) {
+    val funcs: Set[ExstFunc] = supp.map(ExstFunc.opt).flatten
 
-    val byTyp : Map[Typ[Term], Set[Term]] =  supp.groupBy(_.typ)
+    val byTyp: Map[Typ[Term], Set[Term]] = supp.groupBy(_.typ)
 
-    val simpleApplnInvMap : Set[(Term, (ExstFunc, Term))] =
+    val simpleApplnInvMap: Set[(Term, (ExstFunc, Term))] =
       for {
         fn <- funcs
-        x <- byTyp.getOrElse(fn.dom,  Set())
-        y <- fn(x)
+        x  <- byTyp.getOrElse(fn.dom, Set())
+        y  <- fn(x)
       } yield y -> (fn, x)
 
-    val unifApplnInvMap : Set[(Term, (ExstFunc, Term))] =
+    val unifApplnInvMap: Set[(Term, (ExstFunc, Term))] =
       for {
         fn <- funcs
-        x <- supp
-        y <- Unify.appln(fn.func, x)
+        x  <- supp
+        y  <- Unify.appln(fn.func, x)
       } yield y -> (fn, x)
 
-    def applInv(term: Term) : Set[(ExstFunc, Term)] = simpleApplnInvMap.filter(_._1 == term).map(_._2)
+    def applInv(term: Term): Set[(ExstFunc, Term)] =
+      simpleApplnInvMap.filter(_._1 == term).map(_._2)
 
-    def unAppInv(term: Term) : Set[(ExstFunc, Term)] = unifApplnInvMap.filter(_._1 == term).map(_._2)
+    def unAppInv(term: Term): Set[(ExstFunc, Term)] =
+      unifApplnInvMap.filter(_._1 == term).map(_._2)
 
   }
 
-  case class Enumerate(supp: Set[Term], baseContexts: Set[Vector[Term]]) extends ApplnInverse{
+  case class Enumerate(supp: Set[Term], baseContexts: Set[Vector[Term]])
+      extends ApplnInverse {
+
     /**
       * set of terms in the basis contexts
       */
@@ -328,7 +337,7 @@ object ApplnInverse {
       contextTermSet.groupBy(_._2).mapValues((s) => s.map(_._1))
 
     lazy val outers =
-      termsByBaseContext.map{
+      termsByBaseContext.map {
         case (ctx, supp) => ctx -> OuterFromSupport(supp)
       }
 
@@ -336,17 +345,20 @@ object ApplnInverse {
       projectSomeContext(baseContexts.toVector)(term, context)
 
     def applInv(term: Term, context: Vector[Term]) =
-      inBase(term, context).map{
-        case (t, bc) =>
-          outers(bc).applInv(t)
-      }.getOrElse(Set.empty[(ExstFunc, Term)])
-
+      inBase(term, context)
+        .map {
+          case (t, bc) =>
+            outers(bc).applInv(t)
+        }
+        .getOrElse(Set.empty[(ExstFunc, Term)])
 
     def unAppInv(term: Term, context: Vector[Term]) =
-      inBase(term, context).map{
-        case (t, bc) =>
-          outers(bc).unAppInv(t)
-      }.getOrElse(Set.empty[(ExstFunc, Term)])
+      inBase(term, context)
+        .map {
+          case (t, bc) =>
+            outers(bc).unAppInv(t)
+        }
+        .getOrElse(Set.empty[(ExstFunc, Term)])
   }
 }
 
@@ -532,9 +544,9 @@ class EvolverEquations[F](supp: EvolverSupport, prob: EvolverVariables => F)(
     * a cost associated to a lack of consistency of the probabilities.
     */
   lazy val consistencyCost: F =
-    sum(consistencyEquations
-      .map { case (a, b) => klDiff(a, b) })
-
+    sum(
+      consistencyEquations
+        .map { case (a, b) => klDiff(a, b) })
 
   /**
     * total probability of the proof of a theorem
@@ -674,9 +686,8 @@ case class TermLearner[F: Field: Trig](supp: EvolverSupport,
   lazy val evolutionCost: F =
     sum(
       evolutionEquations
-      .map { case (a, b) => klDiff(a, b)}
+        .map { case (a, b) => klDiff(a, b) }
     )
-
 
   /**
     * the total cost, including consistency and entropies

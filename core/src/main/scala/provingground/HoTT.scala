@@ -46,7 +46,7 @@ object HoTT {
     override def toString = name.toString
   }
 
-  trait NameFactory{
+  trait NameFactory {
     def get: Name
   }
 
@@ -56,7 +56,7 @@ object HoTT {
   implicit object DefaultNameFactory extends NameFactory {
     var name: String = ""
 
-    def get : Name = {
+    def get: Name = {
       val newname = nextName(name)
 
       name = newname
@@ -64,7 +64,6 @@ object HoTT {
       Name("$" + newname)
     }
   }
-
 
   /**
     * use strings as symbols.
@@ -339,7 +338,8 @@ object HoTT {
       */
     def Var(implicit factory: NameFactory) = getVar(this)
 
-    def typedVar(implicit factory: NameFactory): TypedTerm[U] = getTypedVar(this)
+    def typedVar(implicit factory: NameFactory): TypedTerm[U] =
+      getTypedVar(this)
 
     /**
       * function type:  `this -> that`
@@ -3079,14 +3079,15 @@ object HoTT {
     prefix + nextName(name)
   }
 
-
   /**
     * return variable with name from factory.
     */
-  def getVar[U <: Term with Subs[U]](typ: Typ[U])(implicit factory: NameFactory) =
+  def getVar[U <: Term with Subs[U]](typ: Typ[U])(
+      implicit factory: NameFactory) =
     typ.symbObj(factory.get)
 
-  def getTypedVar[U <: Term with Subs[U]](typ: Typ[U])(implicit factory: NameFactory) =
+  def getTypedVar[U <: Term with Subs[U]](typ: Typ[U])(
+      implicit factory: NameFactory) =
     typ.typedVar(factory.get)
 
   /**
