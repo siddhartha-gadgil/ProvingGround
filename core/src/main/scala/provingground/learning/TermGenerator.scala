@@ -45,23 +45,26 @@ object ConditionList {
   * A formal node for describing recursive generation. Can have several inputs,
   * encoded as an HList, but has just one output.
   */
-sealed trait GeneratorNode[S, I <: HList, O] {
-  val polyDomain: ConditionList[S, I]
+sealed trait GeneratorNode[S,  O] {
   val codomain: Condition[S, O]
+}
+
+sealed trait BaseGeneratorNode[S, I<: HList, O] extends GeneratorNode[S, O]{
+  val polyDomain: ConditionList[S, I]
 }
 
 object GeneratorNode {
   case class Map[S, X, Y](f: X => Y,
                           domain: Condition[S, X],
                           codomain: Condition[S, Y])
-      extends GeneratorNode[S, X :: HNil, Y] {
+      extends BaseGeneratorNode[S, X :: HNil, Y] {
     val polyDomain = domain :: ConditionList.Nil[S]
   }
 
   case class MapOpt[S, X, Y](f: X => Option[Y],
                              domain: Condition[S, X],
                              codomain: Condition[S, Y])
-      extends GeneratorNode[S, X :: HNil, Y] {
+      extends BaseGeneratorNode[S, X :: HNil, Y] {
     val polyDomain = domain :: ConditionList.Nil[S]
   }
 
@@ -69,7 +72,7 @@ object GeneratorNode {
                                   domain1: Condition[S, X1],
                                   domain2: Condition[S, X2],
                                   codomain: Condition[S, Y])
-      extends GeneratorNode[S, X1 :: X2 :: HNil, Y] {
+      extends BaseGeneratorNode[S, X1 :: X2 :: HNil, Y] {
     val polyDomain = domain1 :: domain2 :: ConditionList.Nil[S]
   }
 
@@ -77,25 +80,23 @@ object GeneratorNode {
                                      domain1: Condition[S, X1],
                                      domain2: Condition[S, X2],
                                      codomain: Condition[S, Y])
-      extends GeneratorNode[S, X1 :: X2 :: HNil, Y] {
+      extends BaseGeneratorNode[S, X1 :: X2 :: HNil, Y] {
     val polyDomain = domain1 :: domain2 :: ConditionList.Nil[S]
   }
 
-  case class ThenCondition[S, I <: HList, O, Y](
-      gen: GeneratorNode[S, I, O],
+  case class ThenCondition[S, O, Y](
+      gen: GeneratorNode[S,  O],
       condition: Condition[S, Y]
-  ) extends GeneratorNode[S, I, Y] {
+  ) extends GeneratorNode[S, Y] {
     val codomain   = condition
-    val polyDomain = gen.polyDomain
   }
 
-  case class Island[S, I <: HList, O, Y, State, Boat, D[_]](
-      polyDomain: ConditionList[S, I],
+  case class Island[S, O, Y, State, Boat, D[_]](
       islandCodomain: Condition[S, O],
       codomain: Condition[S, Y],
       initMap: State => (State, Boat),
       export: (Boat, O) => Y
-  )(implicit dists: Distibutions[S, State, D]) extends GeneratorNode[S, I, Y]
+  )(implicit dists: Distibutions[S, State, D]) extends GeneratorNode[S, Y]
 
 }
 
