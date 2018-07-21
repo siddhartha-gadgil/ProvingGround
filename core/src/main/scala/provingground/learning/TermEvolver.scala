@@ -67,10 +67,6 @@ object TermEvolver {
     })
   }
 
-  def typOpt(x: Term) = x match {
-    case typ: Typ[_] => Some(typ: Typ[Term])
-    case _           => None
-  }
 
   def justTerm[U <: Term with Subs[U]](x: U) = x: Term
 
@@ -83,35 +79,6 @@ object TermEvolver {
   def topTheorems(fd: FD[Term], n: Int = 25) = theorems(fd).entropyVec.take(n)
 }
 
-trait ExstFunc {
-  type U <: Term with Subs[U]
-
-  type V <: Term with Subs[V]
-
-  val func: FuncLike[U, V]
-
-  lazy val term: Term = func
-
-  lazy val dom: Typ[Term] = func.dom
-
-  def apply(arg: Term): Option[Term] =
-    if (arg.typ == func.dom) Some(func(arg.asInstanceOf[U])) else None
-}
-
-object ExstFunc {
-  def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](
-      fn: FuncLike[X, Y]) = new ExstFunc {
-    type U = X
-    type V = Y
-
-    val func = fn
-  }
-
-  def opt(t: Term): Option[ExstFunc] = t match {
-    case fn: FuncLike[u, v] => Some(ExstFunc(fn))
-    case _                  => None
-  }
-}
 
 trait TermEvolution {
   val evolve: T[FD[Term]] => T[PD[Term]]

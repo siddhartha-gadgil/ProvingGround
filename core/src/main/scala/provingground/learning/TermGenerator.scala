@@ -54,6 +54,16 @@ sealed trait BaseGeneratorNode[S, I<: HList, O] extends GeneratorNode[S, O]{
 }
 
 object GeneratorNode {
+  case class Init[S, X](domain: Condition[S, X]) extends BaseGeneratorNode[S, X :: HNil, X]{
+    val codomain = domain
+    val polyDomain = domain :: ConditionList.Nil[S]
+  }
+
+  case class ConditionedInit[S, X, Y](domain: Condition[S, X], codomain: Condition[S, Y]
+  ) extends BaseGeneratorNode[S, X :: HNil, Y]{
+    val polyDomain = domain :: ConditionList.Nil[S]
+  }
+
   case class Map[S, X, Y](f: X => Y,
                           domain: Condition[S, X],
                           codomain: Condition[S, Y])
@@ -84,6 +94,14 @@ object GeneratorNode {
     val polyDomain = domain1 :: domain2 :: ConditionList.Nil[S]
   }
 
+  case class FiberProduct[S, X1, X2, Z, Y](
+                                  quot: X1 => Z,
+                                  fiberDomain: Y => Condition[S, X2],
+                                  f: (X1, X2) => Y,
+                                  baseDomain: Condition[S, X1],
+                                  codomain: Condition[S, Y])
+      extends GeneratorNode[S, Y]
+
   case class ThenCondition[S, O, Y](
       gen: GeneratorNode[S,  O],
       condition: Condition[S, Y]
@@ -96,15 +114,22 @@ object GeneratorNode {
       codomain: Condition[S, Y],
       initMap: State => (State, Boat),
       export: (Boat, O) => Y
-  )(implicit dists: Distibutions[S, State, D]) extends GeneratorNode[S, Y]
+  )(implicit dists: DistributionState[S, State, D]) extends GeneratorNode[S, Y]
 
 }
 
 /**
- * typeclass for providing distributions from a state
+ * typeclass for providing distributions from a state and
+ * modifying a state from distributions
  */
-trait Distibutions[S, State, D[_]]{
-  def distribution[T](condition: Condition[S, T])(state : State) : D[T]
+trait DistributionState[S, State, D[_]]{
+  def distributions[T](condition: Condition[S, T])(state : State) : D[T]
+
+  def update(dists: Distributions[S, D])(init: State): State
+}
+
+trait Distributions[S, D[_]]{
+  def dist[T](condition: Condition[S, T]) : D[S]
 }
 
 /**
@@ -117,4 +142,20 @@ trait Conditioning[D[_]]{
 case object Conditioning{
   def flatten[S, D[_]](implicit cd: Conditioning[D]) : D[Option[S]] => D[S] =
     cd.condition(Condition.Restrict[Option[S], S](identity))
+}
+
+object TermConditions{
+  import Condition._
+
+  val terms = True[Term]
+
+  val typs = Restrict(typOpt)
+
+  val funcs = Restrict(ExstFunc.opt)
+
+  def termsWithTyp(typ: Term) = Filter((t: Term) => t.typ == typ)
+
+  val typFamilies = Filter(isTypFamily)
+
+  def funcsWithDomain(typ: Typ[Term]) = Restrict((t: Term) => ExstFunc.opt(t).filter(_.dom == typ))
 }
