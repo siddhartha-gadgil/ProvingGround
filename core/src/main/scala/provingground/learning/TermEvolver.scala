@@ -67,7 +67,6 @@ object TermEvolver {
     })
   }
 
-
   def justTerm[U <: Term with Subs[U]](x: U) = x: Term
 
   def theorems(fd: FD[Term]) = {
@@ -78,7 +77,6 @@ object TermEvolver {
 
   def topTheorems(fd: FD[Term], n: Int = 25) = theorems(fd).entropyVec.take(n)
 }
-
 
 trait TermEvolution {
   val evolve: T[FD[Term]] => T[PD[Term]]

@@ -24,7 +24,7 @@ object ScalaJSExample {
     val echo = span.render
 
     // import dom.ext._
-    import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
+    import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
     val box = input(`type` := "text", placeholder := "Type here!").render
 
