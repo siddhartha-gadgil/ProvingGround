@@ -17,42 +17,42 @@ import scala.language.higherKinds
   * A `sort`, i.e. type refining a scala type.
   * Can also be used for conditioning, giving one distribution from another.
   */
-sealed trait Sort[+S, T]
+sealed trait Sort[+T]
 
 object Sort {
-  case class True[S]() extends Sort[S, S]
+  case class True[S]() extends Sort[S]
 
-  case class Filter[S](pred: S => Boolean) extends Sort[S, S]
+  case class Filter[S](pred: S => Boolean) extends Sort[S]
 
-  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]
+  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[T]
 
   val AllTerms = True[Term]
 }
 
-sealed trait SortList[S, U <: HList] {
-  def ::[X](that: Sort[S, X]) = SortList.Cons(that, this)
+sealed trait SortList[U <: HList] {
+  def ::[X](that: Sort[X]) = SortList.Cons(that, this)
 }
 
 object SortList {
-  case class Nil[S]() extends SortList[S, HNil]
+  case object Nil extends SortList[HNil]
 
-  case class Cons[S, X, U <: HList](head: Sort[S, X], tail: SortList[S, U])
-      extends SortList[S, X :: U]
+  case class Cons[X, U <: HList](head: Sort[X], tail: SortList[U])
+      extends SortList[X :: U]
 }
 
 class RandomVarFamily[Dom <: HList, O](
-    val polyDomain : SortList[Term, Dom],
-    val rangeFamily: Dom => Sort[_, O] = (d: Dom) => Sort.True[O])
+    val polyDomain : SortList[Dom],
+    val rangeFamily: Dom => Sort[O] = (d: Dom) => Sort.True[O])
 
-class RandomVar[O](val range: Sort[_, O] = Sort.True[O])
-    extends RandomVarFamily[HNil, O](SortList.Nil[Term], (_) => range)
+class RandomVar[O](val range: Sort[O] = Sort.True[O])
+    extends RandomVarFamily[HNil, O](SortList.Nil, (_) => range)
 
 object RandomVar {
-  class SimpleFamily[U, O](
-      domain: Sort[Term, U],
-      rangeFamily: U => Sort[_, O] = (x: U) => Sort.True[O])
+  class SimpleFamily[U <: Term with Subs[U], O](
+      domain: Sort[U],
+      rangeFamily: U => Sort[O] = (x: U) => Sort.True[O])
       extends RandomVarFamily[U :: HNil, O](
-        domain :: SortList.Nil[Term],
+        domain :: SortList.Nil,
         { case x :: HNil => rangeFamily(x) }
       )
 
@@ -180,9 +180,9 @@ object GeneratorNode {
   * modifying a state from distributions
   */
 trait DistributionState[State, D[_]] {
-  val randomVars: Set[RandomVar[_]]
-
-  val randomVarFamilies: Set[RandomVarFamily[_ <: HList, _]]
+  // val randomVars: Set[RandomVar[_]]
+  //
+  // val randomVarFamilies: Set[RandomVarFamily[_ <: HList, _]]
 
   def value[T](state: State)(randomVar: RandomVar[T]): D[T]
 
@@ -199,11 +199,33 @@ trait RandomVarValues[D[_]] {
   def value[T](randomVar: RandomVar[T]): D[T]
 }
 
+trait NodeCoefficients[V]{
+  def value[O](node: GeneratorNode[O]) : V
+
+  def valueAt[Dom <: HList, T](nodes: GeneratorNodeFamily[Dom, T]): V
+}
+
+case class UniversalState[D[_], V, C](randVars : RandomVarValues[D], nodeCoeffs: NodeCoefficients[V], context: C)
+
+object UniversalState{
+  implicit def univDistState[D[_], V, P] : DistributionState[UniversalState[D, V, P], D] =
+    new DistributionState[UniversalState[D, V, P], D]{
+    def value[T](state: UniversalState[D, V, P])(randomVar: RandomVar[T]): D[T] = state.randVars.value(randomVar)
+
+    def valueAt[Dom <: HList, T](
+        state: UniversalState[D, V, P])(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): D[T] =
+          state.randVars.valueAt(randomVarFmly, fullArg)
+
+    def update(values: RandomVarValues[D])(init: UniversalState[D, V, P]): UniversalState[D, V, P] =
+      init.copy(randVars = values)
+  }
+}
+
 /**
   * typeclass for being able to condition
   */
 trait Conditioning[D[_]] {
-  def condition[S, T](sort: Sort[S, T]): D[S] => D[T]
+  def condition[S, T](sort: Sort[T]): D[S] => D[T]
 }
 
 case object Conditioning {
