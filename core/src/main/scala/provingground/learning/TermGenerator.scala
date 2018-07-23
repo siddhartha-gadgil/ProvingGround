@@ -14,107 +14,153 @@ import shapeless._, HList._
 import scala.language.higherKinds
 
 /**
-  * A random variable, corresponding to which we get a distribution from an existing one.
+  * A `sort`, i.e. type refining a scala type.
   * Can also be used for conditioning, giving one distribution from another.
   */
-sealed trait RandomVar[S, T]
+sealed trait Sort[S, T]
 
-object RandomVar {
-  case class True[S]() extends RandomVar[S, S]
+object Sort {
+  case class True[S]() extends Sort[S, S]
 
-  case class Filter[S](pred: S => Boolean) extends RandomVar[S, S]
+  case class Filter[S](pred: S => Boolean) extends Sort[S, S]
 
-  case class Restrict[S, T](optMap: S => Option[T]) extends RandomVar[S, T]
+  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]
 
   val AllTerms = True[Term]
 }
 
-sealed trait RandomVarList[S, U <: HList] {
-  def ::[X](that: RandomVar[S, X]) = RandomVarList.Cons(that, this)
+sealed trait SortList[S, U <: HList] {
+  def ::[X](that: Sort[S, X]) = SortList.Cons(that, this)
 }
 
-object RandomVarList {
-  case class Nil[S]() extends RandomVarList[S, HNil]
+object SortList {
+  case class Nil[S]() extends SortList[S, HNil]
 
-  case class Cons[S, X, U <: HList](head: RandomVar[S, X],
-                                    tail: RandomVarList[S, U])
-      extends RandomVarList[S, X :: U]
+  case class Cons[S, X, U <: HList](head: Sort[S, X],
+                                    tail: SortList[S, U])
+      extends SortList[S, X :: U]
+}
+
+class RandomVarFamily[Dom <: HList, O](val rangeFamily: Dom => Sort[_, O] = (d: Dom) => Sort.True[O])
+
+class RandomVar[O](val range: Sort[_, O] = Sort.True[O]) extends RandomVarFamily[HNil, O]((_) => range)
+
+
+object RandomVar{
+  class SimpleFamily[U, O](rangeFamily: U => Sort[_, O] = (x: U) => Sort.True[O]) extends RandomVarFamily[U :: HNil, O](
+    {case x :: HNil => rangeFamily(x)}
+  )
+
+  case class Instance[Dom <: HList, O](family: RandomVarFamily[Dom, O], fullArg: Dom) extends RandomVar(family.rangeFamily(fullArg))
+}
+
+
+sealed trait RandomVarList[U <: HList] {
+  def ::[X](that: RandomVar[X]) = RandomVarList.Cons(that, this)
+}
+
+
+object RandomVarList {
+  case object Nil extends RandomVarList[HNil]
+
+  case class Cons[X, U <: HList](head: RandomVar[X],
+                                    tail: RandomVarList[U])
+      extends RandomVarList[X :: U]
+}
+
+sealed trait GeneratorNodeFamily[Dom <: HList, O] {
+  val output: RandomVarFamily[Dom, O]
+}
+
+
+object GeneratorNodeFamily {
+  case class Pi[Dom <: HList, O](nodes : Dom => GeneratorNode[O], output: RandomVarFamily[Dom, O]) extends GeneratorNodeFamily[Dom, O]
 }
 
 /**
-  * A formal node for describing recursive generation. Can have several inputs,
+  * A formal node for describing recursive generation. Can have several inputList,
   * encoded as an HList, but has just one output.
   */
-sealed trait GeneratorNode[S,  O] {
-  val codomain: RandomVar[S, O]
+sealed trait GeneratorNode[O] extends GeneratorNodeFamily[HNil, O]{
+  val output: RandomVar[O]
 }
 
-sealed trait BaseGeneratorNode[S, I<: HList, O] extends GeneratorNode[S, O]{
-  val polyDomain: RandomVarList[S, I]
+sealed trait BaseGeneratorNode[I<: HList, O] extends GeneratorNode[O]{
+  val inputList: RandomVarList[I]
 }
 
 object GeneratorNode {
-  case class Init[S, X](domain: RandomVar[S, X]) extends BaseGeneratorNode[S, X :: HNil, X]{
-    val codomain = domain
-    val polyDomain = domain :: RandomVarList.Nil[S]
+  def simplePi[U, O](nodes : U => GeneratorNode[O], output: RandomVarFamily[U :: HNil, O]) =
+    GeneratorNodeFamily.Pi[U :: HNil, O]({case x :: HNil => nodes(x)}, output)
+
+  case class Init[X](input: RandomVar[X]) extends BaseGeneratorNode[X :: HNil, X]{
+    val output = input
+    val inputList = input :: RandomVarList.Nil
   }
 
-  case class ConditionedInit[S, X, Y](domain: RandomVar[S, X], codomain: RandomVar[S, Y]
-  ) extends BaseGeneratorNode[S, X :: HNil, Y]{
-    val polyDomain = domain :: RandomVarList.Nil[S]
+  case class ConditionedInit[X, Y](input: RandomVar[X], output: RandomVar[Y]
+  ) extends BaseGeneratorNode[X :: HNil, Y]{
+    val inputList = input :: RandomVarList.Nil
   }
 
-  case class Map[S, X, Y](f: X => Y,
-                          domain: RandomVar[S, X],
-                          codomain: RandomVar[S, Y])
-      extends BaseGeneratorNode[S, X :: HNil, Y] {
-    val polyDomain = domain :: RandomVarList.Nil[S]
+  case class Map[X, Y](f: X => Y,
+                          input: RandomVar[X],
+                          output: RandomVar[Y])
+      extends BaseGeneratorNode[X :: HNil, Y] {
+    val inputList = input :: RandomVarList.Nil
   }
 
-  case class MapOpt[S, X, Y](f: X => Option[Y],
-                             domain: RandomVar[S, X],
-                             codomain: RandomVar[S, Y])
-      extends BaseGeneratorNode[S, X :: HNil, Y] {
-    val polyDomain = domain :: RandomVarList.Nil[S]
+  case class MapOpt[X, Y](f: X => Option[Y],
+                             input: RandomVar[X],
+                             output: RandomVar[Y])
+      extends BaseGeneratorNode[X :: HNil, Y] {
+    val inputList = input :: RandomVarList.Nil
   }
 
-  case class ZipMap[S, X1, X2, Y](f: (X1, X2) => Y,
-                                  domain1: RandomVar[S, X1],
-                                  domain2: RandomVar[S, X2],
-                                  codomain: RandomVar[S, Y])
-      extends BaseGeneratorNode[S, X1 :: X2 :: HNil, Y] {
-    val polyDomain = domain1 :: domain2 :: RandomVarList.Nil[S]
+  case class ZipMap[X1, X2, Y](f: (X1, X2) => Y,
+                                  input1: RandomVar[X1],
+                                  input2: RandomVar[X2],
+                                  output: RandomVar[Y])
+      extends BaseGeneratorNode[X1 :: X2 :: HNil, Y] {
+    val inputList = input1 :: input2 :: RandomVarList.Nil
   }
 
-  case class ZipMapOpt[S, X1, X2, Y](f: (X1, X2) => Option[Y],
-                                     domain1: RandomVar[S, X1],
-                                     domain2: RandomVar[S, X2],
-                                     codomain: RandomVar[S, Y])
-      extends BaseGeneratorNode[S, X1 :: X2 :: HNil, Y] {
-    val polyDomain = domain1 :: domain2 :: RandomVarList.Nil[S]
+  case class ZipMapOpt[X1, X2, Y](f: (X1, X2) => Option[Y],
+                                     input1: RandomVar[X1],
+                                     input2: RandomVar[X2],
+                                     output: RandomVar[Y])
+      extends BaseGeneratorNode[X1 :: X2 :: HNil, Y] {
+    val inputList = input1 :: input2 :: RandomVarList.Nil
   }
 
-  case class FiberProduct[S, X1, X2, Z, Y](
+  case class FiberProductMap[X1, X2, Z, Y](
                                   quot: X1 => Z,
-                                  fiberDomain: Y => RandomVar[S, X2],
+                                  fiberVar: Y => RandomVar[X2],
                                   f: (X1, X2) => Y,
-                                  baseDomain: RandomVar[S, X1],
-                                  codomain: RandomVar[S, Y])
-      extends GeneratorNode[S, Y]
+                                  baseInput: RandomVar[X1],
+                                  output: RandomVar[Y])
+      extends GeneratorNode[Y]
 
-  case class ThenCondition[S, O, Y](
-      gen: GeneratorNode[S,  O],
-      condition: RandomVar[S, Y]
-  ) extends GeneratorNode[S, Y] {
-    val codomain   = condition
+  case class ZipFlatMap[X1, X2, Y](
+                                  baseInput: RandomVar[X1],
+                                  fiberVar: X1 => RandomVar[X2],
+                                  f: (X1, X2) => Y,
+                                  output: RandomVar[Y])
+      extends GeneratorNode[Y]
+
+  case class ThenCondition[O, Y](
+      gen: GeneratorNode[ O],
+      condition: RandomVar[Y]
+  ) extends GeneratorNode[Y] {
+    val output   = condition
   }
 
-  case class Island[S, O, Y, State, Boat, D[_]](
-      islandCodomain: RandomVar[S, O],
-      codomain: RandomVar[S, Y],
+  case class Island[O, Y, State, Boat, D[_]](
+      islandOutput: RandomVar[O],
+      output: RandomVar[Y],
       initMap: State => (State, Boat),
       export: (Boat, O) => Y
-  )(implicit dists: DistributionState[S, State, D]) extends GeneratorNode[S, Y]
+  )(implicit dists: DistributionState[State, D]) extends GeneratorNode[Y]
 
 }
 
@@ -122,40 +168,53 @@ object GeneratorNode {
  * typeclass for providing distributions from a state and
  * modifying a state from distributions
  */
-trait DistributionState[S, State, D[_]]{
-  def distributions[T](randomVar: RandomVar[S, T])(state : State) : D[T]
+trait DistributionState[State, D[_]]{
+  val randomVars : Set[RandomVar[_]]
 
-  def update(dists: Distributions[S, D])(init: State): State
+  val randomVarFamilies : Set[RandomVarFamily[_ <: HList, _]]
+
+  def value[T](state : State)(randomVar: RandomVar[T]) : D[T]
+
+  def valueAt[Dom <: HList, T](state : State)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom) : D[T]
+
+  def update(values: RandomVarValues[D])(init: State): State
 }
 
-trait Distributions[S, D[_]]{
-  def dist[T](randomVar: RandomVar[S, T]) : D[S]
+trait RandomVarValues[D[_]]{
+  def valueAt[Dom <: HList, T](randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom) : D[T]
+
+  def value[T](randomVar: RandomVar[T]) : D[T]
 }
 
 /**
  * typeclass for being able to condition
  */
 trait Conditioning[D[_]]{
-  def condition[S, T](c: RandomVar[S, T]) : D[S] => D[T]
+  def condition[S, T](sort: Sort[S, T]) : D[S] => D[T]
 }
 
 case object Conditioning{
   def flatten[S, D[_]](implicit cd: Conditioning[D]) : D[Option[S]] => D[S] =
-    cd.condition(RandomVar.Restrict[Option[S], S](identity))
+    cd.condition(Sort.Restrict[Option[S], S](identity))
 }
 
 object TermRandomVars{
-  import RandomVar._
+  case object Terms extends RandomVar[Term]
 
-  val terms = True[Term]
+  case object Typ extends RandomVar[Typ[Term]]
 
-  val typs = Restrict(typOpt)
-
-  val funcs = Restrict(ExstFunc.opt)
-
-  def termsWithTyp(typ: Term) = Filter((t: Term) => t.typ == typ)
-
-  val typFamilies = Filter(isTypFamily)
-
-  def funcsWithDomain(typ: Typ[Term]) = Restrict((t: Term) => ExstFunc.opt(t).filter(_.dom == typ))
+  case object Funcs extends RandomVar[ExstFunc]
+  // import RandomVar._
+  //
+  // val terms = True[Term]
+  //
+  // val typs = Restrict(typOpt)
+  //
+  // val funcs = Restrict(ExstFunc.opt)
+  //
+  // def termsWithTyp(typ: Term) = Filter((t: Term) => t.typ == typ)
+  //
+  // val typFamilies = Filter(isTypFamily)
+  //
+  // def funcsWithDomain(typ: Typ[Term]) = Restrict((t: Term) => ExstFunc.opt(t).filter(_.dom == typ))
 }
