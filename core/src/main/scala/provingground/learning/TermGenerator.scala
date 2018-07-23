@@ -44,11 +44,17 @@ class RandomVarFamily[Dom <: HList, O](
     val polyDomain : SortList[Dom],
     val rangeFamily: Dom => Sort[O] = (d: Dom) => Sort.True[O])
 
+object RandomVarFamily{
+  case class Value[Dom <: HList, O, D[_]](
+    randVars : RandomVarFamily[Dom, O], value : D[O], fullArgs: Dom
+  )
+}
+
 class RandomVar[O](val range: Sort[O] = Sort.True[O])
     extends RandomVarFamily[HNil, O](SortList.Nil, (_) => range)
 
 object RandomVar {
-  class SimpleFamily[U <: Term with Subs[U], O](
+  class SimpleFamily[U, O](
       domain: Sort[U],
       rangeFamily: U => Sort[O] = (x: U) => Sort.True[O])
       extends RandomVarFamily[U :: HNil, O](
@@ -59,6 +65,8 @@ object RandomVar {
   case class Instance[Dom <: HList, O](family: RandomVarFamily[Dom, O],
                                        fullArg: Dom)
       extends RandomVar(family.rangeFamily(fullArg))
+
+  case class Value[O, D[_]](randVar : RandomVar[O], value: D[O])
 }
 
 sealed trait RandomVarList[U <: HList] {
@@ -199,25 +207,57 @@ trait RandomVarValues[D[_]] {
   def value[T](randomVar: RandomVar[T]): D[T]
 }
 
+
 trait NodeCoefficients[V]{
   def value[O](node: GeneratorNode[O]) : V
 
   def valueAt[Dom <: HList, T](nodes: GeneratorNodeFamily[Dom, T]): V
 }
 
-case class UniversalState[D[_], V, C](randVars : RandomVarValues[D], nodeCoeffs: NodeCoefficients[V], context: C)
+trait Empty[D[_]]{
+  def empty[A]: D[A]
+}
+
+case class UniversalState[D[_], V, C](
+  randVarVals : Set[RandomVar.Value[_, D]],
+  randVarFamilyVals : Set[RandomVarFamily.Value[_ <: HList, _, D]],
+  nodeCoeffs: Map[GeneratorNode[_], V],
+  nodeFamilyCoeffs : Map[GeneratorNodeFamily[_ <: HList, _], V]
+  , context: C)
 
 object UniversalState{
-  implicit def univDistState[D[_], V, P] : DistributionState[UniversalState[D, V, P], D] =
+  implicit def safeUnivDistState[D[_], V, P](implicit emp: Empty[D]) : DistributionState[UniversalState[D, V, P], D] =
     new DistributionState[UniversalState[D, V, P], D]{
-    def value[T](state: UniversalState[D, V, P])(randomVar: RandomVar[T]): D[T] = state.randVars.value(randomVar)
+    def value[T](state: UniversalState[D, V, P])(randomVar: RandomVar[T]): D[T] =
+      state
+      .randVarVals
+      .find(_.randVar == randomVar)
+      .map(_.value.asInstanceOf[D[T]])
+      .getOrElse(emp.empty[T])
 
     def valueAt[Dom <: HList, T](
         state: UniversalState[D, V, P])(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): D[T] =
-          state.randVars.valueAt(randomVarFmly, fullArg)
+          state
+          .randVarFamilyVals
+          .find(_.randVars == randomVarFmly)
+          .map(_.value.asInstanceOf[D[T]])
+          .getOrElse(emp.empty[T])
+          // state.randVars.valueAt(randomVarFmly, fullArg)
 
     def update(values: RandomVarValues[D])(init: UniversalState[D, V, P]): UniversalState[D, V, P] =
-      init.copy(randVars = values)
+      {
+        val randomVarVals =
+          for {
+              RandomVar.Value(rv, value) <- init.randVarVals
+              newVal = values.value(rv)
+          } yield RandomVar.Value(rv, newVal)
+        val randomVarFamilyVals =
+          for {
+              RandomVarFamily.Value(rv, value, args) <- init.randVarFamilyVals
+              newVal = values.valueAt(rv, args)
+          } yield RandomVarFamily.Value(rv, newVal, args)
+        init.copy(randVarVals = randomVarVals, randVarFamilyVals = randomVarFamilyVals)
+      }
   }
 }
 
