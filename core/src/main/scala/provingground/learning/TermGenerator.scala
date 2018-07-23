@@ -40,7 +40,7 @@ object SortList {
       extends SortList[X :: U]
 }
 
-class RandomVarFamily[Dom <: HList, O](
+class RandomVarFamily[Dom <: HList, +O](
     val polyDomain : SortList[Dom],
     val rangeFamily: Dom => Sort[O] = (d: Dom) => Sort.True[O])
 
@@ -50,7 +50,7 @@ object RandomVarFamily{
   )
 }
 
-class RandomVar[O](val range: Sort[O] = Sort.True[O])
+class RandomVar[+O](val range: Sort[O] = Sort.True[O])
     extends RandomVarFamily[HNil, O](SortList.Nil, (_) => range)
 
 object RandomVar {
@@ -188,9 +188,6 @@ object GeneratorNode {
   * modifying a state from distributions
   */
 trait DistributionState[State, D[_]] {
-  // val randomVars: Set[RandomVar[_]]
-  //
-  // val randomVarFamilies: Set[RandomVarFamily[_ <: HList, _]]
 
   def value[T](state: State)(randomVar: RandomVar[T]): D[T]
 
@@ -205,6 +202,25 @@ trait RandomVarValues[D[_]] {
                                fullArg: Dom): D[T]
 
   def value[T](randomVar: RandomVar[T]): D[T]
+
+  def support[T](randomVar: RandomVar[T])(implicit supp: Support[D]) =
+    supp.support(value(randomVar))
+
+  def fullArgSet[U <: HList](
+    l: SortList[U],
+    varGroups : Map[Sort[_], Set[RandomVar[_]]]
+    )(implicit supp: Support[D]): Set[U] =
+    l match {
+      case SortList.Nil => Set(HNil)
+      case SortList.Cons(head, tail) =>
+        val headSets : Set[RandomVar[Any]] = varGroups(head)
+        val headSupps = headSets.map((rv) => supp.support(value(rv)))
+        val headSet = headSupps.reduce(_ union _)
+        for {
+          x <- headSet
+          ys <- fullArgSet(tail, varGroups)
+        } yield x :: ys
+    }
 }
 
 
@@ -223,7 +239,11 @@ case class UniversalState[D[_], V, C](
   randVarFamilyVals : Set[RandomVarFamily.Value[_ <: HList, _, D]],
   nodeCoeffs: Map[GeneratorNode[_], V],
   nodeFamilyCoeffs : Map[GeneratorNodeFamily[_ <: HList, _], V]
-  , context: C)
+  , context: C){
+    val rangeSet = randVarVals.map(_.randVar.range)
+
+    val rangeGroups : Map[Sort[_], Set[RandomVar[_]]] = randVarVals.map(_.randVar).groupBy(_.range)
+  }
 
 object UniversalState{
   implicit def safeUnivDistState[D[_], V, P](implicit emp: Empty[D]) : DistributionState[UniversalState[D, V, P], D] =
@@ -251,6 +271,7 @@ object UniversalState{
               RandomVar.Value(rv, value) <- init.randVarVals
               newVal = values.value(rv)
           } yield RandomVar.Value(rv, newVal)
+
         val randomVarFamilyVals =
           for {
               RandomVarFamily.Value(rv, value, args) <- init.randVarFamilyVals
@@ -272,6 +293,12 @@ case object Conditioning {
   def flatten[S, D[_]](implicit cd: Conditioning[D]): D[Option[S]] => D[S] =
     cd.condition(Sort.Restrict[Option[S], S](identity))
 }
+
+trait Support[D[_]]{
+  def support[T](dist: D[T]): Set[T]
+}
+
+
 
 object TermRandomVars {
   case object Terms extends RandomVar[Term]
