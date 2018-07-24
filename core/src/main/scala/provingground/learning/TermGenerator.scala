@@ -40,13 +40,15 @@ object SortList {
       extends SortList[X :: U]
 }
 
-class RandomVarFamily[Dom <: HList, +O](
-    val polyDomain : SortList[Dom],
-    val rangeFamily: Dom => Sort[O] = (d: Dom) => Sort.True[O])
+class RandomVarFamily[Dom <: HList, +O](val polyDomain: SortList[Dom],
+                                        val rangeFamily: Dom => Sort[O] =
+                                          (d: Dom) => Sort.True[O])
 
-object RandomVarFamily{
+object RandomVarFamily {
   case class Value[Dom <: HList, O, D[_]](
-    randVars : RandomVarFamily[Dom, O], value : D[O], fullArgs: Dom
+      randVars: RandomVarFamily[Dom, O],
+      value: D[O],
+      fullArgs: Dom
   )
 }
 
@@ -54,9 +56,8 @@ class RandomVar[+O](val range: Sort[O] = Sort.True[O])
     extends RandomVarFamily[HNil, O](SortList.Nil, (_) => range)
 
 object RandomVar {
-  class SimpleFamily[U, O](
-      domain: Sort[U],
-      rangeFamily: U => Sort[O] = (x: U) => Sort.True[O])
+  class SimpleFamily[U, O](domain: Sort[U],
+                           rangeFamily: U => Sort[O] = (x: U) => Sort.True[O])
       extends RandomVarFamily[U :: HNil, O](
         domain :: SortList.Nil,
         { case x :: HNil => rangeFamily(x) }
@@ -66,7 +67,7 @@ object RandomVar {
                                        fullArg: Dom)
       extends RandomVar(family.rangeFamily(fullArg))
 
-  case class Value[O, D[_]](randVar : RandomVar[O], value: D[O])
+  case class Value[O, D[_]](randVar: RandomVar[O], value: D[O])
 }
 
 sealed trait RandomVarList[U <: HList] {
@@ -80,24 +81,23 @@ object RandomVarList {
       extends RandomVarList[X :: U]
 }
 
-sealed trait GeneratorNodeFamily[Dom <: HList, O] {
-  val outputFamily: Dom => RandomVar[O]
+sealed trait GeneratorNodeFamily[Dom <: HList, +O] {
+  val outputFamily: RandomVarFamily[Dom, O]
 }
 
 object GeneratorNodeFamily {
-  case class Pi[Dom <: HList, O](nodes: Dom => GeneratorNode[O])
-      extends GeneratorNodeFamily[Dom, O] {
-    val outputFamily = (d: Dom) => nodes(d).output
-  }
+  case class Pi[Dom <: HList, +O](nodes: Dom => GeneratorNode[O],
+                                  outputFamily: RandomVarFamily[Dom, O])
+      extends GeneratorNodeFamily[Dom, O]
 }
 
 /**
   * A formal node for describing recursive generation. Can have several inputList,
   * encoded as an HList, but has just one output.
   */
-sealed trait GeneratorNode[O] extends GeneratorNodeFamily[HNil, O] {
+sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
   val output: RandomVar[O]
-  val outputFamily = (_) => output
+  val outputFamily = output
 }
 
 sealed trait BaseGeneratorNode[I <: HList, O] extends GeneratorNode[O] {
@@ -105,8 +105,10 @@ sealed trait BaseGeneratorNode[I <: HList, O] extends GeneratorNode[O] {
 }
 
 object GeneratorNode {
-  def simplePi[U, O](nodes: U => GeneratorNode[O]) =
-    GeneratorNodeFamily.Pi[U :: HNil, O]({ case x :: HNil => nodes(x) })
+  def simplePi[U, O](nodes: U => GeneratorNode[O],
+                     outputFamily: RandomVarFamily[U :: HNil, O]) =
+    GeneratorNodeFamily
+      .Pi[U :: HNil, O]({ case x :: HNil => nodes(x) }, outputFamily)
 
   case class Init[X](input: RandomVar[X])
       extends BaseGeneratorNode[X :: HNil, X] {
@@ -161,9 +163,9 @@ object GeneratorNode {
       extends GeneratorNode[Y]
 
   case class FlatMap[X, Y](
-    baseInput: RandomVar[X],
-    fiberVar: X => GeneratorNode[Y],
-    output: RandomVar[Y]
+      baseInput: RandomVar[X],
+      fiberVar: X => GeneratorNode[Y],
+      output: RandomVar[Y]
   )
 
   case class ThenCondition[O, Y](
@@ -197,6 +199,17 @@ trait DistributionState[State, D[_]] {
   def update(values: RandomVarValues[D])(init: State): State
 }
 
+trait StateEvolver[State] {
+  def next(init: State): State
+}
+
+class DistributionStateEvolver[State, D[_]](
+    nextDist: State => RandomVarValues[D])(
+    implicit ds: DistributionState[State, D])
+    extends StateEvolver[State] {
+  def next(init: State): State = ds.update(nextDist(init))(init)
+}
+
 trait RandomVarValues[D[_]] {
   def valueAt[Dom <: HList, T](randomVarFmly: RandomVarFamily[Dom, T],
                                fullArg: Dom): D[T]
@@ -207,79 +220,106 @@ trait RandomVarValues[D[_]] {
     supp.support(value(randomVar))
 
   def fullArgSet[U <: HList](
-    l: SortList[U],
-    varGroups : Map[Sort[_], Set[RandomVar[_]]]
-    )(implicit supp: Support[D]): Set[U] =
+      l: SortList[U],
+      varGroups: Map[Sort[_], Set[RandomVar[_]]]
+  )(implicit supp: Support[D]): Set[U] =
     l match {
       case SortList.Nil => Set(HNil)
       case SortList.Cons(head, tail) =>
-        val headSets : Set[RandomVar[Any]] = varGroups(head)
-        val headSupps = headSets.map((rv) => supp.support(value(rv)))
-        val headSet = headSupps.reduce(_ union _)
+        val headSets: Set[RandomVar[Any]] = varGroups(head)
+        val headSupps                     = headSets.map((rv) => supp.support(value(rv)))
+        val headSet                       = headSupps.reduce(_ union _)
         for {
-          x <- headSet
+          x  <- headSet
           ys <- fullArgSet(tail, varGroups)
         } yield x :: ys
     }
 }
 
-
-trait NodeCoefficients[V]{
-  def value[O](node: GeneratorNode[O]) : V
-
-  def valueAt[Dom <: HList, T](nodes: GeneratorNodeFamily[Dom, T]): V
-}
-
-trait Empty[D[_]]{
-  def empty[A]: D[A]
-}
-
-case class UniversalState[D[_], V, C](
-  randVarVals : Set[RandomVar.Value[_, D]],
-  randVarFamilyVals : Set[RandomVarFamily.Value[_ <: HList, _, D]],
-  nodeCoeffs: Map[GeneratorNode[_], V],
-  nodeFamilyCoeffs : Map[GeneratorNodeFamily[_ <: HList, _], V]
-  , context: C){
-    val rangeSet = randVarVals.map(_.randVar.range)
-
-    val rangeGroups : Map[Sort[_], Set[RandomVar[_]]] = randVarVals.map(_.randVar).groupBy(_.range)
-  }
-
-object UniversalState{
-  implicit def safeUnivDistState[D[_], V, P](implicit emp: Empty[D]) : DistributionState[UniversalState[D, V, P], D] =
-    new DistributionState[UniversalState[D, V, P], D]{
-    def value[T](state: UniversalState[D, V, P])(randomVar: RandomVar[T]): D[T] =
-      state
-      .randVarVals
+abstract class RandomVarMemo[D[_]](
+    val randomVarVals: Set[RandomVar.Value[_, D]],
+    val randomVarFamilyVals: Set[RandomVarFamily.Value[_ <: HList, _, D]])(
+    implicit emp: Empty[D])
+    extends RandomVarValues[D] {
+  def value[T](randomVar: RandomVar[T]): D[T] =
+    randomVarVals
       .find(_.randVar == randomVar)
       .map(_.value.asInstanceOf[D[T]])
       .getOrElse(emp.empty[T])
 
-    def valueAt[Dom <: HList, T](
-        state: UniversalState[D, V, P])(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): D[T] =
-          state
-          .randVarFamilyVals
+  def valueAt[Dom <: HList, T](randomVarFmly: RandomVarFamily[Dom, T],
+                               fullArg: Dom): D[T] =
+    randomVarFamilyVals
+      .find(_.randVars == randomVarFmly)
+      .map(_.value.asInstanceOf[D[T]])
+      .getOrElse(emp.empty[T])
+}
+
+trait NodeCoefficients[V] {
+  def value[O](node: GeneratorNode[O]): V
+
+  def valueAt[Dom <: HList, T](nodes: GeneratorNodeFamily[Dom, T]): V
+}
+
+trait Empty[D[_]] {
+  def empty[A]: D[A]
+}
+
+case class ExplorerState[D[_], V, C](
+    randVarVals: Set[RandomVar.Value[_, D]],
+    randVarFamilyVals: Set[RandomVarFamily.Value[_ <: HList, _, D]],
+    nodeCoeffs: Vector[(GeneratorNode[_], V)],
+    nodeFamilyCoeffs: Vector[(GeneratorNodeFamily[_ <: HList, _], V)],
+    varsToResolve: Vector[RandomVar[_]],
+    varFamiliesToResolve: Vector[RandomVarFamily[_<: HList, _]],
+    context: C) {
+  val rangeSet = randVarVals.map(_.randVar.range)
+
+  val rangeGroups: Map[Sort[_], Set[RandomVar[_]]] =
+    randVarVals.map(_.randVar).groupBy(_.range)
+}
+
+object ExplorerState {
+  implicit def safeExplDistState[D[_], V, P](
+      implicit emp: Empty[D]): DistributionState[ExplorerState[D, V, P], D] =
+    new DistributionState[ExplorerState[D, V, P], D] {
+      def value[T](state: ExplorerState[D, V, P])(
+          randomVar: RandomVar[T]): D[T] =
+        state.randVarVals
+          .find(_.randVar == randomVar)
+          .map(_.value.asInstanceOf[D[T]])
+          .getOrElse(emp.empty[T])
+
+      def valueAt[Dom <: HList, T](state: ExplorerState[D, V, P])(
+          randomVarFmly: RandomVarFamily[Dom, T],
+          fullArg: Dom): D[T] =
+        state.randVarFamilyVals
           .find(_.randVars == randomVarFmly)
           .map(_.value.asInstanceOf[D[T]])
           .getOrElse(emp.empty[T])
-          // state.randVars.valueAt(randomVarFmly, fullArg)
 
-    def update(values: RandomVarValues[D])(init: UniversalState[D, V, P]): UniversalState[D, V, P] =
-      {
-        val randomVarVals =
-          for {
-              RandomVar.Value(rv, value) <- init.randVarVals
-              newVal = values.value(rv)
-          } yield RandomVar.Value(rv, newVal)
+      def update(values: RandomVarValues[D])(
+          init: ExplorerState[D, V, P]): ExplorerState[D, V, P] =
+        values match {
+          case memo: RandomVarMemo[D] =>
+            init.copy(randVarVals = memo.randomVarVals,
+                      randVarFamilyVals = memo.randomVarFamilyVals)
+          case _ =>
+            val randomVarVals =
+              for {
+                RandomVar.Value(rv, value) <- init.randVarVals
+                newVal = values.value(rv)
+              } yield RandomVar.Value(rv, newVal)
 
-        val randomVarFamilyVals =
-          for {
-              RandomVarFamily.Value(rv, value, args) <- init.randVarFamilyVals
-              newVal = values.valueAt(rv, args)
-          } yield RandomVarFamily.Value(rv, newVal, args)
-        init.copy(randVarVals = randomVarVals, randVarFamilyVals = randomVarFamilyVals)
-      }
-  }
+            val randomVarFamilyVals =
+              for {
+                RandomVarFamily.Value(rv, value, args) <- init.randVarFamilyVals
+                newVal = values.valueAt(rv, args)
+              } yield RandomVarFamily.Value(rv, newVal, args)
+            init.copy(randVarVals = randomVarVals,
+                      randVarFamilyVals = randomVarFamilyVals)
+        }
+    }
 }
 
 /**
@@ -294,11 +334,9 @@ case object Conditioning {
     cd.condition(Sort.Restrict[Option[S], S](identity))
 }
 
-trait Support[D[_]]{
+trait Support[D[_]] {
   def support[T](dist: D[T]): Set[T]
 }
-
-
 
 object TermRandomVars {
   case object Terms extends RandomVar[Term]
@@ -307,65 +345,68 @@ object TermRandomVars {
 
   case object Funcs extends RandomVar[ExstFunc]
 
-  case object TermsWithTyp extends RandomVar.SimpleFamily[Typ[Term], Term](
-    Sort.True[Typ[Term]],
-    (typ: Typ[Term]) => Sort.Filter[Term](_.typ == typ)
-  )
+  case object TermsWithTyp
+      extends RandomVar.SimpleFamily[Typ[Term], Term](
+        Sort.True[Typ[Term]],
+        (typ: Typ[Term]) => Sort.Filter[Term](_.typ == typ)
+      )
 
-  def termsWithTyp(typ: Typ[Term]) = RandomVar.Instance(TermsWithTyp, typ :: HNil)
+  def termsWithTyp(typ: Typ[Term]) =
+    RandomVar.Instance(TermsWithTyp, typ :: HNil)
 
   case object TypFamilies extends RandomVar[Term]
 
-  case object FuncsWithDomain extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
-    Sort.True[Typ[Term]],
-    (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
-  )
+  case object FuncsWithDomain
+      extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
+        Sort.True[Typ[Term]],
+        (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
+      )
 
 }
 
 class TermGeneratorNodes[State, D[_]](
-    appln : (ExstFunc, Term) => Term,
-    unifApplnOpt : (ExstFunc, Term) => Option[Term],
+    appln: (ExstFunc, Term) => Term,
+    unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => (State => (State, Term))
-  )(implicit dists: DistributionState[State, D]){
-    import TermRandomVars._, GeneratorNode._
+)(implicit dists: DistributionState[State, D]) {
+  import TermRandomVars._, GeneratorNode._
 
-    val unifApplnNode = ZipMapOpt[ExstFunc, Term, Term](
-      unifApplnOpt,
+  val unifApplnNode = ZipMapOpt[ExstFunc, Term, Term](
+    unifApplnOpt,
+    Funcs,
+    Terms,
+    Terms
+  )
+
+  val applnNode =
+    FiberProductMap[ExstFunc, Term, Typ[Term], Term](
+      _.dom,
+      termsWithTyp,
+      appln,
       Funcs,
-      Terms,
       Terms
     )
 
-    val applnNode =
-      FiberProductMap[ExstFunc, Term, Typ[Term], Term](
-        _.dom,
-        termsWithTyp,
-        appln,
-        Funcs,
-        Terms
-      )
+  def lambdaIsle(typ: Typ[Term]) =
+    Island[Term, Term, State, Term, D](
+      Terms,
+      Terms,
+      addVar(typ),
+      { case (x, y) => x :~> y }
+    )
 
-    def lambdaIsle(typ: Typ[Term]) =
-      Island[Term, Term, State, Term, D](
-        Terms,
-        Terms,
-        addVar(typ),
-        {case (x, y) => x :~> y}
-      )
+  val lambdaNode =
+    FlatMap(
+      Typs,
+      lambdaIsle,
+      Terms
+    )
 
-    val lambdaNode =
-      FlatMap(
-        Typs,
-        lambdaIsle,
-        Terms
-      )
-
-    def piIslelambdaIsle(typ: Typ[Term]) =
-      Island[Typ[Term], Typ[Term], State, Term, D](
-        Typs,
-        Typs,
-        addVar(typ),
-        {case (x, y) => pi(x)(y)}
-      )
-  }
+  def piIslelambdaIsle(typ: Typ[Term]) =
+    Island[Typ[Term], Typ[Term], State, Term, D](
+      Typs,
+      Typs,
+      addVar(typ),
+      { case (x, y) => pi(x)(y) }
+    )
+}
