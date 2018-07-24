@@ -260,11 +260,15 @@ trait Empty[D[_]] {
   def empty[A]: D[A]
 }
 
+case class GeneratorData[V](
+  nodeCoeffs: Vector[(GeneratorNode[_], V)],
+  nodeFamilyCoeffs: Vector[(GeneratorNodeFamily[_ <: HList, _], V)],
+  varsToResolve: Vector[RandomVar[_]]
+)
+
 case class MemoState[D[_], V, C](
     randVarVals: Set[RandomVar.Value[_, D]],
-    nodeCoeffs: Vector[(GeneratorNode[_], V)],
-    nodeFamilyCoeffs: Vector[(GeneratorNodeFamily[_ <: HList, _], V)],
-    varsToResolve: Vector[RandomVar[_]],
+    genData: GeneratorData[V],
     varFamiliesToResolve: Vector[RandomVarFamily[_<: HList, _]],
     context: C) {
   val rangeSet = randVarVals.map(_.randVar.range)
