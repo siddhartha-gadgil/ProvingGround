@@ -47,8 +47,7 @@ class RandomVarFamily[Dom <: HList, +O](val polyDomain: SortList[Dom],
 object RandomVarFamily {
   case class Value[Dom <: HList, O, D[_]](
       randVars: RandomVarFamily[Dom, O],
-      value: D[O],
-      fullArgs: Dom
+      value: Dom => D[O]
   )
 }
 
@@ -63,7 +62,7 @@ object RandomVar {
         { case x :: HNil => rangeFamily(x) }
       )
 
-  case class Instance[Dom <: HList, O](family: RandomVarFamily[Dom, O],
+  case class AtCoord[Dom <: HList, O](family: RandomVarFamily[Dom, O],
                                        fullArg: Dom)
       extends RandomVar(family.rangeFamily(fullArg))
 
@@ -237,8 +236,7 @@ trait RandomVarValues[D[_]] {
 }
 
 abstract class RandomVarMemo[D[_]](
-    val randomVarVals: Set[RandomVar.Value[_, D]],
-    val randomVarFamilyVals: Set[RandomVarFamily.Value[_ <: HList, _, D]])(
+    val randomVarVals: Set[RandomVar.Value[_, D]])(
     implicit emp: Empty[D])
     extends RandomVarValues[D] {
   def value[T](randomVar: RandomVar[T]): D[T] =
@@ -249,10 +247,7 @@ abstract class RandomVarMemo[D[_]](
 
   def valueAt[Dom <: HList, T](randomVarFmly: RandomVarFamily[Dom, T],
                                fullArg: Dom): D[T] =
-    randomVarFamilyVals
-      .find(_.randVars == randomVarFmly)
-      .map(_.value.asInstanceOf[D[T]])
-      .getOrElse(emp.empty[T])
+    value(RandomVar.AtCoord(randomVarFmly, fullArg))
 }
 
 trait NodeCoefficients[V] {
@@ -265,9 +260,8 @@ trait Empty[D[_]] {
   def empty[A]: D[A]
 }
 
-case class ExplorerState[D[_], V, C](
+case class MemoState[D[_], V, C](
     randVarVals: Set[RandomVar.Value[_, D]],
-    randVarFamilyVals: Set[RandomVarFamily.Value[_ <: HList, _, D]],
     nodeCoeffs: Vector[(GeneratorNode[_], V)],
     nodeFamilyCoeffs: Vector[(GeneratorNodeFamily[_ <: HList, _], V)],
     varsToResolve: Vector[RandomVar[_]],
@@ -279,31 +273,27 @@ case class ExplorerState[D[_], V, C](
     randVarVals.map(_.randVar).groupBy(_.range)
 }
 
-object ExplorerState {
+object MemoState {
   implicit def safeExplDistState[D[_], V, P](
-      implicit emp: Empty[D]): DistributionState[ExplorerState[D, V, P], D] =
-    new DistributionState[ExplorerState[D, V, P], D] {
-      def value[T](state: ExplorerState[D, V, P])(
+      implicit emp: Empty[D]): DistributionState[MemoState[D, V, P], D] =
+    new DistributionState[MemoState[D, V, P], D] {
+      def value[T](state: MemoState[D, V, P])(
           randomVar: RandomVar[T]): D[T] =
         state.randVarVals
           .find(_.randVar == randomVar)
           .map(_.value.asInstanceOf[D[T]])
           .getOrElse(emp.empty[T])
 
-      def valueAt[Dom <: HList, T](state: ExplorerState[D, V, P])(
+      def valueAt[Dom <: HList, T](state: MemoState[D, V, P])(
           randomVarFmly: RandomVarFamily[Dom, T],
           fullArg: Dom): D[T] =
-        state.randVarFamilyVals
-          .find(_.randVars == randomVarFmly)
-          .map(_.value.asInstanceOf[D[T]])
-          .getOrElse(emp.empty[T])
+        value(state)(RandomVar.AtCoord(randomVarFmly, fullArg))
 
       def update(values: RandomVarValues[D])(
-          init: ExplorerState[D, V, P]): ExplorerState[D, V, P] =
+          init: MemoState[D, V, P]): MemoState[D, V, P] =
         values match {
           case memo: RandomVarMemo[D] =>
-            init.copy(randVarVals = memo.randomVarVals,
-                      randVarFamilyVals = memo.randomVarFamilyVals)
+            init.copy(randVarVals = memo.randomVarVals)
           case _ =>
             val randomVarVals =
               for {
@@ -311,13 +301,7 @@ object ExplorerState {
                 newVal = values.value(rv)
               } yield RandomVar.Value(rv, newVal)
 
-            val randomVarFamilyVals =
-              for {
-                RandomVarFamily.Value(rv, value, args) <- init.randVarFamilyVals
-                newVal = values.valueAt(rv, args)
-              } yield RandomVarFamily.Value(rv, newVal, args)
-            init.copy(randVarVals = randomVarVals,
-                      randVarFamilyVals = randomVarFamilyVals)
+            init.copy(randVarVals = randomVarVals)
         }
     }
 }
@@ -352,7 +336,7 @@ object TermRandomVars {
       )
 
   def termsWithTyp(typ: Typ[Term]) =
-    RandomVar.Instance(TermsWithTyp, typ :: HNil)
+    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
 
   case object TypFamilies extends RandomVar[Term]
 
