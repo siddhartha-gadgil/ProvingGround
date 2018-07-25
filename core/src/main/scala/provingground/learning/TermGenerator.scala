@@ -16,19 +16,35 @@ import scala.language.higherKinds
 /**
   * A `sort`, i.e. type refining a scala type.
   * Can also be used for conditioning, giving one distribution from another.
+  * @tparam T scala type elements of this Sort
   */
 sealed trait Sort[+T]
 
 object Sort {
-  case class True[S]() extends Sort[S]
+  /**
+   * Sort of all terms with given scala type
+   */
+  case class All[S]() extends Sort[S]
 
+  /**
+   * Sort given by predicate
+   */
   case class Filter[S](pred: S => Boolean) extends Sort[S]
 
+  /**
+   * Sort as image of an optional map, which should be injective in the `Some(_)` case
+   */
   case class Restrict[S, T](optMap: S => Option[T]) extends Sort[T]
 
-  val AllTerms = True[Term]
+  /**
+   * Sort of all HoTT terms
+   */
+  val AllTerms = All[Term]
 }
 
+/**
+ * List of Sorts, used as domains for families.
+ */
 sealed trait SortList[U <: HList] {
   def ::[X](that: Sort[X]) = SortList.Cons(that, this)
 }
@@ -40,35 +56,75 @@ object SortList {
       extends SortList[X :: U]
 }
 
+/**
+ * A formal family of Random Variables up to equality of distribution.
+ * May actually have representations instead of distributions, for example.
+ *
+ */
 class RandomVarFamily[Dom <: HList, +O](val polyDomain: SortList[Dom],
                                         val rangeFamily: Dom => Sort[O] =
-                                          (d: Dom) => Sort.True[O])
+                                          (d: Dom) => Sort.All[O])
 
 object RandomVarFamily {
+  /**
+   * The associated distribution for a random variable family,
+   * For example if `D[_]` is [[FiniteDistribution]], and `randVars` represents
+   * terms with a given type, then `value` is a function from types to
+   * finite distributions on terms.
+   *
+   * @param randVars  the family of random variables for which the distribution is specified
+   * @param value function giving distributions associated to the random variables
+   * @tparam Dom the domain of the family
+   * @tparam D the distribution (could be representation) that is associated to the random variable
+   */
   case class Value[Dom <: HList, O, D[_]](
       randVars: RandomVarFamily[Dom, O],
       value: Dom => D[O]
   )
 }
 
-class RandomVar[+O](val range: Sort[O] = Sort.True[O])
+/**
+ * A formal Random Variable up to equality of distribution.
+ * May actually have representations instead of distributions, for example.
+ *
+ */
+class RandomVar[+O](val range: Sort[O] = Sort.All[O])
     extends RandomVarFamily[HNil, O](SortList.Nil, (_) => range)
 
 object RandomVar {
+  /**
+   * convenience class to avoid {{HNil}}
+   */
   class SimpleFamily[U, O](domain: Sort[U],
-                           rangeFamily: U => Sort[O] = (x: U) => Sort.True[O])
+                           rangeFamily: U => Sort[O] = (x: U) => Sort.All[O])
       extends RandomVarFamily[U :: HNil, O](
         domain :: SortList.Nil,
         { case x :: HNil => rangeFamily(x) }
       )
 
+  /**
+   * The random variable at a specific domain point of a family.
+   */
   case class AtCoord[Dom <: HList, O](family: RandomVarFamily[Dom, O],
                                        fullArg: Dom)
       extends RandomVar(family.rangeFamily(fullArg))
 
+  /**
+   * The associated distribution for a random variable,
+   * For example if `D[_]` is [[FiniteDistribution]], and `randVars` represents
+   * functions, then `value` is
+   * finite distributions on functions.
+   *
+   * @param randVar  the random variable for which the distribution is specified
+   * @param value function giving distributions associated to the random variables
+   * @tparam D the distribution (could be representation) that is associated to the random variable
+   */
   case class Value[O, D[_]](randVar: RandomVar[O], value: D[O])
 }
 
+/**
+ * List of random variables, e.g. input of simple generator nodes.
+ */
 sealed trait RandomVarList[U <: HList] {
   def ::[X](that: RandomVar[X]) = RandomVarList.Cons(that, this)
 }
@@ -80,11 +136,21 @@ object RandomVarList {
       extends RandomVarList[X :: U]
 }
 
+/**
+ * Family of (recursive) generation functions, either a function giving a family
+ * or a single {{GeneratorNode}}, which is the interesting case.
+ */
 sealed trait GeneratorNodeFamily[Dom <: HList, +O] {
+  /**
+   * the family of random variables for which this is a generation.
+   */
   val outputFamily: RandomVarFamily[Dom, O]
 }
 
 object GeneratorNodeFamily {
+  /**
+   * A family of recursive generation functions, given as a function.
+   */
   case class Pi[Dom <: HList, +O](nodes: Dom => GeneratorNode[O],
                                   outputFamily: RandomVarFamily[Dom, O])
       extends GeneratorNodeFamily[Dom, O]
@@ -335,7 +401,7 @@ object TermRandomVars {
 
   case object TermsWithTyp
       extends RandomVar.SimpleFamily[Typ[Term], Term](
-        Sort.True[Typ[Term]],
+        Sort.All[Typ[Term]],
         (typ: Typ[Term]) => Sort.Filter[Term](_.typ == typ)
       )
 
@@ -346,7 +412,7 @@ object TermRandomVars {
 
   case object FuncsWithDomain
       extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
-        Sort.True[Typ[Term]],
+        Sort.All[Typ[Term]],
         (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
       )
 

@@ -175,6 +175,10 @@ Includes:
                         <a href="HoTT$$ConstantTyp.html" title="Term invariant under substitution.">ConstantTyp</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="HoTT$$DefaultNameFactory$.html" title="factory for variable names"></a>
+                        <a href="HoTT$$DefaultNameFactory$.html" title="factory for variable names">DefaultNameFactory</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="trait" href="HoTT$$DepFunc.html" title="a dependent function - rarely used trait as not closed under substitution."></a>
                         <a href="HoTT$$DepFunc.html" title="a dependent function - rarely used trait as not closed under substitution.">DepFunc</a>
                       </li><li class="current-entities indented2">
@@ -201,6 +205,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$Equality.html" title=""></a>
                         <a href="HoTT$$Equality.html" title="">Equality</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$ExstFunc$.html" title=""></a>
+                        <a class="trait" href="HoTT$$ExstFunc.html" title=""></a>
+                        <a href="HoTT$$ExstFunc.html" title="">ExstFunc</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="HoTT$$Fold$.html" title="convenience methods to apply methods of special scala types such as functions without the compiler knowing that the object has the special type."></a>
@@ -283,8 +291,8 @@ Includes:
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="HoTT$$NameFactory$.html" title="factory for variable names"></a>
-                        <a href="HoTT$$NameFactory$.html" title="factory for variable names">NameFactory</a>
+                        <a class="trait" href="HoTT$$NameFactory.html" title=""></a>
+                        <a href="HoTT$$NameFactory.html" title="">NameFactory</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedDepFunc.html" title="wrapped dependent function adding name"></a>
@@ -705,9 +713,9 @@ for example a group type is this with product etc. dependent on this.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.Typ#Var" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Var:Uwithprovingground.HoTT.Subs[U]"></a><a id="Var:FuncLike[W,U]withSubs[FuncLike[W,U]]"></a>
+      <a id="Var(implicitfactory:provingground.HoTT.NameFactory):Uwithprovingground.HoTT.Subs[U]"></a><a id="Var(NameFactory):FuncLike[W,U]withSubs[FuncLike[W,U]]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$PiDefn.html#Var:Uwithprovingground.HoTT.Subs[U]" title="Permalink">
+      <a href="../provingground/HoTT$$PiDefn.html#Var(implicitfactory:provingground.HoTT.NameFactory):Uwithprovingground.HoTT.Subs[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -716,7 +724,7 @@ for example a group type is this with product etc. dependent on this.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">Var</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.PiDefn.W">W</span>, <span class="extype" name="provingground.HoTT.PiDefn.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.PiDefn.W">W</span>, <span class="extype" name="provingground.HoTT.PiDefn.U">U</span>]]</span>
+        <span class="name">Var</span><span class="params">(<span class="implicit">implicit </span><span name="factory">factory: <a href="HoTT$$NameFactory.html" class="extype" name="provingground.HoTT.NameFactory">NameFactory</a></span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.PiDefn.W">W</span>, <span class="extype" name="provingground.HoTT.PiDefn.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.PiDefn.W">W</span>, <span class="extype" name="provingground.HoTT.PiDefn.U">U</span>]]</span>
       </span>
       
       <p class="shortcomment cmt">new variable from a factory.</p><div class="fullcomment"><div class="comment cmt"><p>new variable from a factory.
@@ -1177,9 +1185,9 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       <p class="shortcomment cmt">Term with somewhat refined type.</p><div class="fullcomment"><div class="comment cmt"><p>Term with somewhat refined type.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.PiDefn">PiDefn</a> → <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.Typ#typedVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="typedVar:provingground.HoTT.TypedTerm[U]"></a><a id="typedVar:TypedTerm[FuncLike[W,U]]"></a>
+      <a id="typedVar(implicitfactory:provingground.HoTT.NameFactory):provingground.HoTT.TypedTerm[U]"></a><a id="typedVar(NameFactory):TypedTerm[FuncLike[W,U]]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$PiDefn.html#typedVar:provingground.HoTT.TypedTerm[U]" title="Permalink">
+      <a href="../provingground/HoTT$$PiDefn.html#typedVar(implicitfactory:provingground.HoTT.NameFactory):provingground.HoTT.TypedTerm[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1188,7 +1196,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">typedVar</span><span class="result">: <a href="HoTT$$TypedTerm.html" class="extype" name="provingground.HoTT.TypedTerm">TypedTerm</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.PiDefn.W">W</span>, <span class="extype" name="provingground.HoTT.PiDefn.U">U</span>]]</span>
+        <span class="name">typedVar</span><span class="params">(<span class="implicit">implicit </span><span name="factory">factory: <a href="HoTT$$NameFactory.html" class="extype" name="provingground.HoTT.NameFactory">NameFactory</a></span>)</span><span class="result">: <a href="HoTT$$TypedTerm.html" class="extype" name="provingground.HoTT.TypedTerm">TypedTerm</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.PiDefn.W">W</span>, <span class="extype" name="provingground.HoTT.PiDefn.U">U</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
