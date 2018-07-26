@@ -245,9 +245,22 @@ object GeneratorNode {
       output: RandomVar[Y],
       initMap: State => (State, Boat),
       export: (Boat, O) => Y
-  )(implicit dists: DistributionState[State, D])
-      extends GeneratorNode[Y]
+  )(implicit ctxExp: ContextExport[Boat, D]) extends GeneratorNode[Y]
 
+}
+
+trait ContextExport[Boat, D[_]]{
+  def export[A]: (Boat, D[A]) => D[A]
+}
+
+object ContextExport{
+  def id[Boat, D[_]] = new ContextExport[Boat, D]{
+    def export[A] = {case (_, d) => d}
+  }
+
+  implicit val fdTerm : ContextExport[Term, FiniteDistribution] = id[Term, FiniteDistribution]
+
+  implicit val pdTerm : ContextExport[Term, FiniteDistribution] = id[Term, FiniteDistribution]
 }
 
 /**
@@ -422,7 +435,7 @@ class TermGeneratorNodes[State, D[_]](
     appln: (ExstFunc, Term) => Term,
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => (State => (State, Term))
-)(implicit dists: DistributionState[State, D]) {
+  )(implicit ctxExp: ContextExport[Term, D]) {
   import TermRandomVars._, GeneratorNode._
 
   val unifApplnNode = ZipMapOpt[ExstFunc, Term, Term](
