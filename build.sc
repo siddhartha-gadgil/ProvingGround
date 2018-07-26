@@ -69,7 +69,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def organization = "in.ac.iisc"
   def name = "ProvingGround"
 
-  override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0-M1")
+  override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0-M7")
 
   override def scalacOptions =
     Seq("-Ypartial-unification",
@@ -94,7 +94,7 @@ trait CommonJSModule extends CommonModule with ScalaJSModule{
 
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:1.1.1",
-  ivy"org.scalameta::scalameta:3.7.3",
+  ivy"org.scalameta::scalameta:3.7.4",
   ivy"com.github.nscala-time::nscala-time:2.16.0",
   ivy"org.reactivemongo::reactivemongo:0.12.1",
   ivy"com.typesafe.akka::akka-actor:2.5.11",
