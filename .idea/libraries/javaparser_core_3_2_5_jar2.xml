@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="javaparser-core-3.2.5.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.github.javaparser/javaparser-core/jars/javaparser-core-3.2.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

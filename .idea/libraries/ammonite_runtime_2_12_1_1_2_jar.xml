@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ammonite-runtime_2.12-1.1.2.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.lihaoyi/ammonite-runtime_2.12/jars/ammonite-runtime_2.12-1.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

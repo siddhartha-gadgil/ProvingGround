@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jline-3.6.2.jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/org.jline/jline/jars/jline-3.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
