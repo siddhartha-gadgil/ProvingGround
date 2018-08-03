@@ -492,7 +492,7 @@ case class MemoState[D[_], V, C](
     genData: GeneratorData[V],
     varFamiliesToResolve: Vector[RandomVarFamily[_ <: HList, _]],
     context: C) {
-  val rangeSet = randVarVals.map(_.randVar.range)
+  val rangeSet: Set[Sort[_]] = randVarVals.map(_.randVar.range)
 
   val rangeGroups: Map[Sort[_], Set[RandomVar[_]]] =
     randVarVals.map(_.randVar).groupBy(_.range)
@@ -546,28 +546,15 @@ trait Support[D[_]] {
   def support[T](dist: D[T]): Set[T]
 }
 
-object TermRandomVars {
-  case object Terms extends RandomVar[Term]
+/**
+  * An example, the geometric distribution in an abstract form
+  */
+object GeomDist{
+  case object GeomVar extends RandomVar[Int]
 
-  case object Typs extends RandomVar[Typ[Term]]
+  import GeneratorNode._
 
-  case object Funcs extends RandomVar[ExstFunc]
+  val init: GeneratorNode[Int] = Init(GeomVar)
 
-  case object TermsWithTyp
-      extends RandomVar.SimpleFamily[Typ[Term], Term](
-        Sort.All[Typ[Term]](),
-        (typ: Typ[Term]) => Sort.Filter[Term](_.typ == typ)
-      )
-
-  def termsWithTyp(typ: Typ[Term]) =
-    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
-
-  case object TypFamilies extends RandomVar[Term]
-
-  case object FuncsWithDomain
-      extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
-        Sort.All[Typ[Term]](),
-        (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
-      )
-
+  val shift: GeneratorNode[Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
 }

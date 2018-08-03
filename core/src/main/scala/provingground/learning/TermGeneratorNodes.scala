@@ -62,3 +62,29 @@ class TermGeneratorNodes[InitState, D[_]](
       { case (x, y) => pi(x)(y) }
     )
 }
+
+object TermRandomVars {
+  case object Terms extends RandomVar[Term]
+
+  case object Typs extends RandomVar[Typ[Term]]
+
+  case object Funcs extends RandomVar[ExstFunc]
+
+  case object TermsWithTyp
+      extends RandomVar.SimpleFamily[Typ[Term], Term](
+        Sort.All[Typ[Term]](),
+        (typ: Typ[Term]) => Sort.Filter[Term](_.typ == typ)
+      )
+
+  def termsWithTyp(typ: Typ[Term]) =
+    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
+  case object TypFamilies extends RandomVar[Term]
+
+  case object FuncsWithDomain
+      extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
+        Sort.All[Typ[Term]](),
+        (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
+      )
+
+}
