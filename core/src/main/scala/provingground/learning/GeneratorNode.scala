@@ -557,4 +557,6 @@ object GeomDist{
   val init: GeneratorNode[Int] = Init(GeomVar)
 
   val shift: GeneratorNode[Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
+
+  val genData = GeneratorData[Double](Vector(init -> 0.5, shift -> 0.5), Vector(), Vector(GeomVar))
 }
