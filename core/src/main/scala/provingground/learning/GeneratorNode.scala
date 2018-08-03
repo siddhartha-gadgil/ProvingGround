@@ -3,8 +3,6 @@ import provingground._
 
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
-import learning.{TangVec => T}
-
 import cats._
 import cats.implicits._
 
@@ -40,7 +38,7 @@ object Sort {
   /**
     * Sort of all HoTT terms
     */
-  val AllTerms = All[Term]
+  val AllTerms: Sort[Term] = All[Term]
 }
 
 /**
@@ -371,14 +369,14 @@ object ContextExport {
   /**
     * no change in context for finite distributions
     */
-  implicit val fdTerm: ContextExport[Term, FiniteDistribution] =
+  implicit val fdTerm: ContextExport[Term, FD] =
     id[Term, FiniteDistribution]
 
   /**
     * no change in context for probability distributions
     */
-  implicit val pdTerm: ContextExport[Term, FiniteDistribution] =
-    id[Term, FiniteDistribution]
+  implicit val pdTerm: ContextExport[Term, PD] =
+    id[Term, PD]
 
   /**
     * change in context typically corresponding to variables representing terms in a lambda-context
@@ -481,6 +479,14 @@ trait Empty[D[_]] {
   def empty[A]: D[A]
 }
 
+object Empty{
+  implicit def fdEmpty: Empty[FD] {
+    def empty[A]: FD[A]
+  } = new Empty[FiniteDistribution]{
+    def empty[A]: FD[A] = FiniteDistribution.empty[A]
+  }
+}
+
 case class GeneratorData[V](
     nodeCoeffs: Vector[(GeneratorNode[_], V)],
     nodeFamilyCoeffs: Vector[(GeneratorNodeFamily[_ <: HList, _], V)],
@@ -549,14 +555,24 @@ trait Support[D[_]] {
 /**
   * An example, the geometric distribution in an abstract form
   */
-object GeomDist{
+object GeomDist {
   case object GeomVar extends RandomVar[Int]
 
   import GeneratorNode._
 
-  val init: GeneratorNode[Int] = Init(GeomVar)
+  val init: Init[Int] = Init(GeomVar)
 
-  val shift: GeneratorNode[Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
+  val shift: Map[Int, Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
 
-  val genData = GeneratorData[Double](Vector(init -> 0.5, shift -> 0.5), Vector(), Vector(GeomVar))
+  val genData: GeneratorData[Double] = GeneratorData[Double](Vector(init -> 0.5, shift -> 0.5),
+                                      Vector(),
+                                      Vector(GeomVar))
+
+
+  // Not needed since there are no islands
+  def state(d: FD[Int]): MemoState[FD, Double, Unit] =
+    MemoState[FD, Double, Unit](Set(RandomVar.Value(GeomVar, d)),
+                                genData,
+                                Vector(GeomVar),
+                                ())
 }
