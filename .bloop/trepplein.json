@@ -11,11 +11,10 @@
         ],
         "classpath" : [
             "/home/gadgil/code/ProvingGround/trepplein/src/main/resources",
-            "/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/3.7.0/scopt_2.12-3.7.0.jar",
-            "/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.3/scala-library-2.12.3.jar"
+            "/home/gadgil/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar",
+            "/home/gadgil/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/3.7.0/scopt_2.12-3.7.0.jar"
         ],
         "out" : "/home/gadgil/code/ProvingGround/.bloop/out/trepplein",
-        "analysisOut" : "/home/gadgil/code/ProvingGround/.bloop/out/trepplein/trepplein-analysis.bin",
         "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/out/trepplein/classes",
         "scala" : {
             "organization" : "org.scala-lang",
@@ -24,30 +23,15 @@
             "options" : [
             ],
             "jars" : [
-                "/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar",
-                "/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar",
-                "/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar",
-                "/home/gadgil/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"
+                "/home/gadgil/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar",
+                "/home/gadgil/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.6/scala-library-2.12.6.jar",
+                "/home/gadgil/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar",
+                "/home/gadgil/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar"
             ]
         },
         "java" : {
             "options" : [
             ]
-        },
-        "sbt" : {
-            "sbtVersion" : "",
-            "autoImports" : [
-            ]
-        },
-        "test" : {
-            "frameworks" : [
-            ],
-            "options" : {
-                "excludes" : [
-                ],
-                "arguments" : [
-                ]
-            }
         },
         "platform" : {
             "name" : "jvm",
@@ -55,18 +39,8 @@
                 "home" : "/usr/lib/jvm/java-8-oracle",
                 "options" : [
                 ]
-            }
-        },
-        "compileSetup" : {
-            "order" : "mixed",
-            "addLibraryToBootClasspath" : true,
-            "addCompilerToClasspath" : false,
-            "addExtraJarsToClasspath" : false,
-            "manageBootClasspath" : true,
-            "filterLibraryFromClasspath" : true
-        },
-        "resolution" : {
-            "modules" : [
+            },
+            "mainClass" : [
             ]
         }
     }
