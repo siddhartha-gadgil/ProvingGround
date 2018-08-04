@@ -18,42 +18,42 @@ import scala.language.implicitConversions
   * Can also be used for conditioning, giving one distribution from another.
   * @tparam T scala type elements of this Sort
   */
-sealed trait Sort[+T]
+sealed trait Sort[-S, +T]
 
 object Sort {
 
   /**
     * Sort of all terms with given scala type
     */
-  case class All[S]() extends Sort[S]
+  case class All[S]() extends Sort[S, S]
 
   /**
     * Sort given by predicate
     */
-  case class Filter[S](pred: S => Boolean) extends Sort[S]
+  case class Filter[S](pred: S => Boolean) extends Sort[S, S]
 
   /**
     * Sort as image of an optional map, which should be injective in the `Some(_)` case
     */
-  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[T]
+  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]
 
   /**
     * Sort of all HoTT terms
     */
-  val AllTerms: Sort[Term] = All[Term]
+  val AllTerms: Sort[Term, Term] = All[Term]
 }
 
 /**
   * List of Sorts, used as domains for families.
   */
 sealed trait SortList[U <: HList] {
-  def ::[X](that: Sort[X]) = SortList.Cons(that, this)
+  def ::[Z, X](that: Sort[Z, X]) = SortList.Cons(that, this)
 }
 
 object SortList {
   case object Nil extends SortList[HNil]
 
-  case class Cons[X, U <: HList](head: Sort[X], tail: SortList[U])
+  case class Cons[Z, X, U <: HList](head: Sort[Z, X], tail: SortList[U])
       extends SortList[X :: U]
 }
 
@@ -63,7 +63,7 @@ object SortList {
   *
   */
 class RandomVarFamily[Dom <: HList, +O](val polyDomain: SortList[Dom],
-                                        val rangeFamily: Dom => Sort[O] =
+                                        val rangeFamily: Dom => Sort[_, O] =
                                           (d: Dom) => Sort.All[O]) {
   def target[State, V] = NodeCoeffs.Target[State, V, Dom, O](this)
 }
@@ -92,7 +92,7 @@ object RandomVarFamily {
   * May actually have representations instead of distributions, for example.
   *
   */
-class RandomVar[+O](val range: Sort[O] = Sort.All[O])
+class RandomVar[+O](val range: Sort[_, O] = Sort.All[O])
     extends RandomVarFamily[HNil, O](SortList.Nil, (_) => range)
 
 object RandomVar {
@@ -100,8 +100,8 @@ object RandomVar {
   /**
     * convenience class to avoid {{HNil}}
     */
-  class SimpleFamily[U, O](domain: Sort[U],
-                           rangeFamily: U => Sort[O] = (x: U) => Sort.All[O])
+  class SimpleFamily[U, O](domain: Sort[_, U],
+                           rangeFamily: U => Sort[_, O] = (x: U) => Sort.All[O])
       extends RandomVarFamily[U :: HNil, O](
         domain :: SortList.Nil,
         { case x :: HNil => rangeFamily(x) }
@@ -235,7 +235,7 @@ object GeneratorNode {
     */
   case class ConditionedInit[X, Y](input: RandomVar[X],
                                    output: RandomVar[Y],
-                                   condition: Sort[Y])
+                                   condition: Sort[X, Y])
       extends BaseGeneratorNode[X :: HNil, Y] {
     val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
   }
@@ -350,7 +350,7 @@ object GeneratorNode {
   case class ThenCondition[V <: HList, O, Y](
       gen: BaseGeneratorNode[V, O],
       output: RandomVar[Y],
-      condition: Sort[Y]
+      condition: Sort[O, Y]
   ) extends BaseGeneratorNode[V, Y] {
     val inputList = gen.inputList
   }
@@ -541,7 +541,7 @@ trait RandomVarValues[D[_]] {
 
   def fullArgSet[U <: HList](
       l: SortList[U],
-      varGroups: Map[Sort[_], Set[RandomVar[_]]]
+      varGroups: Map[Sort[_,_], Set[RandomVar[_]]]
   )(implicit supp: Support[D]): Set[U] =
     l match {
       case SortList.Nil => Set(HNil)
@@ -679,7 +679,7 @@ object MemoState {
   * typeclass for being able to condition
   */
 trait Conditioning[D[_]] {
-  def condition[S, T](sort: Sort[T]): D[S] => D[T]
+  def condition[S, T](sort: Sort[S, T]): D[S] => D[T]
 }
 
 case object Conditioning {
