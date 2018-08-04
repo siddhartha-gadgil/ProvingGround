@@ -584,7 +584,7 @@ object NodeCoeffs{
 
 case class MemoState[D[_], V, C](
     randVarVals: Set[RandomVar.Value[_, D]],
-    // genData: GeneratorData[V],
+    genData: GeneratorData[V],
     // varFamiliesToResolve: Vector[RandomVarFamily[_ <: HList, _]],
     context: C) {
   // val rangeSet: Set[Sort[_]] = randVarVals.map(_.randVar.range)
@@ -663,7 +663,7 @@ object GeomDist {
   // Not needed since there are no islands
   def state(d: FD[Int]): MemoState[FD, Double, Unit] =
     MemoState[FD, Double, Unit](Set(RandomVar.Value(GeomVar, d)),
-                                // genData,
+                                genData,
                                 // Vector(GeomVar),
                                 ())
 }
