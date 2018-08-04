@@ -12,6 +12,7 @@ import shapeless._, HList._
 import scala.language.higherKinds
 
 import scala.language.implicitConversions
+
 /**
   * A `sort`, i.e. type refining a scala type.
   * Can also be used for conditioning, giving one distribution from another.
@@ -63,9 +64,9 @@ object SortList {
   */
 class RandomVarFamily[Dom <: HList, +O](val polyDomain: SortList[Dom],
                                         val rangeFamily: Dom => Sort[O] =
-                                          (d: Dom) => Sort.All[O]){
-                                            def target[State, V] = NodeCoeffs.Target[State, V, Dom, O](this)
-                                          }
+                                          (d: Dom) => Sort.All[O]) {
+  def target[State, V] = NodeCoeffs.Target[State, V, Dom, O](this)
+}
 
 object RandomVarFamily {
 
@@ -152,26 +153,29 @@ sealed trait GeneratorNodeFamily[Dom <: HList, +O] {
   val outputFamily: RandomVarFamily[Dom, O]
 }
 
-sealed trait BaseGeneratorNodeFamily[Dom <: HList, +O] extends GeneratorNodeFamily[Dom, O]
+sealed trait BaseGeneratorNodeFamily[Dom <: HList, +O]
+    extends GeneratorNodeFamily[Dom, O]
 
-sealed trait RecursiveGeneratorNodeFamily[Dom <: HList, State, +O] extends GeneratorNodeFamily[Dom, O]
+sealed trait RecursiveGeneratorNodeFamily[Dom <: HList, State, +O]
+    extends GeneratorNodeFamily[Dom, O]
 
 object GeneratorNodeFamily {
+
   /**
     * A family of recursive generation functions, given as a function.
     */
-  case class RecPi[State, Dom <: HList, +O](nodes: Dom => RecursiveGeneratorNode[State, O],
-                                  outputFamily: RandomVarFamily[Dom, O])
+  case class RecPi[State, Dom <: HList, +O](
+      nodes: Dom => RecursiveGeneratorNode[State, O],
+      outputFamily: RandomVarFamily[Dom, O])
       extends RecursiveGeneratorNodeFamily[Dom, State, O]
 
   /**
     * A family of recursive generation functions, given as a function.
     */
-  case class BasePi[Dom <: HList, I <: HList, +O](nodes: Dom => BaseGeneratorNode[I, O],
-                                  outputFamily: RandomVarFamily[Dom, O])
+  case class BasePi[Dom <: HList, I <: HList, +O](
+      nodes: Dom => BaseGeneratorNode[I, O],
+      outputFamily: RandomVarFamily[Dom, O])
       extends BaseGeneratorNodeFamily[Dom, O]
-
-
   /**
     * A family of recursive generation functions, given as a function.
     */
@@ -189,11 +193,15 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
   val outputFamily: RandomVar[O] = output
 }
 
-sealed trait BaseGeneratorNode[I <: HList, +O] extends GeneratorNode[O] with BaseGeneratorNodeFamily[HNil, O]{
+sealed trait BaseGeneratorNode[I <: HList, +O]
+    extends GeneratorNode[O]
+    with BaseGeneratorNodeFamily[HNil, O] {
   val inputList: RandomVarList[I]
 }
 
-sealed trait RecursiveGeneratorNode[State, +O] extends GeneratorNode[O] with RecursiveGeneratorNodeFamily[HNil, State, O]
+sealed trait RecursiveGeneratorNode[State, +O]
+    extends GeneratorNode[O]
+    with RecursiveGeneratorNodeFamily[HNil, State, O]
 
 object GeneratorNode {
 
@@ -303,17 +311,17 @@ object GeneratorNode {
                                            f: (X1, X2) => Y,
                                            baseInput: RandomVar[X1],
                                            output: RandomVar[Y])
-      extends BaseGeneratorNode[X1 :: HNil, Y]{
-        val inputList = baseInput :: RandomVarList.Nil
-      }
+      extends BaseGeneratorNode[X1 :: HNil, Y] {
+    val inputList = baseInput :: RandomVarList.Nil
+  }
 
   case class ZipFlatMap[X1, X2, Y](baseInput: RandomVar[X1],
                                    fiberVar: X1 => RandomVar[X2],
                                    f: (X1, X2) => Y,
                                    output: RandomVar[Y])
-      extends BaseGeneratorNode[X1 :: HNil, Y]{
-        val inputList = baseInput :: RandomVarList.Nil
-      }
+      extends BaseGeneratorNode[X1 :: HNil, Y] {
+    val inputList = baseInput :: RandomVarList.Nil
+  }
 
   /**
     * flat-maps a family of generator nodes, such as lambda islands corresponding to different types.
@@ -327,7 +335,7 @@ object GeneratorNode {
       baseInput: RandomVar[X],
       fiberNode: X => GeneratorNode[Y],
       output: RandomVar[Y]
-  ) extends BaseGeneratorNode[X :: HNil, Y]{
+  ) extends BaseGeneratorNode[X :: HNil, Y] {
     val inputList = baseInput :: RandomVarList.Nil
   }
 
@@ -343,7 +351,7 @@ object GeneratorNode {
       gen: BaseGeneratorNode[V, O],
       output: RandomVar[Y],
       condition: Sort[Y]
-  ) extends BaseGeneratorNode[V, Y]{
+  ) extends BaseGeneratorNode[V, Y] {
     val inputList = gen.inputList
   }
 
@@ -366,8 +374,30 @@ object GeneratorNode {
       output: RandomVar[Y],
       initMap: InitState => (InitState, Boat),
       export: (Boat, O) => Y
-  )
-      extends RecursiveGeneratorNode[InitState, Y]
+  ) extends RecursiveGeneratorNode[InitState, Y]
+
+  /**
+    * An `island`, i.e., a full map from initial state to all required distributions,
+    * which is used in recursive definitions where we recurse on not just the final state
+    * but also the dynamics. One enters the island using a `boat` which is returned, and must exit by the same boat.
+    *
+    * @param islandOutput the variable whose distribution from the island is used
+    * @param output the final output, as seen from the outside
+    * @param initMap the map from the initial state on the outside to the initial state in the island
+    * @param export the object (e.g. term) level map applied when mapping a distribution obtained in the island to the outside; this is specific to the island
+    * @tparam O the scala type of the final output
+    * @tparam Y the scala type of the island output
+    * @tparam InitState the initial state
+    * @tparam Boat scala type of the `boat`
+    */
+  case class ComplexIsland[O, Y, InitState, Boat, V](
+      islandOutput: RandomVar[O],
+      output: RandomVar[Y],
+      initMap: InitState => (InitState,
+                             Boat,
+                             Map[GeneratorNodeFamily[_ <: HList, _], V]),
+      export: (Boat, O) => Y
+  ) extends RecursiveGeneratorNode[InitState, Y]
 
 }
 
@@ -433,41 +463,59 @@ object ContextExport {
     implicitly[ContextExport[Term, CtxDbl]] // just a test
 }
 
+case class MinimalState[D[_]](randVarVals: Set[RandomVar.Value[_, D]])
+
 /**
- * typeclass for providing distributions from a state
- */
- trait StateDistribution[State, D[_]] {
+  * typeclass for providing distributions from a state
+  */
+trait StateDistribution[State, D[_]] {
 
-   def value[T](state: State)(randomVar: RandomVar[T]): D[T]
+  def value[T](state: State)(randomVar: RandomVar[T]): D[T]
 
-   def valueAt[Dom <: HList, T](
-       state: State)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): D[T]
- }
+  def valueAt[Dom <: HList, T](
+      state: State)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): D[T]
+}
 
+object StateDistribution {
+  implicit def minimalStateDist[D[_], V](
+      implicit emp: Empty[D]): StateDistribution[MinimalState[D], D] =
+    new StateDistribution[MinimalState[D], D] {
+      def value[T](state: MinimalState[D])(randomVar: RandomVar[T]): D[T] =
+        state.randVarVals
+          .find(_.randVar == randomVar)
+          .map(_.value.asInstanceOf[D[T]])
+          .getOrElse(emp.empty[T])
+
+      def valueAt[Dom <: HList, T](state: MinimalState[D])(
+          randomVarFmly: RandomVarFamily[Dom, T],
+          fullArg: Dom): D[T] =
+        value(state)(RandomVar.AtCoord(randomVarFmly, fullArg))
+    }
+
+}
 
 /**
   * typeclass for providing distributions from a state and
   * modifying a state from distributions
   */
-trait DistributionState[State, D[_]]  extends StateDistribution[State, D]{
+trait DistributionState[State, D[_]] extends StateDistribution[State, D] {
 
   def update(values: RandomVarValues[D])(init: State): State
 }
 
-object DistributionState{
-  implicit def fdVar[O](randVar : RandomVar[O]) : DistributionState[FD[O], FD] =
-    new DistributionState[FD[O], FD]{
+object DistributionState {
+  implicit def fdVar[O](randVar: RandomVar[O]): DistributionState[FD[O], FD] =
+    new DistributionState[FD[O], FD] {
       def value[T](state: FD[O])(randomVar: RandomVar[T]) =
         if (randVar == randomVar) state.asInstanceOf[FD[T]] else FD.empty[T]
 
-      def valueAt[Dom <: HList, T](
-          state: FD[O])(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): FD[T] = FD.empty[T]
-
+      def valueAt[Dom <: HList, T](state: FD[O])(
+          randomVarFmly: RandomVarFamily[Dom, T],
+          fullArg: Dom): FD[T] = FD.empty[T]
 
       def update(values: RandomVarValues[FD])(init: FD[O]): FD[O] =
         values.value(randVar)
     }
-
 
 }
 
@@ -526,10 +574,10 @@ trait Empty[D[_]] {
   def empty[A]: D[A]
 }
 
-object Empty{
+object Empty {
   implicit def fdEmpty: Empty[FD] {
     def empty[A]: FD[A]
-  } = new Empty[FiniteDistribution]{
+  } = new Empty[FiniteDistribution] {
     def empty[A]: FD[A] = FiniteDistribution.empty[A]
   }
 }
@@ -541,52 +589,54 @@ case class GeneratorData[V](
 
 sealed trait NodeCoeffSeq[State, V]
 
-object NodeCoeffSeq{
+object NodeCoeffSeq {
   case class Empty[State, V]() extends NodeCoeffSeq[State, V]
 
-  case class Cons[State, V, RDom <: HList, +Y](head: NodeCoeffs[State, V, RDom, Y], tail: NodeCoeffSeq[State, V]) extends NodeCoeffSeq[State, V]
+  case class Cons[State, V, RDom <: HList, +Y](
+      head: NodeCoeffs[State, V, RDom, Y],
+      tail: NodeCoeffSeq[State, V])
+      extends NodeCoeffSeq[State, V]
 }
 
-sealed trait NodeCoeffs[State, V, RDom <: HList, +Y]{
+sealed trait NodeCoeffs[State, V, RDom <: HList, +Y] {
   val output: RandomVarFamily[RDom, Y]
 
   import NodeCoeffs._
   def ::[Dom <: HList, O](
-    head: (BaseGeneratorNodeFamily[Dom, O], V)
+      head: (BaseGeneratorNodeFamily[Dom, O], V)
   ) = BaseCons(head._1, head._2, this)
 
   def ::[Dom <: HList, O](
-    head: (RecursiveGeneratorNodeFamily[Dom, State, O], V)) =
-      RecCons(head._1, head._2, this)
+      head: (RecursiveGeneratorNodeFamily[Dom, State, O], V)) =
+    RecCons(head._1, head._2, this)
 }
 
-object NodeCoeffs{
+object NodeCoeffs {
   case class Target[State, V, RDom <: HList, +Y](
-    output: RandomVarFamily[RDom, Y]
+      output: RandomVarFamily[RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y]
 
   case class BaseCons[Dom <: HList, O, State, V, RDom <: HList, +Y](
-    headGen: BaseGeneratorNodeFamily[Dom, O],
-    headCoeff: V,
-    tail: NodeCoeffs[State, V, RDom, Y]
-  ) extends NodeCoeffs[State, V, RDom, Y]{
+      headGen: BaseGeneratorNodeFamily[Dom, O],
+      headCoeff: V,
+      tail: NodeCoeffs[State, V, RDom, Y]
+  ) extends NodeCoeffs[State, V, RDom, Y] {
     val output = tail.output
   }
 
   case class RecCons[Dom <: HList, O, State, V, RDom <: HList, +Y](
-    headGen: RecursiveGeneratorNodeFamily[Dom, State, O],
-    headCoeff: V,
-    tail: NodeCoeffs[State, V, RDom, Y]
-  ) extends NodeCoeffs[State, V, RDom, Y]{
+      headGen: RecursiveGeneratorNodeFamily[Dom, State, O],
+      headCoeff: V,
+      tail: NodeCoeffs[State, V, RDom, Y]
+  ) extends NodeCoeffs[State, V, RDom, Y] {
     val output = tail.output
   }
 }
 
-case class MemoState[D[_], V, C](
-    randVarVals: Set[RandomVar.Value[_, D]],
-    genData: GeneratorData[V],
-    // varFamiliesToResolve: Vector[RandomVarFamily[_ <: HList, _]],
-    context: C) {
+case class MemoState[D[_], V, C](randVarVals: Set[RandomVar.Value[_, D]],
+                                 genData: GeneratorData[V],
+                                 // varFamiliesToResolve: Vector[RandomVarFamily[_ <: HList, _]],
+                                 context: C) {
   // val rangeSet: Set[Sort[_]] = randVarVals.map(_.randVar.range)
   //
   // val rangeGroups: Map[Sort[_], Set[RandomVar[_]]] =
@@ -594,7 +644,7 @@ case class MemoState[D[_], V, C](
 }
 
 object MemoState {
-  implicit def safeExplDistState[D[_], V, P](
+  implicit def safeMemoDistState[D[_], V, P](
       implicit emp: Empty[D]): DistributionState[MemoState[D, V, P], D] =
     new DistributionState[MemoState[D, V, P], D] {
       def value[T](state: MemoState[D, V, P])(randomVar: RandomVar[T]): D[T] =
@@ -644,7 +694,7 @@ trait Support[D[_]] {
 /**
   * An example, the geometric distribution in an abstract form
   */
-object GeomDist {
+object GeometricDistribution {
   case object GeomVar extends RandomVar[Int]
 
   import GeneratorNode._
@@ -653,17 +703,10 @@ object GeomDist {
 
   val shift: Map[Int, Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
 
-  val nodeCoeffs : NodeCoeffs[FD[Int], Double, HNil, Int] =
-    (init , 0.5) :: (shift, 0.5) ::  (GeomVar.target[FD[Int], Double])
+  val nodeCoeffs: NodeCoeffs[MinimalState[FD], Double, HNil, Int] =
+    (init, 0.5) :: (shift, 0.5) :: (GeomVar.target[MinimalState[FD], Double])
 
+  val initState =
+    MinimalState[FD](Set(RandomVar.Value[Int, FD](GeomVar, FD.unif(0))))
 
-  val genData: GeneratorData[Double] = GeneratorData[Double](Vector(init -> 0.5, shift -> 0.5),
-                                        Vector(GeomVar))
-
-  // Not needed since there are no islands
-  def state(d: FD[Int]): MemoState[FD, Double, Unit] =
-    MemoState[FD, Double, Unit](Set(RandomVar.Value(GeomVar, d)),
-                                genData,
-                                // Vector(GeomVar),
-                                ())
 }

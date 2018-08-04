@@ -13,7 +13,6 @@ import HoTT._
 import shapeless._, HList._
 import scala.language.higherKinds
 
-
 class TermGeneratorNodes[InitState, D[_]](
     appln: (ExstFunc, Term) => Term,
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
