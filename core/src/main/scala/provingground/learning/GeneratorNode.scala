@@ -197,6 +197,7 @@ sealed trait BaseGeneratorNode[I <: HList, +O]
     extends GeneratorNode[O]
     with BaseGeneratorNodeFamily[HNil, O] {
   val inputList: RandomVarList[I]
+
 }
 
 sealed trait RecursiveGeneratorNode[State, +O]
@@ -224,21 +225,21 @@ object GeneratorNode {
     val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
   }
 
-  /**
-    * generator node for using initial distribution and conditioning.
-    *
-    * @param input the random variable with whose initial distribution we start
-    * @param output the output random variable
-    * @param condition the conditioning applied
-    * @tparam X scala type of the input variable
-    * @tparam Y scala type of the output variable
-    */
-  case class ConditionedInit[X, Y](input: RandomVar[X],
-                                   output: RandomVar[Y],
-                                   condition: Sort[X, Y])
-      extends BaseGeneratorNode[X :: HNil, Y] {
-    val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
-  }
+  // /**
+  //   * generator node for using initial distribution and conditioning.
+  //   *
+  //   * @param input the random variable with whose initial distribution we start
+  //   * @param output the output random variable
+  //   * @param condition the conditioning applied
+  //   * @tparam X scala type of the input variable
+  //   * @tparam Y scala type of the output variable
+  //   */
+  // case class ConditionedInit[X, Y](input: RandomVar[X],
+  //                                  output: RandomVar[Y],
+  //                                  condition: Sort[X, Y])
+  //     extends BaseGeneratorNode[X :: HNil, Y] {
+  //   val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
+  // }
 
   /**
     * generator node for mapping
