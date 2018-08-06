@@ -28,6 +28,16 @@ class TruncatedFiniteDistribution(nodeCoeffSeq: NodeCoeffSeq[VarValueSet[FD], Do
         ???
     }.getOrElse(FD.empty[Y])
 
+  def varFamilyDist[RDom <: HList, Y](randomVarFmly: RandomVarFamily[RDom, Y], epsilon: Double) : Map[RDom, FD[Y]] =
+    if (epsilon> 0) Map()
+    else find(randomVarFmly).map{
+      case Target(_) => Map.empty[RDom, FD[Y]]
+      case bc : BaseCons[i, o, VarValueSet[FD], Double, RDom, Y] =>
+        ???
+      case rc : RecCons[i, o, VarValueSet[FD], Double, RDom, Y] =>
+        ???
+    }.getOrElse(Map())
+
   def nodeDist[Y](generatorNode: GeneratorNode[Y], epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else generatorNode match{
