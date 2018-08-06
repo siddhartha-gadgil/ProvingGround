@@ -1,17 +1,12 @@
 package provingground.learning
 import provingground._
-
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
-
-import cats._
-import cats.implicits._
-
 import HoTT._
+import shapeless._
+import HList._
+import provingground.learning.GeneratorNode.ThenCondition
 
-import shapeless._, HList._
-import scala.language.higherKinds
-
-import scala.language.implicitConversions
+import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
 
 /**
   * A `sort`, i.e. type refining a scala type.
@@ -40,7 +35,7 @@ object Sort {
   /**
     * Sort of all HoTT terms
     */
-  val AllTerms: Sort[Term, Term] = All[Term]
+  val AllTerms: Sort[Term, Term] = All[Term]()
 }
 
 /**
@@ -62,10 +57,11 @@ object SortList {
   * May actually have representations instead of distributions, for example.
   *
   */
-class RandomVarFamily[Dom <: HList, +O](val polyDomain: SortList[Dom],
+class RandomVarFamily[Dom <: HList, +O](val polyDomain: RandomVarList[Dom],
                                         val rangeFamily: Dom => Sort[_, O] =
-                                          (d: Dom) => Sort.All[O]) {
-  def target[State, V] = NodeCoeffs.Target[State, V, Dom, O](this)
+                                          (d: Dom) => Sort.All[O]()) {
+  def target[State, V]: NodeCoeffs.Target[State, V, Dom, O] =
+    NodeCoeffs.Target[State, V, Dom, O](this)
 }
 
 object RandomVarFamily {
@@ -92,18 +88,18 @@ object RandomVarFamily {
   * May actually have representations instead of distributions, for example.
   *
   */
-class RandomVar[+O](val range: Sort[_, O] = Sort.All[O])
-    extends RandomVarFamily[HNil, O](SortList.Nil, (_) => range)
+class RandomVar[+O](val range: Sort[_, O] = Sort.All[O]())
+    extends RandomVarFamily[HNil, O](RandomVarList.Nil, (_) => range)
 
 object RandomVar {
 
   /**
     * convenience class to avoid {{HNil}}
     */
-  class SimpleFamily[U, O](domain: Sort[_, U],
+  class SimpleFamily[U, O](domain: RandomVar[U],
                            rangeFamily: U => Sort[_, O] = (x: U) => Sort.All[O])
       extends RandomVarFamily[U :: HNil, O](
-        domain :: SortList.Nil,
+        domain :: RandomVarList.Nil,
         { case x :: HNil => rangeFamily(x) }
       )
 
@@ -197,6 +193,10 @@ sealed trait BaseGeneratorNode[I <: HList, +O]
     extends GeneratorNode[O]
     with BaseGeneratorNodeFamily[HNil, O] {
   val inputList: RandomVarList[I]
+
+  def |[S >: O, T](condition: Sort[S, T],
+                   output: RandomVar[T]): BaseGeneratorNode[I, T] =
+    ThenCondition[I, S, T](this, output, condition)
 
 }
 
@@ -313,7 +313,7 @@ object GeneratorNode {
                                            baseInput: RandomVar[X1],
                                            output: RandomVar[Y])
       extends BaseGeneratorNode[X1 :: HNil, Y] {
-    val inputList = baseInput :: RandomVarList.Nil
+    val inputList: RandomVarList.Cons[X1, HNil] = baseInput :: RandomVarList.Nil
   }
 
   case class ZipFlatMap[X1, X2, Y](baseInput: RandomVar[X1],
@@ -321,7 +321,7 @@ object GeneratorNode {
                                    f: (X1, X2) => Y,
                                    output: RandomVar[Y])
       extends BaseGeneratorNode[X1 :: HNil, Y] {
-    val inputList = baseInput :: RandomVarList.Nil
+    val inputList: RandomVarList.Cons[X1, HNil] = baseInput :: RandomVarList.Nil
   }
 
   /**
@@ -337,7 +337,7 @@ object GeneratorNode {
       fiberNode: X => GeneratorNode[Y],
       output: RandomVar[Y]
   ) extends BaseGeneratorNode[X :: HNil, Y] {
-    val inputList = baseInput :: RandomVarList.Nil
+    val inputList: RandomVarList.Cons[X, HNil] = baseInput :: RandomVarList.Nil
   }
 
   /**
@@ -353,7 +353,7 @@ object GeneratorNode {
       output: RandomVar[Y],
       condition: Sort[O, Y]
   ) extends BaseGeneratorNode[V, Y] {
-    val inputList = gen.inputList
+    val inputList: RandomVarList[V] = gen.inputList
   }
 
   /**
@@ -464,7 +464,7 @@ object ContextExport {
     implicitly[ContextExport[Term, CtxDbl]] // just a test
 }
 
-case class MinimalState[D[_]](randVarVals: Set[RandomVar.Value[_, D]])
+case class VarValueSet[D[_]](randVarVals: Set[RandomVar.Value[_, D]])
 
 /**
   * typeclass for providing distributions from a state
@@ -479,15 +479,15 @@ trait StateDistribution[State, D[_]] {
 
 object StateDistribution {
   implicit def minimalStateDist[D[_], V](
-      implicit emp: Empty[D]): StateDistribution[MinimalState[D], D] =
-    new StateDistribution[MinimalState[D], D] {
-      def value[T](state: MinimalState[D])(randomVar: RandomVar[T]): D[T] =
+      implicit emp: Empty[D]): StateDistribution[VarValueSet[D], D] =
+    new StateDistribution[VarValueSet[D], D] {
+      def value[T](state: VarValueSet[D])(randomVar: RandomVar[T]): D[T] =
         state.randVarVals
           .find(_.randVar == randomVar)
           .map(_.value.asInstanceOf[D[T]])
           .getOrElse(emp.empty[T])
 
-      def valueAt[Dom <: HList, T](state: MinimalState[D])(
+      def valueAt[Dom <: HList, T](state: VarValueSet[D])(
           randomVarFmly: RandomVarFamily[Dom, T],
           fullArg: Dom): D[T] =
         value(state)(RandomVar.AtCoord(randomVarFmly, fullArg))
@@ -507,7 +507,7 @@ trait DistributionState[State, D[_]] extends StateDistribution[State, D] {
 object DistributionState {
   implicit def fdVar[O](randVar: RandomVar[O]): DistributionState[FD[O], FD] =
     new DistributionState[FD[O], FD] {
-      def value[T](state: FD[O])(randomVar: RandomVar[T]) =
+      def value[T](state: FD[O])(randomVar: RandomVar[T]): FD[T] =
         if (randVar == randomVar) state.asInstanceOf[FD[T]] else FD.empty[T]
 
       def valueAt[Dom <: HList, T](state: FD[O])(
@@ -542,7 +542,7 @@ trait RandomVarValues[D[_]] {
 
   def fullArgSet[U <: HList](
       l: SortList[U],
-      varGroups: Map[Sort[_,_], Set[RandomVar[_]]]
+      varGroups: Map[Sort[_, _], Set[RandomVar[_]]]
   )(implicit supp: Support[D]): Set[U] =
     l match {
       case SortList.Nil => Set(HNil)
@@ -588,15 +588,40 @@ case class GeneratorData[V](
     varsToResolve: Vector[RandomVar[_]]
 )
 
-sealed trait NodeCoeffSeq[State, V]
+sealed trait NodeCoeffSeq[State, V] {
+  def ::[RDom <: HList, Y](head: NodeCoeffs[State, V, RDom, Y]) =
+    NodeCoeffSeq.Cons(head, this)
+
+  def find[RDom <: HList, Y](randomVar: RandomVarFamily[RDom, Y])
+    : Option[NodeCoeffs[State, V, RDom, Y]]
+
+  val outputs : Vector[RandomVarFamily[ _ <: HList, _]]
+}
 
 object NodeCoeffSeq {
-  case class Empty[State, V]() extends NodeCoeffSeq[State, V]
+  case class Empty[State, V]() extends NodeCoeffSeq[State, V] {
+    def find[RDom <: HList, Y](randomVar: RandomVarFamily[RDom, Y])
+      : Option[NodeCoeffs[State, V, RDom, Y]] = None
+
+    val outputs : Vector[RandomVarFamily[ _ <: HList, _]] = Vector()
+  }
 
   case class Cons[State, V, RDom <: HList, +Y](
       head: NodeCoeffs[State, V, RDom, Y],
       tail: NodeCoeffSeq[State, V])
-      extends NodeCoeffSeq[State, V]
+      extends NodeCoeffSeq[State, V] {
+    def find[VarRDom <: HList, VarY](randomVar: RandomVarFamily[VarRDom, VarY])
+      : Option[NodeCoeffs[State, V, VarRDom, VarY]] =
+      tail
+        .find(randomVar)
+        .orElse(
+          if (head.output == randomVar)
+            Some(head.asInstanceOf[NodeCoeffs[State, V, VarRDom, VarY]])
+          else None
+        )
+
+    val outputs : Vector[RandomVarFamily[ _ <: HList, _]] = head.output +: tail.outputs
+  }
 }
 
 sealed trait NodeCoeffs[State, V, RDom <: HList, +Y] {
@@ -622,7 +647,7 @@ object NodeCoeffs {
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {
-    val output = tail.output
+    val output: RandomVarFamily[RDom, Y] = tail.output
   }
 
   case class RecCons[Dom <: HList, O, State, V, RDom <: HList, +Y](
@@ -630,7 +655,7 @@ object NodeCoeffs {
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {
-    val output = tail.output
+    val output: RandomVarFamily[RDom, Y] = tail.output
   }
 }
 
@@ -704,10 +729,14 @@ object GeometricDistribution {
 
   val shift: Map[Int, Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
 
-  val nodeCoeffs: NodeCoeffs[MinimalState[FD], Double, HNil, Int] =
-    (init, 0.5) :: (shift, 0.5) :: (GeomVar.target[MinimalState[FD], Double])
+  val nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, HNil, Int] =
+    (init, 0.5) :: (shift, 0.5) :: GeomVar.target[VarValueSet[FD], Double]
 
-  val initState =
-    MinimalState[FD](Set(RandomVar.Value[Int, FD](GeomVar, FD.unif(0))))
+  val nodeCoeffSeq
+    : NodeCoeffSeq.Cons[VarValueSet[FD], Double, HNil, Int] = nodeCoeffs :: NodeCoeffSeq
+    .Empty[VarValueSet[FD], Double]()
+
+  val initState: VarValueSet[FD] =
+    VarValueSet[FD](Set(RandomVar.Value[Int, FD](GeomVar, FD.unif(0))))
 
 }
