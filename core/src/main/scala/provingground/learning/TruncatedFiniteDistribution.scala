@@ -1,10 +1,6 @@
 package provingground.learning
 import provingground._
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
-import learning.{TangVec => T}
-import cats._
-import cats.implicits._
-import HoTT._
 import shapeless._
 import HList._
 
@@ -33,6 +29,13 @@ class TruncatedFiniteDistribution(
             .getOrElse(FD.empty[Y])
       }
 
+  def varListDist[Dom <: HList](initState: VarValueSet[FD])(vl: RandomVarList[Dom], epsilon : Double) : FD[Dom] =
+    vl match {
+      case RandomVarList.Nil => FD.unif(HNil)
+      case RandomVarList.Cons(head, tail) =>
+        varDist(initState)(head, epsilon).zip(varListDist(initState)(tail, epsilon)).map{case (x, y) => x :: y}
+    }
+
   def nodeCoeffDist[Y](initState: VarValueSet[FD])(
       nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, HNil, Y],
       epsilon: Double): FD[Y] =
@@ -40,7 +43,7 @@ class TruncatedFiniteDistribution(
     else
       nodeCoeffs match {
         case Target(_) => FD.empty[Y]
-        case bc: BaseCons[i,  VarValueSet[FD], Double, HNil, Y] =>
+        case bc: BaseCons[VarValueSet[FD], Double, HNil, Y] =>
           val p = bc.headCoeff
           val d =
             bc.headGen match {
@@ -49,7 +52,7 @@ class TruncatedFiniteDistribution(
               case _ => throw new IllegalArgumentException("found family while looking for node")
             }
           d ++ nodeCoeffDist(initState)(bc.tail, epsilon / (1.0 - p))
-        case rc: RecCons[i,  VarValueSet[FD], Double, HNil, Y] =>
+        case rc: RecCons[VarValueSet[FD], Double, HNil, Y] =>
           val p = rc.headCoeff
           val d =
             rc.headGen match {
@@ -60,18 +63,40 @@ class TruncatedFiniteDistribution(
           d ++ nodeCoeffDist(initState)(rc.tail, epsilon / (1.0 - p))
       }
 
+  def mapsSum[X, Y](first: Map[X, FD[Y]], second: Map[X, FD[Y]]): Map[X, FD[Y]] =
+    (for {
+      k <- first.keySet union second.keySet
+      v = first.getOrElse(k, FD.empty[Y]) ++ second.getOrElse(k, FD.empty[Y])
+    } yield (k, v)).toMap
+
+  def nodeCoeffFamilyMap[Dom <: HList, Y](initState: VarValueSet[FD])(
+    nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, Dom, Y], baseDist : FD[Dom],
+    epsilon: Double): Map[Dom, FD[Y]] =
+    if (epsilon > 1) Map()
+    else
+      nodeCoeffs match {
+        case Target(_) => Map()
+        case bc: BaseCons[VarValueSet[FD], Double, Dom, Y] =>
+          val p = bc.headCoeff
+          mapsSum(
+            nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon),
+            nodeCoeffFamilyMap(initState)(bc.tail, baseDist, epsilon / (1.0 - p)) )
+        case rc: RecCons[VarValueSet[FD], Double, Dom, Y] =>
+          val p = rc.headCoeff
+          mapsSum(
+            nodeFamilyDist(initState)(rc.headGen, baseDist, epsilon),
+            nodeCoeffFamilyMap(initState)(rc.tail, baseDist, epsilon / (1.0 - p)) )
+      }
+
   def varFamilyDist[RDom <: HList, Y](initState: VarValueSet[FD])(
       randomVarFmly: RandomVarFamily[RDom, Y],
       epsilon: Double): Map[RDom, FD[Y]] =
     if (epsilon > 0) Map()
     else
       find(randomVarFmly)
-        .map {
-          case Target(_) => Map.empty[RDom, FD[Y]]
-          case bc: BaseCons[i, VarValueSet[FD], Double, RDom, Y] =>
-            ???
-          case rc: RecCons[i, VarValueSet[FD], Double, RDom, Y] =>
-            ???
+        .map { (nc) =>
+          val base = varListDist(initState)(nc.output.polyDomain, epsilon)
+          nodeCoeffFamilyMap(initState)(nc, base, epsilon)
         }
         .getOrElse(Map())
 

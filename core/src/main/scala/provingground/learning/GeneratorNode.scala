@@ -643,16 +643,16 @@ object NodeCoeffs {
       output: RandomVarFamily[RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y]
 
-  case class BaseCons[Dom <: HList,  State, V, RDom <: HList, +Y](
-      headGen: BaseGeneratorNodeFamily[Dom, Y],
+  case class BaseCons[State, V, RDom <: HList, +Y](
+      headGen: BaseGeneratorNodeFamily[RDom, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
   }
 
-  case class RecCons[Dom <: HList, State, V, RDom <: HList, +Y](
-      headGen: RecursiveGeneratorNodeFamily[Dom, State, Y],
+  case class RecCons[State, V, RDom <: HList, +Y](
+      headGen: RecursiveGeneratorNodeFamily[RDom, State, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {
