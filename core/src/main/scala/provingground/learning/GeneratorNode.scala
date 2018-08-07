@@ -172,12 +172,7 @@ object GeneratorNodeFamily {
       nodes: Dom => BaseGeneratorNode[I, O],
       outputFamily: RandomVarFamily[Dom, O])
       extends BaseGeneratorNodeFamily[Dom, O]
-  /**
-    * A family of recursive generation functions, given as a function.
-    */
-  // case class Pi[Dom <: HList, +O](nodes: Dom => GeneratorNode[O],
-  //                                 outputFamily: RandomVarFamily[Dom, O])
-  //     extends GeneratorNodeFamily[Dom, O]
+  
 }
 
 /**
@@ -634,12 +629,12 @@ sealed trait NodeCoeffs[State, V, RDom <: HList, +Y] {
   val output: RandomVarFamily[RDom, Y]
 
   import NodeCoeffs._
-  def ::[Dom <: HList, O](
-      head: (BaseGeneratorNodeFamily[Dom, O], V)
+  def ::[YY >: Y](
+      head: (BaseGeneratorNodeFamily[RDom, YY], V)
   ) = BaseCons(head._1, head._2, this)
 
-  def ::[Dom <: HList, O](
-      head: (RecursiveGeneratorNodeFamily[Dom, State, O], V)) =
+  def ::[YY >: Y](
+      head: (RecursiveGeneratorNodeFamily[RDom, State, YY], V)) =
     RecCons(head._1, head._2, this)
 }
 
@@ -648,16 +643,16 @@ object NodeCoeffs {
       output: RandomVarFamily[RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y]
 
-  case class BaseCons[Dom <: HList, O, State, V, RDom <: HList, +Y](
-      headGen: BaseGeneratorNodeFamily[Dom, O],
+  case class BaseCons[Dom <: HList,  State, V, RDom <: HList, +Y](
+      headGen: BaseGeneratorNodeFamily[Dom, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
   }
 
-  case class RecCons[Dom <: HList, O, State, V, RDom <: HList, +Y](
-      headGen: RecursiveGeneratorNodeFamily[Dom, State, O],
+  case class RecCons[Dom <: HList, State, V, RDom <: HList, +Y](
+      headGen: RecursiveGeneratorNodeFamily[Dom, State, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {

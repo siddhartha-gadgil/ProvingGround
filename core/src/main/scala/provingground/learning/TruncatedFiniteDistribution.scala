@@ -33,27 +33,29 @@ class TruncatedFiniteDistribution(
             .getOrElse(FD.empty[Y])
       }
 
-  def nodeCoeffDist[RDom <: HList, Y](initState: VarValueSet[FD])(
-      nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, RDom, Y],
+  def nodeCoeffDist[Y](initState: VarValueSet[FD])(
+      nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, HNil, Y],
       epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else
       nodeCoeffs match {
         case Target(_) => FD.empty[Y]
-        case bc: BaseCons[i, o, VarValueSet[FD], Double, HNil, Y] =>
+        case bc: BaseCons[i,  VarValueSet[FD], Double, HNil, Y] =>
           val p = bc.headCoeff
           val d =
             bc.headGen match {
               case gen: GeneratorNode[Y] =>
                 nodeDist(initState)(gen, epsilon / p) * p
+              case _ => throw new IllegalArgumentException("found family while looking for node")
             }
           d ++ nodeCoeffDist(initState)(bc.tail, epsilon / (1.0 - p))
-        case rc: RecCons[i, o, VarValueSet[FD], Double, HNil, Y] =>
+        case rc: RecCons[i,  VarValueSet[FD], Double, HNil, Y] =>
           val p = rc.headCoeff
           val d =
             rc.headGen match {
               case gen: GeneratorNode[Y] =>
                 nodeDist(initState)(gen, epsilon / p) * p
+              case _ => throw new IllegalArgumentException("found family while looking for node")
             }
           d ++ nodeCoeffDist(initState)(rc.tail, epsilon / (1.0 - p))
       }
@@ -66,12 +68,32 @@ class TruncatedFiniteDistribution(
       find(randomVarFmly)
         .map {
           case Target(_) => Map.empty[RDom, FD[Y]]
-          case bc: BaseCons[i, o, VarValueSet[FD], Double, RDom, Y] =>
+          case bc: BaseCons[i, VarValueSet[FD], Double, RDom, Y] =>
             ???
-          case rc: RecCons[i, o, VarValueSet[FD], Double, RDom, Y] =>
+          case rc: RecCons[i, VarValueSet[FD], Double, RDom, Y] =>
             ???
         }
         .getOrElse(Map())
+
+  def nodeFamilyDist[Dom <: HList, Y](initState: VarValueSet[FD])(generatorNodeFamily: GeneratorNodeFamily[Dom, Y], baseDist : FD[Dom],
+                                                                  epsilon: Double): Map[Dom, FD[Y]] =
+    generatorNodeFamily match {
+      case node : GeneratorNode[Y] => Map(HNil -> nodeDist(initState)(node, epsilon))
+      case GeneratorNodeFamily.BasePi(nodes, _) =>
+        val kvs: Vector[(Dom, FD[Y])] =
+          for {
+            Weighted(arg, p) <- baseDist.pmf
+            d = nodeDist(initState)(nodes(arg), epsilon/ p)
+          } yield arg -> d
+        kvs.toMap
+      case GeneratorNodeFamily.RecPi(nodes, _) =>
+        val kvs: Vector[(Dom, FD[Y])] =
+          for {
+            Weighted(arg, p) <- baseDist.pmf
+            d = nodeDist(initState)(nodes(arg), epsilon/ p)
+          } yield arg -> d
+        kvs.toMap
+    }
 
   def nodeDist[Y](initState: VarValueSet[FD])(generatorNode: GeneratorNode[Y],
                                               epsilon: Double): FD[Y] =
