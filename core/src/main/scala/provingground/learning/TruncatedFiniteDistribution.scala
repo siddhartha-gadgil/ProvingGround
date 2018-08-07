@@ -7,13 +7,13 @@ import HList._
 import scala.collection.immutable
 import scala.language.higherKinds
 
-class TruncatedFiniteDistribution(
-    nodeCoeffSeq: NodeCoeffSeq[VarValueSet[FD], Double]) {
+class TruncatedFiniteDistribution[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double])(implicit sd: StateDistribution[State, FD]) {
   import nodeCoeffSeq.{outputs, find}
 
   import NodeCoeffs._, StateDistribution._
 
-  def varDist[Y](initState: VarValueSet[FD])(randomVar: RandomVar[Y],
+  def varDist[Y](initState: State)(randomVar: RandomVar[Y],
                                              epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else
@@ -29,21 +29,21 @@ class TruncatedFiniteDistribution(
             .getOrElse(FD.empty[Y])
       }
 
-  def varListDist[Dom <: HList](initState: VarValueSet[FD])(vl: RandomVarList[Dom], epsilon : Double) : FD[Dom] =
+  def varListDist[Dom <: HList](initState: State)(vl: RandomVarList[Dom], epsilon : Double) : FD[Dom] =
     vl match {
       case RandomVarList.Nil => FD.unif(HNil)
       case RandomVarList.Cons(head, tail) =>
         varDist(initState)(head, epsilon).zip(varListDist(initState)(tail, epsilon)).map{case (x, y) => x :: y}
     }
 
-  def nodeCoeffDist[Y](initState: VarValueSet[FD])(
-      nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, HNil, Y],
+  def nodeCoeffDist[Y](initState: State)(
+      nodeCoeffs: NodeCoeffs[State, Double, HNil, Y],
       epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else
       nodeCoeffs match {
         case Target(_) => FD.empty[Y]
-        case bc: BaseCons[VarValueSet[FD], Double, HNil, Y] =>
+        case bc: BaseCons[State, Double, HNil, Y] =>
           val p = bc.headCoeff
           val d =
             bc.headGen match {
@@ -52,7 +52,7 @@ class TruncatedFiniteDistribution(
               case _ => throw new IllegalArgumentException("found family while looking for node")
             }
           d ++ nodeCoeffDist(initState)(bc.tail, epsilon / (1.0 - p))
-        case rc: RecCons[VarValueSet[FD], Double, HNil, Y] =>
+        case rc: RecCons[State, Double, HNil, Y] =>
           val p = rc.headCoeff
           val d =
             rc.headGen match {
@@ -69,26 +69,26 @@ class TruncatedFiniteDistribution(
       v = first.getOrElse(k, FD.empty[Y]) ++ second.getOrElse(k, FD.empty[Y])
     } yield (k, v)).toMap
 
-  def nodeCoeffFamilyMap[Dom <: HList, Y](initState: VarValueSet[FD])(
-    nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, Dom, Y], baseDist : FD[Dom],
+  def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
+    nodeCoeffs: NodeCoeffs[State, Double, Dom, Y], baseDist : FD[Dom],
     epsilon: Double): Map[Dom, FD[Y]] =
     if (epsilon > 1) Map()
     else
       nodeCoeffs match {
         case Target(_) => Map()
-        case bc: BaseCons[VarValueSet[FD], Double, Dom, Y] =>
+        case bc: BaseCons[State, Double, Dom, Y] =>
           val p = bc.headCoeff
           mapsSum(
             nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon),
             nodeCoeffFamilyMap(initState)(bc.tail, baseDist, epsilon / (1.0 - p)) )
-        case rc: RecCons[VarValueSet[FD], Double, Dom, Y] =>
+        case rc: RecCons[State, Double, Dom, Y] =>
           val p = rc.headCoeff
           mapsSum(
             nodeFamilyDist(initState)(rc.headGen, baseDist, epsilon),
             nodeCoeffFamilyMap(initState)(rc.tail, baseDist, epsilon / (1.0 - p)) )
       }
 
-  def varFamilyDist[RDom <: HList, Y](initState: VarValueSet[FD])(
+  def varFamilyDist[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],
       epsilon: Double): Map[RDom, FD[Y]] =
     if (epsilon > 0) Map()
@@ -100,7 +100,7 @@ class TruncatedFiniteDistribution(
         }
         .getOrElse(Map())
 
-  def nodeFamilyDist[Dom <: HList, Y](initState: VarValueSet[FD])(generatorNodeFamily: GeneratorNodeFamily[Dom, Y], baseDist : FD[Dom],
+  def nodeFamilyDist[Dom <: HList, Y](initState: State)(generatorNodeFamily: GeneratorNodeFamily[Dom, Y], baseDist : FD[Dom],
                                                                   epsilon: Double): Map[Dom, FD[Y]] =
     generatorNodeFamily match {
       case node : GeneratorNode[Y] => Map(HNil -> nodeDist(initState)(node, epsilon))
@@ -120,7 +120,7 @@ class TruncatedFiniteDistribution(
         kvs.toMap
     }
 
-  def nodeDist[Y](initState: VarValueSet[FD])(generatorNode: GeneratorNode[Y],
+  def nodeDist[Y](initState: State)(generatorNode: GeneratorNode[Y],
                                               epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else {
@@ -177,7 +177,7 @@ class TruncatedFiniteDistribution(
             case c: Filter[_] => base.conditioned(c.pred)
             case Restrict(f)  => base.condMap(f)
           }
-        case isle: Island[o, Y, VarValueSet[FD], b] =>
+        case isle: Island[o, Y, State, b] =>
           import isle._
           val (isleInit, boat) = initMap(initState)
           val isleOut          = varDist(isleInit)(islandOutput, epsilon)
