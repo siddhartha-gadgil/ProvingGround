@@ -4,7 +4,7 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 import HoTT._
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.ThenCondition
+import provingground.learning.GeneratorNode.{BaseThenCondition, RecursiveThenCondition}
 
 import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
 
@@ -172,7 +172,7 @@ object GeneratorNodeFamily {
       nodes: Dom => BaseGeneratorNode[I, O],
       outputFamily: RandomVarFamily[Dom, O])
       extends BaseGeneratorNodeFamily[Dom, O]
-  
+
 }
 
 /**
@@ -182,6 +182,9 @@ object GeneratorNodeFamily {
 sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
   val output: RandomVar[O]
   val outputFamily: RandomVar[O] = output
+
+  def |[S >: O, T](condition: Sort[S, T],
+                   output: RandomVar[T]) : GeneratorNode[T]
 }
 
 sealed trait BaseGeneratorNode[I <: HList, +O]
@@ -191,24 +194,19 @@ sealed trait BaseGeneratorNode[I <: HList, +O]
 
   def |[S >: O, T](condition: Sort[S, T],
                    output: RandomVar[T]): BaseGeneratorNode[I, T] =
-    ThenCondition[I, S, T](this, output, condition)
+    BaseThenCondition[I, S, T](this, output, condition)
 
 }
 
 sealed trait RecursiveGeneratorNode[State, +O]
     extends GeneratorNode[O]
-    with RecursiveGeneratorNodeFamily[HNil, State, O]
+    with RecursiveGeneratorNodeFamily[HNil, State, O]{
+      def |[S >: O, T](condition: Sort[S, T],
+                       output: RandomVar[T]): RecursiveGeneratorNode[State, T] =
+        RecursiveThenCondition[State, S, T](this, output, condition)
+    }
 
 object GeneratorNode {
-
-  /**
-    * for families with a single parameter, takes care of padding by `HNil`
-    */
-  // def simplePi[U, O](nodes: U => GeneratorNode[O],
-  //                    outputFamily: RandomVarFamily[U :: HNil, O])
-  //   : GeneratorNodeFamily.Pi[::[U, HNil], O] =
-  //   GeneratorNodeFamily
-  //     .Pi[U :: HNil, O]({ case x :: HNil => nodes(x) }, outputFamily)
 
   /**
     * generator node for simply using the initial distribution.
@@ -343,13 +341,19 @@ object GeneratorNode {
     * @tparam O scala type of the original output
     * @tparam Y scala type of the final output
     */
-  case class ThenCondition[V <: HList, O, Y](
+  case class BaseThenCondition[V <: HList, O, Y](
       gen: BaseGeneratorNode[V, O],
       output: RandomVar[Y],
       condition: Sort[O, Y]
   ) extends BaseGeneratorNode[V, Y] {
     val inputList: RandomVarList[V] = gen.inputList
   }
+
+  case class RecursiveThenCondition[State, O, Y](
+      gen: RecursiveGeneratorNode[State, O],
+      output: RandomVar[Y],
+      condition: Sort[O, Y]
+  ) extends RecursiveGeneratorNode[State, Y]
 
   /**
     * An `island`, i.e., a full map from initial state to all required distributions,
@@ -365,9 +369,9 @@ object GeneratorNode {
     * @tparam InitState the initial state
     * @tparam Boat scala type of the `boat`
     */
-  case class Island[O, Y, InitState, Boat](
-      islandOutput: RandomVar[O],
+  case class Island[Y, InitState, O, Boat](
       output: RandomVar[Y],
+      islandOutput: RandomVar[O],
       initMap: InitState => (InitState, Boat),
       export: (Boat, O) => Y
   ) extends RecursiveGeneratorNode[InitState, Y]

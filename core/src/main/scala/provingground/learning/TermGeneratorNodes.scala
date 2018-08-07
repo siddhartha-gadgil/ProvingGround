@@ -37,8 +37,8 @@ class TermGeneratorNodes[InitState, D[_]](
       Terms
     )
 
-  def lambdaIsle(typ: Typ[Term]): Island[Term, Term, InitState, Term] =
-    Island[Term, Term, InitState, Term](
+  def lambdaIsle(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
+    Island[Term, InitState, Term, Term](
       Terms,
       Terms,
       addVar(typ),
@@ -53,8 +53,8 @@ class TermGeneratorNodes[InitState, D[_]](
     )
 
   def piIslelambdaIsle(
-      typ: Typ[Term]): Island[Typ[Term], Typ[Term], InitState, Term] =
-    Island[Typ[Term], Typ[Term], InitState, Term](
+      typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+    Island[Typ[Term], InitState,  Typ[Term], Term](
       Typs,
       Typs,
       addVar(typ),

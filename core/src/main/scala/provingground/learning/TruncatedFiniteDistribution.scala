@@ -7,6 +7,17 @@ import HList._
 import scala.collection.immutable
 import scala.language.higherKinds
 
+object TruncatedFiniteDistribution{
+  import GeometricDistribution._
+
+  object Geom extends TruncatedFiniteDistribution[VarValueSet[FD]](
+    nodeCoeffSeq
+  )
+
+  def truncFD(epsilon: Double) : FD[Int] =
+    Geom.varDist(initState)(GeomVar, epsilon)
+}
+
 class TruncatedFiniteDistribution[State](
     nodeCoeffSeq: NodeCoeffSeq[State, Double])(implicit sd: StateDistribution[State, FD]) {
   import nodeCoeffSeq.{outputs, find}
@@ -168,7 +179,7 @@ class TruncatedFiniteDistribution[State](
               wtd <- d.pmf
             } yield wtd
           FD(pmf.toVector)
-        case tc: ThenCondition[v, o, Y] =>
+        case tc: BaseThenCondition[v, o, Y] =>
           import tc._
           val base = nodeDist(initState)(gen, epsilon)
           import Sort._
@@ -177,7 +188,7 @@ class TruncatedFiniteDistribution[State](
             case c: Filter[_] => base.conditioned(c.pred)
             case Restrict(f)  => base.condMap(f)
           }
-        case isle: Island[o, Y, State, b] =>
+        case isle: Island[Y, State, o, b] =>
           import isle._
           val (isleInit, boat) = initMap(initState)
           val isleOut          = varDist(isleInit)(islandOutput, epsilon)
