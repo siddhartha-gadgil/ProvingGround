@@ -493,6 +493,12 @@ object StateDistribution {
         value(state)(RandomVar.AtCoord(randomVarFmly, fullArg))
     }
 
+  def value[State, T, D[_]](state: State)(randomVar: RandomVar[T])(implicit sd: StateDistribution[State, D]): D[T] =
+    sd.value(state)(randomVar)
+
+  def valueAt[Dom <: HList, State, T, D[_]](state: State)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom)(implicit sd: StateDistribution[State, D]): D[T] =
+    sd.valueAt(state)(randomVarFmly, fullArg)
+
 }
 
 /**
