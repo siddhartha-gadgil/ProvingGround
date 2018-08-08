@@ -288,7 +288,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
         } yield
           q"IndexedConstructorShape.IndexedIdShape($familyCode, $indexCode)"
       case fc: IndexedFuncConsShape[a, H, Fb, b, c, Index] =>
-        ??? // wornd, deprecated case
+        throw new IllegalArgumentException("encountered deprecated case") // word, deprecated case
       //   for {
       //     tailCode <- iterFunc(fc.tail, w)
       //     headCode <- indexedConsShape(fc.head, w)

@@ -69,7 +69,7 @@ class SymbolicField[A: Field] extends SymbolicCRing[A] { self =>
 
     def lcm(a: SymbolicField.this.LocalTerm, b: SymbolicField.this.LocalTerm)(
         implicit ev: spire.algebra.Eq[SymbolicField.this.LocalTerm])
-      : SymbolicField.this.LocalTerm = ???
+      : SymbolicField.this.LocalTerm = times(a, b)
 
     // def mod(a: SymbolicField.this.LocalTerm,
     //         b: SymbolicField.this.LocalTerm): SymbolicField.this.LocalTerm =

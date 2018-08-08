@@ -50,8 +50,6 @@ object TermEvolver {
       TangVec(pd.point.flatMap((a) => f(a).point),
               pd.vec.flatMap((a) => f(a).vec))
 
-    // def flatMapped[B](f: A => PD[B]) : T[PD[B]] = ???
-
     def condMap[B](f: A => Option[B]) = lin((p: PD[A]) => p.condMap(f))(pd)
 
     def conditioned(pred: A => Boolean) =

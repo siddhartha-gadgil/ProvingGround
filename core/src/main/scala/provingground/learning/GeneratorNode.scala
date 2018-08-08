@@ -4,7 +4,10 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 import HoTT._
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{BaseThenCondition, RecursiveThenCondition}
+import provingground.learning.GeneratorNode.{
+  BaseThenCondition,
+  RecursiveThenCondition
+}
 
 import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
 
@@ -60,8 +63,8 @@ object SortList {
 class RandomVarFamily[Dom <: HList, +O](val polyDomain: RandomVarList[Dom],
                                         val rangeFamily: Dom => Sort[_, O] =
                                           (d: Dom) => Sort.All[O]()) {
-  def target[State, V]: NodeCoeffs.Target[State, V, Dom, O] =
-    NodeCoeffs.Target[State, V, Dom, O](this)
+  def target[State, V, Y >: O]: NodeCoeffs.Target[State, V, Dom, Y] =
+    NodeCoeffs.Target[State, V, Dom, Y](this)
 }
 
 object RandomVarFamily {
@@ -79,7 +82,7 @@ object RandomVarFamily {
     */
   case class Value[Dom <: HList, O, D[_]](
       randVars: RandomVarFamily[Dom, O],
-      value: Dom => D[O]
+      value: Map[Dom, D[O]]
   )
 }
 
@@ -157,6 +160,9 @@ sealed trait RecursiveGeneratorNodeFamily[Dom <: HList, State, +O]
 
 object GeneratorNodeFamily {
 
+  case class Value[Dom <: HList, O, V](family: GeneratorNodeFamily[Dom, O],
+                                       value: V)
+
   /**
     * A family of recursive generation functions, given as a function.
     */
@@ -184,7 +190,7 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
   val outputFamily: RandomVar[O] = output
 
   def |[S >: O, T](condition: Sort[S, T],
-                   output: RandomVar[T]) : GeneratorNode[T]
+                   output: RandomVar[T]): GeneratorNode[T]
 }
 
 sealed trait BaseGeneratorNode[I <: HList, +O]
@@ -200,11 +206,13 @@ sealed trait BaseGeneratorNode[I <: HList, +O]
 
 sealed trait RecursiveGeneratorNode[State, +O]
     extends GeneratorNode[O]
-    with RecursiveGeneratorNodeFamily[HNil, State, O]{
-      def |[S >: O, T](condition: Sort[S, T],
-                       output: RandomVar[T]): RecursiveGeneratorNode[State, T] =
-        RecursiveThenCondition[State, S, T](this, output, condition)
-    }
+    with RecursiveGeneratorNodeFamily[HNil, State, O] {
+  def |[S >: O, T](condition: Sort[S, T],
+                   output: RandomVar[T]): RecursiveGeneratorNode[State, T] =
+    RecursiveThenCondition[State, S, T](gen = this,
+                                        output = output,
+                                        condition = condition)
+}
 
 object GeneratorNode {
 
@@ -217,22 +225,6 @@ object GeneratorNode {
     val output: RandomVar[X]                   = input
     val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
   }
-
-  // /**
-  //   * generator node for using initial distribution and conditioning.
-  //   *
-  //   * @param input the random variable with whose initial distribution we start
-  //   * @param output the output random variable
-  //   * @param condition the conditioning applied
-  //   * @tparam X scala type of the input variable
-  //   * @tparam Y scala type of the output variable
-  //   */
-  // case class ConditionedInit[X, Y](input: RandomVar[X],
-  //                                  output: RandomVar[Y],
-  //                                  condition: Sort[X, Y])
-  //     extends BaseGeneratorNode[X :: HNil, Y] {
-  //   val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
-  // }
 
   /**
     * generator node for mapping
@@ -395,7 +387,7 @@ object GeneratorNode {
       output: RandomVar[Y],
       initMap: InitState => (InitState,
                              Boat,
-                             Map[GeneratorNodeFamily[_ <: HList, _], V]),
+                             Set[GeneratorNodeFamily.Value[_ <: HList, _, V]]),
       export: (Boat, O) => Y
   ) extends RecursiveGeneratorNode[InitState, Y]
 
@@ -463,7 +455,9 @@ object ContextExport {
     implicitly[ContextExport[Term, CtxDbl]] // just a test
 }
 
-case class VarValueSet[D[_]](randVarVals: Set[RandomVar.Value[_, D]])
+case class VarValueSet[D[_]](
+    randVarVals: Set[RandomVar.Value[_, D]],
+    randVarFamilyVals: Set[RandomVarFamily.Value[_ <: HList, _, D]])
 
 /**
   * typeclass for providing distributions from a state
@@ -477,7 +471,7 @@ trait StateDistribution[State, D[_]] {
 }
 
 object StateDistribution {
-  implicit def minimalStateDist[D[_], V](
+  implicit def varValueStateDist[D[_], V](
       implicit emp: Empty[D]): StateDistribution[VarValueSet[D], D] =
     new StateDistribution[VarValueSet[D], D] {
       def value[T](state: VarValueSet[D])(randomVar: RandomVar[T]): D[T] =
@@ -489,13 +483,19 @@ object StateDistribution {
       def valueAt[Dom <: HList, T](state: VarValueSet[D])(
           randomVarFmly: RandomVarFamily[Dom, T],
           fullArg: Dom): D[T] =
-        value(state)(RandomVar.AtCoord(randomVarFmly, fullArg))
+        state.randVarFamilyVals
+          .find(_.randVars == randomVarFmly)
+          .flatMap(_.value.asInstanceOf[Map[Dom, D[T]]].get(fullArg))
+          .getOrElse(emp.empty[T])
     }
 
-  def value[State, T, D[_]](state: State)(randomVar: RandomVar[T])(implicit sd: StateDistribution[State, D]): D[T] =
+  def value[State, T, D[_]](state: State)(randomVar: RandomVar[T])(
+      implicit sd: StateDistribution[State, D]): D[T] =
     sd.value(state)(randomVar)
 
-  def valueAt[Dom <: HList, State, T, D[_]](state: State)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom)(implicit sd: StateDistribution[State, D]): D[T] =
+  def valueAt[Dom <: HList, State, T, D[_]](state: State)(
+      randomVarFmly: RandomVarFamily[Dom, T],
+      fullArg: Dom)(implicit sd: StateDistribution[State, D]): D[T] =
     sd.valueAt(state)(randomVarFmly, fullArg)
 
 }
@@ -600,7 +600,14 @@ sealed trait NodeCoeffSeq[State, V] {
   def find[RDom <: HList, Y](randomVar: RandomVarFamily[RDom, Y])
     : Option[NodeCoeffs[State, V, RDom, Y]]
 
-  val outputs : Vector[RandomVarFamily[ _ <: HList, _]]
+  val outputs: Vector[RandomVarFamily[_ <: HList, _]]
+
+  def update[RDom <: HList, Y](
+      data: GeneratorNodeFamily.Value[RDom, Y, V]): NodeCoeffSeq[State, V]
+
+  def updateAll(dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, V]]): NodeCoeffSeq[State, V] =
+    dataSeq.foldLeft(this)(_ update _)
+
 }
 
 object NodeCoeffSeq {
@@ -608,10 +615,13 @@ object NodeCoeffSeq {
     def find[RDom <: HList, Y](randomVar: RandomVarFamily[RDom, Y])
       : Option[NodeCoeffs[State, V, RDom, Y]] = None
 
-    val outputs : Vector[RandomVarFamily[ _ <: HList, _]] = Vector()
+    val outputs: Vector[RandomVarFamily[_ <: HList, _]] = Vector()
+
+    def update[RDom <: HList, Y](data: GeneratorNodeFamily.Value[RDom, Y, V]): Empty[State, V] =
+      this
   }
 
-  case class Cons[State, V, RDom <: HList, +Y](
+  case class Cons[State, V, RDom <: HList, Y](
       head: NodeCoeffs[State, V, RDom, Y],
       tail: NodeCoeffSeq[State, V])
       extends NodeCoeffSeq[State, V] {
@@ -625,54 +635,77 @@ object NodeCoeffSeq {
           else None
         )
 
-    val outputs : Vector[RandomVarFamily[ _ <: HList, _]] = head.output +: tail.outputs
+    val outputs
+      : Vector[RandomVarFamily[_ <: HList, _]] = head.output +: tail.outputs
+
+    def update[D <: HList, O](data: GeneratorNodeFamily.Value[D, O, V]) : NodeCoeffSeq[State, V] =
+      this.copy(head = head.update(data))
   }
 }
 
-sealed trait NodeCoeffs[State, V, RDom <: HList, +Y] {
+sealed trait NodeCoeffs[State, V, RDom <: HList, Y] {
   val output: RandomVarFamily[RDom, Y]
 
+  def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
+    : Option[NodeCoeffs[State, V, RDom, Y]]
+
+  import scala.util.Try
+
+  def update[D <: HList, O](
+      data: GeneratorNodeFamily.Value[D, O, V]): NodeCoeffs[State, V, RDom, Y] =
+    Try {
+      updateOpt(data.asInstanceOf[GeneratorNodeFamily.Value[RDom, Y, V]])
+    }.toOption.flatten.getOrElse(this)
+
+  def updateAll(dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, V]]): NodeCoeffs[State, V, RDom, Y] =
+    dataSeq.foldLeft(this)(_ update _)
+
   import NodeCoeffs._
-  def ::[YY >: Y](
-      head: (BaseGeneratorNodeFamily[RDom, YY], V)
+  def ::(
+      head: (BaseGeneratorNodeFamily[RDom, Y], V)
   ) = BaseCons(head._1, head._2, this)
 
-  def ::[YY >: Y](
-      head: (RecursiveGeneratorNodeFamily[RDom, State, YY], V)) =
+  def ::(head: (RecursiveGeneratorNodeFamily[RDom, State, Y], V)) =
     RecCons(head._1, head._2, this)
 }
 
 object NodeCoeffs {
-  case class Target[State, V, RDom <: HList, +Y](
+  case class Target[State, V, RDom <: HList, Y](
       output: RandomVarFamily[RDom, Y]
-  ) extends NodeCoeffs[State, V, RDom, Y]
+  ) extends NodeCoeffs[State, V, RDom, Y] {
+    def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
+      : Option[NodeCoeffs[State, V, RDom, Y]] = None
+  }
 
-  case class BaseCons[State, V, RDom <: HList, +Y](
+  case class BaseCons[State, V, RDom <: HList, Y](
       headGen: BaseGeneratorNodeFamily[RDom, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
+    def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
+      : Option[BaseCons[State, V, RDom, Y]] =
+      if (data.family == headGen) Some(this.copy(headCoeff = data.value))
+      else None
   }
 
-  case class RecCons[State, V, RDom <: HList, +Y](
+  case class RecCons[State, V, RDom <: HList, Y](
       headGen: RecursiveGeneratorNodeFamily[RDom, State, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, V, RDom, Y]
   ) extends NodeCoeffs[State, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
+    def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
+      : Option[RecCons[State, V, RDom, Y]] =
+      if (data.family == headGen) Some(this.copy(headCoeff = data.value))
+      else None
   }
 }
 
 case class MemoState[D[_], V, C](randVarVals: Set[RandomVar.Value[_, D]],
                                  genData: GeneratorData[V],
                                  // varFamiliesToResolve: Vector[RandomVarFamily[_ <: HList, _]],
-                                 context: C) {
-  // val rangeSet: Set[Sort[_]] = randVarVals.map(_.randVar.range)
-  //
-  // val rangeGroups: Map[Sort[_], Set[RandomVar[_]]] =
-  //   randVarVals.map(_.randVar).groupBy(_.range)
-}
+                                 context: C)
 
 object MemoState {
   implicit def safeMemoDistState[D[_], V, P](
@@ -735,13 +768,13 @@ object GeometricDistribution {
   val shift: Map[Int, Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
 
   val nodeCoeffs: NodeCoeffs[VarValueSet[FD], Double, HNil, Int] =
-    (init, 0.5) :: (shift, 0.5) :: GeomVar.target[VarValueSet[FD], Double]
+    (init, 0.5) :: (shift, 0.5) :: GeomVar.target[VarValueSet[FD], Double, Int]
 
   val nodeCoeffSeq
     : NodeCoeffSeq.Cons[VarValueSet[FD], Double, HNil, Int] = nodeCoeffs :: NodeCoeffSeq
     .Empty[VarValueSet[FD], Double]()
 
   val initState: VarValueSet[FD] =
-    VarValueSet[FD](Set(RandomVar.Value[Int, FD](GeomVar, FD.unif(0))))
+    VarValueSet[FD](Set(RandomVar.Value[Int, FD](GeomVar, FD.unif(0))), Set())
 
 }

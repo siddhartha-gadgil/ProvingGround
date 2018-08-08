@@ -183,7 +183,8 @@ sealed abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
     //   case _ => false
     // }
 
-    def newobj = ??? // should not be called
+    def newobj = throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)") // should not be called
 
     def act(arg: H) =
       caseFn(iterFunc)(arg) getOrElse (codom.symbObj(ApplnSym(fself, arg)))

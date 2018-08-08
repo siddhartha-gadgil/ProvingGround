@@ -190,7 +190,6 @@ object IndexedIterFuncPtnMap {
         // lmbda(g)(
         lmbda(x)(head.induced(f)(g(x)))
         // )
-        // ???
       }
 
     /**
@@ -205,7 +204,6 @@ object IndexedIterFuncPtnMap {
         // lambda(g)(
         lambda(x)(head.inducedDep(f)(g(x)))
         // )
-        // ???
       }
   }
 
@@ -287,7 +285,6 @@ object IndexedIterFuncPtnMap {
         // lmbda(g)(
         lmbda(x)(headfibre(x).induced(f)(g(x)))
         // )
-        // ???
       }
 
     /**
@@ -302,7 +299,6 @@ object IndexedIterFuncPtnMap {
         // lambda(g)(
         lambda(x)(headfibre(x).inducedDep(f)(g(x)))
         // )
-        // ???
       }
   }
 }

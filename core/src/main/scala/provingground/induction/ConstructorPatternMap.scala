@@ -245,18 +245,6 @@ object ConstructorPatternMap {
       val g      = tail.induced(f)
       val recres = g(arg)
       val result = data(arg)(recres)
-      // if (data.dom == arg.typ && data(arg).dom == recres.typ)
-      //   data(arg)(recres)
-      // else {
-      //   import translation.FansiShow._
-      //   println(
-      //     s"In $self,\n data = ${data.fansi} with domain ${data.dom.fansi}\n arg ${arg.fansi} with type ${arg.typ.fansi}")
-      //   println(
-      //     s"Recursive result ${recres.fansi} with typ ${recres.typ.fansi}")
-      //   println(s"domain of data(arg) is ${data(arg).dom.fansi}")
-      //   println(s"induced  function g = ${g}\n from f = ${f.fansi}")
-      //   ???
-      // }
       result
     }
 

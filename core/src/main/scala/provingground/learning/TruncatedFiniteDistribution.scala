@@ -18,8 +18,10 @@ object TruncatedFiniteDistribution{
     Geom.varDist(initState)(GeomVar, epsilon)
 }
 
-class TruncatedFiniteDistribution[State](
-    nodeCoeffSeq: NodeCoeffSeq[State, Double])(implicit sd: StateDistribution[State, FD]) {
+case class TruncatedFiniteDistribution[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double])(implicit sd: StateDistribution[State, FD]) {   
+  def updateAll(dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) = TruncatedFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
+
   import nodeCoeffSeq.{outputs, find}
 
   import NodeCoeffs._, StateDistribution._
@@ -62,7 +64,7 @@ class TruncatedFiniteDistribution[State](
                 nodeDist(initState)(gen, epsilon / p) * p
               case _ => throw new IllegalArgumentException("found family while looking for node")
             }
-          d ++ nodeCoeffDist(initState)(bc.tail, epsilon / (1.0 - p))
+          d ++ nodeCoeffDist(initState)(bc.tail, epsilon)
         case rc: RecCons[State, Double, HNil, Y] =>
           val p = rc.headCoeff
           val d =
@@ -188,13 +190,25 @@ class TruncatedFiniteDistribution[State](
             case c: Filter[_] => base.conditioned(c.pred)
             case Restrict(f)  => base.condMap(f)
           }
+        case tc: RecursiveThenCondition[State, o, Y] =>
+          import tc._
+          val base = nodeDist(initState)(gen, epsilon)
+          import Sort._
+          condition match {
+            case _: All[_]    => base
+            case c: Filter[_] => base.conditioned(c.pred)
+            case Restrict(f)  => base.condMap(f)
+          }
         case isle: Island[Y, State, o, b] =>
           import isle._
           val (isleInit, boat) = initMap(initState)
           val isleOut          = varDist(isleInit)(islandOutput, epsilon)
           isleOut.map(export(boat, _))
-        case ComplexIsland(islandOutput, output, initMap, export) =>
-          ??? // implement later
+        case  isle : ComplexIsland[o, Y, State, b, Double] =>
+          import isle._
+          val (isleInit, boat, mods) = initMap(initState)
+          val isleOut          =  updateAll(mods.toSeq).varDist(isleInit)(islandOutput, epsilon)
+          isleOut.map(export(boat, _))
       }
     }
 }

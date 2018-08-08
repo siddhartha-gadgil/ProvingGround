@@ -157,7 +157,8 @@ sealed abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
     val typ = PiDefn(fibre)
 
-    def newobj = ??? // should not be called
+    def newobj = throw new IllegalArgumentException(
+      s"trying to use the constant $this as a variable (or a component of one)") // should not be called
     // override lazy val hashCode = (outer, ind).hashCode
     //
     // override def equals(that: Any) = that match {
