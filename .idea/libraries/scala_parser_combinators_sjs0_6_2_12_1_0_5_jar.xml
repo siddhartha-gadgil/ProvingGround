@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="scala-parser-combinators_sjs0.6_2.12-1.0.5.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_sjs0.6_2.12/1.0.5/scala-parser-combinators_sjs0.6_2.12-1.0.5.jar!/" />
+      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_sjs0.6_2.12/1.0.5/scala-parser-combinators_sjs0.6_2.12-1.0.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_sjs0.6_2.12/1.0.5/scala-parser-combinators_sjs0.6_2.12-1.0.5-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_sjs0.6_2.12/1.0.5/scala-parser-combinators_sjs0.6_2.12-1.0.5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

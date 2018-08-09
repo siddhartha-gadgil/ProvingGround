@@ -62,9 +62,11 @@ object SortList {
   */
 class RandomVarFamily[Dom <: HList, +O](val polyDomain: RandomVarList[Dom],
                                         val rangeFamily: Dom => Sort[_, O] =
-                                          (d: Dom) => Sort.All[O]()) {
+                                          (_ : Dom) => Sort.All[O]()) {
   def target[State, Boat, V, Y >: O]: NodeCoeffs.Target[State, Boat, V, Dom, Y] =
     NodeCoeffs.Target[State, Boat, V, Dom, Y](this)
+
+  def at(x: Dom) = RandomVar.AtCoord(this, x)
 }
 
 object RandomVarFamily {
@@ -92,7 +94,7 @@ object RandomVarFamily {
   *
   */
 class RandomVar[+O](val range: Sort[_, O] = Sort.All[O]())
-    extends RandomVarFamily[HNil, O](RandomVarList.Nil, (_) => range)
+    extends RandomVarFamily[HNil, O](RandomVarList.Nil, _ => range)
 
 object RandomVar {
 
@@ -100,7 +102,7 @@ object RandomVar {
     * convenience class to avoid {{HNil}}
     */
   class SimpleFamily[U, O](domain: RandomVar[U],
-                           rangeFamily: U => Sort[_, O] = (x: U) => Sort.All[O])
+                           rangeFamily: U => Sort[_, O] = (_ : U) => Sort.All[O]())
       extends RandomVarFamily[U :: HNil, O](
         domain :: RandomVarList.Nil,
         { case x :: HNil => rangeFamily(x) }
@@ -109,7 +111,7 @@ object RandomVar {
   /**
     * The random variable at a specific domain point of a family.
     */
-  case class AtCoord[Dom <: HList, O](family: RandomVarFamily[Dom, O],
+  case class AtCoord[Dom <: HList, +O](family: RandomVarFamily[Dom, O],
                                       fullArg: Dom)
       extends RandomVar(family.rangeFamily(fullArg))
 

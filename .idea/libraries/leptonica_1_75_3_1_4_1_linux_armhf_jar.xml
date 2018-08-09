@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="leptonica-1.75.3-1.4.1-linux-armhf.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/leptonica/1.75.3-1.4.1/leptonica-1.75.3-1.4.1-linux-armhf.jar!/" />
+      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/leptonica/1.75.3-1.4.1/leptonica-1.75.3-1.4.1-linux-armhf.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

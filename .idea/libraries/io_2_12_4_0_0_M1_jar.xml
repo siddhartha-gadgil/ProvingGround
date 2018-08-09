@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="io_2.12-4.0.0-M1.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/io_2.12/4.0.0-M1/io_2.12-4.0.0-M1.jar!/" />
+      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalameta/io_2.12/4.0.0-M1/io_2.12-4.0.0-M1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/scalameta/io_2.12/4.0.0-M1/io_2.12-4.0.0-M1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalameta/io_2.12/4.0.0-M1/io_2.12-4.0.0-M1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

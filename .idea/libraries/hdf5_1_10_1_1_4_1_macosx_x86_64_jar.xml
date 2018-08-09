@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="hdf5-1.10.1-1.4.1-macosx-x86_64.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/hdf5/1.10.1-1.4.1/hdf5-1.10.1-1.4.1-macosx-x86_64.jar!/" />
+      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/bytedeco/javacpp-presets/hdf5/1.10.1-1.4.1/hdf5-1.10.1-1.4.1-macosx-x86_64.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
