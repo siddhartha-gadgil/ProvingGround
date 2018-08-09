@@ -50,6 +50,11 @@ case class GeneratorVariables[State, Boat](
       (rvF: RandomVarFamily[_ <: HList, _]) => varFamilyVars(rvF)
     )
 
+  def generatorVars[O](generatorNode: GeneratorNode[O]): Set[Variable[_]] =
+    generatorNode match {
+      case _ => Set()
+    }
+
 }
 
 object GeneratorVariables {

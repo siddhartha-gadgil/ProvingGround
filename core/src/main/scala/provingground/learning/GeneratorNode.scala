@@ -165,13 +165,18 @@ object GeneratorNodeFamily {
   case class Value[Dom <: HList, O, V](family: GeneratorNodeFamily[Dom, O],
                                        value: V)
 
+  sealed trait Pi[Dom <: HList, +O]{
+    val nodes : Dom => GeneratorNode[O]
+    val outputFamily : RandomVarFamily[Dom, O]
+  }
+
   /**
     * A family of recursive generation functions, given as a function.
     */
   case class RecPi[State, Boat, Dom <: HList, +O](
       nodes: Dom => RecursiveGeneratorNode[State, Boat, O],
       outputFamily: RandomVarFamily[Dom, O])
-      extends RecursiveGeneratorNodeFamily[Dom, State, Boat, O]
+      extends RecursiveGeneratorNodeFamily[Dom, State, Boat, O] with Pi[Dom, O]
 
   /**
     * A family of recursive generation functions, given as a function.
@@ -179,7 +184,7 @@ object GeneratorNodeFamily {
   case class BasePi[Dom <: HList, I <: HList, +O](
       nodes: Dom => BaseGeneratorNode[I, O],
       outputFamily: RandomVarFamily[Dom, O])
-      extends BaseGeneratorNodeFamily[Dom, O]
+      extends BaseGeneratorNodeFamily[Dom, O] with Pi[Dom, O]
 
 }
 
