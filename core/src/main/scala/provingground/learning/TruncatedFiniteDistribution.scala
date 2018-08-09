@@ -11,11 +11,11 @@ object TruncatedFiniteDistribution {
   import GeometricDistribution._
 
   object Geom
-      extends TruncatedFiniteDistribution[VarValueSet[FD]](
+      extends TruncatedFiniteDistribution[VarValueSet[FD], Unit](
         nodeCoeffSeq
       )
 
-  def truncFD(epsilon: Double): FD[Int] =
+  def geomFD(epsilon: Double): FD[Int] =
     Geom.varDist(initState)(GeomVar, epsilon)
 }
 
@@ -27,9 +27,9 @@ object TruncatedFiniteDistribution {
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class TruncatedFiniteDistribution[State](
-    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
-    implicit sd: StateDistribution[State, FD]) {
+case class TruncatedFiniteDistribution[State, Boat](
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+    implicit sd: StateDistribution[State,  FD]) {
 
   /**
     * update coefficients, to be used in complex islands
@@ -87,13 +87,13 @@ case class TruncatedFiniteDistribution[State](
     }
 
   def nodeCoeffDist[Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Double, HNil, Y],
+      nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
       epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else
       nodeCoeffs match {
         case Target(_) => FD.empty[Y]
-        case bc: BaseCons[State, Double, HNil, Y] =>
+        case bc: BaseCons[State, Boat, Double, HNil, Y] =>
           val p: Double = bc.headCoeff
           val d: FD[Y] =
             bc.headGen match {
@@ -104,7 +104,7 @@ case class TruncatedFiniteDistribution[State](
                   "found node family for generating a simple random variable")
             }
           d ++ nodeCoeffDist(initState)(bc.tail, epsilon)
-        case rc: RecCons[State, Double, HNil, Y] =>
+        case rc: RecCons[State, Boat, Double, HNil, Y] =>
           val p = rc.headCoeff
           val d =
             rc.headGen match {
@@ -125,20 +125,20 @@ case class TruncatedFiniteDistribution[State](
     } yield (k, v)).toMap
 
   def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
+      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
       baseDist: FD[Dom],
       epsilon: Double): Map[Dom, FD[Y]] =
     if (epsilon > 1) Map()
     else
       nodeCoeffs match {
         case Target(_) => Map()
-        case bc: BaseCons[State, Double, Dom, Y] =>
+        case bc: BaseCons[State, Boat, Double, Dom, Y] =>
           val p = bc.headCoeff
           mapsSum(nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon),
                   nodeCoeffFamilyMap(initState)(bc.tail,
                                                 baseDist,
                                                 epsilon / (1.0 - p)))
-        case rc: RecCons[State, Double, Dom, Y] =>
+        case rc: RecCons[State, Boat, Double, Dom, Y] =>
           val p = rc.headCoeff
           mapsSum(nodeFamilyDist(initState)(rc.headGen, baseDist, epsilon),
                   nodeCoeffFamilyMap(initState)(rc.tail,
@@ -253,7 +253,7 @@ case class TruncatedFiniteDistribution[State](
             case c: Filter[_] => base.conditioned(c.pred).purge(epsilon)
             case Restrict(f)  => base.condMap(f).purge(epsilon)
           }
-        case tc: RecursiveThenCondition[State, o, Y] =>
+        case tc: RecursiveThenCondition[State, Boat, o, Y] =>
           import tc._
           val base = nodeDist(initState)(gen, epsilon)
           import Sort._
@@ -262,12 +262,12 @@ case class TruncatedFiniteDistribution[State](
             case c: Filter[_] => base.conditioned(c.pred).purge(epsilon)
             case Restrict(f)  => base.condMap(f).purge(epsilon)
           }
-        case isle: Island[Y, State, o, b] =>
+        case isle: Island[Y, State,  o, b] =>
           import isle._
           val (isleInit, boat) = initMap(initState) // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput, epsilon) //result for the island
           isleOut.map(export(boat, _)).purge(epsilon) // exported result seen outside
-        case isle: ComplexIsland[o, Y, State, b, Double] =>
+        case isle: ComplexIsland[o, Y, State,  b, Double] =>
           import isle._
           val (isleInit, boat, isleCoeffs) = initMap(initState)
           val isleOut =
