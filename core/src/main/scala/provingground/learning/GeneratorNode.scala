@@ -609,6 +609,8 @@ sealed trait NodeCoeffSeq[State, Boat, V] {
   def ::[RDom <: HList, Y](head: NodeCoeffs[State, Boat, V, RDom, Y]) =
     NodeCoeffSeq.Cons(head, this)
 
+  val nodeFamilies : Set[GeneratorNodeFamily[_ <: HList, _]]
+
   def find[RDom <: HList, Y](randomVar: RandomVarFamily[RDom, Y])
     : Option[NodeCoeffs[State, Boat, V, RDom, Y]]
 
@@ -629,6 +631,8 @@ object NodeCoeffSeq {
       : Option[NodeCoeffs[State, Boat, V, RDom, Y]] = None
 
     val outputs: Vector[RandomVarFamily[_ <: HList, _]] = Vector()
+
+    val nodeFamilies : Set[GeneratorNodeFamily[_ <: HList, _]] = Set()
 
     def update[RDom <: HList, Y](
         data: GeneratorNodeFamily.Value[RDom, Y, V]): Empty[State, Boat, V] =
@@ -652,6 +656,9 @@ object NodeCoeffSeq {
     val outputs
       : Vector[RandomVarFamily[_ <: HList, _]] = head.output +: tail.outputs
 
+    val nodeFamilies : Set[GeneratorNodeFamily[_ <: HList, _]] =
+      tail.nodeFamilies union head.nodeFamilies.map((x) => x : GeneratorNodeFamily[_ <: HList, _])
+
     def update[D <: HList, O](data: GeneratorNodeFamily.Value[D, O, V])
       : NodeCoeffSeq[State, Boat, V] =
       this.copy(head = head.update(data))
@@ -660,6 +667,8 @@ object NodeCoeffSeq {
 
 sealed trait NodeCoeffs[State, Boat, V, RDom <: HList, Y] {
   val output: RandomVarFamily[RDom, Y]
+
+  val nodeFamilies : Set[GeneratorNodeFamily[RDom, Y]]
 
   def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
     : Option[NodeCoeffs[State, Boat, V, RDom, Y]]
@@ -691,6 +700,8 @@ object NodeCoeffs {
   ) extends NodeCoeffs[State, Boat, V, RDom, Y] {
     def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
       : Option[NodeCoeffs[State, Boat, V, RDom, Y]] = None
+
+    val nodeFamilies : Set[GeneratorNodeFamily[RDom, Y]] = Set()
   }
 
   case class BaseCons[State, Boat, V, RDom <: HList, Y](
@@ -699,6 +710,9 @@ object NodeCoeffs {
       tail: NodeCoeffs[State, Boat, V, RDom, Y]
   ) extends NodeCoeffs[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
+
+    val nodeFamilies : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
+
     def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
       : Option[BaseCons[State, Boat, V, RDom, Y]] =
       if (data.family == headGen) Some(this.copy(headCoeff = data.value))
@@ -711,6 +725,9 @@ object NodeCoeffs {
       tail: NodeCoeffs[State, Boat, V, RDom, Y]
   ) extends NodeCoeffs[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
+
+    val nodeFamilies : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
+
     def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
       : Option[RecCons[State, Boat, V, RDom, Y]] =
       if (data.family == headGen) Some(this.copy(headCoeff = data.value))

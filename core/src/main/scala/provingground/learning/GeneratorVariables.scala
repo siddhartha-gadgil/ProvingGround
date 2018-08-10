@@ -54,6 +54,29 @@ case class GeneratorVariables[State, Boat](
       case _ => Set()
     }
 
+  def generatorFamilyVars[Dom <: HList, O](
+      generatorNodeFamily: GeneratorNodeFamily[Dom, O],
+      output: RandomVarFamily[Dom, O]): Set[Variable[_]] =
+    generatorNodeFamily match {
+      case p: GeneratorNodeFamily.Pi[Dom, O] =>
+        varListSupport(output.polyDomain).flatMap((x) =>
+          generatorVars(p.nodes(x)))
+      case node: GeneratorNode[O] => generatorVars(node)
+    }
+
+  def nodeSeqVars(nc: NodeCoeffSeq[State, Boat, Double]): Set[Variable[_]] =
+    nc match {
+      case _: NodeCoeffSeq.Empty[State, Boat, Double] => Set()
+      case ncs: NodeCoeffSeq.Cons[State, Boat, Double, rd, y] =>
+        nodeSeqVars(ncs.tail) union {
+          ncs.head.nodeFamilies.flatMap(nf =>
+            generatorFamilyVars[rd, y](nf, ncs.head.output))
+        }
+    }
+
+  lazy val allVars: Set[Variable[_]] = outputVars union nodeSeqVars(
+    nodeCoeffSeq)
+
 }
 
 object GeneratorVariables {
