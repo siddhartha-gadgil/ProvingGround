@@ -121,4 +121,6 @@ data/*.tsv
 # macOS
 .DS_Store
 
+.idea/
+
 data/bird-sentences.txt
