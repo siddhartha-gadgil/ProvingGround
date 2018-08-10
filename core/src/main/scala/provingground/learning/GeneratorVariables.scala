@@ -8,8 +8,6 @@ import provingground.learning.GeneratorNode.Island
 import scala.collection.immutable
 import scala.language.higherKinds
 
-
-
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
   * the coefficients of the various generator nodes should be `Double`
@@ -19,13 +17,13 @@ import scala.language.higherKinds
   * @tparam State scala type of the initial state
   */
 case class GeneratorVariables[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double], initState: State)(
-    implicit sd: StateDistribution[State,  FD]) {
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+    initState: State)(implicit sd: StateDistribution[State, FD]) {
 
   def varSupport[Y](rv: RandomVar[Y]): Set[Y] =
     StateDistribution.value(initState)(rv).support
 
-  def varListSupport[Dom <: HList](rvs : RandomVarList[Dom]): Set[Dom] =
+  def varListSupport[Dom <: HList](rvs: RandomVarList[Dom]): Set[Dom] =
     rvs match {
       case RandomVarList.Nil => Set(HNil)
       case RandomVarList.Cons(head, tail) =>
@@ -38,11 +36,12 @@ case class GeneratorVariables[State, Boat](
     }
   import GeneratorVariables._
 
-  def varFamilyVars[Dom <: HList, Y](rvF : RandomVarFamily[Dom, Y]) : Set[GeneratorVariables.Variable[_]] =
+  def varFamilyVars[Dom <: HList, Y](
+      rvF: RandomVarFamily[Dom, Y]): Set[GeneratorVariables.Variable[_]] =
     for {
       x <- varListSupport(rvF.polyDomain)
       dist = StateDistribution.valueAt(initState)(rvF, x)
-      y<- dist.support
+      y <- dist.support
     } yield Prob(y, rvF.at(x))
 
   lazy val outputVars: Set[Variable[_]] =
@@ -65,12 +64,14 @@ object GeneratorVariables {
     */
   trait Variable[Y]
 
-  case class Prob[Y](element: Y, randomVar : RandomVar[Y]) extends Variable[Y]
+  case class Prob[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]
 
-  case class Event[X, Y](base: RandomVar[X], sort : Sort[X, Y]) extends Variable[Y]
+  case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
+      extends Variable[Y]
 
-  case class InIsle[Y, InitState, O, Boat](isleVar: Variable[Y], isle : Island[Y, InitState, O, Boat], boat: Boat) extends Variable[Y]
-
-
+  case class InIsle[Y, InitState, O, Boat](isleVar: Variable[Y],
+                                           isle: Island[Y, InitState, O, Boat],
+                                           boat: Boat)
+      extends Variable[Y]
 
 }

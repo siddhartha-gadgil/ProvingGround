@@ -29,7 +29,7 @@ object TruncatedFiniteDistribution {
   */
 case class TruncatedFiniteDistribution[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
-    implicit sd: StateDistribution[State,  FD]) {
+    implicit sd: StateDistribution[State, FD]) {
 
   /**
     * update coefficients, to be used in complex islands
@@ -262,16 +262,18 @@ case class TruncatedFiniteDistribution[State, Boat](
             case c: Filter[_] => base.conditioned(c.pred).purge(epsilon)
             case Restrict(f)  => base.condMap(f).purge(epsilon)
           }
-        case isle: Island[Y, State,  o, b] =>
+        case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(initState) // initial condition for island, boat to row back
+          val (isleInit, boat) = initMap(initState)                       // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput, epsilon) //result for the island
-          isleOut.map(export(boat, _)).purge(epsilon) // exported result seen outside
-        case isle: ComplexIsland[o, Y, State,  b, Double] =>
+          isleOut
+            .map(export(boat, _))
+            .purge(epsilon) // exported result seen outside
+        case isle: ComplexIsland[o, Y, State, b, Double] =>
           import isle._
           val (isleInit, boat, isleCoeffs) = initMap(initState)
           val isleOut =
-            updateAll(isleCoeffs.toSeq)  // coefficients changed to those for the island
+            updateAll(isleCoeffs.toSeq) // coefficients changed to those for the island
               .varDist(isleInit)(islandOutput, epsilon)
           isleOut.map(export(boat, _)).purge(epsilon)
       }
