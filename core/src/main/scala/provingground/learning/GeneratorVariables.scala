@@ -40,7 +40,7 @@ case class GeneratorVariables[State, Boat](
       x <- varListSupport(rvF.polyDomain)
       dist = StateDistribution.valueAt(initState)(rvF, x)
       y <- dist.support
-    } yield Prob(y, rvF.at(x))
+    } yield Elem(y, rvF.at(x))
 
   lazy val outputVars: Set[Variable[_]] =
     nodeCoeffSeq.outputs.toSet.flatMap(
@@ -58,7 +58,7 @@ case class GeneratorVariables[State, Boat](
         val (isleInit, boat) = initMap(initState)
         val isleVars: Set[Variable[_]] =
           GeneratorVariables(nodeCoeffSeq, isleInit).allVars
-        isleVars.map((x) => GeneratorVariables.InIsle(x, isle, boat))
+        isleVars.map((x) => GeneratorVariables.InIsle(x, boat))
       case _ => Set()
     }
 
@@ -93,16 +93,34 @@ object GeneratorVariables {
     * a variable representing a probability
     * @tparam Y objects in the distribution
     */
-  trait Variable[+Y]
+  sealed trait Variable[+Y]
 
-  case class Prob[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]
+  case class Elem[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]
 
   case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
       extends Variable[Y]
 
-  case class InIsle[Y, InitState, O, Boat](isleVar: Variable[Y],
-                                           isle: Island[Y, InitState, O, Boat],
-                                           boat: Boat)
+  case class InIsle[Y, Boat](isleVar: Variable[Y], boat: Boat)
       extends Variable[Y]
+
+  case class NodeCoeff[RDom <: HList, Y](nodeFamily: GeneratorNodeFamily[RDom, Y]) extends Variable[Unit]
+
+  sealed trait Expression{
+    def +(that: Expression): Sum = Sum(this, that)
+
+    def *(that: Expression): Product = Product(this, that)
+
+    def /(that: Expression): Quotient = Quotient(this, that)
+  }
+
+  case class VarProb[+Y](variable : Variable[Y], prob: Double) extends Expression
+
+  case class Sum(x: Expression, y: Expression) extends Expression
+
+  case class Product(x: Expression, y: Expression) extends Expression
+
+  case class Literal(value: Double) extends Expression
+
+  case class Quotient(x: Expression, y: Expression) extends Expression
 
 }
