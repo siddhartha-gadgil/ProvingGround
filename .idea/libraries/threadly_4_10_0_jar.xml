@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="threadly-4.10.0.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/threadly/threadly/4.10.0/threadly-4.10.0.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/threadly/threadly/4.10.0/threadly-4.10.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/threadly/threadly/4.10.0/threadly-4.10.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/threadly/threadly/4.10.0/threadly-4.10.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

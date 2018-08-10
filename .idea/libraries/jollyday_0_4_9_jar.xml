@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="jollyday-0.4.9.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/de/jollyday/jollyday/0.4.9/jollyday-0.4.9.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/de/jollyday/jollyday/0.4.9/jollyday-0.4.9.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/de/jollyday/jollyday/0.4.9/jollyday-0.4.9-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/de/jollyday/jollyday/0.4.9/jollyday-0.4.9-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

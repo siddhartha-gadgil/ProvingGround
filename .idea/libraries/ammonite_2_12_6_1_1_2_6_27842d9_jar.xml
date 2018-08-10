@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="ammonite_2.12.6-1.1.2-6-27842d9.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/ammonite_2.12.6/1.1.2-6-27842d9/ammonite_2.12.6-1.1.2-6-27842d9.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/lihaoyi/ammonite_2.12.6/1.1.2-6-27842d9/ammonite_2.12.6-1.1.2-6-27842d9.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

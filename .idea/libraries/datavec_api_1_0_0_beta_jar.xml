@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="datavec-api-1.0.0-beta.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/datavec/datavec-api/1.0.0-beta/datavec-api-1.0.0-beta.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/datavec/datavec-api/1.0.0-beta/datavec-api-1.0.0-beta.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/datavec/datavec-api/1.0.0-beta/datavec-api-1.0.0-beta-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/datavec/datavec-api/1.0.0-beta/datavec-api-1.0.0-beta-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

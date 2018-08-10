@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="common-lang-3.1.1.jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/com/twelvemonkeys/common/common-lang/3.1.1/common-lang-3.1.1.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/twelvemonkeys/common/common-lang/3.1.1/common-lang-3.1.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/com/twelvemonkeys/common/common-lang/3.1.1/common-lang-3.1.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/twelvemonkeys/common/common-lang/3.1.1/common-lang-3.1.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
