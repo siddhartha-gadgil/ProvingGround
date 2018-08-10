@@ -1,16 +1,8 @@
 package provingground.learning
+import provingground.HoTT._
 import provingground._
+import shapeless._
 
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
-
-import learning.{TangVec => T}
-
-import cats._
-import cats.implicits._
-
-import HoTT._
-
-import shapeless._, HList._
 import scala.language.higherKinds
 
 class TermGeneratorNodes[InitState, D[_]](
@@ -18,7 +10,8 @@ class TermGeneratorNodes[InitState, D[_]](
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => (InitState => (InitState, Term))
 )(implicit ctxExp: ContextExport[Term, D]) {
-  import TermRandomVars._, GeneratorNode._
+  import GeneratorNode._
+  import TermRandomVars._
 
   val unifApplnNode: ZipMapOpt[ExstFunc, Term, Term] =
     ZipMapOpt[ExstFunc, Term, Term](

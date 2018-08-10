@@ -1,11 +1,9 @@
 package provingground.learning
-import provingground._
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
+import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.Island
+import provingground.learning.GeneratorNode.{FlatMap, Island, ThenCondition}
 
-import scala.collection.immutable
 import scala.language.higherKinds
 
 /**
@@ -49,8 +47,18 @@ case class GeneratorVariables[State, Boat](
       (rvF: RandomVarFamily[_ <: HList, _]) => varFamilyVars(rvF)
     )
 
-  def generatorVars[O](generatorNode: GeneratorNode[O]): Set[Variable[_]] =
+  def generatorVars[Y](generatorNode: GeneratorNode[Y]): Set[Variable[_]] =
     generatorNode match {
+      case tc: ThenCondition[o, Y] =>
+        Set(GeneratorVariables.Event(tc.gen.output, tc.condition))
+      case fm: FlatMap[o, Y] =>
+        varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
+      case isle: Island[Y, State, o, b] =>
+        import isle._
+        val (isleInit, boat) = initMap(initState)
+        val isleVars: Set[Variable[_]] =
+          GeneratorVariables(nodeCoeffSeq, isleInit).allVars
+        isleVars.map((x) => GeneratorVariables.InIsle(x, isle, boat))
       case _ => Set()
     }
 
@@ -85,7 +93,7 @@ object GeneratorVariables {
     * a variable representing a probability
     * @tparam Y objects in the distribution
     */
-  trait Variable[Y]
+  trait Variable[+Y]
 
   case class Prob[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]
 

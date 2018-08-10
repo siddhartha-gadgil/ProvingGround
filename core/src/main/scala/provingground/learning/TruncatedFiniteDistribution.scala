@@ -1,8 +1,7 @@
 package provingground.learning
-import provingground._
-import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
+import provingground.{FiniteDistribution => FD, _}
+import shapeless.HList._
 import shapeless._
-import HList._
 
 import scala.collection.immutable
 import scala.language.higherKinds
@@ -40,9 +39,9 @@ case class TruncatedFiniteDistribution[State, Boat](
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
     TruncatedFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
 
-  import nodeCoeffSeq.{outputs, find}
-
-  import NodeCoeffs._, StateDistribution._
+  import NodeCoeffs._
+  import StateDistribution._
+  import nodeCoeffSeq.find
 
   /**
     * finite distribution for a random variable
@@ -199,19 +198,19 @@ case class TruncatedFiniteDistribution[State, Boat](
       generatorNode match {
         case Init(input) =>
           value(initState)(input).purge(epsilon)
-        case Map(f, input, output) =>
+        case Map(f, input, _) =>
           varDist(initState)(input, epsilon).map(f).purge(epsilon)
-        case MapOpt(f, input, output) =>
+        case MapOpt(f, input, _) =>
           varDist(initState)(input, epsilon).condMap(f).purge(epsilon)
-        case ZipMap(f, input1, input2, output) =>
+        case ZipMap(f, input1, input2, _) =>
           val d1 = varDist(initState)(input1, epsilon).flatten
           val d2 = varDist(initState)(input2, epsilon).flatten
           d1.zip(d2).map { case (x, y) => f(x, y) }.purge(epsilon)
-        case ZipMapOpt(f, input1, input2, output) =>
+        case ZipMapOpt(f, input1, input2, _) =>
           val d1 = varDist(initState)(input1, epsilon).flatten
           val d2 = varDist(initState)(input2, epsilon).flatten
           d1.zip(d2).condMap { case (x, y) => f(x, y) }.purge(epsilon)
-        case ZipFlatMap(baseInput, fiberVar, f, output) =>
+        case ZipFlatMap(baseInput, fiberVar, f, _) =>
           val baseDist = varDist(initState)(baseInput, epsilon).flatten
           val pmf =
             for {
@@ -219,8 +218,8 @@ case class TruncatedFiniteDistribution[State, Boat](
               fiberDist = varDist(initState)(fiberVar(x1), epsilon / p1).flatten
               Weighted(x2, p2) <- fiberDist.pmf
             } yield Weighted(f(x1, x2), p1 * p2)
-          FiniteDistribution(pmf).flatten.purge(epsilon)
-        case FlatMap(baseInput, fiberNode, output) =>
+          FD(pmf).flatten.purge(epsilon)
+        case FlatMap(baseInput, fiberNode, _) =>
           val baseDist = varDist(initState)(baseInput, epsilon).flatten
           val pmf =
             for {
@@ -228,15 +227,15 @@ case class TruncatedFiniteDistribution[State, Boat](
               fiberDist = nodeDist(initState)(fiberNode(x1), epsilon / p1).flatten
               Weighted(x2, p2) <- fiberDist.pmf
             } yield Weighted(x2, p1 * p2)
-          FiniteDistribution(pmf).flatten.purge(epsilon)
-        case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
+          FD(pmf).flatten.purge(epsilon)
+        case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1          = varDist(initState)(baseInput, epsilon).flatten
           val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
           val baseWeights = byBase.mapValues((v) => v.map(_.weight).sum) // weights of terms in the quotient
           val pmf: immutable.Iterable[Weighted[Y]] =
             for {
               (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
-              d2 = varDist(initState)(fiberVar(z), epsilon).flatten // distribution of the fiber at `z`
+              d2 = varDist(initState)(fiberVar(z), epsilon / baseWeights(z)).flatten // distribution of the fiber at `z`
               d = FD(pmf1)
                 .zip(d2)
                 .map { case (x1, x2) => f(x1, x2) }
@@ -244,16 +243,7 @@ case class TruncatedFiniteDistribution[State, Boat](
               wtd <- d.pmf // terms in pmf over z, should be flatMapped over `z`
             } yield wtd
           FD(pmf.toVector).purge(epsilon)
-        case tc: BaseThenCondition[v, o, Y] =>
-          import tc._
-          val base = nodeDist(initState)(gen, epsilon)
-          import Sort._
-          condition match {
-            case _: All[_]    => base
-            case c: Filter[_] => base.conditioned(c.pred).purge(epsilon)
-            case Restrict(f)  => base.condMap(f).purge(epsilon)
-          }
-        case tc: RecursiveThenCondition[State, Boat, o, Y] =>
+        case tc: ThenCondition[o, Y] =>
           import tc._
           val base = nodeDist(initState)(gen, epsilon)
           import Sort._
