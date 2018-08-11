@@ -35,8 +35,6 @@ object Sort {
     */
   case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]
 
-  case class ZipRestrict[S1, S2, T](optMap: (S1, S2) => Option[T]) extends Sort[(S1, S2), T]
-
   /**
     * Sort of all HoTT terms
     */
@@ -717,11 +715,18 @@ object NodeCoeffs {
     val nodeFamilies: Set[GeneratorNodeFamily[RDom, Y]] = Set()
   }
 
+  sealed trait Cons[State, Boat, V, RDom <: HList, Y] extends NodeCoeffs[State, Boat, V, RDom, Y]{
+    val headGen: GeneratorNodeFamily[RDom, Y]
+    val headCoeff: V
+    val tail: NodeCoeffs[State, Boat, V, RDom, Y]
+
+  }
+
   case class BaseCons[State, Boat, V, RDom <: HList, Y](
       headGen: BaseGeneratorNodeFamily[RDom, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, Boat, V, RDom, Y]
-  ) extends NodeCoeffs[State, Boat, V, RDom, Y] {
+  ) extends Cons[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
 
     val nodeFamilies
@@ -737,7 +742,7 @@ object NodeCoeffs {
       headGen: RecursiveGeneratorNodeFamily[RDom, State, Boat, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, Boat, V, RDom, Y]
-  ) extends NodeCoeffs[State, Boat, V, RDom, Y] {
+  ) extends Cons[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
 
     val nodeFamilies

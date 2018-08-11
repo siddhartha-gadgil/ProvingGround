@@ -24,7 +24,6 @@ case class GeneratorEquations[State, Boat](
       .getOrElse(rv, Set())
       .map((v) => v.element.asInstanceOf[Y] -> InitialVal(v))
 
-
   def finalListProb[Dom <: HList](
       rvl: RandomVarList[Dom]): Set[(Dom, Expression)] = rvl match {
     case RandomVarList.Nil => Set(HNil -> Literal(1))
@@ -36,6 +35,35 @@ case class GeneratorEquations[State, Boat](
   }
 
   import GeneratorNode.{Map => _, _}
+
+  lazy val recurrenceEquations: Set[Equation] = nodeCoeffSeqEquations(nodeCoeffSeq)
+
+  def nodeCoeffSeqEquations(ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {
+    case NodeCoeffSeq.Empty() => Set()
+    case NodeCoeffSeq.Cons(head, tail) => nodeCoeffsEquations(head) union nodeCoeffSeqEquations(tail)
+  }
+
+  def nodeCoeffsEquations[Dom <: HList, Y](
+      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y]): Set[Equation] = {
+    val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs)
+    groupEquations(terms) union eqs
+  }
+
+
+  def nodeCoeffsEquationTerms[Dom <: HList, Y](
+      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y])
+    : (Set[EquationTerm], Set[Equation]) =
+    nodeCoeffs match {
+      case NodeCoeffs.Target(output) => (Set(), Set())
+      case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
+        val (hts, hes) = bc.headGen match {
+          case gen: GeneratorNode[Y] =>
+            nodeEquationTerms(gen)
+          case _ => throw new Exception("node family with output not a family")
+        }
+        val (tts, tes) = nodeCoeffsEquationTerms(bc.tail)
+        (hts.map(_ * bc.headCoeff) union tts, hes union tes)
+    }
 
   def nodeEquationTerms[Y](
       node: GeneratorNode[Y]): (Set[EquationTerm], Set[Equation]) =
@@ -61,7 +89,8 @@ case class GeneratorEquations[State, Boat](
               f(x).map { y =>
                 val condition = FinalVal(Event(input, Sort.Restrict(f)))
                 EquationTerm(FinalVal(Elem(y, output)), p / condition)
-              } }
+              }
+          }
         (eqTerms, Set())
       case ZipMap(f, input1, input2, output) =>
         val eqTerms =
@@ -75,9 +104,13 @@ case class GeneratorEquations[State, Boat](
           for {
             (x1, p1) <- finalProbs(zm.input1)
             (x2, p2) <- finalProbs(zm.input2)
-            condition = FinalVal(PairEvent(zm.input1, zm.input2, Sort.Restrict[(o1, o2), Y]{case (x1, x2) => zm.f(x1, x2)}))
+            condition = FinalVal(
+              PairEvent(zm.input1, zm.input2, Sort.Restrict[(o1, o2), Y] {
+                case (x1, x2) => zm.f(x1, x2)
+              }))
             y <- zm.f(x1, x2)
-          } yield EquationTerm(FinalVal(Elem(y, zm.output)), p1 * p2 /condition)
+          } yield
+            EquationTerm(FinalVal(Elem(y, zm.output)), p1 * p2 / condition)
         (eqTerms, Set())
       case _ => ???
     }

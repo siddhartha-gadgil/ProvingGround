@@ -92,7 +92,7 @@ case class TruncatedFiniteDistribution[State, Boat](
     else
       nodeCoeffs match {
         case Target(_) => FD.empty[Y]
-        case bc: BaseCons[State, Boat, Double, HNil, Y] =>
+        case bc: Cons[State, Boat, Double, HNil, Y] =>
           val p: Double = bc.headCoeff
           val d: FD[Y] =
             bc.headGen match {
@@ -103,17 +103,17 @@ case class TruncatedFiniteDistribution[State, Boat](
                   "found node family for generating a simple random variable")
             }
           d ++ nodeCoeffDist(initState)(bc.tail, epsilon)
-        case rc: RecCons[State, Boat, Double, HNil, Y] =>
-          val p = rc.headCoeff
-          val d =
-            rc.headGen match {
-              case gen: GeneratorNode[Y] =>
-                nodeDist(initState)(gen, epsilon / p) * p
-              case _ =>
-                throw new IllegalArgumentException(
-                  "found node family for generating a simple random variable")
-            }
-          d ++ nodeCoeffDist(initState)(rc.tail, epsilon / (1.0 - p))
+        // case rc: RecCons[State, Boat, Double, HNil, Y] =>
+        //   val p = rc.headCoeff
+        //   val d =
+        //     rc.headGen match {
+        //       case gen: GeneratorNode[Y] =>
+        //         nodeDist(initState)(gen, epsilon / p) * p
+        //       case _ =>
+        //         throw new IllegalArgumentException(
+        //           "found node family for generating a simple random variable")
+        //     }
+        //   d ++ nodeCoeffDist(initState)(rc.tail, epsilon / (1.0 - p))
       }
 
   def mapsSum[X, Y](first: Map[X, FD[Y]],
