@@ -2,7 +2,7 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{FlatMap, Island, ThenCondition}
+import provingground.learning.GeneratorNode._
 
 import scala.language.higherKinds
 
@@ -47,10 +47,16 @@ case class GeneratorVariables[State, Boat](
       (rvF: RandomVarFamily[_ <: HList, _]) => varFamilyVars(rvF)
     )
 
-  def generatorVars[Y](generatorNode: GeneratorNode[Y]): Set[Variable[_]] =
+  def generatorVars[Y](generatorNode: GeneratorNode[Y]): Set[GeneratorVariables.Variable[_]] =
     generatorNode match {
       case tc: ThenCondition[o, Y] =>
         Set(GeneratorVariables.Event(tc.gen.output, tc.condition))
+      case MapOpt(f, input, _) =>
+        Set(GeneratorVariables.Event(input, Sort.Restrict(f)))
+      case zm: ZipMapOpt[o1, o2, Y] =>
+        Set(GeneratorVariables.PairEvent(
+          zm.input1, zm.input2, Sort.Restrict[(o1, o2), Y]{
+            case (x, y) => zm.f(x, y)}))
       case fm: FlatMap[o, Y] =>
         varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
       case isle: Island[Y, State, o, b] =>
@@ -100,12 +106,18 @@ object GeneratorVariables {
   case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
       extends Variable[Y]
 
+  case class PairEvent[X1, X2, Y](base1: RandomVar[X1], base2: RandomVar[X2], sort: Sort[(X1, X2), Y])
+    extends Variable[Y]
+
+
   case class InIsle[Y, Boat](isleVar: Variable[Y], boat: Boat)
       extends Variable[Y]
 
   case class NodeCoeff[RDom <: HList, Y](nodeFamily: GeneratorNodeFamily[RDom, Y]) extends Variable[Unit]
 
   sealed trait Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Expression
+
     def +(that: Expression): Sum = Sum(this, that)
 
     def *(that: Expression): Product = Product(this, that)
@@ -113,14 +125,42 @@ object GeneratorVariables {
     def /(that: Expression): Quotient = Quotient(this, that)
   }
 
-  case class VarProb[+Y](variable : Variable[Y], prob: Double) extends Expression
+  case class FinalVal[+Y](variable : Variable[Y]) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Expression = FinalVal(f(variable))
+  }
 
-  case class Sum(x: Expression, y: Expression) extends Expression
+  case class InitialVal[+Y](variable : Variable[Y]) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Expression = InitialVal(f(variable))
+  }
 
-  case class Product(x: Expression, y: Expression) extends Expression
 
-  case class Literal(value: Double) extends Expression
+  case class Sum(x: Expression, y: Expression) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Sum = Sum(x.mapVars(f), y.mapVars(f))
+  }
 
-  case class Quotient(x: Expression, y: Expression) extends Expression
+  case class Product(x: Expression, y: Expression) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Product =Product(x.mapVars(f), y.mapVars(f))
+  }
 
+  case class Literal(value: Double) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Literal = this
+  }
+
+  case class Quotient(x: Expression, y: Expression) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Quotient = Quotient(x.mapVars(f), y.mapVars(f))
+  }
+
+
+  case class Equation(lhs: Expression, rhs: Expression){
+    def mapVars(f: Variable[_] => Variable[_]) = Equation(lhs.mapVars(f), rhs.mapVars(f))
+  }
+
+  case class EquationTerm(lhs: Expression, rhs: Expression){
+    def *(sc: Expression) = EquationTerm(lhs, rhs * sc)
+
+    def *(x: Double) = EquationTerm(lhs, rhs * Literal(x))
+  }
+
+  def groupEquations(ts: Set[EquationTerm]): Set[Equation] =
+    ts.groupBy(_.lhs).map{case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_+ _))}.toSet
 }

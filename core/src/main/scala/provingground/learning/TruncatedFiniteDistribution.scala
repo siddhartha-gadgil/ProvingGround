@@ -61,7 +61,7 @@ case class TruncatedFiniteDistribution[State, Boat](
             .getOrElse(fullArg, FD.empty[Y])
         case _ =>
           find(randomVar)
-            .map { (nc) =>
+            .map { nc =>
               nodeCoeffDist(initState)(nc, epsilon)
             }
             .getOrElse(FD.empty[Y])
@@ -151,7 +151,7 @@ case class TruncatedFiniteDistribution[State, Boat](
     if (epsilon > 0) Map()
     else
       find(randomVarFmly)
-        .map { (nc) =>
+        .map { nc =>
           val base = varListDist(initState)(nc.output.polyDomain, epsilon)
           nodeCoeffFamilyMap(initState)(nc, base, epsilon)
         }
@@ -231,7 +231,7 @@ case class TruncatedFiniteDistribution[State, Boat](
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1          = varDist(initState)(baseInput, epsilon).flatten
           val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
-          val baseWeights = byBase.mapValues((v) => v.map(_.weight).sum) // weights of terms in the quotient
+          val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
           val pmf: immutable.Iterable[Weighted[Y]] =
             for {
               (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`

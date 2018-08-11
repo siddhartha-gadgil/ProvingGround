@@ -5,11 +5,11 @@ import shapeless._
 
 import scala.language.higherKinds
 
-class TermGeneratorNodes[InitState, D[_]](
+class TermGeneratorNodes[InitState](
     appln: (ExstFunc, Term) => Term,
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
-    addVar: Typ[Term] => (InitState => (InitState, Term))
-)(implicit ctxExp: ContextExport[Term, D]) {
+    addVar: Typ[Term] => InitState => (InitState, Term)
+) {
   import GeneratorNode._
   import TermRandomVars._
 
@@ -47,7 +47,7 @@ class TermGeneratorNodes[InitState, D[_]](
 
   def piIslelambdaIsle(
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
-    Island[Typ[Term], InitState,  Typ[Term], Term](
+    Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
       Typs,
       addVar(typ),

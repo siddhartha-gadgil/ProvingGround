@@ -35,6 +35,8 @@ object Sort {
     */
   case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]
 
+  case class ZipRestrict[S1, S2, T](optMap: (S1, S2) => Option[T]) extends Sort[(S1, S2), T]
+
   /**
     * Sort of all HoTT terms
     */
