@@ -9,7 +9,8 @@ import GeneratorVariables._
 
 case class GeneratorEquations[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
-    vars: Set[Variable[_]]) {
+    initState: State)(implicit sd: StateDistribution[State, FD]) {
+  val vars: Set[Variable[_]] = GeneratorVariables(nodeCoeffSeq, initState).allVars
 
   val elemVars: Map[RandomVar[_], Set[Elem[_]]] =
     vars.collect { case e: Elem[u] => e }.groupBy(_.randomVar)
@@ -36,11 +37,17 @@ case class GeneratorEquations[State, Boat](
 
   import GeneratorNode.{Map => _, _}
 
-  lazy val recurrenceEquations: Set[Equation] = nodeCoeffSeqEquations(nodeCoeffSeq)
+  lazy val recurrenceEquations: Set[Equation] = nodeCoeffSeqEquations(
+    nodeCoeffSeq)
 
-  def nodeCoeffSeqEquations(ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {
+  lazy val equations
+    : Set[Equation] = recurrenceEquations // TODO more terms needed
+
+  def nodeCoeffSeqEquations(
+      ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {
     case NodeCoeffSeq.Empty() => Set()
-    case NodeCoeffSeq.Cons(head, tail) => nodeCoeffsEquations(head) union nodeCoeffSeqEquations(tail)
+    case NodeCoeffSeq.Cons(head, tail) =>
+      nodeCoeffsEquations(head) union nodeCoeffSeqEquations(tail)
   }
 
   def nodeCoeffsEquations[Dom <: HList, Y](
@@ -48,7 +55,6 @@ case class GeneratorEquations[State, Boat](
     val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs)
     groupEquations(terms) union eqs
   }
-
 
   def nodeCoeffsEquationTerms[Dom <: HList, Y](
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y])
@@ -112,6 +118,66 @@ case class GeneratorEquations[State, Boat](
           } yield
             EquationTerm(FinalVal(Elem(y, zm.output)), p1 * p2 / condition)
         (eqTerms, Set())
-      case _ => ???
+      case FlatMap(baseInput, fiberNode, output) =>
+        val eqTerms: Set[EquationTerm] = for {
+          (x, p) <- finalProbs(baseInput)
+          eqT <- nodeEquationTerms(fiberNode(x))._1
+        } yield eqT * p
+        val eqns : Set[Equation] = for {
+          (x, p) <- finalProbs(baseInput)
+          eqn <- nodeEquationTerms(fiberNode(x))._2
+        } yield eqn
+        (eqTerms, eqns)
+      case ZipFlatMap(baseInput, fiberVar, f, output) =>
+        val eqTerms =
+          for {
+            (x1, p1) <- finalProbs(baseInput)
+            (x2, p2) <- finalProbs(fiberVar(x1))
+          } yield EquationTerm(FinalVal(Elem(f(x1, x2), output)), p1 * p2)
+        (eqTerms, Set())
+      case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
+        val d1          = finalProbs(baseInput)
+        val byBase      = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
+      val baseWeights = byBase.mapValues(v => v.map(_._2).reduce[Expression](_ + _)) // weights of terms in the quotient
+      val eqT =
+        for {
+          (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
+          d2 = finalProbs(fiberVar(z)) // distribution of the fiber at `z`
+          d = d1.zip(d2).map{
+            case ((x1, p1), (x2, p2)) => (f(x1, x2), p1 * p2)
+          }
+          (y, p) <- d
+        } yield EquationTerm(FinalVal(Elem(y, output)), p)
+        (eqT.toSet, Set())
+      case tc: ThenCondition[o, Y] =>
+        val base = finalProbs(tc.gen.output)
+        val eqT = tc.condition match {
+          case Sort.All() => base.map{case (x, p) => EquationTerm(FinalVal(Elem(x, tc.output)), p)}
+          case s @ Sort.Filter(pred) =>
+            val condition = FinalVal(Event(tc.gen.output, s))
+            for {
+              (x , p) <- base
+              if pred(x)
+            } yield EquationTerm(FinalVal(Elem(x, tc.output)), p / condition)
+          case s @ Sort.Restrict(optMap) =>
+            val condition = FinalVal(Event(tc.gen.output, s))
+            for {
+              (x , p) <- base
+              y <- optMap(x)
+            } yield EquationTerm(FinalVal(Elem(x, tc.output)), p / condition)
+        }
+        (eqT, Set())
+      case isle: Island[Y, State, o, b] =>
+        val (isleInit, boat) = isle.initMap(initState)
+        val isleEq= GeneratorEquations(nodeCoeffSeq, isleInit)
+        val isleEquations: Set[Equation] = isleEq.equations.map(_.useBoat(boat))
+        val isleFinalProb = isleEq.finalProbs(isle.islandOutput)
+        val eqTerms =
+          for{
+            (x, FinalVal(p)) <- isleFinalProb
+            y = isle.export(boat, x)
+          } yield EquationTerm(FinalVal(Elem(y, isle.output)), FinalVal(GeneratorVariables.InIsle(p, boat)))
+        (eqTerms, isleEquations)
+
     }
 }

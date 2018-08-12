@@ -118,6 +118,8 @@ object GeneratorVariables {
   sealed trait Expression{
     def mapVars(f: Variable[_] => Variable[_]): Expression
 
+    def useBoat[Boat](boat: Boat) = mapVars(InIsle(_, boat))
+
     def +(that: Expression): Sum = Sum(this, that)
 
     def *(that: Expression): Product = Product(this, that)
@@ -153,12 +155,15 @@ object GeneratorVariables {
 
   case class Equation(lhs: Expression, rhs: Expression){
     def mapVars(f: Variable[_] => Variable[_]) = Equation(lhs.mapVars(f), rhs.mapVars(f))
+
+    def useBoat[Boat](boat: Boat): Equation = mapVars(InIsle(_, boat))
   }
 
   case class EquationTerm(lhs: Expression, rhs: Expression){
     def *(sc: Expression) = EquationTerm(lhs, rhs * sc)
 
     def *(x: Double) = EquationTerm(lhs, rhs * Literal(x))
+    def useBoat[Boat](boat: Boat) = EquationTerm(lhs, rhs.useBoat(boat))
   }
 
   def groupEquations(ts: Set[EquationTerm]): Set[Equation] =
