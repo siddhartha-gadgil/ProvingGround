@@ -16,14 +16,18 @@ import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
   * Can also be used for conditioning, giving one distribution from another.
   * @tparam T scala type elements of this Sort
   */
-sealed trait Sort[-S, +T]
+sealed trait Sort[-S, +T]{
+  val pred: S => Boolean
+}
 
 object Sort {
 
   /**
     * Sort of all terms with given scala type
     */
-  case class All[S]() extends Sort[S, S]
+  case class All[S]() extends Sort[S, S]{
+    val pred = (_) => true
+  }
 
   /**
     * Sort given by predicate
@@ -33,7 +37,9 @@ object Sort {
   /**
     * Sort as image of an optional map, which should be injective in the `Some(_)` case
     */
-  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]
+  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]{
+    val pred = (s: S) => optMap(s).isDefined
+  }
 
   /**
     * Sort of all HoTT terms

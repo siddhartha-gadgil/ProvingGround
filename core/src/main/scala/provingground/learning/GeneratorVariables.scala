@@ -118,7 +118,7 @@ object GeneratorVariables {
   sealed trait Expression{
     def mapVars(f: Variable[_] => Variable[_]): Expression
 
-    def useBoat[Boat](boat: Boat) = mapVars(InIsle(_, boat))
+    def useBoat[Boat](boat: Boat): Expression = mapVars(InIsle(_, boat))
 
     def +(that: Expression): Sum = Sum(this, that)
 
