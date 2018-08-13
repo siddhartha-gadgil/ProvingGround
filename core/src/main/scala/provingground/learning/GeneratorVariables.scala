@@ -91,6 +91,22 @@ case class GeneratorVariables[State, Boat](
   lazy val allVars: Set[Variable[_]] = outputVars union nodeSeqVars(
     nodeCoeffSeq)
 
+  def variableValue [Y](boatMap : (Boat, State) => State, state: State) : Variable[Y] => Double = {
+    case rv @ Elem(element, randomVar) =>
+      val fd = StateDistribution.value(state)(randomVar)
+      fd(element)
+    case NodeCoeff(_) => 1
+    case Event(base, sort) =>
+      val fd = StateDistribution.value(state)(base)
+      fd.filter(sort.pred).total
+    case PairEvent(base1, base2, sort) =>
+      val fd1 = StateDistribution.value(state)(base1)
+      val fd2 = StateDistribution.value(state)(base2)
+      fd1.zip(fd2).filter(sort.pred).total
+    case isle: InIsle[y, Boat] =>
+      variableValue(boatMap, boatMap(isle.boat, state))(isle.isleVar)
+  }
+
 }
 
 object GeneratorVariables {
@@ -114,6 +130,8 @@ object GeneratorVariables {
       extends Variable[Y]
 
   case class NodeCoeff[RDom <: HList, Y](nodeFamily: GeneratorNodeFamily[RDom, Y]) extends Variable[Unit]
+  
+
 
   sealed trait Expression{
     def mapVars(f: Variable[_] => Variable[_]): Expression
