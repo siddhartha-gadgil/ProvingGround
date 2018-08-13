@@ -1,5 +1,5 @@
 # Use Docker-based container (instead of OpenVZ)
-sudo: required
+sudo: false
 language: scala
 scala:
 - 2.12.6

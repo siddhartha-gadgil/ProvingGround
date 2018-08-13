@@ -47,16 +47,19 @@ case class GeneratorVariables[State, Boat](
       (rvF: RandomVarFamily[_ <: HList, _]) => varFamilyVars(rvF)
     )
 
-  def generatorVars[Y](generatorNode: GeneratorNode[Y]): Set[GeneratorVariables.Variable[_]] =
+  def generatorVars[Y](
+      generatorNode: GeneratorNode[Y]): Set[GeneratorVariables.Variable[_]] =
     generatorNode match {
       case tc: ThenCondition[o, Y] =>
         Set(GeneratorVariables.Event(tc.gen.output, tc.condition))
       case MapOpt(f, input, _) =>
         Set(GeneratorVariables.Event(input, Sort.Restrict(f)))
       case zm: ZipMapOpt[o1, o2, Y] =>
-        Set(GeneratorVariables.PairEvent(
-          zm.input1, zm.input2, Sort.Restrict[(o1, o2), Y]{
-            case (x, y) => zm.f(x, y)}))
+        Set(
+          GeneratorVariables
+            .PairEvent(zm.input1, zm.input2, Sort.Restrict[(o1, o2), Y] {
+              case (x, y) => zm.f(x, y)
+            }))
       case fm: FlatMap[o, Y] =>
         varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
       case isle: Island[Y, State, o, b] =>
@@ -91,7 +94,12 @@ case class GeneratorVariables[State, Boat](
   lazy val allVars: Set[Variable[_]] = outputVars union nodeSeqVars(
     nodeCoeffSeq)
 
-  def variableValue [Y](boatMap : (Boat, State) => State, state: State) : Variable[Y] => Double = {
+}
+
+object GeneratorVariables {
+  def variableValue[Y, State, Boat](boatMap: (Boat, State) => State,
+                                    state: State)(
+      implicit sd: StateDistribution[State, FD]): Variable[Y] => Double = {
     case rv @ Elem(element, randomVar) =>
       val fd = StateDistribution.value(state)(randomVar)
       fd(element)
@@ -104,12 +112,9 @@ case class GeneratorVariables[State, Boat](
       val fd2 = StateDistribution.value(state)(base2)
       fd1.zip(fd2).filter(sort.pred).total
     case isle: InIsle[y, Boat] =>
-      variableValue(boatMap, boatMap(isle.boat, state))(isle.isleVar)
+      val x = variableValue(boatMap, boatMap(isle.boat, state))
+      x(isle.isleVar)
   }
-
-}
-
-object GeneratorVariables {
 
   /**
     * a variable representing a probability
@@ -122,18 +127,19 @@ object GeneratorVariables {
   case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
       extends Variable[Y]
 
-  case class PairEvent[X1, X2, Y](base1: RandomVar[X1], base2: RandomVar[X2], sort: Sort[(X1, X2), Y])
-    extends Variable[Y]
-
+  case class PairEvent[X1, X2, Y](base1: RandomVar[X1],
+                                  base2: RandomVar[X2],
+                                  sort: Sort[(X1, X2), Y])
+      extends Variable[Y]
 
   case class InIsle[Y, Boat](isleVar: Variable[Y], boat: Boat)
       extends Variable[Y]
 
-  case class NodeCoeff[RDom <: HList, Y](nodeFamily: GeneratorNodeFamily[RDom, Y]) extends Variable[Unit]
-  
+  case class NodeCoeff[RDom <: HList, Y](
+      nodeFamily: GeneratorNodeFamily[RDom, Y])
+      extends Variable[Unit]
 
-
-  sealed trait Expression{
+  sealed trait Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression
 
     def useBoat[Boat](boat: Boat): Expression = mapVars(InIsle(_, boat))
@@ -145,45 +151,51 @@ object GeneratorVariables {
     def /(that: Expression): Quotient = Quotient(this, that)
   }
 
-  case class FinalVal[+Y](variable : Variable[Y]) extends Expression{
-    def mapVars(f: Variable[_] => Variable[_]): Expression = FinalVal(f(variable))
+  case class FinalVal[+Y](variable: Variable[Y]) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Expression =
+      FinalVal(f(variable))
   }
 
-  case class InitialVal[+Y](variable : Variable[Y]) extends Expression{
-    def mapVars(f: Variable[_] => Variable[_]): Expression = InitialVal(f(variable))
+  case class InitialVal[+Y](variable: Variable[Y]) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Expression =
+      InitialVal(f(variable))
   }
 
-
-  case class Sum(x: Expression, y: Expression) extends Expression{
-    def mapVars(f: Variable[_] => Variable[_]): Sum = Sum(x.mapVars(f), y.mapVars(f))
+  case class Sum(x: Expression, y: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Sum =
+      Sum(x.mapVars(f), y.mapVars(f))
   }
 
-  case class Product(x: Expression, y: Expression) extends Expression{
-    def mapVars(f: Variable[_] => Variable[_]): Product =Product(x.mapVars(f), y.mapVars(f))
+  case class Product(x: Expression, y: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Product =
+      Product(x.mapVars(f), y.mapVars(f))
   }
 
-  case class Literal(value: Double) extends Expression{
+  case class Literal(value: Double) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Literal = this
   }
 
-  case class Quotient(x: Expression, y: Expression) extends Expression{
-    def mapVars(f: Variable[_] => Variable[_]): Quotient = Quotient(x.mapVars(f), y.mapVars(f))
+  case class Quotient(x: Expression, y: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Quotient =
+      Quotient(x.mapVars(f), y.mapVars(f))
   }
 
-
-  case class Equation(lhs: Expression, rhs: Expression){
-    def mapVars(f: Variable[_] => Variable[_]) = Equation(lhs.mapVars(f), rhs.mapVars(f))
+  case class Equation(lhs: Expression, rhs: Expression) {
+    def mapVars(f: Variable[_] => Variable[_]) =
+      Equation(lhs.mapVars(f), rhs.mapVars(f))
 
     def useBoat[Boat](boat: Boat): Equation = mapVars(InIsle(_, boat))
   }
 
-  case class EquationTerm(lhs: Expression, rhs: Expression){
+  case class EquationTerm(lhs: Expression, rhs: Expression) {
     def *(sc: Expression) = EquationTerm(lhs, rhs * sc)
 
-    def *(x: Double) = EquationTerm(lhs, rhs * Literal(x))
+    def *(x: Double)              = EquationTerm(lhs, rhs * Literal(x))
     def useBoat[Boat](boat: Boat) = EquationTerm(lhs, rhs.useBoat(boat))
   }
 
   def groupEquations(ts: Set[EquationTerm]): Set[Equation] =
-    ts.groupBy(_.lhs).map{case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_+ _))}.toSet
+    ts.groupBy(_.lhs)
+      .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
+      .toSet
 }
