@@ -14,7 +14,7 @@ import provingground._
 import HoTT._
 import translation._
 import learning._
-import ProverTasks._
+import FineProverTasks._
 import monix.execution.CancelableFuture
 import ujson._
 
