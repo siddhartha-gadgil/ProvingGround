@@ -18,6 +18,144 @@ object TruncatedFiniteDistribution {
     Geom.varDist(initState)(GeomVar, epsilon)
 }
 
+abstract class GenTruncatedFiniteDistribution[State, Boat](
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+    implicit sd: StateDistribution[State, FD]){
+      import NodeCoeffs._
+      import StateDistribution._
+      import nodeCoeffSeq.find
+
+      /**
+        * finite distribution for a random variable
+        * @param initState initial state
+        * @param randomVar random variable whose distribution is returned
+        * @param epsilon cutoff
+        * @tparam Y values of the random variable
+        * @return finite distribution for the given random variable
+        */
+      def varDist[Y](initState: State)(randomVar: RandomVar[Y],
+                                       epsilon: Double): FD[Y] =
+        if (epsilon > 1) FD.empty[Y]
+        else
+          randomVar match {
+            case RandomVar.AtCoord(randomVarFmly, fullArg) =>
+              varFamilyDist(initState)(randomVarFmly, epsilon)
+                .getOrElse(fullArg, FD.empty[Y])
+            case _ =>
+              find(randomVar)
+                .map { nc =>
+                  nodeCoeffDist(initState)(nc, epsilon)
+                }
+                .getOrElse(FD.empty[Y])
+          }
+
+      /**
+        * finite distribution for a list of random variables
+        * @param initState initial state
+        * @param vl list of random variables
+        * @param epsilon cutoff
+        * @tparam Dom the `HList` giving the type of the variable list
+        * @return finite distribution of `Dom`
+        */
+      def varListDist[Dom <: HList](initState: State)(vl: RandomVarList[Dom],
+                                                      epsilon: Double): FD[Dom] =
+        vl match {
+          case RandomVarList.Nil => FD.unif(HNil)
+          case RandomVarList.Cons(head, tail) =>
+            varDist(initState)(head, epsilon)
+              .zip(varListDist(initState)(tail, epsilon))
+              .map { case (x, y) => x :: y }
+        }
+
+      def nodeCoeffDist[Y](initState: State)(
+          nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
+          epsilon: Double): FD[Y] =
+        if (epsilon > 1) FD.empty[Y]
+        else
+          nodeCoeffs match {
+            case Target(_) => FD.empty[Y]
+            case bc: Cons[State, Boat, Double, HNil, Y] =>
+              val p: Double = bc.headCoeff
+              val d: FD[Y] =
+                bc.headGen match {
+                  case gen: GeneratorNode[Y] =>
+                    nodeDist(initState)(gen, epsilon / p) * p
+                  case _ =>
+                    throw new IllegalArgumentException(
+                      "found node family for generating a simple random variable")
+                }
+              d ++ nodeCoeffDist(initState)(bc.tail, epsilon)
+          }
+
+      def mapsSum[X, Y](first: Map[X, FD[Y]],
+                        second: Map[X, FD[Y]]): Map[X, FD[Y]] =
+        (for {
+          k <- first.keySet union second.keySet
+          v = first.getOrElse(k, FD.empty[Y]) ++ second.getOrElse(k, FD.empty[Y])
+        } yield (k, v)).toMap
+
+      def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
+          nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+          baseDist: FD[Dom],
+          epsilon: Double): Map[Dom, FD[Y]] =
+        if (epsilon > 1) Map()
+        else
+          nodeCoeffs match {
+            case Target(_) => Map()
+            case bc: BaseCons[State, Boat, Double, Dom, Y] =>
+              val p = bc.headCoeff
+              mapsSum(nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon),
+                      nodeCoeffFamilyMap(initState)(bc.tail,
+                                                    baseDist,
+                                                    epsilon / (1.0 - p)))
+            case rc: RecCons[State, Boat, Double, Dom, Y] =>
+              val p = rc.headCoeff
+              mapsSum(nodeFamilyDist(initState)(rc.headGen, baseDist, epsilon),
+                      nodeCoeffFamilyMap(initState)(rc.tail,
+                                                    baseDist,
+                                                    epsilon / (1.0 - p)))
+          }
+
+      def varFamilyDist[RDom <: HList, Y](initState: State)(
+          randomVarFmly: RandomVarFamily[RDom, Y],
+          epsilon: Double): Map[RDom, FD[Y]] =
+        if (epsilon > 0) Map()
+        else
+          find(randomVarFmly)
+            .map { nc =>
+              val base = varListDist(initState)(nc.output.polyDomain, epsilon)
+              nodeCoeffFamilyMap(initState)(nc, base, epsilon)
+            }
+            .getOrElse(Map())
+
+      def nodeFamilyDist[Dom <: HList, Y](initState: State)(
+          generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
+          baseDist: FD[Dom],
+          epsilon: Double): Map[Dom, FD[Y]] =
+        generatorNodeFamily match {
+          case node: GeneratorNode[Y] =>
+            Map(HNil -> nodeDist(initState)(node, epsilon))
+          case GeneratorNodeFamily.BasePi(nodes, _) =>
+            val kvs: Vector[(Dom, FD[Y])] =
+              for {
+                Weighted(arg, p) <- baseDist.pmf
+                d = nodeDist(initState)(nodes(arg), epsilon / p)
+              } yield arg -> d
+            kvs.toMap
+          case GeneratorNodeFamily.RecPi(nodes, _) =>
+            val kvs: Vector[(Dom, FD[Y])] =
+              for {
+                Weighted(arg, p) <- baseDist.pmf
+                d = nodeDist(initState)(nodes(arg), epsilon / p)
+              } yield arg -> d
+            kvs.toMap
+        }
+
+        def nodeDist[Y](initState: State)(generatorNode: GeneratorNode[Y],
+                                    epsilon: Double): FD[Y]
+
+    }
+
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
   * the coefficients of the various generator nodes should be `Double`
@@ -28,7 +166,7 @@ object TruncatedFiniteDistribution {
   */
 case class TruncatedFiniteDistribution[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
-    implicit sd: StateDistribution[State, FD]) {
+    implicit sd: StateDistribution[State, FD]) extends GenTruncatedFiniteDistribution[State, Boat](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands
@@ -39,146 +177,7 @@ case class TruncatedFiniteDistribution[State, Boat](
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
     TruncatedFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
 
-  import NodeCoeffs._
-  import StateDistribution._
-  import nodeCoeffSeq.find
-
-  /**
-    * finite distribution for a random variable
-    * @param initState initial state
-    * @param randomVar random variable whose distribution is returned
-    * @param epsilon cutoff
-    * @tparam Y values of the random variable
-    * @return finite distribution for the given random variable
-    */
-  def varDist[Y](initState: State)(randomVar: RandomVar[Y],
-                                   epsilon: Double): FD[Y] =
-    if (epsilon > 1) FD.empty[Y]
-    else
-      randomVar match {
-        case RandomVar.AtCoord(randomVarFmly, fullArg) =>
-          varFamilyDist(initState)(randomVarFmly, epsilon)
-            .getOrElse(fullArg, FD.empty[Y])
-        case _ =>
-          find(randomVar)
-            .map { nc =>
-              nodeCoeffDist(initState)(nc, epsilon)
-            }
-            .getOrElse(FD.empty[Y])
-      }
-
-  /**
-    * finite distribution for a list of random variables
-    * @param initState initial state
-    * @param vl list of random variables
-    * @param epsilon cutoff
-    * @tparam Dom the `HList` giving the type of the variable list
-    * @return finite distribution of `Dom`
-    */
-  def varListDist[Dom <: HList](initState: State)(vl: RandomVarList[Dom],
-                                                  epsilon: Double): FD[Dom] =
-    vl match {
-      case RandomVarList.Nil => FD.unif(HNil)
-      case RandomVarList.Cons(head, tail) =>
-        varDist(initState)(head, epsilon)
-          .zip(varListDist(initState)(tail, epsilon))
-          .map { case (x, y) => x :: y }
-    }
-
-  def nodeCoeffDist[Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
-      epsilon: Double): FD[Y] =
-    if (epsilon > 1) FD.empty[Y]
-    else
-      nodeCoeffs match {
-        case Target(_) => FD.empty[Y]
-        case bc: Cons[State, Boat, Double, HNil, Y] =>
-          val p: Double = bc.headCoeff
-          val d: FD[Y] =
-            bc.headGen match {
-              case gen: GeneratorNode[Y] =>
-                nodeDist(initState)(gen, epsilon / p) * p
-              case _ =>
-                throw new IllegalArgumentException(
-                  "found node family for generating a simple random variable")
-            }
-          d ++ nodeCoeffDist(initState)(bc.tail, epsilon)
-        // case rc: RecCons[State, Boat, Double, HNil, Y] =>
-        //   val p = rc.headCoeff
-        //   val d =
-        //     rc.headGen match {
-        //       case gen: GeneratorNode[Y] =>
-        //         nodeDist(initState)(gen, epsilon / p) * p
-        //       case _ =>
-        //         throw new IllegalArgumentException(
-        //           "found node family for generating a simple random variable")
-        //     }
-        //   d ++ nodeCoeffDist(initState)(rc.tail, epsilon / (1.0 - p))
-      }
-
-  def mapsSum[X, Y](first: Map[X, FD[Y]],
-                    second: Map[X, FD[Y]]): Map[X, FD[Y]] =
-    (for {
-      k <- first.keySet union second.keySet
-      v = first.getOrElse(k, FD.empty[Y]) ++ second.getOrElse(k, FD.empty[Y])
-    } yield (k, v)).toMap
-
-  def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
-      baseDist: FD[Dom],
-      epsilon: Double): Map[Dom, FD[Y]] =
-    if (epsilon > 1) Map()
-    else
-      nodeCoeffs match {
-        case Target(_) => Map()
-        case bc: BaseCons[State, Boat, Double, Dom, Y] =>
-          val p = bc.headCoeff
-          mapsSum(nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon),
-                  nodeCoeffFamilyMap(initState)(bc.tail,
-                                                baseDist,
-                                                epsilon / (1.0 - p)))
-        case rc: RecCons[State, Boat, Double, Dom, Y] =>
-          val p = rc.headCoeff
-          mapsSum(nodeFamilyDist(initState)(rc.headGen, baseDist, epsilon),
-                  nodeCoeffFamilyMap(initState)(rc.tail,
-                                                baseDist,
-                                                epsilon / (1.0 - p)))
-      }
-
-  def varFamilyDist[RDom <: HList, Y](initState: State)(
-      randomVarFmly: RandomVarFamily[RDom, Y],
-      epsilon: Double): Map[RDom, FD[Y]] =
-    if (epsilon > 0) Map()
-    else
-      find(randomVarFmly)
-        .map { nc =>
-          val base = varListDist(initState)(nc.output.polyDomain, epsilon)
-          nodeCoeffFamilyMap(initState)(nc, base, epsilon)
-        }
-        .getOrElse(Map())
-
-  def nodeFamilyDist[Dom <: HList, Y](initState: State)(
-      generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
-      baseDist: FD[Dom],
-      epsilon: Double): Map[Dom, FD[Y]] =
-    generatorNodeFamily match {
-      case node: GeneratorNode[Y] =>
-        Map(HNil -> nodeDist(initState)(node, epsilon))
-      case GeneratorNodeFamily.BasePi(nodes, _) =>
-        val kvs: Vector[(Dom, FD[Y])] =
-          for {
-            Weighted(arg, p) <- baseDist.pmf
-            d = nodeDist(initState)(nodes(arg), epsilon / p)
-          } yield arg -> d
-        kvs.toMap
-      case GeneratorNodeFamily.RecPi(nodes, _) =>
-        val kvs: Vector[(Dom, FD[Y])] =
-          for {
-            Weighted(arg, p) <- baseDist.pmf
-            d = nodeDist(initState)(nodes(arg), epsilon / p)
-          } yield arg -> d
-        kvs.toMap
-    }
+    import StateDistribution._
 
   /**
     * recursively determines the finite distribution given a generator node;

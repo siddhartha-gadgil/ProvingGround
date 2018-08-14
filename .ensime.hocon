@@ -1,5 +1,0 @@
-ensime {
-JavaArgs(
-    jvmArgs   = Seq("-Xmx1g")
-  )
-}
