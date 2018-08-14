@@ -2057,8 +2057,9 @@ object HoTT {
     val codom = f.codom
     val typ   = dom ->: codom
 
-    def newobj                 = throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
     def subs(x: Term, y: Term) = Composition(f.replace(x, y), g.replace(x, y))
 
     def act(a: U) = f(g(a))

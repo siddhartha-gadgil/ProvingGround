@@ -16,7 +16,7 @@ import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
   * Can also be used for conditioning, giving one distribution from another.
   * @tparam T scala type elements of this Sort
   */
-sealed trait Sort[-S, +T]{
+sealed trait Sort[-S, +T] {
   val pred: S => Boolean
 }
 
@@ -25,7 +25,7 @@ object Sort {
   /**
     * Sort of all terms with given scala type
     */
-  case class All[S]() extends Sort[S, S]{
+  case class All[S]() extends Sort[S, S] {
     val pred = (_) => true
   }
 
@@ -37,7 +37,7 @@ object Sort {
   /**
     * Sort as image of an optional map, which should be injective in the `Some(_)` case
     */
-  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T]{
+  case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T] {
     val pred = (s: S) => optMap(s).isDefined
   }
 
@@ -343,12 +343,12 @@ object GeneratorNode {
     val inputList: RandomVarList.Cons[X, HNil] = baseInput :: RandomVarList.Nil
   }
 
-  sealed trait ThenCondition[O, Y] extends GeneratorNode[Y] {
-    val gen: GeneratorNode[O]
-
-    val output: RandomVar[Y]
-
-    val condition: Sort[O, Y]
+  case class FlatMapOpt[X, Y](
+      baseInput: RandomVar[X],
+      fiberNodeOpt: X => Option[GeneratorNode[Y]],
+      output: RandomVar[Y]
+  ) extends BaseGeneratorNode[X :: HNil, Y] {
+    val inputList: RandomVarList.Cons[X, HNil] = baseInput :: RandomVarList.Nil
   }
 
   /**
@@ -359,6 +359,14 @@ object GeneratorNode {
     * @tparam O scala type of the original output
     * @tparam Y scala type of the final output
     */
+  sealed trait ThenCondition[O, Y] extends GeneratorNode[Y] {
+    val gen: GeneratorNode[O]
+
+    val output: RandomVar[Y]
+
+    val condition: Sort[O, Y]
+  }
+
   case class BaseThenCondition[V <: HList, O, Y](
       gen: BaseGeneratorNode[V, O],
       output: RandomVar[Y],
@@ -721,7 +729,8 @@ object NodeCoeffs {
     val nodeFamilies: Set[GeneratorNodeFamily[RDom, Y]] = Set()
   }
 
-  sealed trait Cons[State, Boat, V, RDom <: HList, Y] extends NodeCoeffs[State, Boat, V, RDom, Y]{
+  sealed trait Cons[State, Boat, V, RDom <: HList, Y]
+      extends NodeCoeffs[State, Boat, V, RDom, Y] {
     val headGen: GeneratorNodeFamily[RDom, Y]
     val headCoeff: V
     val tail: NodeCoeffs[State, Boat, V, RDom, Y]

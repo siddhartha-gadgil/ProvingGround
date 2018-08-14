@@ -62,6 +62,12 @@ case class GeneratorVariables[State, Boat](
             }))
       case fm: FlatMap[o, Y] =>
         varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
+      case fm: FlatMapOpt[o, Y] =>
+        for {
+          x    <- varSupport(fm.baseInput)
+          node <- fm.fiberNodeOpt(x).toVector
+          v    <- generatorVars(node)
+        } yield v
       case isle: Island[Y, State, o, b] =>
         import isle._
         val (isleInit, boat) = initMap(initState)

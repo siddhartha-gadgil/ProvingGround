@@ -49,7 +49,8 @@ object FiniteDistribution {
   def empty[T]: FiniteDistribution[T] =
     FiniteDistribution[T](Vector(): Vector[Weighted[T]]) //Empty[T]
 
-  def linearCombination[T](terms: Seq[(Double, FiniteDistribution[T])]): FiniteDistribution[T] = {
+  def linearCombination[T](
+      terms: Seq[(Double, FiniteDistribution[T])]): FiniteDistribution[T] = {
     val scaled = for ((a, d) <- terms) yield d * a
     (scaled :\ empty[T])(_ ++ _)
   }
@@ -107,7 +108,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   //  lazy val decryFlat = FiniteDistribution(pmf, true, epsilon)
 
-  def getsum(label: T): Double = (pmf filter (_.elem == label) map (_.weight)).sum
+  def getsum(label: T): Double =
+    (pmf filter (_.elem == label) map (_.weight)).sum
 
   def normalized(t: Double = 0.0): FiniteDistribution[T] = {
     val sc = 1.0 / postotal(t)
@@ -125,7 +127,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def filter(p: T => Boolean) =
     FiniteDistribution(pmf filter (wt => p(wt.elem)))
 
-  def purge(epsilon: Double): FiniteDistribution[T] = filter((t: T) => apply(t) > epsilon)
+  def purge(epsilon: Double): FiniteDistribution[T] =
+    filter((t: T) => apply(t) > epsilon)
 
   def *(sc: Double): FiniteDistribution[T] =
     FiniteDistribution(pmf map (_.scale(sc)))
@@ -134,7 +137,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     FiniteDistribution(pmf ++ that.pmf)
   }
 
-  def --(that: FiniteDistribution[T]): FiniteDistribution[T] = (this ++ (that * (-1))).flatten
+  def --(that: FiniteDistribution[T]): FiniteDistribution[T] =
+    (this ++ (that * (-1))).flatten
 
   def +(elem: T, prob: Double): FiniteDistribution[T] =
     this ++ FiniteDistribution(Vector(Weighted(elem, prob)))
@@ -152,7 +156,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   def zip[S](that: FiniteDistribution[S]): FiniteDistribution[(T, S)] = {
     val newpmf =
-      for{
+      for {
         Weighted(x1, p1) <- pmf
         Weighted(x2, p2) <- that.pmf
       } yield Weighted((x1, x2), p1 * p2)
@@ -169,7 +173,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   def invmapOpt[S](f: S => Option[T],
                    support: Traversable[S]): FiniteDistribution[S] = {
-    val mem   = memo
+    val mem                = memo
     def memFn: T => Double = (x: T) => mem.getOrElse(x, 0.0)
     val pmf =
       support.toVector map
@@ -267,8 +271,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
                   strictness: Double = 1.0): FiniteDistribution[T] = {
     val weights = (t: T) => math.pow(baseweights(t), strictness)
     val rawdiff = for (elem <- supp)
-      yield
-        Weighted(elem, weights(elem) / (weights(elem) * damp + apply(elem)))
+      yield Weighted(elem, weights(elem) / (weights(elem) * damp + apply(elem)))
     val shift = rawdiff.map(_.weight).sum / rawdiff.size
     val normaldiff = for (Weighted(pres, prob) <- rawdiff)
       yield Weighted(pres, prob - shift)
@@ -290,8 +293,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     val rawdiff = for (elem <- supp)
       yield
         Weighted(elem,
-          weights(elem) * weights(elem) /
-            (weights(elem) * damp + apply(elem)))
+                 weights(elem) * weights(elem) /
+                   (weights(elem) * damp + apply(elem)))
     val shift = rawdiff.map(_.weight).sum / (rawdiff.size)
     val normaldiff = for (Weighted(pres, prob) <- rawdiff)
       yield Weighted(pres, prob - shift)
@@ -302,7 +305,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     * gradient w.r.t. inner product scaled by presentation weights,
     * perpendicular to the gradient (w.r.t. same inner product) of the "total weight" function.
     */
-  def KLfeedback(baseweights: T => Double, strictness: Double = 1.0): FiniteDistribution[T] = {
+  def KLfeedback(baseweights: T => Double,
+                 strictness: Double = 1.0): FiniteDistribution[T] = {
     val weights   = (t: T) => math.pow(baseweights(t), strictness)
     val rawdiff   = for (elem <- supp) yield Weighted(elem, 1.0 / apply(elem))
     val innerprod = rawdiff.map((x) => 1.0 / x.weight).sum // Sum(1/q))

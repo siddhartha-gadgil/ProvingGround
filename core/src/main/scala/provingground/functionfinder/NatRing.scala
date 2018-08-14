@@ -27,8 +27,9 @@ object QField extends SymbolicField[Rational] {
   case class PosWitSum(a: PosWit, b: PosWit) extends PosWit {
     lazy val value = a.value + b.value
 
-    def newobj = throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) = PosWitSum(a.replace(x, y), b.replace(x, y))
   }
@@ -36,8 +37,9 @@ object QField extends SymbolicField[Rational] {
   case class PosWitProd(a: PosWit, b: PosWit) extends PosWit {
     lazy val value = a.value * b.value
 
-    def newobj = throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) = PosWitSum(a.replace(x, y), b.replace(x, y))
   }
@@ -47,8 +49,9 @@ object QField extends SymbolicField[Rational] {
 
     val value = Literal(a)
 
-    def newobj = throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) = this
   }
@@ -57,8 +60,9 @@ object QField extends SymbolicField[Rational] {
 
     val value = Literal(0)
 
-    def newobj = throw new IllegalArgumentException(
-      s"trying to use the constant $this as a variable (or a component of one)")
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)")
 
     def subs(x: Term, y: Term) = this
   }

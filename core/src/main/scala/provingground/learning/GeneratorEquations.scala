@@ -129,6 +129,18 @@ case class GeneratorEquations[State, Boat](
           eqn    <- nodeEquationTerms(fiberNode(x))._2
         } yield eqn
         (eqTerms, eqns)
+      case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
+        val eqTerms: Set[EquationTerm] = for {
+          (x, p)                   <- finalProbs(baseInput)
+          (node: GeneratorNode[Y]) <- fiberNodeOpt(x).toSet
+          eqT                      <- nodeEquationTerms(node)._1
+        } yield eqT * p
+        val eqns: Set[Equation] = for {
+          (x, p)                   <- finalProbs(baseInput)
+          (node: GeneratorNode[Y]) <- fiberNodeOpt(x).toSet
+          eqn                      <- nodeEquationTerms(node)._2
+        } yield eqn
+        (eqTerms, eqns)
       case ZipFlatMap(baseInput, fiberVar, f, output) =>
         val eqTerms =
           for {

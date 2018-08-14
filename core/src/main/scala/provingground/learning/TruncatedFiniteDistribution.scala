@@ -228,6 +228,16 @@ case class TruncatedFiniteDistribution[State, Boat](
               Weighted(x2, p2) <- fiberDist.pmf
             } yield Weighted(x2, p1 * p2)
           FD(pmf).flatten.purge(epsilon)
+        case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
+          val baseDist = varDist(initState)(baseInput, epsilon).flatten
+          val pmf =
+            for {
+              Weighted(x1, p1) <- baseDist.pmf
+              node             <- fiberNodeOpt(x1).toVector
+              fiberDist = nodeDist(initState)(node, epsilon / p1).flatten
+              Weighted(x2, p2) <- fiberDist.pmf
+            } yield Weighted(x2, p1 * p2)
+          FD(pmf).flatten.purge(epsilon)
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1          = varDist(initState)(baseInput, epsilon).flatten
           val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
