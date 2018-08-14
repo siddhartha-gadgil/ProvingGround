@@ -13,8 +13,8 @@ import scala.concurrent._, duration._
 
 import translation.FansiShow._
 
+object ProverTasks {
 
-object ProverTasks{
   /**
     * An entropy measure for parsimonious generation of terms inhabiting types.
     */
@@ -97,173 +97,173 @@ object ProverTasks{
          .sortBy(_._2),
        terms.support,
        typs.support)
-       /**
-         * Looks for an element satisfying a predicate in a vector of tasks.
-         * @param tv task giving a vector of tasks giving elements of X.
-         * @param p an optional map, ie predicate+map
-         * @return task giving optional element satisying the predicate.
-         */
-       def inTaskVecTask[X, Y](tv: Task[Vector[Task[X]]],
-                               p: X => Option[Y]): Task[Option[Y]] =
-         tv.flatMap {
-           case Vector() => Task.pure(None)
-           case x +: ys =>
-             x.map(p).flatMap {
-               case Some(z) => Task.pure(Some(z))
-               case None    => inTaskVecTask(Task.eval(ys), p)
-             }
-         }
 
-       /**
-         * bread-first search for an element in `X` satisying a predicate-map `p`;
-         * each element of `X` can spawn a vector of elements in which we also search.
-         * Everything is wrapped in tasks.
-         *
-         * @param tv the initial vector in which we search
-         * @param p the predicate to be satisfied + map; actually an optional map.
-         * @param spawn new vectors in `X` spawned by an element in `X`, depeneding on the depth.
-         * @param depth the depth of the current recursive step.
-         */
-       def breadthFirstTask[X, Y](tv: Task[Vector[Task[X]]],
-                                  p: X => Option[Y],
-                                  spawn: Int => X => Task[Vector[Task[X]]],
-                                  depth: Int = 0): Task[Option[Y]] = {
-         tv.flatMap { (vec) =>
-           if (vec.isEmpty) Task.pure(None)
-           else
-             inTaskVecTask(tv, p).flatMap {
-               case Some(z) => Task.pure(Some(z))
-               case None =>
-                 val tskVecs: Vector[Task[Vector[Task[X]]]] = vec.map(
-                   (t) => t.flatMap(spawn(depth))
-                 )
-                 val w: Task[Vector[Task[X]]] = Task.gather(tskVecs).map(_.flatten)
-                 breadthFirstTask(w, p, spawn, depth + 1)
-             }
-         }
-       }
+  /**
+    * Looks for an element satisfying a predicate in a vector of tasks.
+    * @param tv task giving a vector of tasks giving elements of X.
+    * @param p an optional map, ie predicate+map
+    * @return task giving optional element satisying the predicate.
+    */
+  def inTaskVecTask[X, Y](tv: Task[Vector[Task[X]]],
+                          p: X => Option[Y]): Task[Option[Y]] =
+    tv.flatMap {
+      case Vector() => Task.pure(None)
+      case x +: ys =>
+        x.map(p).flatMap {
+          case Some(z) => Task.pure(Some(z))
+          case None    => inTaskVecTask(Task.eval(ys), p)
+        }
+    }
 
-       /**
-         * bread-first accumulation of results;
-         * a typical example is interesting proofs, with X finite-distributions of terms.
-         * each element of `X` can spawn a vector of elements in which we also search.
-         * Everything is wrapped in tasks.
-         *
-         * @param tsk the initial element for the search
-         * @param results the result, depending on an element of `X` - also the depth,
-         * but this is used mainly for tracking.
-         * @param spawn new vectors in `X` spawned by an element in `X`, depeneding on the depth.
-         * @param depth the depth of the current recursive step.
-         */
-       def branchedGatherTask[X, Y](tsk: Task[X],
-                                    results: Int => X => Task[Y],
-                                    combine: (Y, Y) => Y,
-                                    spawn: Int => X => Task[Vector[Task[X]]],
-                                    depth: Int = 0): Task[Y] = {
-         for {
-           x <- tsk
-           res = results(depth)(x)
-           nextGen <- spawn(depth)(x)
-           childRes: Vector[Task[Y]] = nextGen.map((tx) =>
-             branchedGatherTask(tx, results, combine, spawn, depth + 1))
-           comb <- childRes.foldLeft(res) {
-             case (t1, t2) =>
-               for {
-                 x1 <- t1
-                 x2 <- t2
-               } yield combine(x1, x2)
-           }
-         } yield comb
-       }
-       def h[A](fd: FD[A]) = {
-         val fd0 = fd.flatten
-         fd0.supp.map((x) => -fd(x) * log(fd(x))).sum
-       }
+  /**
+    * bread-first search for an element in `X` satisying a predicate-map `p`;
+    * each element of `X` can spawn a vector of elements in which we also search.
+    * Everything is wrapped in tasks.
+    *
+    * @param tv the initial vector in which we search
+    * @param p the predicate to be satisfied + map; actually an optional map.
+    * @param spawn new vectors in `X` spawned by an element in `X`, depeneding on the depth.
+    * @param depth the depth of the current recursive step.
+    */
+  def breadthFirstTask[X, Y](tv: Task[Vector[Task[X]]],
+                             p: X => Option[Y],
+                             spawn: Int => X => Task[Vector[Task[X]]],
+                             depth: Int = 0): Task[Option[Y]] = {
+    tv.flatMap { (vec) =>
+      if (vec.isEmpty) Task.pure(None)
+      else
+        inTaskVecTask(tv, p).flatMap {
+          case Some(z) => Task.pure(Some(z))
+          case None =>
+            val tskVecs: Vector[Task[Vector[Task[X]]]] = vec.map(
+              (t) => t.flatMap(spawn(depth))
+            )
+            val w: Task[Vector[Task[X]]] = Task.gather(tskVecs).map(_.flatten)
+            breadthFirstTask(w, p, spawn, depth + 1)
+        }
+    }
+  }
 
-       def kl[A](p: FD[A], q: FD[A]) = {
-         val p0 = p.filter(q(_) > 0).flatten.safeNormalized
-         p0.supp.map { (x) =>
-           p(x) * log(p(x) / q(x))
-         }.sum
-       }
+  /**
+    * bread-first accumulation of results;
+    * a typical example is interesting proofs, with X finite-distributions of terms.
+    * each element of `X` can spawn a vector of elements in which we also search.
+    * Everything is wrapped in tasks.
+    *
+    * @param tsk the initial element for the search
+    * @param results the result, depending on an element of `X` - also the depth,
+    * but this is used mainly for tracking.
+    * @param spawn new vectors in `X` spawned by an element in `X`, depeneding on the depth.
+    * @param depth the depth of the current recursive step.
+    */
+  def branchedGatherTask[X, Y](tsk: Task[X],
+                               results: Int => X => Task[Y],
+                               combine: (Y, Y) => Y,
+                               spawn: Int => X => Task[Vector[Task[X]]],
+                               depth: Int = 0): Task[Y] = {
+    for {
+      x <- tsk
+      res = results(depth)(x)
+      nextGen <- spawn(depth)(x)
+      childRes: Vector[Task[Y]] = nextGen.map((tx) =>
+        branchedGatherTask(tx, results, combine, spawn, depth + 1))
+      comb <- childRes.foldLeft(res) {
+        case (t1, t2) =>
+          for {
+            x1 <- t1
+            x2 <- t2
+          } yield combine(x1, x2)
+      }
+    } yield comb
+  }
+  def h[A](fd: FD[A]) = {
+    val fd0 = fd.flatten
+    fd0.supp.map((x) => -fd(x) * log(fd(x))).sum
+  }
 
-       def minOn[A](fd: FD[A], minValue: Double, supp: Set[A]) = {
-         FD(
-           for {
-             Weighted(x, p) <- fd.pmf
-           } yield Weighted(x, if (supp.contains(x)) math.min(p, minValue) else p)
-         )
-       }
+  def kl[A](p: FD[A], q: FD[A]) = {
+    val p0 = p.filter(q(_) > 0).flatten.safeNormalized
+    p0.supp.map { (x) =>
+      p(x) * log(p(x) / q(x))
+    }.sum
+  }
 
-       def pfMatch(ev: FD[Term] => Task[FD[Term]],
-                   typs: Task[FD[Typ[Term]]],
-                   wt: Double = 1.0)(gen: FD[Term]) =
-         for {
-           p  <- typs
-           qt <- ev(gen)
-           q = qt.map(_.typ)
-         } yield kl(p, q) - (h(gen) * wt)
+  def minOn[A](fd: FD[A], minValue: Double, supp: Set[A]) = {
+    FD(
+      for {
+        Weighted(x, p) <- fd.pmf
+      } yield Weighted(x, if (supp.contains(x)) math.min(p, minValue) else p)
+    )
+  }
 
-       def pfMatchDiff(
-           ev: FD[Term] => Task[FD[Term]],
-           typs: Task[FD[Typ[Term]]],
-           cutoff: Double,
-           wt: Double = 1.0)(gen0: FD[Term], gen1: FD[Term]): Task[Double] =
-         for {
-           p   <- typs
-           qt0 <- ev(gen0)
-           qt1 <- ev(gen1)
-           q0      = qt0.map(_.typ)
-           q1      = qt1.map(_.typ)
-           totSupp = q0.support union (q1.support)
-           q0m     = minOn(q0, cutoff, totSupp)
-           q1m     = minOn(q1, cutoff, totSupp)
-           h0      = kl(p, q0m) - (h(gen0) * wt)
-           h1      = kl(p, q1m) - (h(gen1) * wt)
-         } yield h1 - h0
+  def pfMatch(ev: FD[Term] => Task[FD[Term]],
+              typs: Task[FD[Typ[Term]]],
+              wt: Double = 1.0)(gen: FD[Term]) =
+    for {
+      p  <- typs
+      qt <- ev(gen)
+      q = qt.map(_.typ)
+    } yield kl(p, q) - (h(gen) * wt)
 
-       def quasiGradShift[A](base: A,
-                             neighbours: Vector[A],
-                             derTask: (A, A) => Task[Double])(
-           implicit ls: VectorSpace[A, Double]
-       ): Task[A] = {
-         val shiftsTask =
-           Task.gather {
-             for { x <- neighbours } yield {
-               derTask(base, x).map { (der) =>
-                 -der *: (base + x)
-               }
-             }
-           }
-         shiftsTask.map { (shifts) =>
-           shifts.foldLeft(base)(_ + _)
-         }
-       }
+  def pfMatchDiff(
+      ev: FD[Term] => Task[FD[Term]],
+      typs: Task[FD[Typ[Term]]],
+      cutoff: Double,
+      wt: Double = 1.0)(gen0: FD[Term], gen1: FD[Term]): Task[Double] =
+    for {
+      p   <- typs
+      qt0 <- ev(gen0)
+      qt1 <- ev(gen1)
+      q0      = qt0.map(_.typ)
+      q1      = qt1.map(_.typ)
+      totSupp = q0.support union (q1.support)
+      q0m     = minOn(q0, cutoff, totSupp)
+      q1m     = minOn(q1, cutoff, totSupp)
+      h0      = kl(p, q0m) - (h(gen0) * wt)
+      h1      = kl(p, q1m) - (h(gen1) * wt)
+    } yield h1 - h0
 
-       def quasiGradFlowTask[A](base: A,
-                                neighMap: A => Vector[A],
-                                derTask: (A, A) => Task[Double],
-                                halt: (A, A) => Boolean)(
-           implicit ls: VectorSpace[A, Double]
-       ): Task[A] = Task.tailRecM(base)(
-         (x: A) =>
-           quasiGradShift(x, neighMap(x), derTask).map { (y) =>
-             if (halt(x, y)) Right(y) else Left(x)
-         }
-       )
+  def quasiGradShift[A](base: A,
+                        neighbours: Vector[A],
+                        derTask: (A, A) => Task[Double])(
+      implicit ls: VectorSpace[A, Double]
+  ): Task[A] = {
+    val shiftsTask =
+      Task.gather {
+        for { x <- neighbours } yield {
+          derTask(base, x).map { (der) =>
+            -der *: (base + x)
+          }
+        }
+      }
+    shiftsTask.map { (shifts) =>
+      shifts.foldLeft(base)(_ + _)
+    }
+  }
 
-       def selfNeighbours[A](fd: FD[A], epsilon: Double) =
-         fd.flatten.supp.map { (x) =>
-           (fd + (x, fd(x) * epsilon)).safeNormalized
-         }
+  def quasiGradFlowTask[A](base: A,
+                           neighMap: A => Vector[A],
+                           derTask: (A, A) => Task[Double],
+                           halt: (A, A) => Boolean)(
+      implicit ls: VectorSpace[A, Double]
+  ): Task[A] = Task.tailRecM(base)(
+    (x: A) =>
+      quasiGradShift(x, neighMap(x), derTask).map { (y) =>
+        if (halt(x, y)) Right(y) else Left(x)
+    }
+  )
 
-       def newNeighbours[A](fd: FD[A], pert: Vector[A], epsilon: Double) =
-         pert.map { (x) =>
-           (fd + (x, fd(x) * epsilon)).safeNormalized
-         }
+  def selfNeighbours[A](fd: FD[A], epsilon: Double) =
+    fd.flatten.supp.map { (x) =>
+      (fd + (x, fd(x) * epsilon)).safeNormalized
+    }
 
-       def stabHalt(x: FD[Term], y: FD[Term], level: Double): Boolean =
-         (x -- y).norm < level
+  def newNeighbours[A](fd: FD[A], pert: Vector[A], epsilon: Double) =
+    pert.map { (x) =>
+      (fd + (x, fd(x) * epsilon)).safeNormalized
+    }
 
+  def stabHalt(x: FD[Term], y: FD[Term], level: Double): Boolean =
+    (x -- y).norm < level
 
 }

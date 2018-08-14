@@ -6,8 +6,8 @@ import shapeless._
 import scala.collection.immutable
 import scala.language.higherKinds
 
-object TangentFiniteDistribution{
-  def av[X](x : FD[X], y: FD[X]) = (x ++ y) * 0.5
+object TangentFiniteDistribution {
+  def av[X](x: FD[X], y: FD[X]) = (x ++ y) * 0.5
 }
 
 /**
@@ -21,7 +21,8 @@ object TangentFiniteDistribution{
 case class TangentFiniteDistribution[State, Boat](
     baseState: State,
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
-    implicit sd: StateDistribution[State, FD]) extends GenTruncatedFiniteDistribution[State, Boat](nodeCoeffSeq) {
+    implicit sd: StateDistribution[State, FD])
+    extends GenTruncatedFiniteDistribution[State, Boat](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands
@@ -32,8 +33,8 @@ case class TangentFiniteDistribution[State, Boat](
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
     TangentFiniteDistribution(baseState, nodeCoeffSeq.updateAll(dataSeq))
 
-    import StateDistribution._
-    import TangentFiniteDistribution._
+  import StateDistribution._
+  import TangentFiniteDistribution._
 
   /**
     * recursively determines the finite distribution given a generator node;
@@ -46,7 +47,7 @@ case class TangentFiniteDistribution[State, Boat](
     * @return distribution corresponding to the `output` random variable
     */
   def nodeDist[Y](tangentState: State)(generatorNode: GeneratorNode[Y],
-                                    epsilon: Double): FD[Y] =
+                                       epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else {
       import GeneratorNode._
@@ -67,13 +68,12 @@ case class TangentFiniteDistribution[State, Boat](
             d1t.zip(d2b).map { case (x, y) => f(x, y) }
           ).purge(epsilon)
         case ZipMapOpt(f, input1, input2, _) =>
-          val d1 = varDist(tangentState)(input1, epsilon).flatten
-          val d2 = varDist(tangentState)(input2, epsilon).flatten
+          val d1  = varDist(tangentState)(input1, epsilon).flatten
+          val d2  = varDist(tangentState)(input2, epsilon).flatten
           val d1b = value(baseState)(input1)
           val d2b = value(baseState)(input2)
           av(d1.zip(d2b).condMap { case (x, y) => f(x, y) },
-          d1b.zip(d2).condMap { case (x, y) => f(x, y) }
-            ).purge(epsilon)
+             d1b.zip(d2).condMap { case (x, y) => f(x, y) }).purge(epsilon)
         case ZipFlatMap(baseInput, fiberVar, f, _) =>
           val baseDist = varDist(tangentState)(baseInput, epsilon).flatten
           val pmf1 =
@@ -105,22 +105,22 @@ case class TangentFiniteDistribution[State, Boat](
             } yield Weighted(x2, p1 * p2)
           av(FD(pmf1), FD(pmf2)).flatten.purge(epsilon)
         case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
-        val baseDist = varDist(tangentState)(baseInput, epsilon).flatten
-        val pmf1 =
-          for {
-            Weighted(x1, p1) <- value(baseState)(baseInput).pmf
-            (node : GeneratorNode[Y]) <- fiberNodeOpt(x1).toSet
-            fiberDist = nodeDist(tangentState)(node, epsilon / p1).flatten
-            Weighted(x2, p2) <- fiberDist.pmf
-          } yield Weighted(x2, p1 * p2)
-        val pmf2 =
-          for {
-            Weighted(x1, p1) <- baseDist.pmf
-            (node : GeneratorNode[Y]) <- fiberNodeOpt(x1).toSet
-            fiberDist = value(baseState)(node.output)
-            Weighted(x2, p2) <- fiberDist.pmf
-          } yield Weighted(x2, p1 * p2)
-        av(FD(pmf1), FD(pmf2)).flatten.purge(epsilon)
+          val baseDist = varDist(tangentState)(baseInput, epsilon).flatten
+          val pmf1 =
+            for {
+              Weighted(x1, p1)         <- value(baseState)(baseInput).pmf
+              (node: GeneratorNode[Y]) <- fiberNodeOpt(x1).toSet
+              fiberDist = nodeDist(tangentState)(node, epsilon / p1).flatten
+              Weighted(x2, p2) <- fiberDist.pmf
+            } yield Weighted(x2, p1 * p2)
+          val pmf2 =
+            for {
+              Weighted(x1, p1)         <- baseDist.pmf
+              (node: GeneratorNode[Y]) <- fiberNodeOpt(x1).toSet
+              fiberDist = value(baseState)(node.output)
+              Weighted(x2, p2) <- fiberDist.pmf
+            } yield Weighted(x2, p1 * p2)
+          av(FD(pmf1), FD(pmf2)).flatten.purge(epsilon)
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1          = value(baseState)(baseInput)
           val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
@@ -148,7 +148,7 @@ case class TangentFiniteDistribution[State, Boat](
                 .flatten // mapped distribution over `z`
               wtd <- d.pmf // terms in pmf over z, should be flatMapped over `z`
             } yield wtd
-          av(FD(pmf1.toVector), FD(pmf2.toVector) ).purge(epsilon)
+          av(FD(pmf1.toVector), FD(pmf2.toVector)).purge(epsilon)
         case tc: ThenCondition[o, Y] =>
           import tc._
           val base = nodeDist(tangentState)(gen, epsilon)
@@ -160,7 +160,7 @@ case class TangentFiniteDistribution[State, Boat](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(tangentState)                       // initial condition for island, boat to row back
+          val (isleInit, boat) = initMap(tangentState)                    // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput, epsilon) //result for the island
           isleOut
             .map(export(boat, _))

@@ -81,28 +81,33 @@ object TermRandomVars {
 
 }
 
-case class TermState(terms: FD[Term], typs : FD[Typ[Term]])
+case class TermState(terms: FD[Term], typs: FD[Typ[Term]])
 
-object TermState{
+object TermState {
   import TermRandomVars._
 
-  implicit val stateFD : StateDistribution[TermState, FD] =
-    new StateDistribution[TermState, FD]{
+  implicit val stateFD: StateDistribution[TermState, FD] =
+    new StateDistribution[TermState, FD] {
       def value[T](state: TermState)(randomVar: RandomVar[T]): FD[T] =
         randomVar match {
-          case Terms => state.terms.map(x => x : T)
-          case Typs => state.typs.map(x => x : T)
-          case Funcs => state.terms.condMap(ExstFunc.opt).map(x => x : T)
-          case TypFamilies => state.terms.conditioned(isTypFamily).map(x => x : T)
+          case Terms => state.terms.map(x => x: T)
+          case Typs  => state.typs.map(x => x: T)
+          case Funcs => state.terms.condMap(ExstFunc.opt).map(x => x: T)
+          case TypFamilies =>
+            state.terms.conditioned(isTypFamily).map(x => x: T)
         }
 
-      def valueAt[Dom <: HList, T](
-          state: TermState)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): FD[T] =
-            (randomVarFmly, fullArg) match {
-              case (TermsWithTyp, typ :: HNil) =>
-                state.terms.conditioned(_.typ == typ).map(x => x : T)
-              case (FuncsWithDomain, typ :: HNil) =>
-                state.terms.condMap(ExstFunc.opt).conditioned(_.dom == typ).map(x => x : T)
-            }
+      def valueAt[Dom <: HList, T](state: TermState)(
+          randomVarFmly: RandomVarFamily[Dom, T],
+          fullArg: Dom): FD[T] =
+        (randomVarFmly, fullArg) match {
+          case (TermsWithTyp, typ :: HNil) =>
+            state.terms.conditioned(_.typ == typ).map(x => x: T)
+          case (FuncsWithDomain, typ :: HNil) =>
+            state.terms
+              .condMap(ExstFunc.opt)
+              .conditioned(_.dom == typ)
+              .map(x => x: T)
+        }
     }
 }

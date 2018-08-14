@@ -65,7 +65,6 @@ object FineProverTasks {
       .task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime)
       .memoize
 
-
   /**
     * bunch of tasks using newly discovered proofs by evolving along unit tangents.
     * the cutoffs, viewed as resources, are allocated based on values of the new proofs.
@@ -212,7 +211,6 @@ object FineProverTasks {
         }
       }
     }
-
 
   /**
     * breadth-first search for a term of a given type
@@ -472,6 +470,5 @@ object FineProverTasks {
 
     } yield (res, terms, typs)
   }
-
 
 }
