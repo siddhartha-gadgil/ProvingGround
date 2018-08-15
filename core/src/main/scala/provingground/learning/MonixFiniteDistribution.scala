@@ -138,7 +138,7 @@ abstract class GenMonixFiniteDistribution[State, Boat](
               Weighted(arg, p) <- bd.pmf
               dt = nodeDist(initState)(f.nodes(arg), epsilon / p) // actually a task
             } yield dt.map(d => arg -> d)
-          Task.sequence(kvs).map(_.toMap)
+          Task.gather(kvs).map(_.toMap)
         }
     }
 
@@ -226,7 +226,7 @@ case class MonixFiniteDistribution[State, Boat](
                         }
                     tv
                 }
-            Task.sequence(pmfT).map((vv) => FD(vv.flatten))
+            Task.gather(pmfT).map((vv) => FD(vv.flatten))
           }
         case FlatMap(baseInput, fiberNode, _) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map(_.flatten)
@@ -246,7 +246,7 @@ case class MonixFiniteDistribution[State, Boat](
                         }
                       }
                 }
-            Task.sequence(pmfT).map((vv) => FD(vv.flatten))
+            Task.gather(pmfT).map((vv) => FD(vv.flatten))
           }
         case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map(_.flatten)
@@ -269,7 +269,7 @@ case class MonixFiniteDistribution[State, Boat](
                         }
                       }
                 }
-            Task.sequence(pmfT).map((vv) => FD(vv.flatten))
+            Task.gather(pmfT).map((vv) => FD(vv.flatten))
           }
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1T = varDist(initState)(baseInput, epsilon).map(_.flatten)
@@ -290,7 +290,7 @@ case class MonixFiniteDistribution[State, Boat](
                     d.pmf // terms in pmf over z, should be flatMapped over `z`
                   }
               }
-            Task.sequence(pmfT).map((vv) => FD(vv.flatten))
+            Task.gather(pmfT).map((vv) => FD(vv.flatten))
           }
         case tc: ThenCondition[o, Y] =>
           import tc._
