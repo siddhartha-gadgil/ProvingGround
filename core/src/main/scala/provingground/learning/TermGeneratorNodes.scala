@@ -81,7 +81,13 @@ object TermRandomVars {
 
 }
 
-case class TermState(terms: FD[Term], typs: FD[Typ[Term]])
+case class TermState(terms: FD[Term], typs: FD[Typ[Term]], vars: Vector[Term]){
+  val thmsByPf = terms.map(_.typ)
+  val thmsBySt = typs.filter(thmsByPf(_) > 0)
+  val pfSet    = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
+  val fullPfSet = pfSet.flatMap((pf) =>
+    partialLambdaClosures(vars)(pf).map((pf, _)))
+}
 
 object TermState {
   import TermRandomVars._
