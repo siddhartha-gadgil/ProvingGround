@@ -2,6 +2,7 @@ package provingground.learning
 import provingground.HoTT._
 import provingground.{FiniteDistribution => FD, _}
 import shapeless._
+import induction._
 
 import scala.language.higherKinds
 
@@ -99,6 +100,14 @@ class TermGeneratorNodes[InitState](
       addVar(typ),
       { case (x, y) => pi(x)(y) }
     )
+
+  def recFuncs(ind: ExstInducStruc) =
+    ZipMapOpt[Typ[Term], Typ[Term], ExstFunc](
+      {case (x, y) => ind.recOpt(x, y).flatMap(ExstFunc.opt)}, Typs, Typs, Funcs)
+
+  def inducFuncs(ind: ExstInducStruc) =
+    ZipMapOpt[Typ[Term], Term, ExstFunc](
+      {case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)}, Typs, Terms, Funcs)
 }
 
 object TermRandomVars {
@@ -107,6 +116,8 @@ object TermRandomVars {
   case object Typs extends RandomVar[Typ[Term]]
 
   case object Funcs extends RandomVar[ExstFunc]
+
+  case object InducStrucs extends RandomVar[ExstInducStruc]
 
   case object TermsWithTyp
       extends RandomVar.SimpleFamily[Typ[Term], Term](
