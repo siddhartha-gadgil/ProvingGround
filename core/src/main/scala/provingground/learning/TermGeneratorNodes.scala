@@ -9,7 +9,8 @@ import scala.language.higherKinds
 class TermGeneratorNodes[InitState](
     appln: (ExstFunc, Term) => Term,
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
-    addVar: Typ[Term] => InitState => (InitState, Term)
+    addVar: Typ[Term] => InitState => (InitState, Term),
+    getVar: Typ[Term] => Term
 ) {
   import GeneratorNode._
   import TermRandomVars._
@@ -108,6 +109,53 @@ class TermGeneratorNodes[InitState](
   def inducFuncs(ind: ExstInducStruc) =
     ZipMapOpt[Typ[Term], Term, ExstFunc](
       {case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)}, Typs, Terms, Funcs)
+
+  def inducHeadNode(inductiveTyp: Typ[Term]) =
+    Map[Unit, Term](
+     (_) => inductiveTyp,
+     Star, IntroRuleTypes(inductiveTyp))
+
+  def selfHeadNode(inductiveTyp: Typ[Term]) =
+    Island[Typ[Term], InitState, Typ[Term], Term](
+      IntroRuleTypes(inductiveTyp),
+      (t: Term) => IntroRuleTypes(inductiveTyp),
+      addVar(inductiveTyp),
+      { case (x, y) => pi(x)(y) }
+    )
+
+  def otherHeadIsle(inductiveTyp: Typ[Term])(typ: Typ[Term]) =
+    Island[Typ[Term], InitState, Typ[Term], Term](
+      IntroRuleTypes(inductiveTyp),
+      (t: Term) => IntroRuleTypes(inductiveTyp),
+      addVar(typ),
+      { case (x, y) => pi(x)(y) }
+    )
+
+  def otherHeadNode(inductiveTyp: Typ[Term]) =
+      FlatMap(
+        Typs,
+        otherHeadIsle(inductiveTyp),
+        IntroRuleTypes(inductiveTyp)
+    )
+
+  def emptyIntros(inductiveTyp: Typ[Term]) =
+    Map[Unit, Vector[Term]](
+     (_) => Vector(),
+     Star, IntroRulesVecs(inductiveTyp))
+
+  def consIntros(inductiveTyp: Typ[Term]) =
+    ZipMap[Typ[Term], Vector[Term], Vector[Term]]({case (x, ys) => getVar(x) +: ys},
+      IntroRuleTypes(inductiveTyp),
+      IntroRulesVecs(inductiveTyp),
+      IntroRulesVecs(inductiveTyp)
+  )
+
+  def simpleInductiveStructure(inductiveTyp: Typ[Term]) =
+    Map[Vector[Term], ExstInducStruc](
+      intros => ExstInducStruc.get(inductiveTyp, intros),
+      IntroRulesVecs(inductiveTyp),
+      InducStrucs
+    )
 }
 
 object TermRandomVars {
@@ -117,7 +165,6 @@ object TermRandomVars {
 
   case object Funcs extends RandomVar[ExstFunc]
 
-  case object InducStrucs extends RandomVar[ExstInducStruc]
 
   case object TermsWithTyp
       extends RandomVar.SimpleFamily[Typ[Term], Term](
@@ -138,6 +185,17 @@ object TermRandomVars {
 
   def funcsWithDomain(typ: Typ[Term]): RandomVar[ExstFunc] =
     RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
+
+  case object InducStrucs extends RandomVar[ExstInducStruc]
+
+  case object Star extends RandomVar[Unit]
+
+  case class IntroRuleTypes(inductiveTyp: Typ[Term]) extends RandomVar[Typ[Term]]
+
+  case class IntroRulesVecs(inductiveTyp: Typ[Term]) extends RandomVar[Vector[Term]]
+
+  case object NewTyps extends RandomVar[Typ[Term]]
+
 
 }
 
