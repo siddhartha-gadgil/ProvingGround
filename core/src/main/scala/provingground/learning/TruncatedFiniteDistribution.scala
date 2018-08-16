@@ -135,18 +135,19 @@ abstract class GenTruncatedFiniteDistribution[State, Boat](
     generatorNodeFamily match {
       case node: GeneratorNode[Y] =>
         Map(HNil -> nodeDist(initState)(node, epsilon))
-      case GeneratorNodeFamily.BasePi(nodes, _) =>
+      case fml : GeneratorNodeFamily.Pi[Dom, Y] =>
         val kvs: Vector[(Dom, FD[Y])] =
           for {
             Weighted(arg, p) <- baseDist.pmf
-            d = nodeDist(initState)(nodes(arg), epsilon / p)
+            d = nodeDist(initState)(fml.nodes(arg), epsilon / p)
           } yield arg -> d
         kvs.toMap
-      case GeneratorNodeFamily.RecPi(nodes, _) =>
+      case fml : GeneratorNodeFamily.PiOpt[Dom, Y] =>
         val kvs: Vector[(Dom, FD[Y])] =
           for {
             Weighted(arg, p) <- baseDist.pmf
-            d = nodeDist(initState)(nodes(arg), epsilon / p)
+            node <- fml.nodesOpt(arg)
+            d = nodeDist(initState)(node, epsilon / p)
           } yield arg -> d
         kvs.toMap
     }

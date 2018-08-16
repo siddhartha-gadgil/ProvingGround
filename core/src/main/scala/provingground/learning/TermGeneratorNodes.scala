@@ -30,6 +30,15 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  val applnByArgNode: FiberProductMap[Term, ExstFunc, Typ[Term], Term] =
+    FiberProductMap[Term, ExstFunc, Typ[Term], Term](
+      _.typ,
+      funcsWithDomain,
+      {case (x, f) => appln(f, x)},
+      Terms,
+      Terms
+    )
+
   def lambdaIsle(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
     Island[Term, InitState, Term, Term](
       Terms,
@@ -78,6 +87,9 @@ object TermRandomVars {
         Typs,
         (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
       )
+
+  def funcsWithDomain(typ: Typ[Term]): RandomVar[ExstFunc] =
+    RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
 
 }
 

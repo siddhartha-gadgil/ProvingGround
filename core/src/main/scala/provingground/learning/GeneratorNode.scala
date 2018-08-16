@@ -196,6 +196,30 @@ object GeneratorNodeFamily {
       extends BaseGeneratorNodeFamily[Dom, O]
       with Pi[Dom, O]
 
+  sealed trait PiOpt[Dom <: HList, +O] {
+    val nodesOpt: Dom => Option[GeneratorNode[O]]
+    val outputFamily: RandomVarFamily[Dom, O]
+  }
+
+  /**
+    * A family of recursive generation functions, given as a function.
+    */
+  case class RecPiOpt[State, Boat, Dom <: HList, +O](
+      nodesOpt: Dom => Option[RecursiveGeneratorNode[State, Boat, O]],
+      outputFamily: RandomVarFamily[Dom, O])
+      extends RecursiveGeneratorNodeFamily[Dom, State, Boat, O]
+      with PiOpt[Dom, O]
+
+  /**
+    * A family of recursive generation functions, given as a function.
+    */
+  case class BasePiOpt[Dom <: HList, I <: HList, +O](
+      nodesOpt: Dom => Option[BaseGeneratorNode[I, O]],
+      outputFamily: RandomVarFamily[Dom, O])
+      extends BaseGeneratorNodeFamily[Dom, O]
+      with PiOpt[Dom, O]
+
+
 }
 
 /**

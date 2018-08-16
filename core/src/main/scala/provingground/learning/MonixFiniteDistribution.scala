@@ -140,6 +140,16 @@ abstract class GenMonixFiniteDistribution[State, Boat](
             } yield dt.map(d => arg -> d)
           Task.gather(kvs).map(_.toMap)
         }
+    case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
+      baseDist.flatMap { (bd) =>
+        val kvs: Vector[Task[(Dom, FD[Y])]] =
+          for {
+            Weighted(arg, p) <- bd.pmf
+            node <- f.nodesOpt(arg)
+            dt = nodeDist(initState)(node, epsilon / p) // actually a task
+          } yield dt.map(d => arg -> d)
+        Task.gather(kvs).map(_.toMap)
+      }
     }
 
   def nodeDist[Y](initState: State)(generatorNode: GeneratorNode[Y],
