@@ -34,7 +34,7 @@ class TermGeneratorNodes[InitState](
     FiberProductMap[Term, ExstFunc, Typ[Term], Term](
       _.typ,
       funcsWithDomain,
-      {case (x, f) => appln(f, x)},
+      { case (x, f) => appln(f, x) },
       Terms,
       Terms
     )
@@ -42,9 +42,41 @@ class TermGeneratorNodes[InitState](
   def lambdaIsle(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
     Island[Term, InitState, Term, Term](
       Terms,
-      Terms,
+      (_) => Terms,
       addVar(typ),
       { case (x, y) => x :~> y }
+    )
+
+  def lambdaIsleForTyp(
+      typ: Typ[Term]): Option[Island[Term, InitState, Term, Term]] =
+    typ match {
+      case pd: PiDefn[u, v] =>
+        Some(
+          Island[Term, InitState, Term, Term](
+            termsWithTyp(pd),
+            (x) => termsWithTyp(pd.value.replace(pd.variable, x)),
+            addVar(typ),
+            { case (x, y) => x :~> y }
+          )
+        )
+      case ft: FuncTyp[u, v] =>
+        Some(
+          Island[Term, InitState, Term, Term](
+            termsWithTyp(ft),
+            (_) => termsWithTyp(ft.codom),
+            addVar(typ),
+            { case (x, y) => x :~> y }
+          )
+        )
+      case _ => None
+    }
+
+  def lambdaIsleForFuncWithDomain(dom: Typ[Term]) =
+    Island[ExstFunc, InitState, Term, Term](
+      funcsWithDomain(dom),
+      (_) => Terms,
+      addVar(dom),
+      { case (x, y) => ExstFunc(x :~> y) }
     )
 
   val lambdaNode: FlatMap[Typ[Term], Term] =
@@ -54,11 +86,16 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  val lambdaByTypNodeFamily: GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
+    GeneratorNodeFamily.RecPiOpt[InitState, Term, Typ[Term] :: HNil, Term]({
+      case typ :: HNil => lambdaIsleForTyp(typ)
+    }, TermsWithTyp)
+
   def piIslelambdaIsle(
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
-      Typs,
+      (_) => Typs,
       addVar(typ),
       { case (x, y) => pi(x)(y) }
     )
@@ -93,12 +130,12 @@ object TermRandomVars {
 
 }
 
-case class TermState(terms: FD[Term], typs: FD[Typ[Term]], vars: Vector[Term]){
+case class TermState(terms: FD[Term], typs: FD[Typ[Term]], vars: Vector[Term]) {
   val thmsByPf = terms.map(_.typ)
   val thmsBySt = typs.filter(thmsByPf(_) > 0)
   val pfSet    = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
-  val fullPfSet = pfSet.flatMap((pf) =>
-    partialLambdaClosures(vars)(pf).map((pf, _)))
+  val fullPfSet =
+    pfSet.flatMap((pf) => partialLambdaClosures(vars)(pf).map((pf, _)))
 }
 
 object TermState {

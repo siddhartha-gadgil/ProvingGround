@@ -160,8 +160,8 @@ case class TangentFiniteDistribution[State, Boat](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(tangentState)                    // initial condition for island, boat to row back
-          val isleOut          = varDist(isleInit)(islandOutput, epsilon) //result for the island
+          val (isleInit, boat) = initMap(tangentState)                          // initial condition for island, boat to row back
+          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map(export(boat, _))
             .purge(epsilon) // exported result seen outside
@@ -170,7 +170,7 @@ case class TangentFiniteDistribution[State, Boat](
           val (isleInit, boat, isleCoeffs) = initMap(tangentState)
           val isleOut =
             updateAll(isleCoeffs.toSeq) // coefficients changed to those for the island
-              .varDist(isleInit)(islandOutput, epsilon)
+              .varDist(isleInit)(islandOutput(boat), epsilon)
           isleOut.map(export(boat, _)).purge(epsilon)
       }
     }

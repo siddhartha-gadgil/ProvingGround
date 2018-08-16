@@ -173,7 +173,7 @@ object GeneratorNodeFamily {
   case class Value[Dom <: HList, O, V](family: GeneratorNodeFamily[Dom, O],
                                        value: V)
 
-  sealed trait Pi[Dom <: HList, +O] {
+  sealed trait Pi[Dom <: HList, +O] extends GeneratorNodeFamily[Dom, O] {
     val nodes: Dom => GeneratorNode[O]
     val outputFamily: RandomVarFamily[Dom, O]
   }
@@ -196,7 +196,7 @@ object GeneratorNodeFamily {
       extends BaseGeneratorNodeFamily[Dom, O]
       with Pi[Dom, O]
 
-  sealed trait PiOpt[Dom <: HList, +O] {
+  sealed trait PiOpt[Dom <: HList, +O] extends GeneratorNodeFamily[Dom, O] {
     val nodesOpt: Dom => Option[GeneratorNode[O]]
     val outputFamily: RandomVarFamily[Dom, O]
   }
@@ -218,7 +218,6 @@ object GeneratorNodeFamily {
       outputFamily: RandomVarFamily[Dom, O])
       extends BaseGeneratorNodeFamily[Dom, O]
       with PiOpt[Dom, O]
-
 
 }
 
@@ -423,7 +422,7 @@ object GeneratorNode {
     */
   case class Island[+Y, InitState, O, Boat](
       output: RandomVar[Y],
-      islandOutput: RandomVar[O],
+      islandOutput: Boat => RandomVar[O],
       initMap: InitState => (InitState, Boat),
       export: (Boat, O) => Y
   ) extends RecursiveGeneratorNode[InitState, Boat, Y]
@@ -443,7 +442,7 @@ object GeneratorNode {
     * @tparam Boat scala type of the `boat`
     */
   case class ComplexIsland[O, +Y, InitState, Boat, V](
-      islandOutput: RandomVar[O],
+      islandOutput: Boat => RandomVar[O],
       output: RandomVar[Y],
       initMap: InitState => (InitState,
                              Boat,

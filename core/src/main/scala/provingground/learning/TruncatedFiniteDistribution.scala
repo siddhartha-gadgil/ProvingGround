@@ -135,18 +135,18 @@ abstract class GenTruncatedFiniteDistribution[State, Boat](
     generatorNodeFamily match {
       case node: GeneratorNode[Y] =>
         Map(HNil -> nodeDist(initState)(node, epsilon))
-      case fml : GeneratorNodeFamily.Pi[Dom, Y] =>
+      case fml: GeneratorNodeFamily.Pi[Dom, Y] =>
         val kvs: Vector[(Dom, FD[Y])] =
           for {
             Weighted(arg, p) <- baseDist.pmf
             d = nodeDist(initState)(fml.nodes(arg), epsilon / p)
           } yield arg -> d
         kvs.toMap
-      case fml : GeneratorNodeFamily.PiOpt[Dom, Y] =>
+      case fml: GeneratorNodeFamily.PiOpt[Dom, Y] =>
         val kvs: Vector[(Dom, FD[Y])] =
           for {
             Weighted(arg, p) <- baseDist.pmf
-            node <- fml.nodesOpt(arg)
+            node             <- fml.nodesOpt(arg)
             d = nodeDist(initState)(node, epsilon / p)
           } yield arg -> d
         kvs.toMap
@@ -265,8 +265,8 @@ case class TruncatedFiniteDistribution[State, Boat](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(initState)                       // initial condition for island, boat to row back
-          val isleOut          = varDist(isleInit)(islandOutput, epsilon) //result for the island
+          val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
+          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map(export(boat, _))
             .purge(epsilon) // exported result seen outside
@@ -275,7 +275,7 @@ case class TruncatedFiniteDistribution[State, Boat](
           val (isleInit, boat, isleCoeffs) = initMap(initState)
           val isleOut =
             updateAll(isleCoeffs.toSeq) // coefficients changed to those for the island
-              .varDist(isleInit)(islandOutput, epsilon)
+              .varDist(isleInit)(islandOutput(boat), epsilon)
           isleOut.map(export(boat, _)).purge(epsilon)
       }
     }

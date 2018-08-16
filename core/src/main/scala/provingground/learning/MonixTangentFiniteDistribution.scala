@@ -7,8 +7,7 @@ import scala.collection.immutable
 import scala.language.higherKinds
 import monix.eval._
 
-
-object MonixTangentFiniteDistribution{
+object MonixTangentFiniteDistribution {
   def average[V](x: Task[FD[V]], y: Task[FD[V]]) =
     for {
       a <- x
@@ -26,11 +25,10 @@ object MonixTangentFiniteDistribution{
   */
 case class MonixTangentFiniteDistribution[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
-    baseState : State)(
-    implicit sd: StateDistribution[State, FD])
+    baseState: State)(implicit sd: StateDistribution[State, FD])
     extends GenMonixFiniteDistribution[State, Boat](nodeCoeffSeq) {
 
-      import MonixTangentFiniteDistribution._
+  import MonixTangentFiniteDistribution._
 
   /**
     * update coefficients, to be used in complex islands
@@ -56,7 +54,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
     * @return distribution corresponding to the `output` random variable
     */
   def nodeDist[Y](tangentState: State)(generatorNode: GeneratorNode[Y],
-                                    epsilon: Double): Task[FD[Y]] =
+                                       epsilon: Double): Task[FD[Y]] =
     if (epsilon > 1) Task.now(FD.empty[Y])
     else {
       import GeneratorNode._
@@ -68,9 +66,9 @@ case class MonixTangentFiniteDistribution[State, Boat](
         case MapOpt(f, input, _) =>
           varDist(tangentState)(input, epsilon).map(_.condMap(f).purge(epsilon))
         case ZipMap(f, input1, input2, _) =>
-          val d1 = varDist(tangentState)(input1, epsilon).map(_.flatten)
+          val d1  = varDist(tangentState)(input1, epsilon).map(_.flatten)
           val d1b = baseVal(input1)
-          val d2 = varDist(tangentState)(input2, epsilon).map(_.flatten)
+          val d2  = varDist(tangentState)(input2, epsilon).map(_.flatten)
           val d2b = baseVal(input2)
           average(
             d1b.zip(d2).map {
@@ -83,22 +81,23 @@ case class MonixTangentFiniteDistribution[State, Boat](
             }
           )
         case ZipMapOpt(f, input1, input2, _) =>
-          val d1 = varDist(tangentState)(input1, epsilon).map(_.flatten)
+          val d1  = varDist(tangentState)(input1, epsilon).map(_.flatten)
           val d1b = baseVal(input1)
-          val d2 = varDist(tangentState)(input2, epsilon).map(_.flatten)
+          val d2  = varDist(tangentState)(input2, epsilon).map(_.flatten)
           val d2b = baseVal(input1)
           average(
-          d1b.zip(d2).map {
-            case (xd, yd) =>
-              xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon)
-          },
-          d1.zip(d2b).map {
-            case (xd, yd) =>
-              xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon)
-          }
-        )
+            d1b.zip(d2).map {
+              case (xd, yd) =>
+                xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon)
+            },
+            d1.zip(d2b).map {
+              case (xd, yd) =>
+                xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon)
+            }
+          )
         case ZipFlatMap(baseInput, fiberVar, f, _) =>
-          val baseDistT = varDist(tangentState)(baseInput, epsilon).map(_.flatten)
+          val baseDistT =
+            varDist(tangentState)(baseInput, epsilon).map(_.flatten)
           val baseDistTb = baseVal(baseInput)
           average(
             baseDistT.flatMap { (baseDist) =>
@@ -142,7 +141,8 @@ case class MonixTangentFiniteDistribution[State, Boat](
             }
           )
         case FlatMap(baseInput, fiberNode, _) =>
-          val baseDistT = varDist(tangentState)(baseInput, epsilon).map(_.flatten)
+          val baseDistT =
+            varDist(tangentState)(baseInput, epsilon).map(_.flatten)
           val baseDistTb = baseVal(baseInput)
           average(
             baseDistT.flatMap { (baseDist) =>
@@ -182,7 +182,8 @@ case class MonixTangentFiniteDistribution[State, Boat](
             }
           )
         case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
-          val baseDistT = varDist(tangentState)(baseInput, epsilon).map(_.flatten)
+          val baseDistT =
+            varDist(tangentState)(baseInput, epsilon).map(_.flatten)
           val baseDistTb = baseVal(baseInput)
           average(
             baseDistT.flatMap { (baseDist) =>
@@ -228,7 +229,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
             }
           )
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
-          val d1T = varDist(tangentState)(baseInput, epsilon).map(_.flatten)
+          val d1T  = varDist(tangentState)(baseInput, epsilon).map(_.flatten)
           val d1Tb = baseVal(baseInput)
           average(
             d1T.flatMap { d1 =>
@@ -238,7 +239,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
                 byBase.map {
                   case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
                     val d2T =
-                      baseVal(fiberVar(z))// distribution of the fiber at `z`
+                      baseVal(fiberVar(z)) // distribution of the fiber at `z`
                     d2T.map { d2 =>
                       val d = FD(pmf1)
                         .zip(d2)
@@ -256,7 +257,8 @@ case class MonixTangentFiniteDistribution[State, Boat](
                 byBase.map {
                   case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
                     val d2T =
-                      varDist(tangentState)(fiberVar(z), epsilon / baseWeights(z))
+                      varDist(tangentState)(fiberVar(z),
+                                            epsilon / baseWeights(z))
                         .map(_.flatten) // distribution of the fiber at `z`
                     d2T.map { d2 =>
                       val d = FD(pmf1)
@@ -280,8 +282,8 @@ case class MonixTangentFiniteDistribution[State, Boat](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(tangentState)                       // initial condition for island, boat to row back
-          val isleOut          = varDist(isleInit)(islandOutput, epsilon) //result for the island
+          val (isleInit, boat) = initMap(tangentState)                          // initial condition for island, boat to row back
+          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map((fd) => fd.map(export(boat, _)).purge(epsilon)) // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
@@ -289,7 +291,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
           val (isleInit, boat, isleCoeffs) = initMap(tangentState)
           val isleOut =
             updateAll(isleCoeffs.toSeq) // coefficients changed to those for the island
-              .varDist(isleInit)(islandOutput, epsilon)
+              .varDist(isleInit)(islandOutput(boat), epsilon)
           isleOut
             .map((fd) => fd.map(export(boat, _)).purge(epsilon)) // exported result seen outside
       }

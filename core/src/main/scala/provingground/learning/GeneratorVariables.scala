@@ -85,11 +85,11 @@ case class GeneratorVariables[State, Boat](
         varListSupport(output.polyDomain).flatMap((x) =>
           generatorVars(p.nodes(x)))
       case p: GeneratorNodeFamily.PiOpt[Dom, O] =>
-        varListSupport(output.polyDomain).flatMap((x) =>
-          p.nodesOpt(x).toSet.flatMap((node : GeneratorNode[O]) =>
-            generatorVars(node)
-          )
-        )
+        varListSupport(output.polyDomain).flatMap(
+          (x) =>
+            p.nodesOpt(x)
+              .toSet
+              .flatMap((node: GeneratorNode[O]) => generatorVars(node)))
       case node: GeneratorNode[O] => generatorVars(node)
     }
 

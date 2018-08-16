@@ -140,16 +140,16 @@ abstract class GenMonixFiniteDistribution[State, Boat](
             } yield dt.map(d => arg -> d)
           Task.gather(kvs).map(_.toMap)
         }
-    case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
-      baseDist.flatMap { (bd) =>
-        val kvs: Vector[Task[(Dom, FD[Y])]] =
-          for {
-            Weighted(arg, p) <- bd.pmf
-            node <- f.nodesOpt(arg)
-            dt = nodeDist(initState)(node, epsilon / p) // actually a task
-          } yield dt.map(d => arg -> d)
-        Task.gather(kvs).map(_.toMap)
-      }
+      case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
+        baseDist.flatMap { (bd) =>
+          val kvs: Vector[Task[(Dom, FD[Y])]] =
+            for {
+              Weighted(arg, p) <- bd.pmf
+              node             <- f.nodesOpt(arg)
+              dt = nodeDist(initState)(node, epsilon / p) // actually a task
+            } yield dt.map(d => arg -> d)
+          Task.gather(kvs).map(_.toMap)
+        }
     }
 
   def nodeDist[Y](initState: State)(generatorNode: GeneratorNode[Y],
@@ -313,8 +313,8 @@ case class MonixFiniteDistribution[State, Boat](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(initState)                       // initial condition for island, boat to row back
-          val isleOut          = varDist(isleInit)(islandOutput, epsilon) //result for the island
+          val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
+          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map((fd) => fd.map(export(boat, _)).purge(epsilon)) // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
@@ -322,7 +322,7 @@ case class MonixFiniteDistribution[State, Boat](
           val (isleInit, boat, isleCoeffs) = initMap(initState)
           val isleOut =
             updateAll(isleCoeffs.toSeq) // coefficients changed to those for the island
-              .varDist(isleInit)(islandOutput, epsilon)
+              .varDist(isleInit)(islandOutput(boat), epsilon)
           isleOut
             .map((fd) => fd.map(export(boat, _)).purge(epsilon)) // exported result seen outside
       }

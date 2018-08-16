@@ -190,7 +190,7 @@ case class GeneratorEquations[State, Boat](
         val (isleInit, boat)             = isle.initMap(initState)
         val isleEq                       = GeneratorEquations(nodeCoeffSeq, isleInit)
         val isleEquations: Set[Equation] = isleEq.equations.map(_.useBoat(boat))
-        val isleFinalProb                = isleEq.finalProbs(isle.islandOutput)
+        val isleFinalProb                = isleEq.finalProbs(isle.islandOutput(boat))
         val eqTerms =
           for {
             (x, FinalVal(p)) <- isleFinalProb
@@ -203,7 +203,7 @@ case class GeneratorEquations[State, Boat](
         val (isleInit, boat, _)          = isle.initMap(initState)
         val isleEq                       = GeneratorEquations(nodeCoeffSeq, isleInit)
         val isleEquations: Set[Equation] = isleEq.equations.map(_.useBoat(boat))
-        val isleFinalProb                = isleEq.finalProbs(isle.islandOutput)
+        val isleFinalProb                = isleEq.finalProbs(isle.islandOutput(boat))
         val eqTerms =
           for {
             (x, FinalVal(p)) <- isleFinalProb
