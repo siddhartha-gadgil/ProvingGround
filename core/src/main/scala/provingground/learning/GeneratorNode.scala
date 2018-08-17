@@ -103,8 +103,7 @@ object RandomVarFamily {
 class RandomVar[+O](val range: Sort[_, O] = Sort.All[O]())
     extends RandomVarFamily[HNil, O](RandomVarList.Nil, _ => range)
 
-object RandomVar {
-
+object RandomVar {  
   /**
     * convenience class to avoid {{HNil}}
     */

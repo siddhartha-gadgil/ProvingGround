@@ -19,6 +19,8 @@ trait ExstInducStruc {
   def ||(that: ExstInducStruc) = ExstInducStruc.OrElse(this, that)
 }
 
+case class ExstInducDefn(typFamily: Term, intros: Vector[Term], ind: ExstInducStruc, parameters : Vector[Term])
+
 object ExstInducStruc {
   import translation.TermPatterns.fm
 

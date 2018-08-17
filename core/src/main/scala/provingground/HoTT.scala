@@ -1227,7 +1227,7 @@ object HoTT {
       case _          => None
     }
 
-  def typOpt(x: Term) = x match {
+  def typOpt(x: Term): Option[Typ[Term]] = x match {
     case typ: Typ[_] => Some(typ: Typ[Term])
     case _           => None
   }

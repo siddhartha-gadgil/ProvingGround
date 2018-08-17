@@ -3,8 +3,13 @@ import provingground.HoTT._
 import provingground.{FiniteDistribution => FD, _}
 import shapeless._
 import induction._
+import provingground.learning.GeneratorNode.{Map, MapOpt}
 
 import scala.language.higherKinds
+
+import GeneratorNode._
+
+import TermRandomVars._
 
 class TermGeneratorNodes[InitState](
     appln: (ExstFunc, Term) => Term,
@@ -12,8 +17,8 @@ class TermGeneratorNodes[InitState](
     addVar: Typ[Term] => InitState => (InitState, Term),
     getVar: Typ[Term] => Term
 ) {
-  import GeneratorNode._
-  import TermRandomVars._
+
+
 
   val unifApplnNode: ZipMapOpt[ExstFunc, Term, Term] =
     ZipMapOpt[ExstFunc, Term, Term](
@@ -44,7 +49,7 @@ class TermGeneratorNodes[InitState](
   def lambdaIsle(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
     Island[Term, InitState, Term, Term](
       Terms,
-      (_) => Terms,
+      _ => Terms,
       addVar(typ),
       { case (x, y) => x :~> y }
     )
@@ -56,7 +61,7 @@ class TermGeneratorNodes[InitState](
         Some(
           Island[Term, InitState, Term, Term](
             termsWithTyp(pd),
-            (x) => termsWithTyp(pd.value.replace(pd.variable, x)),
+            x => termsWithTyp(pd.value.replace(pd.variable, x)),
             addVar(typ),
             { case (x, y) => x :~> y }
           )
@@ -65,7 +70,7 @@ class TermGeneratorNodes[InitState](
         Some(
           Island[Term, InitState, Term, Term](
             termsWithTyp(ft),
-            (_) => termsWithTyp(ft.codom),
+            _ => termsWithTyp(ft.codom),
             addVar(typ),
             { case (x, y) => x :~> y }
           )
@@ -73,10 +78,10 @@ class TermGeneratorNodes[InitState](
       case _ => None
     }
 
-  def lambdaIsleForFuncWithDomain(dom: Typ[Term]) =
+  def lambdaIsleForFuncWithDomain(dom: Typ[Term]): Island[ExstFunc, InitState, Term, Term] =
     Island[ExstFunc, InitState, Term, Term](
       funcsWithDomain(dom),
-      (_) => Terms,
+      _ => Terms,
       addVar(dom),
       { case (x, y) => ExstFunc(x :~> y) }
     )
@@ -97,33 +102,33 @@ class TermGeneratorNodes[InitState](
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
-      (_) => Typs,
+      _ => Typs,
       addVar(typ),
       { case (x, y) => pi(x)(y) }
     )
 
-  def recFuncs(ind: ExstInducStruc) =
-    ZipMapOpt[Typ[Term], Typ[Term], ExstFunc](
-      {case (x, y) => ind.recOpt(x, y).flatMap(ExstFunc.opt)}, Typs, Typs, Funcs)
+  def recFuncs(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
+    ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
+      case (x, y) => ind.recOpt(x, y).flatMap(ExstFunc.opt)
+    }, Typs, Typs, Funcs)
 
-  def inducFuncs(ind: ExstInducStruc) =
-    ZipMapOpt[Typ[Term], Term, ExstFunc](
-      {case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)}, Typs, Terms, Funcs)
+  def inducFuncs(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Term, ExstFunc] =
+    ZipMapOpt[Typ[Term], Term, ExstFunc]({
+      case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)
+    }, Typs, Terms, Funcs)
 
-  def inducHeadNode(inductiveTyp: Typ[Term]) =
-    Map[Unit, Term](
-     (_) => inductiveTyp,
-     Star, IntroRuleTypes(inductiveTyp))
 
-  def selfHeadNode(inductiveTyp: Typ[Term]) =
+  def selfHeadNode(
+      inductiveTyp: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
-      IntroRuleTypes(inductiveTyp),
-      (t: Term) => IntroRuleTypes(inductiveTyp),
+      IntroRuleTypes(inductiveTyp), // output
+      (t: Term) => IntroRuleTypes(inductiveTyp), // output from island
       addVar(inductiveTyp),
       { case (x, y) => pi(x)(y) }
     )
 
-  def otherHeadIsle(inductiveTyp: Typ[Term])(typ: Typ[Term]) =
+  def otherHeadIsle(inductiveTyp: Typ[Term])(
+      typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IntroRuleTypes(inductiveTyp),
       (t: Term) => IntroRuleTypes(inductiveTyp),
@@ -131,31 +136,142 @@ class TermGeneratorNodes[InitState](
       { case (x, y) => pi(x)(y) }
     )
 
-  def otherHeadNode(inductiveTyp: Typ[Term]) =
-      FlatMap(
-        Typs,
-        otherHeadIsle(inductiveTyp),
-        IntroRuleTypes(inductiveTyp)
+  def otherHeadNode(inductiveTyp: Typ[Term]): FlatMap[Typ[Term], Typ[Term]] =
+    FlatMap(
+      Typs,
+      otherHeadIsle(inductiveTyp),
+      IntroRuleTypes(inductiveTyp)
     )
 
-  def emptyIntros(inductiveTyp: Typ[Term]) =
-    Map[Unit, Vector[Term]](
-     (_) => Vector(),
-     Star, IntroRulesVecs(inductiveTyp))
 
-  def consIntros(inductiveTyp: Typ[Term]) =
-    ZipMap[Typ[Term], Vector[Term], Vector[Term]]({case (x, ys) => getVar(x) +: ys},
-      IntroRuleTypes(inductiveTyp),
-      IntroRulesVecs(inductiveTyp),
-      IntroRulesVecs(inductiveTyp)
-  )
-
-  def simpleInductiveStructure(inductiveTyp: Typ[Term]) =
-    Map[Vector[Term], ExstInducStruc](
-      intros => ExstInducStruc.get(inductiveTyp, intros),
-      IntroRulesVecs(inductiveTyp),
+  def simpleInductiveStructure(
+      inductiveTyp: Typ[Term]): Map[Vector[Typ[Term]], ExstInducStruc] =
+    Map[Vector[Typ[Term]], ExstInducStruc](
+      introTyps =>
+        {
+          val intros = introTyps.map(getVar)
+          ExstInducStruc.get(inductiveTyp, intros)
+        },
+      RandomVector(IntroRuleTypes(inductiveTyp)),
       InducStrucs
     )
+
+  def simpleInductiveDefn(
+                                inductiveTyp: Typ[Term]): Map[Vector[Typ[Term]], ExstInducDefn] =
+    Map[Vector[Typ[Term]], ExstInducDefn](
+      introTyps =>
+        {
+          val intros = introTyps.map(getVar)
+          ExstInducDefn(
+          inductiveTyp,
+          intros,
+          ExstInducStruc.get(inductiveTyp, intros),
+          Vector())},
+      RandomVector(IntroRuleTypes(inductiveTyp)),
+      InducDefns
+    )
+
+  def partiallyApply(f: Term): Option[Map[Term, Term]] =
+    ExstFunc.opt(f).map {
+      fn =>
+        Map(
+          (x: Term) => appln(fn, x),
+          termsWithTyp(fn.dom),
+          PartiallyApplied(f)
+        )
+    }
+
+  def iteratedApply(f: Term) =
+    FlatMapOpt(
+      PartiallyApplied(f),
+      g => partiallyApply(g),
+      PartiallyApplied(f)
+    )
+
+  def iterFuncIsle(targetTyp: Typ[Term])(
+    typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+    Island[Typ[Term], InitState, Typ[Term], Term](
+      IterFuncTypTo(targetTyp),
+      (_: Term) => IntroRuleTypes(targetTyp),
+      addVar(typ),
+      { case (x, y) => pi(x)(y) }
+    )
+
+  def iterFuncNode(targetTyp: Typ[Term]): FlatMap[Typ[Term], Typ[Term]] =
+    FlatMap(
+      Typs,
+      iterFuncIsle(targetTyp),
+      IterFuncTypTo(targetTyp)
+    )
+
+  def iterHeadNode(inductiveTyp: Typ[Term]): FlatMap[Typ[Term], Typ[Term]] =
+    FlatMap(
+      IterFuncTypTo(inductiveTyp),
+      otherHeadIsle(inductiveTyp),
+      IntroRuleTypes(inductiveTyp)
+    )
+
+  def typFromFamily(typF: Term): MapOpt[Term, Typ[Term]] =
+    MapOpt[Term, Typ[Term]](
+      typOpt,
+      PartiallyApplied(typF),
+      TypsFromFamily(typF)
+    )
+
+  def indexedInducHeadNode(typF: Typ[Term]): Map[Typ[Term], Typ[Term]] =
+    Map[Typ[Term], Typ[Term]](
+      identity,
+      TypsFromFamily(typF),
+      IndexedIntroRuleTyps(typF)
+    )
+
+  def indexedOtherHeadIsle(typF: Term)(
+    typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+    Island[Typ[Term], InitState, Typ[Term], Term](
+      IndexedIntroRuleTyps(typF),
+      (t: Term) => IndexedIntroRuleTyps(typF),
+      addVar(typ),
+      { case (x, y) => pi(x)(y) }
+    )
+
+  def indexedSelfHeadNode(typF: Term) =
+    FlatMap(
+      TypsFromFamily(typF),
+      indexedOtherHeadIsle(typF),
+      IndexedIntroRuleTyps(typF)
+    )
+
+  def indexedOtherHeadNode(typF: Term) =
+    FlatMap(
+      Typs,
+      indexedOtherHeadIsle(typF),
+      IndexedIntroRuleTyps(typF)
+    )
+
+  def indexedIterFuncIsle(targetTyp: Term)(
+    typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+    Island[Typ[Term], InitState, Typ[Term], Term](
+      IndexedIterFuncTypTo(targetTyp),
+      (_: Term) => IndexedIntroRuleTyps(targetTyp),
+      addVar(typ),
+      { case (x, y) => pi(x)(y) }
+    )
+
+  def indexedIterFuncNode(targetTyp: Term): FlatMap[Typ[Term], Typ[Term]] =
+    FlatMap(
+      Typs,
+      indexedIterFuncIsle(targetTyp),
+      IndexedIterFuncTypTo(targetTyp)
+    )
+
+  def indexedIterHeadNode(inductiveTyp: Term) =
+    FlatMap(
+      IndexedIterFuncTypTo(inductiveTyp),
+      indexedOtherHeadIsle(inductiveTyp),
+      IndexedIntroRuleTyps(inductiveTyp)
+    )
+
+
 }
 
 object TermRandomVars {
@@ -164,7 +280,6 @@ object TermRandomVars {
   case object Typs extends RandomVar[Typ[Term]]
 
   case object Funcs extends RandomVar[ExstFunc]
-
 
   case object TermsWithTyp
       extends RandomVar.SimpleFamily[Typ[Term], Term](
@@ -188,23 +303,58 @@ object TermRandomVars {
 
   case object InducStrucs extends RandomVar[ExstInducStruc]
 
+  case object InducDefns extends RandomVar[ExstInducDefn]
+
+
   case object Star extends RandomVar[Unit]
 
-  case class IntroRuleTypes(inductiveTyp: Typ[Term]) extends RandomVar[Typ[Term]]
+  def just[X](value: X, rv: RandomVar[X]): GeneratorNode.Map[Unit, X] =
+    GeneratorNode.Map[Unit, X]((_: Unit) => value, Star, rv)
 
-  case class IntroRulesVecs(inductiveTyp: Typ[Term]) extends RandomVar[Vector[Term]]
+  case class IntroRuleTypes(inductiveTyp: Typ[Term])
+      extends RandomVar[Typ[Term]]
 
-  case object NewTyps extends RandomVar[Typ[Term]]
+  def inducHeadNode(inductiveTyp: Typ[Term]): Map[Unit, Term] =
+    just(inductiveTyp, IntroRuleTypes(inductiveTyp))
+
+
+
+  case class PartiallyApplied(func: Term) extends RandomVar[Term]
+
+  def partiallyApplySelf(f: Term): Map[Unit, Term] =
+    just(f, PartiallyApplied(f))
+
+
+  case class IterFuncTypTo(typ: Typ[Term]) extends RandomVar[Typ[Term]]
+
+  val typFamilyTypes: RandomVar[Term] = IterFuncTypTo(Type)
+
+  case class TypsFromFamily(typF: Term) extends RandomVar[Typ[Term]]
+
+  case class IndexedIntroRuleTyps(typF: Term) extends RandomVar[Typ[Term]]
+
+  case class IndexedIterFuncTypTo(typF: Term) extends RandomVar[Typ[Term]]
+
 
 
 }
 
-case class TermState(terms: FD[Term], typs: FD[Typ[Term]], vars: Vector[Term]) {
-  val thmsByPf = terms.map(_.typ)
-  val thmsBySt = typs.filter(thmsByPf(_) > 0)
-  val pfSet    = terms.flatten.supp.filter((t) => thmsBySt(t.typ) > 0)
-  val fullPfSet =
-    pfSet.flatMap((pf) => partialLambdaClosures(vars)(pf).map((pf, _)))
+case class RandomVector[X](base: RandomVar[X]) extends RandomVar[Vector[X]]{
+  def empty: Map[Unit, Vector[X]] = just[Vector[X]](Vector(), this)
+
+  def cons: ZipMap[X, Vector[X], Vector[X]] = ZipMap[X, Vector[X], Vector[X]](
+    { case (x, ys) => x +: ys },
+    base,
+    this,
+    this)
+}
+
+case class TermState(terms: FD[Term], typs: FD[Typ[Term]], vars: Vector[Term], inds: Vector[ExstInducStruc]) {
+  val thmsByPf : FD[Typ[Term]] = terms.map(_.typ)
+  val thmsBySt : FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0)
+  val pfSet: Vector[Term] = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
+  val fullPfSet: Vector[(Term, Term)] =
+    pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 }
 
 object TermState {
