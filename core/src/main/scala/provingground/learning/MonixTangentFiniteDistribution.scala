@@ -59,6 +59,8 @@ case class MonixTangentFiniteDistribution[State, Boat](
     else {
       import GeneratorNode._
       generatorNode match {
+        case Atom(x, input) =>
+          Task(FD.unif(x))
         case Init(input) =>
           Task(sd.value(tangentState)(input))
         case Map(f, input, _) =>

@@ -82,6 +82,10 @@ case class GeneratorEquations[State, Boat](
               EquationTerm(FinalVal(Elem(x, input)), InitialVal(Elem(x, input)))
           }
         (eqTerms, Set())
+      case Atom(x, input) =>
+        val eqTerm =
+          EquationTerm(FinalVal(Elem(x, input)), FinalVal(Elem(x, input)))
+        (Set(eqTerm), Set())
       case GeneratorNode.Map(f, input, output) =>
         val eqTerms =
           finalProbs(input).map {

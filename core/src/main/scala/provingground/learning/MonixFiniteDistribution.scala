@@ -197,6 +197,8 @@ case class MonixFiniteDistribution[State, Boat](
     else {
       import GeneratorNode._
       generatorNode match {
+        case Atom(x, input) =>
+          Task(FD.unif(x))
         case Init(input) =>
           Task(sd.value(initState)(input))
         case Map(f, input, _) =>

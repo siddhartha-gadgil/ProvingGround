@@ -54,6 +54,8 @@ case class TangentFiniteDistribution[State, Boat](
       generatorNode match {
         case Init(input) =>
           value(tangentState)(input).purge(epsilon)
+        case Atom(x, input) =>
+          FD.unif(x)
         case Map(f, input, _) =>
           varDist(tangentState)(input, epsilon).map(f).purge(epsilon)
         case MapOpt(f, input, _) =>

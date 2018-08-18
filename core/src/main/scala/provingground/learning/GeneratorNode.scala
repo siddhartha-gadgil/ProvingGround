@@ -103,7 +103,7 @@ object RandomVarFamily {
 class RandomVar[+O](val range: Sort[_, O] = Sort.All[O]())
     extends RandomVarFamily[HNil, O](RandomVarList.Nil, _ => range)
 
-object RandomVar {  
+object RandomVar {
   /**
     * convenience class to avoid {{HNil}}
     */
@@ -262,6 +262,18 @@ object GeneratorNode {
     */
   case class Init[X](input: RandomVar[X])
       extends BaseGeneratorNode[X :: HNil, X] {
+    val output: RandomVar[X]                   = input
+    val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
+  }
+
+  /**
+    *  atomic value taken by a random variable
+    * @param value the value
+    * @param input the random variable
+    * @tparam X the scala type of the random variable
+    */
+  case class Atom[X](value: X, input: RandomVar[X])
+    extends BaseGeneratorNode[X :: HNil, X] {
     val output: RandomVar[X]                   = input
     val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
   }

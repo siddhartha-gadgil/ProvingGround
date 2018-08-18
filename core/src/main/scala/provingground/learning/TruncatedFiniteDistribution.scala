@@ -197,6 +197,8 @@ case class TruncatedFiniteDistribution[State, Boat](
     else {
       import GeneratorNode._
       generatorNode match {
+        case Atom(x, input) =>
+          FD.unif(x)
         case Init(input) =>
           value(initState)(input).purge(epsilon)
         case Map(f, input, _) =>
