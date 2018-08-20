@@ -19,7 +19,14 @@ trait ExstInducStruc {
   def ||(that: ExstInducStruc) = ExstInducStruc.OrElse(this, that)
 }
 
-case class ExstInducDefn(typFamily: Term, intros: Vector[Term], ind: ExstInducStruc, parameters : Vector[Term])
+case class ExstInducDefn(typFamily: Term, intros: Vector[Term], ind: ExstInducStruc, parameters : Vector[Term]){
+  def introsTypGroups : Map[Typ[Term], Int] =
+    intros.map((x) => x.typ).groupBy(identity).mapValues(_.size)
+
+  def sameAs(that: ExstInducDefn) =
+    (typFamily.typ == that.typFamily.typ) &&
+    introsTypGroups == that.introsTypGroups.map{case (k, v) => k.replace(that.typFamily, typFamily)}
+}
 
 object ExstInducStruc {
   import translation.TermPatterns.fm
