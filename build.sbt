@@ -151,11 +151,11 @@ lazy val nlpSettings = Seq(
   )
 )
 
-lazy val digressionSettings = Seq(
-  name := "ProvingGround-Digressions",
-  libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % akkaV),
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
-)
+// lazy val digressionSettings = Seq(
+//   name := "ProvingGround-Digressions",
+//   libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % akkaV),
+//   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+// )
 
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",

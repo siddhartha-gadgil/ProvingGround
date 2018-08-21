@@ -1,9 +1,0 @@
-import BaseConstructorTypes._
-import RecFunction._
-val NatCons = List(succC, zeroC)
-val r = recFn(NatCons, Nat, Nat)
-val nxt = lambda("x" :: Nat)(lambda("y" :: Nat)("y" :: Nat))
-val fn = fold(r)(nxt, one)
-fold(fn)(zero)
-fold(fn)(one)
-fold(fn)(fold(succ)(one))

@@ -12,8 +12,6 @@ import HoTT.{Name => _, _}
 import translation.{TermLang => TL}
 import trepplein._
 
-// import cats.Eval
-
 import LeanToTerm._
 
 import translation.FansiShow._
@@ -751,42 +749,17 @@ object LeanToTerm {
 
 sealed trait TermIndMod {
   val name: Name
-  // inductiveTyp: Term,
   val intros: Vector[Term]
   val numParams: Int
   val isPropn: Boolean
 
   val typF: Term
-  // val numParams = params.length
 
-  // def proofRelevant(fib: Term): Option[Term] =
-  //   if (isPropn) LeanToTerm.proofLift(inductiveTyp, fib) else Some(fib)
 
   def introsFold(p: Vector[Term]) = intros.map((rule) => foldFunc(rule, p))
 
-  // val introsFolded = introsFold(params)
-
   val recName = Name.Str(name, "rec")
 
-  // import translation.TermLang
-
-  // def recDefn(base: => Parser): OptParser = {
-  //   case (exp: Expr) => {
-  //     defn(exp, base)
-  //   }
-  // }
-  //
-  // def defn(exp: Expr, predef: (Expr) => Try[Term]): Option[Term] = {
-  //   val argsFmlyOpt = LeanToTerm.iterAp(recName, numParams + 1)(exp)
-  //   argsFmlyOpt.flatMap { (argsFmly) =>
-  //     getRec(argsFmly, predef).toOption
-  //   }
-  // }
-
-  // def getRec(argsFmly: Vector[Expr], predef: Expr => Try[Term]): Try[Term] = {
-  //   val argsFmlyTerm = LeanToTerm.parseVec(argsFmly, predef)
-  //   getRecTry(argsFmlyTerm)
-  // }
 
   def getRecTry(argsFmlyTerm: Try[Vector[Term]]): Try[Term]
 
@@ -799,18 +772,11 @@ case class SimpleIndMod(name: Name,
                         numParams: Int,
                         isPropn: Boolean)
     extends TermIndMod {
-  // val typ = toTyp(foldFunc(typF, params))
-  //
-  // lazy val ind =
-  //   // getInd(params)
-  //   ConstructorSeqTL.getExst(typ, introsFolded).value
+
 
   def getInd(p: Vector[Term]) =
     ConstructorSeqTL.getExst(toTyp(foldFunc(typF, p)), introsFold(p)).value
 
-  // println(s"inductive type: ${typ.fansi}")
-  // println(s"params: ${params map (_.fansi)}")
-  // println(s"introsFolded: ${introsFolded.map(_.fansi)}\n")
 
   import LeanToTerm.unifier
 
