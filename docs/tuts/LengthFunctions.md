@@ -39,8 +39,8 @@ scala> import provingground._, HoTT._
 
 scala>  
 
-scala> import functionfinder._, andrewscurtis.FreeGroups._ 
-import functionfinder._, andrewscurtis.FreeGroups._
+scala> import scalahott._, andrewscurtis.FreeGroups._ 
+import scalahott._, andrewscurtis.FreeGroups._
 
 scala> import spire.implicits._ 
 import spire.implicits._

@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground.scalahott
 
 import provingground._, HoTT._
 
@@ -43,8 +43,8 @@ case class IndexedVecTyp[X, +U <: RepTerm[X] with Subs[U]](
 
 class VecTyps[X, U <: RepTerm[X] with Subs[U]](basetyp: Typ[U])(
     implicit baserep: ScalaRep[U, X]) {
-  implicit val vrep: _root_.provingground.functionfinder.ScalaPolyRep[
-    _root_.provingground.functionfinder.RepTerm[
+  implicit val vrep: _root_.provingground.scalahott.ScalaPolyRep[
+    _root_.provingground.scalahott.RepTerm[
       _root_.scala.`package`.Vector[X]],
     _root_.scala.`package`.Vector[X]] = IndexedVecTyp.vecRep[U, X]
 

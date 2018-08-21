@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground.scalahott
 
 import ScalaRep._
 

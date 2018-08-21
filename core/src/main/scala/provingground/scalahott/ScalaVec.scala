@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground.scalahott
 
 import provingground._, HoTT._
 
@@ -35,11 +35,11 @@ class ScalaVec[X](val basetyp: Typ[Term])(
     def subs(x: Term, y: Term) = this
   }
 
-  implicit val nrep: _root_.provingground.functionfinder.ScalaPolyRep[
-    _root_.provingground.functionfinder.RepTerm[_root_.scala.Long],
+  implicit val nrep: _root_.provingground.scalahott.ScalaPolyRep[
+    _root_.provingground.scalahott.RepTerm[_root_.scala.Long],
     _root_.scala.Long] = poly(NatTypLong.rep)
 
-  implicit val urep: _root_.provingground.functionfinder.ScalaPolyRep[
+  implicit val urep: _root_.provingground.scalahott.ScalaPolyRep[
     _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term],
     _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term]] = poly(
     ScalaRep.UnivRep)
@@ -78,15 +78,15 @@ class ScalaVec[X](val basetyp: Typ[Term])(
 
   implicitly[ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]]
 
-  implicit val r: _root_.provingground.functionfinder.ScalaPolyRep[
+  implicit val r: _root_.provingground.scalahott.ScalaPolyRep[
     _root_.provingground.HoTT.FuncLike[
-      _root_.provingground.functionfinder.RepTerm[_root_.scala.Long],
+      _root_.provingground.scalahott.RepTerm[_root_.scala.Long],
       _root_.provingground.HoTT.FuncLike[
-        _root_.provingground.functionfinder.RepTerm[X],
+        _root_.provingground.scalahott.RepTerm[X],
         _root_.provingground.HoTT.FuncLike[
-          _root_.provingground.functionfinder.RepTerm[
+          _root_.provingground.scalahott.RepTerm[
             _root_.scala.`package`.Vector[X]],
-          _root_.provingground.functionfinder.RepTerm[
+          _root_.provingground.scalahott.RepTerm[
             _root_.scala.`package`.Vector[X]]]]],
     _root_.scala.Long => X => _root_.scala.`package`.Vector[X] => _root_.scala.`package`.Vector[
       X]] = depFuncPolyRep(

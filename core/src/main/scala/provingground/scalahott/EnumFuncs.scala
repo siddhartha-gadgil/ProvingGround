@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground.scalahott
 import provingground._, HoTT._
 import EnumType._
 import ScalaRep._
@@ -7,7 +7,7 @@ import scala.reflect.runtime.universe.{
   Function => FunctionUniv,
   _
 }
-import provingground.functionfinder.ScalaUniv._
+import provingground.scalahott.ScalaUniv._
 
 object EnumFuncs {
   def allMaps[U, V](dom: List[U], codom: List[V]): List[Map[U, V]] =

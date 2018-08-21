@@ -20,7 +20,7 @@ The ring of natural numbers is an object NatRing. This has
 
 ```tut
 import provingground._
-import functionfinder._
+import scalahott._
 import NatRing._
 ```
 

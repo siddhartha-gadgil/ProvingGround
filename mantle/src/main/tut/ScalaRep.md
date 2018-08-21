@@ -15,7 +15,7 @@ A more advanced form of Scala representations also makes symbolic algebra simpli
 ```tut
 import provingground._
 import HoTT._
-import functionfinder._
+import scalahott._
 import ScalaRep._
 ```
 

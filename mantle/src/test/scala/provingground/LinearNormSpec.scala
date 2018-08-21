@@ -1,6 +1,6 @@
 package provingground
 
-import functionfinder._, andrewscurtis.FreeGroups._
+import scalahott._, andrewscurtis.FreeGroups._
 import LinNormBound._
 
 import org.scalatest.FlatSpec

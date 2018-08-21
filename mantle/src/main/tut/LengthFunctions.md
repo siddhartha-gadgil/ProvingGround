@@ -33,7 +33,7 @@ We start with some imports. This is a bit ugly due to avoiding variable name col
 ```tut
 import provingground._, HoTT._
 
-import functionfinder._, andrewscurtis.FreeGroups._
+import scalahott._, andrewscurtis.FreeGroups._
 import spire.implicits._
 import NatRing.{ x=>_,  Literal => nat, _}, QField.{w => _, x =>_, y=>_, z=>_, Literal => rat, _}, FreeGroup.{Literal => elem, _}
 import Theorems.{PowerDistributive, ConjPower}

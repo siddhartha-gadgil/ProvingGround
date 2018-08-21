@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground.scalahott
 import provingground._, HoTT._
 // import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv}
 
@@ -264,15 +264,15 @@ object ScalaRep {
                  fibers.subs(x, y))
   }
 
-  implicit val UnivRep: _root_.provingground.functionfinder.ScalaRep[
+  implicit val UnivRep: _root_.provingground.scalahott.ScalaRep[
     _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term],
     _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term]] = idRep(Type)
 
-  implicit def scalaUnivRep[A]: _root_.provingground.functionfinder.ScalaRep[
+  implicit def scalaUnivRep[A]: _root_.provingground.scalahott.ScalaRep[
     _root_.provingground.HoTT.Typ[
-      _root_.provingground.functionfinder.RepTerm[A]],
+      _root_.provingground.scalahott.RepTerm[A]],
     _root_.provingground.HoTT.Typ[
-      _root_.provingground.functionfinder.RepTerm[A]]] = idRep(ScalaTypUniv[A])
+      _root_.provingground.scalahott.RepTerm[A]]] = idRep(ScalaTypUniv[A])
 
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] =
     IdRep(typ)

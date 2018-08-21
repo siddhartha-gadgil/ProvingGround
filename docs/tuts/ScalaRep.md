@@ -22,8 +22,8 @@ scala> import provingground._
 scala> import HoTT._ 
 import HoTT._
 
-scala> import functionfinder._ 
-import functionfinder._
+scala> import scalahott._ 
+import scalahott._
 
 scala> import ScalaRep._ 
 import ScalaRep._

@@ -149,7 +149,7 @@ class FunctionTypeSpec extends FlatSpec {
 
   val f = "f" :: A ->: B
 
-  import functionfinder.ScalaRep._
+  import scalahott.ScalaRep._
   import NatInt.rep
 
   "Simple lambda function with built-in function type" should "be defined properly" in {

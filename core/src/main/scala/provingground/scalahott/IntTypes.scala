@@ -1,4 +1,4 @@
-package provingground.functionfinder
+package provingground.scalahott
 
 import provingground._, HoTT._
 import scala.reflect.runtime.universe.{

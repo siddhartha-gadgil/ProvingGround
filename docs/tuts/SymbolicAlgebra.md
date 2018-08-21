@@ -25,8 +25,8 @@ scala>
 scala> import provingground._ 
 import provingground._
 
-scala> import functionfinder._ 
-import functionfinder._
+scala> import scalahott._ 
+import scalahott._
 
 scala> import NatRing._ 
 import NatRing._

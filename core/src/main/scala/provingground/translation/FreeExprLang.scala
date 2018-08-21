@@ -2,7 +2,7 @@ package provingground.translation
 
 import provingground._
 
-import functionfinder._
+import scalahott._
 
 import upickle.default._
 

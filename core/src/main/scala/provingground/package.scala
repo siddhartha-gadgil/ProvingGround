@@ -9,7 +9,7 @@
   * The [[learning]] package has the code for learning.
   *
   * Scala code, including the ``spire`` library, is integrated with homotopy type theory
-  * in the [[functionfinder]] package
+  * in the [[scalahott]] package
   *
   * We have implemented a functor based approach to translation in the [[translation]]
   * package, used for ``nlp`` as well as ``serialization`` and ``parsing``.

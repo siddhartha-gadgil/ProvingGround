@@ -2,7 +2,7 @@ package provingground.translation
 
 import provingground._, HoTT._
 
-import functionfinder._
+import scalahott._
 
 import RefineTerms.{refine, refineTyp}
 
