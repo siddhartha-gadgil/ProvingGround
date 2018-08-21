@@ -16,7 +16,6 @@ import akka.http.scaladsl.model._
 
 import scala.collection.mutable.{Map => MutMap, Set => MutSet}
 
-import LatexFormat.latex
 
 import HoTT._
 
@@ -131,15 +130,15 @@ object WebServer {
                                        names: Vector[(Term, String)]) = {
     fdVec = fd.pmf map
       ((wt) =>
-        (latex(encode(names)(wt.elem)),
-         latex(encode(names)(wt.elem.typ)),
+        (TeXTranslate(encode(names)(wt.elem)),
+         TeXTranslate(encode(names)(wt.elem.typ)),
          wt.weight))
   }
 
   def showTimeSeries[U <: Term with Subs[U]](term: U,
                                              ts: Vector[Double],
                                              names: Vector[(Term, String)]) = {
-    timeSeries(latex(encode(names)(term))) = ts
+    timeSeries(TeXTranslate(encode(names)(term))) = ts
   }
 
   def showFDs[U <: Term with Subs[U]](fds: Vector[FiniteDistribution[U]],
