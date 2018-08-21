@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.andrewscurtis" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -119,22 +119,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <a title="" href="../examples/index.html"><span class="name">examples</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.functionfinder" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="functionfinder"></a><a id="functionfinder:functionfinder"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#functionfinder" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="../functionfinder/index.html"><span class="name">functionfinder</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
@@ -212,6 +196,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
+                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -235,6 +223,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="trait" href="Conditioning.html" title="typeclass for being able to condition"></a>
                         <a href="Conditioning.html" title="typeclass for being able to condition">Conditioning</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="ContextExport$.html" title=""></a>
+                        <a class="trait" href="ContextExport.html" title="changes in the distribution-like object other than those induced by object level map while exporting from an island typically a change in context for variables representing terms in a context"></a>
+                        <a href="ContextExport.html" title="changes in the distribution-like object other than those induced by object level map while exporting from an island typically a change in context for variables representing terms in a context">ContextExport</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Deducer$.html" title="Generating terms from given ones using the main HoTT operations, and the adjoint of this generation."></a>
                         <a class="class" href="Deducer.html" title=""></a>
                         <a href="Deducer.html" title="">Deducer</a>
@@ -251,7 +243,7 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="trait" href="DiffbleFunction.html" title=""></a>
                         <a href="DiffbleFunction.html" title="">DiffbleFunction</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="DistributionState$.html" title=""></a>
                         <a class="trait" href="DistributionState.html" title="typeclass for providing distributions from a state and modifying a state from distributions"></a>
                         <a href="DistributionState.html" title="typeclass for providing distributions from a state and modifying a state from distributions">DistributionState</a>
                       </li><li class="current-entities indented2">
@@ -259,7 +251,7 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="class" href="DistributionStateEvolver.html" title=""></a>
                         <a href="DistributionStateEvolver.html" title="">DistributionStateEvolver</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
                       </li><li class="current-entities indented2">
@@ -300,12 +292,28 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a href="FineEvolver.html" title="A refined evolver, i.e., evolution of terms and subclasses such as types.">FineEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="FineProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives."></a>
+                        <a href="FineProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.">FineProverTasks</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="FiniteDistributionLearner$.html" title="A combinator for learning systems with state finite distributions on vertices."></a>
                         <a href="FiniteDistributionLearner$.html" title="A combinator for learning systems with state finite distributions on vertices.">FiniteDistributionLearner</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="GenMonixFiniteDistribution.html" title=""></a>
+                        <a href="GenMonixFiniteDistribution.html" title="">GenMonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GenTruncatedFiniteDistribution.html" title=""></a>
+                        <a href="GenTruncatedFiniteDistribution.html" title="">GenTruncatedFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="GeneratorData.html" title=""></a>
                         <a href="GeneratorData.html" title="">GeneratorData</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorEquations.html" title=""></a>
+                        <a href="GeneratorEquations.html" title="">GeneratorEquations</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="GeneratorNode$.html" title=""></a>
                         <a class="trait" href="GeneratorNode.html" title="A formal node for describing recursive generation."></a>
@@ -314,6 +322,14 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="object" href="GeneratorNodeFamily$.html" title=""></a>
                         <a class="trait" href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case."></a>
                         <a href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case.">GeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorVariables$.html" title=""></a>
+                        <a class="class" href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">GeneratorVariables</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form"></a>
+                        <a href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form">GeometricDistribution</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="HoTTgen$.html" title=""></a>
@@ -331,25 +347,37 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="class" href="MemoState.html" title=""></a>
                         <a href="MemoState.html" title="">MemoState</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixSamples$.html" title=""></a>
                         <a class="trait" href="MonixSamples.html" title=""></a>
                         <a href="MonixSamples.html" title="">MonixSamples</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixTangentFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixTangentFiniteDistribution</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="NextSample.html" title=""></a>
                         <a href="NextSample.html" title="">NextSample</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="NodeCoefficients.html" title=""></a>
-                        <a href="NodeCoefficients.html" title="">NodeCoefficients</a>
+                        <a class="object" href="NodeCoeffSeq$.html" title=""></a>
+                        <a class="trait" href="NodeCoeffSeq.html" title=""></a>
+                        <a href="NodeCoeffSeq.html" title="">NodeCoeffSeq</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="NodeCoeffs$.html" title=""></a>
+                        <a class="trait" href="NodeCoeffs.html" title=""></a>
+                        <a href="NodeCoeffs.html" title="">NodeCoeffs</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="PickledTermPopulation$.html" title=""></a>
                         <a class="class" href="PickledTermPopulation.html" title=""></a>
                         <a href="PickledTermPopulation.html" title="">PickledTermPopulation</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="ProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives."></a>
-                        <a href="ProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.">ProverTasks</a>
+                        <a class="object" href="ProverTasks$.html" title=""></a>
+                        <a href="ProverTasks$.html" title="">ProverTasks</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="RandomVar$.html" title=""></a>
                         <a class="class" href="RandomVar.html" title="A formal Random Variable up to equality of distribution."></a>
@@ -371,6 +399,22 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="trait" href="RandomVarValues.html" title=""></a>
                         <a href="RandomVarValues.html" title="">RandomVarValues</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RandomVector.html" title="distributions of vectors from a base distribution"></a>
+                        <a href="RandomVector.html" title="distributions of vectors from a base distribution">RandomVector</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RecursiveGeneratorNode.html" title=""></a>
+                        <a href="RecursiveGeneratorNode.html" title="">RecursiveGeneratorNode</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RecursiveGeneratorNodeFamily.html" title=""></a>
+                        <a href="RecursiveGeneratorNodeFamily.html" title="">RecursiveGeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Representation$.html" title=""></a>
+                        <a class="class" href="Representation.html" title=""></a>
+                        <a href="Representation.html" title="">Representation</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Samples$.html" title=""></a>
                         <a class="trait" href="Samples.html" title=""></a>
                         <a href="Samples.html" title="">Samples</a>
@@ -386,6 +430,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="object" href="SortList$.html" title=""></a>
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="StateDistribution$.html" title=""></a>
+                        <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
+                        <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="StateEvolver.html" title=""></a>
@@ -406,6 +454,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="object" href="TangVec$.html" title=""></a>
                         <a class="class" href="TangVec.html" title=""></a>
                         <a href="TangVec.html" title="">TangVec</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TangentFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="TangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="TangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TangentFiniteDistribution</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="TermBucket$.html" title=""></a>
                         <a class="class" href="TermBucket.html" title=""></a>
@@ -439,6 +491,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="object" href="TermRandomVars$.html" title=""></a>
                         <a href="TermRandomVars$.html" title="">TermRandomVars</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="TermState$.html" title=""></a>
+                        <a class="class" href="TermState.html" title=""></a>
+                        <a href="TermState.html" title="">TermState</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging"></a>
                         <a href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging">TheoremFeedback</a>
@@ -471,13 +527,21 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="class" href="TruncatedDistributionLang.html" title=""></a>
                         <a href="TruncatedDistributionLang.html" title="">TruncatedDistributionLang</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="TruncatedFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TruncatedFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="Unify$.html" title=""></a>
                         <a href="Unify$.html" title="">Unify</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="VectorRepresentations$.html" title=""></a>
-                        <a href="VectorRepresentations$.html" title="">VectorRepresentations</a>
+                        <a class="class" href="VarValueSet.html" title=""></a>
+                        <a href="VarValueSet.html" title="">VarValueSet</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="WeightVect$.html" title=""></a>
+                        <a class="class" href="WeightVect.html" title=""></a>
+                        <a href="WeightVect.html" title="">WeightVect</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="WeightedTermBucket$.html" title=""></a>
                         <a class="class" href="WeightedTermBucket.html" title=""></a>
@@ -495,6 +559,22 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
       </span>
       <span class="symbol">
         <a title="" href="../library/index.html"><span class="name">library</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.scalahott" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="scalahott"></a><a id="scalahott:scalahott"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#scalahott" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../scalahott/index.html"><span class="name">scalahott</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
@@ -631,9 +711,9 @@ concrete languages including our implementation of HoTT are in this package.
       <p class="shortcomment cmt">inverses under application with an without unification
 </p>
     </li><li name="provingground.learning.BaseGeneratorNode" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="BaseGeneratorNode[I&lt;:shapeless.HList,O]extendsGeneratorNode[O]"></a><a id="BaseGeneratorNode[I&lt;:HList,O]:BaseGeneratorNode[I,O]"></a>
+      <a id="BaseGeneratorNode[I&lt;:shapeless.HList,+O]extendsGeneratorNode[O]withBaseGeneratorNodeFamily[shapeless.HNil,O]"></a><a id="BaseGeneratorNode[I&lt;:HList,+O]:BaseGeneratorNode[I,O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/index.html#BaseGeneratorNode[I&lt;:shapeless.HList,O]extendsGeneratorNode[O]" title="Permalink">
+      <a href="../../provingground/learning/index.html#BaseGeneratorNode[I&lt;:shapeless.HList,+O]extendsGeneratorNode[O]withBaseGeneratorNodeFamily[shapeless.HNil,O]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -642,7 +722,23 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="" href="BaseGeneratorNode.html"><span class="name">BaseGeneratorNode</span></a><span class="tparams">[<span name="I">I &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="O">O</span>]</span><span class="result"> extends <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</span>
+        <a title="" href="BaseGeneratorNode.html"><span class="name">BaseGeneratorNode</span></a><span class="tparams">[<span name="I">I &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="O">+O</span>]</span><span class="result"> extends <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>] with <a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.BaseGeneratorNodeFamily" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="BaseGeneratorNodeFamily[Dom&lt;:shapeless.HList,+O]extendsGeneratorNodeFamily[Dom,O]"></a><a id="BaseGeneratorNodeFamily[Dom&lt;:HList,+O]:BaseGeneratorNodeFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#BaseGeneratorNodeFamily[Dom&lt;:shapeless.HList,+O]extendsGeneratorNodeFamily[Dom,O]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="BaseGeneratorNodeFamily.html"><span class="name">BaseGeneratorNodeFamily</span></a><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="O">+O</span>]</span><span class="result"> extends <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.BaseGeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.BaseGeneratorNodeFamily.O">O</span>]</span>
       </span>
       
       
@@ -727,6 +823,24 @@ concrete languages including our implementation of HoTT are in this package.
       
       <p class="shortcomment cmt">typeclass for being able to condition
 </p>
+    </li><li name="provingground.learning.ContextExport" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ContextExport[Boat,D[_]]extendsAnyRef"></a><a id="ContextExport[Boat,D[_]]:ContextExport[Boat,D]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#ContextExport[Boat,D[_]]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="changes in the distribution-like object other than those induced by object level map while exporting from an island typically a change in context for variables representing terms in a context" href="ContextExport.html"><span class="name">ContextExport</span></a><span class="tparams">[<span name="Boat">Boat</span>, <span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">changes in the distribution-like object other than those induced by object level map while exporting from an island
+typically a change in context for variables representing terms in a context</p><div class="fullcomment"><div class="comment cmt"><p>changes in the distribution-like object other than those induced by object level map while exporting from an island
+typically a change in context for variables representing terms in a context</p></div><dl class="paramcmts block"><dt class="tparam">Boat</dt><dd class="cmt"><p>the boat for an island</p></dd><dt class="tparam">D</dt><dd class="cmt"><p>the distribution-like object</p></dd></dl></div>
     </li><li name="provingground.learning.Deducer" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DeducerextendsProductwithSerializable"></a><a id="Deducer:Deducer"></a>
       <span class="permalink">
@@ -792,9 +906,9 @@ concrete languages including our implementation of HoTT are in this package.
       
       
     </li><li name="provingground.learning.DistributionState" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="DistributionState[State,D[_]]extendsAnyRef"></a><a id="DistributionState[State,D[_]]:DistributionState[State,D]"></a>
+      <a id="DistributionState[State,D[_]]extendsStateDistribution[State,D]"></a><a id="DistributionState[State,D[_]]:DistributionState[State,D]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/index.html#DistributionState[State,D[_]]extendsAnyRef" title="Permalink">
+      <a href="../../provingground/learning/index.html#DistributionState[State,D[_]]extendsStateDistribution[State,D]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -803,7 +917,7 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="typeclass for providing distributions from a state and modifying a state from distributions" href="DistributionState.html"><span class="name">DistributionState</span></a><span class="tparams">[<span name="State">State</span>, <span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+        <a title="typeclass for providing distributions from a state and modifying a state from distributions" href="DistributionState.html"><span class="name">DistributionState</span></a><span class="tparams">[<span name="State">State</span>, <span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="StateDistribution.html" class="extype" name="provingground.learning.StateDistribution">StateDistribution</a>[<span class="extype" name="provingground.learning.DistributionState.State">State</span>, <span class="extype" name="provingground.learning.DistributionState.D">D</span>]</span>
       </span>
       
       <p class="shortcomment cmt">typeclass for providing distributions from a state and
@@ -1005,6 +1119,38 @@ Various evolutions are defined mutually recursively - of functions, of types,
 of terms of a type, of type families and of all terms.
 Derivatives are defined mutually recursively with the evolutions.</p><p>This is refined so that, for example, arguments are chosen conditionally from the domain of a function.
 </p></div></div>
+    </li><li name="provingground.learning.GenMonixFiniteDistribution" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="GenMonixFiniteDistribution[State,Boat]extendsAnyRef"></a><a id="GenMonixFiniteDistribution[State,Boat]:GenMonixFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#GenMonixFiniteDistribution[State,Boat]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="GenMonixFiniteDistribution.html"><span class="name">GenMonixFiniteDistribution</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.GenTruncatedFiniteDistribution" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="GenTruncatedFiniteDistribution[State,Boat]extendsAnyRef"></a><a id="GenTruncatedFiniteDistribution[State,Boat]:GenTruncatedFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#GenTruncatedFiniteDistribution[State,Boat]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="GenTruncatedFiniteDistribution.html"><span class="name">GenTruncatedFiniteDistribution</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.GeneratorData" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="GeneratorData[V]extendsProductwithSerializable"></a><a id="GeneratorData[V]:GeneratorData[V]"></a>
       <span class="permalink">
@@ -1017,7 +1163,23 @@ Derivatives are defined mutually recursively with the evolutions.</p><p>This is 
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="GeneratorData.html"><span class="name">GeneratorData</span></a><span class="tparams">[<span name="V">V</span>]</span><span class="params">(<span name="nodeCoeffs">nodeCoeffs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[_], <span class="extype" name="provingground.learning.GeneratorData.V">V</span>)]</span>, <span name="nodeFamilyCoeffs">nodeFamilyCoeffs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _], <span class="extype" name="provingground.learning.GeneratorData.V">V</span>)]</span>, <span name="varsToResolve">varsToResolve: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[_]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="GeneratorData.html"><span class="name">GeneratorData</span></a><span class="tparams">[<span name="V">V</span>]</span><span class="params">(<span name="nodeCoeffs">nodeCoeffs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _], <span class="extype" name="provingground.learning.GeneratorData.V">V</span>)]</span>, <span name="varsToResolve">varsToResolve: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[_]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.GeneratorEquations" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GeneratorEquations[State,Boat]extendsProductwithSerializable"></a><a id="GeneratorEquations[State,Boat]:GeneratorEquations[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#GeneratorEquations[State,Boat]extendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="GeneratorEquations.html"><span class="name">GeneratorEquations</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="params">(<span name="nodeCoeffSeq">nodeCoeffSeq: <a href="NodeCoeffSeq.html" class="extype" name="provingground.learning.NodeCoeffSeq">NodeCoeffSeq</a>[<span class="extype" name="provingground.learning.GeneratorEquations.State">State</span>, <span class="extype" name="provingground.learning.GeneratorEquations.Boat">Boat</span>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="initState">initState: <span class="extype" name="provingground.learning.GeneratorEquations.State">State</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sd">sd: <a href="StateDistribution.html" class="extype" name="provingground.learning.StateDistribution">StateDistribution</a>[<span class="extype" name="provingground.learning.GeneratorEquations.State">State</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -1056,6 +1218,26 @@ encoded as an HList, but has just one output.
       
       <p class="shortcomment cmt">Family of (recursive) generation functions, either a function giving a family
 or a single {{GeneratorNode}}, which is the interesting case.</p>
+    </li><li name="provingground.learning.GeneratorVariables" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="GeneratorVariables[State,Boat]extendsProductwithSerializable"></a><a id="GeneratorVariables[State,Boat]:GeneratorVariables[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#GeneratorVariables[State,Boat]extendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double" href="GeneratorVariables.html"><span class="name">GeneratorVariables</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="params">(<span name="nodeCoeffSeq">nodeCoeffSeq: <a href="NodeCoeffSeq.html" class="extype" name="provingground.learning.NodeCoeffSeq">NodeCoeffSeq</a>[<span class="extype" name="provingground.learning.GeneratorVariables.State">State</span>, <span class="extype" name="provingground.learning.GeneratorVariables.Boat">Boat</span>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="initState">initState: <span class="extype" name="provingground.learning.GeneratorVariables.State">State</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sd">sd: <a href="StateDistribution.html" class="extype" name="provingground.learning.StateDistribution">StateDistribution</a>[<span class="extype" name="provingground.learning.GeneratorVariables.State">State</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p></div><dl class="paramcmts block"><dt class="tparam">State</dt><dd class="cmt"><p>scala type of the initial state</p></dd><dt class="param">nodeCoeffSeq</dt><dd class="cmt"><p>the various generator nodes with coefficients for various random variables and families</p></dd><dt class="param">sd</dt><dd class="cmt"><p>finite distributions from the initial state corresponding to random variables and families</p></dd></dl></div>
     </li><li name="provingground.learning.MemoState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="MemoState[D[_],V,C]extendsProductwithSerializable"></a><a id="MemoState[D[_],V,C]:MemoState[D,V,C]"></a>
       <span class="permalink">
@@ -1068,10 +1250,30 @@ or a single {{GeneratorNode}}, which is the interesting case.</p>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="MemoState.html"><span class="name">MemoState</span></a><span class="tparams">[<span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="V">V</span>, <span name="C">C</span>]</span><span class="params">(<span name="randVarVals">randVarVals: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomVar$$Value.html" class="extype" name="provingground.learning.RandomVar.Value">Value</a>[_, <span class="extype" name="provingground.learning.MemoState.D">D</span>]]</span>, <span name="genData">genData: <a href="GeneratorData.html" class="extype" name="provingground.learning.GeneratorData">GeneratorData</a>[<span class="extype" name="provingground.learning.MemoState.V">V</span>]</span>, <span name="varFamiliesToResolve">varFamiliesToResolve: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _]]</span>, <span name="context">context: <span class="extype" name="provingground.learning.MemoState.C">C</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="MemoState.html"><span class="name">MemoState</span></a><span class="tparams">[<span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="V">V</span>, <span name="C">C</span>]</span><span class="params">(<span name="randVarVals">randVarVals: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomVar$$Value.html" class="extype" name="provingground.learning.RandomVar.Value">Value</a>[_, <span class="extype" name="provingground.learning.MemoState.D">D</span>]]</span>, <span name="genData">genData: <a href="GeneratorData.html" class="extype" name="provingground.learning.GeneratorData">GeneratorData</a>[<span class="extype" name="provingground.learning.MemoState.V">V</span>]</span>, <span name="context">context: <span class="extype" name="provingground.learning.MemoState.C">C</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
+    </li><li name="provingground.learning.MonixFiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MonixFiniteDistribution[State,Boat]extendsGenMonixFiniteDistribution[State,Boat]withProductwithSerializable"></a><a id="MonixFiniteDistribution[State,Boat]:MonixFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#MonixFiniteDistribution[State,Boat]extendsGenMonixFiniteDistribution[State,Boat]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double" href="MonixFiniteDistribution.html"><span class="name">MonixFiniteDistribution</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="params">(<span name="nodeCoeffSeq">nodeCoeffSeq: <a href="NodeCoeffSeq.html" class="extype" name="provingground.learning.NodeCoeffSeq">NodeCoeffSeq</a>[<span class="extype" name="provingground.learning.MonixFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.MonixFiniteDistribution.Boat">Boat</span>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sd">sd: <a href="StateDistribution.html" class="extype" name="provingground.learning.StateDistribution">StateDistribution</a>[<span class="extype" name="provingground.learning.MonixFiniteDistribution.State">State</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>]</span>)</span><span class="result"> extends <a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a>[<span class="extype" name="provingground.learning.MonixFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.MonixFiniteDistribution.Boat">Boat</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p></div><dl class="paramcmts block"><dt class="tparam">State</dt><dd class="cmt"><p>scala type of the initial state</p></dd><dt class="param">nodeCoeffSeq</dt><dd class="cmt"><p>the various generator nodes with coefficients for various random variables and families</p></dd><dt class="param">sd</dt><dd class="cmt"><p>finite distributions from the initial state corresponding to random variables and families</p></dd></dl></div>
     </li><li name="provingground.learning.MonixSamples" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="MonixSamplesextendsSamples[monix.eval.Task]"></a><a id="MonixSamples:MonixSamples"></a>
       <span class="permalink">
@@ -1088,6 +1290,26 @@ or a single {{GeneratorNode}}, which is the interesting case.</p>
       </span>
       
       
+    </li><li name="provingground.learning.MonixTangentFiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MonixTangentFiniteDistribution[State,Boat]extendsGenMonixFiniteDistribution[State,Boat]withProductwithSerializable"></a><a id="MonixTangentFiniteDistribution[State,Boat]:MonixTangentFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#MonixTangentFiniteDistribution[State,Boat]extendsGenMonixFiniteDistribution[State,Boat]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double" href="MonixTangentFiniteDistribution.html"><span class="name">MonixTangentFiniteDistribution</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="params">(<span name="nodeCoeffSeq">nodeCoeffSeq: <a href="NodeCoeffSeq.html" class="extype" name="provingground.learning.NodeCoeffSeq">NodeCoeffSeq</a>[<span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.Boat">Boat</span>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="baseState">baseState: <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sd">sd: <a href="StateDistribution.html" class="extype" name="provingground.learning.StateDistribution">StateDistribution</a>[<span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>]</span>)</span><span class="result"> extends <a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a>[<span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.Boat">Boat</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p></div><dl class="paramcmts block"><dt class="tparam">State</dt><dd class="cmt"><p>scala type of the initial state</p></dd><dt class="param">nodeCoeffSeq</dt><dd class="cmt"><p>the various generator nodes with coefficients for various random variables and families</p></dd><dt class="param">sd</dt><dd class="cmt"><p>finite distributions from the initial state corresponding to random variables and families</p></dd></dl></div>
     </li><li name="provingground.learning.NextSample" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="NextSampleextendsProductwithSerializable"></a><a id="NextSample:NextSample"></a>
       <span class="permalink">
@@ -1104,19 +1326,35 @@ or a single {{GeneratorNode}}, which is the interesting case.</p>
       </span>
       
       
-    </li><li name="provingground.learning.NodeCoefficients" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="NodeCoefficients[V]extendsAnyRef"></a><a id="NodeCoefficients[V]:NodeCoefficients[V]"></a>
+    </li><li name="provingground.learning.NodeCoeffSeq" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NodeCoeffSeq[State,Boat,V]extendsAnyRef"></a><a id="NodeCoeffSeq[State,Boat,V]:NodeCoeffSeq[State,Boat,V]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/index.html#NodeCoefficients[V]extendsAnyRef" title="Permalink">
+      <a href="../../provingground/learning/index.html#NodeCoeffSeq[State,Boat,V]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">sealed </span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="" href="NodeCoefficients.html"><span class="name">NodeCoefficients</span></a><span class="tparams">[<span name="V">V</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+        <a title="" href="NodeCoeffSeq.html"><span class="name">NodeCoeffSeq</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>, <span name="V">V</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.NodeCoeffs" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NodeCoeffs[State,Boat,V,RDom&lt;:shapeless.HList,Y]extendsAnyRef"></a><a id="NodeCoeffs[State,Boat,V,RDom&lt;:HList,Y]:NodeCoeffs[State,Boat,V,RDom,Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#NodeCoeffs[State,Boat,V,RDom&lt;:shapeless.HList,Y]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="NodeCoeffs.html"><span class="name">NodeCoeffs</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>, <span name="V">V</span>, <span name="RDom">RDom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="Y">Y</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       
@@ -1219,6 +1457,70 @@ May actually have representations instead of distributions, for example.</p></di
       </span>
       
       
+    </li><li name="provingground.learning.RandomVector" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RandomVector[X]extendsRandomVar[Vector[X]]withProductwithSerializable"></a><a id="RandomVector[X]:RandomVector[X]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#RandomVector[X]extendsRandomVar[Vector[X]]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="distributions of vectors from a base distribution" href="RandomVector.html"><span class="name">RandomVector</span></a><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="base">base: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.RandomVector.X">X</span>]</span>)</span><span class="result"> extends <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="provingground.learning.RandomVector.X">X</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">distributions of vectors from a base distribution</p><div class="fullcomment"><div class="comment cmt"><p>distributions of vectors from a base distribution</p></div><dl class="paramcmts block"><dt class="tparam">X</dt><dd class="cmt"><p>scala type of the base</p></dd><dt class="param">base</dt><dd class="cmt"><p>the base distribution</p></dd></dl></div>
+    </li><li name="provingground.learning.RecursiveGeneratorNode" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="RecursiveGeneratorNode[State,Boat,+O]extendsGeneratorNode[O]withRecursiveGeneratorNodeFamily[shapeless.HNil,State,Boat,O]"></a><a id="RecursiveGeneratorNode[State,Boat,+O]:RecursiveGeneratorNode[State,Boat,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#RecursiveGeneratorNode[State,Boat,+O]extendsGeneratorNode[O]withRecursiveGeneratorNodeFamily[shapeless.HNil,State,Boat,O]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="RecursiveGeneratorNode.html"><span class="name">RecursiveGeneratorNode</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>, <span name="O">+O</span>]</span><span class="result"> extends <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] with <a href="RecursiveGeneratorNodeFamily.html" class="extype" name="provingground.learning.RecursiveGeneratorNodeFamily">RecursiveGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.RecursiveGeneratorNodeFamily" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="RecursiveGeneratorNodeFamily[Dom&lt;:shapeless.HList,State,Boat,+O]extendsGeneratorNodeFamily[Dom,O]"></a><a id="RecursiveGeneratorNodeFamily[Dom&lt;:HList,State,Boat,+O]:RecursiveGeneratorNodeFamily[Dom,State,Boat,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#RecursiveGeneratorNodeFamily[Dom&lt;:shapeless.HList,State,Boat,+O]extendsGeneratorNodeFamily[Dom,O]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="RecursiveGeneratorNodeFamily.html"><span class="name">RecursiveGeneratorNodeFamily</span></a><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="State">State</span>, <span name="Boat">Boat</span>, <span name="O">+O</span>]</span><span class="result"> extends <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNodeFamily.O">O</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.Representation" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Representation[T]extendsAnyValwithProductwithSerializable"></a><a id="Representation[T]:Representation[T]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#Representation[T]extendsAnyValwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Representation.html"><span class="name">Representation</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="rep">rep: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="WeightVect.html" class="extype" name="provingground.learning.WeightVect">WeightVect</a>[<span class="extype" name="provingground.learning.Representation.T">T</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.Samples" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="Samples[X[_]]extendsTangSamples[X]"></a><a id="Samples[X[_]]:Samples[X]"></a>
       <span class="permalink">
@@ -1252,9 +1554,9 @@ May actually have representations instead of distributions, for example.</p></di
       
       
     </li><li name="provingground.learning.Sort" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="Sort[+T]extendsAnyRef"></a><a id="Sort[+T]:Sort[T]"></a>
+      <a id="Sort[-S,+T]extendsAnyRef"></a><a id="Sort[-S,+T]:Sort[S,T]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/index.html#Sort[+T]extendsAnyRef" title="Permalink">
+      <a href="../../provingground/learning/index.html#Sort[-S,+T]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1263,7 +1565,7 @@ May actually have representations instead of distributions, for example.</p></di
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="A sort, i.e." href="Sort.html"><span class="name">Sort</span></a><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+        <a title="A sort, i.e." href="Sort.html"><span class="name">Sort</span></a><span class="tparams">[<span name="S">-S</span>, <span name="T">+T</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       <p class="shortcomment cmt">A <code>sort</code>, i.e.</p><div class="fullcomment"><div class="comment cmt"><p>A <code>sort</code>, i.e. type refining a scala type.
@@ -1284,6 +1586,23 @@ Can also be used for conditioning, giving one distribution from another.</p></di
       </span>
       
       <p class="shortcomment cmt">List of Sorts, used as domains for families.</p>
+    </li><li name="provingground.learning.StateDistribution" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="StateDistribution[State,D[_]]extendsAnyRef"></a><a id="StateDistribution[State,D[_]]:StateDistribution[State,D]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#StateDistribution[State,D[_]]extendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="typeclass for providing distributions from a state" href="StateDistribution.html"><span class="name">StateDistribution</span></a><span class="tparams">[<span name="State">State</span>, <span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">typeclass for providing distributions from a state
+</p>
     </li><li name="provingground.learning.StateEvolver" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="StateEvolver[State]extendsAnyRef"></a><a id="StateEvolver[State]:StateEvolver[State]"></a>
       <span class="permalink">
@@ -1364,6 +1683,26 @@ Can also be used for conditioning, giving one distribution from another.</p></di
       </span>
       
       
+    </li><li name="provingground.learning.TangentFiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TangentFiniteDistribution[State,Boat]extendsGenTruncatedFiniteDistribution[State,Boat]withProductwithSerializable"></a><a id="TangentFiniteDistribution[State,Boat]:TangentFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#TangentFiniteDistribution[State,Boat]extendsGenTruncatedFiniteDistribution[State,Boat]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double" href="TangentFiniteDistribution.html"><span class="name">TangentFiniteDistribution</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="params">(<span name="baseState">baseState: <span class="extype" name="provingground.learning.TangentFiniteDistribution.State">State</span></span>, <span name="nodeCoeffSeq">nodeCoeffSeq: <a href="NodeCoeffSeq.html" class="extype" name="provingground.learning.NodeCoeffSeq">NodeCoeffSeq</a>[<span class="extype" name="provingground.learning.TangentFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TangentFiniteDistribution.Boat">Boat</span>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sd">sd: <a href="StateDistribution.html" class="extype" name="provingground.learning.StateDistribution">StateDistribution</a>[<span class="extype" name="provingground.learning.TangentFiniteDistribution.State">State</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>]</span>)</span><span class="result"> extends <a href="GenTruncatedFiniteDistribution.html" class="extype" name="provingground.learning.GenTruncatedFiniteDistribution">GenTruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TangentFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TangentFiniteDistribution.Boat">Boat</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p></div><dl class="paramcmts block"><dt class="tparam">State</dt><dd class="cmt"><p>scala type of the initial state</p></dd><dt class="param">nodeCoeffSeq</dt><dd class="cmt"><p>the various generator nodes with coefficients for various random variables and families</p></dd><dt class="param">sd</dt><dd class="cmt"><p>finite distributions from the initial state corresponding to random variables and families</p></dd></dl></div>
     </li><li name="provingground.learning.TermBucket" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TermBucketextendsAnyRef"></a><a id="TermBucket:TermBucket"></a>
       <span class="permalink">
@@ -1429,9 +1768,9 @@ Can also be used for conditioning, giving one distribution from another.</p></di
       
       
     </li><li name="provingground.learning.TermGeneratorNodes" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="TermGeneratorNodes[State,D[_]]extendsAnyRef"></a><a id="TermGeneratorNodes[State,D[_]]:TermGeneratorNodes[State,D]"></a>
+      <a id="TermGeneratorNodes[InitState]extendsAnyRef"></a><a id="TermGeneratorNodes[InitState]:TermGeneratorNodes[InitState]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/index.html#TermGeneratorNodes[State,D[_]]extendsAnyRef" title="Permalink">
+      <a href="../../provingground/learning/index.html#TermGeneratorNodes[InitState]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1440,7 +1779,7 @@ Can also be used for conditioning, giving one distribution from another.</p></di
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="TermGeneratorNodes.html"><span class="name">TermGeneratorNodes</span></a><span class="tparams">[<span name="State">State</span>, <span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+        <a title="" href="TermGeneratorNodes.html"><span class="name">TermGeneratorNodes</span></a><span class="tparams">[<span name="InitState">InitState</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       
@@ -1474,6 +1813,22 @@ Can also be used for conditioning, giving one distribution from another.</p></di
       </span>
       <span class="symbol">
         <a title="" href="TermPopulation.html"><span class="name">TermPopulation</span></a><span class="params">(<span name="termsByType">termsByType: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="types">types: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="thmsByProofs">thmsByProofs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="lambdaWeight">lambdaWeight: <span class="extype" name="scala.Double">Double</span></span>, <span name="piWeight">piWeight: <span class="extype" name="scala.Double">Double</span></span>, <span name="applnInvMap">applnInvMap: <a href="Deducer$.html#InvMap=Vector[(provingground.HoTT.Term,Set[(provingground.HoTT.Term,provingground.HoTT.Term)])]" class="extmbr" name="provingground.learning.Deducer.InvMap">InvMap</a> = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermStateextendsProductwithSerializable"></a><a id="TermState:TermState"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#TermStateextendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermState.html"><span class="name">TermState</span></a><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="inds">inds: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -1591,6 +1946,58 @@ various steps are explicit for exploration and debugging
       </span>
       
       
+    </li><li name="provingground.learning.TruncatedFiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TruncatedFiniteDistribution[State,Boat]extendsGenTruncatedFiniteDistribution[State,Boat]withProductwithSerializable"></a><a id="TruncatedFiniteDistribution[State,Boat]:TruncatedFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#TruncatedFiniteDistribution[State,Boat]extendsGenTruncatedFiniteDistribution[State,Boat]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double" href="TruncatedFiniteDistribution.html"><span class="name">TruncatedFiniteDistribution</span></a><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>]</span><span class="params">(<span name="nodeCoeffSeq">nodeCoeffSeq: <a href="NodeCoeffSeq.html" class="extype" name="provingground.learning.NodeCoeffSeq">NodeCoeffSeq</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sd">sd: <a href="StateDistribution.html" class="extype" name="provingground.learning.StateDistribution">StateDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>]</span>)</span><span class="result"> extends <a href="GenTruncatedFiniteDistribution.html" class="extype" name="provingground.learning.GenTruncatedFiniteDistribution">GenTruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
+the coefficients of the various generator nodes should be <code>Double</code>
+</p></div><dl class="paramcmts block"><dt class="tparam">State</dt><dd class="cmt"><p>scala type of the initial state</p></dd><dt class="param">nodeCoeffSeq</dt><dd class="cmt"><p>the various generator nodes with coefficients for various random variables and families</p></dd><dt class="param">sd</dt><dd class="cmt"><p>finite distributions from the initial state corresponding to random variables and families</p></dd></dl></div>
+    </li><li name="provingground.learning.VarValueSet" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VarValueSet[D[_]]extendsProductwithSerializable"></a><a id="VarValueSet[D[_]]:VarValueSet[D]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#VarValueSet[D[_]]extendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="VarValueSet.html"><span class="name">VarValueSet</span></a><span class="tparams">[<span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="randVarVals">randVarVals: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomVar$$Value.html" class="extype" name="provingground.learning.RandomVar.Value">Value</a>[_, <span class="extype" name="provingground.learning.VarValueSet.D">D</span>]]</span>, <span name="randVarFamilyVals">randVarFamilyVals: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="RandomVarFamily$$Value.html" class="extype" name="provingground.learning.RandomVarFamily.Value">Value</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _, <span class="extype" name="provingground.learning.VarValueSet.D">D</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.WeightVect" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WeightVect[T]extendsProductwithSerializable"></a><a id="WeightVect[T]:WeightVect[T]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#WeightVect[T]extendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="WeightVect.html"><span class="name">WeightVect</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="elem">elem: <span class="extype" name="provingground.learning.WeightVect.T">T</span></span>, <span name="vect">vect: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.WeightedTermBucket" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="WeightedTermBucketextendsAnyRef"></a><a id="WeightedTermBucket:WeightedTermBucket"></a>
       <span class="permalink">
@@ -1679,6 +2086,22 @@ various steps are explicit for exploration and debugging
       </span>
       
       
+    </li><li name="provingground.learning.ContextExport" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContextExport"></a><a id="ContextExport:ContextExport"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#ContextExport" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ContextExport$.html"><span class="name">ContextExport</span></a>
+      </span>
+      
+      
     </li><li name="provingground.learning.Deducer" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Deducer"></a><a id="Deducer:Deducer"></a>
       <span class="permalink">
@@ -1727,6 +2150,38 @@ but the adjoint regards truncated distributions as the tangent space, and restri
       </span>
       <span class="symbol">
         <a title="" href="DiffbleFunction$.html"><span class="name">DiffbleFunction</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.learning.DistributionState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DistributionState"></a><a id="DistributionState:DistributionState"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#DistributionState" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="DistributionState$.html"><span class="name">DistributionState</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.learning.Empty" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Empty"></a><a id="Empty:Empty"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#Empty" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Empty$.html"><span class="name">Empty</span></a>
       </span>
       
       
@@ -1830,6 +2285,27 @@ Derivatives are defined mutually recursively with the evolutions.</p><p>This is 
       </span>
       
       
+    </li><li name="provingground.learning.FineProverTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FineProverTasks"></a><a id="FineProverTasks:FineProverTasks"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#FineProverTasks" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives." href="FineProverTasks$.html"><span class="name">FineProverTasks</span></a>
+      </span>
+      
+      <p class="shortcomment cmt">A collection of functions to build provers;
+some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.</p><div class="fullcomment"><div class="comment cmt"><p>A collection of functions to build provers;
+some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.
+Some methods combine the two to give a ready to use function.
+These are based on <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a> and <code>Monix</code>.
+</p></div></div>
     </li><li name="provingground.learning.FiniteDistributionLearner" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="FiniteDistributionLearner"></a><a id="FiniteDistributionLearner:FiniteDistributionLearner"></a>
       <span class="permalink">
@@ -1881,6 +2357,39 @@ The components are built from: moves (partial functions), partial combinations a
       </span>
       
       
+    </li><li name="provingground.learning.GeneratorVariables" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GeneratorVariables"></a><a id="GeneratorVariables:GeneratorVariables"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#GeneratorVariables" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="GeneratorVariables$.html"><span class="name">GeneratorVariables</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.GeometricDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GeometricDistribution"></a><a id="GeometricDistribution:GeometricDistribution"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#GeometricDistribution" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="An example, the geometric distribution in an abstract form" href="GeometricDistribution$.html"><span class="name">GeometricDistribution</span></a>
+      </span>
+      
+      <p class="shortcomment cmt">An example, the geometric distribution in an abstract form
+</p>
     </li><li name="provingground.learning.HoTTgen" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="HoTTgen"></a><a id="HoTTgen:HoTTgen"></a>
       <span class="permalink">
@@ -1961,6 +2470,54 @@ The components are built from: moves (partial functions), partial combinations a
       </span>
       
       
+    </li><li name="provingground.learning.MonixTangentFiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MonixTangentFiniteDistribution"></a><a id="MonixTangentFiniteDistribution:MonixTangentFiniteDistribution"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#MonixTangentFiniteDistribution" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="MonixTangentFiniteDistribution$.html"><span class="name">MonixTangentFiniteDistribution</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.NodeCoeffSeq" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NodeCoeffSeq"></a><a id="NodeCoeffSeq:NodeCoeffSeq"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#NodeCoeffSeq" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="NodeCoeffSeq$.html"><span class="name">NodeCoeffSeq</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.learning.NodeCoeffs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NodeCoeffs"></a><a id="NodeCoeffs:NodeCoeffs"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#NodeCoeffs" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="NodeCoeffs$.html"><span class="name">NodeCoeffs</span></a>
+      </span>
+      
+      
     </li><li name="provingground.learning.PickledTermPopulation" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="PickledTermPopulation"></a><a id="PickledTermPopulation:PickledTermPopulation"></a>
       <span class="permalink">
@@ -1977,7 +2534,7 @@ The components are built from: moves (partial functions), partial combinations a
       </span>
       
       
-    </li><li name="provingground.learning.ProverTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.learning.ProverTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ProverTasks"></a><a id="ProverTasks:ProverTasks"></a>
       <span class="permalink">
       <a href="../../provingground/learning/index.html#ProverTasks" title="Permalink">
@@ -1989,15 +2546,10 @@ The components are built from: moves (partial functions), partial combinations a
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives." href="ProverTasks$.html"><span class="name">ProverTasks</span></a>
+        <a title="" href="ProverTasks$.html"><span class="name">ProverTasks</span></a>
       </span>
       
-      <p class="shortcomment cmt">A collection of functions to build provers;
-some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.</p><div class="fullcomment"><div class="comment cmt"><p>A collection of functions to build provers;
-some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.
-Some methods combine the two to give a ready to use function.
-These are based on <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a> and <code>Monix</code>.
-</p></div></div>
+      
     </li><li name="provingground.learning.RandomVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="RandomVar"></a><a id="RandomVar:RandomVar"></a>
       <span class="permalink">
@@ -2043,6 +2595,22 @@ These are based on <a href="TermEvolver.html" class="extype" name="provingground
       </span>
       <span class="symbol">
         <a title="" href="RandomVarList$.html"><span class="name">RandomVarList</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.learning.Representation" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Representation"></a><a id="Representation:Representation"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#Representation" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Representation$.html"><span class="name">Representation</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -2094,6 +2662,22 @@ These are based on <a href="TermEvolver.html" class="extype" name="provingground
       </span>
       
       
+    </li><li name="provingground.learning.StateDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StateDistribution"></a><a id="StateDistribution:StateDistribution"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#StateDistribution" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="StateDistribution$.html"><span class="name">StateDistribution</span></a>
+      </span>
+      
+      
     </li><li name="provingground.learning.TangVec" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TangVec"></a><a id="TangVec:TangVec"></a>
       <span class="permalink">
@@ -2107,6 +2691,22 @@ These are based on <a href="TermEvolver.html" class="extype" name="provingground
       </span>
       <span class="symbol">
         <a title="" href="TangVec$.html"><span class="name">TangVec</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TangentFiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TangentFiniteDistribution"></a><a id="TangentFiniteDistribution:TangentFiniteDistribution"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#TangentFiniteDistribution" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TangentFiniteDistribution$.html"><span class="name">TangentFiniteDistribution</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -2174,6 +2774,22 @@ These are based on <a href="TermEvolver.html" class="extype" name="provingground
       </span>
       
       
+    </li><li name="provingground.learning.TermState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermState"></a><a id="TermState:TermState"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#TermState" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermState$.html"><span class="name">TermState</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TruncDistVal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TruncDistVal"></a><a id="TruncDistVal:TruncDistVal"></a>
       <span class="permalink">
@@ -2222,6 +2838,22 @@ These are based on <a href="TermEvolver.html" class="extype" name="provingground
       </span>
       
       
+    </li><li name="provingground.learning.TruncatedFiniteDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TruncatedFiniteDistribution"></a><a id="TruncatedFiniteDistribution:TruncatedFiniteDistribution"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#TruncatedFiniteDistribution" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TruncatedFiniteDistribution$.html"><span class="name">TruncatedFiniteDistribution</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.Unify" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Unify"></a><a id="Unify:Unify"></a>
       <span class="permalink">
@@ -2238,10 +2870,10 @@ These are based on <a href="TermEvolver.html" class="extype" name="provingground
       </span>
       
       
-    </li><li name="provingground.learning.VectorRepresentations" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="VectorRepresentations"></a><a id="VectorRepresentations:VectorRepresentations"></a>
+    </li><li name="provingground.learning.WeightVect" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WeightVect"></a><a id="WeightVect:WeightVect"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/index.html#VectorRepresentations" title="Permalink">
+      <a href="../../provingground/learning/index.html#WeightVect" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -2250,7 +2882,7 @@ These are based on <a href="TermEvolver.html" class="extype" name="provingground
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="VectorRepresentations$.html"><span class="name">VectorRepresentations</span></a>
+        <a title="" href="WeightVect$.html"><span class="name">WeightVect</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       

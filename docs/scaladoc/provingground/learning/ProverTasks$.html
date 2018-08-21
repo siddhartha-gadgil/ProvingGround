@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -120,6 +120,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
+                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -143,6 +147,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="Conditioning.html" title="typeclass for being able to condition"></a>
                         <a href="Conditioning.html" title="typeclass for being able to condition">Conditioning</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="ContextExport$.html" title=""></a>
+                        <a class="trait" href="ContextExport.html" title="changes in the distribution-like object other than those induced by object level map while exporting from an island typically a change in context for variables representing terms in a context"></a>
+                        <a href="ContextExport.html" title="changes in the distribution-like object other than those induced by object level map while exporting from an island typically a change in context for variables representing terms in a context">ContextExport</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Deducer$.html" title="Generating terms from given ones using the main HoTT operations, and the adjoint of this generation."></a>
                         <a class="class" href="Deducer.html" title=""></a>
                         <a href="Deducer.html" title="">Deducer</a>
@@ -159,7 +167,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="DiffbleFunction.html" title=""></a>
                         <a href="DiffbleFunction.html" title="">DiffbleFunction</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="DistributionState$.html" title=""></a>
                         <a class="trait" href="DistributionState.html" title="typeclass for providing distributions from a state and modifying a state from distributions"></a>
                         <a href="DistributionState.html" title="typeclass for providing distributions from a state and modifying a state from distributions">DistributionState</a>
                       </li><li class="current-entities indented2">
@@ -167,7 +175,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="DistributionStateEvolver.html" title=""></a>
                         <a href="DistributionStateEvolver.html" title="">DistributionStateEvolver</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
                       </li><li class="current-entities indented2">
@@ -208,12 +216,28 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="FineEvolver.html" title="A refined evolver, i.e., evolution of terms and subclasses such as types.">FineEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="FineProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives."></a>
+                        <a href="FineProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.">FineProverTasks</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="FiniteDistributionLearner$.html" title="A combinator for learning systems with state finite distributions on vertices."></a>
                         <a href="FiniteDistributionLearner$.html" title="A combinator for learning systems with state finite distributions on vertices.">FiniteDistributionLearner</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="GenMonixFiniteDistribution.html" title=""></a>
+                        <a href="GenMonixFiniteDistribution.html" title="">GenMonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GenTruncatedFiniteDistribution.html" title=""></a>
+                        <a href="GenTruncatedFiniteDistribution.html" title="">GenTruncatedFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="GeneratorData.html" title=""></a>
                         <a href="GeneratorData.html" title="">GeneratorData</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorEquations.html" title=""></a>
+                        <a href="GeneratorEquations.html" title="">GeneratorEquations</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="GeneratorNode$.html" title=""></a>
                         <a class="trait" href="GeneratorNode.html" title="A formal node for describing recursive generation."></a>
@@ -222,6 +246,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="GeneratorNodeFamily$.html" title=""></a>
                         <a class="trait" href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case."></a>
                         <a href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case.">GeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorVariables$.html" title=""></a>
+                        <a class="class" href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">GeneratorVariables</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form"></a>
+                        <a href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form">GeometricDistribution</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="HoTTgen$.html" title=""></a>
@@ -239,25 +271,37 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="MemoState.html" title=""></a>
                         <a href="MemoState.html" title="">MemoState</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixSamples$.html" title=""></a>
                         <a class="trait" href="MonixSamples.html" title=""></a>
                         <a href="MonixSamples.html" title="">MonixSamples</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixTangentFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixTangentFiniteDistribution</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="NextSample.html" title=""></a>
                         <a href="NextSample.html" title="">NextSample</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="NodeCoefficients.html" title=""></a>
-                        <a href="NodeCoefficients.html" title="">NodeCoefficients</a>
+                        <a class="object" href="NodeCoeffSeq$.html" title=""></a>
+                        <a class="trait" href="NodeCoeffSeq.html" title=""></a>
+                        <a href="NodeCoeffSeq.html" title="">NodeCoeffSeq</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="NodeCoeffs$.html" title=""></a>
+                        <a class="trait" href="NodeCoeffs.html" title=""></a>
+                        <a href="NodeCoeffs.html" title="">NodeCoeffs</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="PickledTermPopulation$.html" title=""></a>
                         <a class="class" href="PickledTermPopulation.html" title=""></a>
                         <a href="PickledTermPopulation.html" title="">PickledTermPopulation</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives."></a>
-                        <a href="" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.">ProverTasks</a>
+                        <a class="object" href="" title=""></a>
+                        <a href="" title="">ProverTasks</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="RandomVar$.html" title=""></a>
                         <a class="class" href="RandomVar.html" title="A formal Random Variable up to equality of distribution."></a>
@@ -279,6 +323,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="RandomVarValues.html" title=""></a>
                         <a href="RandomVarValues.html" title="">RandomVarValues</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RandomVector.html" title="distributions of vectors from a base distribution"></a>
+                        <a href="RandomVector.html" title="distributions of vectors from a base distribution">RandomVector</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RecursiveGeneratorNode.html" title=""></a>
+                        <a href="RecursiveGeneratorNode.html" title="">RecursiveGeneratorNode</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RecursiveGeneratorNodeFamily.html" title=""></a>
+                        <a href="RecursiveGeneratorNodeFamily.html" title="">RecursiveGeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Representation$.html" title=""></a>
+                        <a class="class" href="Representation.html" title=""></a>
+                        <a href="Representation.html" title="">Representation</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Samples$.html" title=""></a>
                         <a class="trait" href="Samples.html" title=""></a>
                         <a href="Samples.html" title="">Samples</a>
@@ -294,6 +354,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="SortList$.html" title=""></a>
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="StateDistribution$.html" title=""></a>
+                        <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
+                        <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="StateEvolver.html" title=""></a>
@@ -314,6 +378,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="TangVec$.html" title=""></a>
                         <a class="class" href="TangVec.html" title=""></a>
                         <a href="TangVec.html" title="">TangVec</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TangentFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="TangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="TangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TangentFiniteDistribution</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="TermBucket$.html" title=""></a>
                         <a class="class" href="TermBucket.html" title=""></a>
@@ -347,6 +415,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="TermRandomVars$.html" title=""></a>
                         <a href="TermRandomVars$.html" title="">TermRandomVars</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="TermState$.html" title=""></a>
+                        <a class="class" href="TermState.html" title=""></a>
+                        <a href="TermState.html" title="">TermState</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging"></a>
                         <a href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging">TheoremFeedback</a>
@@ -379,13 +451,21 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="TruncatedDistributionLang.html" title=""></a>
                         <a href="TruncatedDistributionLang.html" title="">TruncatedDistributionLang</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="TruncatedFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TruncatedFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="Unify$.html" title=""></a>
                         <a href="Unify$.html" title="">Unify</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="VectorRepresentations$.html" title=""></a>
-                        <a href="VectorRepresentations$.html" title="">VectorRepresentations</a>
+                        <a class="class" href="VarValueSet.html" title=""></a>
+                        <a href="VarValueSet.html" title="">VarValueSet</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="WeightVect$.html" title=""></a>
+                        <a class="class" href="WeightVect.html" title=""></a>
+                        <a href="WeightVect.html" title="">WeightVect</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="WeightedTermBucket$.html" title=""></a>
                         <a class="class" href="WeightedTermBucket.html" title=""></a>
@@ -418,11 +498,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A collection of functions to build provers;
-some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.
-Some methods combine the two to give a ready to use function.
-These are based on <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a> and <code>Monix</code>.
-</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -609,83 +685,6 @@ Everything is wrapped in tasks.
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#dervecMemoTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="dervecMemoTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,trace:Vector[provingground.HoTT.Term],termSet:Set[provingground.HoTT.Term],typSet:Set[provingground.HoTT.Typ[provingground.HoTT.Term]],vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[(provingground.FiniteDistribution[provingground.HoTT.Term],Vector[provingground.HoTT.Term],Set[provingground.HoTT.Term],Set[provingground.HoTT.Typ[provingground.HoTT.Term]])]]]"></a><a id="dervecMemoTasks(FiniteDistribution[Term],TermEvolver,Task[FiniteDistribution[Term]],Task[FiniteDistribution[Typ[Term]]],FiniteDuration,Double,Double,Vector[Term],Set[Term],Set[Typ[Term]],Vector[Term]):Task[Vector[Task[(FiniteDistribution[Term],Vector[Term],Set[Term],Set[Typ[Term]])]]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#dervecMemoTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,trace:Vector[provingground.HoTT.Term],termSet:Set[provingground.HoTT.Term],typSet:Set[provingground.HoTT.Typ[provingground.HoTT.Term]],vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[(provingground.FiniteDistribution[provingground.HoTT.Term],Vector[provingground.HoTT.Term],Set[provingground.HoTT.Term],Set[provingground.HoTT.Typ[provingground.HoTT.Term]])]]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dervecMemoTasks</span><span class="params">(<span name="base">base: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="termsTask">termsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="typsTask">typsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]</span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>, <span name="trace">trace: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="termSet">termSet: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typSet">typSet: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="monix.eval.Task">Task</span>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]])]]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">bunch of tasks using newly discovered proofs by evolving along unit tangents.</p><div class="fullcomment"><div class="comment cmt"><p>bunch of tasks using newly discovered proofs by evolving along unit tangents.
-the cutoffs, viewed as resources, are allocated based on values of the new proofs.
-these tasks return the tangent distributions as well as the path to get there.
-</p></div></div>
-    </li><li name="provingground.learning.ProverTasks#dervecTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="dervecTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]]]]"></a><a id="dervecTasks(FiniteDistribution[Term],TermEvolver,Task[FiniteDistribution[Term]],Task[FiniteDistribution[Typ[Term]]],FiniteDuration,Double,Double,Vector[Term]):Task[Vector[Task[FiniteDistribution[Term]]]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#dervecTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]]]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dervecTasks</span><span class="params">(<span name="base">base: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="termsTask">termsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="typsTask">typsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]</span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">bunch of tasks using newly discovered proofs by evolving along unit tangents.</p><div class="fullcomment"><div class="comment cmt"><p>bunch of tasks using newly discovered proofs by evolving along unit tangents.
-the cutoffs, viewed as resources, are allocated based on values of the new proofs.
-these tasks only return the tangent distributions
-</p></div></div>
-    </li><li name="provingground.learning.ProverTasks#dervecTraceTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="dervecTraceTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,trace:Vector[provingground.HoTT.Term],vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[(provingground.FiniteDistribution[provingground.HoTT.Term],Vector[provingground.HoTT.Term])]]]"></a><a id="dervecTraceTasks(FiniteDistribution[Term],TermEvolver,Task[FiniteDistribution[Term]],Task[FiniteDistribution[Typ[Term]]],FiniteDuration,Double,Double,Vector[Term],Vector[Term]):Task[Vector[Task[(FiniteDistribution[Term],Vector[Term])]]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#dervecTraceTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,trace:Vector[provingground.HoTT.Term],vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[(provingground.FiniteDistribution[provingground.HoTT.Term],Vector[provingground.HoTT.Term])]]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dervecTraceTasks</span><span class="params">(<span name="base">base: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="termsTask">termsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="typsTask">typsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]</span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>, <span name="trace">trace: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="monix.eval.Task">Task</span>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])]]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">bunch of tasks using newly discovered proofs by evolving along unit tangents.</p><div class="fullcomment"><div class="comment cmt"><p>bunch of tasks using newly discovered proofs by evolving along unit tangents.
-the cutoffs, viewed as resources, are allocated based on values of the new proofs.
-these tasks return the tangent distributions as well as the path to get there.
-</p></div></div>
-    </li><li name="provingground.learning.ProverTasks#dervecWeightedTraceTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="dervecWeightedTraceTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,trace:Vector[(provingground.HoTT.Term,Double)],vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[(provingground.FiniteDistribution[provingground.HoTT.Term],Vector[(provingground.HoTT.Term,Double)])]]]"></a><a id="dervecWeightedTraceTasks(FiniteDistribution[Term],TermEvolver,Task[FiniteDistribution[Term]],Task[FiniteDistribution[Typ[Term]]],FiniteDuration,Double,Double,Vector[(Term,Double)],Vector[Term]):Task[Vector[Task[(FiniteDistribution[Term],Vector[(Term,Double)])]]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#dervecWeightedTraceTasks(base:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,termsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]],typsTask:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]],maxtime:scala.concurrent.duration.FiniteDuration,cutoff:Double,scale:Double,trace:Vector[(provingground.HoTT.Term,Double)],vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Vector[monix.eval.Task[(provingground.FiniteDistribution[provingground.HoTT.Term],Vector[(provingground.HoTT.Term,Double)])]]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dervecWeightedTraceTasks</span><span class="params">(<span name="base">base: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="termsTask">termsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="typsTask">typsTask: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]</span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>, <span name="trace">trace: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>)]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="monix.eval.Task">Task</span>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>)])]]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">bunch of tasks using newly discovered proofs by evolving along unit tangents.</p><div class="fullcomment"><div class="comment cmt"><p>bunch of tasks using newly discovered proofs by evolving along unit tangents.
-the cutoffs, viewed as resources, are allocated based on values of the new proofs.
-these tasks return the tangent distributions as well as the path to get there,
-plus weights of proofs as they are found.
-</p></div></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -1116,136 +1115,6 @@ increase in entropy of the initial distribution.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#termdistDerTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="termdistDerTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tfd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]]"></a><a id="termdistDerTask(FiniteDistribution[Term],FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Vector[Term]):Task[FiniteDistribution[Term]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#termdistDerTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tfd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">termdistDerTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tfd">tfd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">evolution of terms by the <i>derivative</i>, as a  (task with value) finite distribution;
-obtained by lazy recursive definition in <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a> and trunctation.</p><div class="fullcomment"><div class="comment cmt"><p>evolution of terms by the <i>derivative</i>, as a  (task with value) finite distribution;
-obtained by lazy recursive definition in <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a> and trunctation.</p></div><dl class="paramcmts block"><dt class="param">fd</dt><dd class="cmt"><p>the distribution point</p></dd><dt class="param">tfd</dt><dd class="cmt"><p>the tangent distribution</p></dd><dt class="param">tv</dt><dd class="cmt"><p>the term evolver</p></dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#termdistTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="termdistTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]]"></a><a id="termdistTask(FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Vector[Term]):Task[FiniteDistribution[Term]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#termdistTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">termdistTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">evolution of terms, as a  (task with value) finite distribution;
-obtained by lazy recursive definition in <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a> and trunctation.</p>
-    </li><li name="provingground.learning.ProverTasks#theoremSearchMemoTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="theoremSearchMemoTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,goal:provingground.HoTT.Typ[provingground.HoTT.Term],termSet:Set[provingground.HoTT.Term],typSet:Set[provingground.HoTT.Typ[provingground.HoTT.Term]],decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Option[(provingground.HoTT.Term,Vector[provingground.HoTT.Term],Set[provingground.HoTT.Term],Set[provingground.HoTT.Typ[provingground.HoTT.Term]])]]"></a><a id="theoremSearchMemoTask(FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Typ[Term],Set[Term],Set[Typ[Term]],Double,Double,Vector[Term]):Task[Option[(Term,Vector[Term],Set[Term],Set[Typ[Term]])]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#theoremSearchMemoTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,goal:provingground.HoTT.Typ[provingground.HoTT.Term],termSet:Set[provingground.HoTT.Term],typSet:Set[provingground.HoTT.Typ[provingground.HoTT.Term]],decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Option[(provingground.HoTT.Term,Vector[provingground.HoTT.Term],Set[provingground.HoTT.Term],Set[provingground.HoTT.Typ[provingground.HoTT.Term]])]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">theoremSearchMemoTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="termSet">termSet: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typSet">typSet: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="decay">decay: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Option">Option</span>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]])]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">breadth-first search for a term of a given type, keeping track of the path
-and the distributions along the way
-</p><div class="fullcomment"><div class="comment cmt"><p>breadth-first search for a term of a given type, keeping track of the path
-and the distributions along the way
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>task giving an optional term of the type together with a vector of
-proofs of lemmas.</p></dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#theoremSearchTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="theoremSearchTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,goal:provingground.HoTT.Typ[provingground.HoTT.Term],decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Option[provingground.HoTT.Term]]"></a><a id="theoremSearchTask(FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Typ[Term],Double,Double,Vector[Term]):Task[Option[Term]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#theoremSearchTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,goal:provingground.HoTT.Typ[provingground.HoTT.Term],decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Option[provingground.HoTT.Term]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">theoremSearchTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="decay">decay: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">breadth-first search for a term of a given type
-</p><div class="fullcomment"><div class="comment cmt"><p>breadth-first search for a term of a given type
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>task giving an optional term of the type.</p></dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#theoremSearchTraceTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="theoremSearchTraceTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,goal:provingground.HoTT.Typ[provingground.HoTT.Term],decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Option[(provingground.HoTT.Term,Vector[provingground.HoTT.Term])]]"></a><a id="theoremSearchTraceTask(FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Typ[Term],Double,Double,Vector[Term]):Task[Option[(Term,Vector[Term])]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#theoremSearchTraceTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,goal:provingground.HoTT.Typ[provingground.HoTT.Term],decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Option[(provingground.HoTT.Term,Vector[provingground.HoTT.Term])]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">theoremSearchTraceTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="decay">decay: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Option">Option</span>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">breadth-first search for a term of a given type, keeping track of the path
-</p><div class="fullcomment"><div class="comment cmt"><p>breadth-first search for a term of a given type, keeping track of the path
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>task giving an optional term of the type together with a vector of
-proofs of lemmas.</p></dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#theoremsExploreTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="theoremsExploreTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Map[provingground.HoTT.Typ[provingground.HoTT.Term],Vector[(provingground.HoTT.Term,(Int,Double))]]]"></a><a id="theoremsExploreTask(FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Double,Double,Vector[Term]):Task[Map[Typ[Term],Vector[(Term,(Int,Double))]]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#theoremsExploreTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[Map[provingground.HoTT.Typ[provingground.HoTT.Term],Vector[(provingground.HoTT.Term,(Int,Double))]]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">theoremsExploreTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="decay">decay: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, (<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Double">Double</span>))]]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">breadth-first exploration to find alll interesting proofs.</p><div class="fullcomment"><div class="comment cmt"><p>breadth-first exploration to find alll interesting proofs.
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>map from types to proofs with weights and steps</p></dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#theoremsExploreTraceTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="theoremsExploreTraceTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[(Vector[(provingground.HoTT.Term,Vector[(provingground.HoTT.Term,Double)],(Int,Double))],provingground.FiniteDistribution[provingground.HoTT.Term],provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]])]"></a><a id="theoremsExploreTraceTask(FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Double,Double,Vector[Term]):Task[(Vector[(Term,Vector[(Term,Double)],(Int,Double))],FiniteDistribution[Term],FiniteDistribution[Typ[Term]])]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#theoremsExploreTraceTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,decay:Double,scale:Double,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[(Vector[(provingground.HoTT.Term,Vector[(provingground.HoTT.Term,Double)],(Int,Double))],provingground.FiniteDistribution[provingground.HoTT.Term],provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]])]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">theoremsExploreTraceTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="decay">decay: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[(<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>)], (<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Double">Double</span>))], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]])]</span>
-      </span>
-      
-      <p class="shortcomment cmt">breadth-first exploration to find alll interesting proofs, keeping track
-of lemmas
-</p><div class="fullcomment"><div class="comment cmt"><p>breadth-first exploration to find alll interesting proofs, keeping track
-of lemmas
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>task for vector of proofs with lemmas and the corresponding theorems.</p></dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
@@ -1262,23 +1131,6 @@ of lemmas
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.learning.ProverTasks#typdistTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="typdistTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]]"></a><a id="typdistTask(FiniteDistribution[Term],TermEvolver,Double,FiniteDuration,Vector[Term]):Task[FiniteDistribution[Typ[Term]]]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/ProverTasks$.html#typdistTask(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tv:provingground.learning.TermEvolver,cutoff:Double,maxtime:scala.concurrent.duration.FiniteDuration,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">typdistTask</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tv">tv: <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a></span>, <span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxtime">maxtime: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]]</span>
-      </span>
-      
-      <p class="shortcomment cmt">evolution of types, as a  (task with value) finite distribution;
-obtained by lazy recursive definition in <a href="TermEvolver.html" class="extype" name="provingground.learning.TermEvolver">TermEvolver</a> and trunctation.</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">

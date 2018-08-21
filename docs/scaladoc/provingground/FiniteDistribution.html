@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.andrewscurtis" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -119,22 +119,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <a title="" href="examples/index.html"><span class="name">examples</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.functionfinder" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="functionfinder"></a><a id="functionfinder:functionfinder"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#functionfinder" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="functionfinder/index.html"><span class="name">functionfinder</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
@@ -211,6 +195,22 @@ single introduction rule. Traits <a href="induction/ConstructorSeqMapper.html" c
       </span>
       <span class="symbol">
         <a title="" href="library/index.html"><span class="name">library</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.scalahott" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="scalahott"></a><a id="scalahott:scalahott"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#scalahott" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="scalahott/index.html"><span class="name">scalahott</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
@@ -638,9 +638,9 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.FiniteDistribution#condMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="condMap[S](f:T=&gt;Option[S]):provingground.ProbabilityDistribution[S]"></a><a id="condMap[S]((T)⇒Option[S]):ProbabilityDistribution[S]"></a>
+      <a id="condMap[S](f:T=&gt;Option[S]):provingground.FiniteDistribution[S]"></a><a id="condMap[S]((T)⇒Option[S]):FiniteDistribution[S]"></a>
       <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html#condMap[S](f:T=&gt;Option[S]):provingground.ProbabilityDistribution[S]" title="Permalink">
+      <a href="../provingground/FiniteDistribution.html#condMap[S](f:T=&gt;Option[S]):provingground.FiniteDistribution[S]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -649,7 +649,7 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">condMap</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.FiniteDistribution.condMap.S">S</span>]</span>)</span><span class="result">: <a href="ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.condMap.S">S</span>]</span>
+        <span class="name">condMap</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.FiniteDistribution.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.FiniteDistribution.condMap.S">S</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.condMap.S">S</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a> → <a href="ProbabilityDistribution.html" class="extype" name="provingground.ProbabilityDistribution">ProbabilityDistribution</a></dd></dl></div>
@@ -702,9 +702,9 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
       
       
     </li><li name="provingground.FiniteDistribution#entropyVec" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="entropyVec:scala.collection.immutable.Vector[provingground.Weighted[T]]"></a><a id="entropyVec:Vector[Weighted[T]]"></a>
+      <a id="entropyVec:Vector[provingground.Weighted[T]]"></a><a id="entropyVec:Vector[Weighted[T]]"></a>
       <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html#entropyVec:scala.collection.immutable.Vector[provingground.Weighted[T]]" title="Permalink">
+      <a href="../provingground/FiniteDistribution.html#entropyVec:Vector[provingground.Weighted[T]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -713,14 +713,14 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">entropyVec</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
+        <span class="name">entropyVec</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
       </span>
       
       
     </li><li name="provingground.FiniteDistribution#entropyView" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="entropyView:scala.collection.immutable.Vector[provingground.Weighted[String]]"></a><a id="entropyView:Vector[Weighted[String]]"></a>
+      <a id="entropyView:Vector[provingground.Weighted[String]]"></a><a id="entropyView:Vector[Weighted[String]]"></a>
       <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html#entropyView:scala.collection.immutable.Vector[provingground.Weighted[String]]" title="Permalink">
+      <a href="../provingground/FiniteDistribution.html#entropyView:Vector[provingground.Weighted[String]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -729,7 +729,7 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">entropyView</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="java.lang.String">String</span>]]</span>
+        <span class="name">entropyView</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="scala.Predef.String">String</span>]]</span>
       </span>
       
       
@@ -1040,7 +1040,7 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
         <span class="name">norm</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
-      <p class="shortcomment cmt">l^1-norm
+      <p class="shortcomment cmt">l1-norm
 </p>
     </li><li name="provingground.FiniteDistribution#normalized" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="normalized(t:Double):provingground.FiniteDistribution[T]"></a><a id="normalized(Double):FiniteDistribution[T]"></a>
@@ -1070,7 +1070,7 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">pickle</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[(<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Double">Double</span>)]</span>
+        <span class="name">pickle</span><span class="result">: <a href="../scala/index.html#List[+A]=List[A]" class="extmbr" name="scala.List">List</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Double">Double</span>)]</span>
       </span>
       
       
@@ -1091,9 +1091,9 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
       
       
     </li><li name="provingground.FiniteDistribution#posmf" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="posmf(t:Double):scala.collection.immutable.Vector[provingground.Weighted[T]]"></a><a id="posmf(Double):Vector[Weighted[T]]"></a>
+      <a id="posmf(t:Double):Vector[provingground.Weighted[T]]"></a><a id="posmf(Double):Vector[Weighted[T]]"></a>
       <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html#posmf(t:Double):scala.collection.immutable.Vector[provingground.Weighted[T]]" title="Permalink">
+      <a href="../provingground/FiniteDistribution.html#posmf(t:Double):Vector[provingground.Weighted[T]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1102,7 +1102,7 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">posmf</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
+        <span class="name">posmf</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.0</span></span>)</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
       </span>
       
       <p class="shortcomment cmt">objects with positive probability (or bounded below by a threshhold)
@@ -1157,9 +1157,9 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
       
       
     </li><li name="provingground.FiniteDistribution#prunedPMF" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="prunedPMF(epsilon:Double):scala.collection.immutable.Vector[provingground.Weighted[T]]"></a><a id="prunedPMF(Double):Vector[Weighted[T]]"></a>
+      <a id="prunedPMF(epsilon:Double):Vector[provingground.Weighted[T]]"></a><a id="prunedPMF(Double):Vector[Weighted[T]]"></a>
       <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html#prunedPMF(epsilon:Double):scala.collection.immutable.Vector[provingground.Weighted[T]]" title="Permalink">
+      <a href="../provingground/FiniteDistribution.html#prunedPMF(epsilon:Double):Vector[provingground.Weighted[T]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1168,7 +1168,7 @@ perpendicular to the gradient (w.r.t. same inner product) of the &quot;total wei
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">prunedPMF</span><span class="params">(<span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
+        <span class="name">prunedPMF</span><span class="params">(<span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="Weighted.html" class="extype" name="provingground.Weighted">Weighted</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
       </span>
       
       
@@ -1278,9 +1278,9 @@ warning: should come after ++ to ensure implementation choice.
       
       
     </li><li name="provingground.FiniteDistribution#split" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="split(groups:Int):scala.collection.immutable.Map[Int,provingground.FiniteDistribution[T]]"></a><a id="split(Int):Map[Int,FiniteDistribution[T]]"></a>
+      <a id="split(groups:Int):Map[Int,provingground.FiniteDistribution[T]]"></a><a id="split(Int):Map[Int,FiniteDistribution[T]]"></a>
       <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html#split(groups:Int):scala.collection.immutable.Map[Int,provingground.FiniteDistribution[T]]" title="Permalink">
+      <a href="../provingground/FiniteDistribution.html#split(groups:Int):Map[Int,provingground.FiniteDistribution[T]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1289,7 +1289,7 @@ warning: should come after ++ to ensure implementation choice.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">split</span><span class="params">(<span name="groups">groups: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="scala.Int">Int</span>, <a href="" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
+        <span class="name">split</span><span class="params">(<span name="groups">groups: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Int">Int</span>, <a href="" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]]</span>
       </span>
       
       
@@ -1310,9 +1310,9 @@ warning: should come after ++ to ensure implementation choice.
       
       
     </li><li name="provingground.FiniteDistribution#support" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="support:scala.collection.immutable.Set[T]"></a><a id="support:Set[T]"></a>
+      <a id="support:Set[T]"></a>
       <span class="permalink">
-      <a href="../provingground/FiniteDistribution.html#support:scala.collection.immutable.Set[T]" title="Permalink">
+      <a href="../provingground/FiniteDistribution.html#support:Set[T]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1321,7 +1321,7 @@ warning: should come after ++ to ensure implementation choice.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">support</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]</span>
+        <span class="name">support</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="provingground.FiniteDistribution.T">T</span>]</span>
       </span>
       
       
@@ -1337,7 +1337,7 @@ warning: should come after ++ to ensure implementation choice.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a> → Any</dd></dl></div>
@@ -1354,6 +1354,22 @@ warning: should come after ++ to ensure implementation choice.
       </span>
       <span class="symbol">
         <span class="name">total</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.FiniteDistribution#zip" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="zip[S](that:provingground.FiniteDistribution[S]):provingground.FiniteDistribution[(T,S)]"></a><a id="zip[S](FiniteDistribution[S]):FiniteDistribution[(T,S)]"></a>
+      <span class="permalink">
+      <a href="../provingground/FiniteDistribution.html#zip[S](that:provingground.FiniteDistribution[S]):provingground.FiniteDistribution[(T,S)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">zip</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.FiniteDistribution.zip.S">S</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[(<span class="extype" name="provingground.FiniteDistribution.T">T</span>, <span class="extype" name="provingground.FiniteDistribution.zip.S">S</span>)]</span>
       </span>
       
       

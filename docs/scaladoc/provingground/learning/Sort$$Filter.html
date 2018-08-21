@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -157,7 +157,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Filter</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="pred">pred: (<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result"> extends <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Filter</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="pred">pred: (<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result"> extends <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>, <span class="extype" name="provingground.learning.Sort.Filter.S">S</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -167,7 +167,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>, <span class="extype" name="provingground.learning.Sort.Filter.S">S</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -454,7 +454,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.Sort.Filter#pred" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.Sort.Filter#pred" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="pred:S=&gt;Boolean"></a><a id="pred:(S)⇒Boolean"></a>
       <span class="permalink">
       <a href="../../provingground/learning/Sort$$Filter.html#pred:S=&gt;Boolean" title="Permalink">
@@ -469,7 +469,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">pred</span><span class="result">: (<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.Sort.Filter">Filter</a> → <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -573,7 +573,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.learning.Sort">
-              <h3>Inherited from <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>]</h3>
+              <h3>Inherited from <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.Sort.Filter.S">S</span>, <span class="extype" name="provingground.learning.Sort.Filter.S">S</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">

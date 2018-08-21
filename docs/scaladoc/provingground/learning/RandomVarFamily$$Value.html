@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -149,7 +149,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Value</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="O">O</span>, <span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="randVars">randVars: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]</span>, <span name="value">value: (<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>) ⇒ <span class="extype" name="provingground.learning.RandomVarFamily.Value.D">D</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Value</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="O">O</span>, <span name="D">D<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="randVars">randVars: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]</span>, <span name="value">value: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.Value.D">D</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -209,9 +209,9 @@ finite distributions on terms.
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.learning.RandomVarFamily.Value#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(randVars:provingground.learning.RandomVarFamily[Dom,O],value:Dom=&gt;D[O]):provingground.learning.RandomVarFamily.Value[Dom,O,D]"></a><a id="&lt;init&gt;:Value[Dom,O,D]"></a>
+      <a id="&lt;init&gt;(randVars:provingground.learning.RandomVarFamily[Dom,O],value:Map[Dom,D[O]]):provingground.learning.RandomVarFamily.Value[Dom,O,D]"></a><a id="&lt;init&gt;:Value[Dom,O,D]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/RandomVarFamily$$Value.html#&lt;init&gt;(randVars:provingground.learning.RandomVarFamily[Dom,O],value:Dom=&gt;D[O]):provingground.learning.RandomVarFamily.Value[Dom,O,D]" title="Permalink">
+      <a href="../../provingground/learning/RandomVarFamily$$Value.html#&lt;init&gt;(randVars:provingground.learning.RandomVarFamily[Dom,O],value:Map[Dom,D[O]]):provingground.learning.RandomVarFamily.Value[Dom,O,D]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -220,7 +220,7 @@ finite distributions on terms.
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Value</span><span class="params">(<span name="randVars">randVars: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]</span>, <span name="value">value: (<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>) ⇒ <span class="extype" name="provingground.learning.RandomVarFamily.Value.D">D</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]</span>)</span>
+        <span class="name">Value</span><span class="params">(<span name="randVars">randVars: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]</span>, <span name="value">value: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.Value.D">D</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]]</span>)</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">randVars</dt><dd class="cmt"><p>the family of random variables for which the distribution is specified</p></dd><dt class="param">value</dt><dd class="cmt"><p>function giving distributions associated to the random variables</p></dd></dl></div>
@@ -482,9 +482,9 @@ finite distributions on terms.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily.Value#value" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="value:Dom=&gt;D[O]"></a><a id="value:(Dom)⇒D[O]"></a>
+      <a id="value:Map[Dom,D[O]]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/RandomVarFamily$$Value.html#value:Dom=&gt;D[O]" title="Permalink">
+      <a href="../../provingground/learning/RandomVarFamily$$Value.html#value:Map[Dom,D[O]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -493,7 +493,7 @@ finite distributions on terms.
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">value</span><span class="result">: (<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>) ⇒ <span class="extype" name="provingground.learning.RandomVarFamily.Value.D">D</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]</span>
+        <span class="name">value</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.Value.D">D</span>[<span class="extype" name="provingground.learning.RandomVarFamily.Value.O">O</span>]]</span>
       </span>
       
       

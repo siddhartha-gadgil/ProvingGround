@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.andrewscurtis" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -119,22 +119,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <a title="" href="../examples/index.html"><span class="name">examples</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.functionfinder" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="functionfinder"></a><a id="functionfinder:functionfinder"></a>
-      <span class="permalink">
-      <a href="../provingground/index.html#functionfinder" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="../functionfinder/index.html"><span class="name">functionfinder</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
@@ -220,6 +204,10 @@ use <a href="" class="extype" name="provingground.induction">induction</a> inste
                         <a class="object" href="ConstructorTypTL$.html" title=""></a>
                         <a class="class" href="ConstructorTypTL.html" title="an introduction rule shape together with the iductive type typ being defined."></a>
                         <a href="ConstructorTypTL.html" title="an introduction rule shape together with the iductive type typ being defined.">ConstructorTypTL</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ExstInducDefn.html" title=""></a>
+                        <a href="ExstInducDefn.html" title="">ExstInducDefn</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ExstInducStruc$.html" title=""></a>
                         <a class="trait" href="ExstInducStruc.html" title="term level inductive structure for runtime contexts"></a>
@@ -393,6 +381,22 @@ use <a href="" class="extype" name="provingground.induction">induction</a> inste
       </span>
       <span class="symbol">
         <a title="" href="../library/index.html"><span class="name">library</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.scalahott" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="scalahott"></a><a id="scalahott:scalahott"></a>
+      <span class="permalink">
+      <a href="../provingground/index.html#scalahott" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../scalahott/index.html"><span class="name">scalahott</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
@@ -695,6 +699,22 @@ May have Pi-types instead of function types.</p><p>Usually constructed using the
       </span>
       
       <p class="shortcomment cmt">an introduction rule <a href="ConstructorTypTL.html#shape:provingground.induction.ConstructorShape[S,H,ConstructorType]" class="extmbr" name="provingground.induction.ConstructorTypTL#shape">shape</a> together with the iductive type <a href="ConstructorTypTL.html#typ:provingground.HoTT.Typ[H]" class="extmbr" name="provingground.induction.ConstructorTypTL#typ">typ</a> being defined.</p>
+    </li><li name="provingground.induction.ExstInducDefn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExstInducDefnextendsProductwithSerializable"></a><a id="ExstInducDefn:ExstInducDefn"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/index.html#ExstInducDefnextendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ExstInducDefn.html"><span class="name">ExstInducDefn</span></a><span class="params">(<span name="typFamily">typFamily: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="intros">intros: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="ind">ind: <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>, <span name="parameters">parameters: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.induction.ExstInducStruc" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ExstInducStrucextendsAnyRef"></a><a id="ExstInducStruc:ExstInducStruc"></a>
       <span class="permalink">

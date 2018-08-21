@@ -98,22 +98,22 @@ messageStyle: "none",
 and in practice there will be many blind allies.</p>
 <p>We start with some axioms for a Monoid, except that the left and right identities are not assumed equal. We show that they are equal.</p>
 <p>First, some imports</p>
-<pre><code class="language-scala">@        
+<pre><code class="language-scala">scala&gt;        
 
-@ import provingground.{FiniteDistribution =&gt; FD, ProbabilityDistribution =&gt; PD, _} 
+scala&gt; import provingground.{FiniteDistribution =&gt; FD, ProbabilityDistribution =&gt; PD, _} 
 
 import provingground.{FiniteDistribution =&gt; FD, ProbabilityDistribution =&gt; PD, _}
 
-@ import library._, MonoidSimple._ 
+scala&gt; import library._, MonoidSimple._ 
 
 import library._, MonoidSimple._
 
-@ import learning._ 
+scala&gt; import learning._ 
 
-import learnin
+import learning._
 </code></pre>
 <p>A Monoid is axiomatized as a type <code>M</code> with equality <code>eqM</code> and an operation <code>op := _*_</code>. We consider the relevant objects and axioms.</p>
-<pre><code class="language-scala">@ dist1.entropyVec.mkString(&quot;\n&quot;, &quot;\n&quot;, &quot;\n&quot;) 
+<pre><code class="language-scala">scala&gt; dist1.entropyVec.mkString(&quot;\n&quot;, &quot;\n&quot;, &quot;\n&quot;) 
 
 res7: String = &quot;&quot;&quot;
 Weighted(mul,1.5849625007211563)
@@ -125,14 +125,15 @@ Weighted(axiom_{eqM(mul(a)(e_r))(a)},4.392317422778761)
 Weighted(e_l,4.392317422778761)
 Weighted(axiom_{eqM(a)(a)},4.392317422778761)
 Weighted(e_r,4.392317422778761)
+&quot;&quot;&quot;
 </code></pre>
 <p>We use a <code>TermEvolver</code>, We first generate the types, which includes the theorems.
 The time has not been optimized here to avoid accidental biases.</p>
-<pre><code class="language-scala">@ val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0) 
+<pre><code class="language-scala">scala&gt; val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0) 
 
-tv: TermEvolver = provingground.learning.TermEvolver@30ae15cc
+tv: TermEvolver = provingground.learning.TermEvolver@59e40cef
 
-@ val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8)) 
+scala&gt; val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8)) 
 
 fdT: FiniteDistribution[HoTT.Typ[HoTT.Term]] = FiniteDistribution(
   Vector(
@@ -154,9 +155,10 @@ fdT: FiniteDistribution[HoTT.Typ[HoTT.Term]] = FiniteDistribution(
                   ),
                   SymbObj(Name(&quot;e_r&quot;), SymbTyp(Name(&quot;M&quot;), 0))
                 ),
+...
 </code></pre>
 <p>We shall generate terms. Some experiments show that it is enough to generate with truncation <code>10^{-5}</code>.</p>
-<pre><code class="language-scala">@ val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5)) 
+<pre><code class="language-scala">scala&gt; val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5)) 
 
 fd: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
@@ -180,7 +182,7 @@ fd: FiniteDistribution[HoTT.Term] = FiniteDistribution(
                                 SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
 ...
 
-@ fd.filter(_.typ == eqM(l)(op(l)(r))) 
+scala&gt; fd.filter(_.typ == eqM(l)(op(l)(r))) 
 
 res11: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
@@ -202,12 +204,13 @@ res11: FiniteDistribution[HoTT.Term] = FiniteDistribution(
                             SymbolicFunc(
                               ApplnSym(
                                 SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
+...
 </code></pre>
 <p>We see that wee get a proof of a key lemma. Criteria, based on probabilities of statements and proofs,
 tell us that this is one of the best results proved, along with one related by symmetry and a pair that are not useful.</p>
 <p>A quick way to explore consequences of this discovered lemma is to use the derivative of the evolution.
 We see that we get the proof.</p>
-<pre><code class="language-scala">@ val pf = fd.filter(_.typ == eqM(l)(op(l)(r))).supp.head 
+<pre><code class="language-scala">scala&gt; val pf = fd.filter(_.typ == eqM(l)(op(l)(r))).supp.head 
 
 pf: HoTT.Term = SymbObj(
   ApplnSym(
@@ -231,7 +234,7 @@ pf: HoTT.Term = SymbObj(
                         SymbTyp(Name(&quot;M&quot;), 0),
 ...
 
-@ val initt = TangVec(dist1, FD.unif(pf)) 
+scala&gt; val initt = TangVec(dist1, FD.unif(pf)) 
 
 initt: TangVec[FiniteDistribution[HoTT.Term]] = TangVec(
   FiniteDistribution(
@@ -255,7 +258,7 @@ initt: TangVec[FiniteDistribution[HoTT.Term]] = TangVec(
                   SymbObj(a, SymbTyp(Name(&quot;M&quot;), 0))
 ...
 
-@ val fdt = Truncate(tv.evolve(initt).vec , math.pow(0.1, 4)) 
+scala&gt; val fdt = Truncate(tv.evolve(initt).vec , math.pow(0.1, 4)) 
 
 fdt: FiniteDistribution[HoTT.Term] = FiniteDistribution(
   Vector(
@@ -279,7 +282,7 @@ fdt: FiniteDistribution[HoTT.Term] = FiniteDistribution(
                                 SymbolicFunc(Name(&quot;eqM&quot;), SymbTyp(Name(&quot;M&quot;), 0), FuncTyp(SymbTyp(Name(&quot;M&quot;), 0), Universe(0))),
 ...
 
-@ val tqs = fdt.map(_.typ).filter(fdT(_) &gt; 0).flatten 
+scala&gt; val tqs = fdt.map(_.typ).filter(fdT(_) &gt; 0).flatten 
 
 tqs: FiniteDistribution[HoTT.Typ[U] forSome { type U &gt;: x$1 &lt;: HoTT.Term with HoTT.Subs[U]; val x$1: HoTT.Term }] = FiniteDistribution(
   Vector(
@@ -303,15 +306,17 @@ tqs: FiniteDistribution[HoTT.Typ[U] forSome { type U &gt;: x$1 &lt;: HoTT.Term w
                 ),
 ...
 
-@ tqs(eqM(l)(r)) 
+scala&gt; tqs(eqM(l)(r)) 
 
 res16: Double = 0.0013066811853465038
 
-@
+scala&gt;  
+
+scala
 </code></pre>
 <p>The steps of the proof in this case took less than <code>0.1</code> seconds. Of course in practice we assume other axioms and follow other paths.
 But hopefully the time taken is just a few seconds.</p>
-<h4>Git Log when running tutorial: 4d774d05affbeb6f1b3ac5915f80b81c1025bfe1</h4>
+<h4>Git Log when running tutorial: 8f10bc88b54aac33a58f12ac1826158363997eeb</h4>
 
 
 </div>

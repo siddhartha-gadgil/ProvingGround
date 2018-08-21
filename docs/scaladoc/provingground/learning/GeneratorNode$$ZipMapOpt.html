@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -124,48 +124,64 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.learning">learning</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$ConditionedInit.html" title=""></a>
-                        <a href="GeneratorNode$$ConditionedInit.html" title="">ConditionedInit</a>
+                        <a class="class" href="GeneratorNode$$Atom.html" title="atomic value taken by a random variable"></a>
+                        <a href="GeneratorNode$$Atom.html" title="atomic value taken by a random variable">Atom</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorNode$$BaseThenCondition.html" title=""></a>
+                        <a href="GeneratorNode$$BaseThenCondition.html" title="">BaseThenCondition</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorNode$$ComplexIsland.html" title="An island, i.e., a full map from initial state to all required distributions, which is used in recursive definitions where we recurse on not just the final state but also the dynamics."></a>
+                        <a href="GeneratorNode$$ComplexIsland.html" title="An island, i.e., a full map from initial state to all required distributions, which is used in recursive definitions where we recurse on not just the final state but also the dynamics.">ComplexIsland</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="class" href="GeneratorNode$$FiberProductMap.html" title=""></a>
                         <a href="GeneratorNode$$FiberProductMap.html" title="">FiberProductMap</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$FlatMap.html" title=""></a>
-                        <a href="GeneratorNode$$FlatMap.html" title="">FlatMap</a>
+                        <a class="class" href="GeneratorNode$$FlatMap.html" title="flat-maps a family of generator nodes, such as lambda islands corresponding to different types."></a>
+                        <a href="GeneratorNode$$FlatMap.html" title="flat-maps a family of generator nodes, such as lambda islands corresponding to different types.">FlatMap</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$Init.html" title=""></a>
-                        <a href="GeneratorNode$$Init.html" title="">Init</a>
+                        <a class="class" href="GeneratorNode$$FlatMapOpt.html" title=""></a>
+                        <a href="GeneratorNode$$FlatMapOpt.html" title="">FlatMapOpt</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$Island.html" title=""></a>
-                        <a href="GeneratorNode$$Island.html" title="">Island</a>
+                        <a class="class" href="GeneratorNode$$Init.html" title="generator node for simply using the initial distribution."></a>
+                        <a href="GeneratorNode$$Init.html" title="generator node for simply using the initial distribution.">Init</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$Map.html" title=""></a>
-                        <a href="GeneratorNode$$Map.html" title="">Map</a>
+                        <a class="class" href="GeneratorNode$$Island.html" title="An island, i.e., a full map from initial state to all required distributions, which is used in recursive definitions where we recurse on not just the final state but also the dynamics."></a>
+                        <a href="GeneratorNode$$Island.html" title="An island, i.e., a full map from initial state to all required distributions, which is used in recursive definitions where we recurse on not just the final state but also the dynamics.">Island</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$MapOpt.html" title=""></a>
-                        <a href="GeneratorNode$$MapOpt.html" title="">MapOpt</a>
+                        <a class="class" href="GeneratorNode$$Map.html" title="generator node for mapping"></a>
+                        <a href="GeneratorNode$$Map.html" title="generator node for mapping">Map</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$ThenCondition.html" title=""></a>
-                        <a href="GeneratorNode$$ThenCondition.html" title="">ThenCondition</a>
+                        <a class="class" href="GeneratorNode$$MapOpt.html" title="generator node for optionally mapping, to be conditioned by non-trivial outputs (if any)"></a>
+                        <a href="GeneratorNode$$MapOpt.html" title="generator node for optionally mapping, to be conditioned by non-trivial outputs (if any)">MapOpt</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorNode$$RecursiveThenCondition.html" title=""></a>
+                        <a href="GeneratorNode$$RecursiveThenCondition.html" title="">RecursiveThenCondition</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="GeneratorNode$$ThenCondition.html" title="compose a generator node with conditioning"></a>
+                        <a href="GeneratorNode$$ThenCondition.html" title="compose a generator node with conditioning">ThenCondition</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="class" href="GeneratorNode$$ZipFlatMap.html" title=""></a>
                         <a href="GeneratorNode$$ZipFlatMap.html" title="">ZipFlatMap</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="GeneratorNode$$ZipMap.html" title=""></a>
-                        <a href="GeneratorNode$$ZipMap.html" title="">ZipMap</a>
+                        <a class="class" href="GeneratorNode$$ZipMap.html" title="generator node for combining using a binary operation"></a>
+                        <a href="GeneratorNode$$ZipMap.html" title="generator node for combining using a binary operation">ZipMap</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">ZipMapOpt</a>
+                        <a class="class" href="" title="generator node for combining using an optional binary operation, should be conditioned on output being non-trivial"></a>
+                        <a href="" title="generator node for combining using an optional binary operation, should be conditioned on output being non-trivial">ZipMapOpt</a>
                       </li>
               </ul>
             </div>
@@ -194,11 +210,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>generator node for combining using an optional binary operation, should be conditioned on output being non-trivial</p></div><dl class="paramcmts block"><dt class="tparam">X1</dt><dd class="cmt"><p>scala type of the first input random variable</p></dd><dt class="tparam">X2</dt><dd class="cmt"><p>scala type of the second input random variable</p></dd><dt class="tparam">Y</dt><dd class="cmt"><p>scala type of the output random variable</p></dd><dt class="param">f</dt><dd class="cmt"><p>the optional binary operation</p></dd><dt class="param">input1</dt><dd class="cmt"><p>the first input random variable</p></dd><dt class="param">input2</dt><dd class="cmt"><p>the second input random variable</p></dd><dt class="param">output</dt><dd class="cmt"><p>the output random variable</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X1">X1</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X2">X2</span>, <span class="extype" name="shapeless.HNil">HNil</span>]], <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>], <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>], <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X1">X1</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X2">X2</span>, <span class="extype" name="shapeless.HNil">HNil</span>]], <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>], <a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>], <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>], <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -224,7 +240,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.learning.GeneratorNode.ZipMapOpt"><span>ZipMapOpt</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.learning.BaseGeneratorNode"><span>BaseGeneratorNode</span></li><li class="in" name="provingground.learning.GeneratorNode"><span>GeneratorNode</span></li><li class="in" name="provingground.learning.GeneratorNodeFamily"><span>GeneratorNodeFamily</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.learning.GeneratorNode.ZipMapOpt"><span>ZipMapOpt</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.learning.BaseGeneratorNode"><span>BaseGeneratorNode</span></li><li class="in" name="provingground.learning.BaseGeneratorNodeFamily"><span>BaseGeneratorNodeFamily</span></li><li class="in" name="provingground.learning.GeneratorNode"><span>GeneratorNode</span></li><li class="in" name="provingground.learning.GeneratorNodeFamily"><span>GeneratorNodeFamily</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -244,7 +260,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.learning.GeneratorNode.ZipMapOpt#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.learning.GeneratorNode.ZipMapOpt#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(f:(X1,X2)=&gt;Option[Y],input1:provingground.learning.RandomVar[X1],input2:provingground.learning.RandomVar[X2],output:provingground.learning.RandomVar[Y]):provingground.learning.GeneratorNode.ZipMapOpt[X1,X2,Y]"></a><a id="&lt;init&gt;:ZipMapOpt[X1,X2,Y]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/GeneratorNode$$ZipMapOpt.html#&lt;init&gt;(f:(X1,X2)=&gt;Option[Y],input1:provingground.learning.RandomVar[X1],input2:provingground.learning.RandomVar[X2],output:provingground.learning.RandomVar[Y]):provingground.learning.GeneratorNode.ZipMapOpt[X1,X2,Y]" title="Permalink">
@@ -259,7 +275,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">ZipMapOpt</span><span class="params">(<span name="f">f: (<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X1">X1</span>, <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X2">X2</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>]</span>, <span name="input1">input1: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X1">X1</span>]</span>, <span name="input2">input2: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X2">X2</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>]</span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>the optional binary operation</p></dd><dt class="param">input1</dt><dd class="cmt"><p>the first input random variable</p></dd><dt class="param">input2</dt><dd class="cmt"><p>the second input random variable</p></dd><dt class="param">output</dt><dd class="cmt"><p>the output random variable</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -666,6 +682,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.BaseGeneratorNode#|" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.BaseGeneratorNode[I,T]"></a><a id="|[S&gt;:Y,T](Sort[S,T],RandomVar[T]):BaseGeneratorNode[::[X1,::[X2,HNil]],T]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ZipMapOpt.html#|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.BaseGeneratorNode[I,T]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bar" class="name">|</span><span class="tparams">[<span name="S">S &gt;: <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="condition">condition: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.|.S">S</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.|.T">T</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.|.T">T</span>]</span>)</span><span class="result">: <a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X1">X1</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X2">X2</span>, <span class="extype" name="shapeless.HNil">HNil</span>]], <span class="extype" name="provingground.learning.BaseGeneratorNode.|.T">T</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a> → <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
     </li>
               </ol>
             </div>
@@ -686,6 +718,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.learning.BaseGeneratorNode">
               <h3>Inherited from <a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X1">X1</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.X2">X2</span>, <span class="extype" name="shapeless.HNil">HNil</span>]], <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>]</h3>
+            </div><div class="parent" name="provingground.learning.BaseGeneratorNodeFamily">
+              <h3>Inherited from <a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>]</h3>
             </div><div class="parent" name="provingground.learning.GeneratorNode">
               <h3>Inherited from <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt.Y">Y</span>]</h3>
             </div><div class="parent" name="provingground.learning.GeneratorNodeFamily">

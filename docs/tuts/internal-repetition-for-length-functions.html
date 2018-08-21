@@ -118,33 +118,34 @@ messageStyle: "none",
 <p>In the above paper, homogeneity is used to deduce a bound for $l(x)$, and on taking the limit we get $l(x) \leq \frac{l(y) + l(z)}{2}$.</p>
 <h2>Preliminaries</h2>
 <p>We start with some imports. This is a bit ugly due to avoiding variable name collisions.</p>
-<pre><code class="language-scala">@        
+<pre><code class="language-scala">scala&gt;        
 
-@ import provingground._, HoTT._ 
+scala&gt; import provingground._, HoTT._ 
 
 import provingground._, HoTT._
 
-@  
+scala&gt;  
 
-@ import functionfinder._, andrewscurtis.FreeGroups._ 
+scala&gt; import scalahott._, andrewscurtis.FreeGroups._ 
 
-import functionfinder._, andrewscurtis.FreeGroups._
+import scalahott._, andrewscurtis.FreeGroups._
 
-@ import spire.implicits._ 
+scala&gt; import spire.implicits._ 
 
 import spire.implicits._
 
-@ import NatRing.{ x=&gt;_,  Literal =&gt; nat, _}, QField.{w =&gt; _, x =&gt;_, y=&gt;_, z=&gt;_, Literal =&gt; rat, _}, FreeGroup.{Literal =&gt; elem, _} 
+scala&gt; 
+import NatRing.{ x=&gt;_,  Literal =&gt; nat, _}, QField.{w =&gt; _, x =&gt;_, y=&gt;_, z=&gt;_, Literal =&gt; rat, _}, FreeGroup.{Literal =&gt; elem, _} 
 
 import NatRing.{ x=&gt;_,  Literal =&gt; nat, _}, QField.{w =&gt; _, x =&gt;_, y=&gt;_, z=&gt;_, Literal =&gt; rat, _}, FreeGroup.{Literal =&gt; elem, _}
 
-@ import Theorems.{PowerDistributive, ConjPower} 
+scala&gt; import Theorems.{PowerDistributive, ConjPower} 
 
-import Theorems.{PowerDistributive, ConjPow
+import Theorems.{PowerDistributive, ConjPower}
 </code></pre>
 <h2>The Setup</h2>
 <p>We introduce terms for the length function $l$, as well as <em>witnesses</em> for the assumptions on $l$.</p>
-<pre><code class="language-scala">@ val l = &quot;l&quot; :: FreeGroup -&gt;: QTyp 
+<pre><code class="language-scala">scala&gt; val l = &quot;l&quot; :: FreeGroup -&gt;: QTyp 
 
 l: Func[RepTerm[Word], RepTerm[spire.math.Rational]] with Subs[Func[RepTerm[Word], RepTerm[spire.math.Rational]]] = SymbolicFunc(
   Name(&quot;l&quot;),
@@ -152,28 +153,28 @@ l: Func[RepTerm[Word], RepTerm[spire.math.Rational]] with Subs[Func[RepTerm[Word
   Q.Typ
 )
 
-@  
+scala&gt;  
 
-@ val g = &quot;g&quot; :: FreeGroup 
+scala&gt; val g = &quot;g&quot; :: FreeGroup 
 
 g: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;g&quot;), FreeGroup)
 
-@ val h = &quot;h&quot; :: FreeGroup 
+scala&gt; val h = &quot;h&quot; :: FreeGroup 
 
 h: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;h&quot;), FreeGroup)
 
-@ val n = &quot;n&quot; :: NatTyp 
+scala&gt; val n = &quot;n&quot; :: NatTyp 
 
 n: RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]] = RepSymbObj(Name(&quot;n&quot;), Nat.Typ)
 
-@  
+scala&gt;  
 
-@ val triang =
-    &quot;triangle-inequality&quot; :: (
-      g ~&gt;: (h ~&gt;: (
-        (leq(l(g |+| h))(l(g) + l(h)))
-      ))
-    ) 
+scala&gt; val triang =
+         &quot;triangle-inequality&quot; :: (
+           g ~&gt;: (h ~&gt;: (
+             (leq(l(g |+| h))(l(g) + l(h)))
+           ))
+         ) 
 
 triang: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], PosWit]] with Subs[FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], PosWit]]] = PiSymbolicFunc(
   Name(&quot;triangle-inequality&quot;),
@@ -196,16 +197,16 @@ triang: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] 
                     FreeGroup
 ...
 
-@  
+scala&gt;  
 
-@ val conjInv =
-    &quot;conjugacy-invariance&quot; :: (
-      g ~&gt;: (
-        h ~&gt;: (
-          (l(h) =:= (l(g |+| h |+| g.inverse)))
-        )
-      )
-    ) 
+scala&gt; val conjInv =
+         &quot;conjugacy-invariance&quot; :: (
+           g ~&gt;: (
+             h ~&gt;: (
+               (l(h) =:= (l(g |+| h |+| g.inverse)))
+             )
+           )
+         ) 
 
 conjInv: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], Equality[RepTerm[spire.math.Rational]]]] with Subs[FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], Equality[RepTerm[spire.math.Rational]]]]] = PiSymbolicFunc(
   Name(&quot;conjugacy-invariance&quot;),
@@ -227,42 +228,42 @@ conjInv: FuncLike[RepTerm[Word] with Subs[RepTerm[Word]], FuncLike[RepTerm[Word]
                   RepSymbObj(ApplnSym(inv, RepSymbObj(g, FreeGroup)), FreeGroup)
 ...
 
-@
+scala&gt;
 </code></pre>
 <p>Next, we introduce variables for $x, y, z, s, t \in G$, where $s, t \in G$ are the elements so that the conjugacies $x \sim wy$ and $x \sim zw^{-1}$ are given by the equations  $x = swys^{-1}$ and $x = tzw^{-1}t^{-1}$.</p>
-<pre><code class="language-scala">@ val w = &quot;w&quot; :: FreeGroup 
+<pre><code class="language-scala">scala&gt; val w = &quot;w&quot; :: FreeGroup 
 
 w: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;w&quot;), FreeGroup)
 
-@ val y = &quot;y&quot; :: FreeGroup 
+scala&gt; val y = &quot;y&quot; :: FreeGroup 
 
 y: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;y&quot;), FreeGroup)
 
-@ val z = &quot;z&quot; :: FreeGroup 
+scala&gt; val z = &quot;z&quot; :: FreeGroup 
 
 z: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;z&quot;), FreeGroup)
 
-@ val s = &quot;s&quot; :: FreeGroup 
+scala&gt; val s = &quot;s&quot; :: FreeGroup 
 
 s: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;s&quot;), FreeGroup)
 
-@ val t = &quot;t&quot; :: FreeGroup 
+scala&gt; val t = &quot;t&quot; :: FreeGroup 
 
-t: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;t&quot;), FreeGro
+t: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;t&quot;), FreeGroup)
 </code></pre>
 <p>So far these are all independent. We shall introduce terms as witnesses for the above equations later, as we first prove a lemma not involving $x$.</p>
 <h2>Statement of lemma</h2>
 <p>The main internal repetition trick is captured the bound</p>
 <p>$$l((wy)^ns^{-1}t(zw^{-1})^n)\leq n(l(y) + l(z)) + l(s^{-1}) + l(t).$$</p>
 <p>We define $c(n) = (wy)^ns^{-1}t(zw^{-1})^n$ and $f(n) = n(l(y) + l(z)) + l(s^{-1}) + l(t)$, so the inequality is $l(c(n))\leq(f(n))$. We encode this  below as the <em>main lemma</em>.</p>
-<pre><code class="language-scala">@ val wy = w |+| y 
+<pre><code class="language-scala">scala&gt; val wy = w |+| y 
 
 wy: LocalTerm = RepSymbObj(
   ApplnSym(SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;w&quot;), FreeGroup)), FreeGroup, FreeGroup), RepSymbObj(Name(&quot;y&quot;), FreeGroup)),
   FreeGroup
 )
 
-@ val zwbar = z |+| w.inverse 
+scala&gt; val zwbar = z |+| w.inverse 
 
 zwbar: LocalTerm = RepSymbObj(
   ApplnSym(
@@ -272,7 +273,7 @@ zwbar: LocalTerm = RepSymbObj(
   FreeGroup
 )
 
-@ val wyn = FreeGroup.power(wy)(n) 
+scala&gt; val wyn = FreeGroup.power(wy)(n) 
 
 wyn: RepTerm[Word] = RepSymbObj(
   ApplnSym(
@@ -296,7 +297,7 @@ wyn: RepTerm[Word] = RepSymbObj(
             FreeGroup
 ...
 
-@ val zwbarn = FreeGroup.power(zwbar)(n) 
+scala&gt; val zwbarn = FreeGroup.power(zwbar)(n) 
 
 zwbarn: RepTerm[Word] = RepSymbObj(
   ApplnSym(
@@ -320,9 +321,9 @@ zwbarn: RepTerm[Word] = RepSymbObj(
             FreeGroup
 ...
 
-@  
+scala&gt;  
 
-@ val c = n :-&gt; (wyn |+| s.inverse |+| t |+| zwbarn) // this is the function we have to bound. 
+scala&gt; val c = n :-&gt; (wyn |+| s.inverse |+| t |+| zwbarn) // this is the function we have to bound. 
 
 c: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
   RepSymbObj(n, Nat.Typ),
@@ -346,9 +347,9 @@ c: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Lo
                           ApplnSym(
 ...
 
-@  
+scala&gt;  
 
-@ val r = incl(QField) 
+scala&gt; val r = incl(QField) 
 
 r: Rec[LocalTerm] = Rec(
   RepSymbObj(ScalaSymbol(0), Q.Typ),
@@ -364,9 +365,9 @@ r: Rec[LocalTerm] = Rec(
   )
 )
 
-@  
+scala&gt;  
 
-@ val f = n :-&gt; (l(s.inverse) + l(t) + ((l(y) + l(z)) * r(n) ) ) 
+scala&gt; val f = n :-&gt; (l(s.inverse) + l(t) + ((l(y) + l(z)) * r(n) ) ) 
 
 f: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
   RepSymbObj(n, Nat.Typ),
@@ -379,7 +380,6 @@ f: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Lo
       ),
       PiTerm(
         Map(
-          RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;z&quot;), FreeGroup)), Q.Typ) -&gt; 1,
           RepSymbObj(
             ApplnSym(
               Rec(
@@ -388,37 +388,39 @@ f: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Lo
                   RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
                   LambdaFixed(
                     RepSymbObj(f(n), Q.Typ),
+                    RepSymbObj(
 ...
 
-@  
+scala&gt;  
 
-@ val lemma = n :-&gt; (leq (l(c(n)) )(f(n) ) ) 
+scala&gt; val lemma = n :-&gt; (leq (l(c(n)) )(f(n) ) ) 
 
 lemma: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Pos] = LambdaFixed(
   RepSymbObj(n, Nat.Typ),
   Pos(
     SigmaTerm(
       Set(
-        PiTerm(
-          Map(
+        RepSymbObj(
+          ApplnSym(
+            SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(-1), Q.Typ)), Q.Typ, Q.Typ),
             RepSymbObj(
               ApplnSym(
-                Rec(
-                  RepSymbObj(ScalaSymbol(0), Q.Typ),
-                  LambdaFixed(
-                    RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
-                    LambdaFixed(
-                      RepSymbObj(f(n), Q.Typ),
-                      RepSymbObj(
-                        ApplnSym(
-                          SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ),
-                          RepSymbObj(f(n), Q.Typ)
-                        ),
+                SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                RepSymbObj(
+                  ApplnSym(
+                    SymbolicFunc(
+                      ApplnSym(
+                        mul,
+                        RepSymbObj(
+                          ApplnSym(
+                            Rec(
+                              RepSymbObj(ScalaSymbol(Word(Vector())), FreeGroup),
+...
 </code></pre>
 <h2>Proving the lemma</h2>
 <p>Let $d(n) = (wy)(wy)^ns^{-1}t(zw^{-1})^n(zw)$. Note that by definition $g^{n+1} = g^n g$, so we need to prove $d(n) = c(n+1)$.
 We use $g^ng^m = g^{n+m}$ (proved in our code) to prove this. The proof is given by the term <code>dIsc</code>.</p>
-<pre><code class="language-scala">@ val d = n :-&gt; (wy |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| zwbar) 
+<pre><code class="language-scala">scala&gt; val d = n :-&gt; (wy |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| zwbar) 
 
 d: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
   RepSymbObj(n, Nat.Typ),
@@ -442,23 +444,23 @@ d: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Lo
                           LambdaFixed(
 ...
 
-@ val dIsc = FreeGroup.rm(s.inverse |+| t |+| zwbarn |+| zwbar) *: (PowerDistributive.pf(wy)(nat(1))(n)) 
+scala&gt; val dIsc = FreeGroup.rm(s.inverse |+| t |+| zwbarn |+| zwbar) *: (PowerDistributive.pf(wy)(nat(1))(n)) 
 
 dIsc: Equality[LocalTerm] = SymbEquality(
   ApplnSym(
     InducFn(
       FreeGroup,
       LambdaTerm(
-        RepSymbObj($dygku, FreeGroup),
+        RepSymbObj($dygfj, FreeGroup),
         LambdaTerm(
-          RepSymbObj($dygkv, FreeGroup),
+          RepSymbObj($dygfk, FreeGroup),
           LambdaFixed(
-            SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($dygku, FreeGroup), RepSymbObj($dygkv, FreeGroup))),
+            SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($dygfj, FreeGroup), RepSymbObj($dygfk, FreeGroup))),
             IdentityTyp(
               FreeGroup,
               RepSymbObj(
                 ApplnSym(
-                  SymbolicFunc(ApplnSym(mul, RepSymbObj($dygku, FreeGroup)), FreeGroup, FreeGroup),
+                  SymbolicFunc(ApplnSym(mul, RepSymbObj($dygfj, FreeGroup)), FreeGroup, FreeGroup),
                   RepSymbObj(
                     ApplnSym(
                       SymbolicFunc(
@@ -466,10 +468,10 @@ dIsc: Equality[LocalTerm] = SymbEquality(
                         FreeGroup,
 ...
 
-@ assert(dIsc.typ == (d(n) =:= c(succ(n))))
+scala&gt; assert(dIsc.typ == (d(n) =:= c(succ(n))))
 </code></pre>
 <p>Next, let $b(n) = y(wy)^ns^{-1}t(zw^{-1})^nz$ be the conjugacy-reduced form of $d(n)$. Using $d(n) = c(n+1)$ and conjugacy invariance, we show that $l(c(n+1)) = l(b(n))$. The term <code>bIsc</code> is the proof of <code>l(c(n+1)) = l(b(n))</code>.</p>
-<pre><code class="language-scala">@ val b = n :-&gt; (y |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| z) 
+<pre><code class="language-scala">scala&gt; val b = n :-&gt; (y |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| z) 
 
 b: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], LocalTerm] = LambdaFixed(
   RepSymbObj(n, Nat.Typ),
@@ -493,7 +495,7 @@ b: Func[RepTerm[spire.math.SafeLong] with Subs[RepTerm[spire.math.SafeLong]], Lo
                           ApplnSym(
 ...
 
-@ val lbIsld = conjInv(w)(y |+| c(n) |+| z) 
+scala&gt; val lbIsld = conjInv(w)(y |+| c(n) |+| z) 
 
 lbIsld: Equality[RepTerm[spire.math.Rational]] = SymbEquality(
   ApplnSym(
@@ -517,7 +519,7 @@ lbIsld: Equality[RepTerm[spire.math.Rational]] = SymbEquality(
                         ApplnSym(
 ...
 
-@ val bIsc = lbIsld &amp;&amp; (l *: dIsc) 
+scala&gt; val bIsc = lbIsld &amp;&amp; (l *: dIsc) 
 
 bIsc: Equality[RepTerm[spire.math.Rational] with Subs[RepTerm[spire.math.Rational]]] = SymbEquality(
   ApplnSym(
@@ -526,25 +528,25 @@ bIsc: Equality[RepTerm[spire.math.Rational] with Subs[RepTerm[spire.math.Rationa
         InducFn(
           Q.Typ,
           LambdaTerm(
-            RepSymbObj($eflpj, Q.Typ),
+            RepSymbObj($efljy, Q.Typ),
             LambdaTerm(
-              RepSymbObj($eflpk, Q.Typ),
+              RepSymbObj($efljz, Q.Typ),
               LambdaFixed(
-                SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($eflpj, Q.Typ), RepSymbObj($eflpk, Q.Typ))),
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($efljy, Q.Typ), RepSymbObj($efljz, Q.Typ))),
                 FuncTyp(
                   IdentityTyp(
                     Q.Typ,
-                    RepSymbObj($eflpk, Q.Typ),
+                    RepSymbObj($efljz, Q.Typ),
                     RepSymbObj(
                       ApplnSym(
                         SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
                         RepSymbObj(
 ...
 
-@ assert(bIsc.typ == (l(b(n)) =:= l(c(succ(n))) ))
+scala&gt; assert(bIsc.typ == (l(b(n)) =:= l(c(succ(n))) ))
 </code></pre>
 <p>With these preliminaries, we can prove the lemma by induction. First note the base case.</p>
-<pre><code class="language-scala">@ val baseCase = triang(inv(s))(t) !: (lemma(0)) 
+<pre><code class="language-scala">scala&gt; val baseCase = triang(inv(s))(t) !: (lemma(0)) 
 
 baseCase: PosWit = SymbPosWit(
   ApplnSym(
@@ -566,22 +568,20 @@ baseCase: PosWit = SymbPosWit(
                       RepSymbObj(
                         ApplnSym(
                           SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+...
 </code></pre>
 <p>The induction step takes more work.
 We first assume the induction hypothesis.</p>
-<pre><code class="language-scala">@ val hyp = &quot;hyp&quot; :: lemma(n) 
+<pre><code class="language-scala">scala&gt; val hyp = &quot;hyp&quot; :: lemma(n) 
 
 hyp: PosWit with Subs[PosWit] = SymbPosWit(
   Name(&quot;hyp&quot;),
   SigmaTerm(
     Set(
-      RepSymbObj(
-        ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)),
-        Q.Typ
-      ),
+      RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;t&quot;), FreeGroup)), Q.Typ),
       PiTerm(
         Map(
-          RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;z&quot;), FreeGroup)), Q.Typ) -&gt; 1,
+          RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;y&quot;), FreeGroup)), Q.Typ) -&gt; 1,
           RepSymbObj(
             ApplnSym(
               Rec(
@@ -591,9 +591,13 @@ hyp: PosWit with Subs[PosWit] = SymbPosWit(
                   LambdaFixed(
                     RepSymbObj(f(n), Q.Typ),
                     RepSymbObj(
+                      ApplnSym(
+                        SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ),
+                        RepSymbObj(f(n), Q.Typ)
+...
 </code></pre>
 <p>Next, we bound $l(b(n))$ (which we know is $l(c(n+ 1)))$ in terms of $l(c(n))$.</p>
-<pre><code class="language-scala">@ val lbnBoundedlcnlylz = triang(y)(c(n)) + triang(y |+| c(n))(z) 
+<pre><code class="language-scala">scala&gt; val lbnBoundedlcnlylz = triang(y)(c(n)) + triang(y |+| c(n))(z) 
 
 lbnBoundedlcnlylz: PosWitSum = PosWitSum(
   SymbPosWit(
@@ -617,10 +621,10 @@ lbnBoundedlcnlylz: PosWitSum = PosWitSum(
                           ApplnSym(
 ...
 
-@ assert(lbnBoundedlcnlylz.typ == (leq(l(b(n)))(l(c(n)) + l(y) + l(z))))
+scala&gt; assert(lbnBoundedlcnlylz.typ == (leq(l(b(n)))(l(c(n)) + l(y) + l(z))))
 </code></pre>
 <p>Now, using the induction hypothesis, we get a bound on $l(b(n))$.</p>
-<pre><code class="language-scala">@ val lbnBounded = lbnBoundedlcnlylz + hyp 
+<pre><code class="language-scala">scala&gt; val lbnBounded = lbnBoundedlcnlylz + hyp 
 
 lbnBounded: PosWitSum = PosWitSum(
   PosWitSum(
@@ -644,38 +648,37 @@ lbnBounded: PosWitSum = PosWitSum(
                           RepSymbObj(
 ...
 
-@ assert(lbnBounded.typ == leq(l(b(n)) )(f(succ(n))) )
+scala&gt; assert(lbnBounded.typ == leq(l(b(n)) )(f(succ(n))) )
 </code></pre>
 <p>Next, we put together $l(c(n+1)) = l(b(n))$ and the bound on $l(b(n))$ to get the required bound on $l(c(n+1))$.</p>
-<pre><code class="language-scala">@ val bnd = &quot;bound&quot; :: QField.LocalTyp 
+<pre><code class="language-scala">scala&gt; val bnd = &quot;bound&quot; :: QField.LocalTyp 
 
 bnd: RepTerm[spire.math.Rational] with Subs[RepTerm[spire.math.Rational]] = RepSymbObj(Name(&quot;bound&quot;), Q.Typ)
 
-@ val cbnd = bIsc.lift(bnd :-&gt; (leq(bnd)(f(succ(n)) ) )) 
+scala&gt; val cbnd = bIsc.lift(bnd :-&gt; (leq(bnd)(f(succ(n)) ) )) 
 
 cbnd: Func[PosWit, PosWit] = SymbolicFunc(
   ApplnSym(
     InducFn(
       Q.Typ,
       LambdaTerm(
-        RepSymbObj($erdkk, Q.Typ),
+        RepSymbObj($erdvt, Q.Typ),
         LambdaTerm(
-          RepSymbObj($erdkl, Q.Typ),
+          RepSymbObj($erdvu, Q.Typ),
           LambdaFixed(
-            SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($erdkk, Q.Typ), RepSymbObj($erdkl, Q.Typ))),
+            SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($erdvt, Q.Typ), RepSymbObj($erdvu, Q.Typ))),
             FuncTyp(
               Pos(
                 SigmaTerm(
                   Set(
+                    RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;t&quot;), FreeGroup)), Q.Typ),
                     RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;y&quot;), FreeGroup)), Q.Typ),
-                    RepSymbObj(
-                      ApplnSym(
-                        SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
-                        RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)
-                      ),
+                    PiTerm(
+                      Map(
+                        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;y&quot;), FreeGroup)), Q.Typ) -&gt; 1,
 ...
 
-@ val step = cbnd(lbnBounded) 
+scala&gt; val step = cbnd(lbnBounded) 
 
 step: PosWit = SymbPosWit(
   ApplnSym(
@@ -684,25 +687,25 @@ step: PosWit = SymbPosWit(
         InducFn(
           Q.Typ,
           LambdaTerm(
-            RepSymbObj($erdkk, Q.Typ),
+            RepSymbObj($erdvt, Q.Typ),
             LambdaTerm(
-              RepSymbObj($erdkl, Q.Typ),
+              RepSymbObj($erdvu, Q.Typ),
               LambdaFixed(
-                SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($erdkk, Q.Typ), RepSymbObj($erdkl, Q.Typ))),
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(Q.Typ, RepSymbObj($erdvt, Q.Typ), RepSymbObj($erdvu, Q.Typ))),
                 FuncTyp(
                   Pos(
                     SigmaTerm(
                       Set(
+                        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;t&quot;), FreeGroup)), Q.Typ),
                         RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;y&quot;), FreeGroup)), Q.Typ),
-                        RepSymbObj(
-                          ApplnSym(
-                            SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                        PiTerm(
+                          Map(
 ...
 
-@ assert(step.typ == lemma(succ(n)))
+scala&gt; assert(step.typ == lemma(succ(n)))
 </code></pre>
 <p>Finally, the lemma is proved by induction.</p>
-<pre><code class="language-scala">@ val lemmaProof = Induc(lemma, baseCase, n :~&gt; (hyp :-&gt; step)) 
+<pre><code class="language-scala">scala&gt; val lemmaProof = Induc(lemma, baseCase, n :~&gt; (hyp :-&gt; step)) 
 
 lemmaProof: Induc[PosWit with Subs[PosWit]] = Induc(
   LambdaFixed(
@@ -710,36 +713,36 @@ lemmaProof: Induc[PosWit with Subs[PosWit]] = Induc(
     Pos(
       SigmaTerm(
         Set(
-          PiTerm(
-            Map(
+          RepSymbObj(
+            ApplnSym(
+              SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(-1), Q.Typ)), Q.Typ, Q.Typ),
               RepSymbObj(
                 ApplnSym(
-                  Rec(
-                    RepSymbObj(ScalaSymbol(0), Q.Typ),
-                    LambdaFixed(
-                      RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
-                      LambdaFixed(
-                        RepSymbObj(f(n), Q.Typ),
-                        RepSymbObj(
-                          ApplnSym(
-                            SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ),
-                            RepSymbObj(f(n), Q.Typ)
+                  SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                  RepSymbObj(
+                    ApplnSym(
+                      SymbolicFunc(
+                        ApplnSym(
+                          mul,
+                          RepSymbObj(
+                            ApplnSym(
+                              Rec(
 ...
 
-@ assert(lemmaProof.typ == (n ~&gt;: (lemma(n))) )
+scala&gt; assert(lemmaProof.typ == (n ~&gt;: (lemma(n))) )
 </code></pre>
 <h2>Rest of the proof of the theorem</h2>
 <p>Some work remains, essentially to use symbolic algebra for equations such as $x^{2n} = x^nx^n$
 and to put together equations and inequalities. We introduce terms witnessing the hypotheses $x=swys^{-1}$ and $x=tzw^{-1}t^{-1}$</p>
-<pre><code class="language-scala">@ val x = &quot;x&quot; :: FreeGroup 
+<pre><code class="language-scala">scala&gt; val x = &quot;x&quot; :: FreeGroup 
 
 x: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;x&quot;), FreeGroup)
 
-@ val g = &quot;g&quot; :: FreeGroup 
+scala&gt; val g = &quot;g&quot; :: FreeGroup 
 
 g: RepTerm[Word] with Subs[RepTerm[Word]] = RepSymbObj(Name(&quot;g&quot;), FreeGroup)
 
-@ val pown = g :-&gt; FreeGroup.power(g)(n) 
+scala&gt; val pown = g :-&gt; FreeGroup.power(g)(n) 
 
 pown: Func[RepTerm[Word] with Subs[RepTerm[Word]], RepTerm[Word]] = LambdaFixed(
   RepSymbObj(g, FreeGroup),
@@ -763,9 +766,9 @@ pown: Func[RepTerm[Word] with Subs[RepTerm[Word]], RepTerm[Word]] = LambdaFixed(
     FreeGroup
 ...
 
-@  
+scala&gt;  
 
-@ val c1 = &quot;x ~ wy&quot; :: (x =:= (s |+| w |+| y |+| s.inverse)) 
+scala&gt; val c1 = &quot;x ~ wy&quot; :: (x =:= (s |+| w |+| y |+| s.inverse)) 
 
 c1: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[Word] with Subs[RepTerm[Word]]]] = SymbEquality(
   Name(&quot;x ~ wy&quot;),
@@ -789,7 +792,7 @@ c1: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[
           FreeGroup
 ...
 
-@ val c2 = &quot;x ~ zw^{-1}&quot; :: (x =:= (t |+| z |+| w.inverse |+| t.inverse)) 
+scala&gt; val c2 = &quot;x ~ zw^{-1}&quot; :: (x =:= (t |+| z |+| w.inverse |+| t.inverse)) 
 
 c2: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[Word] with Subs[RepTerm[Word]]]] = SymbEquality(
   Name(&quot;x ~ zw^{-1}&quot;),
@@ -811,9 +814,10 @@ c2: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] with Subs[Equality[RepTerm[
                 ),
                 RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;t&quot;), FreeGroup)), FreeGroup)
               ),
+...
 </code></pre>
 <p>We deduce using a theorem (in our code) about powers of conjugates that $x^n = s(wy)^ns^{-1} = t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">@ val xnConjwyn = (pown *: c1) &amp;&amp; ConjPower.pf(s)(wy)(n) 
+<pre><code class="language-scala">scala&gt; val xnConjwyn = (pown *: c1) &amp;&amp; ConjPower.pf(s)(wy)(n) 
 
 xnConjwyn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = SymbEquality(
   ApplnSym(
@@ -822,22 +826,22 @@ xnConjwyn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = SymbEquality(
         InducFn(
           FreeGroup,
           LambdaTerm(
-            RepSymbObj($gmval, FreeGroup),
+            RepSymbObj($gqdzi, FreeGroup),
             LambdaTerm(
-              RepSymbObj($gmvam, FreeGroup),
+              RepSymbObj($gqdzj, FreeGroup),
               LambdaFixed(
-                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gmval, FreeGroup), RepSymbObj($gmvam, FreeGroup))),
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gqdzi, FreeGroup), RepSymbObj($gqdzj, FreeGroup))),
                 FuncTyp(
                   IdentityTyp(
                     FreeGroup,
-                    RepSymbObj($gmvam, FreeGroup),
+                    RepSymbObj($gqdzj, FreeGroup),
                     RepSymbObj(
                       ApplnSym(
                         SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
                         RepSymbObj(
 ...
 
-@ val xnConjzwbarn= (pown *: c2) &amp;&amp; ConjPower.pf(t)(zwbar)(n) 
+scala&gt; val xnConjzwbarn= (pown *: c2) &amp;&amp; ConjPower.pf(t)(zwbar)(n) 
 
 xnConjzwbarn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = SymbEquality(
   ApplnSym(
@@ -846,28 +850,28 @@ xnConjzwbarn: Equality[RepTerm[Word] with Subs[RepTerm[Word]]] = SymbEquality(
         InducFn(
           FreeGroup,
           LambdaTerm(
-            RepSymbObj($gopym, FreeGroup),
+            RepSymbObj($gryxj, FreeGroup),
             LambdaTerm(
-              RepSymbObj($gopyn, FreeGroup),
+              RepSymbObj($gryxk, FreeGroup),
               LambdaFixed(
-                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gopym, FreeGroup), RepSymbObj($gopyn, FreeGroup))),
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gryxj, FreeGroup), RepSymbObj($gryxk, FreeGroup))),
                 FuncTyp(
                   IdentityTyp(
                     FreeGroup,
-                    RepSymbObj($gopyn, FreeGroup),
+                    RepSymbObj($gryxk, FreeGroup),
                     RepSymbObj(
                       ApplnSym(
                         SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;t&quot;), FreeGroup)), FreeGroup, FreeGroup),
                         RepSymbObj(
 ...
 
-@ assert(xnConjwyn.typ == (pown(x) =:= (s |+| pown(wy)  |+| s.inverse  ) ) ) 
+scala&gt; assert(xnConjwyn.typ == (pown(x) =:= (s |+| pown(wy)  |+| s.inverse  ) ) ) 
 
 
-@ assert(xnConjzwbarn.typ == (pown(x) =:= (t |+| pown(zwbar)  |+| t.inverse  ) ) )
+scala&gt; assert(xnConjzwbarn.typ == (pown(x) =:= (t |+| pown(zwbar)  |+| t.inverse  ) ) )
 </code></pre>
 <p>We use the above equations to show that $x^nx^n = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">@ val t1 = s |+| pown(wy)  |+| s.inverse 
+<pre><code class="language-scala">scala&gt; val t1 = s |+| pown(wy)  |+| s.inverse 
 
 t1: LocalTerm = RepSymbObj(
   ApplnSym(
@@ -891,7 +895,7 @@ t1: LocalTerm = RepSymbObj(
                           RepSymbObj(
 ...
 
-@ val t2 = t |+| pown(zwbar)  |+| t.inverse 
+scala&gt; val t2 = t |+| pown(zwbar)  |+| t.inverse 
 
 t2: LocalTerm = RepSymbObj(
   ApplnSym(
@@ -915,7 +919,7 @@ t2: LocalTerm = RepSymbObj(
                           RepSymbObj(
 ...
 
-@ val xnxnExpr = (FreeGroup.rm(pown(x)) *: xnConjwyn) &amp;&amp; (FreeGroup.lm(t1) *: xnConjzwbarn) 
+scala&gt; val xnxnExpr = (FreeGroup.rm(pown(x)) *: xnConjwyn) &amp;&amp; (FreeGroup.lm(t1) *: xnConjzwbarn) 
 
 xnxnExpr: Equality[LocalTerm with Subs[LocalTerm]] = SymbEquality(
   ApplnSym(
@@ -924,25 +928,25 @@ xnxnExpr: Equality[LocalTerm with Subs[LocalTerm]] = SymbEquality(
         InducFn(
           FreeGroup,
           LambdaTerm(
-            RepSymbObj($gtwwi, FreeGroup),
+            RepSymbObj($gxfvf, FreeGroup),
             LambdaTerm(
-              RepSymbObj($gtwwj, FreeGroup),
+              RepSymbObj($gxfvg, FreeGroup),
               LambdaFixed(
-                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gtwwi, FreeGroup), RepSymbObj($gtwwj, FreeGroup))),
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gxfvf, FreeGroup), RepSymbObj($gxfvg, FreeGroup))),
                 FuncTyp(
                   IdentityTyp(
                     FreeGroup,
-                    RepSymbObj($gtwwj, FreeGroup),
+                    RepSymbObj($gxfvg, FreeGroup),
                     RepSymbObj(
                       ApplnSym(
                         SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
                         RepSymbObj(
 ...
 
-@ assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
+scala&gt; assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
 </code></pre>
 <p>Using $x^nx^n = x^{2n}$, we get the formula $x^{2n} = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">@ val x2nExpr =PowerDistributive.pf(x)(n)(n).sym &amp;&amp; xnxnExpr 
+<pre><code class="language-scala">scala&gt; val x2nExpr =PowerDistributive.pf(x)(n)(n).sym &amp;&amp; xnxnExpr 
 
 x2nExpr: Equality[LocalTerm with Subs[LocalTerm] with Subs[LocalTerm with Subs[LocalTerm]]] = SymbEquality(
   ApplnSym(
@@ -951,36 +955,33 @@ x2nExpr: Equality[LocalTerm with Subs[LocalTerm] with Subs[LocalTerm with Subs[L
         InducFn(
           FreeGroup,
           LambdaTerm(
-            RepSymbObj($gzlch, FreeGroup),
+            RepSymbObj($hcube, FreeGroup),
             LambdaTerm(
-              RepSymbObj($gzlci, FreeGroup),
+              RepSymbObj($hcubf, FreeGroup),
               LambdaFixed(
-                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($gzlch, FreeGroup), RepSymbObj($gzlci, FreeGroup))),
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($hcube, FreeGroup), RepSymbObj($hcubf, FreeGroup))),
                 FuncTyp(
                   IdentityTyp(
                     FreeGroup,
-                    RepSymbObj($gzlci, FreeGroup),
+                    RepSymbObj($hcubf, FreeGroup),
                     RepSymbObj(
                       ApplnSym(
                         SymbolicFunc(ApplnSym(mul, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup, FreeGroup),
                         RepSymbObj(
 ...
 
-@ assert(x2nExpr.typ == (FreeGroup.power(x)(NatRing.prod(n)(nat(2))) =:= (s |+| c(n) |+| t.inverse)))
+scala&gt; assert(x2nExpr.typ == (FreeGroup.power(x)(NatRing.prod(n)(nat(2))) =:= (s |+| c(n) |+| t.inverse)))
 </code></pre>
 <p>We now bound the length of the right hand side $s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.</p>
-<pre><code class="language-scala">@ val thmBound = f(n) + l(s) + l(t.inverse) 
+<pre><code class="language-scala">scala&gt; val thmBound = f(n) + l(s) + l(t.inverse) 
 
 thmBound: LocalTerm = SigmaTerm(
   Set(
     RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;s&quot;), FreeGroup)), Q.Typ),
-    RepSymbObj(
-      ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(ApplnSym(inv, RepSymbObj(Name(&quot;s&quot;), FreeGroup)), FreeGroup)),
-      Q.Typ
-    ),
+    RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;t&quot;), FreeGroup)), Q.Typ),
     PiTerm(
       Map(
-        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;z&quot;), FreeGroup)), Q.Typ) -&gt; 1,
+        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;y&quot;), FreeGroup)), Q.Typ) -&gt; 1,
         RepSymbObj(
           ApplnSym(
             Rec(
@@ -991,9 +992,12 @@ thmBound: LocalTerm = SigmaTerm(
                   RepSymbObj(f(n), Q.Typ),
                   RepSymbObj(
                     ApplnSym(SymbolicFunc(ApplnSym(sum, RepSymbObj(ScalaSymbol(1), Q.Typ)), Q.Typ, Q.Typ), RepSymbObj(f(n), Q.Typ)),
+                    Q.Typ
+                  )
+                )
 ...
 
-@ val exprBound = lemmaProof(n) + triang(s)(c(n)) + triang(s |+| c(n))(t.inverse) 
+scala&gt; val exprBound = lemmaProof(n) + triang(s)(c(n)) + triang(s |+| c(n))(t.inverse) 
 
 exprBound: PosWitSum = PosWitSum(
   PosWitSum(
@@ -1005,22 +1009,22 @@ exprBound: PosWitSum = PosWitSum(
             Pos(
               SigmaTerm(
                 Set(
-                  PiTerm(
-                    Map(
+                  RepSymbObj(
+                    ApplnSym(
+                      SymbolicFunc(ApplnSym(prod, RepSymbObj(ScalaSymbol(-1), Q.Typ)), Q.Typ, Q.Typ),
                       RepSymbObj(
                         ApplnSym(
-                          Rec(
-                            RepSymbObj(ScalaSymbol(0), Q.Typ),
-                            LambdaFixed(
-                              RepSymbObj(Name(&quot;_&quot;), Nat.Typ),
-                              LambdaFixed(
-                                RepSymbObj(f(n), Q.Typ),
+                          SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                          RepSymbObj(
+                            ApplnSym(
+                              SymbolicFunc(
+                                ApplnSym(
 ...
 
-@ assert(exprBound.typ == leq(l(s |+| c(n) |+| t.inverse ))(thmBound))
+scala&gt; assert(exprBound.typ == leq(l(s |+| c(n) |+| t.inverse ))(thmBound))
 </code></pre>
 <p>We easily deduce the bound on $l(x^{2n})$ to complete the proof.</p>
-<pre><code class="language-scala">@ val thmProof = x2nExpr.sym.lift (g :-&gt; leq(l(g))(thmBound))(exprBound) 
+<pre><code class="language-scala">scala&gt; val thmProof = x2nExpr.sym.lift (g :-&gt; leq(l(g))(thmBound))(exprBound) 
 
 thmProof: PosWit = SymbPosWit(
   ApplnSym(
@@ -1029,22 +1033,22 @@ thmProof: PosWit = SymbPosWit(
         InducFn(
           FreeGroup,
           LambdaTerm(
-            RepSymbObj($hfdrs, FreeGroup),
+            RepSymbObj($hiozv, FreeGroup),
             LambdaTerm(
-              RepSymbObj($hfdrt, FreeGroup),
+              RepSymbObj($hiozw, FreeGroup),
               LambdaFixed(
-                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($hfdrs, FreeGroup), RepSymbObj($hfdrt, FreeGroup))),
+                SymbEquality(Name(&quot;_&quot;), IdentityTyp(FreeGroup, RepSymbObj($hiozv, FreeGroup), RepSymbObj($hiozw, FreeGroup))),
                 FuncTyp(
                   Pos(
                     SigmaTerm(
                       Set(
                         RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;s&quot;), FreeGroup)), Q.Typ),
-                        RepSymbObj(
-                          ApplnSym(
-                            SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ),
+                        RepSymbObj(ApplnSym(SymbolicFunc(Name(&quot;l&quot;), FreeGroup, Q.Typ), RepSymbObj(Name(&quot;t&quot;), FreeGroup)), Q.Typ),
+                        PiTerm(
+                          Map(
 ...
 
-@ val x2n = FreeGroup.power(x)(NatRing.prod(n)(nat(2))) 
+scala&gt; val x2n = FreeGroup.power(x)(NatRing.prod(n)(nat(2))) 
 
 x2n: RepTerm[Word] = RepSymbObj(
   ApplnSym(
@@ -1068,14 +1072,16 @@ x2n: RepTerm[Word] = RepSymbObj(
       ApplnSym(
 ...
 
-@ assert(thmProof.typ == leq(l(x2n))(thmBound )) 
+scala&gt; assert(thmProof.typ == leq(l(x2n))(thmBound )) 
 
 
-@  
+scala&gt;  
 
-@
+scala&gt;  
+
+scala
 </code></pre>
-<h4>Git Log when running tutorial: 4d774d05affbeb6f1b3ac5915f80b81c1025bfe1</h4>
+<h4>Git Log when running tutorial: 8f10bc88b54aac33a58f12ac1826158363997eeb</h4>
 
 
 </div>

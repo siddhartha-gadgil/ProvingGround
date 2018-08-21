@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -248,9 +248,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.learning.SortList#::" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="::[X](that:provingground.learning.Sort[X]):provingground.learning.SortList.Cons[X,U]"></a><a id="::[X](Sort[X]):Cons[X,HNil]"></a>
+      <a id="::[Z,X](that:provingground.learning.Sort[Z,X]):provingground.learning.SortList.Cons[Z,X,U]"></a><a id="::[Z,X](Sort[Z,X]):Cons[Z,X,HNil]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/SortList$$Nil$.html#::[X](that:provingground.learning.Sort[X]):provingground.learning.SortList.Cons[X,U]" title="Permalink">
+      <a href="../../provingground/learning/SortList$$Nil$.html#::[Z,X](that:provingground.learning.Sort[Z,X]):provingground.learning.SortList.Cons[Z,X,U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -259,7 +259,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $colon$colon" class="name">::</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="that">that: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.SortList.::.X">X</span>]</span>)</span><span class="result">: <a href="SortList$$Cons.html" class="extype" name="provingground.learning.SortList.Cons">Cons</a>[<span class="extype" name="provingground.learning.SortList.::.X">X</span>, <span class="extype" name="shapeless.HNil">HNil</span>]</span>
+        <span title="gt4s: $colon$colon" class="name">::</span><span class="tparams">[<span name="Z">Z</span>, <span name="X">X</span>]</span><span class="params">(<span name="that">that: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.SortList.::.Z">Z</span>, <span class="extype" name="provingground.learning.SortList.::.X">X</span>]</span>)</span><span class="result">: <a href="SortList$$Cons.html" class="extype" name="provingground.learning.SortList.Cons">Cons</a>[<span class="extype" name="provingground.learning.SortList.::.Z">Z</span>, <span class="extype" name="provingground.learning.SortList.::.X">X</span>, <span class="extype" name="shapeless.HNil">HNil</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SortList.html" class="extype" name="provingground.learning.SortList">SortList</a></dd></dl></div>

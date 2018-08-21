@@ -87,7 +87,7 @@
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
-in the <a href="../functionfinder/index.html" class="extype" name="provingground.functionfinder">functionfinder</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
     </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -219,9 +219,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.learning.RandomVar.SimpleFamily#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(domain:provingground.learning.Sort[U],rangeFamily:U=&gt;provingground.learning.Sort[O]):provingground.learning.RandomVar.SimpleFamily[U,O]"></a><a id="&lt;init&gt;:SimpleFamily[U,O]"></a>
+      <a id="&lt;init&gt;(domain:provingground.learning.RandomVar[U],rangeFamily:U=&gt;provingground.learning.Sort[_,O]):provingground.learning.RandomVar.SimpleFamily[U,O]"></a><a id="&lt;init&gt;:SimpleFamily[U,O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#&lt;init&gt;(domain:provingground.learning.Sort[U],rangeFamily:U=&gt;provingground.learning.Sort[O]):provingground.learning.RandomVar.SimpleFamily[U,O]" title="Permalink">
+      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#&lt;init&gt;(domain:provingground.learning.RandomVar[U],rangeFamily:U=&gt;provingground.learning.Sort[_,O]):provingground.learning.RandomVar.SimpleFamily[U,O]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -230,7 +230,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">SimpleFamily</span><span class="params">(<span name="domain">domain: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>]</span>, <span name="rangeFamily">rangeFamily: (<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.O">O</span>] = <span class="symbol"><span class="name"><a href="Sort$.html">(x: U) =&gt; Sort.All[O]</a></span></span></span>)</span>
+        <span class="name">SimpleFamily</span><span class="params">(<span name="domain">domain: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>]</span>, <span name="rangeFamily">rangeFamily: (<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[_, <span class="extype" name="provingground.learning.RandomVar.SimpleFamily.O">O</span>] = <span class="defval" name='<span class="name"><a href="Sort$.html">(_: U) =&gt;
+                             Sort.All[O]()</a></span>'>...</span></span>)</span>
       </span>
       
       
@@ -308,6 +309,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.learning.RandomVarFamily#at" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="at(x:Dom):provingground.learning.RandomVar.AtCoord[Dom,O]"></a><a id="at(::[U,HNil]):AtCoord[::[U,HNil],O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#at(x:Dom):provingground.learning.RandomVar.AtCoord[Dom,O]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">at</span><span class="params">(<span name="x">x: <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>, <span class="extype" name="shapeless.HNil">HNil</span>]</span>)</span><span class="result">: <a href="RandomVar$$AtCoord.html" class="extype" name="provingground.learning.RandomVar.AtCoord">AtCoord</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>, <span class="extype" name="shapeless.HNil">HNil</span>], <span class="extype" name="provingground.learning.RandomVar.SimpleFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -495,9 +512,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#polyDomain" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="polyDomain:provingground.learning.SortList[Dom]"></a><a id="polyDomain:SortList[::[U,HNil]]"></a>
+      <a id="polyDomain:provingground.learning.RandomVarList[Dom]"></a><a id="polyDomain:RandomVarList[::[U,HNil]]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#polyDomain:provingground.learning.SortList[Dom]" title="Permalink">
+      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#polyDomain:provingground.learning.RandomVarList[Dom]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -506,14 +523,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">polyDomain</span><span class="result">: <a href="SortList.html" class="extype" name="provingground.learning.SortList">SortList</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>, <span class="extype" name="shapeless.HNil">HNil</span>]]</span>
+        <span class="name">polyDomain</span><span class="result">: <a href="RandomVarList.html" class="extype" name="provingground.learning.RandomVarList">RandomVarList</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>, <span class="extype" name="shapeless.HNil">HNil</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#rangeFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="rangeFamily:Dom=&gt;provingground.learning.Sort[O]"></a><a id="rangeFamily:(::[U,HNil])⇒Sort[O]"></a>
+      <a id="rangeFamily:Dom=&gt;provingground.learning.Sort[_,O]"></a><a id="rangeFamily:(::[U,HNil])⇒Sort[_,O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#rangeFamily:Dom=&gt;provingground.learning.Sort[O]" title="Permalink">
+      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#rangeFamily:Dom=&gt;provingground.learning.Sort[_,O]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -522,7 +539,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">rangeFamily</span><span class="result">: (<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>, <span class="extype" name="shapeless.HNil">HNil</span>]) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.O">O</span>]</span>
+        <span class="name">rangeFamily</span><span class="result">: (<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>, <span class="extype" name="shapeless.HNil">HNil</span>]) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[_, <span class="extype" name="provingground.learning.RandomVar.SimpleFamily.O">O</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
@@ -542,6 +559,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.learning.RandomVarFamily#target" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="target[State,Boat,V,Y&gt;:O]:provingground.learning.NodeCoeffs.Target[State,Boat,V,Dom,Y]"></a><a id="target[State,Boat,V,Y&gt;:O]:Target[State,Boat,V,::[U,HNil],Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVar$$SimpleFamily.html#target[State,Boat,V,Y&gt;:O]:provingground.learning.NodeCoeffs.Target[State,Boat,V,Dom,Y]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">target</span><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>, <span name="V">V</span>, <span name="Y">Y &gt;: <span class="extype" name="provingground.learning.RandomVar.SimpleFamily.O">O</span></span>]</span><span class="result">: <a href="NodeCoeffs$$Target.html" class="extype" name="provingground.learning.NodeCoeffs.Target">Target</a>[<span class="extype" name="provingground.learning.RandomVarFamily.target.State">State</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.Boat">Boat</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.V">V</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVar.SimpleFamily.U">U</span>, <span class="extype" name="shapeless.HNil">HNil</span>], <span class="extype" name="provingground.learning.RandomVarFamily.target.Y">Y</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
