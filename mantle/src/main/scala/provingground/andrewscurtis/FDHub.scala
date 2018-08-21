@@ -1,5 +1,5 @@
-package provingground.learning
-import provingground._
+package provingground.andrewscurtis
+import provingground._, learning._
 
 import akka.actor._
 import akka.pattern.ask

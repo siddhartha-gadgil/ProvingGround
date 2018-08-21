@@ -1,4 +1,4 @@
-package provingground.learning
+package provingground.andrewscurtis
 import provingground._
 
 import learning._
