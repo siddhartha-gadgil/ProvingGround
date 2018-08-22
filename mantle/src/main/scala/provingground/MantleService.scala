@@ -188,7 +188,7 @@ object MantleServer extends App {
 
   parser.parse(args, Config()) match {
     case Some(config) =>
-      val ammServer = new AmmScriptServer(config.scriptsDir, config.objectsDir)
+      val ammServer = AmmScriptServer
 
       val server = new MantleService(config.serverMode)
 
