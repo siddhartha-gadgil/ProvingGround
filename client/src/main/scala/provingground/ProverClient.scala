@@ -48,10 +48,12 @@ object ProverClient {
 
     val sse = new dom.EventSource("./proof-source")
 
-    sse.onmessage = (event: dom.MessageEvent) =>
-      if (event.data.toString.size > 0) {
+    sse.onmessage = (event: dom.MessageEvent) => showProof(event.data.toString)
+
+    def showProof(data: String) : Unit =
+      if (data.size > 0) {
         runButton.value = "Ask Server for proof"
-        val answer = event.data.toString
+        val answer = data
         val js     = ujson.read(answer)
         val proved = js.obj("proved").bool
         if (proved) {
@@ -102,7 +104,7 @@ object ProverClient {
 
     }
 
-    def query() = {
+    def queryPost() = {
       runButton.value = "Asking Server"
       Ajax
         .post("./monoid-proof")
@@ -111,7 +113,7 @@ object ProverClient {
         }
     }
 
-    runButton.onclick = (e: dom.Event) => query()
+    runButton.onclick = (e: dom.Event) => queryPost() // change this to query a websocket
 
     val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 
