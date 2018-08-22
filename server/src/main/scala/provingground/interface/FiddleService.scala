@@ -62,7 +62,7 @@ $body
 
   import java.nio.charset.StandardCharsets
 
-  def replResult(code: String) = {
+  def replResult(code: String): Either[String, String] = {
     import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
     val outputS = new ByteArrayOutputStream()
     val errLog  = new ByteArrayOutputStream()
