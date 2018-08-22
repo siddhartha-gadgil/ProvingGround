@@ -149,7 +149,7 @@ object trepplein extends SbtModule{
 object mantle extends SbtModule with JvmModule{
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm, server)
 
-  override def mainClass = Some("provingground.interface.MantleServer")
+  override def mainClass = Some("provingground.interface.MantleCask")
 
   object test extends Tests{
     override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
