@@ -3,6 +3,11 @@ package provingground.interface
 import scala.concurrent.ExecutionContext.Implicits.global
 import MantleService._
 
+import io.undertow.websockets.WebSocketConnectionCallback
+import io.undertow.websockets.core.{AbstractReceiveListener, BufferedTextMessage, WebSocketChannel, WebSockets}
+import io.undertow.websockets.spi.WebSocketHttpExchange
+import scala.util.Try
+
 object MantleRoutes extends cask.Routes{
   @cask.staticFiles("docs")
   def docsRoute() = "docs"
@@ -56,8 +61,39 @@ object MantleRoutes extends cask.Routes{
         }
     }
 
+  def sendProof(channel: WebSocketChannel): Unit = {
+    val pfFut = MonoidServer.seekResultFut
+    pfFut.foreach((pf) => WebSockets.sendTextBlocking(pf.toString, channel))
+  }
+
+
+  @cask.websocket("/monoid-websock")
+    def showUserProfile(): cask.WebsocketResult = {
+      new WebSocketConnectionCallback() {
+        override def onConnect(exchange: WebSocketHttpExchange, channel: WebSocketChannel): Unit = {
+          channel.getReceiveSetter.set(
+            new AbstractReceiveListener() {
+              override def onFullTextMessage(channel: WebSocketChannel, message: BufferedTextMessage): Unit = {
+                message.getData match{
+                  case "" => channel.close()
+                  case data =>
+                    pprint.log(s"received $data over websocket")
+                    sendProof(channel)
+                    WebSockets.sendTextBlocking(data, channel)
+                }
+              }
+            }
+          )
+          channel.resumeReceives()
+        }
+      }
+    }
+
   initialize()
 
 }
 
-object MantleCask extends cask.Main(MantleRoutes)
+object MantleCask extends cask.Main(MantleRoutes){
+  override def port = Try(sys.env("PROVINGGROUD_PORT").toInt).getOrElse(8080)
+  override def host = Try(sys.env("PROVINGGROUD_HOST")).getOrElse("localhost")
+}

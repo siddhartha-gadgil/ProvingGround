@@ -4,6 +4,7 @@ import org.scalajs.dom
 
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
+import org.scalajs.dom.raw._
 
 import scala.scalajs.js
 import org.scalajs.dom
@@ -46,9 +47,10 @@ object ProverClient {
       ).render
     )
 
-    val sse = new dom.EventSource("./proof-source")
+    // val sse = new dom.EventSource("./proof-source")
+    //
+    // sse.onmessage = (event: dom.MessageEvent) => showProof(event.data.toString)
 
-    sse.onmessage = (event: dom.MessageEvent) => showProof(event.data.toString)
 
     def showProof(data: String) : Unit =
       if (data.size > 0) {
@@ -65,7 +67,7 @@ object ProverClient {
           proverDiv.appendChild(
             ul(`class` := "list-group")(
               li(`class` := "list-group-item list-group-item-primary")(
-                "From the server via SSE:"),
+                "From the server via WebSocket:"),
               li(`class` := "list-group-item list-group-item-info")("Theorem"),
               li(`class` := "list-group-item")(typDiv),
               li(`class` := "list-group-item list-group-item-success")("Proof"),
@@ -114,6 +116,24 @@ object ProverClient {
     }
 
     runButton.onclick = (e: dom.Event) => queryPost() // change this to query a websocket
+
+    val chat = new WebSocket(s"ws://${dom.document.location.host}/monoid-websock")
+
+    chat.onopen = {
+    (event: Event) =>
+      runButton.value = "Ask Server (over websocket)"
+      runButton.onclick = (e: dom.Event) =>
+        {
+          runButton.value = "Asking Server (over WebSocket)"
+          chat.send("monoid-proof")
+        }
+    }
+
+    chat.onmessage = {(event: MessageEvent) =>
+      val msg = event.data.toString
+      if (msg == "monoid-proof") runButton.value = "Server Working"
+      else showProof(msg)
+      }
 
     val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 
