@@ -20,9 +20,9 @@ cache:
   directories:
     - $HOME/.ivy2/cache
     - $HOME/.mill/ammonite/cache/
-    - $HOME/.coursier/cache/
+    # - $HOME/.coursier/cache/
 
 before_cache:
   # Tricks to avoid unnecessary cache updates
   - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
-  - find $HOME/.coursier/cache -name "*.lock" -type f -delete
+  # - find $HOME/.coursier/cache -name "*.lock" -type f -delete
