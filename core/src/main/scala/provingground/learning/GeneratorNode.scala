@@ -665,7 +665,7 @@ case class GeneratorData[V](
 )
 
 sealed trait NodeCoeffSeq[State, Boat, V] {
-  def ::[RDom <: HList, Y](head: NodeCoeffs[State, Boat, V, RDom, Y]) =
+  def +:[RDom <: HList, Y](head: NodeCoeffs[State, Boat, V, RDom, Y]) =
     NodeCoeffSeq.Cons(head, this)
 
   val nodeFamilies: Set[GeneratorNodeFamily[_ <: HList, _]]
@@ -779,6 +779,10 @@ object NodeCoeffs {
   ) extends Cons[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
 
+    require(
+      headGen.outputFamily == output,
+      s"cannot add node with output ${headGen.outputFamily} to sequence with output $output")
+
     val nodeFamilies
       : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
 
@@ -794,6 +798,10 @@ object NodeCoeffs {
       tail: NodeCoeffs[State, Boat, V, RDom, Y]
   ) extends Cons[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
+
+    require(
+      headGen.outputFamily == output,
+      s"cannot add node with output ${headGen.outputFamily} to sequence with output $output")
 
     val nodeFamilies
       : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
@@ -878,7 +886,7 @@ object GeometricDistribution {
                                       Unit,
                                       Double,
                                       HNil,
-                                      Int] = nodeCoeffs :: NodeCoeffSeq
+                                      Int] = nodeCoeffs +: NodeCoeffSeq
     .Empty[VarValueSet[FD], Unit, Double]()
 
   val initState: VarValueSet[FD] =

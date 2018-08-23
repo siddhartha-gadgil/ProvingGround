@@ -265,6 +265,14 @@ class TermGeneratorNodes[InitState](
       IndexedIntroRuleTyps(inductiveTyp)
     )
 
+  val termsByTyps =
+    ZipFlatMap[Typ[Term], Term, Term](
+      Typs,
+      (typ) => termsWithTyp(typ),
+      {case (typ, term) => term},
+      Terms
+    )
+
 }
 
 object TermRandomVars {
