@@ -59,6 +59,8 @@ object MantleRoutes extends cask.Routes{
           case Right(z) => "--RESULT--\n" + z
           case Left(z)  => "--ERROR--\n" + z
         }
+
+        result
     }
 
   def sendProof(channel: WebSocketChannel): Unit = {
