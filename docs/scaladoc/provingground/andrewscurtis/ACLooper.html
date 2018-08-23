@@ -219,6 +219,18 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="DiffStructure$.html" title=""></a>
                         <a href="DiffStructure$.html" title="">DiffStructure</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="FDHub$.html" title=""></a>
+                        <a class="class" href="FDHub.html" title="Actor controlling (bu not creating) the various loopers for running; maintains info on the state etc."></a>
+                        <a href="FDHub.html" title="Actor controlling (bu not creating) the various loopers for running; maintains info on the state etc.">FDHub</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FDLooper$.html" title=""></a>
+                        <a class="class" href="FDLooper.html" title="Actor for carrying out loops in a learning dynamical system"></a>
+                        <a href="FDLooper.html" title="Actor for carrying out loops in a learning dynamical system">FDLooper</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="FDSrc.html" title="Actor saving snapshots, typically materialized from an akka Source"></a>
+                        <a href="FDSrc.html" title="Actor saving snapshots, typically materialized from an akka Source">FDSrc</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="FreeGroups$.html" title=""></a>
                         <a href="FreeGroups$.html" title="">FreeGroups</a>
@@ -303,7 +315,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">ACLooper</span><span class="result"> extends <a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
+        <span class="name">ACLooper</span><span class="result"> extends <a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
       </span>
       </h4>
 
@@ -313,7 +325,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>], <span class="extype" name="akka.actor.Actor">Actor</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>], <span class="extype" name="akka.actor.Actor">Actor</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -339,7 +351,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.andrewscurtis.ACLooper"><span>ACLooper</span></li><li class="in" name="provingground.learning.FDLooper"><span>FDLooper</span></li><li class="in" name="akka.actor.Actor"><span>Actor</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.andrewscurtis.ACLooper"><span>ACLooper</span></li><li class="in" name="provingground.andrewscurtis.FDLooper"><span>FDLooper</span></li><li class="in" name="akka.actor.Actor"><span>Actor</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -711,7 +723,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.learning.FDLooper#loops" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.andrewscurtis.FDLooper#loops" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="loops:Int"></a>
       <span class="permalink">
       <a href="../../provingground/andrewscurtis/ACLooper.html#loops:Int" title="Permalink">
@@ -728,7 +740,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <p class="shortcomment cmt">loops completed so far
 </p><div class="fullcomment"><div class="comment cmt"><p>loops completed so far
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a></dd></dl></div>
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -783,7 +795,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.FDLooper#param" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.andrewscurtis.FDLooper#param" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="param:P"></a><a id="param:Param"></a>
       <span class="permalink">
       <a href="../../provingground/andrewscurtis/ACLooper.html#param:P" title="Permalink">
@@ -798,7 +810,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">param</span><span class="result">: <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a></dd></dl></div>
     </li><li name="akka.actor.Actor#postRestart" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="postRestart(reason:Throwable):Unit"></a><a id="postRestart(Throwable):Unit"></a>
       <span class="permalink">
@@ -887,7 +899,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.FDLooper#receive" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.andrewscurtis.FDLooper#receive" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="receive:PartialFunction[Any,Unit]"></a>
       <span class="permalink">
       <a href="../../provingground/andrewscurtis/ACLooper.html#receive:PartialFunction[Any,Unit]" title="Permalink">
@@ -902,7 +914,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">receive</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Any">Any</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a> → Actor</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a> → Actor</dd></dl></div>
     </li><li name="akka.actor.Actor#self" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="self:akka.actor.ActorRef"></a><a id="self:ActorRef"></a>
       <span class="permalink">
@@ -935,7 +947,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Actor</dd></dl></div>
-    </li><li name="provingground.learning.FDLooper#shift" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.andrewscurtis.FDLooper#shift" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="shift(start:X,strictness:Double,steps:Int,epsilon:Double):X"></a><a id="shift((FiniteDistribution[AtomicMove],FiniteDistribution[Moves]),Double,Int,Double):(FiniteDistribution[AtomicMove],FiniteDistribution[Moves])"></a>
       <span class="permalink">
       <a href="../../provingground/andrewscurtis/ACLooper.html#shift(start:X,strictness:Double,steps:Int,epsilon:Double):X" title="Permalink">
@@ -952,8 +964,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <p class="shortcomment cmt">change to make for next step: evolve, compute feedback, pullback feedback
 </p><div class="fullcomment"><div class="comment cmt"><p>change to make for next step: evolve, compute feedback, pullback feedback
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a></dd></dl></div>
-    </li><li name="provingground.learning.FDLooper#snapShot" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.FDLooper#snapShot" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="snapShot(x:X):provingground.learning.SnapShot[X,P]"></a><a id="snapShot((FiniteDistribution[AtomicMove],FiniteDistribution[Moves])):SnapShot[(FiniteDistribution[AtomicMove],FiniteDistribution[Moves]),Param]"></a>
       <span class="permalink">
       <a href="../../provingground/andrewscurtis/ACLooper.html#snapShot(x:X):provingground.learning.SnapShot[X,P]" title="Permalink">
@@ -970,8 +982,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <p class="shortcomment cmt">snapshot from state
 </p><div class="fullcomment"><div class="comment cmt"><p>snapshot from state
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a></dd></dl></div>
-    </li><li name="provingground.learning.FDLooper#state" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.FDLooper#state" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="state:X"></a><a id="state:(FiniteDistribution[AtomicMove],FiniteDistribution[Moves])"></a>
       <span class="permalink">
       <a href="../../provingground/andrewscurtis/ACLooper.html#state:X" title="Permalink">
@@ -988,7 +1000,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <p class="shortcomment cmt">current state (mutable)
 </p><div class="fullcomment"><div class="comment cmt"><p>current state (mutable)
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a></dd></dl></div>
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a></dd></dl></div>
     </li><li name="akka.actor.Actor#supervisorStrategy" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="supervisorStrategy:akka.actor.SupervisorStrategy"></a><a id="supervisorStrategy:SupervisorStrategy"></a>
       <span class="permalink">
@@ -1131,8 +1143,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="provingground.learning.FDLooper">
-              <h3>Inherited from <a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</h3>
+        <div class="parent" name="provingground.andrewscurtis.FDLooper">
+              <h3>Inherited from <a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</h3>
             </div><div class="parent" name="akka.actor.Actor">
               <h3>Inherited from <span class="extype" name="akka.actor.Actor">Actor</span></h3>
             </div><div class="parent" name="scala.AnyRef">

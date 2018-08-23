@@ -219,6 +219,18 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="DiffStructure$.html" title=""></a>
                         <a href="DiffStructure$.html" title="">DiffStructure</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="FDHub$.html" title=""></a>
+                        <a class="class" href="FDHub.html" title="Actor controlling (bu not creating) the various loopers for running; maintains info on the state etc."></a>
+                        <a href="FDHub.html" title="Actor controlling (bu not creating) the various loopers for running; maintains info on the state etc.">FDHub</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FDLooper$.html" title=""></a>
+                        <a class="class" href="FDLooper.html" title="Actor for carrying out loops in a learning dynamical system"></a>
+                        <a href="FDLooper.html" title="Actor for carrying out loops in a learning dynamical system">FDLooper</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="FDSrc.html" title="Actor saving snapshots, typically materialized from an akka Source"></a>
+                        <a href="FDSrc.html" title="Actor saving snapshots, typically materialized from an akka Source">FDSrc</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="FreeGroups$.html" title=""></a>
                         <a href="FreeGroups$.html" title="">FreeGroups</a>
@@ -536,7 +548,7 @@ namely:
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ACFileSaver.html"><span class="name">ACFileSaver</span></a><span class="result"> extends <a href="../learning/FDSrc.html" class="extype" name="provingground.learning.FDSrc">FDSrc</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
+        <a title="" href="ACFileSaver.html"><span class="name">ACFileSaver</span></a><span class="result"> extends <a href="FDSrc.html" class="extype" name="provingground.andrewscurtis.FDSrc">FDSrc</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
       </span>
       
       
@@ -552,7 +564,7 @@ namely:
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="The loop for learning specialized to Andrews-Curtis moves" href="ACLooper.html"><span class="name">ACLooper</span></a><span class="result"> extends <a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
+        <a title="The loop for learning specialized to Andrews-Curtis moves" href="ACLooper.html"><span class="name">ACLooper</span></a><span class="result"> extends <a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
       </span>
       
       <p class="shortcomment cmt">The loop for learning specialized to Andrews-Curtis moves
@@ -689,7 +701,7 @@ concrete methods give sinks and a flow that does all the saving.</p>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ACsmoothLooper.html"><span class="name">ACsmoothLooper</span></a><span class="result"> extends <a href="../learning/FDLooper.html" class="extype" name="provingground.learning.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
+        <a title="" href="ACsmoothLooper.html"><span class="name">ACsmoothLooper</span></a><span class="result"> extends <a href="FDLooper.html" class="extype" name="provingground.andrewscurtis.FDLooper">FDLooper</a>[(<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="AtomicMove.html" class="extype" name="provingground.andrewscurtis.AtomicMove">AtomicMove</a>], <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="Moves.html" class="extype" name="provingground.andrewscurtis.Moves">Moves</a>]), <a href="Param.html" class="extype" name="provingground.andrewscurtis.Param">Param</a>]</span>
       </span>
       
       
@@ -725,6 +737,63 @@ concrete methods give sinks and a flow that does all the saving.</p>
       </span>
       
       
+    </li><li name="provingground.andrewscurtis.FDHub" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FDHubextendsActor"></a><a id="FDHub:FDHub"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/index.html#FDHubextendsActor" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="Actor controlling (bu not creating) the various loopers for running; maintains info on the state etc." href="FDHub.html"><span class="name">FDHub</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Actor controlling (bu not creating) the various loopers for running;
+maintains info on the state etc.</p><div class="fullcomment"><div class="comment cmt"><p>Actor controlling (bu not creating) the various loopers for running;
+maintains info on the state etc. of loopers,
+keeps telling a running looper to continue.
+Running loopers is separated into spawning them, in general from outside the actor system,
+and starting them from a Hub.
+</p></div></div>
+    </li><li name="provingground.andrewscurtis.FDLooper" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FDLooper[X,P]extendsActor"></a><a id="FDLooper[X,P]:FDLooper[X,P]"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/index.html#FDLooper[X,P]extendsActor" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="Actor for carrying out loops in a learning dynamical system" href="FDLooper.html"><span class="name">FDLooper</span></a><span class="tparams">[<span name="X">X</span>, <span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Actor for carrying out loops in a learning dynamical system
+</p><div class="fullcomment"><div class="comment cmt"><p>Actor for carrying out loops in a learning dynamical system
+</p></div><dl class="paramcmts block"><dt class="tparam">X</dt><dd class="cmt"><p>state type</p></dd><dt class="tparam">P</dt><dd class="cmt"><p>parameter type</p></dd></dl></div>
+    </li><li name="provingground.andrewscurtis.FDSrc" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="FDSrc[X,P]extendsActor"></a><a id="FDSrc[X,P]:FDSrc[X,P]"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/index.html#FDSrc[X,P]extendsActor" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="Actor saving snapshots, typically materialized from an akka Source" href="FDSrc.html"><span class="name">FDSrc</span></a><span class="tparams">[<span name="X">X</span>, <span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Actor saving snapshots, typically materialized from an akka Source
+</p>
     </li><li name="provingground.andrewscurtis.Inv" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="InvextendsAtomicMovewithProductwithSerializable"></a><a id="Inv:Inv"></a>
       <span class="permalink">
@@ -1179,6 +1248,38 @@ concrete methods give sinks and a flow that does all the saving.</p>
       </span>
       <span class="symbol">
         <a title="" href="DiffStructure$.html"><span class="name">DiffStructure</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.andrewscurtis.FDHub" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FDHub"></a><a id="FDHub:FDHub"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/index.html#FDHub" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FDHub$.html"><span class="name">FDHub</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.andrewscurtis.FDLooper" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FDLooper"></a><a id="FDLooper:FDLooper"></a>
+      <span class="permalink">
+      <a href="../../provingground/andrewscurtis/index.html#FDLooper" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="FDLooper$.html"><span class="name">FDLooper</span></a>
       </span>
       
       
