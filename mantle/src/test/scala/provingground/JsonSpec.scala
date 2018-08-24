@@ -8,9 +8,9 @@ import translation._, interface._
 import TermJson._
 
 class JsonSpec extends FlatSpec {
-  def roundTripBase(t: Term) = termToJson(t).flatMap(jsonToTermBase)
+  def roundTripBase(t: Term): Option[Term] = termToJson(t).flatMap(jsonToTermBase)
 
-  def checkBase(t: Term) = roundTripBase(t) == Some(t)
+  def checkBase(t: Term): Boolean = roundTripBase(t) == Some(t)
 
   "Basic (without induction) serialization" should "be correct for Universe" in {
     assert(checkBase(Type))

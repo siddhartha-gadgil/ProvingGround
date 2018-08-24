@@ -2,18 +2,20 @@ package provingground.interface
 import provingground._
 import induction._
 
-import scala.concurrent._, duration._
+import scala.concurrent._
+import duration._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import monix.reactive._
 import monix.tail._
 import cats._
 import translation.FansiShow._
-import scala.collection.mutable.{Set => mSet, Map => mMap}
 
+import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
 import HoTT.{Name => _, _}
-import math.max
+import monix.execution.CancelableFuture
 
+import math.max
 import trepplein._
 
 object LeanParser {
@@ -26,6 +28,37 @@ object LeanParser {
         case (App(f, x), er: ApplnFailException) => Some((f, x, er))
         case _                                   => None
       }
+  }
+
+  sealed trait Log
+
+  case class Defined(name: Name, term: Term) extends Log
+
+  case class DefinedInduc(name: Name, indMod: TermIndMod) extends Log
+
+  case class ParseWork(expr: Expr) extends Log
+
+  case class Parsed(expr: Expr) extends Log
+
+  trait Logger extends (Log => Unit){logger =>
+    def &&(that: Logger) = new Logger{
+      def apply(l: Log) = {this(l) ; that(l)}
+    }
+  }
+
+  object Logger {
+    def apply(f: Log => Unit) = new Logger{
+      def apply(l: Log) = f(l)
+    }
+
+    val nop: Logger = Logger((_) => ())
+
+    def dispatch(send: String => Unit): Logger = Logger({
+      case LeanParser.Defined(name, _)      => send(s"defined $name")
+      case LeanParser.DefinedInduc(name, _) => send(s"defined inductive $name")
+      case LeanParser.ParseWork(expr)    => send(s"started parsing $expr")
+      case LeanParser.Parsed(expr)       => send(s"finished parsing $expr")
+    })
   }
 
   def splitVec[A](sizes: Vector[Int],
@@ -43,14 +76,14 @@ object LeanParser {
     if (n == 0) lastName
     else shiftedName(n - 1, prefixedNextName(lastName))
 
-  def getNextVarName(vecs: Vector[Term], n: Int) = {
+  def getNextVarName(vecs: Vector[Term], n: Int): String = {
     val cleanVecs = vecs.filterNot(isWitness)
     val lastName =
       cleanVecs.headOption
         .collect { case sym: Symbolic => sym.name.toString }
         .getOrElse(shiftedName(n))
     val newName = prefixedNextName(lastName)
-    if (vecs.headOption.map(isWitness) == Some(true))
+    if (vecs.headOption.exists(isWitness))
       pprint.log(s"$vecs\n$cleanVecs\n$lastName; $newName")
     newName
   }
@@ -113,19 +146,23 @@ object LeanParser {
 
 }
 
-class LeanParser(mods: Vector[Modification],
+class LeanParser(initMods: Seq[Modification],
                  defTaskMap: Map[Name, Task[Term]] = Map(),
-                 indTaskMap: Map[Name, Task[TermIndMod]] = Map()) {
-  import LeanParser._
-  import LeanToTermMonix.{RecIterAp, getRec, isPropnFn, parseWork}
+                 indTaskMap: Map[Name, Task[TermIndMod]] = Map(),
+                 log: LeanParser.Logger = LeanParser.Logger.nop) {
+
+  val mods = ArrayBuffer(initMods : _*)
+
+  def addMods(m: Seq[Modification]) : Unit =  mods ++= m
 
   import LeanParser._
+  import LeanToTermMonix.{RecIterAp, getRec, isPropnFn, parseWork}
 
   val defnMap: mMap[Name, Term] = mMap()
 
   val termIndModMap: mMap[Name, TermIndMod] = mMap()
 
-  def update() = {
+  def update() : Unit = {
     import library._
     defnMap ++= LeanMemo.defMap
     termIndModMap ++= LeanMemo.indMap
@@ -133,20 +170,21 @@ class LeanParser(mods: Vector[Modification],
 
   val parseMemo: mMap[(Expr, Vector[Term]), Term] = mMap()
 
-  def getMemTermIndMod(name: Name, exp: Expr) =
+  def getMemTermIndMod(name: Name, exp: Expr): Task[TermIndMod] =
     getTermIndMod(name)
       .orElse(indModFromMod(name))
       .getOrElse(
         Task.raiseError(UnParsedException(exp))
       )
 
-  def getNamed(name: Name) =
+  def getNamed(name: Name): Option[Task[Term]] =
     defTaskMap
       .get(name)
       .orElse(
         defnMap.get(name).map((t) => Task.pure(t))
       )
-  def getTermIndMod(name: Name) =
+
+  def getTermIndMod(name: Name): Option[Task[TermIndMod]] =
     indTaskMap
       .get(name)
       .orElse(
@@ -208,14 +246,18 @@ class LeanParser(mods: Vector[Modification],
       tsk <- resFlat
     } yield tsk // Task
 
-  def get(name: String) =
-    parse(Const(Name(name.split("\\."): _*), Vector())).runAsync
+  def getTask(name: String): Task[Term] =
+    parse(Const(Name(name.split("\\."): _*), Vector()))
+
+  def get(name: String): CancelableFuture[Term] =
+    getTask(name).runAsync
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
     // memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
     memParsed.map(Task.pure(_)).getOrElse {
       parseWork += exp
+      log(ParseWork(exp))
 
       // pprint.log(s"Parsing $exp")
       // pprint.log(s"$parseWork")
@@ -291,6 +333,7 @@ class LeanParser(mods: Vector[Modification],
         res <- resTask
         _ = {
           parseWork -= exp
+          log(Parsed(exp))
           parseMemo += (exp, vars) -> res
           // pprint.log(s"parsed $exp")
           // if (isPropFmly(res.typ))
@@ -346,14 +389,20 @@ class LeanParser(mods: Vector[Modification],
   def withDefn(name: Name, exp: Expr): Task[Unit] =
     for {
       term <- parse(exp, Vector())
-      _ = { pprint.log(s"Defined $name"); defnMap += name -> term }
+      _ = {
+        pprint.log(s"Defined $name"); log(Defined(name, term));
+        defnMap += name -> term
+      }
     } yield ()
 
   def withAxiom(name: Name, ty: Expr): Task[Unit] =
     for {
       typ <- parse(ty, Vector())
       term = (name.toString) :: toTyp(typ)
-      _    = { pprint.log(s"Defined $name"); defnMap += name -> term }
+      _ = {
+        pprint.log(s"Defined $name"); log(Defined(name, term));
+        defnMap += name -> term
+      }
     } yield ()
 
   def withAxiomSeq(axs: Vector[(Name, Expr)]): Task[Unit] =
@@ -376,7 +425,10 @@ class LeanParser(mods: Vector[Modification],
         typ <- parse(ty, Vector())
         // (typ, ltm1) = pr
         term = (name.toString) :: toTyp(typ)
-        _    = { pprint.log(s"Defined $name"); defnMap += name -> term }
+        _ = {
+          pprint.log(s"Defined $name"); log(Defined(name, term));
+          defnMap += name -> term
+        }
         res <- foldAxiomSeq(term +: accum, ys)
       } yield res
   }
@@ -390,7 +442,10 @@ class LeanParser(mods: Vector[Modification],
         // (indTypTerm, ltm1) = pr
         indTyp = toTyp(indTypTerm)
         typF   = name.toString :: indTyp
-        _      = { pprint.log(s"Defined $name"); defnMap += name -> typF }
+        _ = {
+          pprint.log(s"Defined $name"); log(Defined(name, typF));
+          defnMap += name -> typF
+        }
         intros <- foldAxiomSeq(Vector(), ind.intros).map(_.reverse)
         // (intros, withIntros) = introsPair
         typValuePair <- getValue(typF, ind.numParams, Vector())
@@ -400,7 +455,7 @@ class LeanParser(mods: Vector[Modification],
           case (t, params) =>
             IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
         }
-        _ = { termIndModMap += ind.name -> indMod }
+        _ = { log(DefinedInduc(name, indMod)); termIndModMap += ind.name -> indMod }
       } yield ()
 
     case ax: AxiomMod =>
@@ -473,7 +528,7 @@ class LeanParser(mods: Vector[Modification],
       Vector(mod.name)
   }
 
-  def findMod(name: Name, mods: Vector[Modification]) =
+  def findMod(name: Name, mods: Seq[Modification]) =
     mods.find((mod) => modNames(mod).contains(name))
 
   def defFromMod(name: Name): Option[Task[Term]] =

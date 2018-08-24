@@ -375,7 +375,7 @@ object CodeGen {
     CodeGen(inducNames, termMap)
   }
 
-  def objNames(termNames: Vector[String], indNames: Vector[String]) = {
+  def objNames(termNames: Seq[String], indNames: Seq[String]) = {
     val defnMap =
       termNames.map { (s) =>
         val code = q"${meta.Term.Name(escape(s))}.value"
