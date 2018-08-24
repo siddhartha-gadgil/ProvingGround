@@ -44,7 +44,7 @@ object LeanResources{
   def logUpdate: Logger = new Logger{
     def apply(l: Log) = l match {
       case LeanParser.Defined(name, term)    => defnMap += name -> term
-      case LeanParser.DefinedInduc(name) => ???
+      case LeanParser.DefinedInduc(name, termIndMod) => termIndModMap += name -> termIndMod
       case LeanParser.ParseWork(expr)    => ()
       case LeanParser.Parsed(expr)       => ()
     }
@@ -80,7 +80,7 @@ object LeanRoutes extends cask.Routes{
       Js.Obj("type" -> Js.Str("log"), "message" -> Js.Str(s)).toString()
     )
 
-  val sendLogger = logger.dispatch(sendLog)
+  val sendLogger = Logger.dispatch(sendLog)
 
   def messenger: Logger =
     logUpdate && sendLogger
