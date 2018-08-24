@@ -95,7 +95,7 @@ object MantleRoutes extends cask.Routes{
 
 }
 
-object MantleCask extends cask.Main(MantleRoutes){
-  override def port = Try(sys.env("PROVINGGROUD_PORT").toInt).getOrElse(8080)
-  override def host = Try(sys.env("PROVINGGROUD_HOST")).getOrElse("localhost")
+object MantleCask extends cask.Main(MantleRoutes, LeanRoutes){
+  override def port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
+  override def host = Try(sys.env("PROVINGGROUND_HOST")).getOrElse("localhost")
 }
