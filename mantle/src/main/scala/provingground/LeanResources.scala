@@ -20,11 +20,12 @@ import io.undertow.websockets.core.{
 import io.undertow.websockets.spi.WebSocketHttpExchange
 import provingground.translation.TeXTranslate
 
-
 import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
 
+import upickle.default.{read => _, write => uwrite, _}
+
 object LeanResources {
-  val index: IndexedSeq[String] = read.lines(resource / "index.txt")
+  def index: IndexedSeq[String] = read.lines(resource / "index.txt").filter(_.endsWith(".lean.export"))
 
   val modTasks: Map[String, Task[Vector[Modification]]] = index.map { (name) =>
     val path = resource / name
@@ -63,26 +64,42 @@ object LeanResources {
 object LeanRoutes extends cask.Routes {
   import LeanResources._
   @cask.get("/files")
-  def files() : Vector[String] = index.toVector
+  def files(): String = {
+    pprint.log(index.mkString(","))
+    uwrite(index.toVector)
+  }
 
-  @cask.get("codegen-defns")
+  @cask.get("/codegen-defns")
   def codeGenDefs(): Vector[String] =
     LeanMemo.defTaskMap.keys.map(_.toString).toVector
 
-  @cask.get("codegen-induc-defns")
+  @cask.get("/codegen-induc-defns")
   def codeGenInducDefs(): Vector[String] =
     LeanMemo.indTaskMap.keys.map(_.toString).toVector
 
-  @cask.get("mem-defns")
+  @cask.get("/mem-defns")
   def memDefs(): Vector[String] = defnMap.keys.map(_.toString).toVector
 
-  @cask.get("mem-induc-defns")
+  @cask.get("/mem-induc-defns")
   def memInducDefs(): Vector[String] =
     termIndModMap.keys.map(_.toString).toVector
 
+  @cask.get("mods/:file")
+  def getMods(file: String): Vector[Js.Value] = {
+    val path = resource / file
+    val in   = new java.io.ByteArrayInputStream(read.bytes(path))
+    getModsFromStream(in).map{(m) =>
+      val tp = m match {
+        case _ : trepplein.DefMod => "definition"
+        case _ : trepplein.IndMod => "inductive type"
+      }
+    Js.Obj("type" -> tp, "name" -> m.name.toString)
+    }
+  }
+
   var channelOpt: Option[WebSocketChannel] = None
 
-  @cask.websocket("/monoid-websock")
+  @cask.websocket("/leanlib-websock")
   def showUserProfile(): cask.WebsocketResult = {
     new WebSocketConnectionCallback() {
       override def onConnect(exchange: WebSocketHttpExchange,
@@ -148,7 +165,7 @@ object LeanRoutes extends cask.Routes {
 
   }
 
-  @cask.post("save-code")
+  @cask.post("/save-code")
   def parse() = {
     val lc = LeanCodeGen(parser)
     lc.save()

@@ -117,7 +117,7 @@ object LeanInterface {
     exportedCommands.collect { case ExportedModification(mod) => mod }
   }
 
-  def getModsFromStream(in: java.io.InputStream) = {
+  def getModsFromStream(in: java.io.InputStream): Vector[Modification] = {
     val exportedCommands =
       TextExportParser.parseStream(in).toVector
 

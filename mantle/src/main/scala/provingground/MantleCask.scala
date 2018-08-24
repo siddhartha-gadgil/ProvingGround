@@ -33,6 +33,12 @@ object MantleRoutes extends cask.Routes{
             "ProvingGround HoTT Server",
             false)
 
+  @cask.get("/leanlib.html")
+  def leanlib() = Site.page(leanlibHTML,
+            "resources/",
+            "ProvingGround HoTT Server",
+            false)
+
   @cask.post("/monoid-proof")
   def seek() = {
     pprint.log("seeking proof")

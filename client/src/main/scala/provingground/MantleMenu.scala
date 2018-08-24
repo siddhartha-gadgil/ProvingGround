@@ -27,6 +27,12 @@ object MantleMenu {
 
     navDiv.appendChild(
       li(
+        a(href := "leanlib.html")("Lean Library")
+      ).render
+    )
+
+    navDiv.appendChild(
+      li(
         a(href := "scripts/index.html", target := "_blank")("Fiddle")
       ).render
     )

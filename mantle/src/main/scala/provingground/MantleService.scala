@@ -48,6 +48,18 @@ object MantleService{
       |
     """.stripMargin
 
+    val leanlibHTML =
+      """
+        |
+        |  <div id="leanlib-div"></div>
+        |  <script type="text/javascript" src="resources/out.js"></script>
+        |  <script>
+        |   mantlemenu.add()
+        |   leanlib.load()
+        |  </script>
+        |
+      """.stripMargin
+
     def trySite()(implicit ec: ExecutionContext) =
       Try(Site.mkHome())
         .map { (_) =>
