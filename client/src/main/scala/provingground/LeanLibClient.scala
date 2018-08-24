@@ -77,9 +77,12 @@ object LeanLibClient {
       val jsObj          = read[Js.Value](msg).obj
       val msgTyp: String = jsObj("type").str
       msgTyp match {
-        case "log" => addLog(jsObj("message").str)
+        case "log" => addLog(jsObj("message").str) // TODO other cases
       }
     }
+
+    def parsePost(name: String, file: String) =
+      Ajax.post("./parse", Js.Obj("name" -> Js.Str(name), "file" -> Js.Str(file)).toString())
 
   }
 }

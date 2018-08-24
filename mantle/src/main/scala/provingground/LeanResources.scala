@@ -25,7 +25,8 @@ import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
 import upickle.default.{read => _, write => uwrite, _}
 
 object LeanResources {
-  def index: IndexedSeq[String] = read.lines(resource / "index.txt").filter(_.endsWith(".lean.export"))
+  def index: IndexedSeq[String] =
+    read.lines(resource / "index.txt").filter(_.endsWith(".lean.export"))
 
   val modTasks: Map[String, Task[Vector[Modification]]] = index.map { (name) =>
     val path = resource / name
@@ -33,19 +34,28 @@ object LeanResources {
     name -> Task(getModsFromStream(in)).memoize
   }.toMap
 
+  val loadedNames: mSet[Name] = mSet()
+
+
   lazy val baseParser: LeanParser =
     new LeanParser(Seq(),
                    library.LeanMemo.defTaskMap,
                    library.LeanMemo.indTaskMap)
-
-  def loadTask(f: String): Task[Unit] =
-    modTasks(f).map((m) => baseParser.addMods(m))
 
   val defnMap: mMap[Name, Term] = mMap()
 
   val termIndModMap: mMap[Name, TermIndMod] = mMap()
 
   val mods: ArrayBuffer[Modification] = ArrayBuffer.empty[Modification]
+
+  def loadTask(f: String): Task[Unit] =
+    if (loadedFiles.contains(f)) Task.pure(())
+    else
+      modTasks(f).map { (m) =>
+        mods ++= m
+        loadedNames ++= m.map(_.name)
+        loadedFiles += f
+      }
 
   val loadedFiles: ArrayBuffer[String] = ArrayBuffer()
 
@@ -64,37 +74,37 @@ object LeanResources {
 object LeanRoutes extends cask.Routes {
   import LeanResources._
   @cask.get("/files")
-  def files(): String = {
+  def files() = {
     pprint.log(index.mkString(","))
     uwrite(index.toVector)
   }
 
   @cask.get("/codegen-defns")
-  def codeGenDefs(): Vector[String] =
-    LeanMemo.defTaskMap.keys.map(_.toString).toVector
+  def codeGenDefs(): String =
+    uwrite(LeanMemo.defTaskMap.keys.map(_.toString).toVector)
 
   @cask.get("/codegen-induc-defns")
-  def codeGenInducDefs(): Vector[String] =
-    LeanMemo.indTaskMap.keys.map(_.toString).toVector
+  def codeGenInducDefs(): String =
+    uwrite(LeanMemo.indTaskMap.keys.map(_.toString).toVector)
 
   @cask.get("/mem-defns")
-  def memDefs(): Vector[String] = defnMap.keys.map(_.toString).toVector
+  def memDefs(): String = uwrite(defnMap.keys.map(_.toString).toVector)
 
   @cask.get("/mem-induc-defns")
-  def memInducDefs(): Vector[String] =
-    termIndModMap.keys.map(_.toString).toVector
+  def memInducDefs(): String =
+    uwrite(termIndModMap.keys.map(_.toString).toVector)
 
   @cask.get("mods/:file")
-  def getMods(file: String): Vector[Js.Value] = {
+  def getMods(file: String): String = {
     val path = resource / file
     val in   = new java.io.ByteArrayInputStream(read.bytes(path))
-    getModsFromStream(in).map{(m) =>
+    uwrite(getModsFromStream(in).map { (m) =>
       val tp = m match {
-        case _ : trepplein.DefMod => "definition"
-        case _ : trepplein.IndMod => "inductive type"
+        case _: trepplein.DefMod => "definition"
+        case _: trepplein.IndMod => "inductive type"
       }
-    Js.Obj("type" -> tp, "name" -> m.name.toString)
-    }
+      Js.Obj("type" -> tp, "name" -> m.name.toString)
+    })
   }
 
   var channelOpt: Option[WebSocketChannel] = None
@@ -131,42 +141,54 @@ object LeanRoutes extends cask.Routes {
                    messenger)
 
   @cask.post("/loadFile")
-  def loadFile(request: cask.Request): String = {
+  def loadFileReq(request: cask.Request): String = {
     val name = new String(request.readAllBytes())
-    if (loadedFiles.contains(name))
-      sendLog(s"file $name already loaded")
-    else
-      loadTask(name).foreach { (_) =>
-        loadedFiles += name
-        sendLog(s"loaded file $name")
-      }
+    loadFile(name)
     s"loading $name"
   }
 
-  @cask.post("/parse")
-  def parse(request: cask.Request): String = {
+  def loadFile(name: String) : Task[Unit] = {
+    if (loadedFiles.contains(name))
+      Task(sendLog(s"file $name already loaded"))
+    else
+      loadTask(name).map { (_) =>
+        loadedFiles += name
+        sendLog(s"loaded file $name")
+      }
+
+  }
+
+  @cask.postJson("/parse")
+  def parse(js: Js.Value): String = {
     def result(name: String, t: Term): Unit = send(
       Js.Obj("type" -> "parse-result", "name" -> name, "tex" -> TeXTranslate(t))
         .toString
     )
-    val name = new String(request.readAllBytes())
+    val name = js.obj("name").str
+    val file = js.obj("file").str
     defnMap
-      .get(name)
+      .get(trepplein.Name(name.split(".") : _*))
       .map { (t) =>
         result(name, t)
         s"previously parsed $name"
       }
       .getOrElse {
-        parser.get(name).foreach { (t) =>
+        val termTask: Task[Term] = for {
+         _ <- loadFile(file)
+          t <- parser.getTask(name)
+        } yield t
+
+        termTask.foreach { (t) =>
           result(name, t)
         }
+
         s"parsing $name"
       }
 
   }
 
   @cask.post("/save-code")
-  def parse() = {
+  def saveCode(): String = {
     val lc = LeanCodeGen(parser)
     lc.save()
     lc.memo()
