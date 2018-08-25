@@ -76,7 +76,7 @@ object LeanRoutes extends cask.Routes {
   import LeanResources._
   @cask.get("/files")
   def files(): String = {
-    pprint.log(index.mkString(","))
+//    pprint.log(index.mkString(","))
     sendLog("sending files")
     uwrite(index.toVector)
   }
@@ -109,11 +109,12 @@ object LeanRoutes extends cask.Routes {
       val tp = m match {
         case _: trepplein.DefMod => "definition"
         case _: trepplein.IndMod => "inductive type"
+        case _ : trepplein.AxiomMod => "axiom"
         case _ => m.toString
       }
       Js.Obj("type" -> tp, "name" -> Js.Str(m.name.toString))
     } : _*)
-    pprint.log(res)
+//    pprint.log(res)
     uwrite(res)
   }
 
@@ -171,8 +172,7 @@ object LeanRoutes extends cask.Routes {
   @cask.post("/parse")
   def parse(request: cask.Request): String = {
     def result(name: String, t: Term): Unit = send(
-      Js.Obj("type" -> "parse-result", "name" -> name, "tex" -> TeXTranslate(t))
-        .toString
+      uwrite[Js.Value](Js.Obj("type" -> "parse-result", "name" -> name, "tex" -> TeXTranslate(t).replace("'", ".")))
     )
     val name = new String(request.readAllBytes())
     defnMap

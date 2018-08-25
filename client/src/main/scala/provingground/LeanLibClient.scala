@@ -18,6 +18,7 @@ import upickle.default._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
+
 @JSExportTopLevel("leanlib")
 object LeanLibClient {
   @JSExport
@@ -43,7 +44,7 @@ object LeanLibClient {
 
     def nameLI(name: String): JsDom.TypedTag[LI] = {
       val btn = button(`type` := "button")(name).render
-      btn.onclick = (_) => Ajax.post("/parse", "name")
+      btn.onclick = (_) => Ajax.post("/parse", name)
       li(btn)
     }
 
@@ -87,7 +88,7 @@ object LeanLibClient {
           val mods = read[Js.Value](xhr.responseText).arr.toVector
           val defMods : Vector[String]= mods.collect{case js if js.obj("type").str == "definition" =>
             js.obj("name").str}
-          val dl: Seq[JsDom.TypedTag[LI]] = defMods.map(nameLI)
+          val dl: Seq[JsDom.TypedTag[LI]] = defMods.sortBy(identity).map(nameLI)
           val defList = ul(`class`:= "list-inline")(dl :_*)
           val view =
             div(h3(s"Filename: $file"), h4("definitions"), defList)
@@ -107,7 +108,15 @@ object LeanLibClient {
       val jsObj          = read[Js.Value](msg).obj
       val msgTyp: String = jsObj("type").str
       msgTyp match {
-        case "log" => addLog(jsObj("message").str) // TODO other cases
+        case "log" => addLog(jsObj("message").str)
+        case "parse-result" =>
+          addLog("parser result" + jsObj.toString())
+          val res = div().render
+          res.innerHTML = katex.renderToString(jsObj("tex").str.replace("$", ""))
+          logList.appendChild(li(`class` := "list-group-item")(
+            h3("Parsed"), h4(s"${jsObj("name").str} ="), res
+          ).render)
+        case _ => addLog(s"unparsed websok message: ${jsObj}")
       }
     }
 
