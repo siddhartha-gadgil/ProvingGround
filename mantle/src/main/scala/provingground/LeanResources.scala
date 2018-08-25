@@ -172,7 +172,7 @@ object LeanRoutes extends cask.Routes {
   @cask.post("/parse")
   def parse(request: cask.Request): String = {
     def result(name: String, t: Term): Unit = send(
-      uwrite[Js.Value](Js.Obj("type" -> "parse-result", "name" -> name, "tex" -> TeXTranslate(t).replace("'", ".")))
+      uwrite[Js.Value](Js.Obj("type" -> "parse-result", "name" -> name, "tex" -> TeXTranslate(t).replace("'", "\\check ").replace("$", "\\hat ")))
     )
     val name = new String(request.readAllBytes())
     defnMap

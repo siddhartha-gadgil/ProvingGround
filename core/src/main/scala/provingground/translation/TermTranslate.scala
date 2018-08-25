@@ -90,6 +90,10 @@ object TeXTranslate {
 
   val syms = UnicodeSyms
 
+  val dolName = """\$([a-z]+)""".r
+
+  def hatDol(s: String) = dolName.replaceAllIn(s, (m) => s"\\widehat\\{m.group(0)\\}")
+
   def apply(x: Term) =
     texTrans(x) map (_.toString()) getOrElse (x.toString())
 
