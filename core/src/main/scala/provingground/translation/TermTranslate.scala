@@ -92,10 +92,10 @@ object TeXTranslate {
 
   val dolName = """\$([a-z]+)""".r
 
-  def hatDol(s: String) = dolName.replaceAllIn(s, (m) => s"\\widehat\\{m.group(0)\\}")
+  def hatDol(s: String) = dolName.replaceAllIn(s, (m) => s"\\\\hat\\{${m.group(1)}\\}")
 
   def apply(x: Term) =
-    texTrans(x) map (_.toString()) getOrElse (x.toString())
+    hatDol(texTrans(x) map (_.toString()) getOrElse (x.toString()))
 
   // import fansi.Color.LightRed
 
@@ -116,7 +116,7 @@ object TeXTranslate {
         s"""(\\sum\\limits_{$variable : $typ} $value)"""
     } || universe >>> { (n) =>
       s"""\\mathcal{U}_$n"""
-    } || symName >>> ((s) => s) ||
+    } || symName >>> ((s) => s.replace("_", "\\_")) ||
       prodTyp >>> { case (first, second) => s"""($first \\times $second)""" } ||
       absPair >>> {
         case (first, second) => s"""($first, $second)"""
@@ -179,7 +179,7 @@ object FansiShow {
     case w: andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
   }
 
-  val fansiPrint =
+  val fansiPrint: PPrinter =
     pprint.PPrinter.Color.copy(additionalHandlers = fansiHandler)
 
   val simpleHandler: PartialFunction[Any, Tree] = {
@@ -187,7 +187,7 @@ object FansiShow {
     case sym: AnySym => Tree.Literal(sym.toString)
   }
 
-  val simplePrint =
+  val simplePrint: PPrinter =
     pprint.PPrinter.BlackWhite.copy(additionalHandlers = simpleHandler)
 
   implicit def list[U: FansiShow]: FansiShow[List[U]] =

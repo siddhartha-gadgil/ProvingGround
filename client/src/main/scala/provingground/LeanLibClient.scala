@@ -17,6 +17,7 @@ import ujson.{read => _, _}
 import upickle.default._
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.Try
 
 
 @JSExportTopLevel("leanlib")
@@ -111,8 +112,10 @@ object LeanLibClient {
         case "log" => addLog(jsObj("message").str)
         case "parse-result" =>
           addLog("parser result" + jsObj.toString())
-          val res = div().render
-          res.innerHTML = katex.renderToString(jsObj("tex").str.replace("$", ""))
+          val res: HTMLElement = Try{
+            val d= div().render
+            d .innerHTML = katex.renderToString(jsObj("tex").str)
+            d}.getOrElse(h4(jsObj("plain").str).render)
           logList.appendChild(li(`class` := "list-group-item")(
             h3("Parsed"), h4(s"${jsObj("name").str} ="), res
           ).render)

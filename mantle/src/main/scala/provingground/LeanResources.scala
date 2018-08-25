@@ -11,7 +11,12 @@ import provingground.HoTT._
 import trepplein.{Modification, Name}
 import ujson.Js
 import io.undertow.websockets.WebSocketConnectionCallback
-import io.undertow.websockets.core.{AbstractReceiveListener, BufferedTextMessage, WebSocketChannel, WebSockets}
+import io.undertow.websockets.core.{
+  AbstractReceiveListener,
+  BufferedTextMessage,
+  WebSocketChannel,
+  WebSockets
+}
 import io.undertow.websockets.spi.WebSocketHttpExchange
 import provingground.translation.TeXTranslate
 import ujson.Js.Value
@@ -53,23 +58,22 @@ object LeanResources {
 
   val loadedFiles: ArrayBuffer[String] = ArrayBuffer()
 
-  def logUpdate: Logger =
-    {
-      case LeanParser.Defined(name, term) => defnMap += name -> term
-      case LeanParser.DefinedInduc(name, termIndMod) =>
-        termIndModMap += name -> termIndMod
-      case LeanParser.ParseWork(expr) => ()
-      case LeanParser.Parsed(expr)    => ()
-    }
-
+  def logUpdate: Logger = {
+    case LeanParser.Defined(name, term) => defnMap += name -> term
+    case LeanParser.DefinedInduc(name, termIndMod) =>
+      termIndModMap += name -> termIndMod
+    case LeanParser.ParseWork(expr) => ()
+    case LeanParser.Parsed(expr)    => ()
+  }
 
   def indModView(ind: TermIndMod): Js.Value = {
-    def termJs(t: Term) = Js.Obj("name" -> Js.Str(t.toString), "tex" -> Js.Str(TeXTranslate(t)))
+    def termJs(t: Term) =
+      Js.Obj("name" -> Js.Str(t.toString), "tex" -> Js.Str(TeXTranslate(t)))
     Js.Obj(
-      "name" -> Js.Str(ind.name.toString),
-      "intros" -> Js.Arr(ind.intros.map(termJs) : _*)
+      "name"   -> Js.Str(ind.name.toString),
+      "intros" -> Js.Arr(ind.intros.map(termJs): _*)
     )
-    }
+  }
 }
 
 object LeanRoutes extends cask.Routes {
@@ -91,13 +95,13 @@ object LeanRoutes extends cask.Routes {
 
   @cask.get("/mem-defns") // TODO send definitions
   def memDefs(): String =
-    uwrite[Vector[(String, String)]](defnMap.map{
+    uwrite[Vector[(String, String)]](defnMap.map {
       case (name, term) => name.toString -> TeXTranslate(term)
     }.toVector)
 
   @cask.get("/mem-induc-defns")
   def memInducDefs(): String =
-    uwrite(Js.Arr(termIndModMap.values.toSeq.map(indModView):_*))
+    uwrite(Js.Arr(termIndModMap.values.toSeq.map(indModView): _*))
 
   @cask.get("mods/:file")
   def getMods(file: String): String = {
@@ -105,15 +109,15 @@ object LeanRoutes extends cask.Routes {
     val in      = new java.io.ByteArrayInputStream(read.bytes(path))
     val newMods = getModsFromStream(in)
     mods ++= newMods
-    val res : Js.Value = Js.Arr(newMods.map { (m: Modification) =>
+    val res: Js.Value = Js.Arr(newMods.map { (m: Modification) =>
       val tp = m match {
-        case _: trepplein.DefMod => "definition"
-        case _: trepplein.IndMod => "inductive type"
-        case _ : trepplein.AxiomMod => "axiom"
-        case _ => m.toString
+        case _: trepplein.DefMod   => "definition"
+        case _: trepplein.IndMod   => "inductive type"
+        case _: trepplein.AxiomMod => "axiom"
+        case _                     => m.toString
       }
       Js.Obj("type" -> tp, "name" -> Js.Str(m.name.toString))
-    } : _*)
+    }: _*)
 //    pprint.log(res)
     uwrite(res)
   }
@@ -137,7 +141,7 @@ object LeanRoutes extends cask.Routes {
 
   def sendLog(s: String): Unit =
     send(
-      uwrite[Js.Value]( Js.Obj("type" -> Js.Str("log"), "message" -> Js.Str(s)))
+      uwrite[Js.Value](Js.Obj("type" -> Js.Str("log"), "message" -> Js.Str(s)))
     )
 
   val sendLogger: Logger = Logger.dispatch(sendLog)
@@ -168,11 +172,16 @@ object LeanRoutes extends cask.Routes {
       }
 
   }
-
   @cask.post("/parse")
   def parse(request: cask.Request): String = {
     def result(name: String, t: Term): Unit = send(
-      uwrite[Js.Value](Js.Obj("type" -> "parse-result", "name" -> name, "tex" -> TeXTranslate(t).replace("'", "\\check ").replace("$", "\\hat ")))
+      uwrite[Js.Value](
+        Js.Obj("type" -> "parse-result",
+               "name" -> name,
+               "tex" -> TeXTranslate(t)
+                 .replace("'", "\\check ")
+                 ,
+               "plain" -> t.toString))
     )
     val name = new String(request.readAllBytes())
     defnMap
