@@ -54,8 +54,8 @@ object LeanParser {
     def dispatch(send: String => Unit): Logger = Logger({
       case LeanParser.Defined(name, _)      => send(s"defined $name")
       case LeanParser.DefinedInduc(name, _) => send(s"defined inductive $name")
-      case LeanParser.ParseWork(expr)    => send(s"started parsing $expr")
-      case LeanParser.Parsed(expr)       => send(s"finished parsing $expr")
+      case LeanParser.ParseWork(expr)    => send(s"started parsing $expr; current queue : ${LeanToTermMonix.parseWork.size}")
+      case LeanParser.Parsed(expr)       => send(s"finished parsing $expr; current queue : ${LeanToTermMonix.parseWork.size}")
     })
   }
 
