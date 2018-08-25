@@ -67,11 +67,14 @@ object LeanResources {
   }
 
   def indModView(ind: TermIndMod): Js.Value = {
-    def termJs(t: Term) =
-      Js.Obj("name" -> Js.Str(t.toString), "tex" -> Js.Str(TeXTranslate(t)))
+    def introJs(t: Term) =
+      Js.Obj("name" -> Js.Str(t.toString), "tex" -> Js.Str(TeXTranslate(t.typ)), "plain" -> Js.Str(t.typ.toString))
     Js.Obj(
+      "type" -> Js.Str("inductive-definition"),
       "name"   -> Js.Str(ind.name.toString),
-      "intros" -> Js.Arr(ind.intros.map(termJs): _*)
+      "tex" -> Js.Str(TeXTranslate(ind.typF)),
+      "plain" -> Js.Str(ind.typF.toString),
+      "intros" -> Js.Arr(ind.intros.map(introJs): _*)
     )
   }
 }
@@ -198,6 +201,17 @@ object LeanRoutes extends cask.Routes {
         s"parsing $name"
       }
 
+  }
+
+  @cask.post("/inductive-definition")
+  def inducDefn(request: cask.Request) = {
+    val name = new String(request.readAllBytes())
+    val task: Task[TermIndMod] = parser.getIndTask(name)
+    task.foreach {
+      (indMod) =>
+        send(uwrite[Js.Value](indModView(indMod)))
+      }
+    s"seeking inductive definition for $name"
   }
 
   @cask.post("/save-code")

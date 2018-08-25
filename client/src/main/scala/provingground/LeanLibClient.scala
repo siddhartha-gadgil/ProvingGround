@@ -11,7 +11,7 @@ import org.scalajs.dom
 import dom.ext._
 import provingground._
 import HoTT._
-import org.scalajs.dom.html.{Div, LI}
+import org.scalajs.dom.html.{Div, LI, UList}
 import scalatags.JsDom
 import ujson.{read => _, _}
 import upickle.default._
@@ -112,6 +112,13 @@ object LeanLibClient {
       loadFiles()
     }
 
+    def getTeX(jsObj: Js.Obj): HTMLElement = Try {
+      val d = span().render
+      d.innerHTML = katex.renderToString(jsObj("tex").str)
+      d
+    }.getOrElse(h4(jsObj("plain").str).render)
+
+
     chat.onmessage = { (event: MessageEvent) =>
       val msg            = event.data.toString
       val jsObj          = read[Js.Value](msg).obj
@@ -120,16 +127,29 @@ object LeanLibClient {
         case "log" => addLog(jsObj("message").str)
         case "parse-result" =>
           addLog("parser result" + jsObj.toString())
-          val res: HTMLElement = Try {
-            val d = div().render
-            d.innerHTML = katex.renderToString(jsObj("tex").str)
-            d
-          }.getOrElse(h4(jsObj("plain").str).render)
+          val res: HTMLElement = getTeX(jsObj)
           resultList.appendChild(
             li(`class` := "list-group-item")(
               h3("Parsed"),
               h4(s"${jsObj("name").str} ="),
               res
+            ).render)
+        case "inductive-definition" =>
+          val indName = jsObj("name").str
+          val typDiv = getTeX(jsObj)
+          val intros = jsObj("intros").arr
+          val introListItems: Vector[JsDom.TypedTag[LI]] = intros.toVector.map{
+            (js) =>
+              val name = js.obj("name").str
+              val typ = getTeX(js.obj)
+            li(name, ":", typ)
+          }
+          val introsList: JsDom.TypedTag[UList] = ul(introListItems : _*)
+          val d = div("Name:", indName, "type:", typDiv, introsList).render
+          resultList.appendChild(
+            li(`class` := "list-group-item")(
+              h3("Parsed Inductive type"),
+              d
             ).render)
         case _ => addLog(s"unparsed web-socket message: $jsObj")
       }

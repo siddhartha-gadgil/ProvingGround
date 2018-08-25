@@ -250,6 +250,13 @@ class LeanParser(initMods: Seq[Modification],
   def get(name: String): CancelableFuture[Term] =
     getTask(name).runAsync
 
+  def getIndTask(s: String): Task[TermIndMod] =
+    {
+      val name = Name(s.split("\\.") : _*)
+      val exp = Const(name, Vector())
+      getMemTermIndMod(name, exp)
+    }
+
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
     // memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
