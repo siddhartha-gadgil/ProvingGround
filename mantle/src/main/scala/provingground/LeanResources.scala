@@ -11,18 +11,13 @@ import provingground.HoTT._
 import trepplein.{Modification, Name}
 import ujson.Js
 import io.undertow.websockets.WebSocketConnectionCallback
-import io.undertow.websockets.core.{
-  AbstractReceiveListener,
-  BufferedTextMessage,
-  WebSocketChannel,
-  WebSockets
-}
+import io.undertow.websockets.core.{AbstractReceiveListener, BufferedTextMessage, WebSocketChannel, WebSockets}
 import io.undertow.websockets.spi.WebSocketHttpExchange
 import provingground.translation.TeXTranslate
+import ujson.Js.Value
 
 import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
-
-import upickle.default.{read => _, write => uwrite, _}
+import upickle.default.{write => uwrite, read => _, _}
 
 object LeanResources {
   def index: IndexedSeq[String] =
@@ -35,7 +30,6 @@ object LeanResources {
   }.toMap
 
   val loadedNames: mSet[Name] = mSet()
-
 
   lazy val baseParser: LeanParser =
     new LeanParser(Seq(),
@@ -59,23 +53,31 @@ object LeanResources {
 
   val loadedFiles: ArrayBuffer[String] = ArrayBuffer()
 
-  def logUpdate: Logger = new Logger {
-    def apply(l: Log): Unit = l match {
+  def logUpdate: Logger =
+    {
       case LeanParser.Defined(name, term) => defnMap += name -> term
       case LeanParser.DefinedInduc(name, termIndMod) =>
         termIndModMap += name -> termIndMod
       case LeanParser.ParseWork(expr) => ()
       case LeanParser.Parsed(expr)    => ()
     }
-  }
 
+
+  def indModView(ind: TermIndMod): Js.Value = {
+    def termJs(t: Term) = Js.Obj("name" -> Js.Str(t.toString), "tex" -> Js.Str(TeXTranslate(t)))
+    Js.Obj(
+      "name" -> Js.Str(ind.name.toString),
+      "intros" -> Js.Arr(ind.intros.map(termJs) : _*)
+    )
+    }
 }
 
 object LeanRoutes extends cask.Routes {
   import LeanResources._
   @cask.get("/files")
-  def files() = {
+  def files(): String = {
     pprint.log(index.mkString(","))
+    sendLog("sending files")
     uwrite(index.toVector)
   }
 
@@ -87,24 +89,32 @@ object LeanRoutes extends cask.Routes {
   def codeGenInducDefs(): String =
     uwrite(LeanMemo.indTaskMap.keys.map(_.toString).toVector)
 
-  @cask.get("/mem-defns")
-  def memDefs(): String = uwrite(defnMap.keys.map(_.toString).toVector)
+  @cask.get("/mem-defns") // TODO send definitions
+  def memDefs(): String =
+    uwrite[Vector[(String, String)]](defnMap.map{
+      case (name, term) => name.toString -> TeXTranslate(term)
+    }.toVector)
 
   @cask.get("/mem-induc-defns")
   def memInducDefs(): String =
-    uwrite(termIndModMap.keys.map(_.toString).toVector)
+    uwrite(Js.Arr(termIndModMap.values.toSeq.map(indModView):_*))
 
   @cask.get("mods/:file")
   def getMods(file: String): String = {
-    val path = resource / file
-    val in   = new java.io.ByteArrayInputStream(read.bytes(path))
-    uwrite(getModsFromStream(in).map { (m) =>
+    val path    = resource / file
+    val in      = new java.io.ByteArrayInputStream(read.bytes(path))
+    val newMods = getModsFromStream(in)
+    mods ++= newMods
+    val res : Js.Value = Js.Arr(newMods.map { (m: Modification) =>
       val tp = m match {
         case _: trepplein.DefMod => "definition"
         case _: trepplein.IndMod => "inductive type"
+        case _ => m.toString
       }
-      Js.Obj("type" -> tp, "name" -> m.name.toString)
-    })
+      Js.Obj("type" -> tp, "name" -> Js.Str(m.name.toString))
+    } : _*)
+    pprint.log(res)
+    uwrite(res)
   }
 
   var channelOpt: Option[WebSocketChannel] = None
@@ -126,10 +136,10 @@ object LeanRoutes extends cask.Routes {
 
   def sendLog(s: String): Unit =
     send(
-      Js.Obj("type" -> Js.Str("log"), "message" -> Js.Str(s)).toString()
+      uwrite[Js.Value]( Js.Obj("type" -> Js.Str("log"), "message" -> Js.Str(s)))
     )
 
-  val sendLogger: Logger = Logger.dispatch(send)
+  val sendLogger: Logger = Logger.dispatch(sendLog)
 
   def messenger: Logger =
     logUpdate && sendLogger
@@ -147,7 +157,7 @@ object LeanRoutes extends cask.Routes {
     s"loading $name"
   }
 
-  def loadFile(name: String) : Task[Unit] = {
+  def loadFile(name: String): Task[Unit] = {
     if (loadedFiles.contains(name))
       Task(sendLog(s"file $name already loaded"))
     else
@@ -158,27 +168,21 @@ object LeanRoutes extends cask.Routes {
 
   }
 
-  @cask.postJson("/parse")
-  def parse(js: Js.Value): String = {
+  @cask.post("/parse")
+  def parse(request: cask.Request): String = {
     def result(name: String, t: Term): Unit = send(
       Js.Obj("type" -> "parse-result", "name" -> name, "tex" -> TeXTranslate(t))
         .toString
     )
-    val name = js.obj("name").str
-    val file = js.obj("file").str
+    val name = new String(request.readAllBytes())
     defnMap
-      .get(trepplein.Name(name.split(".") : _*))
+      .get(trepplein.Name(name.split("\\."): _*))
       .map { (t) =>
         result(name, t)
         s"previously parsed $name"
       }
       .getOrElse {
-        val termTask: Task[Term] = for {
-         _ <- loadFile(file)
-          t <- parser.getTask(name)
-        } yield t
-
-        termTask.foreach { (t) =>
+        parser.get(name).foreach { (t) =>
           result(name, t)
         }
 

@@ -12,8 +12,10 @@ import dom.ext._
 import provingground._
 import HoTT._
 import org.scalajs.dom.html.LI
+import scalatags.JsDom
 import ujson.{read => _, _}
 import upickle.default._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @JSExportTopLevel("leanlib")
@@ -28,19 +30,29 @@ object LeanLibClient {
     def addLog(s: String): Node =
       logList.appendChild(li(`class` := "list-group-item")(s).render)
 
-    val logDiv = div(`class` := "panel-body")(logList).render
+    val logDiv = div(`class` := "panel-body view")(logList).render
 
     val filesList = ul(`class` := "list-inline").render
 
     val filesDiv = div(`class` := "panel-body")(filesList).render
 
-    val filesBox = input(`type` := "text").render
+    val namesDiv = div(`class` := "panel-body view")(h2("Names of elements in files")).render
+
+
+
+
+    def nameLI(name: String): JsDom.TypedTag[LI] = {
+      val btn = button(`type` := "button")(name).render
+      btn.onclick = (_) => Ajax.post("/parse", "name")
+      li(btn)
+    }
 
     def fileLI(name: String): LI = {
-      val btn = button(`type` := "button")(name.dropRight(".lean.export".size)).render
-      btn.onclick = (_) => filesBox.value = name
+      val btn = button(`type` := "button")(name.dropRight(".lean.export".length)).render
+      btn.onclick = (_) => loadNames(name)
       li(btn).render
     }
+
 
     leanlibDiv.appendChild(
       div(
@@ -51,20 +63,38 @@ object LeanLibClient {
           div(`class` := "panel-heading")(h4("Files exported from lean:")),
           filesDiv),
         div(`class` := "panel panel-info")(
+          div(`class` := "panel-heading")(h4("Lean Modifications")),
+          namesDiv),
+        div(`class` := "panel panel-info")(
           div(`class` := "panel-heading")(h4("Logs:")),
           logDiv)
       ).render
     )
 
-    def loadFiles() =
+    def loadFiles(): Unit =
       Ajax
         .get("./files")
         .foreach { (xhr) =>
           val files = read[Vector[String]](xhr.responseText)
+          addLog(files.mkString(","))
           files.foreach((name) => filesList.appendChild(fileLI(name)))
         }
 
-    val chat = new WebSocket(
+    def loadNames(file: String): Unit =
+      Ajax
+        .get(s"./mods/$file")
+        .foreach { (xhr) =>
+          val mods = read[Js.Value](xhr.responseText).arr.toVector
+          val defMods : Vector[String]= mods.collect{case js if js.obj("type").str == "definition" =>
+            js.obj("name").str}
+          val dl: Seq[JsDom.TypedTag[LI]] = defMods.map(nameLI)
+          val defList = ul(`class`:= "list-inline")(dl :_*)
+          val view =
+            div(h3(s"Filename: $file"), h4("definitions"), defList)
+          namesDiv.appendChild(view.render)
+        }
+
+    val chat: WebSocket = new WebSocket(
       s"ws://${dom.document.location.host}/leanlib-websock")
 
     chat.onopen = { (_: Event) =>
@@ -81,8 +111,7 @@ object LeanLibClient {
       }
     }
 
-    def parsePost(name: String, file: String) =
-      Ajax.post("./parse", Js.Obj("name" -> Js.Str(name), "file" -> Js.Str(file)).toString())
+
 
   }
 }

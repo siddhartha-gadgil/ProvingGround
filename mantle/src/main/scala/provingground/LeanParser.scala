@@ -42,14 +42,12 @@ object LeanParser {
 
   trait Logger extends (Log => Unit){logger =>
     def &&(that: Logger) = new Logger{
-      def apply(l: Log) = {this(l) ; that(l)}
+      def apply(l: Log): Unit = {logger(l) ; that(l)}
     }
   }
 
   object Logger {
-    def apply(f: Log => Unit) = new Logger{
-      def apply(l: Log) = f(l)
-    }
+    def apply(f: Log => Unit): Logger = (l: Log) => f(l)
 
     val nop: Logger = Logger((_) => ())
 
