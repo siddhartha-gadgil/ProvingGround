@@ -35,6 +35,7 @@ import induction._
 import implicits._
 import shapeless._
 import Fold._
+import monix.eval.Task
 """
 
   def defMapCode = {
@@ -60,7 +61,7 @@ import Fold._
               q"${meta.Term.Name(CodeGen.escape(name.toString))}.value"
             else
               codeGen(term).get
-          q"${nameCode(name)} -> monix.eval.Task($termCode)"
+          q"${nameCode(name)} -> Task($termCode)"
       }.toList
     q"Map(..$kvs)"
   }
@@ -98,7 +99,7 @@ import Fold._
     val kvs =
       termIndModMap.map {
         case (name, m) =>
-          q"${nameCode(name)} -> monix.eval.Task(${indCode(m)})"
+          q"${nameCode(name)} -> Task(${indCode(m)})"
       }.toList
     q"Map(..$kvs)"
 
@@ -107,13 +108,13 @@ import Fold._
   def memoObj =
     q"""
 object LeanMemo {
-  def defMap = $defMapCode
+  def defMap : Map[trepplein.Name, Term] = $defMapCode
 
-  def indMap = $indMapCode
+  def indMap : Map[trepplein.Name, TermIndMod] = $indMapCode
 
-  def defTaskMap = $defTaskMapCode
+  def defTaskMap : Map[trepplein.Name, Task[Term]] = $defTaskMapCode
 
-  def indTaskMap = $indTaskMapCode
+  def indTaskMap : Map[trepplein.Name, Task[TermIndMod]] = $indTaskMapCode
 }
 """
 
