@@ -11,7 +11,7 @@ import org.scalajs.dom
 import dom.ext._
 import provingground._
 import HoTT._
-import org.scalajs.dom.html.{Div, LI, UList}
+import org.scalajs.dom.html.{Button, Div, LI, UList}
 import scalatags.JsDom
 import ujson.{read => _, _}
 import upickle.default._
@@ -41,34 +41,44 @@ object LeanLibClient {
 
     val filesList = ul(`class` := "list-inline").render
 
-    val filesDiv = div(`class` := "panel-body")(filesList).render
+    val filesDiv = div(`class` := "panel-body view")(filesList).render
 
     val namesDiv =
       div(`class` := "panel-body view").render
 
     def nameLI(name: String): JsDom.TypedTag[LI] = {
-      val btn = button(`type` := "button")(name).render
+      val btn = p(`class` := "link")(name).render
       btn.onclick = (_) => Ajax.post("/parse", name)
       li(btn)
     }
 
+    val codeGen: Button =
+      button(`type` := "button", `class` := "btn btn-danger pull-right")(
+        "Generate Code").render
+
+    codeGen.onclick = (_) => Ajax.post("/save-code")
+
     def fileLI(name: String): LI = {
       val btn =
-        button(`type` := "button")(name.dropRight(".lean.export".length)).render
+        p(`class` := "link")(name.dropRight(".lean.export".length)).render
       btn.onclick = (_) => loadNames(name)
       li(btn).render
     }
 
     leanlibDiv.appendChild(
       div(
-        p("""
+        codeGen,
+        p(),
+        p(),
+        h3("""
           | Building a library by exporting from the lean import format.
         """.stripMargin),
         div(`class` := "panel panel-info")(
           div(`class` := "panel-heading")(h4("Files exported from lean:")),
           filesDiv),
         div(`class` := "panel panel-info")(
-          div(`class` := "panel-heading")(h4("Lean Modifications, Memory, Code")),
+          div(`class` := "panel-heading")(
+            h4("Lean Modifications, Memory, Code")),
           namesDiv),
         div(`class` := "panel panel-info")(
           div(`class` := "panel-heading")(h4("Results:")),
@@ -112,12 +122,12 @@ object LeanLibClient {
       loadFiles()
     }
 
-    def getTeX(jsObj: Js.Obj): HTMLElement = Try {
-      val d = span().render
-      d.innerHTML = katex.renderToString(jsObj("tex").str)
-      d
-    }.getOrElse(h4(jsObj("plain").str).render)
-
+    def getTeX(jsObj: Js.Obj): HTMLElement =
+      Try {
+        val d = span().render
+        d.innerHTML = katex.renderToString(jsObj("tex").str)
+        d
+      }.getOrElse(h4(jsObj("plain").str).render)
 
     chat.onmessage = { (event: MessageEvent) =>
       val msg            = event.data.toString
@@ -136,16 +146,16 @@ object LeanLibClient {
             ).render)
         case "inductive-definition" =>
           val indName = jsObj("name").str
-          val typDiv = getTeX(jsObj)
-          val intros = jsObj("intros").arr
-          val introListItems: Vector[JsDom.TypedTag[LI]] = intros.toVector.map{
+          val typDiv  = getTeX(jsObj)
+          val intros  = jsObj("intros").arr
+          val introListItems: Vector[JsDom.TypedTag[LI]] = intros.toVector.map {
             (js) =>
               val name = js.obj("name").str
-              val typ = getTeX(js.obj)
-            li(name, ":", typ)
+              val typ  = getTeX(js.obj)
+              li(name, ":", typ)
           }
-          val introsList: JsDom.TypedTag[UList] = ul(introListItems : _*)
-          val d = div("Name:", indName, "type:", typDiv, introsList).render
+          val introsList: JsDom.TypedTag[UList] = ul(introListItems: _*)
+          val d                                 = div("Name:", indName, "type:", typDiv, introsList).render
           resultList.appendChild(
             li(`class` := "list-group-item")(
               h3("Parsed Inductive type"),

@@ -24,6 +24,8 @@ import ujson.Js.Value
 import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
 import upickle.default.{write => uwrite, read => _, _}
 
+import scala.util.Try
+
 object LeanResources {
   def index: IndexedSeq[String] =
     read.lines(resource / "index.txt").filter(_.endsWith(".lean.export"))
@@ -68,12 +70,14 @@ object LeanResources {
 
   def indModView(ind: TermIndMod): Js.Value = {
     def introJs(t: Term) =
-      Js.Obj("name" -> Js.Str(t.toString), "tex" -> Js.Str(TeXTranslate(t.typ)), "plain" -> Js.Str(t.typ.toString))
+      Js.Obj("name"  -> Js.Str(t.toString),
+             "tex"   -> Js.Str(TeXTranslate(t.typ)),
+             "plain" -> Js.Str(t.typ.toString))
     Js.Obj(
-      "type" -> Js.Str("inductive-definition"),
+      "type"   -> Js.Str("inductive-definition"),
       "name"   -> Js.Str(ind.name.toString),
-      "tex" -> Js.Str(TeXTranslate(ind.typF)),
-      "plain" -> Js.Str(ind.typF.toString),
+      "tex"    -> Js.Str(TeXTranslate(ind.typF)),
+      "plain"  -> Js.Str(ind.typF.toString),
       "intros" -> Js.Arr(ind.intros.map(introJs): _*)
     )
   }
@@ -182,8 +186,7 @@ object LeanRoutes extends cask.Routes {
         Js.Obj("type" -> "parse-result",
                "name" -> name,
                "tex" -> TeXTranslate(t)
-                 .replace("'", "\\check ")
-                 ,
+                 .replace("'", "\\check "),
                "plain" -> t.toString))
     )
     val name = new String(request.readAllBytes())
@@ -205,21 +208,24 @@ object LeanRoutes extends cask.Routes {
 
   @cask.post("/inductive-definition")
   def inducDefn(request: cask.Request) = {
-    val name = new String(request.readAllBytes())
+    val name                   = new String(request.readAllBytes())
     val task: Task[TermIndMod] = parser.getIndTask(name)
-    task.foreach {
-      (indMod) =>
-        send(uwrite[Js.Value](indModView(indMod)))
-      }
+    task.foreach { (indMod) =>
+      send(uwrite[Js.Value](indModView(indMod)))
+    }
     s"seeking inductive definition for $name"
   }
 
   @cask.post("/save-code")
   def saveCode(): String = {
-    val lc = LeanCodeGen(parser)
-    lc.save()
-    lc.memo()
-    "Generated code for all definitions"
+    Task(Try {
+      val lc = LeanCodeGen(parser)
+      lc.save()
+      lc.memo()
+    }).foreach((r) => sendLog(s"Result of code generation: $r"))
+
+    pprint.log("generating code")
+    "Generating code for all definitions"
   }
 
   initialize()

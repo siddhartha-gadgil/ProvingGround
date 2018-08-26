@@ -14,3 +14,13 @@ td, th {
   background-color: #fff !important;
   padding: 2px  !important;
 }
+
+.link {
+  color: #3498db;
+}
+
+.link:hover,
+.link:focus {
+  color: #3498db;
+  text-decoration: underline;
+}
