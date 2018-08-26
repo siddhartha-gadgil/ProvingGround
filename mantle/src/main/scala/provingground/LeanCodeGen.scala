@@ -1,15 +1,15 @@
 package provingground.interface
-import provingground._, translation._
+import provingground._
+import translation._
 import induction._
 import HoTT.{Name => _, _}
-
 import trepplein._
 
 import scala.meta.{Term => _, Type => _, _}
 import ammonite.ops._
 
 object LeanCodeGen {
-  def nameCode(name: trepplein.Name) = {
+  def nameCode(name: trepplein.Name): meta.Term.Apply = {
     val pieces =
       name.toString
         .split('.')
@@ -25,7 +25,8 @@ case class LeanCodeGen(parser: LeanParser) {
   import parser._
   import LeanCodeGen._
 
-  val base = pwd / "leanlib" / "src" / "main" / "scala" / "provingground" / "library"
+  val base
+    : Path = pwd / "leanlib" / "src" / "main" / "scala" / "provingground" / "library"
 
   val header = // just write this to a file
     """package provingground.library
@@ -35,10 +36,9 @@ import induction._
 import implicits._
 import shapeless._
 import Fold._
-import monix.eval.Task
 """
 
-  def defMapCode = {
+  def defMapCode: meta.Term.Apply = {
     val kvs =
       defnMap.map {
         case (name, term) =>
@@ -52,7 +52,7 @@ import monix.eval.Task
     q"Map(..$kvs)"
   }
 
-  def defTaskMapCode = {
+  def defTaskMapCode: meta.Term.Apply = {
     val kvs =
       defnMap.map {
         case (name, term) =>
@@ -66,12 +66,12 @@ import monix.eval.Task
     q"Map(..$kvs)"
   }
 
-  def vecCode(v: Vector[Term]) = {
+  def vecCode(v: Vector[Term]): meta.Term.Apply = {
     val codes = v.map((t) => codeGen(t).get).toList
     q"Vector(..$codes)"
   }
 
-  def indCode(m: TermIndMod) = {
+  def indCode(m: TermIndMod): meta.Term.Apply = {
     val classCode = m match {
       case _: SimpleIndMod  => meta.Term.Name("SimpleIndMod")
       case _: IndexedIndMod => meta.Term.Name("IndexedIndMod")
@@ -85,7 +85,7 @@ import monix.eval.Task
     )"""
   }
 
-  def indMapCode = {
+  def indMapCode: meta.Term.Apply = {
     val kvs =
       termIndModMap.map {
         case (name, m) =>
@@ -95,7 +95,7 @@ import monix.eval.Task
 
   }
 
-  def indTaskMapCode = {
+  def indTaskMapCode: meta.Term.Apply = {
     val kvs =
       termIndModMap.map {
         case (name, m) =>
@@ -105,8 +105,10 @@ import monix.eval.Task
 
   }
 
-  def memoObj =
+  def memoObj: meta.Term.Block =
     q"""
+import monix.eval.Task._
+
 object LeanMemo {
   def defMap : Map[trepplein.Name, Term] = $defMapCode
 
@@ -118,7 +120,7 @@ object LeanMemo {
 }
 """
 
-  def writeDefn(name: trepplein.Name, code: meta.Term) = {
+  def writeDefn(name: trepplein.Name, code: meta.Term): Unit = {
     val obj  = CodeGen.mkObject(name.toString, code)
     val file = base / "definitions" / s"$name.scala"
     write.over(file, header)
@@ -126,7 +128,7 @@ object LeanMemo {
     write.append(file, obj.toString + "\n")
   }
 
-  def writeInduc(name: trepplein.Name, ind: TermIndMod) = {
+  def writeInduc(name: trepplein.Name, ind: TermIndMod): Unit = {
     val code = codeFromInd(ind)
     val obj  = CodeGen.mkObject(s"${name}Ind", code)
     val file = base / "inductive-types" / s"${name}Ind.scala"
@@ -135,12 +137,12 @@ object LeanMemo {
     write.append(file, obj.toString + "\n")
   }
 
-  def save() = {
+  def save(): Unit = {
     defnCode.foreach { case (name, code)     => writeDefn(name, code) }
     termIndModMap.foreach { case (name, ind) => writeInduc(name, ind) }
   }
 
-  def memo() = {
+  def memo(): Unit = {
     val file = pwd / "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala"
     write.over(file, header + "\nimport interface._\n")
 

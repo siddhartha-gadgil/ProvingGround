@@ -18,6 +18,8 @@ import monix.execution.CancelableFuture
 import math.max
 import trepplein._
 
+import scala.meta
+
 object LeanParser {
   case class ParseException(exps: Vector[Expr],
                             vars: Vector[Term],
@@ -529,11 +531,11 @@ class LeanParser(initMods: Seq[Modification],
     case QuotMod =>
       import quotient._
       Vector(quot, quotLift, quotMk, quotInd).map(_.name)
-    case mod =>
+    case _ =>
       Vector(mod.name)
   }
 
-  def findMod(name: Name, mods: Seq[Modification]) =
+  def findMod(name: Name, mods: Seq[Modification]): Option[Modification] =
     mods.find((mod) => modNames(mod).contains(name))
 
   def defFromMod(name: Name): Option[Task[Term]] =
@@ -554,24 +556,24 @@ class LeanParser(initMods: Seq[Modification],
 
   // code generation
 
-  def defNames = mods.collect { case df: DefMod => df.name }
+  def defNames: ArrayBuffer[Name] = mods.collect { case df: DefMod => df.name }
 
-  def allIndNames = mods.collect { case ind: IndMod => ind.name }
+  def allIndNames: ArrayBuffer[Name] = mods.collect { case ind: IndMod => ind.name }
 
   import translation.CodeGen
 
-  def codeGen =
+  def codeGen: CodeGen =
     CodeGen.objNames(defNames.map(_.toString), allIndNames.map(_.toString))
 
-  def defnCode =
-    (defNames.map { (name) =>
+  def defnCode: ArrayBuffer[(Name, meta.Term)] =
+    defNames.flatMap { (name) =>
       for {
         term <- defnMap.get(name)
         code <- codeGen(term)
       } yield (name, code)
-    }).flatten
+    }
 
-  def codeFromInd(ind: TermIndMod) = {
+  def codeFromInd(ind: TermIndMod): meta.Term = {
     val p = getVariables(ind.numParams)(ind.typF).toVector
     val codeOpt =
       ind match {
