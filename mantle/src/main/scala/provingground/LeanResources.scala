@@ -71,13 +71,13 @@ object LeanResources {
   def indModView(ind: TermIndMod): Js.Value = {
     def introJs(t: Term) =
       Js.Obj("name"  -> Js.Str(t.toString),
-             "tex"   -> Js.Str(TeXTranslate(t.typ)),
+             "tex"   -> Js.Str(TeXTranslate(t.typ).replace("'", "\\check ")),
              "plain" -> Js.Str(t.typ.toString))
     Js.Obj(
       "type"   -> Js.Str("inductive-definition"),
       "name"   -> Js.Str(ind.name.toString),
-      "tex"    -> Js.Str(TeXTranslate(ind.typF)),
-      "plain"  -> Js.Str(ind.typF.toString),
+      "tex"    -> Js.Str(TeXTranslate(ind.typF.typ).replace("'", "\\check ")),
+      "plain"  -> Js.Str(ind.typF.typ.toString),
       "intros" -> Js.Arr(ind.intros.map(introJs): _*)
     )
   }

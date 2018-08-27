@@ -43,12 +43,22 @@ object LeanLibClient {
 
     val filesDiv = div(`class` := "panel-body view")(filesList).render
 
+    val codeListDiv = div().render
+
+    val memListDiv = div().render
+
     val namesDiv =
       div(`class` := "panel-body view").render
 
     def nameLI(name: String): JsDom.TypedTag[LI] = {
       val btn = p(`class` := "link")(name).render
       btn.onclick = (_) => Ajax.post("/parse", name)
+      li(btn)
+    }
+
+    def inducLI(name: String): JsDom.TypedTag[LI] = {
+      val btn = p(`class` := "link")(name).render
+      btn.onclick = (_) => Ajax.post("/inductive-definition", name)
       li(btn)
     }
 
@@ -65,6 +75,8 @@ object LeanLibClient {
       li(btn).render
     }
 
+
+
     leanlibDiv.appendChild(
       div(
         codeGen,
@@ -73,7 +85,7 @@ object LeanLibClient {
         h3("""
           | Building a library by exporting from the lean import format.
         """.stripMargin),
-        div(`class` := "panel panel-info")(
+        div(`class` := "col-md-8")(div(`class` := "panel panel-info")(
           div(`class` := "panel-heading")(h4("Files exported from lean:")),
           filesDiv),
         div(`class` := "panel panel-info")(
@@ -85,7 +97,16 @@ object LeanLibClient {
           resultDiv),
         div(`class` := "panel panel-info")(
           div(`class` := "panel-heading")(h4("Logs:")),
-          logDiv)
+          logDiv)),
+          div(`class` := "col-md-4")(
+            div(`class` := "view")(
+            h4("In  Generated Code:"),
+            codeListDiv),
+            div(`class` := "view")(
+            h4("In  Memory:"),
+            memListDiv
+            )
+          )
       ).render
     )
 
@@ -98,6 +119,28 @@ object LeanLibClient {
           files.foreach((name) => filesList.appendChild(fileLI(name)))
         }
 
+    def loadCodeGen(): Unit =
+      Ajax
+        .get("./codegen-defns")
+        .foreach { (xhr) =>
+          val dfs = read[Vector[String]](xhr.responseText).sortBy(identity)
+          addLog(dfs.mkString(","))
+          val u = ol(dfs.map((s) => li(s)) : _*).render
+          codeListDiv.appendChild(u)
+        }
+
+        def loadMem(): Unit =
+          Ajax
+            .get("./mem-defns")
+            .foreach { (xhr) =>
+              val dfs = read[Vector[(String, String)]](xhr.responseText).map(_._1).sortBy(identity)
+              addLog(dfs.mkString(","))
+              val u = ol(dfs.map((s) => li(s)) : _*).render
+              memListDiv.innerHTML = ""
+              memListDiv.appendChild(u)
+            }
+
+
     def loadNames(file: String): Unit =
       Ajax
         .get(s"./mods/$file")
@@ -109,8 +152,20 @@ object LeanLibClient {
           }
           val dl: Seq[JsDom.TypedTag[LI]] = defMods.sortBy(identity).map(nameLI)
           val defList                     = ul(`class` := "list-inline")(dl: _*)
+          val indMods: Vector[String] = mods.collect {
+            case js if "inductive type" == js.obj("type").str =>
+              js.obj("name").str
+          }
+          val il: Seq[JsDom.TypedTag[LI]] = indMods.sortBy(identity).map(inducLI)
+          val indList                     = ul(`class` := "list-inline")(il: _*)
           val view =
-            div(h3(s"Filename: $file"), h4("Definitions and Axioms"), defList)
+            div(
+              h3(s"Filename: $file"),
+              h4("Definitions and Axioms"),
+              defList,
+              h4("Inductive types"),
+              indList
+            )
           namesDiv.appendChild(view.render)
         }
 
@@ -120,6 +175,7 @@ object LeanLibClient {
     chat.onopen = { (_: Event) =>
       addLog("connected to WebSocket")
       loadFiles()
+      loadCodeGen()
     }
 
     def getTeX(jsObj: Js.Obj): HTMLElement =
@@ -137,6 +193,7 @@ object LeanLibClient {
         case "log" => addLog(jsObj("message").str)
         case "parse-result" =>
           addLog("parser result" + jsObj.toString())
+          loadMem()
           val res: HTMLElement = getTeX(jsObj)
           resultList.appendChild(
             li(`class` := "list-group-item")(
@@ -152,10 +209,10 @@ object LeanLibClient {
             (js) =>
               val name = js.obj("name").str
               val typ  = getTeX(js.obj)
-              li(name, ":", typ)
+              li(name, " : ", typ)
           }
           val introsList: JsDom.TypedTag[UList] = ul(introListItems: _*)
-          val d                                 = div("Name:", indName, "type:", typDiv, introsList).render
+          val d                                 = div("Name: ", indName, "; type: ", typDiv, introsList).render
           resultList.appendChild(
             li(`class` := "list-group-item")(
               h3("Parsed Inductive type"),
