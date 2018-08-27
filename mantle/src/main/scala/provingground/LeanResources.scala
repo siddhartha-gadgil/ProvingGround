@@ -215,10 +215,9 @@ object LeanRoutes extends cask.Routes {
   @cask.post("/cancel")
   def cancelParse(request: cask.Request) = {
     val name = new String(request.readAllBytes())
-    parseCanc.filter(_._1 == name).foreach(_._2.cancel)
-    val pc = parseCanc.filter(_._1 != name)
-    parseCanc.clear()
-    parseCanc ++= pc
+    val toPurge = parseCanc.filter(_._1 == name)
+    toPurge.foreach(_._2.cancel)
+    parseCanc --= toPurge
     s"cancelling parsing of $name"
   }
 

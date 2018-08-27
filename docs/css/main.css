@@ -24,3 +24,13 @@ td, th {
   color: #3498db;
   text-decoration: underline;
 }
+
+.danglink {
+  color: red;
+}
+
+.danglink:hover,
+.danglink:focus {
+  color: red;
+  text-decoration: underline;
+}

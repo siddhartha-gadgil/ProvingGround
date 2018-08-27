@@ -18,10 +18,13 @@ import upickle.default._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Try
+import collection.mutable
+
 @JSExportTopLevel("leanlib")
 object LeanLibClient {
   @JSExport
   def load(): Unit = {
+    val parseQueue : mutable.Set[String] = mutable.Set()
 
     val leanlibDiv = dom.document.querySelector("#leanlib-div")
 
@@ -52,7 +55,10 @@ object LeanLibClient {
 
     def nameLI(name: String): JsDom.TypedTag[LI] = {
       val btn = p(`class` := "link")(name).render
-      btn.onclick = (_) => Ajax.post("/parse", name)
+      btn.onclick = (_) => {
+        Ajax.post("/parse", name)
+        parseQueue += name
+      }
       li(btn)
     }
 
@@ -166,6 +172,7 @@ object LeanLibClient {
               h4("Inductive types"),
               indList
             )
+          namesDiv.innerHTML = ""
           namesDiv.appendChild(view.render)
         }
 
@@ -194,6 +201,7 @@ object LeanLibClient {
         case "parse-result" =>
           addLog("parser result" + jsObj.toString())
           loadMem()
+          parseQueue -= jsObj("name").str
           val res: HTMLElement = getTeX(jsObj)
           resultList.appendChild(
             li(`class` := "list-group-item")(
