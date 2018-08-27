@@ -8,6 +8,8 @@ import trepplein._
 import scala.meta.{Term => _, Type => _, _}
 import ammonite.ops._
 
+import scala.collection.immutable
+
 object LeanCodeGen {
   def nameCode(name: trepplein.Name): meta.Term.Apply = {
     val pieces =
@@ -19,6 +21,18 @@ object LeanCodeGen {
         .toList
     q"trepplein.Name(..$pieces)"
   }
+
+  val memoLines: IndexedSeq[String] = read.lines(pwd/ "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala").map(_.trim)
+
+  val memoStats: IndexedSeq[Stat] = memoLines.flatMap(_.parse[Stat].toOption)
+
+  val memoDefKV = memoStats.collect{case q"def defMap : $t = Map(..$kvs)" => kvs}.head
+
+  val memoDefTaskKV = memoStats.collect{case q"def defTaskMap : $t = Map(..$kvs)" => kvs}.head
+
+  val memoIndKV = memoStats.collect{case q"def indMap : $t = Map(..$kvs)" => kvs}.head
+
+  val memoIndTaskKV = memoStats.collect{case q"def indTaskMap : $t = Map(..$kvs)" => kvs}.head
 }
 
 case class LeanCodeGen(parser: LeanParser) {
@@ -48,7 +62,7 @@ import Fold._
             else
               codeGen(term).get
           q"${nameCode(name)} -> $termCode"
-      }.toList
+      }.toList ++ memoDefKV
     q"Map(..$kvs)"
   }
 
@@ -62,7 +76,7 @@ import Fold._
             else
               codeGen(term).get
           q"${nameCode(name)} -> Task($termCode)"
-      }.toList
+      }.toList ++ memoDefTaskKV
     q"Map(..$kvs)"
   }
 
@@ -90,7 +104,7 @@ import Fold._
       termIndModMap.map {
         case (name, m) =>
           q"${nameCode(name)} -> ${indCode(m)}"
-      }.toList
+      }.toList  ++ memoIndKV
     q"Map(..$kvs)"
 
   }
@@ -100,14 +114,13 @@ import Fold._
       termIndModMap.map {
         case (name, m) =>
           q"${nameCode(name)} -> Task(${indCode(m)})"
-      }.toList
+      }.toList ++ memoIndTaskKV
     q"Map(..$kvs)"
 
   }
 
-  def memoObj: meta.Term.Block =
+  def memoObj: meta.Defn.Object =
     q"""
-import monix.eval.Task._
 
 object LeanMemo {
   def defMap : Map[trepplein.Name, Term] = $defMapCode
@@ -144,9 +157,7 @@ object LeanMemo {
 
   def memo(): Unit = {
     val file = pwd / "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala"
-    write.over(file, header + "\nimport interface._\n")
-
-    write.append(file, memoObj.toString + "\n")
+    write.over(file, header + "\nimport interface._\n" + "import monix.eval.Task\n" +  memoObj.toString + "\n")
   }
 
 }

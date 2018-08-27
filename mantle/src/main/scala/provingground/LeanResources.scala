@@ -197,8 +197,14 @@ object LeanRoutes extends cask.Routes {
         s"previously parsed $name"
       }
       .getOrElse {
-        parser.get(name).foreach { (t) =>
+        val p = parser
+        p.get(name).foreach { (t) =>
           result(name, t)
+          defnMap ++= p.defnMap
+          termIndModMap ++= p.termIndModMap
+          pprint.log(p.defnMap.keys)
+          pprint.log(defnMap.keys)
+          pprint.log(termIndModMap.keys)
         }
 
         s"parsing $name"
@@ -218,13 +224,19 @@ object LeanRoutes extends cask.Routes {
 
   @cask.post("/save-code")
   def saveCode(): String = {
-    Task(Try {
-      val lc = LeanCodeGen(parser)
+    pprint.log("generating code")
+    val r = Try {
+      val p = parser
+      p.defnMap ++= defnMap
+      p.termIndModMap ++= termIndModMap
+      val lc = LeanCodeGen(p)
       lc.save()
       lc.memo()
-    }).foreach((r) => sendLog(s"Result of code generation: $r"))
+    }
+    pprint.log(r)
+    sendLog(s"Result of code generation: $r")
 
-    pprint.log("generating code")
+
     "Generating code for all definitions"
   }
 
