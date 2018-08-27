@@ -11,13 +11,9 @@ import provingground.HoTT._
 import trepplein.{Modification, Name}
 import ujson.Js
 import io.undertow.websockets.WebSocketConnectionCallback
-import io.undertow.websockets.core.{
-  AbstractReceiveListener,
-  BufferedTextMessage,
-  WebSocketChannel,
-  WebSockets
-}
+import io.undertow.websockets.core.{AbstractReceiveListener, BufferedTextMessage, WebSocketChannel, WebSockets}
 import io.undertow.websockets.spi.WebSocketHttpExchange
+import monix.execution.CancelableFuture
 import provingground.translation.TeXTranslate
 import ujson.Js.Value
 
@@ -48,6 +44,8 @@ object LeanResources {
   val termIndModMap: mMap[Name, TermIndMod] = mMap()
 
   val mods: ArrayBuffer[Modification] = ArrayBuffer.empty[Modification]
+
+  val parseCanc : ArrayBuffer[(String, CancelableFuture[Term])] = ArrayBuffer()
 
   def loadTask(f: String): Task[Unit] =
     if (loadedFiles.contains(f)) Task.pure(())
@@ -198,7 +196,9 @@ object LeanRoutes extends cask.Routes {
       }
       .getOrElse {
         val p = parser
-        p.get(name).foreach { (t) =>
+        val cf = p.get(name)
+        parseCanc += name -> cf
+        cf.foreach { (t) =>
           result(name, t)
           defnMap ++= p.defnMap
           termIndModMap ++= p.termIndModMap
@@ -210,6 +210,16 @@ object LeanRoutes extends cask.Routes {
         s"parsing $name"
       }
 
+  }
+
+  @cask.post("/cancel")
+  def cancelParse(request: cask.Request) = {
+    val name = new String(request.readAllBytes())
+    parseCanc.filter(_._1 == name).foreach(_._2.cancel)
+    val pc = parseCanc.filter(_._1 != name)
+    parseCanc.clear()
+    parseCanc ++= pc
+    s"cancelling parsing of $name"
   }
 
   @cask.post("/inductive-definition")
