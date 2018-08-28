@@ -213,16 +213,17 @@ object LeanRoutes extends cask.Routes {
   }
 
   @cask.post("/cancel")
-  def cancelParse(request: cask.Request) = {
+  def cancelParse(request: cask.Request): String = {
     val name = new String(request.readAllBytes())
     val toPurge = parseCanc.filter(_._1 == name)
+    pprint.log(s"cancel request for $name, cancelling ${toPurge.size}")
     toPurge.foreach(_._2.cancel)
     parseCanc --= toPurge
     s"cancelling parsing of $name"
   }
 
   @cask.post("/inductive-definition")
-  def inducDefn(request: cask.Request) = {
+  def inducDefn(request: cask.Request): String = {
     val name                   = new String(request.readAllBytes())
     val task: Task[TermIndMod] = parser.getIndTask(name)
     task.foreach { (indMod) =>
