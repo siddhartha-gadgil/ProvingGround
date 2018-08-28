@@ -24,7 +24,7 @@ import collection.mutable
 object LeanLibClient {
   @JSExport
   def load(): Unit = {
-    val parseQueue : mutable.Set[String] = mutable.Set()
+    val parseQueue: mutable.Set[String] = mutable.Set()
 
     val leanlibDiv = dom.document.querySelector("#leanlib-div")
 
@@ -50,14 +50,34 @@ object LeanLibClient {
 
     val memListDiv = div().render
 
+    val cancQuListDiv = div().render
+
     val namesDiv =
       div(`class` := "panel-body view").render
+
+    val codeGen: Button =
+      button(`type` := "button", `class` := "btn btn-danger pull-right")(
+        "Generate Code").render
+
+    codeGen.onclick = (_) => Ajax.post("/save-code")
+
 
     def nameLI(name: String): JsDom.TypedTag[LI] = {
       val btn = p(`class` := "link")(name).render
       btn.onclick = (_) => {
         Ajax.post("/parse", name)
         parseQueue += name
+        loadCanc()
+      }
+      li(btn)
+    }
+
+    def cancLI(name: String): JsDom.TypedTag[LI] = {
+      val btn = p(`class` := "danglink")(name).render
+      btn.onclick = (_) => {
+        Ajax.post("/cancel", name)
+        parseQueue -= name
+        loadCanc()
       }
       li(btn)
     }
@@ -68,11 +88,6 @@ object LeanLibClient {
       li(btn)
     }
 
-    val codeGen: Button =
-      button(`type` := "button", `class` := "btn btn-danger pull-right")(
-        "Generate Code").render
-
-    codeGen.onclick = (_) => Ajax.post("/save-code")
 
     def fileLI(name: String): LI = {
       val btn =
@@ -80,8 +95,6 @@ object LeanLibClient {
       btn.onclick = (_) => loadNames(name)
       li(btn).render
     }
-
-
 
     leanlibDiv.appendChild(
       div(
@@ -91,27 +104,31 @@ object LeanLibClient {
         h3("""
           | Building a library by exporting from the lean import format.
         """.stripMargin),
-        div(`class` := "col-md-8")(div(`class` := "panel panel-info")(
-          div(`class` := "panel-heading")(h4("Files exported from lean:")),
-          filesDiv),
-        div(`class` := "panel panel-info")(
-          div(`class` := "panel-heading")(
-            h4("Lean Modifications, Memory, Code")),
-          namesDiv),
-        div(`class` := "panel panel-info")(
-          div(`class` := "panel-heading")(h4("Results:")),
-          resultDiv),
-        div(`class` := "panel panel-info")(
-          div(`class` := "panel-heading")(h4("Logs:")),
-          logDiv)),
-          div(`class` := "col-md-4")(
-            div(`class` := "view")(
-            h4("In  Generated Code:"),
-            codeListDiv),
-            div(`class` := "view")(
-            h4("In  Memory:"),
-            memListDiv
-            )
+        div(`class` := "col-md-8")(
+          div(`class` := "panel panel-info")(
+            div(`class` := "panel-heading")(h4("Files exported from lean:")),
+            filesDiv),
+          div(`class` := "panel panel-info")(
+            div(`class` := "panel-heading")(
+              h4("Lean Modifications, Memory, Code")),
+            namesDiv),
+          div(`class` := "panel panel-info")(
+            div(`class` := "panel-heading")(h4("Results:")),
+            resultDiv),
+          div(`class` := "panel panel-info")(
+            div(`class` := "panel-heading")(h4("Logs:")),
+            logDiv)
+        ),
+        div(`class` := "col-md-4")(
+          div(`class` := "panel panel-success")(
+            div(`class`:= "panel-heading")("In  Generated Code:"),
+            div(`class`:= "panel-body view")(codeListDiv)),
+          div(`class` := "panel panel-success")(
+            div(`class`:= "panel-heading")("In  Memory:"),
+            div(`class`:= "panel-body view")(memListDiv)),
+          div(`class` := "panel panel-danger")(
+            div(`class`:= "panel-heading")("Currently Parsing:"),
+            div(`class`:= "panel-body view")(cancQuListDiv))
           )
       ).render
     )
@@ -131,21 +148,30 @@ object LeanLibClient {
         .foreach { (xhr) =>
           val dfs = read[Vector[String]](xhr.responseText).sortBy(identity)
           addLog(dfs.mkString(","))
-          val u = ol(dfs.map((s) => li(s)) : _*).render
+          val u = ol(dfs.map((s) => li(s)): _*).render
           codeListDiv.appendChild(u)
         }
 
-        def loadMem(): Unit =
-          Ajax
-            .get("./mem-defns")
-            .foreach { (xhr) =>
-              val dfs = read[Vector[(String, String)]](xhr.responseText).map(_._1).sortBy(identity)
-              addLog(dfs.mkString(","))
-              val u = ol(dfs.map((s) => li(s)) : _*).render
-              memListDiv.innerHTML = ""
-              memListDiv.appendChild(u)
-            }
+    def loadMem(): Unit =
+      Ajax
+        .get("./mem-defns")
+        .foreach { (xhr) =>
+          val dfs = read[Vector[(String, String)]](xhr.responseText)
+            .map(_._1)
+            .sortBy(identity)
+          addLog(dfs.mkString(","))
+          val u = ol(dfs.map((s) => li(s)): _*).render
+          memListDiv.innerHTML = ""
+          memListDiv.appendChild(u)
+        }
 
+    def loadCanc() =
+      {
+        val cs: Seq[JsDom.TypedTag[LI]] = parseQueue.toVector.sortBy(identity).map(cancLI)
+        val l = ol(cs : _*)
+        cancQuListDiv.innerHTML = ""
+        cancQuListDiv.appendChild(l.render)
+      }
 
     def loadNames(file: String): Unit =
       Ajax
@@ -162,8 +188,9 @@ object LeanLibClient {
             case js if "inductive type" == js.obj("type").str =>
               js.obj("name").str
           }
-          val il: Seq[JsDom.TypedTag[LI]] = indMods.sortBy(identity).map(inducLI)
-          val indList                     = ul(`class` := "list-inline")(il: _*)
+          val il: Seq[JsDom.TypedTag[LI]] =
+            indMods.sortBy(identity).map(inducLI)
+          val indList = ul(`class` := "list-inline")(il: _*)
           val view =
             div(
               h3(s"Filename: $file"),
@@ -202,6 +229,7 @@ object LeanLibClient {
           addLog("parser result" + jsObj.toString())
           loadMem()
           parseQueue -= jsObj("name").str
+          loadCanc()
           val res: HTMLElement = getTeX(jsObj)
           resultList.appendChild(
             li(`class` := "list-group-item")(

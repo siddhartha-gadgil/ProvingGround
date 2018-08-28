@@ -45,7 +45,7 @@ object LeanResources {
 
   val mods: ArrayBuffer[Modification] = ArrayBuffer.empty[Modification]
 
-  val parseCanc : ArrayBuffer[(String, CancelableFuture[Term])] = ArrayBuffer()
+  val parseCanc : ArrayBuffer[(String, CancelableFuture[Try[Term]])] = ArrayBuffer()
 
   def loadTask(f: String): Task[Unit] =
     if (loadedFiles.contains(f)) Task.pure(())
@@ -196,33 +196,42 @@ object LeanRoutes extends cask.Routes {
       }
       .getOrElse {
         val p = parser
-        val cf = p.get(name)
+        val cf = p.getTask(name).materialize.runAsync
         parseCanc += name -> cf
-        cf.foreach { (t) =>
-          result(name, t)
-          defnMap ++= p.defnMap
-          termIndModMap ++= p.termIndModMap
-          pprint.log(p.defnMap.keys)
-          pprint.log(defnMap.keys)
-          pprint.log(termIndModMap.keys)
-        }
+        cf.foreach {(tt) =>
+          tt.fold(
+            {(err) =>
+              val message = s"while parsing $name, got $err"
+              pprint.log(message)
+              sendLog(message)
+            },
+          { (t) =>
+            result(name, t)
+            defnMap ++= p.defnMap
+            termIndModMap ++= p.termIndModMap
+            pprint.log(p.defnMap.keys)
+            pprint.log(defnMap.keys)
+            pprint.log(termIndModMap.keys)
+          }    )
 
+        }
         s"parsing $name"
       }
 
   }
 
   @cask.post("/cancel")
-  def cancelParse(request: cask.Request) = {
+  def cancelParse(request: cask.Request): String = {
     val name = new String(request.readAllBytes())
     val toPurge = parseCanc.filter(_._1 == name)
+    pprint.log(s"cancel request for $name, cancelling ${toPurge.size}")
     toPurge.foreach(_._2.cancel)
     parseCanc --= toPurge
     s"cancelling parsing of $name"
   }
 
   @cask.post("/inductive-definition")
-  def inducDefn(request: cask.Request) = {
+  def inducDefn(request: cask.Request): String = {
     val name                   = new String(request.readAllBytes())
     val task: Task[TermIndMod] = parser.getIndTask(name)
     task.foreach { (indMod) =>

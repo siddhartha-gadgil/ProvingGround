@@ -326,8 +326,8 @@ class LeanParser(initMods: Seq[Modification],
             value <- parse(body, x +: vars).cancelable
             cod   <- Task.eval(toTyp(value))
           } yield
-            if (LeanInterface.usesVar(body, 0))(PiDefn(x, cod))
-            else (x.typ ->: cod)
+            if (LeanInterface.usesVar(body, 0)) PiDefn(x, cod)
+            else x.typ ->: cod
         case Let(domain, value, body) =>
           // pprint.log(s"let $domain, $value, $body")
           for {
@@ -336,7 +336,7 @@ class LeanParser(initMods: Seq[Modification],
             x = getNextVarName(vars, maxIndex(body)) :: domTyp
             valueTerm <- parse(value, vars).cancelable
             bodyTerm  <- parse(body, x +: vars).cancelable
-          } yield (bodyTerm.replace(x, valueTerm))
+          } yield bodyTerm.replace(x, valueTerm)
         case e => Task.raiseError(UnParsedException(e))
       }
 
