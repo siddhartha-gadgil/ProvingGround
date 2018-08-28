@@ -3023,7 +3023,7 @@ object HoTT {
       throw new ApplnFailException(f, x)
     case (t, x :: ys) =>
       throw new IllegalArgumentException(
-        s"attempting to apply $t, which is not a function")
+        s"attempting to apply $t, which is not a function, to $x (and then to $ys)")
   }
 
   /**
