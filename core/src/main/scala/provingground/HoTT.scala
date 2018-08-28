@@ -3021,6 +3021,8 @@ object HoTT {
       fold(f.applyUnchecked(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) =>
       throw new ApplnFailException(f, x)
+    case (t, x :: ys) if isWitness(x) =>
+      fold(t)(ys : _*)
     case (t, x :: ys) =>
       throw new IllegalArgumentException(
         s"attempting to apply $t, which is not a function, to $x (and then to $ys)")
