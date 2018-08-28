@@ -204,7 +204,11 @@ class LeanParser(initMods: Seq[Modification],
       vec <- parseVec(xs, vars).cancelable
       _ = pprint.log(s"${vec.map(_.fansi)}")
       recFn <- recFnT
-      res = fold(recFn)(vec: _*)
+      resT = Task(fold(recFn)(vec: _*)).onErrorRecoverWith {
+        case err: ApplnFailException =>
+          throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
+      }
+      res <- resT
     } yield res
 
   def recAppSkips(name: Name,
@@ -477,17 +481,17 @@ class LeanParser(initMods: Seq[Modification],
       withAxiomSeq(axs)
   }
 
-  val allIntros = mods.collect { case ind: IndMod => ind.intros }.flatten
+  val allIntros: ArrayBuffer[(Name, Expr)] = mods.collect { case ind: IndMod => ind.intros }.flatten
 
-  def findDefMod(name: Name) =
-    mods.collect {
+  def findDefMod(name: Name): Option[DefMod] =
+    mods.collectFirst {
       case dm: DefMod if dm.name == name => dm
-    }.headOption
+    }
 
-  def findIndMod(name: Name) =
-    mods.collect {
+  def findIndMod(name: Name): Option[IndMod] =
+    mods collectFirst {
       case dm: IndMod if dm.name == name => dm
-    }.headOption
+    }
 
   def findIntro(name: Name): Option[Expr] =
     allIntros.find(_._1 == name).map(_._2)

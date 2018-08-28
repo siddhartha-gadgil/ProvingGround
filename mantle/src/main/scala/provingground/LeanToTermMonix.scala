@@ -145,7 +145,7 @@ object LeanToTermMonix {
                             ys)
     }
 
-  def introsFold(ind: TermIndMod, p: Vector[Term]) =
+  def introsFold(ind: TermIndMod, p: Vector[Term]): Vector[Term] =
     ind.intros.map((rule) => foldFunc(rule, p))
 
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
@@ -213,7 +213,8 @@ object LeanToTermMonix {
       val fmlOpt =
         if (ind.isPropn)
           fmlOptRaw.flatMap((fib) => proofLift(indNew.W, fib))
-        else fmlOptRaw
+        else
+          fmlOptRaw
       val recOptTask =
         for {
           fml <- fmlOpt

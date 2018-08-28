@@ -1198,7 +1198,7 @@ object HoTT {
       extends IllegalArgumentException("Expected type but got term")
 
   def applyFunc(func: Term, arg: Term): Term = func match {
-    case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
+    // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
       fn.applyUnchecked(arg.asInstanceOf[u])
     case _ => throw new ApplnFailException(func, arg)
