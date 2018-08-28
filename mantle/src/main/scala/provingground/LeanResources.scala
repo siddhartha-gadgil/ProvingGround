@@ -45,7 +45,7 @@ object LeanResources {
 
   val mods: ArrayBuffer[Modification] = ArrayBuffer.empty[Modification]
 
-  val parseCanc : ArrayBuffer[(String, CancelableFuture[Term])] = ArrayBuffer()
+  val parseCanc : ArrayBuffer[(String, CancelableFuture[Try[Term]])] = ArrayBuffer()
 
   def loadTask(f: String): Task[Unit] =
     if (loadedFiles.contains(f)) Task.pure(())
@@ -196,17 +196,25 @@ object LeanRoutes extends cask.Routes {
       }
       .getOrElse {
         val p = parser
-        val cf = p.get(name)
+        val cf = p.getTask(name).materialize.runAsync
         parseCanc += name -> cf
-        cf.foreach { (t) =>
-          result(name, t)
-          defnMap ++= p.defnMap
-          termIndModMap ++= p.termIndModMap
-          pprint.log(p.defnMap.keys)
-          pprint.log(defnMap.keys)
-          pprint.log(termIndModMap.keys)
-        }
+        cf.foreach {(tt) =>
+          tt.fold(
+            {(err) =>
+              val message = s"while parsing $name, got $err"
+              pprint.log(message)
+              sendLog(message)
+            },
+          { (t) =>
+            result(name, t)
+            defnMap ++= p.defnMap
+            termIndModMap ++= p.termIndModMap
+            pprint.log(p.defnMap.keys)
+            pprint.log(defnMap.keys)
+            pprint.log(termIndModMap.keys)
+          }    )
 
+        }
         s"parsing $name"
       }
 
