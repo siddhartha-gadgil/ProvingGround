@@ -204,7 +204,11 @@ class LeanParser(initMods: Seq[Modification],
       vec <- parseVec(xs, vars).cancelable
       _ = pprint.log(s"${vec.map(_.fansi)}")
       recFn <- recFnT
-      res = fold(recFn)(vec: _*)
+      resT = Task(fold(recFn)(vec: _*)).onErrorRecoverWith {
+        case err: ApplnFailException =>
+          throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
+      }
+      res <- resT
     } yield res
 
   def recAppSkips(name: Name,

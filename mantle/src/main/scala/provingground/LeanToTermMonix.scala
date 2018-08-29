@@ -573,7 +573,7 @@ case class RecFoldException(indMod: TermIndMod,
                             argsFmlyTerm: Vector[Term],
                             vec: Vector[Term],
                             fail: ApplnFailException)
-    extends IllegalArgumentException("Failure to fold recursive Function")
+    extends IllegalArgumentException(s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail")
 
 case class LeanToTermMonix(defnMap: Map[Name, Term],
                            termIndModMap: Map[Name, TermIndMod]) { self =>
