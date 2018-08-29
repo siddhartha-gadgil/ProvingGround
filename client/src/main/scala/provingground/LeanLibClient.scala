@@ -30,10 +30,17 @@ object LeanLibClient {
 
     val logList = ul(`class` := "list-group").render
 
+    val errList = ul(`class` := "list-group").render
+
     def addLog(s: String): Node =
       logList.appendChild(li(`class` := "list-group-item")(s).render)
 
     val logDiv = div(`class` := "panel-body view")(logList).render
+
+    def addErr(s: String): Node =
+      errList.appendChild(li(`class` := "list-group-item text-danger")(s).render)
+
+    val errDiv: Div = div(`class` := "panel-body view")(errList).render
 
     val resultList = ul(`class` := "list-group").render
 
@@ -126,9 +133,12 @@ object LeanLibClient {
           div(`class` := "panel panel-success")(
             div(`class`:= "panel-heading")("In  Memory:"),
             div(`class`:= "panel-body view")(memListDiv)),
-          div(`class` := "panel panel-danger")(
+          div(`class` := "panel panel-warning")(
             div(`class`:= "panel-heading")("Currently Parsing:"),
-            div(`class`:= "panel-body view")(cancQuListDiv))
+            div(`class`:= "panel-body view")(cancQuListDiv)),
+          div(`class` := "panel panel-danger")(
+            div(`class` := "panel-heading")(h4("Errors:")),
+            errDiv)
           )
       ).render
     )
@@ -225,6 +235,7 @@ object LeanLibClient {
       val msgTyp: String = jsObj("type").str
       msgTyp match {
         case "log" => addLog(jsObj("message").str)
+        case "error" => addErr(jsObj("message").str)
         case "parse-result" =>
           addLog("parser result" + jsObj.toString())
           loadMem()

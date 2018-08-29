@@ -11,7 +11,12 @@ import provingground.HoTT._
 import trepplein.{Modification, Name}
 import ujson.Js
 import io.undertow.websockets.WebSocketConnectionCallback
-import io.undertow.websockets.core.{AbstractReceiveListener, BufferedTextMessage, WebSocketChannel, WebSockets}
+import io.undertow.websockets.core.{
+  AbstractReceiveListener,
+  BufferedTextMessage,
+  WebSocketChannel,
+  WebSockets
+}
 import io.undertow.websockets.spi.WebSocketHttpExchange
 import monix.execution.CancelableFuture
 import provingground.translation.TeXTranslate
@@ -45,7 +50,8 @@ object LeanResources {
 
   val mods: ArrayBuffer[Modification] = ArrayBuffer.empty[Modification]
 
-  val parseCanc : ArrayBuffer[(String, CancelableFuture[Try[Term]])] = ArrayBuffer()
+  val parseCanc: ArrayBuffer[(String, CancelableFuture[Try[Term]])] =
+    ArrayBuffer()
 
   def loadTask(f: String): Task[Unit] =
     if (loadedFiles.contains(f)) Task.pure(())
@@ -149,6 +155,12 @@ object LeanRoutes extends cask.Routes {
       uwrite[Js.Value](Js.Obj("type" -> Js.Str("log"), "message" -> Js.Str(s)))
     )
 
+  def sendErr(s: String): Unit =
+    send(
+      uwrite[Js.Value](
+        Js.Obj("type" -> Js.Str("error"), "message" -> Js.Str(s)))
+    )
+
   val sendLogger: Logger = Logger.dispatch(sendLog)
 
   def messenger: Logger =
@@ -195,24 +207,31 @@ object LeanRoutes extends cask.Routes {
         s"previously parsed $name"
       }
       .getOrElse {
-        val p = parser
+        val p  = parser
         val cf = p.getTask(name).materialize.runAsync
         parseCanc += name -> cf
-        cf.foreach {(tt) =>
+        cf.foreach { (tt) =>
           tt.fold(
-            {(err) =>
+            { (err) =>
               val message = s"while parsing $name, got $err"
               pprint.log(message)
-              sendLog(message)
-            },
-          { (t) =>
-            result(name, t)
-            defnMap ++= p.defnMap
-            termIndModMap ++= p.termIndModMap
-            pprint.log(p.defnMap.keys)
-            pprint.log(defnMap.keys)
-            pprint.log(termIndModMap.keys)
-          }    )
+              sendErr(message)
+//              ammonite.Main(
+//                predefCode = "import provingground._, HoTT._, interface._"
+//              ).run(
+//                "error" -> err,
+//                "parser" -> p,
+//                "name" -> name
+//              )
+            }, { (t) =>
+              result(name, t)
+              defnMap ++= p.defnMap
+              termIndModMap ++= p.termIndModMap
+              pprint.log(p.defnMap.keys)
+              pprint.log(defnMap.keys)
+              pprint.log(termIndModMap.keys)
+            }
+          )
 
         }
         s"parsing $name"
@@ -222,7 +241,7 @@ object LeanRoutes extends cask.Routes {
 
   @cask.post("/cancel")
   def cancelParse(request: cask.Request): String = {
-    val name = new String(request.readAllBytes())
+    val name    = new String(request.readAllBytes())
     val toPurge = parseCanc.filter(_._1 == name)
     pprint.log(s"cancel request for $name, cancelling ${toPurge.size}")
     toPurge.foreach(_._2.cancel)
@@ -253,7 +272,6 @@ object LeanRoutes extends cask.Routes {
     }
     pprint.log(r)
     sendLog(s"Result of code generation: $r")
-
 
     "Generating code for all definitions"
   }
