@@ -1210,6 +1210,8 @@ object HoTT {
     // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
       fn.applyUnchecked(arg.asInstanceOf[u])
+    case fn if isWitness(arg) =>
+      fn
     case _ => throw new ApplnFailException(func, arg)
   }
 
@@ -3028,6 +3030,8 @@ object HoTT {
     case (t, List()) => t
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
       fold(f.applyUnchecked(x.asInstanceOf[u]))(ys: _*)
+    case (f: FuncLike[u, _], x :: ys) if isWitness(x) =>
+      fold(f)(ys : _*)
     case (f: FuncLike[u, _], x :: ys) =>
       throw new ApplnFailException(f, x)
     case (t, x :: ys) if isWitness(x) =>
