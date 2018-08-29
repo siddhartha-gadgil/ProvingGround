@@ -1207,7 +1207,7 @@ object HoTT {
       extends IllegalArgumentException("Expected type but got term")
 
   def applyFunc(func: Term, arg: Term): Term = func match {
-    case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
+    // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
       fn.applyUnchecked(arg.asInstanceOf[u])
     case _ => throw new ApplnFailException(func, arg)
@@ -3030,9 +3030,11 @@ object HoTT {
       fold(f.applyUnchecked(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) =>
       throw new ApplnFailException(f, x)
+    case (t, x :: ys) if isWitness(x) =>
+      fold(t)(ys : _*)
     case (t, x :: ys) =>
       throw new IllegalArgumentException(
-        s"attempting to apply $t, which is not a function")
+        s"attempting to apply $t, which is not a function, to $x (and then to $ys)")
   }
 
   /**
