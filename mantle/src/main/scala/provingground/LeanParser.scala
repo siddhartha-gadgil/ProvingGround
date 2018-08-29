@@ -311,7 +311,7 @@ class LeanParser(initMods: Seq[Modification],
             value match {
               case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
                 fn
-              case y if domain.prettyName.toString == "_" => y
+              // case y if domain.prettyName.toString == "_" => y
               case _                                      =>
                 // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
                 // else LambdaFixed(x, value)
