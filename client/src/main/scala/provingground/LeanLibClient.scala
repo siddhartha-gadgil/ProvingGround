@@ -38,7 +38,7 @@ object LeanLibClient {
     val logDiv = div(`class` := "panel-body view")(logList).render
 
     def addErr(s: String): Node =
-      errList.appendChild(li(`class` := "list-group-item text-danger")(s).render)
+      errList.appendChild(li(`class` := "list-group-item")(s).render)
 
     val errDiv: Div = div(`class` := "panel-body view")(errList).render
 

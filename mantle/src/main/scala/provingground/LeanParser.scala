@@ -139,7 +139,7 @@ object LeanParser {
       case Vector() => ft
       case x +: ys =>
         applyFuncFold(ft.map(
-                        (f) => fold(f)(x)
+                        (f) => applyFunc(f, x)
                       ),
                       ys)
     }
@@ -204,7 +204,7 @@ class LeanParser(initMods: Seq[Modification],
       vec <- parseVec(xs, vars).cancelable
       _ = pprint.log(s"${vec.map(_.fansi)}")
       recFn <- recFnT
-      resT = Task(fold(recFn)(vec: _*)).onErrorRecoverWith {
+      resT = Task(foldFunc(recFn, vec)).onErrorRecoverWith {
         case err: ApplnFailException =>
           throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
       }
@@ -232,7 +232,7 @@ class LeanParser(initMods: Seq[Modification],
         resOptTask: Task[Option[Term]] = for { // Task
           recData <- parseVec(recDataExpr, vars).cancelable
           recFn   <- recFnT
-          withRecDataTask = Task(fold(recFn)(recData: _*)).cancelable
+          withRecDataTask = Task(foldFunc(recFn, recData)).cancelable
           optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
             case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices).cancelable
           })
