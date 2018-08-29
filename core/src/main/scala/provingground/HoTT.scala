@@ -1165,17 +1165,18 @@ object HoTT {
       */
     val index: Vector[Term]
 
-    lazy val fullIndData = (domW, index, codXs, defnData)
+    lazy val fullIndData: (F, Vector[Term], IDFT, Vector[Term]) =
+      (domW, index, codXs, defnData)
 
-    override def hashCode = fullIndData.hashCode
+    override def hashCode: Int = fullIndData.hashCode
 
-    override def equals(that: Any) = that match {
+    override def equals(that: Any): Boolean = that match {
       case r: IndInducFuncLike[_, _, _, _] =>
         fullIndData == r.fullIndData
       case _ => false
     }
 
-    override def toString() =
+    override def toString(): String =
       defnData.foldLeft(
         s"ind{${domW}${index.mkString("(", ")(", ")")}}{${codXs}}") {
         case (str, t) => s"$str($t)"
@@ -1185,7 +1186,8 @@ object HoTT {
 
   class ApplnFailException(val func: Term, val arg: Term)
       extends IllegalArgumentException(
-        s"function $func with domain(optional) ${ApplnFailException.domOpt(func)} cannot act on given term $arg with type ${arg.typ}") {
+        s"function $func with domain(optional) ${ApplnFailException
+          .domOpt(func)} cannot act on given term $arg with type ${arg.typ}") {
     def domOpt = func match {
       case fn: FuncLike[u, v] => Some(fn.dom)
       case _                  => None
@@ -1194,17 +1196,32 @@ object HoTT {
     def argType = arg.typ
   }
 
-  object ApplnFailException{
+  object ApplnFailException {
     def domOpt(func: Term) = func match {
       case fn: FuncLike[u, v] => Some(fn.dom)
       case _                  => None
     }
 
-
   }
 
   case class NotTypeException(tp: Term)
       extends IllegalArgumentException("Expected type but got term")
+
+  /**
+    * fill in witnesses if proposition, including within lambdas
+    **/
+  def witLess(t: Term): Vector[Term] = {
+    val topFilled: Vector[Term] = t match {
+      case fn: FuncLike[u, v] if isProp(fn.dom) =>
+        witLess(fn(fn.dom.Var.asInstanceOf[u]))
+      case _ => Vector()
+    }
+    val recFilled = t match {
+      case l: LambdaLike[u, v] => witLess(l.value).map(lambda(l.variable))
+      case _                   => Vector(t)
+    }
+    recFilled ++ topFilled
+  }
 
   def applyFunc(func: Term, arg: Term): Term = func match {
     // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
@@ -1212,6 +1229,11 @@ object HoTT {
       fn.applyUnchecked(arg.asInstanceOf[u])
     case fn if isWitness(arg) =>
       fn
+    case fn: FuncLike[u, v] =>
+      witLess(arg)
+        .find(_.typ == fn.dom)
+        .map(x => fn.applyUnchecked(x.asInstanceOf[u]))
+        .getOrElse(throw new ApplnFailException(func, arg))
     case _ => throw new ApplnFailException(func, arg)
   }
 
@@ -3031,11 +3053,11 @@ object HoTT {
     case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
       fold(f.applyUnchecked(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) if isWitness(x) =>
-      fold(f)(ys : _*)
+      fold(f)(ys: _*)
+    case (t, x :: ys) if isWitness(x) =>
+      fold(t)(ys: _*)
     case (f: FuncLike[u, _], x :: ys) =>
       throw new ApplnFailException(f, x)
-    case (t, x :: ys) if isWitness(x) =>
-      fold(t)(ys : _*)
     case (t, x :: ys) =>
       throw new IllegalArgumentException(
         s"attempting to apply $t, which is not a function, to $x (and then to $ys)")
