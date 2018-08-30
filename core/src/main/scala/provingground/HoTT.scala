@@ -1212,7 +1212,9 @@ object HoTT {
     **/
   def witLess(t: Term): Vector[Term] = {
     val topFilled: Vector[Term] = t match {
-      case fn: FuncLike[u, v] if isProp(fn.dom) =>
+      case l : LambdaLike[u, v] if isWitness(l.variable) =>
+        witLess(l.value)
+      case fn: FuncLike[u, v] if isPropFmly(fn.dom) =>
         witLess(fn(fn.dom.Var.asInstanceOf[u]))
       case _ => Vector()
     }
@@ -2160,7 +2162,7 @@ object HoTT {
     def subs(x: Term, y: Term) =
       PiDefn(variable.replace(x, y), value.replace(x, y))
 
-    override def toString = s"${variable} ~> ($value)"
+    override def toString = s"(${variable} : ${variable.typ} ) ~> ($value)"
   }
 
   /**

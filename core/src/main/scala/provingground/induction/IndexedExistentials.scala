@@ -33,7 +33,20 @@ sealed trait TypFamilyExst { typFmlyExst =>
   def ->:[TT <: Term with Subs[TT]](dom: Typ[TT]) =
     TypFamilyExst(FuncTypFamily(dom, pattern), dom.Var :-> W)
 
-  def mapsTo[TT <: Term with Subs[TT]](variable: TT, dom: Typ[TT]) = {
+  def mapsTo[TT <: Term with Subs[TT]](variable: TT,
+                                       dom: Typ[TT]): TypFamilyExst {
+    val subst: TermList[this.Index]
+
+    type Fb = Func[TT, TypFamilyExst.this.Fb]
+
+    val pattern: TypFamilyPtn[Term,
+                              Func[TT, TypFamilyExst.this.Fb],
+                              ::[TT, TypFamilyExst.this.Index]]
+
+    val W: Func[TT, TypFamilyExst.this.Fb]
+
+    type Index = ::[TT, TypFamilyExst.this.Index]
+  } = {
     val fmly = W match {
       case FormalAppln(f, x) if x == variable => f.asInstanceOf[Func[TT, Fb]]
       case _                                  => variable :-> W
@@ -65,7 +78,11 @@ sealed trait TypFamilyExst { typFmlyExst =>
     import IndexedIterFuncShape._
 
     def apply[Fm <: Term with Subs[Fm]](
-        sh: IndexedIterFuncShape[Term, Fm, Fb, Index]) =
+        sh: IndexedIterFuncShape[Term, Fm, Fb, Index]): IndexedIterFuncExst {
+      val shape: IndexedIterFuncShape[Term, Fm, Fb, Index]
+
+      type F = Fm
+    } =
       new IndexedIterFuncExst {
         type F = Fm
         val shape = sh
