@@ -1212,6 +1212,8 @@ object HoTT {
     **/
   def witLess(t: Term): Vector[Term] = {
     val topFilled: Vector[Term] = t match {
+      case l : LambdaLike[u, v] if isWitness(l.variable) =>
+        witLess(l.value)
       case fn: FuncLike[u, v] if isPropFmly(fn.dom) =>
         witLess(fn(fn.dom.Var.asInstanceOf[u]))
       case _ => Vector()
