@@ -315,9 +315,9 @@ class LeanParser(initMods: Seq[Modification],
                 fn
               // case y if domain.prettyName.toString == "_" => y
               case _                                      =>
-                // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
-                // else LambdaFixed(x, value)
-                lambda(x)(value)
+                if (value.typ.dependsOn(x)) LambdaTerm(x, value)
+                else LambdaFixed(x, value)
+                // lambda(x)(value)
             }
         case Pi(domain, body) =>
           // pprint.log(s"pi $domain, $body")
