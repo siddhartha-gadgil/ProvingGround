@@ -14,3 +14,9 @@ while parsing nat.less_than_or_equal.dcases_on,
         with type
           ('u : nat ) ~> ((((nat.less_than_or_equal) ('q)) ('u)) → (((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> ((('r) ('u)) (_))) → ((((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) → ((('r) ((nat.succ) ('u))) (_)))))
 ```
+
+## To correct:
+
+* Replace `(_ : (_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> ((('r) ('u)) (_)))` (a variable) by `_ : ((('r) ('u)) (_))`, i.e., at the level of types,
+* replace `(_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> ((('r) ('u)) (_))` by `(('r) ('u')) (_)`
+* this is valid if there is a witness in scope for the given proposition.

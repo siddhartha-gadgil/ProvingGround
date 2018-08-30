@@ -16,7 +16,45 @@ import translation.FansiShow._
 
 import scala.collection.mutable.{Map => mMap, ArrayBuffer}
 
+import LeanInterface._
+
 object LeanInterface {
+  /**
+    * fill in witnesses if proposition, including within lambdas
+    **/
+  def witLess(t: Term): Vector[Term] = {
+    val topFilled: Vector[Term] = t match {
+      case l : LambdaLike[u, v] if isWitness(l.variable) =>
+        witLess(l.value)
+      case fn: FuncLike[u, v] if isPropFmly(fn.dom) =>
+        witLess(fn(fn.dom.Var.asInstanceOf[u]))
+      case _ => Vector()
+    }
+    val recFilled = t match {
+      case l: LambdaLike[u, v] => witLess(l.value).map(lambda(l.variable))
+      case _                   => Vector(t)
+    }
+    recFilled ++ topFilled
+  }
+
+  def applyFuncLean(func: Term, arg: Term): Term = func match {
+    // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
+    case fn: FuncLike[u, v] if fn.dom == arg.typ =>
+      fn.applyUnchecked(arg.asInstanceOf[u])
+    case fn if isWitness(arg) =>
+      fn
+    case fn: FuncLike[u, v] =>
+      witLess(arg)
+        .find(_.typ == fn.dom)
+        .map(x => fn.applyUnchecked(x.asInstanceOf[u]))
+        .getOrElse(throw new ApplnFailException(func, arg))
+    case _ => throw new ApplnFailException(func, arg)
+  }
+
+
+  def foldFuncLean(func: Term, args: Vector[Term]): Term =
+    args.foldLeft(func)(applyFuncLean)
+
 
   def consts(expr: Expr): Vector[Name] = expr match {
     case Const(name, _)   => Vector(name)
@@ -150,7 +188,7 @@ sealed trait TermIndMod {
   val typF: Term
 
 
-  def introsFold(p: Vector[Term]): Vector[Term] = intros.map((rule) => foldFunc(rule, p))
+  def introsFold(p: Vector[Term]): Vector[Term] = intros.map((rule) => foldFuncLean(rule, p))
 
   val recName = Name.Str(name, "rec")
 
@@ -170,7 +208,7 @@ case class SimpleIndMod(name: Name,
 
 
   def getInd(p: Vector[Term]) =
-    ConstructorSeqTL.getExst(toTyp(foldFunc(typF, p)), introsFold(p)).value
+    ConstructorSeqTL.getExst(toTyp(foldFuncLean(typF, p)), introsFold(p)).value
 
 
   import LeanInterface.unifier
@@ -269,11 +307,11 @@ case class IndexedIndMod(name: Name,
                          numParams: Int,
                          isPropn: Boolean)
     extends TermIndMod {
-  // val typF = foldFunc(typF, params)
+  // val typF = foldFuncLean(typF, params)
 
   def getInd(p: Vector[Term]) =
     TypFamilyExst
-      .getIndexedConstructorSeq(foldFunc(typF, p), introsFold(p))
+      .getIndexedConstructorSeq(foldFuncLean(typF, p), introsFold(p))
       .value
 
   import LeanInterface.unifier

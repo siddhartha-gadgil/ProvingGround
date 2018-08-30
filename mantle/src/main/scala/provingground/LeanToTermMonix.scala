@@ -14,6 +14,7 @@ import scala.collection.mutable.{Set => mSet, Map => mMap}
 import HoTT.{Name => _, _}
 
 import trepplein._
+import LeanInterface._
 
 object LeanToTermMonix {
   def isPropnFn(e: Expr): Boolean = e match {
@@ -146,7 +147,7 @@ object LeanToTermMonix {
     }
 
   def introsFold(ind: TermIndMod, p: Vector[Term]): Vector[Term] =
-    ind.intros.map((rule) => foldFunc(rule, p))
+    ind.intros.map((rule) => foldFuncLean(rule, p))
 
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
@@ -162,7 +163,7 @@ object LeanToTermMonix {
                    argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
     def getInd(p: Vector[Term]) =
       ConstructorSeqTL
-        .getExst(toTyp(foldFunc(ind.typF, p)), introsFold(ind, p))
+        .getExst(toTyp(foldFuncLean(ind.typF, p)), introsFold(ind, p))
         .value
     val newParamsTask = argsFmlyTerm map (_.init)
     newParamsTask.flatMap { (newParams) =>
@@ -203,7 +204,7 @@ object LeanToTermMonix {
                     argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
     def getInd(p: Vector[Term]) =
       TypFamilyExst
-        .getIndexedConstructorSeq(foldFunc(ind.typF, p), introsFold(ind, p))
+        .getIndexedConstructorSeq(foldFuncLean(ind.typF, p), introsFold(ind, p))
         .value
     val newParamsTask = argsFmlyTerm map (_.init)
     newParamsTask.flatMap { (newParams) =>

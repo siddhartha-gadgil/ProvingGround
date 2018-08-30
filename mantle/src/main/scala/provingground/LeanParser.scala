@@ -20,6 +20,8 @@ import trepplein._
 
 import scala.meta
 
+import LeanInterface._
+
 object LeanParser {
   case class ParseException(exps: Vector[Expr],
                             vars: Vector[Term],
@@ -139,7 +141,7 @@ object LeanParser {
       case Vector() => ft
       case x +: ys =>
         applyFuncFold(ft.map(
-                        (f) => applyFunc(f, x)
+                        (f) => applyFuncLean(f, x)
                       ),
                       ys)
     }
@@ -204,7 +206,7 @@ class LeanParser(initMods: Seq[Modification],
       vec <- parseVec(xs, vars).cancelable
       _ = pprint.log(s"${vec.map(_.fansi)}")
       recFn <- recFnT
-      resT = Task(foldFunc(recFn, vec)).onErrorRecoverWith {
+      resT = Task(foldFuncLean(recFn, vec)).onErrorRecoverWith {
         case err: ApplnFailException =>
           throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
       }
@@ -232,7 +234,7 @@ class LeanParser(initMods: Seq[Modification],
         resOptTask: Task[Option[Term]] = for { // Task
           recData <- parseVec(recDataExpr, vars).cancelable
           recFn   <- recFnT
-          withRecDataTask = Task(foldFunc(recFn, recData)).cancelable
+          withRecDataTask = Task(foldFuncLean(recFn, recData)).cancelable
           optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
             case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices).cancelable
           })
@@ -584,14 +586,14 @@ class LeanParser(initMods: Seq[Modification],
         case mod: SimpleIndMod =>
           val seq =
             ConstructorSeqTL
-              .getExst(toTyp(foldFunc(ind.typF, p)),
+              .getExst(toTyp(foldFuncLean(ind.typF, p)),
                        LeanToTermMonix.introsFold(ind, p))
               .value
           codeGen.consSeq(seq)
         case mod: IndexedIndMod =>
           val indSeq =
             TypFamilyExst
-              .getIndexedConstructorSeq(foldFunc(ind.typF, p),
+              .getIndexedConstructorSeq(foldFuncLean(ind.typF, p),
                                         LeanToTermMonix.introsFold(ind, p))
               .value
           codeGen.indexedConsSeqDom(indSeq)

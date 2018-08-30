@@ -18,6 +18,8 @@ import translation.FansiShow._
 
 import scala.collection.mutable.{Map => mMap, ArrayBuffer}
 
+import LeanInterface._
+
 trait LeanParse { self =>
   val defnMap: collection.Map[Name, Term]
 
@@ -58,7 +60,7 @@ trait LeanParse { self =>
                     arg: Term,
                     vars: Vector[Term],
                     data: Vector[Expr] = Vector()): Term =
-    Try(applyFunc(func, arg))
+    Try(applyFuncLean(func, arg))
       .fold(
         (exc) =>
           if (inPropFamily(arg.typ)) func

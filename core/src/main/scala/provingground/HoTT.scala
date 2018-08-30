@@ -1207,35 +1207,10 @@ object HoTT {
   case class NotTypeException(tp: Term)
       extends IllegalArgumentException("Expected type but got term")
 
-  /**
-    * fill in witnesses if proposition, including within lambdas
-    **/
-  def witLess(t: Term): Vector[Term] = {
-    val topFilled: Vector[Term] = t match {
-      case l : LambdaLike[u, v] if isWitness(l.variable) =>
-        witLess(l.value)
-      case fn: FuncLike[u, v] if isPropFmly(fn.dom) =>
-        witLess(fn(fn.dom.Var.asInstanceOf[u]))
-      case _ => Vector()
-    }
-    val recFilled = t match {
-      case l: LambdaLike[u, v] => witLess(l.value).map(lambda(l.variable))
-      case _                   => Vector(t)
-    }
-    recFilled ++ topFilled
-  }
-
   def applyFunc(func: Term, arg: Term): Term = func match {
     // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
       fn.applyUnchecked(arg.asInstanceOf[u])
-    case fn if isWitness(arg) =>
-      fn
-    case fn: FuncLike[u, v] =>
-      witLess(arg)
-        .find(_.typ == fn.dom)
-        .map(x => fn.applyUnchecked(x.asInstanceOf[u]))
-        .getOrElse(throw new ApplnFailException(func, arg))
     case _ => throw new ApplnFailException(func, arg)
   }
 
@@ -1246,8 +1221,6 @@ object HoTT {
     case _ => None
   }
 
-  def foldFunc(func: Term, args: Vector[Term]): Term =
-    args.foldLeft(func)(applyFunc)
 
   def toTyp(t: Term): Typ[U] forSome { type U <: Term with Subs[U] } =
     t match {
