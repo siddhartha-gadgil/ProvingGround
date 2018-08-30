@@ -25,13 +25,21 @@ object LeanInterface {
   def witLess(t: Term): Vector[Term] = {
     val topFilled: Vector[Term] = t match {
       case l : LambdaLike[u, v] if isWitness(l.variable) =>
-        witLess(l.value)
+        l.variable.typ match {
+          case pd : PiDefn[u, v] if isWitness(pd.variable) /* && isPropFmly(pd.typ)*/ =>
+            val x = "_" :: pd.value
+            pprint.log(s"nested witnesses: ${l.variable}, , ${pd.variable}, ${pd.value}, ${isWitness(pd.variable)}")
+            witLess(l.value) ++ witLess(l.value).map(lambda(x))
+          case _ => witLess(l.value)
+        }
+
       case fn: FuncLike[u, v] if isPropFmly(fn.dom) =>
         witLess(fn(fn.dom.Var.asInstanceOf[u]))
       case _ => Vector()
     }
     val recFilled = t match {
-      case l: LambdaLike[u, v] => witLess(l.value).map(lambda(l.variable))
+      case l: LambdaFixed[u, v] => witLess(l.value).map(LambdaFixed(l.variable, _))
+      case l: LambdaTerm[u, v] => witLess(l.value).map(LambdaTerm(l.variable, _))
       case _                   => Vector(t)
     }
     recFilled ++ topFilled
