@@ -161,16 +161,33 @@ object GeneratorVariables {
     def *(that: Expression): Product = Product(this, that)
 
     def /(that: Expression): Quotient = Quotient(this, that)
+
+    def -(that: Expression): Sum =  this +(that * Literal(-1))
+
+    def unary_- : Expression = this * Literal(-1)
   }
 
-  case class FinalVal[+Y](variable: Variable[Y]) extends Expression {
+  sealed trait VarVal[+Y] extends Expression{
+    val variable : Variable[Y]
+  }
+
+  case class FinalVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
     def mapVars(f: Variable[_] => Variable[_]): Expression =
       FinalVal(f(variable))
   }
 
-  case class InitialVal[+Y](variable: Variable[Y]) extends Expression {
+  case class InitialVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
     def mapVars(f: Variable[_] => Variable[_]): Expression =
       InitialVal(f(variable))
+  }
+
+  case class Expectation[Y](rv: RandomVar[Y], f : Y => Expression) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_]): Expectation[Y] = this
+  }
+
+  case class Log(exp: Expression) extends Expression{
+    def mapVars(f: Variable[_] => Variable[_])
+      : Expression = Log(exp.mapVars(f))
   }
 
   case class Sum(x: Expression, y: Expression) extends Expression {

@@ -133,21 +133,21 @@ object LeanRoutes extends cask.Routes {
     uwrite(res)
   }
 
-  var channelOpt: Option[WebSocketChannel] = None
+  var channels: ArrayBuffer[WebSocketChannel] = ArrayBuffer()
 
   @cask.websocket("/leanlib-websock")
   def showUserProfile(): cask.WebsocketResult = {
     new WebSocketConnectionCallback() {
       override def onConnect(exchange: WebSocketHttpExchange,
                              channel: WebSocketChannel): Unit = {
-        channelOpt = Some(channel)
+        channels += channel
         channel.resumeReceives()
       }
     }
   }
 
   def send(s: String): Unit =
-    channelOpt.foreach((channel: WebSocketChannel) =>
+    channels.foreach((channel: WebSocketChannel) =>
       WebSockets.sendTextBlocking(s, channel))
 
   def sendLog(s: String): Unit =
