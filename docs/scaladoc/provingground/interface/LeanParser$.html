@@ -163,6 +163,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="LeanParser.html" title=""></a>
                         <a href="LeanParser.html" title="">LeanParser</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LeanResources$.html" title=""></a>
+                        <a href="LeanResources$.html" title="">LeanResources</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LeanRoutes$.html" title=""></a>
+                        <a href="LeanRoutes$.html" title="">LeanRoutes</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="LeanToTerm$.html" title=""></a>
                         <a class="class" href="LeanToTerm.html" title=""></a>
                         <a href="LeanToTerm.html" title="">LeanToTerm</a>
@@ -364,7 +372,71 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.interface.LeanParser.ParseException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.interface.LeanParser.Defined" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DefinedextendsLeanParser.LogwithProductwithSerializable"></a><a id="Defined:Defined"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#DefinedextendsLeanParser.LogwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$Defined.html"><span class="name">Defined</span></a><span class="params">(<span name="name">name: <span class="extype" name="trepplein.Name">Name</span></span>, <span name="term">term: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result"> extends <a href="LeanParser$$Log.html" class="extype" name="provingground.interface.LeanParser.Log">Log</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.DefinedInduc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DefinedInducextendsLeanParser.LogwithProductwithSerializable"></a><a id="DefinedInduc:DefinedInduc"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#DefinedInducextendsLeanParser.LogwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$DefinedInduc.html"><span class="name">DefinedInduc</span></a><span class="params">(<span name="name">name: <span class="extype" name="trepplein.Name">Name</span></span>, <span name="indMod">indMod: <a href="TermIndMod.html" class="extype" name="provingground.interface.TermIndMod">TermIndMod</a></span>)</span><span class="result"> extends <a href="LeanParser$$Log.html" class="extype" name="provingground.interface.LeanParser.Log">Log</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.Log" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LogextendsAnyRef"></a><a id="Log:Log"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#LogextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$Log.html"><span class="name">Log</span></a><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.Logger" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Loggerextendsprovingground.interface.LeanParser.Log=&gt;Unit"></a><a id="Logger:Logger"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#Loggerextendsprovingground.interface.LeanParser.Log=&gt;Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$Logger.html"><span class="name">Logger</span></a><span class="result"> extends (<a href="LeanParser$$Log.html" class="extype" name="provingground.interface.LeanParser.Log">Log</a>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.ParseException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ParseExceptionextendsExceptionwithProductwithSerializable"></a><a id="ParseException:ParseException"></a>
       <span class="permalink">
       <a href="../../provingground/interface/LeanParser$.html#ParseExceptionextendsExceptionwithProductwithSerializable" title="Permalink">
@@ -377,6 +449,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <a title="" href="LeanParser$$ParseException.html"><span class="name">ParseException</span></a><span class="params">(<span name="exps">exps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="trepplein.Expr">Expr</span>]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="error">error: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>)</span><span class="result"> extends <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.ParseWork" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParseWorkextendsLeanParser.LogwithProductwithSerializable"></a><a id="ParseWork:ParseWork"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#ParseWorkextendsLeanParser.LogwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$ParseWork.html"><span class="name">ParseWork</span></a><span class="params">(<span name="expr">expr: <span class="extype" name="trepplein.Expr">Expr</span></span>)</span><span class="result"> extends <a href="LeanParser$$Log.html" class="extype" name="provingground.interface.LeanParser.Log">Log</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.Parsed" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParsedextendsLeanParser.LogwithProductwithSerializable"></a><a id="Parsed:Parsed"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#ParsedextendsLeanParser.LogwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$Parsed.html"><span class="name">Parsed</span></a><span class="params">(<span name="expr">expr: <span class="extype" name="trepplein.Expr">Expr</span></span>)</span><span class="result"> extends <a href="LeanParser$$Log.html" class="extype" name="provingground.interface.LeanParser.Log">Log</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -885,6 +989,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.LeanParser.Logger" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Logger"></a><a id="Logger:Logger"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#Logger" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$Logger$.html"><span class="name">Logger</span></a>
+      </span>
+      
+      
     </li>
               </ol>
             </div>

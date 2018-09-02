@@ -456,8 +456,8 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="TermGeneratorNodes.html" title=""></a>
-                        <a href="TermGeneratorNodes.html" title="">TermGeneratorNodes</a>
+                        <a class="class" href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
+                        <a href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc.">TermGeneratorNodes</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TermLearner.html" title="Adding equations from a simple generative model to EvolverEquations"></a>
@@ -472,8 +472,8 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a href="TermRandomVars$.html" title="">TermRandomVars</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="TermState$.html" title=""></a>
-                        <a class="class" href="TermState.html" title=""></a>
-                        <a href="TermState.html" title="">TermState</a>
+                        <a class="class" href="TermState.html" title="A state, typically the initial state, for generating terms, types etc"></a>
+                        <a href="TermState.html" title="A state, typically the initial state, for generating terms, types etc">TermState</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging"></a>
@@ -1658,7 +1658,7 @@ the coefficients of the various generator nodes should be <code>Double</code>
       </span>
       
       
-    </li><li name="provingground.learning.TermGeneratorNodes" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.TermGeneratorNodes" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="TermGeneratorNodes[InitState]extendsAnyRef"></a><a id="TermGeneratorNodes[InitState]:TermGeneratorNodes[InitState]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/index.html#TermGeneratorNodes[InitState]extendsAnyRef" title="Permalink">
@@ -1670,10 +1670,13 @@ the coefficients of the various generator nodes should be <code>Double</code>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="TermGeneratorNodes.html"><span class="name">TermGeneratorNodes</span></a><span class="tparams">[<span name="InitState">InitState</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+        <a title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc." href="TermGeneratorNodes.html"><span class="name">TermGeneratorNodes</span></a><span class="tparams">[<span name="InitState">InitState</span>]</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
-      
+      <p class="shortcomment cmt">Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
+to be used for generating distributions, obtaining equations etc.</p><div class="fullcomment"><div class="comment cmt"><p>Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
+to be used for generating distributions, obtaining equations etc.
+</p></div><dl class="paramcmts block"><dt class="tparam">InitState</dt><dd class="cmt"><p>the initial state for the dynamics, equations etc</p></dd></dl></div>
     </li><li name="provingground.learning.TermLearner" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TermLearner[F]extendsEvolverEquations[F]withProductwithSerializable"></a><a id="TermLearner[F]:TermLearner[F]"></a>
       <span class="permalink">
@@ -1707,7 +1710,7 @@ the coefficients of the various generator nodes should be <code>Double</code>
       </span>
       
       
-    </li><li name="provingground.learning.TermState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.TermState" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="TermStateextendsProductwithSerializable"></a><a id="TermState:TermState"></a>
       <span class="permalink">
       <a href="../../provingground/learning/index.html#TermStateextendsProductwithSerializable" title="Permalink">
@@ -1719,10 +1722,10 @@ the coefficients of the various generator nodes should be <code>Double</code>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="TermState.html"><span class="name">TermState</span></a><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="inds">inds: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A state, typically the initial state, for generating terms, types etc" href="TermState.html"><span class="name">TermState</span></a><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="inds">inds: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt">A state, typically the initial state, for generating terms, types etc</p><div class="fullcomment"><div class="comment cmt"><p>A state, typically the initial state, for generating terms, types etc</p></div><dl class="paramcmts block"><dt class="param">terms</dt><dd class="cmt"><p>distribution of terms</p></dd><dt class="param">typs</dt><dd class="cmt"><p>distribution of types</p></dd><dt class="param">vars</dt><dd class="cmt"><p>variables, over which we may take closures</p></dd><dt class="param">inds</dt><dd class="cmt"><p>inductive type definitions</p></dd></dl></div>
     </li><li name="provingground.learning.TheoremFeedback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TheoremFeedbackextendsProductwithSerializable"></a><a id="TheoremFeedback:TheoremFeedback"></a>
       <span class="permalink">

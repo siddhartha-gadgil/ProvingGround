@@ -380,8 +380,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="TermGeneratorNodes.html" title=""></a>
-                        <a href="TermGeneratorNodes.html" title="">TermGeneratorNodes</a>
+                        <a class="class" href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
+                        <a href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc.">TermGeneratorNodes</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TermLearner.html" title="Adding equations from a simple generative model to EvolverEquations"></a>
@@ -396,8 +396,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermRandomVars$.html" title="">TermRandomVars</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="TermState$.html" title=""></a>
-                        <a class="class" href="TermState.html" title=""></a>
-                        <a href="TermState.html" title="">TermState</a>
+                        <a class="class" href="TermState.html" title="A state, typically the initial state, for generating terms, types etc"></a>
+                        <a href="TermState.html" title="A state, typically the initial state, for generating terms, types etc">TermState</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging"></a>
@@ -596,6 +596,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.GeneratorVariables.Expectation" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Expectation[Y]extendsGeneratorVariables.ExpressionwithProductwithSerializable"></a><a id="Expectation[Y]:Expectation[Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$.html#Expectation[Y]extendsGeneratorVariables.ExpressionwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="GeneratorVariables$$Expectation.html"><span class="name">Expectation</span></a><span class="tparams">[<span name="Y">Y</span>]</span><span class="params">(<span name="rv">rv: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorVariables.Expectation.Y">Y</span>]</span>, <span name="f">f: (<span class="extype" name="provingground.learning.GeneratorVariables.Expectation.Y">Y</span>) ⇒ <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>)</span><span class="result"> extends <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.GeneratorVariables.Expression" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ExpressionextendsAnyRef"></a><a id="Expression:Expression"></a>
       <span class="permalink">
@@ -613,9 +629,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.learning.GeneratorVariables.FinalVal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="FinalVal[+Y]extendsGeneratorVariables.ExpressionwithProductwithSerializable"></a><a id="FinalVal[+Y]:FinalVal[Y]"></a>
+      <a id="FinalVal[+Y]extendsGeneratorVariables.VarVal[Y]withProductwithSerializable"></a><a id="FinalVal[+Y]:FinalVal[Y]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/GeneratorVariables$.html#FinalVal[+Y]extendsGeneratorVariables.ExpressionwithProductwithSerializable" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$.html#FinalVal[+Y]extendsGeneratorVariables.VarVal[Y]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -624,7 +640,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="GeneratorVariables$$FinalVal.html"><span class="name">FinalVal</span></a><span class="tparams">[<span name="Y">+Y</span>]</span><span class="params">(<span name="variable">variable: <a href="GeneratorVariables$$Variable.html" class="extype" name="provingground.learning.GeneratorVariables.Variable">Variable</a>[<span class="extype" name="provingground.learning.GeneratorVariables.FinalVal.Y">Y</span>]</span>)</span><span class="result"> extends <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="GeneratorVariables$$FinalVal.html"><span class="name">FinalVal</span></a><span class="tparams">[<span name="Y">+Y</span>]</span><span class="params">(<span name="variable">variable: <a href="GeneratorVariables$$Variable.html" class="extype" name="provingground.learning.GeneratorVariables.Variable">Variable</a>[<span class="extype" name="provingground.learning.GeneratorVariables.FinalVal.Y">Y</span>]</span>)</span><span class="result"> extends <a href="GeneratorVariables$$VarVal.html" class="extype" name="provingground.learning.GeneratorVariables.VarVal">VarVal</a>[<span class="extype" name="provingground.learning.GeneratorVariables.FinalVal.Y">Y</span>] with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -645,9 +661,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.learning.GeneratorVariables.InitialVal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="InitialVal[+Y]extendsGeneratorVariables.ExpressionwithProductwithSerializable"></a><a id="InitialVal[+Y]:InitialVal[Y]"></a>
+      <a id="InitialVal[+Y]extendsGeneratorVariables.VarVal[Y]withProductwithSerializable"></a><a id="InitialVal[+Y]:InitialVal[Y]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/GeneratorVariables$.html#InitialVal[+Y]extendsGeneratorVariables.ExpressionwithProductwithSerializable" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$.html#InitialVal[+Y]extendsGeneratorVariables.VarVal[Y]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -656,7 +672,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="GeneratorVariables$$InitialVal.html"><span class="name">InitialVal</span></a><span class="tparams">[<span name="Y">+Y</span>]</span><span class="params">(<span name="variable">variable: <a href="GeneratorVariables$$Variable.html" class="extype" name="provingground.learning.GeneratorVariables.Variable">Variable</a>[<span class="extype" name="provingground.learning.GeneratorVariables.InitialVal.Y">Y</span>]</span>)</span><span class="result"> extends <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="GeneratorVariables$$InitialVal.html"><span class="name">InitialVal</span></a><span class="tparams">[<span name="Y">+Y</span>]</span><span class="params">(<span name="variable">variable: <a href="GeneratorVariables$$Variable.html" class="extype" name="provingground.learning.GeneratorVariables.Variable">Variable</a>[<span class="extype" name="provingground.learning.GeneratorVariables.InitialVal.Y">Y</span>]</span>)</span><span class="result"> extends <a href="GeneratorVariables$$VarVal.html" class="extype" name="provingground.learning.GeneratorVariables.VarVal">VarVal</a>[<span class="extype" name="provingground.learning.GeneratorVariables.InitialVal.Y">Y</span>] with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -673,6 +689,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <a title="" href="GeneratorVariables$$Literal.html"><span class="name">Literal</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.GeneratorVariables.Log" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LogextendsGeneratorVariables.ExpressionwithProductwithSerializable"></a><a id="Log:Log"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$.html#LogextendsGeneratorVariables.ExpressionwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="GeneratorVariables$$Log.html"><span class="name">Log</span></a><span class="params">(<span name="exp">exp: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>)</span><span class="result"> extends <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -753,6 +785,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <a title="" href="GeneratorVariables$$Sum.html"><span class="name">Sum</span></a><span class="params">(<span name="x">x: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>, <span name="y">y: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>)</span><span class="result"> extends <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.GeneratorVariables.VarVal" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="VarVal[+Y]extendsGeneratorVariables.Expression"></a><a id="VarVal[+Y]:VarVal[Y]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$.html#VarVal[+Y]extendsGeneratorVariables.Expression" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="GeneratorVariables$$VarVal.html"><span class="name">VarVal</span></a><span class="tparams">[<span name="Y">+Y</span>]</span><span class="result"> extends <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
       </span>
       
       

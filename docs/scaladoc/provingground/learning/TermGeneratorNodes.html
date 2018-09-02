@@ -380,8 +380,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">TermGeneratorNodes</a>
+                        <a class="class" href="" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
+                        <a href="" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc.">TermGeneratorNodes</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TermLearner.html" title="Adding equations from a simple generative model to EvolverEquations"></a>
@@ -396,8 +396,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermRandomVars$.html" title="">TermRandomVars</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="TermState$.html" title=""></a>
-                        <a class="class" href="TermState.html" title=""></a>
-                        <a href="TermState.html" title="">TermState</a>
+                        <a class="class" href="TermState.html" title="A state, typically the initial state, for generating terms, types etc"></a>
+                        <a href="TermState.html" title="A state, typically the initial state, for generating terms, types etc">TermState</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging"></a>
@@ -478,7 +478,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
+to be used for generating distributions, obtaining equations etc.
+</p></div><dl class="paramcmts block"><dt class="tparam">InitState</dt><dd class="cmt"><p>the initial state for the dynamics, equations etc</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -528,7 +530,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.learning.TermGeneratorNodes#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.learning.TermGeneratorNodes#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(appln:(provingground.HoTT.ExstFunc,provingground.HoTT.Term)=&gt;provingground.HoTT.Term,unifApplnOpt:(provingground.HoTT.ExstFunc,provingground.HoTT.Term)=&gt;Option[provingground.HoTT.Term],addVar:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;(InitState=&gt;(InitState,provingground.HoTT.Term)),getVar:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;provingground.HoTT.Term):provingground.learning.TermGeneratorNodes[InitState]"></a><a id="&lt;init&gt;:TermGeneratorNodes[InitState]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#&lt;init&gt;(appln:(provingground.HoTT.ExstFunc,provingground.HoTT.Term)=&gt;provingground.HoTT.Term,unifApplnOpt:(provingground.HoTT.ExstFunc,provingground.HoTT.Term)=&gt;Option[provingground.HoTT.Term],addVar:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;(InitState=&gt;(InitState,provingground.HoTT.Term)),getVar:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;provingground.HoTT.Term):provingground.learning.TermGeneratorNodes[InitState]" title="Permalink">
@@ -543,7 +545,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">TermGeneratorNodes</span><span class="params">(<span name="appln">appln: (<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="unifApplnOpt">unifApplnOpt: (<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="addVar">addVar: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ (<span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>) ⇒ (<span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)</span>, <span name="getVar">getVar: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">appln</dt><dd class="cmt"><p>function application, assuming domain and type match</p></dd><dt class="param">unifApplnOpt</dt><dd class="cmt"><p>unified application of functions</p></dd><dt class="param">addVar</dt><dd class="cmt"><p>new state with a variable, of specified type, added</p></dd><dt class="param">getVar</dt><dd class="cmt"><p>a variable of a specified type</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -617,7 +619,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">applnByArgNode</span><span class="result">: <a href="GeneratorNode$$FiberProductMap.html" class="extype" name="provingground.learning.GeneratorNode.FiberProductMap">FiberProductMap</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">function application to get terms by choosing an argument and then a function with domain containing this.</p>
     </li><li name="provingground.learning.TermGeneratorNodes#applnNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="applnNode:provingground.learning.GeneratorNode.FiberProductMap[provingground.HoTT.ExstFunc,provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="applnNode:FiberProductMap[ExstFunc,Term,Typ[Term],Term]"></a>
       <span class="permalink">
@@ -633,7 +635,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">applnNode</span><span class="result">: <a href="GeneratorNode$$FiberProductMap.html" class="extype" name="provingground.learning.GeneratorNode.FiberProductMap">FiberProductMap</a>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">function application to get terms by choosing a function and then a term in its domain
+</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -766,10 +769,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.TermGeneratorNodes#indexedInducHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="indexedInducHeadNode(typF:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="indexedInducHeadNode(Typ[Term]):Map[Typ[Term],Typ[Term]]"></a>
+    </li><li name="provingground.learning.TermGeneratorNodes#indexedInducIdNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="indexedInducIdNode(typF:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="indexedInducIdNode(Typ[Term]):Map[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes.html#indexedInducHeadNode(typF:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#indexedInducIdNode(typF:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -778,11 +781,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">indexedInducHeadNode</span><span class="params">(<span name="typF">typF: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+        <span class="name">indexedInducIdNode</span><span class="params">(<span name="typF">typF: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#indexedIterFuncIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">Start of an indexed introduction rule by fully applying a type family</p><div class="fullcomment"><div class="comment cmt"><p>Start of an indexed introduction rule by fully applying a type family</p></div><dl class="paramcmts block"><dt class="param">typF</dt><dd class="cmt"><p>the type family for the inductive type</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#indexedIterFuncIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indexedIterFuncIsle(targetTyp:provingground.HoTT.Term)(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="indexedIterFuncIsle(Term)(Typ[Term]):Island[Typ[Term],InitState,Typ[Term],Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#indexedIterFuncIsle(targetTyp:provingground.HoTT.Term)(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
@@ -797,8 +800,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">indexedIterFuncIsle</span><span class="params">(<span name="targetTyp">targetTyp: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#indexedIterFuncNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">Extending indexed introduction rule by an iterated function ending in the inductive type family fully applied.</p><div class="fullcomment"><div class="comment cmt"><p>Extending indexed introduction rule by an iterated function ending in the inductive type family fully applied.</p></div><dl class="paramcmts block"><dt class="param">typ</dt><dd class="cmt"><p>the type by which we are extending</p></dd><dt>returns</dt><dd class="cmt"><p>distribution on types.</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#indexedIterFuncNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indexedIterFuncNode(targetTyp:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="indexedIterFuncNode(Term):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#indexedIterFuncNode(targetTyp:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -813,8 +816,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">indexedIterFuncNode</span><span class="params">(<span name="targetTyp">targetTyp: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#indexedIterHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">Aggregating extending indexed introduction rule by iterated function type eding in
+fully applied inductive type family.</p><div class="fullcomment"><div class="comment cmt"><p>Aggregating extending indexed introduction rule by iterated function type eding in
+fully applied inductive type family.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>distribution on types.</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#indexedIterHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indexedIterHeadNode(inductiveTyp:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="indexedIterHeadNode(Term):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#indexedIterHeadNode(inductiveTyp:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -829,8 +834,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">indexedIterHeadNode</span><span class="params">(<span name="inductiveTyp">inductiveTyp: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#indexedOtherHeadIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">Aggregating extending introduction types for indexed inductive types by iterated function types</p><div class="fullcomment"><div class="comment cmt"><p>Aggregating extending introduction types for indexed inductive types by iterated function types</p></div><dl class="paramcmts block"><dt class="param">inductiveTyp</dt><dd class="cmt"><p>the indexed inductive types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#indexedOtherHeadIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indexedOtherHeadIsle(typF:provingground.HoTT.Term)(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="indexedOtherHeadIsle(Term)(Typ[Term]):Island[Typ[Term],InitState,Typ[Term],Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#indexedOtherHeadIsle(typF:provingground.HoTT.Term)(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
@@ -845,8 +850,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">indexedOtherHeadIsle</span><span class="params">(<span name="typF">typF: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#indexedOtherHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">Extending an indexed introduction rule by a specific unrelated type</p><div class="fullcomment"><div class="comment cmt"><p>Extending an indexed introduction rule by a specific unrelated type</p></div><dl class="paramcmts block"><dt class="param">typF</dt><dd class="cmt"><p>the indexed inductive type family</p></dd><dt class="param">typ</dt><dd class="cmt"><p>the type by which to extends</p></dd><dt>returns</dt><dd class="cmt"><p>distribution on types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#indexedOtherHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indexedOtherHeadNode(typF:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="indexedOtherHeadNode(Term):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#indexedOtherHeadNode(typF:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -861,8 +866,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">indexedOtherHeadNode</span><span class="params">(<span name="typF">typF: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#indexedSelfHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">aggregating extending introduction types for  indexed inductive types by unrelated types</p><div class="fullcomment"><div class="comment cmt"><p>aggregating extending introduction types for  indexed inductive types by unrelated types</p></div><dl class="paramcmts block"><dt class="param">typF</dt><dd class="cmt"><p>the indexed type family</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of terms</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#indexedSelfHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indexedSelfHeadNode(typF:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="indexedSelfHeadNode(Term):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#indexedSelfHeadNode(typF:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -877,11 +882,28 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">indexedSelfHeadNode</span><span class="params">(<span name="typF">typF: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Aggregating extending indexed introduction rule by fully applied inductive type family.</p><div class="fullcomment"><div class="comment cmt"><p>Aggregating extending indexed introduction rule by fully applied inductive type family.</p></div><dl class="paramcmts block"><dt class="param">typF</dt><dd class="cmt"><p>the type family</p></dd><dt>returns</dt><dd class="cmt"><p>distribution on types.</p></dd></dl></div>
     </li><li name="provingground.learning.TermGeneratorNodes#inducFuncs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="inducFuncs(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term,provingground.HoTT.ExstFunc]"></a><a id="inducFuncs(ExstInducStruc):ZipMapOpt[Typ[Term],Term,ExstFunc]"></a>
+      <a id="inducFuncs:provingground.learning.GeneratorNode.FlatMap[provingground.induction.ExstInducStruc,provingground.HoTT.ExstFunc]"></a><a id="inducFuncs:FlatMap[ExstInducStruc,ExstFunc]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes.html#inducFuncs(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term,provingground.HoTT.ExstFunc]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#inducFuncs:provingground.learning.GeneratorNode.FlatMap[provingground.induction.ExstInducStruc,provingground.HoTT.ExstFunc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">inducFuncs</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>, <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">aggregated induction functions from inductive types
+</p>
+    </li><li name="provingground.learning.TermGeneratorNodes#inducFuncsForStruc" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="inducFuncsForStruc(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term,provingground.HoTT.ExstFunc]"></a><a id="inducFuncsForStruc(ExstInducStruc):ZipMapOpt[Typ[Term],Term,ExstFunc]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#inducFuncsForStruc(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term,provingground.HoTT.ExstFunc]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -890,10 +912,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">inducFuncs</span><span class="params">(<span name="ind">ind: <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result">: <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+        <span class="name">inducFuncsForStruc</span><span class="params">(<span name="ind">ind: <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result">: <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">induction function for a specific structure, picking the type family</p><div class="fullcomment"><div class="comment cmt"><p>induction function for a specific structure, picking the type family</p></div><dl class="paramcmts block"><dt class="param">ind</dt><dd class="cmt"><p>the inductive structure</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of functions</p></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
@@ -910,7 +932,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="provingground.learning.TermGeneratorNodes#iterFuncIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.TermGeneratorNodes#iterFuncIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="iterFuncIsle(targetTyp:provingground.HoTT.Typ[provingground.HoTT.Term])(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="iterFuncIsle(Typ[Term])(Typ[Term]):Island[Typ[Term],InitState,Typ[Term],Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#iterFuncIsle(targetTyp:provingground.HoTT.Typ[provingground.HoTT.Term])(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
@@ -925,8 +947,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">iterFuncIsle</span><span class="params">(<span name="targetTyp">targetTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#iterFuncNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">extending types of iterated functions targeting <code>W</code> by the type <code>typ</code></p><div class="fullcomment"><div class="comment cmt"><p>extending types of iterated functions targeting <code>W</code> by the type <code>typ</code></p></div><dl class="paramcmts block"><dt class="param">targetTyp</dt><dd class="cmt"><p>the target type</p></dd><dt class="param">typ</dt><dd class="cmt"><p>the type by which it is extended</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#iterFuncNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="iterFuncNode(targetTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="iterFuncNode(Typ[Term]):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#iterFuncNode(targetTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -941,8 +963,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">iterFuncNode</span><span class="params">(<span name="targetTyp">targetTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#iterHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">aggregating extensions of iterated function types</p><div class="fullcomment"><div class="comment cmt"><p>aggregating extensions of iterated function types</p></div><dl class="paramcmts block"><dt class="param">targetTyp</dt><dd class="cmt"><p>target type</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#iterHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="iterHeadNode(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="iterHeadNode(Typ[Term]):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#iterHeadNode(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -957,11 +979,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">iterHeadNode</span><span class="params">(<span name="inductiveTyp">inductiveTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#iteratedApply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="iteratedApply(f:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMapOpt[provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="iteratedApply(Term):FlatMapOpt[Term,Term]"></a>
+      <p class="shortcomment cmt">extension of the introduction rule for an inductive type <code>W</code> by a type of the form eg <code>A -&gt; W</code></p><div class="fullcomment"><div class="comment cmt"><p>extension of the introduction rule for an inductive type <code>W</code> by a type of the form eg <code>A -&gt; W</code></p></div><dl class="paramcmts block"><dt class="param">inductiveTyp</dt><dd class="cmt"><p>the inductive type <code>W</code></p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#iteratedApply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="iteratedApply(f:provingground.HoTT.Term):provingground.learning.GeneratorNode[provingground.HoTT.Term]"></a><a id="iteratedApply(Term):GeneratorNode[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes.html#iteratedApply(f:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMapOpt[provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#iteratedApply(f:provingground.HoTT.Term):provingground.learning.GeneratorNode[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -970,10 +992,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iteratedApply</span><span class="params">(<span name="f">f: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="GeneratorNode$$FlatMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.FlatMapOpt">FlatMapOpt</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">iteratedApply</span><span class="params">(<span name="f">f: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">node to generate partial applications of <code>f</code> from partial applications that are functions.</p><div class="fullcomment"><div class="comment cmt"><p>node to generate partial applications of <code>f</code> from partial applications that are functions.</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>function to be applied</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of terms</p></dd></dl></div>
     </li><li name="provingground.learning.TermGeneratorNodes#lambdaByTypNodeFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lambdaByTypNodeFamily:provingground.learning.GeneratorNodeFamily[provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.Term]"></a><a id="lambdaByTypNodeFamily:GeneratorNodeFamily[::[Typ[Term],HNil],Term]"></a>
       <span class="permalink">
@@ -989,8 +1011,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">lambdaByTypNodeFamily</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="shapeless.HNil">HNil</span>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#lambdaIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">nodes combining lambdas targeting types that are  (dependent) function types,
+aggregated over all types
+</p>
+    </li><li name="provingground.learning.TermGeneratorNodes#lambdaIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambdaIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Term,InitState,provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="lambdaIsle(Typ[Term]):Island[Term,InitState,Term,Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Term,InitState,provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink">
@@ -1005,8 +1029,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">lambdaIsle</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#lambdaIsleForFuncWithDomain" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
+the initial state of the island has a new variable mixed in.</p><div class="fullcomment"><div class="comment cmt"><p>An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
+the initial state of the island has a new variable mixed in.
+</p></div><dl class="paramcmts block"><dt class="param">typ</dt><dd class="cmt"><p>the domain of the lambda</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#lambdaIsleForFuncWithDomain" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambdaIsleForFuncWithDomain(dom:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.ExstFunc,InitState,provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="lambdaIsleForFuncWithDomain(Typ[Term]):Island[ExstFunc,InitState,Term,Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaIsleForFuncWithDomain(dom:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.ExstFunc,InitState,provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink">
@@ -1021,8 +1048,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">lambdaIsleForFuncWithDomain</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#lambdaIsleForTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">lambda island for generating function with specified domain</p><div class="fullcomment"><div class="comment cmt"><p>lambda island for generating function with specified domain</p></div><dl class="paramcmts block"><dt class="param">dom</dt><dd class="cmt"><p>the desired domain</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of functions</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#lambdaIsleForTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambdaIsleForTyp(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[provingground.learning.GeneratorNode.Island[provingground.HoTT.Term,InitState,provingground.HoTT.Term,provingground.HoTT.Term]]"></a><a id="lambdaIsleForTyp(Typ[Term]):Option[Island[Term,InitState,Term,Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaIsleForTyp(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[provingground.learning.GeneratorNode.Island[provingground.HoTT.Term,InitState,provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink">
@@ -1037,7 +1064,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">lambdaIsleForTyp</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">An island for targetting a (dependent) function type, with variable of the domain generated and the co-domain
+type (more generally fibre) targeted within the island.</p><div class="fullcomment"><div class="comment cmt"><p>An island for targetting a (dependent) function type, with variable of the domain generated and the co-domain
+type (more generally fibre) targeted within the island.
+</p></div><dl class="paramcmts block"><dt class="param">typ</dt><dd class="cmt"><p>the target type</p></dd><dt>returns</dt><dd class="cmt"><p>optional distribution.</p></dd></dl></div>
     </li><li name="provingground.learning.TermGeneratorNodes#lambdaNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lambdaNode:provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="lambdaNode:FlatMap[Typ[Term],Term]"></a>
       <span class="permalink">
@@ -1053,7 +1083,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">lambdaNode</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">node combining lambda islands aggregated by type
+</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -1108,7 +1139,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.TermGeneratorNodes#otherHeadIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.TermGeneratorNodes#otherHeadIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="otherHeadIsle(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term])(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="otherHeadIsle(Typ[Term])(Typ[Term]):Island[Typ[Term],InitState,Typ[Term],Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#otherHeadIsle(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term])(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
@@ -1123,8 +1154,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">otherHeadIsle</span><span class="params">(<span name="inductiveTyp">inductiveTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#otherHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">extensions of the introduction rule types for an inductive type <code>W</code> by an unrelated type <code>C</code>;
+we may have a Pi-Type with domain <code>C</code> rather than a FuncTyp
+there is no assumption on how the head type <code>typ</code> is generated, so this is reusable if only that is changed.</p><div class="fullcomment"><div class="comment cmt"><p>extensions of the introduction rule types for an inductive type <code>W</code> by an unrelated type <code>C</code>;
+we may have a Pi-Type with domain <code>C</code> rather than a FuncTyp
+there is no assumption on how the head type <code>typ</code> is generated, so this is reusable if only that is changed.</p></div><dl class="paramcmts block"><dt class="param">inductiveTyp</dt><dd class="cmt"><p>the inductive type <code>W</code></p></dd><dt class="param">typ</dt><dd class="cmt"><p>the type <code>C</code> by which we are extending the introduction rule type</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of introduction rule types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#otherHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="otherHeadNode(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="otherHeadNode(Typ[Term]):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#otherHeadNode(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -1139,8 +1174,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">otherHeadNode</span><span class="params">(<span name="inductiveTyp">inductiveTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#partiallyApply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">aggregating extensions of inductive types by unrelated types</p><div class="fullcomment"><div class="comment cmt"><p>aggregating extensions of inductive types by unrelated types</p></div><dl class="paramcmts block"><dt class="param">inductiveTyp</dt><dd class="cmt"><p>the inductive type being generated</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of introduction rule types.</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#partiallyApply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="partiallyApply(f:provingground.HoTT.Term):Option[provingground.learning.GeneratorNode.Map[provingground.HoTT.Term,provingground.HoTT.Term]]"></a><a id="partiallyApply(Term):Option[Map[Term,Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#partiallyApply(f:provingground.HoTT.Term):Option[provingground.learning.GeneratorNode.Map[provingground.HoTT.Term,provingground.HoTT.Term]]" title="Permalink">
@@ -1155,11 +1190,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">partiallyApply</span><span class="params">(<span name="f">f: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#piIslelambdaIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="piIslelambdaIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="piIslelambdaIsle(Typ[Term]):Island[Typ[Term],InitState,Typ[Term],Term]"></a>
+      <p class="shortcomment cmt">single function application to generate partial applications of <code>f</code>, if <code>f</code> is a function</p><div class="fullcomment"><div class="comment cmt"><p>single function application to generate partial applications of <code>f</code>, if <code>f</code> is a function</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>the function to partially apply</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of terms</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#piIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="piIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="piIsle(Typ[Term]):Island[Typ[Term],InitState,Typ[Term],Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes.html#piIslelambdaIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#piIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1168,14 +1203,48 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">piIslelambdaIsle</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">piIsle</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
+      <p class="shortcomment cmt">island to generate Pi-Types by taking variables with specified domain, similar to <a href="#lambdaIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Term,InitState,provingground.HoTT.Term,provingground.HoTT.Term]" class="extmbr" name="provingground.learning.TermGeneratorNodes#lambdaIsle">lambdaIsle</a></p><div class="fullcomment"><div class="comment cmt"><p>island to generate Pi-Types by taking variables with specified domain, similar to <a href="#lambdaIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Term,InitState,provingground.HoTT.Term,provingground.HoTT.Term]" class="extmbr" name="provingground.learning.TermGeneratorNodes#lambdaIsle">lambdaIsle</a></p></div><dl class="paramcmts block"><dt class="param">typ</dt><dd class="cmt"><p>the domain for</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#piNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="piNode:provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="piNode:FlatMap[Typ[Term],Typ[Term]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#piNode:provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">piNode</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
       
+      <p class="shortcomment cmt">aggregate generation of Pi-types from islands
+</p>
     </li><li name="provingground.learning.TermGeneratorNodes#recFuncs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="recFuncs(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.ExstFunc]"></a><a id="recFuncs(ExstInducStruc):ZipMapOpt[Typ[Term],Typ[Term],ExstFunc]"></a>
+      <a id="recFuncs:provingground.learning.GeneratorNode.FlatMap[provingground.induction.ExstInducStruc,provingground.HoTT.ExstFunc]"></a><a id="recFuncs:FlatMap[ExstInducStruc,ExstFunc]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes.html#recFuncs(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.ExstFunc]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#recFuncs:provingground.learning.GeneratorNode.FlatMap[provingground.induction.ExstInducStruc,provingground.HoTT.ExstFunc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recFuncs</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>, <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">aggregate recursion functions from inductive types
+</p>
+    </li><li name="provingground.learning.TermGeneratorNodes#recFuncsForStruc" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="recFuncsForStruc(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.ExstFunc]"></a><a id="recFuncsForStruc(ExstInducStruc):ZipMapOpt[Typ[Term],Typ[Term],ExstFunc]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#recFuncsForStruc(ind:provingground.induction.ExstInducStruc):provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.ExstFunc]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1184,11 +1253,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recFuncs</span><span class="params">(<span name="ind">ind: <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result">: <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+        <span class="name">recFuncsForStruc</span><span class="params">(<span name="ind">ind: <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result">: <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#selfHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">recursive functions from a specific inductive structure, picking the codomain</p><div class="fullcomment"><div class="comment cmt"><p>recursive functions from a specific inductive structure, picking the codomain</p></div><dl class="paramcmts block"><dt class="param">ind</dt><dd class="cmt"><p>the inductive structure</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of functions</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#selfHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="selfHeadNode(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="selfHeadNode(Typ[Term]):Island[Typ[Term],InitState,Typ[Term],Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#selfHeadNode(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Typ[provingground.HoTT.Term],InitState,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
@@ -1203,8 +1272,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">selfHeadNode</span><span class="params">(<span name="inductiveTyp">inductiveTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#simpleInductiveDefn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">extend an introduction rule type for an inductive type <code>W</code> by <code>W -&gt; ...</code></p><div class="fullcomment"><div class="comment cmt"><p>extend an introduction rule type for an inductive type <code>W</code> by <code>W -&gt; ...</code></p></div><dl class="paramcmts block"><dt class="param">inductiveTyp</dt><dd class="cmt"><p>the inductive type being defined</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types for introduction rules</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#simpleInductiveDefn" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="simpleInductiveDefn(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[Vector[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.induction.ExstInducDefn]"></a><a id="simpleInductiveDefn(Typ[Term]):Map[Vector[Typ[Term]],ExstInducDefn]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#simpleInductiveDefn(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[Vector[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.induction.ExstInducDefn]" title="Permalink">
@@ -1219,8 +1288,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">simpleInductiveDefn</span><span class="params">(<span name="inductiveTyp">inductiveTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]], <a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGeneratorNodes#simpleInductiveStructure" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">builds an inductive definition, i.e.</p><div class="fullcomment"><div class="comment cmt"><p>builds an inductive definition, i.e. structure with type, from a bunch of introduction rules for a type <code>inductiveTyp</code>,
+we must separately specify how to build an introduction rules, as well as a vector of these.</p></div><dl class="paramcmts block"><dt class="param">inductiveTyp</dt><dd class="cmt"><p>the inductve type being defined</p></dd><dt>returns</dt><dd class="cmt"><p>distribution on existential inductive structures</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#simpleInductiveStructure" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="simpleInductiveStructure(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[Vector[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.induction.ExstInducStruc]"></a><a id="simpleInductiveStructure(Typ[Term]):Map[Vector[Typ[Term]],ExstInducStruc]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#simpleInductiveStructure(inductiveTyp:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Map[Vector[provingground.HoTT.Typ[provingground.HoTT.Term]],provingground.induction.ExstInducStruc]" title="Permalink">
@@ -1235,7 +1305,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">simpleInductiveStructure</span><span class="params">(<span name="inductiveTyp">inductiveTyp: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]], <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">builds an inductive structure from a bunch of introduction rules for a type <code>inductiveTyp</code>,
+we must separately specify how to build an introduction rules, as well as a vector of these.</p><div class="fullcomment"><div class="comment cmt"><p>builds an inductive structure from a bunch of introduction rules for a type <code>inductiveTyp</code>,
+we must separately specify how to build an introduction rules, as well as a vector of these.</p></div><dl class="paramcmts block"><dt class="param">inductiveTyp</dt><dd class="cmt"><p>the inductve type being defined</p></dd><dt>returns</dt><dd class="cmt"><p>distribution on existential inductive structures</p></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -1252,6 +1324,24 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#termsByTyps" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="termsByTyps:provingground.learning.GeneratorNode.ZipFlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="termsByTyps:ZipFlatMap[Typ[Term],Term,Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#termsByTyps:provingground.learning.GeneratorNode.ZipFlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">termsByTyps</span><span class="result">: <a href="GeneratorNode$$ZipFlatMap.html" class="extype" name="provingground.learning.GeneratorNode.ZipFlatMap">ZipFlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">terms generated by first choosing type and then term with the type;
+a form of backward reasoning
+</p>
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
@@ -1268,7 +1358,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="provingground.learning.TermGeneratorNodes#typFromFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.TermGeneratorNodes#typFromFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typFromFamily(typF:provingground.HoTT.Term):provingground.learning.GeneratorNode.MapOpt[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="typFromFamily(Term):MapOpt[Term,Typ[Term]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGeneratorNodes.html#typFromFamily(typF:provingground.HoTT.Term):provingground.learning.GeneratorNode.MapOpt[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
@@ -1283,7 +1373,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">typFromFamily</span><span class="params">(<span name="typF">typF: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="GeneratorNode$$MapOpt.html" class="extype" name="provingground.learning.GeneratorNode.MapOpt">MapOpt</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">types from a type family by filtering partial applications to consider only types.</p><div class="fullcomment"><div class="comment cmt"><p>types from a type family by filtering partial applications to consider only types.</p></div><dl class="paramcmts block"><dt class="param">typF</dt><dd class="cmt"><p>the type family</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types.</p></dd></dl></div>
     </li><li name="provingground.learning.TermGeneratorNodes#unifApplnNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="unifApplnNode:provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.ExstFunc,provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="unifApplnNode:ZipMapOpt[ExstFunc,Term,Term]"></a>
       <span class="permalink">
@@ -1299,7 +1389,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">unifApplnNode</span><span class="result">: <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">function application with unification to get terms
+</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
