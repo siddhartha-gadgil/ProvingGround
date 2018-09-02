@@ -11,6 +11,16 @@ import GeneratorNode._
 
 import TermRandomVars._
 
+/**
+* Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
+  * to be used for generating distributions, obtaining equations etc.
+  *
+  * @param appln function application, assuming domain and type match
+  * @param unifApplnOpt unified application of functions
+  * @param addVar new state with a variable, of specified type, added
+  * @param getVar a variable of a specified type
+  * @tparam InitState the initial state for the dynamics, equations etc
+  */
 class TermGeneratorNodes[InitState](
     appln: (ExstFunc, Term) => Term,
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
@@ -18,6 +28,9 @@ class TermGeneratorNodes[InitState](
     getVar: Typ[Term] => Term
 ) {
 
+  /**
+  * function application with unification to get terms
+    */
   val unifApplnNode: ZipMapOpt[ExstFunc, Term, Term] =
     ZipMapOpt[ExstFunc, Term, Term](
       unifApplnOpt,
@@ -26,6 +39,9 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+  * function application to get terms by choosing a function and then a term in its domain
+    */
   val applnNode: FiberProductMap[ExstFunc, Term, Typ[Term], Term] =
     FiberProductMap[ExstFunc, Term, Typ[Term], Term](
       _.dom,
@@ -35,6 +51,9 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+  * function application to get terms by choosing an argument and then a function with domain containing this.
+    */
   val applnByArgNode: FiberProductMap[Term, ExstFunc, Typ[Term], Term] =
     FiberProductMap[Term, ExstFunc, Typ[Term], Term](
       _.typ,
@@ -44,6 +63,13 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+  * An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
+    * the initial state of the island has a new variable mixed in.
+    *
+    * @param typ the domain of the lambda
+    * @return
+    */
   def lambdaIsle(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
     Island[Term, InitState, Term, Term](
       Terms,
@@ -52,6 +78,13 @@ class TermGeneratorNodes[InitState](
       { case (x, y) => x :~> y }
     )
 
+  /**
+  * An island for targetting a (dependent) function type, with variable of the domain generated and the co-domain
+    * type (more generally fibre) targeted within the island.
+    *
+    * @param typ the target type
+    * @return optional distribution.
+    */
   def lambdaIsleForTyp(
       typ: Typ[Term]): Option[Island[Term, InitState, Term, Term]] =
     typ match {
@@ -76,6 +109,11 @@ class TermGeneratorNodes[InitState](
       case _ => None
     }
 
+  /**
+  * lambda island for generating function with specified domain
+    * @param dom the desired domain
+    * @return distribution of functions
+    */
   def lambdaIsleForFuncWithDomain(
       dom: Typ[Term]): Island[ExstFunc, InitState, Term, Term] =
     Island[ExstFunc, InitState, Term, Term](
@@ -85,6 +123,9 @@ class TermGeneratorNodes[InitState](
       { case (x, y) => ExstFunc(x :~> y) }
     )
 
+  /**
+  * node combining lambda islands aggregated by type
+    */
   val lambdaNode: FlatMap[Typ[Term], Term] =
     FlatMap(
       Typs,
@@ -92,12 +133,21 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+  * nodes combining lambdas targeting types that are  (dependent) function types,
+    * aggregated over all types
+    */
   val lambdaByTypNodeFamily: GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
     GeneratorNodeFamily.RecPiOpt[InitState, Term, Typ[Term] :: HNil, Term]({
       case typ :: HNil => lambdaIsleForTyp(typ)
     }, TermsWithTyp)
 
-  def piIslelambdaIsle(
+  /**
+  * island to generate Pi-Types by taking variables with specified domain, similar to [[lambdaIsle]]
+    * @param typ the domain for
+    * @return distribution of types
+    */
+  def piIsle(
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
@@ -106,15 +156,57 @@ class TermGeneratorNodes[InitState](
       { case (x, y) => pi(x)(y) }
     )
 
-  def recFuncs(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
+  /**
+  * aggregate generation of Pi-types from islands
+    */
+  val piNode: FlatMap[Typ[Term], Typ[Term]] =
+    FlatMap(
+      Typs,
+      piIsle,
+      Typs
+    )
+
+  /**
+  * recursive functions from a specific inductive structure, picking the codomain
+    * @param ind the inductive structure
+    * @return distribution of functions
+    */
+  def recFuncsForStruc(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
     ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
       case (x, y) => ind.recOpt(x, y).flatMap(ExstFunc.opt)
     }, Typs, Typs, Funcs)
 
-  def inducFuncs(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Term, ExstFunc] =
+  /**
+  * induction function for a specific structure, picking the type family
+    * @param ind the inductive structure
+    * @return distribution of functions
+    */
+  def inducFuncsForStruc(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Term, ExstFunc] =
     ZipMapOpt[Typ[Term], Term, ExstFunc]({
       case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)
     }, Typs, Terms, Funcs)
+
+  /**
+  * aggregate recursion functions from inductive types
+    */
+  val recFuncs : FlatMap[ExstInducStruc, ExstFunc] =
+    FlatMap(
+      InducStrucs,
+      recFuncsForStruc,
+      Funcs
+    )
+
+  /**
+  * aggregated induction functions from inductive types
+    */
+  val inducFuncs : FlatMap[ExstInducStruc, ExstFunc] =
+    FlatMap(
+      InducStrucs,
+      inducFuncsForStruc,
+      Funcs
+    )
+
+  // Generating inductive types
 
   def selfHeadNode(
       inductiveTyp: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
@@ -265,11 +357,11 @@ class TermGeneratorNodes[InitState](
       IndexedIntroRuleTyps(inductiveTyp)
     )
 
-  val termsByTyps =
+  val termsByTyps: ZipFlatMap[Typ[Term], Term, Term] =
     ZipFlatMap[Typ[Term], Term, Term](
       Typs,
       (typ) => termsWithTyp(typ),
-      {case (typ, term) => term},
+      {case (_, term) => term},
       Terms
     )
 
@@ -393,7 +485,7 @@ object TermRandomVars {
 
   /**
   * distribution of types obtained by full application in a type family
-    * @param typF
+    * @param typF the type family
     */
   case class TypsFromFamily(typF: Term) extends RandomVar[Typ[Term]]
 
