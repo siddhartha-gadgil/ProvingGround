@@ -12,7 +12,7 @@ import GeneratorNode._
 import TermRandomVars._
 
 /**
-* Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
+  * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
   * to be used for generating distributions, obtaining equations etc.
   *
   * @param appln function application, assuming domain and type match
@@ -29,7 +29,7 @@ class TermGeneratorNodes[InitState](
 ) {
 
   /**
-  * function application with unification to get terms
+    * function application with unification to get terms
     */
   val unifApplnNode: ZipMapOpt[ExstFunc, Term, Term] =
     ZipMapOpt[ExstFunc, Term, Term](
@@ -40,7 +40,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * function application to get terms by choosing a function and then a term in its domain
+    * function application to get terms by choosing a function and then a term in its domain
     */
   val applnNode: FiberProductMap[ExstFunc, Term, Typ[Term], Term] =
     FiberProductMap[ExstFunc, Term, Typ[Term], Term](
@@ -52,7 +52,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * function application to get terms by choosing an argument and then a function with domain containing this.
+    * function application to get terms by choosing an argument and then a function with domain containing this.
     */
   val applnByArgNode: FiberProductMap[Term, ExstFunc, Typ[Term], Term] =
     FiberProductMap[Term, ExstFunc, Typ[Term], Term](
@@ -64,7 +64,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
+    * An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
     * the initial state of the island has a new variable mixed in.
     *
     * @param typ the domain of the lambda
@@ -79,7 +79,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * An island for targetting a (dependent) function type, with variable of the domain generated and the co-domain
+    * An island for targetting a (dependent) function type, with variable of the domain generated and the co-domain
     * type (more generally fibre) targeted within the island.
     *
     * @param typ the target type
@@ -110,7 +110,7 @@ class TermGeneratorNodes[InitState](
     }
 
   /**
-  * lambda island for generating function with specified domain
+    * lambda island for generating function with specified domain
     * @param dom the desired domain
     * @return distribution of functions
     */
@@ -124,7 +124,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * node combining lambda islands aggregated by type
+    * node combining lambda islands aggregated by type
     */
   val lambdaNode: FlatMap[Typ[Term], Term] =
     FlatMap(
@@ -134,7 +134,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * nodes combining lambdas targeting types that are  (dependent) function types,
+    * nodes combining lambdas targeting types that are  (dependent) function types,
     * aggregated over all types
     */
   val lambdaByTypNodeFamily: GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
@@ -143,12 +143,11 @@ class TermGeneratorNodes[InitState](
     }, TermsWithTyp)
 
   /**
-  * island to generate Pi-Types by taking variables with specified domain, similar to [[lambdaIsle]]
+    * island to generate Pi-Types by taking variables with specified domain, similar to [[lambdaIsle]]
     * @param typ the domain for
     * @return distribution of types
     */
-  def piIsle(
-      typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+  def piIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
       _ => Typs,
@@ -157,7 +156,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * aggregate generation of Pi-types from islands
+    * aggregate generation of Pi-types from islands
     */
   val piNode: FlatMap[Typ[Term], Typ[Term]] =
     FlatMap(
@@ -167,29 +166,31 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * recursive functions from a specific inductive structure, picking the codomain
+    * recursive functions from a specific inductive structure, picking the codomain
     * @param ind the inductive structure
     * @return distribution of functions
     */
-  def recFuncsForStruc(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
+  def recFuncsForStruc(
+      ind: ExstInducStruc): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
     ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
       case (x, y) => ind.recOpt(x, y).flatMap(ExstFunc.opt)
     }, Typs, Typs, Funcs)
 
   /**
-  * induction function for a specific structure, picking the type family
+    * induction function for a specific structure, picking the type family
     * @param ind the inductive structure
     * @return distribution of functions
     */
-  def inducFuncsForStruc(ind: ExstInducStruc): ZipMapOpt[Typ[Term], Term, ExstFunc] =
+  def inducFuncsForStruc(
+      ind: ExstInducStruc): ZipMapOpt[Typ[Term], Term, ExstFunc] =
     ZipMapOpt[Typ[Term], Term, ExstFunc]({
       case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)
     }, Typs, Terms, Funcs)
 
   /**
-  * aggregate recursion functions from inductive types
+    * aggregate recursion functions from inductive types
     */
-  val recFuncs : FlatMap[ExstInducStruc, ExstFunc] =
+  val recFuncs: FlatMap[ExstInducStruc, ExstFunc] =
     FlatMap(
       InducStrucs,
       recFuncsForStruc,
@@ -197,9 +198,9 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * aggregated induction functions from inductive types
+    * aggregated induction functions from inductive types
     */
-  val inducFuncs : FlatMap[ExstInducStruc, ExstFunc] =
+  val inducFuncs: FlatMap[ExstInducStruc, ExstFunc] =
     FlatMap(
       InducStrucs,
       inducFuncsForStruc,
@@ -207,22 +208,21 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * terms generated by first choosing type and then term with the type;
+    * terms generated by first choosing type and then term with the type;
     * a form of backward reasoning
     */
   val termsByTyps: ZipFlatMap[Typ[Term], Term, Term] =
     ZipFlatMap[Typ[Term], Term, Term](
       Typs,
       (typ) => termsWithTyp(typ),
-      {case (_, term) => term},
+      { case (_, term) => term },
       Terms
     )
-
 
   // Generating simple inductive types, i.e. not indexed and with simple extendsions
 
   /**
-  * extend an introduction rule type for an inductive type `W` by `W -> ...`
+    * extend an introduction rule type for an inductive type `W` by `W -> ...`
     * @param inductiveTyp the inductive type being defined
     * @return distribution of types for introduction rules
     */
@@ -236,7 +236,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * extensions of the introduction rule types for an inductive type `W` by an unrelated type `C`;
+    * extensions of the introduction rule types for an inductive type `W` by an unrelated type `C`;
     * we may have a Pi-Type with domain `C` rather than a FuncTyp
     * there is no assumption on how the head type `typ` is generated, so this is reusable if only that is changed.
     * @param inductiveTyp the inductive type `W`
@@ -253,7 +253,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * aggregating extensions of inductive types by unrelated types
+    * aggregating extensions of inductive types by unrelated types
     * @param inductiveTyp the inductive type being generated
     * @return distribution of introduction rule types.
     */
@@ -282,7 +282,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * builds an inductive definition, i.e. structure with type, from a bunch of introduction rules for a type `inductiveTyp`,
+    * builds an inductive definition, i.e. structure with type, from a bunch of introduction rules for a type `inductiveTyp`,
     * we must separately specify how to build an introduction rules, as well as a vector of these.
     * @param inductiveTyp the inductve type being defined
     * @return distribution on existential inductive structures
@@ -304,7 +304,7 @@ class TermGeneratorNodes[InitState](
   // Generating iterated function types ending in `W` and indexed types
 
   /**
-  * single function application to generate partial applications of `f`, if `f` is a function
+    * single function application to generate partial applications of `f`, if `f` is a function
     * @param f the function to partially apply
     * @return distribution of terms
     */
@@ -318,7 +318,7 @@ class TermGeneratorNodes[InitState](
     }
 
   /**
-  * node to generate partial applications of `f` from partial applications that are functions.
+    * node to generate partial applications of `f` from partial applications that are functions.
     * @param f function to be applied
     * @return distribution of terms
     */
@@ -330,7 +330,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * extending types of iterated functions targeting `W` by the type `typ`
+    * extending types of iterated functions targeting `W` by the type `typ`
     * @param targetTyp the target type
     * @param typ the type by which it is extended
     * @return distribution of types
@@ -345,7 +345,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * aggregating extensions of iterated function types
+    * aggregating extensions of iterated function types
     * @param targetTyp target type
     * @return distribution of types
     */
@@ -357,7 +357,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * extension of the introduction rule for an inductive type `W` by a type of the form eg `A -> W`
+    * extension of the introduction rule for an inductive type `W` by a type of the form eg `A -> W`
     * @param inductiveTyp the inductive type `W`
     * @return distribution of types
     */
@@ -369,7 +369,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * types from a type family by filtering partial applications to consider only types.
+    * types from a type family by filtering partial applications to consider only types.
     * @param typF the type family
     * @return distribution of types.
     */
@@ -381,7 +381,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * Start of an indexed introduction rule by fully applying a type family
+    * Start of an indexed introduction rule by fully applying a type family
     * @param typF the type family for the inductive type
     * @return distribution of types
     */
@@ -393,7 +393,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * Extending an indexed introduction rule by a specific unrelated type
+    * Extending an indexed introduction rule by a specific unrelated type
     * @param typF the indexed inductive type family
     * @param typ the type by which to extends
     * @return distribution on types
@@ -408,7 +408,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * Aggregating extending indexed introduction rule by fully applied inductive type family.
+    * Aggregating extending indexed introduction rule by fully applied inductive type family.
     * @param typF the type family
     * @return distribution on types.
     */
@@ -420,7 +420,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * aggregating extending introduction types for  indexed inductive types by unrelated types
+    * aggregating extending introduction types for  indexed inductive types by unrelated types
     * @param typF the indexed type family
     * @return distribution of terms
     */
@@ -459,7 +459,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-  * Aggregating extending introduction types for indexed inductive types by iterated function types
+    * Aggregating extending introduction types for indexed inductive types by iterated function types
     * @param inductiveTyp the indexed inductive types
     * @return
     */
@@ -469,7 +469,6 @@ class TermGeneratorNodes[InitState](
       indexedOtherHeadIsle(inductiveTyp),
       IndexedIntroRuleTyps(inductiveTyp)
     )
-
 
 }
 
@@ -500,7 +499,7 @@ object TermRandomVars {
       )
 
   /**
-  * distribution of terms with a specific type
+    * distribution of terms with a specific type
     * @param typ the type
     * @return distribution at type
     */
@@ -513,7 +512,7 @@ object TermRandomVars {
   case object TypFamilies extends RandomVar[Term]
 
   /**
-  * family of distribution of (existential) functions with specifed domain.
+    * family of distribution of (existential) functions with specifed domain.
     */
   case object FuncsWithDomain
       extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
@@ -522,7 +521,7 @@ object TermRandomVars {
       )
 
   /**
-  * distribution of functions with a specified domain
+    * distribution of functions with a specified domain
     * @param typ the domain
     * @return distribution at domain
     */
@@ -530,17 +529,17 @@ object TermRandomVars {
     RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
 
   /**
-  * distribution of existential inductive structures
+    * distribution of existential inductive structures
     */
   case object InducStrucs extends RandomVar[ExstInducStruc]
 
   /**
-  * distribution of existential inductive definitions
+    * distribution of existential inductive definitions
     */
   case object InducDefns extends RandomVar[ExstInducDefn]
 
   /**
-  * atomic distribution to be included in generation
+    * atomic distribution to be included in generation
     * @param value the atom
     * @param rv random variable whose distribution is specified
     * @tparam X scala type of the random variable
@@ -550,14 +549,14 @@ object TermRandomVars {
     GeneratorNode.Atom(value, rv)
 
   /**
-  * distribution of introduction rules for an inductive type
+    * distribution of introduction rules for an inductive type
     * @param inductiveTyp the inductive type being defined
     */
   case class IntroRuleTypes(inductiveTyp: Typ[Term])
       extends RandomVar[Typ[Term]]
 
   /**
-  * the introduction with just the target type
+    * the introduction with just the target type
     * @param inductiveTyp the inductive type being defined
     * @return node for inclusion
     */
@@ -565,13 +564,13 @@ object TermRandomVars {
     just(inductiveTyp, IntroRuleTypes(inductiveTyp))
 
   /**
-  * distribution of `f`, `f(x)`, `f(x)(y)` etc
+    * distribution of `f`, `f(x)`, `f(x)(y)` etc
     * @param func the function to apply
     */
   case class PartiallyApplied(func: Term) extends RandomVar[Term]
 
   /**
-  * atomic distribution `f` for partial application
+    * atomic distribution `f` for partial application
     * @param f the function
     * @return node to include
     */
@@ -579,30 +578,30 @@ object TermRandomVars {
     just(f, PartiallyApplied(f))
 
   /**
-  * iterated function types targeting a given type, typically used in introduction rules
+    * iterated function types targeting a given type, typically used in introduction rules
     * @param typ the final type
     */
   case class IterFuncTypTo(typ: Typ[Term]) extends RandomVar[Typ[Term]]
 
   /**
-  * type family types, e.g. `A -> Type`, for indexed induction
+    * type family types, e.g. `A -> Type`, for indexed induction
     */
   val typFamilyTypes: RandomVar[Term] = IterFuncTypTo(Type)
 
   /**
-  * distribution of types obtained by full application in a type family
+    * distribution of types obtained by full application in a type family
     * @param typF the type family
     */
   case class TypsFromFamily(typF: Term) extends RandomVar[Typ[Term]]
 
   /**
-  * distribution of introduction rules for an indexed inductive type
+    * distribution of introduction rules for an indexed inductive type
     * @param typF the type family
     */
   case class IndexedIntroRuleTyps(typF: Term) extends RandomVar[Typ[Term]]
 
   /**
-  * iterated function type targetting a fully applied type family
+    * iterated function type targetting a fully applied type family
     * @param typF the type family
     */
   case class IndexedIterFuncTypTo(typF: Term) extends RandomVar[Typ[Term]]
@@ -610,7 +609,7 @@ object TermRandomVars {
 }
 
 /**
-* distributions of vectors from a base distribution
+  * distributions of vectors from a base distribution
   * @param base the base distribution
   * @tparam X scala type of the base
   */
@@ -625,7 +624,7 @@ case class RandomVector[X](base: RandomVar[X]) extends RandomVar[Vector[X]] {
 }
 
 /**
-* A state, typically the initial state, for generating terms, types etc
+  * A state, typically the initial state, for generating terms, types etc
   * @param terms distribution of terms
   * @param typs distribution of types
   * @param vars variables, over which we may take closures
@@ -640,13 +639,23 @@ case class TermState(terms: FD[Term],
   val pfSet: Vector[Term]     = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
   val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
+
+  def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
+    val x        = typ.Var
+    val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
+    val newTyps =
+      typOpt(x)
+        .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
+        .getOrElse(typs)
+    TermState(newTerms, newTyps, x +: vars, inds) -> x
+  }
 }
 
 object TermState {
   import TermRandomVars._
 
   /**
-  * finite distributions on terms etc
+    * finite distributions on terms etc
     */
   implicit val stateFD: StateDistribution[TermState, FD] =
     new StateDistribution[TermState, FD] {
@@ -657,7 +666,7 @@ object TermState {
           case Funcs => state.terms.condMap(ExstFunc.opt).map(x => x: T)
           case TypFamilies =>
             state.terms.conditioned(isTypFamily).map(x => x: T)
-          case InducDefns => state.inds.map(x => x: T)
+          case InducDefns  => state.inds.map(x => x: T)
           case InducStrucs => state.inds.map(_.ind).map(x => x: T)
         }
 
@@ -674,4 +683,35 @@ object TermState {
               .map(x => x: T)
         }
     }
+
+}
+
+case class TermGenParams(appW: Double = 0.1,
+                         unAppW: Double = 0.1,
+                         argAppW: Double = 0.1,
+                         lmW: Double = 0.1,
+                         piW: Double = 0.1,
+                         varWeight: Double = 0.3,
+                         vars: Vector[Term]) {
+  object Gen
+      extends TermGeneratorNodes[TermState](
+        { case (fn, arg) => fn(arg).get },
+        { case (fn, arg) => Unify.appln(fn.func, arg) },
+        (typ) => (state) => state.addVar(typ, varWeight),
+        _.Var
+      )
+
+  import Gen._, GeneratorNode._
+
+  val termInit: Double = 1.0 - appW - unAppW
+
+  val termNodes: NodeCoeffs[TermState, Term, Double, HNil, Term] =
+    (Init(Terms) -> termInit) ::
+      (applnNode -> appW) ::
+      (unifApplnNode -> unAppW) ::
+      Terms.target[TermState, Term, Double, Term]
+
+  val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
+    termNodes +:
+      NodeCoeffSeq.Empty[TermState, Term, Double]
 }

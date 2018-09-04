@@ -1221,7 +1221,6 @@ object HoTT {
     case _ => None
   }
 
-
   def toTyp(t: Term): Typ[U] forSome { type U <: Term with Subs[U] } =
     t match {
       case tp: Typ[u] => tp
@@ -1257,11 +1256,11 @@ object HoTT {
 
   object ExstFunc {
     def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](
-        fn: FuncLike[X, Y]) = new ExstFunc {
+        fn: FuncLike[X, Y]): ExstFunc = new ExstFunc {
       type U = X
       type V = Y
 
-      val func = fn
+      val func: FuncLike[X, Y] = fn
     }
 
     def opt(t: Term): Option[ExstFunc] = t match {
@@ -1282,7 +1281,7 @@ object HoTT {
     f match {
       case l: LambdaLike[u, v] =>
         val canSkip =
-          skipVars(l.value, n - 1).map(_.indepOf(l.variable)).getOrElse(false)
+          skipVars(l.value, n - 1).exists(_.indepOf(l.variable))
         if (canSkip) Some(l.value) else None
       case _ => None
     }
@@ -3044,7 +3043,7 @@ object HoTT {
     */
   object Fold {
     implicit class Folder[U <: Term with Subs[U]](fn: U) {
-      def apply(args: Term*) = fold(fn)(args: _*)
+      def apply(args: Term*): Term = fold(fn)(args: _*)
     }
 
     def domain: Term => Typ[Term] = {
@@ -3194,7 +3193,7 @@ object HoTT {
     *
     */
   def funcToLambda[U <: Term with Subs[U], V <: Term with Subs[V]](
-      fn: FuncLike[U, V]) = fn match {
+      fn: FuncLike[U, V]): LambdaLike[_ >: U with Subs[U] <: U, V] = fn match {
     case l: LambdaLike[U, V] => l
     case f: Func[U, V] =>
       val x = f.dom.Var
