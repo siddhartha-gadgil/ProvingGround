@@ -31,8 +31,7 @@ object ACFlow {
     * Flow extracting actor names and number of loops from snapshot.
     */
   val loopsFlow =
-    fl map { (snap) =>
-      (snap.name, snap.loops)
+    fl map { (snap) => (snap.name, snap.loops)
     }
 
   /**
@@ -50,12 +49,10 @@ object ACFlow {
     * Flow extracting weights on atomic moves from a snapshot. Only evolved state stored.
     */
   def fdMFlow =
-    fl map { (snap) =>
-      (snap.name, snap.state._1)
+    fl map { (snap) => (snap.name, snap.state._1)
     }
 
   def moveWeightsFlow =
-    fl map { (snap) =>
-      ACMoveWeights(snap.name, snap.state._1, snap.loops)
+    fl map { (snap) => ACMoveWeights(snap.name, snap.state._1, snap.loops)
     }
 }

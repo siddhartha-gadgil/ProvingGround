@@ -495,8 +495,7 @@ object TreeToMath {
     })
 
   val exists =
-    TreePatterns.Exists.>>>[MathExpr]({ (_) =>
-      MathExpr.Exists
+    TreePatterns.Exists.>>>[MathExpr]({ (_) => MathExpr.Exists
     })
 
   val or = TreePatterns.DisjunctNP.>>>[MathExpr](MathExpr.DisjunctNP(_))
@@ -504,8 +503,7 @@ object TreeToMath {
   val and = TreePatterns.ConjunctNP.>>>[MathExpr](MathExpr.ConjunctNP(_))
 
   val dropRoot =
-    TreePatterns.DropRoot.>>>[MathExpr] { (x) =>
-      x
+    TreePatterns.DropRoot.>>>[MathExpr] { (x) => x
     }
 
   val dropNP =

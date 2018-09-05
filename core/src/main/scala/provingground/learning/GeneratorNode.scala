@@ -4,10 +4,8 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 import HoTT._
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{
-  BaseThenCondition,
-  RecursiveThenCondition
-}
+import provingground.learning.GeneratorNode.{BaseThenCondition, RecursiveThenCondition}
+import provingground.learning.GeneratorNodeFamily.BasePi
 
 import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
 
@@ -26,7 +24,7 @@ object Sort {
     * Sort of all terms with given scala type
     */
   case class All[S]() extends Sort[S, S] {
-    val pred : S => Boolean = (_) => true
+    val pred: S => Boolean = (_) => true
   }
 
   /**
@@ -74,6 +72,9 @@ class RandomVarFamily[Dom <: HList, +O](val polyDomain: RandomVarList[Dom],
     NodeCoeffs.Target[State, Boat, V, Dom, Y](this)
 
   def at(x: Dom) = RandomVar.AtCoord(this, x)
+
+
+  def init[Y >: O] = BasePi((x : Dom) => GeneratorNode.Init[Y](at(x)), this)
 }
 
 object RandomVarFamily {
@@ -231,6 +232,15 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
 
   def |[S >: O, T](condition: Sort[S, T],
                    output: RandomVar[T]): GeneratorNode[T]
+
+  def piFmly[Dom <: HList, S >: O, T](
+      conditionFamily: Dom => Sort[S, T],
+      outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T]
+
+  def pi[D, S >: O, T](conditionFamily: D => Sort[S, T],
+                       outputFamily: RandomVarFamily[D :: HNil, T])
+  : GeneratorNodeFamily[D :: HNil, T] =
+    piFmly({case x :: HNil => conditionFamily(x)}, outputFamily)
 }
 
 sealed trait BaseGeneratorNode[I <: HList, +O]
@@ -241,6 +251,13 @@ sealed trait BaseGeneratorNode[I <: HList, +O]
   def |[S >: O, T](condition: Sort[S, T],
                    output: RandomVar[T]): BaseGeneratorNode[I, T] =
     BaseThenCondition[I, S, T](this, output, condition)
+
+  def piFmly[Dom <: HList, S >: O, T](
+      conditionFamily: Dom => Sort[S, T],
+      outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
+    GeneratorNodeFamily.BasePi(
+      (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
+      outputFamily)
 
 }
 
@@ -253,6 +270,14 @@ sealed trait RecursiveGeneratorNode[State, Boat, +O]
     RecursiveThenCondition[State, Boat, S, T](gen = this,
                                               output = output,
                                               condition = condition)
+
+  def piFmly[Dom <: HList, S >: O, T](
+      conditionFamily: Dom => Sort[S, T],
+      outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
+    GeneratorNodeFamily.RecPi(
+      (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
+      outputFamily)
+
 }
 
 object GeneratorNode {
@@ -744,11 +769,11 @@ sealed trait NodeCoeffs[State, Boat, V, RDom <: HList, Y] {
 
   import NodeCoeffs._
   def ::(
-      head: (BaseGeneratorNodeFamily[RDom, Y], V)
-  ) = BaseCons(head._1, head._2, this)
+      head: (GeneratorNodeFamily[RDom, Y], V)
+  ) = Cons(head._1, head._2, this)
 
-  def ::(head: (RecursiveGeneratorNodeFamily[RDom, State, Boat, Y], V)) =
-    RecCons(head._1, head._2, this)
+//  def ::(head: (RecursiveGeneratorNodeFamily[RDom, State, Boat, Y], V)) =
+//    RecCons(head._1, head._2, this)
 }
 
 object NodeCoeffs {
@@ -766,6 +791,19 @@ object NodeCoeffs {
     val headGen: GeneratorNodeFamily[RDom, Y]
     val headCoeff: V
     val tail: NodeCoeffs[State, Boat, V, RDom, Y]
+
+  }
+
+  object Cons{
+    def apply[State, Boat, V, RDom <: HList, Y](
+        headGen: GeneratorNodeFamily[RDom, Y],
+        headCoeff: V,
+        tail: NodeCoeffs[State, Boat, V, RDom, Y]
+                                               ): Cons[State, Boat, V, RDom , Y] =
+      headGen match {
+        case value: BaseGeneratorNodeFamily[RDom, Y]            => BaseCons(value, headCoeff, tail)
+        case value: RecursiveGeneratorNodeFamily[RDom, State, Boat, Y] => RecCons(value, headCoeff, tail)
+      }
 
   }
 

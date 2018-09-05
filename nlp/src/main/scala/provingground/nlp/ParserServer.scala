@@ -68,8 +68,7 @@ class ParserService(serverMode: Boolean)(implicit ec: ExecutionContext,
           }
         }
       } ~ get {
-      path("resources" / Remaining) { path =>
-        getFromResource(path.toString)
+      path("resources" / Remaining) { path => getFromResource(path.toString)
       }
     }
 

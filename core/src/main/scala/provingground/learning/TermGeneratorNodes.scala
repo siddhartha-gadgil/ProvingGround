@@ -39,13 +39,20 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  val typUnifApplnNode: GeneratorNodeFamily[HNil, Typ[Term]] =
+  val typUnifApplnBase: ZipMapOpt[ExstFunc, Term, Term] =
     ZipMapOpt[ExstFunc, Term, Term](
       unifApplnOpt,
       TypFamilies,
       Terms,
       Terms
-    ) | (typSort, Typs)
+    )
+
+  val typUnifApplnNode: BaseGeneratorNodeFamily[HNil, Typ[Term]] =
+    typUnifApplnBase | (typSort, Typs)
+
+  val typFamilyUnifApplnNode
+    : BaseGeneratorNode[ExstFunc :: Term :: HNil, ExstFunc] =
+    typUnifApplnBase | (typFamilySort, TypFamilies)
 
   /**
     * function application to get terms by choosing a function and then a term in its domain
@@ -59,14 +66,20 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  val typApplnNode: GeneratorNodeFamily[HNil, Typ[Term]] =
+  val typApplnBase: FiberProductMap[ExstFunc, Term, Typ[Term], Term] =
     FiberProductMap[ExstFunc, Term, Typ[Term], Term](
       _.dom,
       termsWithTyp,
       appln,
       TypFamilies,
       Terms
-    ) | (typSort, Typs)
+    )
+
+  val typApplnNode
+    : BaseGeneratorNode[ExstFunc :: HNil, Typ[Term]] = typApplnBase | (typSort, Typs)
+
+  val typFamilyApplnNode: GeneratorNode[ExstFunc] =
+    typApplnBase | (typFamilySort, TypFamilies)
 
   /**
     * function application to get terms by choosing an argument and then a function with domain containing this.
@@ -93,6 +106,14 @@ class TermGeneratorNodes[InitState](
       _ => Terms,
       addVar(typ),
       { case (x, y) => x :~> y }
+    )
+
+  def lambdaTypFamilyIsle(typ: Typ[Term]): GeneratorNode[ExstFunc] =
+    Island[ExstFunc, InitState, Term, Term](
+      TypFamilies,
+      _ => TypsAndFamilies,
+      addVar(typ),
+      { case (x, y) => ExstFunc(x :~> y) }
     )
 
   /**
@@ -150,11 +171,19 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  val lambdaTypFamilyNode =
+    FlatMap(
+      Typs,
+      lambdaTypFamilyIsle,
+      TypFamilies
+    )
+
   /**
     * nodes combining lambdas targeting types that are  (dependent) function types,
     * aggregated over all types
     */
-  val lambdaByTypNodeFamily: GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
+  val lambdaByTypNodeFamily
+    : GeneratorNodeFamily.RecPiOpt[InitState, Term, Typ[Term] :: HNil, Term] =
     GeneratorNodeFamily.RecPiOpt[InitState, Term, Typ[Term] :: HNil, Term]({
       case typ :: HNil => lambdaIsleForTyp(typ)
     }, TermsWithTyp)
@@ -465,7 +494,7 @@ class TermGeneratorNodes[InitState](
   /**
     * Aggregating extending indexed introduction rule by iterated function type eding in
     * fully applied inductive type family.
-    * @param typF the type family
+    *
     * @return distribution on types.
     */
   def indexedIterFuncNode(targetTyp: Term): FlatMap[Typ[Term], Typ[Term]] =
@@ -523,6 +552,8 @@ object TermRandomVars {
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
     Sort.Filter[Term](_.typ == typ)
 
+  def withTypNode(node: GeneratorNode[Term]): GeneratorNodeFamily[Typ[Term] :: HNil, Term] = node.pi(withTypSort, TermsWithTyp)
+
   /**
     * distribution of terms with a specific type
     * @param typ the type
@@ -536,8 +567,15 @@ object TermRandomVars {
     */
   case object TypFamilies extends RandomVar[ExstFunc]
 
-  val typFamilySort: Sort.Filter[ExstFunc] =
-    Sort.Filter[ExstFunc]((f) => isTypFamily(f.func))
+  val typFamilySort: Sort[Term, ExstFunc] =
+    Sort.Restrict[Term, ExstFunc]((f) =>
+      ExstFunc.opt(f).filter((fn) => isTypFamily(fn.func)))
+
+  case object TypsAndFamilies extends RandomVar[Term]{
+    lazy val fromTyp: Map[Typ[Term], Term] = Map[Typ[Term], Term]((x) => x, Typs, TypsAndFamilies)
+
+    lazy val fromFamilies: Map[ExstFunc, Term] = Map[ExstFunc, Term](_.func, TypFamilies, TypsAndFamilies)
+  }
 
   /**
     * family of distribution of (existential) functions with specifed domain.
@@ -550,6 +588,10 @@ object TermRandomVars {
 
   def funcWithDomSort(dom: Typ[Term]): Sort.Filter[ExstFunc] =
     Sort.Filter[ExstFunc](_.dom == dom)
+
+  def funcWithDomNode(node: GeneratorNode[ExstFunc])
+    : GeneratorNodeFamily[Typ[Term] :: HNil, ExstFunc] =
+    node.pi(funcWithDomSort, FuncsWithDomain)
 
   /**
     * distribution of functions with a specified domain
@@ -725,6 +767,7 @@ case class TermGenParams(appW: Double = 0.1,
                          argAppW: Double = 0.1,
                          lmW: Double = 0.1,
                          piW: Double = 0.1,
+                         termsByTypW: Double = 0.05,
                          varWeight: Double = 0.3,
                          vars: Vector[Term]) {
   object Gen
@@ -735,17 +778,49 @@ case class TermGenParams(appW: Double = 0.1,
         _.Var
       )
 
-  import Gen._, GeneratorNode._
+  import Gen._, GeneratorNode._, TermRandomVars.{withTypNode => wtN, funcWithDomNode => fdN, _}
 
-  val termInit: Double = 1.0 - appW - unAppW
+  val termInit: Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW
 
-  val termNodes: NodeCoeffs[TermState, Term, Double, HNil, Term] =
+  val typInit: Double = 1.0 - appW - unAppW - piW
+
+  val termNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
     (Init(Terms)     -> termInit) ::
       (applnNode     -> appW) ::
       (unifApplnNode -> unAppW) ::
+      (applnByArgNode -> argAppW) ::
+      (lambdaNode -> lmW) ::
+      (termsByTyps -> termsByTypW) ::
       Terms.target[TermState, Term, Double, Term]
 
+  val typNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] =
+    (Init(Typs)     -> typInit) ::
+      (typApplnNode     -> appW) ::
+      (typUnifApplnNode -> unAppW) ::
+      (piNode -> piW) ::
+      Typs.target[TermState, Term, Double, Typ[Term]]
+
+  val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
+    (Init(Funcs)     -> termInit) ::
+      ((applnNode | (funcSort, Funcs))    -> appW) ::
+      ((unifApplnNode | (funcSort, Funcs)) -> unAppW) ::
+      ((applnByArgNode | (funcSort, Funcs))-> argAppW) ::
+      ((lambdaNode | (funcSort, Funcs))-> lmW) ::
+      ((termsByTyps | (funcSort, Funcs)) -> termsByTypW) ::
+      Funcs.target[TermState, Term, Double, ExstFunc]
+
+  val termsByTypNodes
+    : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
+    (TermsWithTyp.init     -> termInit) ::
+      (wtN(applnNode)     -> appW) ::
+      (wtN(unifApplnNode) -> unAppW) ::
+      (wtN(applnByArgNode) -> argAppW) ::
+    (lambdaByTypNodeFamily -> lmW) ::
+    TermsWithTyp.target[TermState, Term, Double, Term]
+
+
+
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
-    termNodes +:
-      NodeCoeffSeq.Empty[TermState, Term, Double]
+    termNodes +: typNodes +: funcNodes +:
+      NodeCoeffSeq.Empty[TermState, Term, Double]()
 }

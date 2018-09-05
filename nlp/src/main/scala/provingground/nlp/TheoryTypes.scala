@@ -130,8 +130,7 @@ object TheoryTypes {
       case lhs ~ "->" ~ rhs => FuncTypTerm(lhs, rhs)
     }
 
-    def nullTerm: Parser[Term] = failure("") ^^ { _ =>
-      Underscore
+    def nullTerm: Parser[Term] = failure("") ^^ { _ => Underscore
     }
 
     def binOpParse: Parser[Term] =

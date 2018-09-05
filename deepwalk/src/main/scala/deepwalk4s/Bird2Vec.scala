@@ -41,8 +41,7 @@ object Bird2Vec {
 
   def randSentence(length: Int = 10) = {
     val vec = checklists(rnd.nextInt(checklists.size))
-    (1 to length).toVector map { (_) =>
-      vec(rnd.nextInt(vec.size))
+    (1 to length).toVector map { (_) => vec(rnd.nextInt(vec.size))
     }
   }
 
