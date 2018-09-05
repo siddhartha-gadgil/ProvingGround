@@ -39,6 +39,14 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  val typUnifApplnNode: GeneratorNodeFamily[HNil, Typ[Term]] =
+    ZipMapOpt[ExstFunc, Term, Term](
+      unifApplnOpt,
+      TypFamilies,
+      Terms,
+      Terms
+    ) | (typSort, Typs)
+
   /**
     * function application to get terms by choosing a function and then a term in its domain
     */
@@ -50,6 +58,15 @@ class TermGeneratorNodes[InitState](
       Funcs,
       Terms
     )
+
+  val typApplnNode: GeneratorNodeFamily[HNil, Typ[Term]] =
+    FiberProductMap[ExstFunc, Term, Typ[Term], Term](
+      _.dom,
+      termsWithTyp,
+      appln,
+      TypFamilies,
+      Terms
+    ) | (typSort, Typs)
 
   /**
     * function application to get terms by choosing an argument and then a function with domain containing this.
@@ -484,10 +501,15 @@ object TermRandomVars {
     */
   case object Typs extends RandomVar[Typ[Term]]
 
+  val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](typOpt)
+
   /**
     * distribution of functions : as existentials, not as terms
     */
   case object Funcs extends RandomVar[ExstFunc]
+
+  val funcSort: Sort[Term, ExstFunc] =
+    Sort.Restrict[Term, ExstFunc](ExstFunc.opt)
 
   /**
     * family of distributions of terms with specified type
@@ -497,6 +519,9 @@ object TermRandomVars {
         Typs,
         (typ: Typ[Term]) => Sort.Filter[Term](_.typ == typ)
       )
+
+  def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
+    Sort.Filter[Term](_.typ == typ)
 
   /**
     * distribution of terms with a specific type
@@ -509,7 +534,10 @@ object TermRandomVars {
   /**
     * distribution of type families
     */
-  case object TypFamilies extends RandomVar[Term]
+  case object TypFamilies extends RandomVar[ExstFunc]
+
+  val typFamilySort: Sort.Filter[ExstFunc] =
+    Sort.Filter[ExstFunc]((f) => isTypFamily(f.func))
 
   /**
     * family of distribution of (existential) functions with specifed domain.
@@ -519,6 +547,9 @@ object TermRandomVars {
         Typs,
         (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
       )
+
+  def funcWithDomSort(dom: Typ[Term]): Sort.Filter[ExstFunc] =
+    Sort.Filter[ExstFunc](_.dom == dom)
 
   /**
     * distribution of functions with a specified domain
@@ -665,7 +696,10 @@ object TermState {
           case Typs  => state.typs.map(x => x: T)
           case Funcs => state.terms.condMap(ExstFunc.opt).map(x => x: T)
           case TypFamilies =>
-            state.terms.conditioned(isTypFamily).map(x => x: T)
+            state.terms
+              .condMap((t) =>
+                ExstFunc.opt(t).filter((f) => isTypFamily(f.func)))
+              .map(x => x: T)
           case InducDefns  => state.inds.map(x => x: T)
           case InducStrucs => state.inds.map(_.ind).map(x => x: T)
         }
@@ -706,8 +740,8 @@ case class TermGenParams(appW: Double = 0.1,
   val termInit: Double = 1.0 - appW - unAppW
 
   val termNodes: NodeCoeffs[TermState, Term, Double, HNil, Term] =
-    (Init(Terms) -> termInit) ::
-      (applnNode -> appW) ::
+    (Init(Terms)     -> termInit) ::
+      (applnNode     -> appW) ::
       (unifApplnNode -> unAppW) ::
       Terms.target[TermState, Term, Double, Term]
 

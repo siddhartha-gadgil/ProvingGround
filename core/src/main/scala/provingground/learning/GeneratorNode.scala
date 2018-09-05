@@ -26,7 +26,7 @@ object Sort {
     * Sort of all terms with given scala type
     */
   case class All[S]() extends Sort[S, S] {
-    val pred = (_) => true
+    val pred : S => Boolean = (_) => true
   }
 
   /**
@@ -38,7 +38,7 @@ object Sort {
     * Sort as image of an optional map, which should be injective in the `Some(_)` case
     */
   case class Restrict[S, T](optMap: S => Option[T]) extends Sort[S, T] {
-    val pred = (s: S) => optMap(s).isDefined
+    val pred: S => Boolean = (s: S) => optMap(s).isDefined
   }
 
   /**
@@ -388,9 +388,6 @@ object GeneratorNode {
 
   /**
     * compose a generator node with conditioning
-    * @param gen the original node
-    * @param output the output random variable
-    * @param condition the condition
     * @tparam O scala type of the original output
     * @tparam Y scala type of the final output
     */
