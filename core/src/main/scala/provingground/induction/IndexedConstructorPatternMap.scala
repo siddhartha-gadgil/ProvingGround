@@ -593,7 +593,7 @@ sealed abstract class IndexedConstructorShape[S <: HList,
 
   import IndexedConstructorShape._
 
-  // def -->>:[F <: Term with Subs[F]](that: IterFuncShape[H, F], ind: Index) = // FIXME - should use the indexed versions
+  // def -->>:[F <: Term with Subs[F]](that: IterFuncShape[H, F], ind: Index) = //
   //   IndexedFuncConsShape(that, this, ind)
   //
 

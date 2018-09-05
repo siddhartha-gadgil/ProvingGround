@@ -171,7 +171,7 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  val lambdaTypFamilyNode =
+  val lambdaTypFamilyNode: FlatMap[Typ[Term], ExstFunc] =
     FlatMap(
       Typs,
       lambdaTypFamilyIsle,
@@ -187,6 +187,12 @@ class TermGeneratorNodes[InitState](
     GeneratorNodeFamily.RecPiOpt[InitState, Term, Typ[Term] :: HNil, Term]({
       case typ :: HNil => lambdaIsleForTyp(typ)
     }, TermsWithTyp)
+
+  val lambdaForFuncWithDomFamily =
+    GeneratorNodeFamily.RecPi[InitState, Term, Typ[Term] :: HNil, ExstFunc](
+      {case dom :: HNil => lambdaIsleForFuncWithDomain(dom)}
+      , FuncsWithDomain
+    )
 
   /**
     * island to generate Pi-Types by taking variables with specified domain, similar to [[lambdaIsle]]
@@ -593,6 +599,11 @@ object TermRandomVars {
     : GeneratorNodeFamily[Typ[Term] :: HNil, ExstFunc] =
     node.pi(funcWithDomSort, FuncsWithDomain)
 
+  def funcWithDomTermNode(node: GeneratorNode[Term]) =
+    node.pi(
+      (dom: Typ[Term]) =>Sort.Restrict[Term, ExstFunc]((f) => ExstFunc.opt(f).filter((fn) => fn.dom == dom)),
+      FuncsWithDomain)
+
   /**
     * distribution of functions with a specified domain
     * @param typ the domain
@@ -767,6 +778,7 @@ case class TermGenParams(appW: Double = 0.1,
                          argAppW: Double = 0.1,
                          lmW: Double = 0.1,
                          piW: Double = 0.1,
+                         typVsFamily: Double = 0.5,
                          termsByTypW: Double = 0.05,
                          varWeight: Double = 0.3,
                          vars: Vector[Term]) {
@@ -778,7 +790,7 @@ case class TermGenParams(appW: Double = 0.1,
         _.Var
       )
 
-  import Gen._, GeneratorNode._, TermRandomVars.{withTypNode => wtN, funcWithDomNode => fdN, _}
+  import Gen._, GeneratorNode._, TermRandomVars.{withTypNode => wtN, funcWithDomNode => fdN,  funcWithDomTermNode => fdtN}
 
   val termInit: Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW
 
@@ -809,6 +821,15 @@ case class TermGenParams(appW: Double = 0.1,
       ((termsByTyps | (funcSort, Funcs)) -> termsByTypW) ::
       Funcs.target[TermState, Term, Double, ExstFunc]
 
+  val typFamilyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
+    (Init(TypFamilies)     -> termInit) ::
+      (typFamilyApplnNode     -> appW) ::
+      (typFamilyUnifApplnNode -> unAppW) ::
+      ((applnByArgNode | (typFamilySort, Funcs))-> argAppW) ::
+      (lambdaTypFamilyNode ->  lmW) ::
+      ((termsByTyps | (typFamilySort, Funcs)) -> termsByTypW) ::
+      TypFamilies.target[TermState, Term, Double, ExstFunc]
+
   val termsByTypNodes
     : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
     (TermsWithTyp.init     -> termInit) ::
@@ -818,9 +839,23 @@ case class TermGenParams(appW: Double = 0.1,
     (lambdaByTypNodeFamily -> lmW) ::
     TermsWithTyp.target[TermState, Term, Double, Term]
 
+  val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
+    (TypsAndFamilies.fromTyp -> typVsFamily) ::
+      (TypsAndFamilies.fromFamilies -> (1.0 - typVsFamily)) ::
+    TypsAndFamilies.target[TermState, Term, Double, Term]
 
+  val funcWithDomNodes
+    : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, ExstFunc] =
+    (FuncsWithDomain.init     -> termInit) ::
+      (fdtN(applnNode)     -> appW) ::
+      (fdtN(unifApplnNode) -> unAppW) ::
+      (fdtN(applnByArgNode) -> argAppW) ::
+      (lambdaForFuncWithDomFamily -> lmW) ::
+      FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
+
+  
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
-    termNodes +: typNodes +: funcNodes +:
+    termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 }

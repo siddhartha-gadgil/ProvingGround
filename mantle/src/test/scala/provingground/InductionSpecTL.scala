@@ -213,7 +213,7 @@ class InductionSpecTL extends FlatSpec {
     assert(ListInd(A).rec(X).replace(A, B) == ListInd(B).rec(X))
   }
 
-  // FIXME when abstracted over A, B and f, this fails.
+
   it should "have correct definition for a simple map function" in {
     val nilA :: consA :: HNil = ListInd(A).intros
     val nilB :: consB :: HNil = ListInd(B).intros

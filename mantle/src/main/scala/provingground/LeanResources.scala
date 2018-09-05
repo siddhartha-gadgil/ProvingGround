@@ -104,7 +104,7 @@ object LeanRoutes extends cask.Routes {
   def codeGenInducDefs(): String =
     uwrite(LeanMemo.indTaskMap.keys.map(_.toString).toVector)
 
-  @cask.get("/mem-defns") // TODO send definitions
+  @cask.get("/mem-defns")
   def memDefs(): String =
     uwrite[Vector[(String, String)]](defnMap.map {
       case (name, term) => name.toString -> TeXTranslate(term)

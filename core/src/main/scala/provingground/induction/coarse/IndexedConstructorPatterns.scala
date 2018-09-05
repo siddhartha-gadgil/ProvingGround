@@ -174,7 +174,7 @@ F <: Term with Subs[F]](val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
     }
 
     def ~>>:[T <: Term with Subs[T]](thatVar: T) =
-      iConstructorTyp(pattern piOf (thatVar, fmly), fmly) //FIXME type should change as variable created.
+      iConstructorTyp(pattern piOf (thatVar, fmly), fmly)
   }
 
   object iConstructorTyp {
@@ -206,7 +206,7 @@ F <: Term with Subs[F]](val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
     def recDataTyp(w: F, x: Typ[Cod]): Typ[RecDataType] = x
 
     def inducDataTyp(w: F, xs: Func[Total, Typ[Cod]])(cons: H) =
-      xs(incl(cons, index, w)) //FIXME
+      xs(incl(cons, index, w))
     // xs should have domain Total, we should take the total value of cons
 
     def recDefCase(cons: iConstructorType,
