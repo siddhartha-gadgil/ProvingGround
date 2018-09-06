@@ -853,7 +853,7 @@ case class TermGenParams(appW: Double = 0.1,
       (lambdaForFuncWithDomFamily -> lmW) ::
       FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
 
-  
+
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
     termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:

@@ -3,7 +3,6 @@ import provingground.{FiniteDistribution => FD, _}
 import shapeless.HList._
 import shapeless._
 
-import scala.collection.immutable
 import scala.language.higherKinds
 import monix.eval._
 
@@ -11,7 +10,6 @@ abstract class GenMonixFiniteDistribution[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
     implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
-  import StateDistribution._
   import nodeCoeffSeq.find
 
   /**
@@ -179,7 +177,6 @@ case class MonixFiniteDistribution[State, Boat](
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
     MonixFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
 
-  import StateDistribution._
 
   /**
     * recursively determines the finite distribution given a generator node;
@@ -197,7 +194,7 @@ case class MonixFiniteDistribution[State, Boat](
     else {
       import GeneratorNode._
       generatorNode match {
-        case Atom(x, input) =>
+        case Atom(x, _) =>
           Task(FD.unif(x))
         case Init(input) =>
           Task(sd.value(initState)(input))
@@ -264,18 +261,16 @@ case class MonixFiniteDistribution[State, Boat](
           val baseDistT = varDist(initState)(baseInput, epsilon).map(_.flatten)
           baseDistT.flatMap { (baseDist) =>
             val pmfT =
-              baseDist.pmf
+              baseDist.pmf.flatMap {
+                case wt @ Weighted(x, _) => fiberNodeOpt(x).map(wt -> _)
+              }
                 .map {
-                  case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
-                }
-                .flatten
-                .map {
-                  case (Weighted(x1, p1), node) =>
+                  case (Weighted(_, p1), node) =>
                     val fiberDistT =
                       nodeDist(initState)(node, epsilon / p1)
                         .map(_.flatten)
                     fiberDistT
-                      .map { fiberDist =>
+                      .map { fiberDist: FD[Y]=>
                         fiberDist.pmf.map {
                           case Weighted(x2, p2) => Weighted(x2, p1 * p2)
                         }
@@ -286,7 +281,7 @@ case class MonixFiniteDistribution[State, Boat](
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1T = varDist(initState)(baseInput, epsilon).map(_.flatten)
           d1T.flatMap { d1 =>
-            val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
+            val byBase      = d1.pmf.groupBy { case Weighted(x, _) => quot(x) } // pmfs grouped by terms in quotient
             val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
             val pmfT =
               byBase.map {
