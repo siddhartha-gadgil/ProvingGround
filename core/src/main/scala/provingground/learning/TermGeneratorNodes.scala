@@ -6,10 +6,9 @@ import induction._
 import provingground.learning.GeneratorNode.{Map, MapOpt}
 
 import scala.language.higherKinds
-
 import GeneratorNode._
-
 import TermRandomVars._
+import monix.eval.Task
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -790,7 +789,7 @@ case class TermGenParams(appW: Double = 0.1,
         _.Var
       )
 
-  import Gen._, GeneratorNode._, TermRandomVars.{withTypNode => wtN, funcWithDomNode => fdN,  funcWithDomTermNode => fdtN}
+  import Gen._, GeneratorNode._, TermRandomVars.{withTypNode => wtN,  funcWithDomTermNode => fdtN}
 
   val termInit: Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW
 
@@ -858,4 +857,12 @@ case class TermGenParams(appW: Double = 0.1,
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
     termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
+
+  lazy val monixFD: MonixFiniteDistribution[TermState, Term] = MonixFiniteDistribution(nodeCoeffSeq)
+
+  def nextStateTask(initState: TermState, epsilon: Double): Task[TermState] =
+    for {
+      terms <- monixFD.varDist[Term](initState)(Terms, epsilon)
+      typs <- monixFD.varDist[Typ[Term]](initState)(Typs, epsilon)
+    } yield TermState(terms, typs, initState.vars, initState.inds)
 }

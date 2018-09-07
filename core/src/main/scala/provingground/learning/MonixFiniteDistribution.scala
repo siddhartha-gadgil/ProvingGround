@@ -26,8 +26,9 @@ abstract class GenMonixFiniteDistribution[State, Boat](
     else
       randomVar match {
         case RandomVar.AtCoord(randomVarFmly, fullArg) =>
-          varFamilyDist(initState)(randomVarFmly, epsilon)
-            .map(_.getOrElse(fullArg, FD.empty[Y]))
+//          varFamilyDist(initState)(randomVarFmly, epsilon)
+//            .map(_.getOrElse(fullArg, FD.empty[Y]))
+          varFamilyDistFunc(initState)(randomVarFmly, epsilon)(fullArg)
         case _ =>
           find(randomVar)
             .map { nc =>
@@ -109,6 +110,22 @@ abstract class GenMonixFiniteDistribution[State, Boat](
           } yield mapsSum(a, b)
       }
 
+  def nodeCoeffFamilyDist[Dom <: HList, Y](initState: State)(
+    nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+    epsilon: Double)(arg: Dom): Task[FD[Y]] =
+    if (epsilon > 1) Task(FD.empty[Y])
+    else
+      nodeCoeffs match {
+        case Target(_) => Task(FD.empty[Y])
+        case bc: Cons[State, Boat, Double, Dom, Y] =>
+          val p = bc.headCoeff
+          for {
+            a <- nodeFamilyDistFunc(initState)(bc.headGen,  epsilon)(arg)
+            b <- nodeCoeffFamilyDist(initState)(bc.tail,
+              epsilon / (1.0 - p))(arg)
+          } yield a ++ b
+      }
+
   def varFamilyDist[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],
       epsilon: Double): Task[Map[RDom, FD[Y]]] =
@@ -120,6 +137,17 @@ abstract class GenMonixFiniteDistribution[State, Boat](
           nodeCoeffFamilyMap(initState)(nc, base, epsilon)
         }
         .getOrElse(Task(Map()))
+
+  def varFamilyDistFunc[RDom <: HList, Y](initState: State)(
+    randomVarFmly: RandomVarFamily[RDom, Y],
+    epsilon: Double)(arg: RDom): Task[FD[Y]] =
+    if (epsilon > 0) Task(FD.empty[Y])
+    else
+      find(randomVarFmly)
+        .map { nc =>
+          nodeCoeffFamilyDist(initState)(nc,  epsilon)(arg)
+        }
+        .getOrElse(Task(FD.empty[Y]))
 
   def nodeFamilyDist[Dom <: HList, Y](initState: State)(
       generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
@@ -150,6 +178,21 @@ abstract class GenMonixFiniteDistribution[State, Boat](
         }
     }
 
+  def nodeFamilyDistFunc[Dom <: HList, Y](initState: State)(
+      generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
+      epsilon: Double)(arg: Dom): Task[FD[Y]] =
+    generatorNodeFamily match {
+      case node: GeneratorNode[Y] =>
+        assert(arg == HNil, s"looking for coordinate $arg in $node which is not a family")
+        nodeDist(initState)(node, epsilon)
+      case f: GeneratorNodeFamily.Pi[Dom, Y] =>
+        nodeDist(initState)(f.nodes(arg), epsilon) // actually a task
+      case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
+        f.nodesOpt(arg)
+          .map((node) => nodeDist(initState)(node, epsilon))
+          .getOrElse(Task.pure(FD.empty[Y]))
+    }
+
   def nodeDist[Y](initState: State)(generatorNode: GeneratorNode[Y],
                                     epsilon: Double): Task[FD[Y]]
 
@@ -176,7 +219,6 @@ case class MonixFiniteDistribution[State, Boat](
   def updateAll(
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
     MonixFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
-
 
   /**
     * recursively determines the finite distribution given a generator node;
@@ -261,16 +303,17 @@ case class MonixFiniteDistribution[State, Boat](
           val baseDistT = varDist(initState)(baseInput, epsilon).map(_.flatten)
           baseDistT.flatMap { (baseDist) =>
             val pmfT =
-              baseDist.pmf.flatMap {
-                case wt @ Weighted(x, _) => fiberNodeOpt(x).map(wt -> _)
-              }
+              baseDist.pmf
+                .flatMap {
+                  case wt @ Weighted(x, _) => fiberNodeOpt(x).map(wt -> _)
+                }
                 .map {
                   case (Weighted(_, p1), node) =>
                     val fiberDistT =
                       nodeDist(initState)(node, epsilon / p1)
                         .map(_.flatten)
                     fiberDistT
-                      .map { fiberDist: FD[Y]=>
+                      .map { fiberDist: FD[Y] =>
                         fiberDist.pmf.map {
                           case Weighted(x2, p2) => Weighted(x2, p1 * p2)
                         }
