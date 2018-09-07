@@ -715,8 +715,8 @@ case class RandomVector[X](base: RandomVar[X]) extends RandomVar[Vector[X]] {
   */
 case class TermState(terms: FD[Term],
                      typs: FD[Typ[Term]],
-                     vars: Vector[Term],
-                     inds: FD[ExstInducDefn]) {
+                     vars: Vector[Term] = Vector(),
+                     inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn]) {
   val thmsByPf: FD[Typ[Term]] = terms.map(_.typ)
   val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0)
   val pfSet: Vector[Term]     = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
@@ -780,7 +780,7 @@ case class TermGenParams(appW: Double = 0.1,
                          typVsFamily: Double = 0.5,
                          termsByTypW: Double = 0.05,
                          varWeight: Double = 0.3,
-                         vars: Vector[Term]) {
+                         vars: Vector[Term] = Vector()) {
   object Gen
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => fn(arg).get },

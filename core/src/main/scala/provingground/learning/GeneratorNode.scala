@@ -814,9 +814,9 @@ object NodeCoeffs {
   ) extends Cons[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
 
-    require(
-      headGen.outputFamily == output,
-      s"cannot add node with output ${headGen.outputFamily} to sequence with output $output")
+//    require(
+//      headGen.outputFamily == output,
+//      s"cannot add node with output ${headGen.outputFamily} to sequence with output $output")
 
     val nodeFamilies
       : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
@@ -834,9 +834,9 @@ object NodeCoeffs {
   ) extends Cons[State, Boat, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
 
-    require(
-      headGen.outputFamily == output,
-      s"cannot add node with output ${headGen.outputFamily} to sequence with output $output")
+//    require(
+//      headGen.outputFamily == output,
+//      s"cannot add node with output ${headGen.outputFamily} to sequence with output $output")
 
     val nodeFamilies
       : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
