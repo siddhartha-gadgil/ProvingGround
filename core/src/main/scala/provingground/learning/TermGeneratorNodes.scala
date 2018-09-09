@@ -187,7 +187,8 @@ class TermGeneratorNodes[InitState](
       case typ :: HNil => lambdaIsleForTyp(typ)
     }, TermsWithTyp)
 
-  val lambdaForFuncWithDomFamily =
+  val lambdaForFuncWithDomFamily
+    : GeneratorNodeFamily.RecPi[InitState, Term, Typ[Term] :: HNil, ExstFunc] =
     GeneratorNodeFamily.RecPi[InitState, Term, Typ[Term] :: HNil, ExstFunc](
       {case dom :: HNil => lambdaIsleForFuncWithDomain(dom)}
       , FuncsWithDomain
@@ -862,7 +863,10 @@ case class TermGenParams(appW: Double = 0.1,
 
   def nextStateTask(initState: TermState, epsilon: Double): Task[TermState] =
     for {
-      terms <- monixFD.varDist[Term](initState)(Terms, epsilon)
-      typs <- monixFD.varDist[Typ[Term]](initState)(Typs, epsilon)
+      terms <- monixFD.varDist(initState)(Terms, epsilon)
+      typs <- monixFD.varDist(initState)(Typs, epsilon)
     } yield TermState(terms, typs, initState.vars, initState.inds)
+
+  def findProof(initState: TermState, typ: Typ[Term], epsilon: Double): Task[FD[Term]] =
+    monixFD.varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon).map(_.flatten)
 }
