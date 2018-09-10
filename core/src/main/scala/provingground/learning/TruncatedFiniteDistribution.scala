@@ -40,11 +40,11 @@ abstract class GenTruncatedFiniteDistribution[State, Boat](
       randomVar match {
         case RandomVar.AtCoord(randomVarFmly, fullArg) =>
           varFamilyDist(initState)(randomVarFmly, epsilon)
-            .getOrElse(fullArg, FD.empty[Y])
+            .getOrElse(fullArg, FD.empty[Y]).flatten.safeNormalized
         case _ =>
           find(randomVar)
             .map { nc =>
-              nodeCoeffDist(initState)(nc, epsilon)
+              nodeCoeffDist(initState)(nc, epsilon).flatten.safeNormalized
             }
             .getOrElse(FD.empty[Y])
       }

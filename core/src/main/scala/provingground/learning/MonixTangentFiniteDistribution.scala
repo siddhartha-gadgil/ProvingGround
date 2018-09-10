@@ -190,11 +190,9 @@ case class MonixTangentFiniteDistribution[State, Boat](
           average(
             baseDistT.flatMap { (baseDist) =>
               val pmfT =
-                baseDist.pmf
-                  .map {
-                    case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
-                  }
-                  .flatten
+                baseDist.pmf.flatMap {
+                  case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
+                }
                   .map {
                     case (Weighted(x1, p1), node) =>
                       val fiberDistT =
@@ -210,11 +208,9 @@ case class MonixTangentFiniteDistribution[State, Boat](
             },
             baseDistTb.flatMap { (baseDist) =>
               val pmfT =
-                baseDist.pmf
-                  .map {
-                    case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
-                  }
-                  .flatten
+                baseDist.pmf.flatMap {
+                  case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
+                }
                   .map {
                     case (Weighted(x1, p1), node) =>
                       val fiberDistT =
@@ -236,7 +232,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
           average(
             d1T.flatMap { d1 =>
               val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
-              val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
+//              val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
               val pmfT =
                 byBase.map {
                   case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`

@@ -28,11 +28,11 @@ abstract class GenMonixFiniteDistribution[State, Boat](
         case RandomVar.AtCoord(randomVarFmly, fullArg) =>
 //          varFamilyDist(initState)(randomVarFmly, epsilon)
 //            .map(_.getOrElse(fullArg, FD.empty[Y]))
-          varFamilyDistFunc(initState)(randomVarFmly, epsilon)(fullArg).map(_.flatten)
+          varFamilyDistFunc(initState)(randomVarFmly, epsilon)(fullArg).map(_.flatten.safeNormalized)
         case _ =>
           find(randomVar)
             .map { nc =>
-              nodeCoeffDist(initState)(nc, epsilon).map(_.flatten)
+              nodeCoeffDist(initState)(nc, epsilon).map(_.flatten.safeNormalized)
             }
             .getOrElse(Task.now(FD.empty[Y]))
       }
