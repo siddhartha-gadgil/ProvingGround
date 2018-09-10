@@ -129,8 +129,8 @@ class TermGeneratorNodes[InitState](
         Some(
           Island[Term, InitState, Term, Term](
             termsWithTyp(pd),
-            x => termsWithTyp(pd.value.replace(pd.variable, x)),
-            addVar(typ),
+            x => termsWithTyp(pd.fibers(x.asInstanceOf[u])),
+            addVar(pd.domain),
             { case (x, y) => x :~> y }
           )
         )
@@ -139,7 +139,7 @@ class TermGeneratorNodes[InitState](
           Island[Term, InitState, Term, Term](
             termsWithTyp(ft),
             _ => termsWithTyp(ft.codom),
-            addVar(typ),
+            addVar(ft.domain),
             { case (x, y) => x :~> y }
           )
         )
@@ -785,7 +785,7 @@ case class TermGenParams(appW: Double = 0.1,
                          vars: Vector[Term] = Vector()) {
   object Gen
       extends TermGeneratorNodes[TermState](
-        { case (fn, arg) => fn(arg).get },
+        { case (fn, arg) => applyFunc(fn.func, arg) },
         { case (fn, arg) => Unify.appln(fn.func, arg) },
         (typ) => (state) => state.addVar(typ, varWeight),
         _.Var
