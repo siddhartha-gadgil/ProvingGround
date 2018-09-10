@@ -129,7 +129,7 @@ abstract class GenMonixFiniteDistribution[State, Boat](
   def varFamilyDist[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],
       epsilon: Double): Task[Map[RDom, FD[Y]]] =
-    if (epsilon > 0) Task(Map())
+    if (epsilon > 1) Task(Map())
     else
       find(randomVarFmly)
         .map { nc =>
@@ -141,7 +141,7 @@ abstract class GenMonixFiniteDistribution[State, Boat](
   def varFamilyDistFunc[RDom <: HList, Y](initState: State)(
     randomVarFmly: RandomVarFamily[RDom, Y],
     epsilon: Double)(arg: RDom): Task[FD[Y]] =
-    if (epsilon > 0) Task(FD.empty[Y])
+    if (epsilon > 1) Task(FD.empty[Y])
     else
       find(randomVarFmly)
         .map { nc =>

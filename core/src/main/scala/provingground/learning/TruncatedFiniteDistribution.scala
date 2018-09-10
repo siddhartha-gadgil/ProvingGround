@@ -119,7 +119,7 @@ abstract class GenTruncatedFiniteDistribution[State, Boat](
   def varFamilyDist[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],
       epsilon: Double): Map[RDom, FD[Y]] =
-    if (epsilon > 0) Map()
+    if (epsilon > 1) Map()
     else
       find(randomVarFmly)
         .map { nc =>

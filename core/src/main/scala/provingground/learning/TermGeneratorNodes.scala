@@ -755,6 +755,7 @@ object TermState {
               .map(x => x: T)
           case InducDefns  => state.inds.map(x => x: T)
           case InducStrucs => state.inds.map(_.ind).map(x => x: T)
+          case RandomVar.AtCoord(fmly, arg) => valueAt(state)(fmly, arg)
         }
 
       def valueAt[Dom <: HList, T](state: TermState)(
