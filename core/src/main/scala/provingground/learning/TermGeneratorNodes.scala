@@ -265,7 +265,7 @@ class TermGeneratorNodes[InitState](
     */
   val termsByTyps: ZipFlatMap[Typ[Term], Term, Term] =
     ZipFlatMap[Typ[Term], Term, Term](
-      Typs,
+      TargetTyps,
       (typ) => termsWithTyp(typ),
       { case (_, term) => term },
       Terms
@@ -538,6 +538,8 @@ object TermRandomVars {
 
   val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](typOpt)
 
+  case object Goals extends RandomVar[Typ[Term]]
+
   /**
     * distribution of functions : as existentials, not as terms
     */
@@ -581,6 +583,12 @@ object TermRandomVars {
     lazy val fromTyp: Map[Typ[Term], Term] = Map[Typ[Term], Term]((x) => x, Typs, TypsAndFamilies)
 
     lazy val fromFamilies: Map[ExstFunc, Term] = Map[ExstFunc, Term](_.func, TypFamilies, TypsAndFamilies)
+  }
+
+  case object TargetTyps extends RandomVar[Typ[Term]]{
+    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(identity, Goals, TargetTyps)
+
+    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(identity, Typs, TargetTyps)
   }
 
   /**
@@ -717,7 +725,8 @@ case class RandomVector[X](base: RandomVar[X]) extends RandomVar[Vector[X]] {
 case class TermState(terms: FD[Term],
                      typs: FD[Typ[Term]],
                      vars: Vector[Term] = Vector(),
-                     inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn]) {
+                     inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
+                    goals: FD[Typ[Term]] = FD.empty) {
   val thmsByPf: FD[Typ[Term]] = terms.map(_.typ).flatten
   val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0).flatten
   val pfSet: Vector[Term]     = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
@@ -729,11 +738,14 @@ case class TermState(terms: FD[Term],
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
     val x        = typ.Var
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
+    val newGoals = goals.collect{
+      case pd: PiDefn[u, v] => pd.value
+    }
     val newTyps =
       typOpt(x)
         .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
         .getOrElse(typs)
-    TermState(newTerms, newTyps, x +: vars, inds) -> x
+    TermState(newTerms, newTyps, x +: vars, inds, (goals ++ newGoals).safeNormalized) -> x
   }
 }
 
@@ -757,6 +769,7 @@ object TermState {
               .map(x => x: T)
           case InducDefns  => state.inds.map(x => x: T)
           case InducStrucs => state.inds.map(_.ind).map(x => x: T)
+          case Goals => state.goals.map(x => x: T)
           case RandomVar.AtCoord(fmly, arg) => valueAt(state)(fmly, arg)
         }
 
@@ -784,6 +797,7 @@ case class TermGenParams(appW: Double = 0.1,
                          typVsFamily: Double = 0.5,
                          termsByTypW: Double = 0.05,
                          varWeight: Double = 0.3,
+                         goalWeight: Double = 0.5,
                          vars: Vector[Term] = Vector()) {
   object Gen
       extends TermGeneratorNodes[TermState](
@@ -846,6 +860,11 @@ case class TermGenParams(appW: Double = 0.1,
     (TypsAndFamilies.fromTyp -> typVsFamily) ::
       (TypsAndFamilies.fromFamilies -> (1.0 - typVsFamily)) ::
     TypsAndFamilies.target[TermState, Term, Double, Term]
+
+  val targTypNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
+    (TargetTyps.fromGoal -> goalWeight) ::
+      (TargetTyps.fromTyp -> (1.0 - goalWeight)) ::
+      TargetTyps.target[TermState, Term, Double, Term]
 
   val funcWithDomNodes
     : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, ExstFunc] =

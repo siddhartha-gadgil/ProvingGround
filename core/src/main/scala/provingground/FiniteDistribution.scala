@@ -156,6 +156,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     FiniteDistribution(newpmf)
   }
 
+  def collect[S](f: PartialFunction[T, S]) = mapOpt(f.lift)
+
   def zip[S](that: FiniteDistribution[S]): FiniteDistribution[(T, S)] = {
     val newpmf =
       for {
