@@ -724,6 +724,8 @@ case class TermState(terms: FD[Term],
   val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 
+  val pfDist: FD[Term] =  terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
+
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
     val x        = typ.Var
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
