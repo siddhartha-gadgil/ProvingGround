@@ -738,14 +738,15 @@ case class TermState(terms: FD[Term],
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
     val x        = typ.Var
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
-    val newGoals = goals.collect{
-      case pd: PiDefn[u, v] => pd.value
+    val newGoals: FD[Typ[Term]] = goals.map{
+      case pd: PiDefn[u, v] if pd.domain == typ => pd.fibers(x.asInstanceOf[u])
+      case tp => tp
     }
     val newTyps =
       typOpt(x)
         .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
         .getOrElse(typs)
-    TermState(newTerms, newTyps, x +: vars, inds, (goals ++ newGoals).safeNormalized) -> x
+    TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x
   }
 }
 
