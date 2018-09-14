@@ -884,11 +884,19 @@ case class TermGenParams(appW: Double = 0.1,
 
   lazy val monixFD: MonixFiniteDistribution[TermState, Term] = MonixFiniteDistribution(nodeCoeffSeq)
 
+  def monixTangFD(baseState: TermState) = MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
+
   def nextStateTask(initState: TermState, epsilon: Double): Task[TermState] =
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon)
       typs <- monixFD.varDist(initState)(Typs, epsilon)
     } yield TermState(terms, typs, initState.vars, initState.inds)
+
+  def nextTangStateTask(baseState: TermState, tangState: TermState, epsilon: Double): Task[TermState] =
+    for {
+      terms <- monixTangFD(baseState).varDist(tangState)(Terms, epsilon)
+      typs <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon)
+    } yield TermState(terms, typs, baseState.vars, baseState.inds)
 
   def findProof(initState: TermState, typ: Typ[Term], epsilon: Double): Task[FD[Term]] =
     monixFD.varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon).map(_.flatten)
