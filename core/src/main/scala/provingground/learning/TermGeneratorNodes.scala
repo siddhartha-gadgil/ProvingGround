@@ -727,7 +727,7 @@ case class TermState(terms: FD[Term],
                      vars: Vector[Term] = Vector(),
                      inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
                     goals: FD[Typ[Term]] = FD.empty) {
-  val thmsByPf: FD[Typ[Term]] = terms.map(_.typ).flatten
+  val thmsByPf: FD[Typ[Term]] = terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
   val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0).flatten
   val pfSet: Vector[Term]     = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
   val fullPfSet: Vector[(Term, Term)] =
@@ -762,6 +762,7 @@ object TermState {
         randomVar match {
           case Terms => state.terms.map(x => x: T)
           case Typs  => state.typs.map(x => x: T)
+          case TargetTyps => state.typs.map(x => x: T)
           case Funcs => state.terms.condMap(ExstFunc.opt).map(x => x: T)
           case TypFamilies =>
             state.terms

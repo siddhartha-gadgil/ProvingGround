@@ -86,7 +86,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
           val d1  = varDist(tangentState)(input1, epsilon).map(_.flatten)
           val d1b = baseVal(input1)
           val d2  = varDist(tangentState)(input2, epsilon).map(_.flatten)
-          val d2b = baseVal(input1)
+          val d2b = baseVal(input2)
           average(
             d1b.zip(d2).map {
               case (xd, yd) =>

@@ -5,7 +5,7 @@ import scala.concurrent.duration._
 import library._, MonoidSimple._
 import math._
 import scala.concurrent.duration._
-import ProverTasks._
+import ProverTasks._, FineProverTasks._
 
 val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 

@@ -21,26 +21,31 @@ object MonixProverTasks {
   import ProverTasks._
   import TermRandomVars._
 
+  def typs(fd: FD[Term]): FD[Typ[Term]] = fd.mapOpt(typOpt).safeNormalized
+
   def typdistTask(fd: FD[Term],
                   tg: TermGenParams,
                   cutoff: Double,
                   maxtime: FiniteDuration,
-                  vars: Vector[Term] = Vector()): Task[FD[Typ[Term]]] =
-                    ???
-    // Truncate
-    //   .task(tv.baseEvolveTyps(fd), cutoff, maxtime)
-    //   .memoize
+                  vars: Vector[Term] = Vector()): Task[FD[Typ[Term]]] = {
+    val initState = TermState(fd, typs(fd), vars)
+    tg.monixFD.varDist(initState)(Typs, cutoff)
+  }
+  // Truncate
+  //   .task(tv.baseEvolveTyps(fd), cutoff, maxtime)
+  //   .memoize
 
   def termdistTask(fd: FD[Term],
                    tg: TermGenParams,
                    cutoff: Double,
                    maxtime: FiniteDuration,
-                   vars: Vector[Term] = Vector()): Task[FD[Term]] =
-                     ???
-    // Truncate
-    //   .task(tv.baseEvolve(fd), cutoff, maxtime)
-    //   .memoize
-
+                   vars: Vector[Term] = Vector()): Task[FD[Term]] = {
+    val initState = TermState(fd, typs(fd), vars)
+    tg.monixFD.varDist(initState)(Terms, cutoff)
+  }
+  // Truncate
+  //   .task(tv.baseEvolve(fd), cutoff, maxtime)
+  //   .memoize
 
   def termdistDerTask(fd: FD[Term],
                       tfd: FD[Term],
@@ -48,11 +53,13 @@ object MonixProverTasks {
                       cutoff: Double,
                       maxtime: FiniteDuration,
                       vars: Vector[Term] = Vector()): Task[FD[Term]] =
-                        ???
-    // Truncate
-    //   .task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime)
-    //   .memoize
-
+    {
+      val baseState = TermState(fd, typs(fd), vars)
+      val tangState = TermState(tfd, typs(tfd), vars)
+      tg.monixTangFD(baseState).varDist(tangState)(Terms, cutoff)}
+  // Truncate
+  //   .task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime)
+  //   .memoize
 
   /**
     * bunch of tasks using newly discovered proofs by evolving along unit tangents.
@@ -131,7 +138,6 @@ object MonixProverTasks {
       }
     }
 
-
   /**
     * breadth-first search for a term of a given type, keeping track of the path
     *
@@ -153,8 +159,8 @@ object MonixProverTasks {
         vecAc: (FD[Term], Vector[Term])
     ): Task[Vector[Task[(FD[Term], Vector[Term])]]] = {
       val (vec, ac) = vecAc
+//      pprint.log(s"spawning tasks from $vec")
       if (fd.total == 0) Task.pure(Vector())
-      // pprint.log(s"spawning tasks from $vec")
       else
         dervecTraceTasks(
           fd.safeNormalized,
@@ -179,7 +185,6 @@ object MonixProverTasks {
       spawn
     )
   }
-
 
   /**
     * breadth-first exploration to find alll interesting proofs, keeping track
