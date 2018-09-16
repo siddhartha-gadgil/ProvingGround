@@ -41,8 +41,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
 
   import StateDistribution._
 
-  def baseVal[Y](tangentState: State, rd: RandomVar[Y]): Task[FD[Y]] =
-    Task((sd.value(baseState)(rd) ++ sd.value(tangentState)(rd)).safeNormalized)
+  def baseVal[Y](rd: RandomVar[Y]) = Task(sd.value(baseState)(rd))
 
   /**
     * recursively determines the finite distribution given a generator node;
@@ -70,9 +69,9 @@ case class MonixTangentFiniteDistribution[State, Boat](
           varDist(tangentState)(input, epsilon).map(_.condMap(f).purge(epsilon))
         case ZipMap(f, input1, input2, _) =>
           val d1  = varDist(tangentState)(input1, epsilon).map(_.flatten)
-          val d1b = baseVal(tangentState, input1)
+          val d1b = baseVal(input1)
           val d2  = varDist(tangentState)(input2, epsilon).map(_.flatten)
-          val d2b = baseVal(tangentState, input2)
+          val d2b = baseVal(input2)
           average(
             d1b.zip(d2).map {
               case (xd, yd) =>
@@ -85,9 +84,9 @@ case class MonixTangentFiniteDistribution[State, Boat](
           )
         case ZipMapOpt(f, input1, input2, _) =>
           val d1  = varDist(tangentState)(input1, epsilon).map(_.flatten)
-          val d1b = baseVal(tangentState, input1)
+          val d1b = baseVal(input1)
           val d2  = varDist(tangentState)(input2, epsilon).map(_.flatten)
-          val d2b = baseVal(tangentState, input2)
+          val d2b = baseVal(input2)
           average(
             d1b.zip(d2).map {
               case (xd, yd) =>
@@ -101,7 +100,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
         case ZipFlatMap(baseInput, fiberVar, f, _) =>
           val baseDistT =
             varDist(tangentState)(baseInput, epsilon).map(_.flatten)
-          val baseDistTb = baseVal(tangentState, baseInput)
+          val baseDistTb = baseVal(baseInput)
           average(
             baseDistT.flatMap { (baseDist) =>
               val pmfT =
@@ -109,7 +108,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
                   .map {
                     case Weighted(x1, p1) =>
                       val fiberDistT =
-                        baseVal(tangentState, fiberVar(x1))
+                        baseVal(fiberVar(x1))
                         // varDist(tangentState)(fiberVar(x1), epsilon / p1)
                           .map(_.flatten)
                       val tv =
@@ -146,7 +145,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
         case FlatMap(baseInput, fiberNode, _) =>
           val baseDistT =
             varDist(tangentState)(baseInput, epsilon).map(_.flatten)
-          val baseDistTb = baseVal(tangentState, baseInput)
+          val baseDistTb = baseVal(baseInput)
           average(
             baseDistT.flatMap { (baseDist) =>
               val pmfT =
@@ -155,7 +154,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
                     case Weighted(x1, p1) =>
                       val node = fiberNode(x1)
                       val fiberDistT =
-                        baseVal(tangentState, node.output)
+                        baseVal(node.output)
                       fiberDistT
                         .map { fiberDist =>
                           fiberDist.pmf.map {
@@ -187,7 +186,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
         case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
           val baseDistT =
             varDist(tangentState)(baseInput, epsilon).map(_.flatten)
-          val baseDistTb = baseVal(tangentState, baseInput)
+          val baseDistTb = baseVal(baseInput)
           average(
             baseDistT.flatMap { (baseDist) =>
               val pmfT =
@@ -197,7 +196,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
                   .map {
                     case (Weighted(x1, p1), node) =>
                       val fiberDistT =
-                        baseVal(tangentState, node.output)
+                        baseVal(node.output)
                       fiberDistT
                         .map { fiberDist =>
                           fiberDist.pmf.map {
@@ -229,7 +228,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
           )
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1T  = varDist(tangentState)(baseInput, epsilon).map(_.flatten)
-          val d1Tb = baseVal(tangentState, baseInput)
+          val d1Tb = baseVal(baseInput)
           average(
             d1T.flatMap { d1 =>
               val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
@@ -238,7 +237,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
                 byBase.map {
                   case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
                     val d2T =
-                      baseVal(tangentState, fiberVar(z)) // distribution of the fiber at `z`
+                      baseVal(fiberVar(z)) // distribution of the fiber at `z`
                     d2T.map { d2 =>
                       val d = FD(pmf1)
                         .zip(d2)
