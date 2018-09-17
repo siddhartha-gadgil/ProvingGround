@@ -12,7 +12,7 @@ object MonixTangentFiniteDistribution {
     for {
       a <- x
       b <- y
-    } yield (a ++ b) * 0.5
+    } yield (a ++ b).safeNormalized
 }
 
 /**
