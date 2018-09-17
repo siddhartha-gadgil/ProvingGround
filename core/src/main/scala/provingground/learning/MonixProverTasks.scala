@@ -30,7 +30,7 @@ object MonixProverTasks {
                   vars: Vector[Term] = Vector()): Task[FD[Typ[Term]]] = {
     val initState = TermState(fd, typs(fd), vars)
     tg.monixFD.varDist(initState)(Typs, cutoff)
-  }
+  }.memoize
   // Truncate
   //   .task(tv.baseEvolveTyps(fd), cutoff, maxtime)
   //   .memoize
@@ -79,7 +79,7 @@ object MonixProverTasks {
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       {
         val scales = vec.collect {
-          case (v, p) if p > cutoff && cutoff / p > 0 && !(trace.contains(v)) =>
+          case (v, p) if p > cutoff && cutoff / p > 0 && !trace.contains(v) =>
             (v, cutoff / p)
         }
         val tot   = scales.map { case (_, x) => 1 / x }.sum
@@ -118,7 +118,7 @@ object MonixProverTasks {
     prsmEntTask(termsTask, typsTask, scale, vars = vars).map { (vec) =>
       {
         val scales = vec.collect {
-          case (v, p) if p > cutoff && cutoff / p > 0 && !(trace.contains(v)) =>
+          case (v, p) if p > cutoff && cutoff / p > 0 && !trace.contains(v) =>
             (v, p, cutoff / p)
         }
         val tot   = scales.map { case (_, _, x) => 1 / x }.sum
@@ -159,7 +159,7 @@ object MonixProverTasks {
         vecAc: (FD[Term], Vector[Term])
     ): Task[Vector[Task[(FD[Term], Vector[Term])]]] = {
       val (vec, ac) = vecAc
-//      pprint.log(s"spawning tasks from $vec")
+      pprint.log(s"spawning tasks:\n from ${vec.entropyView}\n types: ${vec.map(_.typ).entropyView}\n spawns: ${vec.flatten.supp.length}")
       if (fd.total == 0) Task.pure(Vector())
       else
         dervecTraceTasks(
