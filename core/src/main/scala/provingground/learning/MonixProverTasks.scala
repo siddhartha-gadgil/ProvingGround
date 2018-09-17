@@ -87,6 +87,10 @@ object MonixProverTasks {
         // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
+            pprint.log("Spawning from lemma")
+            pprint.log(v.fansi)
+            pprint.log(v.typ.fansi)
+            pprint.log(-math.log(sc * ratio))
             for {
               fd <- termdistDerTask(base,
                                     FD.unif(v),
@@ -159,7 +163,7 @@ object MonixProverTasks {
         vecAc: (FD[Term], Vector[Term])
     ): Task[Vector[Task[(FD[Term], Vector[Term])]]] = {
       val (vec, ac) = vecAc
-      pprint.log(s"spawning tasks:\n from ${vec.entropyView}\n types: ${vec.map(_.typ).entropyView}\n spawns: ${vec.flatten.supp.length}")
+//      pprint.log(s"spawning tasks:\n from ${vec.entropyView}\n types: ${vec.map(_.typ).entropyView}\n spawns: ${vec.flatten.supp.length}")
       if (fd.total == 0) Task.pure(Vector())
       else
         dervecTraceTasks(
