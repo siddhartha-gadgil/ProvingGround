@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Inductive Types (old style)</title>
+    <title>ProvingGround</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -41,7 +41,7 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-    
+  
   </head>
 
    
@@ -61,27 +61,20 @@ messageStyle: "none",
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav" id="left-nav">
-            <li><a href="../index.html">Docs Home</a></li>
+          <ul class="nav navbar-nav">
+            <li><a href="../index.html#">Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Posts<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
-              </ul>
-            </li>
-          </ul>
+            </ul>
+          </li>
+      </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -90,14 +83,13 @@ messageStyle: "none",
       </div><!-- /.container-fluid -->
     </nav>
 <div class="container">
-
 <h1 class="text-center">Inductive Types (old style)</h1>
 
 <div class="text-justify">
 <h2>Recursion for inductive types</h2>
 <p>We illustrate construction of inductive types, and defining functions on them recursively.</p>
 <p>We begin with some imports. The import induction.coarse.Implicits gives the operations to construct inductive types.</p>
-<pre><code class="language-scala">scala&gt;        
+<pre><code class="language-scala">scala&gt;    
 
 scala&gt; import provingground._ 
 
@@ -124,80 +116,42 @@ import induction.coarse.Implicits._
 Constructors are obtained using the <code>:::</code> method on a <em>Constructor pattern</em>, which for constants is essentially the inductive type itself.</p>
 <pre><code class="language-scala">scala&gt; val Bool = &quot;Boolean&quot; :: Type 
 
-Bool: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;Boolean&quot;), 0)
+Bool: Typ[Term] with Subs[Typ[Term]] = Boolean
 
 scala&gt; val BoolInd = &quot;true&quot; ::: Bool |: &quot;false&quot; ::: Bool =: Bool 
 
 BoolInd: ConstructorSeq.Cons[Term, Term] = Cons(
-  ConstructorDefn(IdW(), SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  Cons(
-    ConstructorDefn(IdW(), SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-    Empty(SymbTyp(Name(&quot;Boolean&quot;), 0))
-  )
+  ConstructorDefn(IdW(), true, Boolean),
+  Cons(ConstructorDefn(IdW(), false, Boolean), Empty(Boolean))
 )
 </code></pre>
 <p>From the inductive structure, we can obtain the introduction rules.</p>
 <pre><code class="language-scala">scala&gt; val List(tt, ff) = BoolInd.intros 
 
-tt: Term = SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
-ff: Term = SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+tt: Term = true
+ff: Term = false
 
 scala&gt; tt 
 
-res12: Term = SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res14: Term = true
 
 scala&gt; ff 
 
-res13: Term = SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res15: Term = false
 </code></pre>
 <p>The most important methods on an inductive structure are the <code>rec</code> method for making recursive definition on the inductive type,
 and the corresponding method for dependent functions. The rec method takes as arguments the data giving the definition for the various constructors.</p>
 <pre><code class="language-scala">scala&gt; BoolInd.rec(Bool) 
 
-res14: BoolInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  LambdaFixed(
-    SymbObj(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-      DataCons(
-        SymbObj(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-        Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-      ),
-      provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-    )
-  )
-)
+res16: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true,Boolean)) :  Boolean) ↦ ((RecSym(ConstructorDefn(IdW(),false,Boolean)) :  Boolean) ↦ (rec(Boolean)(Boolean)(RecSym(ConstructorDefn(IdW(),true,Boolean)))(RecSym(ConstructorDefn(IdW(),false,Boolean)))))
 
 scala&gt; val recBoolBool = BoolInd.rec(Bool) 
 
-recBoolBool: BoolInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  LambdaFixed(
-    SymbObj(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-      DataCons(
-        SymbObj(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-        Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-      ),
-      provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-    )
-  )
-)
+recBoolBool: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true,Boolean)) :  Boolean) ↦ ((RecSym(ConstructorDefn(IdW(),false,Boolean)) :  Boolean) ↦ (rec(Boolean)(Boolean)(RecSym(ConstructorDefn(IdW(),true,Boolean)))(RecSym(ConstructorDefn(IdW(),false,Boolean)))))
 
 scala&gt; recBoolBool.typ 
 
-res16: Typ[Func[BoolInd.cons.pattern.RecDataType, BoolInd.tail.RecType]] = FuncTyp(
-  SymbTyp(Name(&quot;Boolean&quot;), 0),
-  FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)))
-)
+res18: Typ[Func[BoolInd.cons.pattern.RecDataType, BoolInd.tail.RecType]] = (Boolean) → ((Boolean) → ((Boolean) → (Boolean)))
 </code></pre>
 <p>The compile time scala type of the recursion function is just <code>Term</code>. The <code>import Fold._</code> allows pattern matching and using the runtime type.</p>
 <pre><code class="language-scala">scala&gt; import Fold._ 
@@ -208,92 +162,50 @@ import Fold._
 In the case of Booleans, the arguments are just the value of the function at true and false. The result is a function <code>f: Bool -&gt;: X</code> for a type <code>X</code></p>
 <pre><code class="language-scala">scala&gt; val not = recBoolBool(ff)(tt) 
 
-not: Term = DataCons(
-  SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-  DataCons(
-    SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-    provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-    Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-    provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-  ),
-  provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-)
+not: Term = rec(Boolean)(Boolean)(false)(true)
 
 scala&gt; not(ff) 
 
-res19: Term = SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res21: Term = true
 
 scala&gt; not(tt) 
 
-res20: Term = SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res22: Term = false
 
 scala&gt; assert(not(ff) == tt &amp;&amp; not(tt) == ff)
 </code></pre>
 <p>We can similarly define the <em>and</em> function by observing that <em>and(true)</em> is the identity and <em>and(false)</em> is the constant false function.</p>
 <pre><code class="language-scala">scala&gt; val b= &quot;b&quot; :: Bool 
 
-b: Term with Subs[Term] = SymbObj(Name(&quot;b&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+b: Term with Subs[Term] = b
 
 scala&gt; val recBBB = BoolInd.rec(Bool -&gt;: Bool) 
 
-recBBB: BoolInd.RecType = LambdaFixed(
-  SymbolicFunc(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  LambdaFixed(
-    SymbolicFunc(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-    DataCons(
-      SymbolicFunc(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-      DataCons(
-        SymbolicFunc(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-        Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0))),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-      ),
-      provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-    )
-  )
-)
+recBBB: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true,Boolean)) :  (Boolean) → (Boolean)) ↦ ((RecSym(ConstructorDefn(IdW(),false,Boolean)) :  (Boolean) → (Boolean)) ↦ (rec(Boolean)((Boolean) → (Boolean))(RecSym(ConstructorDefn(IdW(),true,Boolean)))(RecSym(ConstructorDefn(IdW(),false,Boolean)))))
 
 scala&gt; recBBB.typ 
 
-res24: Typ[Func[BoolInd.cons.pattern.RecDataType, BoolInd.tail.RecType]] = FuncTyp(
-  FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  FuncTyp(
-    FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-    FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)))
-  )
-)
+res26: Typ[Func[BoolInd.cons.pattern.RecDataType, BoolInd.tail.RecType]] = ((Boolean) → (Boolean)) → (((Boolean) → (Boolean)) → ((Boolean) → ((Boolean) → (Boolean))))
 
 scala&gt; val and = recBBB(lmbda(b)(b))(lmbda(b)(ff)) 
 
-and: Term = DataCons(
-  LambdaFixed(SymbObj(b, SymbTyp(Name(&quot;Boolean&quot;), 0)), SymbObj(b, SymbTyp(Name(&quot;Boolean&quot;), 0))),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-  DataCons(
-    LambdaFixed(SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)), SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))),
-    provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-    Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0))),
-    provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-  ),
-  provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-)
+and: Term = rec(Boolean)((Boolean) → (Boolean))((b :  Boolean) ↦ (b))((_ :  Boolean) ↦ (false))
 
 scala&gt; and(tt)(tt) 
 
-res26: Term = SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res28: Term = true
 
 scala&gt; and(tt)(ff) 
 
-res27: Term = SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res29: Term = false
 
 scala&gt; and(ff)(ff) 
 
-res28: Term = SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res30: Term = false
 
 scala&gt; and(ff)(tt) 
 
-res29: Term = SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res31: Term = false
 
 scala&gt; assert(and(tt)(tt)== tt &amp;&amp; and(tt)(ff) == ff &amp;&amp; and(ff)(tt) == ff &amp;&amp; and(ff)(ff) == ff)
 </code></pre>
@@ -301,26 +213,19 @@ scala&gt; assert(and(tt)(tt)== tt &amp;&amp; and(tt)(ff) == ff &amp;&amp; and(ff
 The method on constructors corresponding to function types we use if <code>--&gt;&gt;:</code>, which is used because the domain of the extension is also the type <code>Nat</code>. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.</p>
 <pre><code class="language-scala">scala&gt; val Nat = &quot;Nat&quot; :: Type 
 
-Nat: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;Nat&quot;), 0)
+Nat: Typ[Term] with Subs[Typ[Term]] = Nat
 
 scala&gt; val NatInd = (&quot;0&quot; ::: Nat) |: (&quot;succ&quot; ::: Nat --&gt;&gt;: Nat) =: Nat 
 
 NatInd: ConstructorSeq.Cons[Term, Term] = Cons(
-  ConstructorDefn(IdW(), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  Cons(
-    ConstructorDefn(
-      FuncPtn(IdIterPtn(), IdW()),
-      SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    ),
-    Empty(SymbTyp(Name(&quot;Nat&quot;), 0))
-  )
+  ConstructorDefn(IdW(), 0, Nat),
+  Cons(ConstructorDefn(FuncPtn(IdIterPtn(), IdW()), succ, Nat), Empty(Nat))
 )
 
 scala&gt; val List(zero, succ) = NatInd.intros 
 
-zero: Term = SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-succ: Term = SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
+zero: Term = 0
+succ: Term = succ
 </code></pre>
 <p>To define recursively a function <code>f : Nat -&gt;: X</code> for a type <code>X</code>, the data is</p>
 <ul>
@@ -329,244 +234,75 @@ succ: Term = SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;),
 </ul>
 <pre><code class="language-scala">scala&gt; val recNatBool = NatInd.rec(Bool) 
 
-recNatBool: NatInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),0,Nat)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  LambdaFixed(
-    SymbolicFunc(
-      RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)),
-      SymbTyp(Name(&quot;Nat&quot;), 0),
-      FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0))
-    ),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),0,Nat)), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-      DataCons(
-        SymbolicFunc(
-          RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)),
-          SymbTyp(Name(&quot;Nat&quot;), 0),
-          FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0))
-        ),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@427ca858,
-        Empty(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-...
+recNatBool: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0,Nat)) :  Boolean) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  (Nat) → ((Boolean) → (Boolean))) ↦ (rec(Nat)(Boolean)(RecSym(ConstructorDefn(IdW(),0,Nat)))(RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
 
 scala&gt; recNatBool.typ 
 
-res35: Typ[Func[NatInd.cons.pattern.RecDataType, NatInd.tail.RecType]] = FuncTyp(
-  SymbTyp(Name(&quot;Boolean&quot;), 0),
-  FuncTyp(
-    FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0))),
-    FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0))
-  )
-)
+res37: Typ[Func[NatInd.cons.pattern.RecDataType, NatInd.tail.RecType]] = (Boolean) → (((Nat) → ((Boolean) → (Boolean))) → ((Nat) → (Boolean)))
 
 scala&gt; val n = &quot;n&quot; :: Nat 
 
-n: Term with Subs[Term] = SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
+n: Term with Subs[Term] = n
 
 scala&gt; val even = recNatBool(tt)(n :-&gt; (b :-&gt; not(b))) 
 
-even: Term = DataCons(
-  SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-  DataCons(
-    LambdaFixed(
-      SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      LambdaFixed(
-        SymbObj(b, SymbTyp(Name(&quot;Boolean&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            DataCons(
-              SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-              provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-              DataCons(
-                SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-                provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-                Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Boolean&quot;), 0)),
-                provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-              ),
-              provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-...
+even: Term = rec(Nat)(Boolean)(true)((_ :  Nat) ↦ ((b :  Boolean) ↦ ((rec(Boolean)(Boolean)(false)(true)) (b))))
 
 scala&gt; val one = succ(zero) 
 
-one: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+one: Term = (succ) (0)
 
 scala&gt; val two = succ(one) 
 
-two: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-      ),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    )
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+two: Term = (succ) ((succ) (0))
 
 scala&gt; val three = succ(two) 
 
-three: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    )
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+three: Term = (succ) ((succ) ((succ) (0)))
 
 scala&gt; val four = succ(three) 
 
-four: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-              ),
-              SymbTyp(Name(&quot;Nat&quot;), 0)
-            )
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-...
+four: Term = (succ) ((succ) ((succ) ((succ) (0))))
 
 scala&gt; even(two) 
 
-res42: Term = SymbObj(Name(&quot;true&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res44: Term = true
 
 scala&gt; even(three) 
 
-res43: Term = SymbObj(Name(&quot;false&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+res45: Term = false
 </code></pre>
 <p>A more complicated example is addition of natural numbers.</p>
 <pre><code class="language-scala">scala&gt; val recNNN = NatInd.rec(Nat -&gt;: Nat) 
 
-recNNN: NatInd.RecType = LambdaFixed(
-  SymbolicFunc(RecSym(ConstructorDefn(IdW(),0,Nat)), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    SymbolicFunc(
-      RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)),
-      SymbTyp(Name(&quot;Nat&quot;), 0),
-      FuncTyp(FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)))
-    ),
-    DataCons(
-      SymbolicFunc(RecSym(ConstructorDefn(IdW(),0,Nat)), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-      DataCons(
-        SymbolicFunc(
-          RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)),
-          SymbTyp(Name(&quot;Nat&quot;), 0),
-          FuncTyp(
-            FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-          )
-        ),
-...
+recNNN: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0,Nat)) :  (Nat) → (Nat)) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  (Nat) → (((Nat) → (Nat)) → ((Nat) → (Nat)))) ↦ (rec(Nat)((Nat) → (Nat))(RecSym(ConstructorDefn(IdW(),0,Nat)))(RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
 
 scala&gt; recNNN.typ 
 
-res45: Typ[Func[NatInd.cons.pattern.RecDataType, NatInd.tail.RecType]] = FuncTyp(
-  FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  FuncTyp(
-    FuncTyp(
-      SymbTyp(Name(&quot;Nat&quot;), 0),
-      FuncTyp(FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)))
-    ),
-    FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)))
-  )
-)
+res47: Typ[Func[NatInd.cons.pattern.RecDataType, NatInd.tail.RecType]] = ((Nat) → (Nat)) → (((Nat) → (((Nat) → (Nat)) → ((Nat) → (Nat)))) → ((Nat) → ((Nat) → (Nat))))
 
 scala&gt; val m = &quot;m&quot; :: Nat 
 
-m: Term with Subs[Term] = SymbObj(Name(&quot;m&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
+m: Term with Subs[Term] = m
 
 scala&gt; val addn = &quot;add(n)&quot; :: Nat -&gt;: Nat 
 
-addn: Func[Term, Term] with Subs[Func[Term, Term]] = SymbolicFunc(Name(&quot;add(n)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
+addn: Func[Term, Term] with Subs[Func[Term, Term]] = add(n)
 
 scala&gt; val add = recNNN(m :-&gt; m)(n :-&gt; (addn :-&gt; (m :-&gt; (succ(addn(m))) ) ) ) 
 
-add: Term = DataCons(
-  LambdaFixed(SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0)), SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0))),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-  DataCons(
-    LambdaFixed(
-      SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      LambdaFixed(
-        SymbolicFunc(add(n), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        LambdaFixed(
-          SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0)),
-          SymbObj(
-            ApplnSym(
-              SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-              SymbObj(
-                ApplnSym(
-                  SymbolicFunc(add(n), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                  SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0))
-                ),
-                SymbTyp(Name(&quot;Nat&quot;), 0)
-              )
-...
+add: Term = rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))
 
 scala&gt; add(two)(one) 
 
-res49: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    )
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res51: Term = (succ) ((succ) ((succ) (0)))
 
 scala&gt; assert(add(two)(one) == three) 
 
 
 scala&gt; add(two)(two) == four 
 
-res51: Boolean = true
+res53: Boolean = true
 </code></pre>
 <p>Lists of elements of a type <code>A</code> form an inductive type <code>ListA</code>, again with two constructors:</p>
 <ul>
@@ -581,146 +317,74 @@ res51: Boolean = true
 <p>Note that <code>f(a)</code> does not make sense. Hence a different method, <code>-&gt;&gt;:</code>, is used for such extensions.</p>
 <pre><code class="language-scala">scala&gt; val A = &quot;A&quot; :: Type 
 
-A: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;A&quot;), 0)
+A: Typ[Term] with Subs[Typ[Term]] = A
 
 scala&gt; val ListA = &quot;List(A)&quot; :: Type 
 
-ListA: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;List(A)&quot;), 0)
+ListA: Typ[Term] with Subs[Typ[Term]] = List(A)
 
 scala&gt; val ListAInd = (&quot;nil&quot; ::: ListA) |: (&quot;cons&quot; ::: A -&gt;&gt;: ListA --&gt;&gt;: ListA ) =: ListA 
 
 ListAInd: ConstructorSeq.Cons[Term, Term] = Cons(
-  ConstructorDefn(IdW(), SymbObj(Name(&quot;nil&quot;), SymbTyp(Name(&quot;List(A)&quot;), 0)), SymbTyp(Name(&quot;List(A)&quot;), 0)),
-  Cons(
-    ConstructorDefn(
-      CnstFncPtn(SymbTyp(Name(&quot;A&quot;), 0), FuncPtn(IdIterPtn(), IdW())),
-      SymbolicFunc(Name(&quot;cons&quot;), SymbTyp(Name(&quot;A&quot;), 0), FuncTyp(SymbTyp(Name(&quot;List(A)&quot;), 0), SymbTyp(Name(&quot;List(A)&quot;), 0))),
-      SymbTyp(Name(&quot;List(A)&quot;), 0)
-    ),
-    Empty(SymbTyp(Name(&quot;List(A)&quot;), 0))
-  )
+  ConstructorDefn(IdW(), nil, List(A)),
+  Cons(ConstructorDefn(CnstFncPtn(A, FuncPtn(IdIterPtn(), IdW())), cons, List(A)), Empty(List(A)))
 )
 
 scala&gt; val List(nil, cons) = ListAInd.intros 
 
-nil: Term = SymbObj(Name(&quot;nil&quot;), SymbTyp(Name(&quot;List(A)&quot;), 0))
-cons: Term = SymbolicFunc(Name(&quot;cons&quot;), SymbTyp(Name(&quot;A&quot;), 0), FuncTyp(SymbTyp(Name(&quot;List(A)&quot;), 0), SymbTyp(Name(&quot;List(A)&quot;), 0)))
+nil: Term = nil
+cons: Term = cons
 </code></pre>
 <p>We can define the size of a list as a natural number recursively.</p>
 <pre><code class="language-scala">scala&gt; val recLN = ListAInd.rec(Nat) 
 
-recLN: ListAInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),nil,List(A))), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    SymbolicFunc(
-      RecSym(ConstructorDefn(CnstFncPtn(A,FuncPtn(IdIterPtn(),IdW())),cons,List(A))),
-      SymbTyp(Name(&quot;A&quot;), 0),
-      FuncTyp(SymbTyp(Name(&quot;List(A)&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)))
-    ),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),nil,List(A))), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5acef26c,
-      DataCons(
-        SymbolicFunc(
-          RecSym(ConstructorDefn(CnstFncPtn(A,FuncPtn(IdIterPtn(),IdW())),cons,List(A))),
-          SymbTyp(Name(&quot;A&quot;), 0),
-          FuncTyp(SymbTyp(Name(&quot;List(A)&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)))
-        ),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@43d6e2c0,
-        Empty(SymbTyp(Name(&quot;List(A)&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-...
+recLN: ListAInd.RecType = (RecSym(ConstructorDefn(IdW(),nil,List(A))) :  Nat) ↦ ((RecSym(ConstructorDefn(CnstFncPtn(A,FuncPtn(IdIterPtn(),IdW())),cons,List(A))) :  (A) → ((List(A)) → ((Nat) → (Nat)))) ↦ (rec(List(A))(Nat)(RecSym(ConstructorDefn(IdW(),nil,List(A))))(RecSym(ConstructorDefn(CnstFncPtn(A,FuncPtn(IdIterPtn(),IdW())),cons,List(A))))))
 
 scala&gt; recLN.typ 
 
-res57: Typ[Func[ListAInd.cons.pattern.RecDataType, ListAInd.tail.RecType]] = FuncTyp(
-  SymbTyp(Name(&quot;Nat&quot;), 0),
-  FuncTyp(
-    FuncTyp(SymbTyp(Name(&quot;A&quot;), 0), FuncTyp(SymbTyp(Name(&quot;List(A)&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)))),
-    FuncTyp(SymbTyp(Name(&quot;List(A)&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-  )
-)
+res59: Typ[Func[ListAInd.cons.pattern.RecDataType, ListAInd.tail.RecType]] = (Nat) → (((A) → ((List(A)) → ((Nat) → (Nat)))) → ((List(A)) → (Nat)))
 
 scala&gt; val a = &quot;a&quot; :: A 
 
-a: Term with Subs[Term] = SymbObj(Name(&quot;a&quot;), SymbTyp(Name(&quot;A&quot;), 0))
+a: Term with Subs[Term] = a
 
 scala&gt; val l = &quot;l&quot; :: ListA 
 
-l: Term with Subs[Term] = SymbObj(Name(&quot;l&quot;), SymbTyp(Name(&quot;List(A)&quot;), 0))
+l: Term with Subs[Term] = l
 
 scala&gt; val n = &quot;n&quot; :: Nat 
 
-n: Term with Subs[Term] = SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
+n: Term with Subs[Term] = n
 
 scala&gt; val size = recLN(zero)(a :-&gt; (l :-&gt; (n :-&gt; (succ(n))))) 
 
-size: Term = DataCons(
-  SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5acef26c,
-  DataCons(
-    LambdaFixed(
-      SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;A&quot;), 0)),
-      LambdaFixed(
-        SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;List(A)&quot;), 0)),
-        LambdaFixed(
-          SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-          SymbObj(
-            ApplnSym(
-              SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-              SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))
-            ),
-            SymbTyp(Name(&quot;Nat&quot;), 0)
-          )
-        )
-      )
-    ),
-...
+size: Term = rec(List(A))(Nat)(0)((_ :  A) ↦ ((_ :  List(A)) ↦ ((n :  Nat) ↦ ((succ) (n)))))
 
 scala&gt; size(nil) 
 
-res62: Term = SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
+res64: Term = 0
 
 scala&gt; size(cons(a)(cons(a)(nil))) 
 
-res63: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-      ),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    )
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res65: Term = (succ) ((succ) (0))
 </code></pre>
 <p>Another interesting inductive type is a binary rooted tree. This is our first description.
 We define the number of vertices recursively on this.</p>
 <pre><code class="language-scala">scala&gt; val T = &quot;Tree&quot; :: Type 
 
-T: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;Tree&quot;), 0)
+T: Typ[Term] with Subs[Typ[Term]] = Tree
 
 scala&gt; val TInd = (&quot;leaf&quot; ::: T) |: (&quot;node&quot; ::: T --&gt;&gt;: T --&gt;&gt;: T) =: T 
 
 TInd: ConstructorSeq.Cons[Term, Term] = Cons(
-  ConstructorDefn(IdW(), SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;Tree&quot;), 0)), SymbTyp(Name(&quot;Tree&quot;), 0)),
-  Cons(
-    ConstructorDefn(
-      FuncPtn(IdIterPtn(), FuncPtn(IdIterPtn(), IdW())),
-      SymbolicFunc(Name(&quot;node&quot;), SymbTyp(Name(&quot;Tree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), SymbTyp(Name(&quot;Tree&quot;), 0))),
-      SymbTyp(Name(&quot;Tree&quot;), 0)
-    ),
-    Empty(SymbTyp(Name(&quot;Tree&quot;), 0))
-  )
+  ConstructorDefn(IdW(), leaf, Tree),
+  Cons(ConstructorDefn(FuncPtn(IdIterPtn(), FuncPtn(IdIterPtn(), IdW())), node, Tree), Empty(Tree))
 )
 
 scala&gt; val List(leaf, node) = TInd.intros 
 
-leaf: Term = SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;Tree&quot;), 0))
-node: Term = SymbolicFunc(Name(&quot;node&quot;), SymbTyp(Name(&quot;Tree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), SymbTyp(Name(&quot;Tree&quot;), 0)))
+leaf: Term = leaf
+node: Term = node
 
 scala&gt; import Fold._ 
 
@@ -728,158 +392,49 @@ import Fold._
 
 scala&gt; val t = node(node(leaf)(node(leaf)(leaf)))(node(leaf)(leaf)) 
 
-t: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;node&quot;), SymbTyp(Name(&quot;Tree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), SymbTyp(Name(&quot;Tree&quot;), 0))),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;node&quot;), SymbTyp(Name(&quot;Tree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), SymbTyp(Name(&quot;Tree&quot;), 0))),
-                SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;Tree&quot;), 0))
-              ),
-              SymbTyp(Name(&quot;Tree&quot;), 0),
-              SymbTyp(Name(&quot;Tree&quot;), 0)
-            ),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(
-                  ApplnSym(
-                    SymbolicFunc(
-...
+t: Term = ((node) (((node) (leaf)) (((node) (leaf)) (leaf)))) (((node) (leaf)) (leaf))
 
 scala&gt;  
 
 scala&gt; val recTN = TInd.rec(Nat) 
 
-recTN: TInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),leaf,Tree)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    SymbolicFunc(
-      RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node,Tree)),
-      SymbTyp(Name(&quot;Tree&quot;), 0),
-      FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))))
-    ),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),leaf,Tree)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@7fc07559,
-      DataCons(
-        SymbolicFunc(
-          RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node,Tree)),
-          SymbTyp(Name(&quot;Tree&quot;), 0),
-          FuncTyp(
-            SymbTyp(Name(&quot;Nat&quot;), 0),
-            FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)))
-          )
-        ),
-...
+recTN: TInd.RecType = (RecSym(ConstructorDefn(IdW(),leaf,Tree)) :  Nat) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node,Tree)) :  (Tree) → ((Nat) → ((Tree) → ((Nat) → (Nat))))) ↦ (rec(Tree)(Nat)(RecSym(ConstructorDefn(IdW(),leaf,Tree)))(RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),FuncPtn(IdIterPtn(),IdW())),node,Tree)))))
 
 scala&gt; recTN.typ 
 
-res70: Typ[Func[TInd.cons.pattern.RecDataType, TInd.tail.RecType]] = FuncTyp(
-  SymbTyp(Name(&quot;Nat&quot;), 0),
-  FuncTyp(
-    FuncTyp(
-      SymbTyp(Name(&quot;Tree&quot;), 0),
-      FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))))
-    ),
-    FuncTyp(SymbTyp(Name(&quot;Tree&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-  )
-)
+res72: Typ[Func[TInd.cons.pattern.RecDataType, TInd.tail.RecType]] = (Nat) → (((Tree) → ((Nat) → ((Tree) → ((Nat) → (Nat))))) → ((Tree) → (Nat)))
 
 scala&gt;  
 
 scala&gt; val t1 = &quot;t1&quot; :: T 
 
-t1: Term with Subs[Term] = SymbObj(Name(&quot;t1&quot;), SymbTyp(Name(&quot;Tree&quot;), 0))
+t1: Term with Subs[Term] = t1
 
 scala&gt; val t2 = &quot;t2&quot; :: T 
 
-t2: Term with Subs[Term] = SymbObj(Name(&quot;t2&quot;), SymbTyp(Name(&quot;Tree&quot;), 0))
+t2: Term with Subs[Term] = t2
 
 scala&gt;  
 
 scala&gt; val vertices = recTN(one)(t1 :-&gt; (m :-&gt;( t2 :-&gt; (n :-&gt; (succ(add(n)(m))  ) ) ) ) ) 
 
-vertices: Term = DataCons(
-  SymbObj(
-    ApplnSym(
-      SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-    ),
-    SymbTyp(Name(&quot;Nat&quot;), 0)
-  ),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@7fc07559,
-  DataCons(
-    LambdaFixed(
-      SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Tree&quot;), 0)),
-      LambdaFixed(
-        SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0)),
-        LambdaFixed(
-          SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Tree&quot;), 0)),
-          LambdaFixed(
-            SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-...
+vertices: Term = rec(Tree)(Nat)((succ) (0))((_ :  Tree) ↦ ((m :  Nat) ↦ ((_ :  Tree) ↦ ((n :  Nat) ↦ ((succ) (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (n)) (m)))))))
 
 scala&gt;  
 
 scala&gt; vertices(t) 
 
-res74: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                SymbObj(
-                  ApplnSym(
-                    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                    SymbObj(
-                      ApplnSym(
-                        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                        SymbObj(
-                          ApplnSym(
-...
+res76: Term = (succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) (0)))))))))
 
 scala&gt;  
 
 scala&gt; val nine = succ(add(four)(four)) 
 
-nine: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                SymbObj(
-                  ApplnSym(
-                    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                    SymbObj(
-                      ApplnSym(
-                        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                        SymbObj(
-                          ApplnSym(
-...
+nine: Term = (succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) (0)))))))))
 
 scala&gt; vertices(t) == nine 
 
-res76: Boolean = true
+res78: Boolean = true
 
 scala&gt; assert(vertices(t) == nine)
 </code></pre>
@@ -890,216 +445,74 @@ The data for recursively defining <code>f</code> is also more complex.
 We define the number of leaves in such a tree recursively.</p>
 <pre><code class="language-scala">scala&gt; val BT = &quot;BinTree&quot; :: Type 
 
-BT: Typ[Term] with Subs[Typ[Term]] = SymbTyp(Name(&quot;BinTree&quot;), 0)
+BT: Typ[Term] with Subs[Typ[Term]] = BinTree
 
 scala&gt; val BTInd = (&quot;leaf&quot; ::: BT) |: (&quot;node&quot; ::: (Bool -|&gt;: BT) --&gt;&gt;: BT )  =: BT 
 
 BTInd: ConstructorSeq.Cons[Term, Term] = Cons(
-  ConstructorDefn(IdW(), SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;BinTree&quot;), 0)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
+  ConstructorDefn(IdW(), leaf, BinTree),
   Cons(
-    ConstructorDefn(
-      FuncPtn(FuncIterPtn(SymbTyp(Name(&quot;Boolean&quot;), 0), IdIterPtn()), IdW()),
-      SymbolicFunc(Name(&quot;node&quot;), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-      SymbTyp(Name(&quot;BinTree&quot;), 0)
-    ),
-    Empty(SymbTyp(Name(&quot;BinTree&quot;), 0))
+    ConstructorDefn(FuncPtn(FuncIterPtn(Boolean, IdIterPtn()), IdW()), node, BinTree),
+    Empty(BinTree)
   )
 )
 
 scala&gt; val List(leaf, node) = BTInd.intros 
 
-leaf: Term = SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;BinTree&quot;), 0))
-node: Term = SymbolicFunc(
-  Name(&quot;node&quot;),
-  FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-  SymbTyp(Name(&quot;BinTree&quot;), 0)
-)
+leaf: Term = leaf
+node: Term = node
 
 scala&gt; val recBTN = BTInd.rec(Nat) 
 
-recBTN: BTInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),leaf,BinTree)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    SymbolicFunc(
-      RecSym(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean,IdIterPtn()),IdW()),node,BinTree)),
-      FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-      FuncTyp(FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)), SymbTyp(Name(&quot;Nat&quot;), 0))
-    ),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),leaf,BinTree)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@6bfaa5a3,
-      DataCons(
-        SymbolicFunc(
-          RecSym(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean,IdIterPtn()),IdW()),node,BinTree)),
-          FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-          FuncTyp(FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)), SymbTyp(Name(&quot;Nat&quot;), 0))
-        ),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@72c6a5e3,
-        Empty(SymbTyp(Name(&quot;BinTree&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-...
+recBTN: BTInd.RecType = (RecSym(ConstructorDefn(IdW(),leaf,BinTree)) :  Nat) ↦ ((RecSym(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean,IdIterPtn()),IdW()),node,BinTree)) :  ((Boolean) → (BinTree)) → (((Boolean) → (Nat)) → (Nat))) ↦ (rec(BinTree)(Nat)(RecSym(ConstructorDefn(IdW(),leaf,BinTree)))(RecSym(ConstructorDefn(FuncPtn(FuncIterPtn(Boolean,IdIterPtn()),IdW()),node,BinTree)))))
 
 scala&gt; recBTN.typ 
 
-res82: Typ[Func[BTInd.cons.pattern.RecDataType, BTInd.tail.RecType]] = FuncTyp(
-  SymbTyp(Name(&quot;Nat&quot;), 0),
-  FuncTyp(
-    FuncTyp(
-      FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-      FuncTyp(FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)), SymbTyp(Name(&quot;Nat&quot;), 0))
-    ),
-    FuncTyp(SymbTyp(Name(&quot;BinTree&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-  )
-)
+res84: Typ[Func[BTInd.cons.pattern.RecDataType, BTInd.tail.RecType]] = (Nat) → ((((Boolean) → (BinTree)) → (((Boolean) → (Nat)) → (Nat))) → ((BinTree) → (Nat)))
 
 scala&gt; val f = &quot;f&quot; :: Bool -&gt;: BT 
 
-f: Func[Term, Term] with Subs[Func[Term, Term]] = SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0))
+f: Func[Term, Term] with Subs[Func[Term, Term]] = f
 
 scala&gt; val g = &quot;g&quot; :: Bool -&gt;: Nat 
 
-g: Func[Term, Term] with Subs[Func[Term, Term]] = SymbolicFunc(Name(&quot;g&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
+g: Func[Term, Term] with Subs[Func[Term, Term]] = g
 
 scala&gt; val leaves = recBTN(one)(f :-&gt; (g :-&gt; (add(g(ff))(g(tt))) )) 
 
-leaves: Term = DataCons(
-  SymbObj(
-    ApplnSym(
-      SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-    ),
-    SymbTyp(Name(&quot;Nat&quot;), 0)
-  ),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@6bfaa5a3,
-  DataCons(
-    LambdaFixed(
-      SymbolicFunc(Name(&quot;_&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-      LambdaFixed(
-        SymbolicFunc(g, SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(
-              ApplnSym(
-                DataCons(
-                  LambdaFixed(SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0)), SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0))),
-...
+leaves: Term = rec(BinTree)(Nat)((succ) (0))((_ :  (Boolean) → (BinTree)) ↦ ((g :  (Boolean) → (Nat)) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) ((g) (false))) ((g) (true)))))
 
 scala&gt; leaves(leaf) 
 
-res86: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res88: Term = (succ) (0)
 
 scala&gt; val b = &quot;b&quot; :: Bool 
 
-b: Term with Subs[Term] = SymbObj(Name(&quot;b&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0))
+b: Term with Subs[Term] = b
 
 scala&gt; val t = node(b :-&gt; leaf) 
 
-t: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;node&quot;), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-    LambdaFixed(SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)), SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;BinTree&quot;), 0)))
-  ),
-  SymbTyp(Name(&quot;BinTree&quot;), 0)
-)
+t: Term = (node) ((_ :  Boolean) ↦ (leaf))
 
 scala&gt; val recBBT = BoolInd.rec(BT) 
 
-recBBT: BoolInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-  LambdaFixed(
-    SymbObj(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),true,Boolean)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-      DataCons(
-        SymbObj(RecSym(ConstructorDefn(IdW(),false,Boolean)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-        Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-      ),
-      provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-    )
-  )
-)
+recBBT: BoolInd.RecType = (RecSym(ConstructorDefn(IdW(),true,Boolean)) :  BinTree) ↦ ((RecSym(ConstructorDefn(IdW(),false,Boolean)) :  BinTree) ↦ (rec(Boolean)(BinTree)(RecSym(ConstructorDefn(IdW(),true,Boolean)))(RecSym(ConstructorDefn(IdW(),false,Boolean)))))
 
 scala&gt; recBBT.typ 
 
-res90: Typ[Func[BoolInd.cons.pattern.RecDataType, BoolInd.tail.RecType]] = FuncTyp(
-  SymbTyp(Name(&quot;BinTree&quot;), 0),
-  FuncTyp(SymbTyp(Name(&quot;BinTree&quot;), 0), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)))
-)
+res92: Typ[Func[BoolInd.cons.pattern.RecDataType, BoolInd.tail.RecType]] = (BinTree) → ((BinTree) → ((Boolean) → (BinTree)))
 
 scala&gt; val ttn = recBBT(leaf)(t) 
 
-ttn: Term = DataCons(
-  SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-  DataCons(
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;node&quot;), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-        LambdaFixed(SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)), SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;BinTree&quot;), 0)))
-      ),
-      SymbTyp(Name(&quot;BinTree&quot;), 0)
-    ),
-    provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-    Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-    provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-  ),
-  provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-)
+ttn: Term = rec(Boolean)(BinTree)(leaf)((node) ((_ :  Boolean) ↦ (leaf)))
 
 scala&gt; val t2 = node(ttn) 
 
-t2: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;node&quot;), FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-    DataCons(
-      SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@2eed0b56,
-      DataCons(
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(
-              Name(&quot;node&quot;),
-              FuncTyp(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-              SymbTyp(Name(&quot;BinTree&quot;), 0)
-            ),
-            LambdaFixed(SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Boolean&quot;), 0)), SymbObj(Name(&quot;leaf&quot;), SymbTyp(Name(&quot;BinTree&quot;), 0)))
-          ),
-          SymbTyp(Name(&quot;BinTree&quot;), 0)
-        ),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@3091f181,
-        Empty(SymbTyp(Name(&quot;Boolean&quot;), 0), SymbTyp(Name(&quot;BinTree&quot;), 0)),
-...
+t2: Term = (node) (rec(Boolean)(BinTree)(leaf)((node) ((_ :  Boolean) ↦ (leaf))))
 
 scala&gt; leaves(t2) 
 
-res93: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    )
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res95: Term = (succ) ((succ) ((succ) (0)))
 </code></pre>
 <p>As some expresssions are very long, we import a method &quot;FansiShow&quot; that prints in a more concise way.
 In the REPL, this gives coloured output using ANSI strings.</p>
@@ -1110,151 +523,45 @@ import FansiShow._
 <p>We define the double of a number recursively, mainly for use later. Observe the partial simplification.</p>
 <pre><code class="language-scala">scala&gt; val recNN = NatInd.rec(Nat) 
 
-recNN: NatInd.RecType = LambdaFixed(
-  SymbObj(RecSym(ConstructorDefn(IdW(),0,Nat)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    SymbolicFunc(
-      RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)),
-      SymbTyp(Name(&quot;Nat&quot;), 0),
-      FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-    ),
-    DataCons(
-      SymbObj(RecSym(ConstructorDefn(IdW(),0,Nat)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-      DataCons(
-        SymbolicFunc(
-          RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)),
-          SymbTyp(Name(&quot;Nat&quot;), 0),
-          FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-        ),
-        provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@427ca858,
-        Empty(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        provingground.induction.RecursiveDefinition$DataCons$$$Lambda$3255/270592835@1922b262
-...
+recNN: NatInd.RecType = (RecSym(ConstructorDefn(IdW(),0,Nat)) :  Nat) ↦ ((RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  (Nat) → ((Nat) → (Nat))) ↦ (rec(Nat)(Nat)(RecSym(ConstructorDefn(IdW(),0,Nat)))(RecSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
 
 scala&gt; val double = recNN(zero)(m :-&gt; (n :-&gt; (succ(succ(n))))) 
 
-double: Term = DataCons(
-  SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-  DataCons(
-    LambdaFixed(
-      SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-      LambdaFixed(
-        SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))
-              ),
-              SymbTyp(Name(&quot;Nat&quot;), 0)
-            )
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-...
+double: Term = rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))
 
 scala&gt; double(two) == four 
 
-res97: Boolean = true
+res99: Boolean = true
 
 scala&gt; assert(double(two) == four) 
 
 
 scala&gt; double(succ(n)) 
 
-res99: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            DataCons(
-              SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-              provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-              DataCons(
-                LambdaFixed(
-                  SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                  LambdaFixed(
-                    SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-                    SymbObj(
-                      ApplnSym(
-                        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                        SymbObj(
-...
+res101: Term = (succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n)))
 </code></pre>
 <p>All our recursive definitions so far of functions <code>f</code> have ignored <code>n</code> in defining <code>f(succ(n))</code>,
 and are only in terms of <code>f(n)</code>. We see a more complex definition, the sum of numbers up to <code>n</code>.
 Note that we are defining <code>sumTo(succ(m))</code> in terms of <code>m</code> and <code>n = sumTo(m)</code>, so this is <code>add(succ(m))(n)</code></p>
 <pre><code class="language-scala">scala&gt; val sumTo = recNN(zero)(m :-&gt; (n :-&gt; (add(succ(m))(n)))) 
 
-sumTo: Term = DataCons(
-  SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-  DataCons(
-    LambdaFixed(
-      SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0)),
-      LambdaFixed(
-        SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(
-                  ApplnSym(
-                    DataCons(
-                      LambdaFixed(SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0)), SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0))),
-                      provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-                      DataCons(
-                        LambdaFixed(
-...
+sumTo: Term = rec(Nat)(Nat)(0)((m :  Nat) ↦ ((n :  Nat) ↦ ((succ) (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (n)))))
 
 scala&gt; sumTo(one) 
 
-res101: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res103: Term = (succ) (0)
 
 scala&gt; sumTo(three).fansi 
 
-res102: String = &quot;succ(succ(succ(succ(succ(succ(0))))))&quot;
+res104: String = &quot;succ(succ(succ(succ(succ(succ(0))))))&quot;
 
 scala&gt; val ten = succ(nine) 
 
-ten: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                SymbObj(
-                  ApplnSym(
-                    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                    SymbObj(
-                      ApplnSym(
-                        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                        SymbObj(
-                          ApplnSym(
-...
+ten: Term = (succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) ((succ) (0))))))))))
 
 scala&gt; sumTo(four) == ten 
 
-res104: Boolean = true
+res106: Boolean = true
 
 scala&gt; assert(sumTo(four) == ten)
 </code></pre>
@@ -1265,37 +572,15 @@ We see an example of such a definition.</p>
 Just like actual vectors, we have <code>nil</code> and <code>cons</code> introduction rules, but here they are purely formal.</p>
 <pre><code class="language-scala">scala&gt; val V = &quot;Vec&quot; :: Nat -&gt;: Type 
 
-V: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0))
+V: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = Vec
 
 scala&gt; val nilv = &quot;nil&quot; :: V(zero) 
 
-nilv: Term with Subs[Term] = SymbObj(
-  Name(&quot;nil&quot;),
-  SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))), 0)
-)
+nilv: Term with Subs[Term] = nil
 
 scala&gt; val consv = &quot;cons&quot; :: n ~&gt;: (Nat -&gt;: V(n) -&gt;: V(succ(n))) 
 
-consv: FuncLike[Term with Subs[Term], Func[Term, Func[Term, Term]]] with Subs[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Term]]]] = PiSymbolicFunc(
-  Name(&quot;cons&quot;),
-  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  FuncTyp(
-    SymbTyp(Name(&quot;Nat&quot;), 0),
-    FuncTyp(
-      SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))), 0),
-      SymbTyp(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-          SymbObj(
-            ApplnSym(
-              SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-              SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))
-            ),
-            SymbTyp(Name(&quot;Nat&quot;), 0)
-          )
-        ),
-        0
-...
+consv: FuncLike[Term with Subs[Term], Func[Term, Func[Term, Term]]] with Subs[FuncLike[Term with Subs[Term], Func[Term, Func[Term, Term]]]] = cons
 </code></pre>
 <p>We have an induction function taking data for the cases and returning a dependent function.
 This is defined by giving data for cases corresponding to the constructors.
@@ -1307,99 +592,33 @@ Namely to define the dependent function <code>f</code>, we must specify</p>
 <p>We define inductively a countdown function, giving the vector counting down from <code>n</code>.</p>
 <pre><code class="language-scala">scala&gt; val indNV = NatInd.induc(V) 
 
-indNV: NatInd.InducType = LambdaFixed(
-  SymbObj(
-    InducSym(ConstructorDefn(IdW(),0,Nat)),
-    SymbTyp(
-      ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      0
-    )
-  ),
-  LambdaFixed(
-    PiSymbolicFunc(
-      InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)),
-      SymbObj($jccfc, SymbTyp(Name(&quot;Nat&quot;), 0)),
-      FuncTyp(
-        SymbTyp(
-          ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj($jccfc, SymbTyp(Name(&quot;Nat&quot;), 0))),
-          0
-        ),
-        SymbTyp(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-...
+indNV: NatInd.InducType = (InducSym(ConstructorDefn(IdW(),0,Nat)) :  (Vec) (0)) ↦ ((InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)) :  ($fmsr : Nat ) ~&gt; (((Vec) ($fmsr)) → ((Vec) ((succ) ($fmsr))))) ↦ (ind(Nat)(Vec)(InducSym(ConstructorDefn(IdW(),0,Nat)))(InducSym(ConstructorDefn(FuncPtn(IdIterPtn(),IdW()),succ,Nat)))))
 
 scala&gt;  
 
 scala&gt; val v = &quot;v_m&quot; :: V(m) 
 
-v: Term with Subs[Term] = SymbObj(
-  Name(&quot;v_m&quot;),
-  SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;m&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))), 0)
-)
+v: Term with Subs[Term] = v_m
 
 scala&gt; val countdown = indNV(nilv)(m :~&gt; (v :-&gt; consv(m)(succ(m))(v)) ) 
 
-countdown: Term = DataCons(
-  SymbObj(
-    Name(&quot;nil&quot;),
-    SymbTyp(
-      ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      0
-    )
-  ),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3130/1826048009@7f19b6ed,
-  DataCons(
-    LambdaTerm(
-      SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0)),
-      LambdaFixed(
-        SymbObj(
-          v_m,
-          SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(m, SymbTyp(Name(&quot;Nat&quot;), 0))), 0)
-        ),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(
-...
+countdown: Term = ind(Nat)(Vec)(nil)((m :  Nat) ↦ ((v_m :  (Vec) (m)) ↦ ((((cons) (m)) ((succ) (m))) (v_m))))
 
 scala&gt; countdown(zero) 
 
-res112: Term = SymbObj(
-  Name(&quot;nil&quot;),
-  SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))), 0)
-)
+res114: Term = nil
 
 scala&gt; countdown(one) 
 
-res113: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(
-      ApplnSym(
-        SymbolicFunc(
-          ApplnSym(
-            PiSymbolicFunc(
-              Name(&quot;cons&quot;),
-              SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-              FuncTyp(
-                SymbTyp(Name(&quot;Nat&quot;), 0),
-                FuncTyp(
-                  SymbTyp(
-                    ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))),
-                    0
-                  ),
-                  SymbTyp(
-                    ApplnSym(
-                      SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-                      SymbObj(
-...
+res115: Term = (((cons) (0)) ((succ) (0))) (nil)
 
 scala&gt; countdown(one).fansi 
 
-res114: String = &quot;cons(0)(succ(0))(nil)&quot;
+res116: String = &quot;cons(0)(succ(0))(nil)&quot;
 
 scala&gt; countdown(three).fansi 
 
-res115: String = &quot;cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))&quot;
+res117: String = &quot;cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))&quot;
 
 scala&gt; assert(countdown(three) ==
          consv(two)(three)(
@@ -1409,11 +628,11 @@ scala&gt; assert(countdown(three) ==
 
 scala&gt; countdown(zero) == nilv 
 
-res117: Boolean = true
+res119: Boolean = true
 
 scala&gt; countdown(nine).fansi 
 
-res118: String = &quot;cons(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(succ(succ(succ(succ(succ(succ(succ(succ(succ(0))))))))))(cons(succ(succ(succ(succ(succ(succ(succ(0))))))))(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(cons(succ(succ(succ(succ(succ(succ(0)))))))(succ(succ(succ(succ(succ(succ(succ(0))))))))(cons(succ(succ(succ(succ(succ(0))))))(succ(succ(succ(succ(succ(succ(0)))))))(cons(succ(succ(succ(succ(0)))))(succ(succ(succ(succ(succ(0))))))(cons(succ(succ(succ(0))))(succ(succ(succ(succ(0)))))(cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))))))))&quot;
+res120: String = &quot;cons(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(succ(succ(succ(succ(succ(succ(succ(succ(succ(0))))))))))(cons(succ(succ(succ(succ(succ(succ(succ(0))))))))(succ(succ(succ(succ(succ(succ(succ(succ(0)))))))))(cons(succ(succ(succ(succ(succ(succ(0)))))))(succ(succ(succ(succ(succ(succ(succ(0))))))))(cons(succ(succ(succ(succ(succ(0))))))(succ(succ(succ(succ(succ(succ(0)))))))(cons(succ(succ(succ(succ(0)))))(succ(succ(succ(succ(succ(0))))))(cons(succ(succ(succ(0))))(succ(succ(succ(succ(0)))))(cons(succ(succ(0)))(succ(succ(succ(0))))(cons(succ(0))(succ(succ(0)))(cons(0)(succ(0))(nil)))))))))&quot;
 </code></pre>
 <p>We now illustrate a simple instance of using <em>propositions as proofs</em>.
 The type family <code>isEven : Nat -&gt;: Type</code> gives a type representing whether a natural number is even.
@@ -1421,90 +640,24 @@ This is an inductive type, but here we simply specify the type by  its introduct
 Such terms introduced by specifying types are logically <em>axioms</em>.</p>
 <pre><code class="language-scala">scala&gt; val isEven = &quot;isEven&quot; :: Nat -&gt;: Type 
 
-isEven: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0))
+isEven: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = isEven
 
 scala&gt; val zeroEven = &quot;0even&quot; :: isEven(zero) 
 
-zeroEven: Term with Subs[Term] = SymbObj(
-  Name(&quot;0even&quot;),
-  SymbTyp(
-    ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-    0
-  )
-)
+zeroEven: Term with Subs[Term] = 0even
 
 scala&gt; val plusTwoEven = &quot;_+2even&quot; :: (n ~&gt;: (isEven(n) -&gt;: isEven(succ(succ(n))))) 
 
-plusTwoEven: FuncLike[Term with Subs[Term], Func[Term, Term]] with Subs[FuncLike[Term with Subs[Term], Func[Term, Term]]] = PiSymbolicFunc(
-  Name(&quot;_+2even&quot;),
-  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  FuncTyp(
-    SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))), 0),
-    SymbTyp(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))
-              ),
-              SymbTyp(Name(&quot;Nat&quot;), 0)
-            )
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-...
+plusTwoEven: FuncLike[Term with Subs[Term], Func[Term, Term]] with Subs[FuncLike[Term with Subs[Term], Func[Term, Term]]] = _+2even
 </code></pre>
 <p>One can directly see that two and four are even.</p>
 <pre><code class="language-scala">scala&gt; val TwoEven = plusTwoEven(zero)(zeroEven)  !: isEven(two) 
 
-TwoEven: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(
-      ApplnSym(
-        PiSymbolicFunc(
-          Name(&quot;_+2even&quot;),
-          SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-          FuncTyp(
-            SymbTyp(
-              ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))),
-              0
-            ),
-            SymbTyp(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-                SymbObj(
-                  ApplnSym(
-                    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                    SymbObj(
-                      ApplnSym(
-...
+TwoEven: Term = ((_+2even) (0)) (0even)
 
 scala&gt; val FourEven = plusTwoEven(two)(TwoEven) !: isEven(four) 
 
-FourEven: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(
-      ApplnSym(
-        PiSymbolicFunc(
-          Name(&quot;_+2even&quot;),
-          SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-          FuncTyp(
-            SymbTyp(
-              ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))),
-              0
-            ),
-            SymbTyp(
-              ApplnSym(
-                SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-                SymbObj(
-                  ApplnSym(
-                    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                    SymbObj(
-                      ApplnSym(
-...
+FourEven: Term = ((_+2even) ((succ) ((succ) (0)))) (((_+2even) (0)) (0even))
 </code></pre>
 <p>Here is a simple proof by induction. We prove the statement that the <em>double</em> of every natural number is even.
 The <code>induc</code> method gives a dependent function, which takes the base case and the induction step as arguments.
@@ -1513,51 +666,11 @@ The <em>induction step</em> for <code>n</code> is a term of type <code>isEven(do
 the <em>induction hypothesis</em>. Note that the induction hypothesis is a term of type <code>isEven(double(n))</code>.</p>
 <pre><code class="language-scala">scala&gt; val thmDoubleEven = n ~&gt;: isEven(double(n)) 
 
-thmDoubleEven: GenFuncTyp[Term with Subs[Term], Term] = PiDefn(
-  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  SymbTyp(
-    ApplnSym(
-      SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-      SymbObj(
-        ApplnSym(
-          DataCons(
-            SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-            DataCons(
-              LambdaFixed(
-                SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                LambdaFixed(
-                  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-                  SymbObj(
-                    ApplnSym(
-                      SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                      SymbObj(
-                        ApplnSym(
-...
+thmDoubleEven: GenFuncTyp[Term with Subs[Term], Term] = (n : Nat ) ~&gt; ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n)))
 
 scala&gt; val hyp = &quot;isEven(double(n))&quot; :: isEven(double(n)) 
 
-hyp: Term with Subs[Term] = SymbObj(
-  Name(&quot;isEven(double(n))&quot;),
-  SymbTyp(
-    ApplnSym(
-      SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-      SymbObj(
-        ApplnSym(
-          DataCons(
-            SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3129/69688141@5643c439,
-            DataCons(
-              LambdaFixed(
-                SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                LambdaFixed(
-                  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-                  SymbObj(
-                    ApplnSym(
-                      SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-                      SymbObj(
-                        ApplnSym(
-...
+hyp: Term with Subs[Term] = isEven(double(n))
 
 scala&gt; val pfDoubleEven =
          NatInd.induc(n :-&gt; isEven(double(n))){
@@ -1569,313 +682,85 @@ scala&gt; val pfDoubleEven =
                  )
            } !: thmDoubleEven 
 
-pfDoubleEven: FuncLike[Term with Subs[Term], Term] = DataCons(
-  SymbObj(
-    Name(&quot;0even&quot;),
-    SymbTyp(
-      ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      0
-    )
-  ),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3130/1826048009@7f19b6ed,
-  DataCons(
-    LambdaTerm(
-      SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-      LambdaFixed(
-        SymbObj(
-          isEven(double(n)),
-          SymbTyp(
-            ApplnSym(
-              SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-              SymbObj(
-                ApplnSym(
-...
+pfDoubleEven: FuncLike[Term with Subs[Term], Term] = ind(Nat)((n :  Nat) ↦ ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))))(0even)((n :  Nat) ↦ ((isEven(double(n)) :  (isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))) ↦ (((_+2even) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))) (isEven(double(n))))))
 </code></pre>
 <p>We next prove a more interesting statement, namely that for any natural number <code>n</code>, one of <code>n</code> and <code>n+1</code> is even.</p>
 <pre><code class="language-scala">scala&gt; val succEven = n :-&gt; (isEven(n) || isEven(succ(n))) 
 
-succEven: Func[Term with Subs[Term], PlusTyp[Term, Term]] = LambdaFixed(
-  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  PlusTyp(
-    SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))), 0),
-    SymbTyp(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-      0
-    )
-  )
-)
+succEven: Func[Term with Subs[Term], PlusTyp[Term, Term]] = (n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n))))
 
 scala&gt;  
 
 scala&gt; val base = succEven(zero).incl1(zeroEven) !: succEven(zero) 
 
-base: Term = FirstIncl(
-  PlusTyp(
-    SymbTyp(
-      ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      0
-    ),
-    SymbTyp(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-      0
-    )
-  ),
-...
+base: Term = FirstIncl(PlusTyp((isEven) (0),(isEven) ((succ) (0))),0even)
 
 scala&gt;  
 
 scala&gt; val thmSuccEven = n ~&gt;: (succEven(n)) 
 
-thmSuccEven: GenFuncTyp[Term with Subs[Term], Term] = PiDefn(
-  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  PlusTyp(
-    SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))), 0),
-    SymbTyp(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-      0
-    )
-  )
-)
+thmSuccEven: GenFuncTyp[Term with Subs[Term], Term] = (n : Nat ) ~&gt; (PlusTyp((isEven) (n),(isEven) ((succ) (n))))
 
 scala&gt;  
 
 scala&gt; val hyp1 = &quot;n-is-Even&quot; :: isEven(n) 
 
-hyp1: Term with Subs[Term] = SymbObj(
-  Name(&quot;n-is-Even&quot;),
-  SymbTyp(
-    ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-    0
-  )
-)
+hyp1: Term with Subs[Term] = n-is-Even
 
 scala&gt; val hyp2 = &quot;(n+1)-is-Even&quot; :: isEven(succ(n)) 
 
-hyp2: Term with Subs[Term] = SymbObj(
-  Name(&quot;(n+1)-is-Even&quot;),
-  SymbTyp(
-    ApplnSym(
-      SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-      SymbObj(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-          SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-        ),
-        SymbTyp(Name(&quot;Nat&quot;), 0)
-      )
-    ),
-    0
-  )
-)
+hyp2: Term with Subs[Term] = (n+1)-is-Even
 
 scala&gt;  
 
 scala&gt; 
 val step = (succEven(n).rec(succEven(succ(n)))){hyp1 :-&gt; (succEven(succ(n)).incl2(plusTwoEven(n)(hyp1)))}{hyp2 :-&gt; (succEven(succ(n)).incl1((hyp2)))} 
 
-step: Func[Term, Term] = RecFn(
-  SymbTyp(
-    ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-    0
-  ),
-  SymbTyp(
-    ApplnSym(
-      SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-      SymbObj(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-          SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-        ),
-        SymbTyp(Name(&quot;Nat&quot;), 0)
-      )
-    ),
-    0
-  ),
-  PlusTyp(
-    SymbTyp(
-...
+step: Func[Term, Term] = rec(PlusTyp((isEven) (n),(isEven) ((succ) (n))))(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))))((n-is-Even :  (isEven) (n)) ↦ (ScndIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),((_+2even) (n)) (n-is-Even))))(((n+1)-is-Even :  (isEven) ((succ) (n))) ↦ (FirstIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),(n+1)-is-Even)))
 
 scala&gt;  
 
 scala&gt; val pf = NatInd.induc(succEven)(base)(n :~&gt; step) !: thmSuccEven 
 
-pf: FuncLike[Term with Subs[Term], Term] = DataCons(
-  FirstIncl(
-    PlusTyp(
-      SymbTyp(
-        ApplnSym(SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-        0
-      ),
-      SymbTyp(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;isEven&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-          SymbObj(
-            ApplnSym(
-              SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-              SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-            ),
-            SymbTyp(Name(&quot;Nat&quot;), 0)
-          )
-        ),
-        0
-      )
-...
+pf: FuncLike[Term with Subs[Term], Term] = ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(FirstIncl(PlusTyp((isEven) (0),(isEven) ((succ) (0))),0even))((n :  Nat) ↦ (rec(PlusTyp((isEven) (n),(isEven) ((succ) (n))))(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))))((n-is-Even :  (isEven) (n)) ↦ (ScndIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),((_+2even) (n)) (n-is-Even))))(((n+1)-is-Even :  (isEven) ((succ) (n))) ↦ (FirstIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),(n+1)-is-Even)))))
 </code></pre>
 <p>We now prove a result that has been a goal, namely that for a function on Natural numbers if <code>f(n)=f(n+1)</code> for all n,
 <code>f</code> is constant.</p>
 <pre><code class="language-scala">scala&gt; val f = &quot;f&quot; :: Nat -&gt;: A 
 
-f: Func[Term, Term] with Subs[Func[Term, Term]] = SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0))
+f: Func[Term, Term] with Subs[Func[Term, Term]] = f
 
 scala&gt; val ass = &quot;assumption&quot; :: n ~&gt;: (f(n) =:= f(succ(n))) 
 
-ass: FuncLike[Term with Subs[Term], Equality[Term]] with Subs[FuncLike[Term with Subs[Term], Equality[Term]]] = PiSymbolicFunc(
-  Name(&quot;assumption&quot;),
-  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  IdentityTyp(
-    SymbTyp(Name(&quot;A&quot;), 0),
-    SymbObj(
-      ApplnSym(SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))),
-      SymbTyp(Name(&quot;A&quot;), 0)
-    ),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-...
+ass: FuncLike[Term with Subs[Term], Equality[Term]] with Subs[FuncLike[Term with Subs[Term], Equality[Term]]] = assumption
 
 scala&gt;  
 
 scala&gt; val claim = n :-&gt; (f(zero) =:= f(n)) 
 
-claim: Func[Term with Subs[Term], IdentityTyp[Term]] = LambdaFixed(
-  SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  IdentityTyp(
-    SymbTyp(Name(&quot;A&quot;), 0),
-    SymbObj(
-      ApplnSym(SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      SymbTyp(Name(&quot;A&quot;), 0)
-    ),
-    SymbObj(
-      ApplnSym(SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0))),
-      SymbTyp(Name(&quot;A&quot;), 0)
-    )
-  )
-)
+claim: Func[Term with Subs[Term], IdentityTyp[Term]] = (n :  Nat) ↦ ((f) (0) = (f) (n))
 
 scala&gt;  
 
 scala&gt; val base = f(zero).refl 
 
-base: Refl[Term] = Refl(
-  SymbTyp(Name(&quot;A&quot;), 0),
-  SymbObj(
-    ApplnSym(SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-    SymbTyp(Name(&quot;A&quot;), 0)
-  )
-)
+base: Refl[Term] = Refl(A,(f) (0))
 
 scala&gt;  
 
 scala&gt; val hyp = &quot;hypothesis&quot; :: (f(zero) =:= f(n)) 
 
-hyp: Equality[Term] with Subs[Equality[Term]] = SymbEquality(
-  Name(&quot;hypothesis&quot;),
-  IdentityTyp(
-    SymbTyp(Name(&quot;A&quot;), 0),
-    SymbObj(
-      ApplnSym(SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      SymbTyp(Name(&quot;A&quot;), 0)
-    ),
-    SymbObj(
-      ApplnSym(SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      SymbTyp(Name(&quot;A&quot;), 0)
-    )
-  )
-)
+hyp: Equality[Term] with Subs[Equality[Term]] = hypothesis : ((f) (0) = (f) (n))
 
 scala&gt; val step = hyp :-&gt; {IdentityTyp.trans(A)(f(zero))(f(n))(f(succ(n)))(hyp)(ass(n)) } 
 
-step: Func[Equality[Term] with Subs[Equality[Term]], Equality[Term with Subs[Term]]] = LambdaFixed(
-  SymbEquality(
-    hypothesis,
-    IdentityTyp(
-      SymbTyp(Name(&quot;A&quot;), 0),
-      SymbObj(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)),
-          SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-        ),
-        SymbTyp(Name(&quot;A&quot;), 0)
-      ),
-      SymbObj(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)),
-          SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-        ),
-        SymbTyp(Name(&quot;A&quot;), 0)
-      )
-    )
-...
+step: Func[Equality[Term] with Subs[Equality[Term]], Equality[Term with Subs[Term]]] = (hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($alddf :  A) ↦ (($alddg :  A) ↦ ($alddf = $alddg))((f) (0))((f) (n))}{($alahi :  A) ↦ (($alahj :  A) ↦ ((_ : ($alahi = $alahj) :  $alahi = $alahj) ↦ (($alahj = (f) ((succ) (n))) → ($alahi = (f) ((succ) (n))))))}(($alahi :  A) ↦ (($alavy : ($alahi = (f) ((succ) (n))) :  $alahi = (f) ((succ) (n))) ↦ ($alavy : ($alahi = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))
 
 scala&gt;  
 
 scala&gt; val pf = NatInd.induc(claim)(base)(n :~&gt; step) !: (n ~&gt;: (f(zero) =:= f(n))) 
 
-pf: FuncLike[Term with Subs[Term], Equality[Term]] = DataCons(
-  Refl(
-    SymbTyp(Name(&quot;A&quot;), 0),
-    SymbObj(
-      ApplnSym(SymbolicFunc(Name(&quot;f&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;A&quot;), 0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-      SymbTyp(Name(&quot;A&quot;), 0)
-    )
-  ),
-  provingground.induction.coarse.ConstructorSeq$Cons$$Lambda$3130/1826048009@7f19b6ed,
-  DataCons(
-    LambdaTerm(
-      SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-      LambdaFixed(
-        SymbEquality(
-          hypothesis,
-          IdentityTyp(
-            SymbTyp(Name(&quot;A&quot;), 0),
-            SymbObj(
-              ApplnSym(
-...
+pf: FuncLike[Term with Subs[Term], Equality[Term]] = ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(Refl(A,(f) (0)))((n :  Nat) ↦ ((hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($aliri :  A) ↦ (($alirj :  A) ↦ ($aliri = $alirj))((f) (0))((f) (n))}{($alahi :  A) ↦ (($alahj :  A) ↦ ((_ : ($alahi = $alahj) :  $alahi = $alahj) ↦ (($alahj = (f) ((succ) (n))) → ($alahi = (f) ((succ) (n))))))}(($alahi :  A) ↦ (($alavy : ($alahi = (f) ((succ) (n))) :  $alahi = (f) ((succ) (n))) ↦ ($alavy : ($alahi = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))))
 
 scala&gt;
 </code></pre>
@@ -1886,348 +771,141 @@ Further, the recursion and induction function only allow construction of (depend
 <p>A typical example is vectors, defined as a family indexed by their length.</p>
 <pre><code class="language-scala">scala&gt; val IndN = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@418131f8
+IndN: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@48b37bc9
 
 scala&gt; val Vec = &quot;Vec&quot; :: Nat -&gt;: Type 
 
-Vec: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0))
+Vec: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = Vec
 
 scala&gt; val VecPtn = new IndexedConstructorPatterns(Nat -&gt;: Types) 
 
-VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@235999be
+VecPtn: IndexedConstructorPatterns[Term, Term, Func[Term, Typ[Term]]] = provingground.induction.coarse.IndexedConstructorPatterns@565507b4
 
 scala&gt; val VecFmly = VecPtn.Family(Vec) 
 
-VecFmly: VecPtn.Family = Family(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)))
+VecFmly: VecPtn.Family = Family(Vec)
 
 scala&gt; 
 val VecInd = {&quot;nil&quot; ::: VecFmly.head(Vec(zero))} |:  {&quot;cons&quot; ::: n ~&gt;&gt;: (A -&gt;&gt;: Vec(n) --&gt;&gt;: VecFmly.head(Vec(succ(n))))} =: VecFmly 
 
 VecInd: VecPtn.iConstructorSeq.Cons = Cons(
-  iConstructorDefn(
-    iW(PairTerm(SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)), Star)),
-    SymbObj(
-      Name(&quot;nil&quot;),
-      SymbTyp(
-        ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-        0
-      )
-    ),
-    SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0))
-  ),
+  iConstructorDefn(iW(((0) , (Star))), nil, Vec),
   Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
-        SymbTyp(Name(&quot;Nat&quot;), 0),
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3878/2041564635@27eedcc9
+        Nat,
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4811/156583273@6c880ee1
       ),
-      PiSymbolicFunc(
-        Name(&quot;cons&quot;),
-...
+      cons,
+      Vec
+    ),
+    Empty(Vec)
+  )
+)
 
 scala&gt; val List(vnil, vcons) = VecInd.intros 
 
-vnil: Term = SymbObj(
-  Name(&quot;nil&quot;),
-  SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))), 0)
-)
-vcons: Term = PiSymbolicFunc(
-  Name(&quot;cons&quot;),
-  SymbObj($kicvw, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  FuncTyp(
-    SymbTyp(Name(&quot;A&quot;), 0),
-    FuncTyp(
-      SymbTyp(
-        ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj($kicvw, SymbTyp(Name(&quot;Nat&quot;), 0))),
-        0
-      ),
-      SymbTyp(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-          SymbObj(
-            ApplnSym(
-              SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-              SymbObj($kicvw, SymbTyp(Name(&quot;Nat&quot;), 0))
-            ),
-            SymbTyp(Name(&quot;Nat&quot;), 0)
-          )
-...
+vnil: Term = nil
+vcons: Term = cons
 
 scala&gt; vcons.typ.fansi 
 
-res147: String = &quot;\u001b\u220f\u001b(\u001b$kicvw\u001b : \u001bNat\u001b)\u001b{ \u001b(A \u001b\u2192\u001b (Vec($kicvw) \u001b\u2192\u001b Vec(succ($kicvw))))\u001b }\u001b&quot;
+res149: String = &quot;\u001b[36m\u220f\u001b[93m(\u001b[39m$alnjl\u001b[33m : \u001b[39mNat\u001b[93m)\u001b[91m{ \u001b[39m(A \u001b[91m\u2192\u001b[39m (Vec($alnjl) \u001b[91m\u2192\u001b[39m Vec(succ($alnjl))))\u001b[91m }\u001b[39m&quot;
 </code></pre>
 <p>We can define function recursively on vectors of all indices. For instance, we can define the size.</p>
 <pre><code class="language-scala">scala&gt; val vn = &quot;v_n&quot; :: Vec(n) 
 
-vn: Term with Subs[Term] = SymbObj(
-  Name(&quot;v_n&quot;),
-  SymbTyp(ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))), 0)
-)
+vn: Term with Subs[Term] = v_n
 
 scala&gt; val recVN = VecInd.rec(Nat) 
 
-recVN: VecInd.RecType = LambdaFixed(
-  SymbObj(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    PiSymbolicFunc(
-      RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3878/2041564635@27eedcc9),cons,Vec)),
-      SymbObj($kicxd, SymbTyp(Name(&quot;Nat&quot;), 0)),
-      FuncTyp(
-        SymbTyp(Name(&quot;A&quot;), 0),
-        FuncTyp(
-          SymbTyp(
-            ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj($kicxd, SymbTyp(Name(&quot;Nat&quot;), 0))),
-            0
-          ),
-          FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-        )
-      )
-    ),
-    LambdaTerm(
-      SymbObj($kicwe_1, SymbTyp(Name(&quot;Nat&quot;), 0)),
-...
+recVN: VecInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4811/156583273@6c880ee1),cons,Vec)) :  ($alnks : Nat ) ~&gt; ((A) → (((Vec) ($alnks)) → ((Nat) → (Nat))))) ↦ (($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec)))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4811/156583273@6c880ee1),cons,Vec)))) ((($alnjt_1) , ($alnjt_2)))))))
 
 scala&gt; val size = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m)))))) 
 
-size: Term = LambdaTerm(
-  SymbObj($kicwe_1, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    SymbObj(
-      $kicwe_2,
-      SymbTyp(
-        ApplnSym(SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj($kicwe_1, SymbTyp(Name(&quot;Nat&quot;), 0))),
-        0
-      )
-    ),
-    SymbObj(
-      ApplnSym(
-        DataCons(
-          SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-          provingground.induction.coarse.IndexedConstructorPatterns$iConstructorSeq$Cons$$Lambda$3879/833377213@7248fc0f,
-          DataCons(
-            LambdaTerm(
-              SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-              LambdaFixed(
-                SymbObj(Name(&quot;_&quot;), SymbTyp(Name(&quot;A&quot;), 0)),
-...
+size: Term = ($alnjt_1 :  Nat) ↦ (($alnjt_2 :  (Vec) ($alnjt_1)) ↦ ((rec(∑(($alnjr :  Nat) ↦ ((Vec) ($alnjr))))(Nat)(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m))))))) ((($alnjt_1) , ($alnjt_2)))))
 
 scala&gt; size(zero)(vnil) 
 
-res151: Term = SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
+res153: Term = 0
 
 scala&gt; val v1 = vcons(zero)(a)(vnil) 
 
-v1: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(
-      ApplnSym(
-        SymbolicFunc(
-          ApplnSym(
-            PiSymbolicFunc(
-              Name(&quot;cons&quot;),
-              SymbObj($kicvw, SymbTyp(Name(&quot;Nat&quot;), 0)),
-              FuncTyp(
-                SymbTyp(Name(&quot;A&quot;), 0),
-                FuncTyp(
-                  SymbTyp(
-                    ApplnSym(
-                      SymbolicFunc(Name(&quot;Vec&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-                      SymbObj($kicvw, SymbTyp(Name(&quot;Nat&quot;), 0))
-                    ),
-                    0
-                  ),
-                  SymbTyp(
-...
+v1: Term = (((cons) (0)) (a)) (nil)
 
 scala&gt; size(one)(v1) 
 
-res153: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res155: Term = (succ) (0)
 
 scala&gt; assert(size(one)(v1) == one)
 </code></pre>
 <p>For a more interesting example, we consider vectors with entries natural numbers, and define the sum of entries.</p>
 <pre><code class="language-scala">scala&gt; val VecN = &quot;Vec(Nat)&quot; ::: Nat -&gt;: Types 
 
-VecN: Func[Term, Typ[Term]] = SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0))
+VecN: Func[Term, Typ[Term]] = Vec(Nat)
 
 scala&gt; val VecNFmly = VecPtn.Family(VecN) 
 
-VecNFmly: VecPtn.Family = Family(SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)))
+VecNFmly: VecPtn.Family = Family(Vec(Nat))
 
 scala&gt;  
 
 scala&gt; val vnn = &quot;v_n&quot; :: VecN(n) 
 
-vnn: Term with Subs[Term] = SymbObj(
-  Name(&quot;v_n&quot;),
-  SymbTyp(
-    ApplnSym(SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;n&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-    0
-  )
-)
+vnn: Term with Subs[Term] = v_n
 
 scala&gt; 
 val VecNInd = {&quot;nil&quot; ::: VecNFmly.head(VecN(zero))} |:  {&quot;cons&quot; ::: n ~&gt;&gt;: (Nat -&gt;&gt;: VecN(n) --&gt;&gt;: VecNFmly.head(VecN(succ(n))))} =: VecNFmly 
 
 VecNInd: VecPtn.iConstructorSeq.Cons = Cons(
-  iConstructorDefn(
-    iW(PairTerm(SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)), Star)),
-    SymbObj(
-      Name(&quot;nil&quot;),
-      SymbTyp(
-        ApplnSym(SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-        0
-      )
-    ),
-    SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0))
-  ),
+  iConstructorDefn(iW(((0) , (Star))), nil, Vec(Nat)),
   Cons(
     iConstructorDefn(
       CnstDepFuncPtn(
-        SymbTyp(Name(&quot;Nat&quot;), 0),
-        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3878/2041564635@35da1cde
+        Nat,
+        provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4811/156583273@21782394
       ),
-      PiSymbolicFunc(
-        Name(&quot;cons&quot;),
-...
+      cons,
+      Vec(Nat)
+    ),
+    Empty(Vec(Nat))
+  )
+)
 
 scala&gt;  
 
 scala&gt; val recVNN = VecNInd.rec(Nat) 
 
-recVNN: VecNInd.RecType = LambdaFixed(
-  SymbObj(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))), SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    PiSymbolicFunc(
-      RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$3878/2041564635@35da1cde),cons,Vec(Nat))),
-      SymbObj($kiney, SymbTyp(Name(&quot;Nat&quot;), 0)),
-      FuncTyp(
-        SymbTyp(Name(&quot;Nat&quot;), 0),
-        FuncTyp(
-          SymbTyp(
-            ApplnSym(SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj($kiney, SymbTyp(Name(&quot;Nat&quot;), 0))),
-            0
-          ),
-          FuncTyp(SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0))
-        )
-      )
-    ),
-    LambdaTerm(
-...
+recVNN: VecNInd.RecType = (RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))) :  Nat) ↦ ((RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4811/156583273@21782394),cons,Vec(Nat))) :  ($alxsn : Nat ) ~&gt; ((Nat) → (((Vec(Nat)) ($alxsn)) → ((Nat) → (Nat))))) ↦ (($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(RecSym(iConstructorDefn(iW(((0) , (Star))),nil,Vec(Nat))))(RecSym(iConstructorDefn(CnstDepFuncPtn(Nat,provingground.induction.coarse.IndexedConstructorPatterns$iConstructorPattern$$Lambda$4811/156583273@21782394),cons,Vec(Nat))))) ((($alxro_1) , ($alxro_2)))))))
 
 scala&gt; val List(vnilN, vconsN) = VecNInd.intros 
 
-vnilN: Term = SymbObj(
-  Name(&quot;nil&quot;),
-  SymbTyp(
-    ApplnSym(SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))),
-    0
-  )
-)
-vconsN: Term = PiSymbolicFunc(
-  Name(&quot;cons&quot;),
-  SymbObj($kindr, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  FuncTyp(
-    SymbTyp(Name(&quot;Nat&quot;), 0),
-    FuncTyp(
-      SymbTyp(
-        ApplnSym(SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj($kindr, SymbTyp(Name(&quot;Nat&quot;), 0))),
-        0
-      ),
-      SymbTyp(
-        ApplnSym(
-          SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-          SymbObj(
-            ApplnSym(
-              SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-              SymbObj($kindr, SymbTyp(Name(&quot;Nat&quot;), 0))
-            ),
-            SymbTyp(Name(&quot;Nat&quot;), 0)
-          )
-...
+vnilN: Term = nil
+vconsN: Term = cons
 
 scala&gt;  
 
 scala&gt; val k = &quot;k&quot; :: Nat 
 
-k: Term with Subs[Term] = SymbObj(Name(&quot;k&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
+k: Term with Subs[Term] = k
 
 scala&gt; val vsum = recVNN(zero)(n :~&gt;(k :-&gt; (vnn :-&gt;(m :-&gt; (add(m)(k)) )))) 
 
-vsum: Term = LambdaTerm(
-  SymbObj($kindz_1, SymbTyp(Name(&quot;Nat&quot;), 0)),
-  LambdaFixed(
-    SymbObj(
-      $kindz_2,
-      SymbTyp(
-        ApplnSym(SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)), SymbObj($kindz_1, SymbTyp(Name(&quot;Nat&quot;), 0))),
-        0
-      )
-    ),
-    SymbObj(
-      ApplnSym(
-        DataCons(
-          SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0)),
-          provingground.induction.coarse.IndexedConstructorPatterns$iConstructorSeq$Cons$$Lambda$3879/833377213@1d265cf6,
-          DataCons(
-            LambdaTerm(
-              SymbObj(n, SymbTyp(Name(&quot;Nat&quot;), 0)),
-              LambdaFixed(
-                SymbObj(k, SymbTyp(Name(&quot;Nat&quot;), 0)),
-...
+vsum: Term = ($alxro_1 :  Nat) ↦ (($alxro_2 :  (Vec(Nat)) ($alxro_1)) ↦ ((rec(∑(($alxrm :  Nat) ↦ ((Vec(Nat)) ($alxrm))))(Nat)(0)((n :  Nat) ↦ ((k :  Nat) ↦ ((_ :  (Vec(Nat)) (n)) ↦ ((m :  Nat) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (k))))))) ((($alxro_1) , ($alxro_2)))))
 
 scala&gt;  
 
 scala&gt; vsum(zero)(vnilN) 
 
-res163: Term = SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
+res165: Term = 0
 
 scala&gt; val v2 = vconsN(zero)(two)(vnilN) 
 
-v2: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(
-      ApplnSym(
-        SymbolicFunc(
-          ApplnSym(
-            PiSymbolicFunc(
-              Name(&quot;cons&quot;),
-              SymbObj($kindr, SymbTyp(Name(&quot;Nat&quot;), 0)),
-              FuncTyp(
-                SymbTyp(Name(&quot;Nat&quot;), 0),
-                FuncTyp(
-                  SymbTyp(
-                    ApplnSym(
-                      SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-                      SymbObj($kindr, SymbTyp(Name(&quot;Nat&quot;), 0))
-                    ),
-                    0
-                  ),
-                  SymbTyp(
-...
+v2: Term = (((cons) (0)) ((succ) ((succ) (0)))) (nil)
 
 scala&gt; vsum(one)(v2) 
 
-res165: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-      ),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    )
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res167: Term = (succ) ((succ) (0))
 
 scala&gt; assert(vsum(one)(v2) == two) 
 
@@ -2236,62 +914,30 @@ scala&gt;
 
 scala&gt; val v3 = vconsN(one)(one)(v2) 
 
-v3: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(
-      ApplnSym(
-        SymbolicFunc(
-          ApplnSym(
-            PiSymbolicFunc(
-              Name(&quot;cons&quot;),
-              SymbObj($kindr, SymbTyp(Name(&quot;Nat&quot;), 0)),
-              FuncTyp(
-                SymbTyp(Name(&quot;Nat&quot;), 0),
-                FuncTyp(
-                  SymbTyp(
-                    ApplnSym(
-                      SymbolicFunc(Name(&quot;Vec(Nat)&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), Universe(0)),
-                      SymbObj($kindr, SymbTyp(Name(&quot;Nat&quot;), 0))
-                    ),
-                    0
-                  ),
-                  SymbTyp(
-...
+v3: Term = (((cons) ((succ) (0))) ((succ) (0))) ((((cons) (0)) ((succ) ((succ) (0)))) (nil))
 
 scala&gt; v3.fansi 
 
-res168: String = &quot;cons(succ(0))(succ(0))(cons(0)(succ(succ(0)))(nil))&quot;
+res170: String = &quot;cons(succ(0))(succ(0))(cons(0)(succ(succ(0)))(nil))&quot;
 
 scala&gt; vsum(two)(v3) 
 
-res169: Term = SymbObj(
-  ApplnSym(
-    SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-    SymbObj(
-      ApplnSym(
-        SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-        SymbObj(
-          ApplnSym(
-            SymbolicFunc(Name(&quot;succ&quot;), SymbTyp(Name(&quot;Nat&quot;), 0), SymbTyp(Name(&quot;Nat&quot;), 0)),
-            SymbObj(Name(&quot;0&quot;), SymbTyp(Name(&quot;Nat&quot;), 0))
-          ),
-          SymbTyp(Name(&quot;Nat&quot;), 0)
-        )
-      ),
-      SymbTyp(Name(&quot;Nat&quot;), 0)
-    )
-  ),
-  SymbTyp(Name(&quot;Nat&quot;), 0)
-)
+res171: Term = (succ) ((succ) ((succ) (0)))
 
-scala&gt; assert(vsum(two)(v3) == three) 
-
-
-scala&gt;  
-
-scala
+scala&gt; assert(vsum(two)(v3) == three)
 </code></pre>
-<h4>Git Log when running tutorial: 8f10bc88b54aac33a58f12ac1826158363997eeb</h4>
+<h4>Git Log when running tutorial</h4>
+<pre><code>commit a83fc238eaaa2f98d8ea8f6e9cbc94aa157f2e41
+Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
+Date:   Mon Sep 17 15:43:03 2018 +0530
+
+    better logging auto search; fails but not serious
+    relevant lemmas are discovered, its a matter of spawning with lemmas
+    together or some such tuning.
+</code></pre>
+<ul>
+<li><strong>Branch</strong> : master</li>
+</ul>
 
 
 </div>

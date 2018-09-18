@@ -255,6 +255,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed."></a>
+                        <a href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed.">MonixProverTasks</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixSamples$.html" title=""></a>
                         <a class="trait" href="MonixSamples.html" title=""></a>
                         <a href="MonixSamples.html" title="">MonixSamples</a>
@@ -278,6 +282,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="PickledTermPopulation$.html" title=""></a>
                         <a class="class" href="PickledTermPopulation.html" title=""></a>
                         <a href="PickledTermPopulation.html" title="">PickledTermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ProofEntropies$.html" title=""></a>
+                        <a class="class" href="ProofEntropies.html" title=""></a>
+                        <a href="ProofEntropies.html" title="">ProofEntropies</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="ProverTasks$.html" title=""></a>
@@ -378,6 +386,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="TermEvolver$.html" title=""></a>
                         <a class="class" href="TermEvolver.html" title=""></a>
                         <a href="TermEvolver.html" title="">TermEvolver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermGenParams.html" title=""></a>
+                        <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
@@ -799,6 +811,22 @@ the coefficients of the various generator nodes should be <code>Double</code>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a></dd></dl></div>
+    </li><li name="provingground.learning.GenMonixFiniteDistribution#nodeCoeffFamilyDist" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="nodeCoeffFamilyDist[Dom&lt;:shapeless.HList,Y](initState:State)(nodeCoeffs:provingground.learning.NodeCoeffs[State,Boat,Double,Dom,Y],epsilon:Double)(arg:Dom):monix.eval.Task[provingground.FiniteDistribution[Y]]"></a><a id="nodeCoeffFamilyDist[Dom&lt;:HList,Y](State)(NodeCoeffs[State,Boat,Double,Dom,Y],Double)(Dom):Task[FiniteDistribution[Y]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/MonixTangentFiniteDistribution.html#nodeCoeffFamilyDist[Dom&lt;:shapeless.HList,Y](initState:State)(nodeCoeffs:provingground.learning.NodeCoeffs[State,Boat,Double,Dom,Y],epsilon:Double)(arg:Dom):monix.eval.Task[provingground.FiniteDistribution[Y]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nodeCoeffFamilyDist</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="Y">Y</span>]</span><span class="params">(<span name="initState">initState: <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span></span>)</span><span class="params">(<span name="nodeCoeffs">nodeCoeffs: <a href="NodeCoeffs.html" class="extype" name="provingground.learning.NodeCoeffs">NodeCoeffs</a>[<span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.Boat">Boat</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeCoeffFamilyDist.Dom">Dom</span>, <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeCoeffFamilyDist.Y">Y</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeCoeffFamilyDist.Dom">Dom</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeCoeffFamilyDist.Y">Y</span>]]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a></dd></dl></div>
     </li><li name="provingground.learning.GenMonixFiniteDistribution#nodeCoeffFamilyMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="nodeCoeffFamilyMap[Dom&lt;:shapeless.HList,Y](initState:State)(nodeCoeffs:provingground.learning.NodeCoeffs[State,Boat,Double,Dom,Y],baseDist:monix.eval.Task[provingground.FiniteDistribution[Dom]],epsilon:Double):monix.eval.Task[Map[Dom,provingground.FiniteDistribution[Y]]]"></a><a id="nodeCoeffFamilyMap[Dom&lt;:HList,Y](State)(NodeCoeffs[State,Boat,Double,Dom,Y],Task[FiniteDistribution[Dom]],Double):Task[Map[Dom,FiniteDistribution[Y]]]"></a>
       <span class="permalink">
@@ -864,6 +892,22 @@ the main work is done here
       </span>
       <span class="symbol">
         <span class="name">nodeFamilyDist</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="Y">Y</span>]</span><span class="params">(<span name="initState">initState: <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span></span>)</span><span class="params">(<span name="generatorNodeFamily">generatorNodeFamily: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDist.Dom">Dom</span>, <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDist.Y">Y</span>]</span>, <span name="baseDist">baseDist: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDist.Dom">Dom</span>]]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDist.Dom">Dom</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDist.Y">Y</span>]]]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a></dd></dl></div>
+    </li><li name="provingground.learning.GenMonixFiniteDistribution#nodeFamilyDistFunc" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="nodeFamilyDistFunc[Dom&lt;:shapeless.HList,Y](initState:State)(generatorNodeFamily:provingground.learning.GeneratorNodeFamily[Dom,Y],epsilon:Double)(arg:Dom):monix.eval.Task[provingground.FiniteDistribution[Y]]"></a><a id="nodeFamilyDistFunc[Dom&lt;:HList,Y](State)(GeneratorNodeFamily[Dom,Y],Double)(Dom):Task[FiniteDistribution[Y]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/MonixTangentFiniteDistribution.html#nodeFamilyDistFunc[Dom&lt;:shapeless.HList,Y](initState:State)(generatorNodeFamily:provingground.learning.GeneratorNodeFamily[Dom,Y],epsilon:Double)(arg:Dom):monix.eval.Task[provingground.FiniteDistribution[Y]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nodeFamilyDistFunc</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="Y">Y</span>]</span><span class="params">(<span name="initState">initState: <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span></span>)</span><span class="params">(<span name="generatorNodeFamily">generatorNodeFamily: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDistFunc.Dom">Dom</span>, <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDistFunc.Y">Y</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDistFunc.Dom">Dom</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.nodeFamilyDistFunc.Y">Y</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a></dd></dl></div>
@@ -966,6 +1010,22 @@ the main work is done here
       </span>
       <span class="symbol">
         <span class="name">varFamilyDist</span><span class="tparams">[<span name="RDom">RDom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="Y">Y</span>]</span><span class="params">(<span name="initState">initState: <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span></span>)</span><span class="params">(<span name="randomVarFmly">randomVarFmly: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDist.RDom">RDom</span>, <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDist.Y">Y</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDist.RDom">RDom</span>, <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDist.Y">Y</span>]]]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a></dd></dl></div>
+    </li><li name="provingground.learning.GenMonixFiniteDistribution#varFamilyDistFunc" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="varFamilyDistFunc[RDom&lt;:shapeless.HList,Y](initState:State)(randomVarFmly:provingground.learning.RandomVarFamily[RDom,Y],epsilon:Double)(arg:RDom):monix.eval.Task[provingground.FiniteDistribution[Y]]"></a><a id="varFamilyDistFunc[RDom&lt;:HList,Y](State)(RandomVarFamily[RDom,Y],Double)(RDom):Task[FiniteDistribution[Y]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/MonixTangentFiniteDistribution.html#varFamilyDistFunc[RDom&lt;:shapeless.HList,Y](initState:State)(randomVarFmly:provingground.learning.RandomVarFamily[RDom,Y],epsilon:Double)(arg:RDom):monix.eval.Task[provingground.FiniteDistribution[Y]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">varFamilyDistFunc</span><span class="tparams">[<span name="RDom">RDom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="Y">Y</span>]</span><span class="params">(<span name="initState">initState: <span class="extype" name="provingground.learning.MonixTangentFiniteDistribution.State">State</span></span>)</span><span class="params">(<span name="randomVarFmly">randomVarFmly: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDistFunc.RDom">RDom</span>, <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDistFunc.Y">Y</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDistFunc.RDom">RDom</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.learning.GenMonixFiniteDistribution.varFamilyDistFunc.Y">Y</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GenMonixFiniteDistribution.html" class="extype" name="provingground.learning.GenMonixFiniteDistribution">GenMonixFiniteDistribution</a></dd></dl></div>

@@ -255,6 +255,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed."></a>
+                        <a href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed.">MonixProverTasks</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixSamples$.html" title=""></a>
                         <a class="trait" href="MonixSamples.html" title=""></a>
                         <a href="MonixSamples.html" title="">MonixSamples</a>
@@ -278,6 +282,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="PickledTermPopulation$.html" title=""></a>
                         <a class="class" href="PickledTermPopulation.html" title=""></a>
                         <a href="PickledTermPopulation.html" title="">PickledTermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ProofEntropies$.html" title=""></a>
+                        <a class="class" href="ProofEntropies.html" title=""></a>
+                        <a href="ProofEntropies.html" title="">ProofEntropies</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="ProverTasks$.html" title=""></a>
@@ -378,6 +386,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="TermEvolver$.html" title=""></a>
                         <a class="class" href="TermEvolver.html" title=""></a>
                         <a href="TermEvolver.html" title="">TermEvolver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermGenParams.html" title=""></a>
+                        <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
@@ -485,7 +497,12 @@ to be used for generating distributions, obtaining equations etc.
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">
+              Known Subclasses
+            </span>
+            <div class="subClasses hiddenContent"><a href="TermGenParams$Gen$.html" class="extype" name="provingground.learning.TermGenParams.Gen">Gen</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -818,7 +835,8 @@ to be used for generating distributions, obtaining equations etc.
       
       <p class="shortcomment cmt">Aggregating extending indexed introduction rule by iterated function type eding in
 fully applied inductive type family.</p><div class="fullcomment"><div class="comment cmt"><p>Aggregating extending indexed introduction rule by iterated function type eding in
-fully applied inductive type family.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>distribution on types.</p></dd></dl></div>
+fully applied inductive type family.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>distribution on types.</p></dd></dl></div>
     </li><li name="provingground.learning.TermGeneratorNodes#indexedIterHeadNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indexedIterHeadNode(inductiveTyp:provingground.HoTT.Term):provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="indexedIterHeadNode(Term):FlatMap[Typ[Term],Typ[Term]]"></a>
       <span class="permalink">
@@ -997,9 +1015,9 @@ fully applied inductive type family.</p></div><dl class="paramcmts block"><dt>re
       
       <p class="shortcomment cmt">node to generate partial applications of <code>f</code> from partial applications that are functions.</p><div class="fullcomment"><div class="comment cmt"><p>node to generate partial applications of <code>f</code> from partial applications that are functions.</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>function to be applied</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of terms</p></dd></dl></div>
     </li><li name="provingground.learning.TermGeneratorNodes#lambdaByTypNodeFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="lambdaByTypNodeFamily:provingground.learning.GeneratorNodeFamily[provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.Term]"></a><a id="lambdaByTypNodeFamily:GeneratorNodeFamily[::[Typ[Term],HNil],Term]"></a>
+      <a id="lambdaByTypNodeFamily:provingground.learning.GeneratorNodeFamily.RecPiOpt[InitState,provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.Term]"></a><a id="lambdaByTypNodeFamily:RecPiOpt[InitState,Term,::[Typ[Term],HNil],Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaByTypNodeFamily:provingground.learning.GeneratorNodeFamily[provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaByTypNodeFamily:provingground.learning.GeneratorNodeFamily.RecPiOpt[InitState,provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1008,12 +1026,28 @@ fully applied inductive type family.</p></div><dl class="paramcmts block"><dt>re
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">lambdaByTypNodeFamily</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="shapeless.HNil">HNil</span>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">lambdaByTypNodeFamily</span><span class="result">: <a href="GeneratorNodeFamily$$RecPiOpt.html" class="extype" name="provingground.learning.GeneratorNodeFamily.RecPiOpt">RecPiOpt</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="shapeless.HNil">HNil</span>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       <p class="shortcomment cmt">nodes combining lambdas targeting types that are  (dependent) function types,
 aggregated over all types
 </p>
+    </li><li name="provingground.learning.TermGeneratorNodes#lambdaForFuncWithDomFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambdaForFuncWithDomFamily:provingground.learning.GeneratorNodeFamily.RecPi[InitState,provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.ExstFunc]"></a><a id="lambdaForFuncWithDomFamily:RecPi[InitState,Term,::[Typ[Term],HNil],ExstFunc]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaForFuncWithDomFamily:provingground.learning.GeneratorNodeFamily.RecPi[InitState,provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.ExstFunc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambdaForFuncWithDomFamily</span><span class="result">: <a href="GeneratorNodeFamily$$RecPi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.RecPi">RecPi</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.InitState">InitState</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="shapeless.HNil">HNil</span>], <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermGeneratorNodes#lambdaIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambdaIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.Island[provingground.HoTT.Term,InitState,provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="lambdaIsle(Typ[Term]):Island[Term,InitState,Term,Term]"></a>
       <span class="permalink">
@@ -1085,6 +1119,38 @@ type (more generally fibre) targeted within the island.
       
       <p class="shortcomment cmt">node combining lambda islands aggregated by type
 </p>
+    </li><li name="provingground.learning.TermGeneratorNodes#lambdaTypFamilyIsle" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambdaTypFamilyIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode[provingground.HoTT.ExstFunc]"></a><a id="lambdaTypFamilyIsle(Typ[Term]):GeneratorNode[ExstFunc]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaTypFamilyIsle(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode[provingground.HoTT.ExstFunc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambdaTypFamilyIsle</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermGeneratorNodes#lambdaTypFamilyNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambdaTypFamilyNode:provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.ExstFunc]"></a><a id="lambdaTypFamilyNode:FlatMap[Typ[Term],ExstFunc]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#lambdaTypFamilyNode:provingground.learning.GeneratorNode.FlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.ExstFunc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambdaTypFamilyNode</span><span class="result">: <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -1358,6 +1424,70 @@ a form of backward reasoning
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#typApplnBase" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="typApplnBase:provingground.learning.GeneratorNode.FiberProductMap[provingground.HoTT.ExstFunc,provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]"></a><a id="typApplnBase:FiberProductMap[ExstFunc,Term,Typ[Term],Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#typApplnBase:provingground.learning.GeneratorNode.FiberProductMap[provingground.HoTT.ExstFunc,provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">typApplnBase</span><span class="result">: <a href="GeneratorNode$$FiberProductMap.html" class="extype" name="provingground.learning.GeneratorNode.FiberProductMap">FiberProductMap</a>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermGeneratorNodes#typApplnNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="typApplnNode:provingground.learning.BaseGeneratorNode[provingground.HoTT.ExstFunc::shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="typApplnNode:BaseGeneratorNode[::[ExstFunc,HNil],Typ[Term]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#typApplnNode:provingground.learning.BaseGeneratorNode[provingground.HoTT.ExstFunc::shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">typApplnNode</span><span class="result">: <a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>[<span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <span class="extype" name="shapeless.HNil">HNil</span>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermGeneratorNodes#typFamilyApplnNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="typFamilyApplnNode:provingground.learning.GeneratorNode[provingground.HoTT.ExstFunc]"></a><a id="typFamilyApplnNode:GeneratorNode[ExstFunc]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#typFamilyApplnNode:provingground.learning.GeneratorNode[provingground.HoTT.ExstFunc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">typFamilyApplnNode</span><span class="result">: <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermGeneratorNodes#typFamilyUnifApplnNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="typFamilyUnifApplnNode:provingground.learning.BaseGeneratorNode[provingground.HoTT.ExstFunc::provingground.HoTT.Term::shapeless.HNil,provingground.HoTT.ExstFunc]"></a><a id="typFamilyUnifApplnNode:BaseGeneratorNode[::[ExstFunc,::[Term,HNil]],ExstFunc]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#typFamilyUnifApplnNode:provingground.learning.BaseGeneratorNode[provingground.HoTT.ExstFunc::provingground.HoTT.Term::shapeless.HNil,provingground.HoTT.ExstFunc]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">typFamilyUnifApplnNode</span><span class="result">: <a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>[<span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="shapeless.HNil">HNil</span>]], <a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermGeneratorNodes#typFromFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typFromFamily(typF:provingground.HoTT.Term):provingground.learning.GeneratorNode.MapOpt[provingground.HoTT.Term,provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="typFromFamily(Term):MapOpt[Term,Typ[Term]]"></a>
       <span class="permalink">
@@ -1374,6 +1504,38 @@ a form of backward reasoning
       </span>
       
       <p class="shortcomment cmt">types from a type family by filtering partial applications to consider only types.</p><div class="fullcomment"><div class="comment cmt"><p>types from a type family by filtering partial applications to consider only types.</p></div><dl class="paramcmts block"><dt class="param">typF</dt><dd class="cmt"><p>the type family</p></dd><dt>returns</dt><dd class="cmt"><p>distribution of types.</p></dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#typUnifApplnBase" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="typUnifApplnBase:provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.ExstFunc,provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="typUnifApplnBase:ZipMapOpt[ExstFunc,Term,Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#typUnifApplnBase:provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.ExstFunc,provingground.HoTT.Term,provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">typUnifApplnBase</span><span class="result">: <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermGeneratorNodes#typUnifApplnNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="typUnifApplnNode:provingground.learning.BaseGeneratorNodeFamily[shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="typUnifApplnNode:BaseGeneratorNodeFamily[HNil,Typ[Term]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#typUnifApplnNode:provingground.learning.BaseGeneratorNodeFamily[shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">typUnifApplnNode</span><span class="result">: <a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermGeneratorNodes#unifApplnNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="unifApplnNode:provingground.learning.GeneratorNode.ZipMapOpt[provingground.HoTT.ExstFunc,provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="unifApplnNode:ZipMapOpt[ExstFunc,Term,Term]"></a>
       <span class="permalink">

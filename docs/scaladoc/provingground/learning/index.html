@@ -331,6 +331,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed."></a>
+                        <a href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed.">MonixProverTasks</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixSamples$.html" title=""></a>
                         <a class="trait" href="MonixSamples.html" title=""></a>
                         <a href="MonixSamples.html" title="">MonixSamples</a>
@@ -354,6 +358,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="object" href="PickledTermPopulation$.html" title=""></a>
                         <a class="class" href="PickledTermPopulation.html" title=""></a>
                         <a href="PickledTermPopulation.html" title="">PickledTermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ProofEntropies$.html" title=""></a>
+                        <a class="class" href="ProofEntropies.html" title=""></a>
+                        <a href="ProofEntropies.html" title="">ProofEntropies</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="ProverTasks$.html" title=""></a>
@@ -454,6 +462,10 @@ single introduction rule. Traits <a href="../induction/ConstructorSeqMapper.html
                         <a class="object" href="TermEvolver$.html" title=""></a>
                         <a class="class" href="TermEvolver.html" title=""></a>
                         <a href="TermEvolver.html" title="">TermEvolver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermGenParams.html" title=""></a>
+                        <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
@@ -1265,6 +1277,22 @@ the coefficients of the various generator nodes should be <code>Double</code>
       </span>
       
       
+    </li><li name="provingground.learning.ProofEntropies" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProofEntropiesextendsProductwithSerializable"></a><a id="ProofEntropies:ProofEntropies"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#ProofEntropiesextendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ProofEntropies.html"><span class="name">ProofEntropies</span></a><span class="params">(<span name="gens">gens: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="theorems">theorems: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Double">Double</span>]</span>, <span name="proofs">proofs: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="genWeight">genWeight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.RandomVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="RandomVar[+O]extendsRandomVarFamily[shapeless.HNil,O]"></a><a id="RandomVar[+O]:RandomVar[O]"></a>
       <span class="permalink">
@@ -1658,6 +1686,22 @@ the coefficients of the various generator nodes should be <code>Double</code>
       </span>
       
       
+    </li><li name="provingground.learning.TermGenParams" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TermGenParamsextendsProductwithSerializable"></a><a id="TermGenParams:TermGenParams"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#TermGenParamsextendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermGenParams.html"><span class="name">TermGenParams</span></a><span class="params">(<span name="appW">appW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="unAppW">unAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="argAppW">argAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="lmW">lmW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="piW">piW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="termsByTypW">termsByTypW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="typVsFamily">typVsFamily: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="goalWeight">goalWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermGeneratorNodes" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="TermGeneratorNodes[InitState]extendsAnyRef"></a><a id="TermGeneratorNodes[InitState]:TermGeneratorNodes[InitState]"></a>
       <span class="permalink">
@@ -1722,7 +1766,7 @@ to be used for generating distributions, obtaining equations etc.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="A state, typically the initial state, for generating terms, types etc" href="TermState.html"><span class="name">TermState</span></a><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="inds">inds: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A state, typically the initial state, for generating terms, types etc" href="TermState.html"><span class="name">TermState</span></a><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>, <span name="inds">inds: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>] = <span class="symbol"><span class="name"><a href="../index.html">FD.empty[ExstInducDefn]</a></span></span></span>, <span name="goals">goals: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] = <span class="symbol"><span class="name"><a href="../index.html">FD.empty</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">A state, typically the initial state, for generating terms, types etc</p><div class="fullcomment"><div class="comment cmt"><p>A state, typically the initial state, for generating terms, types etc</p></div><dl class="paramcmts block"><dt class="param">terms</dt><dd class="cmt"><p>distribution of terms</p></dd><dt class="param">typs</dt><dd class="cmt"><p>distribution of types</p></dd><dt class="param">vars</dt><dd class="cmt"><p>variables, over which we may take closures</p></dd><dt class="param">inds</dt><dd class="cmt"><p>inductive type definitions</p></dd></dl></div>
@@ -2300,6 +2344,23 @@ The components are built from: moves (partial functions), partial combinations a
       </span>
       
       
+    </li><li name="provingground.learning.MonixProverTasks" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MonixProverTasks"></a><a id="MonixProverTasks:MonixProverTasks"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#MonixProverTasks" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed." href="MonixProverTasks$.html"><span class="name">MonixProverTasks</span></a>
+      </span>
+      
+      <p class="shortcomment cmt">A drop-in replacement for <a href="FineProverTasks$.html" class="extype" name="provingground.learning.FineProverTasks">FineProverTasks</a> to test the abstract generators approach;
+since testing is the goal redundancies and some comments have been removed.</p>
     </li><li name="provingground.learning.MonixSamples" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="MonixSamples"></a><a id="MonixSamples:MonixSamples"></a>
       <span class="permalink">
@@ -2377,6 +2438,22 @@ The components are built from: moves (partial functions), partial combinations a
       </span>
       <span class="symbol">
         <a title="" href="PickledTermPopulation$.html"><span class="name">PickledTermPopulation</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.ProofEntropies" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProofEntropies"></a><a id="ProofEntropies:ProofEntropies"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html#ProofEntropies" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="ProofEntropies$.html"><span class="name">ProofEntropies</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       

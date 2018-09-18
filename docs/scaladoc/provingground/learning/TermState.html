@@ -255,6 +255,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed."></a>
+                        <a href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed.">MonixProverTasks</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixSamples$.html" title=""></a>
                         <a class="trait" href="MonixSamples.html" title=""></a>
                         <a href="MonixSamples.html" title="">MonixSamples</a>
@@ -278,6 +282,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="PickledTermPopulation$.html" title=""></a>
                         <a class="class" href="PickledTermPopulation.html" title=""></a>
                         <a href="PickledTermPopulation.html" title="">PickledTermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ProofEntropies$.html" title=""></a>
+                        <a class="class" href="ProofEntropies.html" title=""></a>
+                        <a href="ProofEntropies.html" title="">ProofEntropies</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="ProverTasks$.html" title=""></a>
@@ -380,6 +388,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenParams.html" title=""></a>
+                        <a href="TermGenParams.html" title="">TermGenParams</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
                         <a href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc.">TermGeneratorNodes</a>
                       </li><li class="current-entities indented2">
@@ -475,7 +487,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">TermState</span><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="inds">inds: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">TermState</span><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>, <span name="inds">inds: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>] = <span class="symbol"><span class="name"><a href="../index.html">FD.empty[ExstInducDefn]</a></span></span></span>, <span name="goals">goals: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] = <span class="symbol"><span class="name"><a href="../index.html">FD.empty</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -531,9 +543,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.learning.TermState#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(terms:provingground.FiniteDistribution[provingground.HoTT.Term],typs:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],vars:Vector[provingground.HoTT.Term],inds:provingground.FiniteDistribution[provingground.induction.ExstInducDefn]):provingground.learning.TermState"></a><a id="&lt;init&gt;:TermState"></a>
+      <a id="&lt;init&gt;(terms:provingground.FiniteDistribution[provingground.HoTT.Term],typs:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],vars:Vector[provingground.HoTT.Term],inds:provingground.FiniteDistribution[provingground.induction.ExstInducDefn],goals:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]):provingground.learning.TermState"></a><a id="&lt;init&gt;:TermState"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermState.html#&lt;init&gt;(terms:provingground.FiniteDistribution[provingground.HoTT.Term],typs:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],vars:Vector[provingground.HoTT.Term],inds:provingground.FiniteDistribution[provingground.induction.ExstInducDefn]):provingground.learning.TermState" title="Permalink">
+      <a href="../../provingground/learning/TermState.html#&lt;init&gt;(terms:provingground.FiniteDistribution[provingground.HoTT.Term],typs:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],vars:Vector[provingground.HoTT.Term],inds:provingground.FiniteDistribution[provingground.induction.ExstInducDefn],goals:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]):provingground.learning.TermState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -542,7 +554,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">TermState</span><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="inds">inds: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>)</span>
+        <span class="name">TermState</span><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="typs">typs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>, <span name="inds">inds: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>] = <span class="symbol"><span class="name"><a href="../index.html">FD.empty[ExstInducDefn]</a></span></span></span>, <span name="goals">goals: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] = <span class="symbol"><span class="name"><a href="../index.html">FD.empty</a></span></span></span>)</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">terms</dt><dd class="cmt"><p>distribution of terms</p></dd><dt class="param">typs</dt><dd class="cmt"><p>distribution of types</p></dd><dt class="param">vars</dt><dd class="cmt"><p>variables, over which we may take closures</p></dd><dt class="param">inds</dt><dd class="cmt"><p>inductive type definitions</p></dd></dl></div>
@@ -604,6 +616,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.learning.TermState#addVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addVar(typ:provingground.HoTT.Typ[provingground.HoTT.Term],varWeight:Double):(provingground.learning.TermState,provingground.HoTT.Term)"></a><a id="addVar(Typ[Term],Double):(TermState,Term)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermState.html#addVar(typ:provingground.HoTT.Typ[provingground.HoTT.Term],varWeight:Double):(provingground.learning.TermState,provingground.HoTT.Term)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addVar</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)</span>
+      </span>
+      
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -717,6 +745,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.TermState#goals" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="goals:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="goals:FiniteDistribution[Typ[Term]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermState.html#goals:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">goals</span><span class="result">: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermState#inds" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="inds:provingground.FiniteDistribution[provingground.induction.ExstInducDefn]"></a><a id="inds:FiniteDistribution[ExstInducDefn]"></a>
       <span class="permalink">
@@ -803,6 +847,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.TermState#pfDist" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pfDist:provingground.FiniteDistribution[provingground.HoTT.Term]"></a><a id="pfDist:FiniteDistribution[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermState.html#pfDist:provingground.FiniteDistribution[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pfDist</span><span class="result">: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermState#pfSet" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="pfSet:Vector[provingground.HoTT.Term]"></a><a id="pfSet:Vector[Term]"></a>
       <span class="permalink">
