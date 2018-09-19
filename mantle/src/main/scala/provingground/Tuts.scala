@@ -3,13 +3,13 @@ package provingground.interface
 import Amm._, ammonite.ops._
 
 object Tuts {
-  implicit val wd = pwd
+  implicit val wd: Path = pwd
 
-  def tutdir = pwd / 'mantle / 'src / 'main / 'tut
+  def tutdir : Path = pwd / 'mantle / 'src / 'main / 'tut
 
-  def gitHash = %%("git", "rev-parse", "HEAD").out.lines.head
+  def gitHash: String = %%("git", "rev-parse", "HEAD").out.lines.head
 
-  def gitBranch = %%("git", "symbolic-ref", "--short", "HEAD").out.lines.head
+  def gitBranch: String = %%("git", "symbolic-ref", "--short", "HEAD").out.lines.head
 
   def mkTut(f: String): String = {
     val top =
@@ -22,7 +22,7 @@ object Tuts {
 
     val spl = f.split("```tut").map(_.split("```").toVector).toVector
 
-    val tutcode =
+    val tutcode: String =
       spl.tail
         .map(_(0))
         .mkString(top, "// tutEnd", "")
@@ -55,9 +55,9 @@ object Tuts {
         .zip(tailTextChunks)
         .flatMap { case (a, b) => Vector(a, b) }
 
-    val allChunks = spl.head.head +: textTail
+    val allChunks: Vector[String] = spl.head.head +: textTail
 
-    val gitrep =
+    val gitrep: String =
       s"""
          |
          |#### Git Log when running tutorial: $gitHash
@@ -67,6 +67,6 @@ object Tuts {
     allChunks.mkString("", "\n", gitrep)
   }
 
-  def outdir = pwd / "docs" / "tuts"
+  def outdir: Path = pwd / "docs" / "tuts"
 
 }
