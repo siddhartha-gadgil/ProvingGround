@@ -190,8 +190,8 @@ class TermGeneratorNodes[InitState](
   val lambdaForFuncWithDomFamily
     : GeneratorNodeFamily.RecPi[InitState, Term, Typ[Term] :: HNil, ExstFunc] =
     GeneratorNodeFamily.RecPi[InitState, Term, Typ[Term] :: HNil, ExstFunc](
-      {case dom :: HNil => lambdaIsleForFuncWithDomain(dom)}
-      , FuncsWithDomain
+      { case dom :: HNil => lambdaIsleForFuncWithDomain(dom) },
+      FuncsWithDomain
     )
 
   /**
@@ -214,6 +214,21 @@ class TermGeneratorNodes[InitState](
     FlatMap(
       Typs,
       piIsle,
+      Typs
+    )
+
+  def foldTypFamily(w: Term): GeneratorNode[Typ[Term]] = w match {
+    case typ: Typ[Term] => Atom(typ, Typs)
+    case fn: FuncLike[u, v] =>
+      FlatMap(termsWithTyp(fn.dom),
+        (x: Term) => foldTypFamily(fn(x.asInstanceOf[u])),
+        Typs)
+  }
+
+  val typFoldNode: FlatMap[ExstFunc, Typ[Term]] =
+    FlatMap(
+      TypFamilies,
+      (fn) => foldTypFamily(fn.term),
       Typs
     )
 
@@ -560,7 +575,9 @@ object TermRandomVars {
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
     Sort.Filter[Term](_.typ == typ)
 
-  def withTypNode(node: GeneratorNode[Term]): GeneratorNodeFamily[Typ[Term] :: HNil, Term] = node.pi(withTypSort, TermsWithTyp)
+  def withTypNode(
+      node: GeneratorNode[Term]): GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
+    node.pi(withTypSort, TermsWithTyp)
 
   /**
     * distribution of terms with a specific type
@@ -579,13 +596,15 @@ object TermRandomVars {
     Sort.Restrict[Term, ExstFunc]((f) =>
       ExstFunc.opt(f).filter((fn) => isTypFamily(fn.func)))
 
-  case object TypsAndFamilies extends RandomVar[Term]{
-    lazy val fromTyp: Map[Typ[Term], Term] = Map[Typ[Term], Term]((x) => x, Typs, TypsAndFamilies)
+  case object TypsAndFamilies extends RandomVar[Term] {
+    lazy val fromTyp: Map[Typ[Term], Term] =
+      Map[Typ[Term], Term]((x) => x, Typs, TypsAndFamilies)
 
-    lazy val fromFamilies: Map[ExstFunc, Term] = Map[ExstFunc, Term](_.func, TypFamilies, TypsAndFamilies)
+    lazy val fromFamilies: Map[ExstFunc, Term] =
+      Map[ExstFunc, Term](_.func, TypFamilies, TypsAndFamilies)
   }
 
-  case object TargetTyps extends RandomVar[Typ[Term]]{
+  case object TargetTyps extends RandomVar[Typ[Term]] {
     def fromGoal: Map[Typ[Term], Typ[Term]] = Map(identity, Goals, TargetTyps)
 
     def fromTyp: Map[Typ[Term], Typ[Term]] = Map(identity, Typs, TargetTyps)
@@ -607,10 +626,12 @@ object TermRandomVars {
     : GeneratorNodeFamily[Typ[Term] :: HNil, ExstFunc] =
     node.pi(funcWithDomSort, FuncsWithDomain)
 
-  def funcWithDomTermNode(node: GeneratorNode[Term]) =
-    node.pi(
-      (dom: Typ[Term]) =>Sort.Restrict[Term, ExstFunc]((f) => ExstFunc.opt(f).filter((fn) => fn.dom == dom)),
-      FuncsWithDomain)
+  def funcWithDomTermNode(node: GeneratorNode[Term])
+    : GeneratorNodeFamily[::[Typ[Term], HNil], ExstFunc] =
+    node.pi((dom: Typ[Term]) =>
+              Sort.Restrict[Term, ExstFunc]((f) =>
+                ExstFunc.opt(f).filter((fn) => fn.dom == dom)),
+            FuncsWithDomain)
 
   /**
     * distribution of functions with a specified domain
@@ -654,6 +675,7 @@ object TermRandomVars {
     */
   def inducHeadNode(inductiveTyp: Typ[Term]): Atom[Typ[Term]] =
     just(inductiveTyp, IntroRuleTypes(inductiveTyp))
+
 
   /**
     * distribution of `f`, `f(x)`, `f(x)(y)` etc
@@ -726,21 +748,23 @@ case class TermState(terms: FD[Term],
                      typs: FD[Typ[Term]],
                      vars: Vector[Term] = Vector(),
                      inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
-                    goals: FD[Typ[Term]] = FD.empty) {
-  val thmsByPf: FD[Typ[Term]] = terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
+                     goals: FD[Typ[Term]] = FD.empty) {
+  val thmsByPf: FD[Typ[Term]] =
+    terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
   val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0).flatten
   val pfSet: Vector[Term]     = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
   val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 
-  val pfDist: FD[Term] =  terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
+  val pfDist: FD[Term] =
+    terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
 
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
     val x        = typ.Var
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
-    val newGoals: FD[Typ[Term]] = goals.map{
+    val newGoals: FD[Typ[Term]] = goals.map {
       case pd: PiDefn[u, v] if pd.domain == typ => pd.fibers(x.asInstanceOf[u])
-      case tp => tp
+      case tp                                   => tp
     }
     val newTyps =
       typOpt(x)
@@ -760,18 +784,18 @@ object TermState {
     new StateDistribution[TermState, FD] {
       def value[T](state: TermState)(randomVar: RandomVar[T]): FD[T] =
         randomVar match {
-          case Terms => state.terms.map(x => x: T)
-          case Typs  => state.typs.map(x => x: T)
+          case Terms      => state.terms.map(x => x: T)
+          case Typs       => state.typs.map(x => x: T)
           case TargetTyps => state.typs.map(x => x: T)
-          case Funcs => state.terms.condMap(ExstFunc.opt).map(x => x: T)
+          case Funcs      => state.terms.condMap(ExstFunc.opt).map(x => x: T)
           case TypFamilies =>
             state.terms
               .condMap((t) =>
                 ExstFunc.opt(t).filter((f) => isTypFamily(f.func)))
               .map(x => x: T)
-          case InducDefns  => state.inds.map(x => x: T)
-          case InducStrucs => state.inds.map(_.ind).map(x => x: T)
-          case Goals => state.goals.map(x => x: T)
+          case InducDefns                   => state.inds.map(x => x: T)
+          case InducStrucs                  => state.inds.map(_.ind).map(x => x: T)
+          case Goals                        => state.goals.map(x => x: T)
           case RandomVar.AtCoord(fmly, arg) => valueAt(state)(fmly, arg)
         }
 
@@ -797,7 +821,8 @@ case class TermGenParams(appW: Double = 0.1,
                          lmW: Double = 0.1,
                          piW: Double = 0.1,
                          termsByTypW: Double = 0.05,
-                         typVsFamily: Double = 0.5,                         
+                         typFromFamilyW: Double = 0.05,
+                         typVsFamily: Double = 0.5,
                          varWeight: Double = 0.3,
                          goalWeight: Double = 0.5,
                          vars: Vector[Term] = Vector()) {
@@ -809,96 +834,104 @@ case class TermGenParams(appW: Double = 0.1,
         _.Var
       )
 
-  import Gen._, GeneratorNode._, TermRandomVars.{withTypNode => wtN,  funcWithDomTermNode => fdtN}
+  import Gen._, GeneratorNode._,
+  TermRandomVars.{withTypNode => wtN, funcWithDomTermNode => fdtN}
 
   val termInit: Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW
 
-  val typInit: Double = 1.0 - appW - unAppW - piW
+  val typInit: Double = 1.0 - appW - unAppW - piW - typFromFamilyW
 
   val termNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
-    (Init(Terms)     -> termInit) ::
-      (applnNode     -> appW) ::
-      (unifApplnNode -> unAppW) ::
+    (Init(Terms)      -> termInit) ::
+      (applnNode      -> appW) ::
+      (unifApplnNode  -> unAppW) ::
       (applnByArgNode -> argAppW) ::
-      (lambdaNode -> lmW) ::
-      (termsByTyps -> termsByTypW) ::
+      (lambdaNode     -> lmW) ::
+      (termsByTyps    -> termsByTypW) ::
       Terms.target[TermState, Term, Double, Term]
 
   val typNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] =
-    (Init(Typs)     -> typInit) ::
+    (Init(Typs)         -> typInit) ::
       (typApplnNode     -> appW) ::
       (typUnifApplnNode -> unAppW) ::
-      (piNode -> piW) ::
+      (piNode           -> piW) ::
+      (typFoldNode  -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
   val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
-    (Init(Funcs)     -> termInit) ::
-      ((applnNode | (funcSort, Funcs))    -> appW) ::
-      ((unifApplnNode | (funcSort, Funcs)) -> unAppW) ::
-      ((applnByArgNode | (funcSort, Funcs))-> argAppW) ::
-      ((lambdaNode | (funcSort, Funcs))-> lmW) ::
-      ((termsByTyps | (funcSort, Funcs)) -> termsByTypW) ::
+    (Init(Funcs)                            -> termInit) ::
+      ((applnNode | (funcSort, Funcs))      -> appW) ::
+      ((unifApplnNode | (funcSort, Funcs))  -> unAppW) ::
+      ((applnByArgNode | (funcSort, Funcs)) -> argAppW) ::
+      ((lambdaNode | (funcSort, Funcs))     -> lmW) ::
+      ((termsByTyps | (funcSort, Funcs))    -> termsByTypW) ::
       Funcs.target[TermState, Term, Double, ExstFunc]
 
   val typFamilyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
-    (Init(TypFamilies)     -> termInit) ::
-      (typFamilyApplnNode     -> appW) ::
-      (typFamilyUnifApplnNode -> unAppW) ::
-      ((applnByArgNode | (typFamilySort, Funcs))-> argAppW) ::
-      (lambdaTypFamilyNode ->  lmW) ::
-      ((termsByTyps | (typFamilySort, Funcs)) -> termsByTypW) ::
+    (Init(TypFamilies)                           -> termInit) ::
+      (typFamilyApplnNode                        -> appW) ::
+      (typFamilyUnifApplnNode                    -> unAppW) ::
+      ((applnByArgNode | (typFamilySort, Funcs)) -> argAppW) ::
+      (lambdaTypFamilyNode                       -> lmW) ::
+      ((termsByTyps | (typFamilySort, Funcs))    -> termsByTypW) ::
       TypFamilies.target[TermState, Term, Double, ExstFunc]
 
   val termsByTypNodes
     : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
-    (TermsWithTyp.init     -> termInit) ::
-      (wtN(applnNode)     -> appW) ::
-      (wtN(unifApplnNode) -> unAppW) ::
-      (wtN(applnByArgNode) -> argAppW) ::
-    (lambdaByTypNodeFamily -> lmW) ::
-    TermsWithTyp.target[TermState, Term, Double, Term]
+    (TermsWithTyp.init       -> termInit) ::
+      (wtN(applnNode)        -> appW) ::
+      (wtN(unifApplnNode)    -> unAppW) ::
+      (wtN(applnByArgNode)   -> argAppW) ::
+      (lambdaByTypNodeFamily -> lmW) ::
+      TermsWithTyp.target[TermState, Term, Double, Term]
 
   val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
-    (TypsAndFamilies.fromTyp -> typVsFamily) ::
+    (TypsAndFamilies.fromTyp        -> typVsFamily) ::
       (TypsAndFamilies.fromFamilies -> (1.0 - typVsFamily)) ::
-    TypsAndFamilies.target[TermState, Term, Double, Term]
+      TypsAndFamilies.target[TermState, Term, Double, Term]
 
   val targTypNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
-    (TargetTyps.fromGoal -> goalWeight) ::
+    (TargetTyps.fromGoal  -> goalWeight) ::
       (TargetTyps.fromTyp -> (1.0 - goalWeight)) ::
       TargetTyps.target[TermState, Term, Double, Term]
 
   val funcWithDomNodes
     : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, ExstFunc] =
-    (FuncsWithDomain.init     -> termInit) ::
-      (fdtN(applnNode)     -> appW) ::
-      (fdtN(unifApplnNode) -> unAppW) ::
-      (fdtN(applnByArgNode) -> argAppW) ::
+    (FuncsWithDomain.init         -> termInit) ::
+      (fdtN(applnNode)            -> appW) ::
+      (fdtN(unifApplnNode)        -> unAppW) ::
+      (fdtN(applnByArgNode)       -> argAppW) ::
       (lambdaForFuncWithDomFamily -> lmW) ::
       FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
-
-
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
     termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 
-  lazy val monixFD: MonixFiniteDistribution[TermState, Term] = MonixFiniteDistribution(nodeCoeffSeq)
+  lazy val monixFD: MonixFiniteDistribution[TermState, Term] =
+    MonixFiniteDistribution(nodeCoeffSeq)
 
-  def monixTangFD(baseState: TermState) = MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
+  def monixTangFD(baseState: TermState) =
+    MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
   def nextStateTask(initState: TermState, epsilon: Double): Task[TermState] =
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon)
-      typs <- monixFD.varDist(initState)(Typs, epsilon)
+      typs  <- monixFD.varDist(initState)(Typs, epsilon)
     } yield TermState(terms, typs, initState.vars, initState.inds)
 
-  def nextTangStateTask(baseState: TermState, tangState: TermState, epsilon: Double): Task[TermState] =
+  def nextTangStateTask(baseState: TermState,
+                        tangState: TermState,
+                        epsilon: Double): Task[TermState] =
     for {
       terms <- monixTangFD(baseState).varDist(tangState)(Terms, epsilon)
-      typs <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon)
+      typs  <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon)
     } yield TermState(terms, typs, baseState.vars, baseState.inds)
 
-  def findProof(initState: TermState, typ: Typ[Term], epsilon: Double): Task[FD[Term]] =
-    monixFD.varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon).map(_.flatten)
+  def findProof(initState: TermState,
+                typ: Typ[Term],
+                epsilon: Double): Task[FD[Term]] =
+    monixFD
+      .varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon)
+      .map(_.flatten)
 }
