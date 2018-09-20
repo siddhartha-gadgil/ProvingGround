@@ -163,8 +163,8 @@ sealed trait GeneratorNodeFamily[Dom <: HList, +O] {
   val outputFamily: RandomVarFamily[Dom, O]
 }
 
-sealed trait BaseGeneratorNodeFamily[Dom <: HList, +O]
-    extends GeneratorNodeFamily[Dom, O]
+// sealed trait BaseGeneratorNodeFamily[Dom <: HList, +O]
+//     extends GeneratorNodeFamily[Dom, O]
 
 sealed trait RecursiveGeneratorNodeFamily[Dom <: HList, State, Boat, +O]
     extends GeneratorNodeFamily[Dom, O]
@@ -191,10 +191,10 @@ object GeneratorNodeFamily {
   /**
     * A family of recursive generation functions, given as a function.
     */
-  case class BasePi[Dom <: HList, I <: HList, +O](
-      nodes: Dom => BaseGeneratorNode[I, O],
+  case class BasePi[Dom <: HList, +O](
+      nodes: Dom => GeneratorNode[O],
       outputFamily: RandomVarFamily[Dom, O])
-      extends BaseGeneratorNodeFamily[Dom, O]
+      extends GeneratorNodeFamily[Dom, O]
       with Pi[Dom, O]
 
   sealed trait PiOpt[Dom <: HList, +O] extends GeneratorNodeFamily[Dom, O] {
@@ -214,10 +214,10 @@ object GeneratorNodeFamily {
   /**
     * A family of recursive generation functions, given as a function.
     */
-  case class BasePiOpt[Dom <: HList, I <: HList, +O](
-      nodesOpt: Dom => Option[BaseGeneratorNode[I, O]],
+  case class BasePiOpt[Dom <: HList, +O](
+      nodesOpt: Dom => Option[GeneratorNode[O]],
       outputFamily: RandomVarFamily[Dom, O])
-      extends BaseGeneratorNodeFamily[Dom, O]
+      extends GeneratorNodeFamily[Dom, O]
       with PiOpt[Dom, O]
 
 }
@@ -231,11 +231,13 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
   val outputFamily: RandomVar[O] = output
 
   def |[S >: O, T](condition: Sort[S, T],
-                   output: RandomVar[T]): GeneratorNode[T]
+                   output: RandomVar[T]): GeneratorNode[T] =   BaseThenCondition[ S, T](this, output, condition)
 
   def piFmly[Dom <: HList, S >: O, T](
       conditionFamily: Dom => Sort[S, T],
-      outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T]
+      outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] = GeneratorNodeFamily.BasePi(
+      (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
+      outputFamily)
 
   def pi[D, S >: O, T](conditionFamily: D => Sort[S, T],
                        outputFamily: RandomVarFamily[D :: HNil, T])
@@ -243,40 +245,40 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
     piFmly({case x :: HNil => conditionFamily(x)}, outputFamily)
 }
 
-sealed trait BaseGeneratorNode[I <: HList, +O]
-    extends GeneratorNode[O]
-    with BaseGeneratorNodeFamily[HNil, O] {
-  val inputList: RandomVarList[I]
-
-  def |[S >: O, T](condition: Sort[S, T],
-                   output: RandomVar[T]): BaseGeneratorNode[I, T] =
-    BaseThenCondition[I, S, T](this, output, condition)
-
-  def piFmly[Dom <: HList, S >: O, T](
-      conditionFamily: Dom => Sort[S, T],
-      outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
-    GeneratorNodeFamily.BasePi(
-      (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
-      outputFamily)
-
-}
+// sealed trait BaseGeneratorNode[I <: HList, +O]
+//     extends GeneratorNode[O]
+//     with BaseGeneratorNodeFamily[HNil, O] {
+//   val inputList: RandomVarList[I]
+//
+//   // def |[S >: O, T](condition: Sort[S, T],
+//   //                  output: RandomVar[T]): BaseGeneratorNode[I, T] =
+//   //   BaseThenCondition[I, S, T](this, output, condition)
+//
+//   // def piFmly[Dom <: HList, S >: O, T](
+//   //     conditionFamily: Dom => Sort[S, T],
+//   //     outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
+//   //   GeneratorNodeFamily.BasePi(
+//   //     (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
+//   //     outputFamily)
+//
+// }
 
 sealed trait RecursiveGeneratorNode[State, Boat, +O]
     extends GeneratorNode[O]
     with RecursiveGeneratorNodeFamily[HNil, State, Boat, O] {
-  def |[S >: O, T](
-      condition: Sort[S, T],
-      output: RandomVar[T]): RecursiveGeneratorNode[State, Boat, T] =
-    RecursiveThenCondition[State, Boat, S, T](gen = this,
-                                              output = output,
-                                              condition = condition)
+  // def |[S >: O, T](
+  //     condition: Sort[S, T],
+  //     output: RandomVar[T]): RecursiveGeneratorNode[State, Boat, T] =
+  //   RecursiveThenCondition[State, Boat, S, T](gen = this,
+  //                                             output = output,
+  //                                             condition = condition)
 
-  def piFmly[Dom <: HList, S >: O, T](
-      conditionFamily: Dom => Sort[S, T],
-      outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
-    GeneratorNodeFamily.RecPi(
-      (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
-      outputFamily)
+  // def piFmly[Dom <: HList, S >: O, T](
+  //     conditionFamily: Dom => Sort[S, T],
+  //     outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
+  //   GeneratorNodeFamily.BasePi(
+  //     (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
+  //     outputFamily)
 
 }
 
@@ -287,7 +289,7 @@ object GeneratorNode {
     * @param input the random variable whose distribution we extract.
     */
   case class Init[X](input: RandomVar[X])
-      extends BaseGeneratorNode[X :: HNil, X] {
+      extends GeneratorNode[X] {
     val output: RandomVar[X]                   = input
     val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
   }
@@ -298,11 +300,8 @@ object GeneratorNode {
     * @param input the random variable
     * @tparam X the scala type of the random variable
     */
-  case class Atom[X](value: X, input: RandomVar[X])
-      extends BaseGeneratorNode[X :: HNil, X] {
-    val output: RandomVar[X]                   = input
-    val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
-  }
+  case class Atom[X](value: X, output: RandomVar[X])
+      extends GeneratorNode[X]
 
   /**
     * generator node for mapping
@@ -313,7 +312,7 @@ object GeneratorNode {
     * @tparam Y scala type of the output random variable
     */
   case class Map[X, Y](f: X => Y, input: RandomVar[X], output: RandomVar[Y])
-      extends BaseGeneratorNode[X :: HNil, Y] {
+      extends GeneratorNode[Y] {
     val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
   }
 
@@ -328,7 +327,7 @@ object GeneratorNode {
   case class MapOpt[X, Y](f: X => Option[Y],
                           input: RandomVar[X],
                           output: RandomVar[Y])
-      extends BaseGeneratorNode[X :: HNil, Y] {
+      extends GeneratorNode[Y] {
     val inputList: RandomVarList.Cons[X, HNil] = input :: RandomVarList.Nil
   }
 
@@ -346,7 +345,7 @@ object GeneratorNode {
                                input1: RandomVar[X1],
                                input2: RandomVar[X2],
                                output: RandomVar[Y])
-      extends BaseGeneratorNode[X1 :: X2 :: HNil, Y] {
+      extends GeneratorNode[Y] {
     val inputList
       : RandomVarList.Cons[X1, ::[X2, HNil]] = input1 :: input2 :: RandomVarList.Nil
   }
@@ -365,7 +364,7 @@ object GeneratorNode {
                                   input1: RandomVar[X1],
                                   input2: RandomVar[X2],
                                   output: RandomVar[Y])
-      extends BaseGeneratorNode[X1 :: X2 :: HNil, Y] {
+      extends GeneratorNode[Y] {
     val inputList
       : RandomVarList.Cons[X1, ::[X2, HNil]] = input1 :: input2 :: RandomVarList.Nil
   }
@@ -375,7 +374,7 @@ object GeneratorNode {
                                            f: (X1, X2) => Y,
                                            baseInput: RandomVar[X1],
                                            output: RandomVar[Y])
-      extends BaseGeneratorNode[X1 :: HNil, Y] {
+      extends GeneratorNode[Y] {
     val inputList: RandomVarList.Cons[X1, HNil] = baseInput :: RandomVarList.Nil
   }
 
@@ -383,7 +382,7 @@ object GeneratorNode {
                                    fiberVar: X1 => RandomVar[X2],
                                    f: (X1, X2) => Y,
                                    output: RandomVar[Y])
-      extends BaseGeneratorNode[X1 :: HNil, Y] {
+      extends GeneratorNode[Y] {
     val inputList: RandomVarList.Cons[X1, HNil] = baseInput :: RandomVarList.Nil
   }
 
@@ -399,7 +398,7 @@ object GeneratorNode {
       baseInput: RandomVar[X],
       fiberNode: X => GeneratorNode[Y],
       output: RandomVar[Y]
-  ) extends BaseGeneratorNode[X :: HNil, Y] {
+  ) extends GeneratorNode[Y] {
     val inputList: RandomVarList.Cons[X, HNil] = baseInput :: RandomVarList.Nil
   }
 
@@ -407,7 +406,7 @@ object GeneratorNode {
       baseInput: RandomVar[X],
       fiberNodeOpt: X => Option[GeneratorNode[Y]],
       output: RandomVar[Y]
-  ) extends BaseGeneratorNode[X :: HNil, Y] {
+  ) extends GeneratorNode[Y] {
     val inputList: RandomVarList.Cons[X, HNil] = baseInput :: RandomVarList.Nil
   }
 
@@ -424,14 +423,12 @@ object GeneratorNode {
     val condition: Sort[O, Y]
   }
 
-  case class BaseThenCondition[V <: HList, O, Y](
-      gen: BaseGeneratorNode[V, O],
+  case class BaseThenCondition[O, Y](
+      gen: GeneratorNode[O],
       output: RandomVar[Y],
       condition: Sort[O, Y]
-  ) extends BaseGeneratorNode[V, Y]
-      with ThenCondition[O, Y] {
-    val inputList: RandomVarList[V] = gen.inputList
-  }
+  ) extends GeneratorNode[Y]
+      with ThenCondition[O, Y]
 
   case class RecursiveThenCondition[State, Boat, O, Y](
       gen: RecursiveGeneratorNode[State, Boat, O],
@@ -801,14 +798,14 @@ object NodeCoeffs {
         tail: NodeCoeffs[State, Boat, V, RDom, Y]
                                                ): Cons[State, Boat, V, RDom , Y] =
       headGen match {
-        case value: BaseGeneratorNodeFamily[RDom, Y]            => BaseCons(value, headCoeff, tail)
-        case value: RecursiveGeneratorNodeFamily[RDom, State, Boat, Y] => RecCons(value, headCoeff, tail)
+        case value: GeneratorNodeFamily[RDom, Y]            => BaseCons(value, headCoeff, tail)
+        // case value: RecursiveGeneratorNodeFamily[RDom, State, Boat, Y] => RecCons(value, headCoeff, tail)
       }
 
   }
 
   case class BaseCons[State, Boat, V, RDom <: HList, Y](
-      headGen: BaseGeneratorNodeFamily[RDom, Y],
+      headGen: GeneratorNodeFamily[RDom, Y],
       headCoeff: V,
       tail: NodeCoeffs[State, Boat, V, RDom, Y]
   ) extends Cons[State, Boat, V, RDom, Y] {

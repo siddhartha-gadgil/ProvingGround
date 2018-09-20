@@ -46,11 +46,11 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  val typUnifApplnNode: BaseGeneratorNodeFamily[HNil, Typ[Term]] =
+  val typUnifApplnNode: GeneratorNode[Typ[Term]] =
     typUnifApplnBase | (typSort, Typs)
 
-  val typFamilyUnifApplnNode
-    : BaseGeneratorNode[ExstFunc :: Term :: HNil, ExstFunc] =
+  val typFamilyUnifApplnNode: GeneratorNode[ExstFunc]
+  =
     typUnifApplnBase | (typFamilySort, TypFamilies)
 
   /**
@@ -74,8 +74,8 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  val typApplnNode
-    : BaseGeneratorNode[ExstFunc :: HNil, Typ[Term]] = typApplnBase | (typSort, Typs)
+  val typApplnNode: GeneratorNode[Typ[Term]]
+  = typApplnBase | (typSort, Typs)
 
   val typFamilyApplnNode: GeneratorNode[ExstFunc] =
     typApplnBase | (typFamilySort, TypFamilies)
@@ -116,14 +116,14 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-    * An island for targetting a (dependent) function type, with variable of the domain generated and the co-domain
+    * A node (currently island) for targetting a (dependent function) type, with variable of the domain generated and the co-domain
     * type (more generally fibre) targeted within the island.
     *
     * @param typ the target type
     * @return optional distribution.
     */
-  def lambdaIsleForTyp(
-      typ: Typ[Term]): Option[Island[Term, InitState, Term, Term]] =
+  def nodeForTyp(
+      typ: Typ[Term]): Option[GeneratorNode[Term]] =
     typ match {
       case pd: PiDefn[u, v] =>
         Some(
@@ -181,15 +181,15 @@ class TermGeneratorNodes[InitState](
     * nodes combining lambdas targeting types that are  (dependent) function types,
     * aggregated over all types
     */
-  val lambdaByTypNodeFamily
-    : GeneratorNodeFamily.RecPiOpt[InitState, Term, Typ[Term] :: HNil, Term] =
-    GeneratorNodeFamily.RecPiOpt[InitState, Term, Typ[Term] :: HNil, Term]({
-      case typ :: HNil => lambdaIsleForTyp(typ)
+  val lambdaByTypNodeFamily: GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term]
+  =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => nodeForTyp(typ)
     }, TermsWithTyp)
 
-  val lambdaForFuncWithDomFamily
-    : GeneratorNodeFamily.RecPi[InitState, Term, Typ[Term] :: HNil, ExstFunc] =
-    GeneratorNodeFamily.RecPi[InitState, Term, Typ[Term] :: HNil, ExstFunc](
+  val lambdaForFuncWithDomFamily: GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], ExstFunc]
+  =
+    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, ExstFunc](
       { case dom :: HNil => lambdaIsleForFuncWithDomain(dom) },
       FuncsWithDomain
     )
@@ -231,6 +231,15 @@ class TermGeneratorNodes[InitState](
       (fn) => foldTypFamily(fn.term),
       Typs
     )
+
+  def foldFunc(t: Term, depth: Int, output: RandomVar[Term]) : GeneratorNode[Term] =
+    if (depth < 1) Atom(t, output)
+    else t match {
+      case fn: FuncLike[u, v] =>
+        FlatMap(termsWithTyp(fn.dom),
+          (x: Term) => foldFunc(fn(x.asInstanceOf[u]), depth -1, output),
+          output)
+    }
 
   /**
     * recursive functions from a specific inductive structure, picking the codomain
