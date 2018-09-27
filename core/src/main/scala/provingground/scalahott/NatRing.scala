@@ -1,12 +1,13 @@
 package provingground.scalahott
 
-import provingground._, HoTT._
-
+import provingground._
+import HoTT._
 import ScalaRep._
-
+import provingground.induction.{ExstInducDefn, ExstInducStruc}
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+
 import scala.util._
 import scala.language.implicitConversions
 import annotation.tailrec
@@ -141,10 +142,12 @@ object QField extends SymbolicField[Rational] {
     )
 }
 
-object NatRing extends SymbolicCRing[SafeLong] {
-  override def toString = "Nat"
-  val x: LocalTerm = "x" :: LocalTyp
+object NatRing extends SymbolicCRing[SafeLong] with ExstInducStruc {
+  override def toString                = "Nat"
+  val x: LocalTerm                     = "x" :: LocalTyp
   val succ: Func[LocalTerm, LocalTerm] = lmbda(x)(x + 1)
+
+  val zero = Literal(0)
 
   val NatTyp = LocalTyp
 
@@ -161,13 +164,13 @@ object NatRing extends SymbolicCRing[SafeLong] {
       extends Func[Nat, U] { self =>
     def h = (n: SafeLong) => g(Literal(n))
 
-    val dom   = NatTyp
+    val dom           = NatTyp
     val codom: Typ[U] = init.typ.asInstanceOf[Typ[U]]
 
     val typ: FuncTyp[LocalTerm, U] = dom ->: codom
 
     def subs(x: Term, y: Term) = Rec(init.replace(x, y), g.replace(x, y))
-    def newobj: Rec[U] = this
+    def newobj: Rec[U]         = this
 
     def act(x: LocalTerm): U = x match {
       case Literal(n) => recDefn(n, init, h)
@@ -211,26 +214,53 @@ object NatRing extends SymbolicCRing[SafeLong] {
       Induc(typFamily, init, g.asInstanceOf[FuncLike[Nat, Func[U, U]]])
   }
 
-  def rec[U <: Term with Subs[U]](codom: Typ[U]): Func[U, Func[Func[LocalTerm, Func[U, U]], Func[Nat, U]]] = {
-    val init: U  = codom.Var
-    val g = (NatTyp ->: (codom ->: codom)).Var
-    val value : Func[Nat, U] = Rec(init, g)
+  def rec[U <: Term with Subs[U]](codom: Typ[U])
+    : Func[U, Func[Func[LocalTerm, Func[U, U]], Func[Nat, U]]] = {
+    val init: U             = codom.Var
+    val g                   = (NatTyp ->: (codom ->: codom)).Var
+    val value: Func[Nat, U] = Rec(init, g)
     init :-> (g :-> value)
   }
 
-  def induc[U <: Term with Subs[U]](typFamily: Func[Nat, Typ[U]]): Func[U, Func[FuncLike[LocalTerm, Func[U, U]], FuncLike[Nat, U]]] = {
-    val init: U = typFamily(Literal(0)).Var
-    val n = NatTyp.Var
-    val g = (n ~>: (typFamily(n) ->: typFamily(succ(n)))).Var
-    init :->(g :-> Induc(typFamily, init, g))
+  def induc[U <: Term with Subs[U]](typFamily: Func[Nat, Typ[U]])
+    : Func[U, Func[FuncLike[LocalTerm, Func[U, U]], FuncLike[Nat, U]]] = {
+    val init: U = typFamily(zero).Var
+    val n       = NatTyp.Var
+    val g       = (n ~>: (typFamily(n) ->: typFamily(succ(n)))).Var
+    init :-> (g :-> Induc(typFamily, init, g))
 
   }
 
-  def incl[A: CRing](r: SymbolicCRing[A]) : Func[LocalTerm, r.LocalTerm] = {
+  def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]): Option[Term] =
+    if (dom == NatTyp) Some(rec(cod)) else None
+
+  def inducOpt(dom: Term, cod: Term): Option[Term] =
+    if (dom == NatTyp) cod match {
+      case typFamily: Func[u, _] =>
+        typFamily(zero.asInstanceOf[u]) match {
+          case _ : Typ[w] => Some(induc(typFamily.asInstanceOf[Func[Nat, Typ[u]]]))
+          case _ => None
+        }
+
+      case _ => None
+    } else None
+
+  def subs(x: Term, y: Term): ExstInducStruc = this
+
+  override val constants: Vector[Term] = Vector(zero, succ)
+
+  def incl[A: CRing](r: SymbolicCRing[A]): Func[LocalTerm, r.LocalTerm] = {
     val base = implicitly[Ring[A]]
     val n    = "n" :: LocalTyp
     val fn   = "f(n)" :: r.LocalTyp
-    val step: Func[LocalTerm with Subs[LocalTerm], Func[RepTerm[A] with Subs[RepTerm[A]], r.LocalTerm]] = n :-> (fn :-> r.sum(fn)(r.Literal(base.one)))
+    val step: Func[
+      LocalTerm with Subs[LocalTerm],
+      Func[RepTerm[A] with Subs[RepTerm[A]], r.LocalTerm]] = n :-> (fn :-> r
+      .sum(fn)(r.Literal(base.one)))
     Rec(r.Literal(base.zero), step)
   }
+
+  lazy val exstInducDefn = ExstInducDefn(Type, Vector(zero, succ), this, Vector())
 }
+
+

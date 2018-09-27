@@ -1250,6 +1250,13 @@ object HoTT {
 
     lazy val dom: Typ[Term] = func.dom
 
+    override def hashCode(): Int = term.hashCode()
+
+    override def equals(obj: Any): Boolean = obj match {
+      case that: ExstFunc => term == that.term
+      case _ => false
+    }
+
     def apply(arg: Term): Option[Term] =
       if (arg.typ == func.dom) Some(func(arg.asInstanceOf[U])) else None
   }
