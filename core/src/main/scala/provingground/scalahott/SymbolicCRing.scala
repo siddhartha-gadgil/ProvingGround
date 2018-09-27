@@ -35,15 +35,15 @@ import spire.implicits._
   *
   */
 class SymbolicCRing[A: Ring] { self =>
-  val ring = implicitly[Ring[A]]
+  val ring: Ring[A] = implicitly[Ring[A]]
 
   import ring.{zero, one}
 
-  val two = ring.plus(ring.one, ring.one)
+  val two: A = ring.plus(ring.one, ring.one)
 
-  val minusone = Literal(ring.negate(one))
+  val minusone: LocalTerm  = Literal(ring.negate(one))
 
-  def negate(x: LocalTerm) = prod(minusone)(x)
+  def negate(x: LocalTerm): LocalTerm = prod(minusone)(x)
 
   type LocalTerm = RepTerm[A]
 

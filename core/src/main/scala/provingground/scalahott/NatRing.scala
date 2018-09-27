@@ -143,8 +143,8 @@ object QField extends SymbolicField[Rational] {
 
 object NatRing extends SymbolicCRing[SafeLong] {
   override def toString = "Nat"
-  val x                 = "x" :: LocalTyp
-  val succ              = lmbda(x)(x + 1)
+  val x: LocalTerm = "x" :: LocalTyp
+  val succ: Func[LocalTerm, LocalTerm] = lmbda(x)(x + 1)
 
   val NatTyp = LocalTyp
 
@@ -162,14 +162,14 @@ object NatRing extends SymbolicCRing[SafeLong] {
     def h = (n: SafeLong) => g(Literal(n))
 
     val dom   = NatTyp
-    val codom = init.typ.asInstanceOf[Typ[U]]
+    val codom: Typ[U] = init.typ.asInstanceOf[Typ[U]]
 
-    val typ = dom ->: codom
+    val typ: FuncTyp[LocalTerm, U] = dom ->: codom
 
     def subs(x: Term, y: Term) = Rec(init.replace(x, y), g.replace(x, y))
-    def newobj                 = this
+    def newobj: Rec[U] = this
 
-    def act(x: LocalTerm) = x match {
+    def act(x: LocalTerm): U = x match {
       case Literal(n) => recDefn(n, init, h)
       case LiteralSum(n, x) =>
         recDefn(n, Rec(init, g)(x), (k: SafeLong) => g(sum(Literal(k))(x)))
@@ -182,19 +182,19 @@ object NatRing extends SymbolicCRing[SafeLong] {
                                            g: FuncLike[Nat, Func[U, U]])
       extends FuncLike[Nat, U]
       with Subs[Induc[U]] { self =>
-    def h = (n: SafeLong) => g(Literal(n))
+    def h: SafeLong => Func[U, U] = (n: SafeLong) => g(Literal(n))
 
     val dom = NatTyp
 
     val typ = PiDefn(typFamily)
 
-    val depcodom = typFamily
+    val depcodom: Func[Nat, Typ[U]] = typFamily
 
     def subs(x: Term, y: Term) =
       Induc(typFamily.replace(x, y), init.replace(x, y), g.replace(x, y))
-    def newobj = this
+    def newobj: Induc[U] = this
 
-    def act(x: LocalTerm) = x match {
+    def act(x: LocalTerm): U = x match {
       case Literal(n) => recDefn(n, init, h)
       case LiteralSum(n, x) =>
         recDefn(n,
@@ -211,11 +211,26 @@ object NatRing extends SymbolicCRing[SafeLong] {
       Induc(typFamily, init, g.asInstanceOf[FuncLike[Nat, Func[U, U]]])
   }
 
-  def incl[A: CRing](r: SymbolicCRing[A]) = {
+  def rec[U <: Term with Subs[U]](codom: Typ[U]): Func[U, Func[Func[LocalTerm, Func[U, U]], Func[Nat, U]]] = {
+    val init: U  = codom.Var
+    val g = (NatTyp ->: (codom ->: codom)).Var
+    val value : Func[Nat, U] = Rec(init, g)
+    init :-> (g :-> value)
+  }
+
+  def induc[U <: Term with Subs[U]](typFamily: Func[Nat, Typ[U]]): Func[U, Func[FuncLike[LocalTerm, Func[U, U]], FuncLike[Nat, U]]] = {
+    val init: U = typFamily(Literal(0)).Var
+    val n = NatTyp.Var
+    val g = (n ~>: (typFamily(n) ->: typFamily(succ(n)))).Var
+    init :->(g :-> Induc(typFamily, init, g))
+
+  }
+
+  def incl[A: CRing](r: SymbolicCRing[A]) : Func[LocalTerm, r.LocalTerm] = {
     val base = implicitly[Ring[A]]
     val n    = "n" :: LocalTyp
     val fn   = "f(n)" :: r.LocalTyp
-    val step = n :-> (fn :-> r.sum(fn)(r.Literal(base.one)))
+    val step: Func[LocalTerm with Subs[LocalTerm], Func[RepTerm[A] with Subs[RepTerm[A]], r.LocalTerm]] = n :-> (fn :-> r.sum(fn)(r.Literal(base.one)))
     Rec(r.Literal(base.zero), step)
   }
 }

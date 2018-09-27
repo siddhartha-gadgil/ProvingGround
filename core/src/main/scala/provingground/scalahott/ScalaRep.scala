@@ -388,7 +388,7 @@ object ScalaRep {
   }
 
   class ScalaSym[U <: Term with Subs[U], V](typ: Typ[U]) {
-    def apply(v: V) = typ.symbObj(ScalaSymbol(v))
+    def apply(v: V): U with Subs[U] = typ.symbObj(ScalaSymbol(v))
 
     def unapply(u: Term): Option[V] = u match {
       case sym: Symbolic if u.typ == typ =>

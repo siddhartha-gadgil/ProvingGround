@@ -833,8 +833,7 @@ case class TermGenParams(appW: Double = 0.1,
                          typFromFamilyW: Double = 0.05,
                          typVsFamily: Double = 0.5,
                          varWeight: Double = 0.3,
-                         goalWeight: Double = 0.5,
-                         vars: Vector[Term] = Vector()) {
+                         goalWeight: Double = 0.5) {
   object Gen
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => applyFunc(fn.func, arg) },
@@ -923,7 +922,8 @@ case class TermGenParams(appW: Double = 0.1,
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
-  def nextStateTask(initState: TermState, epsilon: Double): Task[TermState] =
+  def nextStateTask(initState: TermState, epsilon: Double,
+  vars: Vector[Term] = Vector()): Task[TermState] =
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon)
       typs  <- monixFD.varDist(initState)(Typs, epsilon)
@@ -931,7 +931,8 @@ case class TermGenParams(appW: Double = 0.1,
 
   def nextTangStateTask(baseState: TermState,
                         tangState: TermState,
-                        epsilon: Double): Task[TermState] =
+                        epsilon: Double,
+                        vars: Vector[Term] = Vector()): Task[TermState] =
     for {
       terms <- monixTangFD(baseState).varDist(tangState)(Terms, epsilon)
       typs  <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon)
@@ -943,4 +944,10 @@ case class TermGenParams(appW: Double = 0.1,
     monixFD
       .varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon)
       .map(_.flatten)
+}
+
+import upickle.default.{ReadWriter => RW, macroRW, read, write}
+
+object TermGenParams{
+  implicit def rw: RW[TermGenParams] = macroRW
 }
