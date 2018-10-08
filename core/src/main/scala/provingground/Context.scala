@@ -155,7 +155,7 @@ object Context {
   }
 }
 
-trait Context {
+sealed trait Context {
   import Context._
 
   val constants: Vector[Term]
