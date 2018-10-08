@@ -10,19 +10,19 @@ import TermJson._
 class JsonSpec extends FlatSpec {
   def roundTripBase(t: Term): Option[Term] = termToJson(t).flatMap(jsonToTermBase)
 
-  def checkBase(t: Term): Boolean = roundTripBase(t) == Some(t)
+  def checkBase(t: Term): Boolean = roundTripBase(t).contains(t)
 
   "Basic (without induction) serialization" should "be correct for Universe" in {
     assert(checkBase(Type))
   }
 
-  val A = "A" :: Type
+  val A: Typ[Term] with Subs[Typ[Term]] = "A" :: Type
 
-  val B = "B" :: Type
+  val B: Typ[Term] with Subs[Typ[Term]] = "B" :: Type
 
-  val f = "f" :: A ->: B
+  val f: Func[Term, Term] with Subs[Func[Term, Term]] = "f" :: A ->: B
 
-  val a = "a" :: A
+  val a: Term with Subs[Term] = "a" :: A
 
   it should "be correct for function types and applications" in {
     assert(checkBase(A))
@@ -42,7 +42,11 @@ class JsonSpec extends FlatSpec {
     assert(checkBase(a =:= a))
   }
 
-  val mp = A :~> (B :~> (a :-> (f :-> f(a))))
+  val mp
+    : FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]],
+                        Func[Term with Subs[Term],
+                             Func[Func[Term, Term] with Subs[Func[Term, Term]],
+                                  Term]]]] = A :~> (B :~> (a :-> (f :-> f(a))))
 
   it should "be correct for Modus Ponens" in {
     assert(checkBase(mp))
@@ -68,13 +72,13 @@ class JsonSpec extends FlatSpec {
 
   import library._, Nats._, Bools._, Vecs._
 
-  def roundTrip(t: Term) =
+  def roundTrip(t: Term): Option[Term] =
     termToJson(t).flatMap(
       jsonToTerm(Map(Nat         -> NatInd, Bool -> BoolInd).lift,
                  Map((Vec: Term) -> VecAInd).lift)
     )
 
-  def check(t: Term) = roundTrip(t) == Some(t)
+  def check(t: Term): Boolean = roundTrip(t).contains(t)
 
   import Fold._
 
@@ -82,7 +86,7 @@ class JsonSpec extends FlatSpec {
     val double2 = roundTrip(double).get
     assert(double2(N(1)) == N(2))
 
-    assert(roundTrip(double) == Some(double))
+    assert(roundTrip(double).contains(double))
     assert(check(DoubleEven.pf))
 
     assert(check(LocalConstImpliesConst.pf))

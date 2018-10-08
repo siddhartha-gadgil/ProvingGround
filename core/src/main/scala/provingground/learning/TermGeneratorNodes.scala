@@ -247,7 +247,7 @@ class TermGeneratorNodes[InitState](
     * @return distribution of functions
     */
   def recFuncsForStruc(
-      ind: ExstInducStruc): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
+      ind: ExstInducStrucs): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
     ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
       case (x, y) => ind.recOpt(x, y).flatMap(ExstFunc.opt)
     }, Typs, Typs, Funcs)
@@ -258,7 +258,7 @@ class TermGeneratorNodes[InitState](
     * @return distribution of functions
     */
   def inducFuncsForStruc(
-      ind: ExstInducStruc): ZipMapOpt[Typ[Term], Term, ExstFunc] =
+      ind: ExstInducStrucs): ZipMapOpt[Typ[Term], Term, ExstFunc] =
     ZipMapOpt[Typ[Term], Term, ExstFunc]({
       case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)
     }, Typs, Terms, Funcs)
@@ -266,7 +266,7 @@ class TermGeneratorNodes[InitState](
   /**
     * aggregate recursion functions from inductive types
     */
-  val recFuncs: FlatMap[ExstInducStruc, ExstFunc] =
+  val recFuncs: FlatMap[ExstInducStrucs, ExstFunc] =
     FlatMap(
       InducStrucs,
       recFuncsForStruc,
@@ -276,7 +276,7 @@ class TermGeneratorNodes[InitState](
   /**
     * aggregated induction functions from inductive types
     */
-  val inducFuncs: FlatMap[ExstInducStruc, ExstFunc] =
+  val inducFuncs: FlatMap[ExstInducStrucs, ExstFunc] =
     FlatMap(
       InducStrucs,
       inducFuncsForStruc,
@@ -347,11 +347,11 @@ class TermGeneratorNodes[InitState](
     * @return distribution on existential inductive structures
     */
   def simpleInductiveStructure(
-      inductiveTyp: Typ[Term]): Map[Vector[Typ[Term]], ExstInducStruc] =
-    Map[Vector[Typ[Term]], ExstInducStruc](
+      inductiveTyp: Typ[Term]): Map[Vector[Typ[Term]], ExstInducStrucs] =
+    Map[Vector[Typ[Term]], ExstInducStrucs](
       introTyps => {
         val intros = introTyps.map(getVar)
-        ExstInducStruc.get(inductiveTyp, intros)
+        ExstInducStrucs.get(inductiveTyp, intros)
       },
       RandomVector(IntroRuleTypes(inductiveTyp)),
       InducStrucs
@@ -370,7 +370,7 @@ class TermGeneratorNodes[InitState](
         val intros = introTyps.map(getVar)
         ExstInducDefn(inductiveTyp,
                       intros,
-                      ExstInducStruc.get(inductiveTyp, intros),
+                      ExstInducStrucs.get(inductiveTyp, intros),
                       Vector())
       },
       RandomVector(IntroRuleTypes(inductiveTyp)),
@@ -653,7 +653,7 @@ object TermRandomVars {
   /**
     * distribution of existential inductive structures
     */
-  case object InducStrucs extends RandomVar[ExstInducStruc]
+  case object InducStrucs extends RandomVar[ExstInducStrucs]
 
   /**
     * distribution of existential inductive definitions

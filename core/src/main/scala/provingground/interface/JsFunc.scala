@@ -1,18 +1,14 @@
 package provingground.interface
 
 import provingground._
-
 import translation._
-
 import Translator.unmatched
 
 import scala.language.higherKinds
-
 import upickle.Js
-
 import cats._
-
 import cats.implicits._
+import ujson.Js.Value
 
 trait JsFunc[F[_]] {
   def encode(t: F[Js.Value]): Js.Value
@@ -102,7 +98,7 @@ object TermJson {
 
   implicit val travNamed: Traverse[Named] = traversePair[S, Id]
 
-  val termToJson =
+  val termToJson: Translator.OrElse[Term, Value] =
     toJs(universe)("universe") ||
       toJs(formalAppln)("appln") ||
       toJs(lambdaTriple)("lambda") ||
@@ -131,7 +127,7 @@ object TermJson {
   def jsonToTerm(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
       indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
-        (_) => None) =
+        (_) => None): Translator.OrElse[Value, Term] =
     jsonToTermBase ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (x, (y, v)) =>
@@ -149,7 +145,39 @@ object TermJson {
           buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
-  val jsonToTermBase =
+  def jsToTermExst(exst : ExstInducStrucs): Translator.OrElse[Value, Term] =
+    jsonToTermBase ||
+      jsToOpt[Term, IIV]("recursive-function") {
+        case (dom : Term, (cod: Term, data: Vector[Term])) =>
+          for{
+            codom <- typOpt(cod)
+            fn <- exst.recOpt(dom, codom)
+          } yield (fn /: data)(fold(_)(_))
+           //buildRecDef(inds)(x, (y, v))
+      } ||
+      jsToOpt[Term, IIV]("inductive-function") {
+        case (dom : Term, (cod: Term, data: Vector[Term])) =>
+          for{
+            fn <- exst.inducOpt(dom, cod)
+          } yield (fn /: data)(fold(_)(_))
+      } ||
+      jsToOpt[Term, IVIIV]("indexed-recursive-function") {
+        case (_, (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))) =>
+          for{
+            codom <- typOpt(cod)
+            fn <- exst.recOpt(dom, codom)
+          } yield (fn /: (data ++ index))(fold(_)(_))//buildIndRecDef(indexedInds)(w, (x, (y, v)))
+      } ||
+      jsToOpt[Term, IVIIV]("indexed-inductive-function") {
+        case (_, (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))) =>
+          for{
+            fn <- exst.inducOpt(dom, cod)
+          } yield (fn /: (data ++ index))(fold(_)(_))
+        //buildIndIndDef(indexedInds)(w, (x, (y, v)))
+      }
+
+
+  val jsonToTermBase: Translator.OrElse[Value, Term] =
     jsToBuild[Term, N]("universe")((n) => Universe(n)) ||
       jsToBuild[Term, II]("appln") { case (func, arg) => fold(func)(arg) } ||
       jsToBuild[Term, III]("lambda") {

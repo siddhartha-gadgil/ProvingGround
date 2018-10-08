@@ -5,10 +5,10 @@ import shapeless._
 import scala.language.existentials
 
 /**
-  * term level inductive structure for runtime contexts
+  * term level inductive structures for runtime contexts
   */
-trait ExstInducStruc {
-  def subs(x: Term, y: Term): ExstInducStruc
+trait ExstInducStrucs {
+  def subs(x: Term, y: Term): ExstInducStrucs
 
   def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]): Option[Term]
 
@@ -16,10 +16,10 @@ trait ExstInducStruc {
 
   val constants: Vector[Term]
 
-  def ||(that: ExstInducStruc) = ExstInducStruc.OrElse(this, that)
+  def ||(that: ExstInducStrucs) = ExstInducStrucs.OrElse(this, that)
 }
 
-case class ExstInducDefn(typFamily: Term, intros: Vector[Term], ind: ExstInducStruc, parameters : Vector[Term]){
+case class ExstInducDefn(typFamily: Term, intros: Vector[Term], ind: ExstInducStrucs, parameters : Vector[Term]){
   def introsTypGroups : Map[Typ[Term], Int] =
     intros.map((x) => x.typ).groupBy(identity).mapValues(_.size)
 
@@ -28,11 +28,11 @@ case class ExstInducDefn(typFamily: Term, intros: Vector[Term], ind: ExstInducSt
     introsTypGroups == that.introsTypGroups.map{case (k, v) => k.replace(that.typFamily, typFamily)}
 }
 
-object ExstInducStruc {
+object ExstInducStrucs {
   import translation.TermPatterns.fm
 
-  case class OrElse(first: ExstInducStruc, second: ExstInducStruc)
-      extends ExstInducStruc {
+  case class OrElse(first: ExstInducStrucs, second: ExstInducStrucs)
+      extends ExstInducStrucs {
     def subs(x: Term, y: Term) = OrElse(first.subs(x, y), second.subs(x, y))
 
     def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]): Option[Term] =
@@ -45,8 +45,8 @@ object ExstInducStruc {
 
   }
 
-  case class LambdaInduc(variable: Term, struct: ExstInducStruc)
-      extends ExstInducStruc {
+  case class LambdaInduc(variable: Term, struct: ExstInducStrucs)
+      extends ExstInducStrucs {
     def subs(x: Term, y: Term) =
       LambdaInduc(variable.replace(x, y), struct.subs(x, y))
 
@@ -72,7 +72,7 @@ object ExstInducStruc {
   case class ConsSeqExst[SS <: HList, H <: Term with Subs[H], Intros <: HList](
       cs: ConstructorSeqTL[SS, H, Intros],
       intros: Vector[Term]
-  ) extends ExstInducStruc {
+  ) extends ExstInducStrucs {
     def subs(x: Term, y: Term) =
       ConsSeqExst(cs.subs(x, y), intros.map(_.replace(x, y)))
 
@@ -85,7 +85,7 @@ object ExstInducStruc {
     val constants = cs.typ +: intros
   }
 
-  def get(typ: Term, intros: Vector[Term]): ExstInducStruc =
+  def get(typ: Term, intros: Vector[Term]): ExstInducStrucs =
     ConsSeqExst(
       ConstructorSeqTL.getExst(toTyp(typ), intros).value,
       intros
@@ -98,8 +98,8 @@ object ExstInducStruc {
                             Intros <: HList](
       cs: IndexedConstructorSeqDom[SS, H, F, Index, Intros],
       intros: Vector[Term])
-      extends ExstInducStruc {
-    def subs(x: Term, y: Term): ExstInducStruc =
+      extends ExstInducStrucs {
+    def subs(x: Term, y: Term): ExstInducStrucs =
       IndConsSeqExst(cs.subs(x, y), intros.map(_.replace(x, y)))
 
     def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]) =
@@ -111,14 +111,14 @@ object ExstInducStruc {
     val constants = intros
   }
 
-  def getIndexed(typF: Term, intros: Vector[Term]): ExstInducStruc = {
+  def getIndexed(typF: Term, intros: Vector[Term]): ExstInducStrucs = {
     val fmly = TypFamilyExst.getFamily(typF)
     val indTyp =
       fmly.IndexedConstructorSeqExst.getIndexedConstructorSeq(intros).value
     IndConsSeqExst(indTyp, intros)(fmly.subst)
   }
 
-  case object Base extends ExstInducStruc {
+  case object Base extends ExstInducStrucs {
     def subs(x: Term, y: Term) = this
 
     val constants = Vector(Zero, Unit, Star)

@@ -3,7 +3,7 @@ package provingground.scalahott
 import provingground._
 import HoTT._
 import ScalaRep._
-import provingground.induction.{ExstInducDefn, ExstInducStruc}
+import provingground.induction.{ExstInducDefn, ExstInducStrucs}
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -142,7 +142,7 @@ object QField extends SymbolicField[Rational] {
     )
 }
 
-object NatRing extends SymbolicCRing[SafeLong] with ExstInducStruc {
+object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
   override def toString                = "Nat"
   val x: LocalTerm                     = "x" :: LocalTyp
   val succ: Func[LocalTerm, LocalTerm] = lmbda(x)(x + 1)
@@ -245,7 +245,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStruc {
       case _ => None
     } else None
 
-  def subs(x: Term, y: Term): ExstInducStruc = this
+  def subs(x: Term, y: Term): ExstInducStrucs = this
 
   override val constants: Vector[Term] = Vector(zero, succ)
 

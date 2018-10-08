@@ -13,7 +13,7 @@ object Context {
 
     val definitions: Vector[Context.Defn[Term]] = Vector()
 
-    val inductiveDefns: Vector[ExstInducStruc] = Vector()
+    val inductiveDefns: Vector[ExstInducStrucs] = Vector()
 
     def export(t: Term): Term = t
 
@@ -42,7 +42,7 @@ object Context {
       if (global) init.definitions :+ defn.map(init.export)
       else init.definitions
 
-    val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
+    val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
 
     def export(t: Term): Term = init.export(t.replace(defn.name, defn.value))
 
@@ -62,14 +62,33 @@ object Context {
 
     val definitions: Vector[Defn[Term]] = init.definitions
 
-    val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
+    val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
 
     def export(t: Term): Term = init.export(t)
 
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
   }
 
-  case class AppendIndDef(init: Context, defn: ExstInducStruc) extends Context {
+  case class AppendExpr[U <: Term with Subs[U]](init: Context, expr: U)
+    extends Context {
+    val valueOpt : Option[Term] = Some(expr)
+
+    val constants: Vector[Term] = init.constants
+
+    val variables: Vector[Term] = init.variables
+
+    val terms: Vector[Term] = init.terms
+
+    val definitions: Vector[Defn[Term]] = init.definitions
+
+    val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
+
+    def export(t: Term): Term = init.export(t)
+
+    def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
+  }
+
+  case class AppendIndDef(init: Context, defn: ExstInducStrucs) extends Context {
     val valueOpt : Option[Term] = None
 
     val constants: Vector[Term] = init.constants ++ defn.constants
@@ -80,7 +99,7 @@ object Context {
 
     val definitions: Vector[Defn[Term]] = init.definitions
 
-    val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns :+ defn
+    val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns :+ defn
 
     def export(t: Term): Term = init.export(t)
 
@@ -107,7 +126,7 @@ object Context {
 
     val definitions: Vector[Defn[Term]] = init.definitions
 
-    val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
+    val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
 
     def export(t: Term): Term = init.export(t)
 
@@ -126,7 +145,7 @@ object Context {
 
     val definitions: Vector[Defn[Term]] = init.definitions
 
-    val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
+    val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
 
     def export(t: Term): Term =
       init.export(if (t.dependsOn(variable)) variable :~> t else t)
@@ -147,11 +166,11 @@ trait Context {
 
   val definitions: Vector[Context.Defn[Term]]
 
-  val inductiveDefns: Vector[ExstInducStruc]
+  val inductiveDefns: Vector[ExstInducStrucs]
 
-  lazy val inducStruct: ExstInducStruc =
+  lazy val inducStruct: ExstInducStrucs =
     inductiveDefns.reverse
-      .foldRight[ExstInducStruc](ExstInducStruc.Base)(_ || _)
+      .foldRight[ExstInducStrucs](ExstInducStrucs.Base)(_ || _)
 
   def export(t: Term): Term
 
