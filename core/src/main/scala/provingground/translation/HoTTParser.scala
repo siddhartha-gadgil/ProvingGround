@@ -70,6 +70,9 @@ case class HoTTParser(names: Map[String, Term] = Map()) { self =>
 
   val parens: P[Term] = P("(" ~ term ~ ")")
 
+  val simpleterm: P[Term] = P(parens | named)
+
+
   val lmbdaP: P[Term] =
     (P(
       "lmbda" ~ "(" ~ term ~ ")" ~ "(" ~ term ~ ")"
@@ -98,7 +101,6 @@ case class HoTTParser(names: Map[String, Term] = Map()) { self =>
     case (f, x) => applyFunc(f, x)
   }
 
-  val simpleterm: P[Term] = P(parens | named)
 
   val term: P[Term] = P(
     symbolic | lmbdaP | lambdaP | applnP | funcTyp | piTyp | simpleterm)

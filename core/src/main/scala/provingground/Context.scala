@@ -19,7 +19,7 @@ object Context {
 
     def exportTyp(typ: Typ[Term]): Typ[Term] = typ
 
-    val valueOpt = None
+    val valueOpt: Option[Term] = None
   }
 
   case class Defn[+U <: Term with Subs[U]](name: Term, value: U) {
@@ -30,61 +30,61 @@ object Context {
                                                 defn: Defn[U],
                                                 global: Boolean)
       extends Context {
-    val valueOpt = Some(defn.value)
+    val valueOpt : Option[Term] = Some(defn.value)
 
-    val constants = init.constants
+    val constants: Vector[Term] = init.constants
 
-    val variables = init.variables
+    val variables: Vector[Term] = init.variables
 
-    val terms = init.terms
+    val terms: Vector[Term] = init.terms
 
-    val definitions =
+    val definitions: Vector[Defn[Term]] =
       if (global) init.definitions :+ defn.map(init.export)
       else init.definitions
 
     val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
 
-    def export(t: Term) = init.export(t.replace(defn.name, defn.value))
+    def export(t: Term): Term = init.export(t.replace(defn.name, defn.value))
 
-    def exportTyp(t: Typ[Term]) =
+    def exportTyp(t: Typ[Term]): Typ[Term] =
       init.exportTyp(t.replace(defn.name, defn.value))
   }
 
   case class AppendConstant[U <: Term with Subs[U]](init: Context, constant: U)
       extends Context {
-    val valueOpt = Some(constant)
+    val valueOpt : Option[Term] = Some(constant)
 
-    val constants = init.constants :+ init.export(constant)
+    val constants: Vector[Term] = init.constants :+ init.export(constant)
 
-    val variables = init.variables
+    val variables: Vector[Term] = init.variables
 
-    val terms = init.terms
+    val terms: Vector[Term] = init.terms
 
-    val definitions = init.definitions
+    val definitions: Vector[Defn[Term]] = init.definitions
 
     val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
 
-    def export(t: Term) = init.export(t)
+    def export(t: Term): Term = init.export(t)
 
-    def exportTyp(t: Typ[Term]) = init.exportTyp(t)
+    def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
   }
 
   case class AppendIndDef(init: Context, defn: ExstInducStruc) extends Context {
-    val valueOpt = None
+    val valueOpt : Option[Term] = None
 
-    val constants = init.constants ++ defn.constants
+    val constants: Vector[Term] = init.constants ++ defn.constants
 
-    val variables = init.variables
+    val variables: Vector[Term] = init.variables
 
-    val terms = init.terms
+    val terms: Vector[Term] = init.terms
 
-    val definitions = init.definitions
+    val definitions: Vector[Defn[Term]] = init.definitions
 
     val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns :+ defn
 
-    def export(t: Term) = init.export(t)
+    def export(t: Term): Term = init.export(t)
 
-    def exportTyp(t: Typ[Term]) = init.exportTyp(t)
+    def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
   }
 
   sealed trait Role
@@ -97,41 +97,41 @@ object Context {
                                                 term: U,
                                                 role: Role)
       extends Context {
-    val valueOpt = Some(term)
+    val valueOpt: Option[Term] = Some(term)
 
-    val constants = init.constants
+    val constants: Vector[Term] = init.constants
 
-    val variables = init.variables
+    val variables: Vector[Term] = init.variables
 
-    val terms = init.terms :+ init.export(term)
+    val terms: Vector[Term] = init.terms :+ init.export(term)
 
-    val definitions = init.definitions
+    val definitions: Vector[Defn[Term]] = init.definitions
 
     val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
 
-    def export(t: Term) = init.export(t)
+    def export(t: Term): Term = init.export(t)
 
-    def exportTyp(t: Typ[Term]) = init.exportTyp(t)
+    def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
   }
 
   case class AppendVariable[U <: Term with Subs[U]](init: Context, variable: U)
       extends Context {
-    val valueOpt = Some(variable)
+    val valueOpt : Option[Term] = Some(variable)
 
-    val constants = init.constants
+    val constants: Vector[Term] = init.constants
 
-    val variables = init.variables :+ init.export(variable)
+    val variables: Vector[Term] = init.variables :+ init.export(variable)
 
-    val terms = init.terms
+    val terms: Vector[Term] = init.terms
 
-    val definitions = init.definitions
+    val definitions: Vector[Defn[Term]] = init.definitions
 
     val inductiveDefns: Vector[ExstInducStruc] = init.inductiveDefns
 
-    def export(t: Term) =
+    def export(t: Term): Term =
       init.export(if (t.dependsOn(variable)) variable :~> t else t)
 
-    def exportTyp(t: Typ[Term]) =
+    def exportTyp(t: Typ[Term]): Typ[Term] =
       init.exportTyp(if (t.dependsOn(variable)) variable ~>: t else t)
   }
 }
@@ -149,7 +149,7 @@ trait Context {
 
   val inductiveDefns: Vector[ExstInducStruc]
 
-  lazy val inducStruct =
+  lazy val inducStruct: ExstInducStruc =
     inductiveDefns.reverse
       .foldRight[ExstInducStruc](ExstInducStruc.Base)(_ || _)
 
@@ -172,14 +172,14 @@ trait Context {
   def addVariable[U <: Term with Subs[U]](variable: U) =
     AppendConstant(this, variable)
 
-  def assume(tp: Typ[Term], text: String = "assumption") =
+  def assume(tp: Typ[Term], text: String = "assumption"): AppendConstant[Term] =
     addConstant(text :: tp)
 
-  def assert(tp: Typ[Term]) = introduce(tp, Assert)
+  def assert(tp: Typ[Term]): AppendTerm[Typ[Term]] = introduce(tp, Assert)
 
-  def given[U <: Term with Subs[U]](v: Term) = addVariable(v)
+  def given[U <: Term with Subs[U]](v: Term): AppendConstant[Term] = addVariable(v)
 
-  def introduce[U <: Term with Subs[U]](t: U, role: Role = Consider) =
+  def introduce[U <: Term with Subs[U]](t: U, role: Role = Consider): AppendTerm[U] =
     AppendTerm(this, t, role)
 
   val valueOpt: Option[Term]

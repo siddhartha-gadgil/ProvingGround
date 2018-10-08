@@ -44,7 +44,7 @@ trait MetalsModule extends ScalaModule{
 
 val scalaV = "2.12.6"
 
-val ammV = "1.1.0"
+val ammV = "1.2.1"
 
 
 val commonLibs = List(
@@ -93,7 +93,7 @@ trait CommonJSModule extends CommonModule with ScalaJSModule{
 }
 
 val jvmLibs = List(
-  ivy"com.lihaoyi:::ammonite:1.1.1",
+  ivy"com.lihaoyi:::ammonite:$ammV",
   ivy"com.lihaoyi::cask:0.1.6",
   ivy"org.scalameta::scalameta:3.7.4",
   ivy"com.github.nscala-time::nscala-time:2.16.0",
