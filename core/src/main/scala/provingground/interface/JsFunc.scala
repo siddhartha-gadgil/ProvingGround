@@ -1,6 +1,6 @@
 package provingground.interface
 
-import provingground._
+import provingground.{Context, _}
 import translation._
 import Translator.unmatched
 
@@ -147,37 +147,41 @@ object TermJson {
           buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
-  def jsToTermExst(exst : ExstInducStrucs): Translator.OrElse[Value, Term] =
+  def jsToTermExst(exst: ExstInducStrucs): Translator.OrElse[Value, Term] =
     jsonToTermBase ||
       jsToOpt[Term, IIV]("recursive-function") {
-        case (dom : Term, (cod: Term, data: Vector[Term])) =>
-          for{
+        case (dom: Term, (cod: Term, data: Vector[Term])) =>
+          for {
             codom <- typOpt(cod)
-            fn <- exst.recOpt(dom, codom)
+            fn    <- exst.recOpt(dom, codom)
           } yield (fn /: data)(fold(_)(_))
-           //buildRecDef(inds)(x, (y, v))
+        //buildRecDef(inds)(x, (y, v))
       } ||
       jsToOpt[Term, IIV]("inductive-function") {
-        case (dom : Term, (cod: Term, data: Vector[Term])) =>
-          for{
+        case (dom: Term, (cod: Term, data: Vector[Term])) =>
+          for {
             fn <- exst.inducOpt(dom, cod)
           } yield (fn /: data)(fold(_)(_))
       } ||
       jsToOpt[Term, IVIIV]("indexed-recursive-function") {
-        case (_, (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))) =>
-          for{
+        case (_,
+              (index: Vector[Term],
+               (dom: Term, (cod: Term, data: Vector[Term])))) =>
+          for {
             codom <- typOpt(cod)
-            fn <- exst.recOpt(dom, codom)
-          } yield (fn /: (data ++ index))(fold(_)(_))//buildIndRecDef(indexedInds)(w, (x, (y, v)))
+            fn    <- exst.recOpt(dom, codom)
+          } yield
+            (fn /: (data ++ index))(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
       } ||
       jsToOpt[Term, IVIIV]("indexed-inductive-function") {
-        case (_, (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))) =>
-          for{
+        case (_,
+              (index: Vector[Term],
+               (dom: Term, (cod: Term, data: Vector[Term])))) =>
+          for {
             fn <- exst.inducOpt(dom, cod)
           } yield (fn /: (data ++ index))(fold(_)(_))
         //buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
-
 
   val jsonToTermBase: Translator.OrElse[Value, Term] =
     jsToBuild[Term, N]("universe")((n) => Universe(n)) ||
@@ -267,41 +271,45 @@ object TermJson {
 
 }
 
-object InducJson{
+object InducJson {
   import TermJson._, ExstInducStrucs._
 
-  def toJson(exst: ExstInducStrucs) : Js.Value = exst match {
-    case Base => Js.Obj("intro" -> "base")
+  def toJson(exst: ExstInducStrucs): Js.Value = exst match {
+    case Base    => Js.Obj("intro" -> "base")
     case NatRing => Js.Obj("intro" -> "nat-ring")
     case OrElse(first, second) =>
       Js.Obj(
-        "intro" -> "or-else",
+        "intro"  -> "or-else",
         "first"  -> toJson(first),
         "second" -> toJson(second)
       )
     case LambdaInduc(x, struc) =>
       Js.Obj(
-        "intro" -> "lambda",
-        "variable" -> termToJson(x).get,
+        "intro"     -> "lambda",
+        "variable"  -> termToJson(x).get,
         "structure" -> toJson(struc)
       )
     case ConsSeqExst(cs, intros) =>
       Js.Obj(
         "intro" -> "constructor-sequence",
-        "type" -> termToJson(cs.typ).get,
-        "intros" -> Js.Arr(intros.map{(t) => termToJson(t).get} : _*)
+        "type"  -> termToJson(cs.typ).get,
+        "intros" -> Js.Arr(intros.map { (t) =>
+          termToJson(t).get
+        }: _*)
       )
     case ind @ IndConsSeqExst(cs, intros) =>
       Js.Obj(
         "intro" -> "indexed-constructor-sequence",
-        "type" -> termToJson(ind.fmly).get,
-        "intros" -> Js.Arr(intros.map{(t) => termToJson(t).get} : _*)
+        "type"  -> termToJson(ind.fmly).get,
+        "intros" -> Js.Arr(intros.map { (t) =>
+          termToJson(t).get
+        }: _*)
       )
   }
 
   def fromJson(init: ExstInducStrucs)(js: Js.Value): ExstInducStrucs =
     js.obj("intro").str match {
-      case "base" => Base
+      case "base"     => Base
       case "nat-ring" => NatRing
       case "or-else" =>
         OrElse(
@@ -309,17 +317,91 @@ object InducJson{
           fromJson(init)(js.obj("second"))
         )
       case "lambda" =>
-        val x = jsToTermExst(init)(js.obj("variable")).get
+        val x     = jsToTermExst(init)(js.obj("variable")).get
         val struc = fromJson(init)(js.obj("structure"))
         LambdaInduc(x, struc)
       case "constructor-sequence" =>
         val typ = jsToTermExst(init)(js.obj("type")).flatMap(typOpt).get
-        val intros = js.obj("intros").arr.map((t) => jsToTermExst(init)(t).get).toVector
+        val intros =
+          js.obj("intros").arr.map((t) => jsToTermExst(init)(t).get).toVector
         get(typ, intros)
       case "indexed-constructor-sequence" =>
         val typF = jsToTermExst(init)(js.obj("type")).get
-        val intros = js.obj("intros").arr.map((t) => jsToTermExst(init)(t).get).toVector
+        val intros =
+          js.obj("intros").arr.map((t) => jsToTermExst(init)(t).get).toVector
         getIndexed(typF, intros)
     }
 
+}
+
+object ContextJson {
+  import Context._, TermJson._
+  def toJson(ctx: Context): Js.Value = ctx match {
+    case Empty => Js.Obj("intro" -> "empty")
+    case AppendConstant(init, constant: Term) =>
+      Js.Obj(
+        "intro"    -> "append-constant",
+        "init"     -> toJson(init),
+        "constant" -> termToJson(constant).get
+      )
+    case AppendTerm(init, expr: Term, role: Role) =>
+      val rl = role match {
+        case Context.Assert   => Js.Str("assert")
+        case Context.Consider => Js.Str("consider")
+      }
+      Js.Obj(
+        "intro" -> "append-term",
+        "init"  -> toJson(init),
+        "term"  -> termToJson(expr).get,
+        "role"  -> rl
+      )
+    case AppendVariable(init, expr: Term) =>
+      Js.Obj(
+        "intro"      -> "append-variable",
+        "init"       -> toJson(init),
+        "expression" -> termToJson(expr).get
+      )
+    case AppendDefn(init, defn, global) =>
+      Js.Obj(
+        "intro"  -> "append-definition",
+        "name"   -> termToJson(defn.name).get,
+        "value"  -> termToJson(defn.valueTerm).get,
+        "global" -> Js.Bool(global)
+      )
+    case AppendIndDef(init, defn) =>
+      Js.Obj(
+        "intro" -> "append-inductive-definition",
+        "defn"  -> InducJson.toJson(defn)
+      )
+  }
+
+  def fromJson(js: Js.Value): Context =
+    js.obj("intro").str match {
+      case "empty" => Empty
+      case "append-term" =>
+        val init = fromJson(js.obj("init"))
+        val term = jsToTermExst(init.inducStruct)(js.obj("term")).get
+        val role = js.obj("role").str match {
+          case "assert"   => Assert
+          case "consider" => Consider
+        }
+        AppendTerm(init, term, role)
+      case "append-constant" =>
+        val init = fromJson(js.obj("init"))
+        val term = jsToTermExst(init.inducStruct)(js.obj("constant")).get
+        AppendConstant(init, term)
+      case "append-variable" =>
+        val init = fromJson(js.obj("init"))
+        val term = jsToTermExst(init.inducStruct)(js.obj("variable")).get
+        AppendVariable(init, term)
+      case "append-definition" =>
+        val init = fromJson(js.obj("init"))
+        val name = jsToTermExst(init.inducStruct)(js.obj("name")).get
+        val value = jsToTermExst(init.inducStruct)(js.obj("value")).get
+        AppendDefn(init, Defn(name, value), js.obj("global").bool)
+      case "append-inductive-definition" =>
+        val init = fromJson(js.obj("init"))
+        val defn = InducJson.fromJson(init.inducStruct)(js.obj("defn"))
+        AppendIndDef(init, defn)
+    }
 }

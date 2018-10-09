@@ -26,6 +26,8 @@ object Context {
 
   case class Defn[+U <: Term with Subs[U]](name: Term, value: U) {
     def map(f: Term => Term) = Defn(name, f(value))
+
+    def valueTerm: Term = value
   }
 
   case class AppendDefn[U <: Term with Subs[U]](init: Context,
@@ -71,24 +73,6 @@ object Context {
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
   }
 
-  case class AppendExpr[U <: Term with Subs[U]](init: Context, expr: U)
-    extends Context {
-    val valueOpt : Option[Term] = Some(expr)
-
-    val constants: Vector[Term] = init.constants
-
-    val variables: Vector[Term] = init.variables
-
-    val terms: Vector[Term] = init.terms
-
-    val definitions: Vector[Defn[Term]] = init.definitions
-
-    val inductiveDefns: Vector[ExstInducStrucs] = init.inductiveDefns
-
-    def export(t: Term): Term = init.export(t)
-
-    def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
-  }
 
   case class AppendIndDef(init: Context, defn: ExstInducStrucs) extends Context {
     val valueOpt : Option[Term] = None
