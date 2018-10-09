@@ -264,3 +264,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
 }
 
 
+object HoTTPredefs{
+  val exstInduc: ExstInducStrucs.OrElse = ExstInducStrucs.Base || NatRing
+}
+

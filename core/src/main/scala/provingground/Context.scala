@@ -1,6 +1,8 @@
 package provingground
 
-import HoTT._, induction._
+import HoTT._
+import induction._
+import provingground.scalahott.HoTTPredefs
 
 object Context {
 
@@ -170,7 +172,7 @@ sealed trait Context {
 
   lazy val inducStruct: ExstInducStrucs =
     inductiveDefns.reverse
-      .foldRight[ExstInducStrucs](ExstInducStrucs.Base)(_ || _)
+      .foldRight[ExstInducStrucs](HoTTPredefs.exstInduc)(_ || _)
 
   def export(t: Term): Term
 

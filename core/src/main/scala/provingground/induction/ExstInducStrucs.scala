@@ -82,7 +82,7 @@ object ExstInducStrucs {
     def inducOpt(dom: Term, cod: Term): Option[Term] =
       if (dom == cs.typ) Some(cs.inducE(fm[H](cs.typ, cod))) else None
 
-    val constants = cs.typ +: intros
+    val constants: Vector[Term] = cs.typ +: intros
   }
 
   def get(typ: Term, intros: Vector[Term]): ExstInducStrucs =
@@ -99,6 +99,8 @@ object ExstInducStrucs {
       cs: IndexedConstructorSeqDom[SS, H, F, Index, Intros],
       intros: Vector[Term])
       extends ExstInducStrucs {
+    val fmly : Term = cs.W
+
     def subs(x: Term, y: Term): ExstInducStrucs =
       IndConsSeqExst(cs.subs(x, y), intros.map(_.replace(x, y)))
 
@@ -108,7 +110,7 @@ object ExstInducStrucs {
     def inducOpt(dom: Term, cod: Term): Option[Term] =
       if (dom == cs.W) Some(cs.inducE(cod)) else None
 
-    val constants = intros
+    val constants: Vector[Term] = intros
   }
 
   def getIndexed(typF: Term, intros: Vector[Term]): ExstInducStrucs = {
@@ -119,7 +121,7 @@ object ExstInducStrucs {
   }
 
   case object Base extends ExstInducStrucs {
-    def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term): Base.type = this
 
     val constants = Vector(Zero, Unit, Star)
 

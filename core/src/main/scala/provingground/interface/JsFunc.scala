@@ -8,6 +8,8 @@ import scala.language.higherKinds
 import upickle.Js
 import cats._
 import cats.implicits._
+import provingground.induction.ExstInducStrucs
+import provingground.scalahott.NatRing
 import ujson.Js.Value
 
 trait JsFunc[F[_]] {
@@ -18,9 +20,9 @@ trait JsFunc[F[_]] {
 
 object JsFunc {
   implicit val idJS: JsFunc[Id] = new JsFunc[Id] {
-    def encode(t: Js.Value) = t
+    def encode(t: Js.Value): Value = t
 
-    def decode(js: Js.Value) = js
+    def decode(js: Js.Value): Value = js
   }
 
   import Functors._
@@ -28,25 +30,25 @@ object JsFunc {
   implicit val intJs: JsFunc[N] = new JsFunc[N] {
     def encode(t: Int) = Js.Num(t.toDouble)
 
-    def decode(js: Js.Value) = js.num.toInt
+    def decode(js: Js.Value): Int = js.num.toInt
   }
 
   implicit val strJs: JsFunc[S] = new JsFunc[S] {
     def encode(t: String) = Js.Str(t)
 
-    def decode(js: Js.Value) = js.str
+    def decode(js: Js.Value): String = js.str
   }
 
   implicit val unitJs: JsFunc[Un] = new JsFunc[Un] {
-    def encode(t: Unit) = Js.Null
+    def encode(t: Unit): Js.Null.type = Js.Null
 
-    def decode(js: Js.Value) = ()
+    def decode(js: Js.Value): Unit = ()
   }
 
   implicit val vecJs: JsFunc[Vector] = new JsFunc[Vector] {
     def encode(t: Vector[Js.Value]) = Js.Arr(t: _*)
 
-    def decode(js: Js.Value) = js.arr.toVector
+    def decode(js: Js.Value): Vector[Value] = js.arr.toVector
   }
 
   implicit def pairJS[X[_], Y[_]](
@@ -56,7 +58,7 @@ object JsFunc {
       def encode(t: (X[Js.Value], Y[Js.Value])) =
         Js.Obj("first" -> xJs.encode(t._1), "second" -> yJs.encode(t._2))
 
-      def decode(js: Js.Value) =
+      def decode(js: Js.Value): (X[Value], Y[Value]) =
         (xJs.decode(js("first")), yJs.decode(js("second")))
     }
 
@@ -262,5 +264,62 @@ object TermJson {
         case (name, tp: Typ[u]) => name :: tp
         case (x, y)             => unmatched(x, y)
       }(travNamed, implicitly[JsFunc[Named]])
+
+}
+
+object InducJson{
+  import TermJson._, ExstInducStrucs._
+
+  def toJson(exst: ExstInducStrucs) : Js.Value = exst match {
+    case Base => Js.Obj("intro" -> "base")
+    case NatRing => Js.Obj("intro" -> "nat-ring")
+    case OrElse(first, second) =>
+      Js.Obj(
+        "intro" -> "or-else",
+        "first"  -> toJson(first),
+        "second" -> toJson(second)
+      )
+    case LambdaInduc(x, struc) =>
+      Js.Obj(
+        "intro" -> "lambda",
+        "variable" -> termToJson(x).get,
+        "structure" -> toJson(struc)
+      )
+    case ConsSeqExst(cs, intros) =>
+      Js.Obj(
+        "intro" -> "constructor-sequence",
+        "type" -> termToJson(cs.typ).get,
+        "intros" -> Js.Arr(intros.map{(t) => termToJson(t).get} : _*)
+      )
+    case ind @ IndConsSeqExst(cs, intros) =>
+      Js.Obj(
+        "intro" -> "indexed-constructor-sequence",
+        "type" -> termToJson(ind.fmly).get,
+        "intros" -> Js.Arr(intros.map{(t) => termToJson(t).get} : _*)
+      )
+  }
+
+  def fromJson(init: ExstInducStrucs)(js: Js.Value): ExstInducStrucs =
+    js.obj("intro").str match {
+      case "base" => Base
+      case "nat-ring" => NatRing
+      case "or-else" =>
+        OrElse(
+          fromJson(init)(js.obj("first")),
+          fromJson(init)(js.obj("second"))
+        )
+      case "lambda" =>
+        val x = jsToTermExst(init)(js.obj("variable")).get
+        val struc = fromJson(init)(js.obj("structure"))
+        LambdaInduc(x, struc)
+      case "constructor-sequence" =>
+        val typ = jsToTermExst(init)(js.obj("type")).flatMap(typOpt).get
+        val intros = js.obj("intros").arr.map((t) => jsToTermExst(init)(t).get).toVector
+        get(typ, intros)
+      case "indexed-constructor-sequence" =>
+        val typF = jsToTermExst(init)(js.obj("type")).get
+        val intros = js.obj("intros").arr.map((t) => jsToTermExst(init)(t).get).toVector
+        getIndexed(typF, intros)
+    }
 
 }
