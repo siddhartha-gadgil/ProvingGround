@@ -28,7 +28,7 @@ object katex extends js.Object {
 
 object ScratchPad {
   def load(): Unit = {
-    Option(dom.document.querySelector("#hott-scratch")).map { (ediv) =>
+    Option(dom.document.querySelector("#hott-scratch")).foreach { (ediv) =>
       val editDiv = ediv.asInstanceOf[org.scalajs.dom.html.Div]
       val runButton =
         input(`type` := "button",

@@ -26,7 +26,7 @@ object HoTTParser {
   }
 }
 
-case class HoTTParser(ctx: Context) { self =>
+case class HoTTParser(ctx: Context = Context.Empty) { self =>
   import ctx.namedTerms
   import fastparse._
   val White: WhitespaceApi.Wrapper = WhitespaceApi.Wrapper {

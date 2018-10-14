@@ -757,7 +757,8 @@ case class TermState(terms: FD[Term],
                      typs: FD[Typ[Term]],
                      vars: Vector[Term] = Vector(),
                      inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
-                     goals: FD[Typ[Term]] = FD.empty) {
+                     goals: FD[Typ[Term]] = FD.empty,
+                     context: Context = Context.Empty) {
   val thmsByPf: FD[Typ[Term]] =
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
   val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0).flatten
