@@ -1,7 +1,10 @@
 package provingground.translation
 
-import provingground.HoTT._
+import provingground._
+import HoTT._
 import HoTTParser._
+import fastparse.all
+import monix.eval.Task
 
 import scala.collection.immutable
 
@@ -23,7 +26,8 @@ object HoTTParser {
   }
 }
 
-case class HoTTParser(names: Map[String, Term] = Map()) { self =>
+case class HoTTParser(ctx: Context) { self =>
+  import ctx.namedTerms
   import fastparse._
   val White: WhitespaceApi.Wrapper = WhitespaceApi.Wrapper {
     import fastparse.all._
@@ -32,9 +36,9 @@ case class HoTTParser(names: Map[String, Term] = Map()) { self =>
   import fastparse.noApi._
   import White._
 
-  def +(n: String, t: Term) = HoTTParser(names + (n -> t))
+  def +(n: String, t: Term) = HoTTParser(ctx.defineSym(Name(n), t))
 
-  def +(dfn: Defn) = HoTTParser(names + (dfn.name -> dfn.value))
+  def +(dfn: Defn) = HoTTParser(ctx.defineSym(Name(dfn.name), dfn.value))
 
   val predefs: P[Term] =
     P("Type").map((_) => Type: Term) |
@@ -44,7 +48,7 @@ case class HoTTParser(names: Map[String, Term] = Map()) { self =>
       P("Prop").map((_) => Prop: Term)
 
   val named: P[Term] =
-    names.foldRight[P[Term]](predefs) {
+    namedTerms.foldRight[P[Term]](predefs) {
       case ((name, term), parser) => P(name).map((_) => term) | parser
     }
 
@@ -72,7 +76,6 @@ case class HoTTParser(names: Map[String, Term] = Map()) { self =>
 
   val simpleterm: P[Term] = P(parens | named)
 
-
   val lmbdaP: P[Term] =
     (P(
       "lmbda" ~ "(" ~ term ~ ")" ~ "(" ~ term ~ ")"
@@ -97,24 +100,26 @@ case class HoTTParser(names: Map[String, Term] = Map()) { self =>
     simpleterm ~ "~>:" ~ term
   ).map { case (x, y) => x ~>: toTyp(y) }
 
-  val applnP = P(simpleterm ~ "(" ~ term ~ ")").map {
-    case (f, x) => applyFunc(f, x)
-  }
-
+  val applnP: core.Parser[Term, Char, String] =
+    P(simpleterm ~ "(" ~ term ~ ")").map {
+      case (f, x) => applyFunc(f, x)
+    }
 
   val term: P[Term] = P(
     symbolic | lmbdaP | lambdaP | applnP | funcTyp | piTyp | simpleterm)
 
-  val break = P(spc ~ (End | CharIn("\n;"))) | P(
+  val break
+    : core.Parser[Unit, Char, String] = P(spc ~ (End | CharIn("\n;"))) | P(
     "//" ~ CharPred(_ != '\n').rep ~ ("\n" | End))
 
-  val spc = CharIn(" \t").rep
+  val spc: all.P[Unit] = CharIn(" \t").rep
 
-  val defn = P(spc ~ "val" ~ str ~ "=" ~ term ~ break).map {
-    case (n, t) => Defn(n, t)
-  }
+  val defn: core.Parser[Defn, Char, String] =
+    P(spc ~ "val" ~ str ~ "=" ~ term ~ break).map {
+      case (n, t) => Defn(n, t)
+    }
 
-  val expr = (spc ~ term ~ break).map(Expr)
+  val expr: core.Parser[Expr, Char, String] = (spc ~ term ~ break).map(Expr)
 
   val stat: P[Stat] = defn | expr
 
@@ -128,4 +133,17 @@ case class HoTTParser(names: Map[String, Term] = Map()) { self =>
       }) |
       P(stat ~ block ~ End).map { case (s, v) => s +: v } |
       P(spc ~ "\n" ~ block)
+
+  val context: P[Context] =
+    P(spc ~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ context) |
+      (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => Context.Empty) |
+      (spc ~ End).map((_) => Context.Empty ) |
+      defn.flatMap((dfn) =>
+        (self + dfn).context.map { (tail) =>
+          tail.defineSym(Name(dfn.name), dfn.value)
+        }) |
+      P(defn ~ context ~ End).map { case (dfn, ct) => ct.defineSym(Name(dfn.name), dfn.value)} |
+      P(expr ~ context ~ End).map { case (exp, ct) => ct.introduce(exp.term)} |
+      P(spc ~ "\n" ~ context)
+
 }

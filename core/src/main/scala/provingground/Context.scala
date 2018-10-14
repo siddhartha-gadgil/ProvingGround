@@ -189,11 +189,11 @@ sealed trait Context {
 
   val valueOpt: Option[Term]
 
-  lazy val namedTerms: Map[AnySym, Term] =
+  lazy val namedTerms: Map[String, Term] =
     (definitions.collect {
-      case Defn(name: Symbolic, value) => (name.name -> value)
+      case Defn(NamedTerm(name), value) => (name -> value)
     } ++
       constants.collect {
-        case const: Symbolic => const.name -> const
+        case const @ NamedTerm(name) => name -> const
       }).toMap
 }

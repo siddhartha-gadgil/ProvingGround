@@ -46,6 +46,18 @@ object HoTT {
     override def toString = name.toString
   }
 
+  object NamedTerm{
+    def unapply(arg: Term): Option[String] =
+      arg match {
+        case sym: Symbolic =>
+          sym.name match {
+            case Name(name) => Some(name)
+            case _ => None
+          }
+        case _ => None
+      }
+  }
+
   trait NameFactory {
     def get: Name
   }
