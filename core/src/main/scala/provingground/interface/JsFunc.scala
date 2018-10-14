@@ -124,6 +124,14 @@ object TermJson {
       toJs(identityTyp)("equality") ||
       toJs(refl)("reflexivity")
 
+  def fdJson(fd: FiniteDistribution[Term]): Js.Arr = {
+    val pmf = for {
+      Weighted(elem, p) <- fd.pmf
+      tjs <- termToJson(elem)
+    } yield Js.Obj("term" -> tjs, "weight" -> Js.Num(p))
+    Js.Arr(pmf : _*)
+  }
+
   import induction._
 
   def jsonToTerm(
@@ -182,6 +190,18 @@ object TermJson {
           } yield (fn /: (data ++ index))(fold(_)(_))
         //buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
+
+  def jsToFD(exst: ExstInducStrucs)(js: Js.Value): FiniteDistribution[Term] = {
+    val pmf =
+      js.arr.toVector.map{
+        wp =>
+          Weighted(
+            jsToTermExst(exst)(wp.obj("term")).get,
+            wp.obj("weight").num
+          )
+      }
+    FiniteDistribution(pmf)
+  }
 
   val jsonToTermBase: Translator.OrElse[Value, Term] =
     jsToBuild[Term, N]("universe")((n) => Universe(n)) ||

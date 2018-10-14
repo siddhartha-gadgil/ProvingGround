@@ -9,6 +9,7 @@ import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
 import monix.eval.Task
+import provingground.interface.ContextJson
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -49,8 +50,7 @@ class TermGeneratorNodes[InitState](
   val typUnifApplnNode: GeneratorNode[Typ[Term]] =
     typUnifApplnBase | (typSort, Typs)
 
-  val typFamilyUnifApplnNode: GeneratorNode[ExstFunc]
-  =
+  val typFamilyUnifApplnNode: GeneratorNode[ExstFunc] =
     typUnifApplnBase | (typFamilySort, TypFamilies)
 
   /**
@@ -74,8 +74,7 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  val typApplnNode: GeneratorNode[Typ[Term]]
-  = typApplnBase | (typSort, Typs)
+  val typApplnNode: GeneratorNode[Typ[Term]] = typApplnBase | (typSort, Typs)
 
   val typFamilyApplnNode: GeneratorNode[ExstFunc] =
     typApplnBase | (typFamilySort, TypFamilies)
@@ -122,8 +121,7 @@ class TermGeneratorNodes[InitState](
     * @param typ the target type
     * @return optional distribution.
     */
-  def nodeForTyp(
-      typ: Typ[Term]): Option[GeneratorNode[Term]] =
+  def nodeForTyp(typ: Typ[Term]): Option[GeneratorNode[Term]] =
     typ match {
       case pd: PiDefn[u, v] =>
         Some(
@@ -181,14 +179,14 @@ class TermGeneratorNodes[InitState](
     * nodes combining lambdas targeting types that are  (dependent) function types,
     * aggregated over all types
     */
-  val lambdaByTypNodeFamily: GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term]
-  =
+  val lambdaByTypNodeFamily
+    : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
       case typ :: HNil => nodeForTyp(typ)
     }, TermsWithTyp)
 
-  val lambdaForFuncWithDomFamily: GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], ExstFunc]
-  =
+  val lambdaForFuncWithDomFamily
+    : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], ExstFunc] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, ExstFunc](
       { case dom :: HNil => lambdaIsleForFuncWithDomain(dom) },
       FuncsWithDomain
@@ -221,8 +219,8 @@ class TermGeneratorNodes[InitState](
     case typ: Typ[Term] => Atom(typ, Typs)
     case fn: FuncLike[u, v] =>
       FlatMap(termsWithTyp(fn.dom),
-        (x: Term) => foldTypFamily(fn(x.asInstanceOf[u])),
-        Typs)
+              (x: Term) => foldTypFamily(fn(x.asInstanceOf[u])),
+              Typs)
   }
 
   val typFoldNode: FlatMap[ExstFunc, Typ[Term]] =
@@ -232,14 +230,18 @@ class TermGeneratorNodes[InitState](
       Typs
     )
 
-  def foldFunc(t: Term, depth: Int, output: RandomVar[Term]) : GeneratorNode[Term] =
+  def foldFunc(t: Term,
+               depth: Int,
+               output: RandomVar[Term]): GeneratorNode[Term] =
     if (depth < 1) Atom(t, output)
-    else t match {
-      case fn: FuncLike[u, v] =>
-        FlatMap(termsWithTyp(fn.dom),
-          (x: Term) => foldFunc(fn(x.asInstanceOf[u]), depth -1, output),
-          output)
-    }
+    else
+      t match {
+        case fn: FuncLike[u, v] =>
+          FlatMap(
+            termsWithTyp(fn.dom),
+            (x: Term) => foldFunc(fn(x.asInstanceOf[u]), depth - 1, output),
+            output)
+      }
 
   /**
     * recursive functions from a specific inductive structure, picking the codomain
@@ -685,7 +687,6 @@ object TermRandomVars {
   def inducHeadNode(inductiveTyp: Typ[Term]): Atom[Typ[Term]] =
     just(inductiveTyp, IntroRuleTypes(inductiveTyp))
 
-
   /**
     * distribution of `f`, `f(x)`, `f(x)(y)` etc
     * @param func the function to apply
@@ -782,10 +783,36 @@ case class TermState(terms: FD[Term],
         .getOrElse(typs)
     TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x
   }
+
+  import interface._, TermJson._
+
+  import ujson.Js
+
+  def json = {
+    Js.Obj(
+      "terms" -> fdJson(terms),
+      "types" -> fdJson(typs.map((t) => t: Term)),
+      "variables" -> Js.Arr(
+        (vars.map((t) => termToJson(t).get)): _*
+      ),
+      "goals" -> fdJson(goals.map((t) => t: Term)),
+//      "inductive-structures" -> InducJson.toJson(inds),
+      "context" -> ContextJson.toJson(context)
+    )
+  }
 }
 
 object TermState {
   import TermRandomVars._
+  def fromJson(js: ujson.Js.Value) = {
+    import interface._, TermJson._
+    val obj = js.obj
+    val context = ContextJson.fromJson(obj("context"))
+    val terms = jsToFD(context.inducStruct)(obj("terms"))
+    val typs = jsToFD(context.inducStruct)(obj("types")).map{case tp: Typ[Term] => tp}
+    val goals = jsToFD(context.inducStruct)(obj("goals")).map{case tp: Typ[Term] => tp}
+    val vars = obj("variables").arr.toVector.map((t) => jsToTermExst(context.inducStruct)(t).get)
+  }
 
   /**
     * finite distributions on terms etc
@@ -864,7 +891,7 @@ case class TermGenParams(appW: Double = 0.1,
       (typApplnNode     -> appW) ::
       (typUnifApplnNode -> unAppW) ::
       (piNode           -> piW) ::
-      (typFoldNode  -> typFromFamilyW) ::
+      (typFoldNode      -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
   val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
@@ -923,8 +950,9 @@ case class TermGenParams(appW: Double = 0.1,
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
-  def nextStateTask(initState: TermState, epsilon: Double,
-  vars: Vector[Term] = Vector()): Task[TermState] =
+  def nextStateTask(initState: TermState,
+                    epsilon: Double,
+                    vars: Vector[Term] = Vector()): Task[TermState] =
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon)
       typs  <- monixFD.varDist(initState)(Typs, epsilon)
@@ -949,6 +977,6 @@ case class TermGenParams(appW: Double = 0.1,
 
 import upickle.default.{ReadWriter => RW, macroRW, read, write}
 
-object TermGenParams{
+object TermGenParams {
   implicit def rw: RW[TermGenParams] = macroRW
 }
