@@ -5,11 +5,12 @@ import translation._
 import Translator.unmatched
 
 import scala.language.higherKinds
-import upickle.Js
+import ujson.Js
 import cats._
 import cats.implicits._
-import provingground.induction.ExstInducStrucs
+import provingground.induction.{ExstInducDefn, ExstInducStrucs}
 import provingground.scalahott.NatRing
+
 import ujson.Js.Value
 
 trait JsFunc[F[_]] {
@@ -327,6 +328,22 @@ object InducJson {
       )
   }
 
+  def fdJson(fd: FiniteDistribution[ExstInducDefn]): Js.Arr = {
+    val pmf = for {
+      Weighted(elem, p) <- fd.pmf
+    } yield Js.Obj(
+      "type-family" -> termToJson(elem.typFamily).get,
+      "introduction-rules" -> Js.Arr(
+      (elem.intros.map((t) => termToJson(t).get)): _*
+        ),
+      "structure" -> toJson(elem.ind),
+      "parameters" -> Js.Arr(
+        (elem.parameters.map((t) => termToJson(t).get)): _*
+      ),
+      "weight" -> Js.Num(p))
+    Js.Arr(pmf : _*)
+  }
+
   def fromJson(init: ExstInducStrucs)(js: Js.Value): ExstInducStrucs =
     js.obj("intro").str match {
       case "base"     => Base
@@ -351,6 +368,24 @@ object InducJson {
           js.obj("intros").arr.map((t) => jsToTermExst(init)(t).get).toVector
         getIndexed(typF, intros)
     }
+
+    def jsToFD(exst: ExstInducStrucs)(js: Js.Value): FiniteDistribution[ExstInducDefn] = {
+      val pmf =
+        js.arr.toVector.map{
+          wp =>
+            val ind = fromJson(exst)(wp.obj("structure"))
+            val typFamily = jsToTermExst(exst)(wp.obj("type-family")).get
+            val intros = wp.obj("introduction-rules").arr.toVector.map((t) => jsToTermExst(exst)(t).get)
+            val parameters = wp.obj("parameters").arr.toVector.map((t) => jsToTermExst(exst)(t).get)
+            Weighted(
+              ExstInducDefn(typFamily, intros, ind, parameters),
+              wp.obj("weight").num
+            )
+        }
+      FiniteDistribution(pmf)
+    }
+
+
 
 }
 

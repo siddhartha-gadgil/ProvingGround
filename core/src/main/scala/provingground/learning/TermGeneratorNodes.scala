@@ -796,7 +796,7 @@ case class TermState(terms: FD[Term],
         (vars.map((t) => termToJson(t).get)): _*
       ),
       "goals" -> fdJson(goals.map((t) => t: Term)),
-//      "inductive-structures" -> InducJson.toJson(inds),
+      "inductive-structures" -> InducJson.fdJson(inds),
       "context" -> ContextJson.toJson(context)
     )
   }
@@ -804,7 +804,7 @@ case class TermState(terms: FD[Term],
 
 object TermState {
   import TermRandomVars._
-  def fromJson(js: ujson.Js.Value) = {
+  def fromJson(js: ujson.Js.Value): TermState = {
     import interface._, TermJson._
     val obj = js.obj
     val context = ContextJson.fromJson(obj("context"))
@@ -812,6 +812,8 @@ object TermState {
     val typs = jsToFD(context.inducStruct)(obj("types")).map{case tp: Typ[Term] => tp}
     val goals = jsToFD(context.inducStruct)(obj("goals")).map{case tp: Typ[Term] => tp}
     val vars = obj("variables").arr.toVector.map((t) => jsToTermExst(context.inducStruct)(t).get)
+    val inds = InducJson.jsToFD(context.inducStruct)(obj("inductive-structures"))
+    TermState(terms, typs, vars, inds, goals, context)
   }
 
   /**
