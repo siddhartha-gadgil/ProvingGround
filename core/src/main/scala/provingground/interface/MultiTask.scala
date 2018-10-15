@@ -28,3 +28,7 @@ case class MultiTask(jobs: Map[String, String => Task[String]]) extends (String 
 
   def ++(that: MultiTask): MultiTask = MultiTask(jobs ++ that.jobs)
 }
+
+object MultiTask{
+  def apply(kvs: (String, String => Task[String])* ): MultiTask = new MultiTask(kvs.toMap)
+}

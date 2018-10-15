@@ -98,7 +98,12 @@ object InteractiveProver {
         if (e.ctrlKey && e.keyCode == 66) compile()
       }
 
+      val chat = new WebSocket(
+        s"ws://${dom.document.location.host}/prover-websock")
+
     }
+
+
   }
 }
 
@@ -188,7 +193,7 @@ object ProverClient {
 
       }
 
-    def queryPost() = {
+    def queryPost(): Unit = {
       runButton.value = "Asking Server"
       Ajax
         .post("./monoid-proof")

@@ -9,7 +9,7 @@ import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
 import monix.eval.Task
-import provingground.interface.ContextJson
+import provingground.interface.{ContextJson, MultiTask}
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -953,8 +953,7 @@ case class TermGenParams(appW: Double = 0.1,
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
   def nextStateTask(initState: TermState,
-                    epsilon: Double,
-                    vars: Vector[Term] = Vector()): Task[TermState] =
+                    epsilon: Double): Task[TermState] =
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon)
       typs  <- monixFD.varDist(initState)(Typs, epsilon)
@@ -978,7 +977,37 @@ case class TermGenParams(appW: Double = 0.1,
 }
 
 import upickle.default.{ReadWriter => RW, macroRW, read, write}
+import ujson.Js
 
 object TermGenParams {
   implicit def rw: RW[TermGenParams] = macroRW
+}
+
+object TermGenJson{
+
+  def nextStateTask(inp: String): Task[String] = {
+    val obj = read[Js.Value](inp).obj
+    val termGenParams = read[TermGenParams](obj("generatror-parameters"))
+    val epsilon = obj("epsilon").num
+    val initState = TermState.fromJson(obj("initial-state"))
+    val task = termGenParams.nextStateTask(initState, epsilon)
+    task.map((ts) => write(ts.json))
+  }
+
+  def nextTangStateTask(inp: String): Task[String] = {
+    val obj = read[Js.Value](inp).obj
+    val termGenParams = read[TermGenParams](obj("generatror-parameters"))
+    val epsilon = obj("epsilon").num
+    val baseState = TermState.fromJson(obj("base-state"))
+    val tangState = TermState.fromJson(obj("tangent-state"))
+    val task = termGenParams.nextTangStateTask(baseState, tangState, epsilon)
+    task.map((ts) => write(ts.json))
+  }
+
+  val all =
+    MultiTask(
+        "step" -> nextStateTask,
+        "tangent-step" -> nextTangStateTask
+      )
+
 }

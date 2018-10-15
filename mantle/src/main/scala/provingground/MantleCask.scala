@@ -1,5 +1,7 @@
 package provingground.interface
 
+import provingground._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import MantleService._
 import io.undertow.websockets.WebSocketConnectionCallback
@@ -69,6 +71,7 @@ object MantleRoutes extends cask.Routes {
     val pfFut = MonoidServer.seekResultFut
     pfFut.foreach((pf) => WebSockets.sendTextBlocking(pf.toString, channel))
   }
+
   @cask.websocket("/monoid-websock")
   def showUserProfile(): cask.WebsocketResult = {
     new WebSocketConnectionCallback() {
@@ -93,6 +96,12 @@ object MantleRoutes extends cask.Routes {
       }
     }
   }
+
+  import learning._
+
+  @cask.websocket("/prover-websock")
+  def proverSocket() =
+    new TaskSocket(TermGenJson.all)
 
   initialize()
 
