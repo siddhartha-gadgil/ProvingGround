@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 import induction._
-import provingground.scalahott.HoTTPredefs
+
 
 object Context {
 
@@ -156,7 +156,7 @@ sealed trait Context {
 
   lazy val inducStruct: ExstInducStrucs =
     inductiveDefns.reverse
-      .foldRight[ExstInducStrucs](HoTTPredefs.exstInduc)(_ || _)
+      .foldRight[ExstInducStrucs](ExstInducStrucs.Base)(_ || _)
 
   def export(t: Term): Term
 
@@ -167,6 +167,8 @@ sealed trait Context {
 
   def defineSym[U <: Term with Subs[U]](name: AnySym, value: U) =
     AppendDefn(this, Defn(value.typ.variable(name), value), true)
+
+  def defineInduc(ind: ExstInducStrucs) = AppendIndDef(this, ind)
 
   def let[U <: Term with Subs[U]](name: Term, value: U) =
     AppendDefn(this, Defn(name, value), false)

@@ -238,7 +238,8 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
     if (dom == NatTyp) cod match {
       case typFamily: Func[u, _] =>
         typFamily(zero.asInstanceOf[u]) match {
-          case _ : Typ[w] => Some(induc(typFamily.asInstanceOf[Func[Nat, Typ[u]]]))
+          case _: Typ[w] =>
+            Some(induc(typFamily.asInstanceOf[Func[Nat, Typ[u]]]))
           case _ => None
         }
 
@@ -260,11 +261,12 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
     Rec(r.Literal(base.zero), step)
   }
 
-  lazy val exstInducDefn = ExstInducDefn(Type, Vector(zero, succ), this, Vector())
+  lazy val exstInducDefn =
+    ExstInducDefn(Type, Vector(zero, succ), this, Vector())
+
+  lazy val context = Context.Empty
+    .defineInduc(this)
+    .defineSym(Name("zero"), Literal(0))
+    .defineSym(Name("succ"), succ)
+    .defineSym(Name("NatTyp"), NatTyp: Typ[Term])
 }
-
-
-object HoTTPredefs{
-  val exstInduc: ExstInducStrucs.OrElse = ExstInducStrucs.Base || NatRing
-}
-

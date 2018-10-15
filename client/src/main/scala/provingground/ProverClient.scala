@@ -18,6 +18,7 @@ import FineProverTasks._
 import com.scalawarrior.scalajs.ace.ace
 import monix.execution.CancelableFuture
 import org.scalajs.dom.html.Div
+import provingground.scalahott.NatRing
 import scalatags.JsDom
 import ujson._
 
@@ -62,7 +63,7 @@ object InteractiveProver {
           echo
         ).render
 
-      val parser = HoTTParser()
+      val parser = HoTTParser(NatRing.context)
 
       proverDiv.appendChild(
         div(
