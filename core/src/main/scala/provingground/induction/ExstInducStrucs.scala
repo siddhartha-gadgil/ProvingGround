@@ -126,7 +126,7 @@ object ExstInducStrucs {
     val constants = Vector(Zero, Unit, Star)
 
     def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]): Option[Term] =
-      cod match {
+      dom match {
         case pt: ProdTyp[u, v] =>
           Some(pt.rec(cod))
         case Zero =>
@@ -144,7 +144,7 @@ object ExstInducStrucs {
       }
 
     def inducOpt(dom: Term, cod: Term): Option[Term] =
-      cod match {
+      dom match {
         case pt: ProdTyp[u, v] =>
           val x    = pt.first.Var
           val y    = pt.second.Var

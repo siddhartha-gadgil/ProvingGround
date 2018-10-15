@@ -26,6 +26,10 @@ object katex extends js.Object {
   def renderToString(texString: String): String = js.native
 }
 
+object katexSafe{
+  def renderToString(texString: String): String = scala.util.Try(katex.renderToString(texString)).getOrElse(texString)
+}
+
 object ScratchPad {
   def load(): Unit = {
     Option(dom.document.querySelector("#hott-scratch")).foreach { (ediv) =>

@@ -107,8 +107,18 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
       case (f, x) => applyFunc(f, x)
     }
 
+  val recP: core.Parser[Term, Char, String] =
+    P(simpleterm ~ ".rec" ~ "(" ~ term ~ ")").map {
+      case (tp, x) => ctx.inducStruct.recOpt(tp, toTyp(x)).get
+    }
+
+  val inducP: core.Parser[Term, Char, String] =
+    P(simpleterm ~ ".induc" ~ "(" ~ term ~ ")").map {
+      case (tp, x) => ctx.inducStruct.inducOpt(tp, x).get
+    }
+
   val term: P[Term] = P(
-    symbolic | lmbdaP | lambdaP | applnP | funcTyp | piTyp | simpleterm)
+    symbolic | lmbdaP | lambdaP | applnP | funcTyp | piTyp | recP | inducP | simpleterm)
 
   val break
     : core.Parser[Unit, Char, String] = P(spc ~ (End | CharIn("\n;"))) | P(

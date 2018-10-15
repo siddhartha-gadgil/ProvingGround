@@ -101,9 +101,9 @@ object InteractiveProver {
                           val termSpan = span().render
                           val typSpan  = span().render
                           termSpan.innerHTML =
-                            katex.renderToString(TeXTranslate(t))
+                            katexSafe.renderToString(TeXTranslate(t))
                           typSpan.innerHTML =
-                            katex.renderToString(TeXTranslate(t.typ))
+                            katexSafe.renderToString(TeXTranslate(t.typ))
                           div(
                             ul(`class` := "list-inline")(li("Term: ", termSpan),
                                                          li("Type: ", typSpan)),
@@ -174,8 +174,8 @@ object ProverClient {
         if (proved) {
           val termDiv = div(style := "overflow-x: auto;")().render
           val typDiv  = div(style := "overflow-x: auto;")().render
-          termDiv.innerHTML = katex.renderToString(js.obj("term").str)
-          typDiv.innerHTML = katex.renderToString(js.obj("type").str)
+          termDiv.innerHTML = katexSafe.renderToString(js.obj("term").str)
+          typDiv.innerHTML = katexSafe.renderToString(js.obj("type").str)
 
           proverDiv.appendChild(
             ul(`class` := "list-group")(
@@ -191,8 +191,8 @@ object ProverClient {
           def lemmaLI(lm: Js.Value) = {
             val termDivL = div(style := "overflow-x: auto;")().render
             val typDivL  = div(style := "overflow-x: auto;")().render
-            termDivL.innerHTML = katex.renderToString(lm.obj("term").str)
-            typDivL.innerHTML = katex.renderToString(lm.obj("type").str)
+            termDivL.innerHTML = katexSafe.renderToString(lm.obj("term").str)
+            typDivL.innerHTML = katexSafe.renderToString(lm.obj("type").str)
             li(`class` := "list-group-item")(
               ul(`class` := "list-group")(
                 li(`class` := "list-group-item list-group-item-info")("Lemma"),
@@ -285,8 +285,8 @@ object ProverClient {
       case Some(t) =>
         val termDiv = div(style := "overflow-x: auto;")().render
         val typDiv  = div(style := "overflow-x: auto;")().render
-        termDiv.innerHTML = katex.renderToString(TeXTranslate(t))
-        typDiv.innerHTML = katex.renderToString(TeXTranslate(t.typ))
+        termDiv.innerHTML = katexSafe.renderToString(TeXTranslate(t))
+        typDiv.innerHTML = katexSafe.renderToString(TeXTranslate(t.typ))
         proverDiv.appendChild(
           ul(`class` := "list-group")(
             li(`class` := "list-group-item list-group-item-primary")(
