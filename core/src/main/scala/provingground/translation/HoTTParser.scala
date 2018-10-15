@@ -92,7 +92,7 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
     ) |
       P(
         simpleterm ~ ":~>" ~ term
-      )).map { case (x, y) => lmbda(x)(y) }
+      )).map { case (x, y) => lambda(x)(y) }
 
   val funcTyp = P(
     simpleterm ~ "->:" ~ term

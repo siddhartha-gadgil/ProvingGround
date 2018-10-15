@@ -17,7 +17,11 @@ import learning._
 import FineProverTasks._
 import com.scalawarrior.scalajs.ace.ace
 import monix.execution.CancelableFuture
+import org.scalajs.dom.html.Div
+import scalatags.JsDom
 import ujson._
+
+import scala.util.Try
 
 @JSExportTopLevel("interactiveProver")
 object InteractiveProver {
@@ -35,6 +39,14 @@ object InteractiveProver {
               value := "Parse Context (ctrl-B)",
               `class` := "btn btn-success").render
 
+      val scratch = span(contenteditable := true)("Some stuff").render
+
+      val echo = span(scratch.textContent).render
+
+      scratch.oninput = (_) => {
+        echo.textContent = scratch.textContent
+      }
+
       val contextDiv =
         div(
           div(`class` := "panel panel-primary")(
@@ -44,7 +56,10 @@ object InteractiveProver {
             ed,
             div(`class` := "panel-footer")(runButton)
           ),
-          div(h3("Parsed Context:"), viewDiv)
+          div(h3("Parsed Context:"), viewDiv),
+          scratch,
+          " ",
+          echo
         ).render
 
       val parser = HoTTParser()
@@ -62,31 +77,43 @@ object InteractiveProver {
       def compile(): Unit = {
         val text = editor.getValue
 
-        val view = parser.context
-          .parse(text)
-          .fold(
-            (_, _, s) =>
-              div(
-                h5(`class` := "text-danger")("Error"),
-                div(s.traced.trace)
-            ),
-            (bl, _) =>
-              div(
-                h5(`class` := "text-success")("Context Parsed"),
-                bl.valueOpt
-                  .map { (t) =>
-                    val termSpan = span().render
-                    val typSpan  = span().render
-                    termSpan.innerHTML = katex.renderToString(TeXTranslate(t))
-                    typSpan.innerHTML =
-                      katex.renderToString(TeXTranslate(t.typ))
-                    div(ul(`class` := "list-inline")(li("Term: ", termSpan),
-                                                     li("Type: ", typSpan)),
-                        p("Context: ", bl.toString))
-                  }
-                  .getOrElse(div("Empty Context"))
+        val view: JsDom.TypedTag[Div] =
+          Try(
+            parser.context
+              .parse(text))
+            .fold(
+              fa => div(
+                h5(`class` := "text-danger")("Exception while parsing"),
+                div(fa.getMessage)
+              ),
+              fb =>
+                fb.fold(
+                  (_, _, s) =>
+                    div(
+                      h5(`class` := "text-danger")("Parsing failure"),
+                      div(s.traced.trace)
+                  ),
+                  (bl, _) =>
+                    div(
+                      h5(`class` := "text-success")("Context Parsed"),
+                      bl.valueOpt
+                        .map { (t) =>
+                          val termSpan = span().render
+                          val typSpan  = span().render
+                          termSpan.innerHTML =
+                            katex.renderToString(TeXTranslate(t))
+                          typSpan.innerHTML =
+                            katex.renderToString(TeXTranslate(t.typ))
+                          div(
+                            ul(`class` := "list-inline")(li("Term: ", termSpan),
+                                                         li("Type: ", typSpan)),
+                            p("Context: ", bl.toString),
+                            p("All Terms"), bl.terms.mkString(", "))
+                        }
+                        .getOrElse(div("Empty Context"))
+                  )
+              )
             )
-          )
 
         viewDiv.innerHTML = ""
         viewDiv.appendChild(view.render)
@@ -98,11 +125,10 @@ object InteractiveProver {
         if (e.ctrlKey && e.keyCode == 66) compile()
       }
 
-      val chat = new WebSocket(
-        s"ws://${dom.document.location.host}/prover-websock")
+      val chat =
+        new WebSocket(s"ws://${dom.document.location.host}/prover-websock")
 
     }
-
 
   }
 }
