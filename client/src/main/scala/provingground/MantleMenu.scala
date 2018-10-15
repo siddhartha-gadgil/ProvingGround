@@ -21,7 +21,7 @@ object MantleMenu {
 
     navDiv.appendChild(
       li(
-        a(href := "prover.html")("Prover")
+        a(href := "prover.html")("Demo Prover")
       ).render
     )
 
@@ -30,6 +30,13 @@ object MantleMenu {
         a(href := "leanlib.html")("Lean Library")
       ).render
     )
+
+    navDiv.appendChild(
+      li(
+        a(href := "interactive-prover.html")("Interactive Prover")
+      ).render
+    )
+
 
     navDiv.appendChild(
       li(

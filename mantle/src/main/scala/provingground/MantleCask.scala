@@ -32,6 +32,10 @@ object MantleRoutes extends cask.Routes {
   def leanlib() =
     Site.page(leanlibHTML, "resources/", "ProvingGround Lean Export", false)
 
+  @cask.get("/interactive-prover.html")
+  def interactiveProver() : String =
+    Site.page(interactiveProverHTML, "resources/", "ProvingGround: Interactive prover", false)
+
   @cask.post("/monoid-proof")
   def seek() = {
     pprint.log("seeking proof")

@@ -11,18 +11,101 @@ import org.scalajs.dom
 import dom.ext._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
-import provingground._
-import HoTT._
+import HoTT.{id => _, _}
 import translation._
 import learning._
 import FineProverTasks._
+import com.scalawarrior.scalajs.ace.ace
 import monix.execution.CancelableFuture
 import ujson._
+
+@JSExportTopLevel("interactiveProver")
+object InteractiveProver {
+  @JSExport
+  def load(): Unit = {
+    val proverDivOpt = Option(
+      dom.document.querySelector("#interactive-prover-div"))
+    proverDivOpt.foreach { proverDiv =>
+      val ed = div(id := "editor", `class` := "panel-body editor")
+
+      val viewDiv = div(`class` := "mini-view")().render
+
+      val runButton =
+        input(`type` := "button",
+              value := "Parse Context (ctrl-B)",
+              `class` := "btn btn-success").render
+
+      val contextDiv =
+        div(
+          div(`class` := "panel panel-primary")(
+            div(`class` := "panel-heading")(
+              h4("Context Editor"),
+              p("The context can be used for convenient definitions for finite distributions and for inductive types.")),
+            ed,
+            div(`class` := "panel-footer")(runButton)
+          ),
+          div(h3("Parsed Context:"), viewDiv)
+        ).render
+
+      val parser = HoTTParser()
+
+      proverDiv.appendChild(
+        div(
+          contextDiv
+        ).render
+      )
+
+      val editor = ace.edit("editor")
+      editor.setTheme("ace/theme/chrome")
+      editor.getSession().setMode("ace/mode/scala")
+
+      def compile(): Unit = {
+        val text = editor.getValue
+
+        val view = parser.context
+          .parse(text)
+          .fold(
+            (_, _, s) =>
+              div(
+                h5(`class` := "text-danger")("Error"),
+                div(s.traced.trace)
+            ),
+            (bl, _) =>
+              div(
+                h5(`class` := "text-success")("Context Parsed"),
+                bl.valueOpt
+                  .map { (t) =>
+                    val termSpan = span().render
+                    val typSpan  = span().render
+                    termSpan.innerHTML = katex.renderToString(TeXTranslate(t))
+                    typSpan.innerHTML =
+                      katex.renderToString(TeXTranslate(t.typ))
+                    div(ul(`class` := "list-inline")(li("Term: ", termSpan),
+                                                     li("Type: ", typSpan)),
+                        p("Context: ", bl.toString))
+                  }
+                  .getOrElse(div("Empty Context"))
+            )
+          )
+
+        viewDiv.innerHTML = ""
+        viewDiv.appendChild(view.render)
+      }
+
+      runButton.onclick = (event: dom.Event) => compile()
+
+      contextDiv.onkeydown = (e) => {
+        if (e.ctrlKey && e.keyCode == 66) compile()
+      }
+
+    }
+  }
+}
 
 @JSExportTopLevel("prover")
 object ProverClient {
   @JSExport
-  def load() = {
+  def load(): Unit = {
     val runButton =
       input(`type` := "button",
             value := "Ask Server for proof",
@@ -51,9 +134,8 @@ object ProverClient {
     //
     // sse.onmessage = (event: dom.MessageEvent) => showProof(event.data.toString)
 
-
-    def showProof(data: String) : Unit =
-      if (data.size > 0) {
+    def showProof(data: String): Unit =
+      if (data.nonEmpty) {
         runButton.value = "Ask Server for proof"
         val answer = data
         val js     = ujson.read(answer)
@@ -104,7 +186,7 @@ object ProverClient {
         } else
           proverDiv.appendChild(h3("could not find proof of theorem").render)
 
-    }
+      }
 
     def queryPost() = {
       runButton.value = "Asking Server"
@@ -117,23 +199,22 @@ object ProverClient {
 
     runButton.onclick = (e: dom.Event) => queryPost() // change this to query a websocket
 
-    val chat = new WebSocket(s"ws://${dom.document.location.host}/monoid-websock")
+    val chat = new WebSocket(
+      s"ws://${dom.document.location.host}/monoid-websock")
 
-    chat.onopen = {
-    (event: Event) =>
+    chat.onopen = { (event: Event) =>
       runButton.value = "Ask Server (over websocket)"
-      runButton.onclick = (e: dom.Event) =>
-        {
-          runButton.value = "Asking Server (over WebSocket)"
-          chat.send("monoid-proof")
-        }
+      runButton.onclick = (e: dom.Event) => {
+        runButton.value = "Asking Server (over WebSocket)"
+        chat.send("monoid-proof")
+      }
     }
 
-    chat.onmessage = {(event: MessageEvent) =>
+    chat.onmessage = { (event: MessageEvent) =>
       val msg = event.data.toString
       if (msg == "monoid-proof") runButton.value = "Server Working"
       else showProof(msg)
-      }
+    }
 
     val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 

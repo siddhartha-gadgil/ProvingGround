@@ -9,6 +9,12 @@
   border-width: 1px;
 }
 
+.mini-view {
+  overflow-y: auto;
+  height: 100px;
+  border-style: dotted;
+  border-width: 1px;
+}
 
 td, th {
   background-color: #fff !important;

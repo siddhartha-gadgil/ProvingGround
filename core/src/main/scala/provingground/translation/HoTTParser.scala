@@ -40,6 +40,8 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
 
   def +(dfn: Defn) = HoTTParser(ctx.defineSym(Name(dfn.name), dfn.value))
 
+  def +(exp: Expr) = HoTTParser(ctx.introduce(exp.term))
+
   val predefs: P[Term] =
     P("Type").map((_) => Type: Term) |
       P("Star").map((_) => Star: Term) |
@@ -136,14 +138,18 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
 
   val context: P[Context] =
     P(spc ~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ context) |
-      (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => Context.Empty) |
-      (spc ~ End).map((_) => Context.Empty ) |
+      (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => ctx) |
+      (spc ~ End).map((_) => ctx ) |
       defn.flatMap((dfn) =>
         (self + dfn).context.map { (tail) =>
-          tail.defineSym(Name(dfn.name), dfn.value)
+          tail //.defineSym(Name(dfn.name), dfn.value)
         }) |
-      P(defn ~ context ~ End).map { case (dfn, ct) => ct.defineSym(Name(dfn.name), dfn.value)} |
-      P(expr ~ context ~ End).map { case (exp, ct) => ct.introduce(exp.term)} |
+      expr.flatMap((dfn) =>
+        (self + dfn).context.map { (tail) =>
+          tail //.defineSym(Name(dfn.name), dfn.value)
+        }) |
+//      P(defn ~ context ~ End).map { case (dfn, ct) => ct.defineSym(Name(dfn.name), dfn.value)} |
+//      P(expr ~ context ~ End).map { case (exp, ct) => ct.introduce(exp.term)} |
       P(spc ~ "\n" ~ context)
 
 }
