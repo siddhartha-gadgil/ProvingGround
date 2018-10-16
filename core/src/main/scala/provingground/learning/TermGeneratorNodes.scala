@@ -861,9 +861,9 @@ case class TermGenParams(appW: Double = 0.1,
                          piW: Double = 0.1,
                          termsByTypW: Double = 0.05,
                          typFromFamilyW: Double = 0.05,
-                         typVsFamily: Double = 0.5,
                          varWeight: Double = 0.3,
-                         goalWeight: Double = 0.5) {
+                         goalWeight: Double = 0.5,
+                         typVsFamily: Double = 0.5) {
   object Gen
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => applyFunc(fn.func, arg) },

@@ -73,6 +73,39 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
     )
 }
 
+case class DoublesInput(elems: Vector[String], default: Map[String, Double]) {
+  val inputPairs: Vector[(String, Input)] =
+    for {
+      x <- elems
+      p   = default.getOrElse(x, 0.0)
+      inp = input(`type` := "text", value := p, size := 3).render
+    } yield (x, inp)
+
+  val inputRows: Vector[JsDom.TypedTag[TableRow]] =
+    for {
+      (x, p) <- inputPairs
+    } yield tr(td(x.toString), td(p))
+
+  def outputPairs: Vector[(String, Double)] =
+    for {
+      (x, inp) <- inputPairs
+      p = Try(inp.value.toDouble).getOrElse(0.0)
+    } yield (x, p)
+
+  def outputMap: Map[String, Double] = outputPairs.toMap
+
+  val view: JsDom.TypedTag[Table] =
+    table(`class`:= "table table-striped") (
+      tbody(
+        inputRows : _*
+      )
+    )
+}
+
+object DoublesInput{
+  def apply(kvs: (String, Double)* ) : DoublesInput = DoublesInput(kvs.toVector.map(_._1), kvs.toMap)
+}
+
 @JSExportTopLevel("interactiveProver")
 object InteractiveProver {
   @JSExport
@@ -86,12 +119,60 @@ object InteractiveProver {
 
       var termsInput: FDInput[Term] =FDInput(context.terms, Map())
 
-      val termsInputDiv = div(termsInput.view).render
+      val termsInputDiv = div(`class` := "col-md-4")(
+        h3("Terms Distribution"),
+        termsInput.view).render
+
+      var typsInput = FDInput(context.terms.flatMap(typOpt), Map())
+
+      val typsInputDiv = div(`class` := "col-md-4")(
+        h3("Types Distribution"),
+        typsInput.view).render
+
+      val paramsInput =
+          DoublesInput(
+            "function-application" -> 0.1,
+            "unified-application" -> 0.1,
+            "application-by-argument" -> 0.1,
+            "lambda" -> 0.1,
+            "pi" -> 0.1,
+            "terms-by-type" -> 0.05,
+            "type-from-family" -> 0.05,
+            "variable-weight" -> 0.3,
+            "goal-weight" -> 0.5
+          )
+
+      def tg: TermGenParams = {
+        val m = paramsInput.outputMap
+        TermGenParams(
+          m("application"),
+          m("unified application"),
+          m("application-by-argument"),
+          m("lambda"),
+          m("pi"),
+          m("terms-by-type"),
+          m("type-from-family"),
+          m("variable-weight"),
+          m("goal-weight")
+        )
+      }
 
       def updateTermsInput(): Unit = {
         termsInput =FDInput(context.terms, Map())
         termsInputDiv.innerHTML = ""
-        termsInputDiv.appendChild(termsInput.view.render)
+        termsInputDiv.appendChild(
+          div(
+            h3("Terms Distribution"),
+            termsInput.view).render
+        )
+
+        typsInput =FDInput(context.terms.flatMap(typOpt), Map())
+        typsInputDiv.innerHTML = ""
+        typsInputDiv.appendChild(
+          div(
+            h3("Types Distribution"),
+            typsInput.view).render
+        )
       }
 
       val ed = div(id := "editor", `class` := "panel-body editor")
@@ -121,11 +202,11 @@ object InteractiveProver {
             div(`class` := "panel-footer")(runButton)
           ),
           div(h3("Parsed Context:"), viewDiv),
-          scratch,
-          " ",
-          echo ,
-          h3("Input Terms Distribution"),
-          termsInputDiv
+          termsInputDiv,
+          typsInputDiv,
+          div(`class`:="col-md-4")(
+            h3("Term Generator Parameters"),
+            paramsInput.view)
         ).render
 
       val parser = HoTTParser(NatRing.context)
