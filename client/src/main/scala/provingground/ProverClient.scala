@@ -1,5 +1,6 @@
 package provingground
 
+import provingground.{FiniteDistribution => FD}
 import org.scalajs.dom
 
 import scalajs.js.annotation._
@@ -17,27 +18,89 @@ import learning._
 import FineProverTasks._
 import com.scalawarrior.scalajs.ace.ace
 import monix.execution.CancelableFuture
-import org.scalajs.dom.html.Div
+import org.scalajs.dom.html.{Div, Input, Span, Table, TableRow}
 import provingground.scalahott.NatRing
 import scalatags.JsDom
 import ujson._
 
 import scala.util.Try
 
+case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
+  val inputPairs: Vector[(A, Input)] =
+    for {
+      x <- elems
+      p   = previous.getOrElse(x, 0.0)
+      inp = input(`type` := "text", value := p, size := 3).render
+    } yield (x, inp)
+
+  val inputRows: Vector[JsDom.TypedTag[TableRow]] =
+    for {
+      (x, p) <- inputPairs
+    } yield tr(td(x.toString), td(p))
+
+  def outputPairs: Vector[(A, Double)] =
+    for {
+      (x, inp) <- inputPairs
+      p = Try(inp.value.toDouble).getOrElse(0.0)
+    } yield (x, p)
+
+  def fd: FD[A] =
+    FD(
+    for {
+      (x, p) <- outputPairs
+    } yield Weighted(x, p))
+
+  def total: Double = fd.total
+
+  val totalSpan: Span = span(total).render
+
+  val totalRow = tr(td(strong("Total:")), td(totalSpan))
+
+  def update() : Unit = {
+    totalSpan.textContent = total.toString
+  }
+
+  inputPairs.map(_._2).foreach{
+    (el) =>
+      el.oninput = (_) => update()
+  }
+
+  val view: JsDom.TypedTag[Table] =
+    table(`class`:= "table table-striped") (
+      tbody(
+      inputRows :+ totalRow : _*
+    )
+    )
+}
+
 @JSExportTopLevel("interactiveProver")
 object InteractiveProver {
   @JSExport
   def load(): Unit = {
-    val proverDivOpt = Option(
+
+
+    val proverDivOpt: Option[Element] = Option(
       dom.document.querySelector("#interactive-prover-div"))
     proverDivOpt.foreach { proverDiv =>
+      var context: Context = NatRing.context
+
+      var termsInput: FDInput[Term] =FDInput(context.terms, Map())
+
+      val termsInputDiv = div(termsInput.view).render
+
+      def updateTermsInput(): Unit = {
+        termsInput =FDInput(context.terms, Map())
+        termsInputDiv.innerHTML = ""
+        termsInputDiv.appendChild(termsInput.view.render)
+      }
+
       val ed = div(id := "editor", `class` := "panel-body editor")
 
       val viewDiv = div(`class` := "mini-view")().render
 
       val runButton =
         input(`type` := "button",
-              value := "Parse Context (ctrl-B)",
+              value := "Update Context (ctrl-B)",
               `class` := "btn btn-success").render
 
       val scratch = span(contenteditable := true)("Some stuff").render
@@ -60,7 +123,9 @@ object InteractiveProver {
           div(h3("Parsed Context:"), viewDiv),
           scratch,
           " ",
-          echo
+          echo ,
+          h3("Input Terms Distribution"),
+          termsInputDiv
         ).render
 
       val parser = HoTTParser(NatRing.context)
@@ -75,6 +140,8 @@ object InteractiveProver {
       editor.setTheme("ace/theme/chrome")
       editor.getSession().setMode("ace/mode/scala")
 
+
+
       def compile(): Unit = {
         val text = editor.getValue
 
@@ -83,9 +150,10 @@ object InteractiveProver {
             parser.context
               .parse(text))
             .fold(
-              fa => div(
-                h5(`class` := "text-danger")("Exception while parsing"),
-                div(fa.getMessage)
+              fa =>
+                div(
+                  h5(`class` := "text-danger")("Exception while parsing"),
+                  div(fa.getMessage)
               ),
               fb =>
                 fb.fold(
@@ -94,25 +162,31 @@ object InteractiveProver {
                       h5(`class` := "text-danger")("Parsing failure"),
                       div(s.traced.trace)
                   ),
-                  (bl, _) =>
+                  (ctx, _) => {
+                    context = ctx
+                    updateTermsInput()
                     div(
                       h5(`class` := "text-success")("Context Parsed"),
-                      bl.valueOpt
-                        .map { (t) =>
-                          val termSpan = span().render
-                          val typSpan  = span().render
-                          termSpan.innerHTML =
-                            katexSafe.renderToString(TeXTranslate(t))
-                          typSpan.innerHTML =
-                            katexSafe.renderToString(TeXTranslate(t.typ))
-                          div(
-                            ul(`class` := "list-inline")(li("Term: ", termSpan),
-                                                         li("Type: ", typSpan)),
-                            p("Context: ", bl.toString),
-                            p("All Terms"), bl.terms.mkString(", "))
+                      ctx.valueOpt
+                        .map {
+                          (t) =>
+                            val termSpan = span().render
+                            val typSpan  = span().render
+                            termSpan.innerHTML =
+                              katexSafe.renderToString(TeXTranslate(t))
+                            typSpan.innerHTML =
+                              katexSafe.renderToString(TeXTranslate(t.typ))
+                            div(ul(`class` := "list-inline")(li("Term: ",
+                                                                termSpan),
+                                                             li("Type: ",
+                                                                typSpan)),
+                                p("Context: ", ctx.toString),
+                                p("All Terms"),
+                                ctx.terms.mkString(", "))
                         }
                         .getOrElse(div("Empty Context"))
-                  )
+                    )
+                  }
               )
             )
 
