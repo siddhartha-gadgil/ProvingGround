@@ -123,7 +123,14 @@ object TermJson {
       toJs(firstIncl)("first-inclusion") ||
       toJs(secondIncl)("second-inclusion") ||
       toJs(identityTyp)("equality") ||
-      toJs(refl)("reflexivity")
+      toJs(refl)("reflexivity") ||
+      toJs(natTyp)("nat-type") ||
+      toJs(natUniv)("nat-univ") ||
+      toJs(natZero)("nat-zero") ||
+      toJs(natSucc)("nat-succ")
+
+  def termToJsonGet(t: Term) =
+    termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
 
   def fdJson(fd: FiniteDistribution[Term]): Js.Arr = {
     val pmf = for {
@@ -250,7 +257,16 @@ object TermJson {
       jsToBuild[Term, Un]("prop-universe") { (_) =>
         Prop
       } ||
-      jsToBuild[Term, II]("first-inclusion") {
+      jsToBuild[Term, Un]("nat-type") { (_) => NatRing.NatTyp
+      } ||
+      jsToBuild[Term, Un]("nat-univ") { (_) => NatRing.NatTyp.typ
+      } ||
+      jsToBuild[Term, Un]("nat-zero") { (_) =>
+        NatRing.zero
+      } ||
+      jsToBuild[Term, Un]("nat-succ") { (_) =>
+        NatRing.succ
+      } || jsToBuild[Term, II]("first-inclusion") {
         case (tp: PlusTyp[u, v], x) => tp.incl1(x.asInstanceOf[u])
         case (x, y)                 => unmatched(x, y)
       } ||
@@ -307,23 +323,23 @@ object InducJson {
     case LambdaInduc(x, struc) =>
       Js.Obj(
         "intro"     -> "lambda",
-        "variable"  -> termToJson(x).get,
+        "variable"  -> termToJsonGet(x),
         "structure" -> toJson(struc)
       )
     case ConsSeqExst(cs, intros) =>
       Js.Obj(
         "intro" -> "constructor-sequence",
-        "type"  -> termToJson(cs.typ).get,
+        "type"  -> termToJsonGet(cs.typ),
         "intros" -> Js.Arr(intros.map { (t) =>
-          termToJson(t).get
+          termToJsonGet(t)
         }: _*)
       )
     case ind @ IndConsSeqExst(cs, intros) =>
       Js.Obj(
         "intro" -> "indexed-constructor-sequence",
-        "type"  -> termToJson(ind.fmly).get,
+        "type"  -> termToJsonGet(ind.fmly),
         "intros" -> Js.Arr(intros.map { (t) =>
-          termToJson(t).get
+          termToJsonGet(t)
         }: _*)
       )
   }
@@ -332,13 +348,13 @@ object InducJson {
     val pmf = for {
       Weighted(elem, p) <- fd.pmf
     } yield Js.Obj(
-      "type-family" -> termToJson(elem.typFamily).get,
+      "type-family" -> termToJsonGet(elem.typFamily),
       "introduction-rules" -> Js.Arr(
-      (elem.intros.map((t) => termToJson(t).get)): _*
+      (elem.intros.map((t) => termToJsonGet(t))): _*
         ),
       "structure" -> toJson(elem.ind),
       "parameters" -> Js.Arr(
-        (elem.parameters.map((t) => termToJson(t).get)): _*
+        (elem.parameters.map((t) => termToJsonGet(t))): _*
       ),
       "weight" -> Js.Num(p))
     Js.Arr(pmf : _*)
@@ -397,7 +413,7 @@ object ContextJson {
       Js.Obj(
         "intro"    -> "append-constant",
         "init"     -> toJson(init),
-        "constant" -> termToJson(constant).get
+        "constant" -> termToJsonGet(constant)
       )
     case AppendTerm(init, expr: Term, role: Role) =>
       val rl = role match {
@@ -407,21 +423,21 @@ object ContextJson {
       Js.Obj(
         "intro" -> "append-term",
         "init"  -> toJson(init),
-        "term"  -> termToJson(expr).get,
+        "term"  -> termToJsonGet(expr),
         "role"  -> rl
       )
     case AppendVariable(init, expr: Term) =>
       Js.Obj(
         "intro"      -> "append-variable",
         "init"       -> toJson(init),
-        "expression" -> termToJson(expr).get
+        "expression" -> termToJsonGet(expr)
       )
     case AppendDefn(init, defn, global) =>
       Js.Obj(
         "intro"  -> "append-definition",
-        "name"   -> termToJson(defn.name).get,
+        "name"   -> termToJsonGet(defn.name),
         "init"       -> toJson(init),
-        "value"  -> termToJson(defn.valueTerm).get,
+        "value"  -> termToJsonGet(defn.valueTerm),
         "global" -> Js.Bool(global)
       )
     case AppendIndDef(init, defn) =>

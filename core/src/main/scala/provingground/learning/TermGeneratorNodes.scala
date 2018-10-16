@@ -812,7 +812,7 @@ object TermState {
     val typs = jsToFD(context.inducStruct)(obj("types")).map{case tp: Typ[Term] => tp}
     val goals = jsToFD(context.inducStruct)(obj("goals")).map{case tp: Typ[Term] => tp}
     val vars = obj("variables").arr.toVector.map((t) => jsToTermExst(context.inducStruct)(t).get)
-    val inds = InducJson.jsToFD(context.inducStruct)(obj("inductive-structures"))
+    val inds = FD.empty[ExstInducDefn] //InducJson.jsToFD(context.inducStruct)(obj("inductive-structures"))
     TermState(terms, typs, vars, inds, goals, context)
   }
 

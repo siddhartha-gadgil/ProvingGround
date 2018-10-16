@@ -120,7 +120,8 @@ object InteractiveProver {
         logList.appendChild(li(s).render)
       }
 
-      var context: Context = NatRing.context
+      var context: Context = //Context.Empty
+         NatRing.context
 
       var termsInput: FDInput[Term] = FDInput(context.terms, Map())
 
@@ -219,7 +220,10 @@ object InteractiveProver {
           logList
         ).render
 
-      val parser = HoTTParser(NatRing.context)
+      val parser = HoTTParser(
+//        Context.Empty
+        NatRing.context
+        )
 
       proverDiv.appendChild(
         div(
@@ -300,9 +304,9 @@ object InteractiveProver {
         val initialState =
           Js.Obj(
             "terms" -> fdJson(termsInput.fd),
-            "typs" -> fdJson(typsInput.fd map ((t) => t: Term)),
+            "types" -> fdJson(typsInput.fd map ((t) => t: Term)),
             "goals"                -> fdJson(FD.empty),
-            "vars"                 -> Js.Arr(),
+            "variables"                 -> Js.Arr(),
             "inductive-structures" -> InducJson.toJson(context.inducStruct),
             "context" -> ContextJson.toJson(context)
             )

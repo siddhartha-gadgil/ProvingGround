@@ -247,6 +247,16 @@ object TermPatterns {
     */
   val zero = Pattern.check[Term](_ == Zero)
 
+  import scalahott.NatRing
+
+  val natZero = Pattern.check[Term](_ == NatRing.zero)
+
+  val natSucc = Pattern.check[Term](_ == NatRing.succ)
+
+  val natTyp = Pattern.check[Term](_ == NatRing.NatTyp)
+
+  val natUniv = Pattern.check[Term](_ == NatRing.NatTyp.typ)
+
   /**
     * matches `Universe(n)`, returns the level `n`
     */
