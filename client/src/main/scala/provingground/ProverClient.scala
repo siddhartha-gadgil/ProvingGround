@@ -21,7 +21,8 @@ import monix.execution.CancelableFuture
 import org.scalajs.dom.html.{Div, Input, Span, Table, TableRow}
 import provingground.scalahott.NatRing
 import scalatags.JsDom
-import ujson._
+import ujson.Js
+import upickle.default._
 
 import scala.util.Try
 
@@ -45,8 +46,7 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
     } yield (x, p)
 
   def fd: FD[A] =
-    FD(
-    for {
+    FD(for {
       (x, p) <- outputPairs
     } yield Weighted(x, p))
 
@@ -56,20 +56,19 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
 
   val totalRow = tr(td(strong("Total:")), td(totalSpan))
 
-  def update() : Unit = {
+  def update(): Unit = {
     totalSpan.textContent = total.toString
   }
 
-  inputPairs.map(_._2).foreach{
-    (el) =>
-      el.oninput = (_) => update()
+  inputPairs.map(_._2).foreach { (el) =>
+    el.oninput = (_) => update()
   }
 
   val view: JsDom.TypedTag[Table] =
-    table(`class`:= "table table-striped") (
+    table(`class` := "table table-striped")(
       tbody(
-      inputRows :+ totalRow : _*
-    )
+        inputRows :+ totalRow: _*
+      )
     )
 }
 
@@ -95,15 +94,16 @@ case class DoublesInput(elems: Vector[String], default: Map[String, Double]) {
   def outputMap: Map[String, Double] = outputPairs.toMap
 
   val view: JsDom.TypedTag[Table] =
-    table(`class`:= "table table-striped") (
+    table(`class` := "table table-striped")(
       tbody(
-        inputRows : _*
+        inputRows: _*
       )
     )
 }
 
-object DoublesInput{
-  def apply(kvs: (String, Double)* ) : DoublesInput = DoublesInput(kvs.toVector.map(_._1), kvs.toMap)
+object DoublesInput {
+  def apply(kvs: (String, Double)*): DoublesInput =
+    DoublesInput(kvs.toVector.map(_._1), kvs.toMap)
 }
 
 @JSExportTopLevel("interactiveProver")
@@ -111,42 +111,46 @@ object InteractiveProver {
   @JSExport
   def load(): Unit = {
 
-
     val proverDivOpt: Option[Element] = Option(
       dom.document.querySelector("#interactive-prover-div"))
     proverDivOpt.foreach { proverDiv =>
+      val logList = ul(`class`:= "view").render
+
+      def log(s: String) = {
+        logList.appendChild(li(s).render)
+      }
+
       var context: Context = NatRing.context
 
-      var termsInput: FDInput[Term] =FDInput(context.terms, Map())
+      var termsInput: FDInput[Term] = FDInput(context.terms, Map())
 
-      val termsInputDiv = div(`class` := "col-md-4")(
-        h3("Terms Distribution"),
-        termsInput.view).render
+      val termsInputDiv = div(`class` := "col-md-4")(h3("Terms Distribution"),
+                                                     termsInput.view).render
 
       var typsInput = FDInput(context.terms.flatMap(typOpt), Map())
 
-      val typsInputDiv = div(`class` := "col-md-4")(
-        h3("Types Distribution"),
-        typsInput.view).render
+      val typsInputDiv = div(`class` := "col-md-4")(h3("Types Distribution"),
+                                                    typsInput.view).render
 
       val paramsInput =
-          DoublesInput(
-            "function-application" -> 0.1,
-            "unified-application" -> 0.1,
-            "application-by-argument" -> 0.1,
-            "lambda" -> 0.1,
-            "pi" -> 0.1,
-            "terms-by-type" -> 0.05,
-            "type-from-family" -> 0.05,
-            "variable-weight" -> 0.3,
-            "goal-weight" -> 0.5
-          )
+        DoublesInput(
+          "function-application"    -> 0.1,
+          "unified-application"     -> 0.1,
+          "application-by-argument" -> 0.1,
+          "lambda"                  -> 0.1,
+          "pi"                      -> 0.1,
+          "terms-by-type"           -> 0.05,
+          "type-from-family"        -> 0.05,
+          "variable-weight"         -> 0.3,
+          "goal-weight"             -> 0.5,
+          "epsilon"                 -> 0.1
+        )
 
       def tg: TermGenParams = {
         val m = paramsInput.outputMap
         TermGenParams(
-          m("application"),
-          m("unified application"),
+          m("function-application"),
+          m("unified-application"),
           m("application-by-argument"),
           m("lambda"),
           m("pi"),
@@ -157,21 +161,19 @@ object InteractiveProver {
         )
       }
 
+      def epsilon: Double = paramsInput.outputMap("epsilon")
+
       def updateTermsInput(): Unit = {
-        termsInput =FDInput(context.terms, Map())
+        termsInput = FDInput(context.terms, Map())
         termsInputDiv.innerHTML = ""
         termsInputDiv.appendChild(
-          div(
-            h3("Terms Distribution"),
-            termsInput.view).render
+          div(h3("Terms Distribution"), termsInput.view).render
         )
 
-        typsInput =FDInput(context.terms.flatMap(typOpt), Map())
+        typsInput = FDInput(context.terms.flatMap(typOpt), Map())
         typsInputDiv.innerHTML = ""
         typsInputDiv.appendChild(
-          div(
-            h3("Types Distribution"),
-            typsInput.view).render
+          div(h3("Types Distribution"), typsInput.view).render
         )
       }
 
@@ -192,7 +194,12 @@ object InteractiveProver {
         echo.textContent = scratch.textContent
       }
 
-      val contextDiv =
+      val stepButton =
+        input(`type` := "button",
+          value := "Term Generation Step",
+          `class` := "btn btn-primary").render
+
+      val mainDiv =
         div(
           div(`class` := "panel panel-primary")(
             div(`class` := "panel-heading")(
@@ -202,26 +209,27 @@ object InteractiveProver {
             div(`class` := "panel-footer")(runButton)
           ),
           div(h3("Parsed Context:"), viewDiv),
+          h2("Term Generation"),
           termsInputDiv,
           typsInputDiv,
-          div(`class`:="col-md-4")(
-            h3("Term Generator Parameters"),
-            paramsInput.view)
+          div(`class` := "col-md-4")(h3("Term Generator Parameters"),
+                                     paramsInput.view)   ,
+          stepButton,
+          h3("Logs"),
+          logList
         ).render
 
       val parser = HoTTParser(NatRing.context)
 
       proverDiv.appendChild(
         div(
-          contextDiv
+          mainDiv
         ).render
       )
 
       val editor = ace.edit("editor")
       editor.setTheme("ace/theme/chrome")
       editor.getSession().setMode("ace/mode/scala")
-
-
 
       def compile(): Unit = {
         val text = editor.getValue
@@ -277,12 +285,47 @@ object InteractiveProver {
 
       runButton.onclick = (event: dom.Event) => compile()
 
-      contextDiv.onkeydown = (e) => {
+      mainDiv.onkeydown = (e) => {
         if (e.ctrlKey && e.keyCode == 66) compile()
       }
 
-      val chat =
+      val chat: WebSocket =
         new WebSocket(s"ws://${dom.document.location.host}/prover-websock")
+
+      chat.onopen = (_) => log("Web Socket open")
+
+      def step(): Unit = {
+
+        import interface._, TermJson._
+        val initialState =
+          Js.Obj(
+            "terms" -> fdJson(termsInput.fd),
+            "typs" -> fdJson(typsInput.fd map ((t) => t: Term)),
+            "goals"                -> fdJson(FD.empty),
+            "vars"                 -> Js.Arr(),
+            "inductive-structures" -> InducJson.toJson(context.inducStruct),
+            "context" -> ContextJson.toJson(context)
+            )
+
+        val js =
+          Js.Obj(
+            "job" -> "step",
+            "data" -> Js.Obj(
+              "epsilon"              -> Js.Num(epsilon),
+              "generator-parameters" -> write(tg),
+              "initial-state" -> initialState
+            )
+          )
+
+        chat.send(ujson.write(js))
+      }
+
+      stepButton.onclick = (_) => step()
+
+      chat.onmessage = { (event: MessageEvent) =>
+        val msg = event.data.toString
+        log(msg)
+      }
 
     }
 

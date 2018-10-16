@@ -420,13 +420,15 @@ object ContextJson {
       Js.Obj(
         "intro"  -> "append-definition",
         "name"   -> termToJson(defn.name).get,
+        "init"       -> toJson(init),
         "value"  -> termToJson(defn.valueTerm).get,
         "global" -> Js.Bool(global)
       )
     case AppendIndDef(init, defn) =>
       Js.Obj(
         "intro" -> "append-inductive-definition",
-        "defn"  -> InducJson.toJson(defn)
+        "defn"  -> InducJson.toJson(defn),
+        "init"       -> toJson(init)
       )
   }
 

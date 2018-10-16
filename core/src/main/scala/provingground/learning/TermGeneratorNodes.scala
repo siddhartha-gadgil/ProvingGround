@@ -788,12 +788,12 @@ case class TermState(terms: FD[Term],
 
   import ujson.Js
 
-  def json = {
+  def json: Js.Obj = {
     Js.Obj(
       "terms" -> fdJson(terms),
       "types" -> fdJson(typs.map((t) => t: Term)),
       "variables" -> Js.Arr(
-        (vars.map((t) => termToJson(t).get)): _*
+        vars.map((t) => termToJson(t).get): _*
       ),
       "goals" -> fdJson(goals.map((t) => t: Term)),
       "inductive-structures" -> InducJson.fdJson(inds),
@@ -986,10 +986,15 @@ object TermGenParams {
 object TermGenJson{
 
   def nextStateTask(inp: String): Task[String] = {
-    val obj = read[Js.Value](inp).obj
-    val termGenParams = read[TermGenParams](obj("generator-parameters"))
+    pprint.log(ujson.read(inp))
+    val obj = ujson.read(inp).obj
+    pprint.log(obj)
+    val termGenParams = read[TermGenParams](obj("generator-parameters").str)
+    pprint.log(termGenParams)
     val epsilon = obj("epsilon").num
+    pprint.log(epsilon)
     val initState = TermState.fromJson(obj("initial-state"))
+    pprint.log(initState)
     val task = termGenParams.nextStateTask(initState, epsilon)
     task.map((ts) => write(ts.json))
   }
