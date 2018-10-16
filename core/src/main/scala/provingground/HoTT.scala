@@ -395,6 +395,11 @@ object HoTT {
            VV <: Term with Subs[VV],
            V <: Typ[VV] with Subs[V]](those: V) =
       SigmaTyp[UU, VV](LambdaFixed[UU, V](this, those))
+
+    def &:[UU >: U <: Term with Subs[UU], V <: Term with Subs[V]](
+                                                                   variable: V) : SigmaTyp[V, UU] = {
+      SigmaTyp(variable :-> this)
+    }
   }
 
   /**

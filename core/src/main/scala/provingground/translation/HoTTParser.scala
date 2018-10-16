@@ -98,13 +98,30 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
     simpleterm ~ "->:" ~ term
   ).map { case (x, y) => toTyp(x) ->: toTyp(y) }
 
+  val plusTyp = P(
+    simpleterm ~ "||" ~ term
+  ).map { case (x, y) => toTyp(x) || toTyp(y) }
+
+  val prodTyp = P(
+    simpleterm ~ "&&" ~ term
+    ).map { case (x, y) => toTyp(x) && toTyp(y) }
+
   val piTyp = P(
     simpleterm ~ "~>:" ~ term
   ).map { case (x, y) => x ~>: toTyp(y) }
 
+  val sigmaTyp = P(
+    simpleterm ~ "&:" ~ term
+  ).map { case (x, y) => x &: toTyp(y) }
+
   val applnP: core.Parser[Term, Char, String] =
     P(simpleterm ~ "(" ~ term ~ ")").map {
       case (f, x) => applyFunc(f, x)
+    }
+
+  val polyApplnP =
+    P(simpleterm ~ ("(" ~ term ~ ")").rep(1)).map {
+      case (f, xs) => xs.foldLeft(f)(applyFunc)
     }
 
   val recP: core.Parser[Term, Char, String] =
@@ -118,7 +135,7 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
     }
 
   val term: P[Term] = P(
-    symbolic | lmbdaP | lambdaP | applnP | funcTyp | piTyp | recP | inducP | simpleterm)
+    symbolic | lmbdaP | lambdaP |  polyApplnP | funcTyp | piTyp | prodTyp | plusTyp | sigmaTyp | recP | inducP | simpleterm)
 
   val break
     : core.Parser[Unit, Char, String] = P(spc ~ (End | CharIn("\n;"))) | P(
