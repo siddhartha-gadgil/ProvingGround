@@ -26,6 +26,13 @@ import upickle.default._
 
 import scala.util.Try
 
+object FDInput{
+  def uniform[A](v: Vector[A]) = {
+    val m = if (v.isEmpty) Map.empty[A, Double] else v.map((x) => x -> 1.0/v.size).toMap
+    FDInput(v, m)
+  }
+}
+
 case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
   val inputPairs: Vector[(A, Input)] =
     for {
@@ -33,7 +40,6 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
       p   = previous.getOrElse(x, 0.0)
       inp = input(`type` := "text", value := p, size := 3).render
     } yield (x, inp)
-
   val inputRows: Vector[JsDom.TypedTag[TableRow]] =
     for {
       (x, p) <- inputPairs
@@ -123,12 +129,12 @@ object InteractiveProver {
       var context: Context = //Context.Empty
          NatRing.context
 
-      var termsInput: FDInput[Term] = FDInput(context.terms, Map())
+      var termsInput: FDInput[Term] = FDInput.uniform(context.terms)
 
       val termsInputDiv = div(`class` := "col-md-4")(h3("Terms Distribution"),
                                                      termsInput.view).render
 
-      var typsInput = FDInput(context.terms.flatMap(typOpt), Map())
+      var typsInput = FDInput.uniform(context.terms.flatMap(typOpt))
 
       val typsInputDiv = div(`class` := "col-md-4")(h3("Types Distribution"),
                                                     typsInput.view).render
@@ -144,7 +150,7 @@ object InteractiveProver {
           "type-from-family"        -> 0.05,
           "variable-weight"         -> 0.3,
           "goal-weight"             -> 0.5,
-          "epsilon"                 -> 0.1
+          "epsilon"                 -> 0.001
         )
 
       def tg: TermGenParams = {
@@ -165,13 +171,13 @@ object InteractiveProver {
       def epsilon: Double = paramsInput.outputMap("epsilon")
 
       def updateTermsInput(): Unit = {
-        termsInput = FDInput(context.terms, Map())
+        termsInput = FDInput.uniform(context.terms)
         termsInputDiv.innerHTML = ""
         termsInputDiv.appendChild(
           div(h3("Terms Distribution"), termsInput.view).render
         )
 
-        typsInput = FDInput(context.terms.flatMap(typOpt), Map())
+        typsInput = FDInput.uniform(context.terms.flatMap(typOpt))
         typsInputDiv.innerHTML = ""
         typsInputDiv.appendChild(
           div(h3("Types Distribution"), typsInput.view).render
@@ -328,7 +334,20 @@ object InteractiveProver {
 
       chat.onmessage = { (event: MessageEvent) =>
         val msg = event.data.toString
-        log(msg)
+//        log(msg)
+//        log(Try(ujson.read(msg)).toString)
+//        log(Try(ujson.read(msg).obj).toString)
+//        log(Try(ujson.read(msg).obj("result")).toString)
+        val stateTry = Try(
+         TermState.fromJson(
+           ujson.read(ujson.read(msg).obj("result").str))
+        )
+        val termsTry = stateTry.map(_.terms.entropyVec)
+        termsTry.foreach((v) =>
+          v.foreach{
+            case Weighted(elem, weight) => log(s"$elem -> $weight")
+          }
+        )
       }
 
     }
