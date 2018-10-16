@@ -987,7 +987,7 @@ object TermGenJson{
 
   def nextStateTask(inp: String): Task[String] = {
     val obj = read[Js.Value](inp).obj
-    val termGenParams = read[TermGenParams](obj("generatror-parameters"))
+    val termGenParams = read[TermGenParams](obj("generator-parameters"))
     val epsilon = obj("epsilon").num
     val initState = TermState.fromJson(obj("initial-state"))
     val task = termGenParams.nextStateTask(initState, epsilon)
@@ -996,7 +996,7 @@ object TermGenJson{
 
   def nextTangStateTask(inp: String): Task[String] = {
     val obj = read[Js.Value](inp).obj
-    val termGenParams = read[TermGenParams](obj("generatror-parameters"))
+    val termGenParams = read[TermGenParams](obj("generator-parameters"))
     val epsilon = obj("epsilon").num
     val baseState = TermState.fromJson(obj("base-state"))
     val tangState = TermState.fromJson(obj("tangent-state"))
