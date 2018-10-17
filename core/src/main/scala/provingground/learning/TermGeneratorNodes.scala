@@ -862,6 +862,7 @@ object TermState {
 
 }
 
+
 case class TermGenParams(appW: Double = 0.1,
                          unAppW: Double = 0.1,
                          argAppW: Double = 0.1,
@@ -984,6 +985,8 @@ case class TermGenParams(appW: Double = 0.1,
       .map(_.flatten)
 }
 
+case class EvolvedState(init: TermState, result: TermState, params: TermGenParams, epsilon: Double)
+
 import upickle.default.{ReadWriter => RW, macroRW, read, write}
 import ujson.Js
 
@@ -994,15 +997,10 @@ object TermGenParams {
 object TermGenJson{
 
   def nextStateTask(inp: String): Task[String] = {
-    pprint.log(ujson.read(inp))
     val obj = ujson.read(inp).obj
-    pprint.log(obj)
     val termGenParams = read[TermGenParams](obj("generator-parameters").str)
-    pprint.log(termGenParams)
     val epsilon = obj("epsilon").num
-    pprint.log(epsilon)
     val initState = TermState.fromJson(obj("initial-state"))
-    pprint.log(initState)
     val task = termGenParams.nextStateTask(initState, epsilon)
     task.map((ts) => write(ts.json))
   }

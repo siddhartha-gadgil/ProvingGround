@@ -22,6 +22,7 @@ import org.scalajs.dom.html.{Div, Input, Span, Table, TableRow}
 import provingground.scalahott.NatRing
 import scalatags.JsDom
 import ujson.Js
+import ujson.Js.Value
 import upickle.default._
 
 import scala.util.Try
@@ -113,10 +114,15 @@ object DoublesInput {
   def apply(kvs: (String, Double)*): DoublesInput =
     DoublesInput(kvs.toVector.map(_._1), kvs.toMap)
 }
-
 @JSExportTopLevel("interactiveProver")
 object InteractiveProver {
   import katexSafe.teXSpan
+
+  import scala.collection.mutable.{Map => mMap}
+
+  val sentJobs: mMap[Int, String] = mMap()
+
+  val responses: mMap[Int, String] = mMap()
 
   def entropyTable[U <: Term with Subs[U]](
       fd: FD[U],
@@ -185,13 +191,23 @@ object InteractiveProver {
       )
     )
 
+  def getEvolvedState(data : Js.Value, result: String): EvolvedState = {
+    val dataObj = data.obj
+    val termGenParams =
+      read[TermGenParams](dataObj("generator-parameters").str)
+    val epsilon     = dataObj("epsilon").num
+    val initState   = TermState.fromJson(dataObj("initial-state"))
+    val resultState = TermState.fromJson(ujson.read(result))
+    EvolvedState(initState, resultState, termGenParams, epsilon)
+  }
+
   @JSExport
   def load(): Unit = {
 
     val proverDivOpt: Option[Element] = Option(
       dom.document.querySelector("#interactive-prover-div"))
     proverDivOpt.foreach { proverDiv =>
-      val logList = ul(`class` := "view").render
+      val logList = ul(`class` := "mini-view").render
 
       def log(s: String) = {
         logList.appendChild(li(s).render)
@@ -302,9 +318,9 @@ object InteractiveProver {
           div(`class` := "col-md-4")(h3("Term Generator Parameters"),
                                      paramsInput.view),
           stepButton,
-          worksheet,
           h3("Logs"),
-          logList
+          logList,
+          worksheet
         ).render
 
       val parser = HoTTParser(
@@ -398,17 +414,23 @@ object InteractiveProver {
             "context"              -> ContextJson.toJson(context)
           )
 
+        val data = Js.Obj(
+          "epsilon"              -> Js.Num(epsilon),
+          "generator-parameters" -> write(tg),
+          "initial-state"        -> initialState
+        )
+
         val js =
           Js.Obj(
-            "job" -> "step",
-            "data" -> Js.Obj(
-              "epsilon"              -> Js.Num(epsilon),
-              "generator-parameters" -> write(tg),
-              "initial-state"        -> initialState
-            )
+            "job"  -> "step",
+            "data" -> data
           )
 
         chat.send(ujson.write(js))
+
+        log(s"sent job step with data-hash ${data.hashCode()}")
+
+        sentJobs += (data.hashCode() -> ujson.write(js))
       }
 
       stepButton.onclick = (_) => step()
@@ -416,16 +438,27 @@ object InteractiveProver {
       chat.onmessage = { (event: MessageEvent) =>
         val msg = event.data.toString
 
-        val stateTry = Try(
-          TermState.fromJson(ujson.read(ujson.read(msg).obj("result").str))
-        )
-        stateTry.foreach((ts) => show(termStateView(ts).render))
-//        val termsVecTry = stateTry.map(_.terms.entropyVec)
-//        termsVecTry.foreach { (v) =>
-//          v.foreach {
-//            case Weighted(elem, weight) => log(s"$elem -> $weight")
-//          }
-//        }
+        val jsObj = ujson.read(msg).obj
+
+        val job: String = jsObj("job").str
+
+        val data: Value = ujson.read(jsObj("data").str)
+
+        val result: String = jsObj("result").str
+
+        log(s"received response to job $job with data-hash: ${data.hashCode()}")
+
+        responses += data.hashCode() -> msg
+
+        job match {
+          case "step" =>
+            val evolvedState = getEvolvedState(data, result)
+            val ts = evolvedState.result
+            show(termStateView(ts).render)
+          case _ =>
+            log(s"do not know how to handle response to job $job")
+        }
+
       }
 
     }
