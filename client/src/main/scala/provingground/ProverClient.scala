@@ -116,6 +116,8 @@ object DoublesInput {
 
 @JSExportTopLevel("interactiveProver")
 object InteractiveProver {
+  import katexSafe.teXSpan
+
   def entropyTable[U <: Term with Subs[U]](
       fd: FD[U],
       typed: Boolean = true): JsDom.TypedTag[Table] = {
@@ -134,15 +136,54 @@ object InteractiveProver {
         Weighted(x, p) <- fd.entropyVec
       } yield
         if (typed)
-          tr(td(katexSafe.teXSpan(x)),
-             td(katexSafe.teXSpan(x.typ)),
-             td(f"$p%1.3f"))
-        else tr(td(katexSafe.teXSpan(x)), td(f"$p%1.3f"))
+          tr(td(teXSpan(x)), td(teXSpan(x.typ)), td(f"$p%1.3f"))
+        else tr(td(teXSpan(x)), td(f"$p%1.3f"))
     table(`class` := "table")(
       header,
       tbody(rows: _*)
     )
   }
+
+  def thmTable(ts: TermState): JsDom.TypedTag[Table] = {
+    val rows =
+      for {
+        (t, p, q, h) <- ts.thmWeights
+      } yield
+        tr(
+          td(teXSpan(t)),
+          td(f"$p%1.4f"),
+          td(f"$q%1.4f"),
+          td(f"$h%1.3f")
+        )
+    val header =
+      tr(th("theorem"),
+         th("statement prob"),
+         th("proof prob"),
+         th("entropy-term"))
+    table(`class` := "table")(
+      header,
+      tbody(rows: _*)
+    )
+  }
+
+  def termStateView(ts: TermState): JsDom.TypedTag[Div] =
+    div(`class` := "panel panel-info")(
+      div(`class` := "panel-heading")(h3("Evolved Term State")),
+      div(`class` := "panel-body")(
+        div(`class` := "view")(
+          h4("Entropies of Terms"),
+          entropyTable(ts.terms)
+        ),
+        div(`class` := "view")(
+          h4("Entropies of Types"),
+          entropyTable(ts.typs, typed = false)
+        ),
+        div(`class` := "view")(
+          h4("Theorems"),
+          thmTable(ts)
+        )
+      )
+    )
 
   @JSExport
   def load(): Unit = {
@@ -156,7 +197,7 @@ object InteractiveProver {
         logList.appendChild(li(s).render)
       }
 
-      val worksheet: Div = div.render
+      val worksheet: Div = div(p()).render
 
       def show(el: Element): Unit =
         worksheet.appendChild(el)
@@ -378,13 +419,13 @@ object InteractiveProver {
         val stateTry = Try(
           TermState.fromJson(ujson.read(ujson.read(msg).obj("result").str))
         )
-        stateTry.foreach((s) => show(entropyTable(s.terms).render))
-        val termsVecTry = stateTry.map(_.terms.entropyVec)
-        termsVecTry.foreach { (v) =>
-          v.foreach {
-            case Weighted(elem, weight) => log(s"$elem -> $weight")
-          }
-        }
+        stateTry.foreach((ts) => show(termStateView(ts).render))
+//        val termsVecTry = stateTry.map(_.terms.entropyVec)
+//        termsVecTry.foreach { (v) =>
+//          v.foreach {
+//            case Weighted(elem, weight) => log(s"$elem -> $weight")
+//          }
+//        }
       }
 
     }

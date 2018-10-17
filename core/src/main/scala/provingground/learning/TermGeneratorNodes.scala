@@ -762,7 +762,15 @@ case class TermState(terms: FD[Term],
                      context: Context = Context.Empty) {
   val thmsByPf: FD[Typ[Term]] =
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
-  val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0).flatten
+  val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
+
+  val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
+    (for {
+      Weighted(x, p) <- thmsBySt.pmf
+      q = thmsByPf(x)
+      h = -p / (q * math.log(q))
+    } yield (x, p, q, h)).toVector.sortBy(_._4).reverse
+
   val pfSet: Vector[Term]     = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
   val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
