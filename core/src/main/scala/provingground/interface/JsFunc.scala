@@ -10,8 +10,9 @@ import cats._
 import cats.implicits._
 import provingground.induction.{ExstInducDefn, ExstInducStrucs}
 import provingground.scalahott.NatRing
-
 import ujson.Js.Value
+
+import scala.util.matching.Regex
 
 trait JsFunc[F[_]] {
   def encode(t: F[Js.Value]): Js.Value
@@ -302,9 +303,13 @@ object TermJson {
           res
       } ||
       jsToBuild[Term, Named]("symbolic") {
-        case (name, tp: Typ[u]) => name :: tp
+        case (name, tp: Typ[u]) => deHash(name) :: tp
         case (x, y)             => unmatched(x, y)
       }(travNamed, implicitly[JsFunc[Named]])
+
+  val hashReg: Regex = "_[0-9][0-9]+".r
+
+  def deHash(s: String): String = hashReg.replaceAllIn(s, "")
 
 }
 

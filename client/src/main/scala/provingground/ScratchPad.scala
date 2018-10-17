@@ -1,6 +1,7 @@
 package provingground
 
 import org.scalajs.dom
+
 import scalajs.js.annotation._
 import scalatags.JsDom.all._
 
@@ -8,17 +9,17 @@ import scala.scalajs.js
 import org.scalajs.dom
 
 import js.Dynamic.{global => g}
-
 import com.scalawarrior.scalajs.ace._
-
 import dom.ext._
-import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
+import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import upickle.{Js, json}
 
-import scala.util.{Try, Success, Failure}
-
-import HoTT.{id => _, _}, translation._
+import scala.util.{Failure, Success, Try}
+import HoTT.{id => _, _}
+import org.scalajs.dom.html.Span
+import translation._
+import scalatags.JsDom.all._
 
 @JSGlobal
 @js.native
@@ -28,6 +29,14 @@ object katex extends js.Object {
 
 object katexSafe{
   def renderToString(texString: String): String = scala.util.Try(katex.renderToString(texString)).getOrElse(texString)
+
+
+
+  def teXSpan(t: Term): Span = {
+    val s = span().render
+    s.innerHTML = renderToString(TeXTranslate(t))
+    s
+  }
 }
 
 object ScratchPad {

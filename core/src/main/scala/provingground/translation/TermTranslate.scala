@@ -92,14 +92,16 @@ object TeXTranslate {
 
   val dolName = """\$([a-z]+)""".r
 
-  def hatDol(s: String) = dolName.replaceAllIn(s, (m) => s"\\\\widehat\\{${m.group(1)}\\}")
+  def hatDol(s: String) =
+    dolName.replaceAllIn(s, (m) => s"\\\\widehat\\{${m.group(1)}\\}")
 
-  def apply(x: Term) =
-    hatDol(texTrans(x) map (_.toString()) getOrElse (x.toString()))
+  def apply(x: Term, underscoreEscape: Boolean = false) =
+    hatDol(
+      texTrans(underscoreEscape)(x) map (_.toString()) getOrElse (x.toString()))
 
   // import fansi.Color.LightRed
 
-  val texTrans =
+  def texTrans(underscoreEscape: Boolean) =
     Translator.Empty[Term, String] || formalAppln >>> {
       case (func, arg) => func ++ "(" ++ arg ++ ")"
     } || funcTyp >>> {
@@ -116,7 +118,10 @@ object TeXTranslate {
         s"""(\\sum\\limits_{$variable : $typ} $value)"""
     } || universe >>> { (n) =>
       s"""\\mathcal{U}_$n"""
-    } || symName >>> ((s) => s.replace("_", "\\_")) ||
+    } || symName >>> ((s) =>
+      if (s == "_") "\\_"
+      else if (underscoreEscape) s.replace("_", "\\_")
+      else s) ||
       prodTyp >>> { case (first, second) => s"""($first \\times $second)""" } ||
       absPair >>> {
         case (first, second) => s"""($first, $second)"""

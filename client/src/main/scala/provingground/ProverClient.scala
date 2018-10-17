@@ -26,9 +26,11 @@ import upickle.default._
 
 import scala.util.Try
 
-object FDInput{
+object FDInput {
   def uniform[A](v: Vector[A]) = {
-    val m = if (v.isEmpty) Map.empty[A, Double] else v.map((x) => x -> 1.0/v.size).toMap
+    val m =
+      if (v.isEmpty) Map.empty[A, Double]
+      else v.map((x) => x -> 1.0 / v.size).toMap
     FDInput(v, m)
   }
 }
@@ -114,20 +116,53 @@ object DoublesInput {
 
 @JSExportTopLevel("interactiveProver")
 object InteractiveProver {
+  def entropyTable[U <: Term with Subs[U]](
+      fd: FD[U],
+      typed: Boolean = true): JsDom.TypedTag[Table] = {
+    val header =
+      if (typed)
+        thead(
+          tr(th("term"), th("type"), th("entropy"))
+        )
+      else
+        thead(
+          tr(th("term"), th("entropy"))
+        )
+
+    val rows =
+      for {
+        Weighted(x, p) <- fd.entropyVec
+      } yield
+        if (typed)
+          tr(td(katexSafe.teXSpan(x)),
+             td(katexSafe.teXSpan(x.typ)),
+             td(f"$p%1.3f"))
+        else tr(td(katexSafe.teXSpan(x)), td(f"$p%1.3f"))
+    table(`class` := "table")(
+      header,
+      tbody(rows: _*)
+    )
+  }
+
   @JSExport
   def load(): Unit = {
 
     val proverDivOpt: Option[Element] = Option(
       dom.document.querySelector("#interactive-prover-div"))
     proverDivOpt.foreach { proverDiv =>
-      val logList = ul(`class`:= "view").render
+      val logList = ul(`class` := "view").render
 
       def log(s: String) = {
         logList.appendChild(li(s).render)
       }
 
+      val worksheet: Div = div.render
+
+      def show(el: Element): Unit =
+        worksheet.appendChild(el)
+
       var context: Context = //Context.Empty
-         NatRing.context
+        NatRing.context
 
       var termsInput: FDInput[Term] = FDInput.uniform(context.terms)
 
@@ -186,7 +221,7 @@ object InteractiveProver {
 
       val ed = div(id := "editor", `class` := "panel-body editor")
 
-      val viewDiv = div(`class` := "mini-view")().render
+      val viewDiv = div(`class` := "view panel-body")().render
 
       val runButton =
         input(`type` := "button",
@@ -203,25 +238,30 @@ object InteractiveProver {
 
       val stepButton =
         input(`type` := "button",
-          value := "Term Generation Step",
-          `class` := "btn btn-primary").render
+              value := "Term Generation Step",
+              `class` := "btn btn-primary").render
 
       val mainDiv =
         div(
-          div(`class` := "panel panel-primary")(
-            div(`class` := "panel-heading")(
-              h4("Context Editor"),
-              p("The context can be used for convenient definitions for finite distributions and for inductive types.")),
-            ed,
-            div(`class` := "panel-footer")(runButton)
+          div(`class` := "row")(
+            div(`class` := "panel panel-primary col-md-7")(
+              div(`class` := "panel-heading")(
+                h4("Context Editor"),
+                p("The context can be used for definitions including inductive types.")),
+              ed,
+              div(`class` := "panel-footer")(runButton)
+            ),
+            div(`class` := "panel panel-success col-md-5")(
+              div(`class` := "panel-heading")(h4("Parsed Context")),
+              viewDiv)
           ),
-          div(h3("Parsed Context:"), viewDiv),
           h2("Term Generation"),
           termsInputDiv,
           typsInputDiv,
           div(`class` := "col-md-4")(h3("Term Generator Parameters"),
-                                     paramsInput.view)   ,
+                                     paramsInput.view),
           stepButton,
+          worksheet,
           h3("Logs"),
           logList
         ).render
@@ -229,7 +269,7 @@ object InteractiveProver {
       val parser = HoTTParser(
 //        Context.Empty
         NatRing.context
-        )
+      )
 
       proverDiv.appendChild(
         div(
@@ -309,13 +349,13 @@ object InteractiveProver {
         import interface._, TermJson._
         val initialState =
           Js.Obj(
-            "terms" -> fdJson(termsInput.fd),
-            "types" -> fdJson(typsInput.fd map ((t) => t: Term)),
+            "terms"                -> fdJson(termsInput.fd),
+            "types"                -> fdJson(typsInput.fd map ((t) => t: Term)),
             "goals"                -> fdJson(FD.empty),
-            "variables"                 -> Js.Arr(),
+            "variables"            -> Js.Arr(),
             "inductive-structures" -> InducJson.toJson(context.inducStruct),
-            "context" -> ContextJson.toJson(context)
-            )
+            "context"              -> ContextJson.toJson(context)
+          )
 
         val js =
           Js.Obj(
@@ -323,7 +363,7 @@ object InteractiveProver {
             "data" -> Js.Obj(
               "epsilon"              -> Js.Num(epsilon),
               "generator-parameters" -> write(tg),
-              "initial-state" -> initialState
+              "initial-state"        -> initialState
             )
           )
 
@@ -334,20 +374,17 @@ object InteractiveProver {
 
       chat.onmessage = { (event: MessageEvent) =>
         val msg = event.data.toString
-//        log(msg)
-//        log(Try(ujson.read(msg)).toString)
-//        log(Try(ujson.read(msg).obj).toString)
-//        log(Try(ujson.read(msg).obj("result")).toString)
+
         val stateTry = Try(
-         TermState.fromJson(
-           ujson.read(ujson.read(msg).obj("result").str))
+          TermState.fromJson(ujson.read(ujson.read(msg).obj("result").str))
         )
-        val termsTry = stateTry.map(_.terms.entropyVec)
-        termsTry.foreach((v) =>
-          v.foreach{
+        stateTry.foreach((s) => show(entropyTable(s.terms).render))
+        val termsVecTry = stateTry.map(_.terms.entropyVec)
+        termsVecTry.foreach { (v) =>
+          v.foreach {
             case Weighted(elem, weight) => log(s"$elem -> $weight")
           }
-        )
+        }
       }
 
     }

@@ -75,12 +75,12 @@ object LeanResources {
   def indModView(ind: TermIndMod): Js.Value = {
     def introJs(t: Term) =
       Js.Obj("name"  -> Js.Str(t.toString),
-             "tex"   -> Js.Str(TeXTranslate(t.typ).replace("'", "\\check ")),
+             "tex"   -> Js.Str(TeXTranslate(t.typ, true).replace("'", "\\check ")),
              "plain" -> Js.Str(t.typ.toString))
     Js.Obj(
       "type"   -> Js.Str("inductive-definition"),
       "name"   -> Js.Str(ind.name.toString),
-      "tex"    -> Js.Str(TeXTranslate(ind.typF.typ).replace("'", "\\check ")),
+      "tex"    -> Js.Str(TeXTranslate(ind.typF.typ, true).replace("'", "\\check ")),
       "plain"  -> Js.Str(ind.typF.typ.toString),
       "intros" -> Js.Arr(ind.intros.map(introJs): _*)
     )
@@ -107,7 +107,7 @@ object LeanRoutes extends cask.Routes {
   @cask.get("/mem-defns")
   def memDefs(): String =
     uwrite[Vector[(String, String)]](defnMap.map {
-      case (name, term) => name.toString -> TeXTranslate(term)
+      case (name, term) => name.toString -> TeXTranslate(term, true)
     }.toVector)
 
   @cask.get("/mem-induc-defns")
@@ -195,7 +195,7 @@ object LeanRoutes extends cask.Routes {
       uwrite[Js.Value](
         Js.Obj("type" -> "parse-result",
                "name" -> name,
-               "tex" -> TeXTranslate(t)
+               "tex" -> TeXTranslate(t, true)
                  .replace("'", "\\check "),
                "plain" -> t.toString))
     )
