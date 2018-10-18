@@ -1886,7 +1886,9 @@ object HoTT {
     */
   class InnerSym[U <: Term with Subs[U]](variable: U with Symbolic)
       extends AnySym {
-    var outer = variable
+    val outer = variable
+
+    lazy val outerSym: AnySym = outer.name
 
     override def toString = variable.name.toString
     // match {

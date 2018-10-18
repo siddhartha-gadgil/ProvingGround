@@ -288,6 +288,16 @@ object TermPatterns {
     case _            => false
   }
 
+  import scalahott.ScalaRep._
+
+  def getName(sym: AnySym) : Option[Name] =
+    sym match {
+      case name: Name => Some(name)
+      case inner : InnerSym[u] =>
+        getName(inner.outerSym)
+    }
+
+
   /**
     * matches a symbolic name, perhaps wrapped in `InnerSym`, returns `Name`
     */

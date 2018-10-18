@@ -415,7 +415,7 @@ class SymbolicCRing[A: Ring] { self =>
   }
 
   def funcSum(f: LocalTerm => LocalTerm, g: LocalTerm => LocalTerm) = {
-    val x = LocalTyp.obj
+    val x = LocalTyp.Var
     lmbda(x)(sum(f(x))(g(x)))
   }
 

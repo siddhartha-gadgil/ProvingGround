@@ -104,8 +104,7 @@ object TermJson {
 
   val termToJson: Translator.OrElse[Term, Value] =
     toJs(universe)("universe") ||
-      toJs(formalAppln)("appln") ||
-      toJs(miscAppln)("appln") ||
+      toJs(formalAppln)("appln")  ||
       toJs(lambdaTriple)("lambda") ||
       toJs(sigmaTriple)("sigma") ||
       toJs(piTriple)("pi") ||
@@ -133,7 +132,8 @@ object TermJson {
       toJs(natSum)("nat-sum")||
       toJs(natProd)("nat-prod") ||
       toJs(natLiteral)("nat-literal") ||
-      toJs(foldedTerm)("folded-term")
+      toJs(foldedTerm)("folded-term") ||
+      toJs(miscAppln)("appln")
 
   def termToJsonGet(t: Term) =
     termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
