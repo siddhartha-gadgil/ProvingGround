@@ -161,8 +161,13 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
     if (n == 0) formal else h(n - 1)(recDefn(n - 1, formal, h))
 
   case class Rec[U <: Term with Subs[U]](init: U, g: Func[Nat, Func[U, U]])
-      extends Func[Nat, U] { self =>
+      extends RecFunc[Nat, U] { self =>
     def h = (n: SafeLong) => g(Literal(n))
+
+    val defnData: Vector[Term] = Vector(init, g)
+
+    def fromData(data: Vector[Term]): RecFunc[Nat, U] =
+      Rec(data(0).asInstanceOf[U], data(1).asInstanceOf[Func[Nat, Func[U, U]]])
 
     val dom           = NatTyp
     val codom: Typ[U] = init.typ.asInstanceOf[Typ[U]]
@@ -183,13 +188,18 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
   case class Induc[U <: Term with Subs[U]](typFamily: Func[Nat, Typ[U]],
                                            init: U,
                                            g: FuncLike[Nat, Func[U, U]])
-      extends FuncLike[Nat, U]
+      extends InducFuncLike[Nat, U]
       with Subs[Induc[U]] { self =>
     def h: SafeLong => Func[U, U] = (n: SafeLong) => g(Literal(n))
 
     val dom = NatTyp
 
     val typ = PiDefn(typFamily)
+
+    val defnData: Vector[Term] = Vector(init, g)
+
+    def fromData(data: Vector[Term]): InducFuncLike[Nat, U] =
+      Induc(typFamily, Vector(0).asInstanceOf[U], Vector(1).asInstanceOf[FuncLike[Nat, Func[U, U]]])
 
     val depcodom: Func[Nat, Typ[U]] = typFamily
 
@@ -268,5 +278,5 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
     .defineInduc(this)
     .defineSym(Name("zero"), Literal(0))
     .defineSym(Name("succ"), succ)
-    .defineSym(Name("NatTyp"), NatTyp: Typ[Term])
+    .defineSym(Name("NatTyp"), NatTyp: Typ[Term])("sum" -> sum)("prod" -> prod)
 }

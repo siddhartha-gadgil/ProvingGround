@@ -1224,6 +1224,21 @@ object HoTT {
   case class NotTypeException(tp: Term)
       extends IllegalArgumentException("Expected type but got term")
 
+    /**
+    * record a function as an application, especially for serialization
+    */
+  trait MiscAppln extends Term{
+    val func: Term
+    val arg: Term
+  }
+
+  object MiscAppln{
+    def unapply(t: Term) : Option[(Term, Term)] = t match {
+      case ma : MiscAppln => Some(ma.func -> ma.arg)
+      case _ => None
+    }
+  }
+
   def applyFunc(func: Term, arg: Term): Term = func match {
     // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>

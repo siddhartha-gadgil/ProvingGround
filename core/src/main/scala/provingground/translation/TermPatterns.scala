@@ -23,6 +23,8 @@ object TermPatterns {
     */
   val formalAppln = Pattern[Term, II](FormalAppln.unapply)
 
+  val miscAppln = Pattern[Term, II](MiscAppln.unapply)
+
   /**
     * matches lambda definitions
     */
@@ -257,11 +259,23 @@ object TermPatterns {
 
   val natUniv = Pattern.check[Term](_ == NatRing.NatTyp.typ)
 
+  val natSum = Pattern.check[Term](_ == NatRing.sum)
+
+  val natProd = Pattern.check[Term](_ == NatRing.prod)
+
   /**
     * matches `Universe(n)`, returns the level `n`
     */
   val universe = Pattern.partial[Term, N] {
     case Universe(n) => n
+  }
+
+  val natLiteral = Pattern.partial[Term, N]{
+    case NatRing.Literal(n) => n.toInt
+  }
+
+  val foldedTerm = Pattern.partial[Term, IV]{
+    case fd : FoldedTerm[u] => fd.op -> fd.elems.toVector
   }
 
   val propUniv = Pattern.check[Term](_ == Prop)

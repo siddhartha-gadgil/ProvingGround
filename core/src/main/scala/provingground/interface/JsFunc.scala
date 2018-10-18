@@ -105,6 +105,7 @@ object TermJson {
   val termToJson: Translator.OrElse[Term, Value] =
     toJs(universe)("universe") ||
       toJs(formalAppln)("appln") ||
+      toJs(miscAppln)("appln") ||
       toJs(lambdaTriple)("lambda") ||
       toJs(sigmaTriple)("sigma") ||
       toJs(piTriple)("pi") ||
@@ -128,7 +129,11 @@ object TermJson {
       toJs(natTyp)("nat-type") ||
       toJs(natUniv)("nat-univ") ||
       toJs(natZero)("nat-zero") ||
-      toJs(natSucc)("nat-succ")
+      toJs(natSucc)("nat-succ") ||
+      toJs(natSum)("nat-sum")||
+      toJs(natProd)("nat-prod") ||
+      toJs(natLiteral)("nat-literal") ||
+      toJs(foldedTerm)("folded-term")
 
   def termToJsonGet(t: Term) =
     termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
@@ -245,6 +250,12 @@ object TermJson {
       jsToBuild[Term, II]("reflexivity") {
         case (dom: Typ[u], value: Term) => Refl(dom, value)
         case (x, y)                     => unmatched(x, y)
+      }  ||
+      jsToBuild[Term, IV]("folded-term"){
+        case (op, v) =>
+          v.reduce[Term]{
+            case (a : Term, b : Term) => applyFunc(applyFunc(op, a), b)
+          }
       } ||
       jsToBuild[Term, Un]("star") { (_) =>
         Star
@@ -267,7 +278,16 @@ object TermJson {
       } ||
       jsToBuild[Term, Un]("nat-succ") { (_) =>
         NatRing.succ
-      } || jsToBuild[Term, II]("first-inclusion") {
+      } ||
+      jsToBuild[Term, Un]("nat-sum") { (_) =>
+        NatRing.sum
+      } ||
+      jsToBuild[Term, Un]("nat-prod") { (_) =>
+        NatRing.prod
+      } ||
+      jsToBuild[Term, N]("nat-literal"){
+        (n) => NatRing.Literal(n)
+      }   || jsToBuild[Term, II]("first-inclusion") {
         case (tp: PlusTyp[u, v], x) => tp.incl1(x.asInstanceOf[u])
         case (x, y)                 => unmatched(x, y)
       } ||

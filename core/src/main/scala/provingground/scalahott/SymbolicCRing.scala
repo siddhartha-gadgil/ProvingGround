@@ -231,7 +231,7 @@ class SymbolicCRing[A: Ring] { self =>
     }
 
     val elems =
-      multElems.keys.toList flatMap ((x) => PiTerm.powList(x, multElems(x)))
+      multElems.keys.toVector flatMap ((x) => PiTerm.powList(x, multElems(x)))
 
     val op = prod
   }
@@ -352,7 +352,11 @@ class SymbolicCRing[A: Ring] { self =>
     }
   }
 
-  case class AddLiteral(a: A) extends Func[LocalTerm, LocalTerm] {
+  case class AddLiteral(a: A) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+    val func = sum
+
+    val arg = Literal(a)
+
     val dom = LocalTyp
 
     val codom = LocalTyp
@@ -375,7 +379,11 @@ class SymbolicCRing[A: Ring] { self =>
   /**
     * returns function x + _ where x is not a literal and is indecomposable under sum
     */
-  case class AddTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm] {
+  case class AddTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm] with MiscAppln{
+    val func = sum
+
+    val arg = x
+
     //    println(s"addterm $x")
 
     val dom = LocalTyp
@@ -490,7 +498,11 @@ class SymbolicCRing[A: Ring] { self =>
     override def toString = "prod"
   }
 
-  case class multLiteral(b: A) extends Func[LocalTerm, LocalTerm] {
+  case class multLiteral(b: A) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+    val func = prod
+
+    val arg = Literal(b)
+
     val x = Literal(b)
 
     val dom = LocalTyp
@@ -518,7 +530,11 @@ class SymbolicCRing[A: Ring] { self =>
     }
   }
 
-  case class multTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm] {
+  case class multTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+    val func = prod
+
+    val arg = x
+
     val dom = LocalTyp
 
     import Reciprocal.{base, expo}
