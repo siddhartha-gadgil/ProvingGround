@@ -221,3 +221,22 @@ object Group {
 
   val rInv = a ~>: (op(i(a))(a) =:= a)
 }
+
+/* Context to paste in server
+val M = "M" :: Type
+val l = "e_l" :: M
+val r = "e_r" :: M
+val a = "a" :: M
+val b = "b" :: M
+val c = "c" :: M
+val op = "mul" :: M ->: M ->: M
+val eqM = "eqM" :: M ->: M ->: Type
+"sym" :: (a ~>: (b ~>: ((eqM(a)(b)) ->: (eqM(b)(a)))))
+"trans" :: (a ~>: (b ~>: (c ~>: ((eqM(a)(b)) ->: (eqM(b)(c)) ->: (eqM(a)(c))))))
+"lid" :: (a ~>: (eqM(op(l)(a))(a)))
+"rid" :: (a ~>: (eqM(op(a)(r))(a)))
+op
+eqM
+l
+r
+*/
