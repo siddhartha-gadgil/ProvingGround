@@ -19,6 +19,7 @@ import FineProverTasks._
 import com.scalawarrior.scalajs.ace.ace
 import monix.execution.CancelableFuture
 import org.scalajs.dom.html.{Button, Div, Input, Span, Table, TableRow}
+import provingground.library.MonoidSimple
 import provingground.scalahott.NatRing
 import scalatags.JsDom
 import ujson.Js
@@ -141,6 +142,11 @@ object InteractiveProver {
 
   val responses: mMap[Int, String] = mMap()
 
+  var useTeX : Boolean = true
+
+
+  def teXSp(t: Term): Span = if (useTeX) teXSpan(t) else span(t.toString).render
+
   def entropyTable[U <: Term with Subs[U]](
       fd: FD[U],
       typed: Boolean = true): JsDom.TypedTag[Table] = {
@@ -159,8 +165,8 @@ object InteractiveProver {
         Weighted(x, p) <- fd.entropyVec
       } yield
         if (typed)
-          tr(td(teXSpan(x)), td(teXSpan(x.typ)), td(f"$p%1.3f"))
-        else tr(td(teXSpan(x)), td(f"$p%1.3f"))
+          tr(td(teXSp(x)), td(teXSp(x.typ)), td(f"$p%1.3f"))
+        else tr(td(teXSp(x)), td(f"$p%1.3f"))
     table(`class` := "table")(
       header,
       tbody(rows: _*)
@@ -190,9 +196,22 @@ object InteractiveProver {
         logList.appendChild(li(s).render)
       }
 
+
+      val texBtn: Button = button(`class` := "button button-default pull-right")("turn off TeX").render
+
+      def texToggle() : Unit =
+      {
+        useTeX = !useTeX
+        texBtn.innerHTML = ""
+        if (useTeX) texBtn.appendChild(span("turn off TeX").render)
+        else texBtn.appendChild(span("turn on TeX").render)
+      }
+
+      texBtn.onclick = (_) => texToggle()
+
       val worksheet: Div = div(p()).render
 
-      def show(el: Element): Unit =
+      def show(el: Element, heading: String): Unit =
         {
           el.classList.add("collapse")
           el.classList.add("show")
@@ -211,7 +230,8 @@ object InteractiveProver {
           worksheet.appendChild(
             div(
               hr,
-              btn,
+              h4(heading, " ", btn),
+
               el,
               hr).render)}
 
@@ -292,11 +312,12 @@ object InteractiveProver {
 
       val stepButton =
         input(`type` := "button",
-              value := "Term Generation Step",
+              value := "Generation Next State",
               `class` := "btn btn-primary").render
 
       val mainDiv =
         div(
+          div(`class` := "row")(texBtn),
           div(`class` := "row")(
             div(`class` := "panel panel-primary col-md-7")(
               div(`class` := "panel-heading")(
@@ -323,7 +344,8 @@ object InteractiveProver {
 
       val parser = HoTTParser(
 //        Context.Empty
-        NatRing.context
+        NatRing.context,
+        Map("monoid" -> MonoidSimple.context)
       )
 
       proverDiv.appendChild(
@@ -468,7 +490,7 @@ object InteractiveProver {
             (t, p, q, h) <- ts.thmWeights
           } yield
             tr(
-              td(teXSpan(t)),
+              td(teXSp(t)),
               td(f"$p%1.4f"),
               td(f"$q%1.4f"),
               td(f"$h%1.3f"),
@@ -525,12 +547,12 @@ object InteractiveProver {
           case "step" =>
             val evolvedState = getEvolvedState(data, result)
             val ts = evolvedState.result
-            show(termStateView(ts).render)
+            show(termStateView(ts).render, "Evolution Step")
           case "tangent-step" =>
             log(s"received response to tangent step")
             val evolvedState = getEvolvedState(data, result)
             val ts = evolvedState.result
-            show(termStateView(ts).render)
+            show(termStateView(ts).render, "Tangent Evolution Step")
           case _ =>
             log(s"do not know how to handle response to job $job")
         }

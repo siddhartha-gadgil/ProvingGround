@@ -139,6 +139,12 @@ object Context {
     def exportTyp(t: Typ[Term]): Typ[Term] =
       init.exportTyp(if (t.dependsOn(variable)) variable ~>: t else t)
   }
+
+  def consider(ts: Term*): Context = Empty.consider(ts : _*)
+
+  def apply(kvs: (String, Term)*): Context = Empty(kvs : _*)
+
+
 }
 
 sealed trait Context {
@@ -163,15 +169,15 @@ sealed trait Context {
   def exportTyp(typ: Typ[Term]): Typ[Term]
 
   def define[U <: Term with Subs[U]](name: Term, value: U) =
-    AppendDefn(this, Defn(name, value), true)
+    AppendDefn(this, Defn(name, value), global = true)
 
   def defineSym[U <: Term with Subs[U]](name: AnySym, value: U) =
-    AppendDefn(this, Defn(value.typ.variable(name), value), true)
+    AppendDefn(this, Defn(value.typ.variable(name), value), global = true)
 
   def defineInduc(ind: ExstInducStrucs) = AppendIndDef(this, ind)
 
   def let[U <: Term with Subs[U]](name: Term, value: U) =
-    AppendDefn(this, Defn(name, value), false)
+    AppendDefn(this, Defn(name, value), global = false)
 
   def addConstant[U <: Term with Subs[U]](const: U) =
     AppendConstant(this, const)
@@ -189,6 +195,12 @@ sealed trait Context {
   def introduce[U <: Term with Subs[U]](t: U, role: Role = Consider): AppendTerm[U] =
     AppendTerm(this, t, role)
 
+  def consider(ts: Term*): Context =
+    ts.foldLeft(this){case (ctx, t) => ctx.introduce(t)}
+
+  def apply(kvs: (String, Term)*): Context =
+    kvs.foldLeft(this){case (ctx, (k, v)) => ctx.defineSym(Name(k), v)}
+
   val valueOpt: Option[Term]
 
   lazy val namedTerms: Map[String, Term] =
@@ -198,4 +210,13 @@ sealed trait Context {
       constants.collect {
         case const @ NamedTerm(name) => name -> const
       }).toMap
+
+  def ++(that: Context) : Context = that match {
+    case Context.Empty        => this
+    case AppendDefn(init, defn : Defn[u], global)     => AppendDefn[u](++(init), defn, global)
+    case ap:  AppendConstant[u] => AppendConstant[u](++(ap.init), ap.constant)
+    case AppendIndDef(init, defn)      => AppendIndDef(++(init), defn)
+    case ap : AppendTerm[u]    => AppendTerm(++(ap.init), ap.term, ap.role)
+    case ap : AppendVariable[u] => AppendVariable(++(ap.init), ap.variable)
+  }
 }

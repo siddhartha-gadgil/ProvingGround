@@ -8,8 +8,12 @@ import provingground.learning.GeneratorNode.{Map, MapOpt}
 import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
+import com.sun.org.apache.xalan.internal.utils.XMLSecurityManager.Limit
 import monix.eval.Task
 import provingground.interface.{ContextJson, MultiTask}
+
+import scala.concurrent._
+import duration._
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -968,26 +972,27 @@ case class TermGenParams(appW: Double = 0.1,
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
   def nextStateTask(initState: TermState,
-                    epsilon: Double): Task[TermState] =
+                    epsilon: Double, limit: FiniteDuration = 3.minutes): Task[TermState] =
     for {
-      terms <- monixFD.varDist(initState)(Terms, epsilon)
-      typs  <- monixFD.varDist(initState)(Typs, epsilon)
+      terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
+      typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
     } yield TermState(terms, typs, initState.vars, initState.inds)
 
   def nextTangStateTask(baseState: TermState,
                         tangState: TermState,
                         epsilon: Double,
-                        vars: Vector[Term] = Vector()): Task[TermState] =
+                        vars: Vector[Term] = Vector(),
+                        limit: FiniteDuration = 3.minutes): Task[TermState] =
     for {
-      terms <- monixTangFD(baseState).varDist(tangState)(Terms, epsilon)
-      typs  <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon)
+      terms <- monixTangFD(baseState).varDist(tangState)(Terms, epsilon, limit)
+      typs  <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon, limit)
     } yield TermState(terms, typs, baseState.vars, baseState.inds)
 
   def findProof(initState: TermState,
                 typ: Typ[Term],
-                epsilon: Double): Task[FD[Term]] =
+                epsilon: Double, limit: FiniteDuration = 3.minutes): Task[FD[Term]] =
     monixFD
-      .varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon)
+      .varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon, limit)
       .map(_.flatten)
 }
 

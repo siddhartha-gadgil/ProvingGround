@@ -175,6 +175,15 @@ object MonoidSimple {
   val leftId  = "leftIdAx" :: (a ~>: (eqM(op(l)(a))(a)))
   val rightId = "rightIdAx" :: (a ~>: (eqM(op(a)(r))(a)))
 
+  lazy val context = Context(
+    "M"     -> M,
+    "l"     -> l,
+    "r"     -> r,
+    "op"    -> op,
+    "eqM"   -> eqM,
+    "sym"   -> sym,
+    "trans" -> trans).consider(l, r, op, eqM, sym, trans, leftId, rightId)
+
   val refl = "refl" :: a ~>: (eqM(a)(a))
 
   val dist = unif(a, b, c)(l, r, op, eqM)(
@@ -239,4 +248,4 @@ op
 eqM
 l
 r
-*/
+ */

@@ -15,18 +15,21 @@ object HoTTParser {
 
   case class Defn(name: String, value: Term) extends Stat
 
+  case class Import(name: String) extends Stat
+
   case class Block(stats: Vector[Stat]) {
     def +:(s: Stat) = Block(s +: stats)
 
     def valueOpt: Option[Term] =
-      stats.lastOption.map {
-        case Expr(t)    => t
-        case Defn(_, t) => t
+      stats.lastOption.flatMap {
+        case Expr(t)    => Some(t)
+        case Defn(_, t) => Some(t)
+        case Import(_) => None
       }
   }
 }
 
-case class HoTTParser(ctx: Context = Context.Empty) { self =>
+case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Context] = Map()) { self =>
   import ctx.namedTerms
   import fastparse._
   val White: WhitespaceApi.Wrapper = WhitespaceApi.Wrapper {
@@ -36,11 +39,13 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
   import fastparse.noApi._
   import White._
 
-  def +(n: String, t: Term) = HoTTParser(ctx.defineSym(Name(n), t))
+  def +(n: String, t: Term) = HoTTParser(ctx.defineSym(Name(n), t), contextMap)
 
-  def +(dfn: Defn) = HoTTParser(ctx.defineSym(Name(dfn.name), dfn.value))
+  def +(dfn: Defn) = HoTTParser(ctx.defineSym(Name(dfn.name), dfn.value), contextMap)
 
-  def +(exp: Expr) = HoTTParser(ctx.introduce(exp.term))
+  def +(exp: Expr) = HoTTParser(ctx.introduce(exp.term), contextMap)
+
+  def addImport(s: String) = HoTTParser(ctx ++ contextMap(s), contextMap)
 
   val predefs: P[Term] =
     P("Type").map((_) => Type: Term) |
@@ -148,9 +153,11 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
       case (n, t) => Defn(n, t)
     }
 
+  val imp = P(spc ~ "import" ~ str ~ break).map(Import(_))
+
   val expr: core.Parser[Expr, Char, String] = (spc ~ term ~ break).map(Expr)
 
-  val stat: P[Stat] = defn | expr
+  val stat: P[Stat] = defn | expr | imp
 
   val block: P[Block] =
     P(spc ~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ block) |
@@ -168,9 +175,10 @@ case class HoTTParser(ctx: Context = Context.Empty) { self =>
       (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => ctx) |
       (spc ~ End).map((_) => ctx ) |
       defn.flatMap((dfn) =>
-        (self + dfn).context.map { (tail) =>
-          tail //.defineSym(Name(dfn.name), dfn.value)
-        }) |
+        (self + dfn).context) |
+      imp.flatMap((s) =>
+        addImport(s.name).context
+      ) |
       expr.flatMap((dfn) =>
         (self + dfn).context.map { (tail) =>
           tail //.defineSym(Name(dfn.name), dfn.value)

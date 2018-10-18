@@ -6,6 +6,8 @@ import shapeless._
 import scala.language.higherKinds
 import monix.eval._
 
+import scala.concurrent._, duration._
+
 abstract class GenMonixFiniteDistribution[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
     implicit sd: StateDistribution[State, FD]) {
@@ -21,20 +23,20 @@ abstract class GenMonixFiniteDistribution[State, Boat](
     * @return finite distribution for the given random variable
     */
   def varDist[Y](initState: State)(randomVar: RandomVar[Y],
-                                   epsilon: Double): Task[FD[Y]] =
+                                   epsilon: Double, limit: FiniteDuration = 3.minutes): Task[FD[Y]] =
     if (epsilon > 1) Task.now(FD.empty[Y])
     else
       randomVar match {
         case RandomVar.AtCoord(randomVarFmly, fullArg) =>
 //          varFamilyDist(initState)(randomVarFmly, epsilon)
 //            .map(_.getOrElse(fullArg, FD.empty[Y]))
-          varFamilyDistFunc(initState)(randomVarFmly, epsilon)(fullArg).map(_.flatten.safeNormalized)
+          varFamilyDistFunc(initState)(randomVarFmly, epsilon)(fullArg).map(_.flatten.safeNormalized).timeout(limit)
         case _ =>
           find(randomVar)
             .map { nc =>
               nodeCoeffDist(initState)(nc, epsilon).map(_.flatten.safeNormalized)
             }
-            .getOrElse(Task.now(FD.empty[Y]))
+            .getOrElse(Task.now(FD.empty[Y])).timeout(limit)
       }
 
   /**
