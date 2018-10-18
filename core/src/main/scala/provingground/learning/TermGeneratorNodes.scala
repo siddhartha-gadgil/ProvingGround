@@ -792,6 +792,12 @@ case class TermState(terms: FD[Term],
     TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x
   }
 
+  def tangent(x: Term) =
+    this.copy(
+      terms = FD.unif(x),
+      typs = FD.empty
+    )
+
   import interface._, TermJson._
 
   import ujson.Js
@@ -1007,9 +1013,9 @@ object TermGenJson{
 
   def nextTangStateTask(inp: String): Task[String] = {
     val obj = read[Js.Value](inp).obj
-    val termGenParams = read[TermGenParams](obj("generator-parameters"))
+    val termGenParams = read[TermGenParams](obj("generator-parameters").str)
     val epsilon = obj("epsilon").num
-    val baseState = TermState.fromJson(obj("base-state"))
+    val baseState = TermState.fromJson(obj("initial-state"))
     val tangState = TermState.fromJson(obj("tangent-state"))
     val task = termGenParams.nextTangStateTask(baseState, tangState, epsilon)
     task.map((ts) => write(ts.json))

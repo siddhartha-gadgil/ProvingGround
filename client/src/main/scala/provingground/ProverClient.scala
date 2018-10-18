@@ -18,7 +18,7 @@ import learning._
 import FineProverTasks._
 import com.scalawarrior.scalajs.ace.ace
 import monix.execution.CancelableFuture
-import org.scalajs.dom.html.{Div, Input, Span, Table, TableRow}
+import org.scalajs.dom.html.{Button, Div, Input, Span, Table, TableRow}
 import provingground.scalahott.NatRing
 import scalatags.JsDom
 import ujson.Js
@@ -69,6 +69,23 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
     totalSpan.textContent = total.toString
   }
 
+  def normalize() : Unit = {
+    val tot = total
+    for {
+      (x, inp) <- inputPairs
+      p = inp.value.toDouble /tot
+    } inp.value = p.toString
+
+    update()
+  }
+
+  val normButton: Input =
+    input(`type` := "button",
+      value := "normalize",
+      `class` := "btn btn-success").render
+
+  normButton.onclick = (_) => normalize()
+
   inputPairs.map(_._2).foreach { (el) =>
     el.oninput = (_) => update()
   }
@@ -76,7 +93,7 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
   val view: JsDom.TypedTag[Table] =
     table(`class` := "table table-striped")(
       tbody(
-        inputRows :+ totalRow: _*
+        (inputRows :+ totalRow  :+ tr(normButton)): _*
       )
     )
 }
@@ -150,46 +167,6 @@ object InteractiveProver {
     )
   }
 
-  def thmTable(ts: TermState): JsDom.TypedTag[Table] = {
-    val rows =
-      for {
-        (t, p, q, h) <- ts.thmWeights
-      } yield
-        tr(
-          td(teXSpan(t)),
-          td(f"$p%1.4f"),
-          td(f"$q%1.4f"),
-          td(f"$h%1.3f")
-        )
-    val header =
-      tr(th("theorem"),
-         th("statement prob"),
-         th("proof prob"),
-         th("entropy-term"))
-    table(`class` := "table")(
-      header,
-      tbody(rows: _*)
-    )
-  }
-
-  def termStateView(ts: TermState): JsDom.TypedTag[Div] =
-    div(`class` := "panel panel-info")(
-      div(`class` := "panel-heading")(h3("Evolved Term State")),
-      div(`class` := "panel-body")(
-        div(`class` := "view")(
-          h4("Entropies of Terms"),
-          entropyTable(ts.terms)
-        ),
-        div(`class` := "view")(
-          h4("Entropies of Types"),
-          entropyTable(ts.typs, typed = false)
-        ),
-        div(`class` := "view")(
-          h4("Theorems"),
-          thmTable(ts)
-        )
-      )
-    )
 
   def getEvolvedState(data : Js.Value, result: String): EvolvedState = {
     val dataObj = data.obj
@@ -435,6 +412,79 @@ object InteractiveProver {
 
       stepButton.onclick = (_) => step()
 
+      def tangentStep(base: TermState, tangent: TermState) : Unit = {
+        val data = Js.Obj(
+          "epsilon"              -> Js.Num(epsilon),
+          "generator-parameters" -> write(tg),
+          "initial-state"        -> base.json,
+          "tangent-state" -> tangent.json
+        )
+
+        val js =
+          Js.Obj(
+            "job"  -> "tangent-step",
+            "data" -> data
+          )
+
+        chat.send(ujson.write(js))
+
+        log(s"sent job tangent-step with data-hash ${data.hashCode()}")
+
+        sentJobs += (data.hashCode() -> ujson.write(js))
+      }
+
+
+      def tangentButton(base: TermState, tangent: Term): Button = {
+        val tangentState = base.tangent(tangent)
+        val btn = button(`type` := "button", `class`:= "button button-success")("Go").render
+        btn.onclick = (_) => tangentStep(base, tangentState)
+        btn
+      }
+
+      def thmTable(ts: TermState): JsDom.TypedTag[Table] = {
+        val rows =
+          for {
+            (t, p, q, h) <- ts.thmWeights
+          } yield
+            tr(
+              td(teXSpan(t)),
+              td(f"$p%1.4f"),
+              td(f"$q%1.4f"),
+              td(f"$h%1.3f"),
+              tangentButton(ts, t)
+            )
+        val header =
+          tr(th("theorem"),
+            th("statement prob"),
+            th("proof prob"),
+            th("entropy-term"),
+            th("tangent-evolve"))
+        table(`class` := "table")(
+          header,
+          tbody(rows: _*)
+        )
+      }
+
+      def termStateView(ts: TermState): JsDom.TypedTag[Div] =
+        div(`class` := "panel panel-info")(
+          div(`class` := "panel-heading")(h3("Evolved Term State")),
+          div(`class` := "panel-body")(
+            div(`class` := "view")(
+              h4("Entropies of Terms"),
+              entropyTable(ts.terms)
+            ),
+            div(`class` := "view")(
+              h4("Entropies of Types"),
+              entropyTable(ts.typs, typed = false)
+            ),
+            div(`class` := "view")(
+              h4("Theorems"),
+              thmTable(ts)
+            )
+          )
+        )
+
+
       chat.onmessage = { (event: MessageEvent) =>
         val msg = event.data.toString
 
@@ -452,6 +502,11 @@ object InteractiveProver {
 
         job match {
           case "step" =>
+            val evolvedState = getEvolvedState(data, result)
+            val ts = evolvedState.result
+            show(termStateView(ts).render)
+          case "tangent-step" =>
+            log(s"received response to tangent step")
             val evolvedState = getEvolvedState(data, result)
             val ts = evolvedState.result
             show(termStateView(ts).render)

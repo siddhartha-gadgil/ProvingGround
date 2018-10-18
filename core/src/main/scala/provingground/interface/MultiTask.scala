@@ -10,6 +10,7 @@ case class MultiTask(jobs: Map[String, String => Task[String]]) extends (String 
   def apply(inp: String) : Task[String] = {
     val obj: Js.Obj = ujson.read(inp).obj
     val jobName =  obj("job").str
+    pprint.log(s"received job request $jobName")
     val job: String => Task[String] = jobs.getOrElse(jobName, (_) => Task.raiseError(new IllegalArgumentException(s"Cannot find job with name $jobName")))
     val data = ujson.write(obj("data"))
     job(data).materialize.map{
