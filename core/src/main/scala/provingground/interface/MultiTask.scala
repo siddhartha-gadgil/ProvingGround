@@ -15,10 +15,12 @@ case class MultiTask(jobs: Map[String, String => Task[String]]) extends (String 
     val data = ujson.write(obj("data"))
     job(data).materialize.map{
       case Success(result: String) =>
+        pprint.log(s"completed job $jobName")
         ujson.write(
           Js.Obj("job" -> Js.Str(jobName), "data" -> Js.Str(data), "result" -> Js.Str(result), "success" -> Js.Bool(true))
         )
       case Failure(err: Throwable) =>
+        pprint.log(s"failed job $jobName")
         ujson.write(
           Js.Obj("job" -> Js.Str(jobName), "data" -> Js.Str(data), "error" -> Js.Str(err.getMessage), "success" -> Js.Bool(false))
         )

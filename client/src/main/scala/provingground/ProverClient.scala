@@ -193,7 +193,27 @@ object InteractiveProver {
       val worksheet: Div = div(p()).render
 
       def show(el: Element): Unit =
-        worksheet.appendChild(el)
+        {
+          el.classList.add("collapse")
+          el.classList.add("show")
+          val btn = button(`class` := "button buton-default")(span(`class` := "glyphicon glyphicon-minus")).render
+          def toggle() =
+            if (el.classList.contains("show")) {
+              el.classList.remove("show")
+              btn.innerHTML = ""
+              btn.appendChild(span(`class` := "glyphicon glyphicon-plus").render)
+            } else {
+              btn.innerHTML = ""
+              btn.appendChild(span(`class` := "glyphicon glyphicon-minus").render)
+              el.classList.add("show")
+            }
+          btn.onclick = (_) => toggle()
+          worksheet.appendChild(
+            div(
+              hr,
+              btn,
+              el,
+              hr).render)}
 
       var context: Context = //Context.Empty
         NatRing.context
@@ -297,6 +317,7 @@ object InteractiveProver {
           stepButton,
           h3("Logs"),
           logList,
+          h3("Worksheet"),
           worksheet
         ).render
 
@@ -451,7 +472,7 @@ object InteractiveProver {
               td(f"$p%1.4f"),
               td(f"$q%1.4f"),
               td(f"$h%1.3f"),
-              tangentButton(ts, t)
+              tangentButton(ts, "lemma" :: t)
             )
         val header =
           tr(th("theorem"),
