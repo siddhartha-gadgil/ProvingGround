@@ -227,7 +227,7 @@ object HoTT {
             avoidVar(t, d)
           }
         fn.fromData(replacements)
-          .asInstanceOf[U] //.ensuring (_ == fn, s"avoiding var $t failed for recursive function $fn")
+          .asInstanceOf[U]// .ensuring (_ == fn, s"avoiding var $t failed for recursive function $fn")
       case fn: InducFuncLike[u, v] =>
         val replacements =
           fn.defnData.map { (d) =>

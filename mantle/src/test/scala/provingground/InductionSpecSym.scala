@@ -30,7 +30,7 @@ class InductionSpecSym extends FlatSpec {
     assert(ack(Literal(3))(Literal(1)) == Literal(13))
   }
 
-  "Example Theorems Symbolically proved" should "have proofs with types the theorems" ignore {
+  "Example Theorems Symbolically proved" should "have proofs with types the theorems" in {
     assert(DoubleEvenSym.pf.typ == DoubleEvenSym.thm)
     assert(SuccNOrNEvenSym.pf.typ == SuccNOrNEvenSym.thm)
     assert(LocalConstImpliesConstSym.pf.typ == LocalConstImpliesConstSym.thm)
