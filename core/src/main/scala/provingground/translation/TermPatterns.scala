@@ -249,7 +249,7 @@ object TermPatterns {
     */
   val zero = Pattern.check[Term](_ == Zero)
 
-  import scalahott.NatRing
+  import scalahott.NatRing, NatRing.Nat
 
   val natZero = Pattern.check[Term](_ == NatRing.zero)
 
@@ -264,8 +264,11 @@ object TermPatterns {
   val natProd = Pattern.check[Term](_ == NatRing.prod)
 
   val natAddMorph = Pattern.partial[Term, II]{
-    case NatRing.AdditiveMorphism(base: Func[NatRing.Nat, u], op: Term) =>
-      (base, op)
+    case am : NatRing.AdditiveMorphism[u] =>
+    val x = am.base.dom.Var
+    val y = am.base.dom.Var
+    val z = am.op.asInstanceOf[(Nat, Nat) => Nat](x, y)
+      (am.base, x :-> y :-> z)
   }
 
   /**

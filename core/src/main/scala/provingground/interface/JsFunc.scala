@@ -132,7 +132,7 @@ object TermJson {
       toJs(natSum)("nat-sum") ||
       toJs(natProd)("nat-prod") ||
       toJs(natLiteral)("nat-literal") ||
-      toJs(natAddMorph)("nat-additive-morphism")
+      toJs(natAddMorph)("nat-additive-morphism") ||
   toJs(foldedTerm)("folded-term") ||
     toJs(miscAppln)("appln")
 

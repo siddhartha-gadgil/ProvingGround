@@ -5,6 +5,8 @@ import HoTT._
 import HoTTParser._
 import fastparse.all
 import monix.eval.Task
+import provingground.scalahott.NatRing
+import spire.math.SafeLong
 
 import scala.collection.immutable
 
@@ -139,8 +141,14 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
       case (tp, x) => ctx.inducStruct.inducOpt(tp, x).get
     }
 
+  import spire.implicits._, spire.math._
+
+  val num = P(CharIn('0' to '9').rep.!).map{
+    case n => NatRing.Literal(n.toInt : SafeLong)
+  }
+
   val term: P[Term] = P(
-    symbolic | lmbdaP | lambdaP |  polyApplnP | funcTyp | piTyp | prodTyp | plusTyp | sigmaTyp | recP | inducP | simpleterm)
+    symbolic | lmbdaP | lambdaP |  polyApplnP | funcTyp | piTyp | prodTyp | plusTyp | sigmaTyp | recP | inducP | num | simpleterm)
 
   val break
     : core.Parser[Unit, Char, String] = P(spc ~ (End | CharIn("\n;"))) | P(
