@@ -263,6 +263,11 @@ object TermPatterns {
 
   val natProd = Pattern.check[Term](_ == NatRing.prod)
 
+  val natAddMorph = Pattern.partial[Term, II]{
+    case NatRing.AdditiveMorphism(base: Func[NatRing.Nat, u], op: Term) =>
+      (base, op)
+  }
+
   /**
     * matches `Universe(n)`, returns the level `n`
     */

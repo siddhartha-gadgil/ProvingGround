@@ -104,7 +104,7 @@ object TermJson {
 
   val termToJson: Translator.OrElse[Term, Value] =
     toJs(universe)("universe") ||
-      toJs(formalAppln)("appln")  ||
+      toJs(formalAppln)("appln") ||
       toJs(lambdaTriple)("lambda") ||
       toJs(sigmaTriple)("sigma") ||
       toJs(piTriple)("pi") ||
@@ -129,11 +129,12 @@ object TermJson {
       toJs(natUniv)("nat-univ") ||
       toJs(natZero)("nat-zero") ||
       toJs(natSucc)("nat-succ") ||
-      toJs(natSum)("nat-sum")||
+      toJs(natSum)("nat-sum") ||
       toJs(natProd)("nat-prod") ||
       toJs(natLiteral)("nat-literal") ||
-      toJs(foldedTerm)("folded-term") ||
-      toJs(miscAppln)("appln")
+      toJs(natAddMorph)("nat-additive-morphism")
+  toJs(foldedTerm)("folded-term") ||
+    toJs(miscAppln)("appln")
 
   def termToJsonGet(t: Term) =
     termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
@@ -141,9 +142,9 @@ object TermJson {
   def fdJson(fd: FiniteDistribution[Term]): Js.Arr = {
     val pmf = for {
       Weighted(elem, p) <- fd.pmf
-      tjs <- termToJson(elem)
+      tjs               <- termToJson(elem)
     } yield Js.Obj("term" -> tjs, "weight" -> Js.Num(p))
-    Js.Arr(pmf : _*)
+    Js.Arr(pmf: _*)
   }
 
   import induction._
@@ -207,12 +208,11 @@ object TermJson {
 
   def jsToFD(exst: ExstInducStrucs)(js: Js.Value): FiniteDistribution[Term] = {
     val pmf =
-      js.arr.toVector.map{
-        wp =>
-          Weighted(
-            jsToTermExst(exst)(wp.obj("term")).get,
-            wp.obj("weight").num
-          )
+      js.arr.toVector.map { wp =>
+        Weighted(
+          jsToTermExst(exst)(wp.obj("term")).get,
+          wp.obj("weight").num
+        )
       }
     FiniteDistribution(pmf)
   }
@@ -250,11 +250,11 @@ object TermJson {
       jsToBuild[Term, II]("reflexivity") {
         case (dom: Typ[u], value: Term) => Refl(dom, value)
         case (x, y)                     => unmatched(x, y)
-      }  ||
-      jsToBuild[Term, IV]("folded-term"){
+      } ||
+      jsToBuild[Term, IV]("folded-term") {
         case (op, v) =>
-          v.reduce[Term]{
-            case (a : Term, b : Term) => applyFunc(applyFunc(op, a), b)
+          v.reduce[Term] {
+            case (a: Term, b: Term) => applyFunc(applyFunc(op, a), b)
           }
       } ||
       jsToBuild[Term, Un]("star") { (_) =>
@@ -269,9 +269,11 @@ object TermJson {
       jsToBuild[Term, Un]("prop-universe") { (_) =>
         Prop
       } ||
-      jsToBuild[Term, Un]("nat-type") { (_) => NatRing.NatTyp
+      jsToBuild[Term, Un]("nat-type") { (_) =>
+        NatRing.NatTyp
       } ||
-      jsToBuild[Term, Un]("nat-univ") { (_) => NatRing.NatTyp.typ
+      jsToBuild[Term, Un]("nat-univ") { (_) =>
+        NatRing.NatTyp.typ
       } ||
       jsToBuild[Term, Un]("nat-zero") { (_) =>
         NatRing.zero
@@ -285,9 +287,17 @@ object TermJson {
       jsToBuild[Term, Un]("nat-prod") { (_) =>
         NatRing.prod
       } ||
-      jsToBuild[Term, N]("nat-literal"){
-        (n) => NatRing.Literal(n)
-      }   || jsToBuild[Term, II]("first-inclusion") {
+      jsToBuild[Term, N]("nat-literal") { (n) =>
+        NatRing.Literal(n)
+      } ||
+      jsToBuild[Term, II]("nat-additive-morphism") {
+        case (base, op) =>
+          NatRing.AdditiveMorphism(
+            base.asInstanceOf[Func[NatRing.Nat, NatRing.Nat]],
+            op.asInstanceOf[(NatRing.Nat, NatRing.Nat) => NatRing.Nat])
+
+      } ||
+      jsToBuild[Term, II]("first-inclusion") {
         case (tp: PlusTyp[u, v], x) => tp.incl1(x.asInstanceOf[u])
         case (x, y)                 => unmatched(x, y)
       } ||
@@ -372,17 +382,19 @@ object InducJson {
   def fdJson(fd: FiniteDistribution[ExstInducDefn]): Js.Arr = {
     val pmf = for {
       Weighted(elem, p) <- fd.pmf
-    } yield Js.Obj(
-      "type-family" -> termToJsonGet(elem.typFamily),
-      "introduction-rules" -> Js.Arr(
-      (elem.intros.map((t) => termToJsonGet(t))): _*
+    } yield
+      Js.Obj(
+        "type-family" -> termToJsonGet(elem.typFamily),
+        "introduction-rules" -> Js.Arr(
+          (elem.intros.map((t) => termToJsonGet(t))): _*
         ),
-      "structure" -> toJson(elem.ind),
-      "parameters" -> Js.Arr(
-        (elem.parameters.map((t) => termToJsonGet(t))): _*
-      ),
-      "weight" -> Js.Num(p))
-    Js.Arr(pmf : _*)
+        "structure" -> toJson(elem.ind),
+        "parameters" -> Js.Arr(
+          (elem.parameters.map((t) => termToJsonGet(t))): _*
+        ),
+        "weight" -> Js.Num(p)
+      )
+    Js.Arr(pmf: _*)
   }
 
   def fromJson(init: ExstInducStrucs)(js: Js.Value): ExstInducStrucs =
@@ -410,23 +422,29 @@ object InducJson {
         getIndexed(typF, intros)
     }
 
-    def jsToFD(exst: ExstInducStrucs)(js: Js.Value): FiniteDistribution[ExstInducDefn] = {
-      val pmf =
-        js.arr.toVector.map{
-          wp =>
-            val ind = fromJson(exst)(wp.obj("structure"))
-            val typFamily = jsToTermExst(exst)(wp.obj("type-family")).get
-            val intros = wp.obj("introduction-rules").arr.toVector.map((t) => jsToTermExst(exst)(t).get)
-            val parameters = wp.obj("parameters").arr.toVector.map((t) => jsToTermExst(exst)(t).get)
-            Weighted(
-              ExstInducDefn(typFamily, intros, ind, parameters),
-              wp.obj("weight").num
-            )
-        }
-      FiniteDistribution(pmf)
-    }
-
-
+  def jsToFD(exst: ExstInducStrucs)(
+      js: Js.Value): FiniteDistribution[ExstInducDefn] = {
+    val pmf =
+      js.arr.toVector.map { wp =>
+        val ind       = fromJson(exst)(wp.obj("structure"))
+        val typFamily = jsToTermExst(exst)(wp.obj("type-family")).get
+        val intros = wp
+          .obj("introduction-rules")
+          .arr
+          .toVector
+          .map((t) => jsToTermExst(exst)(t).get)
+        val parameters = wp
+          .obj("parameters")
+          .arr
+          .toVector
+          .map((t) => jsToTermExst(exst)(t).get)
+        Weighted(
+          ExstInducDefn(typFamily, intros, ind, parameters),
+          wp.obj("weight").num
+        )
+      }
+    FiniteDistribution(pmf)
+  }
 
 }
 
@@ -461,7 +479,7 @@ object ContextJson {
       Js.Obj(
         "intro"  -> "append-definition",
         "name"   -> termToJsonGet(defn.name),
-        "init"       -> toJson(init),
+        "init"   -> toJson(init),
         "value"  -> termToJsonGet(defn.valueTerm),
         "global" -> Js.Bool(global)
       )
@@ -469,7 +487,7 @@ object ContextJson {
       Js.Obj(
         "intro" -> "append-inductive-definition",
         "defn"  -> InducJson.toJson(defn),
-        "init"       -> toJson(init)
+        "init"  -> toJson(init)
       )
   }
 
@@ -493,8 +511,8 @@ object ContextJson {
         val term = jsToTermExst(init.inducStruct)(js.obj("variable")).get
         AppendVariable(init, term)
       case "append-definition" =>
-        val init = fromJson(js.obj("init"))
-        val name = jsToTermExst(init.inducStruct)(js.obj("name")).get
+        val init  = fromJson(js.obj("init"))
+        val name  = jsToTermExst(init.inducStruct)(js.obj("name")).get
         val value = jsToTermExst(init.inducStruct)(js.obj("value")).get
         AppendDefn(init, Defn(name, value), js.obj("global").bool)
       case "append-inductive-definition" =>
