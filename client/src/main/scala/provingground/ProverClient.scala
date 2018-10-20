@@ -26,6 +26,7 @@ import ujson.Js
 import ujson.Js.Value
 import upickle.default._
 
+import scala.collection.mutable.ArrayBuffer
 import scala.util.Try
 
 object FDInput {
@@ -70,11 +71,11 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
     totalSpan.textContent = total.toString
   }
 
-  def normalize() : Unit = {
+  def normalize(): Unit = {
     val tot = total
     for {
       (x, inp) <- inputPairs
-      p = inp.value.toDouble /tot
+      p = inp.value.toDouble / tot
     } inp.value = p.toString
 
     update()
@@ -82,8 +83,8 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
 
   val normButton: Input =
     input(`type` := "button",
-      value := "normalize",
-      `class` := "btn btn-success").render
+          value := "normalize",
+          `class` := "btn btn-success").render
 
   normButton.onclick = (_) => normalize()
 
@@ -94,7 +95,7 @@ case class FDInput[A](elems: Vector[A], previous: Map[A, Double]) {
   val view: JsDom.TypedTag[Table] =
     table(`class` := "table table-striped")(
       tbody(
-        (inputRows :+ totalRow  :+ tr(normButton)): _*
+        (inputRows :+ totalRow :+ tr(normButton)): _*
       )
     )
 }
@@ -142,8 +143,7 @@ object InteractiveProver {
 
   val responses: mMap[Int, String] = mMap()
 
-  var useTeX : Boolean = true
-
+  var useTeX: Boolean = true
 
   def teXSp(t: Term): Span = if (useTeX) teXSpan(t) else span(t.toString).render
 
@@ -173,8 +173,7 @@ object InteractiveProver {
     )
   }
 
-
-  def getEvolvedState(data : Js.Value, result: String): EvolvedState = {
+  def getEvolvedState(data: Js.Value, result: String): EvolvedState = {
     val dataObj = data.obj
     val termGenParams =
       read[TermGenParams](dataObj("generator-parameters").str)
@@ -196,11 +195,10 @@ object InteractiveProver {
         logList.appendChild(li(s).render)
       }
 
+      val texBtn: Button = button(
+        `class` := "button button-default pull-right")("turn off TeX").render
 
-      val texBtn: Button = button(`class` := "button button-default pull-right")("turn off TeX").render
-
-      def texToggle() : Unit =
-      {
+      def texToggle(): Unit = {
         useTeX = !useTeX
         texBtn.innerHTML = ""
         if (useTeX) texBtn.appendChild(span("turn off TeX").render)
@@ -211,42 +209,46 @@ object InteractiveProver {
 
       val worksheet: Div = div(p()).render
 
-      def show(el: Element, heading: String): Unit =
-        {
-          el.classList.add("collapse")
-          el.classList.add("show")
-          val btn = button(`class` := "button buton-default")(span(`class` := "glyphicon glyphicon-minus")).render
-          def toggle() =
-            if (el.classList.contains("show")) {
-              el.classList.remove("show")
-              btn.innerHTML = ""
-              btn.appendChild(span(`class` := "glyphicon glyphicon-plus").render)
-            } else {
-              btn.innerHTML = ""
-              btn.appendChild(span(`class` := "glyphicon glyphicon-minus").render)
-              el.classList.add("show")
-            }
-          btn.onclick = (_) => toggle()
-          worksheet.appendChild(
-            div(
-              hr,
-              h4(heading, " ", btn),
-
-              el,
-              hr).render)}
+      def show(el: Element, heading: String): Unit = {
+        el.classList.add("collapse")
+        el.classList.add("show")
+        val btn = button(`class` := "button buton-default")(
+          span(`class` := "glyphicon glyphicon-minus")).render
+        def toggle() =
+          if (el.classList.contains("show")) {
+            el.classList.remove("show")
+            btn.innerHTML = ""
+            btn.appendChild(span(`class` := "glyphicon glyphicon-plus").render)
+          } else {
+            btn.innerHTML = ""
+            btn.appendChild(span(`class` := "glyphicon glyphicon-minus").render)
+            el.classList.add("show")
+          }
+        btn.onclick = (_) => toggle()
+        worksheet.appendChild(div(hr, h4(heading, " ", btn), el, hr).render)
+      }
 
       var context: Context = //Context.Empty
         NatRing.context
 
-      var termsInput: FDInput[Term] = FDInput.uniform(context.terms)
+      val extraTerms: ArrayBuffer[Term] = ArrayBuffer()
 
-      val termsInputDiv = div(`class` := "col-md-4")(h3("Terms Distribution"),
+      def genTerms = context.terms ++ extraTerms.toVector
+
+      var termsInput: FDInput[Term] = FDInput.uniform(genTerms)
+
+      val termsInputDiv = div(`class` := "col-md-3")(h3("Terms Distribution"),
                                                      termsInput.view).render
 
-      var typsInput = FDInput.uniform(context.terms.flatMap(typOpt))
+      var typsInput = FDInput.uniform(genTerms.flatMap(typOpt))
 
-      val typsInputDiv = div(`class` := "col-md-4")(h3("Types Distribution"),
+      val typsInputDiv = div(`class` := "col-md-3")(h3("Types Distribution"),
                                                     typsInput.view).render
+
+      var goalsInput = FDInput.uniform(genTerms.flatMap(typOpt))
+
+      val goalsInputDiv = div(`class` := "col-md-3")(h3("Goals Distribution"),
+        goalsInput.view).render
 
       val paramsInput =
         DoublesInput(
@@ -280,16 +282,22 @@ object InteractiveProver {
       def epsilon: Double = paramsInput.outputMap("epsilon")
 
       def updateTermsInput(): Unit = {
-        termsInput = FDInput.uniform(context.terms)
+        termsInput = FDInput.uniform(genTerms)
         termsInputDiv.innerHTML = ""
         termsInputDiv.appendChild(
           div(h3("Terms Distribution"), termsInput.view).render
         )
 
-        typsInput = FDInput.uniform(context.terms.flatMap(typOpt))
+        typsInput = FDInput.uniform(genTerms.flatMap(typOpt))
         typsInputDiv.innerHTML = ""
         typsInputDiv.appendChild(
           div(h3("Types Distribution"), typsInput.view).render
+        )
+
+        goalsInput = FDInput.uniform(genTerms.flatMap(typOpt))
+        goalsInputDiv.innerHTML = ""
+        goalsInputDiv.appendChild(
+          div(h3("Goals Distribution"), goalsInput.view).render
         )
       }
 
@@ -312,7 +320,7 @@ object InteractiveProver {
 
       val stepButton =
         input(`type` := "button",
-              value := "Generation Next State",
+              value := "Generate Next State",
               `class` := "btn btn-primary").render
 
       val mainDiv =
@@ -333,7 +341,8 @@ object InteractiveProver {
           h2("Term Generation"),
           termsInputDiv,
           typsInputDiv,
-          div(`class` := "col-md-4")(h3("Term Generator Parameters"),
+          goalsInputDiv,
+          div(`class` := "col-md-3")(h3("Term Generator Parameters"),
                                      paramsInput.view),
           stepButton,
           h3("Logs"),
@@ -428,7 +437,7 @@ object InteractiveProver {
           Js.Obj(
             "terms"                -> fdJson(termsInput.fd),
             "types"                -> fdJson(typsInput.fd map ((t) => t: Term)),
-            "goals"                -> fdJson(FD.empty),
+            "goals"                -> fdJson(goalsInput.fd map ((t) => t: Term)),
             "variables"            -> Js.Arr(),
             "inductive-structures" -> InducJson.toJson(context.inducStruct),
             "context"              -> ContextJson.toJson(context)
@@ -455,12 +464,12 @@ object InteractiveProver {
 
       stepButton.onclick = (_) => step()
 
-      def tangentStep(base: TermState, tangent: TermState) : Unit = {
+      def tangentStep(base: TermState, tangent: TermState): Unit = {
         val data = Js.Obj(
           "epsilon"              -> Js.Num(epsilon),
           "generator-parameters" -> write(tg),
           "initial-state"        -> base.json,
-          "tangent-state" -> tangent.json
+          "tangent-state"        -> tangent.json
         )
 
         val js =
@@ -476,11 +485,23 @@ object InteractiveProver {
         sentJobs += (data.hashCode() -> ujson.write(js))
       }
 
-
       def tangentButton(base: TermState, tangent: Term): Button = {
         val tangentState = base.tangent(tangent)
-        val btn = button(`type` := "button", `class`:= "button button-success")("Go").render
+        val btn = button(`type` := "button",
+                         `class` := "button button-success")("Go").render
         btn.onclick = (_) => tangentStep(base, tangentState)
+        btn
+      }
+
+      def suppButton(t: Term) = {
+        val btn =
+          button(`type` := "button", `class` := "button button-default")(
+            span(`class` := "glyphicon glyphicon-plus").render).render
+        btn.onclick = (_) => {
+          extraTerms.append(t)
+          typOpt(t).foreach((typ) => extraTerms.append("lemma" :: typ))
+          updateTermsInput()
+        }
         btn
       }
 
@@ -494,14 +515,16 @@ object InteractiveProver {
               td(f"$p%1.4f"),
               td(f"$q%1.4f"),
               td(f"$h%1.3f"),
-              tangentButton(ts, "lemma" :: t)
+              tangentButton(ts, "lemma" :: t),
+              suppButton(t)
             )
         val header =
           tr(th("theorem"),
-            th("statement prob"),
-            th("proof prob"),
-            th("entropy-term"),
-            th("tangent-evolve"))
+             th("statement prob"),
+             th("proof prob"),
+             th("entropy-term"),
+             th("tangent"),
+             th("support"))
         table(`class` := "table")(
           header,
           tbody(rows: _*)
@@ -527,7 +550,6 @@ object InteractiveProver {
           )
         )
 
-
       chat.onmessage = { (event: MessageEvent) =>
         val msg = event.data.toString
 
@@ -546,12 +568,12 @@ object InteractiveProver {
         job match {
           case "step" =>
             val evolvedState = getEvolvedState(data, result)
-            val ts = evolvedState.result
+            val ts           = evolvedState.result
             show(termStateView(ts).render, "Evolution Step")
           case "tangent-step" =>
             log(s"received response to tangent step")
             val evolvedState = getEvolvedState(data, result)
-            val ts = evolvedState.result
+            val ts           = evolvedState.result
             show(termStateView(ts).render, "Tangent Evolution Step")
           case _ =>
             log(s"do not know how to handle response to job $job")
