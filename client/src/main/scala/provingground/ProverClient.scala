@@ -259,6 +259,7 @@ object InteractiveProver {
           "pi"                      -> 0.1,
           "terms-by-type"           -> 0.05,
           "type-from-family"        -> 0.05,
+          "sigma"                   -> 0.05,
           "variable-weight"         -> 0.3,
           "goal-weight"             -> 0.5,
           "epsilon"                 -> 0.001
@@ -274,6 +275,7 @@ object InteractiveProver {
           m("pi"),
           m("terms-by-type"),
           m("type-from-family"),
+          m("sigma"),
           m("variable-weight"),
           m("goal-weight")
         )

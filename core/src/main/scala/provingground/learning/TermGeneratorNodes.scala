@@ -119,7 +119,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-    * A node (currently island) for targetting a (dependent function) type, with variable of the domain generated and the co-domain
+    * A node  for targeting a (dependent function) type, with variable of the domain generated and the co-domain
     * type (more generally fibre) targeted within the island.
     *
     * @param typ the target type
@@ -143,6 +143,24 @@ class TermGeneratorNodes[InitState](
             _ => termsWithTyp(ft.codom),
             addVar(ft.domain),
             { case (x, y) => x :~> y }
+          )
+        )
+      case pt: ProdTyp[u, v]  =>
+        Some(
+          ZipMap[Term, Term, Term](
+            { case (a, b) => PairTerm(a.asInstanceOf[u], b.asInstanceOf[v]) },
+            termsWithTyp(pt. first),
+            termsWithTyp(pt.second),
+            termsWithTyp(pt)
+          )
+        )
+      case pt: SigmaTyp[u, v] =>
+        Some(
+          ZipFlatMap[Term, Term, Term](
+            termsWithTyp(pt.fibers.dom),
+            (x) => termsWithTyp(pt.fibers(x.asInstanceOf[u])),
+            {case (a, b) => pt.paircons(a.asInstanceOf[u])(b.asInstanceOf[v])},
+            termsWithTyp(pt)
           )
         )
       case _ => None
@@ -209,6 +227,14 @@ class TermGeneratorNodes[InitState](
       { case (x, y) => pi(x)(y) }
     )
 
+  def sigmaIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+    Island[Typ[Term], InitState, Typ[Term], Term](
+      Typs,
+      _ => Typs,
+      addVar(typ),
+      { case (x, y) => sigma(x)(y) }
+    )
+
   /**
     * aggregate generation of Pi-types from islands
     */
@@ -216,6 +242,13 @@ class TermGeneratorNodes[InitState](
     FlatMap(
       Typs,
       piIsle,
+      Typs
+    )
+
+  val sigmaNode: FlatMap[Typ[Term], Typ[Term]] =
+    FlatMap(
+      Typs,
+      sigmaIsle,
       Typs
     )
 
@@ -880,6 +913,7 @@ case class TermGenParams(appW: Double = 0.1,
                          piW: Double = 0.1,
                          termsByTypW: Double = 0.05,
                          typFromFamilyW: Double = 0.05,
+                         sigmaW : Double = 0.05,
                          varWeight: Double = 0.3,
                          goalWeight: Double = 0.5,
                          typVsFamily: Double = 0.5) {
@@ -896,7 +930,7 @@ case class TermGenParams(appW: Double = 0.1,
 
   val termInit: Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW
 
-  val typInit: Double = 1.0 - appW - unAppW - piW - typFromFamilyW
+  val typInit: Double = 1.0 - appW - unAppW - piW - sigmaW - typFromFamilyW
 
   val termNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
     (Init(Terms)      -> termInit) ::
@@ -912,6 +946,7 @@ case class TermGenParams(appW: Double = 0.1,
       (typApplnNode     -> appW) ::
       (typUnifApplnNode -> unAppW) ::
       (piNode           -> piW) ::
+      (sigmaNode        -> sigmaW) ::
       (typFoldNode      -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
