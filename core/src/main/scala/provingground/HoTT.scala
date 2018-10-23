@@ -1235,6 +1235,7 @@ object HoTT {
   object MiscAppln{
     def unapply(t: Term) : Option[(Term, Term)] = t match {
       case ma : MiscAppln => Some(ma.func -> ma.arg)
+      case FormalAppln(func, arg) => Some(func -> arg)
       case _ => None
     }
   }

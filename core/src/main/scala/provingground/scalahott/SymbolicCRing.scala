@@ -61,7 +61,7 @@ class SymbolicCRing[A: Ring] { self =>
 
   object Comb {
     def unapply(term: Term): Option[(Op, LocalTerm, LocalTerm)] = term match {
-      case FormalAppln(FormalAppln(op, x), y) =>
+      case MiscAppln(MiscAppln(op, x), y) =>
         Try(
           (op.asInstanceOf[Op],
            x.asInstanceOf[LocalTerm],
@@ -372,7 +372,9 @@ class SymbolicCRing[A: Ring] { self =>
     def act(y: LocalTerm) = y match {
       case Literal(b)                         => Literal(a + b)
       case Comb(f, Literal(b), v) if f == sum => sum(Literal(a + b))(v)
-      case p                                  => Comb(sum, Literal(a), p)
+      case p                                  =>
+        FormalAppln(this, p)
+//        Comb(sum, Literal(a), p)
     }
   }
 
@@ -403,7 +405,9 @@ class SymbolicCRing[A: Ring] { self =>
       y match {
         case Literal(a) =>
           if (a == zero) x
-          else Comb(sum, Literal(a), x)
+          else
+            FormalAppln(sum(Literal(a)), x)
+//            Comb(sum, Literal(a), x)
         case Comb(f, Literal(a), v) if f == sum => sum(Literal(a))(sum(x)(v))
         case s: SigmaTerm                       => x +: s
         case _ =>
@@ -526,7 +530,9 @@ class SymbolicCRing[A: Ring] { self =>
       case SigmaTerm(elems) =>
         (elems map ((u) => prod(x)(u)))
           .reduce((a: LocalTerm, b: LocalTerm) => sum(a)(b))
-      case p => Comb(prod, x, p)
+      case p =>
+        FormalAppln(this, p)
+//        Comb(prod, x, p)
     }
   }
 
