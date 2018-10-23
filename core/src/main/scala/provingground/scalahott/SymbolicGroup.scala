@@ -94,9 +94,9 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
         s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
-      case Comb(u, v) =>
+      case  uv @ Comb(u, v) =>
         if (u == ia) v else
-        FormalAppln(this, Comb(u, v))
+        FormalAppln(this, uv)
 //          Comb(a, Comb(u, v))
       case `e` => a
       case p =>
