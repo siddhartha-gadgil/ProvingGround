@@ -928,7 +928,12 @@ object HoTT {
 
       lazy val typ = xy ~>: (targetFmly(xy.first)(xy.second))
 
-      lazy val depcodom = (p: PairTerm[U, V]) => targetFmly(p.first)(p.second)
+      lazy val depcodom =
+      {
+        val p = prod.Var
+        p :-> targetFmly(p.first)(p.second)
+      }
+//        (p: PairTerm[U, V]) => targetFmly(p.first)(p.second)
 
       def newobj =
         throw new IllegalArgumentException(
@@ -2465,7 +2470,11 @@ object HoTT {
 
       lazy val typ = xy ~>: (targetFmly(xy.first)(xy.second))
 
-      lazy val depcodom = (p: AbsPair[W, U]) => targetFmly(p.first)(p.second)
+      lazy val depcodom = {
+        val p : AbsPair[W, U] = prod.Var
+        p :-> targetFmly(p.first)(p.second)
+      }
+//        (p: AbsPair[W, U]) => targetFmly(p.first)(p.second)
 
       def newobj =
         throw new IllegalArgumentException(
