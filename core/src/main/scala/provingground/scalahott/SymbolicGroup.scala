@@ -47,14 +47,20 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
         s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
-      case Literal(b)                       => Literal(group.inverse(b))
+      case Literal(b)                     => Literal(group.inverse(b))
       case MiscAppln(`inv`, p: LocalTerm) => p
-      case Comb(x, y)                       => mul(inv(y))(inv(x))
-      case p                                => FormalAppln(inv, p)
+      case Comb(x, y)                     => mul(inv(y))(inv(x))
+      case p                              => FormalAppln(inv, p)
     }
   }
 
-  case class MultLiteral(a: A) extends Func[LocalTerm, LocalTerm] {
+  case class MultLiteral(a: A)
+      extends Func[LocalTerm, LocalTerm]
+      with MiscAppln {
+    val func = mul
+
+    val arg = Literal(a)
+
     val dom = self
 
     val codom = self
@@ -70,11 +76,15 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
     def act(y: LocalTerm) = y match {
       case Literal(b)          => Literal(group.combine(a, b))
       case Comb(Literal(b), v) => MultLiteral(group.combine(a, b))(v)
-      case p                   => Comb(Literal(a), p)
+      case p =>
+        FormalAppln(this, p)
+//        Comb(Literal(a), p)
     }
   }
 
-  case class MultTerm(a: LocalTerm) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+  case class MultTerm(a: LocalTerm)
+      extends Func[LocalTerm, LocalTerm]
+      with MiscAppln {
     val func = mul
 
     val arg = a
@@ -94,9 +104,10 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
         s"trying to use the constant $this as a variable (or a component of one)")
 
     def act(y: LocalTerm) = y match {
-      case  uv @ Comb(u, v) =>
-        if (u == ia) v else
-        FormalAppln(this, uv)
+      case uv @ Comb(u, v) =>
+        if (u == ia) v
+        else
+          FormalAppln(this, uv)
 //          Comb(a, Comb(u, v))
       case `e` => a
       case p =>
@@ -120,7 +131,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
 
-    def act(y: LocalTerm) : Func[LocalTerm, LocalTerm] = y match {
+    def act(y: LocalTerm): Func[LocalTerm, LocalTerm] = y match {
       case `e`        => HoTT.id(self)
       case Literal(a) => MultLiteral(a)
       case Comb(u, v) =>
