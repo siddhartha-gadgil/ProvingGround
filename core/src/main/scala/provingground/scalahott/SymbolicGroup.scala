@@ -21,7 +21,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
   object Comb {
     def unapply(term: Term): Option[(LocalTerm, LocalTerm)] = term match {
-      case FormalAppln(FormalAppln(`mul`, x), y) =>
+      case MiscAppln(MiscAppln(`mul`, x), y) =>
         Try((x.asInstanceOf[LocalTerm], y.asInstanceOf[LocalTerm])).toOption
       case _ => None
     }
@@ -48,7 +48,7 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
     def act(y: LocalTerm) = y match {
       case Literal(b)                       => Literal(group.inverse(b))
-      case FormalAppln(`inv`, p: LocalTerm) => p
+      case MiscAppln(`inv`, p: LocalTerm) => p
       case Comb(x, y)                       => mul(inv(y))(inv(x))
       case p                                => FormalAppln(inv, p)
     }
@@ -74,7 +74,11 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
     }
   }
 
-  case class MultTerm(a: LocalTerm) extends Func[LocalTerm, LocalTerm] {
+  case class MultTerm(a: LocalTerm) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+    val func = mul
+
+    val arg = a
+
     val dom = self
 
     lazy val ia = inv(a)
@@ -91,27 +95,32 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
 
     def act(y: LocalTerm) = y match {
       case Comb(u, v) =>
-        if (u == ia) v else Comb(a, Comb(u, v))
+        if (u == ia) v else
+        FormalAppln(this, Comb(u, v))
+//          Comb(a, Comb(u, v))
       case `e` => a
       case p =>
-        if (p == ia) e else Comb(a, p)
+        if (p == ia) e
+        else
+          FormalAppln(this, p)
+//          Comb(a, p)
     }
   }
 
   case object mul extends Func[LocalTerm, Func[LocalTerm, LocalTerm]] { w =>
-    val dom = self
+    val dom: SymbolicGroup[A] = self
 
-    val codom = self ->: self
+    val codom: FuncTyp[LocalTerm, RepTerm[A]] = self ->: self
 
-    val typ = dom ->: codom
+    val typ: FuncTyp[LocalTerm, Func[LocalTerm, RepTerm[A]]] = dom ->: codom
 
-    def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term): mul.type = this
 
     def newobj =
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
 
-    def act(y: LocalTerm) = y match {
+    def act(y: LocalTerm) : Func[LocalTerm, LocalTerm] = y match {
       case `e`        => HoTT.id(self)
       case Literal(a) => MultLiteral(a)
       case Comb(u, v) =>
@@ -124,11 +133,11 @@ class SymbolicGroup[A: Group] extends ScalaTyp[A] { self =>
   }
 
   implicit val groupStructure: Group[LocalTerm] = new Group[LocalTerm] {
-    val empty = e
+    val empty: RepTerm[A] = e
 
-    def combine(x: LocalTerm, y: LocalTerm) = mul(x)(y)
+    def combine(x: LocalTerm, y: LocalTerm): LocalTerm = mul(x)(y)
 
-    def inverse(x: LocalTerm) = inv(x)
+    def inverse(x: LocalTerm): LocalTerm = inv(x)
 
   }
 
