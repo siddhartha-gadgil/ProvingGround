@@ -162,6 +162,8 @@ object HoTT {
             case (ab: AbsPair[u, v], cd: AbsPair[w, x])
                 if (ab.first indepOf ab.second) && (ab.second indepOf ab.first) =>
               replace(ab.first, cd.first) replace (ab.second, cd.second)
+            case (ab: DepPair[u, v], cd: AbsPair[w, x]) if ab.indepComponents =>
+              replace(ab.first, cd.first) replace (ab.second, cd.second)
             case (FormalAppln(f, x), FormalAppln(g, y)) =>
               replace(f, g) replace (x, y)
             case (MiscAppln(f, x), MiscAppln(g, y)) =>
@@ -192,6 +194,8 @@ object HoTT {
 
   }
 
+  case class AvoidVarFormalException(func: Term, arg: Term, variable: Term) extends Exception(s"Avoiding variable fails func: $func, arg: $arg, var: $variable")
+
   /**
     * returns x after modifying to avoid clashes of variables
     */
@@ -211,7 +215,9 @@ object HoTT {
             .asInstanceOf[U]
         } else LambdaTerm(ll.variable, avoidVar(t, ll.value)).asInstanceOf[U]
       case FormalAppln(func, arg) =>
-        applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
+//        val res =
+          applyFunc(avoidVar(t, func), avoidVar(t, arg)).asInstanceOf[U]
+//        if (res == x) res else throw AvoidVarFormalException(func, arg, t)
       case pt: PairTerm[u, v] =>
         PairTerm(avoidVar(t, pt.first), avoidVar(t, pt.second)).asInstanceOf[U]
       case pt: ProdTyp[u, v] =>
@@ -239,7 +245,7 @@ object HoTT {
           .asInstanceOf[U] //.ensuring (_ == fn, s"avoiding var $t failed for inductive function $fn")
       case _ => x
     }
-  } //ensuring (_ == x, s"avoiding var $t failed for $x")
+  } // ensuring (_ == x, s"avoiding var $t failed for $x")
 
   /**
     * Objects with simple substitution.
@@ -2527,8 +2533,13 @@ object HoTT {
     def newobj = {
       val newfirst = first.newobj
       DepPair(newfirst,
-              second.replace(first, newfirst),
+              second.replace(first, newfirst).newobj,
               fibers.replace(first, newfirst))
+    }
+
+    def indepComponents : Boolean = {
+      val newFirst = first.newobj
+      second.replace(first, newFirst) == second.replace(fibers(first), fibers(newFirst))
     }
 
     def subs(x: Term, y: Term) =
