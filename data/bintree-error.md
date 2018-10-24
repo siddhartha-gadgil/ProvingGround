@@ -68,3 +68,28 @@ cannot act on given term
         ((_ : ((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) ↦ (_))))
 with type
   ('u : nat ) ~> ((((nat.less_than_or_equal) ('q)) ('u)) → (((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> ((('r) ('u)) (_))) → ((((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) → ((('r) ((nat.succ) ('u))) (_)))))
+```
+
+## First error with `nat.le`
+
+All before this lean code worked
+```
+lemma pred_lt : ∀ {n : ℕ}, n ≠ 0 → pred n < n
+| 0        h := absurd rfl h
+| (succ a) h := lt_succ_of_le (less_than_or_equal.refl _)
+```
+
+For this, we got the error, which we note is _not_ with recursion folding.
+
+```scala
+while parsing nat.pred_lt, got provingground.interface.LeanParser$ParseException: provingground.HoTT$ApplnFailException:
+  function (_ : ((nat.less_than_or_equal) ((nat.succ) (_))) ((nat.succ) ('w))) ↦ (_)
+with domain(optional)
+  Some(
+    ((nat.less_than_or_equal) ((nat.succ) (_))) ((nat.succ) ('w)))
+cannot act on given term
+    (_ : ((nat.less_than_or_equal) (_)) ('w)) ↦ (_)
+with type
+  (((nat.less_than_or_equal) (_)) ('w)) → (((nat.less_than_or_equal) ((nat.succ) (_))) ((nat.succ) ('w)))
+
+```
