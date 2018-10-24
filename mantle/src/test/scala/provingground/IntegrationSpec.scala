@@ -162,7 +162,7 @@ class FunctionTypeSpec extends FlatSpec {
     val AtoB          = "A → B" :: Type
     val AtoBInd       = ("λ" ::: (A ->: B) ->>: AtoB) =: AtoB
     val lmbda :: HNil = AtoBInd.intros
-    //assert(lmbda(f).typ === f.typ)
+    // assert(lmbda(f).typ === f.typ)
     val recFunAB = AtoBInd.rec(A ->: B)
     val call     = recFunAB(f :-> (a :-> f(a)))
     assert(call.typ === AtoB ->: A ->: B)
@@ -664,7 +664,7 @@ class EliminatorsSpec extends FlatSpec {
     val D       = "D(_ : Σ(a : A, B(a)))" :: a ~>: (Ba(a) ->: Type)
     val p       = "(a, ba)" :: Sgma(a !: A, Ba(a))
     val indSgmD = Sgma(a !: A, Ba(a)).induc(D)
-    //assert(indSgmD.typ ===  (a ~>: ba ~>: D(a)(ba) ) ->: p ~>: D(p.first)(p.second))
+    assert(indSgmD.typ ===  (a ~>: ba ~>: D(a)(ba) ) ->: p ~>: D(p.first)(p.second))
     val f2 = "f2" :: a ~>: ba ~>: D(a)(ba)
     assert(indSgmD(f2)(pair) === f2(a)(ba))
   }
