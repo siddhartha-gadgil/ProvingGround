@@ -197,7 +197,7 @@ object ScalaPolyRep {
       (x, y) match {
         case (u, v: Func[U, X]) if u == this => v
         case _ =>
-          ExtendedFunction((v: V) => dfn(v),
+          ExtendedFunction(dfn,
                            domrep.subs(x, y),
                            codomrep.subs(x, y),
                            typ.subs(x, y))
@@ -236,7 +236,7 @@ object ScalaPolyRep {
       (x, y) match {
         case (u, v: Func[U, X]) if u == this => v
         case _ =>
-          ExtendedDepFunction((v: V) => dfn(v),
+          ExtendedDepFunction(dfn,
                               domrep.subs(x, y),
                               codomrep.subs(x, y),
                               fibers.subs(x, y))

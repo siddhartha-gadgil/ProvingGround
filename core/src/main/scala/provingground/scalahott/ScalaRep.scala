@@ -433,7 +433,7 @@ object ScalaRep {
       (x, y) match {
         case (u, v: Func[U, X]) if u == this => v
         case _ =>
-          ExtendedFunction((v: V) => dfn(v),
+          ExtendedFunction(dfn,
                            domrep.subs(x, y),
                            codomrep.subs(x, y))
       }

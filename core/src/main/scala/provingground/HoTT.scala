@@ -245,7 +245,7 @@ object HoTT {
           .asInstanceOf[U] //.ensuring (_ == fn, s"avoiding var $t failed for inductive function $fn")
       case _ => x
     }
-  } // ensuring (_ == x, s"avoiding var $t failed for $x")
+  }  ensuring (_ == x, s"avoiding var $t failed for $x")
 
   /**
     * Objects with simple substitution.
