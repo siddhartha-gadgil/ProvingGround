@@ -29,7 +29,8 @@ class TermGeneratorNodes[InitState](
     appln: (ExstFunc, Term) => Term,
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => InitState => (InitState, Term),
-    getVar: Typ[Term] => Term
+    getVar: Typ[Term] => Term,
+    inIsle : (Term, InitState) => InitState
 ) {
 
   /**
@@ -107,7 +108,8 @@ class TermGeneratorNodes[InitState](
       Terms,
       _ => Terms,
       addVar(typ),
-      { case (x, y) => x :~> y }
+      { case (x, y) => x :~> y },
+      inIsle
     )
 
   def lambdaTypFamilyIsle(typ: Typ[Term]): GeneratorNode[ExstFunc] =
@@ -115,7 +117,8 @@ class TermGeneratorNodes[InitState](
       TypFamilies,
       _ => TypsAndFamilies,
       addVar(typ),
-      { case (x, y) => ExstFunc(x :~> y) }
+      { case (x, y) => ExstFunc(x :~> y) },
+      inIsle
     )
 
   /**
@@ -133,7 +136,8 @@ class TermGeneratorNodes[InitState](
             termsWithTyp(pd),
             x => termsWithTyp(pd.fibers(x.asInstanceOf[u])),
             addVar(pd.domain),
-            { case (x, y) => x :~> y }
+            { case (x, y) => x :~> y },
+            inIsle
           )
         )
       case ft: FuncTyp[u, v] =>
@@ -142,7 +146,8 @@ class TermGeneratorNodes[InitState](
             termsWithTyp(ft),
             _ => termsWithTyp(ft.codom),
             addVar(ft.domain),
-            { case (x, y) => x :~> y }
+            { case (x, y) => x :~> y },
+            inIsle
           )
         )
       case pt: ProdTyp[u, v]  =>
@@ -177,7 +182,8 @@ class TermGeneratorNodes[InitState](
       funcsWithDomain(dom),
       _ => Terms,
       addVar(dom),
-      { case (x, y) => ExstFunc(x :~> y) }
+      { case (x, y) => ExstFunc(x :~> y) },
+      inIsle
     )
 
   /**
@@ -224,7 +230,8 @@ class TermGeneratorNodes[InitState](
       Typs,
       _ => Typs,
       addVar(typ),
-      { case (x, y) => pi(x)(y) }
+      { case (x, y) => pi(x)(y) },
+      inIsle
     )
 
   def sigmaIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
@@ -232,7 +239,8 @@ class TermGeneratorNodes[InitState](
       Typs,
       _ => Typs,
       addVar(typ),
-      { case (x, y) => sigma(x)(y) }
+      { case (x, y) => sigma(x)(y) },
+      inIsle
     )
 
   /**
@@ -347,7 +355,8 @@ class TermGeneratorNodes[InitState](
       IntroRuleTypes(inductiveTyp), // output
       (_: Term) => IntroRuleTypes(inductiveTyp), // output from island
       addVar(inductiveTyp),
-      { case (x, y) => pi(x)(y) }
+      { case (x, y) => pi(x)(y) },
+      inIsle
     )
 
   /**
@@ -364,7 +373,8 @@ class TermGeneratorNodes[InitState](
       IntroRuleTypes(inductiveTyp),
       (_: Term) => IntroRuleTypes(inductiveTyp),
       addVar(typ),
-      { case (x, y) => pi(x)(y) }
+      { case (x, y) => pi(x)(y) },
+      inIsle
     )
 
   /**
@@ -456,7 +466,8 @@ class TermGeneratorNodes[InitState](
       IterFuncTypTo(targetTyp),
       (_: Term) => IntroRuleTypes(targetTyp),
       addVar(typ),
-      { case (x, y) => pi(x)(y) }
+      { case (x, y) => pi(x)(y) },
+      inIsle
     )
 
   /**
@@ -519,7 +530,8 @@ class TermGeneratorNodes[InitState](
       IndexedIntroRuleTyps(typF),
       (_: Term) => IndexedIntroRuleTyps(typF),
       addVar(typ),
-      { case (x, y) => pi(x)(y) }
+      { case (x, y) => pi(x)(y) },
+      inIsle
     )
 
   /**
@@ -557,7 +569,8 @@ class TermGeneratorNodes[InitState](
       IndexedIterFuncTypTo(targetTyp),
       (_: Term) => IndexedIntroRuleTyps(targetTyp),
       addVar(typ),
-      { case (x, y) => pi(x)(y) }
+      { case (x, y) => pi(x)(y) },
+      inIsle
     )
 
   /**
@@ -851,6 +864,16 @@ case class TermState(terms: FD[Term],
       "context" -> ContextJson.toJson(context)
     )
   }
+
+  def inIsle(x: Term) =
+    TermState(
+      terms.collect{case l: LambdaLike[u, v] if l.variable.typ == x.typ => l.value.replace(l.variable, x)},
+      typs.collect{case l: PiDefn[u, v] if l.variable.typ == x.typ => l.value.replace(l.variable, x)},
+      vars :+ x,
+      inds,
+      goals.collect{case l: PiDefn[u, v] if l.variable.typ == x.typ => l.value.replace(l.variable, x)},
+      Context.AppendVariable(context, x)
+    )
 }
 
 object TermState {
@@ -922,7 +945,8 @@ case class TermGenParams(appW: Double = 0.1,
         { case (fn, arg) => applyFunc(fn.func, arg) },
         { case (fn, arg) => Unify.appln(fn.func, arg) },
         (typ) => (state) => state.addVar(typ, varWeight),
-        _.Var
+        _.Var,
+        {case (t, state) => state.inIsle(t)}
       )
 
   import Gen._, GeneratorNode._,

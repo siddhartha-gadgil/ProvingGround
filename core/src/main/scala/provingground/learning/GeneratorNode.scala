@@ -455,7 +455,8 @@ object GeneratorNode {
       output: RandomVar[Y],
       islandOutput: Boat => RandomVar[O],
       initMap: InitState => (InitState, Boat),
-      export: (Boat, O) => Y
+      export: (Boat, O) => Y,
+      finalMap : (Boat, InitState) => InitState
   ) extends RecursiveGeneratorNode[InitState, Boat, Y]
 
   /**
@@ -478,7 +479,8 @@ object GeneratorNode {
       initMap: InitState => (InitState,
                              Boat,
                              Set[GeneratorNodeFamily.Value[_ <: HList, _, V]]),
-      export: (Boat, O) => Y
+      export: (Boat, O) => Y,
+      finalMap : (Boat, InitState) => InitState
   ) extends RecursiveGeneratorNode[InitState, Boat, Y]
 
 }

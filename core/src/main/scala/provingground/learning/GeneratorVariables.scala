@@ -15,11 +15,11 @@ import scala.language.higherKinds
   * @tparam State scala type of the initial state
   */
 case class GeneratorVariables[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
-    initState: State)(implicit sd: StateDistribution[State, FD]) {
+                                            nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+                                            state: State)(implicit sd: StateDistribution[State, FD]) {
 
   def varSupport[Y](rv: RandomVar[Y]): Set[Y] =
-    StateDistribution.value(initState)(rv).support
+    StateDistribution.value(state)(rv).support
 
   def varListSupport[Dom <: HList](rvs: RandomVarList[Dom]): Set[Dom] =
     rvs match {
@@ -38,7 +38,7 @@ case class GeneratorVariables[State, Boat](
       rvF: RandomVarFamily[Dom, Y]): Set[GeneratorVariables.Variable[_]] =
     for {
       x <- varListSupport(rvF.polyDomain)
-      dist = StateDistribution.valueAt(initState)(rvF, x)
+      dist = StateDistribution.valueAt(state)(rvF, x)
       y <- dist.support
     } yield Elem(y, rvF.at(x))
 
@@ -70,7 +70,7 @@ case class GeneratorVariables[State, Boat](
         } yield v
       case isle: Island[Y, State, o, b] =>
         import isle._
-        val (isleInit, boat) = initMap(initState)
+        val (isleInit, boat) = initMap(state)
         val isleVars: Set[Variable[_]] =
           GeneratorVariables(nodeCoeffSeq, isleInit).allVars
         isleVars.map((x) => GeneratorVariables.InIsle(x, boat))
@@ -162,13 +162,13 @@ object GeneratorVariables {
 
     def /(that: Expression): Quotient = Quotient(this, that)
 
-    def -(that: Expression): Sum =  this +(that * Literal(-1))
+    def -(that: Expression): Sum = this + (that * Literal(-1))
 
     def unary_- : Expression = this * Literal(-1)
   }
 
-  sealed trait VarVal[+Y] extends Expression{
-    val variable : Variable[Y]
+  sealed trait VarVal[+Y] extends Expression {
+    val variable: Variable[Y]
   }
 
   case class FinalVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
@@ -181,13 +181,13 @@ object GeneratorVariables {
       InitialVal(f(variable))
   }
 
-  case class Expectation[Y](rv: RandomVar[Y], f : Y => Expression) extends Expression{
+  case class Expectation[Y](rv: RandomVar[Y], f: Y => Expression)
+      extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expectation[Y] = this
   }
 
-  case class Log(exp: Expression) extends Expression{
-    def mapVars(f: Variable[_] => Variable[_])
-      : Expression = Log(exp.mapVars(f))
+  case class Log(exp: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
   }
 
   case class Sum(x: Expression, y: Expression) extends Expression {
