@@ -811,23 +811,24 @@ case class TermState(terms: FD[Term],
                      inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
                      goals: FD[Typ[Term]] = FD.empty,
                      context: Context = Context.Empty) {
-  val thmsByPf: FD[Typ[Term]] =
+  lazy val thmsByPf: FD[Typ[Term]] =
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
-  val thmsBySt: FD[Typ[Term]] =
+  lazy val thmsBySt: FD[Typ[Term]] =
     typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
 
-  val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
+  lazy val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
     (for {
       Weighted(x, p) <- thmsBySt.pmf
       q = thmsByPf(x)
       h = -p / (q * math.log(q))
     } yield (x, p, q, h)).toVector.sortBy(_._4).reverse
 
-  val pfSet: Vector[Term] = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
-  val fullPfSet: Vector[(Term, Term)] =
+  lazy val pfSet: Vector[Term] =
+    terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
+  lazy val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 
-  val pfDist: FD[Term] =
+  lazy val pfDist: FD[Term] =
     terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
 
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
@@ -837,7 +838,8 @@ case class TermState(terms: FD[Term],
       case pd: PiDefn[u, v] if pd.domain == typ => pd.fibers(x.asInstanceOf[u])
       case tp                                   => tp
     }
-    val newTyps =
+
+    lazy val newTyps =
       typOpt(x)
         .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
         .getOrElse(typs)
@@ -922,6 +924,8 @@ object TermState {
               .condMap((t) =>
                 ExstFunc.opt(t).filter((f) => isTypFamily(f.func)))
               .map(x => x: T)
+          case TypsAndFamilies =>
+            state.terms.conditioned(isTypFamily).map(x => x: T)
           case InducDefns                   => state.inds.map(x => x: T)
           case InducStrucs                  => state.inds.map(_.ind).map(x => x: T)
           case Goals                        => state.goals.map(x => x: T)
@@ -1103,7 +1107,15 @@ object TermGenJson {
     val epsilon       = obj("epsilon").num
     val initState     = TermState.fromJson(obj("initial-state"))
     val task          = termGenParams.nextStateTask(initState, epsilon)
-    task.map((ts) => write(ts.json))
+    task.map { (ts) =>
+//      val eqTry = scala.util.Try(termGenParams.equationsGen(initState, ts))
+//      eqTry.fold(fa => {
+//        pprint.log(fa.getMessage)
+//        pprint.log(fa.getCause)
+//        pprint.log(fa.getStackTrace)
+//      }, fb => pprint.log(fb))
+      write(ts.json)
+    }
   }
 
   def nextTangStateTask(inp: String): Task[String] = {

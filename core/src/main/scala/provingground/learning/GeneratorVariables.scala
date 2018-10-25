@@ -15,8 +15,8 @@ import scala.language.higherKinds
   * @tparam State scala type of the initial state
   */
 case class GeneratorVariables[State, Boat](
-                                            nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
-                                            state: State)(implicit sd: StateDistribution[State, FD]) {
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+    state: State)(implicit sd: StateDistribution[State, FD]) {
 
   def varSupport[Y](rv: RandomVar[Y]): Set[Y] =
     StateDistribution.value(state)(rv).support
@@ -36,11 +36,18 @@ case class GeneratorVariables[State, Boat](
 
   def varFamilyVars[Dom <: HList, Y](
       rvF: RandomVarFamily[Dom, Y]): Set[GeneratorVariables.Variable[_]] =
-    for {
-      x <- varListSupport(rvF.polyDomain)
-      dist = StateDistribution.valueAt(state)(rvF, x)
-      y <- dist.support
-    } yield Elem(y, rvF.at(x))
+    rvF match {
+      case rv: RandomVar[u] =>
+        for {
+        y <- StateDistribution.value(state)(rv).support
+        } yield Elem(y, rv)
+      case _ =>
+        for {
+          x <- varListSupport(rvF.polyDomain)
+          dist : FD[Y] =  StateDistribution.valueAt(state)(rvF, x)
+          y <- dist.support
+        } yield Elem(y, rvF.at(x))
+    }
 
   lazy val outputVars: Set[Variable[_]] =
     nodeCoeffSeq.outputs.toSet.flatMap(

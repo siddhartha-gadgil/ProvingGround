@@ -148,7 +148,7 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
   }
 
   val term: P[Term] = P(
-    symbolic | lmbdaP | lambdaP |  polyApplnP | funcTyp | piTyp | prodTyp | plusTyp | sigmaTyp | recP | inducP | num | simpleterm)
+    symbolic | lmbdaP | lambdaP |  polyApplnP | funcTyp | piTyp | prodTyp | plusTyp | sigmaTyp | recP | inducP |  simpleterm | num)
 
   val break
     : core.Parser[Unit, Char, String] = P(spc ~ (End | CharIn("\n;"))) | P(
