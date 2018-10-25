@@ -30,7 +30,7 @@ class TermGeneratorNodes[InitState](
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => InitState => (InitState, Term),
     getVar: Typ[Term] => Term,
-    inIsle : (Term, InitState) => InitState
+    inIsle: (Term, InitState) => InitState
 ) {
 
   /**
@@ -150,11 +150,11 @@ class TermGeneratorNodes[InitState](
             inIsle
           )
         )
-      case pt: ProdTyp[u, v]  =>
+      case pt: ProdTyp[u, v] =>
         Some(
           ZipMap[Term, Term, Term](
             { case (a, b) => PairTerm(a.asInstanceOf[u], b.asInstanceOf[v]) },
-            termsWithTyp(pt. first),
+            termsWithTyp(pt.first),
             termsWithTyp(pt.second),
             termsWithTyp(pt)
           )
@@ -163,8 +163,9 @@ class TermGeneratorNodes[InitState](
         Some(
           ZipFlatMap[Term, Term, Term](
             termsWithTyp(pt.fibers.dom),
-            (x) => termsWithTyp(pt.fibers(x.asInstanceOf[u])),
-            {case (a, b) => pt.paircons(a.asInstanceOf[u])(b.asInstanceOf[v])},
+            (x) => termsWithTyp(pt.fibers(x.asInstanceOf[u])), {
+              case (a, b) => pt.paircons(a.asInstanceOf[u])(b.asInstanceOf[v])
+            },
             termsWithTyp(pt)
           )
         )
@@ -812,7 +813,8 @@ case class TermState(terms: FD[Term],
                      context: Context = Context.Empty) {
   val thmsByPf: FD[Typ[Term]] =
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
-  val thmsBySt: FD[Typ[Term]] = typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
+  val thmsBySt: FD[Typ[Term]] =
+    typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
 
   val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
     (for {
@@ -821,7 +823,7 @@ case class TermState(terms: FD[Term],
       h = -p / (q * math.log(q))
     } yield (x, p, q, h)).toVector.sortBy(_._4).reverse
 
-  val pfSet: Vector[Term]     = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
+  val pfSet: Vector[Term] = terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
   val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 
@@ -859,19 +861,28 @@ case class TermState(terms: FD[Term],
       "variables" -> Js.Arr(
         vars.map((t) => termToJson(t).get): _*
       ),
-      "goals" -> fdJson(goals.map((t) => t: Term)),
+      "goals"                -> fdJson(goals.map((t) => t: Term)),
       "inductive-structures" -> InducJson.fdJson(inds),
-      "context" -> ContextJson.toJson(context)
+      "context"              -> ContextJson.toJson(context)
     )
   }
 
   def inIsle(x: Term) =
     TermState(
-      terms.collect{case l: LambdaLike[u, v] if l.variable.typ == x.typ => l.value.replace(l.variable, x)},
-      typs.collect{case l: PiDefn[u, v] if l.variable.typ == x.typ => l.value.replace(l.variable, x)},
+      terms.collect {
+        case l: LambdaLike[u, v] if l.variable.typ == x.typ =>
+          l.value.replace(l.variable, x)
+      },
+      typs.collect {
+        case l: PiDefn[u, v] if l.variable.typ == x.typ =>
+          l.value.replace(l.variable, x)
+      },
       vars :+ x,
       inds,
-      goals.collect{case l: PiDefn[u, v] if l.variable.typ == x.typ => l.value.replace(l.variable, x)},
+      goals.collect {
+        case l: PiDefn[u, v] if l.variable.typ == x.typ =>
+          l.value.replace(l.variable, x)
+      },
       Context.AppendVariable(context, x)
     )
 }
@@ -880,12 +891,17 @@ object TermState {
   import TermRandomVars._
   def fromJson(js: ujson.Js.Value): TermState = {
     import interface._, TermJson._
-    val obj = js.obj
+    val obj     = js.obj
     val context = ContextJson.fromJson(obj("context"))
-    val terms = jsToFD(context.inducStruct)(obj("terms"))
-    val typs = jsToFD(context.inducStruct)(obj("types")).map{case tp: Typ[Term] => tp}
-    val goals = jsToFD(context.inducStruct)(obj("goals")).map{case tp: Typ[Term] => tp}
-    val vars = obj("variables").arr.toVector.map((t) => jsToTermExst(context.inducStruct)(t).get)
+    val terms   = jsToFD(context.inducStruct)(obj("terms"))
+    val typs = jsToFD(context.inducStruct)(obj("types")).map {
+      case tp: Typ[Term] => tp
+    }
+    val goals = jsToFD(context.inducStruct)(obj("goals")).map {
+      case tp: Typ[Term] => tp
+    }
+    val vars = obj("variables").arr.toVector.map((t) =>
+      jsToTermExst(context.inducStruct)(t).get)
     val inds = FD.empty[ExstInducDefn] //InducJson.jsToFD(context.inducStruct)(obj("inductive-structures"))
     TermState(terms, typs, vars, inds, goals, context)
   }
@@ -928,7 +944,6 @@ object TermState {
 
 }
 
-
 case class TermGenParams(appW: Double = 0.1,
                          unAppW: Double = 0.1,
                          argAppW: Double = 0.1,
@@ -936,7 +951,7 @@ case class TermGenParams(appW: Double = 0.1,
                          piW: Double = 0.1,
                          termsByTypW: Double = 0.05,
                          typFromFamilyW: Double = 0.05,
-                         sigmaW : Double = 0.05,
+                         sigmaW: Double = 0.05,
                          varWeight: Double = 0.3,
                          goalWeight: Double = 0.5,
                          typVsFamily: Double = 0.5) {
@@ -946,7 +961,7 @@ case class TermGenParams(appW: Double = 0.1,
         { case (fn, arg) => Unify.appln(fn.func, arg) },
         (typ) => (state) => state.addVar(typ, varWeight),
         _.Var,
-        {case (t, state) => state.inIsle(t)}
+        { case (t, state) => state.inIsle(t) }
       )
 
   import Gen._, GeneratorNode._,
@@ -1030,12 +1045,24 @@ case class TermGenParams(appW: Double = 0.1,
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
+  def equationsGen(initState: TermState, finalState: TermState) =
+    GeneratorEquations(nodeCoeffSeq, initState, finalState)
+
   def nextStateTask(initState: TermState,
-                    epsilon: Double, limit: FiniteDuration = 3.minutes): Task[TermState] =
+                    epsilon: Double,
+                    limit: FiniteDuration = 3.minutes): Task[TermState] =
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
       typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
     } yield TermState(terms, typs, initState.vars, initState.inds)
+
+  def nextStateWithEqnsTask(initState: TermState,
+                            epsilon: Double,
+                            limit: FiniteDuration = 3.minutes)
+    : Task[(TermState, Set[GeneratorVariables.Equation])] =
+    nextStateTask(initState, epsilon, limit).map { finalState =>
+      (finalState, equationsGen(initState, finalState).equations)
+    }
 
   def nextTangStateTask(baseState: TermState,
                         tangState: TermState,
@@ -1049,13 +1076,17 @@ case class TermGenParams(appW: Double = 0.1,
 
   def findProof(initState: TermState,
                 typ: Typ[Term],
-                epsilon: Double, limit: FiniteDuration = 3.minutes): Task[FD[Term]] =
+                epsilon: Double,
+                limit: FiniteDuration = 3.minutes): Task[FD[Term]] =
     monixFD
       .varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon, limit)
       .map(_.flatten)
 }
 
-case class EvolvedState(init: TermState, result: TermState, params: TermGenParams, epsilon: Double)
+case class EvolvedState(init: TermState,
+                        result: TermState,
+                        params: TermGenParams,
+                        epsilon: Double)
 
 import upickle.default.{ReadWriter => RW, macroRW, read, write}
 import ujson.Js
@@ -1064,31 +1095,31 @@ object TermGenParams {
   implicit def rw: RW[TermGenParams] = macroRW
 }
 
-object TermGenJson{
+object TermGenJson {
 
   def nextStateTask(inp: String): Task[String] = {
-    val obj = ujson.read(inp).obj
+    val obj           = ujson.read(inp).obj
     val termGenParams = read[TermGenParams](obj("generator-parameters").str)
-    val epsilon = obj("epsilon").num
-    val initState = TermState.fromJson(obj("initial-state"))
-    val task = termGenParams.nextStateTask(initState, epsilon)
+    val epsilon       = obj("epsilon").num
+    val initState     = TermState.fromJson(obj("initial-state"))
+    val task          = termGenParams.nextStateTask(initState, epsilon)
     task.map((ts) => write(ts.json))
   }
 
   def nextTangStateTask(inp: String): Task[String] = {
-    val obj = read[Js.Value](inp).obj
+    val obj           = read[Js.Value](inp).obj
     val termGenParams = read[TermGenParams](obj("generator-parameters").str)
-    val epsilon = obj("epsilon").num
-    val baseState = TermState.fromJson(obj("initial-state"))
-    val tangState = TermState.fromJson(obj("tangent-state"))
-    val task = termGenParams.nextTangStateTask(baseState, tangState, epsilon)
+    val epsilon       = obj("epsilon").num
+    val baseState     = TermState.fromJson(obj("initial-state"))
+    val tangState     = TermState.fromJson(obj("tangent-state"))
+    val task          = termGenParams.nextTangStateTask(baseState, tangState, epsilon)
     task.map((ts) => write(ts.json))
   }
 
   val all =
     MultiTask(
-        "step" -> nextStateTask,
-        "tangent-step" -> nextTangStateTask
-      )
+      "step"         -> nextStateTask,
+      "tangent-step" -> nextTangStateTask
+    )
 
 }
