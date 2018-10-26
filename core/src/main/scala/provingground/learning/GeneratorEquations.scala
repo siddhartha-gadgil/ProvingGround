@@ -257,7 +257,7 @@ case class GeneratorEquations[State, Boat](
     finalProbTotals.map(t => Equation(t, Literal(1)))
 
   def eventTotal[X, Y](ev: Event[X, Y]): Expression = {
-    val elemProbs: Set[Expression] = finalProbs(ev.base).map {
+    val elemProbs: Set[Expression] = finalProbs(ev.base).collect {
       case (x, p) if ev.sort.pred(x) => p
     }
     elemProbs.reduce(_ + _)
