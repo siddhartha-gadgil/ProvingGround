@@ -68,19 +68,23 @@ case class GeneratorVariables[State, Boat](
               case (x, y) => zm.f(x, y)
             }))
       case fm: FlatMap[o, Y] =>
+        pprint.log(fm)
         varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
       case fm: FlatMapOpt[o, Y] =>
+        pprint.log(fm)
         for {
           x    <- varSupport(fm.baseInput)
           node <- fm.fiberNodeOpt(x).toVector
           v    <- generatorVars(node)
         } yield v
-      case isle: Island[Y, State, o, b] =>
-        import isle._
-        val (isleInit, boat) = initMap(state)
-        val isleVars: Set[Variable[_]] =
-          GeneratorVariables(nodeCoeffSeq, isleInit).allVars
-        isleVars.map((x) => GeneratorVariables.InIsle(x, boat))
+      // case isle: Island[Y, State, o, b] =>
+      //   pprint.log(isle)
+      //   import isle._
+      //   val (isleInit, boat) = initMap(state)
+      //   pprint.log(isleInit)
+      //   val isleVars: Set[Variable[_]] =
+      //     GeneratorVariables(nodeCoeffSeq, isleInit).allVars
+      //   isleVars.map((x) => GeneratorVariables.InIsle(x, boat))
       case _ => Set()
     }
 

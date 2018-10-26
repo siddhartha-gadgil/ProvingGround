@@ -1308,13 +1308,20 @@ object HoTT {
   }
 
   object ExstFunc {
-    def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](
-        fn: FuncLike[X, Y]): ExstFunc = new ExstFunc {
+    case class Wrap[X <: Term with Subs[X], Y <: Term with Subs[Y]](func: FuncLike[X, Y]) extends ExstFunc{
       type U = X
-      type V = Y
 
-      val func: FuncLike[X, Y] = fn
+      type V = Y
     }
+
+    def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](
+        fn: FuncLike[X, Y]): ExstFunc = Wrap(fn)
+    //       new ExstFunc {
+    //   type U = X
+    //   type V = Y
+    //
+    //   val func: FuncLike[X, Y] = fn
+    // }
 
     def opt(t: Term): Option[ExstFunc] = t match {
       case fn: FuncLike[u, v] => Some(ExstFunc(fn))
