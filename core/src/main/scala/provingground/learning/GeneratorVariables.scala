@@ -68,10 +68,10 @@ case class GeneratorVariables[State, Boat](
               case (x, y) => zm.f(x, y)
             }))
       case fm: FlatMap[o, Y] =>
-        pprint.log(fm)
+//        pprint.log(fm)
         varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
       case fm: FlatMapOpt[o, Y] =>
-        pprint.log(fm)
+//        pprint.log(fm)
         for {
           x    <- varSupport(fm.baseInput)
           node <- fm.fiberNodeOpt(x).toVector
@@ -146,6 +146,14 @@ object GeneratorVariables {
   sealed trait Variable[+Y]
 
   case class Elem[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]
+
+  trait ElemList[Dom <: HList]
+
+  object ElemList{
+    case object Empty extends ElemList[HNil]
+
+    case class Cons[Y, Z <: HList](head: Elem[Y], tail: ElemList[Z]) extends ElemList[Y :: Z]
+  }
 
   case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
       extends Variable[Y]
