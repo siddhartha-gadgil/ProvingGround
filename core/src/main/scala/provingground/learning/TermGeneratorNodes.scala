@@ -843,7 +843,7 @@ case class TermState(terms: FD[Term],
       typOpt(x)
         .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
         .getOrElse(typs)
-    TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x
+    TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x// FIXME should transform TermsWithTyp and FuncsWithDomain correctly
   }
 
   def tangent(x: Term) =

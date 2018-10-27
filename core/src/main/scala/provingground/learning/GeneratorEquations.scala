@@ -7,6 +7,8 @@ import provingground.learning.GeneratorNode.{FlatMap, Island, ThenCondition}
 import scala.language.higherKinds
 import GeneratorVariables._
 
+import scala.util.Try
+
 case class GeneratorEquations[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
     initState: State,
@@ -99,7 +101,7 @@ case class GeneratorEquations[State, Boat](
 
   def nodeCoeffsEquations[Dom <: HList, Y](
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y]): Set[Equation] =
-    nodeCoeffs.output match { 
+    nodeCoeffs.output match {
       case _: RandomVar[Y] =>
         val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
         groupEquations(terms) union eqs
@@ -187,7 +189,7 @@ case class GeneratorEquations[State, Boat](
       case FlatMap(baseInput, fiberNode, output) =>
         val eqTerms: Set[EquationTerm] = for {
           (x, p) <- finalProbs(baseInput)
-          _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
+//          _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
           eqT <- nodeEquationTerms(fiberNode(x))._1
         } yield eqT * p
         val eqns: Set[Equation] = for {
@@ -227,8 +229,16 @@ case class GeneratorEquations[State, Boat](
           for {
             (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
             d2 = finalProbs(fiberVar(z)) // distribution of the fiber at `z`
-            d = d1.zip(d2).map {
-              case ((x1, p1), (x2, p2)) => (f(x1, x2), p1 * p2)
+            _ = pprint.log(z)
+            _ = pprint.log(fiberVar(z))
+            d = pmf1.zip(d2).map {
+              case ((x1, p1), (x2, p2)) =>
+                Try((f(x1, x2), p1 * p2)).fold(fa => {
+                  pprint.log(x1)
+                  pprint.log(x2)
+                  pprint.log(f)
+                  pprint.log(node)
+                  throw fa}, fb => fb)
             }
             (y, p) <- d
             fve    <- finalElemValOpt(y, output)
