@@ -68,10 +68,8 @@ case class GeneratorVariables[State, Boat](
               case (x, y) => zm.f(x, y)
             }))
       case fm: FlatMap[o, Y] =>
-//        pprint.log(fm)
         varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
       case fm: FlatMapOpt[o, Y] =>
-//        pprint.log(fm)
         for {
           x    <- varSupport(fm.baseInput)
           node <- fm.fiberNodeOpt(x).toVector

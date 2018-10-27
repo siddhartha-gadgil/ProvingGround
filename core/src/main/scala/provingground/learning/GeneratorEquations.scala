@@ -55,6 +55,18 @@ case class GeneratorEquations[State, Boat](
       .getOrElse(rv, Set())
       .map((v) => v.element.asInstanceOf[Y] -> FinalVal(v))
 
+  def finalProbSet[Dom <: HList, Y](rvF: RandomVarFamily[Dom, Y]): Map[HList, Set[FinalVal[Any]]] =
+    (finalVars collect {
+      case  e @ Elem(element, RandomVar.AtCoord(family, fullArg)) if family == rvF =>
+      fullArg -> FinalVal(e)
+    }).groupBy(_._1).mapValues(s => s.map(_._2))
+
+  def finalElemIndices[Dom <: HList, Y](rvF: RandomVarFamily[Dom, Y]): Set[Dom] =
+    finalVars collect {
+      case  Elem(element, RandomVar.AtCoord(family, fullArg)) if family == rvF =>
+        fullArg.asInstanceOf[Dom]
+    }
+
   def initProbs[Y](rv: RandomVar[Y]): Set[(Y, InitialVal[_])] =
     elemInitVars
       .getOrElse(rv, Set())
@@ -87,37 +99,36 @@ case class GeneratorEquations[State, Boat](
 
   def nodeCoeffsEquations[Dom <: HList, Y](
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y]): Set[Equation] =
-    nodeCoeffs.output match { // FIXME want to handle all cases
+    nodeCoeffs.output match { 
       case _: RandomVar[Y] =>
-        val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs)
+        val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
         groupEquations(terms) union eqs
-      case _ => Set()
+      case fmly =>
+        finalElemIndices(nodeCoeffs.output).flatMap{
+          x =>
+            val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, x)
+            groupEquations(terms) union eqs
+        }
     }
 
   def nodeCoeffsEquationTerms[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y])
+      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y], x: Dom)
     : (Set[EquationTerm], Set[Equation]) =
     nodeCoeffs match {
       case NodeCoeffs.Target(output) => (Set(), Set())
       case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
-        val (hts, hes) = (bc.headGen, nodeCoeffs.output) match {
-          case (gen: GeneratorNode[Y], _) =>
+        val (hts, hes) = bc.headGen match {
+          case gen: GeneratorNode[Y] =>
             nodeEquationTerms(gen)
-          case (pf: GeneratorNodeFamily.Pi[Dom, Y],
-                ac: RandomVar.AtCoord[Dom, Y]) =>
-            nodeEquationTerms(pf.nodes(ac.fullArg))
-          case (pf: GeneratorNodeFamily.PiOpt[Dom, Y],
-                ac: RandomVar.AtCoord[Dom, Y]) =>
-            pf.nodesOpt(ac.fullArg)
-              .map(nodeEquationTerms)
-              .getOrElse(Set.empty[EquationTerm] -> Set.empty[Equation])
-
+          case pf: GeneratorNodeFamily.Pi[Dom, Y] =>
+            nodeEquationTerms(pf.nodes(x))
+          case pf: GeneratorNodeFamily.PiOpt[Dom, Y] =>
+             pf.nodesOpt(x).map(nodeEquationTerms).getOrElse(Set.empty[EquationTerm] -> Set.empty[Equation])
           case _ =>
             throw new Exception(
               s"node family ${bc.headGen} with output ${bc.output} in $nodeCoeffs not a family")
-          // FIXME : We can get a BasePi here for example
         }
-        val (tts, tes) = nodeCoeffsEquationTerms(bc.tail)
+        val (tts, tes) = nodeCoeffsEquationTerms(bc.tail, x)
         (hts.map(_ * bc.headCoeff) union tts, hes union tes)
     }
 
