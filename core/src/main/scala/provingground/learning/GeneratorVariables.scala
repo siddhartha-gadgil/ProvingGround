@@ -18,7 +18,7 @@ case class GeneratorVariables[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
     state: State)(implicit sd: StateDistribution[State, FD]) {
 
-  pprint.log("Generating variables")
+  pprint.log(s"Generating variables")
 
   def varSupport[Y](rv: RandomVar[Y]): Set[Y] =
     StateDistribution.value(state)(rv).support

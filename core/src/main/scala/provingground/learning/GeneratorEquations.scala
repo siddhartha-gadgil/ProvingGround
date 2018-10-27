@@ -13,6 +13,9 @@ case class GeneratorEquations[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) {
+  pprint.log(initState)
+  pprint.log(finalState)
+
   lazy val initVars: Set[Variable[_]] =
     GeneratorVariables(nodeCoeffSeq, initState).allVars
 
