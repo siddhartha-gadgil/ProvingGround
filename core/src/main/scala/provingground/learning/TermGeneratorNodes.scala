@@ -878,12 +878,16 @@ case class TermState(terms: FD[Term],
       typs.collect {
         case l: PiDefn[u, v] if l.variable.typ == x.typ =>
           l.value.replace(l.variable, x)
+        case ft : FuncTyp[u, v] if ft.dom == x.typ =>
+          ft.codom
       },
       vars :+ x,
       inds,
       goals.collect {
         case l: PiDefn[u, v] if l.variable.typ == x.typ =>
           l.value.replace(l.variable, x)
+        case ft : FuncTyp[u, v] if ft.dom == x.typ =>
+          ft.codom
       },
       Context.AppendVariable(context, x)
     )
