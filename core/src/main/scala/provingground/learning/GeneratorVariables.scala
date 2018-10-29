@@ -145,7 +145,9 @@ object GeneratorVariables {
     */
   sealed trait Variable[+Y]
 
-  case class Elem[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]
+  case class Elem[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]{
+    override def toString = s"$element \u2208 $randomVar"
+  }
 
   trait ElemList[Dom <: HList]
 
@@ -156,12 +158,16 @@ object GeneratorVariables {
   }
 
   case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
-      extends Variable[Y]
+      extends Variable[Y]{
+        override def toString = s"$base \u2208 $sort"
+      }
 
   case class PairEvent[X1, X2, Y](base1: RandomVar[X1],
                                   base2: RandomVar[X2],
                                   sort: Sort[(X1, X2), Y])
-      extends Variable[Y]
+      extends Variable[Y]{
+        override def toString = s"($base1, $base2) \u2208 $sort"
+      }
 
   case class InIsle[Y, Boat](isleVar: Variable[Y], boat: Boat)
       extends Variable[Y]
@@ -207,25 +213,35 @@ object GeneratorVariables {
 
   case class Log(exp: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
+
+    override def toString = s"log($exp)"
   }
 
   case class Sum(x: Expression, y: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Sum =
       Sum(x.mapVars(f), y.mapVars(f))
+
+    override def toString = s"($x) + ($y)"
   }
 
   case class Product(x: Expression, y: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Product =
       Product(x.mapVars(f), y.mapVars(f))
+
+    override def toString = s"($x) * ($y)"
   }
 
   case class Literal(value: Double) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Literal = this
+
+    override def toString = value.toString
   }
 
   case class Quotient(x: Expression, y: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Quotient =
       Quotient(x.mapVars(f), y.mapVars(f))
+
+      override def toString = s"($x) / ($y)"
   }
 
   case class Equation(lhs: Expression, rhs: Expression) {
@@ -233,6 +249,8 @@ object GeneratorVariables {
       Equation(lhs.mapVars(f), rhs.mapVars(f))
 
     def useBoat[Boat](boat: Boat): Equation = mapVars(InIsle(_, boat))
+
+    override def toString = s"($lhs) == ($rhs)"
   }
 
   case class EquationTerm(lhs: Expression, rhs: Expression) {
@@ -240,6 +258,8 @@ object GeneratorVariables {
 
     def *(x: Double)              = EquationTerm(lhs, rhs * Literal(x))
     def useBoat[Boat](boat: Boat) = EquationTerm(lhs, rhs.useBoat(boat))
+
+    override def toString = rhs.toString
   }
 
   def groupEquations(ts: Set[EquationTerm]): Set[Equation] =
