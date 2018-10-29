@@ -517,8 +517,8 @@ object InteractiveProver {
               td(f"$p%1.4f"),
               td(f"$q%1.4f"),
               td(f"$h%1.3f"),
-              tangentButton(ts, "lemma" :: t),
-              suppButton(t)
+              td(tangentButton(ts, "lemma" :: t)),
+              td(suppButton(t))
             )
         val header =
           tr(th("theorem"),
