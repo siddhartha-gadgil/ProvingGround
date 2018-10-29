@@ -627,6 +627,12 @@ object TermRandomVars {
     override def toString = s"FuncWithDom($dom)"
   }
 
+  case class WithTyp(typ: Typ[Term]) extends (Term => Boolean){
+    def apply(t: Term) = t.typ == typ
+
+    override def toString = s"$WithTyp(typ)"
+  }
+
   /**
     * distribution of terms
     */
@@ -655,11 +661,11 @@ object TermRandomVars {
   case object TermsWithTyp
       extends RandomVar.SimpleFamily[Typ[Term], Term](
         Typs,
-        (typ: Typ[Term]) => Sort.Filter[Term](_.typ == typ)
+        (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
       )
 
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
-    Sort.Filter[Term](_.typ == typ)
+    Sort.Filter[Term](WithTyp(typ))
 
   def withTypNode(
       node: GeneratorNode[Term]): GeneratorNodeFamily[Typ[Term] :: HNil, Term] =

@@ -306,7 +306,7 @@ case class GeneratorEquations[State, Boat](
 
     }
 
-  lazy val finalProbVars: Map[RandomVar[Any], Set[Expression]] = initVars
+  lazy val finalProbVars: Map[RandomVar[Any], Set[Expression]] = finalVars
     .collect {
       case p @ GeneratorVariables.Elem(_, randomVar) => randomVar -> p
     }
@@ -323,7 +323,7 @@ case class GeneratorEquations[State, Boat](
     val elemProbs: Set[Expression] = finalProbs(ev.base).collect {
       case (x, p) if ev.sort.pred(x) => p
     }
-    if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else Literal(1)
+    if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
   }
 
   def pairEventTotal[X1, X2, Y](ev: PairEvent[X1, X2, Y]): Expression = {
@@ -332,15 +332,15 @@ case class GeneratorEquations[State, Boat](
       (x2, p2) <- finalProbs(ev.base2)
       if (ev.sort.pred(x1, x2))
     } yield p1 * p2
-    if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else Literal(1)
+    if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
   }
 
-  lazy val eventEquations: Set[Equation] = initVars.collect {
-    case ev: Event[x, y] => Equation(eventTotal(ev), Literal(1))
+  lazy val eventEquations: Set[Equation] = finalVars.collect {
+    case ev: Event[x, y] => Equation(eventTotal(ev), FinalVal(ev))
   }
 
-  lazy val pairEventEquations: Set[Equation] = initVars.collect {
-    case ev: PairEvent[x1, x2, y] => Equation(pairEventTotal(ev), Literal(1))
+  lazy val pairEventEquations: Set[Equation] = finalVars.collect {
+    case ev: PairEvent[x1, x2, y] => Equation(pairEventTotal(ev), FinalVal(ev))
   }
 
 }

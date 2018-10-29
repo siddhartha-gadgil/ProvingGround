@@ -159,14 +159,14 @@ object GeneratorVariables {
 
   case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
       extends Variable[Y]{
-        override def toString = s"$base \u2208 $sort"
+        override def toString = s"{$base \u2208 $sort}"
       }
 
   case class PairEvent[X1, X2, Y](base1: RandomVar[X1],
                                   base2: RandomVar[X2],
                                   sort: Sort[(X1, X2), Y])
       extends Variable[Y]{
-        override def toString = s"($base1, $base2) \u2208 $sort"
+        override def toString = s"{($base1, $base2) \u2208 $sort}"
       }
 
   case class InIsle[Y, Boat](isleVar: Variable[Y], boat: Boat)
@@ -199,11 +199,15 @@ object GeneratorVariables {
   case class FinalVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
     def mapVars(f: Variable[_] => Variable[_]): Expression =
       FinalVal(f(variable))
+
+    override def toString: String = s"P\u2081($variable)"
   }
 
   case class InitialVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
     def mapVars(f: Variable[_] => Variable[_]): Expression =
       InitialVal(f(variable))
+
+    override def toString: String = s"P\u2080($variable)"
   }
 
   case class Expectation[Y](rv: RandomVar[Y], f: Y => Expression)
