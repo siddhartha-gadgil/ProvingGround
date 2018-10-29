@@ -297,7 +297,7 @@ class TermGeneratorNodes[InitState](
   def recFuncsForStruc(
       ind: ExstInducStrucs): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
     ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
-      case (x, y) => ind.recOpt(x, y).flatMap(ExstFunc.opt)
+      case (x, y) => ind.recOpt(x, y).flatMap(FuncOpt)
     }, Typs, Typs, Funcs)
 
   /**
@@ -308,7 +308,7 @@ class TermGeneratorNodes[InitState](
   def inducFuncsForStruc(
       ind: ExstInducStrucs): ZipMapOpt[Typ[Term], Term, ExstFunc] =
     ZipMapOpt[Typ[Term], Term, ExstFunc]({
-      case (x, y) => ind.inducOpt(x, y).flatMap(ExstFunc.opt)
+      case (x, y) => ind.inducOpt(x, y).flatMap(FuncOpt)
     }, Typs, Terms, Funcs)
 
   /**
@@ -502,7 +502,7 @@ class TermGeneratorNodes[InitState](
     */
   def typFromFamily(typF: Term): MapOpt[Term, Typ[Term]] =
     MapOpt[Term, Typ[Term]](
-      typOpt,
+      TypOpt,
       PartiallyApplied(typF),
       TypsFromFamily(typF)
     )
@@ -603,6 +603,30 @@ class TermGeneratorNodes[InitState](
 
 object TermRandomVars {
 
+  case object TypOpt extends (Term => Option[Typ[Term]]) {
+    def apply(t: Term) : Option[Typ[Term]] = typOpt(t)
+
+    override def toString = "TypOpt"
+  }
+
+  case object FuncOpt extends (Term => Option[ExstFunc]) {
+    def apply(t: Term) : Option[ExstFunc] = ExstFunc.opt(t)
+
+    override def toString = "FuncOpt"
+  }
+
+  case object TypFamilyOpt extends (Term => Option[ExstFunc]) {
+    def apply(t: Term) : Option[ExstFunc] = ExstFunc.opt(t).filter((fn) => isTypFamily(fn.func))
+
+    override def toString = "TypFamilyOpt"
+  }
+
+  case class FuncWithDom(dom: Typ[Term]) extends (Term => Option[ExstFunc]) {
+    def apply(t: Term) : Option[ExstFunc] = ExstFunc.opt(t).filter((fn) => fn.dom == dom)
+
+    override def toString = s"FuncWithDom($dom)"
+  }
+
   /**
     * distribution of terms
     */
@@ -613,7 +637,7 @@ object TermRandomVars {
     */
   case object Typs extends RandomVar[Typ[Term]]
 
-  val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](typOpt)
+  val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](TypOpt)
 
   case object Goals extends RandomVar[Typ[Term]]
 
@@ -623,7 +647,7 @@ object TermRandomVars {
   case object Funcs extends RandomVar[ExstFunc]
 
   val funcSort: Sort[Term, ExstFunc] =
-    Sort.Restrict[Term, ExstFunc](ExstFunc.opt)
+    Sort.Restrict[Term, ExstFunc](FuncOpt)
 
   /**
     * family of distributions of terms with specified type
@@ -655,8 +679,7 @@ object TermRandomVars {
   case object TypFamilies extends RandomVar[ExstFunc]
 
   val typFamilySort: Sort[Term, ExstFunc] =
-    Sort.Restrict[Term, ExstFunc]((f) =>
-      ExstFunc.opt(f).filter((fn) => isTypFamily(fn.func)))
+    Sort.Restrict[Term, ExstFunc](TypFamilyOpt)
 
   case object TypsAndFamilies extends RandomVar[Term] {
     lazy val fromTyp: Map[Typ[Term], Term] =
@@ -691,8 +714,7 @@ object TermRandomVars {
   def funcWithDomTermNode(node: GeneratorNode[Term])
     : GeneratorNodeFamily[::[Typ[Term], HNil], ExstFunc] =
     node.pi((dom: Typ[Term]) =>
-              Sort.Restrict[Term, ExstFunc]((f) =>
-                ExstFunc.opt(f).filter((fn) => fn.dom == dom)),
+              Sort.Restrict[Term, ExstFunc](FuncWithDom(dom)),
             FuncsWithDomain)
 
   /**
@@ -922,11 +944,10 @@ object TermState {
           case Terms      => state.terms.map(x => x: T)
           case Typs       => state.typs.map(x => x: T)
           case TargetTyps => state.typs.map(x => x: T)
-          case Funcs      => state.terms.condMap(ExstFunc.opt).map(x => x: T)
+          case Funcs      => state.terms.condMap(FuncOpt).map(x => x: T)
           case TypFamilies =>
             state.terms
-              .condMap((t) =>
-                ExstFunc.opt(t).filter((f) => isTypFamily(f.func)))
+              .condMap(TypFamilyOpt)
               .map(x => x: T)
           case TypsAndFamilies =>
             state.terms.conditioned(isTypFamily).map(x => x: T)
@@ -944,7 +965,7 @@ object TermState {
             state.terms.conditioned(_.typ == typ).map(x => x: T)
           case (FuncsWithDomain, typ :: HNil) =>
             state.terms
-              .condMap(ExstFunc.opt)
+              .condMap(FuncOpt)
               .conditioned(_.dom == typ)
               .map(x => x: T)
         }
