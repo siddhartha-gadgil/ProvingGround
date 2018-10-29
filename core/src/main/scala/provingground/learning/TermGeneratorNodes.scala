@@ -1071,6 +1071,7 @@ case class TermGenParams(appW: Double = 0.1,
       FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
+    funcWithDomNodes +: targTypNodes +:
     termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 
@@ -1139,12 +1140,6 @@ object TermGenJson {
     val initState     = TermState.fromJson(obj("initial-state"))
     val task          = termGenParams.nextStateTask(initState, epsilon)
     task.map { (ts) =>
-//      val eqTry = scala.util.Try(termGenParams.equationsGen(initState, ts))
-//      eqTry.fold(fa => {
-//        pprint.log(fa.getMessage)
-//        pprint.log(fa.getCause)
-//        pprint.log(fa.getStackTrace)
-//      }, fb => pprint.log(fb))
       write(ts.json)
     }
   }
