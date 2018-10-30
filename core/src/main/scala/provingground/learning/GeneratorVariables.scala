@@ -210,10 +210,6 @@ object GeneratorVariables {
     override def toString: String = s"P\u2080($variable)"
   }
 
-  case class Expectation[Y](rv: RandomVar[Y], f: Y => Expression)
-      extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Expectation[Y] = this
-  }
 
   case class Log(exp: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
