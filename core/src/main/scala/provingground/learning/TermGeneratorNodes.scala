@@ -1085,8 +1085,16 @@ case class TermGenParams(appW: Double = 0.1,
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
-  def equationsGen(initState: TermState, finalState: TermState) =
+  def equationsGen(initState: TermState,
+                   finalState: TermState): GeneratorEquations[TermState, Term] =
     GeneratorEquations(nodeCoeffSeq, initState, finalState)
+
+  def spireGrad(initState: TermState,
+                finalState: TermState,
+                hW: Double = 1,
+                klW: Double = 1,
+                eqW: Double = 1): SpireGradient =
+    TermGenCost(equationsGen(initState, finalState), hW, klW, eqW).spireGradient
 
   def nextStateTask(initState: TermState,
                     epsilon: Double,

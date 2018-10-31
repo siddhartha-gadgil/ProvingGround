@@ -335,6 +335,16 @@ case class GeneratorEquations[State, Boat](
     if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
   }
 
+  def eventValue[X, Y](ev: Event[X, Y]) : Double = ev.sort match {
+    case Sort.All()         => 1
+    case Sort.Filter(pred)      =>
+      val b: FD[X] =  sd.value(finalState)(ev.base).filter(pred)
+      b.total
+    case Sort.Restrict(optMap) =>
+      val b: FD[Y] =  sd.value(finalState)(ev.base).mapOpt(optMap)
+      b.total
+  }
+
   def pairEventTotal[X1, X2, Y](ev: PairEvent[X1, X2, Y]): Expression = {
     val elemProbs: Set[Expression] = for {
       (x1, p1) <- finalProbs(ev.base1)
@@ -342,6 +352,15 @@ case class GeneratorEquations[State, Boat](
       if (ev.sort.pred(x1, x2))
     } yield p1 * p2
     if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
+  }
+
+  def pairEventValue[X1, X2, Y](ev: PairEvent[X1, X2, Y]) : Double = {
+    val bp: FD[(X1, X2)] = sd.value(finalState)(ev.base1).zip(sd.value(finalState)(ev.base2))
+    ev.sort match {
+      case Sort.All()         => 1
+      case Sort.Filter(pred)      => bp.filter(pred).total
+      case Sort.Restrict(optMap) => bp.mapOpt(optMap).total
+    }
   }
 
   lazy val eventEquations: Set[Equation] = finalVars.collect {
@@ -352,12 +371,12 @@ case class GeneratorEquations[State, Boat](
     case ev: PairEvent[x1, x2, y] => Equation(pairEventTotal(ev), FinalVal(ev))
   }
 
-  lazy val eventValues: Map[VarVal[_], Expression] = finalVars.collect {
-    case ev: Event[x, y] => (FinalVal(ev) : VarVal[_]) -> eventTotal(ev)
+  lazy val eventValues: Map[VarVal[_], Double] = finalVars.collect {
+    case ev: Event[x, y] => (FinalVal(ev) : VarVal[_]) -> eventValue(ev)
   }.toMap
 
-  lazy val pairEventValues: Map[VarVal[_], Expression] = finalVars.collect {
-    case ev: PairEvent[x1, x2, y] => (FinalVal(ev) : VarVal[_]) -> pairEventTotal(ev)
+  lazy val pairEventValues: Map[VarVal[_], Double] = finalVars.collect {
+    case ev: PairEvent[x1, x2, y] => (FinalVal(ev) : VarVal[_]) -> pairEventValue(ev)
   }.toMap
 
   lazy val initElemValues: Map[VarVal[_], Double] = elemInitVars.values.flatten.map{
@@ -367,5 +386,8 @@ case class GeneratorEquations[State, Boat](
   lazy val finalElemValues: Map[VarVal[_], Double] = elemInitVars.values.flatten.map{
     case v: Elem[u]=> (FinalVal(v) : VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
   }.toMap
+
+  lazy val varValues
+    : Map[VarVal[_], Double] = initElemValues ++ finalElemValues ++ eventValues ++ pairEventValues
 
 }

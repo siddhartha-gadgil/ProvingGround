@@ -39,7 +39,7 @@ case class SpireGradient(vars: Vector[VarVal[_]],
         v -> (p.getOrElse(v, 0.0) * exp(tang(n)))
     }.toMap
 
-  def spireGradShifted(epsilon: Double): Map[VarVal[_], Double] = {
+  def gradient(epsilon: Double): Map[VarVal[_], Double] = {
     val tang = costJet.infinitesimal.toVector.map { (x) =>
       -x * epsilon
     }
@@ -102,8 +102,12 @@ case class TermGenCost(ge: GeneratorEquations[TermState, Term],
   val cost
     : Sum = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse * eqW)
 
-  val vars: Vector[VarVal[_]] =
+  lazy val vars: Vector[VarVal[_]] =
     (ge.elemInitVars.values.flatten.map(v => InitialVal(v): VarVal[_])++ ge.finalVars.map(v =>
       FinalVal(v): VarVal[_])).toVector
+
+  lazy val spireGradient = SpireGradient(vars, ge.varValues, cost)
+
+  def grad(epsilon: Double = 1): Map[VarVal[_], Double] = spireGradient.gradient(epsilon)
 
 }
