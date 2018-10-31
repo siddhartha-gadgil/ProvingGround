@@ -187,9 +187,15 @@ object GeneratorVariables {
 
     def /(that: Expression): Quotient = Quotient(this, that)
 
+    def /(y: Double): Quotient = Quotient(this, Literal(y))
+
+    def *(y: Double): Product = Product(this, Literal(y))
+
     def -(that: Expression): Sum = this + (that * Literal(-1))
 
     def unary_- : Expression = this * Literal(-1)
+
+    def square: Product = this * this
   }
 
   sealed trait VarVal[+Y] extends Expression {
@@ -234,7 +240,7 @@ object GeneratorVariables {
   case class Literal(value: Double) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Literal = this
 
-    override def toString = value.toString
+    override def toString: String = value.toString
   }
 
   case class Quotient(x: Expression, y: Expression) extends Expression {
@@ -250,6 +256,8 @@ object GeneratorVariables {
 
     def useBoat[Boat](boat: Boat): Equation = mapVars(InIsle(_, boat))
 
+    def squareError : Expression = ((lhs - rhs) / (lhs + rhs)).square
+
     override def toString = s"($lhs) == ($rhs)"
   }
 
@@ -259,7 +267,7 @@ object GeneratorVariables {
     def *(x: Double)              = EquationTerm(lhs, rhs * Literal(x))
     def useBoat[Boat](boat: Boat) = EquationTerm(lhs, rhs.useBoat(boat))
 
-    override def toString = rhs.toString
+    override def toString: String = rhs.toString
   }
 
   def groupEquations(ts: Set[EquationTerm]): Set[Equation] =

@@ -604,30 +604,32 @@ class TermGeneratorNodes[InitState](
 object TermRandomVars {
 
   case object TypOpt extends (Term => Option[Typ[Term]]) {
-    def apply(t: Term) : Option[Typ[Term]] = typOpt(t)
+    def apply(t: Term): Option[Typ[Term]] = typOpt(t)
 
     override def toString = "TypOpt"
   }
 
   case object FuncOpt extends (Term => Option[ExstFunc]) {
-    def apply(t: Term) : Option[ExstFunc] = ExstFunc.opt(t)
+    def apply(t: Term): Option[ExstFunc] = ExstFunc.opt(t)
 
     override def toString = "FuncOpt"
   }
 
   case object TypFamilyOpt extends (Term => Option[ExstFunc]) {
-    def apply(t: Term) : Option[ExstFunc] = ExstFunc.opt(t).filter((fn) => isTypFamily(fn.func))
+    def apply(t: Term): Option[ExstFunc] =
+      ExstFunc.opt(t).filter((fn) => isTypFamily(fn.func))
 
     override def toString = "TypFamilyOpt"
   }
 
   case class FuncWithDom(dom: Typ[Term]) extends (Term => Option[ExstFunc]) {
-    def apply(t: Term) : Option[ExstFunc] = ExstFunc.opt(t).filter((fn) => fn.dom == dom)
+    def apply(t: Term): Option[ExstFunc] =
+      ExstFunc.opt(t).filter((fn) => fn.dom == dom)
 
     override def toString = s"FuncWithDom($dom)"
   }
 
-  case class WithTyp(typ: Typ[Term]) extends (Term => Boolean){
+  case class WithTyp(typ: Typ[Term]) extends (Term => Boolean) {
     def apply(t: Term) = t.typ == typ
 
     override def toString = s"$WithTyp(typ)"
@@ -719,8 +721,7 @@ object TermRandomVars {
 
   def funcWithDomTermNode(node: GeneratorNode[Term])
     : GeneratorNodeFamily[::[Typ[Term], HNil], ExstFunc] =
-    node.pi((dom: Typ[Term]) =>
-              Sort.Restrict[Term, ExstFunc](FuncWithDom(dom)),
+    node.pi((dom: Typ[Term]) => Sort.Restrict[Term, ExstFunc](FuncWithDom(dom)),
             FuncsWithDomain)
 
   /**
@@ -856,6 +857,9 @@ case class TermState(terms: FD[Term],
   lazy val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 
+  lazy val pfMap: scala.collection.immutable.Map[Typ[Term], Vector[Term]] =
+    pfSet.groupBy(_.typ: Typ[Term])
+
   lazy val pfDist: FD[Term] =
     terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
 
@@ -871,7 +875,7 @@ case class TermState(terms: FD[Term],
       typOpt(x)
         .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
         .getOrElse(typs)
-    TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x// FIXME should transform TermsWithTyp and FuncsWithDomain correctly
+    TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x // FIXME should transform TermsWithTyp and FuncsWithDomain correctly
   }
 
   def tangent(x: Term) =
@@ -906,7 +910,7 @@ case class TermState(terms: FD[Term],
       typs.collect {
         case l: PiDefn[u, v] if l.variable.typ == x.typ =>
           l.value.replace(l.variable, x)
-        case ft : FuncTyp[u, v] if ft.dom == x.typ =>
+        case ft: FuncTyp[u, v] if ft.dom == x.typ =>
           ft.codom
       },
       vars :+ x,
@@ -914,7 +918,7 @@ case class TermState(terms: FD[Term],
       goals.collect {
         case l: PiDefn[u, v] if l.variable.typ == x.typ =>
           l.value.replace(l.variable, x)
-        case ft : FuncTyp[u, v] if ft.dom == x.typ =>
+        case ft: FuncTyp[u, v] if ft.dom == x.typ =>
           ft.codom
       },
       Context.AppendVariable(context, x)
@@ -1072,7 +1076,7 @@ case class TermGenParams(appW: Double = 0.1,
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
     funcWithDomNodes +: targTypNodes +:
-    termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
+      termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 
   lazy val monixFD: MonixFiniteDistribution[TermState, Term] =

@@ -297,7 +297,6 @@ object GeneratorNode {
   /**
     *  atomic value taken by a random variable
     * @param value the value
-    * @param input the random variable
     * @tparam X the scala type of the random variable
     */
   case class Atom[X](value: X, output: RandomVar[X])

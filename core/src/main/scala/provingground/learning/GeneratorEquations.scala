@@ -60,15 +60,18 @@ case class GeneratorEquations[State, Boat](
       .getOrElse(rv, Set())
       .map((v) => v.element.asInstanceOf[Y] -> FinalVal(v))
 
-  def finalProbSet[Dom <: HList, Y](rvF: RandomVarFamily[Dom, Y]): Map[HList, Set[FinalVal[Any]]] =
+  def finalProbSet[Dom <: HList, Y](
+      rvF: RandomVarFamily[Dom, Y]): Map[HList, Set[FinalVal[Any]]] =
     (finalVars collect {
-      case  e @ Elem(element, RandomVar.AtCoord(family, fullArg)) if family == rvF =>
-      fullArg -> FinalVal(e)
+      case e @ Elem(element, RandomVar.AtCoord(family, fullArg))
+          if family == rvF =>
+        fullArg -> FinalVal(e)
     }).groupBy(_._1).mapValues(s => s.map(_._2))
 
-  def finalElemIndices[Dom <: HList, Y](rvF: RandomVarFamily[Dom, Y]): Set[Dom] =
+  def finalElemIndices[Dom <: HList, Y](
+      rvF: RandomVarFamily[Dom, Y]): Set[Dom] =
     finalVars collect {
-      case  Elem(element, RandomVar.AtCoord(family, fullArg)) if family == rvF =>
+      case Elem(element, RandomVar.AtCoord(family, fullArg)) if family == rvF =>
         fullArg.asInstanceOf[Dom]
     }
 
@@ -92,8 +95,12 @@ case class GeneratorEquations[State, Boat](
   lazy val recurrenceEquations: Set[Equation] = nodeCoeffSeqEquations(
     nodeCoeffSeq)
 
-  lazy val equations
-    : Set[Equation] = recurrenceEquations union eventEquations union pairEventEquations union totalProbEquations
+  lazy val equations: Set[Equation] =
+    recurrenceEquations union eventEquations union pairEventEquations union totalProbEquations
+
+  lazy val totalSquare: Expression = equations.map(_.squareError).reduce(_ + _)
+
+  lazy val mse: Expression = totalSquare / (equations.size)
 
   def nodeCoeffSeqEquations(
       ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {
@@ -109,16 +116,15 @@ case class GeneratorEquations[State, Boat](
         val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
         groupEquations(terms) union eqs
       case fmly =>
-        finalElemIndices(nodeCoeffs.output).flatMap{
-          x =>
-            val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, x)
-            groupEquations(terms) union eqs
+        finalElemIndices(nodeCoeffs.output).flatMap { x =>
+          val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, x)
+          groupEquations(terms) union eqs
         }
     }
 
   def nodeCoeffsEquationTerms[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y], x: Dom)
-    : (Set[EquationTerm], Set[Equation]) =
+      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+      x: Dom): (Set[EquationTerm], Set[Equation]) =
     nodeCoeffs match {
       case NodeCoeffs.Target(output) => (Set(), Set())
       case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
@@ -128,7 +134,9 @@ case class GeneratorEquations[State, Boat](
           case pf: GeneratorNodeFamily.Pi[Dom, Y] =>
             nodeEquationTerms(pf.nodes(x))
           case pf: GeneratorNodeFamily.PiOpt[Dom, Y] =>
-             pf.nodesOpt(x).map(nodeEquationTerms).getOrElse(Set.empty[EquationTerm] -> Set.empty[Equation])
+            pf.nodesOpt(x)
+              .map(nodeEquationTerms)
+              .getOrElse(Set.empty[EquationTerm] -> Set.empty[Equation])
           case _ =>
             throw new Exception(
               s"node family ${bc.headGen} with output ${bc.output} in $nodeCoeffs not a family")
@@ -232,8 +240,8 @@ case class GeneratorEquations[State, Boat](
           for {
             (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
             d2 = finalProbs(fiberVar(z)) // distribution of the fiber at `z`
-            _ = pprint.log(z)
-            _ = pprint.log(fiberVar(z))
+            _  = pprint.log(z)
+            _  = pprint.log(fiberVar(z))
             d = pmf1.zip(d2).map {
               case ((x1, p1), (x2, p2)) =>
                 Try((f(x1, x2), p1 * p2)).fold(fa => {
@@ -241,7 +249,8 @@ case class GeneratorEquations[State, Boat](
                   pprint.log(x2)
                   pprint.log(f)
                   pprint.log(node)
-                  throw fa}, fb => fb)
+                  throw fa
+                }, fb => fb)
             }
             (y, p) <- d
             fve    <- finalElemValOpt(y, output)
@@ -342,5 +351,21 @@ case class GeneratorEquations[State, Boat](
   lazy val pairEventEquations: Set[Equation] = finalVars.collect {
     case ev: PairEvent[x1, x2, y] => Equation(pairEventTotal(ev), FinalVal(ev))
   }
+
+  lazy val eventValues: Map[VarVal[_], Expression] = finalVars.collect {
+    case ev: Event[x, y] => (FinalVal(ev) : VarVal[_]) -> eventTotal(ev)
+  }.toMap
+
+  lazy val pairEventValues: Map[VarVal[_], Expression] = finalVars.collect {
+    case ev: PairEvent[x1, x2, y] => (FinalVal(ev) : VarVal[_]) -> pairEventTotal(ev)
+  }.toMap
+
+  lazy val initElemValues: Map[VarVal[_], Double] = elemInitVars.values.flatten.map{
+    case v: Elem[u]=> (InitialVal(v) : VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
+  }.toMap
+
+  lazy val finalElemValues: Map[VarVal[_], Double] = elemInitVars.values.flatten.map{
+    case v: Elem[u]=> (FinalVal(v) : VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
+  }.toMap
 
 }
