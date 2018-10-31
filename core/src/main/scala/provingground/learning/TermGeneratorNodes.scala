@@ -840,6 +840,15 @@ case class TermState(terms: FD[Term],
                      inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
                      goals: FD[Typ[Term]] = FD.empty,
                      context: Context = Context.Empty) {
+  def subs(x: Term, y: Term) =
+    TermState(terms.map(_.replace(x, y)),
+      typs.map(_.replace(x, y)),
+      vars.map(_.replace(x, y)),
+      inds.map(_.subs(x, y)),
+      goals.map(_.replace(x, y)),
+      context.subs(x, y)
+    )
+
   lazy val thmsByPf: FD[Typ[Term]] =
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
   lazy val thmsBySt: FD[Typ[Term]] =

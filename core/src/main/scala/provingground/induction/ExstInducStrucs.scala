@@ -20,6 +20,9 @@ trait ExstInducStrucs {
 }
 
 case class ExstInducDefn(typFamily: Term, intros: Vector[Term], ind: ExstInducStrucs, parameters : Vector[Term]){
+  def subs(x: Term, y: Term) =
+    ExstInducDefn(typFamily.replace(x, y), intros.map(_.replace(x, y)), ind.subs(x, y), parameters.map(_.replace(x, y)))
+
   def introsTypGroups : Map[Typ[Term], Int] =
     intros.map((x) => x.typ).groupBy(identity).mapValues(_.size)
 

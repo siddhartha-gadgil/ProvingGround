@@ -134,7 +134,7 @@ object GeneratorVariables {
       val fd1 = StateDistribution.value(state)(base1)
       val fd2 = StateDistribution.value(state)(base2)
       fd1.zip(fd2).filter(sort.pred).total
-    case isle: InIsle[y, Boat] =>
+    case isle: InIsle[y, State, o, Boat] =>
       val x = variableValue(boatMap, boatMap(isle.boat, state))
       x(isle.isleVar)
   }
@@ -169,7 +169,7 @@ object GeneratorVariables {
         override def toString = s"{($base1, $base2) \u2208 $sort}"
       }
 
-  case class InIsle[Y, Boat](isleVar: Variable[Y], boat: Boat)
+  case class InIsle[Y, State, O, Boat](isleVar: Variable[Y], boat: Boat, isle: Island[Y, State, O, Boat])
       extends Variable[Y]
 
   case class NodeCoeff[RDom <: HList, Y](
@@ -190,7 +190,7 @@ object GeneratorVariables {
   sealed trait Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression
 
-    def useBoat[Boat](boat: Boat): Expression = mapVars(InIsle(_, boat))
+    def useBoat[Y, State, O, Boat](boat: Boat, island: Island[Y, State, O, Boat]): Expression = mapVars(InIsle(_, boat, island))
 
     def +(that: Expression): Sum = Sum(this, that)
 
@@ -265,7 +265,7 @@ object GeneratorVariables {
     def mapVars(f: Variable[_] => Variable[_]) =
       Equation(lhs.mapVars(f), rhs.mapVars(f))
 
-    def useBoat[Boat](boat: Boat): Equation = mapVars(InIsle(_, boat))
+    def useBoat[Y, State, O, Boat](boat: Boat, island: Island[Y, State, O, Boat]): Equation = mapVars(InIsle(_, boat, island))
 
     def squareError : Expression = ((lhs - rhs) / (lhs + rhs)).square
 
@@ -276,7 +276,8 @@ object GeneratorVariables {
     def *(sc: Expression) = EquationTerm(lhs, rhs * sc)
 
     def *(x: Double)              = EquationTerm(lhs, rhs * Literal(x))
-    def useBoat[Boat](boat: Boat) = EquationTerm(lhs, rhs.useBoat(boat))
+    def useBoat[Y, State, O, Boat](boat: Boat, island: Island[Y, State, O, Boat]) =
+      EquationTerm(lhs, rhs.useBoat(boat, island))
 
     override def toString: String = rhs.toString
   }

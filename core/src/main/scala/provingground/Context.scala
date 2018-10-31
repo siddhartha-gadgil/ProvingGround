@@ -7,6 +7,8 @@ import induction._
 object Context {
 
   case object Empty extends Context {
+    def subs(x: Term, y: Term) = this
+
     val constants: Vector[Term] = Vector()
 
     val variables: Vector[Term] = Vector()
@@ -28,12 +30,16 @@ object Context {
     def map(f: Term => Term) = Defn(name, f(value))
 
     def valueTerm: Term = value
+
+    def subs(x: Term, y: Term) = Defn(name.replace(x, y), value.replace(x, y))
   }
 
   case class AppendDefn[U <: Term with Subs[U]](init: Context,
                                                 defn: Defn[U],
                                                 global: Boolean)
       extends Context {
+
+    def subs(x: Term, y: Term) = AppendDefn(init.subs(x, y), defn.subs(x, y), global)
     val valueOpt : Option[Term] = Some(defn.value)
 
     val constants: Vector[Term] = init.constants
@@ -56,6 +62,8 @@ object Context {
 
   case class AppendConstant[U <: Term with Subs[U]](init: Context, constant: U)
       extends Context {
+    def subs(x: Term, y: Term) = AppendConstant(init.subs(x, y), constant.subs(x, y))
+
     val valueOpt : Option[Term] = Some(constant)
 
     val constants: Vector[Term] = init.constants :+ init.export(constant)
@@ -75,6 +83,8 @@ object Context {
 
 
   case class AppendIndDef(init: Context, defn: ExstInducStrucs) extends Context {
+    def subs(x: Term, y: Term) = AppendIndDef(init.subs(x, y), defn.subs(x, y))
+
     val valueOpt : Option[Term] = None
 
     val constants: Vector[Term] = init.constants ++ defn.constants
@@ -102,6 +112,8 @@ object Context {
                                                 term: U,
                                                 role: Role)
       extends Context {
+    def subs(x: Term, y: Term) = AppendTerm(init.subs(x, y), term.replace(x, y), role)
+
     val valueOpt: Option[Term] = Some(term)
 
     val constants: Vector[Term] = init.constants
@@ -121,6 +133,8 @@ object Context {
 
   case class AppendVariable[U <: Term with Subs[U]](init: Context, variable: U)
       extends Context {
+    def subs(x: Term, y: Term) = AppendVariable(init.subs(x, y), variable.replace(x, y))
+
     val valueOpt : Option[Term] = Some(variable)
 
     val constants: Vector[Term] = init.constants
@@ -149,6 +163,8 @@ object Context {
 
 sealed trait Context {
   import Context._
+
+  def subs(x: Term, y: Term) : Context
 
   val constants: Vector[Term]
 

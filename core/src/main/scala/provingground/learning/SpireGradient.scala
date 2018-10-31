@@ -63,6 +63,9 @@ case class SpireGradient(vars: Vector[VarVal[_]],
 
 object SpireGradient {
   import TermRandomVars.{Terms, Typs}
+
+  import GeneratorVariables._
+
   def kl(ts: TermState): Expression = {
     val thmTot =
       ts.thmsBySt.supp
@@ -92,6 +95,61 @@ object SpireGradient {
                   eqW: Double = 1): Sum =
     (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse * eqW)
 
+  val sd: StateDistribution[TermState, FD] = TermState.stateFD
+
+  def elemProb[X](state: TermState)(el: Elem[X]): Double =
+    sd.value(state)(el.randomVar)(el.element)
+
+  def eventProb[X, Y](state: TermState)(ev: Event[X, Y]): Double =
+    ev.sort match {
+      case Sort.All()        => 1.0
+      case Sort.Filter(pred) => sd.value(state)(ev.base).filter(pred).total
+      case Sort.Restrict(optMap) =>
+        sd.value(state)(ev.base).mapOpt(optMap).total
+    }
+
+  def pairEventProb[X1, X2, Y](state: TermState)(
+      ev: PairEvent[X1, X2, Y]): Double =
+    ev.sort match {
+      case Sort.All() => 1.0
+      case Sort.Filter(pred) =>
+        sd.value(state)(ev.base1)
+          .zip(sd.value(state)(ev.base2))
+          .filter(pred)
+          .total
+      case Sort.Restrict(optMap) =>
+        sd.value(state)(ev.base1)
+          .zip(sd.value(state)(ev.base2))
+          .mapOpt(optMap)
+          .total
+    }
+
+  def varValue[X](initState: TermState, finalState: TermState)(
+      vv: VarVal[X]): Double =
+    vv match {
+      case FinalVal(variable) =>
+        variable match {
+          case el @ Elem(element, randomVar) => elemProb(finalState)(el)
+          case ev @ Event(base, sort)        => eventProb(finalState)(ev)
+          case ev @ PairEvent(base1, base2, sort) =>
+            pairEventProb(finalState)(ev)
+          case el:  InIsle[X, TermState, o, Term] =>
+            val (st, newBoat : Term) = el.isle.initMap(initState)
+            varValue(
+              st.subs(newBoat, el.boat),
+              el.isle.finalMap(el.boat, finalState))(FinalVal(el.isleVar))
+          case NodeCoeff(nodeFamily) => 0
+        }
+      case InitialVal(variable) =>
+        variable match {
+          case el @ Elem(element, randomVar) => elemProb(initState)(el)
+          case ev @ Event(base, sort)        => eventProb(initState)(ev)
+          case ev @ PairEvent(base1, base2, sort) =>
+            pairEventProb(initState)(ev)
+          case InIsle(isleVar, boat, isle) => ???
+          case NodeCoeff(nodeFamily)       => 0
+        }
+    }
 }
 
 import SpireGradient._
@@ -104,10 +162,16 @@ case class TermGenCost(ge: GeneratorEquations[TermState, Term],
     : Sum = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse * eqW)
 
   lazy val vars: Vector[VarVal[_]] =
-    ge.equations.flatMap(eq => Set(eq.lhs, eq.rhs)).flatMap(expr => Expression.varVals(expr)).toVector
+    ge.equations
+      .flatMap(eq => Set(eq.lhs, eq.rhs))
+      .flatMap(expr => Expression.varVals(expr))
+      .toVector
 
-  lazy val spireGradient = SpireGradient(vars, ge.varValues, cost)
+  lazy val p = vars.map((vv) => vv -> varValue(ge.initState, ge.finalState)(vv)).toMap
 
-  def grad(epsilon: Double = 1): Map[VarVal[_], Double] = spireGradient.gradient(epsilon)
+  lazy val spireGradient = SpireGradient(vars, p, cost)
+
+  def grad(epsilon: Double = 1): Map[VarVal[_], Double] =
+    spireGradient.gradient(epsilon)
 
 }
