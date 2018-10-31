@@ -176,6 +176,17 @@ object GeneratorVariables {
       nodeFamily: GeneratorNodeFamily[RDom, Y])
       extends Variable[Unit]
 
+  object Expression{
+    def varVals(expr: Expression): Set[VarVal[_]] = expr match {
+      case value: VarVal[_] => Set(value)
+      case Log(exp)       => varVals(exp)
+      case Sum(x, y)       => varVals(x) union(varVals(y))
+      case Product(x, y)   => varVals(x) union(varVals(y))
+      case Literal(_)   => Set()
+      case Quotient(x, y)  => varVals(x) union(varVals(y))
+    }
+  }
+
   sealed trait Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression
 

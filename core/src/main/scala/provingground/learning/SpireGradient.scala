@@ -29,7 +29,8 @@ case class SpireGradient(vars: Vector[VarVal[_]],
   def spireProb(p: Map[VarVal[_], Double]): Map[VarVal[_], Jet[Double]] =
     vars.zipWithIndex.map {
       case (v, n) =>
-        v -> (p.getOrElse(v, 0.0) * exp(Jet.h[Double](n)))
+        val t = Jet.h[Double](n)
+        v -> (t * p.getOrElse(v, 0.0))
     }.toMap
 
   def spireUpdate(p: Map[VarVal[_], Double],
@@ -46,7 +47,7 @@ case class SpireGradient(vars: Vector[VarVal[_]],
     spireUpdate(p, tang)
   }
 
-  val costJet: Jet[Double] = jet(p)(cost)
+  lazy val costJet: Jet[Double] = jet(p)(cost)
 
   def jet(p: Map[VarVal[_], Double])(expr: Expression): Jet[Double] =
     expr match {
@@ -103,8 +104,7 @@ case class TermGenCost(ge: GeneratorEquations[TermState, Term],
     : Sum = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse * eqW)
 
   lazy val vars: Vector[VarVal[_]] =
-    (ge.elemInitVars.values.flatten.map(v => InitialVal(v): VarVal[_])++ ge.finalVars.map(v =>
-      FinalVal(v): VarVal[_])).toVector
+    ge.equations.flatMap(eq => Set(eq.lhs, eq.rhs)).flatMap(expr => Expression.varVals(expr)).toVector
 
   lazy val spireGradient = SpireGradient(vars, ge.varValues, cost)
 
