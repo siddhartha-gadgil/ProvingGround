@@ -1,4 +1,4 @@
-
+package provingground.library
 // some imports
 import provingground._, HoTT._
 import scalahott._, andrewscurtis.FreeGroups._
