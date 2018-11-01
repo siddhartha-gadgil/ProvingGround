@@ -98,9 +98,9 @@ case class GeneratorEquations[State, Boat](
   lazy val equations: Set[Equation] =
     recurrenceEquations union eventEquations union pairEventEquations union totalProbEquations
 
-  lazy val totalSquare: Expression = equations.map(_.squareError).reduce(_ + _)
+  def totalSquare (epsilon: Double) : Expression = equations.map(_.squareError(epsilon)).reduce(_ + _)
 
-  lazy val mse: Expression = totalSquare / (equations.size)
+  def mse (epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
 
   def nodeCoeffSeqEquations(
       ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {

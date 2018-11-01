@@ -93,8 +93,9 @@ object SpireGradient {
   def termGenCost(ge: GeneratorEquations[TermState, Term],
                   hW: Double = 1,
                   klW: Double = 1,
-                  eqW: Double = 1): Sum =
-    (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse * eqW)
+                  eqW: Double = 1,
+                  epsilon: Double = math.pow(10, -5)): Sum =
+    (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse(epsilon) * eqW)
 
   val sd: StateDistribution[TermState, FD] = TermState.stateFD
 
@@ -162,9 +163,10 @@ import SpireGradient._
 case class TermGenCost(ge: GeneratorEquations[TermState, Term],
                        hW: Double = 1,
                        klW: Double = 1,
-                       eqW: Double = 1) {
+                       eqW: Double = 1,
+                       epsilon: Double = math.pow(10, -5)) {
   val cost
-    : Sum = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse * eqW)
+    : Sum = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse(epsilon) * eqW)
 
   lazy val vars: Vector[VarVal[_]] =
     ge.equations

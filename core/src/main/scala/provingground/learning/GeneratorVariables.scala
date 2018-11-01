@@ -267,7 +267,7 @@ object GeneratorVariables {
 
     def useBoat[Y, State, O, Boat](boat: Boat, island: Island[Y, State, O, Boat]): Equation = mapVars(InIsle(_, boat, island))
 
-    def squareError : Expression = ((lhs - rhs) / (lhs + rhs)).square
+    def squareError(epsilon: Double) : Expression = ((lhs - rhs) / (lhs + rhs + Literal(epsilon))).square
 
     override def toString = s"($lhs) == ($rhs)"
   }
