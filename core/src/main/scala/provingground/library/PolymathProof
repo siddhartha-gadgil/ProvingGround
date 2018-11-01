@@ -6,7 +6,7 @@ import spire.implicits._
 import NatRing.{ x=>_,  Literal => nat, _}, QField.{w => _, x =>_, y=>_, z=>_, Literal => rat, _}, FreeGroup.{Literal => elem, _}
 import Theorems.{PowerDistributive, ConjPower}
 
-object PolymathLemma{
+object PolymathProof{
 
 // The length function, and the "witnesses" for assumptions on it
 
