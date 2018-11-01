@@ -74,13 +74,15 @@ object LeanResources {
 
   def indModView(ind: TermIndMod): Js.Value = {
     def introJs(t: Term) =
-      Js.Obj("name"  -> Js.Str(t.toString),
-             "tex"   -> Js.Str(TeXTranslate(t.typ, true).replace("'", "\\check ")),
-             "plain" -> Js.Str(t.typ.toString))
+      Js.Obj(
+        "name"  -> Js.Str(t.toString),
+        "tex"   -> Js.Str(TeXTranslate(t.typ, true).replace("'", "\\check ")),
+        "plain" -> Js.Str(t.typ.toString))
     Js.Obj(
-      "type"   -> Js.Str("inductive-definition"),
-      "name"   -> Js.Str(ind.name.toString),
-      "tex"    -> Js.Str(TeXTranslate(ind.typF.typ, true).replace("'", "\\check ")),
+      "type" -> Js.Str("inductive-definition"),
+      "name" -> Js.Str(ind.name.toString),
+      "tex" -> Js.Str(
+        TeXTranslate(ind.typF.typ, true).replace("'", "\\check ")),
       "plain"  -> Js.Str(ind.typF.typ.toString),
       "intros" -> Js.Arr(ind.intros.map(introJs): _*)
     )
@@ -213,8 +215,12 @@ object LeanRoutes extends cask.Routes {
         cf.foreach { (tt) =>
           tt.fold(
             { (err) =>
-              val message = s"while parsing $name, got $err"
+              val message =
+                s"while parsing $name, got $err\n Modifier: \n ${p.findDefMod(
+                  trepplein.Name(name.split("\\."): _*)).map(_.value)}"
               pprint.log(message)
+              pprint.log(p.findDefMod(
+                trepplein.Name(name.split("\\."): _*)).map(_.value), height = 1000)
               sendErr(message)
 //              ammonite.Main(
 //                predefCode = "import provingground._, HoTT._, interface._"
