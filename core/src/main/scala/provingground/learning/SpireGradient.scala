@@ -29,8 +29,9 @@ case class SpireGradient(vars: Vector[VarVal[_]],
   def spireProb(p: Map[VarVal[_], Double]): Map[VarVal[_], Jet[Double]] =
     vars.zipWithIndex.map {
       case (v, n) =>
-        val t = Jet.h[Double](n)
-        v -> (t * p.getOrElse(v, 0.0))
+        val t: Jet[Double] = Jet.h[Double](n)
+        val r: Double = p.getOrElse(v, 0.0)
+        v -> (t + r)
     }.toMap
 
   def spireUpdate(p: Map[VarVal[_], Double],
@@ -146,7 +147,11 @@ object SpireGradient {
           case ev @ Event(base, sort)        => eventProb(initState)(ev)
           case ev @ PairEvent(base1, base2, sort) =>
             pairEventProb(initState)(ev)
-          case InIsle(isleVar, boat, isle) => ???
+          case el:  InIsle[X, TermState, o, Term] =>
+            val (st, newBoat : Term) = el.isle.initMap(initState)
+            varValue(
+              st.subs(newBoat, el.boat),
+              el.isle.finalMap(el.boat, finalState))(InitialVal(el.isleVar))
           case NodeCoeff(nodeFamily)       => 0
         }
     }
@@ -167,7 +172,7 @@ case class TermGenCost(ge: GeneratorEquations[TermState, Term],
       .flatMap(expr => Expression.varVals(expr))
       .toVector
 
-  lazy val p = vars.map((vv) => vv -> varValue(ge.initState, ge.finalState)(vv)).toMap
+  lazy val p: Map[VarVal[_], Double] = vars.map((vv) => vv -> varValue(ge.initState, ge.finalState)(vv)).toMap
 
   lazy val spireGradient = SpireGradient(vars, p, cost)
 
