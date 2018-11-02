@@ -347,7 +347,7 @@ class LeanParser(initMods: Seq[Modification],
         _ = {
           parseWork -= exp
           log(Parsed(exp))
-          parseMemo += (exp, vars) -> res
+          // if (!isUniv(res)) parseMemo += (exp, vars) -> res
           // pprint.log(s"parsed $exp")
           // if (isPropFmly(res.typ))
           //   pprint.log(

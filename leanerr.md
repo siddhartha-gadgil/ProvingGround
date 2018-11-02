@@ -1,315 +1,221 @@
+## The error in `drec` again
+
 ```scala
-DefMod(
-  nat.pred_lt,
-  Vector(),
-  ∀ {n : @nat} (a : @ne.{1} @nat n (@has_zero.zero.{0} @nat @nat.has_zero)),
-  @has_lt.lt.{0} @nat @nat.has_lt (@nat.pred n) n,λ {n : @nat} (a : @ne.{1} @nat n (@has_zero.zero.{0} @nat @nat.has_zero)),
-    @nat.cases_on.{0}
-      (λ {n_0 : @nat},
-      ∀ (a_0 : @ne.{1} @nat n_0 (@has_zero.zero.{0} @nat @nat.has_zero)),
-      @has_lt.lt.{0} @nat @nat.has_lt (@nat.pred n_0) n_0) n
-      (λ (a_0 : @ne.{1} @nat @nat.zero (@has_zero.zero.{0} @nat @nat.has_zero)),
-      @id_rhs.{0}
-        (@has_lt.lt.{0} @nat @nat.has_lt
-          (@nat.pred (@has_zero.zero.{0} @nat @nat.has_zero))
-          (@has_zero.zero.{0} @nat @nat.has_zero))
-        (@absurd.{0}
-          (@eq.{1} @nat (@has_zero.zero.{0} @nat @nat.has_zero)
-            (@has_zero.zero.{0} @nat @nat.has_zero))
-          (@has_lt.lt.{0} @nat @nat.has_lt
-            (@nat.pred (@has_zero.zero.{0} @nat @nat.has_zero))
-            (@has_zero.zero.{0} @nat @nat.has_zero))
-          (@rfl.{1} @nat (@has_zero.zero.{0} @nat @nat.has_zero)) a_0))
-      (λ (n_0 : @nat)
-        (a_0 :
-          @ne.{1} @nat (@nat.succ n_0) (@has_zero.zero.{0} @nat @nat.has_zero)),
-      @id_rhs.{0}
-        (@has_lt.lt.{0} @nat @nat.has_lt (@nat.pred (@nat.succ n_0))
-          (@nat.succ n_0))
-        (@nat.lt_succ_of_le (@nat.pred (@nat.succ n_0)) n_0
-          (@nat.less_than_or_equal.refl (@nat.pred (@nat.succ n_0))))) a
+while parsing nat.less_than_or_equal.drec, got provingground.interface.LeanParser$ParseException:
+provingground.interface.RecFoldException: Failure to fold recursive Function for nat.less_than_or_equal,
+  recursion function (_ :  (('r) ('q)) (_)) ↦ ((InducDataSym((nat.less_than_or_equal.step) ('q)) :  ('u : nat ) ~> ((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> (((('r) ('u)) (_)) → ((('r) ((nat.succ) ('u))) (_))))) ↦ (($gsbtc :  nat) ↦ (ind{(nat.less_than_or_equal) ('q)($gsbtc)}{($gsacz :  nat) ↦ ((_ :  ((nat.less_than_or_equal) ('q)) ($gsacz)) ↦ ((('r) ($gsacz)) (_)))}(_)(InducDataSym((nat.less_than_or_equal.step) ('q))))))
+with error provingground.HoTT$ApplnFailException:
+  function (InducDataSym((nat.less_than_or_equal.step) ('q)) :  ('u : nat ) ~> ((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> (((('r) ('u)) (_)) → ((('r) ((nat.succ) ('u))) (_))))) ↦ (($gsbtc :  nat) ↦ (ind{(nat.less_than_or_equal) ('q)($gsbtc)}{($gsacz :  nat) ↦ ((_ :  ((nat.less_than_or_equal) ('q)) ($gsacz)) ↦ ((('r) ($gsacz)) (_)))}(_)(InducDataSym((nat.less_than_or_equal.step) ('q)))))
+with domain(optional) Some(
+  ('u : nat ) ~>
+    ((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~>
+    (
+      ((('r) ('u)) (_)) →
+        ((('r) ((nat.succ) ('u))) (_))
+      )
+    )
 )
-```
-
-__Clarification__ The value is
-
-```cpp
-λ {n : @nat} (a : @ne.{1} @nat n (@has_zero.zero.{0} @nat @nat.has_zero)),
-  @nat.cases_on.{0}
-    (λ {n_0 : @nat},
-      ∀ (a_0 : @ne.{1} @nat n_0 (@has_zero.zero.{0} @nat @nat.has_zero)), @has_lt.lt.{0} @nat @nat.has_lt (@nat.pred n_0) n_0)
-       n
-        (λ (a_0 : @ne.{1} @nat @nat.zero (@has_zero.zero.{0} @nat @nat.has_zero)), @id_rhs.{0} (@has_lt.lt.{0} @nat @nat.has_lt (@nat.pred (@has_zero.zero.{0} @nat @nat.has_zero)) (@has_zero.zero.{0} @nat @nat.has_zero)) (@absurd.{0} (@eq.{1} @nat (@has_zero.zero.{0} @nat @nat.has_zero) (@has_zero.zero.{0} @nat @nat.has_zero)) (@has_lt.lt.{0} @nat @nat.has_lt (@nat.pred (@has_zero.zero.{0} @nat @nat.has_zero)) (@has_zero.zero.{0} @nat @nat.has_zero)) (@rfl.{1} @nat (@has_zero.zero.{0} @nat @nat.has_zero)) a_0))
-          (λ (n_0 : @nat) (a_0 : @ne.{1} @nat (@nat.succ n_0) (@has_zero.zero.{0} @nat @nat.has_zero)), @id_rhs.{0} (@has_lt.lt.{0} @nat @nat.has_lt (@nat.pred (@nat.succ n_0)) (@nat.succ n_0)) (@nat.lt_succ_of_le (@nat.pred (@nat.succ n_0)) n_0 (@nat.less_than_or_equal.refl (@nat.pred (@nat.succ n_0)))))
-            a
-```
-
-with error message
-
-```scala
-while parsing nat.pred_lt, got provingground.interface.LeanParser$ParseException: provingground.HoTT$ApplnFailException:
-  function (_ :  ((nat.less_than_or_equal) ((nat.succ) (_))) ((nat.succ) ('w))) ↦ (_)
-with domain(optional)
-  Some(
-    ((nat.less_than_or_equal) ((nat.succ) (_))) ((nat.succ) ('w)))
 cannot act on given term
-     (_ :  ((nat.less_than_or_equal) (_)) ('w)) ↦ (_)
+  ('u :  nat) ↦
+    ((_ :  ((nat.less_than_or_equal) ('q)) ('u)) ↦
+      (
+        ('v :  (_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> ((('r) ('u)) (_))) ↦
+        ((_ :  ((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) ↦ (_))
+      )
+    )
 with type
-  (((nat.less_than_or_equal) (_)) ('w)) → (((nat.less_than_or_equal) ((nat.succ) (_))) ((nat.succ) ('w)))
-```
-
-
-## In structured scala form
-
-```scala
-Lam(
-  Binding(Str(, "n"), Const(Str(, "nat"), Vector()), Implicit),
-  Lam(
-    Binding(
-      Str(, "a"),
-      App(
-        App(App(Const(Str(, "ne"), Vector(Succ(Zero))), Const(Str(, "nat"), Vector())), Var(0)),
-        App(
-          App(Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)), Const(Str(, "nat"), Vector())),
-          Const(Str(Str(, "nat"), "has_zero"), Vector())
+  ('u : nat ) ~>
+    (
+      (((nat.less_than_or_equal) ('q)) ('u)) →
+        (((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> // extra, witness
+          ((('r) ('u)) (_))) → 
+            ((((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) → // extra, witness
+            ((('r) ((nat.succ) ('u))) (_)))
         )
+      )
+
+Modifier:
+ Some(λ {a : @nat} {C : (∀ (a_1 : @nat) (h : @nat.less_than_or_equal a a_1), Prop)}
+  (e_1 : C a (@nat.less_than_or_equal.refl a))
+  (e_2 :
+    (∀ {b : @nat} (a_1 : @nat.less_than_or_equal a b) (ih : C b a_1),
+    C (@nat.succ b) (@nat.less_than_or_equal.step a b a_1))) {a_0 : @nat}
+  (n : @nat.less_than_or_equal a a_0),
+@nat.less_than_or_equal.rec a
+  (λ (a_1 : @nat), ∀ (h : @nat.less_than_or_equal a a_1), C a_1 h)
+  (λ (a_1 : @nat.less_than_or_equal a a), e_1)
+  (λ {b : @nat} (a_1 : @nat.less_than_or_equal a b)
+    (ih : (∀ (h : @nat.less_than_or_equal a b), C b h))
+    (a_2 : @nat.less_than_or_equal a (@nat.succ b)),
+  e_2 b a_1 (ih a_1)) a_0 n n)"""
+provingground.interface.LeanRoutes.parse:222 p.findDefMod(
+                trepplein.Name(name.split("\\."): _*)).map(_.value): Some(
+  Lam(
+    Binding(Str(, "a"), Const(Str(, "nat"), Vector()), Implicit),
+    Lam(
+      Binding(
+        Str(, "C"),
+        Pi(
+          Binding(Str(, "a"), Const(Str(, "nat"), Vector()), Default),
+          Pi(
+            Binding(
+              Str(, "h"),
+              App(App(Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()), Var(1)), Var(0)),
+              Default
+            ),
+            Sort(Zero)
+          )
+        ),
+        Implicit
       ),
-      Default
-    ),
-    App(
-      App(
-        App(
+      Lam(
+        Binding(
+          Str(, "e_1"),
           App(
-            App(
-              Const(Str(Str(, "nat"), "cases_on"), Vector(Zero)),
-              Lam(
-                Binding(Str(, "n"), Const(Str(, "nat"), Vector()), Implicit),
+            App(Var(0), Var(1)),
+            App(Const(Str(Str(Str(, "nat"), "less_than_or_equal"), "refl"), Vector()), Var(1))
+          ),
+          Default
+        ),
+        Lam(
+          Binding(
+            Str(, "e_2"),
+            Pi(
+              Binding(Str(, "b"), Const(Str(, "nat"), Vector()), Implicit),
+              Pi(
+                Binding(
+                  Str(, "a"),
+                  App(App(Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()), Var(3)), Var(0)),
+                  Default
+                ),
                 Pi(
-                  Binding(
-                    Str(, "a"),
-                    App(
-                      App(
-                        App(Const(Str(, "ne"), Vector(Succ(Zero))), Const(Str(, "nat"), Vector())),
-                        Var(0)
-                      ),
-                      App(
-                        App(
-                          Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                          Const(Str(, "nat"), Vector())
-                        ),
-                        Const(Str(Str(, "nat"), "has_zero"), Vector())
-                      )
-                    ),
-                    Default
-                  ),
+                  Binding(Str(, "ih"), App(App(Var(3), Var(1)), Var(0)), Default),
                   App(
+                    App(Var(4), App(Const(Str(Str(, "nat"), "succ"), Vector()), Var(2))),
                     App(
                       App(
                         App(
-                          Const(Str(Str(, "has_lt"), "lt"), Vector(Zero)),
-                          Const(Str(, "nat"), Vector())
+                          Const(Str(Str(Str(, "nat"), "less_than_or_equal"), "step"), Vector()),
+                          Var(5)
                         ),
-                        Const(Str(Str(, "nat"), "has_lt"), Vector())
+                        Var(2)
                       ),
-                      App(Const(Str(Str(, "nat"), "pred"), Vector()), Var(1))
-                    ),
-                    Var(1)
+                      Var(1)
+                    )
                   )
                 )
               )
             ),
-            Var(1)
+            Default
           ),
           Lam(
-            Binding(
-              Str(, "a"),
-              App(
-                App(
-                  App(Const(Str(, "ne"), Vector(Succ(Zero))), Const(Str(, "nat"), Vector())),
-                  Const(Str(Str(, "nat"), "zero"), Vector())
-                ),
-                App(
-                  App(
-                    Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                    Const(Str(, "nat"), Vector())
-                  ),
-                  Const(Str(Str(, "nat"), "has_zero"), Vector())
-                )
-              ),
-              Default
-            ),
-            App(
-              App(
-                Const(Str(, "id_rhs"), Vector(Zero)),
-                App(
-                  App(
-                    App(
-                      App(
-                        Const(Str(Str(, "has_lt"), "lt"), Vector(Zero)),
-                        Const(Str(, "nat"), Vector())
-                      ),
-                      Const(Str(Str(, "nat"), "has_lt"), Vector())
-                    ),
-                    App(
-                      Const(Str(Str(, "nat"), "pred"), Vector()),
-                      App(
-                        App(
-                          Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                          Const(Str(, "nat"), Vector())
-                        ),
-                        Const(Str(Str(, "nat"), "has_zero"), Vector())
-                      )
-                    )
-                  ),
-                  App(
-                    App(
-                      Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                      Const(Str(, "nat"), Vector())
-                    ),
-                    Const(Str(Str(, "nat"), "has_zero"), Vector())
-                  )
-                )
+            Binding(Str(, "a"), Const(Str(, "nat"), Vector()), Implicit),
+            Lam(
+              Binding(
+                Str(, "n"),
+                App(App(Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()), Var(4)), Var(0)),
+                Default
               ),
               App(
                 App(
                   App(
                     App(
-                      Const(Str(, "absurd"), Vector(Zero)),
                       App(
                         App(
                           App(
-                            Const(Str(, "eq"), Vector(Succ(Zero))),
-                            Const(Str(, "nat"), Vector())
+                            Const(Str(Str(Str(, "nat"), "less_than_or_equal"), "rec"), Vector()),
+                            Var(5)
                           ),
-                          App(
-                            App(
-                              Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                              Const(Str(, "nat"), Vector())
-                            ),
-                            Const(Str(Str(, "nat"), "has_zero"), Vector())
+                          Lam(
+                            Binding(Str(, "a"), Const(Str(, "nat"), Vector()), Default),
+                            Pi(
+                              Binding(
+                                Str(, "h"),
+                                App(
+                                  App(
+                                    Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()),
+                                    Var(6)
+                                  ),
+                                  Var(0)
+                                ),
+                                Default
+                              ),
+                              App(App(Var(6), Var(1)), Var(0))
+                            )
                           )
                         ),
-                        App(
-                          App(
-                            Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                            Const(Str(, "nat"), Vector())
+                        Lam(
+                          Binding(
+                            Str(, "_"),
+                            App(
+                              App(Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()), Var(5)),
+                              Var(5)
+                            ),
+                            Default
                           ),
-                          Const(Str(Str(, "nat"), "has_zero"), Vector())
+                          Var(4)
+                        )
+                      ),
+                      Lam(
+                        Binding(Str(, "b"), Const(Str(, "nat"), Vector()), Implicit),
+                        Lam(
+                          Binding(
+                            Str(, "a"),
+                            App(
+                              App(Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()), Var(6)),
+                              Var(0)
+                            ),
+                            Default
+                          ),
+                          Lam(
+                            Binding(
+                              Str(, "ih"),
+                              Pi(
+                                Binding(
+                                  Str(, "_h"),
+                                  App(
+                                    App(
+                                      Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()),
+                                      Var(7)
+                                    ),
+                                    Var(1)
+                                  ),
+                                  Default
+                                ),
+                                App(App(Var(7), Var(2)), Var(0))
+                              ),
+                              Default
+                            ),
+                            Lam(
+                              Binding(
+                                Str(, "_"),
+                                App(
+                                  App(
+                                    Const(Str(Str(, "nat"), "less_than_or_equal"), Vector()),
+                                    Var(8)
+                                  ),
+                                  App(Const(Str(Str(, "nat"), "succ"), Vector()), Var(2))
+                                ),
+                                Default
+                              ),
+                              App(App(App(Var(6), Var(3)), Var(2)), App(Var(1), Var(2)))
+                            )
+                          )
                         )
                       )
                     ),
-                    App(
-                      App(
-                        App(
-                          App(
-                            Const(Str(Str(, "has_lt"), "lt"), Vector(Zero)),
-                            Const(Str(, "nat"), Vector())
-                          ),
-                          Const(Str(Str(, "nat"), "has_lt"), Vector())
-                        ),
-                        App(
-                          Const(Str(Str(, "nat"), "pred"), Vector()),
-                          App(
-                            App(
-                              Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                              Const(Str(, "nat"), Vector())
-                            ),
-                            Const(Str(Str(, "nat"), "has_zero"), Vector())
-                          )
-                        )
-                      ),
-                      App(
-                        App(
-                          Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                          Const(Str(, "nat"), Vector())
-                        ),
-                        Const(Str(Str(, "nat"), "has_zero"), Vector())
-                      )
-                    )
+                    Var(1)
                   ),
-                  App(
-                    App(Const(Str(, "rfl"), Vector(Succ(Zero))), Const(Str(, "nat"), Vector())),
-                    App(
-                      App(
-                        Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                        Const(Str(, "nat"), Vector())
-                      ),
-                      Const(Str(Str(, "nat"), "has_zero"), Vector())
-                    )
-                  )
+                  Var(0)
                 ),
                 Var(0)
               )
             )
           )
-        ),
-        Lam(
-          Binding(Str(, "n"), Const(Str(, "nat"), Vector()), Default),
-          Lam(
-            Binding(
-              Str(, "a"),
-              App(
-                App(
-                  App(Const(Str(, "ne"), Vector(Succ(Zero))), Const(Str(, "nat"), Vector())),
-                  App(Const(Str(Str(, "nat"), "succ"), Vector()), Var(0))
-                ),
-                App(
-                  App(
-                    Const(Str(Str(, "has_zero"), "zero"), Vector(Zero)),
-                    Const(Str(, "nat"), Vector())
-                  ),
-                  Const(Str(Str(, "nat"), "has_zero"), Vector())
-                )
-              ),
-              Default
-            ),
-            App(
-              App(
-                Const(Str(, "id_rhs"), Vector(Zero)),
-                App(
-                  App(
-                    App(
-                      App(
-                        Const(Str(Str(, "has_lt"), "lt"), Vector(Zero)),
-                        Const(Str(, "nat"), Vector())
-                      ),
-                      Const(Str(Str(, "nat"), "has_lt"), Vector())
-                    ),
-                    App(
-                      Const(Str(Str(, "nat"), "pred"), Vector()),
-                      App(Const(Str(Str(, "nat"), "succ"), Vector()), Var(1))
-                    )
-                  ),
-                  App(Const(Str(Str(, "nat"), "succ"), Vector()), Var(1))
-                )
-              ),
-              App(
-                App(
-                  App(
-                    Const(Str(Str(, "nat"), "lt_succ_of_le"), Vector()),
-                    App(
-                      Const(Str(Str(, "nat"), "pred"), Vector()),
-                      App(Const(Str(Str(, "nat"), "succ"), Vector()), Var(1))
-                    )
-                  ),
-                  Var(1)
-                ),
-                App(
-                  Const(Str(Str(Str(, "nat"), "less_than_or_equal"), "refl"), Vector()),
-                  App(
-                    Const(Str(Str(, "nat"), "pred"), Vector()),
-                    App(Const(Str(Str(, "nat"), "succ"), Vector()), Var(1))
-                  )
-                )
-              )
-            )
-          )
         )
-      ),
-      Var(0)
+      )
     )
   )
 )
-
 
 ```
