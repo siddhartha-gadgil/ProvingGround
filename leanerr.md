@@ -17,20 +17,25 @@ with domain(optional) Some(
 )
 cannot act on given term
   ('u :  nat) ↦
-    ((_ :  ((nat.less_than_or_equal) ('q)) ('u)) ↦
+    ((_ :  ((nat.less_than_or_equal) ('q)) ('u)) ↦ // extra, witness
       (
         ('v :  (_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> ((('r) ('u)) (_))) ↦
-        ((_ :  ((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) ↦ (_))
+        (
+          (_ :  ((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) ↦ // extra, witness
+            (_)
+        )
       )
     )
 with type
   ('u : nat ) ~>
     (
-      (((nat.less_than_or_equal) ('q)) ('u)) →
-        (((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~> // extra, witness
-          ((('r) ('u)) (_))) → 
-            ((((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) → // extra, witness
-            ((('r) ((nat.succ) ('u))) (_)))
+      (((nat.less_than_or_equal) ('q)) ('u)) → // extra, witness
+        (((_ : ((nat.less_than_or_equal) ('q)) ('u) ) ~>
+          ((('r) ('u)) (_))) →
+            (
+              (((nat.less_than_or_equal) ('q)) ((nat.succ) ('u))) → // extra, witness
+                  ((('r) ((nat.succ) ('u))) (_))
+                )
         )
       )
 
