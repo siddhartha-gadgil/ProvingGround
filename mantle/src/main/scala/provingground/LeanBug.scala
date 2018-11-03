@@ -5,6 +5,7 @@ import Name.Str
 import BinderInfo._
 import Level._
 import ammonite.ops._
+import monix.eval.Task
 import provingground.library
 
 import scala.collection.mutable.ArrayBuffer
@@ -30,10 +31,9 @@ object LeanBug{
 
   lazy val p: LeanParser = parser
 
-  lazy val expr =
-      p.findDefMod(trepplein.Name("nat", "pred_lt")).get.value
+  lazy val expr: Expr =
+      p.findDefMod(trepplein.Name("nat", "less_than_or_equal", "drec")).get.value
 
-  lazy val minExpr = subExpr(expr)(24)
+  lazy val tsk = p.parse(expr).materialize.map(t => t.failed)
 
-  lazy val arg = subExpr(expr)(30)
 }

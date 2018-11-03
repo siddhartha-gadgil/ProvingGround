@@ -24,9 +24,9 @@ object LeanToTermMonix {
   }
 
   def proofLift: (Term, Term) => Task[Term] = {
-    case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
-      Task.pure(lmbda(pt.variable)(pt.value))
-    case (w: Typ[u], tp: Typ[v]) => Task.eval { (w.Var) :-> tp }
+//    case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
+//      Task.pure(lmbda(pt.variable)(pt.value)) // FIXME do not need this case
+    case (w: Typ[u], tp: Typ[v]) => Task.eval { (w.Var) :-> tp } // should be in all cases
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
       proofLift(w(x), tp(x.asInstanceOf[a]))

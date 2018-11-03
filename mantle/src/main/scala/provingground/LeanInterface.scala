@@ -42,6 +42,9 @@ object LeanInterface {
       case l: LambdaTerm[u, v] => witLess(l.value).map(LambdaTerm(l.variable, _))
       case _                   => Vector(t)
     }
+
+//    pprint.log(recFilled)
+//    pprint.log(topFilled)
     recFilled ++ topFilled
   }
 
@@ -50,18 +53,22 @@ object LeanInterface {
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
       fn.applyUnchecked(arg.asInstanceOf[u])
     case fn if isWitness(arg) =>
+      pprint.log(fn)
+      pprint.log(arg)
       fn
     case fn: FuncLike[u, v] =>
       witLess(arg)
         .find(_.typ == fn.dom)
-        .map(x => fn.applyUnchecked(x.asInstanceOf[u]))
+        .map{x =>
+          pprint.log(s"$arg becomes $x for $fn")
+          fn.applyUnchecked(x.asInstanceOf[u])}
         .getOrElse(throw new ApplnFailException(func, arg))
     case _ => throw new ApplnFailException(func, arg)
   }
 
 
   def foldFuncLean(func: Term, args: Vector[Term]): Term =
-    args.foldLeft(func)(applyFuncLean)
+    args.foldLeft(func)(applyFuncLean) // FIXME should just apply a function
 
 
   def consts(expr: Expr): Vector[Name] = expr match {
