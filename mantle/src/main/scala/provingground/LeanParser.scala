@@ -204,6 +204,7 @@ class LeanParser(initMods: Seq[Modification],
       recFnT = getRec(indMod, argsFmlyTerm)
       _      = pprint.log(s"$vars")
       vec <- parseVec(xs, vars).cancelable // TODO should interleave data with intro rules.
+      vecInter = indMod.interleaveData(vec) // Use this
       _ = pprint.log(s"${vec.map(_.fansi)}")
       recFn <- recFnT
       resT = Task(foldFuncLean(recFn, vec)).onErrorRecoverWith {
