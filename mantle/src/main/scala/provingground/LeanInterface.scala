@@ -202,6 +202,8 @@ sealed trait TermIndMod {
 
   val typF: Term
 
+  def interleaveData(v: Vector[Term]) : Vector[Term]
+
 
   def introsFold(p: Vector[Term]): Vector[Term] = intros.map((rule) => foldFuncLean(rule, p))
 
@@ -224,6 +226,9 @@ case class SimpleIndMod(name: Name,
 
   def getInd(p: Vector[Term]) =
     ConstructorSeqTL.getExst(toTyp(foldFuncLean(typF, p)), introsFold(p)).value
+
+
+  def interleaveData(v: Vector[Term]) : Vector[Term] = v
 
 
   import LeanInterface.unifier
@@ -328,6 +333,15 @@ case class IndexedIndMod(name: Name,
     TypFamilyExst
       .getIndexedConstructorSeq(foldFuncLean(typF, p), introsFold(p))
       .value
+
+  def interleaveData(v: Vector[Term]) : Vector[Term] = {
+    val (dataBase, extra) = v.splitAt(intros.size)
+    val newBase = (intros.zip(dataBase)).map{
+      case (in, dat) => LeanToTermMonix.introShuffle(in, typF, dat)
+    }
+    newBase ++ extra
+  }
+
 
   import LeanInterface.unifier
 

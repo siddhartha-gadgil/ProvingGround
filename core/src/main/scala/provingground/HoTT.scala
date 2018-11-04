@@ -2043,6 +2043,23 @@ object HoTT {
         })
     }
 
+  def maxLambda(t: Term) : (Vector[Term] , Term) = t match {
+    case lt: LambdaLike[u, v] =>
+      val (xs, y) = maxLambda(lt.value)
+      (lt.variable +: xs, y)
+    case _ => (Vector(), t)
+  }
+
+  def getVars(t: Term, n: Int) : (Vector[Term], Term) =
+    if (n < 1) (Vector(), t)
+    else
+      t match {
+        case lt: LambdaLike[u, v] =>
+          val (xs, y) = getVars(lt.value, n-1)
+          (lt.variable +: xs, y)
+        case _ => throw new Exception(s"expected lambda but got $t with type ${t.typ}")
+      }
+
   /**
     * returns type as a Pi-Type of the variables in `vars` on which
     * it depends.

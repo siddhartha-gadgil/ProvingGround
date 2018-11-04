@@ -23,10 +23,28 @@ object LeanToTermMonix {
     case _        => false
   }
 
+  /**
+    * shuffles the dat variables from leans convention where they are last to an interleaved form.
+    * @param intro the introduction rule
+    * @param typF the inductive type
+    * @param data the recursion data
+    */
+  def introShuffle(intro: Term, typF: Term, data: Term): Term = {
+    val (vars, _) = maxLambda(intro)
+    val domVars = vars.filter(_.typ.dependsOn(typF)) // number of variables in the codomain
+    val (allVars, value) = getVars(data, vars.size + domVars.size)
+    val (baseVars: Vector[Term], codVars: Vector[Term]) =
+      allVars.splitAt(vars.size)
+    val varPairs = domVars.zip(codVars)
+    val interLeaved = allVars.flatMap((v) => varPairs.filter(_._1 == v).map{case (a, b) => Vector(a, b)}.getOrElse(Vector(v)))
+    if (domVars.size < 2) data else polyLambda(interLeaved.toList, value)
+  }
+
   def proofLift: (Term, Term) => Task[Term] = {
 //    case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
 //      Task.pure(lmbda(pt.variable)(pt.value)) // FIXME do not need this case
-    case (w: Typ[u], tp: Typ[v]) => Task.eval { (w.Var) :-> tp } // should be in all cases
+    case (w: Typ[u], tp: Typ[v]) =>
+      Task.eval { (w.Var) :-> tp } // should be in all cases
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
       val x = w.dom.Var
       proofLift(w(x), tp(x.asInstanceOf[a]))
@@ -575,7 +593,8 @@ case class RecFoldException(indMod: TermIndMod,
                             argsFmlyTerm: Vector[Term],
                             vec: Vector[Term],
                             fail: ApplnFailException)
-    extends IllegalArgumentException(s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail")
+    extends IllegalArgumentException(
+      s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail")
 
 case class LeanToTermMonix(defnMap: Map[Name, Term],
                            termIndModMap: Map[Name, TermIndMod]) { self =>
