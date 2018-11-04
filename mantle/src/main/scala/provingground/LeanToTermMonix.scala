@@ -36,7 +36,8 @@ object LeanToTermMonix {
     val (baseVars: Vector[Term], codVars: Vector[Term]) =
       allVars.splitAt(vars.size)
     val varPairs = domVars.zip(codVars)
-    val interLeaved = allVars.flatMap((v) => varPairs.filter(_._1 == v).map{case (a, b) => Vector(a, b)}.getOrElse(Vector(v)))
+    val interLeaved = allVars.flatMap((v) => varPairs.find(_._1 == v).map{case (a, b) => Vector(a, b)}.getOrElse(Vector(v)))
+    pprint.log(s"${domVars.size} domain vars in $intro for $typF; var types ${vars.map(_.typ)}")
     if (domVars.size < 2) data else polyLambda(interLeaved.toList, value)
   }
 
