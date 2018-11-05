@@ -142,7 +142,7 @@ object ConstructorSeqMap {
                (x: Term) =>
                  (y: Term) =>
                    (cod: Typ[Cod]) =>
-                     if (W.replace(x, y) == W) None
+                     if (W.replace(x, y) == W && cod.replace(x, y) == cod && subs(x, y) == this) None
                      else Some(subs(x, y).dataCons(cod.replace(x, y))))
 
     def recDefn(X: Typ[Cod]) = dataCons(X)
@@ -167,7 +167,10 @@ object ConstructorSeqMap {
         (x) =>
           (y) =>
             (fib) =>
-              if (W.replace(x, y) == W) None
+              if (W.replace(x, y) == W && fib.replace(x, y) == fib && subs(x, y) == this
+            ) {
+                // pprint.log(fib.replace(x, y) == fib)
+                None}
               else Some(subs(x, y).indDataCons(fib.replace(x, y))))
 
     def inducDefn(fibre: Func[H, Typ[Cod]]) = indDataCons(fibre)

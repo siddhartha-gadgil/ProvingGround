@@ -1,233 +1,70 @@
-## This time an error in `bin_tree`
+## Error in `subtype`
 
-Note the source already before shuffling:
-```scala
-Vector('r, 's,
-  ('u : bin_tree('o)) ↦ (_ : 'p('u)) ↦ ('v : bin_tree('o)) ↦ (_ : 'p('v)) ↦ 't('u)('v), // the term
-  'q)
-Vector('r, 's,
-  ('u : bin_tree('o)) ↦ ('v : bin_tree('o)) ↦ ('w : 'p('u)) ↦ ('x : 'p('v)) ↦ 't('u)('v), // the term
-  'q)
-Vector('p(bin_tree.empty('o)), ∏('s : 'o){ 'p(bin_tree.leaf('o)('s)) },
-  ∏('u : bin_tree('o)){
-    ('p('u) → ∏('v : bin_tree('o)){ ('p('v) → 'p(bin_tree.node('o)('v)('v))) }) }, // the type giving error
-    bin_tree('o))
-Vector('p(bin_tree.empty('o)), ∏('s : 'o){ 'p(bin_tree.leaf('o)('s)) },
-  ∏('u : bin_tree('o)){
-    ∏('v : bin_tree('o)){ ('p('u) → ('p('v) → 'p(bin_tree.node('o)('v)('v)))) } },
-    bin_tree('o))
-```
-* the term `'t('u)'v` unexpectedly has type `'p(bin_tree.node('o)('v)('v))` which gives an error.
-* this is even before shuffling
-* the full error and the raw expression are below.
+The mismatch is in the argument not having an inner symbol
 
 ```scala
-while parsing bin_tree.cases_on, got provingground.interface.LeanParser$ParseException:
-provingground.interface.RecFoldException: Failure to fold recursive Function for bin_tree,
-recursion function
-  (InducDataSym((bin_tree.empty) ('o)) :  ('p) ((bin_tree.empty) ('o))) ↦ ((InducDataSym((bin_tree.leaf) ('o)) :  ($bzryq : 'o ) ~> (('p) (((bin_tree.leaf) ('o)) ($bzryq)))) ↦ ((InducDataSym((bin_tree.node) ('o)) :  ($bzsdp : (bin_tree) ('o) ) ~> ((('p) ($bzsdp)) → (($bzstd : (bin_tree) ('o) ) ~> ((('p) ($bzstd)) → (('p) ((((bin_tree.node) ('o)) ($bzsdp)) ($bzstd))))))) ↦ (ind((bin_tree) ('o))(($bzqod :  (bin_tree) ('o)) ↦ (('p) ($bzqod)))(InducDataSym((bin_tree.empty) ('o)))(InducDataSym((bin_tree.leaf) ('o)))(InducDataSym((bin_tree.node) ('o))))))
-with error provingground.HoTT$ApplnFailException:
-function
-  (InducDataSym((bin_tree.node) ('o)) :  ($bzsdp : (bin_tree) ('o) ) ~> ((('p) ($bzsdp)) → (($bzstd : (bin_tree) ('o) ) ~> ((('p) ($bzstd)) → (('p) ((((bin_tree.node) ('o)) ($bzsdp)) ($bzstd))))))) ↦ (ind((bin_tree) ('o))(($bzqod :  (bin_tree) ('o)) ↦ (('p) ($bzqod)))('r)('s)(InducDataSym((bin_tree.node) ('o))))
-with domain(optional)
-Some(
-  ($bzsdp : (bin_tree) ('o) ) ~> ((('p) ($bzsdp)) → (($bzstd : (bin_tree) ('o) ) ~> ((('p) ($bzstd)) → (('p) ((((bin_tree.node) ('o)) ($bzsdp)) ($bzstd)))))))
-cannot act on given term
-  ('u :  (bin_tree) ('o)) ↦ ((_ :  ('p) ('u)) ↦ (('v :  (bin_tree) ('o)) ↦ ((_ :  ('p) ('v)) ↦ ((('t) ('u)) ('v)))))
-with type
-  ('u : (bin_tree) ('o) ) ~> ((('p) ('u)) → (('v : (bin_tree) ('o) ) ~> ((('p) ('v)) → (('p) ((((bin_tree.node) ('o)) ('v)) ('v))))))
+@ ape.domOpt.get
+res9: Typ[u] = SymbProp(ApplnSym(SymbolicFunc('u, SymbTyp('t, 0), Prop), SymbObj(Name("$agynv"), SymbTyp('t, 0))))
 
-Modifier:
-Some(
-  λ {α : Type u} {C : (∀ (n_0 : @bin_tree.{u} α), Sort l)}
-  (n : @bin_tree.{u} α)
-  (e_1 : C (@bin_tree.empty.{u} α))
-  (e_2 : (∀ (val : α), C (@bin_tree.leaf.{u} α val)))
-  (e_3 :
-    (∀ (left right : @bin_tree.{u} α), C (@bin_tree.node.{u} α left right))),
-    @bin_tree.rec.{l u} α C e_1 (λ (val : α), e_2 val)
-      (λ (left right : @bin_tree.{u} α) (ih_left : C left) (ih_right : C right),
-        e_3 left right) n)
+@ ape.argType
+res10: Typ[U] = SymbProp(ApplnSym(SymbolicFunc(Name("'u"), SymbTyp('t, 0), Prop), SymbObj(Name("$agynv"), SymbTyp('t, 0))))
 ```
 
-* In terms of the modifier, `'o` is `\alpha`, `'p` is `C`, `'u` and `'v` are _left_ and _right_ and `'t` is `e_3`.
-* If that is so, then getting witnesses is suspicious, and can explain not distinguishing left and right.
-
+In fansi notation
 ```scala
+@ ape.func
+res59: Term = subtype.mk('t)('u)($agynv)
+
+@ ape.domOpt.get
+res60: Typ[u] = 'u($agynv)
+
+@ ape.argType
+res61: Typ[U] = 'u($agynv)
+```
+
+with the expression to parse
+
+```c
 Some(
+  λ {α : Sort u} {p : (∀ (a : α), Prop)}
+  {C : (∀ (n_0 : @subtype.{u} α p), Sort l)} (n : @subtype.{u} α p)
+  (e_1 :
+    (∀ (val : α) (property : p val), C (@subtype.mk.{u} α p val property))),
+      @subtype.rec.{l u} α p C e_1 n
+    )
+```
+
+The actual expression is
+```scala
+Lam(
+  Binding(Str(, "\u03b1"), Sort(Param(Str(, "u"))), Implicit),
   Lam(
-    Binding(Str(, "\u03b1"), Sort(Succ(Param(Str(, "u")))), Implicit),
+    Binding(Str(, "p"), Pi(Binding(Str(, "a"), Var(0), Default), Sort(Zero)), Implicit),
     Lam(
       Binding(
         Str(, "C"),
         Pi(
-          Binding(
-            Str(, "n"),
-            App(Const(Str(, "bin_tree"), Vector(Param(Str(, "u")))), Var(0)),
-            Default
-          ),
+          Binding(Str(, "n"), App(App(Const(Str(, "subtype"), Vector(Param(Str(, "u")))), Var(1)), Var(0)), Default),
           Sort(Param(Str(, "l")))
         ),
         Implicit
       ),
       Lam(
-        Binding(
-          Str(, "n"),
-          App(Const(Str(, "bin_tree"), Vector(Param(Str(, "u")))), Var(1)),
-          Default
-        ),
+        Binding(Str(, "n"), App(App(Const(Str(, "subtype"), Vector(Param(Str(, "u")))), Var(2)), Var(1)), Default),
         Lam(
           Binding(
             Str(, "e_1"),
-            App(
-              Var(1),
-              App(Const(Str(Str(, "bin_tree"), "empty"), Vector(Param(Str(, "u")))), Var(2))
-            ),
-            Default
-          ),
-          Lam(
-            Binding(
-              Str(, "e_2"),
+            Pi(
+              Binding(Str(, "val"), Var(3), Default),
               Pi(
-                Binding(Str(, "val"), Var(3), Default),
+                Binding(Str(, "property"), App(Var(3), Var(0)), Default),
                 App(
                   Var(3),
                   App(
-                    App(Const(Str(Str(, "bin_tree"), "leaf"), Vector(Param(Str(, "u")))), Var(4)),
+                    App(App(App(Const(Str(Str(, "subtype"), "mk"), Vector(Param(Str(, "u")))), Var(5)), Var(4)), Var(1)),
                     Var(0)
                   )
                 )
-              ),
-              Default
-            ),
-            Lam(
-              Binding(
-                Str(, "e_3"),
-                Pi(
-                  Binding(
-                    Str(, "left"),
-                    App(Const(Str(, "bin_tree"), Vector(Param(Str(, "u")))), Var(4)),
-                    Default
-                  ),
-                  Pi(
-                    Binding(
-                      Str(, "right"),
-                      App(Const(Str(, "bin_tree"), Vector(Param(Str(, "u")))), Var(5)),
-                      Default
-                    ),
-                    App(
-                      Var(5),
-                      App(
-                        App(
-                          App(
-                            Const(Str(Str(, "bin_tree"), "node"), Vector(Param(Str(, "u")))),
-                            Var(6)
-                          ),
-                          Var(1)
-                        ),
-                        Var(0)
-                      )
-                    )
-                  )
-                ),
-                Default
-              ),
-              App(
-                App(
-                  App(
-                    App(
-                      App(
-                        App(
-                          Const(
-                            Str(Str(, "bin_tree"), "rec"),
-                            Vector(Param(Str(, "l")), Param(Str(, "u")))
-                          ),
-                          Var(5)
-                        ),
-                        Var(4)
-                      ),
-                      Var(2)
-                    ),
-                    Lam(Binding(Str(, "val"), Var(5), Default), App(Var(2), Var(0)))
-                  ),
-                  Lam(
-                    Binding(
-                      Str(, "left"),
-                      App(Const(Str(, "bin_tree"), Vector(Param(Str(, "u")))), Var(5)),
-                      Default
-                    ),
-                    Lam(
-                      Binding(
-                        Str(, "right"),
-                        App(Const(Str(, "bin_tree"), Vector(Param(Str(, "u")))), Var(6)),
-                        Default
-                      ),
-                      Lam(
-                        Binding(Str(, "ih_left"), App(Var(6), Var(1)), Default),
-                        Lam(
-                          Binding(Str(, "ih_right"), App(Var(7), Var(1)), Default),
-                          App(App(Var(4), Var(3)), Var(2))
-                        )
-                      )
-                    )
-                  )
-                ),
-                Var(3)
-              )
-            )
-          )
-        )
-      )
-    )
-  )
-)
-
-
-```
-
-
-## Later error
-
-```scala
-while parsing bin_tree.leaf.inj, got provingground.interface.LeanParser$ParseException: provingground.interface.RecFoldException:
-Failure to fold recursive Function for bin_tree, recursion function
-  (InducDataSym((bin_tree.empty) ('o)) :  ('p) ((bin_tree.empty) ('o))) ↦ ((InducDataSym((bin_tree.leaf) ('o)) :  ($lxb : 'o ) ~> (('p) (((bin_tree.leaf) ('o)) ($lxb)))) ↦ ((InducDataSym((bin_tree.node) ('o)) :  ('u : (bin_tree) ('o) ) ~> ((('p) ('u)) → (('v : (bin_tree) ('o) ) ~> ((('p) ('v)) → (('p) ((((bin_tree.node) ('o)) ('u)) ('v))))))) ↦ (ind((bin_tree) ('o))(($kmo :  (bin_tree) ('o)) ↦ (('p) ($kmo)))(InducDataSym((bin_tree.empty) ('o)))(InducDataSym((bin_tree.leaf) ('o)))(InducDataSym((bin_tree.node) ('o))))))
-with error provingground.HoTT$ApplnFailException:
-function
-  (InducDataSym((bin_tree.node) ('o)) :  ('u : (bin_tree) ('o) ) ~> ((('p) ('u)) → (('v : (bin_tree) ('o) ) ~> ((('p) ('v)) → (('p) ((((bin_tree.node) ('o)) ('u)) ('v))))))) ↦ (ind((bin_tree) ('o))(($kmo :  (bin_tree) ('o)) ↦ (('p) ($kmo)))('r)('s)(InducDataSym((bin_tree.node) ('o))))
-with domain(optional)
-Some(
-  ('u : (bin_tree) ('o) ) ~> ((('p) ('u)) → (('v : (bin_tree) ('o) ) ~> ((('p) ('v)) → (('p) ((((bin_tree.node) ('o)) ('u)) ('v))))))
-) cannot act on given term
-  ('u :  (bin_tree) ('o)) ↦ ((_ :  ('p) ('u)) ↦ (('v :  (bin_tree) ('o)) ↦ ((_ :  ('p) ('v)) ↦ ((('t) ('u)) ('v)))))
-with type
-  ('u : (bin_tree) ('o) ) ~> ((('p) ('u)) → (('v : (bin_tree) ('o) ) ~> ((('p) ('v)) → (('p) ((((bin_tree.node) ('o)) ('v)) ('v))))))
-
-provingground.interface.LeanRoutes.parse:222 p.findDefMod(
-                trepplein.Name(name.split("\\."): _*)).map(_.value): Some(
-  Lam(
-    Binding(Str(, "\u03b1"), Sort(Succ(Param(Str(, "u")))), Implicit),
-    Lam(
-      Binding(Str(, "val"), Var(0), Implicit),
-      Lam(
-        Binding(Str(, "val"), Var(1), Implicit),
-        Lam(
-          Binding(
-            Str(, "a"),
-            App(
-              App(
-                App(
-                  Const(Str(, "eq"), Vector(Succ(Param(Str(, "u"))))),
-                  App(Const(Str(, "bin_tree"), Vector(Param(Str(, "u")))), Var(2))
-                ),
-                App(
-                  App(Const(Str(Str(, "bin_tree"), "leaf"), Vector(Param(Str(, "u")))), Var(2)),
-                  Var(1)
-                )
-              ),
-              App(
-                App(Const(Str(Str(, "bin_tree"), "leaf"), Vector(Param(Str(, "u")))), Var(2)),
-                Var(0)
               )
             ),
             Default
@@ -235,45 +72,123 @@ provingground.interface.LeanRoutes.parse:222 p.findDefMod(
           App(
             App(
               App(
-                App(
-                  App(
-                    App(
-                      Const(Str(Str(, "bin_tree"), "no_confusion"), Vector(Zero, Param(Str(, "u")))),
-                      Var(3)
-                    ),
-                    App(
-                      App(App(Const(Str(, "eq"), Vector(Succ(Param(Str(, "u"))))), Var(3)), Var(2)),
-                      Var(1)
-                    )
-                  ),
-                  App(
-                    App(Const(Str(Str(, "bin_tree"), "leaf"), Vector(Param(Str(, "u")))), Var(3)),
-                    Var(2)
-                  )
-                ),
-                App(
-                  App(Const(Str(Str(, "bin_tree"), "leaf"), Vector(Param(Str(, "u")))), Var(3)),
-                  Var(1)
-                )
+                App(App(Const(Str(Str(, "subtype"), "rec"), Vector(Param(Str(, "l")), Param(Str(, "u")))), Var(4)), Var(3)),
+                Var(2)
               ),
               Var(0)
             ),
-            Lam(
-              Binding(
-                Str(, "val_eq"),
-                App(
-                  App(App(Const(Str(, "eq"), Vector(Succ(Param(Str(, "u"))))), Var(3)), Var(2)),
-                  Var(1)
-                ),
-                Default
-              ),
-              Var(0)
-            )
+            Var(1)
           )
         )
       )
     )
   )
 )
+```
 
+The stack trace is:
+```
+provingground.HoTT$FuncLike.apply(HoTT.scala:1384),
+  provingground.HoTT$FuncLike.apply$(HoTT.scala:1383),
+  provingground.HoTT$SymbolicFunc.apply(HoTT.scala:1577),
+  provingground.induction.ConstructorPatternMap$CnstFncPtnMap.inducDataTyp(ConstructorPatternMap.scala:298),
+  provingground.induction.ConstructorPatternMap$CnstFncPtnMap.inducDataTyp(ConstructorPatternMap.scala:267),
+  provingground.induction.ConstructorPatternMap$CnstDepFuncPtnMap.inducDataTyp(ConstructorPatternMap.scala:373),
+  provingground.induction.ConstructorPatternMap$CnstDepFuncPtnMap.inducDataTyp(ConstructorPatternMap.scala:321),
+  provingground.induction.ConstructorSeqMap$Cons.inducData(ConstructorSeqMap.scala:156),
+  provingground.induction.ConstructorSeqMap$Cons.indDataCons(ConstructorSeqMap.scala:164),
+  provingground.induction.ConstructorSeqMap$Cons.$anonfun$indDataCons$3(ConstructorSeqMap.scala:171),
+  provingground.induction.InductiveDefinition$DataCons.subs(InductiveCaseDefinition.scala:103),
+  provingground.induction.InductiveDefinition$DataCons.subs(InductiveCaseDefinition.scala:62),
+  provingground.HoTT$Subs.replace(HoTT.scala:181),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.induction.InductiveDefinition$DataCons.replace(InductiveCaseDefinition.scala:62),
+  provingground.HoTT$ApplnSym.subs(HoTT.scala:1412),
+  provingground.HoTT$ApplnSym.subs(HoTT.scala:1405),
+  provingground.HoTT$.$anonfun$symSubs$4(HoTT.scala:564),
+  scala.Option.getOrElse(Option.scala:121),
+  provingground.HoTT$.$anonfun$symSubs$1(HoTT.scala:564),
+  provingground.HoTT$SymbObj.subs(HoTT.scala:524),
+  provingground.HoTT$Subs.replace(HoTT.scala:181),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$SymbObj.replace(HoTT.scala:513),
+  provingground.HoTT$LambdaFixed.subs(HoTT.scala:1829),
+  provingground.HoTT$LambdaFixed.subs(HoTT.scala:1794),
+  provingground.HoTT$Subs.replace(HoTT.scala:181),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaFixed.replace(HoTT.scala:1794),
+  provingground.HoTT$Subs.replace(HoTT.scala:168),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaFixed.replace(HoTT.scala:1794),
+  provingground.HoTT$Subs.replace(HoTT.scala:168),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaFixed.replace(HoTT.scala:1794),
+  provingground.HoTT$Subs.replace(HoTT.scala:173),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaFixed.replace(HoTT.scala:1794),
+  provingground.HoTT$LambdaLike.subs(HoTT.scala:1722),
+  provingground.HoTT$LambdaLike.subs$(HoTT.scala:1715),
+  provingground.HoTT$LambdaTerm.subs(HoTT.scala:1741),
+  provingground.HoTT$LambdaTerm.subs(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:181),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:168),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:168),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:176),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:173),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$LambdaLike.subs(HoTT.scala:1722),
+  provingground.HoTT$LambdaLike.subs$(HoTT.scala:1715),
+  provingground.HoTT$LambdaTerm.subs(HoTT.scala:1741),
+  provingground.HoTT$LambdaTerm.subs(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:181),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:176),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:173),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$LambdaLike.subs(HoTT.scala:1722),
+  provingground.HoTT$LambdaLike.subs$(HoTT.scala:1715),
+  provingground.HoTT$LambdaTerm.subs(HoTT.scala:1741),
+  provingground.HoTT$LambdaTerm.subs(HoTT.scala:1741),
+  provingground.HoTT$Subs.replace(HoTT.scala:181),
+  provingground.HoTT$Subs.replace$(HoTT.scala:154),
+  provingground.HoTT$LambdaTerm.replace(HoTT.scala:1741),
+  provingground.HoTT$.lambda(HoTT.scala:1981),
+  provingground.interface.LeanParser.$anonfun$parse$13(LeanParser.scala:328),
+  monix.eval.Task$Map.apply(Task.scala:2995),
+  monix.eval.Task$Map.apply(Task.scala:2991),
+  monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:121),
+  monix.eval.internal.TaskRunLoop$RestartCallback.onSuccess(TaskRunLoop.scala:537),
+  monix.eval.Callback$$anon$2.$anonfun$onSuccess$1(Callback.scala:106),
+  monix.execution.schedulers.TrampolineExecutionContext.monix$execution$schedulers$TrampolineExecutionContext$$localRunLoop(TrampolineExecutionContext.scala:109),
+  monix.execution.schedulers.TrampolineExecutionContext.startLoopOptimal(TrampolineExecutionContext.scala:93),
+  monix.execution.schedulers.TrampolineExecutionContext.execute(TrampolineExecutionContext.scala:78),
+  monix.execution.schedulers.BatchingScheduler.execute(BatchingScheduler.scala:50),
+  monix.execution.schedulers.BatchingScheduler.execute$(BatchingScheduler.scala:47),
+  monix.execution.schedulers.AsyncScheduler.execute(AsyncScheduler.scala:29),
+  monix.execution.schedulers.ExecuteExtensions.executeTrampolined(ExecuteExtensions.scala:86),
+  monix.execution.schedulers.ExecuteExtensions.executeTrampolined$(ExecuteExtensions.scala:85),
+  monix.execution.Scheduler$Extensions.executeTrampolined(Scheduler.scala:256),
+  monix.eval.Callback$$anon$2.onSuccess(Callback.scala:106),
+  monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:117),
+  monix.eval.internal.TaskRunLoop$RestartCallback.onSuccess(TaskRunLoop.scala:537),
+  monix.eval.Task$$anon$3.run(Task.scala:2161),
+  java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402),
+  java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289),
+  java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056),
+  java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692),
+  java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+)
 ```

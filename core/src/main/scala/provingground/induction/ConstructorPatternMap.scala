@@ -283,7 +283,7 @@ object ConstructorPatternMap {
                                              HI] { self =>
 
     def subs(x: Term, y: Term) =
-      CnstFncPtnMap(tail.subs(x, y), head.subs(x, y))
+      CnstFncPtnMap(tail.replace(x, y), head.subs(x, y))
 
     val headfibre = (t: T) => head
 
@@ -295,6 +295,7 @@ object ConstructorPatternMap {
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[Cod]])(
         cons: Func[T, HC]): Typ[FuncLike[T, HI]] = {
       val a        = tail.Var
+      if (a.typ != cons.dom) {pprint.log(a); pprint.log(a.typ); pprint.log(cons.dom); pprint.log(cons)}
       val headcons = cons(a)
       val fibre    = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
       piDefn(a)(head.inducDataTyp(w, xs)(headcons))
@@ -369,6 +370,7 @@ object ConstructorPatternMap {
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
         cons: FuncLike[T, HC]): Typ[InducDataType] = {
       val a        = tail.Var
+      if (a.typ != cons.dom) {pprint.log(a); pprint.log(a.typ); pprint.log(cons.dom); pprint.log(cons)}
       val headcons = cons(a)
       val fibre    = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
       piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
