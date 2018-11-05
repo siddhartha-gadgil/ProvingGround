@@ -336,7 +336,7 @@ class LeanParser(initMods: Seq[Modification],
             value <- parse(body, x +: vars).cancelable
             cod   <- Task.eval(toTyp(value))
           } yield
-            if (LeanInterface.usesVar(body, 0)) PiDefn(x, cod)
+            if (LeanInterface.usesVar(body, 0)) piDefn(x)(cod)
             else x.typ ->: cod
         case Let(domain, value, body) =>
           // pprint.log(s"let $domain, $value, $body")
