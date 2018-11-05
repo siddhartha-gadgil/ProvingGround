@@ -32,7 +32,7 @@ object LeanBug{
   lazy val p: LeanParser = parser
 
   lazy val expr: Expr =
-      p.findDefMod(trepplein.Name("nat", "less_than_or_equal", "drec")).get.value
+      p.findDefMod(trepplein.Name("bin_tree", "cases_on")).get.value
 
   lazy val tsk = p.parse(expr).materialize.map(t => t.failed)
 

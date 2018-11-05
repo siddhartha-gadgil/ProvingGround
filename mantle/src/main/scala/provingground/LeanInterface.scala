@@ -268,7 +268,10 @@ case class SimpleIndMod(name: Name,
               } else (indNew.recE(tp))
           }
         case pt: PiDefn[u, v] if isPropn && pt.domain == indNew.typ =>
-          indNew.inducE(LambdaFixed(pt.variable, pt.value))
+          indNew.inducE(
+            (pt.variable : Term) :-> pt.value
+            // LambdaFixedpt.variable, pt.value)
+          )
         case tp: Typ[u] if (isPropn) =>
           val x = tp.Var
           if (tp.dependsOn(x)) {
@@ -305,7 +308,10 @@ case class SimpleIndMod(name: Name,
               } else (indNew.recE(tp))
           }
         case pt: PiDefn[u, v] if isPropn && pt.domain == indNew.typ =>
-          indNew.inducE(LambdaFixed(pt.variable, pt.value))
+          indNew.inducE(
+            (pt.variable : Term) :-> pt.value
+            // LambdaFixed(pt.variable, pt.value)
+          )
         case tp: Typ[u] if (isPropn) =>
           val x = tp.Var
           if (tp.dependsOn(x)) {
