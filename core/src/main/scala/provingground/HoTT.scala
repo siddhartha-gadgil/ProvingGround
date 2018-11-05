@@ -2057,6 +2057,10 @@ object HoTT {
         case lt: LambdaLike[u, v] =>
           val (xs, y) = getVars(lt.value, n-1)
           (lt.variable +: xs, y)
+        case ft: FuncLike[u, v] =>
+          val x = ft.dom.Var
+          val (xs, y) = getVars(ft(x.asInstanceOf[u]), n-1)
+          (x +: xs, y)
         case _ => throw new Exception(s"expected lambda but got $t with type ${t.typ}")
       }
 

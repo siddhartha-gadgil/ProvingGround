@@ -206,11 +206,17 @@ class LeanParser(initMods: Seq[Modification],
       vec <- parseVec(xs, vars).cancelable // TODO should interleave data with intro rules.
       vecInter = indMod.interleaveData(vec) // Use this
       _ = pprint.log(s"${vec.map(_.fansi)}")
-      _ = if (vec != vecInter) pprint.log(s"$vecInter replaces $vec")
+      _ = if (vec != vecInter) {
+        pprint.log(s"$vecInter replaces $vec")
+        println(vecInter.map(_.fansi))
+        println(vec.map(_.fansi))
+        println(vecInter.map(_.typ.fansi))
+        println(vec.map(_.typ.fansi))
+      }
       recFn <- recFnT
-      resT = Task(foldFuncLean(recFn, vec)).onErrorRecoverWith {
+      resT = Task(foldFuncLean(recFn, vecInter)).onErrorRecoverWith {
         case err: ApplnFailException =>
-          throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
+          throw RecFoldException(indMod, recFn, argsFmlyTerm, vecInter, err)
       }
       res <- resT
     } yield res

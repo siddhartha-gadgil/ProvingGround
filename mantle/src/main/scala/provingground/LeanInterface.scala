@@ -205,7 +205,7 @@ sealed trait TermIndMod {
   def interleaveData(v: Vector[Term]) : Vector[Term] = {
     val (dataBase, extra) = v.splitAt(intros.size)
     val newBase = (intros.zip(dataBase)).map{
-      case (in, dat) => LeanToTermMonix.introShuffle(in, typF, dat)
+      case (in, dat) => LeanToTermMonix.introShuffle(in, typF, dat, numParams)
     }
     newBase ++ extra
   }
