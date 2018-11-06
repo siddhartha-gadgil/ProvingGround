@@ -99,6 +99,16 @@ object ConstructorSeqMap {
     def subs(x: Term, y: Term) = InducDataSym(cons.replace(x, y))
   }
 
+  case class ConsIndException[C <: Term with Subs[C],
+                  H <: Term with Subs[H],
+                  Cod <: Term with Subs[Cod],
+                  RD <: Term with Subs[RD],
+                  ID <: Term with Subs[ID],
+                  TR <: Term with Subs[TR],
+                  TI <: Term with Subs[TI],
+                  TIntros <: HList](cons: Cons[C, H, Cod, RD, ID, TR, TI, TIntros], fibre: Func[H, Typ[Cod]], error : Throwable)
+                  extends Exception(error.getMessage)
+
   /**
     * prepending an introduction rule to [[ConstructorSeqMap]]
     *
@@ -153,7 +163,11 @@ object ConstructorSeqMap {
       f => lmbda(data(X))(tail.recDataLambda(X)(f))
 
     def inducData(fibre: Func[H, Typ[Cod]]) =
-      pattern.inducDataTyp(W, fibre)(cons).symbObj(InducDataSym(cons))
+      scala.util.Try(
+        pattern.inducDataTyp(W, fibre)(cons).symbObj(InducDataSym(cons))).fold(
+          err => throw ConsIndException(this, fibre, err),
+          identity
+        )
 
     val inducDefn = (d: ID) =>
       (f: FuncLike[H, Cod]) => pattern.inducDefCase(cons, d, f)

@@ -21,6 +21,7 @@ import trepplein._
 import scala.meta
 
 import LeanInterface._
+import scala.util.Try
 
 object LeanParser {
   case class ParseException(exps: Vector[Expr],
@@ -33,6 +34,9 @@ object LeanParser {
         case _                                   => None
       }
   }
+
+  case class LambdaFormException(variable: Term, value: Term, error: Throwable) extends Exception(error.getMessage)
+
 
   sealed trait Log
 
@@ -320,12 +324,20 @@ class LeanParser(initMods: Seq[Modification],
           } yield
             value match {
               case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
+                pprint.log(fn)
                 fn
               // case y if domain.prettyName.toString == "_" => y
               case _                                      =>
                 // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
                 // else LambdaFixed(x, value)
-                lambda(x)(value)
+               Try(lambda(x)(value)).fold(err => {
+                 pprint.log(value)
+                 pprint.log(x)
+                 pprint.log(x.typ)
+                 throw LambdaFormException(x, value, err)
+               }
+                 ,res => res
+               )
             }
         case Pi(domain, body) =>
           // pprint.log(s"pi $domain, $body")

@@ -348,7 +348,7 @@ object ConstructorPatternMap {
 
     def subs(x: Term, y: Term) = {
 
-      CnstDepFuncPtnMap(tail.replace(x, y), (t: T) => headfibre(t).subs(x, y))
+      CnstDepFuncPtnMap(tail.replace(x, y), (t: T) => headfibre(t.replace(y, x)).subs(x, y))
     }
     //    type ConstructorType = FuncLike[Term, U]
 
@@ -600,7 +600,7 @@ object ConstructorShape {
 
     def subs(x: Term, y: Term) =
       CnstDepFuncConsShape(tail.replace(x, y),
-                           (t: T) => headfibre(t).subs(x, y))
+                           (t: T) => headfibre(t.replace(y, x)).subs(x, y))
   }
 }
 

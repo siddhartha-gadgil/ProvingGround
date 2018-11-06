@@ -481,7 +481,7 @@ object IndexedConstructorPatternMap {
 
     def subs(x: Term, y: Term) =
       IndexedCnstDepFncPtnMap(tail.subs(x, y),
-                              (t: T) => headfibre(t).subs(x, y))
+                              (t: T) => headfibre(t.replace(y, x)).subs(x, y))
 
     def recDataTyp(w: Fb, x: Typ[Cod]) = {
       val a     = tail.Var
@@ -859,7 +859,7 @@ object IndexedConstructorShape {
 
     def subs(x: Term, y: Term) =
       IndexedCnstDepFuncConsShape(tail.replace(x, y),
-                                  (t: T) => headfibre(t).subs(x, y))
+                                  (t: T) => headfibre(t.replace(y, x)).subs(x, y))
   }
 }
 
