@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -292,7 +292,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="QField$.html" class="extype" name="provingground.scalahott.QField">QField</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 170.00 155.00" height="155pt" width="170pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 166,-151 166,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.scalahott.SymbolicField (this class)" xlink:href="#inheritance-diagram"><path d="M129.6667,-86C129.6667,-86 32.3333,-86 32.3333,-86 28.1667,-86 24,-81.8333 24,-77.6667 24,-77.6667 24,-69.3333 24,-69.3333 24,-65.1667 28.1667,-61 32.3333,-61 32.3333,-61 129.6667,-61 129.6667,-61 133.8333,-61 138,-65.1667 138,-69.3333 138,-69.3333 138,-77.6667 138,-77.6667 138,-81.8333 133.8333,-86 129.6667,-86" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-80.5" x="34" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="55" text-anchor="start">SymbolicField[A]</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.scalahott.QField" xlink:href="QField$.html#inheritance-diagram"><path d="M107.6667,-25C107.6667,-25 54.3333,-25 54.3333,-25 50.1667,-25 46,-20.8333 46,-16.6667 46,-16.6667 46,-8.3333 46,-8.3333 46,-4.1667 50.1667,0 54.3333,0 54.3333,0 107.6667,0 107.6667,0 111.8333,0 116,-4.1667 116,-8.3333 116,-8.3333 116,-16.6667 116,-16.6667 116,-20.8333 111.8333,-25 107.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="56" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="77" text-anchor="start">QField</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="QField is a subtype of SymbolicField[A]"><path d="M81,-53.7386C81,-44.3393 81,-33.3803 81,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="78.5501,-53.8607 81,-60.8608 83.4501,-53.8608 78.5501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.scalahott.SymbolicCRing" xlink:href="SymbolicCRing.html#inheritance-diagram"><path d="M132.6667,-147C132.6667,-147 29.3333,-147 29.3333,-147 25.1667,-147 21,-142.8333 21,-138.6667 21,-138.6667 21,-130.3333 21,-130.3333 21,-126.1667 25.1667,-122 29.3333,-122 29.3333,-122 132.6667,-122 132.6667,-122 136.8333,-122 141,-126.1667 141,-130.3333 141,-130.3333 141,-138.6667 141,-138.6667 141,-142.8333 136.8333,-147 132.6667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="31" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="52" text-anchor="start">SymbolicCRing[A]</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="SymbolicField[A] is a subtype of SymbolicCRing[A]"><path d="M81,-114.7386C81,-105.3393 81,-94.3803 81,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="78.5501,-114.8607 81,-121.8608 83.4501,-114.8608 78.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -318,6 +328,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.scalahott.SymbolicField"><span>SymbolicField</span></li><li class="in" name="provingground.scalahott.SymbolicCRing"><span>SymbolicCRing</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -359,9 +374,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="provingground.scalahott.SymbolicCRing.AddLiteral" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="AddLiteral:AddLiteral"></a>
+      <a id="AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="AddLiteral:AddLiteral"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -370,14 +385,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="SymbolicCRing$AddLiteral.html"><span class="name">AddLiteral</span></a><span class="params">(<span name="a">a: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="SymbolicCRing$AddLiteral.html"><span class="name">AddLiteral</span></a><span class="params">(<span name="a">a: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing.AddTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="AddTerm:AddTerm"></a>
+      <a id="AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="AddTerm:AddTerm"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -386,7 +401,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="returns function x + _ where x is not a literal and is indecomposable under sum" href="SymbolicCRing$AddTerm.html"><span class="name">AddTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="returns function x + _ where x is not a literal and is indecomposable under sum" href="SymbolicCRing$AddTerm.html"><span class="name">AddTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">returns function x + _ where x is not a literal and is indecomposable under sum
@@ -448,9 +463,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing.multLiteral" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="multLiteral:multLiteral"></a>
+      <a id="multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="multLiteral:multLiteral"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -459,14 +474,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="SymbolicCRing$multLiteral.html"><span class="name">multLiteral</span></a><span class="params">(<span name="b">b: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="SymbolicCRing$multLiteral.html"><span class="name">multLiteral</span></a><span class="params">(<span name="b">b: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing.multTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="multTerm:multTerm"></a>
+      <a id="multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="multTerm:multTerm"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -475,7 +490,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="SymbolicCRing$multTerm.html"><span class="name">multTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="SymbolicCRing$multTerm.html"><span class="name">multTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
@@ -713,6 +728,49 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(SymbolicField[A],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -785,6 +843,86 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((SymbolicField[A])⇒Boolean,⇒Any):SymbolicField[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((SymbolicField[A])⇒Boolean):SymbolicField[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):SymbolicField[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):SymbolicField[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -871,10 +1009,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.scalahott.SymbolicCRing#funcSum" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A],SymbolicCRing.this.LocalTerm]"></a><a id="funcSum((LocalTerm)⇒LocalTerm,(LocalTerm)⇒LocalTerm):Func[RepTerm[A],LocalTerm]"></a>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicField.html#funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A],SymbolicCRing.this.LocalTerm]" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#formatted(fmtstr:String):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -883,7 +1021,30 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">funcSum</span><span class="params">(<span name="f">f: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a></span>, <span name="g">g: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a></span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>], <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a>]</span>
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.scalahott.SymbolicCRing#funcSum" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[A]],SymbolicCRing.this.LocalTerm]"></a><a id="funcSum((LocalTerm)⇒LocalTerm,(LocalTerm)⇒LocalTerm):Func[RepTerm[A]withSubs[RepTerm[A]],LocalTerm]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[A]],SymbolicCRing.this.LocalTerm]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">funcSum</span><span class="params">(<span name="f">f: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a></span>, <span name="g">g: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a></span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]], <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
@@ -942,9 +1103,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing#minusone" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="minusone:SymbolicCRing.this.LocalTermwithprovingground.HoTT.Subs[SymbolicCRing.this.LocalTerm]"></a><a id="minusone:LocalTermwithSubs[LocalTerm]"></a>
+      <a id="minusone:SymbolicCRing.this.LocalTerm"></a><a id="minusone:LocalTerm"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicField.html#minusone:SymbolicCRing.this.LocalTermwithprovingground.HoTT.Subs[SymbolicCRing.this.LocalTerm]" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#minusone:SymbolicCRing.this.LocalTerm" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -953,7 +1114,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">minusone</span><span class="result">: <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a>]</span>
+        <span class="name">minusone</span><span class="result">: <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicField.LocalTerm">LocalTerm</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
@@ -1234,6 +1395,26 @@ should be overridden in fields, where negative powers are meaningful
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(SymbolicField[A],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/SymbolicField.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1251,7 +1432,23 @@ should be overridden in fields, where negative powers are meaningful
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.SymbolicField">SymbolicField</a>[<span class="extype" name="provingground.scalahott.SymbolicField.A">A</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

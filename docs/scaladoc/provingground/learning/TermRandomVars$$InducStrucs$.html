@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -124,6 +124,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.learning">learning</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="object" href="TermRandomVars$$FuncOpt$.html" title=""></a>
+                        <a href="TermRandomVars$$FuncOpt$.html" title="">FuncOpt</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="TermRandomVars$$FuncWithDom.html" title=""></a>
+                        <a href="TermRandomVars$$FuncWithDom.html" title="">FuncWithDom</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="object" href="TermRandomVars$$Funcs$.html" title="distribution of functions : as existentials, not as terms"></a>
                         <a href="TermRandomVars$$Funcs$.html" title="distribution of functions : as existentials, not as terms">Funcs</a>
                       </li><li class="current-entities indented3">
@@ -180,6 +188,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermRandomVars$$TypFamilies$.html" title="distribution of type families">TypFamilies</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="object" href="TermRandomVars$$TypFamilyOpt$.html" title=""></a>
+                        <a href="TermRandomVars$$TypFamilyOpt$.html" title="">TypFamilyOpt</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="TermRandomVars$$TypOpt$.html" title=""></a>
+                        <a href="TermRandomVars$$TypOpt$.html" title="">TypOpt</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="object" href="TermRandomVars$$Typs$.html" title="distribution of types"></a>
                         <a href="TermRandomVars$$Typs$.html" title="distribution of types">Typs</a>
                       </li><li class="current-entities indented3">
@@ -190,6 +206,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="TermRandomVars$$TypsFromFamily.html" title="distribution of types obtained by full application in a type family"></a>
                         <a href="TermRandomVars$$TypsFromFamily.html" title="distribution of types obtained by full application in a type family">TypsFromFamily</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="TermRandomVars$$WithTyp.html" title=""></a>
+                        <a href="TermRandomVars$$WithTyp.html" title="">WithTyp</a>
                       </li>
               </ul>
             </div>
@@ -213,7 +233,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">InducStrucs</span><span class="result"> extends <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">InducStrucs</span><span class="result"> extends <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -223,7 +243,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>], <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>], <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -341,7 +361,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#at" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="at(x:Dom):provingground.learning.RandomVar.AtCoord[Dom,O]"></a><a id="at(HNil):AtCoord[HNil,ExstInducStruc]"></a>
+      <a id="at(x:Dom):provingground.learning.RandomVar.AtCoord[Dom,O]"></a><a id="at(HNil):AtCoord[HNil,ExstInducStrucs]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermRandomVars$$InducStrucs$.html#at(x:Dom):provingground.learning.RandomVar.AtCoord[Dom,O]" title="Permalink">
         <i class="material-icons"></i>
@@ -352,7 +372,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">at</span><span class="params">(<span name="x">x: <span class="extype" name="shapeless.HNil">HNil</span></span>)</span><span class="result">: <a href="RandomVar$$AtCoord.html" class="extype" name="provingground.learning.RandomVar.AtCoord">AtCoord</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>
+        <span class="name">at</span><span class="params">(<span name="x">x: <span class="extype" name="shapeless.HNil">HNil</span></span>)</span><span class="result">: <a href="RandomVar$$AtCoord.html" class="extype" name="provingground.learning.RandomVar.AtCoord">AtCoord</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
@@ -454,9 +474,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#init" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y::shapeless.HNil,Y]"></a><a id="init[Y&gt;:ExstInducStruc]:BasePi[HNil,::[Y,HNil],Y]"></a>
+      <a id="init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y]"></a><a id="init[Y&gt;:ExstInducStrucs]:BasePi[HNil,Y]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermRandomVars$$InducStrucs$.html#init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y::shapeless.HNil,Y]" title="Permalink">
+      <a href="../../provingground/learning/TermRandomVars$$InducStrucs$.html#init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -465,7 +485,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">init</span><span class="tparams">[<span name="Y">Y &gt;: <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>]</span><span class="result">: <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>, <span class="extype" name="shapeless.HNil">HNil</span>], <span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>]</span>
+        <span class="name">init</span><span class="tparams">[<span name="Y">Y &gt;: <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>]</span><span class="result">: <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
@@ -556,7 +576,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
     </li><li name="provingground.learning.RandomVar#range" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="range:provingground.learning.Sort[_,O]"></a><a id="range:Sort[_,ExstInducStruc]"></a>
+      <a id="range:provingground.learning.Sort[_,O]"></a><a id="range:Sort[_,ExstInducStrucs]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermRandomVars$$InducStrucs$.html#range:provingground.learning.Sort[_,O]" title="Permalink">
         <i class="material-icons"></i>
@@ -567,12 +587,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">range</span><span class="result">: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[_, <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>
+        <span class="name">range</span><span class="result">: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[_, <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a></dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#rangeFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="rangeFamily:Dom=&gt;provingground.learning.Sort[_,O]"></a><a id="rangeFamily:(HNil)⇒Sort[_,ExstInducStruc]"></a>
+      <a id="rangeFamily:Dom=&gt;provingground.learning.Sort[_,O]"></a><a id="rangeFamily:(HNil)⇒Sort[_,ExstInducStrucs]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermRandomVars$$InducStrucs$.html#rangeFamily:Dom=&gt;provingground.learning.Sort[_,O]" title="Permalink">
         <i class="material-icons"></i>
@@ -583,7 +603,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">rangeFamily</span><span class="result">: (<span class="extype" name="shapeless.HNil">HNil</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[_, <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</span>
+        <span class="name">rangeFamily</span><span class="result">: (<span class="extype" name="shapeless.HNil">HNil</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[_, <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
@@ -604,7 +624,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#target" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="target[State,Boat,V,Y&gt;:O]:provingground.learning.NodeCoeffs.Target[State,Boat,V,Dom,Y]"></a><a id="target[State,Boat,V,Y&gt;:ExstInducStruc]:Target[State,Boat,V,HNil,Y]"></a>
+      <a id="target[State,Boat,V,Y&gt;:O]:provingground.learning.NodeCoeffs.Target[State,Boat,V,Dom,Y]"></a><a id="target[State,Boat,V,Y&gt;:ExstInducStrucs]:Target[State,Boat,V,HNil,Y]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermRandomVars$$InducStrucs$.html#target[State,Boat,V,Y&gt;:O]:provingground.learning.NodeCoeffs.Target[State,Boat,V,Dom,Y]" title="Permalink">
         <i class="material-icons"></i>
@@ -615,7 +635,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">target</span><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>, <span name="V">V</span>, <span name="Y">Y &gt;: <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>]</span><span class="result">: <a href="NodeCoeffs$$Target.html" class="extype" name="provingground.learning.NodeCoeffs.Target">Target</a>[<span class="extype" name="provingground.learning.RandomVarFamily.target.State">State</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.Boat">Boat</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.V">V</span>, <span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.Y">Y</span>]</span>
+        <span class="name">target</span><span class="tparams">[<span name="State">State</span>, <span name="Boat">Boat</span>, <span name="V">V</span>, <span name="Y">Y &gt;: <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>]</span><span class="result">: <a href="NodeCoeffs$$Target.html" class="extype" name="provingground.learning.NodeCoeffs.Target">Target</a>[<span class="extype" name="provingground.learning.RandomVarFamily.target.State">State</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.Boat">Boat</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.V">V</span>, <span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.RandomVarFamily.target.Y">Y</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>
@@ -706,9 +726,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="provingground.learning.RandomVar">
-              <h3>Inherited from <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</h3>
+              <h3>Inherited from <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]</h3>
             </div><div class="parent" name="provingground.learning.RandomVarFamily">
-              <h3>Inherited from <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>]</h3>
+              <h3>Inherited from <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">

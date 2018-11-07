@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -124,6 +124,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.learning">learning</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="object" href="TermRandomVars$$FuncOpt$.html" title=""></a>
+                        <a href="TermRandomVars$$FuncOpt$.html" title="">FuncOpt</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="TermRandomVars$$FuncWithDom.html" title=""></a>
+                        <a href="TermRandomVars$$FuncWithDom.html" title="">FuncWithDom</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="object" href="TermRandomVars$$Funcs$.html" title="distribution of functions : as existentials, not as terms"></a>
                         <a href="TermRandomVars$$Funcs$.html" title="distribution of functions : as existentials, not as terms">Funcs</a>
                       </li><li class="current-entities indented3">
@@ -180,6 +188,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermRandomVars$$TypFamilies$.html" title="distribution of type families">TypFamilies</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="object" href="TermRandomVars$$TypFamilyOpt$.html" title=""></a>
+                        <a href="TermRandomVars$$TypFamilyOpt$.html" title="">TypFamilyOpt</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="TermRandomVars$$TypOpt$.html" title=""></a>
+                        <a href="TermRandomVars$$TypOpt$.html" title="">TypOpt</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="object" href="TermRandomVars$$Typs$.html" title="distribution of types"></a>
                         <a href="TermRandomVars$$Typs$.html" title="distribution of types">Typs</a>
                       </li><li class="current-entities indented3">
@@ -190,6 +206,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="TermRandomVars$$TypsFromFamily.html" title="distribution of types obtained by full application in a type family"></a>
                         <a href="TermRandomVars$$TypsFromFamily.html" title="distribution of types obtained by full application in a type family">TypsFromFamily</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="TermRandomVars$$WithTyp.html" title=""></a>
+                        <a href="TermRandomVars$$WithTyp.html" title="">WithTyp</a>
                       </li>
               </ul>
             </div>
@@ -485,9 +505,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#init" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y::shapeless.HNil,Y]"></a><a id="init[Y&gt;:Typ[Term]]:BasePi[HNil,::[Y,HNil],Y]"></a>
+      <a id="init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y]"></a><a id="init[Y&gt;:Typ[Term]]:BasePi[HNil,Y]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermRandomVars$$TargetTyps$.html#init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y::shapeless.HNil,Y]" title="Permalink">
+      <a href="../../provingground/learning/TermRandomVars$$TargetTyps$.html#init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -496,7 +516,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">init</span><span class="tparams">[<span name="Y">Y &gt;: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>]</span><span class="result">: <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>, <span class="extype" name="shapeless.HNil">HNil</span>], <span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>]</span>
+        <span class="name">init</span><span class="tparams">[<span name="Y">Y &gt;: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>]</span><span class="result">: <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a></dd></dl></div>

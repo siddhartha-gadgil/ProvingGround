@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -179,9 +179,9 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
                         <a class="class" href="ExstInducDefn.html" title=""></a>
                         <a href="ExstInducDefn.html" title="">ExstInducDefn</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="ExstInducStruc$.html" title=""></a>
-                        <a class="trait" href="ExstInducStruc.html" title="term level inductive structure for runtime contexts"></a>
-                        <a href="ExstInducStruc.html" title="term level inductive structure for runtime contexts">ExstInducStruc</a>
+                        <a class="object" href="ExstInducStrucs$.html" title=""></a>
+                        <a class="trait" href="ExstInducStrucs.html" title="term level inductive structures for runtime contexts"></a>
+                        <a href="ExstInducStrucs.html" title="term level inductive structures for runtime contexts">ExstInducStrucs</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="IndTyp.html" title=""></a>
@@ -342,7 +342,17 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 272.00 118.00" height="118pt" width="272pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 268,-114 268,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.induction.ConstructorTypTL (this class)" xlink:href="#inheritance-diagram"><path d="M231.6667,-49C231.6667,-49 32.3333,-49 32.3333,-49 28.1667,-49 24,-44.8333 24,-40.6667 24,-40.6667 24,-32.3333 24,-32.3333 24,-28.1667 28.1667,-24 32.3333,-24 32.3333,-24 231.6667,-24 231.6667,-24 235.8333,-24 240,-28.1667 240,-32.3333 240,-32.3333 240,-40.6667 240,-40.6667 240,-44.8333 235.8333,-49 231.6667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="34" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="55" text-anchor="start">ConstructorTypTL[S, H, ConstructorType]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="scala.Product"><path d="M111.1667,-110C111.1667,-110 50.8333,-110 50.8333,-110 46.6667,-110 42.5,-105.8333 42.5,-101.6667 42.5,-101.6667 42.5,-93.3333 42.5,-93.3333 42.5,-89.1667 46.6667,-85 50.8333,-85 50.8333,-85 111.1667,-85 111.1667,-85 115.3333,-85 119.5,-89.1667 119.5,-93.3333 119.5,-93.3333 119.5,-101.6667 119.5,-101.6667 119.5,-105.8333 115.3333,-110 111.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="53" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="74" text-anchor="start">Product</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="ConstructorTypTL[S, H, ConstructorType] is a subtype of Product"><path d="M96.1359,-79.3963C104.2837,-69.6509 114.1326,-57.8708 121.4463,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="94.1776,-77.9189 91.5672,-84.8608 97.9368,-81.0619 94.1776,-77.9189" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Serializable"><path d="M222.1667,-110C222.1667,-110 145.8333,-110 145.8333,-110 141.6667,-110 137.5,-105.8333 137.5,-101.6667 137.5,-101.6667 137.5,-93.3333 137.5,-93.3333 137.5,-89.1667 141.6667,-85 145.8333,-85 145.8333,-85 222.1667,-85 222.1667,-85 226.3333,-85 230.5,-89.1667 230.5,-93.3333 230.5,-93.3333 230.5,-101.6667 230.5,-101.6667 230.5,-105.8333 226.3333,-110 222.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="148" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="169" text-anchor="start">Serializable</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="ConstructorTypTL[S, H, ConstructorType] is a subtype of Serializable"><path d="M168.5673,-79.3963C160.2598,-69.6509 150.2178,-57.8708 142.7606,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="166.8199,-81.123 173.2256,-84.8608 170.5489,-77.9442 166.8199,-81.123" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -368,6 +378,11 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.induction.ConstructorTypTL"><span>ConstructorTypTL</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -445,6 +460,26 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
     </li><li name="provingground.induction.ConstructorTypTL#--&gt;&gt;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="--&gt;&gt;:[F&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[F]](that:provingground.induction.IterFuncShape[H,F]):provingground.induction.ConstructorTypTL[provingground.induction.ConstructorShape.FuncConsShape.type::S,H,provingground.HoTT.Func[F,ConstructorType]]"></a><a id="--&gt;&gt;:[F&lt;:TermwithSubs[F]](IterFuncShape[H,F]):ConstructorTypTL[::[FuncConsShape.type,S],H,Func[F,ConstructorType]]"></a>
       <span class="permalink">
@@ -481,6 +516,29 @@ invoking this is an error if we </code>that<code> is independent of </code>W<cod
       <p class="shortcomment cmt">returns constructor with shape <code>W -&gt; this';
 invoking this is an error if we </code>that<code> is not </code>W<code>
 </code></p>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(ConstructorTypTL[S,H,ConstructorType],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="provingground.induction.ConstructorTypTL#-&gt;&gt;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="-&gt;&gt;:[T&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[T]](that:provingground.HoTT.Typ[T]):provingground.induction.ConstructorTypTL[provingground.induction.ConstructorShape.CnstFuncConsShape.type::S,H,provingground.HoTT.Func[T,ConstructorType]]"></a><a id="-&gt;&gt;:[T&lt;:TermwithSubs[T]](Typ[T]):ConstructorTypTL[::[CnstFuncConsShape.type,S],H,Func[T,ConstructorType]]"></a>
       <span class="permalink">
@@ -571,6 +629,86 @@ invoking this is an error if we </code>that<code> is not independent of </code>W
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((ConstructorTypTL[S,H,ConstructorType])⇒Boolean,⇒Any):ConstructorTypTL[S,H,ConstructorType]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((ConstructorTypTL[S,H,ConstructorType])⇒Boolean):ConstructorTypTL[S,H,ConstructorType]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):ConstructorTypTL[S,H,ConstructorType]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):ConstructorTypTL[S,H,ConstructorType]"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -607,6 +745,29 @@ invoking this is an error if we </code>that<code> is not independent of </code>W
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -832,6 +993,26 @@ invoking this is an error if we </code>that<code> is not independent of </code>W
       <p class="shortcomment cmt">returns constructor with shape <code>that ~&gt; this' where </code>that<code> is a type A;
 invoking this is an error if we </code>that<code> is not independent of </code>W<code>
 </code></p>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(ConstructorTypTL[S,H,ConstructorType],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ConstructorTypTL.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -855,7 +1036,23 @@ invoking this is an error if we </code>that<code> is not independent of </code>W
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ConstructorTypTL">ConstructorTypTL</a>[<span class="extype" name="provingground.induction.ConstructorTypTL.S">S</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.H">H</span>, <span class="extype" name="provingground.induction.ConstructorTypTL.ConstructorType">ConstructorType</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

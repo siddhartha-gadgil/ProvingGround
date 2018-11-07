@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -484,7 +496,17 @@ Includes:
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 381.50 118.00" height="118pt" width="382pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 377.5,-114 377.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.HoTT.SymbObj (this class)" xlink:href="#inheritance-diagram"><path d="M214.1667,-49C214.1667,-49 135.8333,-49 135.8333,-49 131.6667,-49 127.5,-44.8333 127.5,-40.6667 127.5,-40.6667 127.5,-32.3333 127.5,-32.3333 127.5,-28.1667 131.6667,-24 135.8333,-24 135.8333,-24 214.1667,-24 214.1667,-24 218.3333,-24 222.5,-28.1667 222.5,-32.3333 222.5,-32.3333 222.5,-40.6667 222.5,-40.6667 222.5,-44.8333 218.3333,-49 214.1667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-43.5" x="138" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="159" text-anchor="start">SymbObj[U]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.HoTT.Term" xlink:href="HoTT$$Term.html#inheritance-diagram"><path d="M57.6667,-110C57.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 57.6667,-85 57.6667,-85 61.8333,-85 66,-89.1667 66,-93.3333 66,-93.3333 66,-101.6667 66,-101.6667 66,-105.8333 61.8333,-110 57.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31" text-anchor="start">Term</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="SymbObj[U] is a subtype of Term"><path d="M68.9163,-82.0712C92.6417,-71.8793 123.3484,-58.6884 145.6152,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="67.8871,-79.8467 62.4225,-84.8608 69.8212,-84.3489 67.8871,-79.8467" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="provingground.HoTT.Symbolic" xlink:href="HoTT$$Symbolic.html#inheritance-diagram"><path d="M159.1667,-110C159.1667,-110 92.8333,-110 92.8333,-110 88.6667,-110 84.5,-105.8333 84.5,-101.6667 84.5,-101.6667 84.5,-93.3333 84.5,-93.3333 84.5,-89.1667 88.6667,-85 92.8333,-85 92.8333,-85 159.1667,-85 159.1667,-85 163.3333,-85 167.5,-89.1667 167.5,-93.3333 167.5,-93.3333 167.5,-101.6667 167.5,-101.6667 167.5,-105.8333 163.3333,-110 159.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="95" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="116" text-anchor="start">Symbolic</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="SymbObj[U] is a subtype of Symbolic"><path d="M140.5423,-79.3963C148.3706,-69.6509 157.8333,-57.8708 164.8602,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="138.6266,-77.8691 136.1528,-84.8608 142.4467,-80.9377 138.6266,-77.8691" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Product"><path d="M254.1667,-110C254.1667,-110 193.8333,-110 193.8333,-110 189.6667,-110 185.5,-105.8333 185.5,-101.6667 185.5,-101.6667 185.5,-93.3333 185.5,-93.3333 185.5,-89.1667 189.6667,-85 193.8333,-85 193.8333,-85 254.1667,-85 254.1667,-85 258.3333,-85 262.5,-89.1667 262.5,-93.3333 262.5,-93.3333 262.5,-101.6667 262.5,-101.6667 262.5,-105.8333 258.3333,-110 254.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="196" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="217" text-anchor="start">Product</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="SymbObj[U] is a subtype of Product"><path d="M209.4577,-79.3963C201.6294,-69.6509 192.1667,-57.8708 185.1398,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="207.5533,-80.9377 213.8472,-84.8608 211.3734,-77.8691 207.5533,-80.9377" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node trait" id="graph1_4"><g id="a_trait|graph1_4"><a xlink:title="scala.Serializable"><path d="M365.1667,-110C365.1667,-110 288.8333,-110 288.8333,-110 284.6667,-110 280.5,-105.8333 280.5,-101.6667 280.5,-101.6667 280.5,-93.3333 280.5,-93.3333 280.5,-89.1667 284.6667,-85 288.8333,-85 288.8333,-85 365.1667,-85 365.1667,-85 369.3333,-85 373.5,-89.1667 373.5,-93.3333 373.5,-93.3333 373.5,-101.6667 373.5,-101.6667 373.5,-105.8333 369.3333,-110 365.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="291" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="312" text-anchor="start">Serializable</text></a></g></g><!-- node4&#45;&gt;node0 --><g class="edge inheritance" id="graph1_4_0"><g id="a_inheritance|graph1_4_0"><a xlink:title="SymbObj[U] is a subtype of Serializable"><path d="M288.8568,-82.1925C263.3272,-71.9471 230.1437,-58.63 206.1938,-49.0185" stroke="#d4d4d4" fill="none"></path><polygon points="288.0966,-84.5273 295.5055,-84.8608 289.9216,-79.9799 288.0966,-84.5273" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -510,6 +532,11 @@ Includes:
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.SymbObj"><span>SymbObj</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.Symbolic"><span>Symbolic</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -587,6 +614,49 @@ Includes:
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(SymbObj[U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -661,6 +731,86 @@ Includes:
       <p class="shortcomment cmt">returns whether <code>this</code> depends on <code>that</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> depends on <code>that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((SymbObj[U])⇒Boolean,⇒Any):SymbObj[U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((SymbObj[U])⇒Boolean):SymbObj[U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):SymbObj[U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):SymbObj[U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -713,6 +863,29 @@ Includes:
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1064,6 +1237,26 @@ definition.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(SymbObj[U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbObj.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1093,7 +1286,23 @@ definition.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SymbObj">SymbObj</a>[<span class="extype" name="provingground.HoTT.SymbObj.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

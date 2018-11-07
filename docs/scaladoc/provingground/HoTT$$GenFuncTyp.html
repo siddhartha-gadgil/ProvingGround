@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -489,7 +501,17 @@ but with fiber a constant is equal to the corresponding function type.</p></div>
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>, <a href="HoTT$$PiDefn.html" class="extype" name="provingground.HoTT.PiDefn">PiDefn</a>, <a href="HoTT$$PiTyp.html" class="extype" name="provingground.HoTT.PiTyp">PiTyp</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 573.00 169.00" height="169pt" width="573pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 165)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-165 569,-165 569,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><g class="cluster" id="clust3"></g><!-- node6 --><g class="node implicit-outgoing class" id="graph1_6"><g id="a_implicit-outgoing class|graph1_6"><a xlink:title="provingground.HoTT.GenFuncTyp can be implicitly converted to RichTerm[GenFuncTyp[W, U]] by the implicit method RichTerm in object provingground.HoTT" xlink:href="HoTT$$RichTerm.html#inheritance-diagram"><path d="M532.6667,-93C532.6667,-93 383.3333,-93 383.3333,-93 379.1667,-93 375,-88.8333 375,-84.6667 375,-84.6667 375,-76.3333 375,-76.3333 375,-72.1667 379.1667,-68 383.3333,-68 383.3333,-68 532.6667,-68 532.6667,-68 536.8333,-68 541,-72.1667 541,-76.3333 541,-76.3333 541,-84.6667 541,-84.6667 541,-88.8333 536.8333,-93 532.6667,-93" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../lib/class_diagram.png" y="-87.5" x="385" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-78.1" x="406" text-anchor="start">RichTerm[GenFuncTyp[W, U]]</text></a></g></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.HoTT.GenFuncTyp (this class)" xlink:href="#inheritance-diagram"><path d="M223.1667,-93C223.1667,-93 118.8333,-93 118.8333,-93 114.6667,-93 110.5,-88.8333 110.5,-84.6667 110.5,-84.6667 110.5,-76.3333 110.5,-76.3333 110.5,-72.1667 114.6667,-68 118.8333,-68 118.8333,-68 223.1667,-68 223.1667,-68 227.3333,-68 231.5,-72.1667 231.5,-76.3333 231.5,-76.3333 231.5,-84.6667 231.5,-84.6667 231.5,-88.8333 227.3333,-93 223.1667,-93" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-87.5" x="121" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-78.1" x="142" text-anchor="start">GenFuncTyp[W, U]</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge implicit-outgoing" id="0_6"><g id="a_implicit-outgoing|0_6"><a xlink:title="GenFuncTyp[W, U] can be implicitly converted to RichTerm[GenFuncTyp[W, U]]"><path d="M239.9983,-80.5C275.9324,-80.5 320.4911,-80.5 359.9408,-80.5" stroke="#d4d4d4" fill="none"></path><polygon points="360.0001,-82.9501 367,-80.5 360,-78.0501 360.0001,-82.9501" stroke="#d4d4d4" fill="#d4d4d4"></polygon></a></g><text fill="#aaaaaa" font-size="9.00" font-family="Source Code Pro" y="-86.3" x="303.25" text-anchor="middle">implicitly</text></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.HoTT.FuncTyp" xlink:href="HoTT$$FuncTyp.html#inheritance-diagram"><path d="M95.6667,-25C95.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 95.6667,0 95.6667,0 99.8333,0 104,-4.1667 104,-8.3333 104,-8.3333 104,-16.6667 104,-16.6667 104,-20.8333 99.8333,-25 95.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31" text-anchor="start">FuncTyp[W, U]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="FuncTyp[W, U] is a subtype of GenFuncTyp[W, U]"><path d="M142.6168,-64.281C121.5793,-52.2596 93.3198,-36.1113 73.9857,-25.0633" stroke="#d4d4d4" fill="none"></path><polygon points="141.6026,-66.5233 148.8959,-67.8691 144.0337,-62.2689 141.6026,-66.5233" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.HoTT.PiDefn" xlink:href="HoTT$$PiDefn.html#inheritance-diagram"><path d="M211.6667,-25C211.6667,-25 130.3333,-25 130.3333,-25 126.1667,-25 122,-20.8333 122,-16.6667 122,-16.6667 122,-8.3333 122,-8.3333 122,-4.1667 126.1667,0 130.3333,0 130.3333,0 211.6667,0 211.6667,0 215.8333,0 220,-4.1667 220,-8.3333 220,-8.3333 220,-16.6667 220,-16.6667 220,-20.8333 215.8333,-25 211.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="132" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="153" text-anchor="start">PiDefn[W, U]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="PiDefn[W, U] is a subtype of GenFuncTyp[W, U]"><path d="M171,-60.6427C171,-49.2137 171,-35.1902 171,-25.2329" stroke="#d4d4d4" fill="none"></path><polygon points="168.5501,-60.7097 171,-67.7097 173.4501,-60.7098 168.5501,-60.7097" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.HoTT.PiTyp" xlink:href="HoTT$$PiTyp.html#inheritance-diagram"><path d="M323.1667,-25C323.1667,-25 246.8333,-25 246.8333,-25 242.6667,-25 238.5,-20.8333 238.5,-16.6667 238.5,-16.6667 238.5,-8.3333 238.5,-8.3333 238.5,-4.1667 242.6667,0 246.8333,0 246.8333,0 323.1667,0 323.1667,0 327.3333,0 331.5,-4.1667 331.5,-8.3333 331.5,-8.3333 331.5,-16.6667 331.5,-16.6667 331.5,-20.8333 327.3333,-25 323.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="249" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="270" text-anchor="start">PiTyp[W, U]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="PiTyp[W, U] is a subtype of GenFuncTyp[W, U]"><path d="M198.1907,-64.281C218.3442,-52.2596 245.4163,-36.1113 263.938,-25.0633" stroke="#d4d4d4" fill="none"></path><polygon points="196.932,-62.179 192.1754,-67.8691 199.4422,-66.3872 196.932,-62.179" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node trait" id="graph1_4"><g id="a_trait|graph1_4"><a xlink:title="provingground.HoTT.Typ" xlink:href="HoTT$$Typ.html#inheritance-diagram"><path d="M148.6667,-161C148.6667,-161 39.3333,-161 39.3333,-161 35.1667,-161 31,-156.8333 31,-152.6667 31,-152.6667 31,-144.3333 31,-144.3333 31,-140.1667 35.1667,-136 39.3333,-136 39.3333,-136 148.6667,-136 148.6667,-136 152.8333,-136 157,-140.1667 157,-144.3333 157,-144.3333 157,-152.6667 157,-152.6667 157,-156.8333 152.8333,-161 148.6667,-161" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-155.5" x="41" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-146.1" x="62" text-anchor="start">Typ[FuncLike[W, U]]</text></a></g></g><!-- node4&#45;&gt;node0 --><g class="edge inheritance" id="graph1_4_0"><g id="a_inheritance|graph1_4_0"><a xlink:title="GenFuncTyp[W, U] is a subtype of Typ[FuncLike[W, U]]"><path d="M113.9748,-130.8599C127.4173,-118.9886 144.8158,-103.6237 156.842,-93.0032" stroke="#d4d4d4" fill="none"></path><polygon points="112.1082,-129.2397 108.4831,-135.7097 115.3518,-132.9125 112.1082,-129.2397" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node trait" id="graph1_5"><g id="a_trait|graph1_5"><a xlink:title="provingground.HoTT.Subs" xlink:href="HoTT$$Subs.html#inheritance-diagram"><path d="M314.1667,-161C314.1667,-161 183.8333,-161 183.8333,-161 179.6667,-161 175.5,-156.8333 175.5,-152.6667 175.5,-152.6667 175.5,-144.3333 175.5,-144.3333 175.5,-140.1667 179.6667,-136 183.8333,-136 183.8333,-136 314.1667,-136 314.1667,-136 318.3333,-136 322.5,-140.1667 322.5,-144.3333 322.5,-144.3333 322.5,-152.6667 322.5,-152.6667 322.5,-156.8333 318.3333,-161 314.1667,-161" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-155.5" x="186" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-146.1" x="207" text-anchor="start">Subs[GenFuncTyp[W, U]]</text></a></g></g><!-- node5&#45;&gt;node0 --><g class="edge inheritance" id="graph1_5_0"><g id="a_inheritance|graph1_5_0"><a xlink:title="GenFuncTyp[W, U] is a subtype of Subs[GenFuncTyp[W, U]]"><path d="M228.7658,-130.8599C215.1487,-118.9886 197.5242,-103.6237 185.3419,-93.0032" stroke="#d4d4d4" fill="none"></path><polygon points="227.4424,-132.9565 234.3288,-135.7097 230.6624,-129.263 227.4424,-132.9565" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -515,6 +537,11 @@ but with fiber a constant is equal to the corresponding function type.</p></div>
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.GenFuncTyp"><span>GenFuncTyp</span></li><li class="in" name="provingground.HoTT.Typ"><span>Typ</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="provingground.HoTT.RichTerm" data-hidden="false"><span>by RichTerm</span></li><li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -719,6 +746,42 @@ Should throw exception when invoked for constants.
       <p class="shortcomment cmt">returns product type, mainly to use for &quot;and&quot; for structures
 </p><div class="fullcomment"><div class="comment cmt"><p>returns product type, mainly to use for &quot;and&quot; for structures
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Typ#&amp;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&amp;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.SigmaTyp[V,UU]"></a><a id="&amp;:[UU&lt;:TermwithSubs[UU]&gt;:FuncLike[W,U],V&lt;:TermwithSubs[V]](V):SigmaTyp[V,UU]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#&amp;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.SigmaTyp[V,UU]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $amp$colon" class="name">&amp;:</span><span class="tparams">[<span name="UU">UU &gt;: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.UU">UU</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span></span>)</span><span class="result">: <a href="HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span>, <span class="extype" name="provingground.HoTT.Typ.&amp;:.UU">UU</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
     </li><li name="provingground.HoTT.Typ#++" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="++[UU&gt;:provingground.HoTT.Typ[U]&lt;:provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[UU],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],V&lt;:provingground.HoTT.Typ[VV]withprovingground.HoTT.Subs[V]](those:V):provingground.HoTT.SigmaTyp[UU,VV]"></a><a id="++[UU&lt;:Typ[Term]withSubs[UU]&gt;:Typ[FuncLike[W,U]],VV&lt;:TermwithSubs[VV],V&lt;:Typ[VV]withSubs[V]](V):SigmaTyp[UU,VV]"></a>
       <span class="permalink">
@@ -738,6 +801,29 @@ Should throw exception when invoked for constants.
 for example a group type is this with product etc.</p><div class="fullcomment"><div class="comment cmt"><p>returns Sigma-Type, mainly to use as &quot;such that&quot;,
 for example a group type is this with product etc. dependent on this.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(GenFuncTyp[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="provingground.HoTT.Typ#-&gt;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-&gt;:[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](that:provingground.HoTT.Typ[W]):provingground.HoTT.FuncTyp[W,UU]"></a><a id="-&gt;:[W&lt;:TermwithSubs[W],UU&lt;:TermwithSubs[UU]&gt;:FuncLike[W,U]](Typ[W]):FuncTyp[W,UU]"></a>
       <span class="permalink">
@@ -756,6 +842,28 @@ for example a group type is this with product etc. dependent on this.
       <p class="shortcomment cmt">function type:  <code>this -&gt; that</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>function type:  <code>this -&gt; that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#:-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":-&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.Func[U,V]"></a><a id=":-&gt;[V&lt;:TermwithSubs[V]](V):Func[GenFuncTyp[W,U],V]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#:-&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.Func[U,V]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$minus$greater" class="implicit">:-&gt;</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span>]</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span></span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>], <span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">constructor for (pure) lambda functions, see <a href="HoTT$.html#lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]" class="extmbr" name="provingground.HoTT#lmbda">lmbda</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>constructor for (pure) lambda functions, see <a href="HoTT$.html#lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]" class="extmbr" name="provingground.HoTT#lmbda">lmbda</a>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
     </li><li name="provingground.HoTT.Typ#::" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="::(name:String):Uwithprovingground.HoTT.Subs[U]"></a><a id="::(String):FuncLike[W,U]withSubs[FuncLike[W,U]]"></a>
       <span class="permalink">
@@ -772,6 +880,50 @@ for example a group type is this with product etc. dependent on this.
       </span>
       
       <p class="shortcomment cmt">symbolic object with given name</p><div class="fullcomment"><div class="comment cmt"><p>symbolic object with given name</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#:~&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":~&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.FuncLike[U,V]"></a><a id=":~&gt;[V&lt;:TermwithSubs[V]](V):FuncLike[GenFuncTyp[W,U],V]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#:~&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.FuncLike[U,V]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$tilde$greater" class="implicit">:~&gt;</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span>]</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span></span>)</span><span class="result">: <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>], <span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">constructor for (in general dependent) lambda functions, see <a href="HoTT$.html#lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]" class="extmbr" name="provingground.HoTT#lambda">lambda</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>constructor for (in general dependent) lambda functions, see <a href="HoTT$.html#lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]" class="extmbr" name="provingground.HoTT#lambda">lambda</a>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#=:=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="=:=(rhs:U):provingground.HoTT.IdentityTyp[U]"></a><a id="=:=(GenFuncTyp[W,U]):IdentityTyp[GenFuncTyp[W,U]]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#=:=(rhs:U):provingground.HoTT.IdentityTyp[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$colon$eq" class="implicit">=:=</span><span class="params">(<span name="rhs">rhs: <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]</span>)</span><span class="result">: <a href="HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">equality type 'term = rhs'
+</p><div class="fullcomment"><div class="comment cmt"><p>equality type 'term = rhs'
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -879,6 +1031,86 @@ for example a group type is this with product etc. dependent on this.
       </span>
       
       
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((GenFuncTyp[W,U])⇒Boolean,⇒Any):GenFuncTyp[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((GenFuncTyp[W,U])⇒Boolean):GenFuncTyp[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):GenFuncTyp[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):GenFuncTyp[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -947,6 +1179,29 @@ for example a group type is this with product etc. dependent on this.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1089,6 +1344,28 @@ for example a group type is this with product etc. dependent on this.
       <p class="shortcomment cmt">factory for producing objects of the given type.</p><div class="fullcomment"><div class="comment cmt"><p>factory for producing objects of the given type.
 can use {{innervar}} if one wants name unchanged.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#refl" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="refl:provingground.HoTT.Refl[U]"></a><a id="refl:Refl[GenFuncTyp[W,U]]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#refl:provingground.HoTT.Refl[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">refl</span><span class="result">: <a href="HoTT$$Refl.html" class="extype" name="provingground.HoTT.Refl">Refl</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">reflexivity term <code>refl : term = term</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>reflexivity term <code>refl : term = term</code>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
     </li><li name="provingground.HoTT.Subs#replace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]"></a><a id="replace(Term,Term):GenFuncTyp[W,U]withSubs[GenFuncTyp[W,U]]"></a>
       <span class="permalink">
@@ -1365,6 +1642,26 @@ to avoid name clashes.</p><div class="fullcomment"><div class="comment cmt"><p>d
 note that a new variable is created and substituted in <code>this</code>
 to avoid name clashes.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(GenFuncTyp[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$GenFuncTyp.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li><li name="provingground.HoTT.Typ.Elem" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Elem"></a><a id="Elem:Elem"></a>
       <span class="permalink">
@@ -1403,7 +1700,27 @@ to avoid name clashes.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="provingground.HoTT.RichTerm">
+              <h3>Inherited by implicit conversion RichTerm from
+                <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<span class="extype" name="provingground.HoTT.GenFuncTyp.W">W</span>, <span class="extype" name="provingground.HoTT.GenFuncTyp.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

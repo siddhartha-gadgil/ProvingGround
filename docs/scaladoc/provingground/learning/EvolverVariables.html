@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNode.html" title=""></a>
-                        <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -503,7 +511,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="EvolverVariables$$Appl$.html" class="extype" name="provingground.learning.EvolverVariables.Appl">Appl</a>, <a href="EvolverVariables$$FinalProb.html" class="extype" name="provingground.learning.EvolverVariables.FinalProb">FinalProb</a>, <a href="EvolverVariables$$HasTyp.html" class="extype" name="provingground.learning.EvolverVariables.HasTyp">HasTyp</a>, <a href="EvolverVariables$$InitProb.html" class="extype" name="provingground.learning.EvolverVariables.InitProb">InitProb</a>, <a href="EvolverVariables$$InitWeight$.html" class="extype" name="provingground.learning.EvolverVariables.InitWeight">InitWeight</a>, <a href="EvolverVariables$$IsFuncP.html" class="extype" name="provingground.learning.EvolverVariables.IsFuncP">IsFuncP</a>, <a href="EvolverVariables$$IsTypP.html" class="extype" name="provingground.learning.EvolverVariables.IsTypP">IsTypP</a>, <a href="EvolverVariables$$LambdaWeight$.html" class="extype" name="provingground.learning.EvolverVariables.LambdaWeight">LambdaWeight</a>, <a href="EvolverVariables$$PiWeight$.html" class="extype" name="provingground.learning.EvolverVariables.PiWeight">PiWeight</a>, <a href="EvolverVariables$$UnApp$.html" class="extype" name="provingground.learning.EvolverVariables.UnApp">UnApp</a>, <a href="EvolverVariables$$VarWeight$.html" class="extype" name="provingground.learning.EvolverVariables.VarWeight">VarWeight</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 1067.00 155.00" height="155pt" width="1067pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 1063,-151 1063,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.learning.EvolverVariables (this trait)" xlink:href="#inheritance-diagram"><path d="M562.1667,-86C562.1667,-86 462.8333,-86 462.8333,-86 458.6667,-86 454.5,-81.8333 454.5,-77.6667 454.5,-77.6667 454.5,-69.3333 454.5,-69.3333 454.5,-65.1667 458.6667,-61 462.8333,-61 462.8333,-61 562.1667,-61 562.1667,-61 566.3333,-61 570.5,-65.1667 570.5,-69.3333 570.5,-69.3333 570.5,-77.6667 570.5,-77.6667 570.5,-81.8333 566.3333,-86 562.1667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="464.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="485.5" text-anchor="start">EvolverVariables</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.learning.EvolverVariables.Appl" xlink:href="EvolverVariables$$Appl$.html#inheritance-diagram"><path d="M54.6667,-25C54.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 54.6667,0 54.6667,0 58.8333,0 63,-4.1667 63,-8.3333 63,-8.3333 63,-16.6667 63,-16.6667 63,-20.8333 58.8333,-25 54.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">Appl</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="Appl is a subtype of EvolverVariables"><path d="M447.008,-70.259C360.3353,-65.0706 203.1287,-52.5347 71.5,-25 68.7938,-24.4339 66.0097,-23.7605 63.2304,-23.024" stroke="#d4d4d4" fill="none"></path><polygon points="447.0165,-72.7136 454.1484,-70.6793 447.3045,-67.8221 447.0165,-72.7136" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.learning.EvolverVariables.FinalProb" xlink:href="EvolverVariables$$FinalProb.html#inheritance-diagram"><path d="M155.6667,-25C155.6667,-25 89.3333,-25 89.3333,-25 85.1667,-25 81,-20.8333 81,-16.6667 81,-16.6667 81,-8.3333 81,-8.3333 81,-4.1667 85.1667,0 89.3333,0 89.3333,0 155.6667,0 155.6667,0 159.8333,0 164,-4.1667 164,-8.3333 164,-8.3333 164,-16.6667 164,-16.6667 164,-20.8333 159.8333,-25 155.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="91.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="112.5" text-anchor="start">FinalProb</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="FinalProb is a subtype of EvolverVariables"><path d="M447.1026,-66.2056C378.3959,-58.0677 267.3482,-43.5694 172.5,-25 169.7779,-24.4671 166.9819,-23.8799 164.1697,-23.2595" stroke="#d4d4d4" fill="none"></path><polygon points="447.2031,-68.6843 454.4416,-67.0697 447.7761,-63.8179 447.2031,-68.6843" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.learning.EvolverVariables.HasTyp" xlink:href="EvolverVariables$$HasTyp.html#inheritance-diagram"><path d="M248.6667,-25C248.6667,-25 190.3333,-25 190.3333,-25 186.1667,-25 182,-20.8333 182,-16.6667 182,-16.6667 182,-8.3333 182,-8.3333 182,-4.1667 186.1667,0 190.3333,0 190.3333,0 248.6667,0 248.6667,0 252.8333,0 257,-4.1667 257,-8.3333 257,-8.3333 257,-16.6667 257,-16.6667 257,-20.8333 252.8333,-25 248.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="192.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="213.5" text-anchor="start">HasTyp</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="HasTyp is a subtype of EvolverVariables"><path d="M447.4479,-62.0386C397.4825,-52.9188 326.8698,-39.3441 265.5,-25 262.7601,-24.3596 259.9366,-23.6688 257.1,-22.9523" stroke="#d4d4d4" fill="none"></path><polygon points="447.0326,-64.4532 454.358,-63.2956 447.9095,-59.6323 447.0326,-64.4532" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.learning.EvolverVariables.InitProb" xlink:href="EvolverVariables$$InitProb.html#inheritance-diagram"><path d="M343.6667,-25C343.6667,-25 283.3333,-25 283.3333,-25 279.1667,-25 275,-20.8333 275,-16.6667 275,-16.6667 275,-8.3333 275,-8.3333 275,-4.1667 279.1667,0 283.3333,0 283.3333,0 343.6667,0 343.6667,0 347.8333,0 352,-4.1667 352,-8.3333 352,-8.3333 352,-16.6667 352,-16.6667 352,-20.8333 347.8333,-25 343.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="285.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="306.5" text-anchor="start">InitProb</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="InitProb is a subtype of EvolverVariables"><path d="M464.5478,-58.8011C430.1575,-48.2593 384.4172,-34.2384 352.3139,-24.3977" stroke="#d4d4d4" fill="none"></path><polygon points="463.8564,-61.1516 471.2671,-60.8608 465.2925,-56.4668 463.8564,-61.1516" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node object" id="graph1_5"><g id="a_object|graph1_5"><a xlink:title="provingground.learning.EvolverVariables.InitWeight" xlink:href="EvolverVariables$$InitWeight$.html#inheritance-diagram"><path d="M448.1667,-25C448.1667,-25 378.8333,-25 378.8333,-25 374.6667,-25 370.5,-20.8333 370.5,-16.6667 370.5,-16.6667 370.5,-8.3333 370.5,-8.3333 370.5,-4.1667 374.6667,0 378.8333,0 378.8333,0 448.1667,0 448.1667,0 452.3333,0 456.5,-4.1667 456.5,-8.3333 456.5,-8.3333 456.5,-16.6667 456.5,-16.6667 456.5,-20.8333 452.3333,-25 448.1667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="380.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="401.5" text-anchor="start">InitWeight</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="InitWeight is a subtype of EvolverVariables"><path d="M485.7466,-57.0156C469.4619,-46.9816 448.9799,-34.3614 433.9866,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="484.7424,-59.2745 491.9871,-60.8608 487.3128,-55.1028 484.7424,-59.2745" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node class" id="graph1_6"><g id="a_class|graph1_6"><a xlink:title="provingground.learning.EvolverVariables.IsFuncP" xlink:href="EvolverVariables$$IsFuncP.html#inheritance-diagram"><path d="M541.6667,-25C541.6667,-25 483.3333,-25 483.3333,-25 479.1667,-25 475,-20.8333 475,-16.6667 475,-16.6667 475,-8.3333 475,-8.3333 475,-4.1667 479.1667,0 483.3333,0 483.3333,0 541.6667,0 541.6667,0 545.8333,0 550,-4.1667 550,-8.3333 550,-8.3333 550,-16.6667 550,-16.6667 550,-20.8333 545.8333,-25 541.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="485.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="506.5" text-anchor="start">IsFuncP</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="IsFuncP is a subtype of EvolverVariables"><path d="M512.5,-53.7386C512.5,-44.3393 512.5,-33.3803 512.5,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="510.0501,-53.8607 512.5,-60.8608 514.9501,-53.8608 510.0501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node class" id="graph1_7"><g id="a_class|graph1_7"><a xlink:title="provingground.learning.EvolverVariables.IsTypP" xlink:href="EvolverVariables$$IsTypP.html#inheritance-diagram"><path d="M630.6667,-25C630.6667,-25 576.3333,-25 576.3333,-25 572.1667,-25 568,-20.8333 568,-16.6667 568,-16.6667 568,-8.3333 568,-8.3333 568,-4.1667 572.1667,0 576.3333,0 576.3333,0 630.6667,0 630.6667,0 634.8333,0 639,-4.1667 639,-8.3333 639,-8.3333 639,-16.6667 639,-16.6667 639,-20.8333 634.8333,-25 630.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="578.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="599.5" text-anchor="start">IsTypP</text></a></g></g><!-- node0&#45;&gt;node7 --><g class="edge inheritance" id="graph1_0_7"><g id="a_inheritance|graph1_0_7"><a xlink:title="IsTypP is a subtype of EvolverVariables"><path d="M537.4898,-56.7486C552.3931,-46.7585 571.0091,-34.2796 584.6689,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="535.8056,-54.928 531.3553,-60.8608 538.534,-58.9982 535.8056,-54.928" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node object" id="graph1_8"><g id="a_object|graph1_8"><a xlink:title="provingground.learning.EvolverVariables.LambdaWeight" xlink:href="EvolverVariables$$LambdaWeight$.html#inheritance-diagram"><path d="M755.6667,-25C755.6667,-25 665.3333,-25 665.3333,-25 661.1667,-25 657,-20.8333 657,-16.6667 657,-16.6667 657,-8.3333 657,-8.3333 657,-4.1667 661.1667,0 665.3333,0 665.3333,0 755.6667,0 755.6667,0 759.8333,0 764,-4.1667 764,-8.3333 764,-8.3333 764,-16.6667 764,-16.6667 764,-20.8333 759.8333,-25 755.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="667.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="688.5" text-anchor="start">LambdaWeight</text></a></g></g><!-- node0&#45;&gt;node8 --><g class="edge inheritance" id="graph1_0_8"><g id="a_inheritance|graph1_0_8"><a xlink:title="LambdaWeight is a subtype of EvolverVariables"><path d="M560.4971,-58.713C593.9672,-48.4015 638.137,-34.7936 669.866,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="559.4941,-56.4583 553.5257,-60.8608 560.9368,-61.1411 559.4941,-56.4583" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node9 --><g class="node object" id="graph1_9"><g id="a_object|graph1_9"><a xlink:title="provingground.learning.EvolverVariables.PiWeight" xlink:href="EvolverVariables$$PiWeight$.html#inheritance-diagram"><path d="M854.6667,-25C854.6667,-25 790.3333,-25 790.3333,-25 786.1667,-25 782,-20.8333 782,-16.6667 782,-16.6667 782,-8.3333 782,-8.3333 782,-4.1667 786.1667,0 790.3333,0 790.3333,0 854.6667,0 854.6667,0 858.8333,0 863,-4.1667 863,-8.3333 863,-8.3333 863,-16.6667 863,-16.6667 863,-20.8333 858.8333,-25 854.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="792.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="813.5" text-anchor="start">PiWeight</text></a></g></g><!-- node0&#45;&gt;node9 --><g class="edge inheritance" id="graph1_0_9"><g id="a_inheritance|graph1_0_9"><a xlink:title="PiWeight is a subtype of EvolverVariables"><path d="M577.5014,-62.6497C630.4527,-53.5162 707.0556,-39.6318 773.5,-25 776.2437,-24.3958 779.067,-23.7474 781.9073,-23.0752" stroke="#d4d4d4" fill="none"></path><polygon points="576.9988,-60.2501 570.5152,-63.8509 577.8292,-65.0792 576.9988,-60.2501" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node10 --><g class="node object" id="graph1_10"><g id="a_object|graph1_10"><a xlink:title="provingground.learning.EvolverVariables.UnApp" xlink:href="EvolverVariables$$UnApp$.html#inheritance-diagram"><path d="M945.1667,-25C945.1667,-25 889.8333,-25 889.8333,-25 885.6667,-25 881.5,-20.8333 881.5,-16.6667 881.5,-16.6667 881.5,-8.3333 881.5,-8.3333 881.5,-4.1667 885.6667,0 889.8333,0 889.8333,0 945.1667,0 945.1667,0 949.3333,0 953.5,-4.1667 953.5,-8.3333 953.5,-8.3333 953.5,-16.6667 953.5,-16.6667 953.5,-20.8333 949.3333,-25 945.1667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="891.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="912.5" text-anchor="start">UnApp</text></a></g></g><!-- node0&#45;&gt;node10 --><g class="edge inheritance" id="graph1_0_10"><g id="a_inheritance|graph1_0_10"><a xlink:title="UnApp is a subtype of EvolverVariables"><path d="M577.881,-67.4131C650.3641,-60.035 770.5183,-45.931 872.5,-25 875.3594,-24.4131 878.3045,-23.7441 881.2546,-23.0277" stroke="#d4d4d4" fill="none"></path><polygon points="577.303,-65.0089 570.5844,-68.1495 577.7951,-69.8842 577.303,-65.0089" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node11 --><g class="node object" id="graph1_11"><g id="a_object|graph1_11"><a xlink:title="provingground.learning.EvolverVariables.VarWeight" xlink:href="EvolverVariables$$VarWeight$.html#inheritance-diagram"><path d="M1050.6667,-25C1050.6667,-25 980.3333,-25 980.3333,-25 976.1667,-25 972,-20.8333 972,-16.6667 972,-16.6667 972,-8.3333 972,-8.3333 972,-4.1667 976.1667,0 980.3333,0 980.3333,0 1050.6667,0 1050.6667,0 1054.8333,0 1059,-4.1667 1059,-8.3333 1059,-8.3333 1059,-16.6667 1059,-16.6667 1059,-20.8333 1054.8333,-25 1050.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="982.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1003.5" text-anchor="start">VarWeight</text></a></g></g><!-- node0&#45;&gt;node11 --><g class="edge inheritance" id="graph1_0_11"><g id="a_inheritance|graph1_0_11"><a xlink:title="VarWeight is a subtype of EvolverVariables"><path d="M577.9518,-69.009C665.8538,-62.3942 826.711,-48.2378 962.5,-25 965.5751,-24.4738 968.738,-23.8755 971.9151,-23.2325" stroke="#d4d4d4" fill="none"></path><polygon points="577.5118,-66.585 570.7135,-69.5491 577.8764,-71.4714 577.5118,-66.585" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node12 --><g class="node class" id="graph1_12"><g id="a_class|graph1_12"><a xlink:title="scala.AnyRef"><path d="M541.6667,-147C541.6667,-147 483.3333,-147 483.3333,-147 479.1667,-147 475,-142.8333 475,-138.6667 475,-138.6667 475,-130.3333 475,-130.3333 475,-126.1667 479.1667,-122 483.3333,-122 483.3333,-122 541.6667,-122 541.6667,-122 545.8333,-122 550,-126.1667 550,-130.3333 550,-130.3333 550,-138.6667 550,-138.6667 550,-142.8333 545.8333,-147 541.6667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="485.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="506.5" text-anchor="start">AnyRef</text></a></g></g><!-- node12&#45;&gt;node0 --><g class="edge inheritance" id="graph1_12_0"><g id="a_inheritance|graph1_12_0"><a xlink:title="EvolverVariables is a subtype of AnyRef"><path d="M512.5,-114.7386C512.5,-105.3393 512.5,-94.3803 512.5,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="510.0501,-114.8607 512.5,-121.8608 514.9501,-114.8608 510.0501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -529,6 +547,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.learning.EvolverVariables"><span>EvolverVariables</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -587,6 +610,49 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(EvolverVariables,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -643,6 +709,86 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((EvolverVariables)⇒Boolean,⇒Any):EvolverVariables"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((EvolverVariables)⇒Boolean):EvolverVariables"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):EvolverVariables"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):EvolverVariables"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -695,6 +841,29 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -905,6 +1074,26 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(EvolverVariables,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/EvolverVariables.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -920,7 +1109,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.EvolverVariables">EvolverVariables</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -488,8 +500,18 @@ for serialization and pretty printing.
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="HoTT$$IdentityTyp$$RecFn.html" class="extype" name="provingground.HoTT.IdentityTyp.RecFn">RecFn</a>, <a href="HoTT$$IndRecFunc.html" class="extype" name="provingground.HoTT.IndRecFunc">IndRecFunc</a>, <a href="HoTT$$PlusTyp$$RecFn.html" class="extype" name="provingground.HoTT.PlusTyp.RecFn">RecFn</a>, <a href="HoTT$$ProdTyp$RecFn.html" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a>, <a href="HoTT$$SigmaTyp$RecFn.html" class="extype" name="provingground.HoTT.SigmaTyp.RecFn">RecFn</a>, <a href="HoTT$$Unit$$RecFn.html" class="extype" name="provingground.HoTT.Unit.RecFn">RecFn</a>, <a href="induction/IndexedRecursiveDefinition$Funcs.html" class="extype" name="provingground.induction.IndexedRecursiveDefinition.Funcs">Funcs</a>, <a href="induction/RecursiveDefinition.html" class="extype" name="provingground.induction.RecursiveDefinition">RecursiveDefinition</a>, <a href="induction/RecursiveDefinition$$DataCons.html" class="extype" name="provingground.induction.RecursiveDefinition.DataCons">DataCons</a>, <a href="induction/RecursiveDefinition$$Empty.html" class="extype" name="provingground.induction.RecursiveDefinition.Empty">Empty</a></div>
-          </div></div>
+            <div class="subClasses hiddenContent"><a href="HoTT$$IdentityTyp$$RecFn.html" class="extype" name="provingground.HoTT.IdentityTyp.RecFn">RecFn</a>, <a href="HoTT$$IndRecFunc.html" class="extype" name="provingground.HoTT.IndRecFunc">IndRecFunc</a>, <a href="HoTT$$PlusTyp$$RecFn.html" class="extype" name="provingground.HoTT.PlusTyp.RecFn">RecFn</a>, <a href="HoTT$$ProdTyp$RecFn.html" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a>, <a href="HoTT$$SigmaTyp$RecFn.html" class="extype" name="provingground.HoTT.SigmaTyp.RecFn">RecFn</a>, <a href="HoTT$$Unit$$RecFn.html" class="extype" name="provingground.HoTT.Unit.RecFn">RecFn</a>, <a href="induction/IndexedRecursiveDefinition$Funcs.html" class="extype" name="provingground.induction.IndexedRecursiveDefinition.Funcs">Funcs</a>, <a href="induction/RecursiveDefinition.html" class="extype" name="provingground.induction.RecursiveDefinition">RecursiveDefinition</a>, <a href="induction/RecursiveDefinition$$DataCons.html" class="extype" name="provingground.induction.RecursiveDefinition.DataCons">DataCons</a>, <a href="induction/RecursiveDefinition$$Empty.html" class="extype" name="provingground.induction.RecursiveDefinition.Empty">Empty</a>, <a href="scalahott/NatRing$$Rec.html" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 823.50 155.00" height="155pt" width="824pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 819.5,-151 819.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.HoTT.RecFunc (this trait)" xlink:href="#inheritance-diagram"><path d="M423.6667,-86C423.6667,-86 335.3333,-86 335.3333,-86 331.1667,-86 327,-81.8333 327,-77.6667 327,-77.6667 327,-69.3333 327,-69.3333 327,-65.1667 331.1667,-61 335.3333,-61 335.3333,-61 423.6667,-61 423.6667,-61 427.8333,-61 432,-65.1667 432,-69.3333 432,-69.3333 432,-77.6667 432,-77.6667 432,-81.8333 427.8333,-86 423.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-80.5" x="337.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="358.5" text-anchor="start">RecFunc[W, U]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.HoTT.IndRecFunc" xlink:href="HoTT$$IndRecFunc.html#inheritance-diagram"><path d="M120.6667,-25C120.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 120.6667,0 120.6667,0 124.8333,0 129,-4.1667 129,-8.3333 129,-8.3333 129,-16.6667 129,-16.6667 129,-20.8333 124.8333,-25 120.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">IndRecFunc[W, U, F]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="IndRecFunc[W, U, F] is a subtype of RecFunc[W, U]"><path d="M319.6015,-61.9006C265.1488,-51.3558 185.0041,-35.8357 129.1249,-25.0147" stroke="#d4d4d4" fill="none"></path><polygon points="319.4379,-64.3644 326.7761,-63.29 320.3696,-59.5537 319.4379,-64.3644" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.scalahott.NatRing.Rec" xlink:href="scalahott/NatRing$$Rec.html#inheritance-diagram"><path d="M211.1667,-25C211.1667,-25 155.8333,-25 155.8333,-25 151.6667,-25 147.5,-20.8333 147.5,-16.6667 147.5,-16.6667 147.5,-8.3333 147.5,-8.3333 147.5,-4.1667 151.6667,0 155.8333,0 155.8333,0 211.1667,0 211.1667,0 215.3333,0 219.5,-4.1667 219.5,-8.3333 219.5,-8.3333 219.5,-16.6667 219.5,-16.6667 219.5,-20.8333 215.3333,-25 211.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="157.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="178.5" text-anchor="start">Rec[U]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="Rec[U] is a subtype of RecFunc[W, U]"><path d="M332.1382,-58.7598C297.5748,-48.0029 251.4244,-33.6397 219.769,-23.7878" stroke="#d4d4d4" fill="none"></path><polygon points="331.4768,-61.1199 338.8887,-60.8608 332.933,-56.4412 331.4768,-61.1199" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.HoTT.Unit.RecFn" xlink:href="HoTT$$Unit$$RecFn.html#inheritance-diagram"><path d="M311.1667,-25C311.1667,-25 245.8333,-25 245.8333,-25 241.6667,-25 237.5,-20.8333 237.5,-16.6667 237.5,-16.6667 237.5,-8.3333 237.5,-8.3333 237.5,-4.1667 241.6667,0 245.8333,0 245.8333,0 311.1667,0 311.1667,0 315.3333,0 319.5,-4.1667 319.5,-8.3333 319.5,-8.3333 319.5,-16.6667 319.5,-16.6667 319.5,-20.8333 315.3333,-25 311.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="247.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="268.5" text-anchor="start">RecFn[U]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="RecFn[U] is a subtype of RecFunc[W, U]"><path d="M352.2061,-57.0156C335.5924,-46.9816 314.6967,-34.3614 299.4005,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="351.3141,-59.339 358.5727,-60.8608 353.8474,-55.1446 351.3141,-59.339" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.HoTT.ProdTyp.RecFn" xlink:href="HoTT$$ProdTyp$RecFn.html#inheritance-diagram"><path d="M413.1667,-25C413.1667,-25 345.8333,-25 345.8333,-25 341.6667,-25 337.5,-20.8333 337.5,-16.6667 337.5,-16.6667 337.5,-8.3333 337.5,-8.3333 337.5,-4.1667 341.6667,0 345.8333,0 345.8333,0 413.1667,0 413.1667,0 417.3333,0 421.5,-4.1667 421.5,-8.3333 421.5,-8.3333 421.5,-16.6667 421.5,-16.6667 421.5,-20.8333 417.3333,-25 413.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="347.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="368.5" text-anchor="start">RecFn[W]</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="RecFn[W] is a subtype of RecFunc[W, U]"><path d="M379.5,-53.7386C379.5,-44.3393 379.5,-33.3803 379.5,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="377.0501,-53.8607 379.5,-60.8608 381.9501,-53.8608 377.0501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.HoTT.SigmaTyp.RecFn" xlink:href="HoTT$$SigmaTyp$RecFn.html#inheritance-diagram"><path d="M513.1667,-25C513.1667,-25 447.8333,-25 447.8333,-25 443.6667,-25 439.5,-20.8333 439.5,-16.6667 439.5,-16.6667 439.5,-8.3333 439.5,-8.3333 439.5,-4.1667 443.6667,0 447.8333,0 447.8333,0 513.1667,0 513.1667,0 517.3333,0 521.5,-4.1667 521.5,-8.3333 521.5,-8.3333 521.5,-16.6667 521.5,-16.6667 521.5,-20.8333 517.3333,-25 513.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="449.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="470.5" text-anchor="start">RecFn[V]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="RecFn[V] is a subtype of RecFunc[W, U]"><path d="M406.7939,-57.0156C423.4076,-46.9816 444.3033,-34.3614 459.5995,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="405.1526,-55.1446 400.4273,-60.8608 407.6859,-59.339 405.1526,-55.1446" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node class" id="graph1_6"><g id="a_class|graph1_6"><a xlink:title="provingground.HoTT.PlusTyp.RecFn" xlink:href="HoTT$$PlusTyp$$RecFn.html#inheritance-diagram"><path d="M639.1667,-25C639.1667,-25 547.8333,-25 547.8333,-25 543.6667,-25 539.5,-20.8333 539.5,-16.6667 539.5,-16.6667 539.5,-8.3333 539.5,-8.3333 539.5,-4.1667 543.6667,0 547.8333,0 547.8333,0 639.1667,0 639.1667,0 643.3333,0 647.5,-4.1667 647.5,-8.3333 647.5,-8.3333 647.5,-16.6667 647.5,-16.6667 647.5,-20.8333 643.3333,-25 639.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="549.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="570.5" text-anchor="start">RecFn[U, V, W]</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="RecFn[U, V, W] is a subtype of RecFunc[W, U]"><path d="M430.6601,-58.917C466.8815,-48.5922 514.9637,-34.8865 549.4757,-25.049" stroke="#d4d4d4" fill="none"></path><polygon points="429.6417,-56.6596 423.5815,-60.9347 430.985,-61.3719 429.6417,-56.6596" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node trait" id="graph1_7"><g id="a_trait|graph1_7"><a xlink:title="provingground.induction.RecursiveDefinition" xlink:href="induction/RecursiveDefinition.html#inheritance-diagram"><path d="M807.1667,-25C807.1667,-25 673.8333,-25 673.8333,-25 669.6667,-25 665.5,-20.8333 665.5,-16.6667 665.5,-16.6667 665.5,-8.3333 665.5,-8.3333 665.5,-4.1667 669.6667,0 673.8333,0 673.8333,0 807.1667,0 807.1667,0 811.3333,0 815.5,-4.1667 815.5,-8.3333 815.5,-8.3333 815.5,-16.6667 815.5,-16.6667 815.5,-20.8333 811.3333,-25 807.1667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="675.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="696.5" text-anchor="start">RecursiveDefinition[H, C]</text></a></g></g><!-- node0&#45;&gt;node7 --><g class="edge inheritance" id="graph1_0_7"><g id="a_inheritance|graph1_0_7"><a xlink:title="RecursiveDefinition[H, C] is a subtype of RecFunc[W, U]"><path d="M439.4229,-63.3745C501.7396,-52.8446 599.3906,-36.344 666.486,-25.0065" stroke="#d4d4d4" fill="none"></path><polygon points="438.873,-60.9826 432.3791,-64.5647 439.6895,-65.8141 438.873,-60.9826" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node trait" id="graph1_8"><g id="a_trait|graph1_8"><a xlink:title="provingground.HoTT.Func" xlink:href="HoTT$$Func.html#inheritance-diagram"><path d="M416.1667,-147C416.1667,-147 342.8333,-147 342.8333,-147 338.6667,-147 334.5,-142.8333 334.5,-138.6667 334.5,-138.6667 334.5,-130.3333 334.5,-130.3333 334.5,-126.1667 338.6667,-122 342.8333,-122 342.8333,-122 416.1667,-122 416.1667,-122 420.3333,-122 424.5,-126.1667 424.5,-130.3333 424.5,-130.3333 424.5,-138.6667 424.5,-138.6667 424.5,-142.8333 420.3333,-147 416.1667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="344.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="365.5" text-anchor="start">Func[W, U]</text></a></g></g><!-- node8&#45;&gt;node0 --><g class="edge inheritance" id="graph1_8_0"><g id="a_inheritance|graph1_8_0"><a xlink:title="RecFunc[W, U] is a subtype of Func[W, U]"><path d="M379.5,-114.7386C379.5,-105.3393 379.5,-94.3803 379.5,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="377.0501,-114.8607 379.5,-121.8608 381.9501,-114.8608 377.0501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -515,6 +537,11 @@ for serialization and pretty printing.
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.RecFunc"><span>RecFunc</span></li><li class="in" name="provingground.HoTT.Func"><span>Func</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -733,6 +760,49 @@ Should throw exception when invoked for constants.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(RecFunc[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -896,6 +966,86 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       <p class="shortcomment cmt">returns whether <code>this</code> depends on <code>that</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> depends on <code>that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((RecFunc[W,U])⇒Boolean,⇒Any):RecFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((RecFunc[W,U])⇒Boolean):RecFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):RecFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):RecFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -948,6 +1098,29 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="provingground.HoTT.RecFunc#fullData" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
@@ -1244,6 +1417,26 @@ definition.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(RecFunc[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$RecFunc.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1269,7 +1462,23 @@ definition.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<span class="extype" name="provingground.HoTT.RecFunc.W">W</span>, <span class="extype" name="provingground.HoTT.RecFunc.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

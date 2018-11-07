@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="" title=""></a>
-                        <a href="" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -467,25 +475,27 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             </div>
           </div>
           <div id="content">
-            <body class="trait type">
+            <body class="object value">
       <div id="definition">
-        <div class="big-circle trait">t</div>
+        <a href="TermGenParams.html" title="See companion class"><div class="big-circle object-companion-class">o</div></a>
         <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.learning">learning</a></p>
-        <h1>BaseGeneratorNode<span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html" title="Permalink">
+        <h1><a href="TermGenParams.html" title="See companion class">TermGenParams</a><span class="permalink">
+      <a href="../../provingground/learning/TermGenParams$.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="TermGenParams.html" title="See companion class">class TermGenParams</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
+        <span class="modifier"></span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">BaseGeneratorNode</span><span class="tparams">[<span name="I">I &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="O">+O</span>]</span><span class="result"> extends <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>] with <a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</span>
+        <span class="name">TermGenParams</span><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -494,13 +504,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>], <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>], <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div><div class="toggleContainer block">
-            <span class="toggle">
-              Known Subclasses
-            </span>
-            <div class="subClasses hiddenContent"><a href="GeneratorNode$$Atom.html" class="extype" name="provingground.learning.GeneratorNode.Atom">Atom</a>, <a href="GeneratorNode$$BaseThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.BaseThenCondition">BaseThenCondition</a>, <a href="GeneratorNode$$FiberProductMap.html" class="extype" name="provingground.learning.GeneratorNode.FiberProductMap">FiberProductMap</a>, <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>, <a href="GeneratorNode$$FlatMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.FlatMapOpt">FlatMapOpt</a>, <a href="GeneratorNode$$Init.html" class="extype" name="provingground.learning.GeneratorNode.Init">Init</a>, <a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>, <a href="GeneratorNode$$MapOpt.html" class="extype" name="provingground.learning.GeneratorNode.MapOpt">MapOpt</a>, <a href="GeneratorNode$$ZipFlatMap.html" class="extype" name="provingground.learning.GeneratorNode.ZipFlatMap">ZipFlatMap</a>, <a href="GeneratorNode$$ZipMap.html" class="extype" name="provingground.learning.GeneratorNode.ZipMap">ZipMap</a>, <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a></div>
-          </div></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
         
 
       <div id="mbrsel">
@@ -525,7 +530,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.learning.BaseGeneratorNode"><span>BaseGeneratorNode</span></li><li class="in" name="provingground.learning.BaseGeneratorNodeFamily"><span>BaseGeneratorNodeFamily</span></li><li class="in" name="provingground.learning.GeneratorNode"><span>GeneratorNode</span></li><li class="in" name="provingground.learning.GeneratorNodeFamily"><span>GeneratorNodeFamily</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.learning.TermGenParams"><span>TermGenParams</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -547,50 +552,15 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
         
 
-        <div class="values members">
-              <h3>Abstract Value Members</h3>
-              <ol><li name="provingground.learning.BaseGeneratorNode#inputList" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="inputList:provingground.learning.RandomVarList[I]"></a><a id="inputList:RandomVarList[I]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#inputList:provingground.learning.RandomVarList[I]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">inputList</span><span class="result">: <a href="RandomVarList.html" class="extype" name="provingground.learning.RandomVarList">RandomVarList</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.I">I</span>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.learning.GeneratorNode#output" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="output:provingground.learning.RandomVar[O]"></a><a id="output:RandomVar[O]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#output:provingground.learning.RandomVar[O]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">output</span><span class="result">: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
-    </li></ol>
-            </div>
+        
 
         <div class="values members">
-              <h3>Concrete Value Members</h3>
+              <h3>Value Members</h3>
               <ol>
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -606,7 +576,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html###():Int" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -622,7 +592,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -638,7 +608,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -654,7 +624,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#clone():Object" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -678,7 +648,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -694,7 +664,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -710,7 +680,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#finalize():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -732,7 +702,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#getClass():Class[_]" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -751,7 +721,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#hashCode():Int" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -770,7 +740,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -786,7 +756,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -802,7 +772,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#notify():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -821,7 +791,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#notifyAll():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -837,59 +807,26 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.GeneratorNode#outputFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="outputFamily:provingground.learning.RandomVar[O]"></a><a id="outputFamily:RandomVar[O]"></a>
+    </li><li name="provingground.learning.TermGenParams#rw" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="rw:upickle.default.ReadWriter[provingground.learning.TermGenParams]"></a><a id="rw:upickle.default.ReadWriter[TermGenParams]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#outputFamily:provingground.learning.RandomVar[O]" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#rw:upickle.default.ReadWriter[provingground.learning.TermGenParams]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">outputFamily</span><span class="result">: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">the family of random variables for which this is a generation.</p><div class="fullcomment"><div class="comment cmt"><p>the family of random variables for which this is a generation.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a> → <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a></dd></dl></div>
-    </li><li name="provingground.learning.GeneratorNode#pi" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="pi[D,S&gt;:O,T](conditionFamily:D=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[D::shapeless.HNil,T]):provingground.learning.GeneratorNodeFamily[D::shapeless.HNil,T]"></a><a id="pi[D,S&gt;:O,T]((D)⇒Sort[S,T],RandomVarFamily[::[D,HNil],T]):GeneratorNodeFamily[::[D,HNil],T]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#pi[D,S&gt;:O,T](conditionFamily:D=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[D::shapeless.HNil,T]):provingground.learning.GeneratorNodeFamily[D::shapeless.HNil,T]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">implicit </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">pi</span><span class="tparams">[<span name="D">D</span>, <span name="S">S &gt;: <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="conditionFamily">conditionFamily: (<span class="extype" name="provingground.learning.GeneratorNode.pi.D">D</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.GeneratorNode.pi.S">S</span>, <span class="extype" name="provingground.learning.GeneratorNode.pi.T">T</span>]</span>, <span name="outputFamily">outputFamily: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.pi.D">D</span>, <span class="extype" name="shapeless.HNil">HNil</span>], <span class="extype" name="provingground.learning.GeneratorNode.pi.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorNode.pi.D">D</span>, <span class="extype" name="shapeless.HNil">HNil</span>], <span class="extype" name="provingground.learning.GeneratorNode.pi.T">T</span>]</span>
+        <span class="name">rw</span><span class="result">: <span class="extype" name="upickle.core.Types.ReadWriter">upickle.default.ReadWriter</span>[<a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
-    </li><li name="provingground.learning.BaseGeneratorNode#piFmly" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="piFmly[Dom&lt;:shapeless.HList,S&gt;:O,T](conditionFamily:Dom=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[Dom,T]):provingground.learning.GeneratorNodeFamily[Dom,T]"></a><a id="piFmly[Dom&lt;:HList,S&gt;:O,T]((Dom)⇒Sort[S,T],RandomVarFamily[Dom,T]):GeneratorNodeFamily[Dom,T]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#piFmly[Dom&lt;:shapeless.HList,S&gt;:O,T](conditionFamily:Dom=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[Dom,T]):provingground.learning.GeneratorNodeFamily[Dom,T]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">piFmly</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="S">S &gt;: <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="conditionFamily">conditionFamily: (<span class="extype" name="provingground.learning.BaseGeneratorNode.piFmly.Dom">Dom</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.piFmly.S">S</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.piFmly.T">T</span>]</span>, <span name="outputFamily">outputFamily: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.piFmly.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.piFmly.T">T</span>]</span>
-      </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a> → <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -905,7 +842,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#toString():String" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -921,7 +858,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#wait():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -943,7 +880,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -965,7 +902,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGenParams$.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -986,22 +923,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.BaseGeneratorNode#|" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.BaseGeneratorNode[I,T]"></a><a id="|[S&gt;:O,T](Sort[S,T],RandomVar[T]):BaseGeneratorNode[I,T]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/BaseGeneratorNode.html#|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.BaseGeneratorNode[I,T]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bar" class="name">|</span><span class="tparams">[<span name="S">S &gt;: <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="condition">condition: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.|.S">S</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.|.T">T</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.|.T">T</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.I">I</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.|.T">T</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a> → <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1012,12 +933,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="provingground.learning.BaseGeneratorNodeFamily">
-              <h3>Inherited from <a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</h3>
-            </div><div class="parent" name="provingground.learning.GeneratorNode">
-              <h3>Inherited from <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</h3>
-            </div><div class="parent" name="provingground.learning.GeneratorNodeFamily">
-              <h3>Inherited from <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.BaseGeneratorNode.O">O</span>]</h3>
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">

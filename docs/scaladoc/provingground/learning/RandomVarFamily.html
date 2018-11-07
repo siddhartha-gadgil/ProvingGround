@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNode.html" title=""></a>
-                        <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -503,7 +511,17 @@ May actually have representations instead of distributions, for example.</p></di
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="GeometricDistribution$$GeomVar$.html" class="extype" name="provingground.learning.GeometricDistribution.GeomVar">GeomVar</a>, <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>, <a href="RandomVar$$AtCoord.html" class="extype" name="provingground.learning.RandomVar.AtCoord">AtCoord</a>, <a href="RandomVar$$SimpleFamily.html" class="extype" name="provingground.learning.RandomVar.SimpleFamily">SimpleFamily</a>, <a href="RandomVector.html" class="extype" name="provingground.learning.RandomVector">RandomVector</a>, <a href="TermRandomVars$$Funcs$.html" class="extype" name="provingground.learning.TermRandomVars.Funcs">Funcs</a>, <a href="TermRandomVars$$FuncsWithDomain$.html" class="extype" name="provingground.learning.TermRandomVars.FuncsWithDomain">FuncsWithDomain</a>, <a href="TermRandomVars$$Goals$.html" class="extype" name="provingground.learning.TermRandomVars.Goals">Goals</a>, <a href="TermRandomVars$$IndexedIntroRuleTyps.html" class="extype" name="provingground.learning.TermRandomVars.IndexedIntroRuleTyps">IndexedIntroRuleTyps</a>, <a href="TermRandomVars$$IndexedIterFuncTypTo.html" class="extype" name="provingground.learning.TermRandomVars.IndexedIterFuncTypTo">IndexedIterFuncTypTo</a>, <a href="TermRandomVars$$InducDefns$.html" class="extype" name="provingground.learning.TermRandomVars.InducDefns">InducDefns</a>, <a href="TermRandomVars$$InducStrucs$.html" class="extype" name="provingground.learning.TermRandomVars.InducStrucs">InducStrucs</a>, <a href="TermRandomVars$$IntroRuleTypes.html" class="extype" name="provingground.learning.TermRandomVars.IntroRuleTypes">IntroRuleTypes</a>, <a href="TermRandomVars$$IterFuncTypTo.html" class="extype" name="provingground.learning.TermRandomVars.IterFuncTypTo">IterFuncTypTo</a>, <a href="TermRandomVars$$PartiallyApplied.html" class="extype" name="provingground.learning.TermRandomVars.PartiallyApplied">PartiallyApplied</a>, <a href="TermRandomVars$$TargetTyps$.html" class="extype" name="provingground.learning.TermRandomVars.TargetTyps">TargetTyps</a>, <a href="TermRandomVars$$Terms$.html" class="extype" name="provingground.learning.TermRandomVars.Terms">Terms</a>, <a href="TermRandomVars$$TermsWithTyp$.html" class="extype" name="provingground.learning.TermRandomVars.TermsWithTyp">TermsWithTyp</a>, <a href="TermRandomVars$$TypFamilies$.html" class="extype" name="provingground.learning.TermRandomVars.TypFamilies">TypFamilies</a>, <a href="TermRandomVars$$Typs$.html" class="extype" name="provingground.learning.TermRandomVars.Typs">Typs</a>, <a href="TermRandomVars$$TypsAndFamilies$.html" class="extype" name="provingground.learning.TermRandomVars.TypsAndFamilies">TypsAndFamilies</a>, <a href="TermRandomVars$$TypsFromFamily.html" class="extype" name="provingground.learning.TermRandomVars.TypsFromFamily">TypsFromFamily</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 258.00 155.00" height="155pt" width="258pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 254,-151 254,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.learning.RandomVarFamily (this class)" xlink:href="#inheritance-diagram"><path d="M191.6667,-86C191.6667,-86 49.3333,-86 49.3333,-86 45.1667,-86 41,-81.8333 41,-77.6667 41,-77.6667 41,-69.3333 41,-69.3333 41,-65.1667 45.1667,-61 49.3333,-61 49.3333,-61 191.6667,-61 191.6667,-61 195.8333,-61 200,-65.1667 200,-69.3333 200,-69.3333 200,-77.6667 200,-77.6667 200,-81.8333 195.8333,-86 191.6667,-86" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-80.5" x="51.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="72.5" text-anchor="start">RandomVarFamily[Dom, O]</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.learning.RandomVar" xlink:href="RandomVar.html#inheritance-diagram"><path d="M98.6667,-25C98.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 98.6667,0 98.6667,0 102.8333,0 107,-4.1667 107,-8.3333 107,-8.3333 107,-16.6667 107,-16.6667 107,-20.8333 102.8333,-25 98.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">RandomVar[O]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="RandomVar[O] is a subtype of RandomVarFamily[Dom, O]"><path d="M101.2134,-55.9406C90.3965,-46.0923 77.1525,-34.0343 67.3647,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="99.792,-57.9598 106.6176,-60.8608 103.0909,-54.3365 99.792,-57.9598" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.learning.RandomVar.SimpleFamily" xlink:href="RandomVar$$SimpleFamily.html#inheritance-diagram"><path d="M241.6667,-25C241.6667,-25 133.3333,-25 133.3333,-25 129.1667,-25 125,-20.8333 125,-16.6667 125,-16.6667 125,-8.3333 125,-8.3333 125,-4.1667 129.1667,0 133.3333,0 133.3333,0 241.6667,0 241.6667,0 245.8333,0 250,-4.1667 250,-8.3333 250,-8.3333 250,-16.6667 250,-16.6667 250,-20.8333 245.8333,-25 241.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="135.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="156.5" text-anchor="start">SimpleFamily[U, O]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="SimpleFamily[U, O] is a subtype of RandomVarFamily[Dom, O]"><path d="M139.7866,-55.9406C150.6035,-46.0923 163.8475,-34.0343 173.6353,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="137.9091,-54.3365 134.3824,-60.8608 141.208,-57.9598 137.9091,-54.3365" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="scala.AnyRef"><path d="M149.6667,-147C149.6667,-147 91.3333,-147 91.3333,-147 87.1667,-147 83,-142.8333 83,-138.6667 83,-138.6667 83,-130.3333 83,-130.3333 83,-126.1667 87.1667,-122 91.3333,-122 91.3333,-122 149.6667,-122 149.6667,-122 153.8333,-122 158,-126.1667 158,-130.3333 158,-130.3333 158,-138.6667 158,-138.6667 158,-142.8333 153.8333,-147 149.6667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="93.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="114.5" text-anchor="start">AnyRef</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="RandomVarFamily[Dom, O] is a subtype of AnyRef"><path d="M120.5,-114.7386C120.5,-105.3393 120.5,-94.3803 120.5,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="118.0501,-114.8607 120.5,-121.8608 122.9501,-114.8608 118.0501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -529,6 +547,11 @@ May actually have representations instead of distributions, for example.</p></di
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.learning.RandomVarFamily"><span>RandomVarFamily</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -606,6 +629,49 @@ May actually have representations instead of distributions, for example.</p></di
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(RandomVarFamily[Dom,O],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -678,6 +744,86 @@ May actually have representations instead of distributions, for example.</p></di
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((RandomVarFamily[Dom,O])⇒Boolean,⇒Any):RandomVarFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((RandomVarFamily[Dom,O])⇒Boolean):RandomVarFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):RandomVarFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):RandomVarFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -732,6 +878,29 @@ May actually have representations instead of distributions, for example.</p></di
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
@@ -771,9 +940,9 @@ May actually have representations instead of distributions, for example.</p></di
               
         </dd></dl></div>
     </li><li name="provingground.learning.RandomVarFamily#init" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y::shapeless.HNil,Y]"></a><a id="init[Y&gt;:O]:BasePi[Dom,::[Y,HNil],Y]"></a>
+      <a id="init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y]"></a><a id="init[Y&gt;:O]:BasePi[Dom,Y]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/RandomVarFamily.html#init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y::shapeless.HNil,Y]" title="Permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#init[Y&gt;:O]:provingground.learning.GeneratorNodeFamily.BasePi[Dom,Y]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -782,7 +951,7 @@ May actually have representations instead of distributions, for example.</p></di
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">init</span><span class="tparams">[<span name="Y">Y &gt;: <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span></span>]</span><span class="result">: <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>, <span class="extype" name="shapeless.HNil">HNil</span>], <span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>]</span>
+        <span class="name">init</span><span class="tparams">[<span name="Y">Y &gt;: <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span></span>]</span><span class="result">: <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.init.Y">Y</span>]</span>
       </span>
       
       
@@ -1004,6 +1173,26 @@ May actually have representations instead of distributions, for example.</p></di
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(RandomVarFamily[Dom,O],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RandomVarFamily.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1019,7 +1208,23 @@ May actually have representations instead of distributions, for example.</p></di
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RandomVarFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.RandomVarFamily.O">O</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

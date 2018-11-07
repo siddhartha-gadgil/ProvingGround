@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -387,7 +387,7 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">HoTTParser</span><span class="params">(<span name="names">names: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Map()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">HoTTParser</span><span class="params">(<span name="ctx">ctx: <a href="../Context.html" class="extype" name="provingground.Context">Context</a> = <span class="symbol"><span class="name"><a href="../index.html">Context.Empty</a></span></span></span>, <span name="contextMap">contextMap: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../Context.html" class="extype" name="provingground.Context">Context</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Map()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -397,7 +397,17 @@ concrete languages including our implementation of HoTT are in this package.
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 196.00 118.00" height="118pt" width="196pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 192,-114 192,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.translation.HoTTParser (this class)" xlink:href="#inheritance-diagram"><path d="M128.1667,-49C128.1667,-49 50.8333,-49 50.8333,-49 46.6667,-49 42.5,-44.8333 42.5,-40.6667 42.5,-40.6667 42.5,-32.3333 42.5,-32.3333 42.5,-28.1667 46.6667,-24 50.8333,-24 50.8333,-24 128.1667,-24 128.1667,-24 132.3333,-24 136.5,-28.1667 136.5,-32.3333 136.5,-32.3333 136.5,-40.6667 136.5,-40.6667 136.5,-44.8333 132.3333,-49 128.1667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="52.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="73.5" text-anchor="start">HoTTParser</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="scala.Product"><path d="M68.6667,-110C68.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 68.6667,-85 68.6667,-85 72.8333,-85 77,-89.1667 77,-93.3333 77,-93.3333 77,-101.6667 77,-101.6667 77,-105.8333 72.8333,-110 68.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31.5" text-anchor="start">Product</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="HoTTParser is a subtype of Product"><path d="M53.6359,-79.3963C61.7837,-69.6509 71.6326,-57.8708 78.9463,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="51.6776,-77.9189 49.0672,-84.8608 55.4368,-81.0619 51.6776,-77.9189" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Serializable"><path d="M179.6667,-110C179.6667,-110 103.3333,-110 103.3333,-110 99.1667,-110 95,-105.8333 95,-101.6667 95,-101.6667 95,-93.3333 95,-93.3333 95,-89.1667 99.1667,-85 103.3333,-85 103.3333,-85 179.6667,-85 179.6667,-85 183.8333,-85 188,-89.1667 188,-93.3333 188,-93.3333 188,-101.6667 188,-101.6667 188,-105.8333 183.8333,-110 179.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="105.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="126.5" text-anchor="start">Serializable</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="HoTTParser is a subtype of Serializable"><path d="M126.0673,-79.3963C117.7598,-69.6509 107.7178,-57.8708 100.2606,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="124.3199,-81.123 130.7256,-84.8608 128.0489,-77.9442 124.3199,-81.123" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -425,6 +435,11 @@ concrete languages including our implementation of HoTT are in this package.
                     <li class="in" name="provingground.translation.HoTTParser"><span>HoTTParser</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
               <span class="filtertype"></span>
               <ol>
                 <li class="hideall out"><span>Hide All</span></li>
@@ -443,9 +458,9 @@ concrete languages including our implementation of HoTT are in this package.
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.translation.HoTTParser#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(names:Map[String,provingground.HoTT.Term]):provingground.translation.HoTTParser"></a><a id="&lt;init&gt;:HoTTParser"></a>
+      <a id="&lt;init&gt;(ctx:provingground.Context,contextMap:Map[String,provingground.Context]):provingground.translation.HoTTParser"></a><a id="&lt;init&gt;:HoTTParser"></a>
       <span class="permalink">
-      <a href="../../provingground/translation/HoTTParser.html#&lt;init&gt;(names:Map[String,provingground.HoTT.Term]):provingground.translation.HoTTParser" title="Permalink">
+      <a href="../../provingground/translation/HoTTParser.html#&lt;init&gt;(ctx:provingground.Context,contextMap:Map[String,provingground.Context]):provingground.translation.HoTTParser" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -454,7 +469,7 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">HoTTParser</span><span class="params">(<span name="names">names: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Map()</a></span></span></span>)</span>
+        <span class="name">HoTTParser</span><span class="params">(<span name="ctx">ctx: <a href="../Context.html" class="extype" name="provingground.Context">Context</a> = <span class="symbol"><span class="name"><a href="../index.html">Context.Empty</a></span></span></span>, <span name="contextMap">contextMap: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../Context.html" class="extype" name="provingground.Context">Context</a>] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Map()</a></span></span></span>)</span>
       </span>
       
       
@@ -501,6 +516,22 @@ concrete languages including our implementation of HoTT are in this package.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.translation.HoTTParser#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="+(exp:provingground.translation.HoTTParser.Expr):provingground.translation.HoTTParser"></a><a id="+(Expr):HoTTParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#+(exp:provingground.translation.HoTTParser.Expr):provingground.translation.HoTTParser" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="exp">exp: <a href="HoTTParser$$Expr.html" class="extype" name="provingground.translation.HoTTParser.Expr">Expr</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="+(dfn:provingground.translation.HoTTParser.Defn):provingground.translation.HoTTParser"></a><a id="+(Defn):HoTTParser"></a>
       <span class="permalink">
       <a href="../../provingground/translation/HoTTParser.html#+(dfn:provingground.translation.HoTTParser.Defn):provingground.translation.HoTTParser" title="Permalink">
@@ -532,6 +563,29 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(HoTTParser,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -561,6 +615,22 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       <span class="symbol">
         <span class="name">White</span><span class="result">: <span class="extype" name="fastparse.WhitespaceApi.Wrapper">Wrapper</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#addImport" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addImport(s:String):provingground.translation.HoTTParser"></a><a id="addImport(String):HoTTParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#addImport(s:String):provingground.translation.HoTTParser" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addImport</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a></span>
       </span>
       
       
@@ -684,6 +754,54 @@ concrete languages including our implementation of HoTT are in this package.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.translation.HoTTParser#context" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="context:fastparse.noApi.P[provingground.Context]"></a><a id="context:fastparse.noApi.P[Context]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#context:fastparse.noApi.P[provingground.Context]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">context</span><span class="result">: <span class="extype" name="fastparse.Api.P">fastparse.noApi.P</span>[<a href="../Context.html" class="extype" name="provingground.Context">Context</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#contextMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="contextMap:Map[String,provingground.Context]"></a><a id="contextMap:Map[String,Context]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#contextMap:Map[String,provingground.Context]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">contextMap</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../Context.html" class="extype" name="provingground.Context">Context</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#ctx" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ctx:provingground.Context"></a><a id="ctx:Context"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#ctx:provingground.Context" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ctx</span><span class="result">: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>
+      </span>
+      
+      
     </li><li name="provingground.translation.HoTTParser#defn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="defn:fastparse.core.Parser[provingground.translation.HoTTParser.Defn,Char,String]"></a><a id="defn:Parser[Defn,Char,String]"></a>
       <span class="permalink">
@@ -700,6 +818,86 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((HoTTParser)⇒Boolean,⇒Any):HoTTParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((HoTTParser)⇒Boolean):HoTTParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):HoTTParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):HoTTParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -754,6 +952,29 @@ concrete languages including our implementation of HoTT are in this package.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="provingground.translation.HoTTParser#funcTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="funcTyp:fastparse.core.Parser[provingground.HoTT.FuncTyp[U,U]forSome{typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U];typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]},Char,String]"></a><a id="funcTyp:Parser[FuncTyp[U,U]forSome{typeU&lt;:TermwithSubs[U],typeU&lt;:TermwithSubs[U]},Char,String]"></a>
       <span class="permalink">
@@ -789,6 +1010,38 @@ concrete languages including our implementation of HoTT are in this package.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.translation.HoTTParser#imp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="imp:fastparse.core.Parser[provingground.translation.HoTTParser.Import,Char,String]"></a><a id="imp:Parser[Import,Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#imp:fastparse.core.Parser[provingground.translation.HoTTParser.Import,Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">imp</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="HoTTParser$$Import.html" class="extype" name="provingground.translation.HoTTParser.Import">Import</a>, <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#inducP" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="inducP:fastparse.core.Parser[provingground.HoTT.Term,Char,String]"></a><a id="inducP:Parser[Term,Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#inducP:fastparse.core.Parser[provingground.HoTT.Term,Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">inducP</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
@@ -869,22 +1122,6 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       
-    </li><li name="provingground.translation.HoTTParser#names" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="names:Map[String,provingground.HoTT.Term]"></a><a id="names:Map[String,Term]"></a>
-      <span class="permalink">
-      <a href="../../provingground/translation/HoTTParser.html#names:Map[String,provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">names</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -939,6 +1176,22 @@ concrete languages including our implementation of HoTT are in this package.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.translation.HoTTParser#num" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="num:fastparse.core.Parser[provingground.scalahott.NatRing.LocalTermwithprovingground.HoTT.Subs[provingground.scalahott.NatRing.LocalTerm],Char,String]"></a><a id="num:Parser[scalahott.NatRing.LocalTermwithSubs[scalahott.NatRing.LocalTerm],Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#num:fastparse.core.Parser[provingground.scalahott.NatRing.LocalTermwithprovingground.HoTT.Subs[provingground.scalahott.NatRing.LocalTerm],Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">num</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="../scalahott/NatRing$.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">scalahott.NatRing.LocalTerm</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="../scalahott/NatRing$.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">scalahott.NatRing.LocalTerm</a>], <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.HoTTParser#parens" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="parens:fastparse.noApi.P[provingground.HoTT.Term]"></a><a id="parens:fastparse.noApi.P[Term]"></a>
       <span class="permalink">
@@ -971,6 +1224,38 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       
+    </li><li name="provingground.translation.HoTTParser#plusTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="plusTyp:fastparse.core.Parser[provingground.HoTT.PlusTyp[U,U]forSome{typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U];typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]},Char,String]"></a><a id="plusTyp:Parser[PlusTyp[U,U]forSome{typeU&lt;:TermwithSubs[U],typeU&lt;:TermwithSubs[U]},Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#plusTyp:fastparse.core.Parser[provingground.HoTT.PlusTyp[U,U]forSome{typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U];typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]},Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">plusTyp</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="../HoTT$$PlusTyp.html" class="extype" name="provingground.HoTT.PlusTyp">PlusTyp</a>[<span class="extype" name="provingground.translation.HoTTParser.plusTyp.$anonfun.U">U</span>, <span class="extype" name="provingground.translation.HoTTParser.plusTyp.$anonfun.U">U</span>] forSome {type U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.translation.HoTTParser.plusTyp.$anonfun.U">U</span>], type U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.translation.HoTTParser.plusTyp.$anonfun.U">U</span>]}, <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#polyApplnP" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="polyApplnP:fastparse.core.Parser[provingground.HoTT.Term,Char,String]"></a><a id="polyApplnP:Parser[Term,Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#polyApplnP:fastparse.core.Parser[provingground.HoTT.Term,Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">polyApplnP</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.HoTTParser#predefs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="predefs:fastparse.noApi.P[provingground.HoTT.Term]"></a><a id="predefs:fastparse.noApi.P[Term]"></a>
       <span class="permalink">
@@ -984,6 +1269,54 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       <span class="symbol">
         <span class="name">predefs</span><span class="result">: <span class="extype" name="fastparse.Api.P">fastparse.noApi.P</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#prodTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="prodTyp:fastparse.core.Parser[provingground.HoTT.ProdTyp[U,U]forSome{typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U];typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]},Char,String]"></a><a id="prodTyp:Parser[ProdTyp[U,U]forSome{typeU&lt;:TermwithSubs[U],typeU&lt;:TermwithSubs[U]},Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#prodTyp:fastparse.core.Parser[provingground.HoTT.ProdTyp[U,U]forSome{typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U];typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]},Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">prodTyp</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="../HoTT$$ProdTyp.html" class="extype" name="provingground.HoTT.ProdTyp">ProdTyp</a>[<span class="extype" name="provingground.translation.HoTTParser.prodTyp.$anonfun.U">U</span>, <span class="extype" name="provingground.translation.HoTTParser.prodTyp.$anonfun.U">U</span>] forSome {type U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.translation.HoTTParser.prodTyp.$anonfun.U">U</span>], type U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.translation.HoTTParser.prodTyp.$anonfun.U">U</span>]}, <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#recP" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recP:fastparse.core.Parser[provingground.HoTT.Term,Char,String]"></a><a id="recP:Parser[Term,Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#recP:fastparse.core.Parser[provingground.HoTT.Term,Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recP</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.HoTTParser#sigmaTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sigmaTyp:fastparse.core.Parser[provingground.HoTT.SigmaTyp[provingground.HoTT.Term,U]forSome{typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]},Char,String]"></a><a id="sigmaTyp:Parser[SigmaTyp[Term,U]forSome{typeU&lt;:TermwithSubs[U]},Char,String]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#sigmaTyp:fastparse.core.Parser[provingground.HoTT.SigmaTyp[provingground.HoTT.Term,U]forSome{typeU&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]},Char,String]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sigmaTyp</span><span class="result">: <span class="extype" name="fastparse.core.Parser">Parser</span>[<a href="../HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.translation.HoTTParser.sigmaTyp.$anonfun.U">U</span>] forSome {type U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.translation.HoTTParser.sigmaTyp.$anonfun.U">U</span>]}, <span class="extype" name="scala.Char">Char</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       
       
@@ -1167,11 +1500,54 @@ concrete languages including our implementation of HoTT are in this package.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(HoTTParser,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
 
-        
+        <div class="values members">
+              <h3>Shadowed Implicit Value Members</h3>
+              <ol><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/HoTTParser.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit shadowed">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(hoTTParser: any2stringadd[HoTTParser]).+(other)</pre></div></dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li></ol>
+            </div>
 
         
         </div>
@@ -1190,7 +1566,23 @@ concrete languages including our implementation of HoTT are in this package.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.HoTTParser">HoTTParser</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

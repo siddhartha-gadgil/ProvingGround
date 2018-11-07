@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNode.html" title=""></a>
-                        <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -503,8 +511,18 @@ or a single {{GeneratorNode}}, which is the interesting case.
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="BaseGeneratorNode.html" class="extype" name="provingground.learning.BaseGeneratorNode">BaseGeneratorNode</a>, <a href="BaseGeneratorNodeFamily.html" class="extype" name="provingground.learning.BaseGeneratorNodeFamily">BaseGeneratorNodeFamily</a>, <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>, <a href="GeneratorNode$$Atom.html" class="extype" name="provingground.learning.GeneratorNode.Atom">Atom</a>, <a href="GeneratorNode$$BaseThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.BaseThenCondition">BaseThenCondition</a>, <a href="GeneratorNode$$ComplexIsland.html" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>, <a href="GeneratorNode$$FiberProductMap.html" class="extype" name="provingground.learning.GeneratorNode.FiberProductMap">FiberProductMap</a>, <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>, <a href="GeneratorNode$$FlatMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.FlatMapOpt">FlatMapOpt</a>, <a href="GeneratorNode$$Init.html" class="extype" name="provingground.learning.GeneratorNode.Init">Init</a>, <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>, <a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>, <a href="GeneratorNode$$MapOpt.html" class="extype" name="provingground.learning.GeneratorNode.MapOpt">MapOpt</a>, <a href="GeneratorNode$$RecursiveThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.RecursiveThenCondition">RecursiveThenCondition</a>, <a href="GeneratorNode$$ThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.ThenCondition">ThenCondition</a>, <a href="GeneratorNode$$ZipFlatMap.html" class="extype" name="provingground.learning.GeneratorNode.ZipFlatMap">ZipFlatMap</a>, <a href="GeneratorNode$$ZipMap.html" class="extype" name="provingground.learning.GeneratorNode.ZipMap">ZipMap</a>, <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>, <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>, <a href="GeneratorNodeFamily$$BasePiOpt.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePiOpt">BasePiOpt</a>, <a href="GeneratorNodeFamily$$Pi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.Pi">Pi</a>, <a href="GeneratorNodeFamily$$PiOpt.html" class="extype" name="provingground.learning.GeneratorNodeFamily.PiOpt">PiOpt</a>, <a href="GeneratorNodeFamily$$RecPi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.RecPi">RecPi</a>, <a href="GeneratorNodeFamily$$RecPiOpt.html" class="extype" name="provingground.learning.GeneratorNodeFamily.RecPiOpt">RecPiOpt</a>, <a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>, <a href="RecursiveGeneratorNodeFamily.html" class="extype" name="provingground.learning.RecursiveGeneratorNodeFamily">RecursiveGeneratorNodeFamily</a></div>
-          </div></div>
+            <div class="subClasses hiddenContent"><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>, <a href="GeneratorNode$$Atom.html" class="extype" name="provingground.learning.GeneratorNode.Atom">Atom</a>, <a href="GeneratorNode$$BaseThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.BaseThenCondition">BaseThenCondition</a>, <a href="GeneratorNode$$ComplexIsland.html" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>, <a href="GeneratorNode$$FiberProductMap.html" class="extype" name="provingground.learning.GeneratorNode.FiberProductMap">FiberProductMap</a>, <a href="GeneratorNode$$FlatMap.html" class="extype" name="provingground.learning.GeneratorNode.FlatMap">FlatMap</a>, <a href="GeneratorNode$$FlatMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.FlatMapOpt">FlatMapOpt</a>, <a href="GeneratorNode$$Init.html" class="extype" name="provingground.learning.GeneratorNode.Init">Init</a>, <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>, <a href="GeneratorNode$$Map.html" class="extype" name="provingground.learning.GeneratorNode.Map">Map</a>, <a href="GeneratorNode$$MapOpt.html" class="extype" name="provingground.learning.GeneratorNode.MapOpt">MapOpt</a>, <a href="GeneratorNode$$RecursiveThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.RecursiveThenCondition">RecursiveThenCondition</a>, <a href="GeneratorNode$$ThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.ThenCondition">ThenCondition</a>, <a href="GeneratorNode$$ZipFlatMap.html" class="extype" name="provingground.learning.GeneratorNode.ZipFlatMap">ZipFlatMap</a>, <a href="GeneratorNode$$ZipMap.html" class="extype" name="provingground.learning.GeneratorNode.ZipMap">ZipMap</a>, <a href="GeneratorNode$$ZipMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.ZipMapOpt">ZipMapOpt</a>, <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>, <a href="GeneratorNodeFamily$$BasePiOpt.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePiOpt">BasePiOpt</a>, <a href="GeneratorNodeFamily$$Pi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.Pi">Pi</a>, <a href="GeneratorNodeFamily$$PiOpt.html" class="extype" name="provingground.learning.GeneratorNodeFamily.PiOpt">PiOpt</a>, <a href="GeneratorNodeFamily$$RecPi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.RecPi">RecPi</a>, <a href="GeneratorNodeFamily$$RecPiOpt.html" class="extype" name="provingground.learning.GeneratorNodeFamily.RecPiOpt">RecPiOpt</a>, <a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>, <a href="RecursiveGeneratorNodeFamily.html" class="extype" name="provingground.learning.RecursiveGeneratorNodeFamily">RecursiveGeneratorNodeFamily</a></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 925.50 155.00" height="155pt" width="926pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 921.5,-151 921.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.learning.GeneratorNodeFamily (this trait)" xlink:href="#inheritance-diagram"><path d="M476.6667,-86C476.6667,-86 318.3333,-86 318.3333,-86 314.1667,-86 310,-81.8333 310,-77.6667 310,-77.6667 310,-69.3333 310,-69.3333 310,-65.1667 314.1667,-61 318.3333,-61 318.3333,-61 476.6667,-61 476.6667,-61 480.8333,-61 485,-65.1667 485,-69.3333 485,-69.3333 485,-77.6667 485,-77.6667 485,-81.8333 480.8333,-86 476.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="320.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="341.5" text-anchor="start">GeneratorNodeFamily[Dom, O]</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.learning.GeneratorNodeFamily.BasePi" xlink:href="GeneratorNodeFamily$$BasePi.html#inheritance-diagram"><path d="M102.6667,-25C102.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 102.6667,0 102.6667,0 106.8333,0 111,-4.1667 111,-8.3333 111,-8.3333 111,-16.6667 111,-16.6667 111,-20.8333 106.8333,-25 102.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">BasePi[Dom, O]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="BasePi[Dom, O] is a subtype of GeneratorNodeFamily[Dom, O]"><path d="M316.9698,-59.7644C261.6605,-50.2412 186.5803,-37.138 120.5,-25 117.4484,-24.4395 114.3174,-23.8581 111.1577,-23.2666" stroke="#d4d4d4" fill="none"></path><polygon points="316.6417,-62.1938 323.9558,-60.9663 317.4726,-57.3648 316.6417,-62.1938" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.learning.GeneratorNodeFamily.BasePiOpt" xlink:href="GeneratorNodeFamily$$BasePiOpt.html#inheritance-diagram"><path d="M247.1667,-25C247.1667,-25 137.8333,-25 137.8333,-25 133.6667,-25 129.5,-20.8333 129.5,-16.6667 129.5,-16.6667 129.5,-8.3333 129.5,-8.3333 129.5,-4.1667 133.6667,0 137.8333,0 137.8333,0 247.1667,0 247.1667,0 251.3333,0 255.5,-4.1667 255.5,-8.3333 255.5,-8.3333 255.5,-16.6667 255.5,-16.6667 255.5,-20.8333 251.3333,-25 247.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="139.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="160.5" text-anchor="start">BasePiOpt[Dom, O]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="BasePiOpt[Dom, O] is a subtype of GeneratorNodeFamily[Dom, O]"><path d="M348.2404,-58.8423C313.5356,-48.5155 267.5587,-34.8345 234.5705,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="347.6158,-61.2125 355.0239,-60.8608 349.0134,-56.516 347.6158,-61.2125" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="provingground.learning.GeneratorNode" xlink:href="GeneratorNode.html#inheritance-diagram"><path d="M388.6667,-25C388.6667,-25 282.3333,-25 282.3333,-25 278.1667,-25 274,-20.8333 274,-16.6667 274,-16.6667 274,-8.3333 274,-8.3333 274,-4.1667 278.1667,0 282.3333,0 282.3333,0 388.6667,0 388.6667,0 392.8333,0 397,-4.1667 397,-8.3333 397,-8.3333 397,-16.6667 397,-16.6667 397,-20.8333 392.8333,-25 388.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-19.5" x="284.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="305.5" text-anchor="start">GeneratorNode[O]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="GeneratorNode[O] is a subtype of GeneratorNodeFamily[Dom, O]"><path d="M379.6527,-55.9406C369.643,-46.0923 357.3874,-34.0343 348.33,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="377.9454,-57.6978 384.6536,-60.8608 381.382,-54.2049 377.9454,-57.6978" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node trait" id="graph1_4"><g id="a_trait|graph1_4"><a xlink:title="provingground.learning.GeneratorNodeFamily.Pi" xlink:href="GeneratorNodeFamily$$Pi.html#inheritance-diagram"><path d="M497.1667,-25C497.1667,-25 423.8333,-25 423.8333,-25 419.6667,-25 415.5,-20.8333 415.5,-16.6667 415.5,-16.6667 415.5,-8.3333 415.5,-8.3333 415.5,-4.1667 419.6667,0 423.8333,0 423.8333,0 497.1667,0 497.1667,0 501.3333,0 505.5,-4.1667 505.5,-8.3333 505.5,-8.3333 505.5,-16.6667 505.5,-16.6667 505.5,-20.8333 501.3333,-25 497.1667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-19.5" x="425.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="446.5" text-anchor="start">Pi[Dom, O]</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="Pi[Dom, O] is a subtype of GeneratorNodeFamily[Dom, O]"><path d="M415.6352,-55.9406C425.8063,-46.0923 438.2596,-34.0343 447.4631,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="413.8783,-54.2313 410.5536,-60.8608 417.2869,-57.7516 413.8783,-54.2313" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node trait" id="graph1_5"><g id="a_trait|graph1_5"><a xlink:title="provingground.learning.GeneratorNodeFamily.PiOpt" xlink:href="GeneratorNodeFamily$$PiOpt.html#inheritance-diagram"><path d="M620.6667,-25C620.6667,-25 532.3333,-25 532.3333,-25 528.1667,-25 524,-20.8333 524,-16.6667 524,-16.6667 524,-8.3333 524,-8.3333 524,-4.1667 528.1667,0 532.3333,0 532.3333,0 620.6667,0 620.6667,0 624.8333,0 629,-4.1667 629,-8.3333 629,-8.3333 629,-16.6667 629,-16.6667 629,-20.8333 624.8333,-25 620.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-19.5" x="534.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="555.5" text-anchor="start">PiOpt[Dom, O]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="PiOpt[Dom, O] is a subtype of GeneratorNodeFamily[Dom, O]"><path d="M441.2717,-58.5834C471.4836,-48.2877 511.201,-34.7527 539.7652,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="440.4244,-56.2837 434.5889,-60.8608 442.0051,-60.9218 440.4244,-56.2837" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node trait" id="graph1_6"><g id="a_trait|graph1_6"><a xlink:title="provingground.learning.RecursiveGeneratorNodeFamily" xlink:href="RecursiveGeneratorNodeFamily.html#inheritance-diagram"><path d="M909.1667,-25C909.1667,-25 655.8333,-25 655.8333,-25 651.6667,-25 647.5,-20.8333 647.5,-16.6667 647.5,-16.6667 647.5,-8.3333 647.5,-8.3333 647.5,-4.1667 651.6667,0 655.8333,0 655.8333,0 909.1667,0 909.1667,0 913.3333,0 917.5,-4.1667 917.5,-8.3333 917.5,-8.3333 917.5,-16.6667 917.5,-16.6667 917.5,-20.8333 913.3333,-25 909.1667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-19.5" x="657.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="678.5" text-anchor="start">RecursiveGeneratorNodeFamily[Dom, State, Boat, O]</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="RecursiveGeneratorNodeFamily[Dom, State, Boat, O] is a subtype of GeneratorNodeFamily[Dom, O]"><path d="M483.894,-59.8116C549.6383,-49.395 639.3971,-35.1734 703.2975,-25.049" stroke="#d4d4d4" fill="none"></path><polygon points="483.3358,-57.4194 476.8054,-60.9347 484.1026,-62.259 483.3358,-57.4194" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node class" id="graph1_7"><g id="a_class|graph1_7"><a xlink:title="scala.AnyRef"><path d="M426.6667,-147C426.6667,-147 368.3333,-147 368.3333,-147 364.1667,-147 360,-142.8333 360,-138.6667 360,-138.6667 360,-130.3333 360,-130.3333 360,-126.1667 364.1667,-122 368.3333,-122 368.3333,-122 426.6667,-122 426.6667,-122 430.8333,-122 435,-126.1667 435,-130.3333 435,-130.3333 435,-138.6667 435,-138.6667 435,-142.8333 430.8333,-147 426.6667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="370.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="391.5" text-anchor="start">AnyRef</text></a></g></g><!-- node7&#45;&gt;node0 --><g class="edge inheritance" id="graph1_7_0"><g id="a_inheritance|graph1_7_0"><a xlink:title="GeneratorNodeFamily[Dom, O] is a subtype of AnyRef"><path d="M397.5,-114.7386C397.5,-105.3393 397.5,-94.3803 397.5,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="395.0501,-114.8607 397.5,-121.8608 399.9501,-114.8608 395.0501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -530,6 +548,11 @@ or a single {{GeneratorNode}}, which is the interesting case.
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.learning.GeneratorNodeFamily"><span>GeneratorNodeFamily</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -607,6 +630,49 @@ or a single {{GeneratorNode}}, which is the interesting case.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(GeneratorNodeFamily[Dom,O],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -663,6 +729,86 @@ or a single {{GeneratorNode}}, which is the interesting case.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((GeneratorNodeFamily[Dom,O])⇒Boolean,⇒Any):GeneratorNodeFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((GeneratorNodeFamily[Dom,O])⇒Boolean):GeneratorNodeFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):GeneratorNodeFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):GeneratorNodeFamily[Dom,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -715,6 +861,29 @@ or a single {{GeneratorNode}}, which is the interesting case.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -925,6 +1094,26 @@ or a single {{GeneratorNode}}, which is the interesting case.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(GeneratorNodeFamily[Dom,O],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNodeFamily.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -940,7 +1129,23 @@ or a single {{GeneratorNode}}, which is the interesting case.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNodeFamily.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNodeFamily.O">O</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

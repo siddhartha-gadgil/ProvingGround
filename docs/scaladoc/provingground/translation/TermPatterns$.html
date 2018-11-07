@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -741,6 +741,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
       </span>
       
       
+    </li><li name="provingground.translation.TermPatterns#foldedTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="foldedTerm:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.IV]"></a><a id="foldedTerm:Pattern[Term,IV]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#foldedTerm:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.IV]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">foldedTerm</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#IV[A]=(cats.Id[A],Vector[A])" class="extmbr" name="provingground.translation.Functors.IV">IV</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.TermPatterns#formalAppln" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="formalAppln:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]"></a><a id="formalAppln:Pattern[Term,II]"></a>
       <span class="permalink">
@@ -794,6 +810,22 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.translation.TermPatterns#getName" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getName(sym:provingground.HoTT.AnySym):Option[provingground.HoTT.Name]"></a><a id="getName(AnySym):Option[Name]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#getName(sym:provingground.HoTT.AnySym):Option[provingground.HoTT.Name]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getName</span><span class="params">(<span name="sym">sym: <a href="../HoTT$$AnySym.html" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Name.html" class="extype" name="provingground.HoTT.Name">Name</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
@@ -979,6 +1011,150 @@ for various kinds of HoTT terms. Includes matching recursively and inductively d
       
       <p class="shortcomment cmt">matches lambda applications and returns HoTT-type of the variable as well
 </p>
+    </li><li name="provingground.translation.TermPatterns#miscAppln" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="miscAppln:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]"></a><a id="miscAppln:Pattern[Term,II]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#miscAppln:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">miscAppln</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#II[A]=(cats.Id[A],cats.Id[A])" class="extmbr" name="provingground.translation.Functors.II">II</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natAddMorph" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natAddMorph:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]"></a><a id="natAddMorph:Pattern[Term,II]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natAddMorph:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.II]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natAddMorph</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#II[A]=(cats.Id[A],cats.Id[A])" class="extmbr" name="provingground.translation.Functors.II">II</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natLiteral" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natLiteral:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.N]"></a><a id="natLiteral:Pattern[Term,N]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natLiteral:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.N]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natLiteral</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#N[A]=provingground.translation.Functors.C[A,Int]" class="extmbr" name="provingground.translation.Functors.N">N</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natProd" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natProd:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]"></a><a id="natProd:Pattern[Term,Un]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natProd:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natProd</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#Un[A]=provingground.translation.Functors.C[A,Unit]" class="extmbr" name="provingground.translation.Functors.Un">Un</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natSucc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natSucc:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]"></a><a id="natSucc:Pattern[Term,Un]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natSucc:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natSucc</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#Un[A]=provingground.translation.Functors.C[A,Unit]" class="extmbr" name="provingground.translation.Functors.Un">Un</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natSum" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natSum:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]"></a><a id="natSum:Pattern[Term,Un]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natSum:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natSum</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#Un[A]=provingground.translation.Functors.C[A,Unit]" class="extmbr" name="provingground.translation.Functors.Un">Un</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natTyp:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]"></a><a id="natTyp:Pattern[Term,Un]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natTyp:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natTyp</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#Un[A]=provingground.translation.Functors.C[A,Unit]" class="extmbr" name="provingground.translation.Functors.Un">Un</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natUniv" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natUniv:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]"></a><a id="natUniv:Pattern[Term,Un]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natUniv:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natUniv</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#Un[A]=provingground.translation.Functors.C[A,Unit]" class="extmbr" name="provingground.translation.Functors.Un">Un</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.translation.TermPatterns#natZero" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="natZero:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]"></a><a id="natZero:Pattern[Term,Un]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/TermPatterns$.html#natZero:provingground.translation.Translator.Pattern[provingground.HoTT.Term,provingground.translation.Functors.Un]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">natZero</span><span class="result">: <a href="Translator$$Pattern.html" class="extype" name="provingground.translation.Translator.Pattern">Pattern</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="Functors$.html#Un[A]=provingground.translation.Functors.C[A,Unit]" class="extmbr" name="provingground.translation.Functors.Un">Un</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">

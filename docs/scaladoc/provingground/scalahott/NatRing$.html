@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -277,7 +277,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">NatRing</span><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+        <span class="name">NatRing</span><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
       </span>
       </h4>
 
@@ -286,7 +286,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>, <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -312,7 +312,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.scalahott.NatRing"><span>NatRing</span></li><li class="in" name="provingground.scalahott.SymbolicCRing"><span>SymbolicCRing</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.scalahott.NatRing"><span>NatRing</span></li><li class="in" name="provingground.induction.ExstInducStrucs"><span>ExstInducStrucs</span></li><li class="in" name="provingground.scalahott.SymbolicCRing"><span>SymbolicCRing</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -335,9 +335,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="provingground.scalahott.NatRing.Induc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[provingground.scalahott.NatRing.Nat,U]withHoTT.Subs[provingground.scalahott.NatRing.Induc[U]]withProductwithSerializable"></a><a id="Induc[U&lt;:TermwithSubs[U]]:Induc[U]"></a>
+      <a id="Induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.InducFuncLike[provingground.scalahott.NatRing.Nat,U]withHoTT.Subs[provingground.scalahott.NatRing.Induc[U]]withProductwithSerializable"></a><a id="Induc[U&lt;:TermwithSubs[U]]:Induc[U]"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$.html#Induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.FuncLike[provingground.scalahott.NatRing.Nat,U]withHoTT.Subs[provingground.scalahott.NatRing.Induc[U]]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#Induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.InducFuncLike[provingground.scalahott.NatRing.Nat,U]withHoTT.Subs[provingground.scalahott.NatRing.Induc[U]]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -346,7 +346,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="NatRing$$Induc.html"><span class="name">Induc</span></a><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>]</span><span class="params">(<span name="typFamily">typFamily: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>, <span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span></span>, <span name="g">g: <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="NatRing$$Induc.html" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="NatRing$$Induc.html"><span class="name">Induc</span></a><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>]</span><span class="params">(<span name="typFamily">typFamily: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>, <span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span></span>, <span name="g">g: <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="NatRing$$Induc.html" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -399,9 +399,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Rec" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[provingground.scalahott.NatRing.Nat,U]withProductwithSerializable"></a><a id="Rec[U&lt;:TermwithSubs[U]]:Rec[U]"></a>
+      <a id="Rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.RecFunc[provingground.scalahott.NatRing.Nat,U]withProductwithSerializable"></a><a id="Rec[U&lt;:TermwithSubs[U]]:Rec[U]"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$.html#Rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.Func[provingground.scalahott.NatRing.Nat,U]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#Rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]]extendsHoTT.RecFunc[provingground.scalahott.NatRing.Nat,U]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -410,14 +410,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="NatRing$$Rec.html"><span class="name">Rec</span></a><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>]</span><span class="params">(<span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span></span>, <span name="g">g: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="NatRing$$Rec.html"><span class="name">Rec</span></a><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>]</span><span class="params">(<span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span></span>, <span name="g">g: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li><li name="provingground.scalahott.SymbolicCRing.AddLiteral" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="AddLiteral:AddLiteral"></a>
+      <a id="AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="AddLiteral:AddLiteral"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#AddLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -426,14 +426,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="SymbolicCRing$AddLiteral.html"><span class="name">AddLiteral</span></a><span class="params">(<span name="a">a: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="SymbolicCRing$AddLiteral.html"><span class="name">AddLiteral</span></a><span class="params">(<span name="a">a: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing.AddTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="AddTerm:AddTerm"></a>
+      <a id="AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="AddTerm:AddTerm"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#AddTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -442,7 +442,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="returns function x + _ where x is not a literal and is indecomposable under sum" href="SymbolicCRing$AddTerm.html"><span class="name">AddTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="returns function x + _ where x is not a literal and is indecomposable under sum" href="SymbolicCRing$AddTerm.html"><span class="name">AddTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">returns function x + _ where x is not a literal and is indecomposable under sum
@@ -504,9 +504,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing.multLiteral" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="multLiteral:multLiteral"></a>
+      <a id="multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="multLiteral:multLiteral"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#multLiteralextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -515,14 +515,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="SymbolicCRing$multLiteral.html"><span class="name">multLiteral</span></a><span class="params">(<span name="b">b: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="SymbolicCRing$multLiteral.html"><span class="name">multLiteral</span></a><span class="params">(<span name="b">b: <span class="extype" name="provingground.scalahott.SymbolicCRing.A">A</span></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing.multTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable"></a><a id="multTerm:multTerm"></a>
+      <a id="multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable"></a><a id="multTerm:multTerm"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/SymbolicCRing.html#multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withProductwithSerializable" title="Permalink">
+      <a href="../../provingground/scalahott/SymbolicCRing.html#multTermextendsHoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]withHoTT.MiscApplnwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -531,7 +531,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="SymbolicCRing$multTerm.html"><span class="name">multTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="SymbolicCRing$multTerm.html"><span class="name">multTerm</span></a><span class="params">(<span name="x">x: <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a></span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>] with <a href="../HoTT$$MiscAppln.html" class="extype" name="provingground.HoTT.MiscAppln">MiscAppln</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
@@ -647,6 +647,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing#constants" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="constants:Vector[provingground.HoTT.Term]"></a><a id="constants:Vector[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#constants:Vector[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">constants</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing">NatRing</a> → <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing#context" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="context:provingground.Context"></a><a id="context:Context"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#context:provingground.Context" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">context</span><span class="result">: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>
+      </span>
+      
+      
     </li><li name="provingground.scalahott.SymbolicCRing#cringStructure" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="cringStructure:spire.algebra.CRing[SymbolicCRing.this.LocalTerm]"></a><a id="cringStructure:CRing[LocalTerm]"></a>
       <span class="permalink">
@@ -695,6 +727,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing#exstInducDefn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="exstInducDefn:provingground.induction.ExstInducDefn"></a><a id="exstInducDefn:ExstInducDefn"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#exstInducDefn:provingground.induction.ExstInducDefn" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exstInducDefn</span><span class="result">: <a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -718,9 +766,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing#funcSum" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A],SymbolicCRing.this.LocalTerm]"></a><a id="funcSum((LocalTerm)⇒LocalTerm,(LocalTerm)⇒LocalTerm):Func[RepTerm[SafeLong],LocalTerm]"></a>
+      <a id="funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[A]],SymbolicCRing.this.LocalTerm]"></a><a id="funcSum((LocalTerm)⇒LocalTerm,(LocalTerm)⇒LocalTerm):Func[RepTerm[SafeLong]withSubs[RepTerm[SafeLong]],LocalTerm]"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$.html#funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A],SymbolicCRing.this.LocalTerm]" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#funcSum(f:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm,g:SymbolicCRing.this.LocalTerm=&gt;SymbolicCRing.this.LocalTerm):provingground.HoTT.Func[provingground.scalahott.RepTerm[A]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[A]],SymbolicCRing.this.LocalTerm]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -729,7 +777,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">funcSum</span><span class="params">(<span name="f">f: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a></span>, <span name="g">g: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a></span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>], <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>]</span>
+        <span class="name">funcSum</span><span class="params">(<span name="f">f: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a></span>, <span name="g">g: (<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>) ⇒ <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a></span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]], <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
@@ -772,9 +820,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.scalahott.NatRing#incl" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="incl[A](r:provingground.scalahott.SymbolicCRing[A])(implicitevidence$1:spire.algebra.CRing[A]):provingground.scalahott.NatRing.Rec[r.LocalTerm]"></a><a id="incl[A](SymbolicCRing[A])(CRing[A]):Rec[LocalTerm]"></a>
+      <a id="incl[A](r:provingground.scalahott.SymbolicCRing[A])(implicitevidence$1:spire.algebra.CRing[A]):provingground.HoTT.Func[provingground.scalahott.NatRing.LocalTerm,r.LocalTerm]"></a><a id="incl[A](SymbolicCRing[A])(CRing[A]):Func[LocalTerm,LocalTerm]"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$.html#incl[A](r:provingground.scalahott.SymbolicCRing[A])(implicitevidence$1:spire.algebra.CRing[A]):provingground.scalahott.NatRing.Rec[r.LocalTerm]" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#incl[A](r:provingground.scalahott.SymbolicCRing[A])(implicitevidence$1:spire.algebra.CRing[A]):provingground.HoTT.Func[provingground.scalahott.NatRing.LocalTerm,r.LocalTerm]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -783,10 +831,42 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">incl</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="r">r: <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="provingground.scalahott.NatRing.incl.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="spire.algebra.CRing">CRing</span>[<span class="extype" name="provingground.scalahott.NatRing.incl.A">A</span>]</span>)</span><span class="result">: <a href="NatRing$$Rec.html" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>]</span>
+        <span class="name">incl</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="r">r: <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="provingground.scalahott.NatRing.incl.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="spire.algebra.CRing">CRing</span>[<span class="extype" name="provingground.scalahott.NatRing.incl.A">A</span>]</span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>, <a href="SymbolicCRing.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.SymbolicCRing.LocalTerm">LocalTerm</a>]</span>
       </span>
       
       
+    </li><li name="provingground.scalahott.NatRing#induc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typFamily:provingground.HoTT.Func[provingground.scalahott.NatRing.Nat,provingground.HoTT.Typ[U]]):provingground.HoTT.Func[U,provingground.HoTT.Func[provingground.HoTT.FuncLike[provingground.scalahott.NatRing.LocalTerm,provingground.HoTT.Func[U,U]],provingground.HoTT.FuncLike[provingground.scalahott.NatRing.Nat,U]]]"></a><a id="induc[U&lt;:TermwithSubs[U]](Func[Nat,Typ[U]]):Func[U,Func[FuncLike[LocalTerm,Func[U,U]],FuncLike[Nat,U]]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#induc[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](typFamily:provingground.HoTT.Func[provingground.scalahott.NatRing.Nat,provingground.HoTT.Typ[U]]):provingground.HoTT.Func[U,provingground.HoTT.Func[provingground.HoTT.FuncLike[provingground.scalahott.NatRing.LocalTerm,provingground.HoTT.Func[U,U]],provingground.HoTT.FuncLike[provingground.scalahott.NatRing.Nat,U]]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">induc</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.induc.U">U</span>]</span>]</span><span class="params">(<span name="typFamily">typFamily: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.induc.U">U</span>]]</span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.induc.U">U</span>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.induc.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.induc.U">U</span>]], <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.induc.U">U</span>]]]</span>
+      </span>
+      
+      
+    </li><li name="provingground.scalahott.NatRing#inducOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a><a id="inducOpt(Term,Term):Option[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">inducOpt</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing">NatRing</a> → <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></dd></dl></div>
     </li><li name="provingground.scalahott.NatRing#intLiteral" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="intLiteral(n:Int):provingground.scalahott.NatRing.Nat"></a><a id="intLiteral(Int):Nat"></a>
       <span class="permalink">
@@ -820,9 +900,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing#minusone" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="minusone:SymbolicCRing.this.LocalTermwithprovingground.HoTT.Subs[SymbolicCRing.this.LocalTerm]"></a><a id="minusone:LocalTermwithSubs[LocalTerm]"></a>
+      <a id="minusone:SymbolicCRing.this.LocalTerm"></a><a id="minusone:LocalTerm"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$.html#minusone:SymbolicCRing.this.LocalTermwithprovingground.HoTT.Subs[SymbolicCRing.this.LocalTerm]" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#minusone:SymbolicCRing.this.LocalTerm" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -831,7 +911,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">minusone</span><span class="result">: <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>]</span>
+        <span class="name">minusone</span><span class="result">: <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
@@ -946,6 +1026,22 @@ should be overridden in fields, where negative powers are meaningful
 in generality an error for negative n;
 should be overridden in fields, where negative powers are meaningful
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing#rec" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.Func[U,provingground.HoTT.Func[provingground.HoTT.Func[provingground.scalahott.NatRing.LocalTerm,provingground.HoTT.Func[U,U]],provingground.HoTT.Func[provingground.scalahott.NatRing.Nat,U]]]"></a><a id="rec[U&lt;:TermwithSubs[U]](Typ[U]):Func[U,Func[Func[LocalTerm,Func[U,U]],Func[Nat,U]]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#rec[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](codom:provingground.HoTT.Typ[U]):provingground.HoTT.Func[U,provingground.HoTT.Func[provingground.HoTT.Func[provingground.scalahott.NatRing.LocalTerm,provingground.HoTT.Func[U,U]],provingground.HoTT.Func[provingground.scalahott.NatRing.Nat,U]]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rec</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.rec.U">U</span>]</span>]</span><span class="params">(<span name="codom">codom: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.rec.U">U</span>]</span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.rec.U">U</span>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.rec.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.rec.U">U</span>]], <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.rec.U">U</span>]]]</span>
+      </span>
+      
+      
     </li><li name="provingground.scalahott.NatRing#recDefn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="recDefn[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](n:spire.math.SafeLong,formal:U,h:spire.math.SafeLong=&gt;(U=&gt;U)):U"></a><a id="recDefn[U&lt;:TermwithSubs[U]](SafeLong,U,(SafeLong)⇒(U)⇒U):U"></a>
       <span class="permalink">
@@ -962,6 +1058,22 @@ should be overridden in fields, where negative powers are meaningful
       </span>
       
       
+    </li><li name="provingground.scalahott.NatRing#recOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]"></a><a id="recOpt[C&lt;:TermwithSubs[C]](Term,Typ[C]):Option[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recOpt</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.recOpt.C">C</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.recOpt.C">C</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing">NatRing</a> → <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></dd></dl></div>
     </li><li name="provingground.scalahott.SymbolicCRing#reciprocal" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reciprocal:provingground.HoTT.Func[SymbolicCRing.this.LocalTerm,SymbolicCRing.this.LocalTerm]"></a><a id="reciprocal:Func[LocalTerm,LocalTerm]"></a>
       <span class="permalink">
@@ -1012,10 +1124,26 @@ should be overridden in fields, where negative powers are meaningful
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a></dd></dl></div>
-    </li><li name="provingground.scalahott.NatRing#succ" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="succ:provingground.HoTT.Func[provingground.scalahott.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[spire.math.SafeLong]],provingground.scalahott.NatRing.LocalTerm]"></a><a id="succ:Func[RepTerm[SafeLong]withSubs[RepTerm[SafeLong]],LocalTerm]"></a>
+    </li><li name="provingground.scalahott.NatRing#subs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStrucs"></a><a id="subs(Term,Term):ExstInducStrucs"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$.html#succ:provingground.HoTT.Func[provingground.scalahott.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[spire.math.SafeLong]],provingground.scalahott.NatRing.LocalTerm]" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStrucs" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing">NatRing</a> → <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing#succ" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="succ:provingground.HoTT.Func[provingground.scalahott.NatRing.LocalTerm,provingground.scalahott.NatRing.LocalTerm]"></a><a id="succ:Func[LocalTerm,LocalTerm]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#succ:provingground.HoTT.Func[provingground.scalahott.NatRing.LocalTerm,provingground.scalahott.NatRing.LocalTerm]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1024,7 +1152,7 @@ should be overridden in fields, where negative powers are meaningful
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">succ</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]], <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>]</span>
+        <span class="name">succ</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>, <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>]</span>
       </span>
       
       
@@ -1145,9 +1273,9 @@ should be overridden in fields, where negative powers are meaningful
               
         </dd></dl></div>
     </li><li name="provingground.scalahott.NatRing#x" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="x:provingground.scalahott.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[spire.math.SafeLong]]"></a><a id="x:RepTerm[SafeLong]withSubs[RepTerm[SafeLong]]"></a>
+      <a id="x:provingground.scalahott.NatRing.LocalTerm"></a><a id="x:LocalTerm"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$.html#x:provingground.scalahott.RepTerm[spire.math.SafeLong]withprovingground.HoTT.Subs[provingground.scalahott.RepTerm[spire.math.SafeLong]]" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#x:provingground.scalahott.NatRing.LocalTerm" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1156,10 +1284,42 @@ should be overridden in fields, where negative powers are meaningful
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">x</span><span class="result">: <a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]]</span>
+        <span class="name">x</span><span class="result">: <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a></span>
       </span>
       
       
+    </li><li name="provingground.scalahott.NatRing#zero" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="zero:provingground.scalahott.NatRing.LocalTermwithprovingground.HoTT.Subs[provingground.scalahott.NatRing.LocalTerm]"></a><a id="zero:LocalTermwithSubs[LocalTerm]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#zero:provingground.scalahott.NatRing.LocalTermwithprovingground.HoTT.Subs[provingground.scalahott.NatRing.LocalTerm]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">zero</span><span class="result">: <a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">LocalTerm</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.induction.ExstInducStrucs#||" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="||(that:provingground.induction.ExstInducStrucs):provingground.induction.ExstInducStrucs.OrElse"></a><a id="||(ExstInducStrucs):OrElse"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$.html#||(that:provingground.induction.ExstInducStrucs):provingground.induction.ExstInducStrucs.OrElse" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>)</span><span class="result">: <a href="../induction/ExstInducStrucs$$OrElse.html" class="extype" name="provingground.induction.ExstInducStrucs.OrElse">OrElse</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Induc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Induc"></a><a id="Induc:Induc"></a>
       <span class="permalink">
@@ -1348,7 +1508,9 @@ should be overridden in fields, where negative powers are meaningful
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="provingground.scalahott.SymbolicCRing">
+        <div class="parent" name="provingground.induction.ExstInducStrucs">
+              <h3>Inherited from <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></h3>
+            </div><div class="parent" name="provingground.scalahott.SymbolicCRing">
               <h3>Inherited from <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>

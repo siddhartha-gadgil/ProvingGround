@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -483,7 +495,17 @@ Includes:
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="HoTT$$Symbolic.html" class="extype" name="provingground.HoTT.Symbolic">Symbolic</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>], <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>], (<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>) ⇒ <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>, <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]], <a href="../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 539.50 118.00" height="118pt" width="540pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 535.5,-114 535.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.HoTT.SymbolicFunc (this class)" xlink:href="#inheritance-diagram"><path d="M339.6667,-49C339.6667,-49 228.3333,-49 228.3333,-49 224.1667,-49 220,-44.8333 220,-40.6667 220,-40.6667 220,-32.3333 220,-32.3333 220,-28.1667 224.1667,-24 228.3333,-24 228.3333,-24 339.6667,-24 339.6667,-24 343.8333,-24 348,-28.1667 348,-32.3333 348,-32.3333 348,-40.6667 348,-40.6667 348,-44.8333 343.8333,-49 339.6667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-43.5" x="230" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="251" text-anchor="start">SymbolicFunc[W, U]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.HoTT.Func" xlink:href="HoTT$$Func.html#inheritance-diagram"><path d="M81.6667,-110C81.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 81.6667,-85 81.6667,-85 85.8333,-85 90,-89.1667 90,-93.3333 90,-93.3333 90,-101.6667 90,-101.6667 90,-105.8333 85.8333,-110 81.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31" text-anchor="start">Func[W, U]</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="SymbolicFunc[W, U] is a subtype of Func[W, U]"><path d="M97.1763,-84.183C138.112,-73.735 194.6922,-59.294 234.8338,-49.0487" stroke="#d4d4d4" fill="none"></path><polygon points="96.4117,-81.8496 90.235,-85.9547 97.6235,-86.5974 96.4117,-81.8496" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="provingground.HoTT.Subs" xlink:href="HoTT$$Subs.html#inheritance-diagram"><path d="M215.6667,-110C215.6667,-110 116.3333,-110 116.3333,-110 112.1667,-110 108,-105.8333 108,-101.6667 108,-101.6667 108,-93.3333 108,-93.3333 108,-89.1667 112.1667,-85 116.3333,-85 116.3333,-85 215.6667,-85 215.6667,-85 219.8333,-85 224,-89.1667 224,-93.3333 224,-93.3333 224,-101.6667 224,-101.6667 224,-105.8333 219.8333,-110 215.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="118" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="139" text-anchor="start">Subs[Func[W, U]]</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="SymbolicFunc[W, U] is a subtype of Subs[Func[W, U]]"><path d="M196.862,-81.5459C216.4317,-71.4294 241.3945,-58.5249 259.5816,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="195.5428,-79.4698 190.4497,-84.8608 197.7931,-83.8226 195.5428,-79.4698" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="provingground.HoTT.Symbolic" xlink:href="HoTT$$Symbolic.html#inheritance-diagram"><path d="M317.1667,-110C317.1667,-110 250.8333,-110 250.8333,-110 246.6667,-110 242.5,-105.8333 242.5,-101.6667 242.5,-101.6667 242.5,-93.3333 242.5,-93.3333 242.5,-89.1667 246.6667,-85 250.8333,-85 250.8333,-85 317.1667,-85 317.1667,-85 321.3333,-85 325.5,-89.1667 325.5,-93.3333 325.5,-93.3333 325.5,-101.6667 325.5,-101.6667 325.5,-105.8333 321.3333,-110 317.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="253" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="274" text-anchor="start">Symbolic</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="SymbolicFunc[W, U] is a subtype of Symbolic"><path d="M284,-77.7386C284,-68.3393 284,-57.3803 284,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="281.5501,-77.8607 284,-84.8608 286.4501,-77.8608 281.5501,-77.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node trait" id="graph1_4"><g id="a_trait|graph1_4"><a xlink:title="scala.Product"><path d="M412.1667,-110C412.1667,-110 351.8333,-110 351.8333,-110 347.6667,-110 343.5,-105.8333 343.5,-101.6667 343.5,-101.6667 343.5,-93.3333 343.5,-93.3333 343.5,-89.1667 347.6667,-85 351.8333,-85 351.8333,-85 412.1667,-85 412.1667,-85 416.3333,-85 420.5,-89.1667 420.5,-93.3333 420.5,-93.3333 420.5,-101.6667 420.5,-101.6667 420.5,-105.8333 416.3333,-110 412.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="354" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="375" text-anchor="start">Product</text></a></g></g><!-- node4&#45;&gt;node0 --><g class="edge inheritance" id="graph1_4_0"><g id="a_inheritance|graph1_4_0"><a xlink:title="SymbolicFunc[W, U] is a subtype of Product"><path d="M355.5168,-81.0156C339.3966,-70.9816 319.1215,-58.3614 304.2797,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="354.4568,-83.2416 361.6943,-84.8608 357.0462,-79.0816 354.4568,-83.2416" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node trait" id="graph1_5"><g id="a_trait|graph1_5"><a xlink:title="scala.Serializable"><path d="M523.1667,-110C523.1667,-110 446.8333,-110 446.8333,-110 442.6667,-110 438.5,-105.8333 438.5,-101.6667 438.5,-101.6667 438.5,-93.3333 438.5,-93.3333 438.5,-89.1667 442.6667,-85 446.8333,-85 446.8333,-85 523.1667,-85 523.1667,-85 527.3333,-85 531.5,-89.1667 531.5,-93.3333 531.5,-93.3333 531.5,-101.6667 531.5,-101.6667 531.5,-105.8333 527.3333,-110 523.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-104.5" x="449" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="470" text-anchor="start">Serializable</text></a></g></g><!-- node5&#45;&gt;node0 --><g class="edge inheritance" id="graph1_5_0"><g id="a_inheritance|graph1_5_0"><a xlink:title="SymbolicFunc[W, U] is a subtype of Serializable"><path d="M436.2756,-82.713C402.2984,-72.4015 357.4594,-58.7936 325.2496,-49.0185" stroke="#d4d4d4" fill="none"></path><polygon points="435.9428,-85.1723 443.3527,-84.8608 437.3658,-80.4835 435.9428,-85.1723" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -509,6 +531,11 @@ Includes:
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.SymbolicFunc"><span>SymbolicFunc</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.Symbolic"><span>Symbolic</span></li><li class="in" name="provingground.HoTT.Func"><span>Func</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -605,6 +632,49 @@ Includes:
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(SymbolicFunc[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -819,6 +889,86 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <p class="shortcomment cmt">domain</p><div class="fullcomment"><div class="comment cmt"><p>domain</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a> → <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((SymbolicFunc[W,U])⇒Boolean,⇒Any):SymbolicFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((SymbolicFunc[W,U])⇒Boolean):SymbolicFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):SymbolicFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):SymbolicFunc[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -871,6 +1021,29 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1222,6 +1395,26 @@ definition.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(SymbolicFunc[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SymbolicFunc.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1257,7 +1450,23 @@ definition.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>[<span class="extype" name="provingground.HoTT.SymbolicFunc.W">W</span>, <span class="extype" name="provingground.HoTT.SymbolicFunc.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

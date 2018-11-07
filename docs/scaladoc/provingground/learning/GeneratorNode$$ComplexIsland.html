@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -205,7 +205,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ComplexIsland</span><span class="tparams">[<span name="O">O</span>, <span name="Y">+Y</span>, <span name="InitState">InitState</span>, <span name="Boat">Boat</span>, <span name="V">V</span>]</span><span class="params">(<span name="islandOutput">islandOutput: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>]</span>, <span name="initMap">initMap: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>) ⇒ (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorNodeFamily$$Value.html" class="extype" name="provingground.learning.GeneratorNodeFamily.Value">Value</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]])</span>, <span name="export">export: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>) ⇒ <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>)</span><span class="result"> extends <a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ComplexIsland</span><span class="tparams">[<span name="O">O</span>, <span name="Y">+Y</span>, <span name="InitState">InitState</span>, <span name="Boat">Boat</span>, <span name="V">V</span>]</span><span class="params">(<span name="islandOutput">islandOutput: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>]</span>, <span name="initMap">initMap: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>) ⇒ (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorNodeFamily$$Value.html" class="extype" name="provingground.learning.GeneratorNodeFamily.Value">Value</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]])</span>, <span name="export">export: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>) ⇒ <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>, <span name="finalMap">finalMap: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>) ⇒ <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span></span>)</span><span class="result"> extends <a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -218,7 +218,17 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>], <a href="RecursiveGeneratorNodeFamily.html" class="extype" name="provingground.learning.RecursiveGeneratorNodeFamily">RecursiveGeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>], <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>], <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="shapeless.HNil">HNil</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 443.00 118.00" height="118pt" width="443pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 439,-114 439,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.learning.GeneratorNode.ComplexIsland (this class)" xlink:href="#inheritance-diagram"><path d="M381.6667,-49C381.6667,-49 189.3333,-49 189.3333,-49 185.1667,-49 181,-44.8333 181,-40.6667 181,-40.6667 181,-32.3333 181,-32.3333 181,-28.1667 185.1667,-24 189.3333,-24 189.3333,-24 381.6667,-24 381.6667,-24 385.8333,-24 390,-28.1667 390,-32.3333 390,-32.3333 390,-40.6667 390,-40.6667 390,-44.8333 385.8333,-49 381.6667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="191.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="212.5" text-anchor="start">ComplexIsland[O, Y, InitState, Boat, V]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.learning.RecursiveGeneratorNode" xlink:href="RecursiveGeneratorNode.html#inheritance-diagram"><path d="M220.6667,-110C220.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 220.6667,-85 220.6667,-85 224.8333,-85 229,-89.1667 229,-93.3333 229,-93.3333 229,-101.6667 229,-101.6667 229,-105.8333 224.8333,-110 220.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31.5" text-anchor="start">RecursiveGeneratorNode[InitState, Boat, Y]</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="ComplexIsland[O, Y, InitState, Boat, V] is a subtype of RecursiveGeneratorNode[InitState, Boat, Y]"><path d="M156.6797,-82.4534C185.4957,-72.174 223.234,-58.7118 250.407,-49.0185" stroke="#d4d4d4" fill="none"></path><polygon points="155.7012,-80.2012 149.9313,-84.8608 157.3476,-84.8164 155.7012,-80.2012" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Product"><path d="M315.6667,-110C315.6667,-110 255.3333,-110 255.3333,-110 251.1667,-110 247,-105.8333 247,-101.6667 247,-101.6667 247,-93.3333 247,-93.3333 247,-89.1667 251.1667,-85 255.3333,-85 255.3333,-85 315.6667,-85 315.6667,-85 319.8333,-85 324,-89.1667 324,-93.3333 324,-93.3333 324,-101.6667 324,-101.6667 324,-105.8333 319.8333,-110 315.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="257.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="278.5" text-anchor="start">Product</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="ComplexIsland[O, Y, InitState, Boat, V] is a subtype of Product"><path d="M285.5,-77.7386C285.5,-68.3393 285.5,-57.3803 285.5,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="283.0501,-77.8607 285.5,-84.8608 287.9501,-77.8608 283.0501,-77.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Serializable"><path d="M426.6667,-110C426.6667,-110 350.3333,-110 350.3333,-110 346.1667,-110 342,-105.8333 342,-101.6667 342,-101.6667 342,-93.3333 342,-93.3333 342,-89.1667 346.1667,-85 350.3333,-85 350.3333,-85 426.6667,-85 426.6667,-85 430.8333,-85 435,-89.1667 435,-93.3333 435,-93.3333 435,-101.6667 435,-101.6667 435,-105.8333 430.8333,-110 426.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="352.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="373.5" text-anchor="start">Serializable</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="ComplexIsland[O, Y, InitState, Boat, V] is a subtype of Serializable"><path d="M361.1144,-81.2814C344.1006,-71.2052 322.5515,-58.4431 306.8143,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="359.8869,-83.4017 367.1583,-84.8608 362.3838,-79.1856 359.8869,-83.4017" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -246,6 +256,11 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
                     <li class="in" name="provingground.learning.GeneratorNode.ComplexIsland"><span>ComplexIsland</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.learning.RecursiveGeneratorNode"><span>RecursiveGeneratorNode</span></li><li class="in" name="provingground.learning.RecursiveGeneratorNodeFamily"><span>RecursiveGeneratorNodeFamily</span></li><li class="in" name="provingground.learning.GeneratorNode"><span>GeneratorNode</span></li><li class="in" name="provingground.learning.GeneratorNodeFamily"><span>GeneratorNodeFamily</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
+                  </ol>
+                </div><div class="ancestors">
               <span class="filtertype"></span>
               <ol>
                 <li class="hideall out"><span>Hide All</span></li>
@@ -264,9 +279,9 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.learning.GeneratorNode.ComplexIsland#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(islandOutput:Boat=&gt;provingground.learning.RandomVar[O],output:provingground.learning.RandomVar[Y],initMap:InitState=&gt;(InitState,Boat,Set[provingground.learning.GeneratorNodeFamily.Value[_&lt;:shapeless.HList,_,V]]),export:(Boat,O)=&gt;Y):provingground.learning.GeneratorNode.ComplexIsland[O,Y,InitState,Boat,V]"></a><a id="&lt;init&gt;:ComplexIsland[O,Y,InitState,Boat,V]"></a>
+      <a id="&lt;init&gt;(islandOutput:Boat=&gt;provingground.learning.RandomVar[O],output:provingground.learning.RandomVar[Y],initMap:InitState=&gt;(InitState,Boat,Set[provingground.learning.GeneratorNodeFamily.Value[_&lt;:shapeless.HList,_,V]]),export:(Boat,O)=&gt;Y,finalMap:(Boat,InitState)=&gt;InitState):provingground.learning.GeneratorNode.ComplexIsland[O,Y,InitState,Boat,V]"></a><a id="&lt;init&gt;:ComplexIsland[O,Y,InitState,Boat,V]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#&lt;init&gt;(islandOutput:Boat=&gt;provingground.learning.RandomVar[O],output:provingground.learning.RandomVar[Y],initMap:InitState=&gt;(InitState,Boat,Set[provingground.learning.GeneratorNodeFamily.Value[_&lt;:shapeless.HList,_,V]]),export:(Boat,O)=&gt;Y):provingground.learning.GeneratorNode.ComplexIsland[O,Y,InitState,Boat,V]" title="Permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#&lt;init&gt;(islandOutput:Boat=&gt;provingground.learning.RandomVar[O],output:provingground.learning.RandomVar[Y],initMap:InitState=&gt;(InitState,Boat,Set[provingground.learning.GeneratorNodeFamily.Value[_&lt;:shapeless.HList,_,V]]),export:(Boat,O)=&gt;Y,finalMap:(Boat,InitState)=&gt;InitState):provingground.learning.GeneratorNode.ComplexIsland[O,Y,InitState,Boat,V]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -275,7 +290,7 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ComplexIsland</span><span class="params">(<span name="islandOutput">islandOutput: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>]</span>, <span name="initMap">initMap: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>) ⇒ (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorNodeFamily$$Value.html" class="extype" name="provingground.learning.GeneratorNodeFamily.Value">Value</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]])</span>, <span name="export">export: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>) ⇒ <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>)</span>
+        <span class="name">ComplexIsland</span><span class="params">(<span name="islandOutput">islandOutput: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>]</span>, <span name="initMap">initMap: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>) ⇒ (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorNodeFamily$$Value.html" class="extype" name="provingground.learning.GeneratorNodeFamily.Value">Value</a>[_ &lt;: <span class="extype" name="shapeless.HList">HList</span>, _, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]])</span>, <span name="export">export: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>) ⇒ <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>, <span name="finalMap">finalMap: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>) ⇒ <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span></span>)</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">islandOutput</dt><dd class="cmt"><p>the variable whose distribution from the island is used</p></dd><dt class="param">output</dt><dd class="cmt"><p>the final output, as seen from the outside</p></dd><dt class="param">initMap</dt><dd class="cmt"><p>the map from the initial state on the outside to the initial state in the island</p></dd><dt class="param">export</dt><dd class="cmt"><p>the object (e.g. term) level map applied when mapping a distribution obtained in the island to the outside; this is specific to the island</p></dd></dl></div>
@@ -321,6 +336,49 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(ComplexIsland[O,Y,InitState,Boat,V],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -377,6 +435,86 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((ComplexIsland[O,Y,InitState,Boat,V])⇒Boolean,⇒Any):ComplexIsland[O,Y,InitState,Boat,V]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((ComplexIsland[O,Y,InitState,Boat,V])⇒Boolean):ComplexIsland[O,Y,InitState,Boat,V]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):ComplexIsland[O,Y,InitState,Boat,V]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):ComplexIsland[O,Y,InitState,Boat,V]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -409,6 +547,22 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
       </span>
       
       
+    </li><li name="provingground.learning.GeneratorNode.ComplexIsland#finalMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="finalMap:(Boat,InitState)=&gt;InitState"></a><a id="finalMap:(Boat,InitState)⇒InitState"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#finalMap:(Boat,InitState)=&gt;InitState" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalMap</span><span class="result">: (<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>) ⇒ <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -429,6 +583,29 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -601,7 +778,7 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
-    </li><li name="provingground.learning.RecursiveGeneratorNode#piFmly" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.learning.GeneratorNode#piFmly" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="piFmly[Dom&lt;:shapeless.HList,S&gt;:O,T](conditionFamily:Dom=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[Dom,T]):provingground.learning.GeneratorNodeFamily[Dom,T]"></a><a id="piFmly[Dom&lt;:HList,S&gt;:Y,T]((Dom)⇒Sort[S,T],RandomVarFamily[Dom,T]):GeneratorNodeFamily[Dom,T]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#piFmly[Dom&lt;:shapeless.HList,S&gt;:O,T](conditionFamily:Dom=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[Dom,T]):provingground.learning.GeneratorNodeFamily[Dom,T]" title="Permalink">
@@ -613,10 +790,10 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">piFmly</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="S">S &gt;: <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="conditionFamily">conditionFamily: (<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.Dom">Dom</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.S">S</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.T">T</span>]</span>, <span name="outputFamily">outputFamily: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.T">T</span>]</span>
+        <span class="name">piFmly</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="S">S &gt;: <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="conditionFamily">conditionFamily: (<span class="extype" name="provingground.learning.GeneratorNode.piFmly.Dom">Dom</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.GeneratorNode.piFmly.S">S</span>, <span class="extype" name="provingground.learning.GeneratorNode.piFmly.T">T</span>]</span>, <span name="outputFamily">outputFamily: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.GeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNode.piFmly.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNode.piFmly.T">T</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a> → <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -701,10 +878,10 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.RecursiveGeneratorNode#|" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.RecursiveGeneratorNode[State,Boat,T]"></a><a id="|[S&gt;:Y,T](Sort[S,T],RandomVar[T]):RecursiveGeneratorNode[InitState,Boat,T]"></a>
+    </li><li name="provingground.learning.GeneratorNode#|" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.GeneratorNode[T]"></a><a id="|[S&gt;:Y,T](Sort[S,T],RandomVar[T]):GeneratorNode[T]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.RecursiveGeneratorNode[State,Boat,T]" title="Permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.GeneratorNode[T]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -713,10 +890,30 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar" class="name">|</span><span class="tparams">[<span name="S">S &gt;: <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="condition">condition: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.S">S</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.T">T</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.T">T</span>]</span>)</span><span class="result">: <a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.T">T</span>]</span>
+        <span title="gt4s: $bar" class="name">|</span><span class="tparams">[<span name="S">S &gt;: <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="condition">condition: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.GeneratorNode.|.S">S</span>, <span class="extype" name="provingground.learning.GeneratorNode.|.T">T</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.|.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.|.T">T</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RecursiveGeneratorNode.html" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a> → <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(ComplexIsland[O,Y,InitState,Boat,V],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorNode$$ComplexIsland.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -748,7 +945,23 @@ but also the dynamics. One enters the island using a <code>boat</code> which is 
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>[<span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.O">O</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.InitState">InitState</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.Boat">Boat</span>, <span class="extype" name="provingground.learning.GeneratorNode.ComplexIsland.V">V</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

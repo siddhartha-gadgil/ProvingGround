@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -488,8 +500,18 @@ for serialization and pretty printing.
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="HoTT$$IdentityTyp$$InducFn.html" class="extype" name="provingground.HoTT.IdentityTyp.InducFn">InducFn</a>, <a href="HoTT$$IndInducFuncLike.html" class="extype" name="provingground.HoTT.IndInducFuncLike">IndInducFuncLike</a>, <a href="HoTT$$PlusTyp$InducFn.html" class="extype" name="provingground.HoTT.PlusTyp.InducFn">InducFn</a>, <a href="HoTT$$ProdTyp$InducFn.html" class="extype" name="provingground.HoTT.ProdTyp.InducFn">InducFn</a>, <a href="HoTT$$SigmaTyp$InducFn.html" class="extype" name="provingground.HoTT.SigmaTyp.InducFn">InducFn</a>, <a href="HoTT$$Unit$$InducFn.html" class="extype" name="provingground.HoTT.Unit.InducFn">InducFn</a>, <a href="induction/IndexedInductiveDefinition$Funcs.html" class="extype" name="provingground.induction.IndexedInductiveDefinition.Funcs">Funcs</a>, <a href="induction/InductiveDefinition.html" class="extype" name="provingground.induction.InductiveDefinition">InductiveDefinition</a>, <a href="induction/InductiveDefinition$$DataCons.html" class="extype" name="provingground.induction.InductiveDefinition.DataCons">DataCons</a>, <a href="induction/InductiveDefinition$$Empty.html" class="extype" name="provingground.induction.InductiveDefinition.Empty">Empty</a></div>
-          </div></div>
+            <div class="subClasses hiddenContent"><a href="HoTT$$IdentityTyp$$InducFn.html" class="extype" name="provingground.HoTT.IdentityTyp.InducFn">InducFn</a>, <a href="HoTT$$IndInducFuncLike.html" class="extype" name="provingground.HoTT.IndInducFuncLike">IndInducFuncLike</a>, <a href="HoTT$$PlusTyp$InducFn.html" class="extype" name="provingground.HoTT.PlusTyp.InducFn">InducFn</a>, <a href="HoTT$$ProdTyp$InducFn.html" class="extype" name="provingground.HoTT.ProdTyp.InducFn">InducFn</a>, <a href="HoTT$$SigmaTyp$InducFn.html" class="extype" name="provingground.HoTT.SigmaTyp.InducFn">InducFn</a>, <a href="HoTT$$Unit$$InducFn.html" class="extype" name="provingground.HoTT.Unit.InducFn">InducFn</a>, <a href="induction/IndexedInductiveDefinition$Funcs.html" class="extype" name="provingground.induction.IndexedInductiveDefinition.Funcs">Funcs</a>, <a href="induction/InductiveDefinition.html" class="extype" name="provingground.induction.InductiveDefinition">InductiveDefinition</a>, <a href="induction/InductiveDefinition$$DataCons.html" class="extype" name="provingground.induction.InductiveDefinition.DataCons">DataCons</a>, <a href="induction/InductiveDefinition$$Empty.html" class="extype" name="provingground.induction.InductiveDefinition.Empty">Empty</a>, <a href="scalahott/NatRing$$Induc.html" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 877.50 155.00" height="155pt" width="878pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 873.5,-151 873.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.HoTT.InducFuncLike (this trait)" xlink:href="#inheritance-diagram"><path d="M499.1667,-86C499.1667,-86 386.8333,-86 386.8333,-86 382.6667,-86 378.5,-81.8333 378.5,-77.6667 378.5,-77.6667 378.5,-69.3333 378.5,-69.3333 378.5,-65.1667 382.6667,-61 386.8333,-61 386.8333,-61 499.1667,-61 499.1667,-61 503.3333,-61 507.5,-65.1667 507.5,-69.3333 507.5,-69.3333 507.5,-77.6667 507.5,-77.6667 507.5,-81.8333 503.3333,-86 499.1667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-80.5" x="389" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="410" text-anchor="start">InducFuncLike[W, U]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.HoTT.IndInducFuncLike" xlink:href="HoTT$$IndInducFuncLike.html#inheritance-diagram"><path d="M167.6667,-25C167.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 167.6667,0 167.6667,0 171.8333,0 176,-4.1667 176,-8.3333 176,-8.3333 176,-16.6667 176,-16.6667 176,-20.8333 171.8333,-25 167.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31" text-anchor="start">IndInducFuncLike[W, U, F, IDFT]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="IndInducFuncLike[W, U, F, IDFT] is a subtype of InducFuncLike[W, U]"><path d="M371.3412,-61.1868C310.1041,-50.6644 222.3902,-35.5924 160.8211,-25.0129" stroke="#d4d4d4" fill="none"></path><polygon points="370.9865,-63.6117 378.3003,-62.3826 371.8164,-58.7825 370.9865,-63.6117" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.scalahott.NatRing.Induc" xlink:href="scalahott/NatRing$$Induc.html#inheritance-diagram"><path d="M264.1667,-25C264.1667,-25 201.8333,-25 201.8333,-25 197.6667,-25 193.5,-20.8333 193.5,-16.6667 193.5,-16.6667 193.5,-8.3333 193.5,-8.3333 193.5,-4.1667 197.6667,0 201.8333,0 201.8333,0 264.1667,0 264.1667,0 268.3333,0 272.5,-4.1667 272.5,-8.3333 272.5,-8.3333 272.5,-16.6667 272.5,-16.6667 272.5,-20.8333 268.3333,-25 264.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="204" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="225" text-anchor="start">Induc[U]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="Induc[U] is a subtype of InducFuncLike[W, U]"><path d="M393.0189,-58.9817C356.1912,-48.2841 306.7783,-33.9308 272.6522,-24.018" stroke="#d4d4d4" fill="none"></path><polygon points="392.3369,-61.3348 399.7425,-60.9347 393.7038,-56.6293 392.3369,-61.3348" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.HoTT.Unit.InducFn" xlink:href="HoTT$$Unit$$InducFn.html#inheritance-diagram"><path d="M371.1667,-25C371.1667,-25 298.8333,-25 298.8333,-25 294.6667,-25 290.5,-20.8333 290.5,-16.6667 290.5,-16.6667 290.5,-8.3333 290.5,-8.3333 290.5,-4.1667 294.6667,0 298.8333,0 298.8333,0 371.1667,0 371.1667,0 375.3333,0 379.5,-4.1667 379.5,-8.3333 379.5,-8.3333 379.5,-16.6667 379.5,-16.6667 379.5,-20.8333 375.3333,-25 371.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="301" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="322" text-anchor="start">InducFn[U]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="InducFn[U] is a subtype of InducFuncLike[W, U]"><path d="M414.285,-57.2814C396.4453,-47.2052 373.8501,-34.4431 357.349,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="413.3224,-59.5514 420.6223,-60.8608 415.7322,-55.2849 413.3224,-59.5514" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.HoTT.ProdTyp.InducFn" xlink:href="HoTT$$ProdTyp$InducFn.html#inheritance-diagram"><path d="M480.1667,-25C480.1667,-25 405.8333,-25 405.8333,-25 401.6667,-25 397.5,-20.8333 397.5,-16.6667 397.5,-16.6667 397.5,-8.3333 397.5,-8.3333 397.5,-4.1667 401.6667,0 405.8333,0 405.8333,0 480.1667,0 480.1667,0 484.3333,0 488.5,-4.1667 488.5,-8.3333 488.5,-8.3333 488.5,-16.6667 488.5,-16.6667 488.5,-20.8333 484.3333,-25 480.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="408" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="429" text-anchor="start">InducFn[W]</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="InducFn[W] is a subtype of InducFuncLike[W, U]"><path d="M443,-53.7386C443,-44.3393 443,-33.3803 443,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="440.5501,-53.8607 443,-60.8608 445.4501,-53.8608 440.5501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.HoTT.SigmaTyp.InducFn" xlink:href="HoTT$$SigmaTyp$InducFn.html#inheritance-diagram"><path d="M587.1667,-25C587.1667,-25 514.8333,-25 514.8333,-25 510.6667,-25 506.5,-20.8333 506.5,-16.6667 506.5,-16.6667 506.5,-8.3333 506.5,-8.3333 506.5,-4.1667 510.6667,0 514.8333,0 514.8333,0 587.1667,0 587.1667,0 591.3333,0 595.5,-4.1667 595.5,-8.3333 595.5,-8.3333 595.5,-16.6667 595.5,-16.6667 595.5,-20.8333 591.3333,-25 587.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="517" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="538" text-anchor="start">InducFn[V]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="InducFn[V] is a subtype of InducFuncLike[W, U]"><path d="M471.715,-57.2814C489.5547,-47.2052 512.1499,-34.4431 528.651,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="470.2678,-55.2849 465.3777,-60.8608 472.6776,-59.5514 470.2678,-55.2849" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node class" id="graph1_6"><g id="a_class|graph1_6"><a xlink:title="provingground.HoTT.PlusTyp.InducFn" xlink:href="HoTT$$PlusTyp$InducFn.html#inheritance-diagram"><path d="M696.1667,-25C696.1667,-25 621.8333,-25 621.8333,-25 617.6667,-25 613.5,-20.8333 613.5,-16.6667 613.5,-16.6667 613.5,-8.3333 613.5,-8.3333 613.5,-4.1667 617.6667,0 621.8333,0 621.8333,0 696.1667,0 696.1667,0 700.3333,0 704.5,-4.1667 704.5,-8.3333 704.5,-8.3333 704.5,-16.6667 704.5,-16.6667 704.5,-20.8333 700.3333,-25 696.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="624" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="645" text-anchor="start">InducFn[W]</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="InducFn[W] is a subtype of InducFuncLike[W, U]"><path d="M494.6382,-58.917C531.1982,-48.5922 579.7297,-34.8865 614.5643,-25.049" stroke="#d4d4d4" fill="none"></path><polygon points="493.5641,-56.6744 487.4934,-60.9347 494.8958,-61.39 493.5641,-56.6744" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node trait" id="graph1_7"><g id="a_trait|graph1_7"><a xlink:title="provingground.induction.InductiveDefinition" xlink:href="induction/InductiveDefinition.html#inheritance-diagram"><path d="M861.1667,-25C861.1667,-25 730.8333,-25 730.8333,-25 726.6667,-25 722.5,-20.8333 722.5,-16.6667 722.5,-16.6667 722.5,-8.3333 722.5,-8.3333 722.5,-4.1667 726.6667,0 730.8333,0 730.8333,0 861.1667,0 861.1667,0 865.3333,0 869.5,-4.1667 869.5,-8.3333 869.5,-8.3333 869.5,-16.6667 869.5,-16.6667 869.5,-20.8333 865.3333,-25 861.1667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="733" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="754" text-anchor="start">InductiveDefinition[H, C]</text></a></g></g><!-- node0&#45;&gt;node7 --><g class="edge inheritance" id="graph1_0_7"><g id="a_inheritance|graph1_0_7"><a xlink:title="InductiveDefinition[H, C] is a subtype of InducFuncLike[W, U]"><path d="M514.6593,-61.1169C575.4864,-50.6057 662.3701,-35.5919 723.4498,-25.037" stroke="#d4d4d4" fill="none"></path><polygon points="514.2262,-58.7054 507.7456,-62.3117 515.0606,-63.5338 514.2262,-58.7054" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node trait" id="graph1_8"><g id="a_trait|graph1_8"><a xlink:title="provingground.HoTT.FuncLike" xlink:href="HoTT$$FuncLike.html#inheritance-diagram"><path d="M487.6667,-147C487.6667,-147 398.3333,-147 398.3333,-147 394.1667,-147 390,-142.8333 390,-138.6667 390,-138.6667 390,-130.3333 390,-130.3333 390,-126.1667 394.1667,-122 398.3333,-122 398.3333,-122 487.6667,-122 487.6667,-122 491.8333,-122 496,-126.1667 496,-130.3333 496,-130.3333 496,-138.6667 496,-138.6667 496,-142.8333 491.8333,-147 487.6667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="400" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="421" text-anchor="start">FuncLike[W, U]</text></a></g></g><!-- node8&#45;&gt;node0 --><g class="edge inheritance" id="graph1_8_0"><g id="a_inheritance|graph1_8_0"><a xlink:title="InducFuncLike[W, U] is a subtype of FuncLike[W, U]"><path d="M443,-114.7386C443,-105.3393 443,-94.3803 443,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="440.5501,-114.8607 443,-121.8608 445.4501,-114.8608 440.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -515,6 +537,11 @@ for serialization and pretty printing.
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.InducFuncLike"><span>InducFuncLike</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -734,6 +761,49 @@ Should throw exception when invoked for constants.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(InducFuncLike[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -881,6 +951,86 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       <p class="shortcomment cmt">returns whether <code>this</code> depends on <code>that</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> depends on <code>that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((InducFuncLike[W,U])⇒Boolean,⇒Any):InducFuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((InducFuncLike[W,U])⇒Boolean):InducFuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):InducFuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):InducFuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -933,6 +1083,29 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="provingground.HoTT.InducFuncLike#fullData" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
@@ -1229,6 +1402,26 @@ definition.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(InducFuncLike[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$InducFuncLike.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1252,7 +1445,23 @@ definition.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<span class="extype" name="provingground.HoTT.InducFuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.InducFuncLike.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

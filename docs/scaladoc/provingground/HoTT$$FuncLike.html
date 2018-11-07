@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -490,7 +502,17 @@ instead the method <a href="#act(arg:W):U" class="extmbr" name="provingground.Ho
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="HoTT$$CnstFunc.html" class="extype" name="provingground.HoTT.CnstFunc">CnstFunc</a>, <a href="HoTT$$CnstFuncLike.html" class="extype" name="provingground.HoTT.CnstFuncLike">CnstFuncLike</a>, <a href="HoTT$$Composition.html" class="extype" name="provingground.HoTT.Composition">Composition</a>, <a href="HoTT$$DepFunc.html" class="extype" name="provingground.HoTT.DepFunc">DepFunc</a>, <a href="HoTT$$DepFuncDefn.html" class="extype" name="provingground.HoTT.DepFuncDefn">DepFuncDefn</a>, <a href="HoTT$$DepSymbolicFunc.html" class="extype" name="provingground.HoTT.DepSymbolicFunc">DepSymbolicFunc</a>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>, <a href="HoTT$$FuncDefn.html" class="extype" name="provingground.HoTT.FuncDefn">FuncDefn</a>, <a href="HoTT$$IdentityTyp$$InducFn.html" class="extype" name="provingground.HoTT.IdentityTyp.InducFn">InducFn</a>, <a href="HoTT$$IdentityTyp$$RecFn.html" class="extype" name="provingground.HoTT.IdentityTyp.RecFn">RecFn</a>, <a href="HoTT$$IndInducFuncLike.html" class="extype" name="provingground.HoTT.IndInducFuncLike">IndInducFuncLike</a>, <a href="HoTT$$IndRecFunc.html" class="extype" name="provingground.HoTT.IndRecFunc">IndRecFunc</a>, <a href="HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>, <a href="HoTT$$LambdaFixed.html" class="extype" name="provingground.HoTT.LambdaFixed">LambdaFixed</a>, <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a>, <a href="HoTT$$LambdaTerm.html" class="extype" name="provingground.HoTT.LambdaTerm">LambdaTerm</a>, <a href="HoTT$$LambdaTyped.html" class="extype" name="provingground.HoTT.LambdaTyped">LambdaTyped</a>, <a href="HoTT$$LambdaTypedFixed.html" class="extype" name="provingground.HoTT.LambdaTypedFixed">LambdaTypedFixed</a>, <a href="HoTT$$NamedDepFunc.html" class="extype" name="provingground.HoTT.NamedDepFunc">NamedDepFunc</a>, <a href="HoTT$$NamedFunc.html" class="extype" name="provingground.HoTT.NamedFunc">NamedFunc</a>, <a href="HoTT$$OptDepFuncDefn.html" class="extype" name="provingground.HoTT.OptDepFuncDefn">OptDepFuncDefn</a>, <a href="HoTT$$PiSymbolicFunc.html" class="extype" name="provingground.HoTT.PiSymbolicFunc">PiSymbolicFunc</a>, <a href="HoTT$$PlusTyp$InducFn.html" class="extype" name="provingground.HoTT.PlusTyp.InducFn">InducFn</a>, <a href="HoTT$$PlusTyp$$RecFn.html" class="extype" name="provingground.HoTT.PlusTyp.RecFn">RecFn</a>, <a href="HoTT$$ProdTyp$InducFn.html" class="extype" name="provingground.HoTT.ProdTyp.InducFn">InducFn</a>, <a href="HoTT$$ProdTyp$RecFn.html" class="extype" name="provingground.HoTT.ProdTyp.RecFn">RecFn</a>, <a href="HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>, <a href="HoTT$$SigmaTyp$InducFn.html" class="extype" name="provingground.HoTT.SigmaTyp.InducFn">InducFn</a>, <a href="HoTT$$SigmaTyp$RecFn.html" class="extype" name="provingground.HoTT.SigmaTyp.RecFn">RecFn</a>, <a href="HoTT$$SymbolicFunc.html" class="extype" name="provingground.HoTT.SymbolicFunc">SymbolicFunc</a>, <a href="HoTT$$Unit$$InducFn.html" class="extype" name="provingground.HoTT.Unit.InducFn">InducFn</a>, <a href="HoTT$$Unit$$RecFn.html" class="extype" name="provingground.HoTT.Unit.RecFn">RecFn</a>, <a href="MereProposition$$Factorize.html" class="extype" name="provingground.MereProposition.Factorize">Factorize</a>, <a href="MereProposition$$Quotient.html" class="extype" name="provingground.MereProposition.Quotient">Quotient</a>, <a href="induction/IndexedInductiveDefinition$Funcs.html" class="extype" name="provingground.induction.IndexedInductiveDefinition.Funcs">Funcs</a>, <a href="induction/IndexedRecursiveDefinition$Funcs.html" class="extype" name="provingground.induction.IndexedRecursiveDefinition.Funcs">Funcs</a>, <a href="induction/InductiveDefinition.html" class="extype" name="provingground.induction.InductiveDefinition">InductiveDefinition</a>, <a href="induction/InductiveDefinition$$DataCons.html" class="extype" name="provingground.induction.InductiveDefinition.DataCons">DataCons</a>, <a href="induction/InductiveDefinition$$Empty.html" class="extype" name="provingground.induction.InductiveDefinition.Empty">Empty</a>, <a href="induction/RecursiveDefinition.html" class="extype" name="provingground.induction.RecursiveDefinition">RecursiveDefinition</a>, <a href="induction/RecursiveDefinition$$DataCons.html" class="extype" name="provingground.induction.RecursiveDefinition.DataCons">DataCons</a>, <a href="induction/RecursiveDefinition$$Empty.html" class="extype" name="provingground.induction.RecursiveDefinition.Empty">Empty</a>, <a href="scalahott/NatRing$$Induc.html" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>, <a href="scalahott/NatRing$$Rec.html" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>, <a href="scalahott/PlusTypInduc$$PlusExtendedDepFunction.html" class="extype" name="provingground.scalahott.PlusTypInduc.PlusExtendedDepFunction">PlusExtendedDepFunction</a>, <a href="scalahott/PlusTypInduc$$PlusExtendedFunction.html" class="extype" name="provingground.scalahott.PlusTypInduc.PlusExtendedFunction">PlusExtendedFunction</a>, <a href="scalahott/ScalaPolyRep$$ExtendedDepFunction.html" class="extype" name="provingground.scalahott.ScalaPolyRep.ExtendedDepFunction">ExtendedDepFunction</a>, <a href="scalahott/ScalaPolyRep$$ExtendedFunction.html" class="extype" name="provingground.scalahott.ScalaPolyRep.ExtendedFunction">ExtendedFunction</a>, <a href="scalahott/ScalaRep$$ExtendedDepFunction.html" class="extype" name="provingground.scalahott.ScalaRep.ExtendedDepFunction">ExtendedDepFunction</a>, <a href="scalahott/ScalaRep$$ExtendedFunction.html" class="extype" name="provingground.scalahott.ScalaRep.ExtendedFunction">ExtendedFunction</a>, <a href="scalahott/ScalaRep$$SimpleExtendedFunction.html" class="extype" name="provingground.scalahott.ScalaRep.SimpleExtendedFunction">SimpleExtendedFunction</a>, <a href="scalahott/SymbolicCRing$AddLiteral.html" class="extype" name="provingground.scalahott.SymbolicCRing.AddLiteral">AddLiteral</a>, <a href="scalahott/SymbolicCRing$AddTerm.html" class="extype" name="provingground.scalahott.SymbolicCRing.AddTerm">AddTerm</a>, <a href="scalahott/SymbolicCRing$AdditiveMorphism.html" class="extype" name="provingground.scalahott.SymbolicCRing.AdditiveMorphism">AdditiveMorphism</a>, <a href="scalahott/SymbolicCRing$multLiteral.html" class="extype" name="provingground.scalahott.SymbolicCRing.multLiteral">multLiteral</a>, <a href="scalahott/SymbolicCRing$multTerm.html" class="extype" name="provingground.scalahott.SymbolicCRing.multTerm">multTerm</a>, <a href="scalahott/SymbolicCRing$prod$.html" class="extype" name="provingground.scalahott.SymbolicCRing.prod">prod</a>, <a href="scalahott/SymbolicCRing$sum$.html" class="extype" name="provingground.scalahott.SymbolicCRing.sum">sum</a>, <a href="scalahott/SymbolicGroup$MultLiteral.html" class="extype" name="provingground.scalahott.SymbolicGroup.MultLiteral">MultLiteral</a>, <a href="scalahott/SymbolicGroup$MultTerm.html" class="extype" name="provingground.scalahott.SymbolicGroup.MultTerm">MultTerm</a>, <a href="scalahott/SymbolicGroup$inv$.html" class="extype" name="provingground.scalahott.SymbolicGroup.inv">inv</a>, <a href="scalahott/SymbolicGroup$mul$.html" class="extype" name="provingground.scalahott.SymbolicGroup.mul">mul</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 1703.00 169.00" height="169pt" width="1703pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 165)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-165 1699,-165 1699,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust3"></g><g class="cluster" id="clust2"></g><!-- node15 --><g class="node implicit-outgoing class" id="graph1_15"><g id="a_implicit-outgoing class|graph1_15"><a xlink:title="provingground.HoTT.FuncLike can be implicitly converted to RichTerm[FuncLike[W, U]] by the implicit method RichTerm in object provingground.HoTT" xlink:href="HoTT$$RichTerm.html#inheritance-diagram"><path d="M670.6667,-93C670.6667,-93 536.3333,-93 536.3333,-93 532.1667,-93 528,-88.8333 528,-84.6667 528,-84.6667 528,-76.3333 528,-76.3333 528,-72.1667 532.1667,-68 536.3333,-68 536.3333,-68 670.6667,-68 670.6667,-68 674.8333,-68 679,-72.1667 679,-76.3333 679,-76.3333 679,-84.6667 679,-84.6667 679,-88.8333 674.8333,-93 670.6667,-93" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../lib/class_diagram.png" y="-87.5" x="538.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-78.1" x="559.5" text-anchor="start">RichTerm[FuncLike[W, U]]</text></a></g></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.HoTT.FuncLike (this trait)" xlink:href="#inheritance-diagram"><path d="M920.1667,-93C920.1667,-93 830.8333,-93 830.8333,-93 826.6667,-93 822.5,-88.8333 822.5,-84.6667 822.5,-84.6667 822.5,-76.3333 822.5,-76.3333 822.5,-72.1667 826.6667,-68 830.8333,-68 830.8333,-68 920.1667,-68 920.1667,-68 924.3333,-68 928.5,-72.1667 928.5,-76.3333 928.5,-76.3333 928.5,-84.6667 928.5,-84.6667 928.5,-88.8333 924.3333,-93 920.1667,-93" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-87.5" x="832.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-78.1" x="853.5" text-anchor="start">FuncLike[W, U]</text></a></g></g><!-- node0&#45;&gt;node15 --><g class="edge implicit-outgoing" id="0_15"><g id="a_implicit-outgoing|0_15"><a xlink:title="FuncLike[W, U] can be implicitly converted to RichTerm[FuncLike[W, U]]"><path d="M814.5033,-80.5C779.1608,-80.5 733.9854,-80.5 694.5094,-80.5" stroke="#d4d4d4" fill="none"></path><polygon points="694.498,-78.0501 687.498,-80.5 694.498,-82.9501 694.498,-78.0501" stroke="#d4d4d4" fill="#d4d4d4"></polygon></a></g><text fill="#aaaaaa" font-size="9.00" font-family="Source Code Pro" y="-86.3" x="750.75" text-anchor="middle">implicitly</text></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.HoTT.CnstFuncLike" xlink:href="HoTT$$CnstFuncLike.html#inheritance-diagram"><path d="M114.6667,-25C114.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 114.6667,0 114.6667,0 118.8333,0 123,-4.1667 123,-8.3333 123,-8.3333 123,-16.6667 123,-16.6667 123,-20.8333 118.8333,-25 114.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">CnstFuncLike[U, V]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="CnstFuncLike[U, V] is a subtype of FuncLike[W, U]"><path d="M815.1312,-69.5069C779.3174,-63.3966 732.9572,-56.2001 691.5,-52 567.7663,-39.4644 256.098,-38.8094 132.5,-25 129.3904,-24.6526 126.211,-24.2538 123.0051,-23.817" stroke="#d4d4d4" fill="none"></path><polygon points="814.8349,-71.9419 822.1488,-70.7133 815.6651,-67.1127 814.8349,-71.9419" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="provingground.HoTT.DepFunc" xlink:href="HoTT$$DepFunc.html#inheritance-diagram"><path d="M239.1667,-25C239.1667,-25 149.8333,-25 149.8333,-25 145.6667,-25 141.5,-20.8333 141.5,-16.6667 141.5,-16.6667 141.5,-8.3333 141.5,-8.3333 141.5,-4.1667 145.6667,0 149.8333,0 149.8333,0 239.1667,0 239.1667,0 243.3333,0 247.5,-4.1667 247.5,-8.3333 247.5,-8.3333 247.5,-16.6667 247.5,-16.6667 247.5,-20.8333 243.3333,-25 239.1667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="151.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="172.5" text-anchor="start">DepFunc[W, U]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="DepFunc[W, U] is a subtype of FuncLike[W, U]"><path d="M815.1092,-69.7173C779.2878,-63.679 732.9274,-56.4845 691.5,-52 498.9197,-31.1532 448.5591,-50.2007 256.5,-25 253.5605,-24.6143 250.5513,-24.1709 247.52,-23.6863" stroke="#d4d4d4" fill="none"></path><polygon points="814.8171,-72.1526 822.1284,-70.9083 815.6369,-67.3217 814.8171,-72.1526" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.HoTT.DepSymbolicFunc" xlink:href="HoTT$$DepSymbolicFunc.html#inheritance-diagram"><path d="M401.1667,-25C401.1667,-25 273.8333,-25 273.8333,-25 269.6667,-25 265.5,-20.8333 265.5,-16.6667 265.5,-16.6667 265.5,-8.3333 265.5,-8.3333 265.5,-4.1667 269.6667,0 273.8333,0 273.8333,0 401.1667,0 401.1667,0 405.3333,0 409.5,-4.1667 409.5,-8.3333 409.5,-8.3333 409.5,-16.6667 409.5,-16.6667 409.5,-20.8333 405.3333,-25 401.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="275.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="296.5" text-anchor="start">DepSymbolicFunc[W, U]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="DepSymbolicFunc[W, U] is a subtype of FuncLike[W, U]"><path d="M815.434,-70.3408C779.5367,-64.4831 732.9888,-57.2607 691.5,-52 570.5432,-36.6629 539.4611,-40.3034 418.5,-25 415.6767,-24.6428 412.8002,-24.2651 409.896,-23.8724" stroke="#d4d4d4" fill="none"></path><polygon points="815.1627,-72.779 822.4668,-71.4932 815.9551,-67.9435 815.1627,-72.779" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.scalahott.ScalaPolyRep.ExtendedDepFunction" xlink:href="scalahott/ScalaPolyRep$$ExtendedDepFunction.html#inheritance-diagram"><path d="M602.6667,-25C602.6667,-25 436.3333,-25 436.3333,-25 432.1667,-25 428,-20.8333 428,-16.6667 428,-16.6667 428,-8.3333 428,-8.3333 428,-4.1667 432.1667,0 436.3333,0 436.3333,0 602.6667,0 602.6667,0 606.8333,0 611,-4.1667 611,-8.3333 611,-8.3333 611,-16.6667 611,-16.6667 611,-20.8333 606.8333,-25 602.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="438.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="459.5" text-anchor="start">ExtendedDepFunction[U, V, X, Y]</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="ExtendedDepFunction[U, V, X, Y] is a subtype of FuncLike[W, U]"><path d="M814.9819,-68.9404C751.0823,-56.7348 650.6847,-37.5577 584.9716,-25.0058" stroke="#d4d4d4" fill="none"></path><polygon points="814.8678,-71.4128 822.2032,-70.3197 815.7872,-66.5998 814.8678,-71.4128" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.scalahott.ScalaRep.ExtendedDepFunction" xlink:href="scalahott/ScalaRep$$ExtendedDepFunction.html#inheritance-diagram"><path d="M803.6667,-25C803.6667,-25 637.3333,-25 637.3333,-25 633.1667,-25 629,-20.8333 629,-16.6667 629,-16.6667 629,-8.3333 629,-8.3333 629,-4.1667 633.1667,0 637.3333,0 637.3333,0 803.6667,0 803.6667,0 807.8333,0 812,-4.1667 812,-8.3333 812,-8.3333 812,-16.6667 812,-16.6667 812,-20.8333 807.8333,-25 803.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="639.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="660.5" text-anchor="start">ExtendedDepFunction[U, V, X, Y]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="ExtendedDepFunction[U, V, X, Y] is a subtype of FuncLike[W, U]"><path d="M840.2886,-65.0524C812.7205,-52.958 774.8627,-36.3494 749.1369,-25.0633" stroke="#d4d4d4" fill="none"></path><polygon points="839.3144,-67.3004 846.7089,-67.8691 841.283,-62.8132 839.3144,-67.3004" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node trait" id="graph1_6"><g id="a_trait|graph1_6"><a xlink:title="provingground.HoTT.Func" xlink:href="HoTT$$Func.html#inheritance-diagram"><path d="M912.1667,-25C912.1667,-25 838.8333,-25 838.8333,-25 834.6667,-25 830.5,-20.8333 830.5,-16.6667 830.5,-16.6667 830.5,-8.3333 830.5,-8.3333 830.5,-4.1667 834.6667,0 838.8333,0 838.8333,0 912.1667,0 912.1667,0 916.3333,0 920.5,-4.1667 920.5,-8.3333 920.5,-8.3333 920.5,-16.6667 920.5,-16.6667 920.5,-20.8333 916.3333,-25 912.1667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="840.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="861.5" text-anchor="start">Func[W, U]</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="Func[W, U] is a subtype of FuncLike[W, U]"><path d="M875.5,-60.6427C875.5,-49.2137 875.5,-35.1902 875.5,-25.2329" stroke="#d4d4d4" fill="none"></path><polygon points="873.0501,-60.7097 875.5,-67.7097 877.9501,-60.7098 873.0501,-60.7097" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node trait" id="graph1_7"><g id="a_trait|graph1_7"><a xlink:title="provingground.HoTT.InducFuncLike" xlink:href="HoTT$$InducFuncLike.html#inheritance-diagram"><path d="M1059.6667,-25C1059.6667,-25 947.3333,-25 947.3333,-25 943.1667,-25 939,-20.8333 939,-16.6667 939,-16.6667 939,-8.3333 939,-8.3333 939,-4.1667 943.1667,0 947.3333,0 947.3333,0 1059.6667,0 1059.6667,0 1063.8333,0 1068,-4.1667 1068,-8.3333 1068,-8.3333 1068,-16.6667 1068,-16.6667 1068,-20.8333 1063.8333,-25 1059.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="949.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="970.5" text-anchor="start">InducFuncLike[W, U]</text></a></g></g><!-- node0&#45;&gt;node7 --><g class="edge inheritance" id="graph1_0_7"><g id="a_inheritance|graph1_0_7"><a xlink:title="InducFuncLike[W, U] is a subtype of FuncLike[W, U]"><path d="M905.7377,-64.4362C928.3962,-52.3989 958.9655,-36.1589 979.8515,-25.0633" stroke="#d4d4d4" fill="none"></path><polygon points="904.3082,-62.4213 899.2758,-67.8691 906.6071,-66.7486 904.3082,-62.4213" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node trait" id="graph1_8"><g id="a_trait|graph1_8"><a xlink:title="provingground.HoTT.LambdaLike" xlink:href="HoTT$$LambdaLike.html#inheritance-diagram"><path d="M1196.1667,-25C1196.1667,-25 1094.8333,-25 1094.8333,-25 1090.6667,-25 1086.5,-20.8333 1086.5,-16.6667 1086.5,-16.6667 1086.5,-8.3333 1086.5,-8.3333 1086.5,-4.1667 1090.6667,0 1094.8333,0 1094.8333,0 1196.1667,0 1196.1667,0 1200.3333,0 1204.5,-4.1667 1204.5,-8.3333 1204.5,-8.3333 1204.5,-16.6667 1204.5,-16.6667 1204.5,-20.8333 1200.3333,-25 1196.1667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="1096.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1117.5" text-anchor="start">LambdaLike[X, Y]</text></a></g></g><!-- node0&#45;&gt;node8 --><g class="edge inheritance" id="graph1_0_8"><g id="a_inheritance|graph1_0_8"><a xlink:title="LambdaLike[X, Y] is a subtype of FuncLike[W, U]"><path d="M932.3087,-66.1926C980.5992,-54.0306 1049.2599,-36.7383 1095.497,-25.0934" stroke="#d4d4d4" fill="none"></path><polygon points="931.5265,-63.863 925.3368,-67.9485 932.7232,-68.6147 931.5265,-63.863" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node9 --><g class="node class" id="graph1_9"><g id="a_class|graph1_9"><a xlink:title="provingground.HoTT.NamedDepFunc" xlink:href="HoTT$$NamedDepFunc.html#inheritance-diagram"><path d="M1350.1667,-25C1350.1667,-25 1230.8333,-25 1230.8333,-25 1226.6667,-25 1222.5,-20.8333 1222.5,-16.6667 1222.5,-16.6667 1222.5,-8.3333 1222.5,-8.3333 1222.5,-4.1667 1226.6667,0 1230.8333,0 1230.8333,0 1350.1667,0 1350.1667,0 1354.3333,0 1358.5,-4.1667 1358.5,-8.3333 1358.5,-8.3333 1358.5,-16.6667 1358.5,-16.6667 1358.5,-20.8333 1354.3333,-25 1350.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="1232.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1253.5" text-anchor="start">NamedDepFunc[W, U]</text></a></g></g><!-- node0&#45;&gt;node9 --><g class="edge inheritance" id="graph1_0_9"><g id="a_inheritance|graph1_0_9"><a xlink:title="NamedDepFunc[W, U] is a subtype of FuncLike[W, U]"><path d="M936.0995,-70.5704C1012.2325,-58.0956 1142.528,-36.746 1222.142,-23.7008" stroke="#d4d4d4" fill="none"></path><polygon points="935.4161,-68.1997 928.9044,-71.7494 936.2085,-73.0352 935.4161,-68.1997" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node10 --><g class="node class" id="graph1_10"><g id="a_class|graph1_10"><a xlink:title="provingground.HoTT.PiSymbolicFunc" xlink:href="HoTT$$PiSymbolicFunc.html#inheritance-diagram"><path d="M1503.6667,-25C1503.6667,-25 1385.3333,-25 1385.3333,-25 1381.1667,-25 1377,-20.8333 1377,-16.6667 1377,-16.6667 1377,-8.3333 1377,-8.3333 1377,-4.1667 1381.1667,0 1385.3333,0 1385.3333,0 1503.6667,0 1503.6667,0 1507.8333,0 1512,-4.1667 1512,-8.3333 1512,-8.3333 1512,-16.6667 1512,-16.6667 1512,-20.8333 1507.8333,-25 1503.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="1387.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1408.5" text-anchor="start">PiSymbolicFunc[W, U]</text></a></g></g><!-- node0&#45;&gt;node10 --><g class="edge inheritance" id="graph1_0_10"><g id="a_inheritance|graph1_0_10"><a xlink:title="PiSymbolicFunc[W, U] is a subtype of FuncLike[W, U]"><path d="M935.8271,-74.6486C1028.7184,-65.4234 1212.2991,-46.3383 1367.5,-25 1370.5859,-24.5757 1373.7388,-24.1268 1376.9218,-23.6611" stroke="#d4d4d4" fill="none"></path><polygon points="935.4782,-72.2211 928.7539,-75.3494 935.9613,-77.0972 935.4782,-72.2211" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node11 --><g class="node class" id="graph1_11"><g id="a_class|graph1_11"><a xlink:title="provingground.scalahott.PlusTypInduc.PlusExtendedDepFunction" xlink:href="scalahott/PlusTypInduc$$PlusExtendedDepFunction.html#inheritance-diagram"><path d="M1686.6667,-25C1686.6667,-25 1538.3333,-25 1538.3333,-25 1534.1667,-25 1530,-20.8333 1530,-16.6667 1530,-16.6667 1530,-8.3333 1530,-8.3333 1530,-4.1667 1534.1667,0 1538.3333,0 1538.3333,0 1686.6667,0 1686.6667,0 1690.8333,0 1695,-4.1667 1695,-8.3333 1695,-8.3333 1695,-16.6667 1695,-16.6667 1695,-20.8333 1690.8333,-25 1686.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="1540.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1561.5" text-anchor="start">PlusExtendedDepFunction[V]</text></a></g></g><!-- node0&#45;&gt;node11 --><g class="edge inheritance" id="graph1_0_11"><g id="a_inheritance|graph1_0_11"><a xlink:title="PlusExtendedDepFunction[V] is a subtype of FuncLike[W, U]"><path d="M935.7608,-76.3498C1050.1271,-68.2456 1306.4539,-48.9916 1521.5,-25 1524.1943,-24.6994 1526.932,-24.3836 1529.6955,-24.056" stroke="#d4d4d4" fill="none"></path><polygon points="935.5755,-73.9067 928.7657,-76.8441 935.921,-78.7945 935.5755,-73.9067" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node12 --><g class="node trait" id="graph1_12"><g id="a_trait|graph1_12"><a xlink:title="provingground.HoTT.Term" xlink:href="HoTT$$Term.html#inheritance-diagram"><path d="M810.1667,-161C810.1667,-161 760.8333,-161 760.8333,-161 756.6667,-161 752.5,-156.8333 752.5,-152.6667 752.5,-152.6667 752.5,-144.3333 752.5,-144.3333 752.5,-140.1667 756.6667,-136 760.8333,-136 760.8333,-136 810.1667,-136 810.1667,-136 814.3333,-136 818.5,-140.1667 818.5,-144.3333 818.5,-144.3333 818.5,-152.6667 818.5,-152.6667 818.5,-156.8333 814.3333,-161 810.1667,-161" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-155.5" x="762.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-146.1" x="783.5" text-anchor="start">Term</text></a></g></g><!-- node12&#45;&gt;node0 --><g class="edge inheritance" id="graph1_12_0"><g id="a_inheritance|graph1_12_0"><a xlink:title="FuncLike[W, U] is a subtype of Term"><path d="M808.4274,-131.1771C824.1955,-119.2634 844.7696,-103.7185 858.9517,-93.0032" stroke="#d4d4d4" fill="none"></path><polygon points="806.5364,-129.5351 802.4283,-135.7097 809.4904,-133.4446 806.5364,-129.5351" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node13 --><g class="node trait" id="graph1_13"><g id="a_trait|graph1_13"><a xlink:title="scala.Function1"><path d="M906.1667,-161C906.1667,-161 844.8333,-161 844.8333,-161 840.6667,-161 836.5,-156.8333 836.5,-152.6667 836.5,-152.6667 836.5,-144.3333 836.5,-144.3333 836.5,-140.1667 840.6667,-136 844.8333,-136 844.8333,-136 906.1667,-136 906.1667,-136 910.3333,-136 914.5,-140.1667 914.5,-144.3333 914.5,-144.3333 914.5,-152.6667 914.5,-152.6667 914.5,-156.8333 910.3333,-161 906.1667,-161" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-155.5" x="846.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-146.1" x="867.5" text-anchor="start">(W) ⇒ U</text></a></g></g><!-- node13&#45;&gt;node0 --><g class="edge inheritance" id="graph1_13_0"><g id="a_inheritance|graph1_13_0"><a xlink:title="FuncLike[W, U] is a subtype of (W) ⇒ U"><path d="M875.5,-128.6427C875.5,-117.2137 875.5,-103.1902 875.5,-93.2329" stroke="#d4d4d4" fill="none"></path><polygon points="873.0501,-128.7097 875.5,-135.7097 877.9501,-128.7098 873.0501,-128.7097" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node14 --><g class="node trait" id="graph1_14"><g id="a_trait|graph1_14"><a xlink:title="provingground.HoTT.Subs" xlink:href="HoTT$$Subs.html#inheritance-diagram"><path d="M1056.1667,-161C1056.1667,-161 940.8333,-161 940.8333,-161 936.6667,-161 932.5,-156.8333 932.5,-152.6667 932.5,-152.6667 932.5,-144.3333 932.5,-144.3333 932.5,-140.1667 936.6667,-136 940.8333,-136 940.8333,-136 1056.1667,-136 1056.1667,-136 1060.3333,-136 1064.5,-140.1667 1064.5,-144.3333 1064.5,-144.3333 1064.5,-152.6667 1064.5,-152.6667 1064.5,-156.8333 1060.3333,-161 1056.1667,-161" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-155.5" x="942.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-146.1" x="963.5" text-anchor="start">Subs[FuncLike[W, U]]</text></a></g></g><!-- node14&#45;&gt;node0 --><g class="edge inheritance" id="graph1_14_0"><g id="a_inheritance|graph1_14_0"><a xlink:title="FuncLike[W, U] is a subtype of Subs[FuncLike[W, U]]"><path d="M969.4435,-132.4362C947.6701,-120.3989 918.2949,-104.1589 898.2247,-93.0633" stroke="#d4d4d4" fill="none"></path><polygon points="968.3414,-134.6264 975.6529,-135.8691 970.7122,-130.3381 968.3414,-134.6264" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -516,6 +538,11 @@ instead the method <a href="#act(arg:W):U" class="extmbr" name="provingground.Ho
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="provingground.HoTT.RichTerm" data-hidden="false"><span>by RichTerm</span></li><li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -700,6 +727,115 @@ Should throw exception when invoked for constants.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(FuncLike[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#:-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":-&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.Func[U,V]"></a><a id=":-&gt;[V&lt;:TermwithSubs[V]](V):Func[FuncLike[W,U],V]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#:-&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.Func[U,V]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$minus$greater" class="implicit">:-&gt;</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span>]</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span></span>)</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>], <span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">constructor for (pure) lambda functions, see <a href="HoTT$.html#lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]" class="extmbr" name="provingground.HoTT#lmbda">lmbda</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>constructor for (pure) lambda functions, see <a href="HoTT$.html#lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]" class="extmbr" name="provingground.HoTT#lmbda">lmbda</a>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#:~&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":~&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.FuncLike[U,V]"></a><a id=":~&gt;[V&lt;:TermwithSubs[V]](V):FuncLike[FuncLike[W,U],V]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#:~&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.FuncLike[U,V]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$tilde$greater" class="implicit">:~&gt;</span><span class="tparams">[<span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span>]</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>], <span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">constructor for (in general dependent) lambda functions, see <a href="HoTT$.html#lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]" class="extmbr" name="provingground.HoTT#lambda">lambda</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>constructor for (in general dependent) lambda functions, see <a href="HoTT$.html#lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]" class="extmbr" name="provingground.HoTT#lambda">lambda</a>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#=:=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="=:=(rhs:U):provingground.HoTT.IdentityTyp[U]"></a><a id="=:=(FuncLike[W,U]):IdentityTyp[FuncLike[W,U]]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#=:=(rhs:U):provingground.HoTT.IdentityTyp[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$colon$eq" class="implicit">=:=</span><span class="params">(<span name="rhs">rhs: <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]</span>)</span><span class="result">: <a href="HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">equality type 'term = rhs'
+</p><div class="fullcomment"><div class="comment cmt"><p>equality type 'term = rhs'
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -847,6 +983,86 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       <p class="shortcomment cmt">returns whether <code>this</code> depends on <code>that</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> depends on <code>that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((FuncLike[W,U])⇒Boolean,⇒Any):FuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((FuncLike[W,U])⇒Boolean):FuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):FuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):FuncLike[W,U]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -899,6 +1115,29 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1026,6 +1265,28 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#refl" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="refl:provingground.HoTT.Refl[U]"></a><a id="refl:Refl[FuncLike[W,U]]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#refl:provingground.HoTT.Refl[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">refl</span><span class="result">: <a href="HoTT$$Refl.html" class="extype" name="provingground.HoTT.Refl">Refl</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">reflexivity term <code>refl : term = term</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>reflexivity term <code>refl : term = term</code>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method RichTerm in <a href="HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
     </li><li name="provingground.HoTT.Subs#replace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]"></a><a id="replace(Term,Term):FuncLike[W,U]withSubs[FuncLike[W,U]]"></a>
       <span class="permalink">
@@ -1182,6 +1443,26 @@ definition.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(FuncLike[W,U],B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$FuncLike.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1203,7 +1484,27 @@ definition.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="provingground.HoTT.RichTerm">
+              <h3>Inherited by implicit conversion RichTerm from
+                <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to <a href="HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.FuncLike.W">W</span>, <span class="extype" name="provingground.HoTT.FuncLike.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

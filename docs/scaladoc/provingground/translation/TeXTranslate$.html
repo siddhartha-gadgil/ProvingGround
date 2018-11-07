@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -496,9 +496,9 @@ concrete languages including our implementation of HoTT are in this package.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.translation.TeXTranslate#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(x:provingground.HoTT.Term):String"></a><a id="apply(Term):String"></a>
+      <a id="apply(x:provingground.HoTT.Term,underscoreEscape:Boolean):String"></a><a id="apply(Term,Boolean):String"></a>
       <span class="permalink">
-      <a href="../../provingground/translation/TeXTranslate$.html#apply(x:provingground.HoTT.Term):String" title="Permalink">
+      <a href="../../provingground/translation/TeXTranslate$.html#apply(x:provingground.HoTT.Term,underscoreEscape:Boolean):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -507,7 +507,7 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">apply</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="underscoreEscape">underscoreEscape: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       
@@ -778,18 +778,18 @@ concrete languages including our implementation of HoTT are in this package.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.translation.TeXTranslate#texTrans" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="texTrans:provingground.translation.Translator.OrElse[provingground.HoTT.Term,String]"></a><a id="texTrans:OrElse[Term,String]"></a>
+      <a id="texTrans(underscoreEscape:Boolean):provingground.translation.Translator.OrElse[provingground.HoTT.Term,String]"></a><a id="texTrans(Boolean):OrElse[Term,String]"></a>
       <span class="permalink">
-      <a href="../../provingground/translation/TeXTranslate$.html#texTrans:provingground.translation.Translator.OrElse[provingground.HoTT.Term,String]" title="Permalink">
+      <a href="../../provingground/translation/TeXTranslate$.html#texTrans(underscoreEscape:Boolean):provingground.translation.Translator.OrElse[provingground.HoTT.Term,String]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">texTrans</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.translation.Translator.OrElse">OrElse</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">texTrans</span><span class="params">(<span name="underscoreEscape">underscoreEscape: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="Translator$$OrElse.html" class="extype" name="provingground.translation.Translator.OrElse">OrElse</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       
       

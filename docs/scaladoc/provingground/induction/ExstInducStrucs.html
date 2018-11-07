@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -179,9 +179,9 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
                         <a class="class" href="ExstInducDefn.html" title=""></a>
                         <a href="ExstInducDefn.html" title="">ExstInducDefn</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="ExstInducStruc$.html" title=""></a>
-                        <a class="trait" href="" title="term level inductive structure for runtime contexts"></a>
-                        <a href="" title="term level inductive structure for runtime contexts">ExstInducStruc</a>
+                        <a class="object" href="ExstInducStrucs$.html" title=""></a>
+                        <a class="trait" href="" title="term level inductive structures for runtime contexts"></a>
+                        <a href="" title="term level inductive structures for runtime contexts">ExstInducStrucs</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="IndTyp.html" title=""></a>
@@ -313,15 +313,15 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
           <div id="content">
             <body class="trait type">
       <div id="definition">
-        <a href="ExstInducStruc$.html" title="See companion object"><div class="big-circle trait-companion-object">t</div></a>
+        <a href="ExstInducStrucs$.html" title="See companion object"><div class="big-circle trait-companion-object">t</div></a>
         <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.induction">induction</a></p>
-        <h1><a href="ExstInducStruc$.html" title="See companion object">ExstInducStruc</a><span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html" title="Permalink">
+        <h1><a href="ExstInducStrucs$.html" title="See companion object">ExstInducStrucs</a><span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
         <h3><span class="morelinks"><div>
-            Companion <a href="ExstInducStruc$.html" title="See companion object">object ExstInducStruc</a>
+            Companion <a href="ExstInducStrucs$.html" title="See companion object">object ExstInducStrucs</a>
           </div></span></h3>
       </div>
 
@@ -331,12 +331,12 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">ExstInducStruc</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+        <span class="name">ExstInducStrucs</span><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>term level inductive structure for runtime contexts
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>term level inductive structures for runtime contexts
 </p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
@@ -346,8 +346,18 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="ExstInducStruc$$Base$.html" class="extype" name="provingground.induction.ExstInducStruc.Base">Base</a>, <a href="ExstInducStruc$$ConsSeqExst.html" class="extype" name="provingground.induction.ExstInducStruc.ConsSeqExst">ConsSeqExst</a>, <a href="ExstInducStruc$$IndConsSeqExst.html" class="extype" name="provingground.induction.ExstInducStruc.IndConsSeqExst">IndConsSeqExst</a>, <a href="ExstInducStruc$$LambdaInduc.html" class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc">LambdaInduc</a>, <a href="ExstInducStruc$$OrElse.html" class="extype" name="provingground.induction.ExstInducStruc.OrElse">OrElse</a></div>
-          </div></div>
+            <div class="subClasses hiddenContent"><a href="ExstInducStrucs$$Base$.html" class="extype" name="provingground.induction.ExstInducStrucs.Base">Base</a>, <a href="ExstInducStrucs$$ConsSeqExst.html" class="extype" name="provingground.induction.ExstInducStrucs.ConsSeqExst">ConsSeqExst</a>, <a href="ExstInducStrucs$$IndConsSeqExst.html" class="extype" name="provingground.induction.ExstInducStrucs.IndConsSeqExst">IndConsSeqExst</a>, <a href="ExstInducStrucs$$LambdaInduc.html" class="extype" name="provingground.induction.ExstInducStrucs.LambdaInduc">LambdaInduc</a>, <a href="ExstInducStrucs$$OrElse.html" class="extype" name="provingground.induction.ExstInducStrucs.OrElse">OrElse</a>, <a href="../scalahott/NatRing$.html" class="extype" name="provingground.scalahott.NatRing">NatRing</a></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 853.50 155.00" height="155pt" width="854pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 849.5,-151 849.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.induction.ExstInducStrucs (this trait)" xlink:href="#inheritance-diagram"><path d="M568.6667,-86C568.6667,-86 474.3333,-86 474.3333,-86 470.1667,-86 466,-81.8333 466,-77.6667 466,-77.6667 466,-69.3333 466,-69.3333 466,-65.1667 470.1667,-61 474.3333,-61 474.3333,-61 568.6667,-61 568.6667,-61 572.8333,-61 577,-65.1667 577,-69.3333 577,-69.3333 577,-77.6667 577,-77.6667 577,-81.8333 572.8333,-86 568.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="476.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="497.5" text-anchor="start">ExstInducStrucs</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.induction.ExstInducStrucs.Base" xlink:href="ExstInducStrucs$$Base$.html#inheritance-diagram"><path d="M126.6667,-25C126.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 126.6667,0 126.6667,0 130.8333,0 135,-4.1667 135,-8.3333 135,-8.3333 135,-16.6667 135,-16.6667 135,-20.8333 130.8333,-25 126.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">ExstInducStrucs.Base</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="ExstInducStrucs.Base is a subtype of ExstInducStrucs"><path d="M458.772,-66.0723C383.8829,-57.0562 254.8937,-41.057 144.5,-25 141.4175,-24.5516 138.2674,-24.083 135.0867,-23.6012" stroke="#d4d4d4" fill="none"></path><polygon points="458.6056,-68.5198 465.848,-66.9228 459.1904,-63.6549 458.6056,-68.5198" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.induction.ExstInducStrucs.ConsSeqExst" xlink:href="ExstInducStrucs$$ConsSeqExst.html#inheritance-diagram"><path d="M303.1667,-25C303.1667,-25 161.8333,-25 161.8333,-25 157.6667,-25 153.5,-20.8333 153.5,-16.6667 153.5,-16.6667 153.5,-8.3333 153.5,-8.3333 153.5,-4.1667 157.6667,0 161.8333,0 161.8333,0 303.1667,0 303.1667,0 307.3333,0 311.5,-4.1667 311.5,-8.3333 311.5,-8.3333 311.5,-16.6667 311.5,-16.6667 311.5,-20.8333 307.3333,-25 303.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="163.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="184.5" text-anchor="start">ConsSeqExst[SS, H, Intros]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="ConsSeqExst[SS, H, Intros] is a subtype of ExstInducStrucs"><path d="M458.9112,-60.2892C409.3143,-49.8207 340.4934,-35.2945 291.7791,-25.0122" stroke="#d4d4d4" fill="none"></path><polygon points="458.4228,-62.69 465.7779,-61.7386 459.4348,-57.8957 458.4228,-62.69" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.induction.ExstInducStrucs.IndConsSeqExst" xlink:href="ExstInducStrucs$$IndConsSeqExst.html#inheritance-diagram"><path d="M531.1667,-25C531.1667,-25 337.8333,-25 337.8333,-25 333.6667,-25 329.5,-20.8333 329.5,-16.6667 329.5,-16.6667 329.5,-8.3333 329.5,-8.3333 329.5,-4.1667 333.6667,0 337.8333,0 337.8333,0 531.1667,0 531.1667,0 535.3333,0 539.5,-4.1667 539.5,-8.3333 539.5,-8.3333 539.5,-16.6667 539.5,-16.6667 539.5,-20.8333 535.3333,-25 531.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="339.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="360.5" text-anchor="start">IndConsSeqExst[SS, H, F, Index, Intros]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="IndConsSeqExst[SS, H, F, Index, Intros] is a subtype of ExstInducStrucs"><path d="M497.6086,-56.7486C483.3604,-46.7585 465.5627,-34.2796 452.5034,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="496.3355,-58.8481 503.4735,-60.8608 499.1485,-54.836 496.3355,-58.8481" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.induction.ExstInducStrucs.LambdaInduc" xlink:href="ExstInducStrucs$$LambdaInduc.html#inheritance-diagram"><path d="M650.6667,-25C650.6667,-25 566.3333,-25 566.3333,-25 562.1667,-25 558,-20.8333 558,-16.6667 558,-16.6667 558,-8.3333 558,-8.3333 558,-4.1667 562.1667,0 566.3333,0 566.3333,0 650.6667,0 650.6667,0 654.8333,0 659,-4.1667 659,-8.3333 659,-8.3333 659,-16.6667 659,-16.6667 659,-20.8333 654.8333,-25 650.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="568.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="589.5" text-anchor="start">LambdaInduc</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="LambdaInduc is a subtype of ExstInducStrucs"><path d="M545.3914,-56.7486C559.6396,-46.7585 577.4373,-34.2796 590.4966,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="543.8515,-54.836 539.5265,-60.8608 546.6645,-58.8481 543.8515,-54.836" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node object" id="graph1_5"><g id="a_object|graph1_5"><a xlink:title="provingground.scalahott.NatRing" xlink:href="../scalahott/NatRing$.html#inheritance-diagram"><path d="M747.1667,-25C747.1667,-25 685.8333,-25 685.8333,-25 681.6667,-25 677.5,-20.8333 677.5,-16.6667 677.5,-16.6667 677.5,-8.3333 677.5,-8.3333 677.5,-4.1667 681.6667,0 685.8333,0 685.8333,0 747.1667,0 747.1667,0 751.3333,0 755.5,-4.1667 755.5,-8.3333 755.5,-8.3333 755.5,-16.6667 755.5,-16.6667 755.5,-20.8333 751.3333,-25 747.1667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="687.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="708.5" text-anchor="start">NatRing</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="NatRing is a subtype of ExstInducStrucs"><path d="M568.84,-58.6911C602.1466,-48.2721 646.1854,-34.4958 677.4783,-24.7068" stroke="#d4d4d4" fill="none"></path><polygon points="567.8534,-56.4326 561.9041,-60.8608 569.3164,-61.1091 567.8534,-56.4326" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node class" id="graph1_6"><g id="a_class|graph1_6"><a xlink:title="provingground.induction.ExstInducStrucs.OrElse" xlink:href="ExstInducStrucs$$OrElse.html#inheritance-diagram"><path d="M837.1667,-25C837.1667,-25 781.8333,-25 781.8333,-25 777.6667,-25 773.5,-20.8333 773.5,-16.6667 773.5,-16.6667 773.5,-8.3333 773.5,-8.3333 773.5,-4.1667 777.6667,0 781.8333,0 781.8333,0 837.1667,0 837.1667,0 841.3333,0 845.5,-4.1667 845.5,-8.3333 845.5,-8.3333 845.5,-16.6667 845.5,-16.6667 845.5,-20.8333 841.3333,-25 837.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="783.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="804.5" text-anchor="start">OrElse</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="OrElse is a subtype of ExstInducStrucs"><path d="M584.3562,-62.2756C633.5828,-53.167 703.6741,-39.4971 764.5,-25 767.3395,-24.3232 770.2702,-23.5896 773.2104,-22.8286" stroke="#d4d4d4" fill="none"></path><polygon points="583.6881,-59.9074 577.2483,-63.5859 584.5765,-64.7262 583.6881,-59.9074" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node class" id="graph1_7"><g id="a_class|graph1_7"><a xlink:title="scala.AnyRef"><path d="M550.6667,-147C550.6667,-147 492.3333,-147 492.3333,-147 488.1667,-147 484,-142.8333 484,-138.6667 484,-138.6667 484,-130.3333 484,-130.3333 484,-126.1667 488.1667,-122 492.3333,-122 492.3333,-122 550.6667,-122 550.6667,-122 554.8333,-122 559,-126.1667 559,-130.3333 559,-130.3333 559,-138.6667 559,-138.6667 559,-142.8333 554.8333,-147 550.6667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="494.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="515.5" text-anchor="start">AnyRef</text></a></g></g><!-- node7&#45;&gt;node0 --><g class="edge inheritance" id="graph1_7_0"><g id="a_inheritance|graph1_7_0"><a xlink:title="ExstInducStrucs is a subtype of AnyRef"><path d="M521.5,-114.7386C521.5,-105.3393 521.5,-94.3803 521.5,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="519.0501,-114.8607 521.5,-121.8608 523.9501,-114.8608 519.0501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -372,7 +382,12 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.induction.ExstInducStruc"><span>ExstInducStruc</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.induction.ExstInducStrucs"><span>ExstInducStrucs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -396,10 +411,10 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
 
         <div class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="provingground.induction.ExstInducStruc#constants" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.induction.ExstInducStrucs#constants" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="constants:Vector[provingground.HoTT.Term]"></a><a id="constants:Vector[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#constants:Vector[provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#constants:Vector[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -412,10 +427,10 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
       </span>
       
       
-    </li><li name="provingground.induction.ExstInducStruc#inducOpt" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.induction.ExstInducStrucs#inducOpt" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a><a id="inducOpt(Term,Term):Option[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -428,10 +443,10 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
       </span>
       
       
-    </li><li name="provingground.induction.ExstInducStruc#recOpt" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.induction.ExstInducStrucs#recOpt" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]"></a><a id="recOpt[C&lt;:TermwithSubs[C]](Term,Typ[C]):Option[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -440,14 +455,14 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recOpt</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ExstInducStruc.recOpt.C">C</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ExstInducStruc.recOpt.C">C</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">recOpt</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ExstInducStrucs.recOpt.C">C</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ExstInducStrucs.recOpt.C">C</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       
-    </li><li name="provingground.induction.ExstInducStruc#subs" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStruc"></a><a id="subs(Term,Term):ExstInducStruc"></a>
+    </li><li name="provingground.induction.ExstInducStrucs#subs" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStrucs"></a><a id="subs(Term,Term):ExstInducStrucs"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStruc" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStrucs" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -456,7 +471,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>
+        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
       </span>
       
       
@@ -469,7 +484,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -485,7 +500,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html###():Int" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -498,10 +513,53 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(ExstInducStrucs,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -517,7 +575,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -533,7 +591,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#clone():Object" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -554,10 +612,90 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((ExstInducStrucs)⇒Boolean,⇒Any):ExstInducStrucs"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((ExstInducStrucs)⇒Boolean):ExstInducStrucs"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):ExstInducStrucs"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):ExstInducStrucs"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -573,7 +711,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -589,7 +727,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#finalize():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -608,10 +746,33 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#getClass():Class[_]" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -630,7 +791,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#hashCode():Int" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -649,7 +810,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -665,7 +826,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -681,7 +842,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#notify():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -700,7 +861,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#notifyAll():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -719,7 +880,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -735,7 +896,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#toString():String" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -751,7 +912,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#wait():Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -773,7 +934,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -795,7 +956,7 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -816,10 +977,10 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc#||" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="||(that:provingground.induction.ExstInducStruc):provingground.induction.ExstInducStruc.OrElse"></a><a id="||(ExstInducStruc):OrElse"></a>
+    </li><li name="provingground.induction.ExstInducStrucs#||" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="||(that:provingground.induction.ExstInducStrucs):provingground.induction.ExstInducStrucs.OrElse"></a><a id="||(ExstInducStrucs):OrElse"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc.html#||(that:provingground.induction.ExstInducStruc):provingground.induction.ExstInducStruc.OrElse" title="Permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#||(that:provingground.induction.ExstInducStrucs):provingground.induction.ExstInducStrucs.OrElse" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -828,10 +989,30 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result">: <a href="ExstInducStruc$$OrElse.html" class="extype" name="provingground.induction.ExstInducStruc.OrElse">OrElse</a></span>
+        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>)</span><span class="result">: <a href="ExstInducStrucs$$OrElse.html" class="extype" name="provingground.induction.ExstInducStrucs.OrElse">OrElse</a></span>
       </span>
       
       
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(ExstInducStrucs,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/induction/ExstInducStrucs.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -847,7 +1028,23 @@ use <a href="index.html" class="extype" name="provingground.induction">induction
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

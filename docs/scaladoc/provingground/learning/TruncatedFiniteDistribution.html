@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNode.html" title=""></a>
-                        <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -504,7 +512,17 @@ the coefficients of the various generator nodes should be <code>Double</code>
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="TruncatedFiniteDistribution$$Geom$.html" class="extype" name="provingground.learning.TruncatedFiniteDistribution.Geom">Geom</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 440.50 155.00" height="155pt" width="441pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 436.5,-151 436.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.learning.TruncatedFiniteDistribution (this class)" xlink:href="#inheritance-diagram"><path d="M379.1667,-86C379.1667,-86 186.8333,-86 186.8333,-86 182.6667,-86 178.5,-81.8333 178.5,-77.6667 178.5,-77.6667 178.5,-69.3333 178.5,-69.3333 178.5,-65.1667 182.6667,-61 186.8333,-61 186.8333,-61 379.1667,-61 379.1667,-61 383.3333,-61 387.5,-65.1667 387.5,-69.3333 387.5,-69.3333 387.5,-77.6667 387.5,-77.6667 387.5,-81.8333 383.3333,-86 379.1667,-86" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-80.5" x="189" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="210" text-anchor="start">TruncatedFiniteDistribution[State, Boat]</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.learning.TruncatedFiniteDistribution.Geom" xlink:href="TruncatedFiniteDistribution$$Geom$.html#inheritance-diagram"><path d="M309.6667,-25C309.6667,-25 256.3333,-25 256.3333,-25 252.1667,-25 248,-20.8333 248,-16.6667 248,-16.6667 248,-8.3333 248,-8.3333 248,-4.1667 252.1667,0 256.3333,0 256.3333,0 309.6667,0 309.6667,0 313.8333,0 318,-4.1667 318,-8.3333 318,-8.3333 318,-16.6667 318,-16.6667 318,-20.8333 313.8333,-25 309.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../../lib/object_diagram.png" y="-19.5" x="258" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="279" text-anchor="start">Geom</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="Geom is a subtype of TruncatedFiniteDistribution[State, Boat]"><path d="M283,-53.7386C283,-44.3393 283,-33.3803 283,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="280.5501,-53.8607 283,-60.8608 285.4501,-53.8608 280.5501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.learning.GenTruncatedFiniteDistribution" xlink:href="GenTruncatedFiniteDistribution.html#inheritance-diagram"><path d="M217.6667,-147C217.6667,-147 8.3333,-147 8.3333,-147 4.1667,-147 0,-142.8333 0,-138.6667 0,-138.6667 0,-130.3333 0,-130.3333 0,-126.1667 4.1667,-122 8.3333,-122 8.3333,-122 217.6667,-122 217.6667,-122 221.8333,-122 226,-126.1667 226,-130.3333 226,-130.3333 226,-138.6667 226,-138.6667 226,-142.8333 221.8333,-147 217.6667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="31" text-anchor="start">GenTruncatedFiniteDistribution[State, Boat]</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="TruncatedFiniteDistribution[State, Boat] is a subtype of GenTruncatedFiniteDistribution[State, Boat]"><path d="M154.933,-119.4534C183.5806,-109.174 221.0981,-95.7118 248.1122,-86.0185" stroke="#d4d4d4" fill="none"></path><polygon points="153.9853,-117.1905 148.2241,-121.8608 155.6403,-121.8026 153.9853,-117.1905" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Product"><path d="M313.1667,-147C313.1667,-147 252.8333,-147 252.8333,-147 248.6667,-147 244.5,-142.8333 244.5,-138.6667 244.5,-138.6667 244.5,-130.3333 244.5,-130.3333 244.5,-126.1667 248.6667,-122 252.8333,-122 252.8333,-122 313.1667,-122 313.1667,-122 317.3333,-122 321.5,-126.1667 321.5,-130.3333 321.5,-130.3333 321.5,-138.6667 321.5,-138.6667 321.5,-142.8333 317.3333,-147 313.1667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-141.5" x="255" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="276" text-anchor="start">Product</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="TruncatedFiniteDistribution[State, Boat] is a subtype of Product"><path d="M283,-114.7386C283,-105.3393 283,-94.3803 283,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="280.5501,-114.8607 283,-121.8608 285.4501,-114.8608 280.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node trait" id="graph1_4"><g id="a_trait|graph1_4"><a xlink:title="scala.Serializable"><path d="M424.1667,-147C424.1667,-147 347.8333,-147 347.8333,-147 343.6667,-147 339.5,-142.8333 339.5,-138.6667 339.5,-138.6667 339.5,-130.3333 339.5,-130.3333 339.5,-126.1667 343.6667,-122 347.8333,-122 347.8333,-122 424.1667,-122 424.1667,-122 428.3333,-122 432.5,-126.1667 432.5,-130.3333 432.5,-130.3333 432.5,-138.6667 432.5,-138.6667 432.5,-142.8333 428.3333,-147 424.1667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-141.5" x="350" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="371" text-anchor="start">Serializable</text></a></g></g><!-- node4&#45;&gt;node0 --><g class="edge inheritance" id="graph1_4_0"><g id="a_inheritance|graph1_4_0"><a xlink:title="TruncatedFiniteDistribution[State, Boat] is a subtype of Serializable"><path d="M358.6144,-118.2814C341.6006,-108.2052 320.0515,-95.4431 304.3143,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="357.3869,-120.4017 364.6583,-121.8608 359.8838,-116.1856 357.3869,-120.4017" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -530,6 +548,11 @@ the coefficients of the various generator nodes should be <code>Double</code>
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.learning.TruncatedFiniteDistribution"><span>TruncatedFiniteDistribution</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.learning.GenTruncatedFiniteDistribution"><span>GenTruncatedFiniteDistribution</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -607,6 +630,49 @@ the coefficients of the various generator nodes should be <code>Double</code>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(TruncatedFiniteDistribution[State,Boat],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -663,6 +729,86 @@ the coefficients of the various generator nodes should be <code>Double</code>
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((TruncatedFiniteDistribution[State,Boat])⇒Boolean,⇒Any):TruncatedFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((TruncatedFiniteDistribution[State,Boat])⇒Boolean):TruncatedFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):TruncatedFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):TruncatedFiniteDistribution[State,Boat]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -699,6 +845,29 @@ the coefficients of the various generator nodes should be <code>Double</code>
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1038,6 +1207,26 @@ the main work is done here
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(TruncatedFiniteDistribution[State,Boat],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedFiniteDistribution.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1063,7 +1252,23 @@ the main work is done here
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TruncatedFiniteDistribution">TruncatedFiniteDistribution</a>[<span class="extype" name="provingground.learning.TruncatedFiniteDistribution.State">State</span>, <span class="extype" name="provingground.learning.TruncatedFiniteDistribution.Boat">Boat</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

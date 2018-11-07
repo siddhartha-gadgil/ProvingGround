@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -86,14 +86,14 @@
       
       <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
 homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
-homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="../learning/index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
 in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
 package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
-    </li><li name="provingground.induction" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="induction"></a><a id="induction:induction"></a>
+    </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="learning"></a><a id="learning:learning"></a>
       <span class="permalink">
-      <a href="../provingground/index.html#induction" title="Permalink">
+      <a href="../provingground/index.html#learning" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -102,26 +102,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="Much of  the richness of HoTT is in the definitions of Inductive types (and their indexed  counterparts) and of (dependent) functions on these by recursion and induction These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points)." href="index.html"><span class="name">induction</span></a>
+        <a title="" href="index.html"><span class="name">learning</span></a>
       </span>
       
-      <p class="shortcomment cmt">Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
-and of (dependent) functions on these by recursion and induction
-These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points).</p><div class="fullcomment"><div class="comment cmt"><p>Much of  the richness of HoTT is in the definitions of <code><code>Inductive types</code></code> (and their indexed  counterparts)
-and of (dependent) functions on these by recursion and induction
-These are implemented using several layers of recursive definitions and diagonals (i.e., fixed points). In HoTT,
-recursion and induction are applications of (dependent) functions <code>rec_W,X</code> and  <code>ind_W, Xs</code> to the <code><code>definition data</code></code>.</p><p>It is useful to capture information regarding inductive types and the recursion and induction functions in scala types. Our implementation
-is designed to do this.</p><h4>Inductive Type Definitions</h4><p>Inductive types are specified by introduction rules. Each introduction rule is specified in <a href="ConstructorShape.html" class="extype" name="provingground.induction.ConstructorShape">ConstructorShape</a> (without specifying the type)
-and <a href="ConstructorTL.html" class="extype" name="provingground.induction.ConstructorTL">ConstructorTL</a> including the specific type. The full definition is in <a href="ConstructorSeqTL.html" class="extype" name="provingground.induction.ConstructorSeqTL">ConstructorSeqTL</a>.</p><h4>Recursion and Induction functions</h4><p>These are defined recursively, first for each introduction rule and then for the inductive type as a whole. A subtlety is that the
-scala type of the <code>rec_W,X</code> and <code>induc_W, Xs</code> functions depends on the scala type of the codomain <code>X</code> (or family <code>Xs</code>).
-To make these types visible, some type level calculations using  implicits are done, giving traits <a href="ConstructorPatternMap.html" class="extype" name="provingground.induction.ConstructorPatternMap">ConstructorPatternMap</a>
-and <a href="ConstructorSeqMap.html" class="extype" name="provingground.induction.ConstructorSeqMap">ConstructorSeqMap</a> that have recursive definition of the recursion and induction functions, the former for the case of a
-single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="extype" name="provingground.induction.ConstructorSeqMapper">ConstructorSeqMapper</a> and <a href="ConstructorPatternMapper.html" class="extype" name="provingground.induction.ConstructorPatternMapper">ConstructorPatternMapper</a> provide the lifts.</p><h4>Indexed Versions</h4><p>There are indexed versions of all these definitions, to work with indexed inductive type families.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ExstInducStruc"></a><a id="ExstInducStruc:ExstInducStruc"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li name="provingground.learning.GeneratorVariables" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="GeneratorVariables"></a><a id="GeneratorVariables:GeneratorVariables"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/index.html#ExstInducStruc" title="Permalink">
+      <a href="../../provingground/learning/index.html#GeneratorVariables" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -130,54 +118,108 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="ExstInducStruc$.html"><span class="name">ExstInducStruc</span></a>
+        <a title="" href="GeneratorVariables$.html"><span class="name">GeneratorVariables</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.induction">induction</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.learning">learning</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="ExstInducStruc$$Base$.html" title=""></a>
-                        <a href="ExstInducStruc$$Base$.html" title="">Base</a>
+                        <a class="class" href="GeneratorVariables$$Elem.html" title=""></a>
+                        <a href="GeneratorVariables$$Elem.html" title="">Elem</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="" title=""></a>
+                        <a class="trait" href="GeneratorVariables$$ElemList.html" title=""></a>
+                        <a href="GeneratorVariables$$ElemList.html" title="">ElemList</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="ExstInducStruc$$ConsSeqExst.html" title=""></a>
-                        <a href="ExstInducStruc$$ConsSeqExst.html" title="">ConsSeqExst</a>
+                        <a class="class" href="GeneratorVariables$$Equation.html" title=""></a>
+                        <a href="GeneratorVariables$$Equation.html" title="">Equation</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="ExstInducStruc$$IndConsSeqExst.html" title=""></a>
-                        <a href="ExstInducStruc$$IndConsSeqExst.html" title="">IndConsSeqExst</a>
+                        <a class="class" href="GeneratorVariables$$EquationTerm.html" title=""></a>
+                        <a href="GeneratorVariables$$EquationTerm.html" title="">EquationTerm</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">LambdaInduc</a>
+                        <a class="class" href="GeneratorVariables$$Event.html" title=""></a>
+                        <a href="GeneratorVariables$$Event.html" title="">Event</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="GeneratorVariables$$Expression$.html" title=""></a>
+                        <a class="trait" href="GeneratorVariables$$Expression.html" title=""></a>
+                        <a href="GeneratorVariables$$Expression.html" title="">Expression</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="ExstInducStruc$$OrElse.html" title=""></a>
-                        <a href="ExstInducStruc$$OrElse.html" title="">OrElse</a>
+                        <a class="class" href="GeneratorVariables$$FinalVal.html" title=""></a>
+                        <a href="GeneratorVariables$$FinalVal.html" title="">FinalVal</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$InIsle.html" title=""></a>
+                        <a href="GeneratorVariables$$InIsle.html" title="">InIsle</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$InitialVal.html" title=""></a>
+                        <a href="GeneratorVariables$$InitialVal.html" title="">InitialVal</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$Literal.html" title=""></a>
+                        <a href="GeneratorVariables$$Literal.html" title="">Literal</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$Log.html" title=""></a>
+                        <a href="GeneratorVariables$$Log.html" title="">Log</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$NodeCoeff.html" title=""></a>
+                        <a href="GeneratorVariables$$NodeCoeff.html" title="">NodeCoeff</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$PairEvent.html" title=""></a>
+                        <a href="GeneratorVariables$$PairEvent.html" title="">PairEvent</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$Product.html" title=""></a>
+                        <a href="GeneratorVariables$$Product.html" title="">Product</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$Quotient.html" title=""></a>
+                        <a href="GeneratorVariables$$Quotient.html" title="">Quotient</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorVariables$$Sum.html" title=""></a>
+                        <a href="GeneratorVariables$$Sum.html" title="">Sum</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="GeneratorVariables$$VarVal.html" title=""></a>
+                        <a href="GeneratorVariables$$VarVal.html" title="">VarVal</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="GeneratorVariables$$Variable.html" title="a variable representing a probability"></a>
+                        <a href="GeneratorVariables$$Variable.html" title="a variable representing a probability">Variable</a>
                       </li>
               </ul>
             </div>
           </div>
           <div id="content">
-            <body class="class type">
+            <body class="object value">
       <div id="definition">
-        <div class="big-circle class">c</div>
-        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.induction">induction</a>.<a href="ExstInducStruc$.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></p>
-        <h1>LambdaInduc<span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html" title="Permalink">
+        <a href="GeneratorVariables$$ElemList.html" title="See companion trait"><div class="big-circle object-companion-trait">o</div></a>
+        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.learning">learning</a>.<a href="GeneratorVariables$.html" class="extype" name="provingground.learning.GeneratorVariables">GeneratorVariables</a></p>
+        <h1><a href="GeneratorVariables$$ElemList.html" title="See companion trait">ElemList</a><span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="GeneratorVariables$$ElemList.html" title="See companion trait">trait ElemList</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">LambdaInduc</span><span class="params">(<span name="variable">variable: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="struct">struct: <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result"> extends <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ElemList</span>
       </span>
       </h4>
 
@@ -186,7 +228,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -212,7 +254,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.induction.ExstInducStruc.LambdaInduc"><span>LambdaInduc</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.induction.ExstInducStruc"><span>ExstInducStruc</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.learning.GeneratorVariables.ElemList"><span>ElemList</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -230,28 +272,28 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="provingground.induction.ExstInducStruc.LambdaInduc#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(variable:provingground.HoTT.Term,struct:provingground.induction.ExstInducStruc):provingground.induction.ExstInducStruc.LambdaInduc"></a><a id="&lt;init&gt;:LambdaInduc"></a>
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.learning.GeneratorVariables.ElemList.Cons" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Cons[Y,Z&lt;:shapeless.HList]extendsGeneratorVariables.ElemList[Y::Z]withProductwithSerializable"></a><a id="Cons[Y,Z&lt;:HList]:Cons[Y,Z]"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#&lt;init&gt;(variable:provingground.HoTT.Term,struct:provingground.induction.ExstInducStruc):provingground.induction.ExstInducStruc.LambdaInduc" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#Cons[Y,Z&lt;:shapeless.HList]extendsGeneratorVariables.ElemList[Y::Z]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">new</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">LambdaInduc</span><span class="params">(<span name="variable">variable: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="struct">struct: <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span>
+        <a title="" href="GeneratorVariables$$ElemList$$Cons.html"><span class="name">Cons</span></a><span class="tparams">[<span name="Y">Y</span>, <span name="Z">Z &lt;: <span class="extype" name="shapeless.HList">HList</span></span>]</span><span class="params">(<span name="head">head: <a href="GeneratorVariables$$Elem.html" class="extype" name="provingground.learning.GeneratorVariables.Elem">Elem</a>[<span class="extype" name="provingground.learning.GeneratorVariables.ElemList.Cons.Y">Y</span>]</span>, <span name="tail">tail: <a href="GeneratorVariables$$ElemList.html" class="extype" name="provingground.learning.GeneratorVariables.ElemList">ElemList</a>[<span class="extype" name="provingground.learning.GeneratorVariables.ElemList.Cons.Z">Z</span>]</span>)</span><span class="result"> extends <a href="GeneratorVariables$$ElemList.html" class="extype" name="provingground.learning.GeneratorVariables.ElemList">ElemList</a>[<span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.GeneratorVariables.ElemList.Cons.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorVariables.ElemList.Cons.Z">Z</span>]] with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li></ol>
             </div>
-
-        
 
         
 
@@ -261,7 +303,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -277,7 +319,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html###():Int" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -293,7 +335,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -309,7 +351,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -325,7 +367,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#clone():Object" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -346,26 +388,10 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc.LambdaInduc#constants" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="constants:Vector[provingground.HoTT.Term]"></a><a id="constants:Vector[Term]"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#constants:Vector[provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">constants</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc">LambdaInduc</a> → <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -378,10 +404,26 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#equals(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#finalize():Unit" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -403,7 +445,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#getClass():Class[_]" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -419,10 +461,10 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc.LambdaInduc#inducOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]"></a><a id="inducOpt(Term,Term):Option[Term]"></a>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#inducOpt(dom:provingground.HoTT.Term,cod:provingground.HoTT.Term):Option[provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -431,14 +473,17 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">inducOpt</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc">LambdaInduc</a> → <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -454,7 +499,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -470,7 +515,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#notify():Unit" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -489,7 +534,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#notifyAll():Unit" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -505,58 +550,10 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc.LambdaInduc#recOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]"></a><a id="recOpt[C&lt;:TermwithSubs[C]](Term,Typ[C]):Option[Term]"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#recOpt[C&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[C]](dom:provingground.HoTT.Term,cod:provingground.HoTT.Typ[C]):Option[provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">recOpt</span><span class="tparams">[<span name="C">C &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc.recOpt.C">C</span>]</span>]</span><span class="params">(<span name="dom">dom: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="cod">cod: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc.recOpt.C">C</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc">LambdaInduc</a> → <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc.LambdaInduc#struct" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="struct:provingground.induction.ExstInducStruc"></a><a id="struct:ExstInducStruc"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#struct:provingground.induction.ExstInducStruc" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">struct</span><span class="result">: <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>
-      </span>
-      
-      
-    </li><li name="provingground.induction.ExstInducStruc.LambdaInduc#subs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStruc.LambdaInduc"></a><a id="subs(Term,Term):LambdaInduc"></a>
-      <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#subs(x:provingground.HoTT.Term,y:provingground.HoTT.Term):provingground.induction.ExstInducStruc.LambdaInduc" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">subs</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="y">y: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc">LambdaInduc</a></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.induction.ExstInducStruc.LambdaInduc">LambdaInduc</a> → <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -569,26 +566,26 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc.LambdaInduc#variable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="variable:provingground.HoTT.Term"></a><a id="variable:Term"></a>
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#variable:provingground.HoTT.Term" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">variable</span><span class="result">: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#wait():Unit" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -610,7 +607,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -632,7 +629,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -653,22 +650,22 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.induction.ExstInducStruc#||" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="||(that:provingground.induction.ExstInducStruc):provingground.induction.ExstInducStruc.OrElse"></a><a id="||(ExstInducStruc):OrElse"></a>
+    </li><li name="provingground.learning.GeneratorVariables.ElemList.Empty" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Empty"></a><a id="Empty:Empty"></a>
       <span class="permalink">
-      <a href="../../provingground/induction/ExstInducStruc$$LambdaInduc.html#||(that:provingground.induction.ExstInducStruc):provingground.induction.ExstInducStruc.OrElse" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$ElemList$.html#Empty" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$bar" class="name">||</span><span class="params">(<span name="that">that: <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></span>)</span><span class="result">: <a href="ExstInducStruc$$OrElse.html" class="extype" name="provingground.induction.ExstInducStruc.OrElse">OrElse</a></span>
+        <a title="" href="GeneratorVariables$$ElemList$$Empty$.html"><span class="name">Empty</span></a><span class="result"> extends <a href="GeneratorVariables$$ElemList.html" class="extype" name="provingground.learning.GeneratorVariables.ElemList">ElemList</a>[<span class="extype" name="shapeless.HNil">HNil</span>] with <span class="extype" name="scala.Product">scala.Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></dd></dl></div>
+      
     </li>
               </ol>
             </div>
@@ -679,17 +676,7 @@ single introduction rule. Traits <a href="ConstructorSeqMapper.html" class="exty
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="provingground.induction.ExstInducStruc">
-              <h3>Inherited from <a href="ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a></h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

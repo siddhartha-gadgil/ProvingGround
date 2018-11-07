@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -124,6 +124,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="Blender.html" title="">Blender</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="ContextJson$.html" title=""></a>
+                        <a href="ContextJson$.html" title="">ContextJson</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="FileName$.html" title=""></a>
                         <a href="FileName$.html" title="">FileName</a>
                       </li><li class="current-entities indented2">
@@ -139,9 +143,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="IndexedIndMod.html" title=""></a>
                         <a href="IndexedIndMod.html" title="">IndexedIndMod</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="InducJson$.html" title=""></a>
+                        <a href="InducJson$.html" title="">InducJson</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="" title=""></a>
                         <a class="trait" href="JsFunc.html" title=""></a>
                         <a href="JsFunc.html" title="">JsFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LeanBug$.html" title=""></a>
+                        <a href="LeanBug$.html" title="">LeanBug</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="LeanCodeGen$.html" title=""></a>
                         <a class="class" href="LeanCodeGen.html" title=""></a>
@@ -203,6 +215,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="MonoidServer$.html" title=""></a>
                         <a href="MonoidServer$.html" title="">MonoidServer</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="MultiTask$.html" title=""></a>
+                        <a class="class" href="MultiTask.html" title=""></a>
+                        <a href="MultiTask.html" title="">MultiTask</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="NewParseDiffersException.html" title=""></a>
                         <a href="NewParseDiffersException.html" title="">NewParseDiffersException</a>
@@ -262,6 +278,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="SvgPlot$.html" title=""></a>
                         <a class="class" href="SvgPlot.html" title=""></a>
                         <a href="SvgPlot.html" title="">SvgPlot</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TaskSocket.html" title=""></a>
+                        <a href="TaskSocket.html" title="">TaskSocket</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="TermIndMod.html" title=""></a>
@@ -606,9 +626,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.interface.JsFunc#jsToBuild" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="jsToBuild[I,F[_]](name:String,header:String)(build:F[I]=&gt;I)(implicitevidence$2:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[upickle.Js.Value,I]"></a><a id="jsToBuild[I,F[_]](String,String)((F[I])⇒I)(Traverse[F],JsFunc[F]):Translator[Value,I]"></a>
+      <a id="jsToBuild[I,F[_]](name:String,header:String)(build:F[I]=&gt;I)(implicitevidence$2:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[ujson.Js.Value,I]"></a><a id="jsToBuild[I,F[_]](String,String)((F[I])⇒I)(Traverse[F],JsFunc[F]):Translator[Value,I]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/JsFunc$.html#jsToBuild[I,F[_]](name:String,header:String)(build:F[I]=&gt;I)(implicitevidence$2:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[upickle.Js.Value,I]" title="Permalink">
+      <a href="../../provingground/interface/JsFunc$.html#jsToBuild[I,F[_]](name:String,header:String)(build:F[I]=&gt;I)(implicitevidence$2:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[ujson.Js.Value,I]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -622,9 +642,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.interface.JsFunc#jsToOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="jsToOpt[I,F[_]](name:String,header:String)(build:F[I]=&gt;Option[I])(implicitevidence$1:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[upickle.Js.Value,I]"></a><a id="jsToOpt[I,F[_]](String,String)((F[I])⇒Option[I])(Traverse[F],JsFunc[F]):Translator[Value,I]"></a>
+      <a id="jsToOpt[I,F[_]](name:String,header:String)(build:F[I]=&gt;Option[I])(implicitevidence$1:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[ujson.Js.Value,I]"></a><a id="jsToOpt[I,F[_]](String,String)((F[I])⇒Option[I])(Traverse[F],JsFunc[F]):Translator[Value,I]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/JsFunc$.html#jsToOpt[I,F[_]](name:String,header:String)(build:F[I]=&gt;Option[I])(implicitevidence$1:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[upickle.Js.Value,I]" title="Permalink">
+      <a href="../../provingground/interface/JsFunc$.html#jsToOpt[I,F[_]](name:String,header:String)(build:F[I]=&gt;Option[I])(implicitevidence$1:cats.Traverse[F],implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[ujson.Js.Value,I]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -740,9 +760,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="provingground.interface.JsFunc#toJs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="toJs[I,F[_]](pat:provingground.translation.Translator.Pattern[I,F])(name:String,header:String)(implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[I,upickle.Js.Value]"></a><a id="toJs[I,F[_]](Pattern[I,F])(String,String)(JsFunc[F]):Translator[I,Value]"></a>
+      <a id="toJs[I,F[_]](pat:provingground.translation.Translator.Pattern[I,F])(name:String,header:String)(implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[I,ujson.Js.Value]"></a><a id="toJs[I,F[_]](Pattern[I,F])(String,String)(JsFunc[F]):Translator[I,Value]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/JsFunc$.html#toJs[I,F[_]](pat:provingground.translation.Translator.Pattern[I,F])(name:String,header:String)(implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[I,upickle.Js.Value]" title="Permalink">
+      <a href="../../provingground/interface/JsFunc$.html#toJs[I,F[_]](pat:provingground.translation.Translator.Pattern[I,F])(name:String,header:String)(implicitjsF:provingground.interface.JsFunc[F]):provingground.translation.Translator[I,ujson.Js.Value]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>

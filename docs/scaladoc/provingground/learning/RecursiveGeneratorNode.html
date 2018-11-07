@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNode.html" title=""></a>
-                        <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -500,7 +508,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="GeneratorNode$$ComplexIsland.html" class="extype" name="provingground.learning.GeneratorNode.ComplexIsland">ComplexIsland</a>, <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>, <a href="GeneratorNode$$RecursiveThenCondition.html" class="extype" name="provingground.learning.GeneratorNode.RecursiveThenCondition">RecursiveThenCondition</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 637.00 155.00" height="155pt" width="637pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 633,-151 633,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.learning.RecursiveGeneratorNode (this trait)" xlink:href="#inheritance-diagram"><path d="M407.1667,-86C407.1667,-86 205.8333,-86 205.8333,-86 201.6667,-86 197.5,-81.8333 197.5,-77.6667 197.5,-77.6667 197.5,-69.3333 197.5,-69.3333 197.5,-65.1667 201.6667,-61 205.8333,-61 205.8333,-61 407.1667,-61 407.1667,-61 411.3333,-61 415.5,-65.1667 415.5,-69.3333 415.5,-69.3333 415.5,-77.6667 415.5,-77.6667 415.5,-81.8333 411.3333,-86 407.1667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="207.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="228.5" text-anchor="start">RecursiveGeneratorNode[State, Boat, O]</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.learning.GeneratorNode.ComplexIsland" xlink:href="GeneratorNode$$ComplexIsland.html#inheritance-diagram"><path d="M200.6667,-25C200.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 200.6667,0 200.6667,0 204.8333,0 209,-4.1667 209,-8.3333 209,-8.3333 209,-16.6667 209,-16.6667 209,-20.8333 204.8333,-25 200.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">ComplexIsland[O, Y, InitState, Boat, V]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="ComplexIsland[O, Y, InitState, Boat, V] is a subtype of RecursiveGeneratorNode[State, Boat, O]"><path d="M257.5332,-58.713C223.387,-48.4015 178.3248,-34.7936 145.9549,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="257.2361,-61.1825 264.6455,-60.8608 258.6526,-56.4917 257.2361,-61.1825" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.learning.GeneratorNode.Island" xlink:href="GeneratorNode$$Island.html#inheritance-diagram"><path d="M377.6667,-25C377.6667,-25 235.3333,-25 235.3333,-25 231.1667,-25 227,-20.8333 227,-16.6667 227,-16.6667 227,-8.3333 227,-8.3333 227,-4.1667 231.1667,0 235.3333,0 235.3333,0 377.6667,0 377.6667,0 381.8333,0 386,-4.1667 386,-8.3333 386,-8.3333 386,-16.6667 386,-16.6667 386,-20.8333 381.8333,-25 377.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="237.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="258.5" text-anchor="start">Island[Y, InitState, O, Boat]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="Island[Y, InitState, O, Boat] is a subtype of RecursiveGeneratorNode[State, Boat, O]"><path d="M306.5,-53.7386C306.5,-44.3393 306.5,-33.3803 306.5,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="304.0501,-53.8607 306.5,-60.8608 308.9501,-53.8608 304.0501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.learning.GeneratorNode.RecursiveThenCondition" xlink:href="GeneratorNode$$RecursiveThenCondition.html#inheritance-diagram"><path d="M620.6667,-25C620.6667,-25 412.3333,-25 412.3333,-25 408.1667,-25 404,-20.8333 404,-16.6667 404,-16.6667 404,-8.3333 404,-8.3333 404,-4.1667 408.1667,0 412.3333,0 412.3333,0 620.6667,0 620.6667,0 624.8333,0 629,-4.1667 629,-8.3333 629,-8.3333 629,-16.6667 629,-16.6667 629,-20.8333 624.8333,-25 620.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="414.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="435.5" text-anchor="start">RecursiveThenCondition[State, Boat, O, Y]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="RecursiveThenCondition[State, Boat, O, Y] is a subtype of RecursiveGeneratorNode[State, Boat, O]"><path d="M356.7038,-58.917C392.2482,-48.5922 439.4317,-34.8865 473.2986,-25.049" stroke="#d4d4d4" fill="none"></path><polygon points="355.7962,-56.6293 349.7575,-60.9347 357.1631,-61.3348 355.7962,-56.6293" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node trait" id="graph1_4"><g id="a_trait|graph1_4"><a xlink:title="provingground.learning.GeneratorNode" xlink:href="GeneratorNode.html#inheritance-diagram"><path d="M253.6667,-147C253.6667,-147 147.3333,-147 147.3333,-147 143.1667,-147 139,-142.8333 139,-138.6667 139,-138.6667 139,-130.3333 139,-130.3333 139,-126.1667 143.1667,-122 147.3333,-122 147.3333,-122 253.6667,-122 253.6667,-122 257.8333,-122 262,-126.1667 262,-130.3333 262,-130.3333 262,-138.6667 262,-138.6667 262,-142.8333 257.8333,-147 253.6667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-141.5" x="149.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="170.5" text-anchor="start">GeneratorNode[O]</text></a></g></g><!-- node4&#45;&gt;node0 --><g class="edge inheritance" id="graph1_4_0"><g id="a_inheritance|graph1_4_0"><a xlink:title="RecursiveGeneratorNode[State, Boat, O] is a subtype of GeneratorNode[O]"><path d="M228.6832,-118.2814C246.1926,-108.2052 268.3693,-95.4431 284.5649,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="227.3084,-116.2458 222.4633,-121.8608 229.7524,-120.4928 227.3084,-116.2458" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node trait" id="graph1_5"><g id="a_trait|graph1_5"><a xlink:title="provingground.learning.RecursiveGeneratorNodeFamily" xlink:href="RecursiveGeneratorNodeFamily.html#inheritance-diagram"><path d="M538.6667,-147C538.6667,-147 288.3333,-147 288.3333,-147 284.1667,-147 280,-142.8333 280,-138.6667 280,-138.6667 280,-130.3333 280,-130.3333 280,-126.1667 284.1667,-122 288.3333,-122 288.3333,-122 538.6667,-122 538.6667,-122 542.8333,-122 547,-126.1667 547,-130.3333 547,-130.3333 547,-138.6667 547,-138.6667 547,-142.8333 542.8333,-147 538.6667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-141.5" x="290.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="311.5" text-anchor="start">RecursiveGeneratorNodeFamily[HNil, State, Boat, O]</text></a></g></g><!-- node5&#45;&gt;node0 --><g class="edge inheritance" id="graph1_5_0"><g id="a_inheritance|graph1_5_0"><a xlink:title="RecursiveGeneratorNode[State, Boat, O] is a subtype of RecursiveGeneratorNodeFamily[HNil, State, Boat, O]"><path d="M385.0509,-118.2814C367.3763,-108.2052 344.9904,-95.4431 328.6421,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="384.0349,-120.5223 391.3295,-121.8608 386.4617,-116.2654 384.0349,-120.5223" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -526,6 +544,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.learning.RecursiveGeneratorNode"><span>RecursiveGeneratorNode</span></li><li class="in" name="provingground.learning.RecursiveGeneratorNodeFamily"><span>RecursiveGeneratorNodeFamily</span></li><li class="in" name="provingground.learning.GeneratorNode"><span>GeneratorNode</span></li><li class="in" name="provingground.learning.GeneratorNodeFamily"><span>GeneratorNodeFamily</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -603,6 +626,49 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(RecursiveGeneratorNode[State,Boat,O],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -659,6 +725,86 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((RecursiveGeneratorNode[State,Boat,O])⇒Boolean,⇒Any):RecursiveGeneratorNode[State,Boat,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((RecursiveGeneratorNode[State,Boat,O])⇒Boolean):RecursiveGeneratorNode[State,Boat,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):RecursiveGeneratorNode[State,Boat,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):RecursiveGeneratorNode[State,Boat,O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -711,6 +857,29 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -854,7 +1023,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
-    </li><li name="provingground.learning.RecursiveGeneratorNode#piFmly" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.learning.GeneratorNode#piFmly" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="piFmly[Dom&lt;:shapeless.HList,S&gt;:O,T](conditionFamily:Dom=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[Dom,T]):provingground.learning.GeneratorNodeFamily[Dom,T]"></a><a id="piFmly[Dom&lt;:HList,S&gt;:O,T]((Dom)⇒Sort[S,T],RandomVarFamily[Dom,T]):GeneratorNodeFamily[Dom,T]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/RecursiveGeneratorNode.html#piFmly[Dom&lt;:shapeless.HList,S&gt;:O,T](conditionFamily:Dom=&gt;provingground.learning.Sort[S,T],outputFamily:provingground.learning.RandomVarFamily[Dom,T]):provingground.learning.GeneratorNodeFamily[Dom,T]" title="Permalink">
@@ -866,10 +1035,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">piFmly</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="S">S &gt;: <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="conditionFamily">conditionFamily: (<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.Dom">Dom</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.S">S</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.T">T</span>]</span>, <span name="outputFamily">outputFamily: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.piFmly.T">T</span>]</span>
+        <span class="name">piFmly</span><span class="tparams">[<span name="Dom">Dom &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="S">S &gt;: <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="conditionFamily">conditionFamily: (<span class="extype" name="provingground.learning.GeneratorNode.piFmly.Dom">Dom</span>) ⇒ <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.GeneratorNode.piFmly.S">S</span>, <span class="extype" name="provingground.learning.GeneratorNode.piFmly.T">T</span>]</span>, <span name="outputFamily">outputFamily: <a href="RandomVarFamily.html" class="extype" name="provingground.learning.RandomVarFamily">RandomVarFamily</a>[<span class="extype" name="provingground.learning.GeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNode.piFmly.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.GeneratorNode.piFmly.Dom">Dom</span>, <span class="extype" name="provingground.learning.GeneratorNode.piFmly.T">T</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a> → <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -970,10 +1139,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.RecursiveGeneratorNode#|" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.RecursiveGeneratorNode[State,Boat,T]"></a><a id="|[S&gt;:O,T](Sort[S,T],RandomVar[T]):RecursiveGeneratorNode[State,Boat,T]"></a>
+    </li><li name="provingground.learning.GeneratorNode#|" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.GeneratorNode[T]"></a><a id="|[S&gt;:O,T](Sort[S,T],RandomVar[T]):GeneratorNode[T]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/RecursiveGeneratorNode.html#|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.RecursiveGeneratorNode[State,Boat,T]" title="Permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#|[S&gt;:O,T](condition:provingground.learning.Sort[S,T],output:provingground.learning.RandomVar[T]):provingground.learning.GeneratorNode[T]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -982,10 +1151,30 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar" class="name">|</span><span class="tparams">[<span name="S">S &gt;: <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="condition">condition: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.S">S</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.T">T</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.T">T</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.|.T">T</span>]</span>
+        <span title="gt4s: $bar" class="name">|</span><span class="tparams">[<span name="S">S &gt;: <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span></span>, <span name="T">T</span>]</span><span class="params">(<span name="condition">condition: <a href="Sort.html" class="extype" name="provingground.learning.Sort">Sort</a>[<span class="extype" name="provingground.learning.GeneratorNode.|.S">S</span>, <span class="extype" name="provingground.learning.GeneratorNode.|.T">T</span>]</span>, <span name="output">output: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.GeneratorNode.|.T">T</span>]</span>)</span><span class="result">: <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<span class="extype" name="provingground.learning.GeneratorNode.|.T">T</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a> → <a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(RecursiveGeneratorNode[State,Boat,O],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/RecursiveGeneratorNode.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1007,7 +1196,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.RecursiveGeneratorNode">RecursiveGeneratorNode</a>[<span class="extype" name="provingground.learning.RecursiveGeneratorNode.State">State</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.Boat">Boat</span>, <span class="extype" name="provingground.learning.RecursiveGeneratorNode.O">O</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -488,7 +500,17 @@ Includes:
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="HoTT$$ApplnSym.html" class="extype" name="provingground.HoTT.ApplnSym">ApplnSym</a>, <a href="HoTT$$AtomicSym.html" class="extype" name="provingground.HoTT.AtomicSym">AtomicSym</a>, <a href="HoTT$$CodomSym.html" class="extype" name="provingground.HoTT.CodomSym">CodomSym</a>, <a href="HoTT$$DomSym.html" class="extype" name="provingground.HoTT.DomSym">DomSym</a>, <a href="HoTT$$HashSym$.html" class="extype" name="provingground.HoTT.HashSym">HashSym</a>, <a href="HoTT$$InnerSym.html" class="extype" name="provingground.HoTT.InnerSym">InnerSym</a>, <a href="HoTT$$LeftProjSym.html" class="extype" name="provingground.HoTT.LeftProjSym">LeftProjSym</a>, <a href="HoTT$$Name.html" class="extype" name="provingground.HoTT.Name">Name</a>, <a href="HoTT$$RightProjSym.html" class="extype" name="provingground.HoTT.RightProjSym">RightProjSym</a>, <a href="HoTT$$TermSymbol.html" class="extype" name="provingground.HoTT.TermSymbol">TermSymbol</a>, <a href="HoTT$$vacuousSym$.html" class="extype" name="provingground.HoTT.vacuousSym">vacuousSym</a>, <a href="induction/ConstructorSeqMap$$InducDataSym.html" class="extype" name="provingground.induction.ConstructorSeqMap.InducDataSym">InducDataSym</a>, <a href="induction/ConstructorSeqMap$$RecDataSym.html" class="extype" name="provingground.induction.ConstructorSeqMap.RecDataSym">RecDataSym</a>, <a href="induction/coarse/Constructor$$InducSym.html" class="extype" name="provingground.induction.coarse.Constructor.InducSym">InducSym</a>, <a href="induction/coarse/Constructor$$RecSym.html" class="extype" name="provingground.induction.coarse.Constructor.RecSym">RecSym</a>, <a href="induction/coarse/IndexedConstructorPatterns$iConstructor$$InducSym.html" class="extype" name="provingground.induction.coarse.IndexedConstructorPatterns.iConstructor.InducSym">InducSym</a>, <a href="induction/coarse/IndexedConstructorPatterns$iConstructor$$RecSym.html" class="extype" name="provingground.induction.coarse.IndexedConstructorPatterns.iConstructor.RecSym">RecSym</a>, <a href="scalahott/ScalaRep$$ScalaSymbol.html" class="extype" name="provingground.scalahott.ScalaRep.ScalaSymbol">ScalaSymbol</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 1425.50 155.00" height="155pt" width="1426pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 1421.5,-151 1421.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.HoTT.AnySym (this trait)" xlink:href="#inheritance-diagram"><path d="M738.6667,-86C738.6667,-86 675.3333,-86 675.3333,-86 671.1667,-86 667,-81.8333 667,-77.6667 667,-77.6667 667,-69.3333 667,-69.3333 667,-65.1667 671.1667,-61 675.3333,-61 675.3333,-61 738.6667,-61 738.6667,-61 742.8333,-61 747,-65.1667 747,-69.3333 747,-69.3333 747,-77.6667 747,-77.6667 747,-81.8333 742.8333,-86 738.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-80.5" x="677" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="698" text-anchor="start">AnySym</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.HoTT.ApplnSym" xlink:href="HoTT$$ApplnSym.html#inheritance-diagram"><path d="M105.6667,-25C105.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 105.6667,0 105.6667,0 109.8333,0 114,-4.1667 114,-8.3333 114,-8.3333 114,-16.6667 114,-16.6667 114,-20.8333 109.8333,-25 105.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31" text-anchor="start">ApplnSym[W, U]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="ApplnSym[W, U] is a subtype of AnySym"><path d="M659.6192,-71.2444C559.9487,-66.1308 321.4227,-51.9545 123,-25 120.111,-24.6076 117.1569,-24.1725 114.1778,-23.707" stroke="#d4d4d4" fill="none"></path><polygon points="659.7229,-73.7027 666.8383,-71.6113 659.9717,-68.809 659.7229,-73.7027" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.HoTT.AtomicSym" xlink:href="HoTT$$AtomicSym.html#inheritance-diagram"><path d="M217.1667,-25C217.1667,-25 140.8333,-25 140.8333,-25 136.6667,-25 132.5,-20.8333 132.5,-16.6667 132.5,-16.6667 132.5,-8.3333 132.5,-8.3333 132.5,-4.1667 136.6667,0 140.8333,0 140.8333,0 217.1667,0 217.1667,0 221.3333,0 225.5,-4.1667 225.5,-8.3333 225.5,-8.3333 225.5,-16.6667 225.5,-16.6667 225.5,-20.8333 221.3333,-25 217.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="143" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="164" text-anchor="start">AtomicSym</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="AtomicSym is a subtype of AnySym"><path d="M659.7053,-70.5578C574.279,-64.8204 388.7379,-50.4208 234,-25 231.2945,-24.5555 228.5228,-24.0587 225.7319,-23.5264" stroke="#d4d4d4" fill="none"></path><polygon points="659.7691,-73.0174 666.9163,-71.0375 660.0944,-68.1282 659.7691,-73.0174" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.HoTT.CodomSym" xlink:href="HoTT$$CodomSym.html#inheritance-diagram"><path d="M328.1667,-25C328.1667,-25 251.8333,-25 251.8333,-25 247.6667,-25 243.5,-20.8333 243.5,-16.6667 243.5,-16.6667 243.5,-8.3333 243.5,-8.3333 243.5,-4.1667 247.6667,0 251.8333,0 251.8333,0 328.1667,0 328.1667,0 332.3333,0 336.5,-4.1667 336.5,-8.3333 336.5,-8.3333 336.5,-16.6667 336.5,-16.6667 336.5,-20.8333 332.3333,-25 328.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="254" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="275" text-anchor="start">CodomSym</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="CodomSym is a subtype of AnySym"><path d="M659.5841,-68.5299C590.2195,-60.9467 457.1399,-45.2127 345,-25 342.3017,-24.5136 339.5357,-23.9841 336.749,-23.4267" stroke="#d4d4d4" fill="none"></path><polygon points="659.6848,-71.0052 666.9086,-69.3262 660.2145,-66.1339 659.6848,-71.0052" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.HoTT.DomSym" xlink:href="HoTT$$DomSym.html#inheritance-diagram"><path d="M429.1667,-25C429.1667,-25 362.8333,-25 362.8333,-25 358.6667,-25 354.5,-20.8333 354.5,-16.6667 354.5,-16.6667 354.5,-8.3333 354.5,-8.3333 354.5,-4.1667 358.6667,0 362.8333,0 362.8333,0 429.1667,0 429.1667,0 433.3333,0 437.5,-4.1667 437.5,-8.3333 437.5,-8.3333 437.5,-16.6667 437.5,-16.6667 437.5,-20.8333 433.3333,-25 429.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="365" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="386" text-anchor="start">DomSym</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="DomSym is a subtype of AnySym"><path d="M659.4375,-65.5631C606.9887,-56.6014 520.193,-41.1517 446,-25 443.2897,-24.41 440.5026,-23.7795 437.6971,-23.1272" stroke="#d4d4d4" fill="none"></path><polygon points="659.2934,-68.0238 666.6055,-66.784 660.1163,-63.1934 659.2934,-68.0238" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.induction.ConstructorSeqMap.InducDataSym" xlink:href="induction/ConstructorSeqMap$$InducDataSym.html#inheritance-diagram"><path d="M564.1667,-25C564.1667,-25 463.8333,-25 463.8333,-25 459.6667,-25 455.5,-20.8333 455.5,-16.6667 455.5,-16.6667 455.5,-8.3333 455.5,-8.3333 455.5,-4.1667 459.6667,0 463.8333,0 463.8333,0 564.1667,0 564.1667,0 568.3333,0 572.5,-4.1667 572.5,-8.3333 572.5,-8.3333 572.5,-16.6667 572.5,-16.6667 572.5,-20.8333 568.3333,-25 564.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="466" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="487" text-anchor="start">InducDataSym[C]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="InducDataSym[C] is a subtype of AnySym"><path d="M660.2149,-58.713C627.59,-48.4015 584.5356,-34.7936 553.6079,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="659.5973,-61.0872 667.0103,-60.8608 661.0741,-56.415 659.5973,-61.0872" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node class" id="graph1_6"><g id="a_class|graph1_6"><a xlink:title="provingground.induction.coarse.Constructor.InducSym" xlink:href="induction/coarse/Constructor$$InducSym.html#inheritance-diagram"><path d="M692.6667,-25C692.6667,-25 599.3333,-25 599.3333,-25 595.1667,-25 591,-20.8333 591,-16.6667 591,-16.6667 591,-8.3333 591,-8.3333 591,-4.1667 595.1667,0 599.3333,0 599.3333,0 692.6667,0 692.6667,0 696.8333,0 701,-4.1667 701,-8.3333 701,-8.3333 701,-16.6667 701,-16.6667 701,-20.8333 696.8333,-25 692.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="601" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="622" text-anchor="start">InducSym[C, H]</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="InducSym[C, H] is a subtype of AnySym"><path d="M689.169,-55.669C679.3714,-45.8714 667.4526,-33.9526 658.623,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="687.6786,-57.6434 694.3608,-60.8608 691.1434,-54.1786 687.6786,-57.6434" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node class" id="graph1_7"><g id="a_class|graph1_7"><a xlink:title="provingground.HoTT.InnerSym" xlink:href="HoTT$$InnerSym.html#inheritance-diagram"><path d="M808.1667,-25C808.1667,-25 727.8333,-25 727.8333,-25 723.6667,-25 719.5,-20.8333 719.5,-16.6667 719.5,-16.6667 719.5,-8.3333 719.5,-8.3333 719.5,-4.1667 723.6667,0 727.8333,0 727.8333,0 808.1667,0 808.1667,0 812.3333,0 816.5,-4.1667 816.5,-8.3333 816.5,-8.3333 816.5,-16.6667 816.5,-16.6667 816.5,-20.8333 812.3333,-25 808.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="730" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="751" text-anchor="start">InnerSym[U]</text></a></g></g><!-- node0&#45;&gt;node7 --><g class="edge inheritance" id="graph1_0_7"><g id="a_inheritance|graph1_0_7"><a xlink:title="InnerSym[U] is a subtype of AnySym"><path d="M724.831,-55.669C734.6286,-45.8714 746.5474,-33.9526 755.377,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="722.8566,-54.1786 719.6392,-60.8608 726.3214,-57.6434 722.8566,-54.1786" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node class" id="graph1_8"><g id="a_class|graph1_8"><a xlink:title="provingground.HoTT.LeftProjSym" xlink:href="HoTT$$LeftProjSym.html#inheritance-diagram"><path d="M922.6667,-25C922.6667,-25 843.3333,-25 843.3333,-25 839.1667,-25 835,-20.8333 835,-16.6667 835,-16.6667 835,-8.3333 835,-8.3333 835,-4.1667 839.1667,0 843.3333,0 843.3333,0 922.6667,0 922.6667,0 926.8333,0 931,-4.1667 931,-8.3333 931,-8.3333 931,-16.6667 931,-16.6667 931,-20.8333 926.8333,-25 922.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="845" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="866" text-anchor="start">LeftProjSym</text></a></g></g><!-- node0&#45;&gt;node8 --><g class="edge inheritance" id="graph1_0_8"><g id="a_inheritance|graph1_0_8"><a xlink:title="LeftProjSym is a subtype of AnySym"><path d="M750.413,-58.4534C780.0716,-48.174 818.9134,-34.7118 846.8809,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="749.279,-56.2534 743.4673,-60.8608 750.8837,-60.8832 749.279,-56.2534" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node9 --><g class="node class" id="graph1_9"><g id="a_class|graph1_9"><a xlink:title="provingground.induction.ConstructorSeqMap.RecDataSym" xlink:href="induction/ConstructorSeqMap$$RecDataSym.html#inheritance-diagram"><path d="M1052.1667,-25C1052.1667,-25 957.8333,-25 957.8333,-25 953.6667,-25 949.5,-20.8333 949.5,-16.6667 949.5,-16.6667 949.5,-8.3333 949.5,-8.3333 949.5,-4.1667 953.6667,0 957.8333,0 957.8333,0 1052.1667,0 1052.1667,0 1056.3333,0 1060.5,-4.1667 1060.5,-8.3333 1060.5,-8.3333 1060.5,-16.6667 1060.5,-16.6667 1060.5,-20.8333 1056.3333,-25 1052.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="960" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="981" text-anchor="start">RecDataSym[C]</text></a></g></g><!-- node0&#45;&gt;node9 --><g class="edge inheritance" id="graph1_0_9"><g id="a_inheritance|graph1_0_9"><a xlink:title="RecDataSym[C] is a subtype of AnySym"><path d="M754.1174,-63.8552C807.0723,-53.0154 892.9745,-35.4314 949.2326,-23.9155" stroke="#d4d4d4" fill="none"></path><polygon points="753.5561,-61.4692 747.1896,-65.2733 754.5388,-66.2696 753.5561,-61.4692" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node10 --><g class="node class" id="graph1_10"><g id="a_class|graph1_10"><a xlink:title="provingground.induction.coarse.Constructor.RecSym" xlink:href="induction/coarse/Constructor$$RecSym.html#inheritance-diagram"><path d="M1173.1667,-25C1173.1667,-25 1086.8333,-25 1086.8333,-25 1082.6667,-25 1078.5,-20.8333 1078.5,-16.6667 1078.5,-16.6667 1078.5,-8.3333 1078.5,-8.3333 1078.5,-4.1667 1082.6667,0 1086.8333,0 1086.8333,0 1173.1667,0 1173.1667,0 1177.3333,0 1181.5,-4.1667 1181.5,-8.3333 1181.5,-8.3333 1181.5,-16.6667 1181.5,-16.6667 1181.5,-20.8333 1177.3333,-25 1173.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="1089" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1110" text-anchor="start">RecSym[C, H]</text></a></g></g><!-- node0&#45;&gt;node10 --><g class="edge inheritance" id="graph1_0_10"><g id="a_inheritance|graph1_0_10"><a xlink:title="RecSym[C, H] is a subtype of AnySym"><path d="M754.4998,-68.268C823.9978,-60.3608 957.3737,-44.2298 1070,-25 1072.727,-24.5344 1075.519,-24.0344 1078.3346,-23.5119" stroke="#d4d4d4" fill="none"></path><polygon points="753.841,-65.8769 747.1613,-69.0994 754.3927,-70.7457 753.841,-65.8769" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node11 --><g class="node class" id="graph1_11"><g id="a_class|graph1_11"><a xlink:title="provingground.HoTT.RightProjSym" xlink:href="HoTT$$RightProjSym.html#inheritance-diagram"><path d="M1293.6667,-25C1293.6667,-25 1208.3333,-25 1208.3333,-25 1204.1667,-25 1200,-20.8333 1200,-16.6667 1200,-16.6667 1200,-8.3333 1200,-8.3333 1200,-4.1667 1204.1667,0 1208.3333,0 1208.3333,0 1293.6667,0 1293.6667,0 1297.8333,0 1302,-4.1667 1302,-8.3333 1302,-8.3333 1302,-16.6667 1302,-16.6667 1302,-20.8333 1297.8333,-25 1293.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="1210" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1231" text-anchor="start">RightProjSym</text></a></g></g><!-- node0&#45;&gt;node11 --><g class="edge inheritance" id="graph1_0_11"><g id="a_inheritance|graph1_0_11"><a xlink:title="RightProjSym is a subtype of AnySym"><path d="M754.0884,-70.4397C840.8546,-64.4332 1031.6754,-49.509 1191,-25 1193.8395,-24.5632 1196.7474,-24.0795 1199.6778,-23.5636" stroke="#d4d4d4" fill="none"></path><polygon points="753.8361,-68.0012 747.0205,-70.9252 754.1719,-72.8897 753.8361,-68.0012" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node12 --><g class="node class" id="graph1_12"><g id="a_class|graph1_12"><a xlink:title="provingground.HoTT.TermSymbol" xlink:href="HoTT$$TermSymbol.html#inheritance-diagram"><path d="M1409.1667,-25C1409.1667,-25 1328.8333,-25 1328.8333,-25 1324.6667,-25 1320.5,-20.8333 1320.5,-16.6667 1320.5,-16.6667 1320.5,-8.3333 1320.5,-8.3333 1320.5,-4.1667 1324.6667,0 1328.8333,0 1328.8333,0 1409.1667,0 1409.1667,0 1413.3333,0 1417.5,-4.1667 1417.5,-8.3333 1417.5,-8.3333 1417.5,-16.6667 1417.5,-16.6667 1417.5,-20.8333 1413.3333,-25 1409.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="1331" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="1352" text-anchor="start">TermSymbol</text></a></g></g><!-- node0&#45;&gt;node12 --><g class="edge inheritance" id="graph1_0_12"><g id="a_inheritance|graph1_0_12"><a xlink:title="TermSymbol is a subtype of AnySym"><path d="M754.2322,-71.832C856.3127,-67.7622 1104.9308,-55.3435 1311,-25 1314.0572,-24.5498 1317.1944,-24.0335 1320.3509,-23.4727" stroke="#d4d4d4" fill="none"></path><polygon points="754.0366,-69.3877 747.1382,-72.1108 754.2291,-74.284 754.0366,-69.3877" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node13 --><g class="node class" id="graph1_13"><g id="a_class|graph1_13"><a xlink:title="scala.AnyRef"><path d="M736.1667,-147C736.1667,-147 677.8333,-147 677.8333,-147 673.6667,-147 669.5,-142.8333 669.5,-138.6667 669.5,-138.6667 669.5,-130.3333 669.5,-130.3333 669.5,-126.1667 673.6667,-122 677.8333,-122 677.8333,-122 736.1667,-122 736.1667,-122 740.3333,-122 744.5,-126.1667 744.5,-130.3333 744.5,-130.3333 744.5,-138.6667 744.5,-138.6667 744.5,-142.8333 740.3333,-147 736.1667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-141.5" x="680" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="701" text-anchor="start">AnyRef</text></a></g></g><!-- node13&#45;&gt;node0 --><g class="edge inheritance" id="graph1_13_0"><g id="a_inheritance|graph1_13_0"><a xlink:title="AnySym is a subtype of AnyRef"><path d="M707,-114.7386C707,-105.3393 707,-94.3803 707,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="704.5501,-114.8607 707,-121.8608 709.4501,-114.8608 704.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -514,6 +536,11 @@ Includes:
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.AnySym"><span>AnySym</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -591,6 +618,49 @@ Includes:
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(AnySym,B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -647,6 +717,86 @@ Includes:
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((AnySym)⇒Boolean,⇒Any):AnySym"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((AnySym)⇒Boolean):AnySym"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):AnySym"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):AnySym"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -699,6 +849,29 @@ Includes:
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -909,6 +1082,26 @@ Includes:
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(AnySym,B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$AnySym.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -924,7 +1117,23 @@ Includes:
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.AnySym">AnySym</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

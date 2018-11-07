@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../../';
@@ -230,7 +230,17 @@ use <a href="../index.html" class="extype" name="provingground.induction">induct
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="InductiveTypDefinition.html" class="extype" name="provingground.induction.coarse.InductiveTypDefinition">InductiveTypDefinition</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 178.00 155.00" height="155pt" width="178pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 174,-151 174,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.induction.coarse.InductiveTyp (this trait)" xlink:href="#inheritance-diagram"><path d="M137.1667,-86C137.1667,-86 32.8333,-86 32.8333,-86 28.6667,-86 24.5,-81.8333 24.5,-77.6667 24.5,-77.6667 24.5,-69.3333 24.5,-69.3333 24.5,-65.1667 28.6667,-61 32.8333,-61 32.8333,-61 137.1667,-61 137.1667,-61 141.3333,-61 145.5,-65.1667 145.5,-69.3333 145.5,-69.3333 145.5,-77.6667 145.5,-77.6667 145.5,-81.8333 141.3333,-86 137.1667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../../lib/trait_diagram.png" y="-80.5" x="35" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="56" text-anchor="start">InductiveTyp[C, H]</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.induction.coarse.InductiveTypDefinition" xlink:href="InductiveTypDefinition.html#inheritance-diagram"><path d="M151.1667,-25C151.1667,-25 18.8333,-25 18.8333,-25 14.6667,-25 10.5,-20.8333 10.5,-16.6667 10.5,-16.6667 10.5,-8.3333 10.5,-8.3333 10.5,-4.1667 14.6667,0 18.8333,0 18.8333,0 151.1667,0 151.1667,0 155.3333,0 159.5,-4.1667 159.5,-8.3333 159.5,-8.3333 159.5,-16.6667 159.5,-16.6667 159.5,-20.8333 155.3333,-25 151.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../../lib/class_diagram.png" y="-19.5" x="21" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="42" text-anchor="start">InductiveTypDefinition[C]</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="InductiveTypDefinition[C] is a subtype of InductiveTyp[C, H]"><path d="M85,-53.7386C85,-44.3393 85,-33.3803 85,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="82.5501,-53.8607 85,-60.8608 87.4501,-53.8608 82.5501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="provingground.HoTT.Typ" xlink:href="../../HoTT$$Typ.html#inheritance-diagram"><path d="M112.1667,-147C112.1667,-147 57.8333,-147 57.8333,-147 53.6667,-147 49.5,-142.8333 49.5,-138.6667 49.5,-138.6667 49.5,-130.3333 49.5,-130.3333 49.5,-126.1667 53.6667,-122 57.8333,-122 57.8333,-122 112.1667,-122 112.1667,-122 116.3333,-122 120.5,-126.1667 120.5,-130.3333 120.5,-130.3333 120.5,-138.6667 120.5,-138.6667 120.5,-142.8333 116.3333,-147 112.1667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../../lib/trait_diagram.png" y="-141.5" x="60" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="81" text-anchor="start">Typ[H]</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="InductiveTyp[C, H] is a subtype of Typ[H]"><path d="M85,-114.7386C85,-105.3393 85,-94.3803 85,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="82.5501,-114.8607 85,-121.8608 87.4501,-114.8608 82.5501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -256,6 +266,11 @@ use <a href="../index.html" class="extype" name="provingground.induction">induct
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.induction.coarse.InductiveTyp"><span>InductiveTyp</span></li><li class="in" name="provingground.HoTT.Typ"><span>Typ</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -474,6 +489,42 @@ Should throw exception when invoked for constants.
       <p class="shortcomment cmt">returns product type, mainly to use for &quot;and&quot; for structures
 </p><div class="fullcomment"><div class="comment cmt"><p>returns product type, mainly to use for &quot;and&quot; for structures
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Typ#&amp;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&amp;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.SigmaTyp[V,UU]"></a><a id="&amp;:[UU&lt;:TermwithSubs[UU]&gt;:H,V&lt;:TermwithSubs[V]](V):SigmaTyp[V,UU]"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#&amp;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.SigmaTyp[V,UU]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $amp$colon" class="name">&amp;:</span><span class="tparams">[<span name="UU">UU &gt;: <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span> &lt;: <a href="../../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.UU">UU</span>]</span>, <span name="V">V &lt;: <a href="../../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span></span>)</span><span class="result">: <a href="../../HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span>, <span class="extype" name="provingground.HoTT.Typ.&amp;:.UU">UU</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
     </li><li name="provingground.HoTT.Typ#++" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="++[UU&gt;:provingground.HoTT.Typ[U]&lt;:provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[UU],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],V&lt;:provingground.HoTT.Typ[VV]withprovingground.HoTT.Subs[V]](those:V):provingground.HoTT.SigmaTyp[UU,VV]"></a><a id="++[UU&lt;:Typ[Term]withSubs[UU]&gt;:Typ[H],VV&lt;:TermwithSubs[VV],V&lt;:Typ[VV]withSubs[V]](V):SigmaTyp[UU,VV]"></a>
       <span class="permalink">
@@ -493,6 +544,29 @@ Should throw exception when invoked for constants.
 for example a group type is this with product etc.</p><div class="fullcomment"><div class="comment cmt"><p>returns Sigma-Type, mainly to use as &quot;such that&quot;,
 for example a group type is this with product etc. dependent on this.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(InductiveTyp[C,H],B)"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="provingground.HoTT.Typ#-&gt;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-&gt;:[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](that:provingground.HoTT.Typ[W]):provingground.HoTT.FuncTyp[W,UU]"></a><a id="-&gt;:[W&lt;:TermwithSubs[W],UU&lt;:TermwithSubs[UU]&gt;:H](Typ[W]):FuncTyp[W,UU]"></a>
       <span class="permalink">
@@ -635,6 +709,86 @@ for example a group type is this with product etc. dependent on this.
       <p class="shortcomment cmt">returns whether <code>this</code> depends on <code>that</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> depends on <code>that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((InductiveTyp[C,H])⇒Boolean,⇒Any):InductiveTyp[C,H]"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((InductiveTyp[C,H])⇒Boolean):InductiveTyp[C,H]"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):InductiveTyp[C,H]"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):InductiveTyp[C,H]"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -687,6 +841,29 @@ for example a group type is this with product etc. dependent on this.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1156,6 +1333,26 @@ to avoid name clashes.</p><div class="fullcomment"><div class="comment cmt"><p>d
 note that a new variable is created and substituted in <code>this</code>
 to avoid name clashes.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(InductiveTyp[C,H],B)"></a>
+      <span class="permalink">
+      <a href="../../../provingground/induction/coarse/InductiveTyp.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1177,7 +1374,23 @@ to avoid name clashes.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.induction.coarse.InductiveTyp">InductiveTyp</a>[<span class="extype" name="provingground.induction.coarse.InductiveTyp.C">C</span>, <span class="extype" name="provingground.induction.coarse.InductiveTyp.H">H</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

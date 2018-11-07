@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -118,7 +118,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="NatRing$.html"><span class="name">NatRing</span></a><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+        <a title="" href="NatRing$.html"><span class="name">NatRing</span></a><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.scalahott">scalahott</a></dd></dl></div>
@@ -215,7 +215,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Induc</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>]</span><span class="params">(<span name="typFamily">typFamily: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>, <span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span></span>, <span name="g">g: <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Induc</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>]</span><span class="params">(<span name="typFamily">typFamily: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>, <span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span></span>, <span name="g">g: <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -224,8 +224,18 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], (<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>) ⇒ <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], (<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>) ⇒ <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 736.50 125.00" height="125pt" width="737pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 121)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-121 732.5,-121 732.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><g class="cluster" id="clust3"></g><!-- node6 --><g class="node implicit-outgoing trait" id="graph1_6"><g id="a_implicit-outgoing trait|graph1_6"><a xlink:title="provingground.scalahott.NatRing.Induc can be implicitly converted to Ordered[Induc[U]] by the implicit method orderingToOrdered in object scala.math.Ordered"><path d="M696.1667,-49C696.1667,-49 592.8333,-49 592.8333,-49 588.6667,-49 584.5,-44.8333 584.5,-40.6667 584.5,-40.6667 584.5,-32.3333 584.5,-32.3333 584.5,-28.1667 588.6667,-24 592.8333,-24 592.8333,-24 696.1667,-24 696.1667,-24 700.3333,-24 704.5,-28.1667 704.5,-32.3333 704.5,-32.3333 704.5,-40.6667 704.5,-40.6667 704.5,-44.8333 700.3333,-49 696.1667,-49" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../../lib/trait_diagram.png" y="-43.5" x="594.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="615.5" text-anchor="start">Ordered[Induc[U]]</text></a></g></g><!-- node5 --><g class="node implicit-outgoing class" id="graph1_5"><g id="a_implicit-outgoing class|graph1_5"><a xlink:title="provingground.scalahott.NatRing.Induc can be implicitly converted to RichTerm[Induc[U]] by the implicit method RichTerm in object provingground.HoTT" xlink:href="../HoTT$$RichTerm.html#inheritance-diagram"><path d="M558.1667,-49C558.1667,-49 450.8333,-49 450.8333,-49 446.6667,-49 442.5,-44.8333 442.5,-40.6667 442.5,-40.6667 442.5,-32.3333 442.5,-32.3333 442.5,-28.1667 446.6667,-24 450.8333,-24 450.8333,-24 558.1667,-24 558.1667,-24 562.3333,-24 566.5,-28.1667 566.5,-32.3333 566.5,-32.3333 566.5,-40.6667 566.5,-40.6667 566.5,-44.8333 562.3333,-49 558.1667,-49" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="452.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="473.5" text-anchor="start">RichTerm[Induc[U]]</text></a></g></g><!-- node5&#45;&gt;node6 --><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.scalahott.NatRing.Induc (this class)" xlink:href="#inheritance-diagram"><path d="M290.6667,-49C290.6667,-49 228.3333,-49 228.3333,-49 224.1667,-49 220,-44.8333 220,-40.6667 220,-40.6667 220,-32.3333 220,-32.3333 220,-28.1667 224.1667,-24 228.3333,-24 228.3333,-24 290.6667,-24 290.6667,-24 294.8333,-24 299,-28.1667 299,-32.3333 299,-32.3333 299,-40.6667 299,-40.6667 299,-44.8333 294.8333,-49 290.6667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="230.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="251.5" text-anchor="start">Induc[U]</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge implicit-outgoing" id="0_5"><g id="a_implicit-outgoing|0_5"><a xlink:title="Induc[U] can be implicitly converted to RichTerm[Induc[U]], Ordered[Induc[U]]"><path d="M306.4979,-36.5C340.7082,-36.5 387.7969,-36.5 427.4702,-36.5" stroke="#d4d4d4" fill="none"></path><polygon points="427.5017,-38.9501 434.5016,-36.5 427.5016,-34.0501 427.5017,-38.9501" stroke="#d4d4d4" fill="#d4d4d4"></polygon></a></g><text fill="#aaaaaa" font-size="9.00" font-family="Source Code Pro" y="-42.3" x="370.75" text-anchor="middle">implicitly</text></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.HoTT.InducFuncLike" xlink:href="../HoTT$$InducFuncLike.html#inheritance-diagram"><path d="M126.6667,-117C126.6667,-117 8.3333,-117 8.3333,-117 4.1667,-117 0,-112.8333 0,-108.6667 0,-108.6667 0,-100.3333 0,-100.3333 0,-96.1667 4.1667,-92 8.3333,-92 8.3333,-92 126.6667,-92 126.6667,-92 130.8333,-92 135,-96.1667 135,-100.3333 135,-100.3333 135,-108.6667 135,-108.6667 135,-112.8333 130.8333,-117 126.6667,-117" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-111.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="31.5" text-anchor="start">InducFuncLike[Nat, U]</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="Induc[U] is a subtype of InducFuncLike[Nat, U]"><path d="M109.8261,-89.5095C144.0759,-77.3794 191.7571,-60.4923 224.0272,-49.0633" stroke="#d4d4d4" fill="none"></path><polygon points="108.9442,-87.2227 103.1638,-91.8691 110.5801,-91.8415 108.9442,-87.2227" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="provingground.HoTT.Subs" xlink:href="../HoTT$$Subs.html#inheritance-diagram"><path d="M249.6667,-117C249.6667,-117 161.3333,-117 161.3333,-117 157.1667,-117 153,-112.8333 153,-108.6667 153,-108.6667 153,-100.3333 153,-100.3333 153,-96.1667 157.1667,-92 161.3333,-92 161.3333,-92 249.6667,-92 249.6667,-92 253.8333,-92 258,-96.1667 258,-100.3333 258,-100.3333 258,-108.6667 258,-108.6667 258,-112.8333 253.8333,-117 249.6667,-117" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-111.5" x="163.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="184.5" text-anchor="start">Subs[Induc[U]]</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="Induc[U] is a subtype of Subs[Induc[U]]"><path d="M220.241,-85.9372C229.4919,-74.288 241.1801,-59.5695 249.3886,-49.2329" stroke="#d4d4d4" fill="none"></path><polygon points="218.0916,-84.7043 215.657,-91.7097 221.9288,-87.7515 218.0916,-84.7043" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Product"><path d="M344.6667,-117C344.6667,-117 284.3333,-117 284.3333,-117 280.1667,-117 276,-112.8333 276,-108.6667 276,-108.6667 276,-100.3333 276,-100.3333 276,-96.1667 280.1667,-92 284.3333,-92 284.3333,-92 344.6667,-92 344.6667,-92 348.8333,-92 353,-96.1667 353,-100.3333 353,-100.3333 353,-108.6667 353,-108.6667 353,-112.8333 348.8333,-117 344.6667,-117" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-111.5" x="286.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="307.5" text-anchor="start">Product</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="Induc[U] is a subtype of Product"><path d="M299.7447,-86.257C290.2826,-74.5585 278.2358,-59.6643 269.7987,-49.2329" stroke="#d4d4d4" fill="none"></path><polygon points="297.8479,-87.8079 304.1549,-91.7097 301.6577,-84.7264 297.8479,-87.8079" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node trait" id="graph1_4"><g id="a_trait|graph1_4"><a xlink:title="scala.Serializable"><path d="M455.6667,-117C455.6667,-117 379.3333,-117 379.3333,-117 375.1667,-117 371,-112.8333 371,-108.6667 371,-108.6667 371,-100.3333 371,-100.3333 371,-96.1667 375.1667,-92 379.3333,-92 379.3333,-92 455.6667,-92 455.6667,-92 459.8333,-92 464,-96.1667 464,-100.3333 464,-100.3333 464,-108.6667 464,-108.6667 464,-112.8333 459.8333,-117 455.6667,-117" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-111.5" x="381.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="402.5" text-anchor="start">Serializable</text></a></g></g><!-- node4&#45;&gt;node0 --><g class="edge inheritance" id="graph1_4_0"><g id="a_inheritance|graph1_4_0"><a xlink:title="Induc[U] is a subtype of Serializable"><path d="M381.6071,-89.0524C353.5054,-76.958 314.9149,-60.3494 288.6911,-49.0633" stroke="#d4d4d4" fill="none"></path><polygon points="380.7533,-91.3522 388.1517,-91.8691 382.6905,-86.8513 380.7533,-91.3522" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -250,7 +260,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.scalahott.NatRing.Induc"><span>Induc</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.scalahott.NatRing.Induc"><span>Induc</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.InducFuncLike"><span>InducFuncLike</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="provingground.HoTT.RichTerm" data-hidden="false"><span>by RichTerm</span></li><li class="in" name="scala.math.Ordered.orderingToOrdered" data-hidden="false"><span>by orderingToOrdered</span></li><li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -347,6 +362,155 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(Induc[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#:-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":-&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.Func[U,V]"></a><a id=":-&gt;[V&lt;:TermwithSubs[V]](V):Func[Induc[U],V]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#:-&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.Func[U,V]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$minus$greater" class="implicit">:-&gt;</span><span class="tparams">[<span name="V">V &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span>]</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span></span>)</span><span class="result">: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], <span class="extype" name="provingground.HoTT.RichTerm.:-&gt;.V">V</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">constructor for (pure) lambda functions, see <a href="../HoTT$.html#lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]" class="extmbr" name="provingground.HoTT#lmbda">lmbda</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>constructor for (pure) lambda functions, see <a href="../HoTT$.html#lmbda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.Func[U,V]" class="extmbr" name="provingground.HoTT#lmbda">lmbda</a>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method RichTerm in <a href="../HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#:~&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":~&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.FuncLike[U,V]"></a><a id=":~&gt;[V&lt;:TermwithSubs[V]](V):FuncLike[Induc[U],V]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#:~&gt;[V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](that:V):provingground.HoTT.FuncLike[U,V]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$tilde$greater" class="implicit">:~&gt;</span><span class="tparams">[<span name="V">V &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span>]</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span></span>)</span><span class="result">: <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], <span class="extype" name="provingground.HoTT.RichTerm.:~&gt;.V">V</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">constructor for (in general dependent) lambda functions, see <a href="../HoTT$.html#lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]" class="extmbr" name="provingground.HoTT#lambda">lambda</a>
+</p><div class="fullcomment"><div class="comment cmt"><p>constructor for (in general dependent) lambda functions, see <a href="../HoTT$.html#lambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:U)(value:V):provingground.HoTT.FuncLike[U,V]" class="extmbr" name="provingground.HoTT#lambda">lambda</a>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method RichTerm in <a href="../HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&lt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;(that:A):Boolean"></a><a id="&lt;(Induc[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#&lt;(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less" class="implicit">&lt;</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&lt;=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;=(that:A):Boolean"></a><a id="&lt;=(Induc[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#&lt;=(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$eq" class="implicit">&lt;=</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#=:=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="=:=(rhs:U):provingground.HoTT.IdentityTyp[U]"></a><a id="=:=(Induc[U]):IdentityTyp[Induc[U]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#=:=(rhs:U):provingground.HoTT.IdentityTyp[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$colon$eq" class="implicit">=:=</span><span class="params">(<span name="rhs">rhs: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>)</span><span class="result">: <a href="../HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">equality type 'term = rhs'
+</p><div class="fullcomment"><div class="comment cmt"><p>equality type 'term = rhs'
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method RichTerm in <a href="../HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -363,6 +527,46 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;(that:A):Boolean"></a><a id="&gt;(Induc[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#&gt;(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater" class="implicit">&gt;</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&gt;=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;=(that:A):Boolean"></a><a id="&gt;=(Induc[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#&gt;=(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater$eq" class="implicit">&gt;=</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Induc#act" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="act(x:provingground.scalahott.NatRing.LocalTerm):U"></a><a id="act(NatRing.LocalTerm):U"></a>
       <span class="permalink">
@@ -476,6 +680,46 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#compare" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="compare(that:A):Int"></a><a id="compare(Induc[U]):Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#compare(that:A):Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">compare</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#compareTo" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="compareTo(that:A):Int"></a><a id="compareTo(Induc[U]):Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#compareTo(that:A):Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">compareTo</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered → Comparable</dd></dl></div>
     </li><li name="scala.Function1#compose" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="compose[A](g:A=&gt;T1):A=&gt;R"></a><a id="compose[A]((A)⇒Nat):(A)⇒U"></a>
       <span class="permalink">
@@ -495,6 +739,24 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing.Induc#defnData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="defnData:Vector[provingground.HoTT.Term]"></a><a id="defnData:Vector[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#defnData:Vector[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">defnData</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">the definition data for all the introduction rules
+</p><div class="fullcomment"><div class="comment cmt"><p>the definition data for all the introduction rules
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a> → <a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a></dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Induc#depcodom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="depcodom:provingground.HoTT.Func[provingground.scalahott.NatRing.Nat,provingground.HoTT.Typ[U]]"></a><a id="depcodom:Func[Nat,Typ[U]]"></a>
       <span class="permalink">
@@ -545,6 +807,86 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a> → <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((Induc[U])⇒Boolean,⇒Any):Induc[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((Induc[U])⇒Boolean):Induc[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):Induc[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):Induc[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -561,6 +903,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT.InducFuncLike#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(that:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#equals(that:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="that">that: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -583,6 +941,61 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing.Induc#fromData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fromData(data:Vector[provingground.HoTT.Term]):provingground.HoTT.InducFuncLike[provingground.scalahott.NatRing.Nat,U]"></a><a id="fromData(Vector[Term]):InducFuncLike[Nat,U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#fromData(data:Vector[provingground.HoTT.Term]):provingground.HoTT.InducFuncLike[provingground.scalahott.NatRing.Nat,U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fromData</span><span class="params">(<span name="data">data: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a> → <a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a></dd></dl></div>
+    </li><li name="provingground.HoTT.InducFuncLike#fullData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fullData:(provingground.HoTT.Typ[W],W=&gt;provingground.HoTT.Typ[U],Vector[provingground.HoTT.Term])"></a><a id="fullData:(Typ[Nat],(Nat)⇒Typ[U],Vector[Term])"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#fullData:(provingground.HoTT.Typ[W],W=&gt;provingground.HoTT.Typ[U],Vector[provingground.HoTT.Term])" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fullData</span><span class="result">: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>], (<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>) ⇒ <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a></dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Induc#g" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="g:provingground.HoTT.FuncLike[provingground.scalahott.NatRing.Nat,provingground.HoTT.Func[U,U]]"></a><a id="g:FuncLike[Nat,Func[U,U]]"></a>
       <span class="permalink">
@@ -634,6 +1047,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       
+    </li><li name="provingground.HoTT.InducFuncLike#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.Term#indepOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indepOf(that:provingground.HoTT.Term):Boolean"></a><a id="indepOf(Term):Boolean"></a>
       <span class="permalink">
@@ -757,6 +1186,28 @@ Should throw exception when invoked for constants.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.HoTT.RichTerm#refl" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="refl:provingground.HoTT.Refl[U]"></a><a id="refl:Refl[Induc[U]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#refl:provingground.HoTT.Refl[U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">refl</span><span class="result">: <a href="../HoTT$$Refl.html" class="extype" name="provingground.HoTT.Refl">Refl</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">reflexivity term <code>refl : term = term</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>reflexivity term <code>refl : term = term</code>
+</p></div><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method RichTerm in <a href="../HoTT$.html" class="extype" name="provingground.HoTT">provingground.HoTT</a>.
+            
+          </dd><dt>Definition Classes</dt><dd><a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a></dd></dl></div>
     </li><li name="provingground.HoTT.Subs#replace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="replace(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Uwithprovingground.HoTT.Subs[U]"></a><a id="replace(Term,Term):Induc[U]withSubs[Induc[U]]"></a>
       <span class="permalink">
@@ -810,7 +1261,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Function1#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.HoTT.InducFuncLike#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
       <a href="../../provingground/scalahott/NatRing$$Induc.html#toString():String" title="Permalink">
@@ -822,10 +1273,10 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1 → AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Induc#typ" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="typ:provingground.HoTT.PiDefn[provingground.scalahott.NatRing.Nat,U]"></a><a id="typ:PiDefn[Nat,U]"></a>
       <span class="permalink">
@@ -877,7 +1328,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       
       <p class="shortcomment cmt">Term with somewhat refined type.</p><div class="fullcomment"><div class="comment cmt"><p>Term with somewhat refined type.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
-    </li><li name="provingground.HoTT.Term#usesVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.HoTT.InducFuncLike#usesVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="usesVar(t:provingground.HoTT.Term):Boolean"></a><a id="usesVar(Term):Boolean"></a>
       <span class="permalink">
       <a href="../../provingground/scalahott/NatRing$$Induc.html#usesVar(t:provingground.HoTT.Term):Boolean" title="Permalink">
@@ -895,7 +1346,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       <p class="shortcomment cmt">returns whether the variable <code>t</code> is used as a variable in a lambda
 definition.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether the variable <code>t</code> is used as a variable in a lambda
 definition.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
@@ -964,6 +1415,26 @@ definition.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(Induc[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Induc.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -982,6 +1453,8 @@ definition.
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.HoTT.InducFuncLike">
+              <h3>Inherited from <a href="../HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</h3>
             </div><div class="parent" name="provingground.HoTT.FuncLike">
               <h3>Inherited from <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]</h3>
             </div><div class="parent" name="scala.Function1">
@@ -995,7 +1468,31 @@ definition.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="provingground.HoTT.RichTerm">
+              <h3>Inherited by implicit conversion RichTerm from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to <a href="../HoTT$$RichTerm.html" class="extype" name="provingground.HoTT.RichTerm">RichTerm</a>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.math.Ordered.orderingToOrdered">
+              <h3>Inherited by implicit conversion orderingToOrdered from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Induc">Induc</a>[<span class="extype" name="provingground.scalahott.NatRing.Induc.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

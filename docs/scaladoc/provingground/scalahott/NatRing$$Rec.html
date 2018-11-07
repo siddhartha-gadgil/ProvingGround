@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -118,7 +118,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="NatRing$.html"><span class="name">NatRing</span></a><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>]</span>
+        <a title="" href="NatRing$.html"><span class="name">NatRing</span></a><span class="result"> extends <a href="SymbolicCRing.html" class="extype" name="provingground.scalahott.SymbolicCRing">SymbolicCRing</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>] with <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.scalahott">scalahott</a></dd></dl></div>
@@ -213,7 +213,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Rec</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>]</span><span class="params">(<span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span></span>, <span name="g">g: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Rec</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>]</span><span class="params">(<span name="init">init: <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span></span>, <span name="g">g: <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]</span>)</span><span class="result"> extends <a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -222,8 +222,18 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], (<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>) ⇒ <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], (<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>) ⇒ <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 493.50 125.00" height="125pt" width="494pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 121)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-121 489.5,-121 489.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><g class="cluster" id="clust3"></g><!-- node4 --><g class="node implicit-outgoing trait" id="graph1_4"><g id="a_implicit-outgoing trait|graph1_4"><a xlink:title="provingground.scalahott.NatRing.Rec can be implicitly converted to Ordered[Rec[U]] by the implicit method orderingToOrdered in object scala.math.Ordered"><path d="M453.1667,-49C453.1667,-49 355.8333,-49 355.8333,-49 351.6667,-49 347.5,-44.8333 347.5,-40.6667 347.5,-40.6667 347.5,-32.3333 347.5,-32.3333 347.5,-28.1667 351.6667,-24 355.8333,-24 355.8333,-24 453.1667,-24 453.1667,-24 457.3333,-24 461.5,-28.1667 461.5,-32.3333 461.5,-32.3333 461.5,-40.6667 461.5,-40.6667 461.5,-44.8333 457.3333,-49 453.1667,-49" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../../lib/trait_diagram.png" y="-43.5" x="357.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="378.5" text-anchor="start">Ordered[Rec[U]]</text></a></g></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.scalahott.NatRing.Rec (this class)" xlink:href="#inheritance-diagram"><path d="M195.1667,-49C195.1667,-49 139.8333,-49 139.8333,-49 135.6667,-49 131.5,-44.8333 131.5,-40.6667 131.5,-40.6667 131.5,-32.3333 131.5,-32.3333 131.5,-28.1667 135.6667,-24 139.8333,-24 139.8333,-24 195.1667,-24 195.1667,-24 199.3333,-24 203.5,-28.1667 203.5,-32.3333 203.5,-32.3333 203.5,-40.6667 203.5,-40.6667 203.5,-44.8333 199.3333,-49 195.1667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="141.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="162.5" text-anchor="start">Rec[U]</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge implicit-outgoing" id="0_4"><g id="a_implicit-outgoing|0_4"><a xlink:title="Rec[U] can be implicitly converted to Ordered[Rec[U]]"><path d="M211.4973,-36.5C245.4163,-36.5 293.0372,-36.5 332.4884,-36.5" stroke="#d4d4d4" fill="none"></path><polygon points="332.5027,-38.9501 339.5027,-36.5 332.5026,-34.0501 332.5027,-38.9501" stroke="#d4d4d4" fill="#d4d4d4"></polygon></a></g><text fill="#aaaaaa" font-size="9.00" font-family="Source Code Pro" y="-42.3" x="275.5" text-anchor="middle">implicitly</text></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="provingground.HoTT.RecFunc" xlink:href="../HoTT$$RecFunc.html#inheritance-diagram"><path d="M102.6667,-117C102.6667,-117 8.3333,-117 8.3333,-117 4.1667,-117 0,-112.8333 0,-108.6667 0,-108.6667 0,-100.3333 0,-100.3333 0,-96.1667 4.1667,-92 8.3333,-92 8.3333,-92 102.6667,-92 102.6667,-92 106.8333,-92 111,-96.1667 111,-100.3333 111,-100.3333 111,-108.6667 111,-108.6667 111,-112.8333 106.8333,-117 102.6667,-117" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-111.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="31.5" text-anchor="start">RecFunc[Nat, U]</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="Rec[U] is a subtype of RecFunc[Nat, U]"><path d="M82.47,-88.1253C102.2427,-76.1205 128.6892,-60.0637 146.8076,-49.0633" stroke="#d4d4d4" fill="none"></path><polygon points="81.0159,-86.142 76.3039,-91.8691 83.5589,-90.3304 81.0159,-86.142" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Product"><path d="M197.6667,-117C197.6667,-117 137.3333,-117 137.3333,-117 133.1667,-117 129,-112.8333 129,-108.6667 129,-108.6667 129,-100.3333 129,-100.3333 129,-96.1667 133.1667,-92 137.3333,-92 137.3333,-92 197.6667,-92 197.6667,-92 201.8333,-92 206,-96.1667 206,-100.3333 206,-100.3333 206,-108.6667 206,-108.6667 206,-112.8333 201.8333,-117 197.6667,-117" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-111.5" x="139.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="160.5" text-anchor="start">Product</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="Rec[U] is a subtype of Product"><path d="M167.5,-84.6427C167.5,-73.2137 167.5,-59.1902 167.5,-49.2329" stroke="#d4d4d4" fill="none"></path><polygon points="165.0501,-84.7097 167.5,-91.7097 169.9501,-84.7098 165.0501,-84.7097" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Serializable"><path d="M308.6667,-117C308.6667,-117 232.3333,-117 232.3333,-117 228.1667,-117 224,-112.8333 224,-108.6667 224,-108.6667 224,-100.3333 224,-100.3333 224,-96.1667 228.1667,-92 232.3333,-92 232.3333,-92 308.6667,-92 308.6667,-92 312.8333,-92 317,-96.1667 317,-100.3333 317,-100.3333 317,-108.6667 317,-108.6667 317,-112.8333 312.8333,-117 308.6667,-117" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-111.5" x="234.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="255.5" text-anchor="start">Serializable</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="Rec[U] is a subtype of Serializable"><path d="M245.2138,-87.8062C227.0509,-75.8152 202.9565,-59.9081 186.4386,-49.0032" stroke="#d4d4d4" fill="none"></path><polygon points="243.9349,-89.8976 251.1265,-91.7097 246.6346,-85.8084 243.9349,-89.8976" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -248,7 +258,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.scalahott.NatRing.Rec"><span>Rec</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.Func"><span>Func</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.scalahott.NatRing.Rec"><span>Rec</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.HoTT.RecFunc"><span>RecFunc</span></li><li class="in" name="provingground.HoTT.Func"><span>Func</span></li><li class="in" name="provingground.HoTT.FuncLike"><span>FuncLike</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.math.Ordered.orderingToOrdered" data-hidden="false"><span>by orderingToOrdered</span></li><li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -345,6 +360,89 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(Rec[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&lt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;(that:A):Boolean"></a><a id="&lt;(Rec[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#&lt;(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less" class="implicit">&lt;</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&lt;=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;=(that:A):Boolean"></a><a id="&lt;=(Rec[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#&lt;=(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$eq" class="implicit">&lt;=</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -361,6 +459,46 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;(that:A):Boolean"></a><a id="&gt;(Rec[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#&gt;(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater" class="implicit">&gt;</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#&gt;=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;=(that:A):Boolean"></a><a id="&gt;=(Rec[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#&gt;=(that:A):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater$eq" class="implicit">&gt;=</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Rec#act" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="act(x:provingground.scalahott.NatRing.LocalTerm):U"></a><a id="act(NatRing.LocalTerm):U"></a>
       <span class="permalink">
@@ -490,6 +628,46 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <p class="shortcomment cmt">codomain</p><div class="fullcomment"><div class="comment cmt"><p>codomain</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a> → <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a></dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#compare" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="compare(that:A):Int"></a><a id="compare(Rec[U]):Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#compare(that:A):Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">compare</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
+    </li><li name="scala.math.Ordered.orderingToOrdered#compareTo" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="compareTo(that:A):Int"></a><a id="compareTo(Rec[U]):Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#compareTo(that:A):Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">compareTo</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method orderingToOrdered in scala.math.Ordered.
+            This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] is in scope.
+          </dd><dt>Definition Classes</dt><dd>Ordered → Comparable</dd></dl></div>
     </li><li name="scala.Function1#compose" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="compose[A](g:A=&gt;T1):A=&gt;R"></a><a id="compose[A]((A)⇒Nat):(A)⇒U"></a>
       <span class="permalink">
@@ -509,6 +687,23 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing.Rec#defnData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="defnData:Vector[provingground.HoTT.Term]"></a><a id="defnData:Vector[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#defnData:Vector[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">defnData</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">definition data for all introduction  rules.</p><div class="fullcomment"><div class="comment cmt"><p>definition data for all introduction  rules.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a> → <a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a></dd></dl></div>
     </li><li name="provingground.HoTT.Func#depcodom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="depcodom:W=&gt;provingground.HoTT.Typ[U]"></a><a id="depcodom:(Nat)⇒Typ[U]"></a>
       <span class="permalink">
@@ -559,6 +754,86 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <p class="shortcomment cmt">domain</p><div class="fullcomment"><div class="comment cmt"><p>domain</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a> → <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((Rec[U])⇒Boolean,⇒Any):Rec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((Rec[U])⇒Boolean):Rec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):Rec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):Rec[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -575,6 +850,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.HoTT.RecFunc#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(that:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#equals(that:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="that">that: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -597,6 +888,61 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.scalahott.NatRing.Rec#fromData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fromData(data:Vector[provingground.HoTT.Term]):provingground.HoTT.RecFunc[provingground.scalahott.NatRing.Nat,U]"></a><a id="fromData(Vector[Term]):RecFunc[Nat,U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#fromData(data:Vector[provingground.HoTT.Term]):provingground.HoTT.RecFunc[provingground.scalahott.NatRing.Nat,U]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fromData</span><span class="params">(<span name="data">data: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a> → <a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a></dd></dl></div>
+    </li><li name="provingground.HoTT.RecFunc#fullData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fullData:(provingground.HoTT.Typ[W],provingground.HoTT.Typ[U],Vector[provingground.HoTT.Term])"></a><a id="fullData:(Typ[Nat],Typ[U],Vector[Term])"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#fullData:(provingground.HoTT.Typ[W],provingground.HoTT.Typ[U],Vector[provingground.HoTT.Term])" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fullData</span><span class="result">: (<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>], <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a></dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Rec#g" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="g:provingground.HoTT.Func[provingground.scalahott.NatRing.Nat,provingground.HoTT.Func[U,U]]"></a><a id="g:Func[Nat,Func[U,U]]"></a>
       <span class="permalink">
@@ -648,6 +994,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       
+    </li><li name="provingground.HoTT.RecFunc#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a> → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.Term#indepOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indepOf(that:provingground.HoTT.Term):Boolean"></a><a id="indepOf(Term):Boolean"></a>
       <span class="permalink">
@@ -824,7 +1186,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Function1#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.HoTT.RecFunc#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
       <a href="../../provingground/scalahott/NatRing$$Rec.html#toString():String" title="Permalink">
@@ -836,14 +1198,14 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1 → AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a> → Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Rec#typ" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="typ:provingground.HoTT.FuncTyp[provingground.scalahott.RepTerm[spire.math.SafeLong],U]"></a><a id="typ:FuncTyp[RepTerm[SafeLong],U]"></a>
+      <a id="typ:provingground.HoTT.FuncTyp[provingground.scalahott.NatRing.LocalTerm,U]"></a><a id="typ:FuncTyp[NatRing.LocalTerm,U]"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$$Rec.html#typ:provingground.HoTT.FuncTyp[provingground.scalahott.RepTerm[spire.math.SafeLong],U]" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#typ:provingground.HoTT.FuncTyp[provingground.scalahott.NatRing.LocalTerm,U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -852,7 +1214,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">typ</span><span class="result">: <a href="../HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<a href="RepTerm.html" class="extype" name="provingground.scalahott.RepTerm">RepTerm</a>[<span class="extype" name="spire.math.SafeLong">SafeLong</span>], <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
+        <span class="name">typ</span><span class="result">: <a href="../HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<a href="NatRing$.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">NatRing.LocalTerm</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
       </span>
       
       <p class="shortcomment cmt">the HoTT-type of the term
@@ -875,7 +1237,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       
       <p class="shortcomment cmt">Term with somewhat refined type.</p><div class="fullcomment"><div class="comment cmt"><p>Term with somewhat refined type.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a> → <a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a> → <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
-    </li><li name="provingground.HoTT.Term#usesVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.HoTT.RecFunc#usesVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="usesVar(t:provingground.HoTT.Term):Boolean"></a><a id="usesVar(Term):Boolean"></a>
       <span class="permalink">
       <a href="../../provingground/scalahott/NatRing$$Rec.html#usesVar(t:provingground.HoTT.Term):Boolean" title="Permalink">
@@ -893,7 +1255,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       <p class="shortcomment cmt">returns whether the variable <code>t</code> is used as a variable in a lambda
 definition.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether the variable <code>t</code> is used as a variable in a lambda
 definition.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a> → <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
@@ -962,6 +1324,26 @@ definition.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(Rec[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -980,6 +1362,8 @@ definition.
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.HoTT.RecFunc">
+              <h3>Inherited from <a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</h3>
             </div><div class="parent" name="provingground.HoTT.Func">
               <h3>Inherited from <a href="../HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</h3>
             </div><div class="parent" name="provingground.HoTT.FuncLike">
@@ -995,7 +1379,27 @@ definition.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.math.Ordered.orderingToOrdered">
+              <h3>Inherited by implicit conversion orderingToOrdered from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to <span class="extype" name="scala.math.Ordered">Ordered</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

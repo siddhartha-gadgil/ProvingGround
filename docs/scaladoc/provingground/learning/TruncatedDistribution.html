@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNode.html" title=""></a>
-                        <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -502,7 +510,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="TruncatedDistribution$$BigSum.html" class="extype" name="provingground.learning.TruncatedDistribution.BigSum">BigSum</a>, <a href="TruncatedDistribution$$Coeffs.html" class="extype" name="provingground.learning.TruncatedDistribution.Coeffs">Coeffs</a>, <a href="TruncatedDistribution$$Empty.html" class="extype" name="provingground.learning.TruncatedDistribution.Empty">Empty</a>, <a href="TruncatedDistribution$$FD.html" class="extype" name="provingground.learning.TruncatedDistribution.FD">FD</a>, <a href="TruncatedDistribution$$Filter.html" class="extype" name="provingground.learning.TruncatedDistribution.Filter">Filter</a>, <a href="TruncatedDistribution$$FlatMap.html" class="extype" name="provingground.learning.TruncatedDistribution.FlatMap">FlatMap</a>, <a href="TruncatedDistribution$$Flatten.html" class="extype" name="provingground.learning.TruncatedDistribution.Flatten">Flatten</a>, <a href="TruncatedDistribution$$FlattenOpt.html" class="extype" name="provingground.learning.TruncatedDistribution.FlattenOpt">FlattenOpt</a>, <a href="TruncatedDistribution$$FromFDs.html" class="extype" name="provingground.learning.TruncatedDistribution.FromFDs">FromFDs</a>, <a href="TruncatedDistribution$$Map.html" class="extype" name="provingground.learning.TruncatedDistribution.Map">Map</a>, <a href="TruncatedDistribution$$MapFD.html" class="extype" name="provingground.learning.TruncatedDistribution.MapFD">MapFD</a>, <a href="TruncatedDistribution$$MapOpt.html" class="extype" name="provingground.learning.TruncatedDistribution.MapOpt">MapOpt</a>, <a href="TruncatedDistribution$$OptAtom.html" class="extype" name="provingground.learning.TruncatedDistribution.OptAtom">OptAtom</a>, <a href="TruncatedDistribution$$PosFD.html" class="extype" name="provingground.learning.TruncatedDistribution.PosFD">PosFD</a>, <a href="TruncatedDistribution$$Scaled.html" class="extype" name="provingground.learning.TruncatedDistribution.Scaled">Scaled</a>, <a href="TruncatedDistribution$$Sum.html" class="extype" name="provingground.learning.TruncatedDistribution.Sum">Sum</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 202.00 153.00" height="153pt" width="202pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 149)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-149 198,-149 198,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.learning.TruncatedDistribution (this trait)" xlink:href="#inheritance-diagram"><path d="M161.6667,-84C161.6667,-84 32.3333,-84 32.3333,-84 28.1667,-84 24,-79.8333 24,-75.6667 24,-75.6667 24,-67.3333 24,-67.3333 24,-63.1667 28.1667,-59 32.3333,-59 32.3333,-59 161.6667,-59 161.6667,-59 165.8333,-59 170,-63.1667 170,-67.3333 170,-67.3333 170,-75.6667 170,-75.6667 170,-79.8333 165.8333,-84 161.6667,-84" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-78.5" x="34" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-69.1" x="55" text-anchor="start">TruncatedDistribution[A]</text></a></g></g><!-- node1 --><g class="node default" id="graph1_1"><g id="a_default|graph1_1"><a xlink:title="BigSum[A], Coeffs[A], TruncatedDistribution.Empty[A], FD[A], Filter[A], FlatMap[A, B], Flatten[A], FlattenOpt[A], FromFDs[A], Map[A, B], MapFD[A, B], MapOpt[A, B], OptAtom[A], PosFD[A], Scaled[A], Sum[A]"><path d="M135.3333,-23C135.3333,-23 58.6667,-23 58.6667,-23 54.8333,-23 51,-19.1667 51,-15.3333 51,-15.3333 51,-7.6667 51,-7.6667 51,-3.8333 54.8333,0 58.6667,0 58.6667,0 135.3333,0 135.3333,0 139.1667,0 143,-3.8333 143,-7.6667 143,-7.6667 143,-15.3333 143,-15.3333 143,-19.1667 139.1667,-23 135.3333,-23" stroke="#ababab" fill="#e1e1e1"></path><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-9.1" x="62" text-anchor="start">16 classes/traits</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="16 classes/traits are subtypes of TruncatedDistribution[A]"><path d="M97,-51.6728C97,-42.3137 97,-31.4561 97,-23.3899" stroke="#d4d4d4" fill="none"></path><polygon points="94.5501,-51.7755 97,-58.7755 99.4501,-51.7756 94.5501,-51.7755" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="scala.AnyRef"><path d="M126.1667,-145C126.1667,-145 67.8333,-145 67.8333,-145 63.6667,-145 59.5,-140.8333 59.5,-136.6667 59.5,-136.6667 59.5,-128.3333 59.5,-128.3333 59.5,-124.1667 63.6667,-120 67.8333,-120 67.8333,-120 126.1667,-120 126.1667,-120 130.3333,-120 134.5,-124.1667 134.5,-128.3333 134.5,-128.3333 134.5,-136.6667 134.5,-136.6667 134.5,-140.8333 130.3333,-145 126.1667,-145" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-139.5" x="70" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-130.1" x="91" text-anchor="start">AnyRef</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="TruncatedDistribution[A] is a subtype of AnyRef"><path d="M97,-112.7386C97,-103.3393 97,-92.3803 97,-84.123" stroke="#d4d4d4" fill="none"></path><polygon points="94.5501,-112.8607 97,-119.8608 99.4501,-112.8608 94.5501,-112.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -528,6 +546,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.learning.TruncatedDistribution"><span>TruncatedDistribution</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -605,6 +628,49 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(TruncatedDistribution[A],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="provingground.learning.TruncatedDistribution#&lt;*&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="&lt;*&gt;(scale:Double):provingground.learning.TruncatedDistribution[A]"></a><a id="&lt;*&gt;(Double):TruncatedDistribution[A]"></a>
       <span class="permalink">
@@ -725,6 +791,86 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((TruncatedDistribution[A])⇒Boolean,⇒Any):TruncatedDistribution[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((TruncatedDistribution[A])⇒Boolean):TruncatedDistribution[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):TruncatedDistribution[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):TruncatedDistribution[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -811,6 +957,29 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
@@ -1099,6 +1268,26 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(TruncatedDistribution[A],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TruncatedDistribution.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -1114,7 +1303,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TruncatedDistribution">TruncatedDistribution</a>[<span class="extype" name="provingground.learning.TruncatedDistribution.A">A</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

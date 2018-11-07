@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -116,14 +116,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNode.html" title=""></a>
-                        <a href="BaseGeneratorNode.html" title="">BaseGeneratorNode</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="BaseGeneratorNodeFamily.html" title=""></a>
-                        <a href="BaseGeneratorNodeFamily.html" title="">BaseGeneratorNodeFamily</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
                         <a class="class" href="BasicDeducer.html" title=""></a>
                         <a href="BasicDeducer.html" title="">BasicDeducer</a>
                       </li><li class="current-entities indented2">
@@ -170,6 +162,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -343,6 +339,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
                         <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="StateDistribution$.html" title=""></a>
                         <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
                         <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
@@ -388,6 +388,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermEvolver.html" title="">TermEvolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
                         <a class="class" href="TermGenParams.html" title=""></a>
                         <a href="TermGenParams.html" title="">TermGenParams</a>
                       </li><li class="current-entities indented2">
@@ -542,7 +550,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.learning.TermRandomVars.IndexedIntroRuleTyps" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+              <ol><li name="provingground.learning.TermRandomVars.FuncWithDom" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncWithDomextendsprovingground.HoTT.Term=&gt;Option[provingground.HoTT.ExstFunc]withProductwithSerializable"></a><a id="FuncWithDom:FuncWithDom"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermRandomVars$.html#FuncWithDomextendsprovingground.HoTT.Term=&gt;Option[provingground.HoTT.ExstFunc]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermRandomVars$$FuncWithDom.html"><span class="name">FuncWithDom</span></a><span class="params">(<span name="dom">dom: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermRandomVars.IndexedIntroRuleTyps" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="IndexedIntroRuleTypsextendsRandomVar[provingground.HoTT.Typ[provingground.HoTT.Term]]withProductwithSerializable"></a><a id="IndexedIntroRuleTyps:IndexedIntroRuleTyps"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermRandomVars$.html#IndexedIntroRuleTypsextendsRandomVar[provingground.HoTT.Typ[provingground.HoTT.Term]]withProductwithSerializable" title="Permalink">
@@ -638,6 +662,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <p class="shortcomment cmt">distribution of types obtained by full application in a type family</p><div class="fullcomment"><div class="comment cmt"><p>distribution of types obtained by full application in a type family</p></div><dl class="paramcmts block"><dt class="param">typF</dt><dd class="cmt"><p>the type family</p></dd></dl></div>
+    </li><li name="provingground.learning.TermRandomVars.WithTyp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WithTypextendsprovingground.HoTT.Term=&gt;BooleanwithProductwithSerializable"></a><a id="WithTyp:WithTyp"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermRandomVars$.html#WithTypextendsprovingground.HoTT.Term=&gt;BooleanwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermRandomVars$$WithTyp.html"><span class="name">WithTyp</span></a><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li></ol>
             </div>
 
@@ -1221,6 +1261,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.TermRandomVars.FuncOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FuncOpt"></a><a id="FuncOpt:FuncOpt"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermRandomVars$.html#FuncOpt" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermRandomVars$$FuncOpt$.html"><span class="name">FuncOpt</span></a><span class="result"> extends (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermRandomVars.Funcs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Funcs"></a><a id="Funcs:Funcs"></a>
       <span class="permalink">
@@ -1299,7 +1355,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="distribution of existential inductive structures" href="TermRandomVars$$InducStrucs$.html"><span class="name">InducStrucs</span></a><span class="result"> extends <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStruc.html" class="extype" name="provingground.induction.ExstInducStruc">ExstInducStruc</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="distribution of existential inductive structures" href="TermRandomVars$$InducStrucs$.html"><span class="name">InducStrucs</span></a><span class="result"> extends <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">distribution of existential inductive structures
@@ -1371,6 +1427,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <p class="shortcomment cmt">distribution of type families
 </p>
+    </li><li name="provingground.learning.TermRandomVars.TypFamilyOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypFamilyOpt"></a><a id="TypFamilyOpt:TypFamilyOpt"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermRandomVars$.html#TypFamilyOpt" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermRandomVars$$TypFamilyOpt$.html"><span class="name">TypFamilyOpt</span></a><span class="result"> extends (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermRandomVars.TypOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypOpt"></a><a id="TypOpt:TypOpt"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermRandomVars$.html#TypOpt" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TermRandomVars$$TypOpt$.html"><span class="name">TypOpt</span></a><span class="result"> extends (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermRandomVars.Typs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Typs"></a><a id="Typs:Typs"></a>
       <span class="permalink">

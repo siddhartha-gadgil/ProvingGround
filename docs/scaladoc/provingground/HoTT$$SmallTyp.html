@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../lib/scheduler.js"></script>
       <script type="text/javascript" src="../lib/template.js"></script>
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../lib/modernizr.custom.js"></script><script type="text/javascript" src="../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../';
@@ -141,6 +141,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$AtomicTerm.html" title="Objects with simple substitution."></a>
                         <a href="HoTT$$AtomicTerm.html" title="Objects with simple substitution.">AtomicTerm</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="HoTT$$AvoidVarFormalException.html" title=""></a>
+                        <a href="HoTT$$AvoidVarFormalException.html" title="">AvoidVarFormalException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="HoTT$$BaseUniv.html" title="A universe that is equal (in scala) to Type but may have refined scala type."></a>
@@ -286,6 +290,10 @@ Includes:
                         <a class="class" href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol"></a>
                         <a href="HoTT$$LeftProjSym.html" title="symbol for left component in pair from a given symbol">LeftProjSym</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="HoTT$$MiscAppln$.html" title=""></a>
+                        <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
+                        <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
@@ -301,6 +309,10 @@ Includes:
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NamedFunc.html" title="wrapped function adding name"></a>
                         <a href="HoTT$$NamedFunc.html" title="wrapped function adding name">NamedFunc</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$NamedTerm$.html" title=""></a>
+                        <a href="HoTT$$NamedTerm$.html" title="">NamedTerm</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$NotTypeException.html" title=""></a>
@@ -488,7 +500,17 @@ Includes:
               Known Subclasses
             </span>
             <div class="subClasses hiddenContent"><a href="HoTT$$Unit$.html" class="extype" name="provingground.HoTT.Unit">Unit</a>, <a href="HoTT$$Zero$.html" class="extype" name="provingground.HoTT.Zero">Zero</a>, <a href="induction/coarse/BaseConstructorTypes$$SmallBool$.html" class="extype" name="provingground.induction.coarse.BaseConstructorTypes.SmallBool">SmallBool</a>, <a href="induction/coarse/BaseConstructorTypes$$SmallNat$.html" class="extype" name="provingground.induction.coarse.BaseConstructorTypes.SmallNat">SmallNat</a>, <a href="scalahott/BoolType$$Bool$.html" class="extype" name="provingground.scalahott.BoolType.Bool">Bool</a>, <a href="scalahott/BoolType$$isTrueTyp.html" class="extype" name="provingground.scalahott.BoolType.isTrueTyp">isTrueTyp</a>, <a href="scalahott/EnumType$$EnumTyp.html" class="extype" name="provingground.scalahott.EnumType.EnumTyp">EnumTyp</a>, <a href="scalahott/IntTypes$$Fin.html" class="extype" name="provingground.scalahott.IntTypes.Fin">Fin</a>, <a href="scalahott/IntTypes$$IntTyp.html" class="extype" name="provingground.scalahott.IntTypes.IntTyp">IntTyp</a>, <a href="scalahott/IntTypes$$N$.html" class="extype" name="provingground.scalahott.IntTypes.N">N</a>, <a href="scalahott/IntTypes$$Z$.html" class="extype" name="provingground.scalahott.IntTypes.Z">Z</a>, <a href="scalahott/ListType$$ListTyp.html" class="extype" name="provingground.scalahott.ListType.ListTyp">ListTyp</a>, <a href="translation/TheoryTypes$$Claim.html" class="extype" name="provingground.translation.TheoryTypes.Claim">Claim</a>, <a href="translation/TheoryTypes$$Para.html" class="extype" name="provingground.translation.TheoryTypes.Para">Para</a>, <a href="translation/TheoryTypes$$TextTyp.html" class="extype" name="provingground.translation.TheoryTypes.TextTyp">TextTyp</a>, <a href="translation/TheoryTypes$$TheoryTyp.html" class="extype" name="provingground.translation.TheoryTypes.TheoryTyp">TheoryTyp</a>, <a href="translation/TheoryTypes$$Using.html" class="extype" name="provingground.translation.TheoryTypes.Using">Using</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 951.50 155.00" height="155pt" width="952pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 947.5,-151 947.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.HoTT.SmallTyp (this trait)" xlink:href="#inheritance-diagram"><path d="M511.1667,-86C511.1667,-86 445.8333,-86 445.8333,-86 441.6667,-86 437.5,-81.8333 437.5,-77.6667 437.5,-77.6667 437.5,-69.3333 437.5,-69.3333 437.5,-65.1667 441.6667,-61 445.8333,-61 445.8333,-61 511.1667,-61 511.1667,-61 515.3333,-61 519.5,-65.1667 519.5,-69.3333 519.5,-69.3333 519.5,-77.6667 519.5,-77.6667 519.5,-81.8333 515.3333,-86 511.1667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-80.5" x="447.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="468.5" text-anchor="start">SmallTyp</text></a></g></g><!-- node1 --><g class="node object" id="graph1_1"><g id="a_object|graph1_1"><a xlink:title="provingground.scalahott.BoolType.Bool" xlink:href="scalahott/BoolType$$Bool$.html#inheritance-diagram"><path d="M54.6667,-25C54.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 54.6667,0 54.6667,0 58.8333,0 63,-4.1667 63,-8.3333 63,-8.3333 63,-16.6667 63,-16.6667 63,-20.8333 58.8333,-25 54.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">Bool</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="Bool is a subtype of SmallTyp"><path d="M430.1853,-70.6332C353.4764,-65.4364 199.4118,-52.3631 71.5,-25 68.7964,-24.4216 66.0141,-23.7396 63.2361,-22.9973" stroke="#d4d4d4" fill="none"></path><polygon points="430.2163,-73.0906 437.3638,-71.1118 430.5423,-68.2015 430.2163,-73.0906" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.scalahott.EnumType.EnumTyp" xlink:href="scalahott/EnumType$$EnumTyp.html#inheritance-diagram"><path d="M167.6667,-25C167.6667,-25 89.3333,-25 89.3333,-25 85.1667,-25 81,-20.8333 81,-16.6667 81,-16.6667 81,-8.3333 81,-8.3333 81,-4.1667 85.1667,0 89.3333,0 89.3333,0 167.6667,0 167.6667,0 171.8333,0 176,-4.1667 176,-8.3333 176,-8.3333 176,-16.6667 176,-16.6667 176,-20.8333 171.8333,-25 167.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="91.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="112.5" text-anchor="start">EnumTyp[U]</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="EnumTyp[U] is a subtype of SmallTyp"><path d="M430.217,-66.3854C371.8446,-57.5882 270.7031,-41.7175 184.5,-25 181.7618,-24.469 178.9527,-23.9046 176.1209,-23.3205" stroke="#d4d4d4" fill="none"></path><polygon points="430.1812,-68.8575 437.4676,-67.4749 430.9094,-64.0119 430.1812,-68.8575" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="provingground.scalahott.IntTypes.IntTyp" xlink:href="scalahott/IntTypes$$IntTyp.html#inheritance-diagram"><path d="M254.6667,-25C254.6667,-25 202.3333,-25 202.3333,-25 198.1667,-25 194,-20.8333 194,-16.6667 194,-16.6667 194,-8.3333 194,-8.3333 194,-4.1667 198.1667,0 202.3333,0 202.3333,0 254.6667,0 254.6667,0 258.8333,0 263,-4.1667 263,-8.3333 263,-8.3333 263,-16.6667 263,-16.6667 263,-20.8333 258.8333,-25 254.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="204.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="225.5" text-anchor="start">IntTyp</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="IntTyp is a subtype of SmallTyp"><path d="M430.407,-62.9869C388.3396,-53.6113 325.6694,-39.2088 271.5,-25 268.7928,-24.2899 265.9967,-23.5323 263.1902,-22.7547" stroke="#d4d4d4" fill="none"></path><polygon points="430.1306,-65.4352 437.4955,-64.5626 431.1939,-60.652 430.1306,-65.4352" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.scalahott.ListType.ListTyp" xlink:href="scalahott/ListType$$ListTyp.html#inheritance-diagram"><path d="M357.6667,-25C357.6667,-25 289.3333,-25 289.3333,-25 285.1667,-25 281,-20.8333 281,-16.6667 281,-16.6667 281,-8.3333 281,-8.3333 281,-4.1667 285.1667,0 289.3333,0 289.3333,0 357.6667,0 357.6667,0 361.8333,0 366,-4.1667 366,-8.3333 366,-8.3333 366,-16.6667 366,-16.6667 366,-20.8333 361.8333,-25 357.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="291.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="312.5" text-anchor="start">ListTyp[U]</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="ListTyp[U] is a subtype of SmallTyp"><path d="M439.604,-58.1925C413.5705,-47.9471 379.7321,-34.63 355.3094,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="438.9729,-60.577 446.3839,-60.8608 440.7674,-56.0174 438.9729,-60.577" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node object" id="graph1_5"><g id="a_object|graph1_5"><a xlink:title="provingground.induction.coarse.BaseConstructorTypes.SmallBool" xlink:href="induction/coarse/BaseConstructorTypes$$SmallBool$.html#inheritance-diagram"><path d="M462.6667,-25C462.6667,-25 392.3333,-25 392.3333,-25 388.1667,-25 384,-20.8333 384,-16.6667 384,-16.6667 384,-8.3333 384,-8.3333 384,-4.1667 388.1667,0 392.3333,0 392.3333,0 462.6667,0 462.6667,0 466.8333,0 471,-4.1667 471,-8.3333 471,-8.3333 471,-16.6667 471,-16.6667 471,-20.8333 466.8333,-25 462.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="394.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="415.5" text-anchor="start">SmallBool</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="SmallBool is a subtype of SmallTyp"><path d="M463.3641,-55.3963C455.2163,-45.6509 445.3674,-33.8708 438.0537,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="461.5632,-57.0619 467.9328,-60.8608 465.3224,-53.9189 461.5632,-57.0619" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node object" id="graph1_6"><g id="a_object|graph1_6"><a xlink:title="provingground.induction.coarse.BaseConstructorTypes.SmallNat" xlink:href="induction/coarse/BaseConstructorTypes$$SmallNat$.html#inheritance-diagram"><path d="M563.1667,-25C563.1667,-25 497.8333,-25 497.8333,-25 493.6667,-25 489.5,-20.8333 489.5,-16.6667 489.5,-16.6667 489.5,-8.3333 489.5,-8.3333 489.5,-4.1667 493.6667,0 497.8333,0 497.8333,0 563.1667,0 563.1667,0 567.3333,0 571.5,-4.1667 571.5,-8.3333 571.5,-8.3333 571.5,-16.6667 571.5,-16.6667 571.5,-20.8333 567.3333,-25 563.1667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="499.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="520.5" text-anchor="start">SmallNat</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="SmallNat is a subtype of SmallTyp"><path d="M493.9327,-55.3963C502.2402,-45.6509 512.2822,-33.8708 519.7394,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="491.9511,-53.9442 489.2744,-60.8608 495.6801,-57.123 491.9511,-53.9442" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node trait" id="graph1_7"><g id="a_trait|graph1_7"><a xlink:title="provingground.translation.TheoryTypes.TheoryTyp" xlink:href="translation/TheoryTypes$$TheoryTyp.html#inheritance-diagram"><path d="M670.6667,-25C670.6667,-25 598.3333,-25 598.3333,-25 594.1667,-25 590,-20.8333 590,-16.6667 590,-16.6667 590,-8.3333 590,-8.3333 590,-4.1667 594.1667,0 598.3333,0 598.3333,0 670.6667,0 670.6667,0 674.8333,0 679,-4.1667 679,-8.3333 679,-8.3333 679,-16.6667 679,-16.6667 679,-20.8333 674.8333,-25 670.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-19.5" x="600.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="621.5" text-anchor="start">TheoryTyp</text></a></g></g><!-- node0&#45;&gt;node7 --><g class="edge inheritance" id="graph1_0_7"><g id="a_inheritance|graph1_0_7"><a xlink:title="TheoryTyp is a subtype of SmallTyp"><path d="M517.647,-58.1925C543.8484,-47.9471 577.9051,-34.63 602.4854,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="516.4504,-56.0297 510.8233,-60.8608 518.2349,-60.5932 516.4504,-56.0297" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node object" id="graph1_8"><g id="a_object|graph1_8"><a xlink:title="provingground.HoTT.Unit" xlink:href="HoTT$$Unit$.html#inheritance-diagram"><path d="M749.6667,-25C749.6667,-25 705.3333,-25 705.3333,-25 701.1667,-25 697,-20.8333 697,-16.6667 697,-16.6667 697,-8.3333 697,-8.3333 697,-4.1667 701.1667,0 705.3333,0 705.3333,0 749.6667,0 749.6667,0 753.8333,0 758,-4.1667 758,-8.3333 758,-8.3333 758,-16.6667 758,-16.6667 758,-20.8333 753.8333,-25 749.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="707.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="728.5" text-anchor="start">Unit</text></a></g></g><!-- node0&#45;&gt;node8 --><g class="edge inheritance" id="graph1_0_8"><g id="a_inheritance|graph1_0_8"><a xlink:title="Unit is a subtype of SmallTyp"><path d="M526.7349,-63.5541C569.4844,-54.4562 633.4796,-40.1427 688.5,-25 691.2421,-24.2453 694.0794,-23.4213 696.9153,-22.568" stroke="#d4d4d4" fill="none"></path><polygon points="526.138,-61.1762 519.7981,-65.0243 527.154,-65.9697 526.138,-61.1762" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node9 --><g class="node object" id="graph1_9"><g id="a_object|graph1_9"><a xlink:title="provingground.HoTT.Zero" xlink:href="HoTT$$Zero$.html#inheritance-diagram"><path d="M832.6667,-25C832.6667,-25 784.3333,-25 784.3333,-25 780.1667,-25 776,-20.8333 776,-16.6667 776,-16.6667 776,-8.3333 776,-8.3333 776,-4.1667 780.1667,0 784.3333,0 784.3333,0 832.6667,0 832.6667,0 836.8333,0 841,-4.1667 841,-8.3333 841,-8.3333 841,-16.6667 841,-16.6667 841,-20.8333 836.8333,-25 832.6667,-25" stroke="#103a51" fill="#103a51"></path><image xlink:href="../lib/object_diagram.png" y="-19.5" x="786.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="807.5" text-anchor="start">Zero</text></a></g></g><!-- node0&#45;&gt;node9 --><g class="edge inheritance" id="graph1_0_9"><g id="a_inheritance|graph1_0_9"><a xlink:title="Zero is a subtype of SmallTyp"><path d="M526.6816,-67.3623C584.3607,-59.5676 683.6774,-44.7236 767.5,-25 770.2526,-24.3523 773.0914,-23.6215 775.9302,-22.8465" stroke="#d4d4d4" fill="none"></path><polygon points="526.126,-64.9648 519.5138,-68.3236 526.7774,-69.8213 526.126,-64.9648" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node10 --><g class="node class" id="graph1_10"><g id="a_class|graph1_10"><a xlink:title="provingground.scalahott.BoolType.isTrueTyp" xlink:href="scalahott/BoolType$$isTrueTyp.html#inheritance-diagram"><path d="M935.1667,-25C935.1667,-25 867.8333,-25 867.8333,-25 863.6667,-25 859.5,-20.8333 859.5,-16.6667 859.5,-16.6667 859.5,-8.3333 859.5,-8.3333 859.5,-4.1667 863.6667,0 867.8333,0 867.8333,0 935.1667,0 935.1667,0 939.3333,0 943.5,-4.1667 943.5,-8.3333 943.5,-8.3333 943.5,-16.6667 943.5,-16.6667 943.5,-20.8333 939.3333,-25 935.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../lib/class_diagram.png" y="-19.5" x="869.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="890.5" text-anchor="start">isTrueTyp</text></a></g></g><!-- node0&#45;&gt;node10 --><g class="edge inheritance" id="graph1_0_10"><g id="a_inheritance|graph1_0_10"><a xlink:title="isTrueTyp is a subtype of SmallTyp"><path d="M526.8452,-68.9241C598.0687,-61.793 735.2245,-46.5729 850.5,-25 853.3674,-24.4634 856.3149,-23.8656 859.2775,-23.2304" stroke="#d4d4d4" fill="none"></path><polygon points="526.4671,-66.4995 519.7439,-69.6301 526.952,-71.3755 526.4671,-66.4995" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node11 --><g class="node trait" id="graph1_11"><g id="a_trait|graph1_11"><a xlink:title="provingground.HoTT.Typ" xlink:href="HoTT$$Typ.html#inheritance-diagram"><path d="M513.1667,-147C513.1667,-147 443.8333,-147 443.8333,-147 439.6667,-147 435.5,-142.8333 435.5,-138.6667 435.5,-138.6667 435.5,-130.3333 435.5,-130.3333 435.5,-126.1667 439.6667,-122 443.8333,-122 443.8333,-122 513.1667,-122 513.1667,-122 517.3333,-122 521.5,-126.1667 521.5,-130.3333 521.5,-130.3333 521.5,-138.6667 521.5,-138.6667 521.5,-142.8333 517.3333,-147 513.1667,-147" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../lib/trait_diagram.png" y="-141.5" x="445.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="466.5" text-anchor="start">Typ[Term]</text></a></g></g><!-- node11&#45;&gt;node0 --><g class="edge inheritance" id="graph1_11_0"><g id="a_inheritance|graph1_11_0"><a xlink:title="SmallTyp is a subtype of Typ[Term]"><path d="M478.5,-114.7386C478.5,-105.3393 478.5,-94.3803 478.5,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="476.0501,-114.8607 478.5,-121.8608 480.9501,-114.8608 476.0501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -514,6 +536,11 @@ Includes:
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.HoTT.SmallTyp"><span>SmallTyp</span></li><li class="in" name="provingground.HoTT.Typ"><span>Typ</span></li><li class="in" name="provingground.HoTT.Term"><span>Term</span></li><li class="in" name="provingground.HoTT.Subs"><span>Subs</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -626,6 +653,42 @@ Includes:
       <p class="shortcomment cmt">returns product type, mainly to use for &quot;and&quot; for structures
 </p><div class="fullcomment"><div class="comment cmt"><p>returns product type, mainly to use for &quot;and&quot; for structures
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="provingground.HoTT.Typ#&amp;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&amp;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.SigmaTyp[V,UU]"></a><a id="&amp;:[UU&lt;:TermwithSubs[UU]&gt;:Term,V&lt;:TermwithSubs[V]](V):SigmaTyp[V,UU]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#&amp;:[UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](variable:V):provingground.HoTT.SigmaTyp[V,UU]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $amp$colon" class="name">&amp;:</span><span class="tparams">[<span name="UU">UU &gt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.UU">UU</span>]</span>, <span name="V">V &lt;: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span>]</span>]</span><span class="params">(<span name="variable">variable: <span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span></span>)</span><span class="result">: <a href="HoTT$$SigmaTyp.html" class="extype" name="provingground.HoTT.SigmaTyp">SigmaTyp</a>[<span class="extype" name="provingground.HoTT.Typ.&amp;:.V">V</span>, <span class="extype" name="provingground.HoTT.Typ.&amp;:.UU">UU</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
     </li><li name="provingground.HoTT.Typ#++" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="++[UU&gt;:provingground.HoTT.Typ[U]&lt;:provingground.HoTT.Typ[provingground.HoTT.Term]withprovingground.HoTT.Subs[UU],VV&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[VV],V&lt;:provingground.HoTT.Typ[VV]withprovingground.HoTT.Subs[V]](those:V):provingground.HoTT.SigmaTyp[UU,VV]"></a><a id="++[UU&lt;:Typ[Term]withSubs[UU]&gt;:Typ[Term],VV&lt;:TermwithSubs[VV],V&lt;:Typ[VV]withSubs[V]](V):SigmaTyp[UU,VV]"></a>
       <span class="permalink">
@@ -645,6 +708,29 @@ Includes:
 for example a group type is this with product etc.</p><div class="fullcomment"><div class="comment cmt"><p>returns Sigma-Type, mainly to use as &quot;such that&quot;,
 for example a group type is this with product etc. dependent on this.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(SmallTyp,B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="provingground.HoTT.Typ#-&gt;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-&gt;:[W&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[W],UU&gt;:U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[UU]](that:provingground.HoTT.Typ[W]):provingground.HoTT.FuncTyp[W,UU]"></a><a id="-&gt;:[W&lt;:TermwithSubs[W],UU&lt;:TermwithSubs[UU]&gt;:Term](Typ[W]):FuncTyp[W,UU]"></a>
       <span class="permalink">
@@ -770,6 +856,86 @@ for example a group type is this with product etc. dependent on this.
       <p class="shortcomment cmt">returns whether <code>this</code> depends on <code>that</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> depends on <code>that</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((SmallTyp)⇒Boolean,⇒Any):SmallTyp"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((SmallTyp)⇒Boolean):SmallTyp"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):SmallTyp"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):SmallTyp"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -822,6 +988,29 @@ for example a group type is this with product etc. dependent on this.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -1313,6 +1502,26 @@ to avoid name clashes.</p><div class="fullcomment"><div class="comment cmt"><p>d
 note that a new variable is created and substituted in <code>this</code>
 to avoid name clashes.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a></dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(SmallTyp,B)"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$SmallTyp.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li><li name="provingground.HoTT.Typ.Elem" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Elem"></a><a id="Elem:Elem"></a>
       <span class="permalink">
@@ -1351,7 +1560,23 @@ to avoid name clashes.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.HoTT.SmallTyp">SmallTyp</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

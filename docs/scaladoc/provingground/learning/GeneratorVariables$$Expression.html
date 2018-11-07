@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -127,6 +127,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="GeneratorVariables$$Elem.html" title=""></a>
                         <a href="GeneratorVariables$$Elem.html" title="">Elem</a>
                       </li><li class="current-entities indented3">
+                        <a class="object" href="GeneratorVariables$$ElemList$.html" title=""></a>
+                        <a class="trait" href="GeneratorVariables$$ElemList.html" title=""></a>
+                        <a href="GeneratorVariables$$ElemList.html" title="">ElemList</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="class" href="GeneratorVariables$$Equation.html" title=""></a>
                         <a href="GeneratorVariables$$Equation.html" title="">Equation</a>
@@ -139,11 +143,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="GeneratorVariables$$Event.html" title=""></a>
                         <a href="GeneratorVariables$$Event.html" title="">Event</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="GeneratorVariables$$Expectation.html" title=""></a>
-                        <a href="GeneratorVariables$$Expectation.html" title="">Expectation</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
+                        <a class="object" href="GeneratorVariables$$Expression$.html" title=""></a>
                         <a class="trait" href="" title=""></a>
                         <a href="" title="">Expression</a>
                       </li><li class="current-entities indented3">
@@ -201,14 +201,16 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <div id="content">
             <body class="trait type">
       <div id="definition">
-        <div class="big-circle trait">t</div>
+        <a href="GeneratorVariables$$Expression$.html" title="See companion object"><div class="big-circle trait-companion-object">t</div></a>
         <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.learning">learning</a>.<a href="GeneratorVariables$.html" class="extype" name="provingground.learning.GeneratorVariables">GeneratorVariables</a></p>
-        <h1>Expression<span class="permalink">
+        <h1><a href="GeneratorVariables$$Expression$.html" title="See companion object">Expression</a><span class="permalink">
       <a href="../../provingground/learning/GeneratorVariables$$Expression.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="GeneratorVariables$$Expression$.html" title="See companion object">object Expression</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -231,8 +233,18 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="GeneratorVariables$$Expectation.html" class="extype" name="provingground.learning.GeneratorVariables.Expectation">Expectation</a>, <a href="GeneratorVariables$$FinalVal.html" class="extype" name="provingground.learning.GeneratorVariables.FinalVal">FinalVal</a>, <a href="GeneratorVariables$$InitialVal.html" class="extype" name="provingground.learning.GeneratorVariables.InitialVal">InitialVal</a>, <a href="GeneratorVariables$$Literal.html" class="extype" name="provingground.learning.GeneratorVariables.Literal">Literal</a>, <a href="GeneratorVariables$$Log.html" class="extype" name="provingground.learning.GeneratorVariables.Log">Log</a>, <a href="GeneratorVariables$$Product.html" class="extype" name="provingground.learning.GeneratorVariables.Product">Product</a>, <a href="GeneratorVariables$$Quotient.html" class="extype" name="provingground.learning.GeneratorVariables.Quotient">Quotient</a>, <a href="GeneratorVariables$$Sum.html" class="extype" name="provingground.learning.GeneratorVariables.Sum">Sum</a>, <a href="GeneratorVariables$$VarVal.html" class="extype" name="provingground.learning.GeneratorVariables.VarVal">VarVal</a></div>
-          </div></div>
+            <div class="subClasses hiddenContent"><a href="GeneratorVariables$$FinalVal.html" class="extype" name="provingground.learning.GeneratorVariables.FinalVal">FinalVal</a>, <a href="GeneratorVariables$$InitialVal.html" class="extype" name="provingground.learning.GeneratorVariables.InitialVal">InitialVal</a>, <a href="GeneratorVariables$$Literal.html" class="extype" name="provingground.learning.GeneratorVariables.Literal">Literal</a>, <a href="GeneratorVariables$$Log.html" class="extype" name="provingground.learning.GeneratorVariables.Log">Log</a>, <a href="GeneratorVariables$$Product.html" class="extype" name="provingground.learning.GeneratorVariables.Product">Product</a>, <a href="GeneratorVariables$$Quotient.html" class="extype" name="provingground.learning.GeneratorVariables.Quotient">Quotient</a>, <a href="GeneratorVariables$$Sum.html" class="extype" name="provingground.learning.GeneratorVariables.Sum">Sum</a>, <a href="GeneratorVariables$$VarVal.html" class="extype" name="provingground.learning.GeneratorVariables.VarVal">VarVal</a></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 534.00 155.00" height="155pt" width="534pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 151)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-151 530,-151 530,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this trait" id="graph1_0"><g id="a_this trait|graph1_0"><a xlink:title="provingground.learning.GeneratorVariables.Expression (this trait)" xlink:href="#inheritance-diagram"><path d="M291.6667,-86C291.6667,-86 217.3333,-86 217.3333,-86 213.1667,-86 209,-81.8333 209,-77.6667 209,-77.6667 209,-69.3333 209,-69.3333 209,-65.1667 213.1667,-61 217.3333,-61 217.3333,-61 291.6667,-61 291.6667,-61 295.8333,-61 300,-65.1667 300,-69.3333 300,-69.3333 300,-77.6667 300,-77.6667 300,-81.8333 295.8333,-86 291.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="219.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="240.5" text-anchor="start">Expression</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.learning.GeneratorVariables.Literal" xlink:href="GeneratorVariables$$Literal.html#inheritance-diagram"><path d="M62.6667,-25C62.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 62.6667,0 62.6667,0 66.8333,0 71,-4.1667 71,-8.3333 71,-8.3333 71,-16.6667 71,-16.6667 71,-20.8333 66.8333,-25 62.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31.5" text-anchor="start">Literal</text></a></g></g><!-- node0&#45;&gt;node1 --><g class="edge inheritance" id="graph1_0_1"><g id="a_inheritance|graph1_0_1"><a xlink:title="Literal is a subtype of Expression"><path d="M202.5106,-59.0189C161.9933,-47.7333 106.8081,-32.3621 71.1645,-22.4339" stroke="#d4d4d4" fill="none"></path><polygon points="201.9879,-61.4165 209.3886,-60.9347 203.3027,-56.6962 201.9879,-61.4165" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.learning.GeneratorVariables.Log" xlink:href="GeneratorVariables$$Log.html#inheritance-diagram"><path d="M141.1667,-25C141.1667,-25 97.8333,-25 97.8333,-25 93.6667,-25 89.5,-20.8333 89.5,-16.6667 89.5,-16.6667 89.5,-8.3333 89.5,-8.3333 89.5,-4.1667 93.6667,0 97.8333,0 97.8333,0 141.1667,0 141.1667,0 145.3333,0 149.5,-4.1667 149.5,-8.3333 149.5,-8.3333 149.5,-16.6667 149.5,-16.6667 149.5,-20.8333 145.3333,-25 141.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="99.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="120.5" text-anchor="start">Log</text></a></g></g><!-- node0&#45;&gt;node2 --><g class="edge inheritance" id="graph1_0_2"><g id="a_inheritance|graph1_0_2"><a xlink:title="Log is a subtype of Expression"><path d="M220.0647,-57.9403C197.549,-47.7666 168.515,-34.6475 147.4363,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="219.14,-60.211 226.5279,-60.8608 221.1577,-55.7457 219.14,-60.211" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.learning.GeneratorVariables.Product" xlink:href="GeneratorVariables$$Product.html#inheritance-diagram"><path d="M236.6667,-25C236.6667,-25 176.3333,-25 176.3333,-25 172.1667,-25 168,-20.8333 168,-16.6667 168,-16.6667 168,-8.3333 168,-8.3333 168,-4.1667 172.1667,0 176.3333,0 176.3333,0 236.6667,0 236.6667,0 240.8333,0 245,-4.1667 245,-8.3333 245,-8.3333 245,-16.6667 245,-16.6667 245,-20.8333 240.8333,-25 236.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="178.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="199.5" text-anchor="start">Product</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge inheritance" id="graph1_0_3"><g id="a_inheritance|graph1_0_3"><a xlink:title="Product is a subtype of Expression"><path d="M240.039,-55.1225C232.4129,-45.431 223.2521,-33.7891 216.4329,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="238.3002,-56.8747 244.5544,-60.8608 242.151,-53.8446 238.3002,-56.8747" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.learning.GeneratorVariables.Quotient" xlink:href="GeneratorVariables$$Quotient.html#inheritance-diagram"><path d="M335.6667,-25C335.6667,-25 271.3333,-25 271.3333,-25 267.1667,-25 263,-20.8333 263,-16.6667 263,-16.6667 263,-8.3333 263,-8.3333 263,-4.1667 267.1667,0 271.3333,0 271.3333,0 335.6667,0 335.6667,0 339.8333,0 344,-4.1667 344,-8.3333 344,-8.3333 344,-16.6667 344,-16.6667 344,-20.8333 339.8333,-25 335.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="273.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="294.5" text-anchor="start">Quotient</text></a></g></g><!-- node0&#45;&gt;node4 --><g class="edge inheritance" id="graph1_0_4"><g id="a_inheritance|graph1_0_4"><a xlink:title="Quotient is a subtype of Expression"><path d="M269.0423,-55.3963C276.8706,-45.6509 286.3333,-33.8708 293.3602,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="267.1266,-53.8691 264.6528,-60.8608 270.9467,-56.9377 267.1266,-53.8691" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5 --><g class="node class" id="graph1_5"><g id="a_class|graph1_5"><a xlink:title="provingground.learning.GeneratorVariables.Sum" xlink:href="GeneratorVariables$$Sum.html#inheritance-diagram"><path d="M416.6667,-25C416.6667,-25 370.3333,-25 370.3333,-25 366.1667,-25 362,-20.8333 362,-16.6667 362,-16.6667 362,-8.3333 362,-8.3333 362,-4.1667 366.1667,0 370.3333,0 370.3333,0 416.6667,0 416.6667,0 420.8333,0 425,-4.1667 425,-8.3333 425,-8.3333 425,-16.6667 425,-16.6667 425,-20.8333 420.8333,-25 416.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="372.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="393.5" text-anchor="start">Sum</text></a></g></g><!-- node0&#45;&gt;node5 --><g class="edge inheritance" id="graph1_0_5"><g id="a_inheritance|graph1_0_5"><a xlink:title="Sum is a subtype of Expression"><path d="M289.9556,-57.9403C313.1384,-47.7666 343.0327,-34.6475 364.736,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="288.7263,-55.8042 283.3009,-60.8608 290.6954,-60.2912 288.7263,-55.8042" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node trait" id="graph1_6"><g id="a_trait|graph1_6"><a xlink:title="provingground.learning.GeneratorVariables.VarVal" xlink:href="GeneratorVariables$$VarVal.html#inheritance-diagram"><path d="M517.6667,-25C517.6667,-25 451.3333,-25 451.3333,-25 447.1667,-25 443,-20.8333 443,-16.6667 443,-16.6667 443,-8.3333 443,-8.3333 443,-4.1667 447.1667,0 451.3333,0 451.3333,0 517.6667,0 517.6667,0 521.8333,0 526,-4.1667 526,-8.3333 526,-8.3333 526,-16.6667 526,-16.6667 526,-20.8333 521.8333,-25 517.6667,-25" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-19.5" x="453.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="474.5" text-anchor="start">VarVal[Y]</text></a></g></g><!-- node0&#45;&gt;node6 --><g class="edge inheritance" id="graph1_0_6"><g id="a_inheritance|graph1_0_6"><a xlink:title="VarVal[Y] is a subtype of Expression"><path d="M307.1948,-59.5244C348.3273,-48.6154 404.6926,-33.6663 442.7399,-23.5755" stroke="#d4d4d4" fill="none"></path><polygon points="306.3536,-57.2127 300.2156,-61.3754 307.6098,-61.949 306.3536,-57.2127" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7 --><g class="node class" id="graph1_7"><g id="a_class|graph1_7"><a xlink:title="scala.AnyRef"><path d="M283.6667,-147C283.6667,-147 225.3333,-147 225.3333,-147 221.1667,-147 217,-142.8333 217,-138.6667 217,-138.6667 217,-130.3333 217,-130.3333 217,-126.1667 221.1667,-122 225.3333,-122 225.3333,-122 283.6667,-122 283.6667,-122 287.8333,-122 292,-126.1667 292,-130.3333 292,-130.3333 292,-138.6667 292,-138.6667 292,-142.8333 287.8333,-147 283.6667,-147" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-141.5" x="227.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-132.1" x="248.5" text-anchor="start">AnyRef</text></a></g></g><!-- node7&#45;&gt;node0 --><g class="edge inheritance" id="graph1_7_0"><g id="a_inheritance|graph1_7_0"><a xlink:title="Expression is a subtype of AnyRef"><path d="M254.5,-114.7386C254.5,-105.3393 254.5,-94.3803 254.5,-86.123" stroke="#d4d4d4" fill="none"></path><polygon points="252.0501,-114.8607 254.5,-121.8608 256.9501,-114.8608 252.0501,-114.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -258,6 +270,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.learning.GeneratorVariables.Expression"><span>Expression</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -336,6 +353,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="provingground.learning.GeneratorVariables.Expression#*" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="*(y:Double):provingground.learning.GeneratorVariables.Product"></a><a id="*(Double):Product"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#*(y:Double):provingground.learning.GeneratorVariables.Product" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $times" class="name">*</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="GeneratorVariables$$Product.html" class="extype" name="provingground.learning.GeneratorVariables.Product">Product</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.GeneratorVariables.Expression#*" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="*(that:provingground.learning.GeneratorVariables.Expression):provingground.learning.GeneratorVariables.Product"></a><a id="*(Expression):Product"></a>
       <span class="permalink">
       <a href="../../provingground/learning/GeneratorVariables$$Expression.html#*(that:provingground.learning.GeneratorVariables.Expression):provingground.learning.GeneratorVariables.Product" title="Permalink">
@@ -380,6 +413,45 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span title="gt4s: $minus" class="name">-</span><span class="params">(<span name="that">that: <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>)</span><span class="result">: <a href="GeneratorVariables$$Sum.html" class="extype" name="provingground.learning.GeneratorVariables.Sum">Sum</a></span>
+      </span>
+      
+      
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(Expression,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.learning.GeneratorVariables.Expression#/" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="/(y:Double):provingground.learning.GeneratorVariables.Quotient"></a><a id="/(Double):Quotient"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#/(y:Double):provingground.learning.GeneratorVariables.Quotient" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $div" class="name">/</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="GeneratorVariables$$Quotient.html" class="extype" name="provingground.learning.GeneratorVariables.Quotient">Quotient</a></span>
       </span>
       
       
@@ -455,6 +527,86 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((Expression)⇒Boolean,⇒Any):Expression"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((Expression)⇒Boolean):Expression"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):Expression"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):Expression"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -507,6 +659,29 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -617,6 +792,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.GeneratorVariables.Expression#square" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="square:provingground.learning.GeneratorVariables.Product"></a><a id="square:Product"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#square:provingground.learning.GeneratorVariables.Product" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">square</span><span class="result">: <a href="GeneratorVariables$$Product.html" class="extype" name="provingground.learning.GeneratorVariables.Product">Product</a></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -666,9 +857,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.learning.GeneratorVariables.Expression#useBoat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="useBoat[Boat](boat:Boat):provingground.learning.GeneratorVariables.Expression"></a><a id="useBoat[Boat](Boat):Expression"></a>
+      <a id="useBoat[Y,State,O,Boat](boat:Boat,island:provingground.learning.GeneratorNode.Island[Y,State,O,Boat]):provingground.learning.GeneratorVariables.Expression"></a><a id="useBoat[Y,State,O,Boat](Boat,Island[Y,State,O,Boat]):Expression"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#useBoat[Boat](boat:Boat):provingground.learning.GeneratorVariables.Expression" title="Permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#useBoat[Y,State,O,Boat](boat:Boat,island:provingground.learning.GeneratorNode.Island[Y,State,O,Boat]):provingground.learning.GeneratorVariables.Expression" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -677,7 +868,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">useBoat</span><span class="tparams">[<span name="Boat">Boat</span>]</span><span class="params">(<span name="boat">boat: <span class="extype" name="provingground.learning.GeneratorVariables.Expression.useBoat.Boat">Boat</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
+        <span class="name">useBoat</span><span class="tparams">[<span name="Y">Y</span>, <span name="State">State</span>, <span name="O">O</span>, <span name="Boat">Boat</span>]</span><span class="params">(<span name="boat">boat: <span class="extype" name="provingground.learning.GeneratorVariables.Expression.useBoat.Boat">Boat</span></span>, <span name="island">island: <a href="GeneratorNode$$Island.html" class="extype" name="provingground.learning.GeneratorNode.Island">Island</a>[<span class="extype" name="provingground.learning.GeneratorVariables.Expression.useBoat.Y">Y</span>, <span class="extype" name="provingground.learning.GeneratorVariables.Expression.useBoat.State">State</span>, <span class="extype" name="provingground.learning.GeneratorVariables.Expression.useBoat.O">O</span>, <span class="extype" name="provingground.learning.GeneratorVariables.Expression.useBoat.Boat">Boat</span>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
       </span>
       
       
@@ -749,11 +940,54 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(Expression,B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
 
-        
+        <div class="values members">
+              <h3>Shadowed Implicit Value Members</h3>
+              <ol><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/GeneratorVariables$$Expression.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit shadowed">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(expression: any2stringadd[Expression]).+(other)</pre></div></dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li></ol>
+            </div>
 
         
         </div>
@@ -764,7 +998,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

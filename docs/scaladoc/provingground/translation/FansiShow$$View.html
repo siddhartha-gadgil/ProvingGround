@@ -19,7 +19,7 @@
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
       <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
         var toRoot = '../../';
@@ -163,7 +163,17 @@ concrete languages including our implementation of HoTT are in this package.
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">
+                  Type Hierarchy
+                </span>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 624.00 125.00" height="125pt" width="624pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 121)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-121 620,-121 620,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><g class="cluster" id="clust3"></g><g class="cluster" id="clust4"></g><!-- node3 --><g class="node implicit-outgoing class" id="graph1_3"><g id="a_implicit-outgoing class|graph1_3"><a xlink:title="provingground.translation.FansiShow.View can be implicitly converted to View[View[U]] by the implicit method View in object provingground.translation.FansiShow" xlink:href="#inheritance-diagram"><path d="M583.1667,-49C583.1667,-49 496.8333,-49 496.8333,-49 492.6667,-49 488.5,-44.8333 488.5,-40.6667 488.5,-40.6667 488.5,-32.3333 488.5,-32.3333 488.5,-28.1667 492.6667,-24 496.8333,-24 496.8333,-24 583.1667,-24 583.1667,-24 587.3333,-24 591.5,-28.1667 591.5,-32.3333 591.5,-32.3333 591.5,-40.6667 591.5,-40.6667 591.5,-44.8333 587.3333,-49 583.1667,-49" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="499" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="520" text-anchor="start">View[View[U]]</text></a></g></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.translation.FansiShow.View (this class)" xlink:href="#inheritance-diagram"><path d="M336.1667,-49C336.1667,-49 275.8333,-49 275.8333,-49 271.6667,-49 267.5,-44.8333 267.5,-40.6667 267.5,-40.6667 267.5,-32.3333 267.5,-32.3333 267.5,-28.1667 271.6667,-24 275.8333,-24 275.8333,-24 336.1667,-24 336.1667,-24 340.3333,-24 344.5,-28.1667 344.5,-32.3333 344.5,-32.3333 344.5,-40.6667 344.5,-40.6667 344.5,-44.8333 340.3333,-49 336.1667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="278" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="299" text-anchor="start">View[U]</text></a></g></g><!-- node0&#45;&gt;node3 --><g class="edge implicit-outgoing" id="0_3"><g id="a_implicit-outgoing|0_3"><a xlink:title="View[U] can be implicitly converted to View[View[U]]"><path d="M352.9995,-36.5C387.3923,-36.5 434.5471,-36.5 472.8992,-36.5" stroke="#d4d4d4" fill="none"></path><polygon points="473.0037,-38.9501 480.0037,-36.5 473.0036,-34.0501 473.0037,-38.9501" stroke="#d4d4d4" fill="#d4d4d4"></polygon></a></g><text fill="#aaaaaa" font-size="9.00" font-family="Source Code Pro" y="-42.3" x="416.5" text-anchor="middle">implicitly</text></g><!-- node2 --><g class="node implicit-incoming trait" id="graph1_2"><g id="a_implicit-incoming trait|graph1_2"><a xlink:title="provingground.translation.FansiShow can be implicitly converted to View[FansiShow[U]] by the implicit method View in object provingground.translation.FansiShow" xlink:href="FansiShow.html#inheritance-diagram"><path d="M115.6667,-49C115.6667,-49 32.3333,-49 32.3333,-49 28.1667,-49 24,-44.8333 24,-40.6667 24,-40.6667 24,-32.3333 24,-32.3333 24,-28.1667 28.1667,-24 32.3333,-24 32.3333,-24 115.6667,-24 115.6667,-24 119.8333,-24 124,-28.1667 124,-32.3333 124,-32.3333 124,-40.6667 124,-40.6667 124,-44.8333 119.8333,-49 115.6667,-49" stroke="#ababab" fill="#e1e1e1"></path><image xlink:href="../../lib/trait_diagram.png" y="-43.5" x="34" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#7d7d7d" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="55" text-anchor="start">FansiShow[U]</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge implicit-incoming" id="2_0"><g id="a_implicit-incoming|2_0"><a xlink:title="FansiShow[U] can be implicitly converted to View[U]"><path d="M131.9983,-36.5C168.7558,-36.5 215.9757,-36.5 251.9481,-36.5" stroke="#d4d4d4" fill="none"></path><polygon points="252.0025,-38.9501 259.0025,-36.5 252.0025,-34.0501 252.0025,-38.9501" stroke="#d4d4d4" fill="#d4d4d4"></polygon></a></g><text fill="#aaaaaa" font-size="9.00" font-family="Source Code Pro" y="-42.3" x="195.75" text-anchor="middle">implicitly</text></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="scala.AnyRef"><path d="M335.1667,-117C335.1667,-117 276.8333,-117 276.8333,-117 272.6667,-117 268.5,-112.8333 268.5,-108.6667 268.5,-108.6667 268.5,-100.3333 268.5,-100.3333 268.5,-96.1667 272.6667,-92 276.8333,-92 276.8333,-92 335.1667,-92 335.1667,-92 339.3333,-92 343.5,-96.1667 343.5,-100.3333 343.5,-100.3333 343.5,-108.6667 343.5,-108.6667 343.5,-112.8333 339.3333,-117 335.1667,-117" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-111.5" x="279" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-102.1" x="300" text-anchor="start">AnyRef</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="View[U] is a subtype of AnyRef"><path d="M306,-84.6427C306,-73.2137 306,-59.1902 306,-49.2329" stroke="#d4d4d4" fill="none"></path><polygon points="303.5501,-84.7097 306,-91.7097 308.4501,-84.7098 303.5501,-84.7097" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -189,6 +199,11 @@ concrete languages including our implementation of HoTT are in this package.
                   </span>
                   <ol id="linearization">
                     <li class="in" name="provingground.translation.FansiShow.View"><span>View</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+                  <span class="filtertype">Implicitly<br />
+                  </span>
+                  <ol id="implicits"> <li class="in" name="provingground.translation.FansiShow.View" data-hidden="false"><span>by View</span></li><li class="in" name="scala.Predef.any2stringadd" data-hidden="true"><span>by any2stringadd</span></li><li class="in" name="scala.Predef.StringFormat" data-hidden="true"><span>by StringFormat</span></li><li class="in" name="scala.Predef.Ensuring" data-hidden="true"><span>by Ensuring</span></li><li class="in" name="scala.Predef.ArrowAssoc" data-hidden="true"><span>by ArrowAssoc</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -266,6 +281,49 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(other:String):String"></a><a id="+(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#+(other:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method any2stringadd in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(View[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
@@ -322,6 +380,86 @@ concrete languages including our implementation of HoTT are in this package.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((View[U])⇒Boolean,⇒Any):View[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((View[U])⇒Boolean):View[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):View[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
+    </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):View[U]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#ensuring(cond:Boolean):A" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method Ensuring in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -390,6 +528,29 @@ concrete languages including our implementation of HoTT are in this package.
       
       <span class="symbol">classOf[java.lang.Throwable]</span>
     </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#formatted(fmtstr:String):String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method StringFormat in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -600,11 +761,54 @@ concrete languages including our implementation of HoTT are in this package.
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(View[U],B)"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#→[B](y:B):(A,B)" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method ArrowAssoc in scala.Predef.
+            
+          </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
               </ol>
             </div>
 
-        
+        <div class="values members">
+              <h3>Shadowed Implicit Value Members</h3>
+              <ol><li name="provingground.translation.FansiShow.View#fansi" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fansi:String"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/FansiShow$$View.html#fansi:String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="implicit shadowed">fansi</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to
+            <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] performed by method View in <a href="FansiShow$.html" class="extype" name="provingground.translation.FansiShow">provingground.translation.FansiShow</a>.
+            This conversion will take place only if an implicit value of type <a href="FansiShow.html" class="extype" name="provingground.translation.FansiShow">FansiShow</a>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]] is in scope.
+          </dd><dt class="implicit">Shadowing</dt><dd>This implicitly inherited member is shadowed by one or more members in this class.<br />To access this member you can use a <a href="http://stackoverflow.com/questions/2087250/what-is-the-purpose-of-type-ascription-in-scala" target="_blank">type ascription</a>:<br /><div class="cmt"><pre>(view: View[View[U]]).fansi</pre></div></dd></dl></div>
+    </li></ol>
+            </div>
 
         
         </div>
@@ -615,7 +819,27 @@ concrete languages including our implementation of HoTT are in this package.
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
-        
+        <div class="conversion" name="provingground.translation.FansiShow.View">
+              <h3>Inherited by implicit conversion View from
+                <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.any2stringadd">
+              <h3>Inherited by implicit conversion any2stringadd from
+                <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.StringFormat">
+              <h3>Inherited by implicit conversion StringFormat from
+                <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.Ensuring">
+              <h3>Inherited by implicit conversion Ensuring from
+                <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]]
+              </h3>
+            </div><div class="conversion" name="scala.Predef.ArrowAssoc">
+              <h3>Inherited by implicit conversion ArrowAssoc from
+                <a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.translation.FansiShow.View">View</a>[<span class="extype" name="provingground.translation.FansiShow.View.U">U</span>]]
+              </h3>
+            </div>
         </div>
 
         <div id="groupedMembers">

@@ -80,6 +80,16 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
       "-feature",
       "-language:existentials")
 
+  override def scalaDocOptions =
+    T{
+      scalacOptions() ++
+      Seq(
+        "-diagrams",
+        "-implicits",
+        "-implicits-show-all"
+      )
+    }
+
   def bin() : define.Command[PathRef] = T.command {
     def ass: PathRef = assembly()
     def name: String = artifactName()
