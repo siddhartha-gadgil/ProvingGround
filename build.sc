@@ -80,7 +80,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
       "-feature",
       "-language:existentials")
 
-  override def scalaDocOptions =
+  def scalaDocOptions =
     T{
       scalacOptions() ++
       Seq(
