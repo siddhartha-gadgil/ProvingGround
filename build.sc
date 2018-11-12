@@ -55,7 +55,7 @@ val commonLibs = List(
   ivy"com.lihaoyi::upickle::0.6.6",
   ivy"com.lihaoyi::fastparse::1.0.0",
   ivy"com.chuusai::shapeless::2.3.3",
-  ivy"org.typelevel::cats-core::1.1.0",
+  ivy"org.typelevel::cats-core::1.4.0",
   ivy"io.monix::monix::3.0.0-RC1",
   ivy"com.lihaoyi::pprint::0.5.2",
   ivy"com.lihaoyi::sourcecode::0.1.4",

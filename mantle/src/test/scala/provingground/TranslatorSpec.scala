@@ -81,7 +81,7 @@ class TranslatorSpec extends FlatSpec {
 
     val li = implicitly[Functor[IL]]
 
-    val ii = implicitly[Functor[II]]
+    val ii = traversePair[Id, Id]
 
     val iii = implicitly[Functor[III]]
 
