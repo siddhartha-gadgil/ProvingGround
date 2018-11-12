@@ -42,7 +42,7 @@ trait MetalsModule extends ScalaModule{
   }
 }
 
-val scalaV = "2.12.6"
+val scalaV = "2.12.7"
 
 val ammV = "1.4.2"
 
@@ -56,7 +56,7 @@ val commonLibs = List(
   ivy"com.lihaoyi::fastparse::1.0.0",
   ivy"com.chuusai::shapeless::2.3.3",
   ivy"org.typelevel::cats-core::1.4.0",
-  ivy"io.monix::monix::3.0.0-RC1",
+  ivy"io.monix::monix::3.0.0-RC2",
   ivy"com.lihaoyi::pprint::0.5.2",
   ivy"com.lihaoyi::sourcecode::0.1.4",
   ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
@@ -99,7 +99,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule{
-  def scalaJSVersion = "0.6.22"
+  def scalaJSVersion = "0.6.25"
 }
 
 val jvmLibs = List(
@@ -143,7 +143,7 @@ object core extends Module{
 
   object js extends CommonJSModule with SbtModule{
     // def scalaVersion = "2.12.4"
-    override def scalaJSVersion = "0.6.22"
+    override def scalaJSVersion = "0.6.25"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }

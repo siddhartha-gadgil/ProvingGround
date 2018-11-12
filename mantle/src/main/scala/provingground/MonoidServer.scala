@@ -47,6 +47,6 @@ object MonoidServer {
       case None => Js.Obj("proved" -> false)
     }
 
-  def seekResultFut: Future[Js.Value] = seekResult.runAsync
+  def seekResultFut: Future[Js.Value] = seekResult.runToFuture
 
 }

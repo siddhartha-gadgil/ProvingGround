@@ -268,7 +268,7 @@ class LeanParser(initMods: Seq[Modification],
     parse(Const(Name(name.split("\\."): _*), Vector()))
 
   def get(name: String): CancelableFuture[Term] =
-    getTask(name).runAsync
+    getTask(name).runToFuture
 
   def getIndTask(s: String): Task[TermIndMod] =
     {

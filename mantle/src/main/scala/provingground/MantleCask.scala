@@ -120,7 +120,7 @@ class TaskSocket(task: String => Task[String])
 
   import monix.execution.Scheduler.Implicits.global
 
-  def respond(t: Task[String], channel: WebSocketChannel): CancelableFuture[Unit] =
+  def respond(t: Task[String], channel: WebSocketChannel): Unit =
     t.foreach((output) => WebSockets.sendTextBlocking(output, channel))
 
   override def onConnect(exchange: WebSocketHttpExchange,

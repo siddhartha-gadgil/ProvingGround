@@ -210,7 +210,7 @@ object LeanRoutes extends cask.Routes {
       }
       .getOrElse {
         val p  = parser
-        val cf = p.getTask(name).materialize.runAsync
+        val cf = p.getTask(name).materialize.runToFuture
         parseCanc += name -> cf
         cf.foreach { (tt) =>
           tt.fold(

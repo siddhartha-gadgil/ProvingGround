@@ -733,7 +733,7 @@ object ProverClient {
           You can query the server for much quicker computation.""")
         ).render
       )
-      seek.runAsync
+      seek.runToFuture
     }
 
     seekFut.foreach {
