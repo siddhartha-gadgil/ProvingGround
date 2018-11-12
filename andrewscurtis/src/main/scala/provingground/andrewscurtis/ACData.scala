@@ -366,7 +366,7 @@ object ACData {
                  lines: Option[Int] = None) = {
     val source = wd / dir / s"${file}.acthms"
     val target = wd / dir / s"${file}.acthms.csv"
-    val l = (lines map ((n) => ((read.lines.iter(source)).take(n)).toVector))
+    val l = (lines map ((n) => ((read.lines(source)).take(n)).toVector))
       .getOrElse(read.lines(source))
     val pmfs = l map ((x) => uread[Vector[(String, Double)]](x))
     val tVec =
