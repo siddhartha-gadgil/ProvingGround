@@ -96,15 +96,15 @@ case class GeneratorTF[State, Boat](
     finalVars.collect { case e: Elem[u] => e }.groupBy(_.randomVar)
 
   def eventSupport[X, Y](ev: Event[X, Y]): Set[Elem[_]] =
-    elemFinalVars(ev.base).filter((el) =>
+    elemFinalVars.getOrElse(ev.base, Set.empty[Elem[_]]).filter((el) =>
       ev.sort.pred(el.element.asInstanceOf[X]))
 
   def pairEventSupport[X1, X2, Y](
       ev: PairEvent[X1, X2, Y]): Set[(Elem[_], Elem[_])] = {
     for {
-      x1 <- elemFinalVars(ev.base1)
-      x2 <- elemFinalVars(ev.base2)
-      if (ev.sort.pred((x1.asInstanceOf[X1], x2.asInstanceOf[X2])))
+      x1 <- elemFinalVars.getOrElse(ev.base1, Set.empty[Elem[_]])
+      x2 <- elemFinalVars.getOrElse(ev.base2, Set.empty[Elem[_]])
+      if (ev.sort.pred((x1.element.asInstanceOf[X1], x2.element.asInstanceOf[X2])))
     } yield (x1, x2)
 
   }
@@ -220,7 +220,7 @@ case class GeneratorTF[State, Boat](
         (hts.map(_ * bc.headCoeff) union tts, hes ++ tes)
     }
 
-  val baseData: TFData =
+  lazy val baseData: TFData =
     TFData(
       elemInitVars.values.toSet.flatten
         .map((x) => InitialVal(x): VarVal[_]) union elemFinalVars.values.toSet.flatten
@@ -308,7 +308,7 @@ case class GeneratorTF[State, Boat](
         val eqTerms: Set[EquationTerm] = for {
           (x, p)                   <- finalProbs(baseInput)
           (node: GeneratorNode[Y]) <- fiberNodeOpt(x).toSet
-          _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
+//          _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
           eqT <- nodeEquationTerms(node)._1
         } yield eqT * p
         val allData: Set[TFData] = for {
@@ -336,8 +336,8 @@ case class GeneratorTF[State, Boat](
           for {
             (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
             d2 = finalProbs(fiberVar(z)) // distribution of the fiber at `z`
-            _  = pprint.log(z)
-            _  = pprint.log(fiberVar(z))
+//            _  = pprint.log(z)
+//            _  = pprint.log(fiberVar(z))
             d = pmf1.zip(d2).map {
               case ((x1, p1), (x2, p2)) =>
                 Try((f(x1, x2), p1 * p2)).fold(fa => {
