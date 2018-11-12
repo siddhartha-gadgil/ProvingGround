@@ -119,7 +119,8 @@ val jvmLibs = List(
   ivy"org.slf4j:slf4j-simple:1.7.16",
   ivy"com.github.scopt::scopt:3.5.0",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
-  ivy"org.apache.logging.log4j:log4j-core:2.11.1"
+  ivy"org.apache.logging.log4j:log4j-core:2.11.1",
+  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64"
 )
 
 
