@@ -126,7 +126,7 @@ object GeneratorVariables {
     case rv @ Elem(element, randomVar) =>
       val fd = StateDistribution.value(state)(randomVar)
       fd(element)
-    case NodeCoeff(_) => 1
+//    case NodeCoeff(_) => 1
     case Event(base, sort) =>
       val fd = StateDistribution.value(state)(base)
       fd.filter(sort.pred).total
@@ -174,7 +174,7 @@ object GeneratorVariables {
 
   case class NodeCoeff[RDom <: HList, Y](
       nodeFamily: GeneratorNodeFamily[RDom, Y])
-      extends Variable[Unit]
+//      extends Variable[Unit]
 
   object Expression{
     def varVals(expr: Expression): Set[VarVal[_]] = expr match {

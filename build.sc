@@ -44,7 +44,7 @@ trait MetalsModule extends ScalaModule{
 
 val scalaV = "2.12.6"
 
-val ammV = "1.2.1"
+val ammV = "1.4.2"
 
 
 val commonLibs = List(

@@ -588,7 +588,7 @@ object ConstructorShape {
       extends ConstructorShape[CnstDepFuncConsShape.type :: HShape,
                                H,
                                FuncLike[T, HC]] {
-    lazy val introArgs = 1 + headfibre(tail.Var).introArgs
+    lazy val introArgs: Int = 1 + headfibre(tail.Var).introArgs
 
     def apply(W: Typ[H]): Typ[FuncLike[T, HC]] = {
       val a = tail.Var

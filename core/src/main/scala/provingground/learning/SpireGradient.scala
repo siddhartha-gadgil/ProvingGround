@@ -140,7 +140,7 @@ object SpireGradient {
             varValue(
               st.subs(newBoat, el.boat),
               el.isle.finalMap(el.boat, finalState))(FinalVal(el.isleVar))
-          case NodeCoeff(nodeFamily) => 0
+//          case NodeCoeff(nodeFamily) => 0
         }
       case InitialVal(variable) =>
         variable match {
@@ -153,7 +153,7 @@ object SpireGradient {
             varValue(
               st.subs(newBoat, el.boat),
               el.isle.finalMap(el.boat, finalState))(InitialVal(el.isleVar))
-          case NodeCoeff(nodeFamily)       => 0
+//          case NodeCoeff(nodeFamily)       => 0
         }
     }
 }
