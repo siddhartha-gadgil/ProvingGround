@@ -591,7 +591,7 @@ object TypFamilyMap {
       tailfibre(ind.head).typRestrict(xs(ind.head), ind.tail)
 
     def subs(x: Term, y: Term) =
-      DepFuncTypFamilyMap(head.replace(x, y), (u: U) => tailfibre(u).subs(x, y))
+      DepFuncTypFamilyMap(head.replace(x, y), (u: U) => tailfibre(u.replace(y, x)).subs(x, y))
   }
 }
 
