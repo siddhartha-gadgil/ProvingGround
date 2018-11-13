@@ -91,3 +91,73 @@ class TFEg {
 
 
 }
+
+case class EgUnif(n: Int) {
+  val rnd = new scala.util.Random()
+
+  val probVars: Vector[api.tf.Variable[Double]] = (0 to n)
+    .map(j =>
+      tf.variable[Double](s"p$j",
+        Shape(1, 1),
+        initializer = tf.ConstantInitializer[Double](5 * (rnd.nextDouble() - 0.5))))
+    .toVector
+
+  val totSig: Output[Double] =
+    probVars.map(v => tf.sigmoid(v: Output[Double])).reduce[Output[Double]] {
+      case (x, y) => tf.add(x, y)
+    }
+
+  val probs: Vector[Output[Double]] =
+    probVars.map(v => tf.divide(tf.sigmoid(v), totSig))
+
+
+  val dist =
+    TFDist(
+      (0 to n).map(j => j -> probs(j)).toMap
+    )
+
+
+  val loss: Output[Double] = tf.negate(dist.entropy)
+
+  val trainOp: UntypedOp = tf.train.AdaGrad(1.0f).minimize(loss)
+
+  val geomFD: FiniteDistribution[Int] = FiniteDistribution(
+    (0 to n).toVector.map(j => Weighted(j, math.pow(2, -(j + 1))))
+  ).normalized()
+
+  val geomDist: TFDist[Int] = TFDist.fromFD(geomFD)
+
+  val klLoss: Output[Double] = geomDist.klDivergence(dist)
+
+  val klTrainOp: UntypedOp = tf.train.AdaGrad(1.0f).minimize(klLoss)
+
+  val session = Session()
+
+  session.run(targets = tf.globalVariablesInitializer())
+
+  def tuned(steps: Int): FiniteDistribution[Int] = {
+
+    (1 to steps).foreach { j =>
+      //      println(j)
+      val trainLoss = session.run(fetches = loss, targets = trainOp)
+      if (j % 100 == 0) println(s"loss: ${trainLoss.scalar}, steps: $j")
+    }
+
+
+    dist.getFD(session)
+  }
+
+  def klTuned(steps: Int): FiniteDistribution[Int] = {
+
+    (1 to steps).foreach { j =>
+      //      println(j)
+      val trainLoss = session.run(fetches = klLoss, targets = klTrainOp)
+      if (j % 100 == 0) println(s"loss: ${trainLoss.scalar}, steps: $j")
+    }
+
+
+    dist.getFD(session)
+  }
+
+
+}
