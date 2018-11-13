@@ -131,6 +131,12 @@ case class EgUnif(n: Int) {
 
   val klTrainOp: UntypedOp = tf.train.AdaGrad(1.0f).minimize(klLoss)
 
+  val geomShift: TFDist[Int] = TFDist(Map(0 -> tf.constant(0.5))) ++ (dist.map(_ + 1) * tf.constant(0.5))
+
+  val recLoss: Output[Double] = dist.klDivergence(geomShift)
+
+  val recTrainOp: UntypedOp = tf.train.AdaGrad(1.0f).minimize(recLoss)
+
   val session = Session()
 
   session.run(targets = tf.globalVariablesInitializer())
@@ -152,6 +158,18 @@ case class EgUnif(n: Int) {
     (1 to steps).foreach { j =>
       //      println(j)
       val trainLoss = session.run(fetches = klLoss, targets = klTrainOp)
+      if (j % 100 == 0) println(s"loss: ${trainLoss.scalar}, steps: $j")
+    }
+
+
+    dist.getFD(session)
+  }
+
+  def recTuned(steps: Int): FiniteDistribution[Int] = {
+
+    (1 to steps).foreach { j =>
+      //      println(j)
+      val trainLoss = session.run(fetches = recLoss, targets = recTrainOp)
       if (j % 100 == 0) println(s"loss: ${trainLoss.scalar}, steps: $j")
     }
 
