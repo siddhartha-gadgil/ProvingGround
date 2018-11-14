@@ -12,6 +12,8 @@ import scala.util.Try
 
 import translation.{FansiShow, TermLang => TL}
 
+import TermList._
+
 /**
   * the shape of a type family.
   */
@@ -354,10 +356,10 @@ object TypFamilyPtn {
   * methods allow restricting (dependent) functions and type families to indices and
   * building (dependent) functions from such restrictions.
   */
-sealed trait TypFamilyMap[H <: Term with Subs[H],
+abstract class TypFamilyMap[H <: Term with Subs[H],
                           F <: Term with Subs[F],
                           C <: Term with Subs[C],
-                          Index <: HList,
+                          Index <: HList : TermList,
                           IF <: Term with Subs[IF],
                           IDF <: Term with Subs[IDF],
                           IDFT <: Term with Subs[IDFT]] {
@@ -641,13 +643,14 @@ object TypObj {
 /**
   * bridge between [[TypFamilyPtn]] and [[TypFamilyMap]]
   */
-sealed trait TypFamilyMapper[H <: Term with Subs[H],
+abstract class TypFamilyMapper[H <: Term with Subs[H],
                              F <: Term with Subs[F],
                              C <: Term with Subs[C],
-                             Index <: HList,
+                             Index <: HList : TermList,
                              IF <: Term with Subs[IF],
                              IDF <: Term with Subs[IDF],
                              IDFT <: Term with Subs[IDFT]] {
+  val tlEvidence = implicitly[TermList[Index]]                            
 
   val mapper: TypFamilyPtn[H, F, Index] => TypFamilyMap[H,
                                                         F,
