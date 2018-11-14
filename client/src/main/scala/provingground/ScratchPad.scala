@@ -1,5 +1,7 @@
 package provingground
 
+
+import fastparse._
 import org.scalajs.dom
 
 import scalajs.js.annotation._
@@ -71,9 +73,9 @@ object ScratchPad {
       def compile(): Unit = {
         val text = editor.getValue
 
-        val view = parser.block
-          .parse(text)
-          .fold(
+        val view =
+          parse(text, parser.block(_)
+        ).fold(
             (_, _, s) =>
               div(
                 h3(`class` := "text-danger")("Error"),

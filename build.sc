@@ -53,7 +53,7 @@ val commonLibs = List(
   ivy"org.typelevel::spire::0.16.0",
   ivy"com.lihaoyi::fansi::0.2.4",
   ivy"com.lihaoyi::upickle::0.6.6",
-  ivy"com.lihaoyi::fastparse::1.0.0",
+  ivy"com.lihaoyi::fastparse::2.0.4",
   ivy"com.chuusai::shapeless::2.3.3",
   ivy"org.typelevel::cats-core::1.4.0",
   ivy"io.monix::monix::3.0.0-RC2",
@@ -69,12 +69,12 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def organization = "in.ac.iisc"
   def name = "ProvingGround"
 
-  // override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
+  override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
 
   override def scalacOptions =
     Seq("-Ypartial-unification",
       "-Yrangepos",
-      // "-Xplugin-require:semanticdb",
+      "-Xplugin-require:semanticdb",
       "-unchecked",
       "-deprecation",
       "-feature",

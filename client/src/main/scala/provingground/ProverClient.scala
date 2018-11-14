@@ -26,6 +26,8 @@ import ujson.Js
 import ujson.Js.Value
 import upickle.default._
 
+import fastparse._
+
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Try
 
@@ -374,8 +376,8 @@ object InteractiveProver {
 
         val view: JsDom.TypedTag[Div] =
           Try(
-            parser.context
-              .parse(text))
+          parse(text,parser.context(_))
+          )
             .fold(
               fa =>
                 div(

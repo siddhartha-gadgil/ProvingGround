@@ -3,7 +3,7 @@ package provingground.translation
 import provingground._
 import HoTT._
 import HoTTParser._
-import fastparse.all
+import fastparse._
 import monix.eval.Task
 import provingground.scalahott.NatRing
 import spire.math.SafeLong
@@ -33,13 +33,8 @@ object HoTTParser {
 
 case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Context] = Map()) { self =>
   import ctx.namedTerms
-  import fastparse._
-  val White: WhitespaceApi.Wrapper = WhitespaceApi.Wrapper {
-    import fastparse.all._
-    NoTrace(" ".rep)
-  }
-  import fastparse.noApi._
-  import White._
+  import fastparse._, NoWhitespace._
+
 
   def +(n: String, t: Term) = HoTTParser(ctx.defineSym(Name(n), t), contextMap)
 
@@ -49,43 +44,39 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
 
   def addImport(s: String) = HoTTParser(ctx ++ contextMap(s), contextMap)
 
-  val predefs: P[Term] =
+  def predefs[_ : P]: P[Term] =
     P("Type").map((_) => Type: Term) |
       P("Star").map((_) => Star: Term) |
       P("Unit").map((_) => Unit: Term) |
       P("Zero").map((_) => Zero: Term) |
       P("Prop").map((_) => Prop: Term)
 
-  val named: P[Term] =
+  def named[_ : P]: P[Term] =
     namedTerms.foldRight[P[Term]](predefs) {
-      case ((name, term), parser) => P(name).map((_) => term) | parser
+      case ((name, term), parser) => (P(name).map((_) => term) | parser)
     }
 
-  val alphachar
-    : immutable.IndexedSeq[Char] = ('a' to 'z') ++ ('A' to 'Z') ++ Seq('$',
-                                                                       '@',
-                                                                       '_')
+  def alphachar[_ : P] = CharIn("A-Z", "a-z", "$","@", "_")
 
-  val alphanum: immutable.IndexedSeq[Char] = alphachar ++ ('0' to '9') ++ Seq(
-    '.')
+  def alphanum[_ : P] = alphachar | CharIn("0-9")
 
-  val str: core.Parser[String, Char, String] =
-    (P(CharIn(alphachar).!) ~ P(CharIn(alphanum).rep.!)).map {
+  def str[_ : P]: P[String] =
+    (alphachar.! ~ P(alphanum.rep.!)).map {
       case (h, t) => h + t.toString
     }
 
-  val name: P[String] =
+  def name[_ : P]: P[String] =
     P("\"" ~ str ~ "\"")
 
-  val symbolic: P[Term] = P(name ~ P("::") ~ term).map {
+  def symbolic[_ : P]: P[Term] = P(name ~ P("::") ~ term).map {
     case (s, t) => s :: toTyp(t)
   }
 
-  val parens: P[Term] = P("(" ~ term ~ ")")
+  def parens[_ : P]: P[Term] = P("(" ~ term ~ ")")
 
-  val simpleterm: P[Term] = P(parens | named)
+  def simpleterm[_ : P]: P[Term] = P(parens | named)
 
-  val lmbdaP: P[Term] =
+  def lmbdaP[_ : P]: P[Term] =
     (P(
       "lmbda" ~ "(" ~ term ~ ")" ~ "(" ~ term ~ ")"
     ) |
@@ -93,7 +84,7 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
         simpleterm ~ ":->" ~ term
       )).map { case (x, y) => lmbda(x)(y) }
 
-  val lambdaP: P[Term] =
+  def lambdaP[_ : P]: P[Term] =
     (P(
       "lambda" ~ "(" ~ term ~ ")" ~ "(" ~ term ~ ")"
     ) |
@@ -101,73 +92,73 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
         simpleterm ~ ":~>" ~ term
       )).map { case (x, y) => lambda(x)(y) }
 
-  val funcTyp = P(
+  def funcTyp[_ : P] = P(
     simpleterm ~ "->:" ~ term
   ).map { case (x, y) => toTyp(x) ->: toTyp(y) }
 
-  val plusTyp = P(
+  def plusTyp[_ : P] = P(
     simpleterm ~ "||" ~ term
   ).map { case (x, y) => toTyp(x) || toTyp(y) }
 
-  val prodTyp = P(
+  def prodTyp[_ : P] = P(
     simpleterm ~ "&&" ~ term
     ).map { case (x, y) => toTyp(x) && toTyp(y) }
 
-  val piTyp = P(
+  def piTyp[_ : P] = P(
     simpleterm ~ "~>:" ~ term
   ).map { case (x, y) => x ~>: toTyp(y) }
 
-  val sigmaTyp = P(
+  def sigmaTyp[_ : P] = P(
     simpleterm ~ "&:" ~ term
   ).map { case (x, y) => x &: toTyp(y) }
 
-  val applnP: core.Parser[Term, Char, String] =
+  def applnP[_ : P]: P[Term] =
     P(simpleterm ~ "(" ~ term ~ ")").map {
       case (f, x) => applyFunc(f, x)
     }
 
-  val polyApplnP =
+  def polyApplnP[_ : P] =
     P(simpleterm ~ ("(" ~ term ~ ")").rep(1)).map {
       case (f, xs) => xs.foldLeft(f)(applyFunc)
     }
 
-  val recP: core.Parser[Term, Char, String] =
+  def recP[_ : P]: P[Term] =
     P(simpleterm ~ ".rec" ~ "(" ~ term ~ ")").map {
       case (tp, x) => ctx.inducStruct.recOpt(tp, toTyp(x)).get
     }
 
-  val inducP: core.Parser[Term, Char, String] =
+  def inducP[_ : P]: P[Term] =
     P(simpleterm ~ ".induc" ~ "(" ~ term ~ ")").map {
       case (tp, x) => ctx.inducStruct.inducOpt(tp, x).get
     }
 
   import spire.implicits._, spire.math._
 
-  val num = P(CharIn('0' to '9').rep.!).map{
+  def num[_ : P] = CharIn("0-9").rep.!.map{
     case n => NatRing.Literal(n.toInt : SafeLong)
   }
 
-  val term: P[Term] = P(
+  def term[_ : P]: P[Term] = P(
     symbolic | lmbdaP | lambdaP |  polyApplnP | funcTyp | piTyp | prodTyp | plusTyp | sigmaTyp | recP | inducP |  simpleterm | num)
 
-  val break
-    : core.Parser[Unit, Char, String] = P(spc ~ (End | CharIn("\n;"))) | P(
+  def break[_ : P]
+     = P(spc ~ (End | CharIn("\n;"))) | P(
     "//" ~ CharPred(_ != '\n').rep ~ ("\n" | End))
 
-  val spc: all.P[Unit] = CharIn(" \t").rep
+  def spc[_ : P]: P[Unit] = CharIn(" \t").rep
 
-  val defn: core.Parser[Defn, Char, String] =
+  def defn[_ : P] =
     P(spc ~ "val" ~ str ~ "=" ~ term ~ break).map {
       case (n, t) => Defn(n, t)
     }
 
-  val imp = P(spc ~ "import" ~ str ~ break).map(Import(_))
+  def imp[_ : P] = P(spc ~ "import" ~ str ~ break).map(Import(_))
 
-  val expr: core.Parser[Expr, Char, String] = (spc ~ term ~ break).map(Expr)
+  def expr[_ : P] = (spc ~ term ~ break).map(Expr)
 
-  val stat: P[Stat] = defn | expr | imp
+  def stat[_ : P]: P[Stat] = defn | expr | imp
 
-  val block: P[Block] =
+  def block[_ : P]: P[Block] =
     P(spc ~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ block) |
       (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => Block(Vector())) |
       (spc ~ End).map((_) => Block(Vector())) |
@@ -178,7 +169,7 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
       P(stat ~ block ~ End).map { case (s, v) => s +: v } |
       P(spc ~ "\n" ~ block)
 
-  val context: P[Context] =
+  def context[_ : P]: P[Context] =
     P(spc ~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ context) |
       (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => ctx) |
       (spc ~ End).map((_) => ctx ) |
