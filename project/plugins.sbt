@@ -20,7 +20,7 @@ addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.6")
 
 // addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")
 
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.21")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.25")
 
 // addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "5.1.0")
 

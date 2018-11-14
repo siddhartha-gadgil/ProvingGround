@@ -1,8 +1,8 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.12.4"
+val scalaV = "2.12.7"
 
-val ammV = "1.1.1"
+val ammV = "1.4.2"
 
 // scalaOrganization in ThisBuild := "org.typelevel"
 
@@ -57,13 +57,13 @@ lazy val commonSettings = baseSettings ++ Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.0.5",
      "org.scala-lang.modules" %% "scala-xml" % "1.1.0",
-    "org.typelevel" %%% "spire"         % "0.15.0",
+    "org.typelevel" %%% "spire"         % "0.16.0",
     "com.lihaoyi"   %%% "fansi"         % "0.2.4",
     "com.lihaoyi"   %%% "upickle"       % "0.6.6",
     "com.lihaoyi" %%% "fastparse" % "1.0.0",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
-    "io.monix"      %%% "monix"         % "3.0.0-RC1",
+    "io.monix"      %%% "monix"         % "3.0.0-RC2",
     "org.scalameta" %%% "scalameta"     % "3.4.0",
     "com.geirsson"  %%% "scalafmt-core" % "1.4.0",
     "com.lihaoyi" %%% "pprint"      % "0.5.3",
@@ -96,6 +96,7 @@ lazy val jvmSettings = Seq(
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "org.scalactic" %% "scalactic" % "3.0.1",
     "org.scalatest" %% "scalatest" % "3.0.4" % "test",
+    "com.lihaoyi" %% "cask" % "0.1.9",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
     // "org.mongodb"  %% "casbah" % "3.1.1",
