@@ -69,12 +69,12 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def organization = "in.ac.iisc"
   def name = "ProvingGround"
 
-  override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
+  // override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
 
   override def scalacOptions =
     Seq("-Ypartial-unification",
       "-Yrangepos",
-      "-Xplugin-require:semanticdb",
+      // "-Xplugin-require:semanticdb",
       "-unchecked",
       "-deprecation",
       "-feature",
