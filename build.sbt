@@ -4,45 +4,19 @@ val scalaV = "2.12.7"
 
 val ammV = "1.4.2"
 
-// scalaOrganization in ThisBuild := "org.typelevel"
-
-// inThisBuild(Seq(
-//   scalaOrganization := "org.typelevel",
-//   scalaVersion := "2.12.2-bin-typelevel-4"
-// ))
 
 scalaVersion in ThisBuild := scalaV
-// scalafmtOnCompile in ThisBuild := true
-// scalafmtVersion in ThisBuild := "1.0.0-RC3"
 
-// classpathTypes += "maven-plugin"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
+// addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
 
 libraryDependencies += compilerPlugin(
-  "org.scalameta" % "semanticdb-scalac" % "2.1.2" cross CrossVersion.full)
+  "org.scalameta" % "semanticdb-scalac" % "4.0.0" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
-scalacOptions += "-P:splain:all:true"
+// scalacOptions += "-P:splain:all:true"
 
-// javaOptions in Universal ++= Seq(
-//   // -J params will be added as jvm parameters
-//   "-J-Xmx4G",
-//   "-J-Xms512m"
-// )
-
-// libraryDependencies += "com.lihaoyi" % "ammonite" % ammV % "test" cross CrossVersion.full
-//
-// sourceGenerators in Test += Def.task {
-//   val file = (sourceManaged in Test).value / "amm.scala"
-//   IO.write(file, """object amm extends App { ammonite.Main("$initCommands").run() }""")
-//   Seq(file)
-// }.taskValue
-
-// addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.9.3")
-
-// addCompilerPlugin("org.typelevel" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
 
 lazy val jsProjects = Seq(client)
 
@@ -64,8 +38,8 @@ lazy val commonSettings = baseSettings ++ Seq(
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
     "io.monix"      %%% "monix"         % "3.0.0-RC2",
-    "org.scalameta" %%% "scalameta"     % "3.4.0",
-    "com.geirsson"  %%% "scalafmt-core" % "1.4.0",
+    "org.scalameta" %%% "scalameta"     % "3.7.0",
+    // "com.geirsson"  %%% "scalafmt-core" % "1.4.0",
     "com.lihaoyi" %%% "pprint"      % "0.5.3",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.lihaoyi"   %%% "sourcecode"    % "0.1.4"
@@ -113,7 +87,8 @@ lazy val jvmSettings = Seq(
     "org.slf4j"   % "slf4j-simple" % "1.7.16",
     // Last stable release
     "org.scalanlp" %% "breeze" % "0.13.2",
-    "com.atlassian.commonmark" % "commonmark" % "0.11.0"
+    "com.atlassian.commonmark" % "commonmark" % "0.11.0",
+    "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64"
     // Native libraries are not included by default. add this if you want them (as of 0.7)
     // Native libraries greatly improve performance, but increase jar sizes.
     // It also packages various blas implementations, which have licenses that may or may not
@@ -122,8 +97,9 @@ lazy val jvmSettings = Seq(
     // The visualization library is distributed separately as well.
     // It depends on LGPL code
     // "org.scalanlp" %% "breeze-viz" % "0.12"
-  ),
-  resources in Compile += (fastOptJS in (client, Compile)).value.data
+  )
+  // ,
+  // resources in Compile += (fastOptJS in (client, Compile)).value.data
 )
 
 //lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
@@ -136,8 +112,8 @@ lazy val serverSettings = Seq(
     // "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
     "org.webjars" % "jquery" % "1.11.1"
   ),
-  scalaJSProjects := jsProjects,
-  pipelineStages := Seq(scalaJSProd),
+  // scalaJSProjects := jsProjects,
+  // pipelineStages := Seq(scalaJSProd),
   initialCommands in console := """import provingground._ ; import HoTT._; /*import pprint.Config.Colors._; import pprint.pprintln*/"""
 )
 
@@ -152,11 +128,6 @@ lazy val nlpSettings = Seq(
   )
 )
 
-// lazy val digressionSettings = Seq(
-//   name := "ProvingGround-Digressions",
-//   libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-actor" % akkaV),
-//   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
-// )
 
 lazy val acSettings = Seq(
   name := "AndrewsCurtis",
@@ -167,7 +138,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
-  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.15.0"),
+  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.16.0"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.NormalForm._"""
 )
@@ -176,7 +147,7 @@ lazy val client = project
   .settings(
     name := "ProvingGround-JS",
     // scalaVersion := scalaV,
-    coverageEnabled := false,
+    // coverageEnabled := false,
     scalaJSUseMainModuleInitializer := false,
     // persistLauncher in Test := false,
     // sourceMapsDirectories += coreJS.base / "..",
@@ -193,7 +164,7 @@ lazy val client = project
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
     )
   )
-  .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
+  // .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
   .dependsOn(coreJS)
 
 lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
@@ -203,7 +174,7 @@ lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
     libraryDependencies ++= Seq(
 //      "com.lihaoyi" %%% "upickle" % "0.3.4"
     ))
-  .jsConfigure(_ enablePlugins ScalaJSWeb)
+  // .jsConfigure(_ enablePlugins ScalaJSWeb)
 //  .jsSettings(sourceMapsBase := baseDirectory.value / "..")
 
 lazy val coreJVM = core.jvm
@@ -215,8 +186,8 @@ lazy val server = (project in file("server"))
   .settings(
     name := "provingground-server",
     // scalaVersion := scalaV,
-    scalaJSProjects := Seq(client),
-    pipelineStages in Assets := Seq(scalaJSPipeline),
+    // scalaJSProjects := Seq(client),
+    // pipelineStages in Assets := Seq(scalaJSPipeline),
     // triggers scalaJSPipeline when using compile or continuous compilation
     // compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
     libraryDependencies ++= Seq(
@@ -225,11 +196,12 @@ lazy val server = (project in file("server"))
       "com.typesafe.akka" %% "akka-actor"  % akkaV,
       "com.typesafe.akka" %% "akka-stream" % akkaV,
       "com.github.scopt"  %% "scopt"       % "3.5.0"
-    ),
-    resources in Compile += (fastOptJS in (client, Compile)).value.data
+    )
+    // ,
+    // resources in Compile += (fastOptJS in (client, Compile)).value.data
 
   )
-  .enablePlugins(JavaAppPackaging, UniversalPlugin)
+  // .enablePlugins(JavaAppPackaging, UniversalPlugin)
   .dependsOn(coreJVM)
 
 
@@ -245,8 +217,8 @@ lazy val leanlib =
 lazy val mantle = (project in file("mantle"))
   .settings(
     name := "ProvingGround-mantle",
-    scalaJSProjects := Seq(client),
-    pipelineStages in Assets := Seq(scalaJSPipeline)
+    // scalaJSProjects := Seq(client),
+    // pipelineStages in Assets := Seq(scalaJSPipeline)
     //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
   )
   .settings(commonSettings: _*)
@@ -263,7 +235,9 @@ lazy val mantle = (project in file("mantle"))
   .dependsOn(server)
   .dependsOn(trepplein)
   .dependsOn(leanlib)
-  .enablePlugins(SbtWeb, TutPlugin)
+  // .enablePlugins(SbtWeb
+    // , TutPlugin
+  // )
 
 
 lazy val exploring = project
@@ -271,7 +245,7 @@ lazy val exploring = project
             libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
-  .enablePlugins(JavaAppPackaging, UniversalPlugin)
+  // .enablePlugins(JavaAppPackaging, UniversalPlugin)
 
 val nlpInitCommands =
   "import scala.collection.JavaConversions._, provingground._, PennTrees._, cats._, cats.implicits._, translation._, Functors._, SubTypePattern._, TreeToMath._, StanfordParser._"

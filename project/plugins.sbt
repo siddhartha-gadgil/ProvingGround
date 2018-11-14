@@ -16,7 +16,7 @@
 
 // addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.7.1")
 
-addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.6")
+// addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.8-0.6")
 
 // addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")
 
@@ -26,21 +26,21 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.25")
 
 // addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.12")
 
-addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.4.0")
-
+// addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.4.0")
+//
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
+//
+// addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.6.0") // change to 0.6.0 for sbt 1.0
+//
+// addSbtPlugin("org.ensime" % "sbt-ensime" % "2.4.0")
 
-addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.6.0") // change to 0.6.0 for sbt 1.0
+// addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC12")
+//
+// addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.5.7")
 
-addSbtPlugin("org.ensime" % "sbt-ensime" % "2.4.0")
-
-addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC12")
-
-addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.5.7")
-
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
-
-addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.6.0")
+// addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
+//
+// addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.6.0")
 
 // addSbtPlugin("org.lyranthe.sbt" % "partial-unification" % "1.0.0")
 
@@ -48,9 +48,9 @@ addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.6.0")
 
 // Plugins for trepplein
 
-resolvers += Classpaths.sbtPluginReleases
-logLevel := Level.Warn
-
-resolvers += Resolver.sbtPluginRepo("releases")
+// resolvers += Classpaths.sbtPluginReleases
+// logLevel := Level.Warn
+//
+// resolvers += Resolver.sbtPluginRepo("releases")
 // addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.2")
 // addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
