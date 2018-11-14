@@ -31,9 +31,9 @@ object LeanBug{
 
   lazy val p: LeanParser = parser
 
-  lazy val expr: Expr =
-      p.findDefMod(trepplein.Name("subtype", "cases_on")).get.value
+  lazy val mod: IndMod =
+      p.findIndMod(trepplein.Name("heq")).get
 
-  lazy val tsk = p.parse(expr).materialize.map(t => t.failed)
+  lazy val tsk = p.indModFromMod(trepplein.Name("heq")).get
 
 }

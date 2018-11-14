@@ -221,7 +221,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
           xv          <- onTerm(x)
           tailValCode <- typFamilyPtn(tailVal, typ)
         } yield
-          q"val x = $xv; TypFamilyPtn.DepFuncTypFamily($headCode, x ~>: $tailValCode)"
+          q"val x = $xv; val tailVal = $tailValCode;  x ~>: tailVal"
     }
 
   }
