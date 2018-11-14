@@ -6,6 +6,7 @@ import HoTT.{Name => _, _}
 import trepplein._
 
 import scala.meta.{Term => _, Type => _, _}
+import scala.meta
 import ammonite.ops._
 
 import scala.collection.immutable
@@ -19,20 +20,43 @@ object LeanCodeGen {
           (s) => Lit.String(s)
         )
         .toList
-    q"trepplein.Name(..$pieces)"
+    // q"trepplein.Name(..$pieces)"
+    meta.Term.Apply(meta.Term.Select(meta.Term.Name("trepplein"), meta.Term.Name("Name")), pieces)
   }
 
   val memoLines: IndexedSeq[String] = read.lines(pwd/ "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala").map(_.trim)
 
   val memoStats: IndexedSeq[Stat] = memoLines.flatMap(_.parse[Stat].toOption)
 
-  val memoDefKV = memoStats.collect{case q"def defMap : $t = Map(..$kvs)" => kvs}.head
+  val memoDefKV = memoStats.collect{
+    case Defn.Def(List(),meta.Term.Name("defMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
+      ) => kvs
+    // q"def defMap : $t = Map(..$kvs)" => kvs
+  }.head
 
-  val memoDefTaskKV = memoStats.collect{case q"def defTaskMap : $t = Map(..$kvs)" => kvs}.head
+  val memoDefTaskKV =
+    memoStats.collect{
+      case Defn.Def(List(),meta.Term.Name("defTaskMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
+        ) => kvs
+      // q"def defMap : $t = Map(..$kvs)" => kvs
+    }.head
+     // memoStats.collect{case q"def defTaskMap : $t = Map(..$kvs)" => kvs}.head
 
-  val memoIndKV = memoStats.collect{case q"def indMap : $t = Map(..$kvs)" => kvs}.head
+  val memoIndKV =
+    memoStats.collect{
+      case Defn.Def(List(),meta.Term.Name("indMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
+        ) => kvs
+      // q"def defMap : $t = Map(..$kvs)" => kvs
+    }.head
+    // memoStats.collect{case q"def indMap : $t = Map(..$kvs)" => kvs}.head
 
-  val memoIndTaskKV = memoStats.collect{case q"def indTaskMap : $t = Map(..$kvs)" => kvs}.head
+  val memoIndTaskKV =
+    memoStats.collect{
+      case Defn.Def(List(),meta.Term.Name("indTaskMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
+        ) => kvs
+      // q"def defMap : $t = Map(..$kvs)" => kvs
+    }.head
+    // memoStats.collect{case q"def indTaskMap : $t = Map(..$kvs)" => kvs}.head
 }
 
 case class LeanCodeGen(parser: LeanParser) {
@@ -58,12 +82,17 @@ import Fold._
         case (name, term) =>
           val termCode =
             if (defNames.contains(name))
-              q"${meta.Term.Name(CodeGen.escape(name.toString))}.value"
+              meta.Term.Name(CodeGen.escape(name.toString))
             else
               codeGen(term).get
-          q"${nameCode(name)} -> $termCode"
+          // q"${nameCode(name)} -> $termCode"
+          meta.Term.ApplyInfix(nameCode(name), meta.Term.Name("->"), List(), List(termCode))
       }.toList ++ memoDefKV
-    q"Map(..$kvs)"
+    // q"Map(..$kvs)"
+    meta.Term.Apply(
+      meta.Term.Name("Map"),
+      kvs
+    )
   }
 
   def defTaskMapCode: meta.Term.Apply = {
@@ -72,17 +101,28 @@ import Fold._
         case (name, term) =>
           val termCode =
             if (defNames.contains(name))
-              q"${meta.Term.Name(CodeGen.escape(name.toString))}.value"
+              meta.Term.Name(CodeGen.escape(name.toString))
             else
               codeGen(term).get
-          q"${nameCode(name)} -> Task($termCode)"
+              meta.Term.ApplyInfix(nameCode(name), meta.Term.Name("->"), List(),
+              List(
+                meta.Term.Apply(
+                  meta.Term.Name("Task"),
+                  List(termCode)))
+                )
+          // q"${nameCode(name)} -> Task($termCode)"
       }.toList ++ memoDefTaskKV
-    q"Map(..$kvs)"
+    // q"Map(..$kvs)"
+    meta.Term.Apply(
+      meta.Term.Name("Map"),
+      kvs
+    )
   }
 
   def vecCode(v: Vector[Term]): meta.Term.Apply = {
     val codes = v.map((t) => codeGen(t).get).toList
-    q"Vector(..$codes)"
+    // q"Vector(..$codes)"
+    meta.Term.Apply(meta.Term.Name("Vector"), codes)
   }
 
   def indCode(m: TermIndMod): meta.Term.Apply = {
@@ -90,22 +130,30 @@ import Fold._
       case _: SimpleIndMod  => meta.Term.Name("SimpleIndMod")
       case _: IndexedIndMod => meta.Term.Name("IndexedIndMod")
     }
-    q"""$classCode(
-      ${nameCode(m.name)},
-      ${codeGen(m.typF).get},
-      ${vecCode(m.intros)},
-      ${Lit.Int(m.numParams)},
-      ${Lit.Boolean(m.isPropn)}
-    )"""
+    // q"""$classCode(
+    //   ${nameCode(m.name)},
+    //   ${codeGen(m.typF).get},
+    //   ${vecCode(m.intros)},
+    //   ${Lit.Int(m.numParams)},
+    //   ${Lit.Boolean(m.isPropn)}
+    // )"""
+    meta.Term.Apply(
+      classCode, List(nameCode(m.name), codeGen(m.typF).get, vecCode(m.intros), Lit.Int(m.numParams), Lit.Boolean(m.isPropn))
+    )
   }
 
   def indMapCode: meta.Term.Apply = {
     val kvs =
       termIndModMap.map {
         case (name, m) =>
-          q"${nameCode(name)} -> ${indCode(m)}"
+        meta.Term.ApplyInfix(nameCode(name), meta.Term.Name("->"), List(), List(indCode(m)))
+          // q"${nameCode(name)} -> ${indCode(m)}"
       }.toList  ++ memoIndKV
-    q"Map(..$kvs)"
+      meta.Term.Apply(
+        meta.Term.Name("Map"),
+        kvs
+      )
+          // q"Map(..$kvs)"
 
   }
 
@@ -113,25 +161,92 @@ import Fold._
     val kvs =
       termIndModMap.map {
         case (name, m) =>
-          q"${nameCode(name)} -> Task(${indCode(m)})"
+        meta.Term.ApplyInfix(nameCode(name), meta.Term.Name("->"), List(),
+        List(
+          meta.Term.Apply(
+            meta.Term.Name("Task"),
+            List(indCode(m))))
+          )
+          // q"${nameCode(name)} -> Task(${indCode(m)})"
       }.toList ++ memoIndTaskKV
-    q"Map(..$kvs)"
+      meta.Term.Apply(
+        meta.Term.Name("Map"),
+        kvs
+      )
+    // q"Map(..$kvs)"
 
   }
 
   def memoObj: meta.Defn.Object =
-    q"""
+    Defn.Object(
+  List(),
+  meta.Term.Name("LeanMemo"),
+  Template(
+    List(),
+    List(),
+    Self(meta.Name(""), None),
+    List(
+      Defn.Def(
+        List(),
+        meta.Term.Name("defMap"),
+        List(),
+        List(),
+        Some(meta.Type.Apply(meta.Type.Name("Map"), List(meta.Type.Select(meta.Term.Name("trepplein"), meta.Type.Name("Name")), meta.Type.Name("Term")))),
+        defMapCode
+      ),
+      Defn.Def(
+        List(),
+        meta.Term.Name("indMap"),
+        List(),
+        List(),
+        Some(meta.Type.Apply(meta.Type.Name("Map"), List(meta.Type.Select(meta.Term.Name("trepplein"), meta.Type.Name("Name")), meta.Type.Name("TermIndMod")))),
+        indMapCode
+      ),
+      Defn.Def(
+        List(),
+        meta.Term.Name("defTaskMap"),
+        List(),
+        List(),
+        Some(
+          meta.Type.Apply(
+            meta.Type.Name("Map"),
+            List(meta.Type.Select(meta.Term.Name("trepplein"), meta.Type.Name("Name")), meta.Type.Apply(meta.Type.Name("Task"), List(meta.Type.Name("Term"))))
+          )
+        ),
+        defTaskMapCode
+      ),
+      Defn.Def(
+        List(),
+        meta.Term.Name("indTaskMap"),
+        List(),
+        List(),
+        Some(
+          meta.Type.Apply(
+            meta.Type.Name("Map"),
+            List(
+              meta.Type.Select(meta.Term.Name("trepplein"), meta.Type.Name("Name")),
+              meta.Type.Apply(meta.Type.Name("Task"), List(meta.Type.Name("TermIndMod")))
+            )
+          )
+        ),
+        indTaskMapCode
+      )
+    )
+  )
+)
 
-object LeanMemo {
-  def defMap : Map[trepplein.Name, Term] = $defMapCode
-
-  def indMap : Map[trepplein.Name, TermIndMod] = $indMapCode
-
-  def defTaskMap : Map[trepplein.Name, Task[Term]] = $defTaskMapCode
-
-  def indTaskMap : Map[trepplein.Name, Task[TermIndMod]] = $indTaskMapCode
-}
-"""
+//     q"""
+//
+// object LeanMemo {
+//   def defMap : Map[trepplein.Name, Term] = $defMapCode
+//
+//   def indMap : Map[trepplein.Name, TermIndMod] = $indMapCode
+//
+//   def defTaskMap : Map[trepplein.Name, Task[Term]] = $defTaskMapCode
+//
+//   def indTaskMap : Map[trepplein.Name, Task[TermIndMod]] = $indTaskMapCode
+// }
+// """
 
   def writeDefn(name: trepplein.Name, code: meta.Term): Unit = {
     val obj  = CodeGen.mkObject(name.toString, code)
