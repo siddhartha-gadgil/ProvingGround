@@ -6,15 +6,8 @@ import implicits._
 import shapeless._
 import Fold._
 object pprod$fst {
-  lazy val value = lambda("'p_1335769311_7402319" :: Type)(
-    lambda("'q_1400071888_264607479" :: Type)(
-      ({
-        val rxyz = pprodInd
-          .value("'p_1335769311_7402319" :: Type)(
-            "'q_1400071888_264607479" :: Type)
-          .rec("'p_1335769311_7402319" :: Type)
-        rxyz
-      })(lmbda("'s_59064292_812711851" :: "'p_1335769311_7402319" :: Type)(
-        lmbda("_" :: "'q_1400071888_264607479" :: Type)(
-          "'s_59064292_812711851" :: "'p_1335769311_7402319" :: Type)))))
+  lazy val value = lambda("'p_1107972026" :: Type)(lambda("'q_579249507" :: Type)(({
+    val rxyz = pprodInd.value("'p_1107972026" :: Type)("'q_579249507" :: Type).rec("'p_1107972026" :: Type)
+    rxyz
+  })(lmbda("'s_888824813" :: "'p_1107972026" :: Type)(lmbda("_" :: "'q_579249507" :: Type)("'s_888824813" :: "'p_1107972026" :: Type)))))
 }

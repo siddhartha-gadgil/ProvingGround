@@ -5,39 +5,4 @@ import induction._
 import implicits._
 import shapeless._
 import Fold._
-object pprodInd {
-  lazy val value = Subst.Lambda(
-    "$buigwgj" :: Type,
-    Subst.Lambda(
-      "$buigwgk" :: Type,
-      ConstructorSeqTL(
-        ConstructorSeqDom.Cons(
-          ApplnSym(
-            ("pprod.mk" :: piDefn("'f_1037748589" :: Type)(
-              piDefn("'g_733979854" :: Type)(
-                FuncTyp("'f_1037748589" :: Type,
-                        FuncTyp("'g_733979854" :: Type,
-                                ("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))(
-                                  "'f_1037748589" :: Type)(
-                                  "'g_733979854" :: Type))))))(
-              "$buigwgj" :: Type),
-            "$buigwgk" :: Type
-          ),
-          ConstructorShape.CnstFuncConsShape(
-            "$buigwgj" :: Type,
-            ConstructorShape.CnstFuncConsShape(
-              "$buigwgk" :: Type,
-              ConstructorShape.IdShape.byTyp(
-                ("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))(
-                  "$buigwgj" :: Type)("$buigwgk" :: Type)))
-          ),
-          ConstructorSeqDom.Empty.byTyp(
-            ("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))("$buigwgj" :: Type)(
-              "$buigwgk" :: Type))
-        ),
-        ("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))("$buigwgj" :: Type)(
-          "$buigwgk" :: Type)
-      )
-    )
-  )
-}
+object pprodInd { lazy val value = Subst.Lambda("$mpcetc" :: Type, Subst.Lambda("$mpcetd" :: Type, ConstructorSeqTL(ConstructorSeqDom.Cons(ApplnSym(("pprod.mk" :: piDefn("'f_234597865" :: Type)(piDefn("'g_1111384708" :: Type)(FuncTyp("'f_234597865" :: Type, FuncTyp("'g_1111384708" :: Type, ("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))("'f_234597865" :: Type)("'g_1111384708" :: Type))))))("$mpcetc" :: Type), "$mpcetd" :: Type), ConstructorShape.CnstFuncConsShape("$mpcetc" :: Type, ConstructorShape.CnstFuncConsShape("$mpcetd" :: Type, ConstructorShape.IdShape.byTyp(("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))("$mpcetc" :: Type)("$mpcetd" :: Type)))), ConstructorSeqDom.Empty.byTyp(("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))("$mpcetc" :: Type)("$mpcetd" :: Type))), ("pprod" :: FuncTyp(Type, FuncTyp(Type, Type)))("$mpcetc" :: Type)("$mpcetd" :: Type)))) }
