@@ -82,7 +82,10 @@ import Fold._
         case (name, term) =>
           val termCode =
             if (defNames.contains(name))
-              meta.Term.Name(CodeGen.escape(name.toString))
+              meta.Term.Select(
+                meta.Term.Name(CodeGen.escape(name.toString)),
+                meta.Term.Name("value")
+              )
             else
               codeGen(term).get
           // q"${nameCode(name)} -> $termCode"
@@ -101,7 +104,10 @@ import Fold._
         case (name, term) =>
           val termCode =
             if (defNames.contains(name))
-              meta.Term.Name(CodeGen.escape(name.toString))
+            meta.Term.Select(
+              meta.Term.Name(CodeGen.escape(name.toString)),
+              meta.Term.Name("value")
+            )
             else
               codeGen(term).get
               meta.Term.ApplyInfix(nameCode(name), meta.Term.Name("->"), List(),

@@ -555,12 +555,18 @@ object CodeGen {
   def objNames(termNames: Seq[String], indNames: Seq[String]) = {
     val defnMap =
       termNames.map { (s) =>
-        val code = meta.Term.Name(escape(s))
+        val code =
+          meta.Term.Select(
+            meta.Term.Name(escape(s)),
+          meta.Term.Name("value"))
         s -> code
       }.toMap
     val indMap =
       indNames.map { (s) =>
-        val code: meta.Term = meta.Term.Name(escape(s) + "Ind")
+        val code: meta.Term =
+          meta.Term.Select(
+            meta.Term.Name(escape(s) + "Ind"),
+          meta.Term.Name("value"))
         s -> code
       }.toMap
     val inducNames: Term => Option[meta.Term] = {
@@ -609,17 +615,26 @@ object CodeGen {
       // q"$dom ->: $codom"
     } || lambdaFixedTriple >>> {
       case ((variable, typ), value) =>
-        meta.Term.Apply(meta.Term.Name("lmbda"), List(variable, value))
+        meta.Term.Apply(
+          meta.Term.Apply(meta.Term.Name("lmbda"), List(variable)),
+          List(value)
+        )
         // q"""lmbda($variable)($value)"""
 //        q"""lmbda($variable)($value)"""
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
-      meta.Term.Apply(meta.Term.Name("lambda"), List(variable, value))
+        meta.Term.Apply(
+          meta.Term.Apply(meta.Term.Name("lambda"), List(variable)),
+          List(value)
+        )
         // q"""lambda($variable)($value)"""
       // q"""lambda($variable)($value)"""
     } || piTriple >>> {
       case ((variable, typ), value) =>
-      meta.Term.Apply(meta.Term.Name("piDefn"), List(variable, value))
+      meta.Term.Apply(
+        meta.Term.Apply(meta.Term.Name("PiDefn"), List(variable)),
+        List(value)
+      )
         // q"""piDefn($variable)($value)"""
       // q"""$variable ~>: $value"""
     } || sigmaTriple >>> {
