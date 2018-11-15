@@ -357,7 +357,7 @@ List(nameCode, shapeCode, tailCode)) //q"ConstructorSeqDom.Cons($nameCode, $shap
         } yield
         meta.Term.Block(
   List(
-    Import(List(Importer(meta.Term.Name("shapeless"), List()))),
+    Import(List(Importer(meta.Term.Name("shapeless"), List(Importee.Wildcard())))),
     meta.Term.ApplyInfix(headCode, meta.Term.Name("::"), List(), List(tailCode))
   )
 )
