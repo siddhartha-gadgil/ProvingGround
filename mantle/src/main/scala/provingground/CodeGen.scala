@@ -108,7 +108,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
             )
             // q"IdentityTyp.induc($dom.dom, $codom)"
           case _ =>
-          meta.Term.Apply(meta.Term.Select(ind, meta.Term.Name("induc")), List(codom))
+          meta.Term.Apply(meta.Term.Select(ind, meta.Term.Name("inducE")), List(codom))
             // q"${ind}.induc($codom)"
         }
         val withImplicit: meta.Term =
