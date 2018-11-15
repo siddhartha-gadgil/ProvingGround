@@ -632,7 +632,7 @@ object CodeGen {
     } || piTriple >>> {
       case ((variable, typ), value) =>
       meta.Term.Apply(
-        meta.Term.Apply(meta.Term.Name("PiDefn"), List(variable)),
+        meta.Term.Apply(meta.Term.Name("piDefn"), List(variable)),
         List(value)
       )
         // q"""piDefn($variable)($value)"""
