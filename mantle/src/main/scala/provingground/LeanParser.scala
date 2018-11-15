@@ -620,7 +620,11 @@ class LeanParser(initMods: Seq[Modification],
       }
     import scala.meta._
     val cp = p.map(codeGen(_).get)
-    cp.foldRight(codeOpt.get) { case (x, y) => q"Subst.Lambda($x, $y)" }
+    cp.foldRight(codeOpt.get) {
+      case (x, y) =>
+        meta.Term.Apply(meta.Term.Select(meta.Term.Name("Subst"), meta.Term.Name("Lambda")), List(x, y))
+        // q"Subst.Lambda($x, $y)"
+      }
   }
 
 }

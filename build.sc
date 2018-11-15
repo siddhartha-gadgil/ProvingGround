@@ -105,7 +105,7 @@ trait CommonJSModule extends CommonModule with ScalaJSModule{
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:$ammV",
   ivy"com.lihaoyi::cask:0.1.9",
-  ivy"org.scalameta::scalameta:3.7.4",
+  ivy"org.scalameta::scalameta:4.0.0",
   ivy"com.github.nscala-time::nscala-time:2.16.0",
   ivy"org.reactivemongo::reactivemongo:0.12.1",
   ivy"com.typesafe.akka::akka-actor:2.5.11",
