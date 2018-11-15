@@ -480,15 +480,15 @@ object HoTT {
     }
 
     implicit def funcVar[U <: Term with Subs[U], V <: Term with Subs[V]]
-      : _root_.scala.AnyRef with _root_.provingground.HoTT.Variable[
-        _root_.provingground.HoTT.Func[U, V]] {} =
+      : Variable[
+        Func[U, V]] {} =
       new Variable[Func[U, V]] {
         def typ(t: Func[U, V]) = t.typ
       }
 
     implicit def funcLikeVar[U <: Term with Subs[U], V <: Term with Subs[V]]
-      : _root_.scala.AnyRef with _root_.provingground.HoTT.Variable[
-        _root_.provingground.HoTT.FuncLike[U, V]] {} =
+      : Variable[
+        FuncLike[U, V]] {} =
       new Variable[FuncLike[U, V]] {
         def typ(t: FuncLike[U, V]) = t.typ
       }
@@ -3453,16 +3453,16 @@ object Subst {
 
   implicit def funcSubst[A: Subst]: Subst[Term => A] =
     new Subst[Term => A] {
-      def subst(f: Term => A)(x: Term, y: Term) =
+      def subst(f: Term => A)(x: Term, y: Term): Term => A =
         (t: Term) => Subst[A].subst(f(t))(x, y)
     }
 
   case class Lambda[T <: Term with Subs[T], A](variable: T, value: A)(
       implicit s: Subst[A])
       extends (T => A) {
-    def apply(t: T) = s.subst(value)(variable, t)
+    def apply(t: T): A = s.subst(value)(variable, t)
 
-    override lazy val hashCode = {
+    override lazy val hashCode: Int = {
       val newvar = variable.typ.symbObj(Name("hash"))
       val newval = s.subst(value)(variable, newvar)
       41 * (variable.typ.hashCode + 41) + newval.hashCode

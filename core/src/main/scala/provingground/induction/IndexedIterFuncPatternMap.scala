@@ -530,7 +530,7 @@ object IndexedIterFuncPtnMapper {
       IF <: Term with Subs[IF],
       IDF <: Term with Subs[IDF],
       IDFT <: Term with Subs[IDFT]]
-    : _root_.provingground.induction.IndexedIterFuncPtnMapper[H,
+    : IndexedIterFuncPtnMapper[H,
                                                               Fb,
                                                               Index,
                                                               C,
@@ -576,14 +576,14 @@ object IndexedIterFuncPtnMapper {
                                             IF,
                                             IDF,
                                             IDFT])
-    : _root_.provingground.induction.IndexedIterFuncPtnMapper[
+    : IndexedIterFuncPtnMapper[
       H,
       Fb,
       Index,
       C,
-      _root_.provingground.HoTT.Func[TT, V],
-      _root_.provingground.HoTT.Func[TT, T],
-      _root_.provingground.HoTT.FuncLike[TT, D],
+      Func[TT, V],
+      Func[TT, T],
+      FuncLike[TT, D],
       IF,
       IDF,
       IDFT] =
@@ -632,14 +632,14 @@ object IndexedIterFuncPtnMapper {
                                             IF,
                                             IDF,
                                             IDFT])
-    : _root_.provingground.induction.IndexedIterFuncPtnMapper[
+    : IndexedIterFuncPtnMapper[
       H,
       Fb,
       Index,
       C,
-      _root_.provingground.HoTT.FuncLike[TT, V],
-      _root_.provingground.HoTT.FuncLike[TT, T],
-      _root_.provingground.HoTT.FuncLike[TT, D],
+      FuncLike[TT, V],
+      FuncLike[TT, T],
+      FuncLike[TT, D],
       IF,
       IDF,
       IDFT] =

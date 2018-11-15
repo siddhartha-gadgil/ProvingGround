@@ -16,7 +16,7 @@
 //   val typs: List[Typ[Term]] =
 //     List(A, B, A ->: B, SigmaTyp(Bf), PiDefn(Bf), Type)
 //
-//   implicit val lp: _root_.provingground.translation.LiteralParser.Empty.type =
+//   implicit val lp: LiteralParser.Empty.type =
 //     LiteralParser.Empty
 //
 //   "A term without literals" should "give itself on mapping by TermExpr.simple and then _.asTerm" in {

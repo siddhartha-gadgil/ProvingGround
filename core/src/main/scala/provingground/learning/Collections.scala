@@ -143,8 +143,8 @@ object Collections {
 
   object InnerProduct {
     implicit def finiteDistInnerProd[X]
-      : _root_.provingground.learning.Collections.InnerProduct[
-        _root_.provingground.FiniteDistribution[X]] =
+      : Collections.InnerProduct[
+        FiniteDistribution[X]] =
       InnerProduct[FiniteDistribution[X]](_ dot _)
 
     implicit class DotOp[V: InnerProduct](a: V) {
@@ -154,12 +154,12 @@ object Collections {
     def vdot[V](implicit ip: InnerProduct[V]) = ip.dot
 
     implicit val realInnerProd
-      : _root_.provingground.learning.Collections.InnerProduct[
+      : Collections.InnerProduct[
         _root_.scala.Double] = InnerProduct[Double](_ * _)
 
     implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A],
                                          ipB: InnerProduct[B])
-      : _root_.provingground.learning.Collections.InnerProduct[(A, B)] = {
+      : Collections.InnerProduct[(A, B)] = {
       InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
     }
 
@@ -252,7 +252,7 @@ object Collections {
   }
 
   implicit def shiftFromVS[V](implicit ls: LinearStructure[V])
-    : _root_.provingground.learning.Collections.Shift[V] =
+    : Collections.Shift[V] =
     Shift((base: V, tang: V, e: Double) => ls.diff(base, ls.mult(e, tang)))
 
   def update[B](init: B, tangent: B, epsilon: Double)(implicit s: Shift[B]) =

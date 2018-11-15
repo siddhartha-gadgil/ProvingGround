@@ -9,7 +9,7 @@ import shapeless._
 import scala.language.implicitConversions
 
 object Implicits {
-  implicit def stringSym(name: String): _root_.provingground.HoTT.Name =
+  implicit def stringSym(name: String): Name =
     Name(name)
 
   import ConstructorPattern._
