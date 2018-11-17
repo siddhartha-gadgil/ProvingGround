@@ -6,8 +6,8 @@ import implicits._
 import shapeless._
 import Fold._
 object has_mul$mul {
-  lazy val value = lambda("'k_1339533146" :: Type)(({
-    val rxyz = has_mulInd.value("'k_1339533146" :: Type).rec(FuncTyp("'k_1339533146" :: Type, FuncTyp("'k_1339533146" :: Type, "'k_1339533146" :: Type)))
+  lazy val value = lambda("'k_1484442186" :: Type)(({
+    val rxyz = has_mulInd.value("'k_1484442186" :: Type).rec(FuncTyp("'k_1484442186" :: Type, FuncTyp("'k_1484442186" :: Type, "'k_1484442186" :: Type)))
     rxyz
-  })(lmbda("'m_1516386288" :: FuncTyp("'k_1339533146" :: Type, FuncTyp("'k_1339533146" :: Type, "'k_1339533146" :: Type)))("'m_1516386288" :: FuncTyp("'k_1339533146" :: Type, FuncTyp("'k_1339533146" :: Type, "'k_1339533146" :: Type)))))
+  })(lmbda("'m_228483377" :: FuncTyp("'k_1484442186" :: Type, FuncTyp("'k_1484442186" :: Type, "'k_1484442186" :: Type)))("'m_228483377" :: FuncTyp("'k_1484442186" :: Type, FuncTyp("'k_1484442186" :: Type, "'k_1484442186" :: Type)))))
 }
