@@ -43,13 +43,13 @@ case class EntropyAtomWeight(h0: Double,
   def ratIterator(x: Double, sc: Double = 1): Iterator[Double] =
     Iterator.iterate(x)(y => ratShifted(y, sc))
 
-  def diff(x: Double): Jet[Double] = kl1(x) - h1(x)
+  def tot(x: Double): Jet[Double] = kl1(x) + h1(x)
 
-  def diffShifted(x: Double, sc: Double = 1): Double =
-    x - (diff(x).infinitesimal(0) * sc)
+  def totShifted(x: Double, sc: Double = 1): Double =
+    x - (tot(x).infinitesimal(0) * sc)
 
-  def diffIterator(x: Double, sc: Double = 1): Iterator[Double] =
-    Iterator.iterate(x)(y => diffShifted(y, sc))
+  def totIterator(x: Double, sc: Double = 1): Iterator[Double] =
+    Iterator.iterate(x)(y => totShifted(y, sc))
 }
 
 object EntropyAtomWeight {
