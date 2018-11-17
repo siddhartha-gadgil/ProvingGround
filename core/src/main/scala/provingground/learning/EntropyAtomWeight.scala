@@ -32,7 +32,7 @@ case class EntropyAtomWeight(h0: Double,
 
   def kl1(x: Double): Jet[Double] = {
     val q = q1(x)
-    kl0 - ((1 - p0) * log(1 - q)) - (p0 * log(1 + (q / q0)))
+    kl0 - ((1 - p0) * log(1 - q)) - (p0 * log(1 - q + (q / q0)))
   }
 
   def rat(x: Double): Jet[Double] = kl1(x) / h1(x)
