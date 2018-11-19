@@ -250,6 +250,57 @@ object TreePatterns {
           (adjs, (np, npp))
       })
 
+  object Which extends Pattern.Partial[Tree, Id]({
+    case Node(
+        "SBAR",
+        Vector(
+          Node("WHNP", Vector(Node("WDT", Vector(Leaf("which"))))),
+          Node("S", Vector( condition ))
+        )
+      ) => condition
+  })
+
+  object DPWhich extends Pattern.Partial[Tree, II](
+    {
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBase(_, _),
+          wh @ Which(_)
+        )
+      ) => (dp, wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBaseZero(_, _),
+          wh @ Which(_)
+        )
+      ) => (dp, wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPQuant(_, _),
+          wh @ Which(_)
+        )
+      ) => (dp, wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBaseQuant(_, _),
+          wh @ Which(_)
+        )
+      ) => (dp, wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBaseQuantZero(_, _),
+          wh @ Which(_)
+        )
+      ) => (dp, wh)
+
+    }
+  )
+
   val isModalDo: Tree => Boolean = {
     case Node("MD", _)            => true
     case Node(_, Vector(Leaf(v))) => Set("do", "does") contains (v)
@@ -434,6 +485,13 @@ object TreeToMath {
 
   val they = TreePatterns.They.>>>[MathExpr]((_) => MathExpr.They(Vector()))
 
+  val which = TreePatterns.Which.>>>[MathExpr](MathExpr.Which(_))
+
+  val dpWhich = TreePatterns.DPWhich.>>[MathExpr]{
+    case (det : MathExpr.DP, wh) => Some(det.add(wh))
+    case _ => None
+  }
+
   val dpBase =
     TreePatterns.DPBase.>>>[MathExpr]({
       case (det, (adjs, nnOpt)) =>
@@ -545,7 +603,7 @@ object TreeToMath {
   val mathExpr =
     fmla || ifThen || and || or || addPP || addST || addPPST || nn || vb || jj || pp ||
       prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp ||
-      verbpp || notvp || it || they || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
+      verbpp || notvp || it || they || which || dpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || dropRoot || dropNP || purge || iff || dropThen
 
   val mathExprTree = mathExpr || FormalExpr.translator
