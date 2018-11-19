@@ -8,7 +8,7 @@ import upickle.{Js, json}
 import StanfordParser._
 import TreeToMath._
 import edu.stanford.nlp.trees.Tree
-import org.scalafmt.Scalafmt.format
+// import org.scalafmt.Scalafmt.format
 import scala.util.Try
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -22,8 +22,11 @@ object ParserRoutes extends cask.Routes{
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
     // println(proseTree.view)
     val code =
-      Try(format(s"object ConstituencyParsed {$expr}").get)
-        .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
+      {
+        // println(pprint.PPrinter.BlackWhite(expr))
+      pprint.PPrinter.BlackWhite(expr)}
+      // Try(format(s"object ConstituencyParsed {$expr}").get)
+      //   .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
     Js.Obj("tree"    -> tree.pennString,
            "expr"    -> code.toString,
            "deptree" -> proseTree.view.replace("\n", ""))
@@ -35,7 +38,7 @@ object ParserRoutes extends cask.Routes{
     Site.page(mainHTML,
             "resources/",
             "ProvingGround: Natural language translation",
-            true)
+            false)
           }
 
   @cask.post("/parse")
@@ -53,6 +56,8 @@ object ParserRoutes extends cask.Routes{
       |  <script src="resources/out.js" type="text/javascript" charset="utf-8"></script>
       |  <script>
       |    parser.load()
+      |    mantlemenu.add()
+      |    leanlib.load()
       |  </script>
     """.stripMargin
 
@@ -60,7 +65,7 @@ object ParserRoutes extends cask.Routes{
 
 }
 
-object ParserServer extends cask.Main(ParserRoutes, MantleRoutes, LeanRoutes) {
+object ParserCask extends cask.Main(ParserRoutes, MantleRoutes, LeanRoutes) {
   override def port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
   override def host = Try(sys.env("IP")).getOrElse("localhost")
 }

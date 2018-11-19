@@ -7,6 +7,9 @@ import scalatags.JsDom.all._
 import scala.scalajs.js
 import org.scalajs.dom
 import dom.ext._
+import scala.concurrent.ExecutionContext.Implicits.global
+
+
 @JSExportTopLevel("mantlemenu")
 object MantleMenu {
   @JSExport
@@ -49,6 +52,14 @@ object MantleMenu {
         a(href := "index.html")("Home")
       ).render
     )
+
+    Ajax.get("/nlp.html").foreach{_ =>
+      navDiv.appendChild(
+      li(
+        a(href := "nlp.html")("NLP")
+      ).render
+    )
+    }
 
   }
 }

@@ -57,11 +57,11 @@ object ConstituencyParser {
             js.obj("expr")
               .str
               .toString
-              .replace("\"\"\"", "")
-              .split("\n")
-              .drop(1)
-              .dropRight(1)
-              .mkString("\n")
+              // .replace("\"\"\"", "")
+              // .split("\n")
+              // .drop(1)
+              // .dropRight(1)
+              // .mkString("\n")
           exprDiv.innerHTML = ""
           exprDiv.appendChild(
             pre(

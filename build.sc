@@ -194,7 +194,7 @@ object nlp extends SbtModule with ServerModule{
     )
   }
 
-  override def mainClass = Some("provingground.interface.ParserServer")
+  override def mainClass = Some("provingground.interface.ParserCask")
 }
 
 object jvmRoot extends CommonModule{
