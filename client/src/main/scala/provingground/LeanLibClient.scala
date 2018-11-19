@@ -72,7 +72,7 @@ object LeanLibClient {
     def nameLI(name: String): JsDom.TypedTag[LI] = {
       val btn = p(`class` := "link")(name).render
       btn.onclick = (_) => {
-        Ajax.post("/parse", name)
+        Ajax.post("/lean-parse", name)
         parseQueue += name
         loadCanc()
       }

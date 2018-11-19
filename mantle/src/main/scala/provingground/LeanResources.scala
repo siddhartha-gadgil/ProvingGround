@@ -191,7 +191,7 @@ object LeanRoutes extends cask.Routes {
       }
 
   }
-  @cask.post("/parse")
+  @cask.post("/lean-parse")
   def parse(request: cask.Request): String = {
     def result(name: String, t: Term): Unit = send(
       uwrite[Js.Value](
