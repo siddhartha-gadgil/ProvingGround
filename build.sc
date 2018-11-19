@@ -188,8 +188,8 @@ object nlp extends SbtModule with ServerModule{
 
   override def ivyDeps = T{
     super.ivyDeps() ++  Agg(
-      ivy"edu.stanford.nlp:stanford-corenlp:3.7.0",
-      ivy"edu.stanford.nlp:stanford-corenlp:3.7.0;classifier=models",
+      ivy"edu.stanford.nlp:stanford-corenlp:3.9.2",
+      ivy"edu.stanford.nlp:stanford-corenlp:3.9.2;classifier=models",
       ivy"com.google.protobuf:protobuf-java:2.6.1"
     )
   }

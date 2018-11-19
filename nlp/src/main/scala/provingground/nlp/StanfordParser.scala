@@ -71,7 +71,7 @@ object StanfordParser {
       // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
     val raw = preraw
-      .replace("such that", "so that")
+      // .replace("such that", "so that")
     // .replace("which", "where it") // useful for contituency parsing
     // .replace("that", "where it")
 
