@@ -250,7 +250,8 @@ object TreePatterns {
       extends Pattern.Partial[Tree, SVII]({
         case Node("NP", Det(det) +: adjs :+ np :+ npp)
             if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")|| np.value == "CD" ) &&
-              npp.value.startsWith("N")) =>
+              (npp.value.startsWith("N") || npp.value == "CD" )) =>
+          // pprint.log(npp)
           (det, (adjs, (np, npp)))
         case Node("NP",
                   Vector(
@@ -258,7 +259,7 @@ object TreePatterns {
                     Node("NP", Vector(npp))
                   ))
             if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")|| np.value == "CD" ) &&
-              npp.value.startsWith("N")) =>
+              (npp.value.startsWith("N") || npp.value == "CD"  )) =>
           (det, (adjs, (np, npp)))
       })
 
@@ -266,7 +267,7 @@ object TreePatterns {
       extends Pattern.Partial[Tree, VII]({
         case Node("NP", adjs :+ np :+ npp)
             if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
-              (npp.value.startsWith("N") || np.value == "CD" )) =>
+              (npp.value.startsWith("N") || npp.value == "CD" )) =>
           (adjs, (np, npp))
         case Node("NP",
                   Vector(
@@ -274,7 +275,7 @@ object TreePatterns {
                     Node("NP", Vector(npp))
                   ))
             if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
-              (npp.value.startsWith("N")|| np.value == "CD"  )) =>
+              (npp.value.startsWith("N")|| npp.value == "CD"  )) =>
           (adjs, (np, npp))
       })
 
