@@ -143,6 +143,16 @@ object TreePatterns {
           (jj, np)
       })
 
+  object QP extends Pattern.Partial[Tree, III]({
+    case Node("QP",
+      Vector(
+        nn @ JJ(_),
+        pp @ IN(_),
+        Node("CD", Vector(fmla))
+      )
+    ) => ((nn, pp), fmla)
+  })
+
   object NPPP
       extends Pattern.Partial[Tree, II]({
         case Node("NP", Vector(x @ NP(_), y @ PP(_, _))) => (x, y)
@@ -550,6 +560,10 @@ object TreeToMath {
       case (pp, np) => MathExpr.PP(false, pp, np)
     })
 
+  val qp = TreePatterns.QP>>>[MathExpr]({
+    case ((jj, pp), fm) => MathExpr.JJPP(jj, Vector(MathExpr.PP(false, pp, fm)))
+  })
+
   val nn = TreePatterns.NN.>>>[MathExpr](MathExpr.NN(_))
 
   val fmla = TreePatterns.NNP.>>>[MathExpr](MathExpr.Formula(_))
@@ -690,7 +704,7 @@ object TreeToMath {
 
   val mathExpr =
     fmla || ifThen || and || or || addPP || addST || addPPST || nn || vb || jj || pp ||
-      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp ||
+      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp || qp ||
       verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || dropRoot || dropNP || purge || iff || dropThen || innerIf
 
