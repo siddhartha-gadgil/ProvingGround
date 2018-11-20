@@ -242,14 +242,14 @@ object TreePatterns {
       extends Pattern.Partial[Tree, SVI]({
         case Node("NP", Det(det) +: adjs :+ np)
             if (adjs.forall(_.value == "JJ") && (np.value != "NN") &&
-              np.value.startsWith("N")) =>
+              (np.value.startsWith("N")|| np.value == "CD" )) =>
           (det, (adjs, np))
       })
 
   object DPBaseQuant
       extends Pattern.Partial[Tree, SVII]({
         case Node("NP", Det(det) +: adjs :+ np :+ npp)
-            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")) &&
+            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")|| np.value == "CD" ) &&
               npp.value.startsWith("N")) =>
           (det, (adjs, (np, npp)))
         case Node("NP",
@@ -257,7 +257,7 @@ object TreePatterns {
                     Node("NP", Det(det) +: adjs :+ np),
                     Node("NP", Vector(npp))
                   ))
-            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")) &&
+            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")|| np.value == "CD" ) &&
               npp.value.startsWith("N")) =>
           (det, (adjs, (np, npp)))
       })
@@ -266,7 +266,7 @@ object TreePatterns {
       extends Pattern.Partial[Tree, VII]({
         case Node("NP", adjs :+ np :+ npp)
             if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
-              npp.value.startsWith("N")) =>
+              (npp.value.startsWith("N") || np.value == "CD" )) =>
           (adjs, (np, npp))
         case Node("NP",
                   Vector(
@@ -274,7 +274,7 @@ object TreePatterns {
                     Node("NP", Vector(npp))
                   ))
             if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
-              npp.value.startsWith("N")) =>
+              (npp.value.startsWith("N")|| np.value == "CD"  )) =>
           (adjs, (np, npp))
       })
 
@@ -405,6 +405,8 @@ object TreePatterns {
       extends Pattern.Partial[Tree, S]({
         case Node("NP", Vector(Node("NNP", Vector(Leaf(nn))))) => nn
         case Node("NNP", Vector(Leaf(nn)))                     => nn
+        case Node("NP", Vector(Node("CD", Vector(Leaf(nn))))) => nn
+        case Node("CD", Vector(Leaf(nn)))                     => nn
       })
 
   object DisjunctNP
