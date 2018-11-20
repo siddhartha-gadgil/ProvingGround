@@ -12,6 +12,7 @@ import java.util
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
+import scala.util.matching.Regex
 
 /**
   * Interface to the Stanford parser, handling (inline) TeX by separating tokenizing and POS tagging from parsing.
@@ -37,11 +38,11 @@ object StanfordParser {
 
   def parse(s: String): Tree = lp(tagger(words(s).asJava))
 
-  def texInline(s: String) = """\$[^\$]+\$""".r.findAllIn(s)
+  def texInline(s: String): Regex.MatchIterator = """\$[^\$]+\$""".r.findAllIn(s)
 
-  def texDisplay(s: String) = """\$\$[^\$]+\$\$""".r.findAllIn(s)
+  def texDisplay(s: String): Regex.MatchIterator = """\$\$[^\$]+\$\$""".r.findAllIn(s)
 
-  def reTag(word: String, tag: String)(tw: TaggedWord) =
+  def reTag(word: String, tag: String)(tw: TaggedWord): TaggedWord =
     if (tw.word.toLowerCase == word) new TaggedWord(tw.word, tag) else tw
 
   def mergeTag(mwe: Vector[String], tag: String)(
@@ -71,32 +72,32 @@ object StanfordParser {
       mweSubs: Vector[(Vector[String], TaggedWord)] = Vector()
       // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
-    val raw = preraw
+    val raw: String = preraw
       // .replace("such that", "so that")
     // .replace("which", "where it") // useful for contituency parsing
     // .replace("that", "where it")
 
-    lazy val texMap = (texInline(raw).zipWithIndex map {
+    lazy val texMap: Map[String, String] = (texInline(raw).zipWithIndex map {
       case (w, n) => (s"TeXInline$n", w)
     }).toMap
 
-    lazy val deTeXed = (texMap :\ raw) { case ((l, w), s) => s.replace(w, l) }
+    lazy val deTeXed: String = (texMap :\ raw) { case ((l, w), s) => s.replace(w, l) }
 
-    lazy val deTeXWords = words(deTeXed)
+    lazy val deTeXWords: mutable.Buffer[Word] = words(deTeXed)
 
-    lazy val deTeXTagged = tagger(deTeXWords.asJava)
+    lazy val deTeXTagged: util.List[TaggedWord] = tagger(deTeXWords.asJava)
 
-    def reTagged(tw: TaggedWord) =
+    def reTagged(tw: TaggedWord): TaggedWord =
       wordTags.foldRight(tw) { case ((w, tag), t) => reTag(w, tag)(t) }
 
-    lazy val tagged =
+    lazy val tagged: mutable.Buffer[TaggedWord] =
       deTeXTagged.asScala map { (tw) =>
         if (tw.word.startsWith("TeXInline"))
           new TaggedWord(texMap(tw.word), "CD")
         else reTagged(tw)
       }
 
-    lazy val mergeSubsTagged =
+    lazy val mergeSubsTagged: Vector[TaggedWord] =
       mweSubs.foldRight(tagged.toVector) {
         case ((ws, tw), t) => mergeSubs(ws, tw)(t)
       }
@@ -106,9 +107,9 @@ object StanfordParser {
 
     lazy val parsed: Tree = lp(mergeSubsTagged.asJava)
 
-    lazy val gs = gsf.newGrammaticalStructure(parsed)
+    lazy val gs: GrammaticalStructure = gsf.newGrammaticalStructure(parsed)
 
-    lazy val tdl = gs.typedDependenciesCCprocessed
+    lazy val tdl: util.List[TypedDependency] = gs.typedDependenciesCCprocessed
 
     import translation.NlpProse._
 
@@ -132,13 +133,14 @@ object StanfordParser {
   def texParse(s: String,
                wordTags: Vector[(String, String)] = baseWordTags,
                // mweTags: Vector[(Vector[String], String)] = Vector(),
-               mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs) =
+               mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs): Tree =
     TeXParsed(s, wordTags, mweSubs).parsed
 
   def proseTree(s: String,
                 wordTags: Vector[(String, String)] = baseWordTags,
                 // mweTags: Vector[(Vector[String], String)] = Vector(),
-                mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs) =
+                mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs)
+    : NlpProse.ProseTree =
     TeXParsed(s, wordTags, mweSubs).proseTree
 
 }
