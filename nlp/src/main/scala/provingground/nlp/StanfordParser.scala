@@ -69,7 +69,7 @@ object StanfordParser {
   case class TeXParsed(
       preraw: String,
       wordTags: Vector[(String, String)] = Vector(),
-      mweSubs: Vector[(Vector[String], TaggedWord)] = Vector()
+      mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
       // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
     val raw: String = preraw

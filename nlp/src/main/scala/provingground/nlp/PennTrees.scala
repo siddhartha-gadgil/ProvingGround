@@ -126,6 +126,9 @@ object PennTrees {
       .treeFactory()
       .newTreeNode(tag, children.asJava: java.util.List[Tree])
 
+  def mkLeaf(word: String,  parent: Tree) =
+    parent.treeFactory().newLeaf(word)
+
   def sentence(children: Vector[Tree]) =
     children.head
       .treeFactory()

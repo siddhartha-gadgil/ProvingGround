@@ -27,7 +27,7 @@ object ParserRoutes extends cask.Routes{
       pprint.PPrinter.BlackWhite(expr)}
       // Try(format(s"object ConstituencyParsed {$expr}").get)
       //   .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
-    Js.Obj("tree"    -> tree.pennString,
+    Js.Obj("tree"    -> (tree.pennString + "\n\n" + pprint.PPrinter.BlackWhite(FormalExpr.translator(tree)) ),
            "expr"    -> code.toString,
            "deptree" -> proseTree.view.replace("\n", ""))
   }

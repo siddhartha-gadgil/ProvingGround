@@ -67,7 +67,17 @@ object TreePatterns {
       xl._2.headOption map (_ + xl._1))
   }
 
-  object VP extends Pattern.Partial[Tree, Vector]({ case Node("VP", xs) => xs })
+  object VP
+      extends Pattern.Partial[Tree, Vector]({
+        case parent @ Node("VP", Vector(x1 @ VB(s1), Node("VP", (x2 @VB(s2)) +: tail))) =>
+          val w = PennTrees.mkLeaf(s1 + " " + s2, parent)
+          val n = PennTrees.mkTree(Vector(w), "VB", parent)
+          pprint.log(n +: tail)
+          n +: tail
+        case Node("VP", xs)                                   =>
+          pprint.log(xs)
+          xs
+      })
 
   object VPIf
       extends Pattern.Partial[Tree, II]({
@@ -127,7 +137,7 @@ object TreePatterns {
 
   object VerbPP
       extends Pattern.Partial[Tree, IV]({
-        case Node("VP", x +: ys)
+        case VP(x +: ys)
             if x.value.startsWith("V") &&
               ys.forall(_.value.startsWith("PP")) =>
           (x, ys)
@@ -241,9 +251,7 @@ object TreePatterns {
           (det, (adjs, Some(nn)))
         case Node("NP", Det(det) +: adjs) if (adjs.forall(_.value == "JJ")) =>
           (det, (adjs, None))
-        case Node("NP",
-                  Vector(
-                    Node("QP", Vector(Det(det), nn)))) =>
+        case Node("NP", Vector(Node("QP", Vector(Det(det), nn)))) =>
           (det, (Vector(), Some(nn)))
       })
 
@@ -456,6 +464,19 @@ object TreePatterns {
             init :+ Node("CC", Vector(Leaf("and"))) :+ last
             ) =>
           init.filter(_.value != ",") :+ last
+      })
+
+  object Iff
+      extends Pattern.Partial[Tree, II]({
+        case Node(
+            "NP",
+            Vector(
+              lhs,
+              Node("CC", Vector(Leaf("iff"))),
+              rhs
+            )
+            ) =>
+          (lhs, rhs)
       })
 
   object VB
@@ -679,6 +700,9 @@ object TreeToMath {
 
   val and = TreePatterns.ConjunctNP.>>>[MathExpr](MathExpr.ConjunctNP(_))
 
+  val iff =
+    TreePatterns.Iff.>>>[MathExpr]({ case (x, y) => MathExpr.Iff(x, y) })
+
   val dropRoot =
     TreePatterns.DropRoot.>>>[MathExpr] { (x) =>
       x
@@ -712,7 +736,7 @@ object TreeToMath {
 
   val notvp = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
 
-  val iff = TreePatterns.phrase("_ iff _").>>>[MathExpr] {
+  val iffP = TreePatterns.phrase("_ iff _").>>>[MathExpr] {
     case Vector(x, y) => MathExpr.Iff(x, y)
   }
 
@@ -725,7 +749,7 @@ object TreeToMath {
   }
 
   val mathExpr =
-    fmla || ifThen || and || or || addPP || addST || addPPST || nn || vb || jj || pp ||
+    fmla || ifThen || and || or || addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
       prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp || qp ||
       verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || dropRoot || dropNP || purge || iff || dropThen || innerIf
