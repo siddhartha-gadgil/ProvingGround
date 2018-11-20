@@ -8,6 +8,7 @@ import edu.stanford.nlp.process.PTBTokenizer
 import edu.stanford.nlp.process.CoreLabelTokenFactory
 import edu.stanford.nlp.tagger.maxent._
 import java.io._
+import java.util
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
@@ -17,24 +18,24 @@ import scala.collection.mutable
   * Parsing is done by the [[texParse]] method
   */
 object StanfordParser {
-  val lp = LexicalizedParser.loadModel(
+  val lp: LexicalizedParser = LexicalizedParser.loadModel(
     "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
 
-  lazy val tlp = new PennTreebankLanguagePack
+  lazy val tlp: PennTreebankLanguagePack = new PennTreebankLanguagePack
 
-  lazy val gsf = tlp.grammaticalStructureFactory
+  lazy val gsf: GrammaticalStructureFactory = tlp.grammaticalStructureFactory
 
-  val tagger = new MaxentTagger(
+  val tagger: MaxentTagger = new MaxentTagger(
     "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger")
 
-  val tokenizerFactory = PTBTokenizer.factory(new CoreLabelTokenFactory(), "")
+  val tokenizerFactory: TokenizerFactory[CoreLabel] = PTBTokenizer.factory(new CoreLabelTokenFactory(), "")
 
-  def coreLabels(s: String) =
+  def coreLabels(s: String): util.List[CoreLabel] =
     tokenizerFactory.getTokenizer(new StringReader(s)).tokenize
 
-  def words(s: String) = coreLabels(s).asScala map ((c) => new Word(c.word))
+  def words(s: String): mutable.Buffer[Word] = coreLabels(s).asScala map ((c) => new Word(c.word))
 
-  def parse(s: String) = lp(tagger(words(s).asJava))
+  def parse(s: String): Tree = lp(tagger(words(s).asJava))
 
   def texInline(s: String) = """\$[^\$]+\$""".r.findAllIn(s)
 
