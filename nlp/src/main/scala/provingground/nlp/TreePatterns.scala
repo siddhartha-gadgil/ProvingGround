@@ -266,11 +266,11 @@ object TreePatterns {
         case Node("NP",
                   Vector(
                     Node("NP", Det(det) +: adjs :+ np),
-                    Node("NP", Vector(npp))
+                    npp @ Node("NP", _)
                   ))
-            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")|| np.value == "CD" ) &&
-              (npp.value.startsWith("N") || npp.value == "CD"  )) =>
-          (det, (adjs, (np, npp)))
+            if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NN")|| np.value == "CD" )
+            // && (npp.value.startsWith("N") || npp.value == "CD"  )
+          ) => (det, (adjs, (np, npp)))
       })
 
   object DPBaseQuantZero

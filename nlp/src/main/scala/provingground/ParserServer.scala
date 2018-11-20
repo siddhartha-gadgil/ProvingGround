@@ -24,7 +24,7 @@ object ParserRoutes extends cask.Routes{
     val code =
       {
         // println(pprint.PPrinter.BlackWhite(expr))
-      pprint.PPrinter.BlackWhite(expr)}
+      pprint.PPrinter.BlackWhite(expr, 200)}
       // Try(format(s"object ConstituencyParsed {$expr}").get)
       //   .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
     Js.Obj("tree"    -> tree.pennString,
