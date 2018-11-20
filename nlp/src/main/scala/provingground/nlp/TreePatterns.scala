@@ -186,6 +186,34 @@ object TreePatterns {
           PennTrees.mkTree(v filter (_.value != ","), tag, parent)
       })
 
+  object IfNode extends Pattern.Partial[Tree, Id](
+    {
+      case Node(
+          "SBAR",
+          Vector(
+            Node("IN", Vector(Leaf("if"))),
+            tail
+          ))  => tail
+    }
+  )
+
+  val  ifSplit: Tree => Option[(Tree, Tree)] = {
+    case parent @ Node(tag, init :+ IfNode(condition)) =>
+      // pprint.log(parent)
+      Some(condition -> PennTrees.mkTree(init, tag, parent))
+    case parent @ Node(tag, init :+ last) =>
+      // pprint.log(parent)
+      // pprint.log(last)
+      // pprint.log(FormalExpr.translator(last))
+      // pprint.log(IfNode.unapply(last))
+      for{
+        (condition, stump) <- ifSplit(last)
+      } yield condition -> PennTrees.mkTree(init :+ stump, tag, parent)
+    case _ => None
+  }
+
+  object IfSplit extends Pattern[Tree, II](ifSplit)
+
   val npvpPattern = Translator.Pattern[Tree, Functors.II](NPVP.unapply)
 
   object Det
@@ -254,7 +282,7 @@ object TreePatterns {
     case Node(
         "SBAR",
         Vector(
-          Node("WHNP", Vector(Node("WDT", Vector(Leaf("which"))))),
+          Node("WHNP", Vector(Node("WDT", Vector(Leaf(_))))),
           Node("S", Vector( condition ))
         )
       ) => condition
@@ -300,6 +328,54 @@ object TreePatterns {
 
     }
   )
+
+  object DPPPWhich extends Pattern.Partial[Tree, III](
+    {
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBase(_, _),
+          pp @ PP(_, _),
+          wh @ Which(_)
+        )
+      ) => ((dp, pp), wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBaseZero(_, _),
+          pp @ PP(_, _),
+          wh @ Which(_)
+        )
+      ) => ((dp, pp), wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPQuant(_, _),
+          pp @ PP(_, _),
+          wh @ Which(_)
+        )
+      ) => ((dp, pp), wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBaseQuant(_, _),
+          pp @ PP(_, _),
+          wh @ Which(_)
+        )
+      ) => ((dp, pp), wh)
+      case Node(
+        "NP",
+        Vector(
+          dp @ DPBaseQuantZero(_, _),
+          pp @ PP(_, _),
+          wh @ Which(_)
+        )
+      ) => ((dp, pp), wh)
+
+    }
+  )
+
+
 
   val isModalDo: Tree => Boolean = {
     case Node("MD", _)            => true
@@ -492,6 +568,11 @@ object TreeToMath {
     case _ => None
   }
 
+  val dpPpWhich = TreePatterns.DPPPWhich.>>[MathExpr]{
+    case ((det : MathExpr.DP, pp), wh) => Some(det.add(pp).add(wh))
+    case _ => None
+  }
+
   val dpBase =
     TreePatterns.DPBase.>>>[MathExpr]({
       case (det, (adjs, nnOpt)) =>
@@ -600,11 +681,15 @@ object TreeToMath {
     case Vector(x) => x
   }
 
+  val innerIf = TreePatterns.IfSplit.>>>[MathExpr]{
+    case (x, y) => MathExpr.IfThen(x, y)
+  }
+
   val mathExpr =
     fmla || ifThen || and || or || addPP || addST || addPPST || nn || vb || jj || pp ||
       prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp ||
-      verbpp || notvp || it || they || which || dpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
-      dpBaseQuantZero || dropRoot || dropNP || purge || iff || dropThen
+      verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
+      dpBaseQuantZero || dropRoot || dropNP || purge || iff || dropThen || innerIf
 
   val mathExprTree = mathExpr || FormalExpr.translator
 
