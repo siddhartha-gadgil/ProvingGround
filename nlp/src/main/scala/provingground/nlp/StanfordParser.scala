@@ -92,7 +92,7 @@ object StanfordParser {
     lazy val tagged =
       deTeXTagged.asScala map { (tw) =>
         if (tw.word.startsWith("TeXInline"))
-          new TaggedWord(texMap(tw.word), "NNP")
+          new TaggedWord(texMap(tw.word), "CD")
         else reTagged(tw)
       }
 
