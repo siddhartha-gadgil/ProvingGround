@@ -68,7 +68,7 @@ object StanfordParser {
 
   case class TeXParsed(
       preraw: String,
-      wordTags: Vector[(String, String)] = Vector(),
+      wordTags: Vector[(String, String)] = baseWordTags,
       mweSubs: Vector[(Vector[String], TaggedWord)] = baseMweSubs
       // , mweTags: Vector[(Vector[String], String)] = Vector()
   ) {
@@ -124,10 +124,10 @@ object StanfordParser {
   }
 
   val baseWordTags =
-    Vector("iff" -> "CC", "modulo" -> "IN")
+    Vector("iff" -> "IN", "modulo" -> "IN")
 
   val baseMweSubs =
-    Vector(Vector("if", "and", "only", "if") -> new TaggedWord("iff", "CC"),
+    Vector(Vector("if", "and", "only", "if") -> new TaggedWord("iff", "IN"),
            Vector("such", "that")            -> new TaggedWord("where, WRB"))
 
   def texParse(s: String,

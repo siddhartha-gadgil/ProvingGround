@@ -69,12 +69,22 @@ object TreePatterns {
 
   object VP
       extends Pattern.Partial[Tree, Vector]({
-        case parent @ Node("VP", Vector(x1 @ VB(s1), Node("VP", (x2 @VB(s2)) +: tail))) =>
+        case parent @ Node("VP",
+                           Vector(VB(s1), Node("VP", (VB(s2)) +: tail))) =>
           val w = PennTrees.mkLeaf(s1 + " " + s2, parent)
           val n = PennTrees.mkTree(Vector(w), "VB", parent)
           pprint.log(n +: tail)
           n +: tail
-        case Node("VP", xs)                                   =>
+        case parent @ Node(
+              "VP",
+              Vector(MD(s0),
+                     Node("VP", Vector(VB(s1), Node("VP", (VB(s2)) +: tail))))
+            ) =>
+          val w = PennTrees.mkLeaf(s0 + " " + s1 + " " + s2, parent)
+          val n = PennTrees.mkTree(Vector(w), "VB", parent)
+          pprint.log(n +: tail)
+          n +: tail
+        case Node("VP", xs) =>
           pprint.log(xs)
           xs
       })
@@ -240,8 +250,8 @@ object TreePatterns {
 
   object Det
       extends Pattern.Partial[Tree, S]({
-        case Node("DT", Vector(Leaf(det))) => det
-        case Node("CD", Vector(Leaf(n)))   => "#" + n
+        case Node("DT", Vector(Leaf(det)))                     => det
+        case Node("CD", Vector(Leaf(n))) if !n.startsWith("$") => "#" + n
       })
 
   object DPBase
@@ -472,7 +482,7 @@ object TreePatterns {
             "NP",
             Vector(
               lhs,
-              Node("CC", Vector(Leaf("iff"))),
+              Node("IN", Vector(Leaf("iff"))),
               rhs
             )
             ) =>
@@ -482,6 +492,11 @@ object TreePatterns {
   object VB
       extends Pattern.Partial[Tree, S]({
         case Node(tag, Vector(Leaf(vb))) if tag.startsWith("VB") => vb
+      })
+
+  object MD
+      extends Pattern.Partial[Tree, S]({
+        case Node("MD", Vector(Leaf(s))) => s
       })
 
   object JJ
@@ -749,10 +764,10 @@ object TreeToMath {
   }
 
   val mathExpr =
-    fmla || ifThen || and || or || addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
+    fmla || ifThen ||  addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
       prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp || qp ||
       verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
-      dpBaseQuantZero || dropRoot || dropNP || purge || iff || dropThen || innerIf
+      dpBaseQuantZero || and || or || dropRoot || dropNP || purge || iff || dropThen || innerIf
 
   val mathExprTree = mathExpr || FormalExpr.translator
 

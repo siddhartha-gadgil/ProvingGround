@@ -117,6 +117,7 @@ object ConstituencyParser {
         "if $p$ is a prime number, the form deduced from $f$ by reduction modulo $p$ has a non-trivial root",
         "if $p$ is a prime number, the form deduced from $f$ by reduction modulo $p$ has a non-trivial zero, and this zero can be lifted to a p-adic zero",
         "the quadratic form $f$ represents zero in all the $Q_p$, and also in $R$",
+        "if two diagrams $D_1$ and $D_2$ are related by a chain of Reidemeister moves, the complexes of  groups $C(D_1)$ and $C(D_2)$ are equivalent",
         "if two diagrams $D_1$ and $D_2$ are related by a chain of Reidemeister moves, the complexes of graded abelian groups $C(D_1)$ and $C(D_2)$ are equivalent and homology groups $H(D_1)$ and $H(D_2)$ are isomorphic",
         "$AB \\subset G$ if and only if $AB = BA$", //parsed
         "$AB \\subset G$ and $AB = BA$", //experiment iff -> and; parsed
