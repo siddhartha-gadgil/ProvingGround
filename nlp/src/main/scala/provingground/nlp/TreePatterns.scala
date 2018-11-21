@@ -165,11 +165,20 @@ object TreePatterns {
 
   object QP
       extends Pattern.Partial[Tree, III]({
+        case Node("NP",
+                  Vector(
+                    Node("QP",
+                         Vector(
+                           nn @ JJ(_),
+                           pp @ IN(_),
+                           fmla @ Node("CD", _)
+                         )))) =>
+          ((nn, pp), fmla)
         case Node("QP",
                   Vector(
                     nn @ JJ(_),
                     pp @ IN(_),
-                    Node("CD", Vector(fmla))
+                    fmla @ Node("CD", _)
                   )) =>
           ((nn, pp), fmla)
       })
@@ -465,6 +474,11 @@ object TreePatterns {
             init :+ Node("CC", Vector(Leaf("or"))) :+ last
             ) =>
           init.filter(_.value != ",") :+ last
+        case Node(
+            "NP",
+            Vector(
+              Node("QP", init :+ Node("CC", Vector(Leaf("or"))) :+ last))) =>
+          init.filter(_.value != ",") :+ last
       })
 
   object ConjunctNP
@@ -473,6 +487,11 @@ object TreePatterns {
             "NP",
             init :+ Node("CC", Vector(Leaf("and"))) :+ last
             ) =>
+          init.filter(_.value != ",") :+ last
+        case Node(
+            "NP",
+            Vector(
+              Node("QP", init :+ Node("CC", Vector(Leaf("and"))) :+ last))) =>
           init.filter(_.value != ",") :+ last
       })
 
@@ -570,38 +589,40 @@ object TreePatterns {
         case _ => None
     })
 
-  def phrase(s: String) = phraseFromVec(s.split(" ").toVector)
+  def phrase(s: String): Pattern[Tree, Vector] =
+    phraseFromVec(s.split(" ").toVector)
 
-  def phraseTrans(s: String) = phrase(s) >>> { (v: Vector[MathExpr]) =>
-    FormalExpr.Vec(v): MathExpr
-  }
+  def phraseTrans(s: String): Translator.Junction[Tree, MathExpr, Vector] =
+    phrase(s) >>> { (v: Vector[MathExpr]) =>
+      FormalExpr.Vec(v): MathExpr
+    }
 
-  def phrasesTrans(ss: String*) =
+  def phrasesTrans(ss: String*): Translator[Tree, MathExpr] =
     ss.toVector.map(phraseTrans).fold(Translator.Empty[Tree, MathExpr])(_ || _)
 }
 
 object TreeToMath {
-  val npvp =
+  val npvp: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.NPVP.>>>[MathExpr]({
       case (np, vp) => MathExpr.NPVP(np, vp)
     })
 
-  val verbObj =
+  val verbObj: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.VerbObj.>>>[MathExpr]({
       case (vp, np) => MathExpr.VerbObj(vp, np)
     })
 
-  val verbAdj =
+  val verbAdj: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.VerbAdj.>>>[MathExpr]({
       case (vp, adj) => MathExpr.VerbAdj(vp, adj)
     })
 
-  val verbNotObj =
+  val verbNotObj: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.VerbNotObj.>>>[MathExpr]({
       case (vp, np) => MathExpr.VerbObj(MathExpr.NegVP(vp), np)
     })
 
-  val verbNotAdj =
+  val verbNotAdj: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.VerbNotAdj.>>>[MathExpr]({
       case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
     })
@@ -763,14 +784,15 @@ object TreeToMath {
     case (x, y) => MathExpr.IfThen(x, y)
   }
 
-  val mathExpr =
-    fmla || ifThen ||  addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
+  val mathExpr: Translator.OrElse[Tree, MathExpr] =
+    fmla || ifThen || addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
       prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp || qp ||
       verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || and || or || dropRoot || dropNP || purge || iff || dropThen || innerIf
 
-  val mathExprTree = mathExpr || FormalExpr.translator
+  val mathExprTree
+    : Translator.OrElse[Tree, MathExpr] = mathExpr || FormalExpr.translator
 
-  def mathExprFormal(ss: String*) =
+  def mathExprFormal(ss: String*): Translator.OrElse[Tree, MathExpr] =
     mathExpr || TreePatterns.phrasesTrans(ss: _*) || FormalExpr.translator
 }

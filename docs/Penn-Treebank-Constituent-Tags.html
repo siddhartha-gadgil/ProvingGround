@@ -1,0 +1,814 @@
+
+<!-- saved from url=(0093)http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>
+Penn Treebank Constituent Tags
+</title>
+</head>
+
+<body>
+
+<h1>
+Penn Treebank II Constituent Tags
+</h1>
+
+<p>
+Note:  This information comes from "Bracketing Guidelines for Treebank II Style Penn Treebank Project" - part of the  
+documentation that comes with the Penn Treebank.
+
+</p><p>
+</p><h2>
+Contents:
+</h2>
+
+<ul>
+<li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Bracket">Bracket Labels</a>
+
+<ul>
+<li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Clause">Clause Level</a>
+
+</li><li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Phrase">Phrase Level</a>
+
+</li><li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Word">Word Level</a>
+</li></ul>
+
+</li><li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Function">Function Tags</a>
+
+<ul>
+<li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Form">Form/function discrepancies</a>
+
+</li><li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Grammar">Grammatical role</a>
+
+</li><li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#ADVERBIALS">Adverbials</a>
+
+</li><li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Misc">Miscellaneous</a>
+</li></ul>
+
+</li><li><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#Index">Index of All Tags</a>
+</li></ul>
+
+<a name="Bracket">
+<h2>
+Bracket Labels
+</h2>
+</a>
+
+<a name="Clause">
+<h3>
+Clause Level
+</h3>
+</a>
+
+<p>
+<a name="S">
+<b>S</b> - simple declarative clause, i.e. one that is not introduced by a (possible empty) subordinating conjunction or a  
+<i>wh</i>-word and that does not exhibit subject-verb inversion.<br>
+</a>
+
+<a name="SBAR">
+<b>SBAR</b> - Clause introduced by a (possibly empty) subordinating conjunction.<br>
+</a>
+
+<a name="SBARQ">
+<b>SBARQ</b> - Direct question introduced by a <i>wh</i>-word or a <i>wh</i>-phrase.  Indirect questions and relative  
+clauses should be bracketed as SBAR, not SBARQ.<br>
+</a>
+
+<a name="SINV">
+<b>SINV</b> - Inverted declarative sentence, i.e. one in which the subject follows the tensed verb or modal.<br>
+</a>
+
+<a name="SQ">
+<b>SQ</b> - Inverted yes/no question, or main clause of a <i>wh</i>-question, following the <i>wh</i>-phrase in SBARQ.<br>
+</a>
+
+<a name="Phrase">
+</a></p><h3><a name="Phrase">
+Phrase Level
+</a></h3><a name="Phrase">
+</a>
+
+<a name="ADJP">
+<b>ADJP</b> - Adjective Phrase.<br>
+</a>
+
+<a name="ADVP">
+<b>ADVP</b> - Adverb Phrase.<br>
+</a>
+
+<a name="CONJP">
+<b>CONJP</b> - Conjunction Phrase.<br>
+</a>
+
+<a name="FRAG">
+<b>FRAG</b> - Fragment.<br>
+</a>
+
+<a name="INTJ">
+<b>INTJ</b> - Interjection.  Corresponds approximately to the part-of-speech tag UH.<br>
+</a>
+
+<a name="LST">
+<b>LST</b> - List marker.  Includes surrounding punctuation.<br>
+</a>
+
+<a name="NAC">
+<b>NAC</b> - Not a Constituent; used to show the scope of certain prenominal modifiers within an NP.<br>
+</a>
+
+<a name="NP">
+<b>NP</b> - Noun Phrase. <br>
+</a>
+
+<a name="NX">
+<b>NX</b> - Used within certain complex NPs to mark the head of the NP.  Corresponds very roughly to N-bar level but used  
+quite differently.<br>
+</a>
+
+<a name="PP">
+<b>PP</b> - Prepositional Phrase.<br>
+</a>
+
+<a name="PRN">
+<b>PRN</b> - Parenthetical. <br>
+</a>
+
+<a name="PRT">
+<b>PRT</b> - Particle.  Category for words that should be tagged RP. <br>
+</a>
+
+<a name="QP">
+<b>QP</b> - Quantifier Phrase (i.e. complex measure/amount phrase); used within NP.<br>
+</a>
+
+<a name="RRC">
+<b>RRC</b> - Reduced Relative Clause. <br>
+</a>
+
+<a name="UCP">
+<b>UCP</b> - Unlike Coordinated Phrase. <br>
+</a>
+
+<a name="VP">
+<b>VP</b> - Vereb Phrase. <br>
+</a>
+
+<a name="WHADJP">
+<b>WHADJP</b> - <i>Wh</i>-adjective Phrase.  Adjectival phrase containing a <i>wh</i>-adverb, as in <i>how hot</i>.<br>
+</a>
+
+<a name="WHADVP">
+<b>WHAVP</b> - <i>Wh</i>-adverb Phrase.  Introduces a clause with an NP gap.  May be null (containing the 0 complementizer)  
+or lexical, containing a <i>wh</i>-adverb such as <i>how</i> or <i>why</i>.<br>
+</a>
+
+<a name="WHNP">
+<b>WHNP</b> - <i>Wh</i>-noun Phrase.  Introduces a clause with an NP gap.  May be null (containing the 0 complementizer) or  
+lexical, containing some <i>wh</i>-word, e.g. <i>who</i>, <i>which book</i>, <i>whose daughter</i>, <i>none of which</i>,  
+or <i>how many leopards</i>.<br>
+</a>
+
+<a name="WHPP">
+<b>WHPP</b> - <i>Wh</i>-prepositional Phrase.  Prepositional phrase containing a <i>wh</i>-noun phrase (such as  
+<i>of which</i> or <i>by whose authority</i>) that either introduces a PP gap or is contained by a WHNP.<br>
+</a>
+
+<a name="X">
+<b>X</b> - Unknown, uncertain, or unbracketable.  X is often used for bracketing typos and in bracketing  
+<i>the...the</i>-constructions.<br>
+</a>
+
+<a name="Word">
+<h3>
+Word level
+</h3>
+</a>
+
+<a name="CC">
+<b>CC</b>   - Coordinating conjunction<br>
+</a>
+<a name="CD">
+<b>CD</b>   - Cardinal number<br>
+</a>
+<a name="DT">
+<b>DT</b>   - Determiner<br>
+</a>
+<a name="EX">
+<b>EX</b>   - Existential there<br>
+</a>
+<a name="FW">
+<b>FW</b>   - Foreign word<br>
+</a>
+<a name="IN">
+<b>IN</b>   - Preposition or subordinating conjunction<br>
+</a>
+<a name="JJ">
+<b>JJ</b>   - Adjective<br>
+</a>
+<a name="JJR">
+<b>JJR</b>  - Adjective, comparative<br>
+</a>
+<a name="JJS">
+<b>JJS</b>  - Adjective, superlative<br>
+</a>
+<a name="LS">
+<b>LS</b>   - List item marker<br>
+</a>
+<a name="MD">
+<b>MD</b>   - Modal<br>
+</a>
+<a name="NN">
+<b>NN</b>   - Noun, singular or mass<br>
+</a>
+<a name="NNS">
+<b>NNS</b>  - Noun, plural<br>
+</a>
+<a name="NNP">
+<b>NNP</b>  - Proper noun, singular<br>
+</a>
+<a name="NNPS">
+<b>NNPS</b> - Proper noun, plural<br>
+</a>
+<a name="PDT">
+<b>PDT</b>  - Predeterminer<br>
+</a>
+<a name="POS">
+<b>POS</b>  - Possessive ending<br>
+</a>
+<a name="PRP">
+<b>PRP</b>  - Personal pronoun<br>
+</a>
+<a name="PRP$">
+<b>PRP$</b> - Possessive pronoun (prolog version PRP-S)<br>
+</a>
+<a name="RB">
+<b>RB</b>   - Adverb<br>
+</a>
+<a name="RBR">
+<b>RBR</b>  - Adverb, comparative<br>
+</a>
+<a name="RBS">
+<b>RBS</b>  - Adverb, superlative<br>
+</a>
+<a name="RP">
+<b>RP</b>   - Particle<br>
+</a>
+<a name="SYM">
+<b>SYM</b>  - Symbol<br>
+</a>
+<a name="TO">
+<b>TO</b>   - to<br>
+</a>
+<a name="UH">
+<b>UH</b>   - Interjection<br>
+</a>
+<a name="VB">
+<b>VB</b>   - Verb, base form<br>
+</a>
+<a name="VBD">
+<b>VBD</b>  - Verb, past tense<br>
+</a>
+<a name="VBG">
+<b>VBG</b>  - Verb, gerund or present participle<br>
+</a>
+<a name="VBN">
+<b>VBN</b>  - Verb, past participle<br>
+</a>
+<a name="VBP">
+<b>VBP</b>  - Verb, non-3rd person singular present<br>
+</a>
+<a name="VBZ">
+<b>VBZ</b>  - Verb, 3rd person singular present<br>
+</a>
+<a name="WDT">
+<b>WDT</b>  - Wh-determiner<br>
+</a>
+<a name="WP">
+<b>WP</b>   - Wh-pronoun<br>
+</a>
+<a name="WP$">
+<b>WP$</b>  - Possessive wh-pronoun (prolog version WP-S)<br>
+</a>
+<a name="WRB">
+<b>WRB</b>  - Wh-adverb<br>
+</a>
+
+
+
+
+<a name="Function">
+<h2>
+Function tags
+</h2>
+</a>
+
+<a name="Form">
+<h3>
+Form/function discrepancies
+</h3>
+</a>
+
+<a name="-ADV">
+<b>-ADV (adverbial)</b> - marks a constituent other than ADVP or PP when it is used adverbially (e.g. NPs or free  
+("headless" relatives).  However, constituents that themselves are modifying an ADVP generally do not get -ADV.  If a  
+more specific tag is available (for example, </a><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#TMP">-TMP</a>) then it is used alone and -ADV is implied.  See  
+the <a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#ADVERBIALS">Adverbials</a> section.<br>
+
+
+<a name="-NOM">
+<b>-NOM (nominal)</b> - marks free ("headless") relatives and gerunds when they act nominally.<br>    
+</a>
+
+<a name="Grammar">
+<h3>
+Grammatical role
+</h3>
+</a>
+
+<a name="-DTV">
+<b>-DTV (dative)</b> - marks the dative object in the unshifted form of the double object construction.  If the  
+preposition introducing the "dative" object is <i>for</i>, it is considered benefactive (</a><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-BNF">-BNF</a>).   
+-DTV (and -BNF) is only used after verbs that can undergo dative shift.<br>
+
+
+<a name="-LGS">
+<b>-LGS (logical subject)</b> - is used to mark the logical subject in passives.  It attaches to the NP object of  
+<i>by</i> and not to the PP node itself.<br>
+</a>
+
+<a name="-PRD">
+<b>-PRD (predicate)</b> - marks any predicate that is not VP.  In the <i>do so</i> construction, the <i>so</i> is  
+annotated as a predicate.<br>
+
+</a><a name="-PUT">
+<b>-PUT</b> - marks the locative complement of <i>put</i>. <br>
+</a>
+
+<a name="-SBJ">
+<b>-SBJ (surface subject)</b> - marks the structural surface subject of both matrix and embedded clauses, including  
+those with null subjects.<br>
+</a>
+
+<a name="-TPC">
+<b>-TPC ("topicalized")</b> - marks elements that appear before the subject in a declarative sentence, but in two  
+cases only:
+<ol>
+<li>if the front element is associated with a *T* in the position of the gap.
+</li><li>if the fronted element is left-dislocated (i.e. it is associated with a resumptive pronoun in the position of  
+the gap).
+</li></ol>
+</a>
+
+<a name="-VOC">
+<b>-VOC (vocative)</b> - marks nouns of address, regardless of their position in the sentence.  It is not coindexed  
+to the subject and not get -TPC when it is sentence-initial.<br>
+</a>
+
+<a name="ADVERBIALS">
+<h3>
+Adverbials
+</h3>
+</a>
+
+<p>
+Adverbials are generally VP adjuncts.<br><br>
+
+<a name="-BNF">
+<b>-BNF (benefactive)</b> - marks the beneficiary of an action (attaches to NP or PP). <br>  
+This tag is used <i>only</i> when (1) the verb can undergo dative shift and (2) the prepositional variant (with the  
+same meaning) uses <i>for</i>.  The prepositional objects of dative-shifting verbs with other prepositions than  
+<i>for</i> (such as <i>to</i> or <i>of</i>) are annotated </a><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-DTV">-DTV</a>.<br>
+
+
+<a name="-DIR">
+<b>-DIR (direction)</b> - marks adverbials that answer the questions "from where?" and "to where?"  It implies motion,  
+which can be metaphorical as in <i>"...rose 5 pts. to 57-1/2"</i> or <i>"increased 70% to 5.8 billion yen"</i>  -DIR is  
+most often used with verbs of motion/transit and financial verbs.<br>
+</a>
+
+<a name="-EXT">
+<b>-EXT (extent)</b> - marks adverbial phrases that describe the spatial extent of an activity.  -EXT was incorporated  
+primarily for cases of movement in financial space, but is also used in analogous situations elsewhere.  Obligatory  
+complements do not receive -EXT.  Words such as <i>fully</i> and <i>completely</i> are absolutes and do <b>not</b> receive  
+-EXT. <br>
+</a>
+
+<a name="-LOC">
+<b>-LOC (locative)</b> - marks adverbials that indicate place/setting of the event.  -LOC may also indicate metaphorical  
+location.  There is likely to be some varation in the use of -LOC due to differing annotator interpretations.  In cases  
+where the annotator is faced with a choice between -LOC or -TMP, the default is -LOC.  In cases involving SBAR, SBAR should  
+not receive -LOC. -LOC has some uses that are not adverbial, such as with place names that are adjoined to other NPs and  
+NAC-LOC premodifiers of NPs.  The special tag </a><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-PUT">-PUT</a> is used for the locative argument of <i>put</i>.<br>
+
+
+<a name="-MNR">
+<b>-MNR (manner)</b> - marks adverbials that indicate manner, including instrument phrases.<br>
+</a>
+
+<a name="-PRP">
+<b>-PRP (purpose or reason)</b> - marks purpose or reason clauses and PPs.<br>
+</a>
+
+<a name="-TMP">
+<b>-TMP (temporal)</b> - marks temporal or aspectual adverbials that answer the questions <i>when, how often</i>, or <i>how  
+long</i>.  It has some uses that are not strictly adverbial, auch as with dates that modify other NPs at S- or VP-level.   
+In cases of apposition involving SBAR, the SBAR should not be labeled -TMP.  Only in "financialspeak," and only when the  
+dominating PP is a PP-DIR, may temporal modifiers be put at PP object level.  Note that -TMP is not used in possessive  
+phrases. <br>
+</a>
+
+<a name="Misc">
+</a></p><h3><a name="Misc">
+Miscellaneous
+</a></h3><a name="Misc">
+</a>
+
+<a name="-CLR">
+<b>-CLR (closely related)</b> - marks constituents that occupy some middle ground between arguments and adjunct of the verb  
+phrase.  These roughly correspond to "predication adjuncts", prepositional ditransitives, and some "phrasel verbs".  Although  
+constituents marked with -CLR are not strictly speaking complements, they are treated as complements whenever it makes a  
+bracketing difference.  The precise meaning of -CLR depends somewhat on the category of the phrase.
+
+</a><ul><a name="-CLR">
+<li><b>on S or SBAR</b> - These categories are usually arguments, so the -CLR tag indicates that the clause is more adverbial  
+than normal clausal arguments.  The most common case is the infinitival semi-complement of <i>use</i>, but there are a variety  
+of other cases.
+
+</li></a><li><a name="-CLR"><b>on PP, ADVP, SBAR-PRP, etc</b> - On categories that are ordinarily interpreted as (adjunct) adverbials, -CLR indicates  
+a somewhat closer relationship to the verb.   For example:
+
+</a><ul><a name="-CLR">
+</a><li><a name="-CLR">Prepositional Ditransitives<br>
+In order to ensure consistency, the Treebank recognizes only a limited class of verbs that take more than one complement  
+(</a><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-DTV">-DTV</a> and <a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-PUT">-PUT</a> and Small Clauses)  Verbs that fall outside these classes (including most  
+of the prepositional ditransitive verbs in class [D2]) are often associated with -CLR.
+
+</li><li>Phrasal verbs<br>
+Phrasal verbs are also annotated with -CLR or a combination of <a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#PRT">-PRT</a> and PP-CLR.  Words that are considered  
+borderline between particle and adverb are often bracketed with ADVP-CLR.
+
+</li><li>Predication Adjuncts<br>
+Many of Quirk's predication adjuncts are annotated with -CLR.
+</li></ul>
+
+</li><li><b>on NP</b> - To the extent that -CLR is used on NPs, it indicates that the NP is part of some kind of "fixed phrase" or  
+expression, such as <i>take care of</i>.  Variation is more likely for NPs than for other uses of -CLR.
+</li></ul>
+
+
+<a name="-CLF">
+<b>-CLF (cleft)</b> - marks it-clefts ("true clefts") and may be added to the labels </a><a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#S">S</a>, <a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#SINV">SINV</a>, or  
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#SQ">SQ</a>.<br>
+
+
+<a name="-HLN">
+<b>-HLN (headline)</b> - marks headlines and datelines.  Note that headlines and datelines always constitute a unit of text that is  
+structurally independent from the following sentence.<br>
+</a>
+
+<a name="-TTL">
+<b>-TTL (title)</b> - is attached to the top node of a title when this title appears inside running text.  -TTL implies -NOM.  The  
+internal structure of the title is bracketed as usual.<br>
+</a>
+
+
+<a name="Index">
+<h2>
+Index of All Tags
+</h2>
+</a>
+
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#ADJP">
+<b>ADJP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-ADV">
+<b>-ADV</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#ADVP">
+<b>ADVP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-BNF">
+<b>-BNF</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#CC">
+<b>CC</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#CD">
+<b>CD</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-CLR">
+<b>-CLF</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-CLR">
+<b>-CLR</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#CONJP">
+<b>CONJP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-DIR">
+<b>-DIR</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#DT">
+<b>DT</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-DTV">
+<b>-DTV</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#EX">
+<b>EX</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-EXT">
+<b>-EXT</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#FRAG">
+<b>FRAG</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#FW">
+<b>FW</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-HLN">
+<b>-HLN</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#IN">
+<b>IN</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#INTJ">
+<b>INTJ</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#JJ">
+<b>JJ</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#JJR">
+<b>JJR</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#JJS">
+<b>JJS</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-LGS">
+<b>-LGS</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-LOC">
+<b>-LOC</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#LS">
+<b>LS</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#LST">
+<b>LST</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#MD">
+<b>MD</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-MNR">
+<b>-MNR</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#NAC">
+<b>NAC</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#NN">
+<b>NN</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#NNS">
+<b>NNS</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#NNP">
+<b>NNP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#NNPS">
+<b>NNPS</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-NOM">
+<b>-NOM</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#NP">
+<b>NP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#NX">
+<b>NX</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#PDT">
+<b>PDT</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#POS">
+<b>POS</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#PP">
+<b>PP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-PRD">
+<b>-PRD</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#PRN">
+<b>PRN</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#PRP">
+<b>PRP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-PRP">
+<b>-PRP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#PRP$">
+<b>PRP$ or PRP-S</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#PRT">
+<b>PRT</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-PUT">
+<b>-PUT</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#QP">
+<b>QP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#RB">
+<b>RB</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#RBR">
+<b>RBR</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#RBS">
+<b>RBS</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#RP">
+<b>RP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#RRC">
+<b>RRC</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#S">
+<b>S</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#SBAR">
+<b>SBAR</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#SBARQ">
+<b>SBARQ</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-SBJ">
+<b>-SBJ</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#SINV">
+<b>SINV</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#SQ">
+<b>SQ</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#SYM">
+<b>SYM</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-TMP">
+<b>-TMP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#TO">
+<b>TO</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-TPC">
+<b>-TPC</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-TTL">
+<b>-TTL</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#UCP">
+<b>UCP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#UH">
+<b>UH</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#VB">
+<b>VB</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#VBD">
+<b>VBD</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#VBG">
+<b>VBG</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#VBN">
+<b>VBN</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#VBP">
+<b>VBP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#VBZ">
+<b>VBZ</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#-VOC">
+<b>-VOC</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#VP">
+<b>VP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WDT">
+<b>WDT</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WHADJP">
+<b>WHADJP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WHADVP">
+<b>WHADVP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WHNP">
+<b>WHNP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WHPP">
+<b>WHPP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WP">
+<b>WP</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WP$">
+<b>WP$ or WP-S</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#WRB">
+<b>WRB</b>
+</a>
+<br>
+<a href="http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html#X">
+<b>X</b>
+</a>
+
+
+
+
+
+
+<iframe frameborder="0" scrolling="no" style="background-color: transparent; border: 0px; display: none;" src="./Penn-Treebank-Constituent-Tags_files/saved_resource.html"></iframe><div id="GOOGLE_INPUT_CHEXT_FLAG" input="" input_stat="{&quot;tlang&quot;:true,&quot;tsbc&quot;:true,&quot;pun&quot;:true,&quot;mk&quot;:true,&quot;ss&quot;:true}" style="display: none;"></div></body></html>

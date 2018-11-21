@@ -57,18 +57,17 @@ object ConstituencyParser {
             js.obj("expr")
               .str
               .toString
-              // .replace("\"\"\"", "")
-              // .split("\n")
-              // .drop(1)
-              // .dropRight(1)
-              // .mkString("\n")
+          val parsed = js.obj("parsed").bool
           exprDiv.innerHTML = ""
           exprDiv.appendChild(
-            pre(
+            div(
+              p(s"Parsed: $parsed"),
+              pre(
               code(`class` := "language-scala")(expr)
-            ).render)
+            )
+              ).render)
           val depTree = js.obj("deptree")
-          depTreeDiv.innerHTML = depTree.toString().drop(1).dropRight(1)
+          depTreeDiv.innerHTML = ujson.read(depTree).str
           g.hljs.highlightBlock(exprDiv)
           g.hljs.initHighlighting.called = false
           g.hljs.initHighlighting()
