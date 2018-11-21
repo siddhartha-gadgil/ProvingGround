@@ -300,7 +300,7 @@ object TreePatterns {
         case Node("NP",
                   Vector(
                     Node("NP", Det(det) +: adjs :+ np),
-                    Node("NP", Vector(npp))
+                    npp @ Node("NP", _)
                   ))
             if (adjs.forall(_.value == "JJ") && (np.value
               .startsWith("NN") || np.value == "CD") &&
@@ -317,7 +317,7 @@ object TreePatterns {
         case Node("NP",
                   Vector(
                     Node("NP", adjs :+ np),
-                    Node("NP", Vector(npp))
+                    npp @ Node("NP", _)
                   ))
             if (adjs.forall(_.value == "JJ") && (np.value.startsWith("NNS")) &&
               (npp.value.startsWith("N") || npp.value == "CD")) =>
