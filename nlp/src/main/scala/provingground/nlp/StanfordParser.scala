@@ -128,7 +128,7 @@ object StanfordParser {
 
   val baseMweSubs =
     Vector(Vector("if", "and", "only", "if") -> new TaggedWord("iff", "IN"),
-           Vector("such", "that")            -> new TaggedWord("where, WRB"))
+           Vector("such", "that")            -> new TaggedWord("with", "IN"))
 
   def texParse(s: String,
                wordTags: Vector[(String, String)] = baseWordTags,

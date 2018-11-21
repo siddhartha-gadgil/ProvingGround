@@ -786,7 +786,8 @@ object TreeToMath {
 
   val mathExpr: Translator.OrElse[Tree, MathExpr] =
     fmla || ifThen || addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
-      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || verbIf || exists || jjpp || qp ||
+      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || // verbIf ||
+      exists || jjpp || qp ||
       verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || and || or || dropRoot || dropNP || purge || iff || dropThen || innerIf
 
