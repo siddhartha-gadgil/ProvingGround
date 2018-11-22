@@ -617,16 +617,19 @@ object FormalExpr {
     implicit def rw: RW[Vec] = macroRW
   }
 
-  def translator =
+  val translator =
     Translator.Empty[Tree, MathExpr] || Pattern.partial[Tree, S] {
-      case PennTrees.Leaf(s) => s
+      case PennTrees.Leaf(s) =>
+        s
     } >>> {
       case s => Leaf(s)
     } ||
       Pattern.partial[Tree, SL] {
         case PennTrees.Node(s, l) => (s, l)
       } >>> {
-        case ("NP", Vector(dp: MathExpr.DP)) => dp
+        case ("NP", Vector(dp: MathExpr.DP)) =>
+          pprint.log(dp)
+          dp
         case (s, l)                          => Node(s, l)
       }
 }

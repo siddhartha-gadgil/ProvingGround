@@ -13,36 +13,41 @@ import scala.util.Try
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-
-object ParserRoutes extends cask.Routes{
+object ParserRoutes extends cask.Routes {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
     val expr: MathExpr                = mathExprTree(tree).get
+    val strictParsed                  = ujson.Js.Bool(mathExpr(tree).nonEmpty)
+    pprint.log(strictParsed)
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
     // println(proseTree.view)
-    val code =
-      {
-        // println(pprint.PPrinter.BlackWhite(expr))
-      pprint.PPrinter.BlackWhite(expr, 200)}
-      // Try(format(s"object ConstituencyParsed {$expr}").get)
-      //   .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
-    Js.Obj("tree"    -> tree.pennString,
-           "expr"    -> code.toString,
-           "deptree" -> proseTree.view.replace("\n", ""))
+    val code = {
+      // println(pprint.PPrinter.BlackWhite(expr))
+      pprint.PPrinter.BlackWhite(expr, height=500)
+    }
+    // Try(format(s"object ConstituencyParsed {$expr}").get)
+    //   .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
+    Js.Obj(
+      "tree" -> (tree.pennString + "\n\n" + pprint.PPrinter
+        .BlackWhite(FormalExpr.translator(tree), height = 500)),
+      "expr"    -> code.toString,
+      "parsed"  -> strictParsed,
+      "deptree" -> proseTree.view.replace("\n", "")
+    )
   }
 
   @cask.get("/nlp.html")
   def nlp(): String = {
     Future(parseResult("Hello World")) // waking up the stanford pipeline
     Site.page(mainHTML,
-            "resources/",
-            "ProvingGround: Natural language translation",
-            false)
-          }
+              "resources/",
+              "ProvingGround: Natural language translation",
+              false)
+  }
 
   @cask.post("/parse")
-  def parse(request: cask.Request) : String = {
+  def parse(request: cask.Request): String = {
     val txt = new String(request.readAllBytes())
     println(s"parsing: $txt")
     ujson.write(parseResult(txt))
