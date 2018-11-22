@@ -85,9 +85,24 @@ object TreePatterns {
           pprint.log(n +: tail)
           n +: tail
         case Node("VP", xs) =>
-          pprint.log(xs)
+          // pprint.log(xs)
           xs
       })
+
+  object ExistSP extends Pattern.Partial[Tree, Id]({
+    case parent @ Node(
+                    "S",
+                    Vector(
+                      Node("NP", Vector(Node("EX", _ ))),
+                      Node(
+                        "VP",
+                        (vex @VB(w))  +: tail
+                      )
+                    )
+                  ) =>
+                   // if w.startsWith("exist") =>
+                  PennTrees.mkTree(tail, "NP", parent)
+  })
 
   object VPIf
       extends Pattern.Partial[Tree, II]({
@@ -241,6 +256,8 @@ object TreePatterns {
   val ifSplit: Tree => Option[(Tree, Tree)] = {
     case parent @ Node(tag, init :+ IfNode(condition)) =>
       // pprint.log(parent)
+      pprint.log(condition)
+      pprint.log(ExistSP.unapply(condition))
       Some(condition -> PennTrees.mkTree(init, tag, parent))
     case parent @ Node(tag, init :+ last) =>
       // pprint.log(parent)
@@ -732,6 +749,9 @@ object TreeToMath {
       MathExpr.Exists
     })
 
+  val existsSP =
+    TreePatterns.ExistSP.>>>[MathExpr](identity)
+
   val or = TreePatterns.DisjunctNP.>>>[MathExpr](MathExpr.DisjunctNP(_))
 
   val and = TreePatterns.ConjunctNP.>>>[MathExpr](MathExpr.ConjunctNP(_))
@@ -781,13 +801,16 @@ object TreeToMath {
   }
 
   val innerIf = TreePatterns.IfSplit.>>>[MathExpr] {
-    case (x, y) => MathExpr.IfThen(x, y)
+    case (x, y) =>
+      pprint.log(x)
+      pprint.log(y)
+    MathExpr.IfThen(x, y)
   }
 
   val mathExpr: Translator.OrElse[Tree, MathExpr] =
     fmla || ifThen || addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
       prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || // verbIf ||
-      exists || jjpp || qp ||
+      existsSP || exists || jjpp || qp ||
       verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || and || or || dropRoot || dropNP || purge || iff || dropThen || innerIf
 
