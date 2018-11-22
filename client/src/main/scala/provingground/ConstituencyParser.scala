@@ -96,6 +96,7 @@ object ConstituencyParser {
         // "Six is not the sum of two distinct primes",
         "$6$ is not the sum of two distinct prime numbers", // 'primes' causes trouble
         "Every natural number is greater than $0$",
+        "Every number $n$ is divisible by a prime number $p$",
         // "The image of $Z$ in $K$ is an integral domain, hence isomorphic to $Z$ or $Z/p$, where $p$ is a prime",
         "If $G/H$ is cyclic, then $G$ is abelian", // parsed
         "If $G/H$ is cyclic, $G$ is abelian", //parsed
