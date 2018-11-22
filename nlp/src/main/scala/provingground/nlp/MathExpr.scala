@@ -64,19 +64,19 @@ object MathExpr {
   /**
     * A conjunction of  sentential phrases forming a sentential phrase.
     */
-  case class ConjuctSP(sps: SententialPhrase) extends SententialPhrase
+  case class ConjunctSP(sps: Vector[SententialPhrase]) extends SententialPhrase
 
-  object ConjuctSP {
-    implicit def rw: RW[ConjuctSP] = macroRW
+  object ConjunctSP {
+    implicit def rw: RW[ConjunctSP] = macroRW
   }
 
   /**
     * A disjunction of sentential phrases forming a sentential phrase.
     */
-  case class DisjuctSP(sps: SententialPhrase) extends SententialPhrase
+  case class DisjunctSP(sps: Vector[SententialPhrase]) extends SententialPhrase
 
-  object DisjuctSP {
-    implicit def rw: RW[DisjuctSP] = macroRW
+  object DisjunctSP {
+    implicit def rw: RW[DisjunctSP] = macroRW
   }
 
   /**
