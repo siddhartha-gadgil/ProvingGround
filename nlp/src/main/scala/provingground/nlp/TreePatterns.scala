@@ -89,20 +89,21 @@ object TreePatterns {
           xs
       })
 
-  object ExistSP extends Pattern.Partial[Tree, Id]({
-    case parent @ Node(
-                    "S",
-                    Vector(
-                      Node("NP", Vector(Node("EX", _ ))),
-                      Node(
-                        "VP",
-                        (vex @VB(w))  +: tail
-                      )
-                    )
-                  ) =>
-                   // if w.startsWith("exist") =>
-                  PennTrees.mkTree(tail, "NP", parent)
-  })
+  object ExistSP
+      extends Pattern.Partial[Tree, Id]({
+        case parent @ Node(
+              "S",
+              Vector(
+                Node("NP", Vector(Node("EX", _))),
+                Node(
+                  "VP",
+                  (vex @ VB(w)) +: tail
+                )
+              )
+            ) =>
+          // if w.startsWith("exist") =>
+          PennTrees.mkTree(tail, "NP", parent)
+      })
 
   object VPIf
       extends Pattern.Partial[Tree, II]({
@@ -474,6 +475,14 @@ object TreePatterns {
         case Node("NP", Vector(Node(tag, Vector(Leaf(nn)))))
             if tag.startsWith("N") & tag != "NNP" =>
           nn
+        case parent @ Node(
+            "NP",
+            Vector(
+              Node(n1, Vector(Leaf(s1))),
+              Node(n2, Vector(Leaf(s2)))
+            )
+            ) if (n1.startsWith("N") && n2.startsWith("N")) =>
+          s1 + " " + s2
       })
 
   object NNP
@@ -804,7 +813,7 @@ object TreeToMath {
     case (x, y) =>
       pprint.log(x)
       pprint.log(y)
-    MathExpr.IfThen(x, y)
+      MathExpr.IfThen(x, y)
   }
 
   val mathExpr: Translator.OrElse[Tree, MathExpr] =
