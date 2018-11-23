@@ -127,7 +127,7 @@ object TreePatterns {
           (x, y)
       })
 
-  object VerbNotObj
+  object VerbNegObj
       extends Pattern.Partial[Tree, II]({
         case Node("VP",
                   Vector(x @ Node(vb, _),
@@ -144,7 +144,7 @@ object TreePatterns {
           (x, y)
       })
 
-  object VerbNotAdj
+  object VerbNegAdj
       extends Pattern.Partial[Tree, II]({
         case Node("VP",
                   Vector(x @ Node(vb, _),
@@ -462,7 +462,7 @@ object TreePatterns {
     case _                        => false
   }
 
-  object NotVP
+  object NegVP
       extends Pattern.Partial[Tree, Id]({
         case Node("VP",
                   head +: Node("RB", Vector(Leaf("not"))) +: Vector(
@@ -665,13 +665,13 @@ object TreeToMath {
       case (vp, adj) => MathExpr.VerbAdj(vp, adj)
     })
 
-  val verbNotObj: Translator.Junction[Tree, MathExpr, II] =
-    TreePatterns.VerbNotObj.>>>[MathExpr]({
+  val verbNegObj: Translator.Junction[Tree, MathExpr, II] =
+    TreePatterns.VerbNegObj.>>>[MathExpr]({
       case (vp, np) => MathExpr.VerbObj(MathExpr.NegVP(vp), np)
     })
 
-  val verbNotAdj: Translator.Junction[Tree, MathExpr, II] =
-    TreePatterns.VerbNotAdj.>>>[MathExpr]({
+  val verbNegAdj: Translator.Junction[Tree, MathExpr, II] =
+    TreePatterns.VerbNegAdj.>>>[MathExpr]({
       case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
     })
 
@@ -827,7 +827,7 @@ object TreeToMath {
       case (x, y) => MathExpr.IfThen(x, y)
     })
 
-  val notvp: Translator.Junction[Tree, MathExpr, Id] = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
+  val negvp: Translator.Junction[Tree, MathExpr, Id] = TreePatterns.NegVP.>>>[MathExpr](MathExpr.NegVP(_))
 
   val iffP: Translator.Junction[Tree, MathExpr, Vector] = TreePatterns.phrase("_ iff _").>>>[MathExpr] {
     case Vector(x, y) => MathExpr.Iff(x, y)
@@ -846,9 +846,9 @@ object TreeToMath {
 
   val mathExpr: Translator.OrElse[Tree, MathExpr] =
     fmla || ifThen || addPP || addST || addPPST || nn || vb || jj || pp || iffP ||
-      prep || npvp || verbObj || verbAdj || verbNotObj || verbNotAdj || // verbIf ||
+      prep || npvp || verbObj || verbAdj || verbNegObj || verbNegAdj || // verbIf ||
       existsSP || exists || jjpp || qp ||
-      verbpp || notvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
+      verbpp || negvp || it || they || which || dpWhich || dpPpWhich || dpBase || dpQuant || dpBaseQuant || dpBaseZero ||
       dpBaseQuantZero || and || or || andS || orS || dropRoot || dropNP || purge || iff || dropThen || innerIf
 
   val mathExprTree
