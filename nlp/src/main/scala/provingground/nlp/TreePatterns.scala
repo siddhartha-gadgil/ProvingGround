@@ -60,10 +60,10 @@ object TreePatterns {
 
   //  import Translator._
 
-  val ifPattern = Translator.Pattern[Tree, IV](IfTree.unapply)
+  val ifPattern: Pattern[Tree, IV] = Translator.Pattern[Tree, IV](IfTree.unapply)
 
   object Test {
-    val ifTrans = ifPattern.join((xl: (Int, Vector[Int])) =>
+    val ifTrans: Translator.Junction[Tree, Int, IV] = ifPattern.join((xl: (Int, Vector[Int])) =>
       xl._2.headOption map (_ + xl._1))
   }
 
@@ -73,7 +73,7 @@ object TreePatterns {
                            Vector(VB(s1), Node("VP", (VB(s2)) +: tail))) =>
           val w = PennTrees.mkLeaf(s1 + " " + s2, parent)
           val n = PennTrees.mkTree(Vector(w), "VB", parent)
-          pprint.log(n +: tail)
+//          pprint.log(n +: tail)
           n +: tail
         case parent @ Node(
               "VP",
@@ -229,9 +229,9 @@ object TreePatterns {
       extends Pattern.Partial[Tree, II]({
         case Node("S", Vector(NP(Vector(x)), VP(Vector(y)))) => (x, y)
       }) {
-    val pattern = Translator.Pattern[Tree, Functors.II](unapply)
+    val pattern: Pattern[Tree, II] = Translator.Pattern[Tree, Functors.II](unapply)
 
-    def translate[E: ExprLang] = {
+    def translate[E: ExprLang]: Translator.Junction[Tree, E, II] = {
       pattern.join(ExprLang.appln[E])
     }
   }
@@ -273,7 +273,7 @@ object TreePatterns {
 
   object IfSplit extends Pattern[Tree, II](ifSplit)
 
-  val npvpPattern = Translator.Pattern[Tree, Functors.II](NPVP.unapply)
+  val npvpPattern: Pattern[Tree, II] = Translator.Pattern[Tree, Functors.II](NPVP.unapply)
 
   object Det
       extends Pattern.Partial[Tree, S]({
@@ -630,7 +630,7 @@ object TreePatterns {
           t match {
             case WordDashDash(a, b, c) if a == w =>
               phraseFromVec(tail).unapply(c).map(b +: _)
-            case WordDash(u, v) if u == v =>
+            case WordDash(u, v)  =>
               phraseFromVec("_" +: tail).unapply(v)
             case _ => None
           }
@@ -646,7 +646,7 @@ object TreePatterns {
     }
 
   def phrasesTrans(ss: String*): Translator[Tree, MathExpr] =
-    ss.toVector.map(phraseTrans).fold(Translator.Empty[Tree, MathExpr])(_ || _)
+    ss.toVector.map(phraseTrans).fold(Translator.Empty[Tree, MathExpr]())(_ || _)
 }
 
 object TreeToMath {
@@ -675,132 +675,133 @@ object TreeToMath {
       case (vp, adj) => MathExpr.VerbAdj(MathExpr.NegVP(vp), adj)
     })
 
-  val verbIf =
+  val verbIf: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.VPIf.>>>[MathExpr]({
       case (vp, ifc) => MathExpr.VPIf(vp, ifc)
     })
 
-  val pp =
+  val pp: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.PP.>>>[MathExpr]({
-      case (pp, np) => MathExpr.PP(false, pp, np)
+      case (p, np) => MathExpr.PP(negated = false, p, np)
     })
 
-  val qp = TreePatterns.QP >>> [MathExpr] ({
-    case ((jj, pp), fm) => MathExpr.JJPP(jj, Vector(MathExpr.PP(false, pp, fm)))
+  val qp
+    : Translator.Junction[Tree, MathExpr, III] = TreePatterns.QP >>> [MathExpr] ({
+    case ((j, p), fm) => MathExpr.JJPP(j, Vector(MathExpr.PP(negated = false, p, fm)))
   })
 
-  val nn = TreePatterns.NN.>>>[MathExpr](MathExpr.NN(_))
+  val nn: Translator.Junction[Tree, MathExpr, S] = TreePatterns.NN.>>>[MathExpr](MathExpr.NN(_))
 
-  val fmla = TreePatterns.NNP.>>>[MathExpr](MathExpr.Formula(_))
+  val fmla: Translator.Junction[Tree, MathExpr, S] = TreePatterns.NNP.>>>[MathExpr](MathExpr.Formula(_))
 
-  val vb = TreePatterns.VB.>>>[MathExpr](MathExpr.VB(_))
+  val vb: Translator.Junction[Tree, MathExpr, S] = TreePatterns.VB.>>>[MathExpr](MathExpr.VB(_))
 
-  val jj = TreePatterns.JJ.>>>[MathExpr](MathExpr.JJ(_))
+  val jj: Translator.Junction[Tree, MathExpr, S] = TreePatterns.JJ.>>>[MathExpr](MathExpr.JJ(_))
 
-  val prep = TreePatterns.IN.>>>[MathExpr](MathExpr.Prep(_))
+  val prep: Translator.Junction[Tree, MathExpr, S] = TreePatterns.IN.>>>[MathExpr](MathExpr.Prep(_))
 
-  val it = TreePatterns.It.>>>[MathExpr]((_) => MathExpr.It(None))
+  val it: Translator.Junction[Tree, MathExpr, Un] = TreePatterns.It.>>>[MathExpr]((_) => MathExpr.It(None))
 
-  val they = TreePatterns.They.>>>[MathExpr]((_) => MathExpr.They(Vector()))
+  val they: Translator.Junction[Tree, MathExpr, Un] = TreePatterns.They.>>>[MathExpr]((_) => MathExpr.They(Vector()))
 
-  val which = TreePatterns.Which.>>>[MathExpr](MathExpr.Which(_))
+  val which: Translator.Junction[Tree, MathExpr, Id] = TreePatterns.Which.>>>[MathExpr](MathExpr.Which(_))
 
-  val dpWhich = TreePatterns.DPWhich.>>[MathExpr] {
+  val dpWhich: Translator.Junction[Tree, MathExpr, II] = TreePatterns.DPWhich.>>[MathExpr] {
     case (det: MathExpr.DP, wh) => Some(det.add(wh))
     case _                      => None
   }
 
-  val dpPpWhich = TreePatterns.DPPPWhich.>>[MathExpr] {
-    case ((det: MathExpr.DP, pp), wh) => Some(det.add(pp).add(wh))
+  val dpPpWhich: Translator.Junction[Tree, MathExpr, III] = TreePatterns.DPPPWhich.>>[MathExpr] {
+    case ((det: MathExpr.DP, p), wh) => Some(det.add(p).add(wh))
     case _                            => None
   }
 
-  val dpBase =
+  val dpBase: Translator.Junction[Tree, MathExpr, SVO] =
     TreePatterns.DPBase.>>>[MathExpr]({
       case (det, (adjs, nnOpt)) =>
         MathExpr.DP(MathExpr.Determiner(det), adjs, nnOpt)
     })
 
-  val dpBaseZero =
+  val dpBaseZero: Translator.Junction[Tree, MathExpr, VO] =
     TreePatterns.DPBaseZero.>>>[MathExpr]({
       case (adjs, nnOpt) =>
         MathExpr.DP(MathExpr.Determiner.Zero, adjs, nnOpt)
     })
 
-  val dpQuant =
+  val dpQuant: Translator.Junction[Tree, MathExpr, SVI] =
     TreePatterns.DPQuant.>>>[MathExpr]({
       case (det, (adjs, np)) =>
         MathExpr.DP(MathExpr.Determiner(det), adjs, None, Some(np))
     })
 
-  val dpBaseQuant =
+  val dpBaseQuant: Translator.Junction[Tree, MathExpr, SVII] =
     TreePatterns.DPBaseQuant.>>>[MathExpr]({
       case (det, (adjs, (np, npp))) =>
         MathExpr.DP(MathExpr.Determiner(det), adjs, Some(np), Some(npp))
     })
 
-  val dpBaseQuantZero =
+  val dpBaseQuantZero: Translator.Junction[Tree, MathExpr, VII] =
     TreePatterns.DPBaseQuantZero.>>>[MathExpr]({
       case (adjs, (np, npp)) =>
         MathExpr.DP(MathExpr.Determiner.Zero, adjs, Some(np), Some(npp))
     })
 
-  val addPP =
+  val addPP: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.NPPP.>>[MathExpr] {
-      case (dp: MathExpr.DP, pp)        => Some(dp.add(pp))
-      case (fmla: MathExpr.Formula, pp) => Some(fmla.dp.add(pp))
+      case (dp: MathExpr.DP, p)        => Some(dp.add(p))
+      case (fmla: MathExpr.Formula, p) => Some(fmla.dp.add(p))
       case _                            => None
     }
 
-  val addST =
+  val addST: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.NPWH.>>[MathExpr] {
-      case (dp: MathExpr.DP, wh)        => Some(dp.st(wh))
+      case (dpp: MathExpr.DP, wh)        => Some(dpp.st(wh))
       case (fmla: MathExpr.Formula, wh) => Some(fmla.dp.st(wh))
       case _                            => None
     }
 
-  val addPPST = TreePatterns.NPPPWH.>>[MathExpr] {
-    case ((dp: MathExpr.DP, pp), wh)        => Some(dp.add(pp).st(wh))
-    case ((fmla: MathExpr.Formula, pp), wh) => Some(fmla.dp.add(pp).st(wh))
+  val addPPST: Translator.Junction[Tree, MathExpr, III] = TreePatterns.NPPPWH.>>[MathExpr] {
+    case ((dp: MathExpr.DP, p), wh)        => Some(dp.add(p).st(wh))
+    case ((fmla: MathExpr.Formula, p), wh) => Some(fmla.dp.add(p).st(wh))
     case _                                  => None
   }
 
-  val jjpp =
+  val jjpp: Translator.Junction[Tree, MathExpr, IV] =
     TreePatterns.JJPP.>>>[MathExpr]({
       case (adj, pps) => MathExpr.JJPP(adj, pps)
     })
 
-  val verbpp =
+  val verbpp: Translator.Junction[Tree, MathExpr, IV] =
     TreePatterns.VerbPP.>>>[MathExpr]({
       case (verb, pps) => MathExpr.VerbPP(verb, pps)
     })
 
-  val exists =
+  val exists: Translator.Junction[Tree, MathExpr, Un] =
     TreePatterns.Exists.>>>[MathExpr]({ (_) =>
       MathExpr.Exists
     })
 
-  val existsSP =
+  val existsSP: Translator.Junction[Tree, MathExpr, Id] =
     TreePatterns.ExistSP.>>>[MathExpr](identity)
 
-  val or = TreePatterns.DisjunctNP.>>>[MathExpr](MathExpr.DisjunctNP(_))
+  val or: Translator.Junction[Tree, MathExpr, Vector] = TreePatterns.DisjunctNP.>>>[MathExpr](MathExpr.DisjunctNP(_))
 
-  val and = TreePatterns.ConjunctNP.>>>[MathExpr](MathExpr.ConjunctNP(_))
+  val and: Translator.Junction[Tree, MathExpr, Vector] = TreePatterns.ConjunctNP.>>>[MathExpr](MathExpr.ConjunctNP(_))
 
-  val andS = TreePatterns.ConjunctSP.>>>[MathExpr](MathExpr.ConjunctSP(_))
+  val andS: Translator.Junction[Tree, MathExpr, Vector] = TreePatterns.ConjunctSP.>>>[MathExpr](MathExpr.ConjunctSP(_))
 
-  val orS = TreePatterns.DisjunctSP.>>>[MathExpr](MathExpr.DisjunctSP(_))
+  val orS: Translator.Junction[Tree, MathExpr, Vector] = TreePatterns.DisjunctSP.>>>[MathExpr](MathExpr.DisjunctSP(_))
 
 
-  val iff =
+  val iff: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.Iff.>>>[MathExpr]({ case (x, y) => MathExpr.Iff(x, y) })
 
-  val dropRoot =
+  val dropRoot: Translator.Junction[Tree, MathExpr, Id] =
     TreePatterns.DropRoot.>>>[MathExpr] { (x) =>
       x
     }
 
-  val dropNP =
+  val dropNP: Translator.Junction[Tree, MathExpr, Vector] =
     TreePatterns.DropNP.>>[MathExpr] {
       case Vector(x: MathExpr.DP)      => Some(x)
       case Vector(x: MathExpr.Formula) => Some(x)
@@ -810,7 +811,7 @@ object TreeToMath {
         None
     }
 
-  val purge = TreePatterns.Purge.>>>[MathExpr]((x) => x)
+  val purge: Translator.Junction[Tree, MathExpr, Id] = TreePatterns.Purge.>>>[MathExpr]((x) => x)
 
   // val ifThen = TreePatterns.IfTree >>[MathExpr]{
   //   case (x, Vector(y)) =>
@@ -821,22 +822,22 @@ object TreeToMath {
   //     None
   // }
 
-  val ifThen =
+  val ifThen: Translator.Junction[Tree, MathExpr, II] =
     TreePatterns.IfTreeSent.>>>[MathExpr]({
       case (x, y) => MathExpr.IfThen(x, y)
     })
 
-  val notvp = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
+  val notvp: Translator.Junction[Tree, MathExpr, Id] = TreePatterns.NotVP.>>>[MathExpr](MathExpr.NegVP(_))
 
-  val iffP = TreePatterns.phrase("_ iff _").>>>[MathExpr] {
+  val iffP: Translator.Junction[Tree, MathExpr, Vector] = TreePatterns.phrase("_ iff _").>>>[MathExpr] {
     case Vector(x, y) => MathExpr.Iff(x, y)
   }
 
-  val dropThen = TreePatterns.phrase("then _").>>>[MathExpr] {
+  val dropThen: Translator.Junction[Tree, MathExpr, Vector] = TreePatterns.phrase("then _").>>>[MathExpr] {
     case Vector(x) => x
   }
 
-  val innerIf = TreePatterns.IfSplit.>>>[MathExpr] {
+  val innerIf: Translator.Junction[Tree, MathExpr, II] = TreePatterns.IfSplit.>>>[MathExpr] {
     case (x, y) =>
       pprint.log(x)
       pprint.log(y)
