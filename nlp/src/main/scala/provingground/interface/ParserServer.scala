@@ -17,9 +17,18 @@ object ParserRoutes extends cask.Routes {
   def parseResult(txt: String) = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
-    val expr: MathExpr                = mathExprTree(tree).get
-    val strictParsed                  = ujson.Js.Bool(mathExpr(tree).nonEmpty)
+    val baseExpr: MathExpr                = mathExprTree(tree).get
+    val strictParsed                  = mathExpr(tree).nonEmpty
+    def polyExprOpt = texParsed.polyParsed.map(mathExpr(_)).flatten.headOption
+    val expr =
+      if (strictParsed) baseExpr
+      else {
+        texParsed.polyParsed.foreach(t => println(t))
+        polyExprOpt.getOrElse(baseExpr)
+      }
+    def parsed = strictParsed || polyExprOpt.nonEmpty
     pprint.log(strictParsed)
+    pprint.log(parsed)
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
     // println(proseTree.view)
     val code = {
@@ -32,7 +41,7 @@ object ParserRoutes extends cask.Routes {
       "tree" -> (tree.pennString + "\n\n" + pprint.PPrinter
         .BlackWhite(FormalExpr.translator(tree), height = 500)),
       "expr"    -> code.toString,
-      "parsed"  -> strictParsed,
+      "parsed"  -> ujson.Js.Bool(parsed),
       "deptree" -> proseTree.view.replace("\n", "")
     )
   }

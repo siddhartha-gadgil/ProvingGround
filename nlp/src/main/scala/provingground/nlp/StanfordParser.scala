@@ -14,6 +14,8 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable
 import scala.util.matching.Regex
 
+import interface.WordNet
+
 /**
   * Interface to the Stanford parser, handling (inline) TeX by separating tokenizing and POS tagging from parsing.
   * Parsing is done by the [[texParse]] method
@@ -66,6 +68,21 @@ object StanfordParser {
         case x +: ys  => x +: mergeSubs(mwe, tw)(ys)
       }
 
+  def wordNetTags(tws: Vector[TaggedWord]) : Vector[Vector[TaggedWord]] =
+    tws match {
+      case Vector() => Vector(Vector())
+      case x +: ys =>
+        val tags = x.tag +: WordNet.posTags(x.word)
+        pprint.log(tags)
+        for {
+          tag <- tags
+          tail <- wordNetTags(ys)
+          tw = new TaggedWord(x.word, tag)
+          // _ = pprint.log(tw)
+          // _ = pprint.log(tail)
+        } yield tw +: tail
+    }
+
   case class TeXParsed(
       preraw: String,
       wordTags: Vector[(String, String)] = baseWordTags,
@@ -106,6 +123,11 @@ object StanfordParser {
     //     mweTags.foldRight(tagged.toVector){case ((ws, tag), t) => mergeTag(ws, tag)(t)}
 
     lazy val parsed: Tree = lp(mergeSubsTagged.asJava)
+
+    lazy val polyParsed: Vector[Tree] =
+      for {
+        tws <- wordNetTags(mergeSubsTagged)
+      } yield lp(tws.asJava)
 
     lazy val gs: GrammaticalStructure = gsf.newGrammaticalStructure(parsed)
 

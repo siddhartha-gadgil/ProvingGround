@@ -45,6 +45,6 @@ object WordNet{
       (pos, s) <- pennPos
     } yield s -> getWordIdsPos(word, pos)
 
-  def getPosTags(word: String) =
+  def posTags(word: String) =
     getWordIDsMap(word).filter(_._2.nonEmpty).keys.toVector
 }
