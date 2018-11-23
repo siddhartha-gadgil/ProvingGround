@@ -484,7 +484,7 @@ object TreePatterns {
                 Node(n1, Vector(Leaf(s1))),
                 Node(n2, Vector(Leaf(s2)))
               )
-            ) if (n1.startsWith("N") && n2.startsWith("N")) =>
+            ) if (n1.startsWith("N") && n2.startsWith("N"))  =>
           s1 + " " + s2
       })
 
