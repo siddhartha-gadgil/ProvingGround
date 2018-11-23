@@ -190,7 +190,8 @@ object nlp extends SbtModule with ServerModule{
     super.ivyDeps() ++  Agg(
       ivy"edu.stanford.nlp:stanford-corenlp:3.7.0",
       ivy"edu.stanford.nlp:stanford-corenlp:3.7.0;classifier=models",
-      ivy"com.google.protobuf:protobuf-java:2.6.1"
+      ivy"com.google.protobuf:protobuf-java:2.6.1",
+      ivy"edu.mit:jwi:2.2.3"
     )
   }
 
