@@ -82,7 +82,7 @@ object TreePatterns {
             ) =>
           val w = PennTrees.mkLeaf(s0 + " " + s1 + " " + s2, parent)
           val n = PennTrees.mkTree(Vector(w), "VB", parent)
-          pprint.log(n +: tail)
+          // pprint.log(n +: tail)
           n +: tail
         case Node("VP", xs) =>
           // pprint.log(xs)
