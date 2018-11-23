@@ -74,7 +74,7 @@ object StanfordParser {
       case x +: ys =>
         val cdTag = if (x.word.startsWith("$")) Vector("CD") else Vector()
         val tags = (x.tag +: WordNet.posTags(x.word)) ++ cdTag
-        pprint.log(tags)
+        // pprint.log(tags)
         for {
           tag <- tags
           tail <- wordNetTags(ys)
