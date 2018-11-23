@@ -284,10 +284,10 @@ object TreePatterns {
   object DPBase
       extends Pattern.Partial[Tree, SVO]({
         case Node("NP", Det(det) +: adjs :+ nn)
-            if (adjs.forall(_.value.startsWith("JJ")) && (nn.value == "NN")) =>
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("N")) && (nn.value == "NN")) =>
           (det, (adjs, Some(nn)))
         case Node("NP", Det(det) +: adjs)
-            if (adjs.forall(_.value.startsWith("JJ"))) =>
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("N"))) =>
           (det, (adjs, None))
         case Node("NP", Vector(Node("QP", Vector(Det(det), nn)))) =>
           (det, (Vector(), Some(nn)))
@@ -296,14 +296,14 @@ object TreePatterns {
   object DPBaseZero
       extends Pattern.Partial[Tree, VO]({
         case Node("NP", adjs :+ nn)
-            if (adjs.forall(_.value.startsWith("JJ")) && (nn.value == "NNS")) =>
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("NN")) && (nn.value == "NNS")) =>
           (adjs, Some(nn))
       })
 
   object DPQuant
       extends Pattern.Partial[Tree, SVI]({
         case Node("NP", Det(det) +: adjs :+ np)
-            if (adjs.forall(_.value.startsWith("JJ")) && (np.value != "NN") &&
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("N")) && (np.value != "NN") &&
               (np.value.startsWith("N") || np.value == "CD")) =>
           (det, (adjs, np))
       })
@@ -311,7 +311,7 @@ object TreePatterns {
   object DPBaseQuant
       extends Pattern.Partial[Tree, SVII]({
         case Node("NP", Det(det) +: adjs :+ np :+ npp)
-            if (adjs.forall(_.value.startsWith("JJ")) && (np.value
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("N")) && (np.value
               .startsWith("NN") || np.value == "CD") &&
               (npp.value.startsWith("N") || npp.value == "CD")) =>
           // pprint.log(npp)
@@ -321,7 +321,7 @@ object TreePatterns {
                     Node("NP", Det(det) +: adjs :+ np),
                     npp @ Node("NP", _)
                   ))
-            if (adjs.forall(_.value.startsWith("JJ")) && (np.value
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("N")) && (np.value
               .startsWith("NN") || np.value == "CD") &&
               (npp.value.startsWith("N") || npp.value == "CD")) =>
           (det, (adjs, (np, npp)))
@@ -330,7 +330,7 @@ object TreePatterns {
   object DPBaseQuantZero
       extends Pattern.Partial[Tree, VII]({
         case Node("NP", adjs :+ np :+ npp)
-            if (adjs.forall(_.value.startsWith("JJ")) && (np.value.startsWith(
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("N")) && (np.value.startsWith(
               "NNS")) &&
               (npp.value.startsWith("N") || npp.value == "CD")) =>
           (adjs, (np, npp))
@@ -339,7 +339,7 @@ object TreePatterns {
                     Node("NP", adjs :+ np),
                     npp @ Node("NP", _)
                   ))
-            if (adjs.forall(_.value.startsWith("JJ")) && (np.value.startsWith(
+            if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("N")) && (np.value.startsWith(
               "NNS")) &&
               (npp.value.startsWith("N") || npp.value == "CD")) =>
           (adjs, (np, npp))
