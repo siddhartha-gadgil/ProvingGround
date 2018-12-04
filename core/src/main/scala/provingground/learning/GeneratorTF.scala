@@ -10,7 +10,7 @@ import GeneratorVariables._
 import scala.util.Try
 
 case class TFData(
-    vars: Set[VarVal[_]],
+    vars: Map[VarVal[_], Double],
     varSets: Set[Set[VarVal[_]]],
     inFinalEvent: Map[Variable[_], Set[Variable[_]]], // InIsle events are not events
     inFinalPairEvent: Map[Variable[_], Set[(Variable[_], Variable[_])]],
@@ -18,8 +18,8 @@ case class TFData(
   def map(f: Variable[_] => Variable[_]): TFData = {
     TFData(
       vars.map {
-        case FinalVal(variable)   => FinalVal(f(variable))
-        case InitialVal(variable) => InitialVal(f(variable))
+        case (FinalVal(variable), p)   => FinalVal(f(variable)) -> p
+        case (InitialVal(variable), p) => (InitialVal(f(variable)) -> p)
       },
       varSets.map(
         s =>
@@ -42,7 +42,7 @@ case class TFData(
 
   def ++(that: TFData): TFData =
     TFData(
-      vars union that.vars,
+      vars ++ that.vars,
       varSets union that.varSets,
       inFinalEvent ++ that.inFinalEvent,
       inFinalPairEvent ++ inFinalPairEvent,
@@ -51,7 +51,7 @@ case class TFData(
 }
 
 object TFData {
-  val empty = TFData(Set(), Set(), Map(), Map(), Set())
+  val empty = TFData(Map(), Set(), Map(), Map(), Set())
 }
 
 case class GeneratorTF[State, Boat](
@@ -94,6 +94,20 @@ case class GeneratorTF[State, Boat](
 
   lazy val elemFinalVars: Map[RandomVar[_], Set[Elem[_]]] =
     finalVars.collect { case e: Elem[u] => e }.groupBy(_.randomVar)
+
+  lazy val initElemValues: Map[VarVal[_], Double] =
+    elemInitVars.values.flatten.map {
+      case v: Elem[u] =>
+        (InitialVal(v): VarVal[_]) -> sd.value(initState)(v.randomVar)(
+          v.element)
+    }.toMap
+
+  lazy val finalElemValues: Map[VarVal[_], Double] =
+    elemInitVars.values.flatten.map {
+      case v: Elem[u] =>
+        (FinalVal(v): VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
+    }.toMap
+
 
   def eventSupport[X, Y](ev: Event[X, Y]): Set[Elem[_]] =
     elemFinalVars.getOrElse(ev.base, Set.empty[Elem[_]]).filter((el) =>
@@ -222,9 +236,7 @@ case class GeneratorTF[State, Boat](
 
   lazy val baseData: TFData =
     TFData(
-      elemInitVars.values.toSet.flatten
-        .map((x) => InitialVal(x): VarVal[_]) union elemFinalVars.values.toSet.flatten
-        .map((x) => FinalVal(x): VarVal[_]),
+      initElemValues ++ finalElemValues,
       elemInitVars.values.toSet
         .map((s: Set[Elem[_]]) => s.map(x => InitialVal(x): VarVal[_])) union elemFinalVars.values.toSet
         .map((s: Set[Elem[_]]) => s.map(x => FinalVal(x): VarVal[_])),
@@ -428,17 +440,5 @@ case class GeneratorTF[State, Boat](
 
 
 
-  lazy val initElemValues: Map[VarVal[_], Double] =
-    elemInitVars.values.flatten.map {
-      case v: Elem[u] =>
-        (InitialVal(v): VarVal[_]) -> sd.value(initState)(v.randomVar)(
-          v.element)
-    }.toMap
-
-  lazy val finalElemValues: Map[VarVal[_], Double] =
-    elemInitVars.values.flatten.map {
-      case v: Elem[u] =>
-        (FinalVal(v): VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
-    }.toMap
 
 }
