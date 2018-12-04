@@ -68,20 +68,26 @@ object StanfordParser {
         case x +: ys  => x +: mergeSubs(mwe, tw)(ys)
       }
 
-  def wordNetTags(tws: Vector[TaggedWord]) : Vector[Vector[TaggedWord]] =
+  def wordNetTags(tws: Vector[TaggedWord], depth : Int) : Vector[Vector[TaggedWord]] =
     tws match {
       case Vector() => Vector(Vector())
       case x +: ys =>
         val cdTag = if (x.word.startsWith("$")) Vector("CD") else Vector()
-        val tags = (x.tag +: WordNet.posTags(x.word)) ++ cdTag
-        // pprint.log(tags)
-        for {
-          tag <- tags
-          tail <- wordNetTags(ys)
+        def thinTags: Vector[String] = x.tag +: cdTag
+        def fatTags: Vector[String] = (x.tag +: WordNet.posTags(x.word)) ++ cdTag
+        def thinTailed: Vector[Vector[TaggedWord]] =
+          for {
+          tag <- fatTags
+          tail <- wordNetTags(ys, depth - 1)
           tw = new TaggedWord(x.word, tag)
-          // _ = pprint.log(tw)
-          // _ = pprint.log(tail)
         } yield tw +: tail
+        def fatTailed =
+          for {
+            tag <- thinTags
+            tail <- wordNetTags(ys, depth)
+            tw = new TaggedWord(x.word, tag)
+          } yield tw +: tail
+        if (depth > 1) thinTailed ++ fatTailed else fatTailed
     }
 
   case class TeXParsed(
@@ -127,7 +133,7 @@ object StanfordParser {
 
     lazy val polyParsed: Vector[Tree] =
       for {
-        tws <- wordNetTags(mergeSubsTagged)
+        tws <- wordNetTags(mergeSubsTagged, 2)
       } yield lp(tws.asJava)
 
     lazy val gs: GrammaticalStructure = gsf.newGrammaticalStructure(parsed)

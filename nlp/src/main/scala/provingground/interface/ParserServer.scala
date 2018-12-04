@@ -20,8 +20,8 @@ object ParserRoutes extends cask.Routes {
     val baseExpr: MathExpr                = mathExprTree(tree).get
     val strictParsed                  = mathExpr(tree).nonEmpty
     def polyExprOpt : Option[MathExpr] =
-      None
-      // texParsed.polyParsed.map(mathExpr(_)).flatten.headOption
+      // None
+      texParsed.polyParsed.map(mathExpr(_)).flatten.headOption
     val expr =
       if (strictParsed) baseExpr
       else {
