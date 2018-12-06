@@ -14,6 +14,7 @@ import provingground.interface.{ContextJson, MultiTask}
 
 import scala.concurrent._
 import duration._
+import monix.execution.Scheduler.Implicits.global
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -1120,6 +1121,11 @@ case class TermGenParams(appW: Double = 0.1,
       result =>
         EvolvedState(initState, result, tg, epsilon)
     )
+
+  def getEvolvedState(initState: TermState,
+                      epsilon: Double,
+                      limit: FiniteDuration = 3.minutes): EvolvedState =
+    evolvedStateTask(initState, epsilon, limit).runSyncUnsafe(limit)
 
 
   def nextStateWithEqnsTask(initState: TermState,
