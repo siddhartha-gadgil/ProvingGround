@@ -1,5 +1,5 @@
 package provingground.learning
-import provingground._
+import provingground._, HoTT._
 
 import spire.math._
 import spire.implicits._
@@ -19,7 +19,7 @@ case class EntropyAtomWeight(h0: Double,
                              initWeight: Double) {
   implicit val jetDim: JetDim = JetDim(1)
 
-  val t: Jet[Double] = Jet.h[Double](0)
+  private val t: Jet[Double] = Jet.h[Double](0)
 
   def pInit(x: Double): Jet[Double] = 1 / (1 + exp(x + t))
 
@@ -60,8 +60,11 @@ case class EntropyAtomWeight(h0: Double,
 
   def prunedPairIterator(x: Double, cutoff: Double,  sc: Double = 1): Iterator[(Double, Option[Double])] =
     pairIterator(x, sc).takeWhile{
-      case (_, optShift) => optShift.map(_ > cutoff).getOrElse(true)
+      case (_, optShift) => optShift.forall(_ > cutoff)
     }
+
+  def stableWeight(x: Double, cutoff: Double,  sc: Double = 1): Double =
+    prunedPairIterator(x, cutoff, sc).foldLeft(x){case (_, (y, _)) => y}
 }
 
 object EntropyAtomWeight {
@@ -85,4 +88,20 @@ object EntropyAtomWeight {
                       pDist(elem),
                       qDist(elem),
                       initWeight)
+
+  def evolvedLemmaGens(ev: EvolvedState): Vector[(Typ[Term], EntropyAtomWeight)] =
+    ev.result.pfSet.map(pf =>
+      pf.typ -> EntropyAtomWeight[Term, Typ[Term]](
+        ev.init.terms,
+        ev.result.thmsByPf,
+        ev.result.thmsBySt,
+        pf.typ,
+        ev.params.termInit
+      )
+    )
+
+  def evolveLemmaWeights(ev: EvolvedState, cutoff: Double,  sc: Double = 1): Vector[(Typ[Term], Double)] =
+    evolvedLemmaGens(ev).map{
+      case (lemma, ew) => lemma -> ew.stableWeight(ev.result.thmsByPf(lemma), cutoff, sc)
+    }
 }

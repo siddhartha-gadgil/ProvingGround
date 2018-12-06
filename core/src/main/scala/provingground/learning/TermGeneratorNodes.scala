@@ -1002,7 +1002,7 @@ case class TermGenParams(appW: Double = 0.1,
                          sigmaW: Double = 0.05,
                          varWeight: Double = 0.3,
                          goalWeight: Double = 0.5,
-                         typVsFamily: Double = 0.5) {
+                         typVsFamily: Double = 0.5) {tg =>
   object Gen
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => applyFunc(fn.func, arg) },
@@ -1112,6 +1112,15 @@ case class TermGenParams(appW: Double = 0.1,
       terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
       typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
     } yield TermState(terms, typs, initState.vars, initState.inds)
+
+  def evolvedStateTask(initState: TermState,
+                       epsilon: Double,
+                       limit: FiniteDuration = 3.minutes): Task[EvolvedState] =
+    nextStateTask(initState, epsilon, limit).map(
+      result =>
+        EvolvedState(initState, result, tg, epsilon)
+    )
+
 
   def nextStateWithEqnsTask(initState: TermState,
                             epsilon: Double,
