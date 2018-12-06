@@ -35,13 +35,13 @@ case class EntropyAtomWeight(h0: Double,
     kl0 - ((1 - p0) * log(1 - q)) - (p0 * log(1 - q + (q / q0)))
   }
 
-  def rat(x: Double): Jet[Double] = kl1(x) / h1(x)
-
-  def ratShifted(x: Double, sc: Double = 1): Double =
-    x - (rat(x).infinitesimal(0) * sc)
-
-  def ratIterator(x: Double, sc: Double = 1): Iterator[Double] =
-    Iterator.iterate(x)(y => ratShifted(y, sc))
+  // def rat(x: Double): Jet[Double] = kl1(x) / h1(x)
+  //
+  // def ratShifted(x: Double, sc: Double = 1): Double =
+  //   x - (rat(x).infinitesimal(0) * sc)
+  //
+  // def ratIterator(x: Double, sc: Double = 1): Iterator[Double] =
+  //   Iterator.iterate(x)(y => ratShifted(y, sc))
 
   def tot(x: Double): Jet[Double] = kl1(x) + h1(x)
 
@@ -50,6 +50,18 @@ case class EntropyAtomWeight(h0: Double,
 
   def totIterator(x: Double, sc: Double = 1): Iterator[Double] =
     Iterator.iterate(x)(y => totShifted(y, sc))
+
+  def pairIterator(x: Double, sc: Double = 1): Iterator[(Double, Option[Double])] =
+    Iterator.iterate[(Double, Option[Double])](x-> None){
+      case (y, _) =>
+        val shift = tot(x).infinitesimal(0) * sc
+        (x - shift, Some(shift.abs))
+    }
+
+  def prunedPairIterator(x: Double, cutoff: Double,  sc: Double = 1): Iterator[(Double, Option[Double])] =
+    pairIterator(x, sc).takeWhile{
+      case (_, optShift) => optShift.map(_ > cutoff).getOrElse(true)
+    }
 }
 
 object EntropyAtomWeight {
@@ -59,10 +71,9 @@ object EntropyAtomWeight {
     * @param pDist the initial "theorem by proof" distribution
     * @param qDist the initial "theorem by statement" distribution
     * @param elem the lemma whose weight is learned
-    * @param initWeight
-    * @tparam A
-    * @tparam B
-    * @return
+    * @param initWeight the weight of the initial distribution in the final one
+    * @tparam A the type of objects of the initial distribution, e.g. terms
+    * @tparam B the type of objects of the final distribution, e.g. types
     */
   def apply[A, B](genDist: FiniteDistribution[A],
                   pDist: FiniteDistribution[B],
