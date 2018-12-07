@@ -1122,10 +1122,10 @@ case class TermGenParams(appW: Double = 0.1,
         EvolvedState(initState, result, tg, epsilon)
     )
 
-  def getEvolvedState(initState: TermState,
-                      epsilon: Double,
-                      limit: FiniteDuration = 3.minutes): EvolvedState =
-    evolvedStateTask(initState, epsilon, limit).runSyncUnsafe(limit)
+  // def getEvolvedState(initState: TermState,
+  //                     epsilon: Double,
+  //                     limit: FiniteDuration = 3.minutes): EvolvedState =
+  //   evolvedStateTask(initState, epsilon, limit).runSyncUnsafe(limit)
 
 
   def nextStateWithEqnsTask(initState: TermState,

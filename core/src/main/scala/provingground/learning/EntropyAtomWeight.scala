@@ -35,14 +35,6 @@ case class EntropyAtomWeight(h0: Double,
     kl0 - ((1 - p0) * log(1 - q)) - (p0 * log(1 - q + (q / q0)))
   }
 
-  // def rat(x: Double): Jet[Double] = kl1(x) / h1(x)
-  //
-  // def ratShifted(x: Double, sc: Double = 1): Double =
-  //   x - (rat(x).infinitesimal(0) * sc)
-  //
-  // def ratIterator(x: Double, sc: Double = 1): Iterator[Double] =
-  //   Iterator.iterate(x)(y => ratShifted(y, sc))
-
   def tot(x: Double): Jet[Double] = kl1(x) + h1(x)
 
   def totShifted(x: Double, sc: Double = 1): Double =
@@ -54,8 +46,8 @@ case class EntropyAtomWeight(h0: Double,
   def pairIterator(x: Double, sc: Double = 1): Iterator[(Double, Option[Double])] =
     Iterator.iterate[(Double, Option[Double])](x-> None){
       case (y, _) =>
-        val shift = tot(x).infinitesimal(0) * sc
-        (x - shift, Some(shift.abs))
+        val shift = tot(y).infinitesimal(0) * sc
+        (y - shift, Some(shift.abs))
     }
 
   def prunedPairIterator(x: Double, cutoff: Double,  sc: Double = 1): Iterator[(Double, Option[Double])] =
@@ -90,17 +82,17 @@ object EntropyAtomWeight {
                       initWeight)
 
   def evolvedLemmaGens(ev: EvolvedState): Vector[(Typ[Term], EntropyAtomWeight)] =
-    ev.result.pfSet.map(pf =>
-      pf.typ -> EntropyAtomWeight[Term, Typ[Term]](
+    ev.result.thmsBySt.supp.map(lem =>
+      lem -> EntropyAtomWeight[Term, Typ[Term]](
         ev.init.terms,
         ev.result.thmsByPf,
         ev.result.thmsBySt,
-        pf.typ,
+        lem,
         ev.params.termInit
       )
     )
 
-  def evolveLemmaWeights(ev: EvolvedState, cutoff: Double,  sc: Double = 1): Vector[(Typ[Term], Double)] =
+  def evolvedLemmaWeights(ev: EvolvedState, cutoff: Double,  sc: Double = 1): Vector[(Typ[Term], Double)] =
     evolvedLemmaGens(ev).map{
       case (lemma, ew) => lemma -> ew.stableWeight(ev.result.thmsByPf(lemma), cutoff, sc)
     }

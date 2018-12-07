@@ -186,7 +186,7 @@ object MonoidSimple {
 
   val refl = "refl" :: a ~>: (eqM(a)(a))
 
-  val dist = unif(a, b, c)(l, r, op, eqM)(
+  val dist: FiniteDistribution[Term] = unif(a, b, c)(l, r, op, eqM)(
     eqM(a)(a),
     eqM(a)(b) ->: eqM(b)(a),
     eqM(a)(b) ->: eqM(b)(c) ->: eqM(a)(c),

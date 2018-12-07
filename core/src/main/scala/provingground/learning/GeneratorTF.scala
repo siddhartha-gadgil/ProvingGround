@@ -1,5 +1,5 @@
 package provingground.learning
-import provingground.{FiniteDistribution => FD}
+import provingground.{HoTT, FiniteDistribution => FD}
 import shapeless._
 import HList._
 import provingground.learning.GeneratorNode.{FlatMap, Island, ThenCondition}
@@ -52,6 +52,11 @@ case class TFData(
 
 object TFData {
   val empty = TFData(Map(), Set(), Map(), Map(), Set())
+}
+
+object GeneratorTF{
+  def fromEvolved(ev: EvolvedState): GeneratorTF[TermState, HoTT.Term] =
+    GeneratorTF(ev.params.nodeCoeffSeq, ev.init, ev.result)
 }
 
 case class GeneratorTF[State, Boat](
