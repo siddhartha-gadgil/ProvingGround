@@ -74,6 +74,7 @@ activator*
 
 _site/
 
+.vscode/
 
 src/main/scala/provingground
 
