@@ -63,8 +63,8 @@ case class GeneratorTF[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) {
-  // pprint.log(initState)
-  // pprint.log(finalState)
+  pprint.log(initState)
+  pprint.log(finalState)
 
   lazy val initVars: Set[Variable[_]] =
     GeneratorVariables(nodeCoeffSeq, initState).allVars
@@ -191,6 +191,7 @@ case class GeneratorTF[State, Boat](
     ncs match {
       case NodeCoeffSeq.Empty() => Set() -> TFData.empty
       case NodeCoeffSeq.Cons(head, tail) =>
+        pprint.log(head.output)
         (
           nodeCoeffsEquations(head)._1 union nodeCoeffSeqEquations(tail)._1,
           nodeCoeffsEquations(head)._2 ++ nodeCoeffSeqEquations(tail)._2
@@ -202,10 +203,12 @@ case class GeneratorTF[State, Boat](
     : (Set[Equation], TFData) =
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
+        pprint.log(nodeCoeffs.output)
         val (terms, data) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
         groupEquations(terms) -> data
       case fmly =>
         val eqns = finalElemIndices(nodeCoeffs.output).flatMap { x =>
+          pprint.log(x)
           val (terms, _) = nodeCoeffsEquationTerms(nodeCoeffs, x)
           groupEquations(terms)
         }
@@ -224,6 +227,7 @@ case class GeneratorTF[State, Boat](
       case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
         val (hts, hes) = bc.headGen match {
           case gen: GeneratorNode[Y] =>
+            pprint.log(gen)
             nodeEquationTerms(gen)
           case pf: GeneratorNodeFamily.Pi[Dom, Y] =>
             nodeEquationTerms(pf.nodes(x))
@@ -313,7 +317,7 @@ case class GeneratorTF[State, Boat](
       case FlatMap(baseInput, fiberNode, output) =>
         val eqTerms: Set[EquationTerm] = for {
           (x, p) <- finalProbs(baseInput)
-//          _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
+         _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
           eqT <- nodeEquationTerms(fiberNode(x))._1
         } yield eqT * p
         val allData: Set[TFData] = for {
@@ -325,7 +329,7 @@ case class GeneratorTF[State, Boat](
         val eqTerms: Set[EquationTerm] = for {
           (x, p)                   <- finalProbs(baseInput)
           (node: GeneratorNode[Y]) <- fiberNodeOpt(x).toSet
-//          _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
+         _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
           eqT <- nodeEquationTerms(node)._1
         } yield eqT * p
         val allData: Set[TFData] = for {
