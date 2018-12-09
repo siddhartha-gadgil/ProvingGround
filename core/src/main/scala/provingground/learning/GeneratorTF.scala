@@ -402,6 +402,7 @@ case class GeneratorTF[State, Boat](
             (eqT, baseData)
           case isle: Island[Y, State, o, b] =>
             val (isleInit, boat) = isle.initMap(initState)
+            // FIXME if the final state is empty, just return empty terms and data
             val isleEq =
               GeneratorTF(nodeCoeffSeq,
                           isleInit,
