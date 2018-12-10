@@ -2,13 +2,14 @@ package provingground.learning
 import provingground.{HoTT, FiniteDistribution => FD}
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{FlatMap, Island, ThenCondition}
 
 import scala.language.higherKinds
 import GeneratorVariables._
 import scala.collection.mutable.{Map => mMap}
 
 import scala.util.Try
+
+import monix.eval._
 
 case class TFData(
     vars: Map[VarVal[_], Double],
@@ -402,28 +403,25 @@ case class GeneratorTF[State, Boat](
             (eqT, baseData)
           case isle: Island[Y, State, o, b] =>
             val (isleInit, boat) = isle.initMap(initState)
-            val fs = isle.finalMap(boat, finalState)
-            // FIXME if the final state is empty, just return empty terms and data
+            val fs               = isle.finalMap(boat, finalState)
             if (sd.isEmpty(fs)) (Set.empty[EquationTerm], TFData.empty)
-            else
-            {
+            else {
               val isleEq =
-              GeneratorTF(nodeCoeffSeq,
-                          isleInit,
-                          fs)
-            val isleData: TFData =
-              isleEq.tfData.map((x) => InIsle(x, boat, isle))
-            val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
-            val eqTerms =
-              for {
-                (x, FinalVal(p)) <- isleFinalProb
-                y = isle.export(boat, x)
-                fve <- finalElemValOpt(y, isle.output)
-              } yield
-                EquationTerm(fve,
-                             FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
-            (eqTerms, baseData ++ isleData)
-          }
+                GeneratorTF(nodeCoeffSeq, isleInit, fs)
+              val isleData: TFData =
+                isleEq.tfData.map((x) => InIsle(x, boat, isle))
+              val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
+              val eqTerms =
+                for {
+                  (x, FinalVal(p)) <- isleFinalProb
+                  y = isle.export(boat, x)
+                  fve <- finalElemValOpt(y, isle.output)
+                } yield
+                  EquationTerm(
+                    fve,
+                    FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
+              (eqTerms, baseData ++ isleData)
+            }
           case isle: ComplexIsland[o, Y, State, Boat, Double] =>
             val (isleInit, boat, _) = isle.initMap(initState)
             val isleEq =
@@ -443,7 +441,6 @@ case class GeneratorTF[State, Boat](
                              FinalVal(GeneratorVariables.InIsle(p, boat, ???)))
             (eqTerms, baseData ++ isleData)
 
-
         }
 //        pprint.log(node)
 //        pprint.log(result)
@@ -452,6 +449,234 @@ case class GeneratorTF[State, Boat](
         result
       }
     )
+
+  def nodeEquationTermsTask[Y](
+      node: GeneratorNode[Y]): Task[(Set[EquationTerm], TFData)] =
+    if (nodeMap.keySet.contains(node)) Task.now(nodeMap(node))
+    else {
+      //        pprint.log(node)
+      val resultTask = node match {
+        case Init(input) =>
+          Task {
+            val eqTerms =
+              initProbs(input).map {
+                case (x, _) =>
+                  EquationTerm(FinalVal(Elem(x, input)),
+                               InitialVal(Elem(x, input)))
+              }
+            (eqTerms, baseData)
+          }
+        case Atom(x, input) =>
+          Task {
+            val eqTerm =
+              EquationTerm(FinalVal(Elem(x, input)), FinalVal(Elem(x, input)))
+            (Set(eqTerm), baseData)
+          }
+        case GeneratorNode.Map(f, input, output) =>
+          Task {
+            val eqTerms =
+              finalProbs(input).flatMap {
+                case (x, p) =>
+                  finalElemValOpt(f(x), output).map(EquationTerm(_, p))
+              }
+            (eqTerms, baseData)
+          }
+        case MapOpt(f, input, output) =>
+          Task {
+            val eqTerms =
+              finalProbs(input).flatMap {
+                case (x, p) =>
+                  f(x).flatMap { y =>
+                    val condition = FinalVal(Event(input, Sort.Restrict(f)))
+                    finalElemValOpt(y, output).map(
+                      EquationTerm(_, p / condition))
+                  }
+              }
+            (eqTerms, baseData)
+          }
+        case ZipMap(f, input1, input2, output) =>
+          Task {
+            val eqTerms =
+              for {
+                (x1, p1) <- finalProbs(input1)
+                (x2, p2) <- finalProbs(input2)
+                fve      <- finalElemValOpt(f(x1, x2), output)
+              } yield EquationTerm(fve, p1 * p2)
+            (eqTerms, baseData)
+          }
+        case zm: ZipMapOpt[o1, o2, Y] =>
+          Task {
+            val eqTerms =
+              for {
+                (x1, p1) <- finalProbs(zm.input1)
+                (x2, p2) <- finalProbs(zm.input2)
+                condition = FinalVal(
+                  PairEvent(zm.input1, zm.input2, Sort.Restrict[(o1, o2), Y] {
+                    case (x1, x2) => zm.f(x1, x2)
+                  }))
+                y   <- zm.f(x1, x2)
+                fve <- finalElemValOpt(y, zm.output)
+              } yield EquationTerm(fve, p1 * p2 / condition)
+            (eqTerms, baseData)
+          }
+        case FlatMap(baseInput, fiberNode, output) =>
+          val weightedTasks
+            : Set[(Task[(Set[EquationTerm], TFData)], FinalVal[_])] =
+            for {
+              (x, p) <- finalProbs(baseInput)
+            } yield nodeEquationTermsTask(fiberNode(x)).memoize -> p
+          val eqTermTask: Task[Set[EquationTerm]] =
+            Task
+              .gather(weightedTasks.map {
+                case (tsk, p) => tsk.map { case (eqTS, _) => eqTS.map(_ * p) }
+              })
+              .map(_.flatten)
+          val dataTask =
+            Task
+              .gather(weightedTasks.map { case (tsk, _) => tsk.map(_._2) })
+              .map(s => s.foldLeft(baseData)(_ ++ _))
+          for {
+            eqTerms <- eqTermTask
+            data    <- dataTask
+          } yield (eqTerms, data)
+        case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
+          val weightedTasks
+            : Set[(Task[(Set[EquationTerm], TFData)], FinalVal[_])] =
+            for {
+              (x, p) <- finalProbs(baseInput)
+              node   <- fiberNodeOpt(x)
+            } yield nodeEquationTermsTask(node).memoize -> p
+          val eqTermTask: Task[Set[EquationTerm]] =
+            Task
+              .gather(weightedTasks.map {
+                case (tsk, p) => tsk.map { case (eqTS, _) => eqTS.map(_ * p) }
+              })
+              .map(_.flatten)
+          val dataTask =
+            Task
+              .gather(weightedTasks.map { case (tsk, _) => tsk.map(_._2) })
+              .map(s => s.foldLeft(baseData)(_ ++ _))
+          for {
+            eqTerms <- eqTermTask
+            data    <- dataTask
+          } yield (eqTerms, data)
+        case ZipFlatMap(baseInput, fiberVar, f, output) =>
+          Task {
+            val eqTerms =
+              for {
+                (x1, p1) <- finalProbs(baseInput)
+                (x2, p2) <- finalProbs(fiberVar(x1))
+                fve      <- finalElemValOpt(f(x1, x2), output)
+              } yield EquationTerm(fve, p1 * p2)
+            (eqTerms, baseData)
+          }
+        case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
+          Task {
+            val d1     = finalProbs(baseInput)
+            val byBase = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
+            val baseWeights = byBase.mapValues(v =>
+              v.map(_._2)
+                .reduce[Expression](_ + _)) // weights of terms in the quotient
+            val eqT =
+              for {
+                (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
+                d2 = finalProbs(fiberVar(z)) // distribution of the fiber at `z`
+                //            _  = pprint.log(z)
+                //            _  = pprint.log(fiberVar(z))
+                d = pmf1.zip(d2).map {
+                  case ((x1, p1), (x2, p2)) =>
+                    Try((f(x1, x2), p1 * p2)).fold(fa => {
+                      pprint.log(x1)
+                      pprint.log(x2)
+                      pprint.log(f)
+                      pprint.log(node)
+                      throw fa
+                    }, fb => fb)
+                }
+                (y, p) <- d
+                fve    <- finalElemValOpt(y, output)
+              } yield EquationTerm(fve, p)
+            (eqT.toSet, baseData)
+          }
+        case tc: ThenCondition[o, Y] =>
+          Task {
+            val base = finalProbs(tc.gen.output)
+            val eqT = tc.condition match {
+              case Sort.All() =>
+                for {
+                  (x, p) <- base
+
+                  fve <- finalElemValOpt(x, tc.output)
+                } yield EquationTerm(fve, p)
+
+              case s @ Sort.Filter(pred) =>
+                val condition = FinalVal(Event(tc.gen.output, s))
+                for {
+                  (x, p) <- base
+                  if pred(x)
+                  fve <- finalElemValOpt(x, tc.output)
+                } yield EquationTerm(fve, p / condition)
+              case s @ Sort.Restrict(optMap) =>
+                val condition = FinalVal(Event(tc.gen.output, s))
+                for {
+                  (x, p) <- base
+                  y      <- optMap(x)
+                  fve    <- finalElemValOpt(x, tc.output)
+                } yield EquationTerm(fve, p / condition)
+            }
+            (eqT, baseData)
+          }
+        case isle: Island[Y, State, o, b] =>
+          Task {
+            val (isleInit, boat) = isle.initMap(initState)
+            val fs               = isle.finalMap(boat, finalState)
+            if (sd.isEmpty(fs)) (Set.empty[EquationTerm], TFData.empty)
+            else {
+              val isleEq =
+                GeneratorTF(nodeCoeffSeq, isleInit, fs)
+              val isleData: TFData =
+                isleEq.tfData.map((x) => InIsle(x, boat, isle))
+              val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
+              val eqTerms =
+                for {
+                  (x, FinalVal(p)) <- isleFinalProb
+                  y = isle.export(boat, x)
+                  fve <- finalElemValOpt(y, isle.output)
+                } yield
+                  EquationTerm(
+                    fve,
+                    FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
+              (eqTerms, baseData ++ isleData)
+            }
+          }
+        case isle: ComplexIsland[o, Y, State, Boat, Double] =>
+          Task {
+            val (isleInit, boat, _) = isle.initMap(initState)
+            val isleEq =
+              GeneratorTF(nodeCoeffSeq,
+                          isleInit,
+                          isle.finalMap(boat, finalState))
+            val isleData: TFData =
+              isleEq.tfData.map((x) => InIsle(x, boat, ???))
+            val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
+            val eqTerms =
+              for {
+                (x, FinalVal(p)) <- isleFinalProb
+                y = isle.export(boat, x)
+                fve <- finalElemValOpt(y, isle.output)
+              } yield
+                EquationTerm(fve,
+                             FinalVal(GeneratorVariables.InIsle(p, boat, ???)))
+            (eqTerms, baseData ++ isleData)
+
+          }
+      }
+
+      resultTask.map { result =>
+        nodeMap += node -> result
+        result
+      }
+    }
 
   lazy val finalProbVars: Map[RandomVar[Any], Set[Expression]] = finalVars
     .collect {
