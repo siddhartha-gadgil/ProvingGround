@@ -559,6 +559,8 @@ trait StateDistribution[State, D[_]] {
 
   def valueAt[Dom <: HList, T](
       state: State)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): D[T]
+
+  def isEmpty(state: State): Boolean
 }
 
 object StateDistribution {
@@ -578,6 +580,8 @@ object StateDistribution {
           .find(_.randVars == randomVarFmly)
           .flatMap(_.value.asInstanceOf[Map[Dom, D[T]]].get(fullArg))
           .getOrElse(emp.empty[T])
+
+      def isEmpty(state: VarValueSet[D]) = state.randVarVals.isEmpty && state.randVarFamilyVals.isEmpty
     }
 
   def value[State, T, D[_]](state: State)(randomVar: RandomVar[T])(
@@ -609,6 +613,8 @@ object DistributionState {
       def valueAt[Dom <: HList, T](state: FD[O])(
           randomVarFmly: RandomVarFamily[Dom, T],
           fullArg: Dom): FD[T] = FD.empty[T]
+
+      def isEmpty(state: FiniteDistribution[O]) = state.support.isEmpty
 
       def update(values: RandomVarValues[FD])(init: FD[O]): FD[O] =
         values.value(randVar)
@@ -860,6 +866,8 @@ object MemoState {
           .find(_.randVar == randomVar)
           .map(_.value.asInstanceOf[D[T]])
           .getOrElse(emp.empty[T])
+
+      def isEmpty(state: MemoState[D, V, P]) = state.randVarVals.isEmpty
 
       def valueAt[Dom <: HList, T](state: MemoState[D, V, P])(
           randomVarFmly: RandomVarFamily[Dom, T],

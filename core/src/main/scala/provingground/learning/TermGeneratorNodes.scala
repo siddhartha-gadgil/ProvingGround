@@ -959,6 +959,8 @@ object TermState {
     */
   implicit val stateFD: StateDistribution[TermState, FD] =
     new StateDistribution[TermState, FD] {
+      def isEmpty(state: TermState) = state.terms.support.isEmpty && state.typs.support.isEmpty
+
       def value[T](state: TermState)(randomVar: RandomVar[T]): FD[T] =
         randomVar match {
           case Terms      => state.terms.map(x => x: T)
