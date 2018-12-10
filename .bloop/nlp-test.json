@@ -1,19 +1,21 @@
 {
     "version" : "1.1.0-M2",
     "project" : {
-        "name" : "nlp",
+        "name" : "nlp-test",
         "directory" : "/home/gadgil/code/ProvingGround/nlp",
         "sources" : [
-            "/home/gadgil/code/ProvingGround/nlp/src/main/scala-2.12",
-            "/home/gadgil/code/ProvingGround/nlp/src/main/scala",
-            "/home/gadgil/code/ProvingGround/nlp/src/main/java",
-            "/home/gadgil/code/ProvingGround/nlp/target/scala-2.12/src_managed/main"
+            "/home/gadgil/code/ProvingGround/nlp/src/test/scala-2.12",
+            "/home/gadgil/code/ProvingGround/nlp/src/test/scala",
+            "/home/gadgil/code/ProvingGround/nlp/src/test/java",
+            "/home/gadgil/code/ProvingGround/nlp/target/scala-2.12/src_managed/test"
         ],
         "dependencies" : [
             "coreJVM",
-            "mantle"
+            "mantle",
+            "nlp"
         ],
         "classpath" : [
+            "/home/gadgil/code/ProvingGround/.bloop/nlp/scala-2.12/classes",
             "/home/gadgil/code/ProvingGround/.bloop/coreJVM/scala-2.12/classes",
             "/home/gadgil/code/ProvingGround/.bloop/mantle/scala-2.12/classes",
             "/home/gadgil/code/ProvingGround/.bloop/server/scala-2.12/classes",
@@ -169,13 +171,14 @@
             "/home/gadgil/.ivy2/cache/xalan/xalan/jars/xalan-2.7.0.jar",
             "/home/gadgil/.ivy2/cache/com.googlecode.efficient-java-matrix-library/ejml/jars/ejml-0.23.jar",
             "/home/gadgil/.ivy2/cache/org.glassfish/javax.json/bundles/javax.json-1.0.4.jar",
-            "/home/gadgil/.ivy2/cache/edu.mit/jwi/jars/jwi-2.2.3.jar"
+            "/home/gadgil/.ivy2/cache/edu.mit/jwi/jars/jwi-2.2.3.jar",
+            "/home/gadgil/.ivy2/cache/org.scalatest/scalatest_2.12/bundles/scalatest_2.12-3.0.4.jar"
         ],
         "out" : "/home/gadgil/code/ProvingGround/.bloop/nlp",
-        "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/nlp/scala-2.12/classes",
+        "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/nlp/scala-2.12/test-classes",
         "resources" : [
-            "/home/gadgil/code/ProvingGround/nlp/src/main/resources",
-            "/home/gadgil/code/ProvingGround/nlp/target/scala-2.12/resource_managed/main"
+            "/home/gadgil/code/ProvingGround/nlp/src/test/resources",
+            "/home/gadgil/code/ProvingGround/nlp/target/scala-2.12/resource_managed/test"
         ],
         "scala" : {
             "organization" : "org.scala-lang",
@@ -246,6 +249,17 @@
                 "excludes" : [
                 ],
                 "arguments" : [
+                    {
+                        "args" : [
+                            "-oD"
+                        ],
+                        "framework" : {
+                            "names" : [
+                                "org.scalatest.tools.Framework",
+                                "org.scalatest.tools.ScalaTestFramework"
+                            ]
+                        }
+                    }
                 ]
             }
         },
@@ -2616,6 +2630,22 @@
                             "name" : "jwi",
                             "classifier" : "sources",
                             "path" : "/home/gadgil/.ivy2/cache/edu.mit/jwi/srcs/jwi-2.2.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalatest",
+                    "name" : "scalatest_2.12",
+                    "version" : "3.0.4",
+                    "artifacts" : [
+                        {
+                            "name" : "scalatest_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalatest/scalatest_2.12/bundles/scalatest_2.12-3.0.4.jar"
+                        },
+                        {
+                            "name" : "scalatest_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.4-sources.jar"
                         }
                     ]
                 }

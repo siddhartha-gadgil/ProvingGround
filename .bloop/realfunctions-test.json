@@ -1,25 +1,19 @@
 {
     "version" : "1.1.0-M2",
     "project" : {
-        "name" : "nlp",
-        "directory" : "/home/gadgil/code/ProvingGround/nlp",
+        "name" : "realfunctions-test",
+        "directory" : "/home/gadgil/code/ProvingGround/realfunctions",
         "sources" : [
-            "/home/gadgil/code/ProvingGround/nlp/src/main/scala-2.12",
-            "/home/gadgil/code/ProvingGround/nlp/src/main/scala",
-            "/home/gadgil/code/ProvingGround/nlp/src/main/java",
-            "/home/gadgil/code/ProvingGround/nlp/target/scala-2.12/src_managed/main"
+            "/home/gadgil/code/ProvingGround/realfunctions/src/test/scala-2.12",
+            "/home/gadgil/code/ProvingGround/realfunctions/src/test/scala",
+            "/home/gadgil/code/ProvingGround/realfunctions/src/test/java",
+            "/home/gadgil/code/ProvingGround/realfunctions/target/scala-2.12/src_managed/test"
         ],
         "dependencies" : [
-            "coreJVM",
-            "mantle"
+            "realfunctions"
         ],
         "classpath" : [
-            "/home/gadgil/code/ProvingGround/.bloop/coreJVM/scala-2.12/classes",
-            "/home/gadgil/code/ProvingGround/.bloop/mantle/scala-2.12/classes",
-            "/home/gadgil/code/ProvingGround/.bloop/server/scala-2.12/classes",
-            "/home/gadgil/code/ProvingGround/.bloop/trepplein/scala-2.12/classes",
-            "/home/gadgil/code/ProvingGround/.bloop/leanlib/scala-2.12/classes",
-            "/home/gadgil/code/ProvingGround/mantle/lib/com.microsoft.z3.jar",
+            "/home/gadgil/code/ProvingGround/.bloop/realfunctions/scala-2.12/classes",
             "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
             "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.1.0.jar",
@@ -63,6 +57,7 @@
             "/home/gadgil/.ivy2/cache/org.scalameta/semanticdb_2.12/jars/semanticdb_2.12-4.0.0-M1.jar",
             "/home/gadgil/.ivy2/cache/com.geirsson/metaconfig-typesafe-config_2.12/jars/metaconfig-typesafe-config_2.12-0.7.2.jar",
             "/home/gadgil/.ivy2/cache/com.lihaoyi/ammonite_2.12.7/jars/ammonite_2.12.7-1.4.2.jar",
+            "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/jars/scopt_2.12-3.5.0.jar",
             "/home/gadgil/.ivy2/cache/com.lihaoyi/ammonite-terminal_2.12/jars/ammonite-terminal_2.12-1.4.2.jar",
             "/home/gadgil/.ivy2/cache/com.lihaoyi/ammonite-ops_2.12/jars/ammonite-ops_2.12-1.4.2.jar",
             "/home/gadgil/.ivy2/cache/com.lihaoyi/os-lib_2.12/jars/os-lib_2.12-0.2.2.jar",
@@ -148,34 +143,13 @@
             "/home/gadgil/.ivy2/cache/io.circe/circe-parser_2.12/jars/circe-parser_2.12-0.10.0.jar",
             "/home/gadgil/.ivy2/cache/io.circe/circe-jawn_2.12/jars/circe-jawn_2.12-0.10.0.jar",
             "/home/gadgil/.ivy2/cache/org.spire-math/jawn-parser_2.12/jars/jawn-parser_2.12-0.13.0.jar",
-            "/home/gadgil/.ivy2/cache/com.vmunier/scalajs-scripts_2.12/jars/scalajs-scripts_2.12-1.1.0.jar",
-            "/home/gadgil/.ivy2/cache/com.typesafe.play/twirl-api_2.12/jars/twirl-api_2.12-1.3.0.jar",
-            "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/jars/scopt_2.12-3.7.0.jar",
-            "/home/gadgil/.ivy2/cache/edu.stanford.nlp/stanford-corenlp/jars/stanford-corenlp-3.7.0-models.jar",
-            "/home/gadgil/.ivy2/cache/edu.stanford.nlp/stanford-corenlp/jars/stanford-corenlp-3.7.0.jar",
-            "/home/gadgil/.ivy2/cache/com.apple/AppleJavaExtensions/jars/AppleJavaExtensions-1.4.jar",
-            "/home/gadgil/.ivy2/cache/de.jollyday/jollyday/jars/jollyday-0.4.9.jar",
-            "/home/gadgil/.ivy2/cache/javax.xml.bind/jaxb-api/jars/jaxb-api-2.2.7.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.3.1.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-queryparser/jars/lucene-queryparser-4.10.3.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-core/jars/lucene-core-4.10.3.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-queries/jars/lucene-queries-4.10.3.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-sandbox/jars/lucene-sandbox-4.10.3.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-analyzers-common/jars/lucene-analyzers-common-4.10.3.jar",
-            "/home/gadgil/.ivy2/cache/javax.servlet/javax.servlet-api/jars/javax.servlet-api-3.0.1.jar",
-            "/home/gadgil/.ivy2/cache/com.io7m.xom/xom/jars/xom-1.2.10.jar",
-            "/home/gadgil/.ivy2/cache/xml-apis/xml-apis/jars/xml-apis-1.3.03.jar",
-            "/home/gadgil/.ivy2/cache/xerces/xercesImpl/jars/xercesImpl-2.8.0.jar",
-            "/home/gadgil/.ivy2/cache/xalan/xalan/jars/xalan-2.7.0.jar",
-            "/home/gadgil/.ivy2/cache/com.googlecode.efficient-java-matrix-library/ejml/jars/ejml-0.23.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish/javax.json/bundles/javax.json-1.0.4.jar",
-            "/home/gadgil/.ivy2/cache/edu.mit/jwi/jars/jwi-2.2.3.jar"
+            "/home/gadgil/.ivy2/cache/org.scalatest/scalatest_2.12/bundles/scalatest_2.12-3.0.4.jar"
         ],
-        "out" : "/home/gadgil/code/ProvingGround/.bloop/nlp",
-        "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/nlp/scala-2.12/classes",
+        "out" : "/home/gadgil/code/ProvingGround/.bloop/realfunctions",
+        "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/realfunctions/scala-2.12/test-classes",
         "resources" : [
-            "/home/gadgil/code/ProvingGround/nlp/src/main/resources",
-            "/home/gadgil/code/ProvingGround/nlp/target/scala-2.12/resource_managed/main"
+            "/home/gadgil/code/ProvingGround/realfunctions/src/test/resources",
+            "/home/gadgil/code/ProvingGround/realfunctions/target/scala-2.12/resource_managed/test"
         ],
         "scala" : {
             "organization" : "org.scala-lang",
@@ -246,6 +220,17 @@
                 "excludes" : [
                 ],
                 "arguments" : [
+                    {
+                        "args" : [
+                            "-oD"
+                        ],
+                        "framework" : {
+                            "names" : [
+                                "org.scalatest.tools.Framework",
+                                "org.scalatest.tools.ScalaTestFramework"
+                            ]
+                        }
+                    }
                 ]
             }
         },
@@ -946,6 +931,22 @@
                             "name" : "ammonite_2.12.7",
                             "classifier" : "sources",
                             "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/ammonite_2.12.7/srcs/ammonite_2.12.7-1.4.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.github.scopt",
+                    "name" : "scopt_2.12",
+                    "version" : "3.5.0",
+                    "artifacts" : [
+                        {
+                            "name" : "scopt_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/jars/scopt_2.12-3.5.0.jar"
+                        },
+                        {
+                            "name" : "scopt_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/srcs/scopt_2.12-3.5.0-sources.jar"
                         }
                     ]
                 },
@@ -2289,333 +2290,18 @@
                     ]
                 },
                 {
-                    "organization" : "com.vmunier",
-                    "name" : "scalajs-scripts_2.12",
-                    "version" : "1.1.0",
+                    "organization" : "org.scalatest",
+                    "name" : "scalatest_2.12",
+                    "version" : "3.0.4",
                     "artifacts" : [
                         {
-                            "name" : "scalajs-scripts_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/com.vmunier/scalajs-scripts_2.12/jars/scalajs-scripts_2.12-1.1.0.jar"
+                            "name" : "scalatest_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalatest/scalatest_2.12/bundles/scalatest_2.12-3.0.4.jar"
                         },
                         {
-                            "name" : "scalajs-scripts_2.12",
+                            "name" : "scalatest_2.12",
                             "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/com.vmunier/scalajs-scripts_2.12/srcs/scalajs-scripts_2.12-1.1.0-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.typesafe.play",
-                    "name" : "twirl-api_2.12",
-                    "version" : "1.3.0",
-                    "artifacts" : [
-                        {
-                            "name" : "twirl-api_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/com.typesafe.play/twirl-api_2.12/jars/twirl-api_2.12-1.3.0.jar"
-                        },
-                        {
-                            "name" : "twirl-api_2.12",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/com.typesafe.play/twirl-api_2.12/srcs/twirl-api_2.12-1.3.0-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.scopt",
-                    "name" : "scopt_2.12",
-                    "version" : "3.7.0",
-                    "artifacts" : [
-                        {
-                            "name" : "scopt_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/jars/scopt_2.12-3.7.0.jar"
-                        },
-                        {
-                            "name" : "scopt_2.12",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/srcs/scopt_2.12-3.7.0-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "edu.stanford.nlp",
-                    "name" : "stanford-corenlp",
-                    "version" : "3.7.0",
-                    "artifacts" : [
-                        {
-                            "name" : "stanford-corenlp",
-                            "classifier" : "models",
-                            "path" : "/home/gadgil/.ivy2/cache/edu.stanford.nlp/stanford-corenlp/jars/stanford-corenlp-3.7.0-models.jar"
-                        },
-                        {
-                            "name" : "stanford-corenlp",
-                            "path" : "/home/gadgil/.ivy2/cache/edu.stanford.nlp/stanford-corenlp/jars/stanford-corenlp-3.7.0.jar"
-                        },
-                        {
-                            "name" : "stanford-corenlp",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/edu.stanford.nlp/stanford-corenlp/srcs/stanford-corenlp-3.7.0-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.apple",
-                    "name" : "AppleJavaExtensions",
-                    "version" : "1.4",
-                    "artifacts" : [
-                        {
-                            "name" : "AppleJavaExtensions",
-                            "path" : "/home/gadgil/.ivy2/cache/com.apple/AppleJavaExtensions/jars/AppleJavaExtensions-1.4.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "de.jollyday",
-                    "name" : "jollyday",
-                    "version" : "0.4.9",
-                    "artifacts" : [
-                        {
-                            "name" : "jollyday",
-                            "path" : "/home/gadgil/.ivy2/cache/de.jollyday/jollyday/jars/jollyday-0.4.9.jar"
-                        },
-                        {
-                            "name" : "jollyday",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/de.jollyday/jollyday/srcs/jollyday-0.4.9-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "javax.xml.bind",
-                    "name" : "jaxb-api",
-                    "version" : "2.2.7",
-                    "artifacts" : [
-                        {
-                            "name" : "jaxb-api",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.xml.bind/jaxb-api/jars/jaxb-api-2.2.7.jar"
-                        },
-                        {
-                            "name" : "jaxb-api",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.xml.bind/jaxb-api/srcs/jaxb-api-2.2.7-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.commons",
-                    "name" : "commons-lang3",
-                    "version" : "3.3.1",
-                    "artifacts" : [
-                        {
-                            "name" : "commons-lang3",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.3.1.jar"
-                        },
-                        {
-                            "name" : "commons-lang3",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.commons/commons-lang3/srcs/commons-lang3-3.3.1-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.lucene",
-                    "name" : "lucene-queryparser",
-                    "version" : "4.10.3",
-                    "artifacts" : [
-                        {
-                            "name" : "lucene-queryparser",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-queryparser/jars/lucene-queryparser-4.10.3.jar"
-                        },
-                        {
-                            "name" : "lucene-queryparser",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-queryparser/srcs/lucene-queryparser-4.10.3-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.lucene",
-                    "name" : "lucene-core",
-                    "version" : "4.10.3",
-                    "artifacts" : [
-                        {
-                            "name" : "lucene-core",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-core/jars/lucene-core-4.10.3.jar"
-                        },
-                        {
-                            "name" : "lucene-core",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-core/srcs/lucene-core-4.10.3-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.lucene",
-                    "name" : "lucene-queries",
-                    "version" : "4.10.3",
-                    "artifacts" : [
-                        {
-                            "name" : "lucene-queries",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-queries/jars/lucene-queries-4.10.3.jar"
-                        },
-                        {
-                            "name" : "lucene-queries",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-queries/srcs/lucene-queries-4.10.3-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.lucene",
-                    "name" : "lucene-sandbox",
-                    "version" : "4.10.3",
-                    "artifacts" : [
-                        {
-                            "name" : "lucene-sandbox",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-sandbox/jars/lucene-sandbox-4.10.3.jar"
-                        },
-                        {
-                            "name" : "lucene-sandbox",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-sandbox/srcs/lucene-sandbox-4.10.3-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.lucene",
-                    "name" : "lucene-analyzers-common",
-                    "version" : "4.10.3",
-                    "artifacts" : [
-                        {
-                            "name" : "lucene-analyzers-common",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-analyzers-common/jars/lucene-analyzers-common-4.10.3.jar"
-                        },
-                        {
-                            "name" : "lucene-analyzers-common",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.lucene/lucene-analyzers-common/srcs/lucene-analyzers-common-4.10.3-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "javax.servlet",
-                    "name" : "javax.servlet-api",
-                    "version" : "3.0.1",
-                    "artifacts" : [
-                        {
-                            "name" : "javax.servlet-api",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.servlet/javax.servlet-api/jars/javax.servlet-api-3.0.1.jar"
-                        },
-                        {
-                            "name" : "javax.servlet-api",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.servlet/javax.servlet-api/srcs/javax.servlet-api-3.0.1-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.io7m.xom",
-                    "name" : "xom",
-                    "version" : "1.2.10",
-                    "artifacts" : [
-                        {
-                            "name" : "xom",
-                            "path" : "/home/gadgil/.ivy2/cache/com.io7m.xom/xom/jars/xom-1.2.10.jar"
-                        },
-                        {
-                            "name" : "xom",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/com.io7m.xom/xom/srcs/xom-1.2.10-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "xml-apis",
-                    "name" : "xml-apis",
-                    "version" : "1.3.03",
-                    "artifacts" : [
-                        {
-                            "name" : "xml-apis",
-                            "path" : "/home/gadgil/.ivy2/cache/xml-apis/xml-apis/jars/xml-apis-1.3.03.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "xerces",
-                    "name" : "xercesImpl",
-                    "version" : "2.8.0",
-                    "artifacts" : [
-                        {
-                            "name" : "xercesImpl",
-                            "path" : "/home/gadgil/.ivy2/cache/xerces/xercesImpl/jars/xercesImpl-2.8.0.jar"
-                        },
-                        {
-                            "name" : "xercesImpl",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/xerces/xercesImpl/srcs/xercesImpl-2.8.0-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "xalan",
-                    "name" : "xalan",
-                    "version" : "2.7.0",
-                    "artifacts" : [
-                        {
-                            "name" : "xalan",
-                            "path" : "/home/gadgil/.ivy2/cache/xalan/xalan/jars/xalan-2.7.0.jar"
-                        },
-                        {
-                            "name" : "xalan",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/xalan/xalan/srcs/xalan-2.7.0-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.googlecode.efficient-java-matrix-library",
-                    "name" : "ejml",
-                    "version" : "0.23",
-                    "artifacts" : [
-                        {
-                            "name" : "ejml",
-                            "path" : "/home/gadgil/.ivy2/cache/com.googlecode.efficient-java-matrix-library/ejml/jars/ejml-0.23.jar"
-                        },
-                        {
-                            "name" : "ejml",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/com.googlecode.efficient-java-matrix-library/ejml/srcs/ejml-0.23-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish",
-                    "name" : "javax.json",
-                    "version" : "1.0.4",
-                    "artifacts" : [
-                        {
-                            "name" : "javax.json",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish/javax.json/bundles/javax.json-1.0.4.jar"
-                        },
-                        {
-                            "name" : "javax.json",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish/javax.json/srcs/javax.json-1.0.4-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "edu.mit",
-                    "name" : "jwi",
-                    "version" : "2.2.3",
-                    "artifacts" : [
-                        {
-                            "name" : "jwi",
-                            "path" : "/home/gadgil/.ivy2/cache/edu.mit/jwi/jars/jwi-2.2.3.jar"
-                        },
-                        {
-                            "name" : "jwi",
-                            "classifier" : "sources",
-                            "path" : "/home/gadgil/.ivy2/cache/edu.mit/jwi/srcs/jwi-2.2.3-sources.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalatest/scalatest_2.12/srcs/scalatest_2.12-3.0.4-sources.jar"
                         }
                     ]
                 }
