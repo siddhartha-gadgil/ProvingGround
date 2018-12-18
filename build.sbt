@@ -157,9 +157,9 @@ lazy val client = project
     resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.1",
-      "com.lihaoyi"  %%% "scalatags"   % "0.6.3",
-      "com.lihaoyi"  %%% "upickle"     % "0.6.4",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.4",
+      "com.lihaoyi"  %%% "scalatags"   % "0.6.7",
+      "com.lihaoyi"  %%% "upickle"     % "0.6.6",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
