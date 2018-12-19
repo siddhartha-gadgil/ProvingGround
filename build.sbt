@@ -357,23 +357,23 @@ fork in run := true
 connectInput := true
 outputStrategy := Some(StdoutOutput)
 
-val root = (project in file("."))
-  .settings(baseSettings: _*)
-  .enablePlugins(ScalaUnidocPlugin)
-  .settings(
-    name := "Proving-Ground",
-    unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject -- inProjects(
-      coreJS,
-      client)
-  )
-  .aggregate(andrewscurtis,
-             //  client,
-             coreJVM,
-             //  coreJS,
-             exploring,
-             mantle,
-             nlp,
-             normalform,
-             realfunctions,
-             server,
-             trepplein)
+// val root = (project in file("."))
+//   .settings(baseSettings: _*)
+//   .enablePlugins(ScalaUnidocPlugin)
+//   .settings(
+//     name := "Proving-Ground",
+//     unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject -- inProjects(
+//       coreJS,
+//       client)
+//   )
+//   .aggregate(andrewscurtis,
+//              //  client,
+//              coreJVM,
+//              //  coreJS,
+//              exploring,
+//              mantle,
+//              nlp,
+//              normalform,
+//              realfunctions,
+//              server,
+//              trepplein)
