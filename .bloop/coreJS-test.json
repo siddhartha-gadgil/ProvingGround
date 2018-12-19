@@ -1,0 +1,1115 @@
+{
+    "version" : "1.1.2",
+    "project" : {
+        "name" : "coreJS-test",
+        "directory" : "/home/gadgil/code/ProvingGround/core/.js",
+        "sources" : [
+            "/home/gadgil/code/ProvingGround/core/.js/src/test/scala-2.12",
+            "/home/gadgil/code/ProvingGround/core/.js/src/test/scala",
+            "/home/gadgil/code/ProvingGround/core/.js/src/test/java",
+            "/home/gadgil/code/ProvingGround/core/src/test/scala-2.12",
+            "/home/gadgil/code/ProvingGround/core/src/test/scala",
+            "/home/gadgil/code/ProvingGround/core/.js/target/scala-2.12/src_managed/test"
+        ],
+        "dependencies" : [
+            "coreJS"
+        ],
+        "classpath" : [
+            "/home/gadgil/code/ProvingGround/.bloop/coreJS/scala-2.12/classes",
+            "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-library_2.12/jars/scalajs-library_2.12-0.6.25.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_sjs0.6_2.12/jars/scala-parser-combinators_sjs0.6_2.12-1.0.5.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.1.0.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/spire_sjs0.6_2.12/jars/spire_sjs0.6_2.12-0.16.0.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/spire-macros_sjs0.6_2.12/jars/spire-macros_sjs0.6_2.12-0.16.0.jar",
+            "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/algebra_sjs0.6_2.12/jars/algebra_sjs0.6_2.12-1.0.0.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/spire-platform_sjs0.6_2.12/jars/spire-platform_sjs0.6_2.12-0.16.0.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/spire-util_sjs0.6_2.12/jars/spire-util_sjs0.6_2.12-0.16.0.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/sourcecode_sjs0.6_2.12/bundles/sourcecode_sjs0.6_2.12-0.1.4.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/upickle_sjs0.6_2.12/jars/upickle_sjs0.6_2.12-0.6.6.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/ujson_sjs0.6_2.12/jars/ujson_sjs0.6_2.12-0.6.6.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse_sjs0.6_2.12/jars/fastparse_sjs0.6_2.12-1.0.0.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse-utils_sjs0.6_2.12/jars/fastparse-utils_sjs0.6_2.12-1.0.0.jar",
+            "/home/gadgil/.ivy2/cache/com.chuusai/shapeless_sjs0.6_2.12/bundles/shapeless_sjs0.6_2.12-2.3.2.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/macro-compat_2.12/jars/macro-compat_2.12-1.1.1.jar",
+            "/home/gadgil/.ivy2/cache/io.monix/monix_sjs0.6_2.12/jars/monix_sjs0.6_2.12-3.0.0-RC2.jar",
+            "/home/gadgil/.ivy2/cache/io.monix/monix-execution_sjs0.6_2.12/jars/monix-execution_sjs0.6_2.12-3.0.0-RC2.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/cats-effect_sjs0.6_2.12/jars/cats-effect_sjs0.6_2.12-1.0.0.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/cats-core_sjs0.6_2.12/jars/cats-core_sjs0.6_2.12-1.3.1.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/cats-macros_sjs0.6_2.12/jars/cats-macros_sjs0.6_2.12-1.3.1.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/machinist_sjs0.6_2.12/jars/machinist_sjs0.6_2.12-0.6.5.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-collection-compat_2.12/bundles/scala-collection-compat_2.12-0.1.1.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/cats-kernel_sjs0.6_2.12/jars/cats-kernel_sjs0.6_2.12-1.3.1.jar",
+            "/home/gadgil/.ivy2/cache/io.monix/monix-catnap_sjs0.6_2.12/jars/monix-catnap_sjs0.6_2.12-3.0.0-RC2.jar",
+            "/home/gadgil/.ivy2/cache/io.monix/monix-eval_sjs0.6_2.12/jars/monix-eval_sjs0.6_2.12-3.0.0-RC2.jar",
+            "/home/gadgil/.ivy2/cache/io.monix/monix-tail_sjs0.6_2.12/jars/monix-tail_sjs0.6_2.12-3.0.0-RC2.jar",
+            "/home/gadgil/.ivy2/cache/io.monix/monix-reactive_sjs0.6_2.12/jars/monix-reactive_sjs0.6_2.12-3.0.0-RC2.jar",
+            "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/scalapb-runtime_2.12/jars/scalapb-runtime_2.12-0.7.1.jar",
+            "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/lenses_2.12/jars/lenses_2.12-0.7.0-test2.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse_2.12/jars/fastparse_2.12-1.0.0.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse-utils_2.12/jars/fastparse-utils_2.12-1.0.0.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/sourcecode_2.12/bundles/sourcecode_2.12-0.1.4.jar",
+            "/home/gadgil/.ivy2/cache/com.google.protobuf/protobuf-java/bundles/protobuf-java-3.5.0.jar",
+            "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/scalapb-runtime_sjs0.6_2.12/jars/scalapb-runtime_sjs0.6_2.12-0.7.1.jar",
+            "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/lenses_sjs0.6_2.12/jars/lenses_sjs0.6_2.12-0.7.0-test2.jar",
+            "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/protobuf-runtime-scala_sjs0.6_2.12/jars/protobuf-runtime-scala_sjs0.6_2.12-0.7.0.1.jar",
+            "/home/gadgil/.ivy2/cache/com.geirsson/scalafmt-core_sjs0.6_2.12/jars/scalafmt-core_sjs0.6_2.12-1.6.0-RC1.jar",
+            "/home/gadgil/.ivy2/cache/com.geirsson/metaconfig-core_sjs0.6_2.12/jars/metaconfig-core_sjs0.6_2.12-0.7.2.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/pprint_sjs0.6_2.12/jars/pprint_sjs0.6_2.12-0.5.3.jar",
+            "/home/gadgil/.ivy2/cache/com.lihaoyi/fansi_sjs0.6_2.12/jars/fansi_sjs0.6_2.12-0.2.5.jar",
+            "/home/gadgil/.ivy2/cache/org.typelevel/paiges-core_sjs0.6_2.12/jars/paiges-core_sjs0.6_2.12-0.2.0.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/scalameta_sjs0.6_2.12/jars/scalameta_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/common_sjs0.6_2.12/jars/common_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/semanticdb3_sjs0.6_2.12/jars/semanticdb3_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/dialects_sjs0.6_2.12/jars/dialects_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/parsers_sjs0.6_2.12/jars/parsers_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/inputs_sjs0.6_2.12/jars/inputs_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/io_sjs0.6_2.12/jars/io_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/tokens_sjs0.6_2.12/jars/tokens_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/tokenizers_sjs0.6_2.12/jars/tokenizers_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/trees_sjs0.6_2.12/jars/trees_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/quasiquotes_sjs0.6_2.12/jars/quasiquotes_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/transversers_sjs0.6_2.12/jars/transversers_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/org.scalameta/semanticdb_sjs0.6_2.12/jars/semanticdb_sjs0.6_2.12-4.0.0-M1.jar",
+            "/home/gadgil/.ivy2/cache/com.geirsson/metaconfig-hocon_sjs0.6_2.12/jars/metaconfig-hocon_sjs0.6_2.12-0.7.2.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-test-interface_2.12/jars/scalajs-test-interface_2.12-0.6.25.jar"
+        ],
+        "out" : "/home/gadgil/code/ProvingGround/.bloop/coreJS",
+        "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/coreJS/scala-2.12/test-classes",
+        "resources" : [
+            "/home/gadgil/code/ProvingGround/core/.js/src/test/resources",
+            "/home/gadgil/code/ProvingGround/core/.js/target/scala-2.12/resource_managed/test"
+        ],
+        "scala" : {
+            "organization" : "org.scala-lang",
+            "name" : "scala-compiler",
+            "version" : "2.12.7",
+            "options" : [
+                "-P:semanticdb:failures:warning",
+                "-P:semanticdb:sourceroot:/home/gadgil/code/ProvingGround",
+                "-Yrangepos",
+                "-Xplugin-require:semanticdb",
+                "-Xplugin:/home/gadgil/.ivy2/cache/org.scala-js/scalajs-compiler_2.12.7/jars/scalajs-compiler_2.12.7-0.6.25.jar",
+                "-Xplugin:/home/gadgil/.ivy2/cache/org.scalameta/semanticdb-scalac_2.12.7/jars/semanticdb-scalac_2.12.7-4.1.0.jar",
+                "-unchecked",
+                "-deprecation",
+                "-feature",
+                "-language:existentials"
+            ],
+            "jars" : [
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar"
+            ],
+            "setup" : {
+                "order" : "mixed",
+                "addLibraryToBootClasspath" : true,
+                "addCompilerToClasspath" : false,
+                "addExtraJarsToClasspath" : false,
+                "manageBootClasspath" : true,
+                "filterLibraryFromClasspath" : true
+            }
+        },
+        "java" : {
+            "options" : [
+            ]
+        },
+        "test" : {
+            "frameworks" : [
+                {
+                    "names" : [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                }
+            ],
+            "options" : {
+                "excludes" : [
+                ],
+                "arguments" : [
+                    {
+                        "args" : [
+                            "-oD"
+                        ],
+                        "framework" : {
+                            "names" : [
+                                "org.scalatest.tools.Framework",
+                                "org.scalatest.tools.ScalaTestFramework"
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "platform" : {
+            "name" : "js",
+            "config" : {
+                "version" : "0.6.25",
+                "mode" : "debug",
+                "kind" : "none",
+                "emitSourceMaps" : false,
+                "jsdom" : false,
+                "toolchain" : [
+                ]
+            },
+            "mainClass" : [
+            ]
+        },
+        "resolution" : {
+            "modules" : [
+                {
+                    "organization" : "org.scala-lang",
+                    "name" : "scala-library",
+                    "version" : "2.12.7",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-library",
+                            "path" : "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar"
+                        },
+                        {
+                            "name" : "scala-library",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.7-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-js",
+                    "name" : "scalajs-library_2.12",
+                    "version" : "0.6.25",
+                    "artifacts" : [
+                        {
+                            "name" : "scalajs-library_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-library_2.12/jars/scalajs-library_2.12-0.6.25.jar"
+                        },
+                        {
+                            "name" : "scalajs-library_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-library_2.12/srcs/scalajs-library_2.12-0.6.25-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang.modules",
+                    "name" : "scala-parser-combinators_sjs0.6_2.12",
+                    "version" : "1.0.5",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-parser-combinators_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_sjs0.6_2.12/jars/scala-parser-combinators_sjs0.6_2.12-1.0.5.jar"
+                        },
+                        {
+                            "name" : "scala-parser-combinators_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_sjs0.6_2.12/srcs/scala-parser-combinators_sjs0.6_2.12-1.0.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang.modules",
+                    "name" : "scala-xml_2.12",
+                    "version" : "1.1.0",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-xml_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.1.0.jar"
+                        },
+                        {
+                            "name" : "scala-xml_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/srcs/scala-xml_2.12-1.1.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "spire_sjs0.6_2.12",
+                    "version" : "0.16.0",
+                    "artifacts" : [
+                        {
+                            "name" : "spire_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire_sjs0.6_2.12/jars/spire_sjs0.6_2.12-0.16.0.jar"
+                        },
+                        {
+                            "name" : "spire_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire_sjs0.6_2.12/srcs/spire_sjs0.6_2.12-0.16.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "spire-macros_sjs0.6_2.12",
+                    "version" : "0.16.0",
+                    "artifacts" : [
+                        {
+                            "name" : "spire-macros_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire-macros_sjs0.6_2.12/jars/spire-macros_sjs0.6_2.12-0.16.0.jar"
+                        },
+                        {
+                            "name" : "spire-macros_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire-macros_sjs0.6_2.12/srcs/spire-macros_sjs0.6_2.12-0.16.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang",
+                    "name" : "scala-reflect",
+                    "version" : "2.12.7",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-reflect",
+                            "path" : "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar"
+                        },
+                        {
+                            "name" : "scala-reflect",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.12.7-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "algebra_sjs0.6_2.12",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "algebra_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/algebra_sjs0.6_2.12/jars/algebra_sjs0.6_2.12-1.0.0.jar"
+                        },
+                        {
+                            "name" : "algebra_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/algebra_sjs0.6_2.12/srcs/algebra_sjs0.6_2.12-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "spire-platform_sjs0.6_2.12",
+                    "version" : "0.16.0",
+                    "artifacts" : [
+                        {
+                            "name" : "spire-platform_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire-platform_sjs0.6_2.12/jars/spire-platform_sjs0.6_2.12-0.16.0.jar"
+                        },
+                        {
+                            "name" : "spire-platform_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire-platform_sjs0.6_2.12/srcs/spire-platform_sjs0.6_2.12-0.16.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "spire-util_sjs0.6_2.12",
+                    "version" : "0.16.0",
+                    "artifacts" : [
+                        {
+                            "name" : "spire-util_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire-util_sjs0.6_2.12/jars/spire-util_sjs0.6_2.12-0.16.0.jar"
+                        },
+                        {
+                            "name" : "spire-util_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/spire-util_sjs0.6_2.12/srcs/spire-util_sjs0.6_2.12-0.16.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "upickle_sjs0.6_2.12",
+                    "version" : "0.6.6",
+                    "artifacts" : [
+                        {
+                            "name" : "upickle_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/upickle_sjs0.6_2.12/jars/upickle_sjs0.6_2.12-0.6.6.jar"
+                        },
+                        {
+                            "name" : "upickle_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/upickle_sjs0.6_2.12/srcs/upickle_sjs0.6_2.12-0.6.6-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "ujson_sjs0.6_2.12",
+                    "version" : "0.6.6",
+                    "artifacts" : [
+                        {
+                            "name" : "ujson_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/ujson_sjs0.6_2.12/jars/ujson_sjs0.6_2.12-0.6.6.jar"
+                        },
+                        {
+                            "name" : "ujson_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/ujson_sjs0.6_2.12/srcs/ujson_sjs0.6_2.12-0.6.6-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "fastparse_sjs0.6_2.12",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "fastparse_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse_sjs0.6_2.12/jars/fastparse_sjs0.6_2.12-1.0.0.jar"
+                        },
+                        {
+                            "name" : "fastparse_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse_sjs0.6_2.12/srcs/fastparse_sjs0.6_2.12-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "fastparse-utils_sjs0.6_2.12",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "fastparse-utils_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse-utils_sjs0.6_2.12/jars/fastparse-utils_sjs0.6_2.12-1.0.0.jar"
+                        },
+                        {
+                            "name" : "fastparse-utils_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse-utils_sjs0.6_2.12/srcs/fastparse-utils_sjs0.6_2.12-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "sourcecode_sjs0.6_2.12",
+                    "version" : "0.1.4",
+                    "artifacts" : [
+                        {
+                            "name" : "sourcecode_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/sourcecode_sjs0.6_2.12/bundles/sourcecode_sjs0.6_2.12-0.1.4.jar"
+                        },
+                        {
+                            "name" : "sourcecode_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/sourcecode_sjs0.6_2.12/srcs/sourcecode_sjs0.6_2.12-0.1.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.chuusai",
+                    "name" : "shapeless_sjs0.6_2.12",
+                    "version" : "2.3.2",
+                    "artifacts" : [
+                        {
+                            "name" : "shapeless_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.chuusai/shapeless_sjs0.6_2.12/bundles/shapeless_sjs0.6_2.12-2.3.2.jar"
+                        },
+                        {
+                            "name" : "shapeless_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.chuusai/shapeless_sjs0.6_2.12/srcs/shapeless_sjs0.6_2.12-2.3.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "macro-compat_2.12",
+                    "version" : "1.1.1",
+                    "artifacts" : [
+                        {
+                            "name" : "macro-compat_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/macro-compat_2.12/jars/macro-compat_2.12-1.1.1.jar"
+                        },
+                        {
+                            "name" : "macro-compat_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/macro-compat_2.12/srcs/macro-compat_2.12-1.1.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "io.monix",
+                    "name" : "monix_sjs0.6_2.12",
+                    "version" : "3.0.0-RC2",
+                    "artifacts" : [
+                        {
+                            "name" : "monix_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix_sjs0.6_2.12/jars/monix_sjs0.6_2.12-3.0.0-RC2.jar"
+                        },
+                        {
+                            "name" : "monix_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix_sjs0.6_2.12/srcs/monix_sjs0.6_2.12-3.0.0-RC2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "io.monix",
+                    "name" : "monix-execution_sjs0.6_2.12",
+                    "version" : "3.0.0-RC2",
+                    "artifacts" : [
+                        {
+                            "name" : "monix-execution_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-execution_sjs0.6_2.12/jars/monix-execution_sjs0.6_2.12-3.0.0-RC2.jar"
+                        },
+                        {
+                            "name" : "monix-execution_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-execution_sjs0.6_2.12/srcs/monix-execution_sjs0.6_2.12-3.0.0-RC2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "cats-effect_sjs0.6_2.12",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "cats-effect_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-effect_sjs0.6_2.12/jars/cats-effect_sjs0.6_2.12-1.0.0.jar"
+                        },
+                        {
+                            "name" : "cats-effect_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-effect_sjs0.6_2.12/srcs/cats-effect_sjs0.6_2.12-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "cats-core_sjs0.6_2.12",
+                    "version" : "1.3.1",
+                    "artifacts" : [
+                        {
+                            "name" : "cats-core_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-core_sjs0.6_2.12/jars/cats-core_sjs0.6_2.12-1.3.1.jar"
+                        },
+                        {
+                            "name" : "cats-core_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-core_sjs0.6_2.12/srcs/cats-core_sjs0.6_2.12-1.3.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "cats-macros_sjs0.6_2.12",
+                    "version" : "1.3.1",
+                    "artifacts" : [
+                        {
+                            "name" : "cats-macros_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-macros_sjs0.6_2.12/jars/cats-macros_sjs0.6_2.12-1.3.1.jar"
+                        },
+                        {
+                            "name" : "cats-macros_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-macros_sjs0.6_2.12/srcs/cats-macros_sjs0.6_2.12-1.3.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "machinist_sjs0.6_2.12",
+                    "version" : "0.6.5",
+                    "artifacts" : [
+                        {
+                            "name" : "machinist_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/machinist_sjs0.6_2.12/jars/machinist_sjs0.6_2.12-0.6.5.jar"
+                        },
+                        {
+                            "name" : "machinist_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/machinist_sjs0.6_2.12/srcs/machinist_sjs0.6_2.12-0.6.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang.modules",
+                    "name" : "scala-collection-compat_2.12",
+                    "version" : "0.1.1",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-collection-compat_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-collection-compat_2.12/bundles/scala-collection-compat_2.12-0.1.1.jar"
+                        },
+                        {
+                            "name" : "scala-collection-compat_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-collection-compat_2.12/srcs/scala-collection-compat_2.12-0.1.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "cats-kernel_sjs0.6_2.12",
+                    "version" : "1.3.1",
+                    "artifacts" : [
+                        {
+                            "name" : "cats-kernel_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-kernel_sjs0.6_2.12/jars/cats-kernel_sjs0.6_2.12-1.3.1.jar"
+                        },
+                        {
+                            "name" : "cats-kernel_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/cats-kernel_sjs0.6_2.12/srcs/cats-kernel_sjs0.6_2.12-1.3.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "io.monix",
+                    "name" : "monix-catnap_sjs0.6_2.12",
+                    "version" : "3.0.0-RC2",
+                    "artifacts" : [
+                        {
+                            "name" : "monix-catnap_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-catnap_sjs0.6_2.12/jars/monix-catnap_sjs0.6_2.12-3.0.0-RC2.jar"
+                        },
+                        {
+                            "name" : "monix-catnap_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-catnap_sjs0.6_2.12/srcs/monix-catnap_sjs0.6_2.12-3.0.0-RC2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "io.monix",
+                    "name" : "monix-eval_sjs0.6_2.12",
+                    "version" : "3.0.0-RC2",
+                    "artifacts" : [
+                        {
+                            "name" : "monix-eval_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-eval_sjs0.6_2.12/jars/monix-eval_sjs0.6_2.12-3.0.0-RC2.jar"
+                        },
+                        {
+                            "name" : "monix-eval_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-eval_sjs0.6_2.12/srcs/monix-eval_sjs0.6_2.12-3.0.0-RC2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "io.monix",
+                    "name" : "monix-tail_sjs0.6_2.12",
+                    "version" : "3.0.0-RC2",
+                    "artifacts" : [
+                        {
+                            "name" : "monix-tail_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-tail_sjs0.6_2.12/jars/monix-tail_sjs0.6_2.12-3.0.0-RC2.jar"
+                        },
+                        {
+                            "name" : "monix-tail_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-tail_sjs0.6_2.12/srcs/monix-tail_sjs0.6_2.12-3.0.0-RC2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "io.monix",
+                    "name" : "monix-reactive_sjs0.6_2.12",
+                    "version" : "3.0.0-RC2",
+                    "artifacts" : [
+                        {
+                            "name" : "monix-reactive_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-reactive_sjs0.6_2.12/jars/monix-reactive_sjs0.6_2.12-3.0.0-RC2.jar"
+                        },
+                        {
+                            "name" : "monix-reactive_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/io.monix/monix-reactive_sjs0.6_2.12/srcs/monix-reactive_sjs0.6_2.12-3.0.0-RC2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.thesamet.scalapb",
+                    "name" : "scalapb-runtime_2.12",
+                    "version" : "0.7.1",
+                    "artifacts" : [
+                        {
+                            "name" : "scalapb-runtime_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/scalapb-runtime_2.12/jars/scalapb-runtime_2.12-0.7.1.jar"
+                        },
+                        {
+                            "name" : "scalapb-runtime_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/scalapb-runtime_2.12/srcs/scalapb-runtime_2.12-0.7.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.thesamet.scalapb",
+                    "name" : "lenses_2.12",
+                    "version" : "0.7.0-test2",
+                    "artifacts" : [
+                        {
+                            "name" : "lenses_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/lenses_2.12/jars/lenses_2.12-0.7.0-test2.jar"
+                        },
+                        {
+                            "name" : "lenses_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/lenses_2.12/srcs/lenses_2.12-0.7.0-test2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "fastparse_2.12",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "fastparse_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse_2.12/jars/fastparse_2.12-1.0.0.jar"
+                        },
+                        {
+                            "name" : "fastparse_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse_2.12/srcs/fastparse_2.12-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "fastparse-utils_2.12",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "fastparse-utils_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse-utils_2.12/jars/fastparse-utils_2.12-1.0.0.jar"
+                        },
+                        {
+                            "name" : "fastparse-utils_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fastparse-utils_2.12/srcs/fastparse-utils_2.12-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "sourcecode_2.12",
+                    "version" : "0.1.4",
+                    "artifacts" : [
+                        {
+                            "name" : "sourcecode_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/sourcecode_2.12/bundles/sourcecode_2.12-0.1.4.jar"
+                        },
+                        {
+                            "name" : "sourcecode_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/sourcecode_2.12/srcs/sourcecode_2.12-0.1.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.google.protobuf",
+                    "name" : "protobuf-java",
+                    "version" : "3.5.0",
+                    "artifacts" : [
+                        {
+                            "name" : "protobuf-java",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.protobuf/protobuf-java/bundles/protobuf-java-3.5.0.jar"
+                        },
+                        {
+                            "name" : "protobuf-java",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.protobuf/protobuf-java/srcs/protobuf-java-3.5.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.thesamet.scalapb",
+                    "name" : "scalapb-runtime_sjs0.6_2.12",
+                    "version" : "0.7.1",
+                    "artifacts" : [
+                        {
+                            "name" : "scalapb-runtime_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/scalapb-runtime_sjs0.6_2.12/jars/scalapb-runtime_sjs0.6_2.12-0.7.1.jar"
+                        },
+                        {
+                            "name" : "scalapb-runtime_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/scalapb-runtime_sjs0.6_2.12/srcs/scalapb-runtime_sjs0.6_2.12-0.7.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.thesamet.scalapb",
+                    "name" : "lenses_sjs0.6_2.12",
+                    "version" : "0.7.0-test2",
+                    "artifacts" : [
+                        {
+                            "name" : "lenses_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/lenses_sjs0.6_2.12/jars/lenses_sjs0.6_2.12-0.7.0-test2.jar"
+                        },
+                        {
+                            "name" : "lenses_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/lenses_sjs0.6_2.12/srcs/lenses_sjs0.6_2.12-0.7.0-test2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.thesamet.scalapb",
+                    "name" : "protobuf-runtime-scala_sjs0.6_2.12",
+                    "version" : "0.7.0.1",
+                    "artifacts" : [
+                        {
+                            "name" : "protobuf-runtime-scala_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/protobuf-runtime-scala_sjs0.6_2.12/jars/protobuf-runtime-scala_sjs0.6_2.12-0.7.0.1.jar"
+                        },
+                        {
+                            "name" : "protobuf-runtime-scala_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.thesamet.scalapb/protobuf-runtime-scala_sjs0.6_2.12/srcs/protobuf-runtime-scala_sjs0.6_2.12-0.7.0.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.geirsson",
+                    "name" : "scalafmt-core_sjs0.6_2.12",
+                    "version" : "1.6.0-RC1",
+                    "artifacts" : [
+                        {
+                            "name" : "scalafmt-core_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.geirsson/scalafmt-core_sjs0.6_2.12/jars/scalafmt-core_sjs0.6_2.12-1.6.0-RC1.jar"
+                        },
+                        {
+                            "name" : "scalafmt-core_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.geirsson/scalafmt-core_sjs0.6_2.12/srcs/scalafmt-core_sjs0.6_2.12-1.6.0-RC1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.geirsson",
+                    "name" : "metaconfig-core_sjs0.6_2.12",
+                    "version" : "0.7.2",
+                    "artifacts" : [
+                        {
+                            "name" : "metaconfig-core_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.geirsson/metaconfig-core_sjs0.6_2.12/jars/metaconfig-core_sjs0.6_2.12-0.7.2.jar"
+                        },
+                        {
+                            "name" : "metaconfig-core_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.geirsson/metaconfig-core_sjs0.6_2.12/srcs/metaconfig-core_sjs0.6_2.12-0.7.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "pprint_sjs0.6_2.12",
+                    "version" : "0.5.3",
+                    "artifacts" : [
+                        {
+                            "name" : "pprint_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/pprint_sjs0.6_2.12/jars/pprint_sjs0.6_2.12-0.5.3.jar"
+                        },
+                        {
+                            "name" : "pprint_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/pprint_sjs0.6_2.12/srcs/pprint_sjs0.6_2.12-0.5.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.lihaoyi",
+                    "name" : "fansi_sjs0.6_2.12",
+                    "version" : "0.2.5",
+                    "artifacts" : [
+                        {
+                            "name" : "fansi_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fansi_sjs0.6_2.12/jars/fansi_sjs0.6_2.12-0.2.5.jar"
+                        },
+                        {
+                            "name" : "fansi_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.lihaoyi/fansi_sjs0.6_2.12/srcs/fansi_sjs0.6_2.12-0.2.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.typelevel",
+                    "name" : "paiges-core_sjs0.6_2.12",
+                    "version" : "0.2.0",
+                    "artifacts" : [
+                        {
+                            "name" : "paiges-core_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/paiges-core_sjs0.6_2.12/jars/paiges-core_sjs0.6_2.12-0.2.0.jar"
+                        },
+                        {
+                            "name" : "paiges-core_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.typelevel/paiges-core_sjs0.6_2.12/srcs/paiges-core_sjs0.6_2.12-0.2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "scalameta_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "scalameta_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/scalameta_sjs0.6_2.12/jars/scalameta_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "scalameta_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/scalameta_sjs0.6_2.12/srcs/scalameta_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "common_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "common_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/common_sjs0.6_2.12/jars/common_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "common_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/common_sjs0.6_2.12/srcs/common_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "semanticdb3_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "semanticdb3_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/semanticdb3_sjs0.6_2.12/jars/semanticdb3_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "semanticdb3_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/semanticdb3_sjs0.6_2.12/srcs/semanticdb3_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "dialects_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "dialects_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/dialects_sjs0.6_2.12/jars/dialects_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "dialects_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/dialects_sjs0.6_2.12/srcs/dialects_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "parsers_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "parsers_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/parsers_sjs0.6_2.12/jars/parsers_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "parsers_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/parsers_sjs0.6_2.12/srcs/parsers_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "inputs_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "inputs_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/inputs_sjs0.6_2.12/jars/inputs_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "inputs_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/inputs_sjs0.6_2.12/srcs/inputs_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "io_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "io_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/io_sjs0.6_2.12/jars/io_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "io_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/io_sjs0.6_2.12/srcs/io_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "tokens_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "tokens_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/tokens_sjs0.6_2.12/jars/tokens_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "tokens_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/tokens_sjs0.6_2.12/srcs/tokens_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "tokenizers_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "tokenizers_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/tokenizers_sjs0.6_2.12/jars/tokenizers_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "tokenizers_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/tokenizers_sjs0.6_2.12/srcs/tokenizers_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "trees_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "trees_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/trees_sjs0.6_2.12/jars/trees_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "trees_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/trees_sjs0.6_2.12/srcs/trees_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "quasiquotes_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "quasiquotes_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/quasiquotes_sjs0.6_2.12/jars/quasiquotes_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "quasiquotes_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/quasiquotes_sjs0.6_2.12/srcs/quasiquotes_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "transversers_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "transversers_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/transversers_sjs0.6_2.12/jars/transversers_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "transversers_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/transversers_sjs0.6_2.12/srcs/transversers_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalameta",
+                    "name" : "semanticdb_sjs0.6_2.12",
+                    "version" : "4.0.0-M1",
+                    "artifacts" : [
+                        {
+                            "name" : "semanticdb_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/semanticdb_sjs0.6_2.12/jars/semanticdb_sjs0.6_2.12-4.0.0-M1.jar"
+                        },
+                        {
+                            "name" : "semanticdb_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalameta/semanticdb_sjs0.6_2.12/srcs/semanticdb_sjs0.6_2.12-4.0.0-M1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.geirsson",
+                    "name" : "metaconfig-hocon_sjs0.6_2.12",
+                    "version" : "0.7.2",
+                    "artifacts" : [
+                        {
+                            "name" : "metaconfig-hocon_sjs0.6_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.geirsson/metaconfig-hocon_sjs0.6_2.12/jars/metaconfig-hocon_sjs0.6_2.12-0.7.2.jar"
+                        },
+                        {
+                            "name" : "metaconfig-hocon_sjs0.6_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.geirsson/metaconfig-hocon_sjs0.6_2.12/srcs/metaconfig-hocon_sjs0.6_2.12-0.7.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-js",
+                    "name" : "scalajs-test-interface_2.12",
+                    "version" : "0.6.25",
+                    "artifacts" : [
+                        {
+                            "name" : "scalajs-test-interface_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-test-interface_2.12/jars/scalajs-test-interface_2.12-0.6.25.jar"
+                        },
+                        {
+                            "name" : "scalajs-test-interface_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-test-interface_2.12/srcs/scalajs-test-interface_2.12-0.6.25-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

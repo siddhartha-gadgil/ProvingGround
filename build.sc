@@ -248,7 +248,7 @@ object client extends CommonJSModule with SbtModule{
     )
 
   override def ivyDeps = Agg(
-    ivy"org.scala-js::scalajs-dom::0.9.4",
+    ivy"org.scala-js::scalajs-dom::0.9.2",
     ivy"com.lihaoyi::scalatags::0.6.7",
     ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )

@@ -1,0 +1,280 @@
+{
+    "version" : "1.1.2",
+    "project" : {
+        "name" : "trepplein-test",
+        "directory" : "/home/gadgil/code/ProvingGround/trepplein",
+        "sources" : [
+            "/home/gadgil/code/ProvingGround/trepplein/src/test/scala-2.12",
+            "/home/gadgil/code/ProvingGround/trepplein/src/test/scala",
+            "/home/gadgil/code/ProvingGround/trepplein/src/test/java",
+            "/home/gadgil/code/ProvingGround/trepplein/target/scala-2.12/src_managed/test"
+        ],
+        "dependencies" : [
+            "trepplein"
+        ],
+        "classpath" : [
+            "/home/gadgil/code/ProvingGround/.bloop/trepplein/scala-2.12/classes",
+            "/home/gadgil/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.4.jar",
+            "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/jars/scopt_2.12-3.7.0.jar",
+            "/home/gadgil/.ivy2/cache/org.specs2/specs2-core_2.12/jars/specs2-core_2.12-4.0.2.jar",
+            "/home/gadgil/.ivy2/cache/org.specs2/specs2-matcher_2.12/jars/specs2-matcher_2.12-4.0.2.jar",
+            "/home/gadgil/.ivy2/cache/org.specs2/specs2-common_2.12/jars/specs2-common_2.12-4.0.2.jar",
+            "/home/gadgil/.ivy2/cache/org.specs2/specs2-fp_2.12/jars/specs2-fp_2.12-4.0.2.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.12.4.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.0.6.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.6.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar"
+        ],
+        "out" : "/home/gadgil/code/ProvingGround/.bloop/trepplein",
+        "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/trepplein/scala-2.12/test-classes",
+        "resources" : [
+            "/home/gadgil/code/ProvingGround/trepplein/src/test/resources",
+            "/home/gadgil/code/ProvingGround/trepplein/target/scala-2.12/resource_managed/test"
+        ],
+        "scala" : {
+            "organization" : "org.scala-lang",
+            "name" : "scala-compiler",
+            "version" : "2.12.4",
+            "options" : [
+                "-opt:l:inline",
+                "-opt-inline-from:**",
+                "-opt-warnings",
+                "-P:semanticdb:failures:warning",
+                "-P:semanticdb:sourceroot:/home/gadgil/code/ProvingGround",
+                "-Yrangepos",
+                "-Xplugin-require:semanticdb",
+                "-Xplugin:/home/gadgil/.ivy2/cache/org.scalameta/semanticdb-scalac_2.12.4/jars/semanticdb-scalac_2.12.4-4.1.0.jar"
+            ],
+            "jars" : [
+                "/home/gadgil/.ivy2/cache/org.scala-lang/scala-compiler/jars/scala-compiler-2.12.4.jar",
+                "/home/gadgil/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.4.jar",
+                "/home/gadgil/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.12.4.jar",
+                "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.0.6.jar",
+                "/home/gadgil/.ivy2/cache/jline/jline/jars/jline-2.14.5.jar"
+            ],
+            "setup" : {
+                "order" : "mixed",
+                "addLibraryToBootClasspath" : true,
+                "addCompilerToClasspath" : false,
+                "addExtraJarsToClasspath" : false,
+                "manageBootClasspath" : true,
+                "filterLibraryFromClasspath" : true
+            }
+        },
+        "java" : {
+            "options" : [
+            ]
+        },
+        "test" : {
+            "frameworks" : [
+                {
+                    "names" : [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                }
+            ],
+            "options" : {
+                "excludes" : [
+                ],
+                "arguments" : [
+                ]
+            }
+        },
+        "platform" : {
+            "name" : "jvm",
+            "config" : {
+                "home" : "/usr/lib/jvm/java-8-oracle/jre",
+                "options" : [
+                ]
+            },
+            "mainClass" : [
+            ]
+        },
+        "resolution" : {
+            "modules" : [
+                {
+                    "organization" : "org.scala-lang",
+                    "name" : "scala-library",
+                    "version" : "2.12.4",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-library",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.4.jar"
+                        },
+                        {
+                            "name" : "scala-library",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.github.scopt",
+                    "name" : "scopt_2.12",
+                    "version" : "3.7.0",
+                    "artifacts" : [
+                        {
+                            "name" : "scopt_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/jars/scopt_2.12-3.7.0.jar"
+                        },
+                        {
+                            "name" : "scopt_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/com.github.scopt/scopt_2.12/srcs/scopt_2.12-3.7.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.specs2",
+                    "name" : "specs2-core_2.12",
+                    "version" : "4.0.2",
+                    "artifacts" : [
+                        {
+                            "name" : "specs2-core_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-core_2.12/jars/specs2-core_2.12-4.0.2.jar"
+                        },
+                        {
+                            "name" : "specs2-core_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-core_2.12/srcs/specs2-core_2.12-4.0.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.specs2",
+                    "name" : "specs2-matcher_2.12",
+                    "version" : "4.0.2",
+                    "artifacts" : [
+                        {
+                            "name" : "specs2-matcher_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-matcher_2.12/jars/specs2-matcher_2.12-4.0.2.jar"
+                        },
+                        {
+                            "name" : "specs2-matcher_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-matcher_2.12/srcs/specs2-matcher_2.12-4.0.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.specs2",
+                    "name" : "specs2-common_2.12",
+                    "version" : "4.0.2",
+                    "artifacts" : [
+                        {
+                            "name" : "specs2-common_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-common_2.12/jars/specs2-common_2.12-4.0.2.jar"
+                        },
+                        {
+                            "name" : "specs2-common_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-common_2.12/srcs/specs2-common_2.12-4.0.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.specs2",
+                    "name" : "specs2-fp_2.12",
+                    "version" : "4.0.2",
+                    "artifacts" : [
+                        {
+                            "name" : "specs2-fp_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-fp_2.12/jars/specs2-fp_2.12-4.0.2.jar"
+                        },
+                        {
+                            "name" : "specs2-fp_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.specs2/specs2-fp_2.12/srcs/specs2-fp_2.12-4.0.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang",
+                    "name" : "scala-reflect",
+                    "version" : "2.12.4",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-reflect",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.12.4.jar"
+                        },
+                        {
+                            "name" : "scala-reflect",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.12.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang.modules",
+                    "name" : "scala-xml_2.12",
+                    "version" : "1.0.6",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-xml_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.0.6.jar"
+                        },
+                        {
+                            "name" : "scala-xml_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/srcs/scala-xml_2.12-1.0.6-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang.modules",
+                    "name" : "scala-parser-combinators_2.12",
+                    "version" : "1.0.6",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-parser-combinators_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.6.jar"
+                        },
+                        {
+                            "name" : "scala-parser-combinators_2.12",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/srcs/scala-parser-combinators_2.12-1.0.6-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-sbt",
+                    "name" : "test-interface",
+                    "version" : "1.0",
+                    "artifacts" : [
+                        {
+                            "name" : "test-interface",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar"
+                        },
+                        {
+                            "name" : "test-interface",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-sbt/test-interface/srcs/test-interface-1.0-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

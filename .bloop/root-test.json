@@ -1,0 +1,133 @@
+{
+    "version" : "1.1.2",
+    "project" : {
+        "name" : "root-test",
+        "directory" : "/home/gadgil/code/ProvingGround",
+        "sources" : [
+            "/home/gadgil/code/ProvingGround/src/test/scala-2.12",
+            "/home/gadgil/code/ProvingGround/src/test/scala",
+            "/home/gadgil/code/ProvingGround/src/test/java",
+            "/home/gadgil/code/ProvingGround/target/scala-2.12/src_managed/test"
+        ],
+        "dependencies" : [
+            "root",
+            "andrewscurtis-test",
+            "coreJVM-test",
+            "exploring-test",
+            "mantle-test",
+            "nlp-test",
+            "normalform-test",
+            "realfunctions-test",
+            "server-test",
+            "trepplein-test"
+        ],
+        "classpath" : [
+            "/home/gadgil/code/ProvingGround/.bloop/root/scala-2.12/classes",
+            "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar"
+        ],
+        "out" : "/home/gadgil/code/ProvingGround/.bloop/root",
+        "classesDir" : "/home/gadgil/code/ProvingGround/.bloop/root/scala-2.12/test-classes",
+        "resources" : [
+            "/home/gadgil/code/ProvingGround/src/test/resources",
+            "/home/gadgil/code/ProvingGround/target/scala-2.12/resource_managed/test"
+        ],
+        "scala" : {
+            "organization" : "org.scala-lang",
+            "name" : "scala-compiler",
+            "version" : "2.12.7",
+            "options" : [
+                "-Yrangepos",
+                "-P:semanticdb:failures:warning",
+                "-P:semanticdb:sourceroot:/home/gadgil/code/ProvingGround",
+                "-Yrangepos",
+                "-Xplugin-require:semanticdb"
+            ],
+            "jars" : [
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar"
+            ],
+            "setup" : {
+                "order" : "mixed",
+                "addLibraryToBootClasspath" : true,
+                "addCompilerToClasspath" : false,
+                "addExtraJarsToClasspath" : false,
+                "manageBootClasspath" : true,
+                "filterLibraryFromClasspath" : true
+            }
+        },
+        "java" : {
+            "options" : [
+            ]
+        },
+        "test" : {
+            "frameworks" : [
+                {
+                    "names" : [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                }
+            ],
+            "options" : {
+                "excludes" : [
+                ],
+                "arguments" : [
+                ]
+            }
+        },
+        "platform" : {
+            "name" : "jvm",
+            "config" : {
+                "home" : "/usr/lib/jvm/java-8-oracle/jre",
+                "options" : [
+                ]
+            },
+            "mainClass" : [
+            ]
+        },
+        "resolution" : {
+            "modules" : [
+                {
+                    "organization" : "org.scala-lang",
+                    "name" : "scala-library",
+                    "version" : "2.12.7",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-library",
+                            "path" : "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar"
+                        },
+                        {
+                            "name" : "scala-library",
+                            "classifier" : "sources",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.7-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
