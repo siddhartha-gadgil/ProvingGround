@@ -1,0 +1,3060 @@
+
+гуFleanlib/src/main/scala/provingground/library/definitions/nat.mul.scala*3
+local20 А*x$19АК"
+java/lang/String#*5
+local174 А*x$162АК"
+java/lang/String#*5
+local273 А*x$257АК"
+java/lang/String#*3
+local41 А*x$38АК"
+java/lang/String#*л
+local4 А*rxyzАКС"О
+ЛИprovingground/HoTT.Func#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*5
+local195 А*x$185АК"
+java/lang/String#*5
+local189 А*x$177АК"
+java/lang/String#*5
+local294 А*x$277АК"
+java/lang/String#*5
+local153 А*x$143АК"
+java/lang/String#*3
+local29 А*x$25АК"
+java/lang/String#*5
+local180 А*x$169АК"
+java/lang/String#*5
+local252 А*x$238АК"
+java/lang/String#*5
+local366 А*x$345АК"
+java/lang/String#*3
+local56 А*x$52АК"
+java/lang/String#*5
+local393 А*x$370АК"
+java/lang/String#*5
+local168 А*x$158АК"
+java/lang/String#*5
+local288 А*x$274АК"
+java/lang/String#*3
+local14 А*x$13АК"
+java/lang/String#*5
+local351 А*x$330АК"
+java/lang/String#*5
+local387 А*x$364АК"
+java/lang/String#*5
+local450 А*x$424АК"
+java/lang/String#*5
+local459 А*x$435АК"
+java/lang/String#*5
+local345 А*x$325АК"
+java/lang/String#*3
+local35 А*x$32АК"
+java/lang/String#*5
+local372 А*x$351АК"
+java/lang/String#*5
+local444 А*x$419АК"
+java/lang/String#*5
+local267 А*x$253АК"
+java/lang/String#*5
+local135 А*x$127АК"
+java/lang/String#*у
+local7 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local354 А*x$336АК"
+java/lang/String#*х
+local234 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local348 А*x$328АК"
+java/lang/String#*3
+local38 А*x$34АК"
+java/lang/String#*5
+local261 А*x$246АК"
+java/lang/String#*5
+local447 А*x$421АК"
+java/lang/String#*5
+local369 А*x$348АК"
+java/lang/String#*5
+local183 А*x$171АК"
+java/lang/String#*3
+local91 А*x$85АК"
+java/lang/String#*5
+local432 А*x$408АК"
+java/lang/String#*5
+local327 А*x$309АК"
+java/lang/String#*3
+local17 А*x$16АК"
+java/lang/String#*5
+local426 А*x$403АК"
+java/lang/String#*5
+local249 А*x$235АК"
+java/lang/String#*5
+local453 А*x$428АК"
+java/lang/String#*5
+local162 А*x$155АК"
+java/lang/String#*5
+local156 А*x$146АК"
+java/lang/String#*5
+local360 А*x$339АК"
+java/lang/String#*5
+local255 А*x$241АК"
+java/lang/String#*5
+local375 А*x$353АК"
+java/lang/String#*5
+local282 А*x$265АК"
+java/lang/String#*5
+local333 А*x$314АК"
+java/lang/String#*5
+local177 А*x$166АК"
+java/lang/String#*3
+local23 А*x$21АК"
+java/lang/String#*5
+local240 А*x$227АК"
+java/lang/String#*5
+local141 А*x$134АК"
+java/lang/String#*5
+local276 А*x$259АК"
+java/lang/String#*5
+local123 А*x$116АК"
+java/lang/String#*5
+local264 А*x$249АК"
+java/lang/String#*5
+local159 А*x$149АК"
+java/lang/String#*5
+local357 А*x$337АК"
+java/lang/String#*5
+local222 А*x$209АК"
+java/lang/String#*5
+local117 А*x$111АК"
+java/lang/String#*х
+local321 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local144 А*x$136АК"
+java/lang/String#*3
+local11 А*x$10АК"
+java/lang/String#*5
+local243 А*x$230АК"
+java/lang/String#*5
+local237 А*x$223АК"
+java/lang/String#*3
+local88 А*x$82АК"
+java/lang/String#*5
+local456 А*x$430АК"
+java/lang/String#*5
+local150 А*x$140АК"
+java/lang/String#*5
+local315 А*x$297АК"
+java/lang/String#*5
+local414 А*x$390АК"
+java/lang/String#*5
+local408 А*x$384АК"
+java/lang/String#*5
+local258 А*x$244АК"
+java/lang/String#*3
+local94 А*x$88АК"
+java/lang/String#*5
+local441 А*x$416АК"
+java/lang/String#*5
+local336 А*x$317АК"
+java/lang/String#*5
+local216 А*x$203АК"
+java/lang/String#*5
+local435 А*x$412АК"
+java/lang/String#*5
+local429 А*x$405АК"
+java/lang/String#*5
+local138 А*x$130АК"
+java/lang/String#*5
+local342 А*x$321АК"
+java/lang/String#*3
+local73 А*x$68АК"
+java/lang/String#*ў
+local165 А*rxyzАК█"╪
+╒╥provingground/HoTT.Func#provingground/HoTT.Term#ЧФprovingground/HoTT.Func#ЩЦprovingground/HoTT.FuncLike#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#*5
+local420 А*x$396АК"
+java/lang/String#*5
+local438 А*x$429АК"
+java/lang/String#*5
+local293 А*x$276АК"
+java/lang/String#*5
+local318 А*x$301АК"
+java/lang/String#*3
+local55 А*x$51АК"
+java/lang/String#*5
+local392 А*x$369АК"
+java/lang/String#*5
+local231 А*x$219АК"
+java/lang/String#*3
+local82 А*x$77АК"
+java/lang/String#*5
+local147 А*x$138АК"
+java/lang/String#*5
+local417 А*x$393АК"
+java/lang/String#*х
+local111 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*3
+local97 А*x$99АК"
+java/lang/String#*5
+local324 А*x$305АК"
+java/lang/String#*5
+local219 А*x$205АК"
+java/lang/String#*5
+local423 А*x$400АК"
+java/lang/String#*5
+local246 А*x$232АК"
+java/lang/String#*5
+local132 А*x$125АК"
+java/lang/String#*5
+local126 А*x$119АК"
+java/lang/String#*5
+local105 А*x$100АК"
+java/lang/String#*5
+local204 А*x$192АК"
+java/lang/String#*5
+local210 А*x$196АК"
+java/lang/String#*х
+local339 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local194 А*x$183АК"
+java/lang/String#*3
+local76 А*x$73АК"
+java/lang/String#*5
+local303 А*x$285АК"
+java/lang/String#*5
+local330 А*x$312АК"
+java/lang/String#*5
+local402 А*x$378АК"
+java/lang/String#*5
+local225 А*x$212АК"
+java/lang/String#*3
+local61 А*x$64АК"
+java/lang/String#*5
+local306 А*x$289АК"
+java/lang/String#*5
+local312 А*x$294АК"
+java/lang/String#*х
+local207 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local405 А*x$381АК"
+java/lang/String#*5
+local380 А*x$358АК"
+java/lang/String#*3
+local70 А*x$66АК"
+java/lang/String#*5
+local182 А*x$172АК"
+java/lang/String#*5
+local296 А*x$278АК"
+java/lang/String#*3
+local58 А*x$54АК"
+java/lang/String#*5
+local395 А*x$372АК"
+java/lang/String#*3
+local85 А*x$79АК"
+java/lang/String#*5
+local129 А*x$122АК"
+java/lang/String#*1
+local6 А*x$6АК"
+java/lang/String#*3
+local43 А*x$41АК"
+java/lang/String#*5
+local197 А*x$187АК"
+java/lang/String#*5
+local411 А*x$389АК"
+java/lang/String#*х
+local275 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local120 А*x$114АК"
+java/lang/String#*5
+local114 А*x$107АК"
+java/lang/String#*3
+local37 А*x$35АК"
+java/lang/String#*5
+local374 А*x$355АК"
+java/lang/String#*3
+local64 А*x$59АК"
+java/lang/String#*5
+local213 А*x$200АК"
+java/lang/String#*5
+local228 А*x$216АК"
+java/lang/String#*5
+local108 А*x$103АК"
+java/lang/String#*5
+local281 А*x$264АК"
+java/lang/String#*5
+local176 А*x$165АК"
+java/lang/String#*5
+local389 А*x$367АК"
+java/lang/String#*3
+local79 А*x$74АК"
+java/lang/String#*5
+local290 А*x$273АК"
+java/lang/String#*3
+local31 А*x$28АК"
+java/lang/String#*5
+local185 А*x$173АК"
+java/lang/String#*5
+local179 А*x$168АК"
+java/lang/String#*х
+local398 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*4
+local102 А*x$96АК"
+java/lang/String#*5
+local278 А*x$260АК"
+java/lang/String#*5
+local201 А*x$191АК"
+java/lang/String#*5
+local170 А*x$160АК"
+java/lang/String#*1
+local9 А*x$9АК"
+java/lang/String#*н
+local356 А*rxyzАКС"О
+ЛИprovingground/HoTT.Func#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*5
+local300 А*x$282АК"
+java/lang/String#*5
+local263 А*x$248АК"
+java/lang/String#*5
+local309 А*x$291АК"
+java/lang/String#*5
+local164 А*x$154АК"
+java/lang/String#*5
+local158 А*x$148АК"
+java/lang/String#*5
+local299 А*x$281АК"
+java/lang/String#*1
+local0 А*x$2АК"
+java/lang/String#*5
+local191 А*x$179АК"
+java/lang/String#*5
+local377 А*x$368АК"
+java/lang/String#*3
+local52 А*x$48АК"
+java/lang/String#*3
+local67 А*x$62АК"
+java/lang/String#*5
+local284 А*x$267АК"
+java/lang/String#*3
+local25 А*x$36АК"
+java/lang/String#*3
+local19 А*x$17АК"
+java/lang/String#*5
+local383 А*x$360АК"
+java/lang/String#*5
+local362 А*x$340АК"
+java/lang/String#*5
+local257 А*x$242АК"
+java/lang/String#*5
+local455 А*x$431АК"
+java/lang/String#*2
+local10 А*x$8АК"
+java/lang/String#*3
+local46 А*x$43АК"
+java/lang/String#*3
+local13 А*x$12АК"
+java/lang/String#*1
+local3 А*x$3АК"
+java/lang/String#*5
+local344 А*x$324АК"
+java/lang/String#*5
+local350 А*x$331АК"
+java/lang/String#*х
+local359 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*3
+local40 А*x$37АК"
+java/lang/String#*5
+local239 А*x$226АК"
+java/lang/String#*3
+local49 А*x$45АК"
+java/lang/String#*5
+local458 А*x$432АК"
+java/lang/String#*ы
+$provingground/library/nat$mul.value. └*valueАКнк
+ евprovingground/HoTT.Func#c:a"]ЪZ
+provingground/HoTT.Term#
+:8provingground/HoTT.Subs#provingground/HoTT.Term#* аЭprovingground/HoTT.Func#c:a"]ЪZ
+provingground/HoTT.Term#
+:8provingground/HoTT.Subs#provingground/HoTT.Term#* provingground/HoTT.Term#Т: *5
+local188 А*x$176АК"
+java/lang/String#*5
+local443 А*x$417АК"
+java/lang/String#*5
+local287 А*x$269АК"
+java/lang/String#*5
+local245 А*x$233АК"
+java/lang/String#*3
+local96 А*x$89АК"
+java/lang/String#*5
+local152 А*x$141АК"
+java/lang/String#*5
+local272 А*x$256АК"
+java/lang/String#*5
+local167 А*x$156АК"
+java/lang/String#*3
+local34 А*x$31АК"
+java/lang/String#*5
+local365 А*x$344АК"
+java/lang/String#*5
+local371 А*x$349АК"
+java/lang/String#*5
+local266 А*x$251АК"
+java/lang/String#*5
+local173 А*x$163АК"
+java/lang/String#*5
+local338 А*x$319АК"
+java/lang/String#*3
+local28 А*x$26АК"
+java/lang/String#*5
+local386 А*x$363АК"
+java/lang/String#*5
+local251 А*x$237АК"
+java/lang/String#*5
+local437 А*x$413АК"
+java/lang/String#*5
+local146 А*x$137АК"
+java/lang/String#*5
+local155 А*x$145АК"
+java/lang/String#*5
+local269 А*x$254АК"
+java/lang/String#*5
+local128 А*x$121АК"
+java/lang/String#*5
+local233 А*x$221АК"
+java/lang/String#*5
+local368 А*x$347АК"
+java/lang/String#*5
+local227 А*x$214АК"
+java/lang/String#*w
+provingground/library/nat$mul.
+ *nat$mulАК?
+=
+ scala/AnyRef#"&
+$provingground/library/nat$mul.value.Т: *5
+local431 А*x$407АК"
+java/lang/String#*5
+local446 А*x$420АК"
+java/lang/String#*5
+local254 А*x$240АК"
+java/lang/String#*5
+local140 А*x$132АК"
+java/lang/String#*5
+local326 А*x$308АК"
+java/lang/String#*х
+local149 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*3
+local16 А*x$15АК"
+java/lang/String#*5
+local353 А*x$333АК"
+java/lang/String#*5
+local248 А*x$236АК"
+java/lang/String#*ф
+local84 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local452 А*x$426АК"
+java/lang/String#*5
+local311 А*x$293АК"
+java/lang/String#*5
+local410 А*x$385АК"
+java/lang/String#*5
+local425 А*x$401АК"
+java/lang/String#*5
+local419 А*x$395АК"
+java/lang/String#*3
+local99 А*x$93АК"
+java/lang/String#*5
+local332 А*x$315АК"
+java/lang/String#*3
+local22 А*x$23АК"
+java/lang/String#*3
+local90 А*x$84АК"
+java/lang/String#*5
+local134 А*x$126АК"
+java/lang/String#*5
+local161 А*x$150АК"
+java/lang/String#*5
+local347 А*x$327АК"
+java/lang/String#*3
+local78 А*x$75АК"
+java/lang/String#*5
+local260 А*x$245АК"
+java/lang/String#*5
+local143 А*x$135АК"
+java/lang/String#*5
+local407 А*x$383АК"
+java/lang/String#*4
+local101 А*x$95АК"
+java/lang/String#*3
+local87 А*x$80АК"
+java/lang/String#*5
+local221 А*x$208АК"
+java/lang/String#*5
+local236 А*x$224АК"
+java/lang/String#*5
+local122 А*x$117АК"
+java/lang/String#*5
+local116 А*x$110АК"
+java/lang/String#*5
+local440 А*x$415АК"
+java/lang/String#*5
+local329 А*x$311АК"
+java/lang/String#*5
+local335 А*x$332АК"
+java/lang/String#*5
+local242 А*x$229АК"
+java/lang/String#*5
+local137 А*x$129АК"
+java/lang/String#*3
+local93 А*x$87АК"
+java/lang/String#*5
+local320 А*x$303АК"
+java/lang/String#*5
+local200 А*x$188АК"
+java/lang/String#*5
+local209 А*x$197АК"
+java/lang/String#*5
+local215 А*x$202АК"
+java/lang/String#*5
+local413 А*x$397АК"
+java/lang/String#*5
+local449 А*x$423АК"
+java/lang/String#*5
+local428 А*x$404АК"
+java/lang/String#*5
+local314 А*x$296АК"
+java/lang/String#*5
+local308 А*x$292АК"
+java/lang/String#*5
+local341 А*x$322АК"
+java/lang/String#*3
+local66 А*x$61АК"
+java/lang/String#*3
+local72 А*x$69АК"
+java/lang/String#*5
+local434 А*x$410АК"
+java/lang/String#*5
+local422 А*x$399АК"
+java/lang/String#*5
+local131 А*x$123АК"
+java/lang/String#*5
+local317 А*x$299АК"
+java/lang/String#*ф
+local48 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local416 А*x$392АК"
+java/lang/String#*5
+local385 А*x$362АК"
+java/lang/String#*3
+local75 А*x$70АК"
+java/lang/String#*5
+local119 А*x$113АК"
+java/lang/String#*5
+local302 А*x$284АК"
+java/lang/String#*5
+local323 А*x$306АК"
+java/lang/String#*5
+local187 А*x$175АК"
+java/lang/String#*3
+local69 А*x$65АК"
+java/lang/String#*5
+local401 А*x$376АК"
+java/lang/String#*5
+local391 А*x$371АК"
+java/lang/String#*3
+local54 А*x$50АК"
+java/lang/String#*5
+local203 А*x$207АК"
+java/lang/String#*5
+local230 А*x$218АК"
+java/lang/String#*5
+local125 А*x$120АК"
+java/lang/String#*5
+local193 А*x$182АК"
+java/lang/String#*5
+local218 А*x$206АК"
+java/lang/String#*5
+local224 А*x$211АК"
+java/lang/String#*3
+local60 А*x$55АК"
+java/lang/String#*5
+local110 А*x$105АК"
+java/lang/String#*5
+local292 А*x$275АК"
+java/lang/String#*5
+local286 А*x$270АК"
+java/lang/String#*4
+local104 А*x$98АК"
+java/lang/String#*3
+local81 А*x$76АК"
+java/lang/String#*5
+local181 А*x$170АК"
+java/lang/String#*х
+local295 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*3
+local36 А*x$33АК"
+java/lang/String#*5
+local404 А*x$380АК"
+java/lang/String#*5
+local394 А*x$387АК"
+java/lang/String#*5
+local107 А*x$102АК"
+java/lang/String#*5
+local289 А*x$272АК"
+java/lang/String#*5
+local206 А*x$194АК"
+java/lang/String#*5
+local175 А*x$164АК"
+java/lang/String#*Ў
+local42 А*rxyzАК█"╪
+╒╥provingground/HoTT.Func#provingground/HoTT.Term#ЧФprovingground/HoTT.Func#ЩЦprovingground/HoTT.FuncLike#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#*5
+local274 А*x$271АК"
+java/lang/String#*5
+local305 А*x$287АК"
+java/lang/String#*5
+local169 А*x$159АК"
+java/lang/String#*1
+local5 А*x$5АК"
+java/lang/String#*5
+local373 А*x$352АК"
+java/lang/String#*5
+local196 А*x$184АК"
+java/lang/String#*3
+local63 А*x$58АК"
+java/lang/String#*3
+local21 А*x$20АК"
+java/lang/String#*5
+local367 А*x$346АК"
+java/lang/String#*5
+local212 А*x$199АК"
+java/lang/String#*3
+local57 А*x$53АК"
+java/lang/String#*5
+local280 А*x$263АК"
+java/lang/String#*5
+local160 А*x$151АК"
+java/lang/String#*5
+local388 А*x$365АК"
+java/lang/String#*5
+local113 А*x$108АК"
+java/lang/String#*5
+local268 А*x$252АК"
+java/lang/String#*5
+local460 А*x$434АК"
+java/lang/String#*5
+local355 А*x$335АК"
+java/lang/String#*3
+local45 А*x$42АК"
+java/lang/String#*5
+local199 А*x$189АК"
+java/lang/String#*3
+local18 А*x$18АК"
+java/lang/String#*1
+local8 А*x$7АК"
+java/lang/String#*5
+local184 А*x$180АК"
+java/lang/String#*5
+local448 А*x$422АК"
+java/lang/String#*5
+local142 А*x$133АК"
+java/lang/String#*5
+local157 А*x$147АК"
+java/lang/String#*5
+local361 А*x$341АК"
+java/lang/String#*3
+local51 А*x$46АК"
+java/lang/String#*5
+local163 А*x$153АК"
+java/lang/String#*5
+local277 А*x$261АК"
+java/lang/String#*5
+local283 А*x$266АК"
+java/lang/String#*5
+local178 А*x$167АК"
+java/lang/String#*3
+local39 А*x$39АК"
+java/lang/String#*5
+local190 А*x$178АК"
+java/lang/String#*5
+local241 А*x$228АК"
+java/lang/String#*5
+local376 А*x$354АК"
+java/lang/String#*5
+local382 А*x$359АК"
+java/lang/String#*5
+local454 А*x$427АК"
+java/lang/String#*5
+local340 А*x$320АК"
+java/lang/String#*5
+local298 А*x$279АК"
+java/lang/String#*5
+local349 А*x$329АК"
+java/lang/String#*3
+local30 А*x$27АК"
+java/lang/String#*3
+local24 А*x$22АК"
+java/lang/String#*5
+local397 А*x$374АК"
+java/lang/String#*5
+local262 А*x$247АК"
+java/lang/String#*х
+local256 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local124 А*x$118АК"
+java/lang/String#*1
+local2 А*x$4АК"
+java/lang/String#*5
+local343 А*x$323АК"
+java/lang/String#*5
+local379 А*x$356АК"
+java/lang/String#*3
+local33 А*x$30АК"
+java/lang/String#*5
+local238 А*x$225АК"
+java/lang/String#*х
+local442 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local436 А*x$411АК"
+java/lang/String#*5
+local145 А*x$139АК"
+java/lang/String#*5
+local337 А*x$318АК"
+java/lang/String#*3
+local27 А*x$24АК"
+java/lang/String#*5
+local364 А*x$343АК"
+java/lang/String#*5
+local223 А*x$210АК"
+java/lang/String#*3
+local95 А*x$90АК"
+java/lang/String#*3
+local89 А*x$83АК"
+java/lang/String#*5
+local457 А*x$433АК"
+java/lang/String#*5
+local322 А*x$304АК"
+java/lang/String#*3
+local12 А*x$11АК"
+java/lang/String#*5
+local421 А*x$398АК"
+java/lang/String#*3
+local80 А*x$91АК"
+java/lang/String#*5
+local151 А*x$142АК"
+java/lang/String#*5
+local244 А*x$231АК"
+java/lang/String#*5
+local250 А*x$239АК"
+java/lang/String#*5
+local139 А*x$131АК"
+java/lang/String#*5
+local259 А*x$243АК"
+java/lang/String#*5
+local172 А*x$161АК"
+java/lang/String#*5
+local166 А*x$157АК"
+java/lang/String#*5
+local358 А*x$338АК"
+java/lang/String#*5
+local370 А*x$350АК"
+java/lang/String#*х
+local130 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local265 А*x$250АК"
+java/lang/String#*5
+local271 А*x$258АК"
+java/lang/String#*5
+local148 А*x$152АК"
+java/lang/String#*5
+local352 А*x$334АК"
+java/lang/String#*3
+local62 А*x$57АК"
+java/lang/String#*5
+local247 А*x$234АК"
+java/lang/String#*5
+local106 А*x$101АК"
+java/lang/String#*5
+local310 А*x$300АК"
+java/lang/String#*5
+local133 А*x$124АК"
+java/lang/String#*5
+local205 А*x$193АК"
+java/lang/String#*5
+local418 А*x$394АК"
+java/lang/String#*5
+local232 А*x$220АК"
+java/lang/String#*н
+local127 А*rxyzАКС"О
+ЛИprovingground/HoTT.Func#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*5
+local451 А*x$425АК"
+java/lang/String#*5
+local445 А*x$418АК"
+java/lang/String#*5
+local331 А*x$313АК"
+java/lang/String#*5
+local154 А*x$144АК"
+java/lang/String#*5
+local403 А*x$379АК"
+java/lang/String#*5
+local439 А*x$414АК"
+java/lang/String#*5
+local112 А*x$106АК"
+java/lang/String#*н
+local253 А*rxyzАКС"О
+ЛИprovingground/HoTT.Func#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*3
+local98 А*x$92АК"
+java/lang/String#*5
+local211 А*x$198АК"
+java/lang/String#*5
+local325 А*x$307АК"
+java/lang/String#*3
+local15 А*x$14АК"
+java/lang/String#*5
+local430 А*x$406АК"
+java/lang/String#*х
+local424 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local319 А*x$302АК"
+java/lang/String#*3
+local83 А*x$78АК"
+java/lang/String#*5
+local346 А*x$326АК"
+java/lang/String#*5
+local226 А*x$213АК"
+java/lang/String#*3
+local77 А*x$72АК"
+java/lang/String#*5
+local304 А*x$286АК"
+java/lang/String#*5
+local433 А*x$409АК"
+java/lang/String#*5
+local313 А*x$295АК"
+java/lang/String#*5
+local328 А*x$310АК"
+java/lang/String#*5
+local381 А*x$357АК"
+java/lang/String#*3
+local71 А*x$67АК"
+java/lang/String#*3
+local44 А*x$40АК"
+java/lang/String#*5
+local412 А*x$388АК"
+java/lang/String#*4
+local100 А*x$94АК"
+java/lang/String#*5
+local115 А*x$109АК"
+java/lang/String#*3
+local50 А*x$47АК"
+java/lang/String#*3
+local59 А*x$56АК"
+java/lang/String#*5
+local208 А*x$195АК"
+java/lang/String#*5
+local427 А*x$402АК"
+java/lang/String#*5
+local121 А*x$115АК"
+java/lang/String#*5
+local235 А*x$222АК"
+java/lang/String#*5
+local136 А*x$128АК"
+java/lang/String#*5
+local334 А*x$316АК"
+java/lang/String#*5
+local198 А*x$186АК"
+java/lang/String#*5
+local229 А*x$217АК"
+java/lang/String#*3
+local65 А*x$60АК"
+java/lang/String#*5
+local297 А*x$280АК"
+java/lang/String#*5
+local307 А*x$288АК"
+java/lang/String#*3
+local92 А*x$86АК"
+java/lang/String#*5
+local406 А*x$382АК"
+java/lang/String#*5
+local214 А*x$201АК"
+java/lang/String#*5
+local220 А*x$215АК"
+java/lang/String#*5
+local396 А*x$373АК"
+java/lang/String#*5
+local109 А*x$104АК"
+java/lang/String#*3
+local86 А*x$81АК"
+java/lang/String#*5
+local301 А*x$283АК"
+java/lang/String#*5
+local291 А*x$290АК"
+java/lang/String#*5
+local186 А*x$174АК"
+java/lang/String#*5
+local400 А*x$377АК"
+java/lang/String#*5
+local409 А*x$386АК"
+java/lang/String#*4
+local103 А*x$97АК"
+java/lang/String#*5
+local399 А*x$375АК"
+java/lang/String#*5
+local118 А*x$112АК"
+java/lang/String#*х
+local171 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local363 А*x$342АК"
+java/lang/String#*3
+local47 А*x$44АК"
+java/lang/String#*3
+local53 А*x$49АК"
+java/lang/String#*5
+local390 А*x$366АК"
+java/lang/String#*5
+local384 А*x$361АК"
+java/lang/String#*5
+local279 А*x$262АК"
+java/lang/String#*5
+local285 А*x$268АК"
+java/lang/String#*1
+local1 А*x$1АК"
+java/lang/String#*5
+local202 А*x$190АК"
+java/lang/String#*х
+local378 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*3
+local68 А*x$63АК"
+java/lang/String#*5
+local415 А*x$391АК"
+java/lang/String#*5
+local270 А*x$255АК"
+java/lang/String#*3
+local32 А*x$29АК"
+java/lang/String#*ф
+local26 А*rxyzАК╔"╞
+├└provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#шхprovingground/HoTT.Func#╤╬provingground/HoTT.Func#provingground/HoTT.Term#УРprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
+local217 А*x$204АК"
+java/lang/String#*5
+local316 А*x$298АК"
+java/lang/String#*5
+local192 А*x$181АК"
+java/lang/String#*3
+local74 А*x$71АК"
+java/lang/String#2(
+
+п │provingground/HoTT.Type.2?
+ !1provingground/induction/ConstructorSeqTL#induc().2.
+
+┘ █provingground/HoTT.Typ#`::`().2.
+
+,э, яprovingground/HoTT.Typ#`::`().2(
+
+6╬6 ╥provingground/HoTT.Type.2&
+** provingground/HoTT.Type.2.
+
+,Ъ, Ьprovingground/HoTT.Typ#`::`().2(
+
+PоP ▓provingground/HoTT.Type.2(
+
+А Дprovingground/HoTT.Type.2(
+
+VїV ∙provingground/HoTT.Type.2)
+PP provingground/HoTT.lmbda().2,
+E,E .provingground/HoTT.Typ#`::`().2)
+ provingground/HoTT.lmbda().2.
+
+!Ї! Ўprovingground/HoTT.Typ#`::`().2(
+
+ї ∙provingground/HoTT.Type.2(
+
+/а/ дprovingground/HoTT.Type.2&
+DD provingground/HoTT.Type.2+
+99 provingground/library/natInd.2,
+PP provingground/HoTT.Typ#`::`().2.
+
+╩ ╠provingground/HoTT.Typ#`::`().2&
+!X! \provingground/HoTT.Type.2)
+HH provingground/HoTT.lmbda().2(
+
+PмP ░provingground/HoTT.Type.2=
+44 !/provingground/induction/ConstructorSeqTL#rec().2,
+&S& Uprovingground/HoTT.Typ#`::`().2(
+
+/·/ ■provingground/HoTT.Type.2.
+
+!г! еprovingground/HoTT.Typ#`::`().2(
+
+&ї& ∙provingground/HoTT.Type.2&
+k oprovingground/HoTT.Type.2)
+// provingground/HoTT.lmbda().2.
+
+█ ▌provingground/HoTT.Typ#`::`().2)
+M^M eprovingground/HoTT.FuncTyp.2&
+PpP tprovingground/HoTT.Type.2&
+DVD Zprovingground/HoTT.Type.2(
+
+Д Иprovingground/HoTT.Type.2)
+" 'provingground/HoTT.lmbda().2
+33 local2532(
+
+>╧> ╙provingground/HoTT.Type.2&
+MzM ~provingground/HoTT.Type.2.
+
+DиD кprovingground/HoTT.Typ#`::`().2)
+MM provingground/HoTT.lmbda().2)
+h oprovingground/HoTT.FuncTyp.2,
+
+PщP яprovingground/HoTT.piDefn().21
+TT #provingground/library/natInd.value.2(
+
+!╢! ║provingground/HoTT.Type.2(
+
+>л> пprovingground/HoTT.Type.2?
+'' !1provingground/induction/ConstructorSeqTL#induc().2(
+
+VаV дprovingground/HoTT.Type.21
+ #provingground/library/natInd.value.2 
+ provingground/library/2.
+
+D╦D ═provingground/HoTT.Typ#`::`().2+
+
+2╝2 ├provingground/HoTT.FuncTyp.2(
+
+M▐M тprovingground/HoTT.Type.2,
+PeP gprovingground/HoTT.Typ#`::`().2.
+
+Ъ Ьprovingground/HoTT.Typ#`::`().2+
+
+╡ ║provingground/HoTT.lmbda().2+
+
+VжV нprovingground/HoTT.FuncTyp.2.
+
+2и2 кprovingground/HoTT.Typ#`::`().2(
+
+P╤P ╒provingground/HoTT.Type.2+
+
+╛ ┼provingground/HoTT.FuncTyp.2.
+
+!╠! ╬provingground/HoTT.Typ#`::`().2(
+
+DїD ∙provingground/HoTT.Type.2&
+6{6 provingground/HoTT.Type.2.
+
+PаP вprovingground/HoTT.Typ#`::`().2+
+
+2Ш2 Яprovingground/HoTT.FuncTyp.2.
+
+й лprovingground/HoTT.Typ#`::`().2,
+V5V 7provingground/HoTT.Typ#`::`().2.
+
+,Ў, °provingground/HoTT.Typ#`::`().2
+11 local2342
+NN local3982
+@@ local3212/
+ !provingground/HoTT.Fold.Folder().2=
+ !/provingground/induction/ConstructorSeqTL#rec().2-
+ provingground/library/pprodInd.2,
+&e& gprovingground/HoTT.Typ#`::`().2)
+A>A Cprovingground/HoTT.lmbda().2.
+
+VХV Чprovingground/HoTT.Typ#`::`().2(
+
+MкM оprovingground/HoTT.Type.2+
+
+,У, Ъprovingground/HoTT.FuncTyp.2(
+
+PНP Сprovingground/HoTT.Type.2.
+
+PХP Чprovingground/HoTT.Typ#`::`().2.
+
+>┬> ─provingground/HoTT.Typ#`::`().2.
+
+Х Чprovingground/HoTT.Typ#`::`().2(
+
+H╘H ╪provingground/HoTT.Type.2(
+
+>¤> Бprovingground/HoTT.Type.2(
+
+&┤& ╕provingground/HoTT.Type.2(
+
+DДD Иprovingground/HoTT.Type.2,
+P,P .provingground/HoTT.Typ#`::`().2(
+
+6г6 зprovingground/HoTT.Type.2.
+
+▌ ▀provingground/HoTT.Typ#`::`().2.
+
+SрS тprovingground/HoTT.Typ#`::`().2(
+
+PвP жprovingground/HoTT.Type.2+
+
+H▒H ╕provingground/HoTT.FuncTyp.2.
+
+ц шprovingground/HoTT.Typ#`::`().2(
+
+SЗS Лprovingground/HoTT.Type.2'
+	A~A Вprovingground/HoTT.Type.2)
+,u, |provingground/HoTT.FuncTyp.2(
+
+/а/ дprovingground/HoTT.Type.2(
+
+H┬H ╞provingground/HoTT.Type.2
+GG 
+local3592(
+
+О Тprovingground/HoTT.Type.2,
+/e/ gprovingground/HoTT.Typ#`::`().2.
+
+6┴6 ├provingground/HoTT.Typ#`::`().2'
+	D~D Вprovingground/HoTT.Type.2&
+r vprovingground/HoTT.Type.2(
+
+!▐! тprovingground/HoTT.Type.2+
+<< provingground/library/natInd.2(
+
+2З2 Лprovingground/HoTT.Type.2,
+H]H _provingground/HoTT.Typ#`::`().2.
+
+P╬P ╨provingground/HoTT.Typ#`::`().2=
+99 /provingground/induction/ConstructorSeqTL#rec().2(
+
+╜ ┴provingground/HoTT.Type.2/
+77 !provingground/HoTT.Fold.Folder().2,
+,, provingground/HoTT.Typ#`::`().2&
+p tprovingground/HoTT.Type.2)
+v }provingground/HoTT.FuncTyp.2+
+ provingground/library/natInd.2+
+
+ж нprovingground/HoTT.FuncTyp.2(
+
+MбM еprovingground/HoTT.Type.2
+:: local2752(
+
+>ї> ∙provingground/HoTT.Type.2(
+
+6 6 Гprovingground/HoTT.Type.2(
+
+>▄> рprovingground/HoTT.Type.2(
+
+AїA ∙provingground/HoTT.Type.2
+		 local42.
+
+Ы Эprovingground/HoTT.Typ#`::`().2+
+
+2№2 Гprovingground/HoTT.FuncTyp.2.
+
+&┘& █provingground/HoTT.Typ#`::`().2.
+
+6╨6 ╥provingground/HoTT.Typ#`::`().2+
+
+╞ ═provingground/HoTT.FuncTyp.2'
+	S~S Вprovingground/HoTT.Type.2.
+
+AиA кprovingground/HoTT.Typ#`::`().2(
+
+P┤P ╕provingground/HoTT.Type.2(
+
+;й; нprovingground/HoTT.Type.2,
+;H; Jprovingground/HoTT.Typ#`::`().2.
+
+М Оprovingground/HoTT.Typ#`::`().2+
+
+,╡, ║provingground/HoTT.lmbda().2(
+
+К Оprovingground/HoTT.Type.2,
+>5> 7provingground/HoTT.Typ#`::`().2,
+6"6 $provingground/HoTT.Typ#`::`().2.
+
+╬ ╨provingground/HoTT.Typ#`::`().2(
+
+/╝/ └provingground/HoTT.Type.21
+ #provingground/library/natInd.value.2.
+
+;╬; ╨provingground/HoTT.Typ#`::`().2&
+/V/ Zprovingground/HoTT.Type.2&
+X \provingground/HoTT.Type.2(
+
+HмH ░provingground/HoTT.Type.2(
+
+S┐S ├provingground/HoTT.Type.2,
+
+Ю дprovingground/HoTT.lambda().2(
+
+>═> ╤provingground/HoTT.Type.2+
+
+/╝/ ├provingground/HoTT.FuncTyp.2)
+u |provingground/HoTT.FuncTyp.2,
+** provingground/HoTT.Typ#`::`().2(
+
+/╥/ ╓provingground/HoTT.Type.2,
+8O8 Qprovingground/HoTT.Typ#`::`().2,
+HKH Mprovingground/HoTT.Typ#`::`().2(
+
+2а2 дprovingground/HoTT.Type.2(
+
+,Ы, Яprovingground/HoTT.Type.2.
+
+D└D ┬provingground/HoTT.Typ#`::`().2,
+!g! iprovingground/HoTT.Typ#`::`().2+
+
+;Ы; вprovingground/HoTT.FuncTyp.2(
+
+&Д& Иprovingground/HoTT.Type.2,
+'@' Bprovingground/HoTT.Typ#`::`().2(
+
+HяH єprovingground/HoTT.Type.2+
+
+,╩, ╧provingground/HoTT.lmbda().2(
+
+>а> дprovingground/HoTT.Type.2.
+
+MЛM Нprovingground/HoTT.Typ#`::`().2.
+
+Є Їprovingground/HoTT.Typ#`::`().2(
+
+┘ ▌provingground/HoTT.Type.2)
+>h> oprovingground/HoTT.FuncTyp.2(
+
+ч ыprovingground/HoTT.Type.2(
+
+S┤S ╕provingground/HoTT.Type.2&
+;s; wprovingground/HoTT.Type.2.
+
+*Ж* Иprovingground/HoTT.Typ#`::`().2&
+K K $provingground/HoTT.Type.2
+ 
+local72(
+
+V▄V рprovingground/HoTT.Type.2
+ 
+shapeless/2&
+J/J 3provingground/HoTT.Type.2.
+
+,Л, Нprovingground/HoTT.Typ#`::`().2.
+
+DЯD бprovingground/HoTT.Typ#`::`().2&
+o sprovingground/HoTT.Type.2)
+T [provingground/HoTT.FuncTyp.2(
+
+*╢* ║provingground/HoTT.Type.2(
+
+в жprovingground/HoTT.Type.2+
+KK provingground/library/natInd.2,
+. 0provingground/HoTT.Typ#`::`().2(
+
+6э6 ёprovingground/HoTT.Type.2)
+## %provingground/HoTT.FuncTyp.2.
+
+;╡; ╖provingground/HoTT.Typ#`::`().2(
+
+/▄/ рprovingground/HoTT.Type.2.
+
+>р> тprovingground/HoTT.Typ#`::`().2=
+
+
+ !/provingground/induction/ConstructorSeqTL#rec().2)
+ provingground/HoTT.lmbda().2.
+
+PДP Жprovingground/HoTT.Typ#`::`().2/
+II !provingground/HoTT.Fold.Folder().2,
+SSS Uprovingground/HoTT.Typ#`::`().2,
+; =provingground/HoTT.Typ#`::`().2+
+
+
+ provingground/library/natInd.2(
+
+PГP Зprovingground/HoTT.Type.2)
+>v> }provingground/HoTT.FuncTyp.2.
+
+6№6 ■provingground/HoTT.Typ#`::`().2+
+
+Ш Яprovingground/HoTT.FuncTyp.2(
+
+╢ ║provingground/HoTT.Type.2.
+
+2Х2 Чprovingground/HoTT.Typ#`::`().2,
+M M "provingground/HoTT.Typ#`::`().2,
+U Wprovingground/HoTT.Typ#`::`().2(
+
+*А* Дprovingground/HoTT.Type.2,
+U Wprovingground/HoTT.Typ#`::`().2.
+
+/Д/ Жprovingground/HoTT.Typ#`::`().2(
+
+п │provingground/HoTT.Type.2,
+SS provingground/HoTT.Typ#`::`().2.
+
+PтP фprovingground/HoTT.Typ#`::`().2(
+
+M║M ╛provingground/HoTT.Type.21
+99 #provingground/library/natInd.value.2(
+
+P▄P рprovingground/HoTT.Type.2(
+
+MНM Сprovingground/HoTT.Type.2,
+252 7provingground/HoTT.Typ#`::`().2+
+
+PШP Яprovingground/HoTT.FuncTyp.2&
+;y; }provingground/HoTT.Type.2(
+
+2ї2 ∙provingground/HoTT.Type.2(
+
+D┤D ╕provingground/HoTT.Type.2(
+
+S═S ╤provingground/HoTT.Type.2)
+AvA }provingground/HoTT.FuncTyp.2&
+5 9provingground/HoTT.Type.2.
+
+>Х> Чprovingground/HoTT.Typ#`::`().2
+ local1112+
+
+▀ цprovingground/HoTT.FuncTyp.2&
+ provingground/HoTT.Type.2.
+
+*█* ▌provingground/HoTT.Typ#`::`().2(
+
+DЗD Лprovingground/HoTT.Type.2,
+>S> Uprovingground/HoTT.Typ#`::`().2,
+&& provingground/HoTT.Typ#`::`().2.
+
+╠ ╬provingground/HoTT.Typ#`::`().2(
+
+!╧! ╙provingground/HoTT.Type.2)
+66 provingground/HoTT.lmbda().2(
+
+&н& ▒provingground/HoTT.Type.2)
+c jprovingground/HoTT.FuncTyp.2.
+
+/Э/ Яprovingground/HoTT.Typ#`::`().2(
+
+о ▓provingground/HoTT.Type.2(
+
+▄ рprovingground/HoTT.Type.2+
+
+V╝V ├provingground/HoTT.FuncTyp.2)
+&& provingground/HoTT.lmbda().2,
+#,# .provingground/HoTT.Typ#`::`().2+
+
+AШA Яprovingground/HoTT.FuncTyp.2.
+
+2Д2 Жprovingground/HoTT.Typ#`::`().2=
+<< /provingground/induction/ConstructorSeqTL#rec().2.
+
+/∙/ √provingground/HoTT.Typ#`::`().2,
+J;J =provingground/HoTT.Typ#`::`().2.
+
+HгH еprovingground/HoTT.Typ#`::`().2.
+
+/Ъ/ Ьprovingground/HoTT.Typ#`::`().2+
+ provingground/library/natInd.2.
+
+└ ┬provingground/HoTT.Typ#`::`().2+
+
+6│6 ║provingground/HoTT.FuncTyp.2)
+S>S Cprovingground/HoTT.lmbda().2,
+'7' 9provingground/HoTT.Typ#`::`().2(
+
+A A Гprovingground/HoTT.Type.2&
+3/3 3provingground/HoTT.Type.2,
+ provingground/HoTT.Typ#`::`().2(
+
+AыA яprovingground/HoTT.Type.2)
+V>V Cprovingground/HoTT.lmbda().2.
+
+SХS Чprovingground/HoTT.Typ#`::`().2.
+
+,Ш, Ъprovingground/HoTT.Typ#`::`().2(
+
+*н* ▒provingground/HoTT.Type.2)
+> Cprovingground/HoTT.lmbda().2,
+
+>З> Нprovingground/HoTT.piDefn().2.
+
+V┘V █provingground/HoTT.Typ#`::`().2.
+
+╩ ╠provingground/HoTT.Typ#`::`().2(
+
+,╫, █provingground/HoTT.Type.2(
+
+VШV Ьprovingground/HoTT.Type.2,
+5 7provingground/HoTT.Typ#`::`().2+
+
+;Н; Фprovingground/HoTT.FuncTyp.2,
+ provingground/HoTT.Typ#`::`().2(
+
+/Ї/ °provingground/HoTT.Type.2.
+
+PАP Вprovingground/HoTT.Typ#`::`().2+
+
+AЗA Оprovingground/HoTT.FuncTyp.2&
+;K; Oprovingground/HoTT.Type.2+
+ provingground/library/natInd.2,
+O Qprovingground/HoTT.Typ#`::`().2(
+
+!в! жprovingground/HoTT.Type.2&
+r vprovingground/HoTT.Type.2)
+2h2 oprovingground/HoTT.FuncTyp.2)
+&v& }provingground/HoTT.FuncTyp.2,
+2S2 Uprovingground/HoTT.Typ#`::`().2(
+
+V╧V ╙provingground/HoTT.Type.2.
+
+M█M ▌provingground/HoTT.Typ#`::`().2&
+']' aprovingground/HoTT.Type.2(
+
+/З/ Лprovingground/HoTT.Type.2.
+
+>╠> ╬provingground/HoTT.Typ#`::`().2(
+
+,к, оprovingground/HoTT.Type.2.
+
+▄ ▐provingground/HoTT.Typ#`::`().2+
+
+,¤, Дprovingground/HoTT.FuncTyp.2.
+
+P┴P ├provingground/HoTT.Typ#`::`().2)
+!! provingground/HoTT.lmbda().2,
+Q Sprovingground/HoTT.Typ#`::`().2.
+
+S╩S ╠provingground/HoTT.Typ#`::`().2)
+VvV }provingground/HoTT.FuncTyp.2,
+S5S 7provingground/HoTT.Typ#`::`().2.
+
+/┘/ █provingground/HoTT.Typ#`::`().2&
+AA provingground/HoTT.Type.2.
+
+VЄV Їprovingground/HoTT.Typ#`::`().2.
+
+;·; №provingground/HoTT.Typ#`::`().2.
+
+6М6 Оprovingground/HoTT.Typ#`::`().2(
+
+▌ сprovingground/HoTT.Type.2(
+
+V═V ╤provingground/HoTT.Type.2)
+DvD }provingground/HoTT.FuncTyp.2+
+
+MЕM Мprovingground/HoTT.FuncTyp.2(
+
+/З/ Лprovingground/HoTT.Type.2)
+VV provingground/HoTT.lmbda().2.
+
+· №provingground/HoTT.Typ#`::`().2&
+/p/ tprovingground/HoTT.Type.2.
+
+H■H Аprovingground/HoTT.Typ#`::`().2+
+
+ы Єprovingground/HoTT.FuncTyp.2(
+
+MдM иprovingground/HoTT.Type.2.
+
+P╩P ╠provingground/HoTT.Typ#`::`().2&
+282 <provingground/HoTT.Type.2+
+
+2┼2 ╩provingground/HoTT.lmbda().2?
+
+╡ ╕/provingground/induction/ConstructorSeqTL#rec().2.
+
+*Ч* Щprovingground/HoTT.Typ#`::`().2.
+
+╓ ╪provingground/HoTT.Typ#`::`().2.
+
+SдS жprovingground/HoTT.Typ#`::`().2,
+R Tprovingground/HoTT.Typ#`::`().2(
+
+,Р, Фprovingground/HoTT.Type.2)
+HnH uprovingground/HoTT.FuncTyp.2=
+QQ /provingground/induction/ConstructorSeqTL#rec().2&
+;e; iprovingground/HoTT.Type.2+
+00 provingground/library/natInd.2.
+
+DЄD Їprovingground/HoTT.Typ#`::`().2
+OO local3982)
+EE %provingground/HoTT.FuncTyp.2(
+
+╛ ┬provingground/HoTT.Type.2+
+FF provingground/library/natInd.2&
+DpD tprovingground/HoTT.Type.2(
+
+И Мprovingground/HoTT.Type.2+
+
+!и! пprovingground/HoTT.FuncTyp.2,
+;); +provingground/HoTT.Typ#`::`().2.
+
+┘ █provingground/HoTT.Typ#`::`().2(
+
+P·P ■provingground/HoTT.Type.2.
+
+AрA тprovingground/HoTT.Typ#`::`().2
+ local1272,
+MIM Kprovingground/HoTT.Typ#`::`().21
+?? #provingground/library/natInd.value.2&
+!! provingground/HoTT.Type.2.
+
+VХV Чprovingground/HoTT.Typ#`::`().2&
+SS provingground/HoTT.Type.2.
+
+!╫! ┘provingground/HoTT.Typ#`::`().2(
+
+MЦM Ъprovingground/HoTT.Type.2(
+
+2л2 пprovingground/HoTT.Type.2=
+?? /provingground/induction/ConstructorSeqTL#rec().2,
+, .provingground/HoTT.Typ#`::`().2.
+
+M╞M ╚provingground/HoTT.Typ#`::`().2)
+ %provingground/HoTT.FuncTyp.2,
+6+6 -provingground/HoTT.Typ#`::`().2&
+>8> <provingground/HoTT.Type.2)
+33 %provingground/HoTT.FuncTyp.2(
+
+а дprovingground/HoTT.Type.2,
+l nprovingground/HoTT.Typ#`::`().2)
+v }provingground/HoTT.FuncTyp.2)
+;2; 7provingground/HoTT.lmbda().2*
+,, provingground/HoTT.piDefn().2&
+N N $provingground/HoTT.Type.2.
+
+MШM Ъprovingground/HoTT.Typ#`::`().2+
+
+╝ ├provingground/HoTT.FuncTyp.2)
+DD provingground/HoTT.lmbda().2(
+
+M╥M ╓provingground/HoTT.Type.2(
+
+SаS дprovingground/HoTT.Type.2.
+
+┘ █provingground/HoTT.Typ#`::`().21
+KK #provingground/library/natInd.value.2(
+
+Є Ўprovingground/HoTT.Type.2+
+
+э Їprovingground/HoTT.FuncTyp.21
+QQ #provingground/library/natInd.value.2+
+
+/▐/ хprovingground/HoTT.FuncTyp.2.
+
+SДS Жprovingground/HoTT.Typ#`::`().2(
+
+ц ъprovingground/HoTT.Type.2/
+"" !provingground/HoTT.Fold.Folder().2(
+
+Д Иprovingground/HoTT.Type.2,
+A,A .provingground/HoTT.Typ#`::`().21
+<< #provingground/library/natInd.value.2
+ local262.
+
+Ї Ўprovingground/HoTT.Typ#`::`().2&
+6M6 Qprovingground/HoTT.Type.2.
+
+PцP шprovingground/HoTT.Typ#`::`().23
+ %provingground/library/pprodInd.value.2&
+ provingground/HoTT.Type.2)
+; @provingground/HoTT.lmbda().2(
+
+Б Еprovingground/HoTT.Type.2.
+
+>Є> Їprovingground/HoTT.Typ#`::`().2(
+
+2ч2 ыprovingground/HoTT.Type.2.
+
+╩ ╠provingground/HoTT.Typ#`::`().2+
+
+HРH Чprovingground/HoTT.FuncTyp.2&
+;; provingground/HoTT.Type.2.
+
+й лprovingground/HoTT.Typ#`::`().2(
+
+═ ╤provingground/HoTT.Type.2,
+6\6 ^provingground/HoTT.Typ#`::`().2(
+
+о ▓provingground/HoTT.Type.2)
+v }provingground/HoTT.FuncTyp.2(
+
+/л/ пprovingground/HoTT.Type.2(
+
+/▄/ рprovingground/HoTT.Type.2(
+
+Э бprovingground/HoTT.Type.2.
+
+!Ж! Иprovingground/HoTT.Typ#`::`().2.
+
+D┘D █provingground/HoTT.Typ#`::`().2)
+!j! qprovingground/HoTT.FuncTyp.2)
+22 provingground/HoTT.lmbda().2+
+
+>А> Зprovingground/HoTT.FuncTyp.2
+ local422'
+	~ Вprovingground/HoTT.Type.2)
+2>2 Cprovingground/HoTT.lmbda().2)
+VhV oprovingground/HoTT.FuncTyp.2(
+
+!╦! ╧provingground/HoTT.Type.2'
+	&~& Вprovingground/HoTT.Type.2.
+
+>╩> ╠provingground/HoTT.Typ#`::`().2+
+
+>▄> уprovingground/HoTT.FuncTyp.2+
+
+H┤H ╗provingground/HoTT.FuncTyp.2.
+
+>┘> █provingground/HoTT.Typ#`::`().2,
+>,> .provingground/HoTT.Typ#`::`().2(
+
+D═D ╤provingground/HoTT.Type.2(
+
+Ю вprovingground/HoTT.Type.2(
+
+м ░provingground/HoTT.Type.2+
+
+>ж> нprovingground/HoTT.FuncTyp.2.
+
+!█! ▌provingground/HoTT.Typ#`::`().2,
+/,/ .provingground/HoTT.Typ#`::`().2)
+;]; dprovingground/HoTT.FuncTyp.2&
+  $provingground/HoTT.Type.2)
+ provingground/HoTT.lmbda().2
+<< local2952.
+
+PйP лprovingground/HoTT.Typ#`::`().2+
+
+;С; Шprovingground/HoTT.FuncTyp.2.
+
+╓ ╪provingground/HoTT.Typ#`::`().2(
+
+,О, Тprovingground/HoTT.Type.2.
+
+AЯA бprovingground/HoTT.Typ#`::`().2,
+
+у щprovingground/HoTT.piDefn().2&
+*r* vprovingground/HoTT.Type.2(
+
+M╔M ═provingground/HoTT.Type.2(
+
+AзA лprovingground/HoTT.Type.2&
+6.6 2provingground/HoTT.Type.2(
+
+,Э, бprovingground/HoTT.Type.2,
+MM provingground/HoTT.Typ#`::`().2(
+
+а дprovingground/HoTT.Type.2*
+	y Аprovingground/HoTT.FuncTyp.2(
+
+>б> еprovingground/HoTT.Type.2&
+,., 2provingground/HoTT.Type.2
+++ local1652&
+MM provingground/HoTT.Type.2.
+
+2∙2 √provingground/HoTT.Typ#`::`().2.
+
+AХA Чprovingground/HoTT.Typ#`::`().2+
+
+Ъ бprovingground/HoTT.FuncTyp.2+
+QQ provingground/library/natInd.2.
+
+*Ї* Ўprovingground/HoTT.Typ#`::`().2.
+
+,Я, бprovingground/HoTT.Typ#`::`().21
+00 #provingground/library/natInd.value.2(
+
+>┬> ╞provingground/HoTT.Type.21
+
+
+ #provingground/library/natInd.value.2+
+
+/╨/ ╫provingground/HoTT.FuncTyp.2(
+
+SыS яprovingground/HoTT.Type.2&
+PP provingground/HoTT.Type.2(
+
+PУP Чprovingground/HoTT.Type.2(
+
+PцP ъprovingground/HoTT.Type.2(
+
+>С> Хprovingground/HoTT.Type.2.
+
+Д Жprovingground/HoTT.Typ#`::`().2&
+66 provingground/HoTT.Type.2+
+
+╤ ╪provingground/HoTT.FuncTyp.2(
+
+ў √provingground/HoTT.Type.2+
+
+/О/ Хprovingground/HoTT.FuncTyp.2,
+
+PЙP Пprovingground/HoTT.piDefn().2)
+88 %provingground/HoTT.FuncTyp.2+
+
+/Ш/ Яprovingground/HoTT.FuncTyp.2'
+	2~2 Вprovingground/HoTT.Type.2.
+
+Є Їprovingground/HoTT.Typ#`::`().2.
+
+M№M ■provingground/HoTT.Typ#`::`().2(
+
+/№/ Аprovingground/HoTT.Type.2+
+
+╞ ╦provingground/HoTT.lmbda().2'
+	P~P Вprovingground/HoTT.Type.2(
+
+>о> ▓provingground/HoTT.Type.21
+44 #provingground/library/natInd.value.2(
+
+,│, ╖provingground/HoTT.Type.2
+ provingground/2.
+
+/и/ кprovingground/HoTT.Typ#`::`().2(
+
+/Ц/ Ъprovingground/HoTT.Type.2(
+
+░ ┤provingground/HoTT.Type.2&
+B B $provingground/HoTT.Type.2.
+
+╔ ╦provingground/HoTT.Typ#`::`().2&
+- - $provingground/HoTT.Type.2'
+	H|H Аprovingground/HoTT.Type.2&
+MLM Pprovingground/HoTT.Type.2(
+
+;ы; яprovingground/HoTT.Type.2(
+
+А Дprovingground/HoTT.Type.2&
+8 <provingground/HoTT.Type.2(
+
+;╟; ╦provingground/HoTT.Type.2.
+
+>ф> цprovingground/HoTT.Typ#`::`().2
+ local842.
+
+,╓, ╪provingground/HoTT.Typ#`::`().2(
+
+╙ ╫provingground/HoTT.Type.2,
+ provingground/HoTT.Typ#`::`().2.
+
+Э Яprovingground/HoTT.Typ#`::`().2+
+
+,в, йprovingground/HoTT.FuncTyp.2+
+
+Ш Яprovingground/HoTT.FuncTyp.2=
+ /provingground/induction/ConstructorSeqTL#rec().2(
+
+Щ Эprovingground/HoTT.Type.2+
+
+>Г> Кprovingground/HoTT.FuncTyp.2+
+
+MЬM гprovingground/HoTT.FuncTyp.2)
+U \provingground/HoTT.FuncTyp.2(
+
+Д Иprovingground/HoTT.Type.2.
+
+м оprovingground/HoTT.Typ#`::`().2.
+
+S┘S █provingground/HoTT.Typ#`::`().2.
+
+/Л/ Нprovingground/HoTT.Typ#`::`().2.
+
+/┐/ ┴provingground/HoTT.Typ#`::`().21
+FF #provingground/library/natInd.value.2.
+
+а вprovingground/HoTT.Typ#`::`().2.
+
+Й Лprovingground/HoTT.Typ#`::`().2&
+MfM jprovingground/HoTT.Type.2&
+&V& Zprovingground/HoTT.Type.2(
+
+м ░provingground/HoTT.Type.2(
+
+!░! ┤provingground/HoTT.Type.2-
+33 provingground/library/pprodInd.2.
+
+╛ └provingground/HoTT.Typ#`::`().2+
+
+П Цprovingground/HoTT.FuncTyp.2(
+
+н ▒provingground/HoTT.Type.2(
+
+;╤; ╒provingground/HoTT.Type.2(
+
+*ў* √provingground/HoTT.Type.2.
+
+M╖M ╣provingground/HoTT.Typ#`::`().2(
+
+&З& Лprovingground/HoTT.Type.2*
+	'y' Аprovingground/HoTT.FuncTyp.21
+BB #provingground/library/natInd.value.2+
+$$ provingground/library/natInd.2+
+
+SуS ъprovingground/HoTT.FuncTyp.2.
+
+й лprovingground/HoTT.Typ#`::`().2,
+P5P 7provingground/HoTT.Typ#`::`().2(
+
+/├/ ╟provingground/HoTT.Type.2(
+
+'Щ' Эprovingground/HoTT.Type.2.
+
+/┘/ █provingground/HoTT.Typ#`::`().2,
++ -provingground/HoTT.Typ#`::`().2.
+
+/╣/ ╗provingground/HoTT.Typ#`::`().2)
+j qprovingground/HoTT.FuncTyp.2.
+
+&Є& Їprovingground/HoTT.Typ#`::`().2+
+
+;▒; ╕provingground/HoTT.FuncTyp.2,
+HH provingground/HoTT.Typ#`::`().2(
+
+э ёprovingground/HoTT.Type.21
+ #provingground/library/natInd.value.23
+EE %provingground/library/pprodInd.value.2&
+8 <provingground/HoTT.Type.2+
+
+!╛! ┼provingground/HoTT.FuncTyp.2+
+
+/г/ кprovingground/HoTT.FuncTyp.2(
+
+;Х; Щprovingground/HoTT.Type.2.
+
+&Д& Жprovingground/HoTT.Typ#`::`().2&
+ provingground/HoTT.Type.2+
+
+6П6 Цprovingground/HoTT.FuncTyp.2+
+
+╟ ╠provingground/HoTT.lmbda().2(
+
+*╧* ╙provingground/HoTT.Type.2)
+E Jprovingground/HoTT.lmbda().2+
+
+в йprovingground/HoTT.FuncTyp.2=
+ /provingground/induction/ConstructorSeqTL#rec().2(
+
+┐ ├provingground/HoTT.Type.2
+ local422(
+
+&▄& рprovingground/HoTT.Type.2(
+
+DлD пprovingground/HoTT.Type.2(
+
+AДA Иprovingground/HoTT.Type.2.
+
+/█/ ▌provingground/HoTT.Typ#`::`().2+
+BB provingground/library/natInd.2.
+
+Ц Шprovingground/HoTT.Typ#`::`().2(
+
+/ї/ ∙provingground/HoTT.Type.2+
+
+DжD нprovingground/HoTT.FuncTyp.2.
+
+6а6 вprovingground/HoTT.Typ#`::`().2(
+
+!ў! √provingground/HoTT.Type.2+
+
+!║! ┴provingground/HoTT.FuncTyp.2.
+
+V┴V ├provingground/HoTT.Typ#`::`().2
+-- local2072+
+
+Ш Яprovingground/HoTT.FuncTyp.2+
+
+д лprovingground/HoTT.FuncTyp.2.
+
+Я бprovingground/HoTT.Typ#`::`().2)
+'"' 'provingground/HoTT.lmbda().2
+UU local4422,
+7 9provingground/HoTT.Typ#`::`().2&
+&p& tprovingground/HoTT.Type.2(
+
+Ж Кprovingground/HoTT.Type.2.
+
+V╩V ╠provingground/HoTT.Typ#`::`().2.
+
+DщD ыprovingground/HoTT.Typ#`::`().2,
+S Uprovingground/HoTT.Typ#`::`().2(
+
+┘ ▌provingground/HoTT.Type.21
+ #provingground/library/natInd.value.2.
+
+├ ┼provingground/HoTT.Typ#`::`().2(
+
+б еprovingground/HoTT.Type.2&
+2p2 tprovingground/HoTT.Type.2(
+
+ї ∙provingground/HoTT.Type.2(
+
+,ў, √provingground/HoTT.Type.2(
+
+6╙6 ╫provingground/HoTT.Type.2,
+S Uprovingground/HoTT.Typ#`::`().2(
+
+╧ ╙provingground/HoTT.Type.2)
+SvS }provingground/HoTT.FuncTyp.2
+%% local1492(
+
+2о2 ▓provingground/HoTT.Type.2&
+/ 3provingground/HoTT.Type.2(
+
+/╛/ ┬provingground/HoTT.Type.2(
+
+┤ ╕provingground/HoTT.Type.2=
+(( !/provingground/induction/ConstructorSeqTL#rec().2.
+
+,р, тprovingground/HoTT.Typ#`::`().2(
+
+VоV ▓provingground/HoTT.Type.2
+'' local1652&
+>V> Zprovingground/HoTT.Type.2.
+
+PРP Тprovingground/HoTT.Typ#`::`().28
+ *provingground/induction/package.implicits.2(
+
+>у> чprovingground/HoTT.Type.2,
+S,S .provingground/HoTT.Typ#`::`().2+
+ provingground/library/natInd.2.
+
+к мprovingground/HoTT.Typ#`::`().2,
+. 0provingground/HoTT.Typ#`::`().2,
+JJ provingground/HoTT.Typ#`::`().2)
+AA provingground/HoTT.lmbda().2.
+
+>и> кprovingground/HoTT.Typ#`::`().2.
+
+;╕; ║provingground/HoTT.Typ#`::`().2+
+'' provingground/library/natInd.2(
+
+M M Гprovingground/HoTT.Type.2.
+
+Н Пprovingground/HoTT.Typ#`::`().2.
+
+>Ю> аprovingground/HoTT.Typ#`::`().2&
+C Gprovingground/HoTT.Type.2.
+
+Є Їprovingground/HoTT.Typ#`::`().2,
+H"H $provingground/HoTT.Typ#`::`().2(
+
+AШA Ьprovingground/HoTT.Type.2(
+
+Й Нprovingground/HoTT.Type.2)
+#E# Jprovingground/HoTT.lmbda().2&
+VpV tprovingground/HoTT.Type.2,
+D,D .provingground/HoTT.Typ#`::`().2)
+M2M 7provingground/HoTT.lmbda().2)
+j qprovingground/HoTT.FuncTyp.2&
+22 provingground/HoTT.Type.2+
+
+м │provingground/HoTT.FuncTyp.2&
+S8S <provingground/HoTT.Type.2&
+8/8 3provingground/HoTT.Type.2.
+
+2Щ2 Ыprovingground/HoTT.Typ#`::`().2.
+
+╒ ╫provingground/HoTT.Typ#`::`().2+
+
+SёS °provingground/HoTT.FuncTyp.2+
+
+SШS Яprovingground/HoTT.FuncTyp.2+
+
+╝ ├provingground/HoTT.FuncTyp.23
+		 %provingground/library/pprodInd.value.2)
+>>> Cprovingground/HoTT.lmbda().2=
+ !/provingground/induction/ConstructorSeqTL#rec().2.
+
+>Є> Їprovingground/HoTT.Typ#`::`().2&
+V Zprovingground/HoTT.Type.2&
+: >provingground/HoTT.Type.2
+
+
+
+ local72&
+#># Bprovingground/HoTT.Type.2
+== local2952-
+EE provingground/library/pprodInd.2+
+
+,░, ╖provingground/HoTT.FuncTyp.2,
+2,2 .provingground/HoTT.Typ#`::`().2,
+ASA Uprovingground/HoTT.Typ#`::`().2&
+T T $provingground/HoTT.Type.2,
+ provingground/HoTT.Typ#`::`().2&
+E>E Bprovingground/HoTT.Type.2,
+g iprovingground/HoTT.Typ#`::`().2(
+
+&═& ╤provingground/HoTT.Type.2.
+
+*к* мprovingground/HoTT.Typ#`::`().2.
+
+PЇP Ўprovingground/HoTT.Typ#`::`().2.
+
+AДA Жprovingground/HoTT.Typ#`::`().2,
+#;# =provingground/HoTT.Typ#`::`().2.
+
+╟ ╔provingground/HoTT.Typ#`::`().2+
+
+M╛M ┼provingground/HoTT.FuncTyp.2.
+
+2╩2 ╠provingground/HoTT.Typ#`::`().2,
+
+/┬/ ╚provingground/HoTT.piDefn().2,
+*g* iprovingground/HoTT.Typ#`::`().2(
+
+H┼H ╔provingground/HoTT.Type.2,
+2 4provingground/HoTT.Typ#`::`().2&
+#/# 3provingground/HoTT.Type.2.
+
+>Я> бprovingground/HoTT.Typ#`::`().2(
+
+>Є> Ўprovingground/HoTT.Type.2(
+
+▐ тprovingground/HoTT.Type.2+
+
+>ъ> ёprovingground/HoTT.FuncTyp.2)
+646 9provingground/HoTT.lmbda().2.
+
+MВM Дprovingground/HoTT.Typ#`::`().2+
+
+Э дprovingground/HoTT.FuncTyp.2&
+	>	 Bprovingground/HoTT.Type.2)
+P>P Cprovingground/HoTT.lmbda().2(
+
+!п! │provingground/HoTT.Type.2(
+
+*░* ┤provingground/HoTT.Type.2&
+] aprovingground/HoTT.Type.2+
+ provingground/library/natInd.2&
+,o, sprovingground/HoTT.Type.2(
+
+PЇP °provingground/HoTT.Type.2,
+SeS gprovingground/HoTT.Typ#`::`().2(
+
+/┤/ ╕provingground/HoTT.Type.2(
+
+>ф> шprovingground/HoTT.Type.2&
+> Bprovingground/HoTT.Type.2
+   
+local1302,
+,+, -provingground/HoTT.Typ#`::`().2=
+BB /provingground/induction/ConstructorSeqTL#rec().2,
+M[M ]provingground/HoTT.Typ#`::`().2(
+
+AЗA Лprovingground/HoTT.Type.2)
+ 
+provingground/HoTT.lmbda().2&
+0 0 $provingground/HoTT.Type.2+
+
+P▐P хprovingground/HoTT.FuncTyp.2.
+
+DХD Чprovingground/HoTT.Typ#`::`().2+
+
+╝ ├provingground/HoTT.FuncTyp.2,
+K Mprovingground/HoTT.Typ#`::`().2.
+
+&к& мprovingground/HoTT.Typ#`::`().2?
+
+!╢! ╣/provingground/induction/ConstructorSeqTL#rec().2,
+8;8 =provingground/HoTT.Typ#`::`().2)
+h oprovingground/HoTT.FuncTyp.2&
+A8A <provingground/HoTT.Type.21
+(( #provingground/library/natInd.value.2.
+
+/╩/ ╠provingground/HoTT.Typ#`::`().2)
+AhA oprovingground/HoTT.FuncTyp.2+
+
+,¤, Дprovingground/HoTT.FuncTyp.2&
+MtM xprovingground/HoTT.Type.2)
+PvP }provingground/HoTT.FuncTyp.2(
+
+SмS ░provingground/HoTT.Type.2&
+ provingground/HoTT.Type.2&
+E/E 3provingground/HoTT.Type.2+
+ provingground/library/natInd.2(
+
+PоP ▓provingground/HoTT.Type.2,
+PSP Uprovingground/HoTT.Typ#`::`().2(
+
+┘ ▌provingground/HoTT.Type.2(
+
+>Д> Иprovingground/HoTT.Type.2.
+
+Ф Цprovingground/HoTT.Typ#`::`().2,
+M)M +provingground/HoTT.Typ#`::`().2.
+
+VйV лprovingground/HoTT.Typ#`::`().2=
+00 /provingground/induction/ConstructorSeqTL#rec().2,
+ provingground/HoTT.Typ#`::`().21
+ #provingground/library/natInd.value.2,
+// provingground/HoTT.Typ#`::`().2&
+p tprovingground/HoTT.Type.2(
+
+Ч Ыprovingground/HoTT.Type.2+
+
+VШV Яprovingground/HoTT.FuncTyp.2+
+
+PйP ░provingground/HoTT.FuncTyp.2,
+
+/т/ шprovingground/HoTT.piDefn().21
+NN #provingground/library/natInd.value.2,
+e gprovingground/HoTT.Typ#`::`().2(
+
+/═/ ╤provingground/HoTT.Type.2
+LL local3782&
+'C' Gprovingground/HoTT.Type.2
+
+ local1302.
+
+2╗2 ╜provingground/HoTT.Typ#`::`().2,
+e gprovingground/HoTT.Typ#`::`().2(
+
+е йprovingground/HoTT.Type.21
+-- #provingground/library/natInd.value.2.
+
+Ч Щprovingground/HoTT.Typ#`::`().2+
+?? provingground/library/natInd.2&
+HNH Rprovingground/HoTT.Type.2(
+
+*Й* Нprovingground/HoTT.Type.2)
+JJ %provingground/HoTT.FuncTyp.2)
+ provingground/HoTT.lmbda().2&
+X \provingground/HoTT.Type.2(
+
+2═2 ╤provingground/HoTT.Type.2+
+
+MОM Хprovingground/HoTT.FuncTyp.2(
+
+HШH Ьprovingground/HoTT.Type.2,
+, .provingground/HoTT.Typ#`::`().2.
+
+!м! оprovingground/HoTT.Typ#`::`().2)
+H`H gprovingground/HoTT.FuncTyp.2.
+
+Є Їprovingground/HoTT.Typ#`::`().2(
+
+/д/ иprovingground/HoTT.Type.2+
+-- provingground/library/natInd.2.
+
+A╩A ╠provingground/HoTT.Typ#`::`().2,
+5 7provingground/HoTT.Typ#`::`().2=
+NN /provingground/induction/ConstructorSeqTL#rec().2(
+
+*в* жprovingground/HoTT.Type.2'
+	V~V Вprovingground/HoTT.Type.2.
+
+HьH юprovingground/HoTT.Typ#`::`().2)
+@ Eprovingground/HoTT.lmbda().2(
+
+/ц/ ъprovingground/HoTT.Type.2.
+
+;╔; ╦provingground/HoTT.Typ#`::`().2+
+
+▀ цprovingground/HoTT.FuncTyp.2+
+
+П Цprovingground/HoTT.FuncTyp.2
+ provingground/2&
+N Rprovingground/HoTT.Type.2(
+
+;╠; ╨provingground/HoTT.Type.2,
+66 provingground/HoTT.Typ#`::`().2&
+HvH zprovingground/HoTT.Type.2,
+!U! Wprovingground/HoTT.Typ#`::`().2.
+
+Ї Ўprovingground/HoTT.Typ#`::`().2.
+
+З Йprovingground/HoTT.Typ#`::`().2&
+*:* >provingground/HoTT.Type.2(
+
+VДV Иprovingground/HoTT.Type.2.
+
+>┐> ┴provingground/HoTT.Typ#`::`().2+
+
+6о6 ╡provingground/HoTT.FuncTyp.2)
+ %provingground/HoTT.FuncTyp.2(
+
+PїP ∙provingground/HoTT.Type.2(
+
+PДP Иprovingground/HoTT.Type.2(
+
+HжH кprovingground/HoTT.Type.2(
+
+PУP Чprovingground/HoTT.Type.2(
+
+*▐* тprovingground/HoTT.Type.2.
+
+Х Чprovingground/HoTT.Typ#`::`().2+
+
+&╝& ├provingground/HoTT.FuncTyp.2+
+
+и пprovingground/HoTT.FuncTyp.2.
+
+&╒& ╫provingground/HoTT.Typ#`::`().2&
+,N, Rprovingground/HoTT.Type.2.
+
+VЄV Їprovingground/HoTT.Typ#`::`().2(
+
+>°> №provingground/HoTT.Type.2,
+>e> gprovingground/HoTT.Typ#`::`().2+
+
+PВP Йprovingground/HoTT.FuncTyp.2.
+
+M╠M ╬provingground/HoTT.Typ#`::`().2(
+
+;Л; Пprovingground/HoTT.Type.2)
+ provingground/HoTT.lmbda().2+
+
+*╛* ┼provingground/HoTT.FuncTyp.2.
+
+>Д> Жprovingground/HoTT.Typ#`::`().2(
+
+═ ╤provingground/HoTT.Type.2+
+
+PжP нprovingground/HoTT.FuncTyp.2)
+x provingground/HoTT.FuncTyp.2,
+; ; "provingground/HoTT.Typ#`::`().2,
+&5& 7provingground/HoTT.Typ#`::`().2(
+
+ї ∙provingground/HoTT.Type.2.
+
+MбM гprovingground/HoTT.Typ#`::`().2&
+3>3 Bprovingground/HoTT.Type.2.
+
+,Н, Пprovingground/HoTT.Typ#`::`().2(
+
+2Д2 Иprovingground/HoTT.Type.2+
+
+!Ъ! бprovingground/HoTT.FuncTyp.2(
+
+;╕; ╝provingground/HoTT.Type.2.
+
+H╬H ╨provingground/HoTT.Typ#`::`().2!
+ provingground/HoTT.2+
+
+¤ Дprovingground/HoTT.FuncTyp.2+
+
+;з; оprovingground/HoTT.FuncTyp.2.
+
+;А; Вprovingground/HoTT.Typ#`::`().2(
+
+;б; еprovingground/HoTT.Type.2+
+
+M▓M ╣provingground/HoTT.FuncTyp.2.
+
+6Ч6 Щprovingground/HoTT.Typ#`::`().2.
+
+,░, ▓provingground/HoTT.Typ#`::`().2&
+H.H 2provingground/HoTT.Type.2)
+'c' jprovingground/HoTT.FuncTyp.2(
+
+HБH Еprovingground/HoTT.Type.2.
+
+в дprovingground/HoTT.Typ#`::`().2(
+
+MдM иprovingground/HoTT.Type.2,
+; =provingground/HoTT.Typ#`::`().2(
+
+▄ рprovingground/HoTT.Type.2.
+
+H┬H ─provingground/HoTT.Typ#`::`().2.
+
+VщV ыprovingground/HoTT.Typ#`::`().2+
+
+>Ш> Яprovingground/HoTT.FuncTyp.2.
+
+PЯP бprovingground/HoTT.Typ#`::`().2(
+
+SШS Ьprovingground/HoTT.Type.2,
+*U* Wprovingground/HoTT.Typ#`::`().2&
+HhH lprovingground/HoTT.Type.2(
+
+;Я; гprovingground/HoTT.Type.2.
+
+6╦6 ═provingground/HoTT.Typ#`::`().2.
+
+╝ ╛provingground/HoTT.Typ#`::`().2.
+
+ш ъprovingground/HoTT.Typ#`::`().2(
+
+>Б> Еprovingground/HoTT.Type.2,
+8,8 .provingground/HoTT.Typ#`::`().2=
+-- /provingground/induction/ConstructorSeqTL#rec().2.
+
+б гprovingground/HoTT.Typ#`::`().2.
+
+,ь, юprovingground/HoTT.Typ#`::`().2)
+SS provingground/HoTT.lmbda().2.
+
+VМV Оprovingground/HoTT.Typ#`::`().2.
+
+PЄP Їprovingground/HoTT.Typ#`::`().2(
+
+2┤2 ╕provingground/HoTT.Type.2)
+MlM sprovingground/HoTT.FuncTyp.2(
+
+SїS ∙provingground/HoTT.Type.22
+ $provingground/library/nat$mul.value.2(
+
+PхP щprovingground/HoTT.Type.2,
+V,V .provingground/HoTT.Typ#`::`().2.
+
+PлP нprovingground/HoTT.Typ#`::`().2+
+
+Ъ бprovingground/HoTT.FuncTyp.2.
+
+*╠* ╬provingground/HoTT.Typ#`::`().2(
+
+P╟P ╦provingground/HoTT.Type.2
+99 local2752&
+] aprovingground/HoTT.Type.2(
+
+;г; зprovingground/HoTT.Type.2
+)) 
+local1712,
+, .provingground/HoTT.Typ#`::`().2)
+		 %provingground/HoTT.FuncTyp.2(
+
+SзS лprovingground/HoTT.Type.2)
+ provingground/HoTT.lmbda().2+
+
+*Ъ* бprovingground/HoTT.FuncTyp.2+
+TT provingground/library/natInd.2,
+DD provingground/HoTT.Typ#`::`().2.
+
+;Х; Чprovingground/HoTT.Typ#`::`().2.
+
+P┘P █provingground/HoTT.Typ#`::`().2(
+
+╧ ╙provingground/HoTT.Type.2(
+
+2▄2 рprovingground/HoTT.Type.2(
+
+╠ ╨provingground/HoTT.Type.2(
+
+P P Гprovingground/HoTT.Type.2(
+
+S S Гprovingground/HoTT.Type.2(
+
+V┤V ╕provingground/HoTT.Type.2)
+ShS oprovingground/HoTT.FuncTyp.2
+4
+4 local2562+
+
+PЕP Мprovingground/HoTT.FuncTyp.2,
+*.* 0provingground/HoTT.Typ#`::`().2.
+
+;╪; ┌provingground/HoTT.Typ#`::`().2+
+
+;╗; ┬provingground/HoTT.FuncTyp.2,
+JOJ Qprovingground/HoTT.Typ#`::`().2(
+
+╫ █provingground/HoTT.Type.2+
+
+&╟& ╬provingground/HoTT.FuncTyp.2)
+8E8 Jprovingground/HoTT.lmbda().2)
+DhD oprovingground/HoTT.FuncTyp.2&
+" &provingground/HoTT.Type.2(
+
+2╛2 ┬provingground/HoTT.Type.2.
+
+SаS вprovingground/HoTT.Typ#`::`().2)
+h oprovingground/HoTT.FuncTyp.2,
+	,	 .provingground/HoTT.Typ#`::`().2.
+
+у хprovingground/HoTT.Typ#`::`().2&
+6u6 yprovingground/HoTT.Type.2.
+
+&ф& цprovingground/HoTT.Typ#`::`().2(
+
+AлA пprovingground/HoTT.Type.2(
+
+▐ тprovingground/HoTT.Type.2(
+
+,Л, Пprovingground/HoTT.Type.2.
+
+/Я/ бprovingground/HoTT.Typ#`::`().2
+00 local2342)
+/v/ }provingground/HoTT.FuncTyp.2.
+
+AдA жprovingground/HoTT.Typ#`::`().2(
+
+&а& дprovingground/HoTT.Type.2&
+*X* \provingground/HoTT.Type.2.
+
+>О> Рprovingground/HoTT.Typ#`::`().2,
+7 9provingground/HoTT.Typ#`::`().2.
+
+Д Жprovingground/HoTT.Typ#`::`().2+
+
+и пprovingground/HoTT.FuncTyp.2,
+DSD Uprovingground/HoTT.Typ#`::`().2.
+
+Ю аprovingground/HoTT.Typ#`::`().2,
+, .provingground/HoTT.Typ#`::`().2.
+
+HНH Пprovingground/HoTT.Typ#`::`().2.
+
+M└M ┬provingground/HoTT.Typ#`::`().2+
+
+>╚> ╧provingground/HoTT.FuncTyp.2&
+// provingground/HoTT.Type.2)
+H4H 9provingground/HoTT.lmbda().2)
+JEJ Jprovingground/HoTT.lmbda().2+
+
+&ж& нprovingground/HoTT.FuncTyp.2.
+
+*б* гprovingground/HoTT.Typ#`::`().2+
+
+/▓/ ╣provingground/HoTT.FuncTyp.2.
+
+M╧M ╤provingground/HoTT.Typ#`::`().2,
+
+├ ╔provingground/HoTT.piDefn().2+
+
+/ж/ нprovingground/HoTT.FuncTyp.2*
+4 :provingground/HoTT.piDefn().2+
+
+│ ║provingground/HoTT.FuncTyp.2(
+
+A┤A ╕provingground/HoTT.Type.2&
+. 2provingground/HoTT.Type.2(
+
+╕ ╝provingground/HoTT.Type.2,
+
+,в, иprovingground/HoTT.lambda().2,
+'R' Tprovingground/HoTT.Typ#`::`().2(
+
+,п, │provingground/HoTT.Type.2(
+
+2Н2 Сprovingground/HoTT.Type.2+
+
+S╝S ├provingground/HoTT.FuncTyp.2)
+> Cprovingground/HoTT.lmbda().2.
+
+A╘A ╓provingground/HoTT.Typ#`::`().2(
+
+>З> Лprovingground/HoTT.Type.2.
+
+╘ ╓provingground/HoTT.Typ#`::`().2.
+
+&─& ╞provingground/HoTT.Typ#`::`().2+
+
+P╩P ╤provingground/HoTT.FuncTyp.2+
+
+*и* пprovingground/HoTT.FuncTyp.2.
+
+6ъ6 ьprovingground/HoTT.Typ#`::`().2.
+
+&Х& Чprovingground/HoTT.Typ#`::`().2&
+  $provingground/HoTT.Type.2
+ local262.
+
+;─; ╞provingground/HoTT.Typ#`::`().2+
+
+/л/ ▓provingground/HoTT.FuncTyp.2
+TT local4422.
+
+S╘S ╓provingground/HoTT.Typ#`::`().2)
+6m6 tprovingground/HoTT.FuncTyp.2,
+;; provingground/HoTT.Typ#`::`().2.
+
+╡ ╖provingground/HoTT.Typ#`::`().2&
+>> provingground/HoTT.Type.2(
+
+√  provingground/HoTT.Type.2(
+
+'К' Оprovingground/HoTT.Type.2&
+> Bprovingground/HoTT.Type.2(
+
+&о& ▓provingground/HoTT.Type.2.
+
+DДD Жprovingground/HoTT.Typ#`::`().2&
+8 <provingground/HoTT.Type.2,
+@ Bprovingground/HoTT.Typ#`::`().2)
+@ Eprovingground/HoTT.lmbda().2(
+
+6л6 пprovingground/HoTT.Type.2(
+
+PЗP Лprovingground/HoTT.Type.2+
+
+,я, Ўprovingground/HoTT.FuncTyp.2.
+
+/╧/ ╤provingground/HoTT.Typ#`::`().2&
+SpS tprovingground/HoTT.Type.2.
+
+Х Чprovingground/HoTT.Typ#`::`().2(
+
+Ч Ыprovingground/HoTT.Type.2&
+("( &provingground/HoTT.Type.2.
+
+SХS Чprovingground/HoTT.Typ#`::`().2.
+
+;ш; ъprovingground/HoTT.Typ#`::`().2.
+
+█ ▌provingground/HoTT.Typ#`::`().2&
+ provingground/induction/2.
+
+я ёprovingground/HoTT.Typ#`::`().2.
+
+VаV вprovingground/HoTT.Typ#`::`().2(
+
+;¤; Бprovingground/HoTT.Type.2.
+
+SЄS Їprovingground/HoTT.Typ#`::`().2*
+ provingground/HoTT.piDefn().2.
+
+!╚! ╩provingground/HoTT.Typ#`::`().2+
+
+AёA °provingground/HoTT.FuncTyp.2(
+
+!А! Дprovingground/HoTT.Type.2.
+
+>Э> Яprovingground/HoTT.Typ#`::`().2,
+
+>ч> эprovingground/HoTT.piDefn().2+
+
+╣ └provingground/HoTT.FuncTyp.2'
+	/~/ Вprovingground/HoTT.Type.2(
+
+╢ ║provingground/HoTT.Type.21
+'' #provingground/library/natInd.value.2(
+
+;┬; ╞provingground/HoTT.Type.2.
+
+AЄA Їprovingground/HoTT.Typ#`::`().2+
+(( provingground/library/natInd.2.
+
+S╝S ╛provingground/HoTT.Typ#`::`().2,
+#O# Qprovingground/HoTT.Typ#`::`().2(
+
+VїV ∙provingground/HoTT.Type.2&
+ApA tprovingground/HoTT.Type.2.
+
+а вprovingground/HoTT.Typ#`::`().2(
+
+к оprovingground/HoTT.Type.2(
+
+/╪/ ▄provingground/HoTT.Type.2,
+	;	 =provingground/HoTT.Typ#`::`().2&
+	/	 3provingground/HoTT.Type.2+
+
+HЮH еprovingground/HoTT.FuncTyp.2,
+A5A 7provingground/HoTT.Typ#`::`().2+
+
+;Г; Кprovingground/HoTT.FuncTyp.2,
+Z \provingground/HoTT.Typ#`::`().2+
+
+P╝P ├provingground/HoTT.FuncTyp.2.
+
+;┐; ┴provingground/HoTT.Typ#`::`().2(
+
+/ц/ ъprovingground/HoTT.Type.2.
+
+╨ ╥provingground/HoTT.Typ#`::`().2.
+
+а вprovingground/HoTT.Typ#`::`().2.
+
+л нprovingground/HoTT.Typ#`::`().2=
+KK /provingground/induction/ConstructorSeqTL#rec().2
+ local842,
+22 provingground/HoTT.Typ#`::`().2(
+
+┴ ┼provingground/HoTT.Type.2+
+
+&Ш& Яprovingground/HoTT.FuncTyp.2(
+
+,┘, ▌provingground/HoTT.Type.2.
+
+;Ю; аprovingground/HoTT.Typ#`::`().2&
+
+"
+ &provingground/HoTT.Type.2&
+AVA Zprovingground/HoTT.Type.2
+(
+( local1712.
+
+H┐H ┴provingground/HoTT.Typ#`::`().2+
+
+SжS нprovingground/HoTT.FuncTyp.2)
+&h& oprovingground/HoTT.FuncTyp.2(
+
+VмV ░provingground/HoTT.Type.2.
+
+>■> Аprovingground/HoTT.Typ#`::`().2.
+
+╠ ╬provingground/HoTT.Typ#`::`().2(
+
+A═A ╤provingground/HoTT.Type.2+
+
+A╝A ├provingground/HoTT.FuncTyp.2(
+
+З Лprovingground/HoTT.Type.2
+.. local2072(
+
+/Э/ бprovingground/HoTT.Type.2.
+
+,Н, Пprovingground/HoTT.Typ#`::`().2,
+5 7provingground/HoTT.Typ#`::`().2&
+M,M 0provingground/HoTT.Type.2,
+,l, nprovingground/HoTT.Typ#`::`().2&
+$ $ $provingground/HoTT.Type.2.
+
+AХA Чprovingground/HoTT.Typ#`::`().2,
+e gprovingground/HoTT.Typ#`::`().2(
+
+╩ ╬provingground/HoTT.Type.2,
+D5D 7provingground/HoTT.Typ#`::`().2(
+
+AоA ▓provingground/HoTT.Type.2(
+
+,д, иprovingground/HoTT.Type.2,
+E;E =provingground/HoTT.Typ#`::`().2(
+
+D▄D рprovingground/HoTT.Type.2(
+
+┤ ╕provingground/HoTT.Type.2=
+FF !/provingground/induction/ConstructorSeqTL#rec().2,
+ provingground/HoTT.Typ#`::`().2&
+SVS Zprovingground/HoTT.Type.2
+QQ local4242)
+;; provingground/HoTT.lmbda().2(
+
+&╪& ▄provingground/HoTT.Type.2)
+,T, [provingground/HoTT.FuncTyp.2(
+
+─ ╚provingground/HoTT.Type.2(
+
+,╕, ╝provingground/HoTT.Type.2.
+
+A╗A ╜provingground/HoTT.Typ#`::`().2
+?? local3212)
+'U' \provingground/HoTT.FuncTyp.2,
+88 provingground/HoTT.Typ#`::`().2(
+
+S∙S ¤provingground/HoTT.Type.2.
+
+>├> ┼provingground/HoTT.Typ#`::`().2(
+
+┤ ╕provingground/HoTT.Type.2,
+2e2 gprovingground/HoTT.Typ#`::`().2+
+
+ж нprovingground/HoTT.FuncTyp.2.
+
+,╘, ╓provingground/HoTT.Typ#`::`().2(
+
+/ь/ Ёprovingground/HoTT.Type.2+
+
+>з> оprovingground/HoTT.FuncTyp.2(
+
+о ▓provingground/HoTT.Type.2?
+
+6к6 н/provingground/induction/ConstructorSeqTL#rec().2(
+
+;Щ; Эprovingground/HoTT.Type.2,
+>> provingground/HoTT.Typ#`::`().2)
+*j* qprovingground/HoTT.FuncTyp.2(
+
+PгP зprovingground/HoTT.Type.2&
+ provingground/HoTT.Fold.2,
+*7* 9provingground/HoTT.Typ#`::`().2
+CC local3392)
+/>/ Cprovingground/HoTT.lmbda().2,
+AA provingground/HoTT.Typ#`::`().2.
+
+P┼P ╟provingground/HoTT.Typ#`::`().2)
+2v2 }provingground/HoTT.FuncTyp.2
+
+ local482,
+6J6 Lprovingground/HoTT.Typ#`::`().2(
+
+ї ∙provingground/HoTT.Type.23
+33 %provingground/library/pprodInd.value.2(
+
+,╛, ┬provingground/HoTT.Type.2&
+9 9 $provingground/HoTT.Type.2(
+
+/о/ ▓provingground/HoTT.Type.2+
+
+PўP ■provingground/HoTT.FuncTyp.21
+ #provingground/library/natInd.value.2+
+
+AуA ъprovingground/HoTT.FuncTyp.2(
+
+>а> дprovingground/HoTT.Type.2(
+
+Р Фprovingground/HoTT.Type.2(
+
+Й Нprovingground/HoTT.Type.2&
+&& provingground/HoTT.Type.2.
+
+Д Жprovingground/HoTT.Typ#`::`().2,
+/5/ 7provingground/HoTT.Typ#`::`().2,
+ provingground/HoTT.Typ#`::`().2+
+
+2ж2 нprovingground/HoTT.FuncTyp.2)
+D>D Cprovingground/HoTT.lmbda().2'
+	~ Вprovingground/HoTT.Type.2(
+
+ў √provingground/HoTT.Type.2
+RR local4242,
+7 9provingground/HoTT.Typ#`::`().2(
+
+░ ┤provingground/HoTT.Type.2.
+
+/└/ ┬provingground/HoTT.Typ#`::`().2(
+
+VЗV Лprovingground/HoTT.Type.2)
+*@* Eprovingground/HoTT.lmbda().2&
+'k' oprovingground/HoTT.Type.2,
+;Z; \provingground/HoTT.Typ#`::`().2
+ local1112(
+
+6┐6 ├provingground/HoTT.Type.2+
+
+/Ь/ гprovingground/HoTT.FuncTyp.2(
+
+!Ж! Кprovingground/HoTT.Type.2.
+
+/═/ ╧provingground/HoTT.Typ#`::`().2,
+VSV Uprovingground/HoTT.Typ#`::`().2(
+
+SДS Иprovingground/HoTT.Type.2(
+
+MЫM Яprovingground/HoTT.Type.2(
+
+*Ж* Кprovingground/HoTT.Type.2=
+$$ /provingground/induction/ConstructorSeqTL#rec().2(
+
+,─, ╚provingground/HoTT.Type.2.
+
+MЎM °provingground/HoTT.Typ#`::`().2,
+DeD gprovingground/HoTT.Typ#`::`().2.
+
+▄ ▐provingground/HoTT.Typ#`::`().2=
+TT /provingground/induction/ConstructorSeqTL#rec().2(
+
+З Лprovingground/HoTT.Type.2)
+>> provingground/HoTT.lmbda().2(
+
+в жprovingground/HoTT.Type.2(
+
+S▄S рprovingground/HoTT.Type.2(
+
+ї ∙provingground/HoTT.Type.2,
+3;3 =provingground/HoTT.Typ#`::`().2.
+
+PаP вprovingground/HoTT.Typ#`::`().2.
+
+M╗M ╜provingground/HoTT.Typ#`::`().2'
+	>~> Вprovingground/HoTT.Type.2,
+J,J .provingground/HoTT.Typ#`::`().2&
+D8D <provingground/HoTT.Type.2&
+? ? $provingground/HoTT.Type.2.
+
+Ч Щprovingground/HoTT.Typ#`::`().2(
+
+SоS ▓provingground/HoTT.Type.2&
+VV provingground/HoTT.Type.2.
+
+P█P ▌provingground/HoTT.Typ#`::`().2(
+
+З Лprovingground/HoTT.Type.2(
+
+а дprovingground/HoTT.Type.2+
+NN provingground/library/natInd.2&
+V Zprovingground/HoTT.Type.2
+55 
+local2562(
+
+о ▓provingground/HoTT.Type.2&
+HH provingground/HoTT.Type.2&
+6g6 kprovingground/HoTT.Type.2&
+p tprovingground/HoTT.Type.2.
+
+&╩& ╠provingground/HoTT.Typ#`::`().2.
+
+;Ї; Ўprovingground/HoTT.Typ#`::`().2.
+
+/Х/ Чprovingground/HoTT.Typ#`::`().2+
+
+/▐/ хprovingground/HoTT.FuncTyp.2.
+
+Ж Иprovingground/HoTT.Typ#`::`().2.
+
+/╗/ ╜provingground/HoTT.Typ#`::`().2(
+
+M╧M ╙provingground/HoTT.Type.2'
+	~ Вprovingground/HoTT.Type.2.
+
+!Ч! Щprovingground/HoTT.Typ#`::`().2
+$$ local1492.
+
+2Є2 Їprovingground/HoTT.Typ#`::`().2.
+
+DЄD Їprovingground/HoTT.Typ#`::`().2,
+!7! 9provingground/HoTT.Typ#`::`().2.
+
+2К2 Мprovingground/HoTT.Typ#`::`().2+
+
+∙ Аprovingground/HoTT.FuncTyp.2.
+
+V╠V ╬provingground/HoTT.Typ#`::`().2&
+J>J Bprovingground/HoTT.Type.2(
+
+щ эprovingground/HoTT.Type.2(
+
+;█; ▀provingground/HoTT.Type.2
+KK local3782&
+  $provingground/HoTT.Type.2.
+
+'З' Йprovingground/HoTT.Typ#`::`().2.
+
+&б& гprovingground/HoTT.Typ#`::`().2&
+" &provingground/HoTT.Type.2+
+
+D╝D ├provingground/HoTT.FuncTyp.2
+EE local3562(
+
+/к/ оprovingground/HoTT.Type.2,
+!! provingground/HoTT.Typ#`::`().2&
+/ 3provingground/HoTT.Type.2&
+< < $provingground/HoTT.Type.2(
+
+л пprovingground/HoTT.Type.2.
+
+2Я2 бprovingground/HoTT.Typ#`::`().2+
+
+/В/ Йprovingground/HoTT.FuncTyp.2.
+
+;К; Мprovingground/HoTT.Typ#`::`().2&
+V8V <provingground/HoTT.Type.2(
+
+HжH кprovingground/HoTT.Type.2+
+
+6Э6 дprovingground/HoTT.FuncTyp.2.
+
+Е Зprovingground/HoTT.Typ#`::`().2(
+
+м ░provingground/HoTT.Type.2?
+
+HнH ░/provingground/induction/ConstructorSeqTL#rec().2.
+
+,б, гprovingground/HoTT.Typ#`::`().2(
+
+2Ь2 аprovingground/HoTT.Type.2&
+PVP Zprovingground/HoTT.Type.2(
+
+P═P ╤provingground/HoTT.Type.2(
+
+DоD ▓provingground/HoTT.Type.2(
+
+D╬D ╥provingground/HoTT.Type.2&
+Q Q $provingground/HoTT.Type.2,
+H+H -provingground/HoTT.Typ#`::`().2.
+
+/Д/ Жprovingground/HoTT.Typ#`::`().2.
+
+Ж Иprovingground/HoTT.Typ#`::`().2.
+
+MъM ьprovingground/HoTT.Typ#`::`().2.
+
+P─P ╞provingground/HoTT.Typ#`::`().2.
+
+┴ ├provingground/HoTT.Typ#`::`().2(
+
+а дprovingground/HoTT.Type.2+
+
+>ї> №provingground/HoTT.FuncTyp.2)
+*x* provingground/HoTT.FuncTyp.2.
+
+>┘> █provingground/HoTT.Typ#`::`().2(
+
+,Е, Йprovingground/HoTT.Type.2)
+JJ 
+provingground/HoTT.lmbda().2
+F
+F local3592(
+
+,∙, ¤provingground/HoTT.Type.2,
+, .provingground/HoTT.Typ#`::`().2,
+VV provingground/HoTT.Typ#`::`().2,
+ provingground/library/nat$mul.2,
+VeV gprovingground/HoTT.Typ#`::`().2&
+F"F &provingground/HoTT.Type.2.
+
+╠ ╬provingground/HoTT.Typ#`::`().2)
+** provingground/HoTT.lmbda().2+
+
+Г Кprovingground/HoTT.FuncTyp.2,
+!.! 0provingground/HoTT.Typ#`::`().2)
+> Cprovingground/HoTT.lmbda().2(
+
+═ ╤provingground/HoTT.Type.2&
+>p> tprovingground/HoTT.Type.2,
+,K, Mprovingground/HoTT.Typ#`::`().2&
+V Zprovingground/HoTT.Type.2+
+
+DШD Яprovingground/HoTT.FuncTyp.2)
+## 
+provingground/HoTT.lmbda().2&
+P8P <provingground/HoTT.Type.2(
+
+▄ рprovingground/HoTT.Type.2+
+
+MУM Ъprovingground/HoTT.FuncTyp.2*
+,4, :provingground/HoTT.piDefn().21
+$$ #provingground/library/natInd.value.2.
+
+/╚/ ╩provingground/HoTT.Typ#`::`().2.
+
+HЪH Ьprovingground/HoTT.Typ#`::`().2+
+
+AжA нprovingground/HoTT.FuncTyp.2&
+;,; 0provingground/HoTT.Type.2(
+
+/╦/ ╧provingground/HoTT.Type.2(
+
+>Л> Пprovingground/HoTT.Type.2&
+: >provingground/HoTT.Type.2,
+g iprovingground/HoTT.Typ#`::`().2(
+
+A╛A ┬provingground/HoTT.Type.2,
+/S/ Uprovingground/HoTT.Typ#`::`().2)
+x provingground/HoTT.FuncTyp.2.
+
+,╦, ═provingground/HoTT.Typ#`::`().2(
+
+DаD дprovingground/HoTT.Type.2.
+
+'Ц' Шprovingground/HoTT.Typ#`::`().2&
+&8& <provingground/HoTT.Type.2(
+
+/Д/ Иprovingground/HoTT.Type.2)
+PhP oprovingground/HoTT.FuncTyp.2.
+
+,╕, ║provingground/HoTT.Typ#`::`().2&
+q uprovingground/HoTT.Type.2)
+!x! provingground/HoTT.FuncTyp.2,
+&,& .provingground/HoTT.Typ#`::`().2+
+
+>╝> ├provingground/HoTT.FuncTyp.2&
+VVV Zprovingground/HoTT.Type.2(
+
+>┼> ╔provingground/HoTT.Type.2(
+
+M├M ╟provingground/HoTT.Type.2(
+
+¤ Бprovingground/HoTT.Type.2&
+8>8 Bprovingground/HoTT.Type.2.
+
+H╤H ╙provingground/HoTT.Typ#`::`().2)
+;k; rprovingground/HoTT.FuncTyp.2(
+
+6─6 ╚provingground/HoTT.Type.2(
+
+!┌! ▐provingground/HoTT.Type.2(
+
+H╤H ╒provingground/HoTT.Type.2(
+
+┐ ├provingground/HoTT.Type.2.
+
+┌ ▄provingground/HoTT.Typ#`::`().2)
+88 
+provingground/HoTT.lmbda().2.
+
+/Є/ Їprovingground/HoTT.Typ#`::`().2&
+2V2 Zprovingground/HoTT.Type.2,
+AeA gprovingground/HoTT.Typ#`::`().2&
+!:! >provingground/HoTT.Type.2)
+!@! Eprovingground/HoTT.lmbda().2(
+
+!Й! Нprovingground/HoTT.Type.2(
+
+P─P ╚provingground/HoTT.Type.2(
+
+ч ыprovingground/HoTT.Type.2(
+
+&ч& ыprovingground/HoTT.Type.2)
+/h/ oprovingground/HoTT.FuncTyp.2.
+
+2ф2 цprovingground/HoTT.Typ#`::`().2(
+
+A▄A рprovingground/HoTT.Type.2,
+S Uprovingground/HoTT.Typ#`::`().2(
+
+MэM ёprovingground/HoTT.Type.2.
+
+D╩D ╠provingground/HoTT.Typ#`::`().2.
+
+2┘2 █provingground/HoTT.Typ#`::`().2-
+		 provingground/library/pprodInd.2(
+
+>С> Хprovingground/HoTT.Type.2
+BB local3392(
+
+З Лprovingground/HoTT.Type.2(
+
+AаA дprovingground/HoTT.Type.2+
+
+░ ╖provingground/HoTT.FuncTyp.2,
+) +provingground/HoTT.Typ#`::`().2(
+
+A∙A ¤provingground/HoTT.Type.2.
+
+м оprovingground/HoTT.Typ#`::`().2+
+
+/ь/ єprovingground/HoTT.FuncTyp.2.
+
+,┴, ├provingground/HoTT.Typ#`::`().2&
+/8/ <provingground/HoTT.Type.2.
+
+щ ыprovingground/HoTT.Typ#`::`().2+
+
+PьP єprovingground/HoTT.FuncTyp.2.
+
+VДV Жprovingground/HoTT.Typ#`::`().2&
+4"4 &provingground/HoTT.Type.2+
+
+SЗS Оprovingground/HoTT.FuncTyp.2(
+
+PаP дprovingground/HoTT.Type.2+
+
+╛ ┼provingground/HoTT.FuncTyp.2(
+
+>м> ░provingground/HoTT.Type.2.
+
+>й> лprovingground/HoTT.Typ#`::`().2(
+
+6е6 йprovingground/HoTT.Type.2.
+
+6╝6 ╛provingground/HoTT.Typ#`::`().2(
+
+є ўprovingground/HoTT.Type.2
+ 
+local482.
+
+╝ ╛provingground/HoTT.Typ#`::`().2(
+
+DїD ∙provingground/HoTT.Type.2&
+ provingground/HoTT.Type.2+
+44 provingground/library/natInd.2)
+6_6 fprovingground/HoTT.FuncTyp.2+
+
+MйM ░provingground/HoTT.FuncTyp.2)
+&>& Cprovingground/HoTT.lmbda().2.
+
+,м, оprovingground/HoTT.Typ#`::`().2&
+!r! vprovingground/HoTT.Type.2.
+
+2█2 ▌provingground/HoTT.Typ#`::`().2(
+
+6Ч6 Ыprovingground/HoTT.Type.2(
+
+,Є, Ўprovingground/HoTT.Type.2&
+'q' uprovingground/HoTT.Type.2.
+
+SйS лprovingground/HoTT.Typ#`::`().2=
+ /provingground/induction/ConstructorSeqTL#rec().2(
+
+╪ ▄provingground/HoTT.Type.2,
+## provingground/HoTT.Typ#`::`().2(
+
+>┤> ╕provingground/HoTT.Type.2(
+
+Ж Кprovingground/HoTT.Type.2.
+
+,я, ёprovingground/HoTT.Typ#`::`().2,
+3,3 .provingground/HoTT.Typ#`::`().2.
+
+Л Нprovingground/HoTT.Typ#`::`().2+
+
+ж нprovingground/HoTT.FuncTyp.2.
+
+║ ╝provingground/HoTT.Typ#`::`().2.
+
+A┘A █provingground/HoTT.Typ#`::`().PZ D3D737F6DBD18AE80FE857A3392BD4FC
