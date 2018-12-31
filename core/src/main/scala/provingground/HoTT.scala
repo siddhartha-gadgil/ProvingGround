@@ -576,7 +576,9 @@ object HoTT {
     type Obj = Term
 
     def variable(name: AnySym) =
-      if (level == 0) SymbObj(name, this) else SymbTyp(name, level - 1)
+//      if (level == 0)
+        SymbObj(name, this)
+//      else SymbTyp(name, level - 1)
 
     // override def toString = s"""${name.toString} : ${UnivSym}_$level"""
 
@@ -781,8 +783,12 @@ object HoTT {
     override def toString = UnivSym + "_" + level
 
     override def equals(that: Any) = that match {
-      case Universe(k) if (ignoreLevels || k == level) => true
-      case _: BaseUniv if (ignoreLevels || level == 0) => true
+      case Universe(k) if (ignoreLevels || k == level) =>
+        // if (k != level) pprint.log(s"mismatched universe levels $level and $k")
+        true
+      case _: BaseUniv if (ignoreLevels || level == 0) =>
+        // if (level != 0) pprint.log(s"mismatched universe levels $level and Base")
+        true
       case _                                           => false
     }
   }
