@@ -1658,6 +1658,17 @@ object HoTT {
         t.replace(x, y)
     }
 
+  val resizedEqual: (Typ[Term], Typ[Term]) => Boolean =
+  {
+    case (x, y) if (x == y) => true
+    case (Type, _ : Universe) => true
+    case (ft1: FuncTyp[x1, y1], ft2: FuncTyp[x2, y2]) => (ft1.dom == ft2.dom) && resizedEqual(ft1.codom, ft2.codom)
+    case (gt1: GenFuncTyp[x1, y1], gt2: GenFuncTyp[x2, y2]) if gt1.domain == gt2.domain =>
+      val x = gt1.domain.Var
+      resizedEqual(gt1.fib(x.asInstanceOf[x1]), gt2.fib(x.asInstanceOf[x2]))
+    case _ => false
+  }
+
   /**
     *  A lambda-expression;
     *  variable is mapped to value.
