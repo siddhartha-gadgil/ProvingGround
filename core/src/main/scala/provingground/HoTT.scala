@@ -760,7 +760,7 @@ object HoTT {
     }
   }
 
-  var ignoreLevels = true
+  var ignoreLevels = false
 
   /** The (usual) universes */
   case class Universe(level: Int) extends Univ with Subs[Universe] {
@@ -1714,6 +1714,9 @@ object HoTT {
       } else
         FuncTyp(variable.typ.asInstanceOf[Typ[X]],
                 value.typ.asInstanceOf[Typ[Y]])
+
+    override def canApply(arg: X): Boolean =
+      resizedEqual(dom, arg.typ)
 
     def act(arg: X) : Y =
       if (usesVar(arg)) {
