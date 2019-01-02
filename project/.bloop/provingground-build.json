@@ -28,6 +28,7 @@
             "/home/gadgil/.ivy2/cache/org.spire-math/jawn-parser_2.12/jars/jawn-parser_2.12-0.11.1.jar",
             "/home/gadgil/.ivy2/cache/io.circe/circe-derivation_2.12/jars/circe-derivation_2.12-0.9.0-M3.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.3.3.jar",
+            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-unidoc/jars/sbt-unidoc-0.4.1.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scala-js/sbt-scalajs/jars/sbt-scalajs-0.6.25.jar",
             "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-tools_2.12/jars/scalajs-tools_2.12-0.6.25.jar",
             "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-ir_2.12/jars/scalajs-ir_2.12-0.6.25.jar",
@@ -112,7 +113,6 @@
             "/home/gadgil/.ivy2/cache/org.bouncycastle/bcpg-jdk15on/jars/bcpg-jdk15on-1.51.jar",
             "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.6.jar",
             "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.0.6.jar",
-            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-unidoc/jars/sbt-unidoc-0.4.1.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-assembly/jars/sbt-assembly-0.14.5.jar",
             "/home/gadgil/.ivy2/cache/org.scalactic/scalactic_2.12/bundles/scalactic_2.12-3.0.1.jar",
             "/home/gadgil/.ivy2/cache/org.pantsbuild/jarjar/jars/jarjar-1.6.4.jar",
@@ -218,10 +218,10 @@
                 "-deprecation"
             ],
             "jars" : [
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar"
             ],
             "setup" : {
@@ -243,8 +243,8 @@
                 "import _root_.scala.xml.{TopScope=>$scope}",
                 "import _root_.sbt._",
                 "import _root_.sbt.Keys._",
-                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._, _root_.org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._, _root_.com.typesafe.sbt.SbtNativePackager.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.JavaAppPackaging.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.jar.ClasspathJarPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.jar.LauncherJarPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.scripts.BashStartScriptPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.scripts.BatStartScriptPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemdPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemloaderPlugin.autoImport._, _root_.com.typesafe.sbt.packager.debian.DebianPlugin.autoImport._, _root_.com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerPlugin.autoImport._, _root_.com.typesafe.sbt.packager.linux.LinuxPlugin.autoImport._, _root_.com.typesafe.sbt.packager.rpm.RpmPlugin.autoImport._, _root_.com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._, _root_.com.typesafe.sbt.packager.windows.WindowsPlugin.autoImport._, _root_.sbtunidoc.BaseUnidocPlugin.autoImport._, _root_.sbtunidoc.GenJavadocPlugin.autoImport._, _root_.sbtunidoc.JavaUnidocPlugin.autoImport._, _root_.sbtunidoc.ScalaUnidocPlugin.autoImport._, _root_.sbtassembly.AssemblyPlugin.autoImport._",
-                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.scala.meta.metals.MetalsPlugin, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin, _root_.org.scalajs.sbtplugin.ScalaJSJUnitPlugin, _root_.org.scalajs.sbtplugin.ScalaJSPlugin, _root_.org.scalajs.sbtplugin.internal.ScalaJSGlobalPlugin, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin, _root_.com.typesafe.sbt.SbtNativePackager, _root_.com.typesafe.sbt.packager.archetypes.JavaAppPackaging, _root_.com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging, _root_.com.typesafe.sbt.packager.archetypes.jar.ClasspathJarPlugin, _root_.com.typesafe.sbt.packager.archetypes.jar.LauncherJarPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.AshScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.BashStartScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.BatStartScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemVPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemdPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemloaderPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.UpstartPlugin, _root_.com.typesafe.sbt.packager.debian.DebianDeployPlugin, _root_.com.typesafe.sbt.packager.debian.DebianPlugin, _root_.com.typesafe.sbt.packager.debian.JDebPackaging, _root_.com.typesafe.sbt.packager.docker.DockerPlugin, _root_.com.typesafe.sbt.packager.docker.DockerSpotifyClientPlugin, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerDeployPlugin, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerPlugin, _root_.com.typesafe.sbt.packager.linux.LinuxPlugin, _root_.com.typesafe.sbt.packager.rpm.RpmDeployPlugin, _root_.com.typesafe.sbt.packager.rpm.RpmPlugin, _root_.com.typesafe.sbt.packager.universal.UniversalDeployPlugin, _root_.com.typesafe.sbt.packager.universal.UniversalPlugin, _root_.com.typesafe.sbt.packager.windows.WindowsDeployPlugin, _root_.com.typesafe.sbt.packager.windows.WindowsPlugin, _root_.sbtunidoc.BaseUnidocPlugin, _root_.sbtunidoc.GenJavadocPlugin, _root_.sbtunidoc.JavaUnidocPlugin, _root_.sbtunidoc.PublishJavadocPlugin, _root_.sbtunidoc.ScalaUnidocPlugin, _root_.sbtassembly.AssemblyPlugin"
+                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.sbtunidoc.BaseUnidocPlugin.autoImport._, _root_.sbtunidoc.GenJavadocPlugin.autoImport._, _root_.sbtunidoc.JavaUnidocPlugin.autoImport._, _root_.sbtunidoc.ScalaUnidocPlugin.autoImport._, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._, _root_.org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._, _root_.com.typesafe.sbt.SbtNativePackager.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.JavaAppPackaging.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.jar.ClasspathJarPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.jar.LauncherJarPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.scripts.BashStartScriptPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.scripts.BatStartScriptPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemdPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemloaderPlugin.autoImport._, _root_.com.typesafe.sbt.packager.debian.DebianPlugin.autoImport._, _root_.com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerPlugin.autoImport._, _root_.com.typesafe.sbt.packager.linux.LinuxPlugin.autoImport._, _root_.com.typesafe.sbt.packager.rpm.RpmPlugin.autoImport._, _root_.com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._, _root_.com.typesafe.sbt.packager.windows.WindowsPlugin.autoImport._, _root_.sbtassembly.AssemblyPlugin.autoImport._",
+                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.scala.meta.metals.MetalsPlugin, _root_.sbtunidoc.BaseUnidocPlugin, _root_.sbtunidoc.GenJavadocPlugin, _root_.sbtunidoc.JavaUnidocPlugin, _root_.sbtunidoc.PublishJavadocPlugin, _root_.sbtunidoc.ScalaUnidocPlugin, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin, _root_.org.scalajs.sbtplugin.ScalaJSJUnitPlugin, _root_.org.scalajs.sbtplugin.ScalaJSPlugin, _root_.org.scalajs.sbtplugin.internal.ScalaJSGlobalPlugin, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin, _root_.com.typesafe.sbt.SbtNativePackager, _root_.com.typesafe.sbt.packager.archetypes.JavaAppPackaging, _root_.com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging, _root_.com.typesafe.sbt.packager.archetypes.jar.ClasspathJarPlugin, _root_.com.typesafe.sbt.packager.archetypes.jar.LauncherJarPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.AshScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.BashStartScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.BatStartScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemVPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemdPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemloaderPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.UpstartPlugin, _root_.com.typesafe.sbt.packager.debian.DebianDeployPlugin, _root_.com.typesafe.sbt.packager.debian.DebianPlugin, _root_.com.typesafe.sbt.packager.debian.JDebPackaging, _root_.com.typesafe.sbt.packager.docker.DockerPlugin, _root_.com.typesafe.sbt.packager.docker.DockerSpotifyClientPlugin, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerDeployPlugin, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerPlugin, _root_.com.typesafe.sbt.packager.linux.LinuxPlugin, _root_.com.typesafe.sbt.packager.rpm.RpmDeployPlugin, _root_.com.typesafe.sbt.packager.rpm.RpmPlugin, _root_.com.typesafe.sbt.packager.universal.UniversalDeployPlugin, _root_.com.typesafe.sbt.packager.universal.UniversalPlugin, _root_.com.typesafe.sbt.packager.windows.WindowsDeployPlugin, _root_.com.typesafe.sbt.packager.windows.WindowsPlugin, _root_.sbtassembly.AssemblyPlugin"
             ]
         },
         "test" : {
@@ -458,6 +458,17 @@
                         {
                             "name" : "sbt-metals",
                             "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.3.3.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.eed3si9n",
+                    "name" : "sbt-unidoc",
+                    "version" : "0.4.1",
+                    "artifacts" : [
+                        {
+                            "name" : "sbt-unidoc",
+                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-unidoc/jars/sbt-unidoc-0.4.1.jar"
                         }
                     ]
                 },
@@ -1376,17 +1387,6 @@
                         {
                             "name" : "scala-xml_2.12",
                             "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.0.6.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.eed3si9n",
-                    "name" : "sbt-unidoc",
-                    "version" : "0.4.1",
-                    "artifacts" : [
-                        {
-                            "name" : "sbt-unidoc",
-                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-unidoc/jars/sbt-unidoc-0.4.1.jar"
                         }
                     ]
                 },

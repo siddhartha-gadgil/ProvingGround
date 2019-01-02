@@ -20,7 +20,6 @@
             "/home/gadgil/code/ProvingGround/.bloop/server/scala-2.12/classes",
             "/home/gadgil/code/ProvingGround/.bloop/trepplein/scala-2.12/classes",
             "/home/gadgil/code/ProvingGround/.bloop/leanlib/scala-2.12/classes",
-            "/home/gadgil/code/ProvingGround/mantle/lib/com.microsoft.z3.jar",
             "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
             "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.1.0.jar",
@@ -175,10 +174,10 @@
                 "-language:existentials"
             ],
             "jars" : [
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar"
             ],
             "setup" : {

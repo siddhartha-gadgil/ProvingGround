@@ -167,10 +167,10 @@
                 "-language:existentials"
             ],
             "jars" : [
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar"
             ],
             "setup" : {
