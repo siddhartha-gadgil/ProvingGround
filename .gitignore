@@ -125,3 +125,5 @@ data/*.tsv
 .idea/
 
 data/bird-sentences.txt
+
+.bloop/
