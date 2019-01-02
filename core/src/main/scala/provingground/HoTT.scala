@@ -1262,14 +1262,14 @@ object HoTT {
 
   def applyFunc(func: Term, arg: Term): Term = func match {
     // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
-    case fn: FuncLike[u, v] if fn.dom == arg.typ =>
+    case fn: FuncLike[u, v] if fn.canApply(arg.asInstanceOf[u]) =>
       fn.applyUnchecked(arg.asInstanceOf[u])
     case _ => throw new ApplnFailException(func, arg)
   }
 
   def applyFuncOpt(func: Term, arg: Term): Option[Term] = func match {
     case fn: Func[u, v] if isWitness(arg) => Some("_" :: fn.codom)
-    case fn: FuncLike[u, v] if fn.dom == arg.typ =>
+    case fn: FuncLike[u, v] if fn.canApply(arg.asInstanceOf[u]) =>
       Some(fn.applyUnchecked(arg.asInstanceOf[u]))
     case _ => None
   }
@@ -3149,7 +3149,7 @@ object HoTT {
     * applying terms as long as the result is a function and the list is non-empty.
     */
   def foldterms: (Term, List[Term]) => Term = {
-    case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
+    case (f: FuncLike[u, _], x :: ys) if f.canApply(x.asInstanceOf[u]) =>
       foldterms(f.applyUnchecked(x.asInstanceOf[u]), ys)
     case (t, _) => t
   }
@@ -3160,7 +3160,7 @@ object HoTT {
     */
   def fold(fn: Term)(args: Term*): Term = (fn, args.toList) match {
     case (t, List()) => t
-    case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
+    case (f: FuncLike[u, _], x :: ys) if f.canApply(x.asInstanceOf[u]) =>
       fold(f.applyUnchecked(x.asInstanceOf[u]))(ys: _*)
     case (f: FuncLike[u, _], x :: ys) if isWitness(x) =>
       fold(f)(ys: _*)

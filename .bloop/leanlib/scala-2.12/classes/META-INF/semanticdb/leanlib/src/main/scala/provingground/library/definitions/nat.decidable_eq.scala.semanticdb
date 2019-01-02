@@ -1,5 +1,5 @@
 
-ÛÉOleanlib/src/main/scala/provingground/library/definitions/nat.decidable_eq.scala*3
+ñÇOleanlib/src/main/scala/provingground/library/definitions/nat.decidable_eq.scala*3
 local20 Ä*x$19Ää"
 java/lang/String#*5
 local174 Ä*x$168Ää"
@@ -347,11 +347,9 @@
 local461 Ä*x$449Ää"
 java/lang/String#*5
 local455 Ä*x$443Ää"
-java/lang/String#*Û
--provingground/library/nat$decidable_eq.value. ¿*valueÄä¨©
- §°provingground/HoTT.FuncLike#c:a"]öZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* provingground/HoTT.Term#í: *3
+java/lang/String#*®
+-provingground/library/nat$decidable_eq.value. ¿*valueÄäb`
+ \Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#í: *3
 local10 Ä*x$10Ää"
 java/lang/String#*3
 local46 Ä*x$46Ää"
@@ -706,13 +704,9 @@ F
 local256 Ä*x$257Ää"
 java/lang/String#*5
 local124 Ä*x$119Ää"
-java/lang/String#*≈
-local2 Ä*rxyzÄä´"®
-•¢provingground/HoTT.Func#†ùprovingground/HoTT.Func#provingground/HoTT.Term#‚ﬂprovingground/HoTT.Func#provingground/HoTT.Term#§°provingground/HoTT.FuncLike#c:a"]öZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* provingground/HoTT.Term#‚ﬂprovingground/HoTT.Func#provingground/HoTT.Term#§°provingground/HoTT.FuncLike#c:a"]öZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* provingground/HoTT.Term#*5
+java/lang/String#*≥
+local2 Ä*rxyzÄäô"ñ
+ìêprovingground/HoTT.Func#◊‘provingground/HoTT.Func#provingground/HoTT.Term#ôñprovingground/HoTT.Func#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#ôñprovingground/HoTT.Func#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#*5
 local343 Ä*x$333Ää"
 java/lang/String#*5
 local379 Ä*x$369Ää"

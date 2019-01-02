@@ -1,5 +1,5 @@
 
-†ôJleanlib/src/main/scala/provingground/library/definitions/nat.brec_on.scala*3
+ÀïJleanlib/src/main/scala/provingground/library/definitions/nat.brec_on.scala*3
 local20 €*x$20€Š"
 java/lang/String#*5
 local174 €*x$166€Š"
@@ -520,19 +520,9 @@ A
 local322 €*x$307€Š"
 java/lang/String#*3
 local12 €*x$11€Š"
-java/lang/String#*Ä
-(provingground/library/nat$brec_on.value. À*value€Š‚ÿ
- ú÷provingground/HoTT.FuncLike#š:—"’šŽ
-usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#
-”‘provingground/HoTT.Subs#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#* ¹¶provingground/HoTT.FuncLike#c:a"]šZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* °­provingground/HoTT.Func#ò:ï"êšæ
-àÝprovingground/HoTT.FuncLike#c:a"]šZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#
-€ýprovingground/HoTT.Subs#àÝprovingground/HoTT.FuncLike#c:a"]šZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#* provingground/HoTT.Term#’: *3
+java/lang/String#*þ
+(provingground/library/nat$brec_on.value. À*value€Š¼¹
+ ´±provingground/HoTT.FuncLike#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#™–provingground/HoTT.FuncLike#provingground/HoTT.Term#×Ôprovingground/HoTT.Func#™–provingground/HoTT.FuncLike#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#provingground/HoTT.Term#’: *3
 local80 €*x$77€Š"
 java/lang/String#*5
 local151 €*x$142€Š"
