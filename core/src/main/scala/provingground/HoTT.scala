@@ -168,12 +168,12 @@ object HoTT {
               replace(f, g) replace (x, y)
             case (MiscAppln(f, x), MiscAppln(g, y)) =>
               replace(f, g) replace (x, y)
-            case (xs: Symbolic, _)
-                if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
-              val typchange = replace(x.typ, y.typ)
-//             if (self != typchange) {  pprint.log(self, height = 300)
-//              pprint.log(typchange, height = 300)}
-              typchange replace ((y.typ).symbObj(xs.name), y)
+//            case (xs: Symbolic, _)
+//                if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
+//              val typchange = replace(x.typ, y.typ)
+////             if (self != typchange) {  pprint.log(self, height = 300)
+////              pprint.log(typchange, height = 300)}
+//              typchange replace ((y.typ).symbObj(xs.name), y)
             case (FuncTyp(a, b), FuncTyp(c, d)) =>
               replace(a, c) replace (b, d)
             case (PiDefn(a: Term, b), PiDefn(c: Term, d)) =>

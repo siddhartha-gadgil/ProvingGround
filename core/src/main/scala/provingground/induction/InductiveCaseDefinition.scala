@@ -138,7 +138,10 @@ sealed abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
   case class Funcs(ind: Index) extends IndInducFuncLike[H, C, F, IDFT] {
     fself =>
-    val dom = family.pattern.typ(W, ind)
+    val dom = {
+      pprint.log(ind)
+      family.pattern.typ(W, ind)
+    }
 
     val domW  = self.W
     val codXs = self.Xs
