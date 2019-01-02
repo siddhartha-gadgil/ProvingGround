@@ -1,3329 +1,0 @@
-
-заOleanlib/src/main/scala/provingground/library/definitions/monoid.mul_assoc.scala*5
-local471 А*x$465АК"
-java/lang/String#*3
-local20 А*x$19АК"
-java/lang/String#*5
-local174 А*x$172АК"
-java/lang/String#*5
-local273 А*x$268АК"
-java/lang/String#*5
-local486 А*x$480АК"
-java/lang/String#*3
-local41 А*x$38АК"
-java/lang/String#*1
-local4 А*x$3АК"
-java/lang/String#*5
-local195 А*x$191АК"
-java/lang/String#*5
-local189 А*x$185АК"
-java/lang/String#*5
-local294 А*x$291АК"
-java/lang/String#*5
-local153 А*x$149АК"
-java/lang/String#*3
-local29 А*x$28АК"
-java/lang/String#*5
-local180 А*x$195АК"
-java/lang/String#*5
-local252 А*x$251АК"
-java/lang/String#*5
-local366 А*x$364АК"
-java/lang/String#*3
-local56 А*x$55АК"
-java/lang/String#*5
-local465 А*x$461АК"
-java/lang/String#*5
-local393 А*x$387АК"
-java/lang/String#*5
-local168 А*x$164АК"
-java/lang/String#*5
-local288 А*x$287АК"
-java/lang/String#*3
-local14 А*x$13АК"
-java/lang/String#*5
-local492 А*x$488АК"
-java/lang/String#*5
-local351 А*x$345АК"
-java/lang/String#*5
-local387 А*x$381АК"
-java/lang/String#*5
-local450 А*x$445АК"
-java/lang/String#*5
-local459 А*x$457АК"
-java/lang/String#*5
-local345 А*x$339АК"
-java/lang/String#*3
-local35 А*x$32АК"
-java/lang/String#*5
-local372 А*x$368АК"
-java/lang/String#*5
-local444 А*x$438АК"
-java/lang/String#*5
-local267 А*x$262АК"
-java/lang/String#*5
-local135 А*x$131АК"
-java/lang/String#*1
-local7 А*x$6АК"
-java/lang/String#*5
-local354 А*x$350АК"
-java/lang/String#*5
-local234 А*x$229АК"
-java/lang/String#*5
-local348 А*x$346АК"
-java/lang/String#*3
-local38 А*x$39АК"
-java/lang/String#*5
-local261 А*x$257АК"
-java/lang/String#*5
-local447 А*x$443АК"
-java/lang/String#*5
-local474 А*x$468АК"
-java/lang/String#*5
-local525 А*x$521АК"
-java/lang/String#*5
-local369 А*x$363АК"
-java/lang/String#*5
-local183 А*x$183АК"
-java/lang/String#*3
-local91 А*x$88АК"
-java/lang/String#*5
-local432 А*x$426АК"
-java/lang/String#*5
-local327 А*x$322АК"
-java/lang/String#*м	
-local17 А*rxyzАКС	"О	
-Л	И	provingground/HoTT.Func#ХТprovingground/HoTT.FuncLike#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#┘╓provingground/HoTT.FuncLike#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.FuncLike#provingground/HoTT.Term#СОprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#УРprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*5
-local426 А*x$420АК"
-java/lang/String#*5
-local249 А*x$244АК"
-java/lang/String#*5
-local453 А*x$447АК"
-java/lang/String#*5
-local162 А*x$177АК"
-java/lang/String#*5
-local156 А*x$154АК"
-java/lang/String#*5
-local360 А*x$354АК"
-java/lang/String#*5
-local255 А*x$250АК"
-java/lang/String#*5
-local375 А*x$369АК"
-java/lang/String#*5
-local468 А*x$462АК"
-java/lang/String#*5
-local282 А*x$277АК"
-java/lang/String#*5
-local333 А*x$327АК"
-java/lang/String#*5
-local177 А*x$173АК"
-java/lang/String#*3
-local23 А*x$21АК"
-java/lang/String#*5
-local240 А*x$237АК"
-java/lang/String#*5
-local141 А*x$137АК"
-java/lang/String#*5
-local276 А*x$273АК"
-java/lang/String#*5
-local123 А*x$121АК"
-java/lang/String#*5
-local264 А*x$259АК"
-java/lang/String#*5
-local159 А*x$155АК"
-java/lang/String#*5
-local357 А*x$352АК"
-java/lang/String#*5
-local222 А*x$217АК"
-java/lang/String#*5
-local117 А*x$114АК"
-java/lang/String#*5
-local321 А*x$317АК"
-java/lang/String#*5
-local144 А*x$142АК"
-java/lang/String#*3
-local11 А*x$10АК"
-java/lang/String#*5
-local243 А*x$238АК"
-java/lang/String#*5
-local237 А*x$232АК"
-java/lang/String#*3
-local88 А*x$85АК"
-java/lang/String#*5
-local456 А*x$450АК"
-java/lang/String#*5
-local150 А*x$148АК"
-java/lang/String#*5
-local315 А*x$310АК"
-java/lang/String#*5
-local414 А*x$410АК"
-java/lang/String#*5
-local408 А*x$403АК"
-java/lang/String#*5
-local258 А*x$255АК"
-java/lang/String#*3
-local94 А*x$95АК"
-java/lang/String#*5
-local513 А*x$511АК"
-java/lang/String#*5
-local441 А*x$439АК"
-java/lang/String#*5
-local336 А*x$332АК"
-java/lang/String#*5
-local216 А*x$216АК"
-java/lang/String#*5
-local435 А*x$433АК"
-java/lang/String#*5
-local429 А*x$425АК"
-java/lang/String#*5
-local138 А*x$134АК"
-java/lang/String#*5
-local507 А*x$503АК"
-java/lang/String#*5
-local342 А*x$340АК"
-java/lang/String#*3
-local73 А*x$70АК"
-java/lang/String#*5
-local165 А*x$165АК"
-java/lang/String#*5
-local420 А*x$415АК"
-java/lang/String#*5
-local438 А*x$432АК"
-java/lang/String#*5
-local293 А*x$288АК"
-java/lang/String#*5
-local318 А*x$312АК"
-java/lang/String#*3
-local55 А*x$52АК"
-java/lang/String#*5
-local501 А*x$495АК"
-java/lang/String#*5
-local392 А*x$388АК"
-java/lang/String#*5
-local231 А*x$227АК"
-java/lang/String#*3
-local82 А*x$81АК"
-java/lang/String#*5
-local147 А*x$143АК"
-java/lang/String#*5
-local522 А*x$516АК"
-java/lang/String#*5
-local417 А*x$411АК"
-java/lang/String#*н	
-local111 А*rxyzАКС	"О	
-Л	И	provingground/HoTT.Func#ХТprovingground/HoTT.FuncLike#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#┘╓provingground/HoTT.FuncLike#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.FuncLike#provingground/HoTT.Term#СОprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#УРprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*3
-local97 А*x$94АК"
-java/lang/String#*5
-local324 А*x$318АК"
-java/lang/String#*5
-local219 А*x$215АК"
-java/lang/String#*5
-local423 А*x$417АК"
-java/lang/String#*5
-local246 А*x$245АК"
-java/lang/String#*5
-local132 А*x$132АК"
-java/lang/String#*5
-local126 А*x$122АК"
-java/lang/String#*5
-local105 А*x$103АК"
-java/lang/String#*5
-local491 А*x$485АК"
-java/lang/String#*5
-local204 А*x$201АК"
-java/lang/String#*5
-local210 А*x$207АК"
-java/lang/String#*5
-local339 А*x$333АК"
-java/lang/String#*5
-local194 А*x$192АК"
-java/lang/String#*3
-local76 А*x$77АК"
-java/lang/String#*5
-local303 А*x$299АК"
-java/lang/String#*5
-local516 А*x$510АК"
-java/lang/String#*5
-local330 А*x$324АК"
-java/lang/String#*5
-local402 А*x$397АК"
-java/lang/String#*5
-local225 А*x$222АК"
-java/lang/String#*3
-local61 А*x$58АК"
-java/lang/String#*5
-local306 А*x$302АК"
-java/lang/String#*5
-local312 А*x$311АК"
-java/lang/String#*5
-local488 А*x$484АК"
-java/lang/String#*5
-local207 А*x$206АК"
-java/lang/String#*5
-local510 А*x$504АК"
-java/lang/String#*5
-local405 А*x$404АК"
-java/lang/String#*5
-local380 А*x$374АК"
-java/lang/String#*3
-local70 А*x$67АК"
-java/lang/String#*5
-local473 А*x$467АК"
-java/lang/String#*5
-local182 А*x$178АК"
-java/lang/String#*5
-local296 А*x$293АК"
-java/lang/String#*3
-local58 А*x$59АК"
-java/lang/String#*5
-local395 А*x$390АК"
-java/lang/String#*3
-local85 А*x$82АК"
-java/lang/String#*5
-local129 А*x$125АК"
-java/lang/String#*5
-local504 А*x$498АК"
-java/lang/String#*5
-local494 А*x$492АК"
-java/lang/String#*1
-local6 А*x$7АК"
-java/lang/String#*3
-local43 А*x$40АК"
-java/lang/String#*5
-local197 А*x$193АК"
-java/lang/String#*5
-local411 А*x$405АК"
-java/lang/String#*5
-local275 А*x$270АК"
-java/lang/String#*5
-local120 А*x$157АК"
-java/lang/String#*5
-local114 А*x$112АК"
-java/lang/String#*3
-local37 А*x$35АК"
-java/lang/String#*5
-local519 А*x$517АК"
-java/lang/String#*5
-local374 А*x$370АК"
-java/lang/String#*3
-local64 А*x$63АК"
-java/lang/String#*5
-local213 А*x$210АК"
-java/lang/String#*5
-local228 А*x$223АК"
-java/lang/String#*5
-local108 А*x$109АК"
-java/lang/String#*5
-local281 А*x$278АК"
-java/lang/String#*5
-local176 А*x$174АК"
-java/lang/String#*5
-local389 А*x$383АК"
-java/lang/String#*3
-local79 А*x$76АК"
-java/lang/String#*5
-local476 А*x$471АК"
-java/lang/String#*5
-local290 А*x$285АК"
-java/lang/String#*3
-local31 А*x$30АК"
-java/lang/String#*5
-local185 А*x$181АК"
-java/lang/String#*5
-local179 А*x$175АК"
-java/lang/String#*5
-local398 А*x$396АК"
-java/lang/String#*5
-local102 А*x$101АК"
-java/lang/String#*5
-local278 А*x$275АК"
-java/lang/String#*5
-local201 А*x$198АК"
-java/lang/String#*5
-local170 А*x$170АК"
-java/lang/String#*1
-local9 А*x$8АК"
-java/lang/String#*5
-local356 А*x$353АК"
-java/lang/String#*5
-local300 А*x$296АК"
-java/lang/String#*5
-local263 А*x$260АК"
-java/lang/String#*5
-local309 А*x$305АК"
-java/lang/String#*5
-local164 А*x$160АК"
-java/lang/String#*5
-local158 А*x$156АК"
-java/lang/String#*5
-local299 А*x$295АК"
-java/lang/String#*5
-local482 А*x$476АК"
-java/lang/String#*1
-local0 А*x$1АК"
-java/lang/String#*5
-local191 А*x$187АК"
-java/lang/String#*5
-local377 А*x$373АК"
-java/lang/String#*3
-local52 А*x$53АК"
-java/lang/String#*3
-local67 А*x$65АК"
-java/lang/String#*5
-local284 А*x$279АК"
-java/lang/String#*3
-local25 А*x$23АК"
-java/lang/String#*╧
--provingground/library/monoid$mul_assoc.value. └*valueАКИЕ
- А¤provingground/HoTT.FuncLike#97provingground/HoTT.Typ#provingground/HoTT.Term#бЮprovingground/HoTT.FuncLike#provingground/HoTT.Term#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#Т: *3
-local19 А*x$18АК"
-java/lang/String#*5
-local497 А*x$491АК"
-java/lang/String#*5
-local383 А*x$378АК"
-java/lang/String#*5
-local362 А*x$356АК"
-java/lang/String#*5
-local257 А*x$252АК"
-java/lang/String#*5
-local461 А*x$455АК"
-java/lang/String#*5
-local455 А*x$449АК"
-java/lang/String#*3
-local10 А*x$11АК"
-java/lang/String#*3
-local46 А*x$45АК"
-java/lang/String#*3
-local13 А*x$12АК"
-java/lang/String#*5
-local464 А*x$458АК"
-java/lang/String#*1
-local3 А*x$5АК"
-java/lang/String#*5
-local344 А*x$338АК"
-java/lang/String#*5
-local350 А*x$344АК"
-java/lang/String#*5
-local359 А*x$355АК"
-java/lang/String#*3
-local40 А*x$37АК"
-java/lang/String#*5
-local239 А*x$234АК"
-java/lang/String#*3
-local49 А*x$46АК"
-java/lang/String#*5
-local458 А*x$453АК"
-java/lang/String#*5
-local485 А*x$481АК"
-java/lang/String#*5
-local188 А*x$188АК"
-java/lang/String#*Т
-'provingground/library/monoid$mul_assoc.
- *monoid$mul_assocАКH
-F
- scala/AnyRef#"/
--provingground/library/monoid$mul_assoc.value.Т: *5
-local443 А*x$437АК"
-java/lang/String#*5
-local287 А*x$283АК"
-java/lang/String#*5
-local245 А*x$240АК"
-java/lang/String#*3
-local96 А*x$93АК"
-java/lang/String#*5
-local152 А*x$152АК"
-java/lang/String#*5
-local272 А*x$267АК"
-java/lang/String#*5
-local167 А*x$163АК"
-java/lang/String#*3
-local34 А*x$31АК"
-java/lang/String#*5
-local365 А*x$360АК"
-java/lang/String#*5
-local371 А*x$365АК"
-java/lang/String#*5
-local266 А*x$261АК"
-java/lang/String#*5
-local470 А*x$466АК"
-java/lang/String#*5
-local479 А*x$473АК"
-java/lang/String#*5
-local173 А*x$169АК"
-java/lang/String#*5
-local338 А*x$334АК"
-java/lang/String#*3
-local28 А*x$25АК"
-java/lang/String#*5
-local386 А*x$380АК"
-java/lang/String#*5
-local251 А*x$246АК"
-java/lang/String#*5
-local437 А*x$431АК"
-java/lang/String#*5
-local146 А*x$146АК"
-java/lang/String#*5
-local155 А*x$151АК"
-java/lang/String#*5
-local269 А*x$265АК"
-java/lang/String#*5
-local128 А*x$124АК"
-java/lang/String#*5
-local233 А*x$228АК"
-java/lang/String#*5
-local368 А*x$362АК"
-java/lang/String#*5
-local227 А*x$226АК"
-java/lang/String#*5
-local431 А*x$427АК"
-java/lang/String#*5
-local446 А*x$440АК"
-java/lang/String#*5
-local254 А*x$249АК"
-java/lang/String#*5
-local140 А*x$138АК"
-java/lang/String#*5
-local326 А*x$320АК"
-java/lang/String#*5
-local149 А*x$145АК"
-java/lang/String#*3
-local16 А*x$16АК"
-java/lang/String#*5
-local353 А*x$347АК"
-java/lang/String#*5
-local248 А*x$243АК"
-java/lang/String#*3
-local84 А*x$83АК"
-java/lang/String#*5
-local452 А*x$448АК"
-java/lang/String#*5
-local311 А*x$307АК"
-java/lang/String#*5
-local467 А*x$463АК"
-java/lang/String#*5
-local524 А*x$518АК"
-java/lang/String#*5
-local410 А*x$406АК"
-java/lang/String#*5
-local425 А*x$423АК"
-java/lang/String#*5
-local419 А*x$413АК"
-java/lang/String#*3
-local99 А*x$96АК"
-java/lang/String#*5
-local332 А*x$330АК"
-java/lang/String#*5
-local518 А*x$512АК"
-java/lang/String#*3
-local22 А*x$24АК"
-java/lang/String#*3
-local90 А*x$87АК"
-java/lang/String#*5
-local134 А*x$130АК"
-java/lang/String#*5
-local161 А*x$158АК"
-java/lang/String#*5
-local347 А*x$341АК"
-java/lang/String#*3
-local78 А*x$75АК"
-java/lang/String#*5
-local260 А*x$258АК"
-java/lang/String#*5
-local143 А*x$139АК"
-java/lang/String#*5
-local512 А*x$506АК"
-java/lang/String#*5
-local407 А*x$402АК"
-java/lang/String#*4
-local101 А*x$98АК"
-java/lang/String#*3
-local87 А*x$86АК"
-java/lang/String#*5
-local221 А*x$218АК"
-java/lang/String#*5
-local236 А*x$235АК"
-java/lang/String#*5
-local122 А*x$118АК"
-java/lang/String#*5
-local116 А*x$117АК"
-java/lang/String#*5
-local440 А*x$434АК"
-java/lang/String#*5
-local329 А*x$323АК"
-java/lang/String#*5
-local335 А*x$329АК"
-java/lang/String#*5
-local242 А*x$239АК"
-java/lang/String#*5
-local137 А*x$133АК"
-java/lang/String#*3
-local93 А*x$91АК"
-java/lang/String#*5
-local506 А*x$500АК"
-java/lang/String#*5
-local320 А*x$314АК"
-java/lang/String#*5
-local496 А*x$490АК"
-java/lang/String#*5
-local200 А*x$197АК"
-java/lang/String#*5
-local209 А*x$208АК"
-java/lang/String#*5
-local215 А*x$212АК"
-java/lang/String#*5
-local413 А*x$407АК"
-java/lang/String#*5
-local449 А*x$446АК"
-java/lang/String#*5
-local428 А*x$422АК"
-java/lang/String#*5
-local314 А*x$309АК"
-java/lang/String#*5
-local308 А*x$304АК"
-java/lang/String#*5
-local341 А*x$335АК"
-java/lang/String#*3
-local66 А*x$66АК"
-java/lang/String#*3
-local72 А*x$69АК"
-java/lang/String#*5
-local434 А*x$428АК"
-java/lang/String#*5
-local422 А*x$416АК"
-java/lang/String#*5
-local131 А*x$128АК"
-java/lang/String#*5
-local317 А*x$313АК"
-java/lang/String#*5
-local521 А*x$515АК"
-java/lang/String#*3
-local48 А*x$47АК"
-java/lang/String#*5
-local416 А*x$414АК"
-java/lang/String#*5
-local385 А*x$379АК"
-java/lang/String#*3
-local75 А*x$73АК"
-java/lang/String#*5
-local119 А*x$116АК"
-java/lang/String#*5
-local484 А*x$478АК"
-java/lang/String#*5
-local478 А*x$472АК"
-java/lang/String#*5
-local302 А*x$301АК"
-java/lang/String#*5
-local323 А*x$321АК"
-java/lang/String#*5
-local187 А*x$184АК"
-java/lang/String#*3
-local69 А*x$68АК"
-java/lang/String#*5
-local401 А*x$398АК"
-java/lang/String#*5
-local391 А*x$385АК"
-java/lang/String#*5
-local500 А*x$494АК"
-java/lang/String#*5
-local509 А*x$505АК"
-java/lang/String#*5
-local499 А*x$497АК"
-java/lang/String#*3
-local54 А*x$51АК"
-java/lang/String#*5
-local203 А*x$200АК"
-java/lang/String#*5
-local230 А*x$225АК"
-java/lang/String#*5
-local125 А*x$123АК"
-java/lang/String#*5
-local490 А*x$486АК"
-java/lang/String#*5
-local515 А*x$509АК"
-java/lang/String#*5
-local193 А*x$189АК"
-java/lang/String#*5
-local218 А*x$214АК"
-java/lang/String#*5
-local224 А*x$219АК"
-java/lang/String#*3
-local60 А*x$57АК"
-java/lang/String#*5
-local110 А*x$108АК"
-java/lang/String#*5
-local292 А*x$289АК"
-java/lang/String#*5
-local286 А*x$281АК"
-java/lang/String#*5
-local104 А*x$106АК"
-java/lang/String#*3
-local81 А*x$78АК"
-java/lang/String#*5
-local181 А*x$179АК"
-java/lang/String#*5
-local295 А*x$290АК"
-java/lang/String#*3
-local36 А*x$33АК"
-java/lang/String#*5
-local404 А*x$399АК"
-java/lang/String#*5
-local394 А*x$393АК"
-java/lang/String#*5
-local107 А*x$105АК"
-java/lang/String#*5
-local289 А*x$284АК"
-java/lang/String#*5
-local472 А*x$470АК"
-java/lang/String#*5
-local206 А*x$203АК"
-java/lang/String#*5
-local175 А*x$171АК"
-java/lang/String#*3
-local42 А*x$43АК"
-java/lang/String#*5
-local274 А*x$271АК"
-java/lang/String#*5
-local305 А*x$303АК"
-java/lang/String#*5
-local169 А*x$166АК"
-java/lang/String#*5
-local493 А*x$487АК"
-java/lang/String#*5
-local487 А*x$522АК"
-java/lang/String#*1
-local5 А*x$4АК"
-java/lang/String#*5
-local373 А*x$367АК"
-java/lang/String#*5
-local196 А*x$194АК"
-java/lang/String#*3
-local63 А*x$60АК"
-java/lang/String#*3
-local21 А*x$20АК"
-java/lang/String#*5
-local503 А*x$501АК"
-java/lang/String#*5
-local367 А*x$361АК"
-java/lang/String#*5
-local212 А*x$209АК"
-java/lang/String#*3
-local57 А*x$54АК"
-java/lang/String#*5
-local280 А*x$294АК"
-java/lang/String#*5
-local466 А*x$460АК"
-java/lang/String#*5
-local160 А*x$159АК"
-java/lang/String#*5
-local388 А*x$384АК"
-java/lang/String#*5
-local113 А*x$111АК"
-java/lang/String#*5
-local268 А*x$263АК"
-java/lang/String#*5
-local460 А*x$454АК"
-java/lang/String#*5
-local469 А*x$482АК"
-java/lang/String#*5
-local355 А*x$349АК"
-java/lang/String#*3
-local45 А*x$42АК"
-java/lang/String#*5
-local199 А*x$196АК"
-java/lang/String#*3
-local18 А*x$17АК"
-java/lang/String#*1
-local8 А*x$9АК"
-java/lang/String#*5
-local184 А*x$180АК"
-java/lang/String#*5
-local448 А*x$442АК"
-java/lang/String#*5
-local142 А*x$140АК"
-java/lang/String#*5
-local157 А*x$153АК"
-java/lang/String#*5
-local361 А*x$359АК"
-java/lang/String#*3
-local51 А*x$48АК"
-java/lang/String#*5
-local163 А*x$161АК"
-java/lang/String#*5
-local277 А*x$272АК"
-java/lang/String#*5
-local283 А*x$282АК"
-java/lang/String#*5
-local178 А*x$176АК"
-java/lang/String#*3
-local39 А*x$36АК"
-java/lang/String#*5
-local481 А*x$477АК"
-java/lang/String#*5
-local190 А*x$186АК"
-java/lang/String#*5
-local241 А*x$236АК"
-java/lang/String#*5
-local376 А*x$389АК"
-java/lang/String#*5
-local382 А*x$376АК"
-java/lang/String#*5
-local475 А*x$469АК"
-java/lang/String#*5
-local454 А*x$452АК"
-java/lang/String#*5
-local340 А*x$336АК"
-java/lang/String#*5
-local298 А*x$298АК"
-java/lang/String#*5
-local349 А*x$343АК"
-java/lang/String#*3
-local30 А*x$27АК"
-java/lang/String#*3
-local24 А*x$22АК"
-java/lang/String#*5
-local397 А*x$392АК"
-java/lang/String#*5
-local262 А*x$276АК"
-java/lang/String#*5
-local256 А*x$253АК"
-java/lang/String#*5
-local124 А*x$120АК"
-java/lang/String#*1
-local2 А*x$2АК"
-java/lang/String#*5
-local343 А*x$337АК"
-java/lang/String#*5
-local379 А*x$377АК"
-java/lang/String#*3
-local33 А*x$34АК"
-java/lang/String#*5
-local238 А*x$233АК"
-java/lang/String#*5
-local442 А*x$436АК"
-java/lang/String#*5
-local436 А*x$430АК"
-java/lang/String#*5
-local145 А*x$141АК"
-java/lang/String#*5
-local337 А*x$331АК"
-java/lang/String#*3
-local27 А*x$26АК"
-java/lang/String#*5
-local364 А*x$358АК"
-java/lang/String#*5
-local223 А*x$220АК"
-java/lang/String#*3
-local95 А*x$92АК"
-java/lang/String#*3
-local89 А*x$90АК"
-java/lang/String#*5
-local457 А*x$451АК"
-java/lang/String#*5
-local322 А*x$316АК"
-java/lang/String#*3
-local12 А*x$15АК"
-java/lang/String#*5
-local520 А*x$514АК"
-java/lang/String#*5
-local421 А*x$419АК"
-java/lang/String#*3
-local80 А*x$79АК"
-java/lang/String#*5
-local151 А*x$147АК"
-java/lang/String#*5
-local244 А*x$241АК"
-java/lang/String#*5
-local250 А*x$247АК"
-java/lang/String#*5
-local139 А*x$135АК"
-java/lang/String#*5
-local259 А*x$254АК"
-java/lang/String#*5
-local463 А*x$459АК"
-java/lang/String#*5
-local172 А*x$168АК"
-java/lang/String#*5
-local166 А*x$162АК"
-java/lang/String#*5
-local358 А*x$371АК"
-java/lang/String#*5
-local370 А*x$366АК"
-java/lang/String#*5
-local130 А*x$126АК"
-java/lang/String#*5
-local265 А*x$264АК"
-java/lang/String#*5
-local271 А*x$266АК"
-java/lang/String#*5
-local148 А*x$144АК"
-java/lang/String#*5
-local517 А*x$513АК"
-java/lang/String#*5
-local352 А*x$348АК"
-java/lang/String#*3
-local62 А*x$61АК"
-java/lang/String#*5
-local247 А*x$242АК"
-java/lang/String#*5
-local106 А*x$104АК"
-java/lang/String#*5
-local310 А*x$306АК"
-java/lang/String#*5
-local133 А*x$129АК"
-java/lang/String#*5
-local205 А*x$204АК"
-java/lang/String#*5
-local418 А*x$412АК"
-java/lang/String#*5
-local232 А*x$231АК"
-java/lang/String#*5
-local127 А*x$127АК"
-java/lang/String#*5
-local451 А*x$464АК"
-java/lang/String#*5
-local445 А*x$441АК"
-java/lang/String#*5
-local331 А*x$325АК"
-java/lang/String#*5
-local154 А*x$150АК"
-java/lang/String#*5
-local403 А*x$400АК"
-java/lang/String#*5
-local439 А*x$435АК"
-java/lang/String#*5
-local112 А*x$110АК"
-java/lang/String#*5
-local253 А*x$248АК"
-java/lang/String#*3
-local98 А*x$97АК"
-java/lang/String#*5
-local502 А*x$496АК"
-java/lang/String#*н	
-local211 А*rxyzАКС	"О	
-Л	И	provingground/HoTT.Func#ХТprovingground/HoTT.FuncLike#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#┘╓provingground/HoTT.FuncLike#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.FuncLike#provingground/HoTT.Term#СОprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#УРprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*5
-local325 А*x$319АК"
-java/lang/String#*3
-local15 А*x$14АК"
-java/lang/String#*5
-local430 А*x$424АК"
-java/lang/String#*5
-local424 А*x$418АК"
-java/lang/String#*5
-local319 А*x$315АК"
-java/lang/String#*3
-local83 А*x$80АК"
-java/lang/String#*5
-local523 А*x$519АК"
-java/lang/String#*5
-local346 А*x$342АК"
-java/lang/String#*5
-local226 А*x$221АК"
-java/lang/String#*3
-local77 А*x$74АК"
-java/lang/String#*5
-local304 А*x$300АК"
-java/lang/String#*5
-local433 А*x$429АК"
-java/lang/String#*5
-local313 А*x$308АК"
-java/lang/String#*5
-local328 А*x$326АК"
-java/lang/String#*5
-local526 А*x$520АК"
-java/lang/String#*5
-local381 А*x$375АК"
-java/lang/String#*3
-local71 А*x$72АК"
-java/lang/String#*5
-local489 А*x$483АК"
-java/lang/String#*3
-local44 А*x$41АК"
-java/lang/String#*5
-local412 А*x$408АК"
-java/lang/String#*4
-local100 А*x$99АК"
-java/lang/String#*5
-local115 А*x$113АК"
-java/lang/String#*5
-local505 А*x$499АК"
-java/lang/String#*5
-local480 А*x$474АК"
-java/lang/String#*3
-local50 А*x$49АК"
-java/lang/String#*3
-local59 А*x$56АК"
-java/lang/String#*5
-local208 А*x$205АК"
-java/lang/String#*5
-local427 А*x$421АК"
-java/lang/String#*5
-local121 А*x$119АК"
-java/lang/String#*5
-local235 А*x$230АК"
-java/lang/String#*5
-local136 А*x$136АК"
-java/lang/String#*5
-local495 А*x$489АК"
-java/lang/String#*5
-local334 А*x$328АК"
-java/lang/String#*5
-local198 А*x$199АК"
-java/lang/String#*5
-local229 А*x$224АК"
-java/lang/String#*3
-local65 А*x$62АК"
-java/lang/String#*5
-local297 А*x$292АК"
-java/lang/String#*н	
-local307 А*rxyzАКС	"О	
-Л	И	provingground/HoTT.Func#ХТprovingground/HoTT.FuncLike#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#┘╓provingground/HoTT.FuncLike#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.FuncLike#provingground/HoTT.Term#СОprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#УРprovingground/HoTT.Func#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#╙╨provingground/HoTT.Func#provingground/HoTT.Term#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*3
-local92 А*x$89АК"
-java/lang/String#*5
-local511 А*x$507АК"
-java/lang/String#*5
-local406 А*x$401АК"
-java/lang/String#*5
-local214 А*x$211АК"
-java/lang/String#*5
-local220 А*x$256АК"
-java/lang/String#*5
-local396 А*x$391АК"
-java/lang/String#*5
-local109 А*x$107АК"
-java/lang/String#*4
-local86 А*x$102АК"
-java/lang/String#*5
-local301 А*x$297АК"
-java/lang/String#*5
-local291 А*x$286АК"
-java/lang/String#*5
-local186 А*x$182АК"
-java/lang/String#*5
-local400 А*x$395АК"
-java/lang/String#*5
-local409 А*x$444АК"
-java/lang/String#*5
-local103 А*x$100АК"
-java/lang/String#*5
-local399 А*x$394АК"
-java/lang/String#*5
-local118 А*x$115АК"
-java/lang/String#*5
-local508 А*x$502АК"
-java/lang/String#*5
-local477 А*x$475АК"
-java/lang/String#*5
-local171 А*x$167АК"
-java/lang/String#*5
-local363 А*x$357АК"
-java/lang/String#*3
-local47 А*x$44АК"
-java/lang/String#*3
-local53 А*x$50АК"
-java/lang/String#*5
-local390 А*x$386АК"
-java/lang/String#*5
-local384 А*x$382АК"
-java/lang/String#*5
-local279 А*x$274АК"
-java/lang/String#*5
-local285 А*x$280АК"
-java/lang/String#*5
-local483 А*x$479АК"
-java/lang/String#*╦
-
-local1 А*rxyzАК▒
-"о
-
-л
-и
-provingground/HoTT.Func#чфprovingground/HoTT.FuncLike#ХТprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#лиprovingground/HoTT.FuncLike#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#евprovingground/HoTT.FuncLike#provingground/HoTT.Term#урprovingground/HoTT.FuncLike#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#с▐provingground/HoTT.FuncLike#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#бЮprovingground/HoTT.FuncLike#provingground/HoTT.Term#▀▄provingground/HoTT.FuncLike#provingground/HoTT.Term#ЭЪprovingground/HoTT.FuncLike#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#*5
-local498 А*x$493АК"
-java/lang/String#*5
-local202 А*x$202АК"
-java/lang/String#*5
-local378 А*x$372АК"
-java/lang/String#*3
-local68 А*x$84АК"
-java/lang/String#*5
-local415 А*x$409АК"
-java/lang/String#*5
-local270 А*x$269АК"
-java/lang/String#*3
-local32 А*x$29АК"
-java/lang/String#*3
-local26 А*x$64АК"
-java/lang/String#*5
-local514 А*x$508АК"
-java/lang/String#*5
-local217 А*x$213АК"
-java/lang/String#*5
-local462 А*x$456АК"
-java/lang/String#*5
-local316 А*x$351АК"
-java/lang/String#*5
-local192 А*x$190АК"
-java/lang/String#*3
-local74 А*x$71АК"
-java/lang/String#2.
-
-∙ √provingground/HoTT.Typ#`::`().2.
-
-▓ ┤provingground/HoTT.Typ#`::`().2.
-
-т фprovingground/HoTT.Typ#`::`().2+
-
-ё °provingground/HoTT.FuncTyp.2(
-
-ы яprovingground/HoTT.Type.2(
-
-╨
- ╘
-provingground/HoTT.Prop.2,
-
-┐ ┼provingground/HoTT.piDefn().2.
-
-Н Пprovingground/HoTT.Typ#`::`().2.
-  provingground/library/monoidInd.2(
-
-╓ ┌provingground/HoTT.Type.2?
-	9	 >1provingground/induction/ConstructorSeqTL#induc().2(
-
-░ ┤provingground/HoTT.Type.2.
-
-  Б	provingground/HoTT.Typ#`::`().2,
-
-ю Їprovingground/HoTT.piDefn().2(
-
-№ Аprovingground/HoTT.Type.2.
-
-Ф Цprovingground/HoTT.Typ#`::`().2.
-
-	╢	 ╕provingground/HoTT.Typ#`::`().2,
-
-	Ь	 вprovingground/HoTT.piDefn().2.
-
-┴ ├provingground/HoTT.Typ#`::`().2(
-
-▓ ╢provingground/HoTT.Type.2.
-
-Р Тprovingground/HoTT.Typ#`::`().2.
-
-є їprovingground/HoTT.Typ#`::`().2,
- !provingground/HoTT.Typ#`::`().2(
-
-Р Фprovingground/HoTT.Type.2.
-
-╒ ╫provingground/HoTT.Typ#`::`().2+
-
-╤ ╪provingground/HoTT.FuncTyp.2(
-
-╫	 █	provingground/HoTT.Type.2.
-
-у	 х	provingground/HoTT.Typ#`::`().2.
-
-╞ ╚provingground/HoTT.Typ#`::`().2.
-
-▀ сprovingground/HoTT.Typ#`::`().2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2(
-
-╪	 ▄	provingground/HoTT.Type.2.
-
-Ж Иprovingground/HoTT.Typ#`::`().2(
-
-т
- ц
-provingground/HoTT.Type.2.
-
-у	 х	provingground/HoTT.Typ#`::`().2,
-
-П Хprovingground/HoTT.piDefn().2(
-
-б еprovingground/HoTT.Type.2+
-
-└ ╟provingground/HoTT.FuncTyp.2.
-
-├ ┼provingground/HoTT.Typ#`::`().2(
-
-Я
- г
-provingground/HoTT.Type.2+
-
-╒ ▄provingground/HoTT.FuncTyp.2=
-
-;
- >/provingground/induction/ConstructorSeqTL#rec().2.
-
-н пprovingground/HoTT.Typ#`::`().2.
-
-э яprovingground/HoTT.Typ#`::`().2+
-
-¤
- Дprovingground/HoTT.FuncTyp.2(
-
-╩
- ╬
-provingground/HoTT.Type.2.
-
-╨ ╥provingground/HoTT.Typ#`::`().2.
-
-Ї Ўprovingground/HoTT.Typ#`::`().2.
-
-═ ╧provingground/HoTT.Typ#`::`().2.
-
-В Дprovingground/HoTT.Typ#`::`().2&
-` dprovingground/HoTT.Type.2&
-5 9provingground/HoTT.Type.2+
-
-╗ ┬provingground/HoTT.FuncTyp.2(
-
-∙ ¤provingground/HoTT.Type.2.
-
-б гprovingground/HoTT.Typ#`::`().2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2.
-
-╕ ║provingground/HoTT.Typ#`::`().2.
-
-У	 Х	provingground/HoTT.Typ#`::`().2(
-
-└
- ─
-provingground/HoTT.Type.2.
-
-Ц Шprovingground/HoTT.Typ#`::`().24
-		 &provingground/library/monoidInd.value.2(
-
-╕ ╝provingground/HoTT.Type.2(
-
-Л Пprovingground/HoTT.Type.2.
-
-й лprovingground/HoTT.Typ#`::`().2(
-
-· ■provingground/HoTT.Type.2(
-
-	╒	 ┘provingground/HoTT.Type.2&
-x |provingground/HoTT.Type.2.
-
-Э Яprovingground/HoTT.Typ#`::`().2,
- !provingground/HoTT.Typ#`::`().2.
-
-╪ ┌provingground/HoTT.Typ#`::`().2,
-
-╘ ┌provingground/HoTT.piDefn().2.
-
-┬ ─provingground/HoTT.Typ#`::`().2.
-
-╘	 ╓	provingground/HoTT.Typ#`::`().2.
-
-┴	 ├	provingground/HoTT.Typ#`::`().2(
-
-
-Ч
- Ыprovingground/HoTT.Type.2.
-
-┌ ▄provingground/HoTT.Typ#`::`().2&
-[ _provingground/HoTT.Type.2.
-
-▀ сprovingground/HoTT.Typ#`::`().2.
-
-М Оprovingground/HoTT.Typ#`::`().2(
-
-╪ ▄provingground/HoTT.Type.2)
-" )provingground/HoTT.FuncTyp.2(
-
-№ Аprovingground/HoTT.Type.2(
-
-╒ ┘provingground/HoTT.Type.2!
- provingground/HoTT.2)
-a hprovingground/HoTT.FuncTyp.2.
-
-И Кprovingground/HoTT.Typ#`::`().2)
-D Kprovingground/HoTT.FuncTyp.2(
-
-	Ш	 Ьprovingground/HoTT.Type.2
- 
-shapeless/2
-
-
-
- local172+
-
-ї №provingground/HoTT.FuncTyp.2.
-
-Ў °provingground/HoTT.Typ#`::`().2.
-
-Э Яprovingground/HoTT.Typ#`::`().2.
-
-с уprovingground/HoTT.Typ#`::`().2.
-
-┴ ├provingground/HoTT.Typ#`::`().2(
-
-А Дprovingground/HoTT.Prop.2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2.
-
-╣ ╗provingground/HoTT.Typ#`::`().2.
-
-┤ ╢provingground/HoTT.Typ#`::`().2.
-
-є їprovingground/HoTT.Typ#`::`().2(
-
-╣ ╜provingground/HoTT.Type.2(
-
-к оprovingground/HoTT.Type.2.
-
-ж	 и	provingground/HoTT.Typ#`::`().2,
- !provingground/HoTT.Typ#`::`().2(
-
-Л Пprovingground/HoTT.Type.2(
-
-Е Йprovingground/HoTT.Type.2.
-
-В Дprovingground/HoTT.Typ#`::`().2(
-
-Е Йprovingground/HoTT.Type.2(
-
-▓ ╢provingground/HoTT.Type.2(
-
-ш ьprovingground/HoTT.Type.2(
-
-о ▓provingground/HoTT.Type.2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2,
-
-╢ ╝provingground/HoTT.piDefn().2,
-
-2
- 4provingground/HoTT.Typ#`::`().2(
-
-э
- ё
-provingground/HoTT.Type.2(
-
-╒ ┘provingground/HoTT.Type.2.
-
-╒ ╫provingground/HoTT.Typ#`::`().2+
-
-║ ┴provingground/HoTT.FuncTyp.2.
-
-ї ўprovingground/HoTT.Typ#`::`().2+
-
-╙ ┌provingground/HoTT.FuncTyp.2&
-	s	 wprovingground/HoTT.Type.2+
-
-▌ фprovingground/HoTT.FuncTyp.2.
-
-¤	  	provingground/HoTT.Typ#`::`().2.
-
-Ў °provingground/HoTT.Typ#`::`().2(
-
-╕ ╝provingground/HoTT.Type.2(
-
-Щ Эprovingground/HoTT.Type.2,
-X Zprovingground/HoTT.Typ#`::`().2+
-
-Е
- М
-provingground/HoTT.FuncTyp.2.
-
-	╥	 ╘provingground/HoTT.Typ#`::`().2.
-
-М Оprovingground/HoTT.Typ#`::`().2
- 
-local172.
-
-б гprovingground/HoTT.Typ#`::`().2(
-
-▓ ╢provingground/HoTT.Type.2,
-
-X
- Zprovingground/HoTT.Typ#`::`().2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2.
-
-╙ ╒provingground/HoTT.Typ#`::`().2*
- provingground/HoTT.lambda().2.
-
-ї ўprovingground/HoTT.Typ#`::`().2.
-
-▌ ▀provingground/HoTT.Typ#`::`().2.
-
-э яprovingground/HoTT.Typ#`::`().2.
-
-ъ ьprovingground/HoTT.Typ#`::`().2.
-
-╜
- ┐
-provingground/HoTT.Typ#`::`().2+
-
-║ ┴provingground/HoTT.FuncTyp.2.
-
-┐ ┴provingground/HoTT.Typ#`::`().2,
-
-	щ	 яprovingground/HoTT.piDefn().2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2*
- provingground/HoTT.lambda().2(
-
-╜ ┴provingground/HoTT.Type.2+
-
-ы Єprovingground/HoTT.FuncTyp.2.
-
-Щ Ыprovingground/HoTT.Typ#`::`().2.
-
-Ъ Ьprovingground/HoTT.Typ#`::`().2.
-
-	Х	 Чprovingground/HoTT.Typ#`::`().2(
-
-е йprovingground/HoTT.Type.2(
-
-У Чprovingground/HoTT.Type.2(
-
-Э бprovingground/HoTT.Type.2(
-
-Г Зprovingground/HoTT.Type.2(
-
-у
- ч
-provingground/HoTT.Type.2(
-
-ч ыprovingground/HoTT.Type.2.
-
-╔ ╦provingground/HoTT.Typ#`::`().2.
-
-╞ ╚provingground/HoTT.Typ#`::`().2'
-	
-}
- Бprovingground/HoTT.Type.2)
-
-a
- hprovingground/HoTT.FuncTyp.2(
-
-█ ▀provingground/HoTT.Type.2.
-
-╞ ╚provingground/HoTT.Typ#`::`().2.
-
-	в	 дprovingground/HoTT.Typ#`::`().2.
-
-Р Тprovingground/HoTT.Typ#`::`().2(
-
-▓ ╢provingground/HoTT.Type.2,
-2 4provingground/HoTT.Typ#`::`().2.
-
-Ъ Ьprovingground/HoTT.Typ#`::`().2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2(
-
-Х Щprovingground/HoTT.Prop.2.
-
-б гprovingground/HoTT.Typ#`::`().2,
-
-й	 п	provingground/HoTT.piDefn().2.
-
-╕ ║provingground/HoTT.Typ#`::`().2,
-+ -provingground/HoTT.Typ#`::`().2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2(
-
-з лprovingground/HoTT.Type.2+
-
-╓ ▌provingground/HoTT.FuncTyp.2(
-
-М Рprovingground/HoTT.Type.2.
-
-╥ ╘provingground/HoTT.Typ#`::`().2(
-
-э ёprovingground/HoTT.Type.2(
-
-г зprovingground/HoTT.Type.2.
-
-▒ │provingground/HoTT.Typ#`::`().2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2.
-
-У	 Х	provingground/HoTT.Typ#`::`().2)
-	e	 lprovingground/HoTT.FuncTyp.2,
-
-ё ўprovingground/HoTT.lambda().2(
-
-М Рprovingground/HoTT.Type.2+
-
-ъ ёprovingground/HoTT.FuncTyp.2+
-
-ч юprovingground/HoTT.FuncTyp.2.
-
-Й Лprovingground/HoTT.Typ#`::`().2.
-
-Ы Эprovingground/HoTT.Typ#`::`().2.
-
-П Сprovingground/HoTT.Typ#`::`().2+
-
-╧ ╓provingground/HoTT.FuncTyp.2,
-
-П Хprovingground/HoTT.piDefn().2(
-
-Т Цprovingground/HoTT.Type.2.
-
-╕ ║provingground/HoTT.Typ#`::`().2(
-
-А
- Д
-provingground/HoTT.Type.2.
-
-└ ┬provingground/HoTT.Typ#`::`().2+
-
-╔ ╨provingground/HoTT.FuncTyp.2(
-
-█ ▀provingground/HoTT.Type.2.
-
-Ф Цprovingground/HoTT.Typ#`::`().2.
-
-п ▒provingground/HoTT.Typ#`::`().2.
-
-м оprovingground/HoTT.Typ#`::`().2(
-
- 	 Г
-provingground/HoTT.Type.2(
-
-Т Цprovingground/HoTT.Type.2(
-
-П Уprovingground/HoTT.Type.2)
-a hprovingground/HoTT.FuncTyp.2.
-
-д жprovingground/HoTT.Typ#`::`().2(
-
-Р Фprovingground/HoTT.Type.2.
-
-▓ ┤provingground/HoTT.Typ#`::`().2(
-
-а
- д
-provingground/HoTT.Type.2+
-
-╧ ╓provingground/HoTT.FuncTyp.2.
-
-Г Еprovingground/HoTT.Typ#`::`().2+
-
-ь єprovingground/HoTT.FuncTyp.2.
-
-ь юprovingground/HoTT.Typ#`::`().2(
-
-╗ ┐provingground/HoTT.Type.2+
-
-└ ╟provingground/HoTT.FuncTyp.2(
-
-┴ ┼provingground/HoTT.Type.2,
-2 4provingground/HoTT.Typ#`::`().2(
-
-П Уprovingground/HoTT.Type.2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2.
-
-х чprovingground/HoTT.Typ#`::`().2(
-
-∙ ¤provingground/HoTT.Type.2+
-
-▌ фprovingground/HoTT.FuncTyp.2.
-
-╩ ╠provingground/HoTT.Typ#`::`().2.
-
-Ж Иprovingground/HoTT.Typ#`::`().2(
-
-Э бprovingground/HoTT.Type.2.
-
-р тprovingground/HoTT.Typ#`::`().2.
-
-Р Тprovingground/HoTT.Typ#`::`().2(
-
-╪ ▄provingground/HoTT.Type.2,
-
-й	 п	provingground/HoTT.piDefn().2(
-
-н ▒provingground/HoTT.Type.2(
-
-ж кprovingground/HoTT.Type.2.
-
-╙ ╒provingground/HoTT.Typ#`::`().2.
-
-√
- ¤
-provingground/HoTT.Typ#`::`().2+
-
-э Їprovingground/HoTT.FuncTyp.2.
-
-ж иprovingground/HoTT.Typ#`::`().2&
- provingground/induction/2(
-
-№ Аprovingground/HoTT.Type.2.
-
-╒	 ╫	provingground/HoTT.Typ#`::`().2.
-
-│ ╡provingground/HoTT.Typ#`::`().2(
-
-Е Йprovingground/HoTT.Type.2,
-
-	Х	 Ыprovingground/HoTT.piDefn().2,
-
-─ ╩provingground/HoTT.piDefn().2.
-
-√ ¤provingground/HoTT.Typ#`::`().2(
-
-┐ ├provingground/HoTT.Type.2.
-
-у хprovingground/HoTT.Typ#`::`().2(
-
-╪ ▄provingground/HoTT.Type.2.
-
-П Сprovingground/HoTT.Typ#`::`().2(
-
-о ▓provingground/HoTT.Type.2.
-
-Ь Юprovingground/HoTT.Typ#`::`().2&
-5 9provingground/HoTT.Type.2
- 
-local2112&
-5 9provingground/HoTT.Type.2(
-
-а дprovingground/HoTT.Type.2(
-
-╓ ┌provingground/HoTT.Type.2.
-
-▒ │provingground/HoTT.Typ#`::`().2.
-
-ю Ёprovingground/HoTT.Typ#`::`().2.
-
-Э Яprovingground/HoTT.Typ#`::`().2.
-
-¤  provingground/HoTT.Typ#`::`().2(
-
-∙ ¤provingground/HoTT.Type.2.
-
-а вprovingground/HoTT.Typ#`::`().2.
-
-	К	 Мprovingground/HoTT.Typ#`::`().2.
-
-║ ╝provingground/HoTT.Typ#`::`().2.
-
-В Дprovingground/HoTT.Typ#`::`().2(
-
-╦ ╧provingground/HoTT.Type.2+
-
-■
- Еprovingground/HoTT.FuncTyp.2
-		 local12&
-> Bprovingground/HoTT.Type.2.
-
-╜ ┐provingground/HoTT.Typ#`::`().2(
-
-╫ █provingground/HoTT.Type.2.
-
-Ч Щprovingground/HoTT.Typ#`::`().2.
-
-	╠	 ╬provingground/HoTT.Typ#`::`().2+
-
-╧ ╓provingground/HoTT.FuncTyp.2.
-
-А Вprovingground/HoTT.Typ#`::`().24
-  &provingground/library/monoidInd.value.2,
-	0	 2provingground/HoTT.Typ#`::`().2)
-  'provingground/HoTT.FuncTyp.2(
-
-┐
- ├
-provingground/HoTT.Type.2.
-
-¤	  	provingground/HoTT.Typ#`::`().2.
-
-Г Еprovingground/HoTT.Typ#`::`().2(
-
-А Дprovingground/HoTT.Type.2.
-
-є їprovingground/HoTT.Typ#`::`().2.
-
-г еprovingground/HoTT.Typ#`::`().2.
-
-╩ ╠provingground/HoTT.Typ#`::`().2.
-
-Ц Шprovingground/HoTT.Typ#`::`().2.
-
-Ю аprovingground/HoTT.Typ#`::`().2.
-
-Е Зprovingground/HoTT.Typ#`::`().2(
-
-Ж Кprovingground/HoTT.Type.2(
-
-┼ ╔provingground/HoTT.Prop.2+
-
-ф ыprovingground/HoTT.FuncTyp.2+
-
-▌ фprovingground/HoTT.FuncTyp.2+
-
-║ ┴provingground/HoTT.FuncTyp.2.
-
-	Л	 Нprovingground/HoTT.Typ#`::`().2.
-
-	▓	 ┤provingground/HoTT.Typ#`::`().2(
-
-╠ ╨provingground/HoTT.Type.2.
-
-э яprovingground/HoTT.Typ#`::`().2(
-
-∙ ¤provingground/HoTT.Type.2(
-
-Е Йprovingground/HoTT.Type.2+
-
-А Зprovingground/HoTT.FuncTyp.2(
-
-▓ ╢provingground/HoTT.Type.2.
-
-╝
- ╛
-provingground/HoTT.Typ#`::`().2(
-
-╡ ╣provingground/HoTT.Type.2(
-
-┌ ▐provingground/HoTT.Type.2(
-
-║ ╛provingground/HoTT.Type.2,
-z |provingground/HoTT.Typ#`::`().2.
-
-· №provingground/HoTT.Typ#`::`().2(
-
-Щ Эprovingground/HoTT.Type.2(
-
-в жprovingground/HoTT.Type.2.
-
-Ч Щprovingground/HoTT.Typ#`::`().2(
-
-Э бprovingground/HoTT.Type.2(
-
-т цprovingground/HoTT.Type.2.
-
-█ ▌provingground/HoTT.Typ#`::`().2(
-
-╡ ╣provingground/HoTT.Type.2.
-
-у хprovingground/HoTT.Typ#`::`().2+
-
-■ Еprovingground/HoTT.FuncTyp.2,
-
-Щ Яprovingground/HoTT.piDefn().2,
-2 4provingground/HoTT.Typ#`::`().2.
-
-╒ ╫provingground/HoTT.Typ#`::`().2(
-
-■ Вprovingground/HoTT.Type.2.
-
-к мprovingground/HoTT.Typ#`::`().2.
-
-╘ ╓provingground/HoTT.Typ#`::`().2&
- provingground/HoTT.Fold.2.
-
-У	 Х	provingground/HoTT.Typ#`::`().2.
-
-Щ Ыprovingground/HoTT.Typ#`::`().2(
-
-Ў ·provingground/HoTT.Type.2,
-
-ю Їprovingground/HoTT.piDefn().2.
-
-М Оprovingground/HoTT.Typ#`::`().2+
-
-В Зprovingground/HoTT.lmbda().2.
-
-щ ыprovingground/HoTT.Typ#`::`().2.
-
-Э Яprovingground/HoTT.Typ#`::`().2.
-
-с уprovingground/HoTT.Typ#`::`().2.
-
-╕ ║provingground/HoTT.Typ#`::`().2(
-
-█ ▀provingground/HoTT.Type.2(
-
-Є Ўprovingground/HoTT.Type.2+
-
-ж
- н
-provingground/HoTT.FuncTyp.2(
-
-т
- ц
-provingground/HoTT.Type.2.
-
-Р Тprovingground/HoTT.Typ#`::`().2.
-
-ў ∙provingground/HoTT.Typ#`::`().2.
-
-п ▒provingground/HoTT.Typ#`::`().2.
-
-ц шprovingground/HoTT.Typ#`::`().2+
-
-е
- м
-provingground/HoTT.FuncTyp.2(
-
-Т Цprovingground/HoTT.Prop.2&
-z ~provingground/HoTT.Type.2(
-
-а дprovingground/HoTT.Type.2.
-
-Й	 Л	provingground/HoTT.Typ#`::`().2.
-
-╪ ┌provingground/HoTT.Typ#`::`().2+
-
-н ┤provingground/HoTT.FuncTyp.2.
-
-─ ╞provingground/HoTT.Typ#`::`().2+
-
-Ь	 б	provingground/HoTT.lmbda().2
- provingground/2.
-
-Ц Шprovingground/HoTT.Typ#`::`().2.
-
-Н Пprovingground/HoTT.Typ#`::`().2+
-
-┘ рprovingground/HoTT.FuncTyp.2+
-
-Ё ўprovingground/HoTT.FuncTyp.2(
-
-к
- о
-provingground/HoTT.Type.2,
-[ ]provingground/HoTT.Typ#`::`().2.
-
-В Дprovingground/HoTT.Typ#`::`().2.
-
-к мprovingground/HoTT.Typ#`::`().2.
-
-я ёprovingground/HoTT.Typ#`::`().2(
-
-Ы Яprovingground/HoTT.Type.2+
-
-╗ ┬provingground/HoTT.FuncTyp.2(
-
-╗ ┐provingground/HoTT.Type.2(
-
-┤ ╕provingground/HoTT.Type.2(
-
-у
- ч
-provingground/HoTT.Type.2(
-
-	╣	 ╜provingground/HoTT.Type.2(
-
-┼
- ╔
-provingground/HoTT.Prop.2(
-
-д иprovingground/HoTT.Type.2(
-
-┌ ▐provingground/HoTT.Type.2+
-
-ж
- н
-provingground/HoTT.FuncTyp.2,
-w yprovingground/HoTT.Typ#`::`().2(
-
-Э бprovingground/HoTT.Type.2.
-
-и кprovingground/HoTT.Typ#`::`().2.
-
-ф цprovingground/HoTT.Typ#`::`().2.
-
-╫ ┘provingground/HoTT.Typ#`::`().2(
-
-Р Фprovingground/HoTT.Type.2+
-
-¤ Дprovingground/HoTT.FuncTyp.2.
-
-в дprovingground/HoTT.Typ#`::`().2.
-
-я ёprovingground/HoTT.Typ#`::`().2=
-; >/provingground/induction/ConstructorSeqTL#rec().2.
-
-╫ ┘provingground/HoTT.Typ#`::`().2.
-
-░ ▓provingground/HoTT.Typ#`::`().2(
-
-Ў ·provingground/HoTT.Type.2.
-
-П Сprovingground/HoTT.Typ#`::`().2(
-
-р фprovingground/HoTT.Type.2.
-
-т фprovingground/HoTT.Typ#`::`().2(
-
-А Дprovingground/HoTT.Prop.2(
-
-╔ ═provingground/HoTT.Type.2,
-u wprovingground/HoTT.Typ#`::`().2.
-
-ж	 и	provingground/HoTT.Typ#`::`().2(
-
-Є Ўprovingground/HoTT.Type.2.
-
-Ю аprovingground/HoTT.Typ#`::`().2.
-
-Є Їprovingground/HoTT.Typ#`::`().2.
-
-╕ ║provingground/HoTT.Typ#`::`().2 
- provingground/library/2*
- provingground/HoTT.lambda().2(
-
-Т Цprovingground/HoTT.Type.2.
-
-л нprovingground/HoTT.Typ#`::`().2+
-
-└ ╟provingground/HoTT.FuncTyp.2(
-
-╛ ┬provingground/HoTT.Type.2+
-
-В Зprovingground/HoTT.lmbda().2+
-
-а зprovingground/HoTT.FuncTyp.2(
-
-З Лprovingground/HoTT.Type.2.
-
-·
- №
-provingground/HoTT.Typ#`::`().2.
-
-Ю аprovingground/HoTT.Typ#`::`().2.
-
-Ю аprovingground/HoTT.Typ#`::`().2+
-
-┬ ╔provingground/HoTT.FuncTyp.2.
-
-я ёprovingground/HoTT.Typ#`::`().2(
-
-▐ тprovingground/HoTT.Type.2.
-
-╕ ║provingground/HoTT.Typ#`::`().2.
-
-Ц Шprovingground/HoTT.Typ#`::`().2+
-
-╒ ▄provingground/HoTT.FuncTyp.2.
-
-▀	 с	provingground/HoTT.Typ#`::`().2.
-
-б гprovingground/HoTT.Typ#`::`().2(
-
-	Н	 Сprovingground/HoTT.Type.2+
-
-е мprovingground/HoTT.FuncTyp.2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2&
-> Bprovingground/HoTT.Type.2+
-
-╩ ╤provingground/HoTT.FuncTyp.2(
-
-Р Фprovingground/HoTT.Type.2(
-
-у чprovingground/HoTT.Type.2,
-
-б зprovingground/HoTT.piDefn().2(
-
-Ъ Юprovingground/HoTT.Type.2)
-" )provingground/HoTT.FuncTyp.2(
-
-┤ ╕provingground/HoTT.Type.2,
-X Zprovingground/HoTT.Typ#`::`().24
-  &provingground/library/monoidInd.value.2(
-
-	╡	 ╣provingground/HoTT.Type.2.
-
-	Є	 Їprovingground/HoTT.Typ#`::`().2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2(
-
-Я гprovingground/HoTT.Type.2(
-
-∙ ¤provingground/HoTT.Type.2.
-
-я ёprovingground/HoTT.Typ#`::`().2.
-
-Ю аprovingground/HoTT.Typ#`::`().2.
-
-╥ ╘provingground/HoTT.Typ#`::`().2.
-
-· №provingground/HoTT.Typ#`::`().2.
-
-Э
- Я
-provingground/HoTT.Typ#`::`().2(
-
-Е Йprovingground/HoTT.Type.2,
-
-│ ╣provingground/HoTT.piDefn().2(
-
-п │provingground/HoTT.Type.2+
-
-ъ ёprovingground/HoTT.FuncTyp.2.
-
-ж	 и	provingground/HoTT.Typ#`::`().2*
- provingground/HoTT.lambda().2.
-
-ў ∙provingground/HoTT.Typ#`::`().2.
-
-╓ ╪provingground/HoTT.Typ#`::`().2&
-< @provingground/HoTT.Type.2.
-
-▒ │provingground/HoTT.Typ#`::`().2.
-
-▓ ┤provingground/HoTT.Typ#`::`().2.
-
-╧ ╤provingground/HoTT.Typ#`::`().2.
-
-╕ ║provingground/HoTT.Typ#`::`().2(
-
- 	 Г
-provingground/HoTT.Type.2.
-
-д жprovingground/HoTT.Typ#`::`().2(
-
-╓ ┌provingground/HoTT.Type.2(
-
-╫ █provingground/HoTT.Type.2(
-
-г зprovingground/HoTT.Type.2+
-
-■
- Еprovingground/HoTT.FuncTyp.2,
-
-│	 ╣	provingground/HoTT.piDefn().2.
-
-═ ╧provingground/HoTT.Typ#`::`().2.
-
-Э Яprovingground/HoTT.Typ#`::`().2.
-
-╘ ╓provingground/HoTT.Typ#`::`().2+
-
-в йprovingground/HoTT.FuncTyp.2.
-
-Н Пprovingground/HoTT.Typ#`::`().2(
-
-· ■provingground/HoTT.Type.2.
-
-╞ ╚provingground/HoTT.Typ#`::`().2(
-
-Ё Їprovingground/HoTT.Type.2.
-
-─ ╞provingground/HoTT.Typ#`::`().2(
-
-· ■provingground/HoTT.Type.2&
-	3	 7provingground/HoTT.Type.2(
-
-Ц	 Ъ	provingground/HoTT.Type.2,
-] _provingground/HoTT.Typ#`::`().2.
-
-╥ ╘provingground/HoTT.Typ#`::`().2(
-
-Г Зprovingground/HoTT.Type.2.
-
-╩ ╠provingground/HoTT.Typ#`::`().2.
-
-╨ ╥provingground/HoTT.Typ#`::`().2.
-
-∙ √provingground/HoTT.Typ#`::`().2.
-
-Э Яprovingground/HoTT.Typ#`::`().2.
-
-ў ∙provingground/HoTT.Typ#`::`().2.
-
-╙ ╒provingground/HoTT.Typ#`::`().2.
-
-д жprovingground/HoTT.Typ#`::`().2+
-
-▐ хprovingground/HoTT.FuncTyp.2(
-
-ц ъprovingground/HoTT.Type.2(
-
-╓ ┌provingground/HoTT.Type.2(
-
-╚ ╠provingground/HoTT.Type.2.
-
-в дprovingground/HoTT.Typ#`::`().2.
-
-┌ ▄provingground/HoTT.Typ#`::`().2+
-
-ї ·provingground/HoTT.lmbda().2+
-
-Я жprovingground/HoTT.FuncTyp.2.
-
-л нprovingground/HoTT.Typ#`::`().2+
-
-─ ╦provingground/HoTT.FuncTyp.2+
-
-╦ ╥provingground/HoTT.FuncTyp.2.
-
-√ ¤provingground/HoTT.Typ#`::`().2.
-
-Э Яprovingground/HoTT.Typ#`::`().2(
-
-ъ юprovingground/HoTT.Type.2(
-
-ы яprovingground/HoTT.Type.2(
-
-° №provingground/HoTT.Type.2&
-> Bprovingground/HoTT.Type.2,
-
-	┐	 ┼provingground/HoTT.piDefn().2.
-
-ц шprovingground/HoTT.Typ#`::`().2(
-
-╨ ╘provingground/HoTT.Type.2,
-
-б зprovingground/HoTT.piDefn().2+
-
-╕ ┐provingground/HoTT.FuncTyp.2(
-
-▓ ╢provingground/HoTT.Type.2.
-
-х чprovingground/HoTT.Typ#`::`().2,
-
-ч	 э	provingground/HoTT.piDefn().2*
- provingground/HoTT.lambda().2.
-
-╦	 ═	provingground/HoTT.Typ#`::`().2.
-
-∙ √provingground/HoTT.Typ#`::`().2,
-
-П Хprovingground/HoTT.piDefn().2.
-
-╖ ╣provingground/HoTT.Typ#`::`().2.
-
-╫ ┘provingground/HoTT.Typ#`::`().2.
-
-Є Їprovingground/HoTT.Typ#`::`().2(
-
-╙ ╫provingground/HoTT.Type.2(
-
-Л Пprovingground/HoTT.Type.2.
-
-╣ ╗provingground/HoTT.Typ#`::`().2(
-
-Х Щprovingground/HoTT.Prop.2.
-
-╔ ╦provingground/HoTT.Typ#`::`().2.
-
-╝ ╛provingground/HoTT.Typ#`::`().2,
- !provingground/HoTT.Typ#`::`().2(
-
-· ■provingground/HoTT.Type.2(
-
-╞
- ╩
-provingground/HoTT.Prop.2(
-
-╪ ▄provingground/HoTT.Type.2.
-
-╦ ═provingground/HoTT.Typ#`::`().2.
-
-И Кprovingground/HoTT.Typ#`::`().2,
-
-ч эprovingground/HoTT.lambda().2.
-
-ш ъprovingground/HoTT.Typ#`::`().2.
-
-▒ │provingground/HoTT.Typ#`::`().2,
-; =provingground/HoTT.Typ#`::`().2.
-
-Я бprovingground/HoTT.Typ#`::`().2.
-
-м оprovingground/HoTT.Typ#`::`().2.
-
-╙ ╒provingground/HoTT.Typ#`::`().2.
-
-╘ ╓provingground/HoTT.Typ#`::`().2(
-
-щ эprovingground/HoTT.Type.2+
-
-Є ∙provingground/HoTT.FuncTyp.2&
-^ bprovingground/HoTT.Type.2(
-
-ъ юprovingground/HoTT.Type.2.
-
-ш ъprovingground/HoTT.Typ#`::`().2,
-z |provingground/HoTT.Typ#`::`().2
- 
-local3072.
-
-к мprovingground/HoTT.Typ#`::`().2(
-
-╪ ▄provingground/HoTT.Type.2&
-z ~provingground/HoTT.Type.2(
-
-с хprovingground/HoTT.Type.2.
-
-▒ │provingground/HoTT.Typ#`::`().2+
-
-р чprovingground/HoTT.FuncTyp.2+
-
-Ё ўprovingground/HoTT.FuncTyp.2&
-
-5
- 9provingground/HoTT.Type.2,
-
-л ▒provingground/HoTT.piDefn().2(
-
-▐ тprovingground/HoTT.Type.2&
-[ _provingground/HoTT.Type.2.
-
-ю Ёprovingground/HoTT.Typ#`::`().2(
-
-Ж Кprovingground/HoTT.Type.2(
-
-	О	 Тprovingground/HoTT.Type.2,
-
-─ ╩provingground/HoTT.piDefn().2,
-
-z
- |provingground/HoTT.Typ#`::`().2.
-
-х чprovingground/HoTT.Typ#`::`().2,
-
-ё	 ў	provingground/HoTT.piDefn().2(
-
-П Уprovingground/HoTT.Type.2.
-
-Й Лprovingground/HoTT.Typ#`::`().2(
-
-К
- О
-provingground/HoTT.Type.2.
-
-В Дprovingground/HoTT.Typ#`::`().2(
-
-╔ ═provingground/HoTT.Type.2.
-
-к мprovingground/HoTT.Typ#`::`().2(
-
-─ ╚provingground/HoTT.Type.2,
-
-П Хprovingground/HoTT.piDefn().2.
-
-к мprovingground/HoTT.Typ#`::`().2,
-w yprovingground/HoTT.Typ#`::`().2.
-
-у хprovingground/HoTT.Typ#`::`().2)
-B Iprovingground/HoTT.FuncTyp.2,
-
-ю Їprovingground/HoTT.piDefn().2.
-
-╥ ╘provingground/HoTT.Typ#`::`().2(
-
-┼
- ╔
-provingground/HoTT.Prop.2(
-
-р фprovingground/HoTT.Type.2&
-> Bprovingground/HoTT.Type.2.
-
-А Вprovingground/HoTT.Typ#`::`().2.
-
-Ъ Ьprovingground/HoTT.Typ#`::`().2+
-
-Ш Яprovingground/HoTT.FuncTyp.2.
-
-п ▒provingground/HoTT.Typ#`::`().2(
-
-а дprovingground/HoTT.Type.2.
-
-  Бprovingground/HoTT.Typ#`::`().2.
-
-┴	 ├	provingground/HoTT.Typ#`::`().2(
-
-Ь аprovingground/HoTT.Type.2(
-
-╥ ╓provingground/HoTT.Type.2(
-
-∙ ¤provingground/HoTT.Type.2,
-
-ч эprovingground/HoTT.lambda().2(
-
-	ї	 ∙provingground/HoTT.Type.2+
-
-ж	 л	provingground/HoTT.lmbda().2(
-
-┐ ├provingground/HoTT.Type.2(
-
-Р Фprovingground/HoTT.Type.2+
-
-  Жprovingground/HoTT.FuncTyp.2+
-
-Ш Яprovingground/HoTT.FuncTyp.2+
-
-╧ ╓provingground/HoTT.FuncTyp.2.
-
-┴ ├provingground/HoTT.Typ#`::`().2(
-
-е йprovingground/HoTT.Type.2(
-
-· ■provingground/HoTT.Type.2+
-
-═ ╘provingground/HoTT.FuncTyp.2(
-
-	у	 чprovingground/HoTT.Type.2,
-; =provingground/HoTT.Typ#`::`().2(
-
-╓ ┌provingground/HoTT.Type.2.
-
-п ▒provingground/HoTT.Typ#`::`().2(
-
-Ў ·provingground/HoTT.Type.2(
-
-╕ ╝provingground/HoTT.Type.24
-  &provingground/library/monoidInd.value.2,
-
-ч	 э	provingground/HoTT.piDefn().2.
-
-ч щprovingground/HoTT.Typ#`::`().2(
-
-║ ╛provingground/HoTT.Type.2(
-
-Л Пprovingground/HoTT.Type.2,
-w yprovingground/HoTT.Typ#`::`().2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2(
-
-Е Йprovingground/HoTT.Type.2(
-
-Ъ Юprovingground/HoTT.Type.2(
-
-╕ ╝provingground/HoTT.Type.2+
-
-═ ╘provingground/HoTT.FuncTyp.2,
-] _provingground/HoTT.Typ#`::`().2,
-
-° ■provingground/HoTT.piDefn().2,
-	U	 Wprovingground/HoTT.Typ#`::`().2+
-
-н ┤provingground/HoTT.FuncTyp.2.
-
-╠ ╬provingground/HoTT.Typ#`::`().2(
-
-╛ ┬provingground/HoTT.Type.2(
-
-з лprovingground/HoTT.Type.2,
-
-б зprovingground/HoTT.piDefn().2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2)
-? Fprovingground/HoTT.FuncTyp.2
-
- local3072(
-
-х щprovingground/HoTT.Type.2(
-
-╞
- ╩
-provingground/HoTT.Prop.2+
-
-В Зprovingground/HoTT.lmbda().2(
-
-Ё Їprovingground/HoTT.Type.2.
-
-м оprovingground/HoTT.Typ#`::`().2.
-
-А Вprovingground/HoTT.Typ#`::`().2)
-D Kprovingground/HoTT.FuncTyp.2&
-z ~provingground/HoTT.Type.2.
-
-Ь
- Ю
-provingground/HoTT.Typ#`::`().2(
-
-ч ыprovingground/HoTT.Type.2.
-
-з йprovingground/HoTT.Typ#`::`().2(
-
-┤ ╕provingground/HoTT.Type.2.
-
-	Ў	 °provingground/HoTT.Typ#`::`().2+
-
-к ▒provingground/HoTT.FuncTyp.2(
-
-╫	 █	provingground/HoTT.Type.2(
-
-я єprovingground/HoTT.Type.2.
-
-╦ ═provingground/HoTT.Typ#`::`().2,
-
-│ ╣provingground/HoTT.piDefn().2)
-D Kprovingground/HoTT.FuncTyp.2.
-
-Ъ Ьprovingground/HoTT.Typ#`::`().2(
-
-Ч Ыprovingground/HoTT.Type.2.
-
-Я бprovingground/HoTT.Typ#`::`().2.
-
-щ ыprovingground/HoTT.Typ#`::`().2(
-
-█ ▀provingground/HoTT.Type.2.
-
-х чprovingground/HoTT.Typ#`::`().2.
-
-з йprovingground/HoTT.Typ#`::`().2+
-
-р чprovingground/HoTT.FuncTyp.2+
-
-╩ ╤provingground/HoTT.FuncTyp.2.
-  provingground/library/monoidInd.2.
-
-Э Яprovingground/HoTT.Typ#`::`().2.
-
-╬ ╨provingground/HoTT.Typ#`::`().2.
-
-Ч Щprovingground/HoTT.Typ#`::`().2+
-
-в йprovingground/HoTT.FuncTyp.2(
-
-А Дprovingground/HoTT.Type.2(
-
-├ ╟provingground/HoTT.Type.2+
-
-┌ сprovingground/HoTT.FuncTyp.2.
-
-Ц Шprovingground/HoTT.Typ#`::`().2.
-
-├ ┼provingground/HoTT.Typ#`::`().2(
-
-ы яprovingground/HoTT.Type.2(
-
-┬ ╞provingground/HoTT.Type.2,
-
-ї √provingground/HoTT.piDefn().2&
-` dprovingground/HoTT.Type.2.
-
-Р Тprovingground/HoTT.Typ#`::`().2.
-
-Г Еprovingground/HoTT.Typ#`::`().2(
-
-О Тprovingground/HoTT.Type.2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2.
-
-ї ўprovingground/HoTT.Typ#`::`().2.
-
-Х Чprovingground/HoTT.Typ#`::`().2.
-
-р тprovingground/HoTT.Typ#`::`().2.
-
-Л Нprovingground/HoTT.Typ#`::`().2.
-
-╒	 ╫	provingground/HoTT.Typ#`::`().2(
-
-┤ ╕provingground/HoTT.Type.2(
-
-№ Аprovingground/HoTT.Type.2+
-
-╚ ╧provingground/HoTT.FuncTyp.2.
-
-Щ Ыprovingground/HoTT.Typ#`::`().2(
-
-▌ сprovingground/HoTT.Type.2(
-
-ф шprovingground/HoTT.Type.2(
-
-╗ ┐provingground/HoTT.Type.2,
-
-─ ╩provingground/HoTT.piDefn().2.
-
-Д Жprovingground/HoTT.Typ#`::`().2.
-
-Й Лprovingground/HoTT.Typ#`::`().2(
-
-ш ьprovingground/HoTT.Type.2(
-
-█ ▀provingground/HoTT.Type.2(
-
-И Мprovingground/HoTT.Type.2(
-
-╒ ┘provingground/HoTT.Type.2+
-
-╨ ╫provingground/HoTT.FuncTyp.2+
-
-┌ сprovingground/HoTT.FuncTyp.2.
-
-╛ └provingground/HoTT.Typ#`::`().2.
-
-ь юprovingground/HoTT.Typ#`::`().2.
-
-▓ ┤provingground/HoTT.Typ#`::`().2+
-
-Ь	 б	provingground/HoTT.lmbda().2+
-
-▌ фprovingground/HoTT.FuncTyp.2(
-
-х щprovingground/HoTT.Type.2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2.
-
-ў ∙provingground/HoTT.Typ#`::`().2(
-
-╓ ┌provingground/HoTT.Type.2.
-
-Й Лprovingground/HoTT.Typ#`::`().2(
-
-║ ╛provingground/HoTT.Type.2.
-
-Ю аprovingground/HoTT.Typ#`::`().2.
-
-Ы Эprovingground/HoTT.Typ#`::`().2(
-
-ї ∙provingground/HoTT.Type.2(
-
-Ф Шprovingground/HoTT.Type.2+
-
-я Ўprovingground/HoTT.FuncTyp.2.
-
-▀
- с
-provingground/HoTT.Typ#`::`().2.
-
-∙ √provingground/HoTT.Typ#`::`().2.
-
-к мprovingground/HoTT.Typ#`::`().2.
-
-№	 ■	provingground/HoTT.Typ#`::`().2.
-
-▒ │provingground/HoTT.Typ#`::`().2'
-	} Бprovingground/HoTT.Type.2+
-
-Ш Яprovingground/HoTT.FuncTyp.2.
-
-ф цprovingground/HoTT.Typ#`::`().2,
-
-й	 п	provingground/HoTT.piDefn().2(
-
-а
- д
-provingground/HoTT.Type.2.
-
-╞ ╚provingground/HoTT.Typ#`::`().2.
-
-▌ ▀provingground/HoTT.Typ#`::`().2+
-
-а зprovingground/HoTT.FuncTyp.2.
-
-╙ ╒provingground/HoTT.Typ#`::`().2+
-
-В Зprovingground/HoTT.lmbda().2.
-
-ф	 ц	provingground/HoTT.Typ#`::`().2+
-
-Ь	 б	provingground/HoTT.lmbda().2.
-
-	Щ	 Ыprovingground/HoTT.Typ#`::`().2(
-
-╡ ╣provingground/HoTT.Type.2.
-
-р
- т
-provingground/HoTT.Typ#`::`().2+
-
-╕ ┐provingground/HoTT.FuncTyp.2.
-
-╚ ╩provingground/HoTT.Typ#`::`().2.
-
-╕ ║provingground/HoTT.Typ#`::`().2,
-
-й	 п	provingground/HoTT.piDefn().2(
-
-Г Зprovingground/HoTT.Type.2+
-
-┌ сprovingground/HoTT.FuncTyp.2(
-
-Ъ Юprovingground/HoTT.Type.2(
-
-╒ ┘provingground/HoTT.Type.2.
-
-∙ √provingground/HoTT.Typ#`::`().2.
-
-Ў °provingground/HoTT.Typ#`::`().2(
-
-п │provingground/HoTT.Type.2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2.
-
-Ў °provingground/HoTT.Typ#`::`().2(
-
-щ эprovingground/HoTT.Type.2)
-" )provingground/HoTT.FuncTyp.2(
-
-╡ ╣provingground/HoTT.Type.2.
-
-¤  provingground/HoTT.Typ#`::`().2.
-
-└ ┬provingground/HoTT.Typ#`::`().2.
-
-З
- Й
-provingground/HoTT.Typ#`::`().2.
-
-л нprovingground/HoTT.Typ#`::`().2.
-
-Ъ Ьprovingground/HoTT.Typ#`::`().2,
-
-╢ ╝provingground/HoTT.piDefn().2(
-
-Ц	 Ъ	provingground/HoTT.Type.2(
-
-У Чprovingground/HoTT.Type.2.
-
-ш ъprovingground/HoTT.Typ#`::`().2.
-
-У Хprovingground/HoTT.Typ#`::`().2.
-
-
-Ф
- Цprovingground/HoTT.Typ#`::`().2.
-
-М Оprovingground/HoTT.Typ#`::`().2(
-
-Д Иprovingground/HoTT.Type.2(
-
-┤ ╕provingground/HoTT.Type.2.
-
-М Оprovingground/HoTT.Typ#`::`().2.
-
-С Уprovingground/HoTT.Typ#`::`().2(
-
-┤ ╕provingground/HoTT.Type.2,
-
-─ ╩provingground/HoTT.piDefn().2.
-
-М Оprovingground/HoTT.Typ#`::`().2+
-
-Ф Ыprovingground/HoTT.FuncTyp.2+
-
-╕ ┐provingground/HoTT.FuncTyp.2(
-
-╛ ┬provingground/HoTT.Type.2.
-
-я ёprovingground/HoTT.Typ#`::`().2(
-
-Ў ·provingground/HoTT.Type.2.
-
-╛ └provingground/HoTT.Typ#`::`().2&
-` dprovingground/HoTT.Type.2.
-
-╠ ╬provingground/HoTT.Typ#`::`().2(
-
-ж кprovingground/HoTT.Type.2=
-; >/provingground/induction/ConstructorSeqTL#rec().2(
-
-А
- Д
-provingground/HoTT.Type.2(
-
-┌ ▐provingground/HoTT.Type.2(
-
-Я
- г
-provingground/HoTT.Type.2+
-
-Ж
- Н
-provingground/HoTT.FuncTyp.2(
-
-р фprovingground/HoTT.Type.2(
-
-╛ ┬provingground/HoTT.Type.2)
-
-?
- Fprovingground/HoTT.FuncTyp.2*
- provingground/HoTT.lambda().2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2(
-
-╝ └provingground/HoTT.Type.2,
-z |provingground/HoTT.Typ#`::`().2.
-
-╙ ╒provingground/HoTT.Typ#`::`().2.
-
-┼ ╟provingground/HoTT.Typ#`::`().2.
-
-▌ ▀provingground/HoTT.Typ#`::`().2+
-
-┌ сprovingground/HoTT.FuncTyp.2.
-
-Ч Щprovingground/HoTT.Typ#`::`().2.
-  provingground/library/monoidInd.2+
-
-р чprovingground/HoTT.FuncTyp.2.
-
-п ▒provingground/HoTT.Typ#`::`().2.
-
-	р	 тprovingground/HoTT.Typ#`::`().2.
-
-п ▒provingground/HoTT.Typ#`::`().2.
-
-б гprovingground/HoTT.Typ#`::`().2.
-
-х чprovingground/HoTT.Typ#`::`().2(
-
-└
- ─
-provingground/HoTT.Type.2&
-
-[
- _provingground/HoTT.Type.2.
-
-╢ ╕provingground/HoTT.Typ#`::`().2+
-
-°  provingground/HoTT.FuncTyp.2
- local12.
-
-  Б	provingground/HoTT.Typ#`::`().2)
-? Fprovingground/HoTT.FuncTyp.2(
-
-У Чprovingground/HoTT.Type.2.
-
-и кprovingground/HoTT.Typ#`::`().2.
-
-╟ ╔provingground/HoTT.Typ#`::`().2
-
- local1112.
-
-√ ¤provingground/HoTT.Typ#`::`().2(
-
-а дprovingground/HoTT.Type.2+
-
-╬ ╒provingground/HoTT.FuncTyp.2.
-
-ч щprovingground/HoTT.Typ#`::`().2&
-[ _provingground/HoTT.Type.2(
-
-а	 д	provingground/HoTT.Type.2.
-
-Ў °provingground/HoTT.Typ#`::`().2
- provingground/2+
-
-ш эprovingground/HoTT.lmbda().2(
-
-м ░provingground/HoTT.Type.2.
-
-Х Чprovingground/HoTT.Typ#`::`().2.
-
-ф	 ц	provingground/HoTT.Typ#`::`().2.
-
-я ёprovingground/HoTT.Typ#`::`().2,
-] _provingground/HoTT.Typ#`::`().2.
-
-Ъ Ьprovingground/HoTT.Typ#`::`().2.
-
-Ў °provingground/HoTT.Typ#`::`().2.
-
-╟
- ╔
-provingground/HoTT.Typ#`::`().2.
-
-╡ ╖provingground/HoTT.Typ#`::`().2.
-
-є їprovingground/HoTT.Typ#`::`().2.
-
-Ъ Ьprovingground/HoTT.Typ#`::`().2.
-
-х чprovingground/HoTT.Typ#`::`().2+
-
-Р
- Ч
-provingground/HoTT.FuncTyp.2.
-
-ю	 Ё	provingground/HoTT.Typ#`::`().2,
-w yprovingground/HoTT.Typ#`::`().2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2+
-
-╬ ╒provingground/HoTT.FuncTyp.2(
-
-  Гprovingground/HoTT.Type.2,
-
-ц ьprovingground/HoTT.piDefn().2+
-
-░
- ╖
-provingground/HoTT.FuncTyp.2'
-	} Бprovingground/HoTT.Type.2.
-
-Ю аprovingground/HoTT.Typ#`::`().2,
-X Zprovingground/HoTT.Typ#`::`().2,
-
-╬ ╘provingground/HoTT.piDefn().2.
-
-Ш Ъprovingground/HoTT.Typ#`::`().2.
-
-╝
- ╛
-provingground/HoTT.Typ#`::`().2,
-
-° ■provingground/HoTT.piDefn().2+
-
-Е Мprovingground/HoTT.FuncTyp.2(
-
-╘ ╪provingground/HoTT.Type.2.
-
-╨ ╥provingground/HoTT.Typ#`::`().2.
-
-є їprovingground/HoTT.Typ#`::`().2.
-
-№ ■provingground/HoTT.Typ#`::`().2(
-
-Э бprovingground/HoTT.Type.2.
-
-э яprovingground/HoTT.Typ#`::`().2+
-
-╗ ┬provingground/HoTT.FuncTyp.2,
-; =provingground/HoTT.Typ#`::`().2.
-
-│ ╡provingground/HoTT.Typ#`::`().2(
-
-· ■provingground/HoTT.Type.2.
-
-У	 Х	provingground/HoTT.Typ#`::`().2,
-
-ю Їprovingground/HoTT.piDefn().2.
-
-х чprovingground/HoTT.Typ#`::`().2(
-
-Ш Ьprovingground/HoTT.Type.2(
-
-я єprovingground/HoTT.Type.2.
-
-╪ ┌provingground/HoTT.Typ#`::`().2+
-
-╖ ╛provingground/HoTT.FuncTyp.2.
-
-╬ ╨provingground/HoTT.Typ#`::`().2+
-
-╥ ┘provingground/HoTT.FuncTyp.2)
-? Fprovingground/HoTT.FuncTyp.2.
-
-╪ ┌provingground/HoTT.Typ#`::`().2.
-
-Й Лprovingground/HoTT.Typ#`::`().2(
-
-╧ ╙provingground/HoTT.Type.2(
-
-ы яprovingground/HoTT.Type.2.
-
-Г Еprovingground/HoTT.Typ#`::`().2.
-
-Ы Эprovingground/HoTT.Typ#`::`().2(
-
-░ ┤provingground/HoTT.Type.2(
-
-х щprovingground/HoTT.Type.2.
-
-∙ √provingground/HoTT.Typ#`::`().2+
-
-┼ ╠provingground/HoTT.FuncTyp.2+
-
-Є ∙provingground/HoTT.FuncTyp.2,
-9 ;provingground/HoTT.Typ#`::`().28
- *provingground/induction/package.implicits.2+
-
-└ ╟provingground/HoTT.FuncTyp.2+
-
-▌ фprovingground/HoTT.FuncTyp.2.
-
-ш ъprovingground/HoTT.Typ#`::`().2.
-
-└	 ┬	provingground/HoTT.Typ#`::`().2&
-. 2provingground/HoTT.Type.2(
-
-с хprovingground/HoTT.Type.2&
-z ~provingground/HoTT.Type.2.
-
-╥ ╘provingground/HoTT.Typ#`::`().2.
-
-╒ ╫provingground/HoTT.Typ#`::`().2(
-
-║ ╛provingground/HoTT.Type.2.
-
-╙ ╒provingground/HoTT.Typ#`::`().2+
-
-ы Ёprovingground/HoTT.lmbda().2,
- provingground/HoTT.Typ#`::`().2.
-
-  Б	provingground/HoTT.Typ#`::`().2+
-
-Я жprovingground/HoTT.FuncTyp.2&
-` dprovingground/HoTT.Type.2(
-
-а дprovingground/HoTT.Type.2.
-
-█ ▌provingground/HoTT.Typ#`::`().2.
-
-з йprovingground/HoTT.Typ#`::`().2.
-
-Б Гprovingground/HoTT.Typ#`::`().2.
-
-Р Тprovingground/HoTT.Typ#`::`().2.
-
-¤  provingground/HoTT.Typ#`::`().2.
-
-╒ ╫provingground/HoTT.Typ#`::`().2)
-	?	 Dprovingground/HoTT.lmbda().2(
-
-╒ ┘provingground/HoTT.Type.2(
-
-у чprovingground/HoTT.Type.2+
-
-я Ўprovingground/HoTT.FuncTyp.2.
-		  provingground/library/monoidInd.2(
-
-Ё Їprovingground/HoTT.Type.2.
-
-▓ ┤provingground/HoTT.Typ#`::`().2.
-
-П Сprovingground/HoTT.Typ#`::`().2(
-
-Э бprovingground/HoTT.Type.2(
-
-╗ ┐provingground/HoTT.Type.2.
-
-н пprovingground/HoTT.Typ#`::`().2+
-
-А Еprovingground/HoTT.lmbda().2,
-
-В Иprovingground/HoTT.piDefn().2+
-
-е
- м
-provingground/HoTT.FuncTyp.2(
-
-█ ▀provingground/HoTT.Type.2.
-
-ч щprovingground/HoTT.Typ#`::`().2.
-
-─ ╞provingground/HoTT.Typ#`::`().2(
-
-┐
- ├
-provingground/HoTT.Type.2+
-
-╙ ┌provingground/HoTT.FuncTyp.2.
-
-ь юprovingground/HoTT.Typ#`::`().2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2.
-
-Х Чprovingground/HoTT.Typ#`::`().2.
-
-Х Чprovingground/HoTT.Typ#`::`().2.
-
-А Вprovingground/HoTT.Typ#`::`().2(
-
-╞ ╩provingground/HoTT.Type.2.
-
-░	 ▓	provingground/HoTT.Typ#`::`().2&
-	m	 qprovingground/HoTT.Type.2(
-
-№ Аprovingground/HoTT.Type.2.
-
-з йprovingground/HoTT.Typ#`::`().2.
-
-▒ │provingground/HoTT.Typ#`::`().2.
-
-И Кprovingground/HoTT.Typ#`::`().2.
-
-└ ┬provingground/HoTT.Typ#`::`().2.
-
-В Дprovingground/HoTT.Typ#`::`().2.
-
-в дprovingground/HoTT.Typ#`::`().2,
-
-ї √provingground/HoTT.piDefn().2.
-
-Є Їprovingground/HoTT.Typ#`::`().2.
-
-Й Лprovingground/HoTT.Typ#`::`().2.
-
-╝ ╛provingground/HoTT.Typ#`::`().2(
-
-Э бprovingground/HoTT.Type.2.
-
-╚ ╩provingground/HoTT.Typ#`::`().2(
-
-┌ ▐provingground/HoTT.Type.2.
-
-╔ ╦provingground/HoTT.Typ#`::`().2(
-
-А Дprovingground/HoTT.Prop.2,
-
-ц	 ь	provingground/HoTT.piDefn().2.
-
-Й Лprovingground/HoTT.Typ#`::`().2(
-
-М Рprovingground/HoTT.Type.2(
-
-С Хprovingground/HoTT.Prop.2(
-
-Ё Їprovingground/HoTT.Type.2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2+
-
-И Пprovingground/HoTT.FuncTyp.2.
-
-√
- ¤
-provingground/HoTT.Typ#`::`().2.
-
-Х Чprovingground/HoTT.Typ#`::`().2.
-
-Е Зprovingground/HoTT.Typ#`::`().2.
-
-г еprovingground/HoTT.Typ#`::`().2.
-
-├ ┼provingground/HoTT.Typ#`::`().2.
-
-Ж Иprovingground/HoTT.Typ#`::`().2(
-
-Ю вprovingground/HoTT.Prop.2.
-
-╗ ╜provingground/HoTT.Typ#`::`().2,
-
-ц	 ь	provingground/HoTT.piDefn().2.
-
-Ш Ъprovingground/HoTT.Typ#`::`().2.
-
-Э Яprovingground/HoTT.Typ#`::`().2.
-
-╞ ╚provingground/HoTT.Typ#`::`().2,
-
-ч эprovingground/HoTT.lambda().2(
-
-╩ ╬provingground/HoTT.Type.2(
-
-	√	  provingground/HoTT.Prop.2(
-
-╫ █provingground/HoTT.Type.2(
-
-ф шprovingground/HoTT.Type.2+
-
-	█	 тprovingground/HoTT.FuncTyp.2.
-
-╠ ╬provingground/HoTT.Typ#`::`().2.
-
-з йprovingground/HoTT.Typ#`::`().2.
-
-▐ рprovingground/HoTT.Typ#`::`().2,
-	b	 dprovingground/HoTT.Typ#`::`().2.
-
-┴ ├provingground/HoTT.Typ#`::`().2(
-
-╝ └provingground/HoTT.Type.2(
-
-╒ ┘provingground/HoTT.Type.2
-
- local2112(
-
-╛ ┬provingground/HoTT.Type.2.
-
-  Б	provingground/HoTT.Typ#`::`().2(
-
-╘ ╪provingground/HoTT.Type.2.
-
-∙ √provingground/HoTT.Typ#`::`().2.
-
-╘ ╓provingground/HoTT.Typ#`::`().2.
-
-╠ ╬provingground/HoTT.Typ#`::`().2(
-
-╛ ┬provingground/HoTT.Type.2.
-
-б гprovingground/HoTT.Typ#`::`().2(
-
-█ ▀provingground/HoTT.Type.2(
-
-У Чprovingground/HoTT.Type.2(
-
-Ь аprovingground/HoTT.Type.2.
-
-╨ ╥provingground/HoTT.Typ#`::`().2.
-
-ь юprovingground/HoTT.Typ#`::`().2.
-
-И Кprovingground/HoTT.Typ#`::`().2(
-
-╪ ▄provingground/HoTT.Type.2)
-a hprovingground/HoTT.FuncTyp.2.
-
-Э	 Я	provingground/HoTT.Typ#`::`().2(
-
-Ж Кprovingground/HoTT.Type.2.
-
-Ф Цprovingground/HoTT.Typ#`::`().2+
-
-Ь	 б	provingground/HoTT.lmbda().2+
-
-ш эprovingground/HoTT.lmbda().2.
-
-╖ ╣provingground/HoTT.Typ#`::`().2.
-
-ц шprovingground/HoTT.Typ#`::`().2(
-
-ш ьprovingground/HoTT.Type.2,
-
-б зprovingground/HoTT.piDefn().2.
-
-М Оprovingground/HoTT.Typ#`::`().2(
-
-╔ ═provingground/HoTT.Type.2.
-
-╣ ╗provingground/HoTT.Typ#`::`().2.
-
-Н Пprovingground/HoTT.Typ#`::`().2(
-
-а дprovingground/HoTT.Type.2+
-
-║ ┴provingground/HoTT.FuncTyp.2(
-
-Ц	 Ъ	provingground/HoTT.Type.2.
-
-а вprovingground/HoTT.Typ#`::`().2+
-
-Ш Яprovingground/HoTT.FuncTyp.2(
-
-Г Зprovingground/HoTT.Type.2(
-
-╫ █provingground/HoTT.Type.2.
-
-╘ ╓provingground/HoTT.Typ#`::`().2.
-
-ъ
- ь
-provingground/HoTT.Typ#`::`().2;
- -provingground/library/monoid$mul_assoc.value.25
- 'provingground/library/monoid$mul_assoc.2(
-
-А Дprovingground/HoTT.Prop.2,
-
-° ■provingground/HoTT.piDefn().2.
-
-·
- №
-provingground/HoTT.Typ#`::`().2(
-
-т	 ц	provingground/HoTT.Type.2=
-; >/provingground/induction/ConstructorSeqTL#rec().2(
-
-Ц	 Ъ	provingground/HoTT.Type.2.
-
-р
- т
-provingground/HoTT.Typ#`::`().2.
-
-з
- й
-provingground/HoTT.Typ#`::`().2(
-
-╪	 ▄	provingground/HoTT.Type.2.
-
-╟ ╔provingground/HoTT.Typ#`::`().2.
-
-─ ╞provingground/HoTT.Typ#`::`().2.
-
-Й Лprovingground/HoTT.Typ#`::`().2+
-
-Ж
- Н
-provingground/HoTT.FuncTyp.2(
-
-д иprovingground/HoTT.Type.2.
-
-╫ ┘provingground/HoTT.Typ#`::`().2
- 
-local1112.
-
-ш ъprovingground/HoTT.Typ#`::`().2+
-
-ї №provingground/HoTT.FuncTyp.2.
-
-╤ ╙provingground/HoTT.Typ#`::`().2.
-
-ь юprovingground/HoTT.Typ#`::`().2.
-
-╖ ╣provingground/HoTT.Typ#`::`().2(
-
-Ч Ыprovingground/HoTT.Type.2(
-
-╛ ┬provingground/HoTT.Type.2.
-
-┴ ├provingground/HoTT.Typ#`::`().2(
-
-╘ ╪provingground/HoTT.Type.24
-
-
-  &provingground/library/monoidInd.value.2+
-
-Я жprovingground/HoTT.FuncTyp.2(
-
-Ж Кprovingground/HoTT.Type.2.
-
-№	 ■	provingground/HoTT.Typ#`::`().2.
-
-╝ ╛provingground/HoTT.Typ#`::`().2,
-] _provingground/HoTT.Typ#`::`().2(
-
-К Оprovingground/HoTT.Prop.2.
-
-┐ ┴provingground/HoTT.Typ#`::`().2(
-
-Т Цprovingground/HoTT.Type.2+
-
-═ ╘provingground/HoTT.FuncTyp.2.
-
-√ ¤provingground/HoTT.Typ#`::`().2(
-
-╧ ╙provingground/HoTT.Type.2.
-
-Н Пprovingground/HoTT.Typ#`::`().2.
-
-Г Еprovingground/HoTT.Typ#`::`().2.
-
-╛ └provingground/HoTT.Typ#`::`().2+
-
-н ┤provingground/HoTT.FuncTyp.2(
-
-а дprovingground/HoTT.Type.2.
-
-┼ ╟provingground/HoTT.Typ#`::`().2(
-
-т цprovingground/HoTT.Type.2+
-
-ы Ёprovingground/HoTT.lmbda().2(
-
-с хprovingground/HoTT.Type.2.
-
-Ы Эprovingground/HoTT.Typ#`::`().2+
-
-╕ ┐provingground/HoTT.FuncTyp.2,
-
-ч эprovingground/HoTT.lambda().2.
-
-Х Чprovingground/HoTT.Typ#`::`().2(
-
-з лprovingground/HoTT.Type.2.
-
-▀
- с
-provingground/HoTT.Typ#`::`().2(
-
-╪ ▄provingground/HoTT.Type.2(
-
-№ Аprovingground/HoTT.Type.2.
-
-п ▒provingground/HoTT.Typ#`::`().2(
-
-¤ Бprovingground/HoTT.Type.2.
-
-т фprovingground/HoTT.Typ#`::`().2.
-
-Н Пprovingground/HoTT.Typ#`::`().2.
-
-ў ∙provingground/HoTT.Typ#`::`().2+
-
-р чprovingground/HoTT.FuncTyp.2.
-
-
-  provingground/library/monoidInd.2(
-
-Й Нprovingground/HoTT.Type.2(
-
-Щ Эprovingground/HoTT.Type.2,
-; =provingground/HoTT.Typ#`::`().2.
-
-╜
- ┐
-provingground/HoTT.Typ#`::`().2,
-
-Й Пprovingground/HoTT.piDefn().2(
-
-ь Ёprovingground/HoTT.Type.2.
-
-М Оprovingground/HoTT.Typ#`::`().2.
-
-√ ¤provingground/HoTT.Typ#`::`().2)
-" )provingground/HoTT.FuncTyp.2(
-
-Ъ Юprovingground/HoTT.Type.2+
-
-	╗	 ┬provingground/HoTT.FuncTyp.2,
-
-▓ ╕provingground/HoTT.piDefn().2.
-
-╒ ╫provingground/HoTT.Typ#`::`().2(
-
-ы яprovingground/HoTT.Type.2.
-
-╦ ═provingground/HoTT.Typ#`::`().2.
-
-Е Зprovingground/HoTT.Typ#`::`().2(
-
-Ў ·provingground/HoTT.Type.2(
-
-Ч Ыprovingground/HoTT.Type.2.
-
-╘	 ╓	provingground/HoTT.Typ#`::`().2(
-
-ш ьprovingground/HoTT.Type.2'
-	} Бprovingground/HoTT.Type.2.
-
-└	 ┬	provingground/HoTT.Typ#`::`().2+
-
-¤
- Дprovingground/HoTT.FuncTyp.2.
-
-╖ ╣provingground/HoTT.Typ#`::`().2.
-
-Ю аprovingground/HoTT.Typ#`::`().2.
-
-х чprovingground/HoTT.Typ#`::`().2(
-
-╔ ═provingground/HoTT.Type.2.
-
-Ю аprovingground/HoTT.Typ#`::`().2.
-
-ж	 и	provingground/HoTT.Typ#`::`().2.
-
-Й Лprovingground/HoTT.Typ#`::`().2(
-
-╡ ╣provingground/HoTT.Type.2.
-
-Э
- Я
-provingground/HoTT.Typ#`::`().2)
-D Kprovingground/HoTT.FuncTyp.2(
-
-╘ ╪provingground/HoTT.Type.2.
-
-Ь
- Ю
-provingground/HoTT.Typ#`::`().2+
-
-н ┤provingground/HoTT.FuncTyp.2.
-
-з йprovingground/HoTT.Typ#`::`().2+
-
-╗ ┬provingground/HoTT.FuncTyp.2(
-
-╫ █provingground/HoTT.Type.2+
-
-Е
- М
-provingground/HoTT.FuncTyp.2.
-
-▌ ▀provingground/HoTT.Typ#`::`().2.
-
-ў ∙provingground/HoTT.Typ#`::`().2(
-
-р фprovingground/HoTT.Type.PZ 822D903A6007CBA0A9196FA353AB0104
