@@ -171,6 +171,8 @@ object HoTT {
             case (xs: Symbolic, _)
                 if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
               val typchange = replace(x.typ, y.typ)
+//             if (self != typchange) {  pprint.log(self, height = 300)
+//              pprint.log(typchange, height = 300)}
               typchange replace ((y.typ).symbObj(xs.name), y)
             case (FuncTyp(a, b), FuncTyp(c, d)) =>
               replace(a, c) replace (b, d)
