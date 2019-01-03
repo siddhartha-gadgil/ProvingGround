@@ -168,12 +168,12 @@ object HoTT {
               replace(f, g) replace (x, y)
             case (MiscAppln(f, x), MiscAppln(g, y)) =>
               replace(f, g) replace (x, y)
-//            case (xs: Symbolic, _)
-//                if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
-//              val typchange = replace(x.typ, y.typ)
-////             if (self != typchange) {  pprint.log(self, height = 300)
-////              pprint.log(typchange, height = 300)}
-//              typchange replace ((y.typ).symbObj(xs.name), y)
+           case (xs: Symbolic, _)
+               if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
+             val typchange = replace(x.typ, y.typ)
+//             if (self != typchange) {  pprint.log(self, height = 300)
+//              pprint.log(typchange, height = 300)}
+             typchange replace ((y.typ).symbObj(xs.name), y)
             case (FuncTyp(a, b), FuncTyp(c, d)) =>
               replace(a, c) replace (b, d)
             case (PiDefn(a: Term, b), PiDefn(c: Term, d)) =>
@@ -2317,10 +2317,11 @@ object HoTT {
     def act(arg: W): U = depcodom(arg).symbObj(ApplnSym(this, arg))
 
     def newobj: PiSymbolicFunc[W, U] = {
-      val newvar = variable.newobj
+      // val newvar = variable.newobj
       PiSymbolicFunc(InnerSym[FuncLike[W, U]](this),
-                     newvar,
-                     value.replace(variable, newvar))
+                     variable,// newvar,
+                     value //value.replace(variable, newvar)
+                     )
       // val fibers = LambdaFixed(variable, value)
       // DepSymbolicFunc(InnerSym[FuncLike[W, U]](this), fibers.newobj)
     }
