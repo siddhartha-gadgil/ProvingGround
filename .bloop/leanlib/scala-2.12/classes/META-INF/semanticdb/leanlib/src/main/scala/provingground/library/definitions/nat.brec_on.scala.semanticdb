@@ -1,2142 +1,0 @@
-
-ÜÙJleanlib/src/main/scala/provingground/library/definitions/nat.brec_on.scala*3
-local20 Ä*x$20Ää"
-java/lang/String#*5
-local174 Ä*x$166Ää"
-java/lang/String#*5
-local273 Ä*x$261Ää"
-java/lang/String#*2
-local4 Ä*x$25Ää"
-java/lang/String#*3
-local41 Ä*x$38Ää"
-java/lang/String#*5
-local195 Ä*x$187Ää"
-java/lang/String#*5
-local189 Ä*x$181Ää"
-java/lang/String#*5
-local294 Ä*x$283Ää"
-java/lang/String#*5
-local153 Ä*x$145Ää"
-java/lang/String#*3
-local29 Ä*x$29Ää"
-java/lang/String#*5
-local252 Ä*x$242Ää"
-java/lang/String#*5
-local180 Ä*x$174Ää"
-java/lang/String#*‰
-local56 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local288 Ä*x$278Ää"
-java/lang/String#*5
-local168 Ä*x$160Ää"
-java/lang/String#*3
-local14 Ä*x$14Ää"
-java/lang/String#*3
-local35 Ä*x$33Ää"
-java/lang/String#*5
-local267 Ä*x$255Ää"
-java/lang/String#*5
-local135 Ä*x$128Ää"
-java/lang/String#*„
-local7 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local234 Ä*x$224Ää"
-java/lang/String#*3
-local38 Ä*x$37Ää"
-java/lang/String#*5
-local261 Ä*x$249Ää"
-java/lang/String#*3
-local91 Ä*x$87Ää"
-java/lang/String#*5
-local183 Ä*x$175Ää"
-java/lang/String#*5
-local327 Ä*x$314Ää"
-java/lang/String#*3
-local17 Ä*x$15Ää"
-java/lang/String#*5
-local249 Ä*x$240Ää"
-java/lang/String#*5
-local156 Ä*x$147Ää"
-java/lang/String#*5
-local162 Ä*x$153Ää"
-java/lang/String#*5
-local255 Ä*x$245Ää"
-java/lang/String#*5
-local282 Ä*x$270Ää"
-java/lang/String#*5
-local177 Ä*x$169Ää"
-java/lang/String#*3
-local23 Ä*x$21Ää"
-java/lang/String#*5
-local276 Ä*x$263Ää"
-java/lang/String#*Â
-local240 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local141 Ä*x$134Ää"
-java/lang/String#*5
-local264 Ä*x$253Ää"
-java/lang/String#*5
-local123 Ä*x$115Ää"
-java/lang/String#*5
-local159 Ä*x$151Ää"
-java/lang/String#*5
-local222 Ä*x$215Ää"
-java/lang/String#*5
-local117 Ä*x$111Ää"
-java/lang/String#*5
-local321 Ä*x$308Ää"
-java/lang/String#*5
-local144 Ä*x$138Ää"
-java/lang/String#*3
-local11 Ä*x$10Ää"
-java/lang/String#*5
-local243 Ä*x$232Ää"
-java/lang/String#*5
-local237 Ä*x$227Ää"
-java/lang/String#*3
-local88 Ä*x$83Ää"
-java/lang/String#*5
-local315 Ä*x$301Ää"
-java/lang/String#*5
-local150 Ä*x$143Ää"
-java/lang/String#*5
-local258 Ä*x$248Ää"
-java/lang/String#*3
-local94 Ä*x$88Ää"
-java/lang/String#*5
-local216 Ä*x$207Ää"
-java/lang/String#*5
-local138 Ä*x$133Ää"
-java/lang/String#*3
-local73 Ä*x$68Ää"
-java/lang/String#*5
-local165 Ä*x$157Ää"
-java/lang/String#*5
-local318 Ä*x$304Ää"
-java/lang/String#*5
-local293 Ä*x$281Ää"
-java/lang/String#*3
-local55 Ä*x$67Ää"
-java/lang/String#*5
-local231 Ä*x$221Ää"
-java/lang/String#*3
-local82 Ä*x$79Ää"
-java/lang/String#*5
-local147 Ä*x$139Ää"
-java/lang/String#*5
-local111 Ä*x$106Ää"
-java/lang/String#*3
-local97 Ä*x$93Ää"
-java/lang/String#*5
-local324 Ä*x$309Ää"
-java/lang/String#*5
-local219 Ä*x$208Ää"
-java/lang/String#*5
-local246 Ä*x$236Ää"
-java/lang/String#*4
-local105 Ä*x$99Ää"
-java/lang/String#*5
-local126 Ä*x$119Ää"
-java/lang/String#*5
-local132 Ä*x$126Ää"
-java/lang/String#*5
-local210 Ä*x$201Ää"
-java/lang/String#*5
-local204 Ä*x$194Ää"
-java/lang/String#*5
-local194 Ä*x$185Ää"
-java/lang/String#*ˆ
-local76 Ä*rxyzÄä€"ÿ
-’“provingground/HoTT.Func#provingground/HoTT.Term#óîprovingground/HoTT.Func#ôñprovingground/HoTT.FuncLike#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#\Zprovingground/HoTT.FuncLike#provingground/HoTT.Term#provingground/HoTT.Term#*5
-local303 Ä*x$291Ää"
-java/lang/String#*5
-local330 Ä*x$316Ää"
-java/lang/String#*5
-local225 Ä*x$217Ää"
-java/lang/String#*3
-local61 Ä*x$57Ää"
-java/lang/String#*5
-local312 Ä*x$300Ää"
-java/lang/String#*5
-local306 Ä*x$293Ää"
-java/lang/String#*5
-local207 Ä*x$197Ää"
-java/lang/String#*3
-local70 Ä*x$65Ää"
-java/lang/String#*5
-local296 Ä*x$284Ää"
-java/lang/String#*5
-local182 Ä*x$176Ää"
-java/lang/String#*3
-local58 Ä*x$55Ää"
-java/lang/String#*3
-local85 Ä*x$80Ää"
-java/lang/String#*5
-local129 Ä*x$121Ää"
-java/lang/String#*1
-local6 Ä*x$5Ää"
-java/lang/String#*3
-local43 Ä*x$41Ää"
-java/lang/String#*5
-local197 Ä*x$190Ää"
-java/lang/String#*5
-local275 Ä*x$264Ää"
-java/lang/String#*5
-local120 Ä*x$113Ää"
-java/lang/String#*3
-local37 Ä*x$35Ää"
-java/lang/String#*5
-local114 Ä*x$107Ää"
-java/lang/String#*5
-local228 Ä*x$218Ää"
-java/lang/String#*5
-local213 Ä*x$202Ää"
-java/lang/String#*3
-local64 Ä*x$59Ää"
-java/lang/String#*5
-local108 Ä*x$102Ää"
-java/lang/String#*5
-local281 Ä*x$269Ää"
-java/lang/String#*5
-local176 Ä*x$170Ää"
-java/lang/String#*3
-local79 Ä*x$75Ää"
-java/lang/String#*5
-local290 Ä*x$280Ää"
-java/lang/String#*‰
-local31 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local179 Ä*x$172Ää"
-java/lang/String#*5
-local185 Ä*x$177Ää"
-java/lang/String#*5
-local278 Ä*x$266Ää"
-java/lang/String#*4
-local102 Ä*x$96Ää"
-java/lang/String#*5
-local201 Ä*x$193Ää"
-java/lang/String#*1
-local9 Ä*x$9Ää"
-java/lang/String#*5
-local170 Ä*x$162Ää"
-java/lang/String#*5
-local300 Ä*x$287Ää"
-java/lang/String#*5
-local263 Ä*x$251Ää"
-java/lang/String#*5
-local309 Ä*x$296Ää"
-java/lang/String#*5
-local299 Ä*x$288Ää"
-java/lang/String#*5
-local158 Ä*x$149Ää"
-java/lang/String#*5
-local164 Ä*x$156Ää"
-java/lang/String#*1
-local0 Ä*x$2Ää"
-java/lang/String#*5
-local191 Ä*x$184Ää"
-java/lang/String#*3
-local52 Ä*x$48Ää"
-java/lang/String#*3
-local67 Ä*x$63Ää"
-java/lang/String#*5
-local284 Ä*x$272Ää"
-java/lang/String#*3
-local19 Ä*x$18Ää"
-java/lang/String#*3
-local25 Ä*x$23Ää"
-java/lang/String#*5
-local257 Ä*x$246Ää"
-java/lang/String#*2
-local10 Ä*x$8Ää"
-java/lang/String#*3
-local46 Ä*x$45Ää"
-java/lang/String#*3
-local13 Ä*x$12Ää"
-java/lang/String#*1
-local3 Ä*x$3Ää"
-java/lang/String#*5
-local239 Ä*x$229Ää"
-java/lang/String#*3
-local40 Ä*x$39Ää"
-java/lang/String#*3
-local49 Ä*x$46Ää"
-java/lang/String#*5
-local188 Ä*x$180Ää"
-java/lang/String#*5
-local287 Ä*x$276Ää"
-java/lang/String#*5
-local245 Ä*x$235Ää"
-java/lang/String#*3
-local96 Ä*x$91Ää"
-java/lang/String#*5
-local272 Ä*x$259Ää"
-java/lang/String#*5
-local152 Ä*x$144Ää"
-java/lang/String#*5
-local167 Ä*x$159Ää"
-java/lang/String#*3
-local34 Ä*x$31Ää"
-java/lang/String#*5
-local266 Ä*x$254Ää"
-java/lang/String#*5
-local173 Ä*x$168Ää"
-java/lang/String#*3
-local28 Ä*x$26Ää"
-java/lang/String#*5
-local251 Ä*x$241Ää"
-java/lang/String#*5
-local146 Ä*x$140Ää"
-java/lang/String#*5
-local269 Ä*x$258Ää"
-java/lang/String#*5
-local155 Ä*x$148Ää"
-java/lang/String#*5
-local128 Ä*x$122Ää"
-java/lang/String#*5
-local233 Ä*x$223Ää"
-java/lang/String#*5
-local227 Ä*x$225Ää"
-java/lang/String#*5
-local254 Ä*x$243Ää"
-java/lang/String#*5
-local326 Ä*x$312Ää"
-java/lang/String#*5
-local140 Ä*x$135Ää"
-java/lang/String#*5
-local149 Ä*x$141Ää"
-java/lang/String#*3
-local16 Ä*x$16Ää"
-java/lang/String#*5
-local248 Ä*x$237Ää"
-java/lang/String#*‰
-local84 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local311 Ä*x$297Ää"
-java/lang/String#*4
-local99 Ä*x$101Ää"
-java/lang/String#*5
-local332 Ä*x$318Ää"
-java/lang/String#*3
-local22 Ä*x$22Ää"
-java/lang/String#*3
-local90 Ä*x$85Ää"
-java/lang/String#*5
-local134 Ä*x$129Ää"
-java/lang/String#*5
-local161 Ä*x$154Ää"
-java/lang/String#*3
-local78 Ä*x$73Ää"
-java/lang/String#*5
-local260 Ä*x$250Ää"
-java/lang/String#*5
-local143 Ä*x$136Ää"
-java/lang/String#*3
-local87 Ä*x$81Ää"
-java/lang/String#*4
-local101 Ä*x$95Ää"
-java/lang/String#*5
-local236 Ä*x$228Ää"
-java/lang/String#*5
-local221 Ä*x$210Ää"
-java/lang/String#*5
-local116 Ä*x$109Ää"
-java/lang/String#*5
-local122 Ä*x$116Ää"
-java/lang/String#*5
-local329 Ä*x$317Ää"
-java/lang/String#*5
-local242 Ä*x$233Ää"
-java/lang/String#*3
-local93 Ä*x$89Ää"
-java/lang/String#*5
-local137 Ä*x$130Ää"
-java/lang/String#*5
-local320 Ä*x$306Ää"
-java/lang/String#*5
-local200 Ä*x$212Ää"
-java/lang/String#*5
-local215 Ä*x$205Ää"
-java/lang/String#*5
-local209 Ä*x$199Ää"
-java/lang/String#*Â
-local314 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local308 Ä*x$315Ää"
-java/lang/String#*3
-local72 Ä*x$69Ää"
-java/lang/String#*3
-local66 Ä*x$61Ää"
-java/lang/String#*5
-local317 Ä*x$302Ää"
-java/lang/String#*5
-local131 Ä*x$123Ää"
-java/lang/String#*3
-local48 Ä*x$47Ää"
-java/lang/String#*3
-local75 Ä*x$70Ää"
-java/lang/String#*É
-"provingground/library/nat$brec_on.
- *nat$brec_onÄäC
-A
- scala/AnyRef#"*
-(provingground/library/nat$brec_on.value.í: *5
-local119 Ä*x$112Ää"
-java/lang/String#*5
-local323 Ä*x$310Ää"
-java/lang/String#*5
-local302 Ä*x$289Ää"
-java/lang/String#*5
-local187 Ä*x$178Ää"
-java/lang/String#*3
-local69 Ä*x$66Ää"
-java/lang/String#*Â
-local203 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*3
-local54 Ä*x$50Ää"
-java/lang/String#*5
-local230 Ä*x$220Ää"
-java/lang/String#*5
-local125 Ä*x$117Ää"
-java/lang/String#*5
-local224 Ä*x$214Ää"
-java/lang/String#*5
-local218 Ä*x$209Ää"
-java/lang/String#*5
-local193 Ä*x$186Ää"
-java/lang/String#*3
-local60 Ä*x$56Ää"
-java/lang/String#*Â
-local292 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local286 Ä*x$274Ää"
-java/lang/String#*5
-local110 Ä*x$104Ää"
-java/lang/String#*3
-local81 Ä*x$76Ää"
-java/lang/String#*4
-local104 Ä*x$98Ää"
-java/lang/String#*5
-local295 Ä*x$282Ää"
-java/lang/String#*3
-local36 Ä*x$34Ää"
-java/lang/String#*5
-local181 Ä*x$173Ää"
-java/lang/String#*5
-local289 Ä*x$277Ää"
-java/lang/String#*5
-local107 Ä*x$103Ää"
-java/lang/String#*5
-local206 Ä*x$195Ää"
-java/lang/String#*5
-local175 Ä*x$167Ää"
-java/lang/String#*3
-local42 Ä*x$40Ää"
-java/lang/String#*5
-local305 Ä*x$294Ää"
-java/lang/String#*5
-local274 Ä*x$262Ää"
-java/lang/String#*5
-local169 Ä*x$161Ää"
-java/lang/String#*1
-local5 Ä*x$6Ää"
-java/lang/String#*5
-local196 Ä*x$188Ää"
-java/lang/String#*3
-local63 Ä*x$60Ää"
-java/lang/String#*3
-local21 Ä*x$19Ää"
-java/lang/String#*5
-local212 Ä*x$203Ää"
-java/lang/String#*3
-local57 Ä*x$53Ää"
-java/lang/String#*5
-local280 Ä*x$268Ää"
-java/lang/String#*5
-local160 Ä*x$152Ää"
-java/lang/String#*5
-local268 Ä*x$256Ää"
-java/lang/String#*5
-local113 Ä*x$108Ää"
-java/lang/String#*3
-local45 Ä*x$42Ää"
-java/lang/String#*5
-local199 Ä*x$191Ää"
-java/lang/String#*3
-local18 Ä*x$17Ää"
-java/lang/String#*1
-local8 Ä*x$7Ää"
-java/lang/String#*Â
-local184 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local142 Ä*x$155Ää"
-java/lang/String#*5
-local157 Ä*x$150Ää"
-java/lang/String#*3
-local51 Ä*x$49Ää"
-java/lang/String#*5
-local283 Ä*x$271Ää"
-java/lang/String#*5
-local277 Ä*x$267Ää"
-java/lang/String#*5
-local163 Ä*x$163Ää"
-java/lang/String#*5
-local178 Ä*x$171Ää"
-java/lang/String#*3
-local39 Ä*x$36Ää"
-java/lang/String#*5
-local241 Ä*x$231Ää"
-java/lang/String#*5
-local190 Ä*x$182Ää"
-java/lang/String#*5
-local298 Ä*x$286Ää"
-java/lang/String#*3
-local24 Ä*x$24Ää"
-java/lang/String#*3
-local30 Ä*x$28Ää"
-java/lang/String#*Â
-local262 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local256 Ä*x$265Ää"
-java/lang/String#*5
-local124 Ä*x$118Ää"
-java/lang/String#*1
-local2 Ä*x$4Ää"
-java/lang/String#*5
-local238 Ä*x$230Ää"
-java/lang/String#*3
-local33 Ä*x$32Ää"
-java/lang/String#*5
-local145 Ä*x$137Ää"
-java/lang/String#*3
-local27 Ä*x$27Ää"
-java/lang/String#*5
-local223 Ä*x$213Ää"
-java/lang/String#*3
-local95 Ä*x$90Ää"
-java/lang/String#*3
-local89 Ä*x$84Ää"
-java/lang/String#*5
-local322 Ä*x$307Ää"
-java/lang/String#*3
-local12 Ä*x$11Ää"
-java/lang/String#*ƒ
-(provingground/library/nat$brec_on.value. ¿*valueÄäÇˇ
- ˙˜provingground/HoTT.FuncLike#ö:ó"íöé
-usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#
-îëprovingground/HoTT.Subs#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#* π∂provingground/HoTT.FuncLike#c:a"]öZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* ∞≠provingground/HoTT.Func#Ú:Ô"ÍöÊ
-‡›provingground/HoTT.FuncLike#c:a"]öZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#
-Ä˝provingground/HoTT.Subs#‡›provingground/HoTT.FuncLike#c:a"]öZ
-provingground/HoTT.Term#
-:8provingground/HoTT.Subs#provingground/HoTT.Term#* XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#* provingground/HoTT.Term#í: *3
-local80 Ä*x$77Ää"
-java/lang/String#*5
-local151 Ä*x$142Ää"
-java/lang/String#*5
-local250 Ä*x$239Ää"
-java/lang/String#*5
-local244 Ä*x$234Ää"
-java/lang/String#*5
-local259 Ä*x$247Ää"
-java/lang/String#*5
-local139 Ä*x$132Ää"
-java/lang/String#*5
-local166 Ä*x$158Ää"
-java/lang/String#*5
-local172 Ä*x$164Ää"
-java/lang/String#*5
-local271 Ä*x$260Ää"
-java/lang/String#*5
-local265 Ä*x$252Ää"
-java/lang/String#*5
-local130 Ä*x$124Ää"
-java/lang/String#*Â
-local148 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*5
-local247 Ä*x$238Ää"
-java/lang/String#*3
-local62 Ä*x$58Ää"
-java/lang/String#*5
-local106 Ä*x$100Ää"
-java/lang/String#*5
-local310 Ä*x$298Ää"
-java/lang/String#*5
-local133 Ä*x$125Ää"
-java/lang/String#*5
-local205 Ä*x$196Ää"
-java/lang/String#*5
-local232 Ä*x$222Ää"
-java/lang/String#*5
-local127 Ä*x$120Ää"
-java/lang/String#*5
-local331 Ä*x$319Ää"
-java/lang/String#*5
-local154 Ä*x$146Ää"
-java/lang/String#*5
-local253 Ä*x$244Ää"
-java/lang/String#*5
-local112 Ä*x$127Ää"
-java/lang/String#*3
-local98 Ä*x$92Ää"
-java/lang/String#*5
-local325 Ä*x$311Ää"
-java/lang/String#*5
-local211 Ä*x$200Ää"
-java/lang/String#*3
-local15 Ä*x$13Ää"
-java/lang/String#*5
-local319 Ä*x$305Ää"
-java/lang/String#*3
-local83 Ä*x$78Ää"
-java/lang/String#*5
-local226 Ä*x$216Ää"
-java/lang/String#*3
-local77 Ä*x$74Ää"
-java/lang/String#*5
-local304 Ä*x$292Ää"
-java/lang/String#*5
-local313 Ä*x$299Ää"
-java/lang/String#*5
-local328 Ä*x$313Ää"
-java/lang/String#*3
-local71 Ä*x$72Ää"
-java/lang/String#*3
-local44 Ä*x$43Ää"
-java/lang/String#*4
-local100 Ä*x$94Ää"
-java/lang/String#*Â
-local115 Ä*rxyzÄä…"∆
-√¿provingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#ËÂprovingground/HoTT.Func#—Œprovingground/HoTT.Func#provingground/HoTT.Term#ìêprovingground/HoTT.Func#97provingground/HoTT.Typ#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#usprovingground/HoTT.Func#provingground/HoTT.Term#97provingground/HoTT.Typ#provingground/HoTT.Term#*3
-local50 Ä*x$52Ää"
-java/lang/String#*5
-local208 Ä*x$198Ää"
-java/lang/String#*3
-local59 Ä*x$54Ää"
-java/lang/String#*5
-local235 Ä*x$226Ää"
-java/lang/String#*5
-local121 Ä*x$114Ää"
-java/lang/String#*5
-local136 Ä*x$131Ää"
-java/lang/String#*5
-local229 Ä*x$219Ää"
-java/lang/String#*5
-local198 Ä*x$189Ää"
-java/lang/String#*3
-local65 Ä*x$62Ää"
-java/lang/String#*5
-local307 Ä*x$295Ää"
-java/lang/String#*5
-local297 Ä*x$285Ää"
-java/lang/String#*3
-local92 Ä*x$86Ää"
-java/lang/String#*5
-local220 Ä*x$211Ää"
-java/lang/String#*5
-local214 Ä*x$204Ää"
-java/lang/String#*5
-local109 Ä*x$105Ää"
-java/lang/String#*3
-local86 Ä*x$82Ää"
-java/lang/String#*5
-local301 Ä*x$290Ää"
-java/lang/String#*5
-local291 Ä*x$279Ää"
-java/lang/String#*5
-local186 Ä*x$179Ää"
-java/lang/String#*4
-local103 Ä*x$97Ää"
-java/lang/String#*5
-local118 Ä*x$110Ää"
-java/lang/String#*5
-local171 Ä*x$165Ää"
-java/lang/String#*3
-local53 Ä*x$51Ää"
-java/lang/String#*3
-local47 Ä*x$44Ää"
-java/lang/String#*5
-local285 Ä*x$273Ää"
-java/lang/String#*5
-local279 Ä*x$275Ää"
-java/lang/String#*5
-local202 Ä*x$192Ää"
-java/lang/String#*1
-local1 Ä*x$1Ää"
-java/lang/String#*3
-local68 Ä*x$64Ää"
-java/lang/String#*5
-local270 Ä*x$257Ää"
-java/lang/String#*∞
-local26 Ä*rxyzÄäï"í
-èåprovingground/HoTT.Func#ïíprovingground/HoTT.Func#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#XVprovingground/HoTT.Func#provingground/HoTT.Term#provingground/HoTT.Term#*3
-local32 Ä*x$30Ää"
-java/lang/String#*5
-local217 Ä*x$206Ää"
-java/lang/String#*5
-local316 Ä*x$303Ää"
-java/lang/String#*5
-local192 Ä*x$183Ää"
-java/lang/String#*3
-local74 Ä*x$71Ää"
-java/lang/String#2+
-
- ò  üprovingground/HoTT.FuncTyp.2+
-
-#ò# üprovingground/HoTT.FuncTyp.2(
-
-∆  provingground/HoTT.Type.2(
-
-˝ Åprovingground/HoTT.Type.2(
-
-£ ßprovingground/HoTT.Type.2.
-
-&˚& ˝provingground/HoTT.Typ#`::`().2=
- !/provingground/induction/ConstructorSeqTL#rec().2+
-
-,∞, ∑provingground/HoTT.FuncTyp.2.
-
-Ú Ùprovingground/HoTT.Typ#`::`().2.
-
-&Ú& Ùprovingground/HoTT.Typ#`::`().2(
-
- ã  èprovingground/HoTT.Type.2,
-#,# .provingground/HoTT.Typ#`::`().2,
-5 7provingground/HoTT.Typ#`::`().2(
-
-2Æ2 ≤provingground/HoTT.Type.2.
-
- ü  °provingground/HoTT.Typ#`::`().2+
-
-Ü çprovingground/HoTT.FuncTyp.2&
-* * $provingground/HoTT.Type.2,
- provingground/HoTT.Typ#`::`().2.
-
-‡ ‚provingground/HoTT.Typ#`::`().2+
-
-– ◊provingground/HoTT.FuncTyp.2&
-G Kprovingground/HoTT.Type.2.
-
-/É/ Öprovingground/HoTT.Typ#`::`().2(
-
-&⁄& ﬁprovingground/HoTT.Type.2(
-
- æ  ¬provingground/HoTT.Type.2(
-
-2·2 Âprovingground/HoTT.Type.2+
- provingground/library/natInd.2.
-
-2Œ2 –provingground/HoTT.Typ#`::`().2'
-	/~/ Çprovingground/HoTT.Type.2.
-
-Ä Çprovingground/HoTT.Typ#`::`().2(
-
- Á  Îprovingground/HoTT.Type.2(
-
-&∂& ∫provingground/HoTT.Type.2,
-22 provingground/HoTT.Typ#`::`().2(
-
-Á Îprovingground/HoTT.Type.2.
-
-&Œ& –provingground/HoTT.Typ#`::`().2(
-
-&ƒ& »provingground/HoTT.Type.2.
-
-∫ ºprovingground/HoTT.Typ#`::`().2)
-/h/ oprovingground/HoTT.FuncTyp.2.
-
-Ã Œprovingground/HoTT.Typ#`::`().2.
-
-Œ –provingground/HoTT.Typ#`::`().2,
-)5) 7provingground/HoTT.Typ#`::`().2.
-
-§ ¶provingground/HoTT.Typ#`::`().21
- #provingground/library/natInd.value.2.
-
-#ï# óprovingground/HoTT.Typ#`::`().2.
-
-◊ Ÿprovingground/HoTT.Typ#`::`().2.
-
-)ï) óprovingground/HoTT.Typ#`::`().2(
-
-/·/ Âprovingground/HoTT.Type.2.
-
-)É) Öprovingground/HoTT.Typ#`::`().2)
-u |provingground/HoTT.FuncTyp.2.
-
-,ü, °provingground/HoTT.Typ#`::`().2(
-
-,ë, ïprovingground/HoTT.Type.2(
-
-,ê, îprovingground/HoTT.Type.2*
-4 :provingground/HoTT.piDefn().2+
-
-˚ Çprovingground/HoTT.FuncTyp.2,
-7 9provingground/HoTT.Typ#`::`().2'
-	~ Çprovingground/HoTT.Type.2(
-
-/µ/ πprovingground/HoTT.Type.2)
- v  }provingground/HoTT.FuncTyp.2.
-
-‡ ‚provingground/HoTT.Typ#`::`().2&
-V Zprovingground/HoTT.Type.2&
-: >provingground/HoTT.Type.2)
-&>& Cprovingground/HoTT.lmbda().2&
-I Mprovingground/HoTT.Type.2.
-
-)†) ¢provingground/HoTT.Typ#`::`().2(
-
-/£/ ßprovingground/HoTT.Type.2.
-
-˛ Äprovingground/HoTT.Typ#`::`().2+
-!! provingground/library/natInd.2.
-
-,Œ, –provingground/HoTT.Typ#`::`().2.
-
-í îprovingground/HoTT.Typ#`::`().2'
-	#~# Çprovingground/HoTT.Type.2&
-- - $provingground/HoTT.Type.2.
-
-Ñ Üprovingground/HoTT.Typ#`::`().2+
-
-ò üprovingground/HoTT.FuncTyp.2&
-8 <provingground/HoTT.Type.2&
-8 <provingground/HoTT.Type.2.
-
-œ —provingground/HoTT.Typ#`::`().2(
-
-È Ìprovingground/HoTT.Type.2(
-
-&£& ßprovingground/HoTT.Type.2(
-
-Á Îprovingground/HoTT.Type.2&
- provingground/HoTT.Type.2+
-00 provingground/library/natInd.2+
-
-)í) ôprovingground/HoTT.FuncTyp.2.
-
-á âprovingground/HoTT.Typ#`::`().2.
-
- “  ‘provingground/HoTT.Typ#`::`().2(
-
-/€/ ﬂprovingground/HoTT.Type.2(
-
-#†# §provingground/HoTT.Type.2+
-
- –  ◊provingground/HoTT.FuncTyp.2
-.. local2922+
-
-&Å& àprovingground/HoTT.FuncTyp.2+
-
- ¢  ©provingground/HoTT.FuncTyp.2(
-
-,·, Âprovingground/HoTT.Type.2(
-
-/Ì/ Òprovingground/HoTT.Type.2+
-
-&‡& Áprovingground/HoTT.FuncTyp.2.
-
- ≤  ¥provingground/HoTT.Typ#`::`().2.
-
-É Öprovingground/HoTT.Typ#`::`().2.
-
-2˙2 ¸provingground/HoTT.Typ#`::`().2(
-
-&±& µprovingground/HoTT.Type.2.
-
-,Ü, àprovingground/HoTT.Typ#`::`().2+
-
-#±# ∏provingground/HoTT.FuncTyp.2.
-
-& & Ãprovingground/HoTT.Typ#`::`().2.
-
-ﬁ ‡provingground/HoTT.Typ#`::`().2.
-
-/◊/ Ÿprovingground/HoTT.Typ#`::`().2.
-
-#ü# °provingground/HoTT.Typ#`::`().2,
-2,2 .provingground/HoTT.Typ#`::`().2.
-
-)è) ëprovingground/HoTT.Typ#`::`().2.
-
- †  ¢provingground/HoTT.Typ#`::`().2,
-)) provingground/HoTT.Typ#`::`().2(
-
-)·) Âprovingground/HoTT.Type.2,
-K Mprovingground/HoTT.Typ#`::`().2.
-
- ˛  Äprovingground/HoTT.Typ#`::`().2.
-
-≤ ¥provingground/HoTT.Typ#`::`().2.
-
-#®# ™provingground/HoTT.Typ#`::`().2,
-S Uprovingground/HoTT.Typ#`::`().2.
-
-&£& •provingground/HoTT.Typ#`::`().2(
-
-2ä2 éprovingground/HoTT.Type.2.
-
-,Õ, œprovingground/HoTT.Typ#`::`().2+
-
-&ò& üprovingground/HoTT.FuncTyp.2=
-$$ /provingground/induction/ConstructorSeqTL#rec().2(
-
-&ÿ& ‹provingground/HoTT.Type.2&
- V  Zprovingground/HoTT.Type.2.
-
- €  ›provingground/HoTT.Typ#`::`().2.
-
-é êprovingground/HoTT.Typ#`::`().2.
-
-Ú Ùprovingground/HoTT.Typ#`::`().2*
-K Qprovingground/HoTT.lambda().2,
-g iprovingground/HoTT.Typ#`::`().2.
-
-Õ œprovingground/HoTT.Typ#`::`().2(
-
-)Ì) Òprovingground/HoTT.Type.2
- local262(
-
-,⁄, ﬁprovingground/HoTT.Type.2(
-
-æ ¬provingground/HoTT.Type.2(
-
-/Ñ/ àprovingground/HoTT.Type.2(
-
- Ö  âprovingground/HoTT.Type.2(
-
-)⁄) ﬁprovingground/HoTT.Type.2.
-
-&˛& Äprovingground/HoTT.Typ#`::`().2.
-
- ∏  ∫provingground/HoTT.Typ#`::`().2(
-
-∂ ∫provingground/HoTT.Type.2)
- h  oprovingground/HoTT.FuncTyp.2,
-
-#à# éprovingground/HoTT.piDefn().2,
-* ,provingground/HoTT.Typ#`::`().2(
-
-,¥, ∏provingground/HoTT.Type.2(
-
-¢ ¶provingground/HoTT.Type.2,
-)e) gprovingground/HoTT.Typ#`::`().2+
-
-ı ¸provingground/HoTT.FuncTyp.2+
-
- “  Ÿprovingground/HoTT.FuncTyp.2.
-
-√ ≈provingground/HoTT.Typ#`::`().2(
-
-Ñ àprovingground/HoTT.Type.21
--- #provingground/library/natInd.value.2.
-
-â ãprovingground/HoTT.Typ#`::`().2.
-
-≠ Øprovingground/HoTT.Typ#`::`().2,
-U Wprovingground/HoTT.Typ#`::`().2(
-
-å êprovingground/HoTT.Type.2.
-
-&ﬁ& ‡provingground/HoTT.Typ#`::`().2&
-N Rprovingground/HoTT.Type.2)
-j qprovingground/HoTT.FuncTyp.2(
-
-å êprovingground/HoTT.Type.2'
-	 ~  Çprovingground/HoTT.Type.2(
-
-#Ñ# àprovingground/HoTT.Type.2)
-2 9provingground/HoTT.FuncTyp.2(
-
-† §provingground/HoTT.Type.2.
-
-¯ ˙provingground/HoTT.Typ#`::`().2,
-S Uprovingground/HoTT.Typ#`::`().2.
-
- Œ  –provingground/HoTT.Typ#`::`().2)
-)v) }provingground/HoTT.FuncTyp.2(
-
-Æ ≤provingground/HoTT.Type.2,
-&S& Uprovingground/HoTT.Typ#`::`().2.
-
-‰ Êprovingground/HoTT.Typ#`::`().2&
-/8/ <provingground/HoTT.Type.2(
-
-,µ, πprovingground/HoTT.Type.2,
-- /provingground/HoTT.Typ#`::`().2.
-
-ó ôprovingground/HoTT.Typ#`::`().2+
-
-– ◊provingground/HoTT.FuncTyp.2.
-
-ﬁ ‡provingground/HoTT.Typ#`::`().2+
-
-,ı, ¸provingground/HoTT.FuncTyp.2(
-
-¢ ¶provingground/HoTT.Type.2(
-
-#Ì# Òprovingground/HoTT.Type.2(
-
-)¥) ∏provingground/HoTT.Type.2(
-
-∏ ºprovingground/HoTT.Type.2(
-
-&Â& Èprovingground/HoTT.Type.2(
-
-∂ ∫provingground/HoTT.Type.2(
-
-Á Îprovingground/HoTT.Type.2)
-)>) Cprovingground/HoTT.lmbda().2.
-
-2ó2 ôprovingground/HoTT.Typ#`::`().2(
-
-2¥2 ∏provingground/HoTT.Type.2?
- !1provingground/induction/ConstructorSeqTL#induc().2.
-
-&¯& ˙provingground/HoTT.Typ#`::`().2&
-" &provingground/HoTT.Type.2.
-
-÷ ÿprovingground/HoTT.Typ#`::`().2(
-
-/ä/ éprovingground/HoTT.Type.2&
-. 2provingground/HoTT.Type.2(
-
-/·/ Âprovingground/HoTT.Type.2(
-
-§ ®provingground/HoTT.Type.2)
-2h2 oprovingground/HoTT.FuncTyp.2(
-
-,Œ, “provingground/HoTT.Type.2.
-
-,Ô, Òprovingground/HoTT.Typ#`::`().2.
-
- Ë  Íprovingground/HoTT.Typ#`::`().2(
-
-/Æ/ ≤provingground/HoTT.Type.2&
-p tprovingground/HoTT.Type.2.
-
-2Ô2 Òprovingground/HoTT.Typ#`::`().2)
-#h# oprovingground/HoTT.FuncTyp.2.
-
-2†2 ¢provingground/HoTT.Typ#`::`().2)
- >  Cprovingground/HoTT.lmbda().2,
-@ Bprovingground/HoTT.Typ#`::`().2&
-0 0 $provingground/HoTT.Type.2)
-2>2 Cprovingground/HoTT.lmbda().2&
-l pprovingground/HoTT.Type.2&
-j nprovingground/HoTT.Type.2.
-
-/Í/ Ïprovingground/HoTT.Typ#`::`().2&
-   provingground/HoTT.Type.2)
-- 4provingground/HoTT.FuncTyp.2(
-
-Ñ àprovingground/HoTT.Type.2,
-S Uprovingground/HoTT.Typ#`::`().2(
-
- ´  Øprovingground/HoTT.Type.2.
-
-2ï2 óprovingground/HoTT.Typ#`::`().2(
-
-ù °provingground/HoTT.Type.2+
-
-,‘, €provingground/HoTT.FuncTyp.2&
-)8) <provingground/HoTT.Type.2,
- S  Uprovingground/HoTT.Typ#`::`().2.
-
-Ô Òprovingground/HoTT.Typ#`::`().2+
-
-∞ ∑provingground/HoTT.FuncTyp.2)
-#># Cprovingground/HoTT.lmbda().2.
-
-,æ, ¿provingground/HoTT.Typ#`::`().2&
-k oprovingground/HoTT.Type.2&
-/V/ Zprovingground/HoTT.Type.2(
-
-#⁄# ﬁprovingground/HoTT.Type.2(
-
-#µ# πprovingground/HoTT.Type.2.
-
-∞ ≤provingground/HoTT.Typ#`::`().2(
-
-ä éprovingground/HoTT.Type.2,
-/S/ Uprovingground/HoTT.Typ#`::`().2.
-
-Ÿ €provingground/HoTT.Typ#`::`().2+
-
-)†) ßprovingground/HoTT.FuncTyp.2+
-
-,ò, üprovingground/HoTT.FuncTyp.2,
-),) .provingground/HoTT.Typ#`::`().2)
-,, provingground/HoTT.lmbda().2+
-
-2ò2 üprovingground/HoTT.FuncTyp.2'
-	2~2 Çprovingground/HoTT.Type.2&
-)V) Zprovingground/HoTT.Type.2,
-7 9provingground/HoTT.Typ#`::`().2(
-
-ä éprovingground/HoTT.Type.2(
-
-® ¨provingground/HoTT.Type.2(
-
-„ Áprovingground/HoTT.Type.2.
-
-)˛) Äprovingground/HoTT.Typ#`::`().2
- 
-shapeless/2(
-
-)£) ßprovingground/HoTT.Type.2.
-
- ◊  Ÿprovingground/HoTT.Typ#`::`().2)
-/>/ Cprovingground/HoTT.lmbda().2(
-
-å êprovingground/HoTT.Type.2(
-
-† §provingground/HoTT.Type.2&
-## provingground/HoTT.Type.2(
-
-,æ, ¬provingground/HoTT.Type.2.
-
-ÿ ⁄provingground/HoTT.Typ#`::`().2.
-
-ï óprovingground/HoTT.Typ#`::`().2&
-  $provingground/HoTT.Type.21
- #provingground/library/natInd.value.2&
-$ $ $provingground/HoTT.Type.2+
-
-ı ¸provingground/HoTT.FuncTyp.2(
-
-&á& ãprovingground/HoTT.Type.2,
-252 7provingground/HoTT.Typ#`::`().2.
-
-&∑& πprovingground/HoTT.Typ#`::`().2.
-
-,ï, óprovingground/HoTT.Typ#`::`().2.
-
-£ •provingground/HoTT.Typ#`::`().2.
-
-ï óprovingground/HoTT.Typ#`::`().2(
-
-&ú& †provingground/HoTT.Type.2,
-,, provingground/HoTT.Typ#`::`().2+
-
-ö °provingground/HoTT.FuncTyp.2.
-
-,◊, Ÿprovingground/HoTT.Typ#`::`().2(
-
-,Ÿ, ›provingground/HoTT.Type.2)
-c jprovingground/HoTT.FuncTyp.2&
- provingground/HoTT.Type.2,
-// provingground/HoTT.Typ#`::`().2,
-k mprovingground/HoTT.Typ#`::`().2
- local1482+
-'' provingground/library/natInd.2&
-D Hprovingground/HoTT.Type.2(
-
-∂ ∫provingground/HoTT.Type.2&
-V Zprovingground/HoTT.Type.2+
-
-/ / —provingground/HoTT.FuncTyp.2.
-
-∫ ºprovingground/HoTT.Typ#`::`().2.
-
-– “provingground/HoTT.Typ#`::`().2,
-+ -provingground/HoTT.Typ#`::`().2*
- provingground/HoTT.lambda().2
-$$ local2032.
-
-,œ, —provingground/HoTT.Typ#`::`().2(
-
-,˝, Åprovingground/HoTT.Type.21
-!! #provingground/library/natInd.value.2(
-
-&¥& ∏provingground/HoTT.Type.2(
-
-)®) ¨provingground/HoTT.Type.2(
-
-)†) §provingground/HoTT.Type.2(
-
-2£2 ßprovingground/HoTT.Type.2(
-
-Ø ≥provingground/HoTT.Type.2,
-e gprovingground/HoTT.Typ#`::`().2(
-
-å êprovingground/HoTT.Type.2.
-
-,À, Õprovingground/HoTT.Typ#`::`().2+
-
-ë òprovingground/HoTT.FuncTyp.2(
-
-Ñ àprovingground/HoTT.Type.2)
-> Cprovingground/HoTT.lmbda().2(
-
-,˚, ˇprovingground/HoTT.Type.2)
-,h, oprovingground/HoTT.FuncTyp.2(
-
-&†& §provingground/HoTT.Type.2,
-,S, Uprovingground/HoTT.Typ#`::`().2+
-
-– ◊provingground/HoTT.FuncTyp.2)
-" 'provingground/HoTT.lmbda().2&
- 8  <provingground/HoTT.Type.2(
-
-&·& Âprovingground/HoTT.Type.2
-** local2622)
-22 provingground/HoTT.lmbda().2(
-
-&Á& Îprovingground/HoTT.Type.2&
-: >provingground/HoTT.Type.2&
-/p/ tprovingground/HoTT.Type.2,
-&& provingground/HoTT.Typ#`::`().2.
-
-)á) âprovingground/HoTT.Typ#`::`().2.
-
-£ •provingground/HoTT.Typ#`::`().2(
-
-/¥/ ∏provingground/HoTT.Type.2&
-C Gprovingground/HoTT.Type.2(
-
- ª  øprovingground/HoTT.Type.2&
- p  tprovingground/HoTT.Type.2(
-
-,Á, Îprovingground/HoTT.Type.2.
-
-&◊& Ÿprovingground/HoTT.Typ#`::`().2+
-
-,¡, »provingground/HoTT.FuncTyp.2+
-
-#¶# ≠provingground/HoTT.FuncTyp.2(
-
-&∫& æprovingground/HoTT.Type.2.
-
-2≤2 ¥provingground/HoTT.Typ#`::`().2.
-
- ﬁ  ‡provingground/HoTT.Typ#`::`().2,
-i kprovingground/HoTT.Typ#`::`().2&
-8 <provingground/HoTT.Type.2+
--- provingground/library/natInd.2.
-
-˛ Äprovingground/HoTT.Typ#`::`().2&
-22 provingground/HoTT.Type.2(
-
-ê îprovingground/HoTT.Type.2(
-
- á  ãprovingground/HoTT.Type.2.
-
-,ë, ìprovingground/HoTT.Typ#`::`().2.
-
-/á/ âprovingground/HoTT.Typ#`::`().2+
-
-ò üprovingground/HoTT.FuncTyp.2.
-
-#á# âprovingground/HoTT.Typ#`::`().2(
-
-Ÿ ›provingground/HoTT.Type.2,
-&e& gprovingground/HoTT.Typ#`::`().2(
-
-· Âprovingground/HoTT.Type.2(
-
-&⁄& ﬁprovingground/HoTT.Type.2.
-
-)ÿ) ⁄provingground/HoTT.Typ#`::`().2.
-
-&á& âprovingground/HoTT.Typ#`::`().2&
-	 	 $provingground/HoTT.Type.2(
-
- ∏  ºprovingground/HoTT.Type.2(
-
-)µ) πprovingground/HoTT.Type.2.
-
-ä åprovingground/HoTT.Typ#`::`().2(
-
- õ  üprovingground/HoTT.Type.2,
-2e2 gprovingground/HoTT.Typ#`::`().2,
-
-ç ìprovingground/HoTT.piDefn().2.
-
- …  Àprovingground/HoTT.Typ#`::`().2(
-
-ï ôprovingground/HoTT.Type.2+
-
-,¶, ≠provingground/HoTT.FuncTyp.2(
-
- Ùprovingground/HoTT.Type.2.
-
-Ω øprovingground/HoTT.Typ#`::`().2.
-
-π ªprovingground/HoTT.Typ#`::`().2&
-p tprovingground/HoTT.Type.2)
-v }provingground/HoTT.FuncTyp.2)
-@ Eprovingground/HoTT.lmbda().2(
-
-,Ñ, àprovingground/HoTT.Type.2(
-
-2Á2 Îprovingground/HoTT.Type.2)
-q vprovingground/HoTT.lmbda().2.
-
- Ã  Œprovingground/HoTT.Typ#`::`().2=
- /provingground/induction/ConstructorSeqTL#rec().2+
-
-/¶/ ≠provingground/HoTT.FuncTyp.2.
-
-#Í# Ïprovingground/HoTT.Typ#`::`().2.
-
-â ãprovingground/HoTT.Typ#`::`().2+
-
-&ï& úprovingground/HoTT.FuncTyp.2,
-
-ô üprovingground/HoTT.lambda().2+
-
-¶ ≠provingground/HoTT.FuncTyp.2.
-
-,Ô, Òprovingground/HoTT.Typ#`::`().2.
-
-ï óprovingground/HoTT.Typ#`::`().2(
-
- †  §provingground/HoTT.Type.2,
- ,  .provingground/HoTT.Typ#`::`().2.
-
-/ÿ/ ⁄provingground/HoTT.Typ#`::`().2(
-
- î  òprovingground/HoTT.Type.2.
-
-,á, âprovingground/HoTT.Typ#`::`().2&
-X \provingground/HoTT.Type.2=
-** /provingground/induction/ConstructorSeqTL#rec().2
-
- local312.
-
-#˛# Äprovingground/HoTT.Typ#`::`().2(
-
-· Âprovingground/HoTT.Type.2+
-
-¶ ≠provingground/HoTT.FuncTyp.2(
-
-,Ô, Ûprovingground/HoTT.Type.2.
-
-Ä Çprovingground/HoTT.Typ#`::`().2=
-00 /provingground/induction/ConstructorSeqTL#rec().2=
--- /provingground/induction/ConstructorSeqTL#rec().2+
-
-¬ «provingground/HoTT.lmbda().2,
- provingground/HoTT.Typ#`::`().2&
-X \provingground/HoTT.Type.2.
-
-ä åprovingground/HoTT.Typ#`::`().2&
-)) provingground/HoTT.Type.2+
-
-/†/ ßprovingground/HoTT.FuncTyp.2.
-
-¥ ∂provingground/HoTT.Typ#`::`().2(
-
- ·  Âprovingground/HoTT.Type.2(
-
-#Æ# ≤provingground/HoTT.Type.2+
- provingground/library/natInd.2+
-
- ç  îprovingground/HoTT.FuncTyp.2.
-
-&˛& Äprovingground/HoTT.Typ#`::`().2(
-
-£ ßprovingground/HoTT.Type.2+
-
-&£& ™provingground/HoTT.FuncTyp.2,
-@ Bprovingground/HoTT.Typ#`::`().2(
-
-&Ñ& àprovingground/HoTT.Type.2
--- local2922.
-
- à  äprovingground/HoTT.Typ#`::`().2
- local262,
-l nprovingground/HoTT.Typ#`::`().2+
-
-® Øprovingground/HoTT.FuncTyp.2.
-
-≤ ¥provingground/HoTT.Typ#`::`().2,
-e gprovingground/HoTT.Typ#`::`().2(
-
-∑ ªprovingground/HoTT.Type.2
-		 local72,
-
-Ú ¯provingground/HoTT.piDefn().2.
-
-õ ùprovingground/HoTT.Typ#`::`().2&
-,, provingground/HoTT.Type.2.
-
-)ﬁ) ‡provingground/HoTT.Typ#`::`().2)
- provingground/HoTT.lmbda().2(
-
-£ ßprovingground/HoTT.Type.2 
- provingground/library/2)
-v }provingground/HoTT.FuncTyp.2.
-
-É Öprovingground/HoTT.Typ#`::`().2.
-
-&ô& õprovingground/HoTT.Typ#`::`().2,
- provingground/HoTT.Typ#`::`().2(
-
-2£2 ßprovingground/HoTT.Type.2.
-
-/Õ/ œprovingground/HoTT.Typ#`::`().2(
-
-¥ ∏provingground/HoTT.Type.2.
-
-÷ ÿprovingground/HoTT.Typ#`::`().2+
-** provingground/library/natInd.2,
- provingground/HoTT.Typ#`::`().26
- (provingground/library/nat$brec_on.value.2&
-&& provingground/HoTT.Type.2.
-
-)Å) Éprovingground/HoTT.Typ#`::`().2+
-
-,–, ◊provingground/HoTT.FuncTyp.2+
-
- ¶  ≠provingground/HoTT.FuncTyp.2.
-
-/è/ ëprovingground/HoTT.Typ#`::`().2&
-2p2 tprovingground/HoTT.Type.2(
-
-È Ìprovingground/HoTT.Type.2&
- provingground/HoTT.Fold.2&
-,p, tprovingground/HoTT.Type.2(
-
-† §provingground/HoTT.Type.2(
-
-,•, ©provingground/HoTT.Type.2!
- provingground/HoTT.2+
-
- Ú  ˘provingground/HoTT.FuncTyp.2(
-
-)Æ) ≤provingground/HoTT.Type.2(
-
-&´& Øprovingground/HoTT.Type.2)
-## provingground/HoTT.lmbda().2)
-&h& oprovingground/HoTT.FuncTyp.2(
-
-&µ& πprovingground/HoTT.Type.21
- #provingground/library/natInd.value.2(
-
-· Âprovingground/HoTT.Type.2)
- provingground/HoTT.lmbda().2(
-
- ⁄  ﬁprovingground/HoTT.Type.2)
-&v& }provingground/HoTT.FuncTyp.2)
-j qprovingground/HoTT.FuncTyp.2.
-
-&€& ›provingground/HoTT.Typ#`::`().2.
-
-Õ œprovingground/HoTT.Typ#`::`().2'
-	&~& Çprovingground/HoTT.Type.2.
-
-Œ –provingground/HoTT.Typ#`::`().2.
-
-† ¢provingground/HoTT.Typ#`::`().2(
-
-#£# ßprovingground/HoTT.Type.2
-
- local842.
-
-&ï& óprovingground/HoTT.Typ#`::`().2.
-
-,´, ≠provingground/HoTT.Typ#`::`().2.
-
-2†2 ¢provingground/HoTT.Typ#`::`().2)
-&& provingground/HoTT.lmbda().2(
-
-& & Œprovingground/HoTT.Type.2(
-
-,Ú, ˆprovingground/HoTT.Type.2.
-
-2á2 âprovingground/HoTT.Typ#`::`().21
-$$ #provingground/library/natInd.value.2.
-
-ÿ ⁄provingground/HoTT.Typ#`::`().2+
-
-,ó, ûprovingground/HoTT.FuncTyp.2(
-
-Ü äprovingground/HoTT.Type.2)
-h oprovingground/HoTT.FuncTyp.2.
-
- Í  Ïprovingground/HoTT.Typ#`::`().2+
-
-/í/ ôprovingground/HoTT.FuncTyp.2+
-
-ö °provingground/HoTT.FuncTyp.2(
-
-2˝2 Åprovingground/HoTT.Type.2,
-)S) Uprovingground/HoTT.Typ#`::`().2.
-
-á âprovingground/HoTT.Typ#`::`().2(
-
-ä éprovingground/HoTT.Type.2
- provingground/2(
-
-,†, §provingground/HoTT.Type.2.
-
-¢ §provingground/HoTT.Typ#`::`().2(
-
-&ä& éprovingground/HoTT.Type.2.
-
-&´& ≠provingground/HoTT.Typ#`::`().2)
-)) provingground/HoTT.lmbda().2(
-
- ™  Æprovingground/HoTT.Type.2
-!! local1842.
-
- ¸  ˛provingground/HoTT.Typ#`::`().2.
-
-2˛2 Äprovingground/HoTT.Typ#`::`().2.
-
-â ãprovingground/HoTT.Typ#`::`().2&
-C Gprovingground/HoTT.Type.2)
-   provingground/HoTT.lmbda().2(
-
-¥ ∏provingground/HoTT.Type.2&
-,V, Zprovingground/HoTT.Type.2.
-
-/¯/ ˙provingground/HoTT.Typ#`::`().2,
-, .provingground/HoTT.Typ#`::`().2'
-	,~, Çprovingground/HoTT.Type.2(
-
-∆  provingground/HoTT.Type.2(
-
-Ú ˆprovingground/HoTT.Type.2,
-7 9provingground/HoTT.Typ#`::`().2
-00 local3142(
-
-/†/ §provingground/HoTT.Type.2
- local562+
-
-2¶2 ≠provingground/HoTT.FuncTyp.2.
-
-&É& Öprovingground/HoTT.Typ#`::`().2=
- /provingground/induction/ConstructorSeqTL#rec().2.
-
- ©  ´provingground/HoTT.Typ#`::`().2,
-/,/ .provingground/HoTT.Typ#`::`().2(
-
-Ø ≥provingground/HoTT.Type.2)
-t yprovingground/HoTT.lmbda().2.
-
-&‚& ‰provingground/HoTT.Typ#`::`().2.
-
-#Œ# –provingground/HoTT.Typ#`::`().2,
-,,, .provingground/HoTT.Typ#`::`().2
- provingground/2+
-
-&º& √provingground/HoTT.FuncTyp.2=
-'' /provingground/induction/ConstructorSeqTL#rec().2
-'' local2402.
-
-ﬁ ‡provingground/HoTT.Typ#`::`().2&
-r vprovingground/HoTT.Type.2
-
-
- local72(
-
-#ä# éprovingground/HoTT.Type.2?
-
-„ Ê/provingground/induction/ConstructorSeqTL#rec().2(
-
-• ©provingground/HoTT.Type.2,
-/ 1provingground/HoTT.Typ#`::`().2&
-n rprovingground/HoTT.Type.2(
-
-,Æ, ≤provingground/HoTT.Type.2.
-
-&Õ& œprovingground/HoTT.Typ#`::`().21
-'' #provingground/library/natInd.value.2)
-/v/ }provingground/HoTT.FuncTyp.2&
-! ! $provingground/HoTT.Type.2.
-
-,ç, èprovingground/HoTT.Typ#`::`().2(
-
-)€) ﬂprovingground/HoTT.Type.2+
-
-õ ¢provingground/HoTT.FuncTyp.2)
-U \provingground/HoTT.FuncTyp.2(
-
- Ò  ıprovingground/HoTT.Type.2.
-
-,¯, ˙provingground/HoTT.Typ#`::`().2.
-
-ú ûprovingground/HoTT.Typ#`::`().2(
-
-Ü äprovingground/HoTT.Type.2(
-
-)ö) ûprovingground/HoTT.Type.2&
-282 <provingground/HoTT.Type.2(
-
-å êprovingground/HoTT.Type.2(
-
- œ  ”provingground/HoTT.Type.2+
-
-“ Ÿprovingground/HoTT.FuncTyp.2+
-
- õ  ¢provingground/HoTT.FuncTyp.2+
- provingground/library/natInd.2)
-,v, }provingground/HoTT.FuncTyp.2(
-
-µ πprovingground/HoTT.Type.2.
-
-Œ –provingground/HoTT.Typ#`::`().2+
- provingground/library/natInd.2
-"" local1842(
-
-,Æ, ≤provingground/HoTT.Type.2(
-
-∞ ¥provingground/HoTT.Type.2.
-
-© ´provingground/HoTT.Typ#`::`().2.
-
-ü °provingground/HoTT.Typ#`::`().2+
-
-#–# ◊provingground/HoTT.FuncTyp.2(
-
-µ πprovingground/HoTT.Type.2&
- provingground/HoTT.Type.2.
-
-&◊& Ÿprovingground/HoTT.Typ#`::`().2(
-
-⁄ ﬁprovingground/HoTT.Type.2(
-
-/®/ ¨provingground/HoTT.Type.2(
-
-#´# Øprovingground/HoTT.Type.2.
-
-&¨& Æprovingground/HoTT.Typ#`::`().2(
-
-º ¿provingground/HoTT.Type.2.
-
- ®  ™provingground/HoTT.Typ#`::`().2&
-r vprovingground/HoTT.Type.2.
-
-√ ≈provingground/HoTT.Typ#`::`().2+
-
- ∞  ∑provingground/HoTT.FuncTyp.2.
-
-/ﬁ/ ‡provingground/HoTT.Typ#`::`().2(
-
-Ä Ñprovingground/HoTT.Type.2'
-	~ Çprovingground/HoTT.Type.2(
-
-í ñprovingground/HoTT.Type.2.
-
-è ëprovingground/HoTT.Typ#`::`().2(
-
-Æ ≤provingground/HoTT.Type.2&
-&8& <provingground/HoTT.Type.2+
-
-) ) —provingground/HoTT.FuncTyp.2,
-&,& .provingground/HoTT.Typ#`::`().2.
-
-√ ≈provingground/HoTT.Typ#`::`().2.
-
- ò  öprovingground/HoTT.Typ#`::`().2.
-
-&ù& üprovingground/HoTT.Typ#`::`().2.
-
-’ ◊provingground/HoTT.Typ#`::`().2+
-
-∂ Ωprovingground/HoTT.FuncTyp.2)
-h oprovingground/HoTT.FuncTyp.2(
-
- ∂  ∫provingground/HoTT.Type.2(
-
-⁄ ﬁprovingground/HoTT.Type.2.
-
-Õ œprovingground/HoTT.Typ#`::`().2-
- provingground/library/pprodInd.2(
-
-,£, ßprovingground/HoTT.Type.2.
-
-#◊# Ÿprovingground/HoTT.Typ#`::`().2&
-)p) tprovingground/HoTT.Type.2.
-
-)Í) Ïprovingground/HoTT.Typ#`::`().2.
-
-Ì Ôprovingground/HoTT.Typ#`::`().2.
-
-◊ Ÿprovingground/HoTT.Typ#`::`().2.
-
-á âprovingground/HoTT.Typ#`::`().2,
-5 7provingground/HoTT.Typ#`::`().2(
-
-&å& êprovingground/HoTT.Type.2,
-2S2 Uprovingground/HoTT.Typ#`::`().2+
-
-&–& ◊provingground/HoTT.FuncTyp.2.
-
-/Œ/ –provingground/HoTT.Typ#`::`().2(
-
-,ü, £provingground/HoTT.Type.2(
-
- ï  ôprovingground/HoTT.Type.2.
-
-œ —provingground/HoTT.Typ#`::`().2(
-
-,ä, éprovingground/HoTT.Type.2,
-g iprovingground/HoTT.Typ#`::`().2)
-,>, Cprovingground/HoTT.lmbda().2,
-,5, 7provingground/HoTT.Typ#`::`().2.
-
-ó ôprovingground/HoTT.Typ#`::`().2)
- provingground/HoTT.lmbda().2+
-		 provingground/library/natInd.2.
-
-/†/ ¢provingground/HoTT.Typ#`::`().2.
-
-)◊) Ÿprovingground/HoTT.Typ#`::`().2.
-
-† ¢provingground/HoTT.Typ#`::`().2(
-
-∞ ¥provingground/HoTT.Type.2.
-
-É Öprovingground/HoTT.Typ#`::`().2,
-#S# Uprovingground/HoTT.Typ#`::`().2.
-
-#Ö# áprovingground/HoTT.Typ#`::`().2(
-
-)Ñ) àprovingground/HoTT.Type.2&
-" &provingground/HoTT.Type.2(
-
-/Æ/ ≤provingground/HoTT.Type.2+
-
-)–) ◊provingground/HoTT.FuncTyp.2,
-^ `provingground/HoTT.Typ#`::`().2.
-
-/≤/ ¥provingground/HoTT.Typ#`::`().2(
-
- ¥  ∏provingground/HoTT.Type.2(
-
- £  ßprovingground/HoTT.Type.2(
-
-ó õprovingground/HoTT.Type.2,
-,e, gprovingground/HoTT.Typ#`::`().2.
-
- ◊  Ÿprovingground/HoTT.Typ#`::`().2
-11 local3142&
-> Bprovingground/HoTT.Type.2.
-
-≤ ¥provingground/HoTT.Typ#`::`().2,
- provingground/HoTT.Typ#`::`().2&
-  $provingground/HoTT.Type.21
- #provingground/library/natInd.value.2,
-; =provingground/HoTT.Typ#`::`().21
-		 #provingground/library/natInd.value.2(
-
- ¨  ∞provingground/HoTT.Type.2,
-U Wprovingground/HoTT.Typ#`::`().2&
-&V& Zprovingground/HoTT.Type.2)
-> Cprovingground/HoTT.lmbda().2,
-
-,¥, ∫provingground/HoTT.piDefn().2)
-v }provingground/HoTT.FuncTyp.2.
-
-)Œ) –provingground/HoTT.Typ#`::`().2+
-
-,¢, ©provingground/HoTT.FuncTyp.2
- local1152+
-
-ü ¶provingground/HoTT.FuncTyp.2(
-
-Ÿ ›provingground/HoTT.Type.2(
-
-∑ ªprovingground/HoTT.Type.2(
-
-ÿ ‹provingground/HoTT.Type.2&
-  $provingground/HoTT.Type.2
- local562'
-	~ Çprovingground/HoTT.Type.2(
-
-µ πprovingground/HoTT.Type.2&
-q uprovingground/HoTT.Type.2(
-
- Ã  –provingground/HoTT.Type.2&
-2V2 Zprovingground/HoTT.Type.2+
-
-“ Ÿprovingground/HoTT.FuncTyp.2,
-
- ë  óprovingground/HoTT.piDefn().2)
- provingground/HoTT.lmbda().2.
-
-≤ ¥provingground/HoTT.Typ#`::`().2.
-
-&‰& Êprovingground/HoTT.Typ#`::`().2
-%% local2032(
-
- Æ  ≤provingground/HoTT.Type.2,
-, .provingground/HoTT.Typ#`::`().2.
-
-2ﬁ2 ‡provingground/HoTT.Typ#`::`().2)
-x provingground/HoTT.FuncTyp.2+
-
-&Õ& ‘provingground/HoTT.FuncTyp.2+
-
-)¶) ≠provingground/HoTT.FuncTyp.2)
-// provingground/HoTT.lmbda().2.
-
-‚ ‰provingground/HoTT.Typ#`::`().2(
-
-)Á) Îprovingground/HoTT.Type.2(
-
-• ©provingground/HoTT.Type.2.
-
-ç èprovingground/HoTT.Typ#`::`().2(
-
- Ñ  àprovingground/HoTT.Type.2&
-&p& tprovingground/HoTT.Type.2+
-
- Ó  ıprovingground/HoTT.FuncTyp.2=
- !/provingground/induction/ConstructorSeqTL#rec().2,
- provingground/HoTT.Typ#`::`().2)
-#v# }provingground/HoTT.FuncTyp.2&
-// provingground/HoTT.Type.21
-** #provingground/library/natInd.value.2+
-
-ç îprovingground/HoTT.FuncTyp.2,
-R Tprovingground/HoTT.Typ#`::`().2=
- /provingground/induction/ConstructorSeqTL#rec().2(
-
-)Æ) ≤provingground/HoTT.Type.2)
-x provingground/HoTT.FuncTyp.2(
-
-¿ ƒprovingground/HoTT.Type.2+
-
-,â, êprovingground/HoTT.FuncTyp.2.
-
-,ﬁ, ‡provingground/HoTT.Typ#`::`().2=
-		 /provingground/induction/ConstructorSeqTL#rec().2,
-## provingground/HoTT.Typ#`::`().2.
-
-)«) …provingground/HoTT.Typ#`::`().2,
- 5  7provingground/HoTT.Typ#`::`().2+
-
-® Øprovingground/HoTT.FuncTyp.2(
-
-&Ü& äprovingground/HoTT.Type.2(
-
- ä  éprovingground/HoTT.Type.2(
-
-µ πprovingground/HoTT.Type.2(
-
-&Á& Îprovingground/HoTT.Type.2+
- provingground/library/natInd.2.
-
-2◊2 Ÿprovingground/HoTT.Typ#`::`().2(
-
- Ì  Òprovingground/HoTT.Type.2(
-
-&ä& éprovingground/HoTT.Type.2(
-
- µ  πprovingground/HoTT.Type.2&
-,8, <provingground/HoTT.Type.2
-(( local2402(
-
-,“, ÷provingground/HoTT.Type.2,
-/5/ 7provingground/HoTT.Typ#`::`().2&
- provingground/induction/2=
-!! /provingground/induction/ConstructorSeqTL#rec().2,
-
-&¿& ∆provingground/HoTT.piDefn().2(
-
- é  íprovingground/HoTT.Type.2)
-2v2 }provingground/HoTT.FuncTyp.2(
-
-‹ ‡provingground/HoTT.Type.2.
-
- ≥  µprovingground/HoTT.Typ#`::`().2(
-
-&˛& Çprovingground/HoTT.Type.2(
-
-™ Æprovingground/HoTT.Type.2(
-
-&‰& Ëprovingground/HoTT.Type.2(
-
-/ö/ ûprovingground/HoTT.Type.2,
-> @provingground/HoTT.Typ#`::`().2(
-
-,∏, ºprovingground/HoTT.Type.2.
-
-&≤& ¥provingground/HoTT.Typ#`::`().2.
-
-◊ Ÿprovingground/HoTT.Typ#`::`().2,
-e gprovingground/HoTT.Typ#`::`().2(
-
-Æ ≤provingground/HoTT.Type.2(
-
-)Ñ) àprovingground/HoTT.Type.2.
-
-)≤) ¥provingground/HoTT.Typ#`::`().2&
-#V# Zprovingground/HoTT.Type.2,
- provingground/HoTT.Typ#`::`().2.
-
-î ñprovingground/HoTT.Typ#`::`().2,
-
- Ò  ˜provingground/HoTT.piDefn().2&
-] aprovingground/HoTT.Type.2+
-
-)ò) üprovingground/HoTT.FuncTyp.2,
-. 0provingground/HoTT.Typ#`::`().2.
-
-Õ œprovingground/HoTT.Typ#`::`().2+
-
-&¶& ≠provingground/HoTT.FuncTyp.2.
-
-&’& ◊provingground/HoTT.Typ#`::`().2
- 
-local8421
-00 #provingground/library/natInd.value.2
- local762,
-5 7provingground/HoTT.Typ#`::`().2,
- e  gprovingground/HoTT.Typ#`::`().2,
-. 0provingground/HoTT.Typ#`::`().2.
-
-,˙, ¸provingground/HoTT.Typ#`::`().2&
- provingground/HoTT.Type.2.
-
-¥ ∂provingground/HoTT.Typ#`::`().2)
-T [provingground/HoTT.FuncTyp.2(
-
-)ä) éprovingground/HoTT.Type.2+
-
- ˇ  Üprovingground/HoTT.FuncTyp.2(
-
-#Á# Îprovingground/HoTT.Type.2'
-	)~) Çprovingground/HoTT.Type.2(
-
-∞ ¥provingground/HoTT.Type.2.
-
- Ó  provingground/HoTT.Typ#`::`().2.
-
-)Õ) œprovingground/HoTT.Typ#`::`().2(
-
-,™, Æprovingground/HoTT.Type.2.
-
-Ô Òprovingground/HoTT.Typ#`::`().2&
-p tprovingground/HoTT.Type.2
- local1152
-++ local2622(
-
-,ÿ, ‹provingground/HoTT.Type.2(
-
-/Á/ Îprovingground/HoTT.Type.2.
-
-&†& ¢provingground/HoTT.Typ#`::`().2(
-
-/Ñ/ àprovingground/HoTT.Type.2+
-
-&ı& ¸provingground/HoTT.FuncTyp.2+
-
-/ò/ üprovingground/HoTT.FuncTyp.2(
-
-„ Áprovingground/HoTT.Type.2.
-
-ü °provingground/HoTT.Typ#`::`().2&
-V Zprovingground/HoTT.Type.2.
-
-Ô Òprovingground/HoTT.Typ#`::`().2.
-
- Ô  Òprovingground/HoTT.Typ#`::`().2.
-
-&˚& ˝provingground/HoTT.Typ#`::`().2,
-, .provingground/HoTT.Typ#`::`().2.
-
-,≤, ¥provingground/HoTT.Typ#`::`().2(
-
-&ù& °provingground/HoTT.Type.2+
-
-/–/ ◊provingground/HoTT.FuncTyp.2,
-
-,î, öprovingground/HoTT.piDefn().2(
-
-œ ”provingground/HoTT.Type.23
- %provingground/library/pprodInd.value.2.
-
- Õ  œprovingground/HoTT.Typ#`::`().2+
-
-ı ¸provingground/HoTT.FuncTyp.2)
-> Cprovingground/HoTT.lmbda().2.
-
-¥ ∂provingground/HoTT.Typ#`::`().2.
-
-#ﬁ# ‡provingground/HoTT.Typ#`::`().2,
-` bprovingground/HoTT.Typ#`::`().2.
-
-#≤# ¥provingground/HoTT.Typ#`::`().2.
-
-† ¢provingground/HoTT.Typ#`::`().2(
-
-¥ ∏provingground/HoTT.Type.2.
-
-,†, ¢provingground/HoTT.Typ#`::`().2(
-
-Ô Ûprovingground/HoTT.Type.2+
-
-2–2 ◊provingground/HoTT.FuncTyp.2(
-
-Ä Ñprovingground/HoTT.Type.2(
-
-í ñprovingground/HoTT.Type.2+
-
-ò üprovingground/HoTT.FuncTyp.2.
-
-&í& îprovingground/HoTT.Typ#`::`().2.
-
-,Ô, Òprovingground/HoTT.Typ#`::`().2
- local1482(
-
-É áprovingground/HoTT.Type.2
- 
-local312(
-
-¢ ¶provingground/HoTT.Type.2+
-
-¶ ≠provingground/HoTT.FuncTyp.2+
-
- ±  ∏provingground/HoTT.FuncTyp.2+
-$$ provingground/library/natInd.2.
-
-#†# ¢provingground/HoTT.Typ#`::`().2,
-
-&†& ¶provingground/HoTT.piDefn().2.
-
- à  äprovingground/HoTT.Typ#`::`().2+
-
-&«& Œprovingground/HoTT.FuncTyp.2.
-
-2Õ2 œprovingground/HoTT.Typ#`::`().2,
-b dprovingground/HoTT.Typ#`::`().2,
-   provingground/HoTT.Typ#`::`().20
- "provingground/library/nat$brec_on.2.
-
-¨ Æprovingground/HoTT.Typ#`::`().2+
- provingground/library/natInd.2.
-
- á  âprovingground/HoTT.Typ#`::`().2(
-
-û ¢provingground/HoTT.Type.2.
-
- ï  óprovingground/HoTT.Typ#`::`().2(
-
-&˚& ˇprovingground/HoTT.Type.2(
-
-⁄ ﬁprovingground/HoTT.Type.2(
-
-2†2 §provingground/HoTT.Type.2(
-
-Ü äprovingground/HoTT.Type.2)
-h oprovingground/HoTT.FuncTyp.21
- #provingground/library/natInd.value.2,
-{ }provingground/HoTT.Typ#`::`().2&
- provingground/HoTT.Type.2.
-
-&ƒ& ∆provingground/HoTT.Typ#`::`().2(
-
-)·) Âprovingground/HoTT.Type.2(
-
- Î  Ôprovingground/HoTT.Type.2*
- provingground/HoTT.piDefn().2&
-A Eprovingground/HoTT.Type.2(
-
-&ﬁ& ‚provingground/HoTT.Type.2+
-
-Á Óprovingground/HoTT.FuncTyp.21
- #provingground/library/natInd.value.2)
- 
-provingground/HoTT.lmbda().28
- *provingground/induction/package.implicits.2.
-
-¢ §provingground/HoTT.Typ#`::`().2.
-
-&á& âprovingground/HoTT.Typ#`::`().2.
-
-˛ Äprovingground/HoTT.Typ#`::`().2.
-
-)¯) ˙provingground/HoTT.Typ#`::`().2(
-
-&Æ& ≤provingground/HoTT.Type.2)
-0 7provingground/HoTT.FuncTyp.2.
-
-,Ï, Óprovingground/HoTT.Typ#`::`().2(
-
-2⁄2 ﬁprovingground/HoTT.Type.2,
-/e/ gprovingground/HoTT.Typ#`::`().2.
-
-≠ Øprovingground/HoTT.Typ#`::`().2,
-&5& 7provingground/HoTT.Typ#`::`().2.
-
-/Å/ Éprovingground/HoTT.Typ#`::`().2)
-)h) oprovingground/HoTT.FuncTyp.2+
-
- Ä  áprovingground/HoTT.FuncTyp.2(
-
-2µ2 πprovingground/HoTT.Type.2.
-
-/ï/ óprovingground/HoTT.Typ#`::`().2(
-
-#¥# ∏provingground/HoTT.Type.2.
-
-,˛, Äprovingground/HoTT.Typ#`::`().2&
-o sprovingground/HoTT.Type.2(
-
-2Ñ2 àprovingground/HoTT.Type.2,
-g iprovingground/HoTT.Typ#`::`().2(
-
- ˙  ˛provingground/HoTT.Type.2.
-
-/«/ …provingground/HoTT.Typ#`::`().2(
-
- ﬁ  ‚provingground/HoTT.Type.2(
-
-€ ﬂprovingground/HoTT.Type.2(
-
-&Ø& ≥provingground/HoTT.Type.2(
-
-Ü äprovingground/HoTT.Type.2&
-#8# <provingground/HoTT.Type.2,
-#e# gprovingground/HoTT.Typ#`::`().2)
- provingground/HoTT.lmbda().2.
-
-/˛/ Äprovingground/HoTT.Typ#`::`().2(
-
- à  åprovingground/HoTT.Type.2(
-
-#·# Âprovingground/HoTT.Type.2+
-
-&Æ& µprovingground/HoTT.FuncTyp.2.
-
-œ —provingground/HoTT.Typ#`::`().2(
-
- ˇ  Éprovingground/HoTT.Type.2&
-#p# tprovingground/HoTT.Type.2.
-
- ¸  ˛provingground/HoTT.Typ#`::`().2
- local762.
-
- Î  Ìprovingground/HoTT.Typ#`::`().2.
-
-¨ Æprovingground/HoTT.Typ#`::`().2.
-
- ë  ìprovingground/HoTT.Typ#`::`().2.
-
-&Ñ& Üprovingground/HoTT.Typ#`::`().2(
-
-/⁄/ ﬁprovingground/HoTT.Type.2,
-#5# 7provingground/HoTT.Typ#`::`().2+
-
-¢ ©provingground/HoTT.FuncTyp.2&
-' ' $provingground/HoTT.Type.2+
-
- ⁄  ·provingground/HoTT.FuncTyp.2)
-@ Eprovingground/HoTT.lmbda().2.
-
-,÷, ÿprovingground/HoTT.Typ#`::`().2.
-
-#Õ# œprovingground/HoTT.Typ#`::`().2(
-
-∞ ¥provingground/HoTT.Type.2.
-
-â ãprovingground/HoTT.Typ#`::`().PZ 501732025EC2BFCC6C88461B5D53ECCD

@@ -252,7 +252,7 @@ object TypFamilyPtn {
     }
 
     def subs(x: Term, y: Term) =
-      DepFuncTypFamily(head.replace(x, y), (u: U) => tailfibre(u).subs(x, y))
+      DepFuncTypFamily(head.replace(x, y), (u: U) => tailfibre(u.replace(y, x)).subs(x, y))
 
     def mapper[C <: Term with Subs[C]] =
       depFuncTypFamilyMapper(tailfibre(head.Var).mapper[C],
@@ -592,8 +592,9 @@ object TypFamilyMap {
     def typRestrict(xs: FuncLike[U, TIDFT], ind: (U :: TIndex)) =
       tailfibre(ind.head).typRestrict(xs(ind.head), ind.tail)
 
-    def subs(x: Term, y: Term) =
+    def subs(x: Term, y: Term) = {
       DepFuncTypFamilyMap(head.replace(x, y), (u: U) => tailfibre(u.replace(y, x)).subs(x, y))
+    }
   }
 }
 
