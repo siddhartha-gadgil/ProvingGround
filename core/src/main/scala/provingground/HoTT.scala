@@ -3409,9 +3409,11 @@ object HoTT {
               fx.func(x.asInstanceOf[u]) == func(x) && fx.arg.typ == func.dom)
             Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
           else getArg(func)(fx.func)
-        case _ => None
+        case _ => 
+          if (isProp(func.dom) && isProp(sym.typ)) Some(("_" :: func.dom).asInstanceOf[D]) else None
       }
-    case _ => None
+    case res => 
+      if (isProp(func.dom) && isProp(res.typ)) Some(("_" :: func.dom).asInstanceOf[D]) else None
   }
 
   /**
