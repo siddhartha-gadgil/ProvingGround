@@ -5,7 +5,7 @@ import spire.math._
 import spire.implicits._
 
 /**
-* Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy
+  * Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy
   * @param h0 the initial generation entropy
   * @param kl0 the initial relative entropy between theorems and proofs
   * @param p0 the initial theorem weight of the element
@@ -44,31 +44,36 @@ case class EntropyAtomWeight(h0: Double,
   def totIterator(x: Double, sc: Double = 1): Iterator[Double] =
     Iterator.iterate(x)(y => totShifted(y, sc))
 
-  def iter(sc: Double = 1): Iterator[Double] =
-    {
-      val x = log(1.0/q0 - 1)
-      totIterator(x, sc).map{(y) => 1 / (1 + exp(y))}
+  def iter(sc: Double = 1): Iterator[Double] = {
+    val x = log(1.0 / q0 - 1)
+    totIterator(x, sc).map { (y) =>
+      1 / (1 + exp(y))
     }
+  }
 
   def pairIterator(sc: Double = 1): Iterator[(Double, Option[Double])] =
-    Iterator.iterate[(Double, Option[Double])](log(1.0/q0 - 1)-> None){
-      case (y, _) =>
-        val shift = tot(y).infinitesimal(0) * sc
-        (y - shift, Some(shift.abs))
-    }.map{case (x, s) => 1.0 / (1 + exp(x)) -> s}
+    Iterator
+      .iterate[(Double, Option[Double])](log(1.0 / q0 - 1) -> None) {
+        case (y, _) =>
+          val shift = tot(y).infinitesimal(0) * sc
+          (y - shift, Some(shift.abs))
+      }
+      .map { case (x, s) => 1.0 / (1 + exp(x)) -> s }
 
-  def prunedPairIterator(cutoff: Double,  sc: Double = 1): Iterator[(Double, Option[Double])] =
-    pairIterator(sc).takeWhile{
+  def prunedPairIterator(cutoff: Double,
+                         sc: Double = 1): Iterator[(Double, Option[Double])] =
+    pairIterator(sc).takeWhile {
       case (_, optShift) => optShift.forall(_ > cutoff)
     }
 
-  def stableWeight(cutoff: Double,  sc: Double = 1): Double =
-    prunedPairIterator(cutoff, sc).foldLeft(q0){case (_, (y, _)) => y}
+  def stableWeight(cutoff: Double, sc: Double = 1): Double =
+    prunedPairIterator(cutoff, sc).foldLeft(q0) { case (_, (y, _)) => y }
 }
 
 object EntropyAtomWeight {
+
   /**
-  * More natural (but verbose) description of spire gradients for entropy tradeoff
+    * More natural (but verbose) description of spire gradients for entropy tradeoff
     * @param genDist the initial generating distribution
     * @param pDist the initial "theorem by proof" distribution
     * @param qDist the initial "theorem by statement" distribution
@@ -88,19 +93,23 @@ object EntropyAtomWeight {
                       qDist(elem),
                       initWeight)
 
-  def evolvedLemmaGens(ev: EvolvedState): Vector[(Typ[Term], EntropyAtomWeight)] =
-    ev.result.thmsBySt.supp.map(lem =>
-      lem -> EntropyAtomWeight[Term, Typ[Term]](
-        ev.init.terms,
-        ev.result.thmsBySt,
-        ev.result.thmsByPf,
-        lem,
-        ev.params.termInit
-      )
-    )
+  def evolvedLemmaGens(
+      ev: EvolvedState): Vector[(Typ[Term], EntropyAtomWeight)] =
+    ev.result.thmsBySt.supp
+      .filter(!ev.init.terms.map(_.typ).supp.contains(_))
+      .map(
+        lem =>
+          lem -> EntropyAtomWeight[Term, Typ[Term]](
+            ev.init.terms,
+            ev.result.thmsBySt,
+            ev.result.thmsByPf,
+            lem,
+            ev.params.termInit
+        ))
 
-  def evolvedLemmaIters(ev: EvolvedState,   sc: Double = 1): Vector[(Typ[Term], Iterator[Double])] =
-    evolvedLemmaGens(ev).map{
+  def evolvedLemmaIters(ev: EvolvedState,
+                        sc: Double = 1): Vector[(Typ[Term], Iterator[Double])] =
+    evolvedLemmaGens(ev).map {
       case (lemma, ew) => lemma -> ew.iter(sc)
     }
 }
