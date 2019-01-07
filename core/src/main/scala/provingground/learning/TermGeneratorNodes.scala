@@ -166,7 +166,7 @@ class TermGeneratorNodes[InitState](
         Some(
           Island[Term, InitState, Term, Term](
             termsWithTyp(pd),
-            x => termsWithTyp(pd.fibers(x.asInstanceOf[u])),
+            PiOutput(pd),
             addVar(pd.domain),
             LamApply,
             inIsle
@@ -662,7 +662,7 @@ object TermRandomVars {
   }
 
   case class WithTyp(typ: Typ[Term]) extends (Term => Boolean) {
-    def apply(t: Term) = t.typ == typ
+    def apply(t: Term): Boolean = t.typ == typ
 
     override def toString = s"$WithTyp(typ)"
   }
@@ -697,6 +697,10 @@ object TermRandomVars {
         Typs,
         (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
       )
+
+  case class PiOutput[U<: Term with Subs[U], V <: Term with Subs[V]](pd: PiDefn[U, V]) extends (Term => RandomVar[Term]){
+    def apply(x: Term): RandomVar[Term] = termsWithTyp(pd.fibers(x.asInstanceOf[U]))
+  }
 
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
     Sort.Filter[Term](WithTyp(typ))
