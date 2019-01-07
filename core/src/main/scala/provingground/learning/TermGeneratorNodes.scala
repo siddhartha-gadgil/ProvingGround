@@ -1031,8 +1031,8 @@ import upickle.default.{ReadWriter => RW, macroRW, read, write}
 object TermGenParams {
   implicit def rw: RW[TermGenParams] = macroRW
 
-  case class AddVar(wt: Double) extends (Typ[Term] => TermState => (TermState, Term)){
-    def apply(typ: Typ[Term]) = (ts: TermState) => ts.addVar(typ, wt)
+  case class AddVar(typ: Typ[Term], wt: Double) extends (TermState => (TermState, Term)){
+    def apply(ts: TermState) = ts.addVar(typ, wt)
 
     override def toString = "AddVar"
   }
@@ -1067,7 +1067,7 @@ case class TermGenParams(appW: Double = 0.1,
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => applyFunc(fn.func, arg) },
         { case (fn, arg) => Unify.appln(fn.func, arg) },
-        AddVar(varWeight),
+        AddVar(_, varWeight),
         GetVar,
         InIsle 
       )

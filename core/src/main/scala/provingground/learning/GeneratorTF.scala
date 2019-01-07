@@ -60,14 +60,18 @@ object TFData {
 object GeneratorTF {
   def fromEvolved(ev: EvolvedState): GeneratorTF[TermState, HoTT.Term] =
     GeneratorTF(ev.params.nodeCoeffSeq, ev.init, ev.result)
+
+  val gset : collection.mutable.Set[GeneratorTF[_, _]] = collection.mutable.Set()
 }
 
 case class GeneratorTF[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) {
-  pprint.log(initState)
-  pprint.log(finalState)
+  // pprint.log(initState)
+  // pprint.log(finalState)
+
+ GeneratorTF.gset += this
 
   lazy val initVars: Set[Variable[_]] =
     GeneratorVariables(nodeCoeffSeq, initState).allVars
@@ -204,7 +208,7 @@ case class GeneratorTF[State, Boat](
         groupEquations(terms) -> data
       case fmly =>
         val eqns = finalElemIndices(nodeCoeffs.output).flatMap { x =>
-          pprint.log(x)
+          // pprint.log(x)
           val (terms, _) = nodeCoeffsEquationTerms(nodeCoeffs, x)
           groupEquations(terms)
         }
@@ -320,7 +324,7 @@ case class GeneratorTF[State, Boat](
           case FlatMap(baseInput, fiberNode, output) =>
             val eqTerms: Set[EquationTerm] = for {
               (x, p) <- finalProbs(baseInput)
-              _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
+              // _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
               eqT <- nodeEquationTerms(fiberNode(x))._1
             } yield eqT * p
             val allData: Set[TFData] = for {
@@ -332,7 +336,7 @@ case class GeneratorTF[State, Boat](
             val eqTerms: Set[EquationTerm] = for {
               (x, p)                   <- finalProbs(baseInput)
               (node: GeneratorNode[Y]) <- fiberNodeOpt(x).toSet
-              _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
+              // _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
               eqT <- nodeEquationTerms(node)._1
             } yield eqT * p
             val allData: Set[TFData] = for {
@@ -364,10 +368,10 @@ case class GeneratorTF[State, Boat](
                 d = pmf1.zip(d2).map {
                   case ((x1, p1), (x2, p2)) =>
                     Try((f(x1, x2), p1 * p2)).fold(fa => {
-                      pprint.log(x1)
-                      pprint.log(x2)
-                      pprint.log(f)
-                      pprint.log(node)
+                      // pprint.log(x1)
+                      // pprint.log(x2)
+                      // pprint.log(f)
+                      // pprint.log(node)
                       throw fa
                     }, fb => fb)
                 }
@@ -445,7 +449,7 @@ case class GeneratorTF[State, Boat](
 //        pprint.log(node)
 //        pprint.log(result)
         nodeMap += node -> result
-        pprint.log(nodeMap.size)
+        // pprint.log(nodeMap.size)
         result
       }
     )
@@ -586,10 +590,10 @@ case class GeneratorTF[State, Boat](
                 d = pmf1.zip(d2).map {
                   case ((x1, p1), (x2, p2)) =>
                     Try((f(x1, x2), p1 * p2)).fold(fa => {
-                      pprint.log(x1)
-                      pprint.log(x2)
-                      pprint.log(f)
-                      pprint.log(node)
+                      // pprint.log(x1)
+                      // pprint.log(x2)
+                      // pprint.log(f)
+                      // pprint.log(node)
                       throw fa
                     }, fb => fb)
                 }
