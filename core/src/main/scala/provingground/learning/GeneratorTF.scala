@@ -743,9 +743,9 @@ case class GeneratorTF[State, Boat](
 
     }
 
-  val recTask: Task[(Set[Equation], TFData)] = nodeCoeffSeqEquationsTask(nodeCoeffSeq)
+  val recTask: Task[(Set[Equation], TFData)] = nodeCoeffSeqEquationsTask(nodeCoeffSeq).memoize
 
-  val eqnTask: Task[Set[Equation]] = recTask.map{case (re, rd) => re union(rd.equations)}
+  val eqnTask: Task[Set[Equation]] = recTask.map{case (re, rd) => re union(rd.equations)}.memoize
 
   lazy val finalProbVars: Map[RandomVar[Any], Set[Expression]] = finalVars
     .collect {

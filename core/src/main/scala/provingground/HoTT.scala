@@ -46,6 +46,16 @@ object HoTT {
     override def toString: String = name.toString
   }
 
+  object Name{
+    def getName(t: Term): Option[String] = t match {
+      case sym: Symbolic => sym.name match {
+        case Name(name) => Some(name)
+        case _ => None
+      }
+      case _ => None
+    }
+  }
+
   object NamedTerm {
     def unapply(arg: Term): Option[String] =
       arg match {
@@ -61,6 +71,29 @@ object HoTT {
   trait NameFactory {
     def get: Name
   }
+
+  def getName(n: Int) : String =
+    if (n < 26) ('a' + n).toChar.toString
+    else {
+      val last = ('a' + (n % 26)).toChar.toString
+      getName(n / 26 - 1) + last
+    }
+
+  def nameCard(s: String) : Int =
+    if (s.length == 1) s.head - 'a'
+    else (s.head - 'a' + 1) * math.pow(26, (s.length - 1)).toInt + nameCard(s.tail)
+
+  def nextVar(typ: Typ[Term], vars: Vector[Term], prefix: String = "@"): Term = {
+    val cards: Vector[Int] = for {
+      t <- vars
+      if t.typ == typ
+      n <- Name.getName(t)
+    } yield nameCard(n.tail)
+    val name = prefix + getName((cards :+ 0).max + 1)
+    name :: typ
+  }
+
+
 
   /**
     * factory for variable names
