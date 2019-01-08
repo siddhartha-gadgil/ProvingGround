@@ -61,7 +61,7 @@ object GeneratorTF {
   def fromEvolved(ev: EvolvedState): GeneratorTF[TermState, HoTT.Term] =
     GeneratorTF(ev.params.nodeCoeffSeq, ev.init, ev.result)
 
-  val gset : collection.mutable.Set[GeneratorTF[_, _]] = collection.mutable.Set()
+  val gset: collection.mutable.Set[GeneratorTF[_, _]] = collection.mutable.Set()
 }
 
 case class GeneratorTF[State, Boat](
@@ -70,8 +70,6 @@ case class GeneratorTF[State, Boat](
     finalState: State)(implicit sd: StateDistribution[State, FD]) {
   // pprint.log(initState)
   // pprint.log(finalState)
-
- GeneratorTF.gset += this
 
   lazy val initVars: Set[Variable[_]] =
     GeneratorVariables(nodeCoeffSeq, initState).allVars
@@ -410,8 +408,11 @@ case class GeneratorTF[State, Boat](
             val fs               = isle.finalMap(boat, finalState)
             if (sd.isEmpty(fs)) (Set.empty[EquationTerm], TFData.empty)
             else {
-              val isleEq =
+              val isleEqNew =
                 GeneratorTF(nodeCoeffSeq, isleInit, fs)
+              val isleEq =
+                GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
+              GeneratorTF.gset += isleEq
               val isleData: TFData =
                 isleEq.tfData.map((x) => InIsle(x, boat, isle))
               val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
@@ -636,8 +637,11 @@ case class GeneratorTF[State, Boat](
             val fs               = isle.finalMap(boat, finalState)
             if (sd.isEmpty(fs)) (Set.empty[EquationTerm], TFData.empty)
             else {
-              val isleEq =
+              val isleEqNew =
                 GeneratorTF(nodeCoeffSeq, isleInit, fs)
+              val isleEq =
+                GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
+              GeneratorTF.gset += isleEq
               val isleData: TFData =
                 isleEq.tfData.map((x) => InIsle(x, boat, isle))
               val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
@@ -710,42 +714,51 @@ case class GeneratorTF[State, Boat](
     }
 
   def nodeCoeffSeqEquationsTask(
-                             ncs: NodeCoeffSeq[State, Boat, Double]): Task[(Set[Equation], TFData)] =
+      ncs: NodeCoeffSeq[State, Boat, Double]): Task[(Set[Equation], TFData)] =
     ncs match {
-      case NodeCoeffSeq.Empty()          => Task.now(Set() -> TFData.empty)
+      case NodeCoeffSeq.Empty() => Task.now(Set() -> TFData.empty)
       case NodeCoeffSeq.Cons(head, tail) =>
         for {
           hp <- nodeCoeffsEquationsTask(head)
           tp <- nodeCoeffSeqEquationsTask(tail)
-        } yield
-          (hp._1 union(tp._1), hp._2 ++ tp._2)
+        } yield (hp._1 union (tp._1), hp._2 ++ tp._2)
     }
 
   def nodeCoeffsEquationsTask[Dom <: HList, Y](
-                                            nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y])
-  : Task[(Set[Equation], TFData)] =
+      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y])
+    : Task[(Set[Equation], TFData)] =
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
         // pprint.log(nodeCoeffs.output)
-        nodeCoeffsEquationTermsTask(nodeCoeffs, HNil).map{
-        case (terms, data) =>
-        groupEquations(terms) -> data}
-      case fmly =>
-        val tskSet: Set[Task[(Set[EquationTerm], TFData)]] = finalElemIndices(nodeCoeffs.output).map{
-          x => nodeCoeffsEquationTermsTask(nodeCoeffs, x).memoize
+        nodeCoeffsEquationTermsTask(nodeCoeffs, HNil).map {
+          case (terms, data) =>
+            groupEquations(terms) -> data
         }
-        val eqnTask: Task[Set[Equation]] = Task.gather(tskSet.map(s => s.map(_._1))).map(_.flatten).map(groupEquations)
-        val dataTask: Task[TFData] = Task.gather(tskSet.map(s => s.map(_._2))).map(_.foldLeft(baseData)(_ ++ _))
+      case fmly =>
+        val tskSet: Set[Task[(Set[EquationTerm], TFData)]] =
+          finalElemIndices(nodeCoeffs.output).map { x =>
+            nodeCoeffsEquationTermsTask(nodeCoeffs, x).memoize
+          }
+        val eqnTask: Task[Set[Equation]] = Task
+          .gather(tskSet.map(s => s.map(_._1)))
+          .map(_.flatten)
+          .map(groupEquations)
+        val dataTask: Task[TFData] = Task
+          .gather(tskSet.map(s => s.map(_._2)))
+          .map(_.foldLeft(baseData)(_ ++ _))
         for {
-          eqs <- eqnTask
+          eqs  <- eqnTask
           data <- dataTask
         } yield (eqs, data)
 
     }
 
-  val recTask: Task[(Set[Equation], TFData)] = nodeCoeffSeqEquationsTask(nodeCoeffSeq).memoize
+  val recTask: Task[(Set[Equation], TFData)] = nodeCoeffSeqEquationsTask(
+    nodeCoeffSeq).memoize
 
-  val eqnTask: Task[Set[Equation]] = recTask.map{case (re, rd) => re union(rd.equations)}.memoize
+  val eqnTask: Task[Set[Equation]] = recTask.map {
+    case (re, rd) => re union (rd.equations)
+  }.memoize
 
   lazy val finalProbVars: Map[RandomVar[Any], Set[Expression]] = finalVars
     .collect {

@@ -909,7 +909,9 @@ case class TermState(terms: FD[Term],
     terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
 
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
-    val x        = typ.Var
+    val x        =
+      nextVar(typ, context.variables)
+//      typ.Var
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
     val newGoals: FD[Typ[Term]] = goals.map {
       case pd: PiDefn[u, v] if pd.domain == typ => pd.fibers(x.asInstanceOf[u])

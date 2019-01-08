@@ -89,7 +89,7 @@ object HoTT {
       if t.typ == typ
       n <- Name.getName(t)
     } yield nameCard(n.tail)
-    val name = prefix + getName((cards :+ 0).max + 1)
+    val name = prefix + getName((cards :+ (-1)).max + 1)
     name :: typ
   }
 
