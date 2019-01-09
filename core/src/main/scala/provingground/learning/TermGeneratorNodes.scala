@@ -1105,6 +1105,8 @@ case class TermGenParams(appW: Double = 0.1,
       (typFoldNode      -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
+  val goalNodes = (Init(Goals) -> 1.0) :: Goals.target[TermState, Term, Double, Typ[Term]]
+
   val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
     (Init(Funcs)                            -> termInit) ::
       ((applnNode | (funcSort, Funcs))      -> appW) ::
@@ -1152,7 +1154,7 @@ case class TermGenParams(appW: Double = 0.1,
       FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
-    funcWithDomNodes +: targTypNodes +:
+    funcWithDomNodes +: targTypNodes +: goalNodes +:
       termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 
