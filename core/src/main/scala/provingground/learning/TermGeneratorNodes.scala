@@ -885,6 +885,8 @@ case class TermState(terms: FD[Term],
       context.subs(x, y)
     )
 
+  // pprint.log(context.variables)
+
   lazy val thmsByPf: FD[Typ[Term]] =
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
   lazy val thmsBySt: FD[Typ[Term]] =

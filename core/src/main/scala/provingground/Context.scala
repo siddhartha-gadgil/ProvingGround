@@ -199,14 +199,14 @@ sealed trait Context {
     AppendConstant(this, const)
 
   def addVariable[U <: Term with Subs[U]](variable: U) =
-    AppendConstant(this, variable)
+    AppendVariable(this, variable)
 
   def assume(tp: Typ[Term], text: String = "assumption"): AppendConstant[Term] =
     addConstant(text :: tp)
 
   def assert(tp: Typ[Term]): AppendTerm[Typ[Term]] = introduce(tp, Assert)
 
-  def given[U <: Term with Subs[U]](v: Term): AppendConstant[Term] = addVariable(v)
+  def given[U <: Term with Subs[U]](v: Term): Context = addVariable(v)
 
   def introduce[U <: Term with Subs[U]](t: U, role: Role = Consider): AppendTerm[U] =
     AppendTerm(this, t, role)

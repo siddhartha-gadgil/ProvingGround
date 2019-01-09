@@ -2655,11 +2655,11 @@ object HoTT {
               fibers.replace(first, newfirst))
     }
 
-    def indepComponents: Boolean = {
+    def indepComponents: Boolean = Try{
       val newFirst = first.newobj
       second.replace(first, newFirst) == second.replace(fibers(first),
                                                         fibers(newFirst))
-    }
+    }.getOrElse(true)
 
     def subs(x: Term, y: Term): DepPair[W, U] =
       if (x == this) y.asInstanceOf[DepPair[W, U]]
