@@ -13,7 +13,7 @@ import com.scalawarrior.scalajs.ace._
 import dom.ext._
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
-import upickle.{Js, json}
+import ujson.Js
 
 import scala.util.{Failure, Success, Try}
 import HoTT.{id => _, _}

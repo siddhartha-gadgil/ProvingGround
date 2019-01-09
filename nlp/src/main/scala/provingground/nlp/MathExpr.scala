@@ -43,7 +43,7 @@ object MathExpr {
   type T = Tree
 
   implicit def rwT: RW[T] =
-    readwriter[Js.Value].bimap[Tree](PennTrees.toJson, PennTrees.fromJson)
+    readwriter[ujson.Value].bimap[Tree](PennTrees.toJson, PennTrees.fromJson)
 
   /**
     * An abstract sentential phrase, representing a term.

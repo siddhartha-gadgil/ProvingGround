@@ -14,7 +14,7 @@ import com.scalawarrior.scalajs.ace._
 import dom.ext._
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
-import upickle.{Js, json}
+// import ujson.Js
 
 import scala.util.{Try, Success, Failure}
 
@@ -49,7 +49,7 @@ object ConstituencyParser {
           val answer = xhr.responseText
           runButton.value = "Parse (ctrl-B)"
           logDiv.appendChild(pre(answer).render)
-          val js   = json.read(answer)
+          val js   = ujson.read(answer)
           val tree = js.obj("tree").str.toString
           treeDiv.innerHTML = ""
           treeDiv.appendChild(pre(tree).render)

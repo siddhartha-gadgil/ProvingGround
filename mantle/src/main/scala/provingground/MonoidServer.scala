@@ -26,27 +26,27 @@ object MonoidServer {
                            decay = 3)
   }
 
-  val seekResult: Task[Js.Value] =
+  val seekResult: Task[ujson.Value] =
     seek.map {
       case Some((t, ls)) =>
         pprint.log("Found proof")
         val lemmaSeq =
           ls.map(
             (l) =>
-              Js.Obj(
+              ujson.Obj(
                 "term" -> TeXTranslate(l),
                 "type" -> TeXTranslate(l.typ)
             )
           )
-        Js.Obj(
+        ujson.Obj(
           "proved" -> true,
           "term"   -> TeXTranslate(t),
           "type"   -> TeXTranslate(t.typ),
-          "lemmas" -> Js.Arr(lemmaSeq: _*)
+          "lemmas" -> ujson.Arr(lemmaSeq: _*)
         )
-      case None => Js.Obj("proved" -> false)
+      case None => ujson.Obj("proved" -> false)
     }
 
-  def seekResultFut: Future[Js.Value] = seekResult.runToFuture
+  def seekResultFut: Future[ujson.Value] = seekResult.runToFuture
 
 }

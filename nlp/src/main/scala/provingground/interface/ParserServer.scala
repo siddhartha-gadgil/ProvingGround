@@ -4,7 +4,7 @@ import provingground._
 import translation._
 
 import scala.util.Try
-import upickle.{Js, json}
+import ujson.Js
 import StanfordParser._
 import TreeToMath._
 import edu.stanford.nlp.trees.Tree
@@ -39,11 +39,11 @@ object ParserRoutes extends cask.Routes {
     }
     // Try(format(s"object ConstituencyParsed {$expr}").get)
     //   .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
-    Js.Obj(
+    ujson.Obj(
       "tree" -> (tree.pennString + "\n\n" + pprint.PPrinter
         .BlackWhite(FormalExpr.translator(tree), height = 500)),
       "expr"    -> code.toString,
-      "parsed"  -> ujson.Js.Bool(parsed),
+      "parsed"  -> ujson.Bool(parsed),
       "deptree" -> proseTree.view.replace("\n", "")
     )
   }

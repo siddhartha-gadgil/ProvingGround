@@ -94,33 +94,33 @@ object LeanParser {
     newName
   }
 
-  import upickle.default._, upickle.Js
+  import upickle.default._, ujson.Js
 
   import translation._, TermJson._
 
   def jsDef(parser: LeanParser) = {
     val jsDefs = parser.defnMap.toVector.map {
       case (name, term) =>
-        Js.Obj("name" -> Js.Str(name.toString), "term" -> termToJson(term).get)
+        ujson.Obj("name" -> ujson.Str(name.toString), "term" -> termToJson(term).get)
     }
-    Js.Arr(jsDefs: _*)
+    ujson.Arr(jsDefs: _*)
   }
 
   def jsTermIndMod(parser: LeanParser) = {
     val jsIndMods = parser.termIndModMap.toVector map {
       case (name, tim) =>
-        Js.Obj(
-          "name"       -> Js.Str(name.toString),
-          "num-params" -> Js.Num(tim.numParams),
-          "is-propn"   -> (if (tim.isPropn) Js.True else Js.False),
-          "intros"     -> Js.Arr(tim.intros.map(termToJson(_).get): _*)
+        ujson.Obj(
+          "name"       -> ujson.Str(name.toString),
+          "num-params" -> ujson.Num(tim.numParams),
+          "is-propn"   -> (if (tim.isPropn) ujson.True else ujson.False),
+          "intros"     -> ujson.Arr(tim.intros.map(termToJson(_).get): _*)
         )
     }
-    Js.Arr(jsIndMods: _*)
+    ujson.Arr(jsIndMods: _*)
   }
 
   def toJs(parser: LeanParser) =
-    Js.Obj(
+    ujson.Obj(
       "defns"   -> jsDef(parser),
       "indmods" -> jsTermIndMod(parser)
     )

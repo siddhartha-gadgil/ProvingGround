@@ -937,11 +937,11 @@ case class TermState(terms: FD[Term],
 
   import ujson.Js
 
-  def json: Js.Obj = {
-    Js.Obj(
+  def json: ujson.Obj = {
+    ujson.Obj(
       "terms" -> fdJson(terms),
       "types" -> fdJson(typs.map((t) => t: Term)),
-      "variables" -> Js.Arr(
+      "variables" -> ujson.Arr(
         vars.map((t) => termToJson(t).get): _*
       ),
       "goals"                -> fdJson(goals.map((t) => t: Term)),
@@ -976,7 +976,7 @@ case class TermState(terms: FD[Term],
 
 object TermState {
   import TermRandomVars._
-  def fromJson(js: ujson.Js.Value): TermState = {
+  def fromJson(js: ujson.Value): TermState = {
     import interface._, TermJson._
     val obj     = js.obj
     val context = ContextJson.fromJson(obj("context"))
@@ -1077,7 +1077,7 @@ case class TermGenParams(appW: Double = 0.1,
         { case (fn, arg) => Unify.appln(fn.func, arg) },
         AddVar(_, varWeight),
         GetVar,
-        InIsle 
+        InIsle
       )
 
   import Gen._, GeneratorNode._,
@@ -1246,7 +1246,7 @@ object TermGenJson {
   }
 
   def nextTangStateTask(inp: String): Task[String] = {
-    val obj           = read[Js.Value](inp).obj
+    val obj           = read[ujson.Value](inp).obj
     val termGenParams = read[TermGenParams](obj("generator-parameters").str)
     val epsilon       = obj("epsilon").num
     val baseState     = TermState.fromJson(obj("initial-state"))

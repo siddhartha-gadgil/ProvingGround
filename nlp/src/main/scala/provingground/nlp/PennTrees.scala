@@ -10,15 +10,15 @@ import ujson._
 import upickle.default.{ReadWriter => RW, macroRW}
 
 object PennTrees {
-  def toJson(tree: Tree): Js.Value = tree match {
-    case Leaf(s) => Js.Obj("type" -> "leaf", "label" -> s)
+  def toJson(tree: Tree): ujson.Value = tree match {
+    case Leaf(s) => ujson.Obj("type" -> "leaf", "label" -> s)
     case Node(s, children) =>
-      Js.Obj("type" -> "node", "label" -> s, "children" -> children.map(toJson))
+      ujson.Obj("type" -> "node", "label" -> s, "children" -> children.map(toJson))
   }
 
   import TreeModel.factory
 
-  def fromJson(js: Js.Value): Tree =
+  def fromJson(js: ujson.Value): Tree =
     js.obj("type").str match {
       case "leaf" => factory.newLeaf(js.obj("label").str)
       case "node" =>

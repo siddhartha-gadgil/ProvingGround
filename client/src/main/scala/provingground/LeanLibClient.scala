@@ -187,7 +187,7 @@ object LeanLibClient {
       Ajax
         .get(s"./mods/$file")
         .foreach { (xhr) =>
-          val mods = read[Js.Value](xhr.responseText).arr.toVector
+          val mods = read[ujson.Value](xhr.responseText).arr.toVector
           val defMods: Vector[String] = mods.collect {
             case js if Set("definition", "axiom") contains js.obj("type").str =>
               js.obj("name").str
@@ -222,7 +222,7 @@ object LeanLibClient {
       loadCodeGen()
     }
 
-    def getTeX(jsObj: Js.Obj): HTMLElement =
+    def getTeX(jsObj: ujson.Obj): HTMLElement =
       Try {
         val d = span().render
         d.innerHTML = katex.renderToString(jsObj("tex").str)
@@ -231,7 +231,7 @@ object LeanLibClient {
 
     chat.onmessage = { (event: MessageEvent) =>
       val msg            = event.data.toString
-      val jsObj          = read[Js.Value](msg).obj
+      val jsObj          = read[ujson.Value](msg).obj
       val msgTyp: String = jsObj("type").str
       msgTyp match {
         case "log" => addLog(jsObj("message").str)

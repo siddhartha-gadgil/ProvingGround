@@ -9,7 +9,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 
 import scala.util.Try
-import upickle.{Js, json}
+import ujson.Js
 import StanfordParser._
 import TreeToMath._
 import edu.stanford.nlp.trees.Tree
@@ -30,7 +30,7 @@ class AkkaParserService(serverMode: Boolean)(implicit ec: ExecutionContext,
     val code =
       Try(format(s"object ConstituencyParsed {$expr}").get)
         .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
-    Js.Obj("tree"    -> tree.pennString,
+    ujson.Obj("tree"    -> tree.pennString,
            "expr"    -> code.toString,
            "deptree" -> proseTree.view.replace("\n", ""))
   }

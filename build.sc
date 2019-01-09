@@ -42,9 +42,9 @@ trait MetalsModule extends ScalaModule{
   }
 }
 
-val scalaV = "2.12.7"
+val scalaV = "2.12.8"
 
-val ammV = "1.4.2"
+val ammV = "1.6.0"
 
 
 val commonLibs = List(
@@ -52,7 +52,7 @@ val commonLibs = List(
   ivy"org.scala-lang.modules::scala-xml:1.1.0",
   ivy"org.typelevel::spire::0.16.0",
   ivy"com.lihaoyi::fansi::0.2.4",
-  ivy"com.lihaoyi::upickle::0.6.6",
+  ivy"com.lihaoyi::upickle::0.7.1",
   ivy"com.lihaoyi::fastparse::1.0.0",
   ivy"com.chuusai::shapeless::2.3.3",
   ivy"org.typelevel::cats-core::1.4.0",

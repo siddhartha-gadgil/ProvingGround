@@ -23,7 +23,7 @@ import provingground.library.MonoidSimple
 import provingground.scalahott.NatRing
 import scalatags.JsDom
 import ujson.Js
-import ujson.Js.Value
+import ujson.Value
 import upickle.default._
 
 import scala.collection.mutable.ArrayBuffer
@@ -173,7 +173,7 @@ object InteractiveProver {
     )
   }
 
-  def getEvolvedState(data: Js.Value, result: String): EvolvedState = {
+  def getEvolvedState(data: ujson.Value, result: String): EvolvedState = {
     val dataObj = data.obj
     val termGenParams =
       read[TermGenParams](dataObj("generator-parameters").str)
@@ -436,23 +436,23 @@ object InteractiveProver {
 
         import interface._, TermJson._
         val initialState =
-          Js.Obj(
+          ujson.Obj(
             "terms"                -> fdJson(termsInput.fd),
             "types"                -> fdJson(typsInput.fd map ((t) => t: Term)),
             "goals"                -> fdJson(goalsInput.fd map ((t) => t: Term)),
-            "variables"            -> Js.Arr(),
+            "variables"            -> ujson.Arr(),
             "inductive-structures" -> InducJson.toJson(context.inducStruct),
             "context"              -> ContextJson.toJson(context)
           )
 
-        val data = Js.Obj(
-          "epsilon"              -> Js.Num(epsilon),
+        val data = ujson.Obj(
+          "epsilon"              -> ujson.Num(epsilon),
           "generator-parameters" -> write(tg),
           "initial-state"        -> initialState
         )
 
         val js =
-          Js.Obj(
+          ujson.Obj(
             "job"  -> "step",
             "data" -> data
           )
@@ -467,15 +467,15 @@ object InteractiveProver {
       stepButton.onclick = (_) => step()
 
       def tangentStep(base: TermState, tangent: TermState): Unit = {
-        val data = Js.Obj(
-          "epsilon"              -> Js.Num(epsilon),
+        val data = ujson.Obj(
+          "epsilon"              -> ujson.Num(epsilon),
           "generator-parameters" -> write(tg),
           "initial-state"        -> base.json,
           "tangent-state"        -> tangent.json
         )
 
         val js =
-          Js.Obj(
+          ujson.Obj(
             "job"  -> "tangent-step",
             "data" -> data
           )
@@ -643,7 +643,7 @@ object ProverClient {
             ).render)
 
           val lemmaSeq = js.obj("lemmas").arr
-          def lemmaLI(lm: Js.Value) = {
+          def lemmaLI(lm: ujson.Value) = {
             val termDivL = div(style := "overflow-x: auto;")().render
             val typDivL  = div(style := "overflow-x: auto;")().render
             termDivL.innerHTML = katexSafe.renderToString(lm.obj("term").str)
