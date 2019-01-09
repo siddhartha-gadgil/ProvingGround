@@ -1,8 +1,8 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.12.7"
+val scalaV = "2.12.8"
 
-val ammV = "1.4.2"
+val ammV = "1.6.0"
 
 
 scalaVersion in ThisBuild := scalaV
@@ -33,7 +33,7 @@ lazy val commonSettings = baseSettings ++ Seq(
      "org.scala-lang.modules" %% "scala-xml" % "1.1.0",
     "org.typelevel" %%% "spire"         % "0.16.0",
     "com.lihaoyi"   %%% "fansi"         % "0.2.4",
-    "com.lihaoyi"   %%% "upickle"       % "0.6.6",
+    "com.lihaoyi"   %%% "upickle"       % "0.7.1",
     "com.lihaoyi" %%% "fastparse" % "1.0.0",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
