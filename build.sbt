@@ -73,6 +73,7 @@ lazy val jvmSettings = Seq(
     "com.lihaoyi" %% "cask" % "0.1.9",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
+    "org.apache.logging.log4j" % "log4j-core" % "2.11.1",
     // "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
@@ -218,6 +219,7 @@ lazy val leanlib =
 lazy val mantle = (project in file("mantle"))
   .settings(
     name := "ProvingGround-mantle",
+    // resourceDirectory := baseDirectory.value / "docs"
     // scalaJSProjects := Seq(client),
     // pipelineStages in Assets := Seq(scalaJSPipeline)
     //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
