@@ -13,7 +13,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 // addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
 
 libraryDependencies += compilerPlugin(
-  "org.scalameta" % "semanticdb-scalac" % "4.0.0" cross CrossVersion.full)
+  "org.scalameta" % "semanticdb-scalac" % "4.1.0" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
 // scalacOptions += "-P:splain:all:true"
 
@@ -165,7 +165,7 @@ lazy val client = project
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
     )
   )
-  // .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
+  .enablePlugins(ScalaJSPlugin)
   .dependsOn(coreJS)
 
 lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))

@@ -24,7 +24,8 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.25")
 
 // addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "5.1.0")
 
-// addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.12")
+resolvers += Resolver.sonatypeRepo("snapshots")
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-SNAPSHOT")
 
 // addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.4.0")
 //
