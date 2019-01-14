@@ -97,33 +97,38 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+  * Constant random variable, for fibers for islands
+    * @param randomVar the random variable
+    * @tparam O scala type of the random variable
+    */
   case class CRV[O](randomVar : RandomVar[O]) extends (Term => RandomVar[O]){
-    def apply(t: Term) = randomVar
+    def apply(t: Term): RandomVar[O] = randomVar
 
-    override def toString = randomVar.toString
+    override def toString: String = randomVar.toString
   }
 
   case object LamApply extends ((Term, Term) => Term){
-    def apply(x: Term, y: Term) = x :~> y
+    def apply(x: Term, y: Term): FuncLike[Term, Term] = x :~> y
 
     override def toString = "Lambda"
   }
 
   case object PiApply extends ((Term, Typ[Term]) => Typ[Term]){
-    def apply(x: Term, y: Typ[Term]) = pi(x)(y)
+    def apply(x: Term, y: Typ[Term]): Typ[FuncLike[Term, Term]] = pi(x)(y)
 
     override def toString = "Pi"
   }
 
   case object SigmaApply extends ((Term, Typ[Term]) => Typ[Term]){
-    def apply(x: Term, y: Typ[Term]) = sigma(x)(y)
+    def apply(x: Term, y: Typ[Term]): Typ[AbsPair[Term, Term]] = sigma(x)(y)
 
     override def toString = "Sigma"
   }
 
 
   case object LamFunc extends ((Term, Term) => ExstFunc){
-    def apply(x: Term, y: Term) = ExstFunc(x :~> y)
+    def apply(x: Term, y: Term): ExstFunc = ExstFunc(x :~> y)
 
     override def toString = "Lambda"
   }
