@@ -28,6 +28,10 @@ object FiniteDistribution {
   def apply[T](pmf: Traversable[Weighted[T]]): FiniteDistribution[T] =
     FiniteDistribution(pmf.toVector)
 
+  def apply[T](pairs: (T, Double) *): FiniteDistribution[T] = FiniteDistribution(
+    pairs.map{case (x, p) => Weighted(x, p)}.toVector
+  )
+
   def entropy[T](fd: FiniteDistribution[T]): Double =
     (fd.supp map ((x) => fd(x)) map ((p) => -p * math.log(p))).sum
 
@@ -304,6 +308,11 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
       yield Weighted(pres, prob - shift)
     FiniteDistribution(normaldiff)
   }
+
+  def klDivergence(that: FiniteDistribution[T]): Double =
+    (for {
+      Weighted(x, p) <- pmf
+    } yield p * math.log(p / that(x))).sum
 
   /**
     * gradient w.r.t. inner product scaled by presentation weights,

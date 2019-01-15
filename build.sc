@@ -4,8 +4,8 @@ import scalajslib._
 import mill.scalalib.scalafmt._
 import define.{Sources, Task}
 import ammonite.ops._
-import coursier.maven.MavenRepository
-// import $ivy.`ch.epfl.scala::mill-bloop:1.0.0`
+//import coursier.maven.MavenRepository
+// import $ivy.`ch.epfl.scala::mill-bloop:1.1.2`
 // import $ivy.`fun.valycorp::mill-ensime:0.0.1`
 
 
@@ -42,9 +42,9 @@ trait MetalsModule extends ScalaModule{
   }
 }
 
-val scalaV = "2.12.7"
+val scalaV = "2.12.8"
 
-val ammV = "1.4.2"
+val ammV = "1.6.0"
 
 
 val commonLibs = List(
@@ -52,8 +52,8 @@ val commonLibs = List(
   ivy"org.scala-lang.modules::scala-xml:1.1.0",
   ivy"org.typelevel::spire::0.16.0",
   ivy"com.lihaoyi::fansi::0.2.4",
-  ivy"com.lihaoyi::upickle::0.6.6",
-  ivy"com.lihaoyi::fastparse::2.0.4",
+  ivy"com.lihaoyi::upickle::0.7.1",
+  ivy"com.lihaoyi::fastparse::2.1.0",
   ivy"com.chuusai::shapeless::2.3.3",
   ivy"org.typelevel::cats-core::1.4.0",
   ivy"io.monix::monix::3.0.0-RC2",
@@ -69,12 +69,12 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def organization = "in.ac.iisc"
   def name = "ProvingGround"
 
-  override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
+  // override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
 
   override def scalacOptions =
     Seq("-Ypartial-unification",
       "-Yrangepos",
-      "-Xplugin-require:semanticdb",
+      // "-Xplugin-require:semanticdb",
       "-unchecked",
       "-deprecation",
       "-feature",
@@ -190,32 +190,33 @@ object nlp extends SbtModule with ServerModule{
     super.ivyDeps() ++  Agg(
       ivy"edu.stanford.nlp:stanford-corenlp:3.7.0",
       ivy"edu.stanford.nlp:stanford-corenlp:3.7.0;classifier=models",
-      ivy"com.google.protobuf:protobuf-java:2.6.1"
+      ivy"com.google.protobuf:protobuf-java:2.6.1",
+      ivy"edu.mit:jwi:2.2.3"
     )
   }
 
-  override def mainClass = Some("provingground.interface.ParserServer")
+  override def mainClass = Some("provingground.interface.ParserCask")
 }
 
-object jvmRoot extends CommonModule{
-  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server)
+// object jvmRoot extends CommonModule{
+//   val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server)
 
-  override def sources = T.sources{
-    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources() ++ server.sources()
-  }
+//   override def sources = T.sources{
+//     core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources() ++ server.sources()
+//   }
 
-  override def ivyDeps = T{
-    core.jvm.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
-  }
+//   override def ivyDeps = T{
+//     core.jvm.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
+//   }
 
-  override def moduleDeps = Seq(trepplein)
+//   override def moduleDeps = Seq(trepplein)
 
-  def docs() = T.command{
-    def jar = docJar()
-    cp.over(jar.path / up / "javadoc", pwd / "docs" / "scaladoc")
-    jar
-  }
-}
+//   def docs() = T.command{
+//     def jar = docJar()
+//     cp.over(jar.path / up / "javadoc", pwd / "docs" / "scaladoc")
+//     jar
+//   }
+// }
 
 object exploring extends JvmModule{
   override def moduleDeps = Seq(core.jvm, mantle)
@@ -247,7 +248,7 @@ object client extends CommonJSModule with SbtModule{
     )
 
   override def ivyDeps = Agg(
-    ivy"org.scala-js::scalajs-dom::0.9.4",
+    ivy"org.scala-js::scalajs-dom::0.9.2",
     ivy"com.lihaoyi::scalatags::0.6.7",
     ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )

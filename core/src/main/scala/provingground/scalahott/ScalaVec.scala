@@ -35,13 +35,13 @@ class ScalaVec[X](val basetyp: Typ[Term])(
     def subs(x: Term, y: Term) = this
   }
 
-  implicit val nrep: _root_.provingground.scalahott.ScalaPolyRep[
-    _root_.provingground.scalahott.RepTerm[_root_.scala.Long],
+  implicit val nrep: ScalaPolyRep[
+    RepTerm[_root_.scala.Long],
     _root_.scala.Long] = poly(NatTypLong.rep)
 
-  implicit val urep: _root_.provingground.scalahott.ScalaPolyRep[
-    _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term],
-    _root_.provingground.HoTT.Typ[_root_.provingground.HoTT.Term]] = poly(
+  implicit val urep: ScalaPolyRep[
+    Typ[Term],
+    Typ[Term]] = poly(
     ScalaRep.UnivRep)
 
   private val a = basetyp.Var
@@ -78,15 +78,15 @@ class ScalaVec[X](val basetyp: Typ[Term])(
 
   implicitly[ScalaPolyRep[RepTerm[Vector[X]], Vector[X]]]
 
-  implicit val r: _root_.provingground.scalahott.ScalaPolyRep[
-    _root_.provingground.HoTT.FuncLike[
-      _root_.provingground.scalahott.RepTerm[_root_.scala.Long],
-      _root_.provingground.HoTT.FuncLike[
-        _root_.provingground.scalahott.RepTerm[X],
-        _root_.provingground.HoTT.FuncLike[
-          _root_.provingground.scalahott.RepTerm[
+  implicit val r: ScalaPolyRep[
+    FuncLike[
+      RepTerm[_root_.scala.Long],
+      FuncLike[
+        RepTerm[X],
+        FuncLike[
+          RepTerm[
             _root_.scala.`package`.Vector[X]],
-          _root_.provingground.scalahott.RepTerm[
+          RepTerm[
             _root_.scala.`package`.Vector[X]]]]],
     _root_.scala.Long => X => _root_.scala.`package`.Vector[X] => _root_.scala.`package`.Vector[
       X]] = depFuncPolyRep(

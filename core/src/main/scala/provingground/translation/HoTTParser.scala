@@ -169,6 +169,10 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
       P(stat ~ block ~ End).map { case (s, v) => s +: v } |
       P(spc ~ "\n" ~ block)
 
+  def parseContext(txt: String) = parse(txt, context(_))
+
+  def parseBlock(txt: String) = parse(txt, block(_))
+
   def context[_ : P]: P[Context] =
     P(spc ~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ context) |
       (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => ctx) |

@@ -138,7 +138,9 @@ sealed abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
 
   case class Funcs(ind: Index) extends IndInducFuncLike[H, C, F, IDFT] {
     fself =>
-    val dom = family.pattern.typ(W, ind)
+    val dom = {
+      family.pattern.typ(W, ind)
+    }
 
     val domW  = self.W
     val codXs = self.Xs
@@ -172,7 +174,9 @@ sealed abstract class IndexedInductiveDefinition[H <: Term with Subs[H],
       caseFn(iterDepFunc)(arg) getOrElse
         (depcodom(arg).symbObj(ApplnSym(fself, arg)))
 
-    def subs(x: Term, y: Term) = self.subs(x, y).Funcs(ind.subst(x, y))
+    def subs(x: Term, y: Term) = {
+      self.subs(x, y).Funcs(ind.subst(x, y))
+    }
   }
 
   lazy val iterDepFunc = family.iterDepFunc(Funcs)

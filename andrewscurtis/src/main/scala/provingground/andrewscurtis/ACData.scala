@@ -158,7 +158,7 @@ object ACFlowSaver {
     Src(read.lines(snapd / date / batch.toString).toStream)
 
   def snapStream(date: String) =
-    (ls(wd / date).toStream map (_.name))
+    (ls(wd / date).toStream map (_.last))
       .sortBy(_.toInt)
       .flatMap((filename: String) =>
         (read.lines(snapd / date / filename)).toStream)
@@ -382,7 +382,7 @@ object ACData {
 
   def thmFiles(dir: String = "acDev", s: String => Boolean = (x) => true) = {
     ls(wd / dir) filter
-      ((file) => file.ext == "acthms" && s(file.name.dropRight(7)))
+      ((file) => file.ext == "acthms" && s(file.last.dropRight(7)))
   }
 
   def pickle(
@@ -444,7 +444,7 @@ object ACData {
 
   def loadAllFinal(name: String, dir: String = "acDev") = {
     val fileNames =
-      ls(wd / dir) filter (_.ext == "acstate") map (_.name.dropRight(8))
+      ls(wd / dir) filter (_.ext == "acstate") map (_.toString.dropRight(8))
     val states =
       (for (name <- fileNames) yield (name, loadFinal(name, dir))).toMap
     ACStateData(states, dir)
@@ -456,7 +456,7 @@ object ACData {
 
   def loadAll(dir: String = "acDev") = {
     val fileNames =
-      ls(wd / dir) filter (_.ext == "acrun") map (_.name.dropRight(6))
+      ls(wd / dir) filter (_.ext == "acrun") map (_.last.dropRight(6))
     (for (name <- fileNames) yield (name, load(name, dir))).toMap
   }
 
@@ -491,7 +491,7 @@ object ACData {
   }
 
   def succFile(source: ammonite.ops.Path) = {
-    val target = source / up / s"succ-${source.name}"
+    val target = source / up / s"succ-${source.last}"
     lastLine(source, target)
   }
 }

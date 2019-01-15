@@ -73,7 +73,7 @@ object LeanAmmTest extends App {
     val it = LeanToTermMonix.iterant(mods.drop(n), l2tm, recoverAll = false)
   }
 
-  Await.result(task.runToFuture, Duration.Inf)
+  task.runSyncUnsafe(Duration.Inf)
 }
 
 object BatchTest /*extends App*/ {
@@ -102,5 +102,5 @@ object BatchTest /*extends App*/ {
     write.append(file, s"count: $count\nTheorems:\n${x.fansi}\n\n")
   })
 
-  Await.result(awaitTask.runToFuture, duration * 2)
+  awaitTask.runSyncUnsafe(duration * 2)
 }

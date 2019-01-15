@@ -20,7 +20,7 @@ import io.undertow.websockets.core.{
 import io.undertow.websockets.spi.WebSocketHttpExchange
 import monix.execution.CancelableFuture
 import provingground.translation.TeXTranslate
-import ujson.Js.Value
+import ujson.Value
 
 import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
 import upickle.default.{write => uwrite, read => _, _}
@@ -72,19 +72,19 @@ object LeanResources {
     case LeanParser.Parsed(expr)    => ()
   }
 
-  def indModView(ind: TermIndMod): Js.Value = {
+  def indModView(ind: TermIndMod): ujson.Value = {
     def introJs(t: Term) =
-      Js.Obj(
-        "name"  -> Js.Str(t.toString),
-        "tex"   -> Js.Str(TeXTranslate(t.typ, true).replace("'", "\\check ")),
-        "plain" -> Js.Str(t.typ.toString))
-    Js.Obj(
-      "type" -> Js.Str("inductive-definition"),
-      "name" -> Js.Str(ind.name.toString),
-      "tex" -> Js.Str(
+      ujson.Obj(
+        "name"  -> ujson.Str(t.toString),
+        "tex"   -> ujson.Str(TeXTranslate(t.typ, true).replace("'", "\\check ")),
+        "plain" -> ujson.Str(t.typ.toString))
+    ujson.Obj(
+      "type" -> ujson.Str("inductive-definition"),
+      "name" -> ujson.Str(ind.name.toString),
+      "tex" -> ujson.Str(
         TeXTranslate(ind.typF.typ, true).replace("'", "\\check ")),
-      "plain"  -> Js.Str(ind.typF.typ.toString),
-      "intros" -> Js.Arr(ind.intros.map(introJs): _*)
+      "plain"  -> ujson.Str(ind.typF.typ.toString),
+      "intros" -> ujson.Arr(ind.intros.map(introJs): _*)
     )
   }
 }
@@ -114,7 +114,7 @@ object LeanRoutes extends cask.Routes {
 
   @cask.get("/mem-induc-defns")
   def memInducDefs(): String =
-    uwrite(Js.Arr(termIndModMap.values.toSeq.map(indModView): _*))
+    uwrite(ujson.Arr(termIndModMap.values.toSeq.map(indModView): _*))
 
   @cask.get("mods/:file")
   def getMods(file: String): String = {
@@ -122,14 +122,14 @@ object LeanRoutes extends cask.Routes {
     val in      = new java.io.ByteArrayInputStream(read.bytes(path))
     val newMods = getModsFromStream(in)
     mods ++= newMods
-    val res: Js.Value = Js.Arr(newMods.map { (m: Modification) =>
+    val res: ujson.Value = ujson.Arr(newMods.map { (m: Modification) =>
       val tp = m match {
         case _: trepplein.DefMod   => "definition"
         case _: trepplein.IndMod   => "inductive type"
         case _: trepplein.AxiomMod => "axiom"
         case _                     => m.toString
       }
-      Js.Obj("type" -> tp, "name" -> Js.Str(m.name.toString))
+      ujson.Obj("type" -> tp, "name" -> ujson.Str(m.name.toString))
     }: _*)
 //    pprint.log(res)
     uwrite(res)
@@ -154,13 +154,13 @@ object LeanRoutes extends cask.Routes {
 
   def sendLog(s: String): Unit =
     send(
-      uwrite[Js.Value](Js.Obj("type" -> Js.Str("log"), "message" -> Js.Str(s)))
+      uwrite[ujson.Value](ujson.Obj("type" -> ujson.Str("log"), "message" -> ujson.Str(s)))
     )
 
   def sendErr(s: String): Unit =
     send(
-      uwrite[Js.Value](
-        Js.Obj("type" -> Js.Str("error"), "message" -> Js.Str(s)))
+      uwrite[ujson.Value](
+        ujson.Obj("type" -> ujson.Str("error"), "message" -> ujson.Str(s)))
     )
 
   val sendLogger: Logger = Logger.dispatch(sendLog)
@@ -191,11 +191,11 @@ object LeanRoutes extends cask.Routes {
       }
 
   }
-  @cask.post("/parse")
+  @cask.post("/lean-parse")
   def parse(request: cask.Request): String = {
     def result(name: String, t: Term): Unit = send(
-      uwrite[Js.Value](
-        Js.Obj("type" -> "parse-result",
+      uwrite[ujson.Value](
+        ujson.Obj("type" -> "parse-result",
                "name" -> name,
                "tex" -> TeXTranslate(t, true)
                  .replace("'", "\\check "),
@@ -260,7 +260,7 @@ object LeanRoutes extends cask.Routes {
     val name                   = new String(request.readAllBytes())
     val task: Task[TermIndMod] = parser.getIndTask(name)
     task.foreach { (indMod) =>
-      send(uwrite[Js.Value](indModView(indMod)))
+      send(uwrite[ujson.Value](indModView(indMod)))
     }
     s"seeking inductive definition for $name"
   }

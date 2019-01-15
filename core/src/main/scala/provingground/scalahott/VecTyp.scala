@@ -64,8 +64,8 @@ object VecTyp {
 
   import NatTypLong._
 
-  implicit val NatVecRep: _root_.provingground.scalahott.ScalaPolyRep[
-    _root_.provingground.scalahott.RepTerm[
+  implicit val NatVecRep: ScalaPolyRep[
+    RepTerm[
       _root_.scala.`package`.Vector[_root_.scala.Long]],
     _root_.scala.`package`.Vector[_root_.scala.Long]] =
     vecRep[RepTerm[Long], Long](poly(NatTypLong.rep))

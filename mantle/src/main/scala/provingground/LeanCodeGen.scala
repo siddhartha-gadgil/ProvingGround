@@ -10,6 +10,7 @@ import scala.meta
 import ammonite.ops._
 
 import scala.collection.immutable
+import scala.util.Try
 
 object LeanCodeGen {
   def nameCode(name: trepplein.Name): meta.Term.Apply = {
@@ -24,17 +25,17 @@ object LeanCodeGen {
     meta.Term.Apply(meta.Term.Select(meta.Term.Name("trepplein"), meta.Term.Name("Name")), pieces)
   }
 
-  val memoLines: IndexedSeq[String] = read.lines(pwd/ "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala").map(_.trim)
+  lazy val memoLines: IndexedSeq[String] = read.lines(pwd/ "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala").map(_.trim)
 
-  val memoStats: IndexedSeq[Stat] = memoLines.flatMap(_.parse[Stat].toOption)
+  lazy val memoStats: IndexedSeq[Stat] = memoLines.flatMap(_.parse[Stat].toOption)
 
-  val memoDefKV = memoStats.collect{
+  lazy val memoDefKV = memoStats.collect{
     case Defn.Def(List(),meta.Term.Name("defMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
       ) => kvs
     // q"def defMap : $t = Map(..$kvs)" => kvs
   }.head
 
-  val memoDefTaskKV =
+  lazy val memoDefTaskKV =
     memoStats.collect{
       case Defn.Def(List(),meta.Term.Name("defTaskMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
         ) => kvs
@@ -42,7 +43,7 @@ object LeanCodeGen {
     }.head
      // memoStats.collect{case q"def defTaskMap : $t = Map(..$kvs)" => kvs}.head
 
-  val memoIndKV =
+  lazy val memoIndKV =
     memoStats.collect{
       case Defn.Def(List(),meta.Term.Name("indMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
         ) => kvs
@@ -50,7 +51,7 @@ object LeanCodeGen {
     }.head
     // memoStats.collect{case q"def indMap : $t = Map(..$kvs)" => kvs}.head
 
-  val memoIndTaskKV =
+  lazy val memoIndTaskKV =
     memoStats.collect{
       case Defn.Def(List(),meta.Term.Name("indTaskMap"),List(),List(), _, meta.Term.Apply(meta.Term.Name("Map"), kvs)
         ) => kvs
@@ -90,7 +91,7 @@ import Fold._
               codeGen(term).get
           // q"${nameCode(name)} -> $termCode"
           meta.Term.ApplyInfix(nameCode(name), meta.Term.Name("->"), List(), List(termCode))
-      }.toList ++ memoDefKV
+      }.toList // ++ memoDefKV
     // q"Map(..$kvs)"
     meta.Term.Apply(
       meta.Term.Name("Map"),
@@ -117,7 +118,7 @@ import Fold._
                   List(termCode)))
                 )
           // q"${nameCode(name)} -> Task($termCode)"
-      }.toList ++ memoDefTaskKV
+      }.toList // ++ memoDefTaskKV
     // q"Map(..$kvs)"
     meta.Term.Apply(
       meta.Term.Name("Map"),
@@ -154,7 +155,7 @@ import Fold._
         case (name, m) =>
         meta.Term.ApplyInfix(nameCode(name), meta.Term.Name("->"), List(), List(indCode(m)))
           // q"${nameCode(name)} -> ${indCode(m)}"
-      }.toList  ++ memoIndKV
+      }.toList // ++ memoIndKV
       meta.Term.Apply(
         meta.Term.Name("Map"),
         kvs
@@ -174,7 +175,7 @@ import Fold._
             List(indCode(m))))
           )
           // q"${nameCode(name)} -> Task(${indCode(m)})"
-      }.toList ++ memoIndTaskKV
+      }.toList // ++ memoIndTaskKV
       meta.Term.Apply(
         meta.Term.Name("Map"),
         kvs
@@ -277,7 +278,10 @@ import Fold._
   }
 
   def memo(): Unit = {
+    pprint.log(s"memo: ${defnMap.keys}")
+    pprint.log(Try(defTaskMapCode))
     val file = pwd / "mantle" / "src" / "main" / "scala" / "provingground" / "LeanMemo.scala"
+    pprint.log(file)
     write.over(file, header + "\nimport interface._\n" + "import monix.eval.Task\n" +  memoObj.toString + "\n")
   }
 

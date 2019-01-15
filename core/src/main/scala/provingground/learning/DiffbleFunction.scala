@@ -387,8 +387,8 @@ object AdjDiffbleFunction {
 
   implicit def vecSpaceDiffFn[A, B](implicit vsA: VectorSpace[A, Double],
                                     vsB: VectorSpace[B, Double])
-    : _root_.scala.AnyRef with _root_.spire.algebra.VectorSpace[
-      _root_.provingground.learning.AdjDiffbleFunction[A, B],
+    : _root_.spire.algebra.VectorSpace[
+      AdjDiffbleFunction[A, B],
       _root_.scala.Double] {} =
     new VectorSpace[AdjDiffbleFunction[A, B], Double] {
 

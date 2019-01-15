@@ -43,7 +43,7 @@ object MathExpr {
   type T = Tree
 
   implicit def rwT: RW[T] =
-    readwriter[Js.Value].bimap[Tree](PennTrees.toJson, PennTrees.fromJson)
+    readwriter[ujson.Value].bimap[Tree](PennTrees.toJson, PennTrees.fromJson)
 
   /**
     * An abstract sentential phrase, representing a term.
@@ -64,19 +64,19 @@ object MathExpr {
   /**
     * A conjunction of  sentential phrases forming a sentential phrase.
     */
-  case class ConjuctSP(sps: SententialPhrase) extends SententialPhrase
+  case class ConjunctSP(sps: Vector[SententialPhrase]) extends SententialPhrase
 
-  object ConjuctSP {
-    implicit def rw: RW[ConjuctSP] = macroRW
+  object ConjunctSP {
+    implicit def rw: RW[ConjunctSP] = macroRW
   }
 
   /**
     * A disjunction of sentential phrases forming a sentential phrase.
     */
-  case class DisjuctSP(sps: SententialPhrase) extends SententialPhrase
+  case class DisjunctSP(sps: Vector[SententialPhrase]) extends SententialPhrase
 
-  object DisjuctSP {
-    implicit def rw: RW[DisjuctSP] = macroRW
+  object DisjunctSP {
+    implicit def rw: RW[DisjunctSP] = macroRW
   }
 
   /**
@@ -394,6 +394,12 @@ object MathExpr {
     implicit def rw: RW[SuchThat] = macroRW
   }
 
+  case class Which(condition: MathExpr) extends PostModifier
+
+  object Which{
+    implicit def rw: RW[Which] = macroRW
+  }
+
   /**
     * Determiner phrase: this is the main composite tree.
     */
@@ -576,21 +582,21 @@ object MathExpr {
 object FormalExpr {
   import MathExpr._
 
-  case class FormalLeaf(s: String) extends MathExpr {
-    override def toString = s"FormalLeaf($tq$s$tq)"
+  case class Leaf(s: String) extends MathExpr {
+    override def toString = s"Leaf($tq$s$tq)"
   }
 
-  object FormalLeaf {
-    implicit def rw: RW[FormalLeaf] = macroRW
+  object Leaf {
+    implicit def rw: RW[Leaf] = macroRW
   }
 
-  case class FormalNode(s: String, children: Vector[MathExpr])
+  case class Node(s: String, children: Vector[MathExpr])
       extends MathExpr {
-    override def toString = s"FormalNode($tq$s$tq, $children)"
+    override def toString = s"Node($tq$s$tq, $children)"
   }
 
-  object FormalNode {
-    implicit def rw: RW[FormalNode] = macroRW
+  object Node {
+    implicit def rw: RW[Node] = macroRW
   }
 
   import Translator.Pattern
@@ -611,17 +617,20 @@ object FormalExpr {
     implicit def rw: RW[Vec] = macroRW
   }
 
-  def translator =
+  val translator =
     Translator.Empty[Tree, MathExpr] || Pattern.partial[Tree, S] {
-      case PennTrees.Leaf(s) => s
+      case PennTrees.Leaf(s) =>
+        s
     } >>> {
-      case s => FormalLeaf(s)
+      case s => Leaf(s)
     } ||
       Pattern.partial[Tree, SL] {
         case PennTrees.Node(s, l) => (s, l)
       } >>> {
-        case ("NP", Vector(dp: MathExpr.DP)) => dp
-        case (s, l)                          => FormalNode(s, l)
+        case ("NP", Vector(dp: MathExpr.DP)) =>
+          pprint.log(dp)
+          dp
+        case (s, l)                          => Node(s, l)
       }
 }
 

@@ -10,81 +10,81 @@ import cats._
 import cats.implicits._
 import provingground.induction.{ExstInducDefn, ExstInducStrucs}
 import provingground.scalahott.NatRing
-import ujson.Js.Value
+import ujson.Value
 
 import scala.util.matching.Regex
 
 trait JsFunc[F[_]] {
-  def encode(t: F[Js.Value]): Js.Value
+  def encode(t: F[ujson.Value]): ujson.Value
 
-  def decode(js: Js.Value): F[Js.Value]
+  def decode(js: ujson.Value): F[ujson.Value]
 }
 
 object JsFunc {
   implicit val idJS: JsFunc[Id] = new JsFunc[Id] {
-    def encode(t: Js.Value): Value = t
+    def encode(t: ujson.Value): Value = t
 
-    def decode(js: Js.Value): Value = js
+    def decode(js: ujson.Value): Value = js
   }
 
   import Functors._
 
   implicit val intJs: JsFunc[N] = new JsFunc[N] {
-    def encode(t: Int) = Js.Num(t.toDouble)
+    def encode(t: Int) = ujson.Num(t.toDouble)
 
-    def decode(js: Js.Value): Int = js.num.toInt
+    def decode(js: ujson.Value): Int = js.num.toInt
   }
 
   implicit val strJs: JsFunc[S] = new JsFunc[S] {
-    def encode(t: String) = Js.Str(t)
+    def encode(t: String) = ujson.Str(t)
 
-    def decode(js: Js.Value): String = js.str
+    def decode(js: ujson.Value): String = js.str
   }
 
   implicit val unitJs: JsFunc[Un] = new JsFunc[Un] {
-    def encode(t: Unit): Js.Null.type = Js.Null
+    def encode(t: Unit): ujson.Null.type = ujson.Null
 
-    def decode(js: Js.Value): Unit = ()
+    def decode(js: ujson.Value): Unit = ()
   }
 
   implicit val vecJs: JsFunc[Vector] = new JsFunc[Vector] {
-    def encode(t: Vector[Js.Value]) = Js.Arr(t: _*)
+    def encode(t: Vector[ujson.Value]) = ujson.Arr(t: _*)
 
-    def decode(js: Js.Value): Vector[Value] = js.arr.toVector
+    def decode(js: ujson.Value): Vector[Value] = js.arr.toVector
   }
 
   implicit def pairJS[X[_], Y[_]](
       implicit xJs: JsFunc[X],
       yJs: JsFunc[Y]): JsFunc[({ type Z[A] = (X[A], Y[A]) })#Z] =
     new JsFunc[({ type Z[A] = (X[A], Y[A]) })#Z] {
-      def encode(t: (X[Js.Value], Y[Js.Value])) =
-        Js.Obj("first" -> xJs.encode(t._1), "second" -> yJs.encode(t._2))
+      def encode(t: (X[ujson.Value], Y[ujson.Value])) =
+        ujson.Obj("first" -> xJs.encode(t._1), "second" -> yJs.encode(t._2))
 
-      def decode(js: Js.Value): (X[Value], Y[Value]) =
+      def decode(js: ujson.Value): (X[Value], Y[Value]) =
         (xJs.decode(js("first")), yJs.decode(js("second")))
     }
 
   import Translator._
 
   def toJs[I, F[_]](pat: Pattern[I, F])(name: String, header: String = "intro")(
-      implicit jsF: JsFunc[F]): Translator[I, Js.Value] =
+      implicit jsF: JsFunc[F]): Translator[I, ujson.Value] =
     pat >>> { (js) =>
-      Js.Obj(header -> Js.Str(name), "tree" -> jsF.encode(js))
+      ujson.Obj(header -> ujson.Str(name), "tree" -> jsF.encode(js))
     }
 
   def jsToOpt[I, F[_]: Traverse](name: String, header: String = "intro")(
       build: F[I] => Option[I])(
-      implicit jsF: JsFunc[F]): Translator[Js.Value, I] = {
-    val pat = Pattern[Js.Value, F] { (js) =>
-      if (js(header) == Js.Str(name)) Some(jsF.decode(js("tree"))) else None
+      implicit jsF: JsFunc[F]): Translator[ujson.Value, I] = {
+    val pat = Pattern[ujson.Value, F] { (js) =>
+      if (js(header) == ujson.Str(name)) Some(jsF.decode(js("tree"))) else None
     }
     pat >> build
   }
 
   def jsToBuild[I, F[_]: Traverse](name: String, header: String = "intro")(
-      build: F[I] => I)(implicit jsF: JsFunc[F]): Translator[Js.Value, I] = {
-    val pat = Pattern[Js.Value, F] { (js) =>
-      if (js(header) == Js.Str(name)) Some(jsF.decode(js("tree"))) else None
+      build: F[I] => I)(implicit jsF: JsFunc[F]): Translator[ujson.Value, I] = {
+    val pat = Pattern[ujson.Value, F] { (js) =>
+      if (js(header) == ujson.Str(name)) Some(jsF.decode(js("tree"))) else None
     }
     pat >>> build
   }
@@ -139,12 +139,12 @@ object TermJson {
   def termToJsonGet(t: Term) =
     termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
 
-  def fdJson(fd: FiniteDistribution[Term]): Js.Arr = {
+  def fdJson(fd: FiniteDistribution[Term]): ujson.Arr = {
     val pmf = for {
       Weighted(elem, p) <- fd.pmf
       tjs               <- termToJson(elem)
-    } yield Js.Obj("term" -> tjs, "weight" -> Js.Num(p))
-    Js.Arr(pmf: _*)
+    } yield ujson.Obj("term" -> tjs, "weight" -> ujson.Num(p))
+    ujson.Arr(pmf: _*)
   }
 
   import induction._
@@ -206,7 +206,7 @@ object TermJson {
         //buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
-  def jsToFD(exst: ExstInducStrucs)(js: Js.Value): FiniteDistribution[Term] = {
+  def jsToFD(exst: ExstInducStrucs)(js: ujson.Value): FiniteDistribution[Term] = {
     val pmf =
       js.arr.toVector.map { wp =>
         Weighted(
@@ -346,58 +346,58 @@ object TermJson {
 object InducJson {
   import TermJson._, ExstInducStrucs._
 
-  def toJson(exst: ExstInducStrucs): Js.Value = exst match {
-    case Base    => Js.Obj("intro" -> "base")
-    case NatRing => Js.Obj("intro" -> "nat-ring")
+  def toJson(exst: ExstInducStrucs): ujson.Value = exst match {
+    case Base    => ujson.Obj("intro" -> "base")
+    case NatRing => ujson.Obj("intro" -> "nat-ring")
     case OrElse(first, second) =>
-      Js.Obj(
+      ujson.Obj(
         "intro"  -> "or-else",
         "first"  -> toJson(first),
         "second" -> toJson(second)
       )
     case LambdaInduc(x, struc) =>
-      Js.Obj(
+      ujson.Obj(
         "intro"     -> "lambda",
         "variable"  -> termToJsonGet(x),
         "structure" -> toJson(struc)
       )
     case ConsSeqExst(cs, intros) =>
-      Js.Obj(
+      ujson.Obj(
         "intro" -> "constructor-sequence",
         "type"  -> termToJsonGet(cs.typ),
-        "intros" -> Js.Arr(intros.map { (t) =>
+        "intros" -> ujson.Arr(intros.map { (t) =>
           termToJsonGet(t)
         }: _*)
       )
     case ind @ IndConsSeqExst(cs, intros) =>
-      Js.Obj(
+      ujson.Obj(
         "intro" -> "indexed-constructor-sequence",
         "type"  -> termToJsonGet(ind.fmly),
-        "intros" -> Js.Arr(intros.map { (t) =>
+        "intros" -> ujson.Arr(intros.map { (t) =>
           termToJsonGet(t)
         }: _*)
       )
   }
 
-  def fdJson(fd: FiniteDistribution[ExstInducDefn]): Js.Arr = {
+  def fdJson(fd: FiniteDistribution[ExstInducDefn]): ujson.Arr = {
     val pmf = for {
       Weighted(elem, p) <- fd.pmf
     } yield
-      Js.Obj(
+      ujson.Obj(
         "type-family" -> termToJsonGet(elem.typFamily),
-        "introduction-rules" -> Js.Arr(
+        "introduction-rules" -> ujson.Arr(
           (elem.intros.map((t) => termToJsonGet(t))): _*
         ),
         "structure" -> toJson(elem.ind),
-        "parameters" -> Js.Arr(
+        "parameters" -> ujson.Arr(
           (elem.parameters.map((t) => termToJsonGet(t))): _*
         ),
-        "weight" -> Js.Num(p)
+        "weight" -> ujson.Num(p)
       )
-    Js.Arr(pmf: _*)
+    ujson.Arr(pmf: _*)
   }
 
-  def fromJson(init: ExstInducStrucs)(js: Js.Value): ExstInducStrucs =
+  def fromJson(init: ExstInducStrucs)(js: ujson.Value): ExstInducStrucs =
     js.obj("intro").str match {
       case "base"     => Base
       case "nat-ring" => NatRing
@@ -423,7 +423,7 @@ object InducJson {
     }
 
   def jsToFD(exst: ExstInducStrucs)(
-      js: Js.Value): FiniteDistribution[ExstInducDefn] = {
+      js: ujson.Value): FiniteDistribution[ExstInducDefn] = {
     val pmf =
       js.arr.toVector.map { wp =>
         val ind       = fromJson(exst)(wp.obj("structure"))
@@ -450,48 +450,48 @@ object InducJson {
 
 object ContextJson {
   import Context._, TermJson._
-  def toJson(ctx: Context): Js.Value = ctx match {
-    case Empty => Js.Obj("intro" -> "empty")
+  def toJson(ctx: Context): ujson.Value = ctx match {
+    case Empty => ujson.Obj("intro" -> "empty")
     case AppendConstant(init, constant: Term) =>
-      Js.Obj(
+      ujson.Obj(
         "intro"    -> "append-constant",
         "init"     -> toJson(init),
         "constant" -> termToJsonGet(constant)
       )
     case AppendTerm(init, expr: Term, role: Role) =>
       val rl = role match {
-        case Context.Assert   => Js.Str("assert")
-        case Context.Consider => Js.Str("consider")
+        case Context.Assert   => ujson.Str("assert")
+        case Context.Consider => ujson.Str("consider")
       }
-      Js.Obj(
+      ujson.Obj(
         "intro" -> "append-term",
         "init"  -> toJson(init),
         "term"  -> termToJsonGet(expr),
         "role"  -> rl
       )
     case AppendVariable(init, expr: Term) =>
-      Js.Obj(
+      ujson.Obj(
         "intro"      -> "append-variable",
         "init"       -> toJson(init),
         "expression" -> termToJsonGet(expr)
       )
     case AppendDefn(init, defn, global) =>
-      Js.Obj(
+      ujson.Obj(
         "intro"  -> "append-definition",
         "name"   -> termToJsonGet(defn.name),
         "init"   -> toJson(init),
         "value"  -> termToJsonGet(defn.valueTerm),
-        "global" -> Js.Bool(global)
+        "global" -> ujson.Bool(global)
       )
     case AppendIndDef(init, defn) =>
-      Js.Obj(
+      ujson.Obj(
         "intro" -> "append-inductive-definition",
         "defn"  -> InducJson.toJson(defn),
         "init"  -> toJson(init)
       )
   }
 
-  def fromJson(js: Js.Value): Context =
+  def fromJson(js: ujson.Value): Context =
     js.obj("intro").str match {
       case "empty" => Empty
       case "append-term" =>

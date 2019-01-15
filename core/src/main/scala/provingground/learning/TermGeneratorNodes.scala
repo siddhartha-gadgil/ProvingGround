@@ -14,6 +14,7 @@ import provingground.interface.{ContextJson, MultiTask}
 
 import scala.concurrent._
 import duration._
+import monix.execution.Scheduler.Implicits.global
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -97,6 +98,42 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
+  * Constant random variable, for fibers for islands
+    * @param randomVar the random variable
+    * @tparam O scala type of the random variable
+    */
+  case class CRV[O](randomVar : RandomVar[O]) extends (Term => RandomVar[O]){
+    def apply(t: Term): RandomVar[O] = randomVar
+
+    override def toString: String = randomVar.toString
+  }
+
+  case object LamApply extends ((Term, Term) => Term){
+    def apply(x: Term, y: Term): FuncLike[Term, Term] = x :~> y
+
+    override def toString = "Lambda"
+  }
+
+  case object PiApply extends ((Term, Typ[Term]) => Typ[Term]){
+    def apply(x: Term, y: Typ[Term]): Typ[FuncLike[Term, Term]] = pi(x)(y)
+
+    override def toString = "Pi"
+  }
+
+  case object SigmaApply extends ((Term, Typ[Term]) => Typ[Term]){
+    def apply(x: Term, y: Typ[Term]): Typ[AbsPair[Term, Term]] = sigma(x)(y)
+
+    override def toString = "Sigma"
+  }
+
+
+  case object LamFunc extends ((Term, Term) => ExstFunc){
+    def apply(x: Term, y: Term): ExstFunc = ExstFunc(x :~> y)
+
+    override def toString = "Lambda"
+  }
+
+  /**
     * An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
     * the initial state of the island has a new variable mixed in.
     *
@@ -106,18 +143,18 @@ class TermGeneratorNodes[InitState](
   def lambdaIsle(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
     Island[Term, InitState, Term, Term](
       Terms,
-      _ => Terms,
+      CRV(Terms),
       addVar(typ),
-      { case (x, y) => x :~> y },
+      LamApply,
       inIsle
     )
 
   def lambdaTypFamilyIsle(typ: Typ[Term]): GeneratorNode[ExstFunc] =
     Island[ExstFunc, InitState, Term, Term](
       TypFamilies,
-      _ => TypsAndFamilies,
+      CRV(TypsAndFamilies),
       addVar(typ),
-      { case (x, y) => ExstFunc(x :~> y) },
+      LamFunc,
       inIsle
     )
 
@@ -134,9 +171,9 @@ class TermGeneratorNodes[InitState](
         Some(
           Island[Term, InitState, Term, Term](
             termsWithTyp(pd),
-            x => termsWithTyp(pd.fibers(x.asInstanceOf[u])),
+            PiOutput(pd),
             addVar(pd.domain),
-            { case (x, y) => x :~> y },
+            LamApply,
             inIsle
           )
         )
@@ -144,9 +181,9 @@ class TermGeneratorNodes[InitState](
         Some(
           Island[Term, InitState, Term, Term](
             termsWithTyp(ft),
-            _ => termsWithTyp(ft.codom),
+            CRV(termsWithTyp(ft.codom)),
             addVar(ft.domain),
-            { case (x, y) => x :~> y },
+            LamApply,
             inIsle
           )
         )
@@ -181,9 +218,9 @@ class TermGeneratorNodes[InitState](
       dom: Typ[Term]): Island[ExstFunc, InitState, Term, Term] =
     Island[ExstFunc, InitState, Term, Term](
       funcsWithDomain(dom),
-      _ => Terms,
+      CRV(Terms),
       addVar(dom),
-      { case (x, y) => ExstFunc(x :~> y) },
+      LamFunc,
       inIsle
     )
 
@@ -229,18 +266,18 @@ class TermGeneratorNodes[InitState](
   def piIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
-      _ => Typs,
+      CRV(Typs),
       addVar(typ),
-      { case (x, y) => pi(x)(y) },
+      PiApply,
       inIsle
     )
 
   def sigmaIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
-      _ => Typs,
+      CRV(Typs),
       addVar(typ),
-      { case (x, y) => sigma(x)(y) },
+      SigmaApply,
       inIsle
     )
 
@@ -354,9 +391,9 @@ class TermGeneratorNodes[InitState](
       inductiveTyp: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IntroRuleTypes(inductiveTyp), // output
-      (_: Term) => IntroRuleTypes(inductiveTyp), // output from island
+      CRV(IntroRuleTypes(inductiveTyp)), // output from island
       addVar(inductiveTyp),
-      { case (x, y) => pi(x)(y) },
+      PiApply,
       inIsle
     )
 
@@ -372,9 +409,9 @@ class TermGeneratorNodes[InitState](
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IntroRuleTypes(inductiveTyp),
-      (_: Term) => IntroRuleTypes(inductiveTyp),
+      CRV(IntroRuleTypes(inductiveTyp)),
       addVar(typ),
-      { case (x, y) => pi(x)(y) },
+      PiApply,
       inIsle
     )
 
@@ -465,9 +502,9 @@ class TermGeneratorNodes[InitState](
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IterFuncTypTo(targetTyp),
-      (_: Term) => IntroRuleTypes(targetTyp),
+      CRV(IntroRuleTypes(targetTyp)),
       addVar(typ),
-      { case (x, y) => pi(x)(y) },
+      PiApply,
       inIsle
     )
 
@@ -529,9 +566,9 @@ class TermGeneratorNodes[InitState](
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IndexedIntroRuleTyps(typF),
-      (_: Term) => IndexedIntroRuleTyps(typF),
+      CRV(IndexedIntroRuleTyps(typF)),
       addVar(typ),
-      { case (x, y) => pi(x)(y) },
+      PiApply,
       inIsle
     )
 
@@ -568,9 +605,9 @@ class TermGeneratorNodes[InitState](
       typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IndexedIterFuncTypTo(targetTyp),
-      (_: Term) => IndexedIntroRuleTyps(targetTyp),
+      CRV(IndexedIntroRuleTyps(targetTyp)),
       addVar(typ),
-      { case (x, y) => pi(x)(y) },
+      PiApply,
       inIsle
     )
 
@@ -630,7 +667,7 @@ object TermRandomVars {
   }
 
   case class WithTyp(typ: Typ[Term]) extends (Term => Boolean) {
-    def apply(t: Term) = t.typ == typ
+    def apply(t: Term): Boolean = t.typ == typ
 
     override def toString = s"$WithTyp(typ)"
   }
@@ -665,6 +702,10 @@ object TermRandomVars {
         Typs,
         (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
       )
+
+  case class PiOutput[U<: Term with Subs[U], V <: Term with Subs[V]](pd: PiDefn[U, V]) extends (Term => RandomVar[Term]){
+    def apply(x: Term): RandomVar[Term] = termsWithTyp(pd.fibers(x.asInstanceOf[U]))
+  }
 
   def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
     Sort.Filter[Term](WithTyp(typ))
@@ -849,6 +890,8 @@ case class TermState(terms: FD[Term],
       context.subs(x, y)
     )
 
+  // pprint.log(context.variables)
+
   lazy val thmsByPf: FD[Typ[Term]] =
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
   lazy val thmsBySt: FD[Typ[Term]] =
@@ -873,7 +916,9 @@ case class TermState(terms: FD[Term],
     terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
 
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
-    val x        = typ.Var
+    val x        =
+      nextVar(typ, context.variables)
+//      typ.Var
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
     val newGoals: FD[Typ[Term]] = goals.map {
       case pd: PiDefn[u, v] if pd.domain == typ => pd.fibers(x.asInstanceOf[u])
@@ -884,10 +929,10 @@ case class TermState(terms: FD[Term],
       typOpt(x)
         .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
         .getOrElse(typs)
-    TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten) -> x // FIXME should transform TermsWithTyp and FuncsWithDomain correctly
+    TermState(newTerms, newTyps, x +: vars, inds, newGoals.flatten, context.addVariable(x)) -> x
   }
 
-  def tangent(x: Term) =
+  def tangent(x: Term): TermState =
     this.copy(
       terms = FD.unif(x),
       typs = FD.empty
@@ -897,11 +942,11 @@ case class TermState(terms: FD[Term],
 
   import ujson.Js
 
-  def json: Js.Obj = {
-    Js.Obj(
+  def json: ujson.Obj = {
+    ujson.Obj(
       "terms" -> fdJson(terms),
       "types" -> fdJson(typs.map((t) => t: Term)),
-      "variables" -> Js.Arr(
+      "variables" -> ujson.Arr(
         vars.map((t) => termToJson(t).get): _*
       ),
       "goals"                -> fdJson(goals.map((t) => t: Term)),
@@ -936,7 +981,7 @@ case class TermState(terms: FD[Term],
 
 object TermState {
   import TermRandomVars._
-  def fromJson(js: ujson.Js.Value): TermState = {
+  def fromJson(js: ujson.Value): TermState = {
     import interface._, TermJson._
     val obj     = js.obj
     val context = ContextJson.fromJson(obj("context"))
@@ -958,6 +1003,8 @@ object TermState {
     */
   implicit val stateFD: StateDistribution[TermState, FD] =
     new StateDistribution[TermState, FD] {
+      def isEmpty(state: TermState) = state.terms.support.isEmpty && state.typs.support.isEmpty
+
       def value[T](state: TermState)(randomVar: RandomVar[T]): FD[T] =
         randomVar match {
           case Terms      => state.terms.map(x => x: T)
@@ -992,6 +1039,32 @@ object TermState {
 
 }
 
+import upickle.default.{ReadWriter => RW, macroRW, read, write}
+
+object TermGenParams {
+  implicit def rw: RW[TermGenParams] = macroRW
+
+  case class AddVar(typ: Typ[Term], wt: Double) extends (TermState => (TermState, Term)){
+    def apply(ts: TermState) = ts.addVar(typ, wt)
+
+    override def toString = "AddVar"
+  }
+
+  case object GetVar extends (Typ[Term] => Term){
+    def apply(typ: Typ[Term]) = typ.Var
+
+    override def toString = "GetVar"
+  }
+
+  case object InIsle extends ((Term, TermState) => TermState){
+    def apply(t: Term, state: TermState) = state.inIsle(t)
+
+    override def toString = "InIsle"
+  }
+}
+
+import TermGenParams._
+
 case class TermGenParams(appW: Double = 0.1,
                          unAppW: Double = 0.1,
                          argAppW: Double = 0.1,
@@ -1002,14 +1075,14 @@ case class TermGenParams(appW: Double = 0.1,
                          sigmaW: Double = 0.05,
                          varWeight: Double = 0.3,
                          goalWeight: Double = 0.5,
-                         typVsFamily: Double = 0.5) {
+                         typVsFamily: Double = 0.5) {tg =>
   object Gen
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => applyFunc(fn.func, arg) },
         { case (fn, arg) => Unify.appln(fn.func, arg) },
-        (typ) => (state) => state.addVar(typ, varWeight),
-        _.Var,
-        { case (t, state) => state.inIsle(t) }
+        AddVar(_, varWeight),
+        GetVar,
+        InIsle
       )
 
   import Gen._, GeneratorNode._,
@@ -1036,6 +1109,8 @@ case class TermGenParams(appW: Double = 0.1,
       (sigmaNode        -> sigmaW) ::
       (typFoldNode      -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
+
+  val goalNodes = (Init(Goals) -> 1.0) :: Goals.target[TermState, Term, Double, Typ[Term]]
 
   val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
     (Init(Funcs)                            -> termInit) ::
@@ -1084,7 +1159,7 @@ case class TermGenParams(appW: Double = 0.1,
       FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
-    funcWithDomNodes +: targTypNodes +:
+    funcWithDomNodes +: targTypNodes +: goalNodes +:
       termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 
@@ -1112,6 +1187,20 @@ case class TermGenParams(appW: Double = 0.1,
       terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
       typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
     } yield TermState(terms, typs, initState.vars, initState.inds)
+
+  def evolvedStateTask(initState: TermState,
+                       epsilon: Double,
+                       limit: FiniteDuration = 3.minutes): Task[EvolvedState] =
+    nextStateTask(initState, epsilon, limit).map(
+      result =>
+        EvolvedState(initState, result, tg, epsilon)
+    )
+
+  // def getEvolvedState(initState: TermState,
+  //                     epsilon: Double,
+  //                     limit: FiniteDuration = 3.minutes): EvolvedState =
+  //   evolvedStateTask(initState, epsilon, limit).runSyncUnsafe(limit)
+
 
   def nextStateWithEqnsTask(initState: TermState,
                             epsilon: Double,
@@ -1145,12 +1234,8 @@ case class EvolvedState(init: TermState,
                         params: TermGenParams,
                         epsilon: Double)
 
-import upickle.default.{ReadWriter => RW, macroRW, read, write}
-import ujson.Js
 
-object TermGenParams {
-  implicit def rw: RW[TermGenParams] = macroRW
-}
+import ujson.Js
 
 object TermGenJson {
 
@@ -1166,7 +1251,7 @@ object TermGenJson {
   }
 
   def nextTangStateTask(inp: String): Task[String] = {
-    val obj           = read[Js.Value](inp).obj
+    val obj           = read[ujson.Value](inp).obj
     val termGenParams = read[TermGenParams](obj("generator-parameters").str)
     val epsilon       = obj("epsilon").num
     val baseState     = TermState.fromJson(obj("initial-state"))

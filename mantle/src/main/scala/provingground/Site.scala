@@ -185,16 +185,18 @@ object Site {
 
     def save = write.over(target, output)
 
-    def json: ujson.Js.Obj = {
+    def json: ujson.Obj = {
       import ujson._
-      Js.Obj("name" -> name, "title" -> title)
+      ujson.Obj("name" -> name, "title" -> title)
     }
   }
 
   def getTut(p: Path): Tut = {
     val l = ops.read.lines(p).toVector
     val name =
-      titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
+      titleOpt(l).map(filename).getOrElse(
+        p.last.dropRight(p.ext.length + 1)
+        )
     val rawContent = body(l).mkString("\n")
     Tut(name, rawContent, titleOpt(l))
   }
@@ -252,16 +254,18 @@ object Site {
 
     def save = write.over(target, output)
 
-    def json: ujson.Js.Obj = {
+    def json: ujson.Obj = {
       import ujson._
-      Js.Obj("name" -> name, "title" -> title, "date" -> dateString)
+      ujson.Obj("name" -> name, "title" -> title, "date" -> dateString)
     }
   }
 
   def getPost(p: Path): Post = {
     val l = ops.read.lines(p).toVector
     val name =
-      titleOpt(l).map(filename).getOrElse(p.name.dropRight(p.ext.length + 1))
+      titleOpt(l).map(filename).getOrElse(
+        p.last.dropRight(p.ext.length + 1)
+        )
     val content = body(l).mkString("\n")
     Post(name, content, dateOpt(l), titleOpt(l))
   }
@@ -334,9 +338,9 @@ object Site {
     write.over(pwd / "docs" / "index.html", home)
 
   def mkLists() = {
-    val tutsJs = ujson.Js.Arr(allTuts.map(_.json): _*)
+    val tutsJs = ujson.Arr(allTuts.map(_.json): _*)
     write.over(pwd / "docs" / "tut-list.json", tutsJs.toString)
-    val postsJs = ujson.Js.Arr(allPosts.map(_.json): _*)
+    val postsJs = ujson.Arr(allPosts.map(_.json): _*)
     write.over(pwd / "docs" / "posts-list.json", postsJs.toString())
   }
 

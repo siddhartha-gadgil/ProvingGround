@@ -1,6 +1,6 @@
 package provingground.interface
 
-import upickle.Js
+import ujson.Js
 import upickle.default._
 import monix.eval._
 
@@ -8,7 +8,7 @@ import scala.util.{Failure, Success}
 
 case class MultiTask(jobs: Map[String, String => Task[String]]) extends (String => Task[String]){
   def apply(inp: String) : Task[String] = {
-    val obj: Js.Obj = ujson.read(inp).obj
+    val obj: ujson.Obj = ujson.read(inp).obj
     val jobName =  obj("job").str
     pprint.log(s"received job request $jobName")
     val job: String => Task[String] = jobs.getOrElse(jobName, (_) => Task.raiseError(new IllegalArgumentException(s"Cannot find job with name $jobName")))
@@ -17,12 +17,12 @@ case class MultiTask(jobs: Map[String, String => Task[String]]) extends (String 
       case Success(result: String) =>
         pprint.log(s"completed job $jobName")
         ujson.write(
-          Js.Obj("job" -> Js.Str(jobName), "data" -> Js.Str(data), "result" -> Js.Str(result), "success" -> Js.Bool(true))
+          ujson.Obj("job" -> ujson.Str(jobName), "data" -> ujson.Str(data), "result" -> ujson.Str(result), "success" -> ujson.Bool(true))
         )
       case Failure(err: Throwable) =>
         pprint.log(s"failed job $jobName")
         ujson.write(
-          Js.Obj("job" -> Js.Str(jobName), "data" -> Js.Str(data), "error" -> Js.Str(err.getMessage), "success" -> Js.Bool(false))
+          ujson.Obj("job" -> ujson.Str(jobName), "data" -> ujson.Str(data), "error" -> ujson.Str(err.getMessage), "success" -> ujson.Bool(false))
         )
     }
   }

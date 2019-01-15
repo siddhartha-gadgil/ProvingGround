@@ -14,7 +14,7 @@ import com.scalawarrior.scalajs.ace._
 import dom.ext._
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
-import upickle.{Js, json}
+// import ujson.Js
 
 import scala.util.{Try, Success, Failure}
 
@@ -49,7 +49,7 @@ object ConstituencyParser {
           val answer = xhr.responseText
           runButton.value = "Parse (ctrl-B)"
           logDiv.appendChild(pre(answer).render)
-          val js   = json.read(answer)
+          val js   = ujson.read(answer)
           val tree = js.obj("tree").str.toString
           treeDiv.innerHTML = ""
           treeDiv.appendChild(pre(tree).render)
@@ -57,18 +57,17 @@ object ConstituencyParser {
             js.obj("expr")
               .str
               .toString
-              .replace("\"\"\"", "")
-              .split("\n")
-              .drop(1)
-              .dropRight(1)
-              .mkString("\n")
+          val parsed = js.obj("parsed").bool
           exprDiv.innerHTML = ""
           exprDiv.appendChild(
-            pre(
+            div(
+              p(s"Parsed: $parsed"),
+              pre(
               code(`class` := "language-scala")(expr)
-            ).render)
+            )
+              ).render)
           val depTree = js.obj("deptree")
-          depTreeDiv.innerHTML = depTree.toString().drop(1).dropRight(1)
+          depTreeDiv.innerHTML = ujson.read(depTree).str
           g.hljs.highlightBlock(exprDiv)
           g.hljs.initHighlighting.called = false
           g.hljs.initHighlighting()
@@ -97,6 +96,7 @@ object ConstituencyParser {
         // "Six is not the sum of two distinct primes",
         "$6$ is not the sum of two distinct prime numbers", // 'primes' causes trouble
         "Every natural number is greater than $0$",
+        "Every number $n$ is divisible by a prime number $p$",
         // "The image of $Z$ in $K$ is an integral domain, hence isomorphic to $Z$ or $Z/p$, where $p$ is a prime",
         "If $G/H$ is cyclic, then $G$ is abelian", // parsed
         "If $G/H$ is cyclic, $G$ is abelian", //parsed
@@ -117,6 +117,8 @@ object ConstituencyParser {
         "if $p$ is a prime number, the form deduced from $f$ by reduction modulo $p$ has a non-trivial root",
         "if $p$ is a prime number, the form deduced from $f$ by reduction modulo $p$ has a non-trivial zero, and this zero can be lifted to a p-adic zero",
         "the quadratic form $f$ represents zero in all the $Q_p$, and also in $R$",
+        "if two diagrams $D_1$ and $D_2$ are related by a chain of moves, the complexes of  groups $C(D_1)$ and $C(D_2)$ are equivalent",
+        "if two diagrams $D_1$ and $D_2$ are related by a chain of Reidemeister moves, the complexes of  groups $C(D_1)$ and $C(D_2)$ are equivalent",
         "if two diagrams $D_1$ and $D_2$ are related by a chain of Reidemeister moves, the complexes of graded abelian groups $C(D_1)$ and $C(D_2)$ are equivalent and homology groups $H(D_1)$ and $H(D_2)$ are isomorphic",
         "$AB \\subset G$ if and only if $AB = BA$", //parsed
         "$AB \\subset G$ and $AB = BA$", //experiment iff -> and; parsed

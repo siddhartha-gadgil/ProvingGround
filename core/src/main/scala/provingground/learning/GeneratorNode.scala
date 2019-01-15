@@ -559,6 +559,8 @@ trait StateDistribution[State, D[_]] {
 
   def valueAt[Dom <: HList, T](
       state: State)(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): D[T]
+
+  def isEmpty(state: State): Boolean
 }
 
 object StateDistribution {
@@ -578,6 +580,8 @@ object StateDistribution {
           .find(_.randVars == randomVarFmly)
           .flatMap(_.value.asInstanceOf[Map[Dom, D[T]]].get(fullArg))
           .getOrElse(emp.empty[T])
+
+      def isEmpty(state: VarValueSet[D]) = state.randVarVals.isEmpty && state.randVarFamilyVals.isEmpty
     }
 
   def value[State, T, D[_]](state: State)(randomVar: RandomVar[T])(
@@ -609,6 +613,8 @@ object DistributionState {
       def valueAt[Dom <: HList, T](state: FD[O])(
           randomVarFmly: RandomVarFamily[Dom, T],
           fullArg: Dom): FD[T] = FD.empty[T]
+
+      def isEmpty(state: FiniteDistribution[O]) = state.support.isEmpty
 
       def update(values: RandomVarValues[FD])(init: FD[O]): FD[O] =
         values.value(randVar)
@@ -702,6 +708,9 @@ sealed trait NodeCoeffSeq[State, Boat, V] {
     : NodeCoeffSeq[State, Boat, V] =
     dataSeq.foldLeft(this)(_ update _)
 
+  def getCoeff[RDom <: HList, Y](gen: GeneratorNodeFamily[RDom, Y]) : Option[V]
+
+
 }
 
 object NodeCoeffSeq {
@@ -716,6 +725,9 @@ object NodeCoeffSeq {
     def update[RDom <: HList, Y](
         data: GeneratorNodeFamily.Value[RDom, Y, V]): Empty[State, Boat, V] =
       this
+
+    def getCoeff[RDom <: HList, Y](gen: GeneratorNodeFamily[RDom, Y]) : Option[V] = None
+
   }
 
   case class Cons[State, Boat, V, RDom <: HList, Y](
@@ -742,6 +754,10 @@ object NodeCoeffSeq {
     def update[D <: HList, O](data: GeneratorNodeFamily.Value[D, O, V])
       : NodeCoeffSeq[State, Boat, V] =
       this.copy(head = head.update(data))
+
+    def getCoeff[RDom <: HList, Y](gen: GeneratorNodeFamily[RDom, Y]) : Option[V] =
+      tail.getCoeff(gen).orElse(head.getCoeff(gen))
+
   }
 }
 
@@ -770,6 +786,8 @@ sealed trait NodeCoeffs[State, Boat, V, RDom <: HList, Y] {
       head: (GeneratorNodeFamily[RDom, Y], V)
   ) = Cons(head._1, head._2, this)
 
+  def getCoeff[RD <: HList, YY](gen: GeneratorNodeFamily[RD, YY]) : Option[V]
+
 //  def ::(head: (RecursiveGeneratorNodeFamily[RDom, State, Boat, Y], V)) =
 //    RecCons(head._1, head._2, this)
 }
@@ -782,6 +800,9 @@ object NodeCoeffs {
       : Option[NodeCoeffs[State, Boat, V, RDom, Y]] = None
 
     val nodeFamilies: Set[GeneratorNodeFamily[RDom, Y]] = Set()
+
+    def getCoeff[RD <: HList, YY](gen: GeneratorNodeFamily[RD, YY]) : Option[V] = None
+
   }
 
   sealed trait Cons[State, Boat, V, RDom <: HList, Y]
@@ -789,6 +810,12 @@ object NodeCoeffs {
     val headGen: GeneratorNodeFamily[RDom, Y]
     val headCoeff: V
     val tail: NodeCoeffs[State, Boat, V, RDom, Y]
+
+    def getCoeff[RD <: HList, YY](gen: GeneratorNodeFamily[RD, YY]) : Option[V] =
+      tail.getCoeff(gen).orElse{
+        if (gen == headGen) Some(headCoeff) else None
+      }
+
 
   }
 
@@ -860,6 +887,8 @@ object MemoState {
           .find(_.randVar == randomVar)
           .map(_.value.asInstanceOf[D[T]])
           .getOrElse(emp.empty[T])
+
+      def isEmpty(state: MemoState[D, V, P]) = state.randVarVals.isEmpty
 
       def valueAt[Dom <: HList, T](state: MemoState[D, V, P])(
           randomVarFmly: RandomVarFamily[Dom, T],

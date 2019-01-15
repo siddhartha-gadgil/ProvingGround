@@ -12,7 +12,7 @@ import akka.http.scaladsl.model.sse.ServerSentEvent
 import akka.http.scaladsl.marshalling.sse.EventStreamMarshalling._
 
 import scala.util.Try
-import upickle.{Js, json}
+import ujson.Js
 
 import scala.util.Try
 import scala.concurrent._, duration._

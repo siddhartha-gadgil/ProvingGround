@@ -1,8 +1,8 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.12.7"
+val scalaV = "2.12.8"
 
-val ammV = "1.4.2"
+val ammV = "1.6.0"
 
 
 scalaVersion in ThisBuild := scalaV
@@ -13,7 +13,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 // addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
 
 libraryDependencies += compilerPlugin(
-  "org.scalameta" % "semanticdb-scalac" % "4.0.0" cross CrossVersion.full)
+  "org.scalameta" % "semanticdb-scalac" % "4.1.0" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
 // scalacOptions += "-P:splain:all:true"
 
@@ -33,7 +33,7 @@ lazy val commonSettings = baseSettings ++ Seq(
      "org.scala-lang.modules" %% "scala-xml" % "1.1.0",
     "org.typelevel" %%% "spire"         % "0.16.0",
     "com.lihaoyi"   %%% "fansi"         % "0.2.4",
-    "com.lihaoyi"   %%% "upickle"       % "0.6.6",
+    "com.lihaoyi"   %%% "upickle"       % "0.7.1",
     "com.lihaoyi" %%% "fastparse" % "1.0.0",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
@@ -73,6 +73,7 @@ lazy val jvmSettings = Seq(
     "com.lihaoyi" %% "cask" % "0.1.9",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
+    "org.apache.logging.log4j" % "log4j-core" % "2.11.1",
     // "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
@@ -124,7 +125,8 @@ lazy val nlpSettings = Seq(
     "com.lihaoyi"   %% "upickle"       % "0.6.6",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",
-    "com.google.protobuf" % "protobuf-java"    % "2.6.1"
+    "com.google.protobuf" % "protobuf-java"    % "2.6.1",
+    "edu.mit" % "jwi" % "2.2.3"
   )
 )
 
@@ -156,15 +158,15 @@ lazy val client = project
     resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.1",
-      "com.lihaoyi"  %%% "scalatags"   % "0.6.3",
-      "com.lihaoyi"  %%% "upickle"     % "0.6.4",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.2",
+      "com.lihaoyi"  %%% "scalatags"   % "0.6.7",
+      "com.lihaoyi"  %%% "upickle"     % "0.6.6",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
     )
   )
-  // .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
+  .enablePlugins(ScalaJSPlugin)
   .dependsOn(coreJS)
 
 lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
@@ -217,6 +219,7 @@ lazy val leanlib =
 lazy val mantle = (project in file("mantle"))
   .settings(
     name := "ProvingGround-mantle",
+    // resourceDirectory := baseDirectory.value / "docs"
     // scalaJSProjects := Seq(client),
     // pipelineStages in Assets := Seq(scalaJSPipeline)
     //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
@@ -356,23 +359,23 @@ fork in run := true
 connectInput := true
 outputStrategy := Some(StdoutOutput)
 
-val root = (project in file("."))
-  .settings(baseSettings: _*)
-  .enablePlugins(ScalaUnidocPlugin)
-  .settings(
-    name := "Proving-Ground",
-    unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject -- inProjects(
-      coreJS,
-      client)
-  )
-  .aggregate(andrewscurtis,
-             //  client,
-             coreJVM,
-             //  coreJS,
-             exploring,
-             mantle,
-             nlp,
-             normalform,
-             realfunctions,
-             server,
-             trepplein)
+// val root = (project in file("."))
+//   .settings(baseSettings: _*)
+//   .enablePlugins(ScalaUnidocPlugin)
+//   .settings(
+//     name := "Proving-Ground",
+//     unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject -- inProjects(
+//       coreJS,
+//       client)
+//   )
+//   .aggregate(andrewscurtis,
+//              //  client,
+//              coreJVM,
+//              //  coreJS,
+//              exploring,
+//              mantle,
+//              nlp,
+//              normalform,
+//              realfunctions,
+//              server,
+//              trepplein)

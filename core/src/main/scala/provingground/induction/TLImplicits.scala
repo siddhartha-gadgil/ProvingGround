@@ -18,7 +18,7 @@ trait InductionImplicits {
 
   import ConstructorShape._
 
-  implicit def stringSym(name: String): _root_.provingground.HoTT.Name =
+  implicit def stringSym(name: String): Name =
     Name(name)
 
   implicit class ConstructorHead[H <: Term with Subs[H]](typ: Typ[H]) {

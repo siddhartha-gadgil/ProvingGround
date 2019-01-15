@@ -108,7 +108,7 @@ case class CodeGen(inducNames: Term => Option[meta.Term] = (_) => None,
             )
             // q"IdentityTyp.induc($dom.dom, $codom)"
           case _ =>
-          meta.Term.Apply(meta.Term.Select(ind, meta.Term.Name("induc")), List(codom))
+          meta.Term.Apply(meta.Term.Select(ind, meta.Term.Name("inducE")), List(codom))
             // q"${ind}.induc($codom)"
         }
         val withImplicit: meta.Term =
@@ -357,7 +357,7 @@ List(nameCode, shapeCode, tailCode)) //q"ConstructorSeqDom.Cons($nameCode, $shap
         } yield
         meta.Term.Block(
   List(
-    Import(List(Importer(meta.Term.Name("shapeless"), List()))),
+    Import(List(Importer(meta.Term.Name("shapeless"), List(Importee.Wildcard())))),
     meta.Term.ApplyInfix(headCode, meta.Term.Name("::"), List(), List(tailCode))
   )
 )

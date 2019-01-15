@@ -28,7 +28,7 @@ object Application extends Controller {
   }
 
   def jstest = Action {
-    Ok(views.html.jstest("Test of Scala Js."))
+    Ok(views.html.jstest("Test of Scala ujson."))
   }
 
   def redirect = Action {

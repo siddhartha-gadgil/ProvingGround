@@ -74,6 +74,7 @@ activator*
 
 _site/
 
+.vscode/
 
 src/main/scala/provingground
 
@@ -124,3 +125,5 @@ data/*.tsv
 .idea/
 
 data/bird-sentences.txt
+
+.bloop/
