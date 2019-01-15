@@ -127,3 +127,5 @@ data/*.tsv
 data/bird-sentences.txt
 
 .bloop/
+
+notes/.ipynb_checkpoints/
