@@ -120,7 +120,8 @@ val jvmLibs = List(
   ivy"com.github.scopt::scopt:3.5.0",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
-  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64"
+  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
+  ivy"org.scalameta::mdoc:1.2.7"
 )
 
 
