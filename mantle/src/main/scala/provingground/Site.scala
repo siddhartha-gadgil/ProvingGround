@@ -12,6 +12,11 @@ import scala.xml.Elem
 object Site {
   implicit val wd = pwd
 
+  def mktut() = {
+    val settings = mdoc.MainSettings().withIn(java.nio.file.Paths.get("tuts"))
+    mdoc.Main.process(settings)
+  }
+
   def pack() = {
     pprint.log("packing client")
     %%("mill", "client.pack")

@@ -13,7 +13,7 @@ import ujson.Js
 import StanfordParser._
 import TreeToMath._
 import edu.stanford.nlp.trees.Tree
-import org.scalafmt.Scalafmt.format
+// import org.scalafmt.Scalafmt.format
 import scala.util.Try
 import scala.concurrent._
 
@@ -27,9 +27,9 @@ class AkkaParserService(serverMode: Boolean)(implicit ec: ExecutionContext,
     val expr: MathExpr                = mathExprTree(tree).get
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
     // println(proseTree.view)
-    val code =
-      Try(format(s"object ConstituencyParsed {$expr}").get)
-        .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
+    val code = pprint.PPrinter.BlackWhite(expr, height=500)
+      // Try(format(s"object ConstituencyParsed {$expr}").get)
+      //   .getOrElse(s"\n//could not format:\n$expr\n\n//raw above\n\n")
     ujson.Obj("tree"    -> tree.pennString,
            "expr"    -> code.toString,
            "deptree" -> proseTree.view.replace("\n", ""))

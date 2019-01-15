@@ -58,8 +58,8 @@ val commonLibs = List(
   ivy"org.typelevel::cats-core::1.4.0",
   ivy"io.monix::monix::3.0.0-RC2",
   ivy"com.lihaoyi::pprint::0.5.2",
-  ivy"com.lihaoyi::sourcecode::0.1.4",
-  ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
+  ivy"com.lihaoyi::sourcecode::0.1.4"//,
+  // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
 trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
@@ -105,7 +105,7 @@ trait CommonJSModule extends CommonModule with ScalaJSModule{
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:$ammV",
   ivy"com.lihaoyi::cask:0.1.9",
-  ivy"org.scalameta::scalameta:4.0.0",
+  ivy"org.scalameta::scalameta:4.1.0",
   ivy"com.github.nscala-time::nscala-time:2.16.0",
   ivy"org.reactivemongo::reactivemongo:0.12.1",
   ivy"com.typesafe.akka::akka-actor:2.5.11",
@@ -120,7 +120,8 @@ val jvmLibs = List(
   ivy"com.github.scopt::scopt:3.5.0",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
-  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64"
+  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
+  ivy"org.scalameta::mdoc:1.2.7"
 )
 
 
