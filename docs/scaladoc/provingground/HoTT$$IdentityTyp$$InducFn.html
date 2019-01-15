@@ -460,6 +460,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.HoTT.FuncLike#canApply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="canApply(arg:W):Boolean"></a><a id="canApply(Equality[U]):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#canApply(arg:W):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">canApply</span><span class="params">(<span name="arg">arg: <a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">checks if application is valid; can override to allow for example resizing universes</p><div class="fullcomment"><div class="comment cmt"><p>checks if application is valid; can override to allow for example resizing universes</p></div><dl class="paramcmts block"><dt class="param">arg</dt><dd class="cmt"><p>the argument</p></dd><dt>returns</dt><dd class="cmt"><p>whether the argument has the correct type.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -537,9 +553,9 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       
       
     </li><li name="provingground.HoTT.IdentityTyp.InducFn#defnData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="defnData:scala.collection.immutable.Vector[provingground.HoTT.FuncLike[U,V]]"></a><a id="defnData:Vector[FuncLike[U,V]]"></a>
+      <a id="defnData:Vector[provingground.HoTT.FuncLike[U,V]]"></a><a id="defnData:Vector[FuncLike[U,V]]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#defnData:scala.collection.immutable.Vector[provingground.HoTT.FuncLike[U,V]]" title="Permalink">
+      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#defnData:Vector[provingground.HoTT.FuncLike[U,V]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -548,16 +564,16 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">defnData</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>, <span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.V">V</span>]]</span>
+        <span class="name">defnData</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>, <span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.V">V</span>]]</span>
       </span>
       
       <p class="shortcomment cmt">the definition data for all the introduction rules
 </p><div class="fullcomment"><div class="comment cmt"><p>the definition data for all the introduction rules
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.IdentityTyp.InducFn">InducFn</a> → <a href="HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a></dd></dl></div>
     </li><li name="provingground.HoTT.IdentityTyp.InducFn#depcodom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="depcodom:provingground.HoTT.Func[provingground.HoTT.Equality[U]withprovingground.HoTT.Subs[provingground.HoTT.Equality[U]],provingground.HoTT.Typ[V]]"></a><a id="depcodom:Func[Equality[U]withSubs[Equality[U]],Typ[V]]"></a>
+      <a id="depcodom:provingground.HoTT.Func[provingground.HoTT.Equality[U],provingground.HoTT.Typ[V]]"></a><a id="depcodom:Func[Equality[U],Typ[V]]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#depcodom:provingground.HoTT.Func[provingground.HoTT.Equality[U]withprovingground.HoTT.Subs[provingground.HoTT.Equality[U]],provingground.HoTT.Typ[V]]" title="Permalink">
+      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#depcodom:provingground.HoTT.Func[provingground.HoTT.Equality[U],provingground.HoTT.Typ[V]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -566,7 +582,7 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">depcodom</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]], <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.V">V</span>]]</span>
+        <span class="name">depcodom</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>], <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.V">V</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.IdentityTyp.InducFn">InducFn</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
@@ -605,9 +621,9 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.IdentityTyp.InducFn">InducFn</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="provingground.HoTT.IdentityTyp.InducFn#domW" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="domW:provingground.HoTT.Func[Uwithprovingground.HoTT.Subs[U],provingground.HoTT.Func[Uwithprovingground.HoTT.Subs[U],provingground.HoTT.IdentityTyp[Uwithprovingground.HoTT.Subs[U]]]]"></a><a id="domW:Func[UwithSubs[U],Func[UwithSubs[U],IdentityTyp[UwithSubs[U]]]]"></a>
+      <a id="domW:provingground.HoTT.Func[U,provingground.HoTT.Func[U,provingground.HoTT.IdentityTyp[U]]]"></a><a id="domW:Func[U,Func[U,IdentityTyp[U]]]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#domW:provingground.HoTT.Func[Uwithprovingground.HoTT.Subs[U],provingground.HoTT.Func[Uwithprovingground.HoTT.Subs[U],provingground.HoTT.IdentityTyp[Uwithprovingground.HoTT.Subs[U]]]]" title="Permalink">
+      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#domW:provingground.HoTT.Func[U,provingground.HoTT.Func[U,provingground.HoTT.IdentityTyp[U]]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -616,7 +632,7 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">domW</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>], <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>], <a href="HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span> with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]]]]</span>
+        <span class="name">domW</span><span class="result">: <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>, <a href="HoTT$$Func.html" class="extype" name="provingground.HoTT.Func">Func</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>, <a href="HoTT$$IdentityTyp.html" class="extype" name="provingground.HoTT.IdentityTyp">IdentityTyp</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]]]</span>
       </span>
       
       <p class="shortcomment cmt">the domain family, e.g.</p><div class="fullcomment"><div class="comment cmt"><p>the domain family, e.g. <code>Vec</code>
@@ -911,9 +927,9 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       <p class="shortcomment cmt">returns whether <code>this</code> is independent of <code>that</code>.</p><div class="fullcomment"><div class="comment cmt"><p>returns whether <code>this</code> is independent of <code>that</code>.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.IdentityTyp.InducFn#index" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="index:scala.collection.immutable.Vector[U]"></a><a id="index:Vector[U]"></a>
+      <a id="index:Vector[U]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#index:scala.collection.immutable.Vector[U]" title="Permalink">
+      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#index:Vector[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -922,7 +938,7 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">index</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]</span>
+        <span class="name">index</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]</span>
       </span>
       
       <p class="shortcomment cmt">indices of the introduction rules.</p><div class="fullcomment"><div class="comment cmt"><p>indices of the introduction rules.
@@ -1018,9 +1034,9 @@ Should throw exception when invoked for constants.
               
         </dd></dl></div>
     </li><li name="provingground.HoTT.IdentityTyp.InducFn#p" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="p:provingground.HoTT.Equality[U]withprovingground.HoTT.Subs[provingground.HoTT.Equality[U]]"></a><a id="p:Equality[U]withSubs[Equality[U]]"></a>
+      <a id="p:provingground.HoTT.Equality[U]"></a><a id="p:Equality[U]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#p:provingground.HoTT.Equality[U]withprovingground.HoTT.Subs[provingground.HoTT.Equality[U]]" title="Permalink">
+      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#p:provingground.HoTT.Equality[U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1029,7 +1045,7 @@ Should throw exception when invoked for constants.
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">p</span><span class="result">: <a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]]</span>
+        <span class="name">p</span><span class="result">: <a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]</span>
       </span>
       
       
@@ -1135,9 +1151,9 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$IndInducFuncLike.html" class="extype" name="provingground.HoTT.IndInducFuncLike">IndInducFuncLike</a> → <a href="HoTT$$InducFuncLike.html" class="extype" name="provingground.HoTT.InducFuncLike">InducFuncLike</a> → Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.IdentityTyp.InducFn#typ" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="typ:provingground.HoTT.GenFuncTyp[provingground.HoTT.Equality[U]withprovingground.HoTT.Subs[provingground.HoTT.Equality[U]],V]"></a><a id="typ:GenFuncTyp[Equality[U]withSubs[Equality[U]],V]"></a>
+      <a id="typ:provingground.HoTT.GenFuncTyp[provingground.HoTT.Equality[U],V]"></a><a id="typ:GenFuncTyp[Equality[U],V]"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#typ:provingground.HoTT.GenFuncTyp[provingground.HoTT.Equality[U]withprovingground.HoTT.Subs[provingground.HoTT.Equality[U]],V]" title="Permalink">
+      <a href="../provingground/HoTT$$IdentityTyp$$InducFn.html#typ:provingground.HoTT.GenFuncTyp[provingground.HoTT.Equality[U],V]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1146,7 +1162,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">typ</span><span class="result">: <a href="HoTT$$GenFuncTyp.html" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>] with <a href="HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>]], <span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.V">V</span>]</span>
+        <span class="name">typ</span><span class="result">: <a href="HoTT$$GenFuncTyp.html" class="extype" name="provingground.HoTT.GenFuncTyp">GenFuncTyp</a>[<a href="HoTT$$Equality.html" class="extype" name="provingground.HoTT.Equality">Equality</a>[<span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.U">U</span>], <span class="extype" name="provingground.HoTT.IdentityTyp.InducFn.V">V</span>]</span>
       </span>
       
       <p class="shortcomment cmt">the HoTT-type of the term

@@ -108,6 +108,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="AkkaParserService.html" title=""></a>
+                        <a href="AkkaParserService.html" title="">AkkaParserService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="Amm$.html" title=""></a>
                         <a href="Amm$.html" title="">Amm</a>
                       </li><li class="current-entities indented2">
@@ -232,12 +236,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="NoIndexedInducE.html" title="">NoIndexedInducE</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="ParserServer$.html" title=""></a>
-                        <a href="ParserServer$.html" title="">ParserServer</a>
+                        <a class="object" href="ParserCask$.html" title=""></a>
+                        <a href="ParserCask$.html" title="">ParserCask</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="ParserService.html" title=""></a>
-                        <a href="ParserService.html" title="">ParserService</a>
+                        <a class="object" href="ParserRoutes$.html" title=""></a>
+                        <a href="ParserRoutes$.html" title="">ParserRoutes</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="QDI$.html" title=""></a>
@@ -310,6 +314,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="WebServer$.html" title=""></a>
                         <a href="WebServer$.html" title="">WebServer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="WordNet$.html" title=""></a>
+                        <a href="WordNet$.html" title="">WordNet</a>
                       </li>
               </ul>
             </div>
@@ -1001,9 +1009,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.interface.LeanToTermMonix#parseSym" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="parseSym(name:trepplein.Name,ty:trepplein.Expr,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]]"></a><a id="parseSym(Name,Expr,Vector[Term]):Task[TermwithSubs[Term]]"></a>
+      <a id="parseSym(name:trepplein.Name,ty:trepplein.Expr,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Term]"></a><a id="parseSym(Name,Expr,Vector[Term]):Task[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/LeanToTermMonix.html#parseSym(name:trepplein.Name,ty:trepplein.Expr,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]]" title="Permalink">
+      <a href="../../provingground/interface/LeanToTermMonix.html#parseSym(name:trepplein.Name,ty:trepplein.Expr,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1012,7 +1020,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">parseSym</span><span class="params">(<span name="name">name: <span class="extype" name="trepplein.Name">Name</span></span>, <span name="ty">ty: <span class="extype" name="trepplein.Expr">Expr</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+        <span class="name">parseSym</span><span class="params">(<span name="name">name: <span class="extype" name="trepplein.Name">Name</span></span>, <span name="ty">ty: <span class="extype" name="trepplein.Expr">Expr</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       
@@ -1065,9 +1073,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.interface.LeanToTermMonix#parseVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="parseVar(b:trepplein.Binding,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]]"></a><a id="parseVar(Binding,Vector[Term]):Task[TermwithSubs[Term]]"></a>
+      <a id="parseVar(b:trepplein.Binding,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Term]"></a><a id="parseVar(Binding,Vector[Term]):Task[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/LeanToTermMonix.html#parseVar(b:trepplein.Binding,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Termwithprovingground.HoTT.Subs[provingground.HoTT.Term]]" title="Permalink">
+      <a href="../../provingground/interface/LeanToTermMonix.html#parseVar(b:trepplein.Binding,vars:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1076,7 +1084,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">parseVar</span><span class="params">(<span name="b">b: <span class="extype" name="trepplein.Binding">Binding</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+        <span class="name">parseVar</span><span class="params">(<span name="b">b: <span class="extype" name="trepplein.Binding">Binding</span></span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       

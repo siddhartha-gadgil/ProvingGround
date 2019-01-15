@@ -159,9 +159,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="DistributionStateEvolver.html" title=""></a>
                         <a href="DistributionStateEvolver.html" title="">DistributionStateEvolver</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EgUnif.html" title=""></a>
+                        <a href="EgUnif.html" title="">EgUnif</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="EntropyAtomWeight$.html" title=""></a>
+                        <a class="class" href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy"></a>
+                        <a href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy">EntropyAtomWeight</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="EvolvedState.html" title=""></a>
@@ -222,6 +230,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="GeneratorNodeFamily$.html" title=""></a>
                         <a class="trait" href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case."></a>
                         <a href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case.">GeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorTF$.html" title=""></a>
+                        <a class="class" href="GeneratorTF.html" title=""></a>
+                        <a href="GeneratorTF.html" title="">GeneratorTF</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="GeneratorVariables$.html" title=""></a>
                         <a class="class" href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
@@ -358,6 +370,18 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="trait" href="Support.html" title=""></a>
                         <a href="Support.html" title="">Support</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TFData$.html" title=""></a>
+                        <a class="class" href="TFData.html" title=""></a>
+                        <a href="TFData.html" title="">TFData</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TFDist$.html" title=""></a>
+                        <a class="class" href="TFDist.html" title=""></a>
+                        <a href="TFDist.html" title="">TFDist</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TFEg.html" title=""></a>
+                        <a href="TFEg.html" title="">TFEg</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="TangSamples.html" title=""></a>
@@ -500,7 +524,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -866,6 +890,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.TermGenParams#evolvedStateTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="evolvedStateTask(initState:provingground.learning.TermState,epsilon:Double,limit:scala.concurrent.duration.FiniteDuration):monix.eval.Task[provingground.learning.EvolvedState]"></a><a id="evolvedStateTask(TermState,Double,FiniteDuration):Task[EvolvedState]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGenParams.html#evolvedStateTask(initState:provingground.learning.TermState,epsilon:Double,limit:scala.concurrent.duration.FiniteDuration):monix.eval.Task[provingground.learning.EvolvedState]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">evolvedStateTask</span><span class="params">(<span name="initState">initState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>, <span name="limit">limit: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span> = <span class="symbol"><span class="name"><a href="../../scala/index.html">3.minutes</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="EvolvedState.html" class="extype" name="provingground.learning.EvolvedState">EvolvedState</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -978,6 +1018,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.TermGenParams#goalNodes" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="goalNodes:provingground.learning.NodeCoeffs.Cons[provingground.learning.TermState,provingground.HoTT.Term,Double,shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="goalNodes:Cons[TermState,Term,Double,HNil,Typ[Term]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGenParams.html#goalNodes:provingground.learning.NodeCoeffs.Cons[provingground.learning.TermState,provingground.HoTT.Term,Double,shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">goalNodes</span><span class="result">: <a href="NodeCoeffs$$Cons.html" class="extype" name="provingground.learning.NodeCoeffs.Cons">Cons</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="shapeless.HNil">HNil</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermGenParams#goalWeight" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="goalWeight:Double"></a>
       <span class="permalink">

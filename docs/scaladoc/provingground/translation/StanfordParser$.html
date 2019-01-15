@@ -456,7 +456,7 @@ Parsing is done by the <a href="#texParse(s:String,wordTags:Vector[(String,Strin
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="StanfordParser$$TeXParsed.html"><span class="name">TeXParsed</span></a><span class="params">(<span name="preraw">preraw: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="wordTags">wordTags: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>, <span name="mweSubs">mweSubs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>)] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="StanfordParser$$TeXParsed.html"><span class="name">TeXParsed</span></a><span class="params">(<span name="preraw">preraw: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="wordTags">wordTags: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)] = <span class="symbol"><span class="name"><a href="#baseWordTags:scala.collection.immutable.Vector[(String,String)]">baseWordTags</a></span></span></span>, <span name="mweSubs">mweSubs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>)] = <span class="symbol"><span class="name"><a href="#baseMweSubs:scala.collection.immutable.Vector[(scala.collection.immutable.Vector[String],edu.stanford.nlp.ling.TaggedWord)]">baseMweSubs</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -1074,6 +1074,22 @@ Parsing is done by the <a href="#texParse(s:String,wordTags:Vector[(String,Strin
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.translation.StanfordParser#wordNetTags" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="wordNetTags(tws:Vector[edu.stanford.nlp.ling.TaggedWord],depth:Int):Vector[Vector[edu.stanford.nlp.ling.TaggedWord]]"></a><a id="wordNetTags(Vector[TaggedWord],Int):Vector[Vector[TaggedWord]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/StanfordParser$.html#wordNetTags(tws:Vector[edu.stanford.nlp.ling.TaggedWord],depth:Int):Vector[Vector[edu.stanford.nlp.ling.TaggedWord]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wordNetTags</span><span class="params">(<span name="tws">tws: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>]</span>, <span name="depth">depth: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>]]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.StanfordParser#words" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="words(s:String):scala.collection.mutable.Buffer[edu.stanford.nlp.ling.Word]"></a><a id="words(String):Buffer[Word]"></a>
       <span class="permalink">

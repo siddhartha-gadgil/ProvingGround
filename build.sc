@@ -199,25 +199,25 @@ object nlp extends SbtModule with ServerModule{
   override def mainClass = Some("provingground.interface.ParserCask")
 }
 
-// object jvmRoot extends CommonModule{
-//   val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server)
+object jvmRoot extends CommonModule{
+  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server)
 
-//   override def sources = T.sources{
-//     core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources() ++ server.sources()
-//   }
+  override def sources = T.sources{
+    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources() ++ server.sources()
+  }
 
-//   override def ivyDeps = T{
-//     core.jvm.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
-//   }
+  override def ivyDeps = T{
+    core.jvm.ivyDeps() ++ mantle.ivyDeps() ++ nlp.ivyDeps()
+  }
 
-//   override def moduleDeps = Seq(trepplein)
+  override def moduleDeps = Seq(trepplein)
 
-//   def docs() = T.command{
-//     def jar = docJar()
-//     cp.over(jar.path / up / "javadoc", pwd / "docs" / "scaladoc")
-//     jar
-//   }
-// }
+  def docs() = T.command{
+    def jar = docJar()
+    cp.over(jar.path / up / "javadoc", pwd / "docs" / "scaladoc")
+    jar
+  }
+}
 
 object exploring extends JvmModule{
   override def moduleDeps = Seq(core.jvm, mantle)

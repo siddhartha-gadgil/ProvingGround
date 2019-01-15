@@ -294,7 +294,7 @@ Includes:
                         <a class="trait" href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization"></a>
                         <a href="HoTT$$MiscAppln.html" title="record a function as an application, especially for serialization">MiscAppln</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="HoTT$$Name$.html" title=""></a>
                         <a class="class" href="HoTT$$Name.html" title="Strings as symbols"></a>
                         <a href="HoTT$$Name.html" title="Strings as symbols">Name</a>
                       </li><li class="current-entities indented2">
@@ -828,6 +828,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.HoTT.LambdaLike#canApply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="canApply(arg:X):Boolean"></a><a id="canApply(X):Boolean"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$$LambdaTyped.html#canApply(arg:X):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">canApply</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.HoTT.LambdaTyped.X">X</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">checks if application is valid; can override to allow for example resizing universes</p><div class="fullcomment"><div class="comment cmt"><p>checks if application is valid; can override to allow for example resizing universes</p></div><dl class="paramcmts block"><dt class="param">arg</dt><dd class="cmt"><p>the argument</p></dd><dt>returns</dt><dd class="cmt"><p>whether the argument has the correct type.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -1128,7 +1144,7 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="name">hashCode</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.HoTT.Term#indepOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="indepOf(that:provingground.HoTT.Term):Boolean"></a><a id="indepOf(Term):Boolean"></a>
       <span class="permalink">
@@ -1392,9 +1408,9 @@ definition.</p><div class="fullcomment"><div class="comment cmt"><p>returns whet
 definition.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> → <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></dd></dl></div>
     </li><li name="provingground.HoTT.LambdaTyped#value" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="value:LambdaTyped.this.tvalue.term.type"></a><a id="value:term.type"></a>
+      <a id="value:Y"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$LambdaTyped.html#value:LambdaTyped.this.tvalue.term.type" title="Permalink">
+      <a href="../provingground/HoTT$$LambdaTyped.html#value:Y" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1403,16 +1419,16 @@ definition.
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">value</span><span class="result">: <a href="HoTT$$TypedTerm.html#term:U" class="extmbr" name="provingground.HoTT.TypedTerm#term">term</a>.type</span>
+        <span class="name">value</span><span class="result">: <span class="extype" name="provingground.HoTT.LambdaTyped.Y">Y</span></span>
       </span>
       
       <p class="shortcomment cmt">the value <code>y</code> in the lambda definition <code>x mapsto y</code>
 </p><div class="fullcomment"><div class="comment cmt"><p>the value <code>y</code> in the lambda definition <code>x mapsto y</code>
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.LambdaTyped">LambdaTyped</a> → <a href="HoTT$$LambdaLike.html" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a></dd></dl></div>
     </li><li name="provingground.HoTT.LambdaTyped#variable" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="variable:LambdaTyped.this.tvar.term.type"></a><a id="variable:term.type"></a>
+      <a id="variable:X"></a>
       <span class="permalink">
-      <a href="../provingground/HoTT$$LambdaTyped.html#variable:LambdaTyped.this.tvar.term.type" title="Permalink">
+      <a href="../provingground/HoTT$$LambdaTyped.html#variable:X" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1421,7 +1437,7 @@ definition.
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">variable</span><span class="result">: <a href="HoTT$$TypedTerm.html#term:U" class="extmbr" name="provingground.HoTT.TypedTerm#term">term</a>.type</span>
+        <span class="name">variable</span><span class="result">: <span class="extype" name="provingground.HoTT.LambdaTyped.X">X</span></span>
       </span>
       
       <p class="shortcomment cmt">the variable <code>x</code> in the lambda definition <code>x \mapsto y</code>

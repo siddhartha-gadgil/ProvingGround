@@ -529,6 +529,22 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.HoTT.FuncLike#canApply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="canApply(arg:W):Boolean"></a><a id="canApply(U):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/scalahott/ScalaRep$$ExtendedDepFunction.html#canApply(arg:W):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">canApply</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.scalahott.ScalaRep.ExtendedDepFunction.U">U</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">checks if application is valid; can override to allow for example resizing universes</p><div class="fullcomment"><div class="comment cmt"><p>checks if application is valid; can override to allow for example resizing universes</p></div><dl class="paramcmts block"><dt class="param">arg</dt><dd class="cmt"><p>the argument</p></dd><dt>returns</dt><dd class="cmt"><p>whether the argument has the correct type.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -1165,9 +1181,9 @@ definition.
               
         </dd></dl></div>
     </li><li name="provingground.scalahott.ScalaRep.RepSection#~~&gt;:" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="~~&gt;:[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](domrep:provingground.scalahott.ScalaRep[U,V]):provingground.scalahott.ScalaRep.DepFuncRep[Uwithprovingground.HoTT.Subs[U],V,provingground.HoTT.Term,Y]"></a><a id="~~&gt;:[U&lt;:TermwithSubs[U]](ScalaRep[U,U]):DepFuncRep[UwithSubs[U],U,Term,Y]"></a>
+      <a id="~~&gt;:[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](domrep:provingground.scalahott.ScalaRep[U,V]):provingground.scalahott.ScalaRep.DepFuncRep[U,V,provingground.HoTT.Term,Y]"></a><a id="~~&gt;:[U&lt;:TermwithSubs[U]](ScalaRep[U,U]):DepFuncRep[U,U,Term,Y]"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/ScalaRep$$ExtendedDepFunction.html#~~&gt;:[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](domrep:provingground.scalahott.ScalaRep[U,V]):provingground.scalahott.ScalaRep.DepFuncRep[Uwithprovingground.HoTT.Subs[U],V,provingground.HoTT.Term,Y]" title="Permalink">
+      <a href="../../provingground/scalahott/ScalaRep$$ExtendedDepFunction.html#~~&gt;:[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U]](domrep:provingground.scalahott.ScalaRep[U,V]):provingground.scalahott.ScalaRep.DepFuncRep[U,V,provingground.HoTT.Term,Y]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1176,7 +1192,7 @@ definition.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $tilde$tilde$greater$colon" class="implicit">~~&gt;:</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.ScalaRep.RepSection.~~&gt;:.U">U</span>]</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaRep.html" class="extype" name="provingground.scalahott.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.scalahott.ScalaRep.RepSection.~~&gt;:.U">U</span>, <span class="extype" name="provingground.scalahott.ScalaRep.ExtendedDepFunction.U">U</span>]</span>)</span><span class="result">: <a href="ScalaRep$$DepFuncRep.html" class="extype" name="provingground.scalahott.ScalaRep.DepFuncRep">DepFuncRep</a>[<span class="extype" name="provingground.scalahott.ScalaRep.RepSection.~~&gt;:.U">U</span> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.ScalaRep.RepSection.~~&gt;:.U">U</span>], <span class="extype" name="provingground.scalahott.ScalaRep.ExtendedDepFunction.U">U</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.scalahott.ScalaRep.RepSection.Y">Y</span>]</span>
+        <span title="gt4s: $tilde$tilde$greater$colon" class="implicit">~~&gt;:</span><span class="tparams">[<span name="U">U &lt;: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a> with <a href="../HoTT$$Subs.html" class="extype" name="provingground.HoTT.Subs">Subs</a>[<span class="extype" name="provingground.scalahott.ScalaRep.RepSection.~~&gt;:.U">U</span>]</span>]</span><span class="params">(<span name="domrep">domrep: <a href="ScalaRep.html" class="extype" name="provingground.scalahott.ScalaRep">ScalaRep</a>[<span class="extype" name="provingground.scalahott.ScalaRep.RepSection.~~&gt;:.U">U</span>, <span class="extype" name="provingground.scalahott.ScalaRep.ExtendedDepFunction.U">U</span>]</span>)</span><span class="result">: <a href="ScalaRep$$DepFuncRep.html" class="extype" name="provingground.scalahott.ScalaRep.DepFuncRep">DepFuncRep</a>[<span class="extype" name="provingground.scalahott.ScalaRep.RepSection.~~&gt;:.U">U</span>, <span class="extype" name="provingground.scalahott.ScalaRep.ExtendedDepFunction.U">U</span>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="provingground.scalahott.ScalaRep.RepSection.Y">Y</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>

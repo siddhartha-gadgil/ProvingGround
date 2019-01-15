@@ -159,9 +159,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="DistributionStateEvolver.html" title=""></a>
                         <a href="DistributionStateEvolver.html" title="">DistributionStateEvolver</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EgUnif.html" title=""></a>
+                        <a href="EgUnif.html" title="">EgUnif</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Empty$.html" title=""></a>
                         <a class="trait" href="Empty.html" title=""></a>
                         <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="EntropyAtomWeight$.html" title=""></a>
+                        <a class="class" href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy"></a>
+                        <a href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy">EntropyAtomWeight</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="EvolvedState.html" title=""></a>
@@ -222,6 +230,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="GeneratorNodeFamily$.html" title=""></a>
                         <a class="trait" href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case."></a>
                         <a href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case.">GeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorTF$.html" title=""></a>
+                        <a class="class" href="GeneratorTF.html" title=""></a>
+                        <a href="GeneratorTF.html" title="">GeneratorTF</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="GeneratorVariables$.html" title=""></a>
                         <a class="class" href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
@@ -358,6 +370,18 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="trait" href="Support.html" title=""></a>
                         <a href="Support.html" title="">Support</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TFData$.html" title=""></a>
+                        <a class="class" href="TFData.html" title=""></a>
+                        <a href="TFData.html" title="">TFData</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TFDist$.html" title=""></a>
+                        <a class="class" href="TFDist.html" title=""></a>
+                        <a href="TFDist.html" title="">TFDist</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TFEg.html" title=""></a>
+                        <a href="TFEg.html" title="">TFEg</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="TangSamples.html" title=""></a>
@@ -574,7 +598,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
         <div class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="provingground.learning.NodeCoeffs#nodeFamilies" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.learning.NodeCoeffs#getCoeff" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="getCoeff[RD&lt;:shapeless.HList,YY](gen:provingground.learning.GeneratorNodeFamily[RD,YY]):Option[V]"></a><a id="getCoeff[RD&lt;:HList,YY](GeneratorNodeFamily[RD,YY]):Option[V]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/NodeCoeffs.html#getCoeff[RD&lt;:shapeless.HList,YY](gen:provingground.learning.GeneratorNodeFamily[RD,YY]):Option[V]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getCoeff</span><span class="tparams">[<span name="RD">RD &lt;: <span class="extype" name="shapeless.HList">HList</span></span>, <span name="YY">YY</span>]</span><span class="params">(<span name="gen">gen: <a href="GeneratorNodeFamily.html" class="extype" name="provingground.learning.GeneratorNodeFamily">GeneratorNodeFamily</a>[<span class="extype" name="provingground.learning.NodeCoeffs.getCoeff.RD">RD</span>, <span class="extype" name="provingground.learning.NodeCoeffs.getCoeff.YY">YY</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.learning.NodeCoeffs.V">V</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.NodeCoeffs#nodeFamilies" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="nodeFamilies:Set[provingground.learning.GeneratorNodeFamily[RDom,Y]]"></a><a id="nodeFamilies:Set[GeneratorNodeFamily[RDom,Y]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/NodeCoeffs.html#nodeFamilies:Set[provingground.learning.GeneratorNodeFamily[RDom,Y]]" title="Permalink">

@@ -108,6 +108,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="AkkaParserService.html" title=""></a>
+                        <a href="AkkaParserService.html" title="">AkkaParserService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="Amm$.html" title=""></a>
                         <a href="Amm$.html" title="">Amm</a>
                       </li><li class="current-entities indented2">
@@ -232,12 +236,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="NoIndexedInducE.html" title="">NoIndexedInducE</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="ParserServer$.html" title=""></a>
-                        <a href="ParserServer$.html" title="">ParserServer</a>
+                        <a class="object" href="ParserCask$.html" title=""></a>
+                        <a href="ParserCask$.html" title="">ParserCask</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="ParserService.html" title=""></a>
-                        <a href="ParserService.html" title="">ParserService</a>
+                        <a class="object" href="ParserRoutes$.html" title=""></a>
+                        <a href="ParserRoutes$.html" title="">ParserRoutes</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="QDI$.html" title=""></a>
@@ -310,6 +314,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="WebServer$.html" title=""></a>
                         <a href="WebServer$.html" title="">WebServer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="WordNet$.html" title=""></a>
+                        <a href="WordNet$.html" title="">WordNet</a>
                       </li>
               </ul>
             </div>
@@ -731,7 +739,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">getPost</span><span class="params">(<span name="p">p: <span class="extype" name="ammonite.ops.Path">Path</span></span>)</span><span class="result">: <a href="Site$$Post.html" class="extype" name="provingground.interface.Site.Post">Post</a></span>
+        <span class="name">getPost</span><span class="params">(<span name="p">p: <a href="../../ammonite/ops/index.html#Path=os.Path" class="extmbr" name="ammonite.ops.Path">Path</a></span>)</span><span class="result">: <a href="Site$$Post.html" class="extype" name="provingground.interface.Site.Post">Post</a></span>
       </span>
       
       
@@ -747,7 +755,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">getTut</span><span class="params">(<span name="p">p: <span class="extype" name="ammonite.ops.Path">Path</span></span>)</span><span class="result">: <a href="Site$$Tut.html" class="extype" name="provingground.interface.Site.Tut">Tut</a></span>
+        <span class="name">getTut</span><span class="params">(<span name="p">p: <a href="../../ammonite/ops/index.html#Path=os.Path" class="extmbr" name="ammonite.ops.Path">Path</a></span>)</span><span class="result">: <a href="Site$$Tut.html" class="extype" name="provingground.interface.Site.Tut">Tut</a></span>
       </span>
       
       
@@ -930,6 +938,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.interface.Site#mktut" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="mktut():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/Site$.html#mktut():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mktut</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      
     </li><li name="provingground.interface.Site#nav" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="nav(relDocsPath:String):scala.xml.Elem"></a><a id="nav(String):Elem"></a>
       <span class="permalink">
@@ -1049,9 +1073,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.interface.Site#postsDir" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="postsDir:ammonite.ops.Path"></a><a id="postsDir:Path"></a>
+      <a id="postsDir:os.Path"></a><a id="postsDir:Path"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#postsDir:ammonite.ops.Path" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#postsDir:os.Path" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1060,7 +1084,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">postsDir</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
+        <span class="name">postsDir</span><span class="result">: <span class="extype" name="os.Path">Path</span></span>
       </span>
       
       
@@ -1229,9 +1253,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.interface.Site#wd" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="wd:ammonite.ops.Path"></a><a id="wd:Path"></a>
+      <a id="wd:os.Path"></a><a id="wd:Path"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/Site$.html#wd:ammonite.ops.Path" title="Permalink">
+      <a href="../../provingground/interface/Site$.html#wd:os.Path" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1240,7 +1264,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">wd</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
+        <span class="name">wd</span><span class="result">: <span class="extype" name="os.Path">Path</span></span>
       </span>
       
       

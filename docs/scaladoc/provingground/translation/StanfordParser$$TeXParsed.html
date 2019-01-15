@@ -155,7 +155,7 @@ Parsing is done by the <a href="StanfordParser$.html#texParse(s:String,wordTags:
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">TeXParsed</span><span class="params">(<span name="preraw">preraw: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="wordTags">wordTags: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>, <span name="mweSubs">mweSubs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>)] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">TeXParsed</span><span class="params">(<span name="preraw">preraw: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="wordTags">wordTags: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)] = <span class="symbol"><span class="name"><a href="StanfordParser$.html#baseWordTags:scala.collection.immutable.Vector[(String,String)]">baseWordTags</a></span></span></span>, <span name="mweSubs">mweSubs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>)] = <span class="symbol"><span class="name"><a href="StanfordParser$.html#baseMweSubs:scala.collection.immutable.Vector[(scala.collection.immutable.Vector[String],edu.stanford.nlp.ling.TaggedWord)]">baseMweSubs</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -237,7 +237,7 @@ Parsing is done by the <a href="StanfordParser$.html#texParse(s:String,wordTags:
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">TeXParsed</span><span class="params">(<span name="preraw">preraw: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="wordTags">wordTags: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>, <span name="mweSubs">mweSubs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>)] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Vector()</a></span></span></span>)</span>
+        <span class="name">TeXParsed</span><span class="params">(<span name="preraw">preraw: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="wordTags">wordTags: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)] = <span class="symbol"><span class="name"><a href="StanfordParser$.html#baseWordTags:scala.collection.immutable.Vector[(String,String)]">baseWordTags</a></span></span></span>, <span name="mweSubs">mweSubs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="edu.stanford.nlp.ling.TaggedWord">TaggedWord</span>)] = <span class="symbol"><span class="name"><a href="StanfordParser$.html#baseMweSubs:scala.collection.immutable.Vector[(scala.collection.immutable.Vector[String],edu.stanford.nlp.ling.TaggedWord)]">baseMweSubs</a></span></span></span>)</span>
       </span>
       
       
@@ -426,7 +426,7 @@ Parsing is done by the <a href="StanfordParser$.html#texParse(s:String,wordTags:
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">deTeXed</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">deTeXed</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       
@@ -724,6 +724,22 @@ Parsing is done by the <a href="StanfordParser$.html#texParse(s:String,wordTags:
       </span>
       
       
+    </li><li name="provingground.translation.StanfordParser.TeXParsed#polyParsed" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="polyParsed:Vector[edu.stanford.nlp.trees.Tree]"></a><a id="polyParsed:Vector[Tree]"></a>
+      <span class="permalink">
+      <a href="../../provingground/translation/StanfordParser$$TeXParsed.html#polyParsed:Vector[edu.stanford.nlp.trees.Tree]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">polyParsed</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="edu.stanford.nlp.trees.Tree">Tree</span>]</span>
+      </span>
+      
+      
     </li><li name="provingground.translation.StanfordParser.TeXParsed#preraw" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="preraw:String"></a>
       <span class="permalink">
@@ -768,7 +784,7 @@ Parsing is done by the <a href="StanfordParser$.html#texParse(s:String,wordTags:
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">raw</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">raw</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       
@@ -837,9 +853,9 @@ Parsing is done by the <a href="StanfordParser$.html#texParse(s:String,wordTags:
       
       
     </li><li name="provingground.translation.StanfordParser.TeXParsed#texMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="texMap:scala.collection.immutable.Map[String,String]"></a><a id="texMap:Map[String,String]"></a>
+      <a id="texMap:Map[String,String]"></a>
       <span class="permalink">
-      <a href="../../provingground/translation/StanfordParser$$TeXParsed.html#texMap:scala.collection.immutable.Map[String,String]" title="Permalink">
+      <a href="../../provingground/translation/StanfordParser$$TeXParsed.html#texMap:Map[String,String]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -848,7 +864,7 @@ Parsing is done by the <a href="StanfordParser$.html#texParse(s:String,wordTags:
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">texMap</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">texMap</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       
       

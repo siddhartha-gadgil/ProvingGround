@@ -108,6 +108,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
     </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="AkkaParserService.html" title=""></a>
+                        <a href="AkkaParserService.html" title="">AkkaParserService</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="Amm$.html" title=""></a>
                         <a href="Amm$.html" title="">Amm</a>
                       </li><li class="current-entities indented2">
@@ -232,12 +236,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="NoIndexedInducE.html" title="">NoIndexedInducE</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="ParserServer$.html" title=""></a>
-                        <a href="ParserServer$.html" title="">ParserServer</a>
+                        <a class="object" href="ParserCask$.html" title=""></a>
+                        <a href="ParserCask$.html" title="">ParserCask</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="ParserService.html" title=""></a>
-                        <a href="ParserService.html" title="">ParserService</a>
+                        <a class="object" href="ParserRoutes$.html" title=""></a>
+                        <a href="ParserRoutes$.html" title="">ParserRoutes</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="QDI$.html" title=""></a>
@@ -310,6 +314,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="WebServer$.html" title=""></a>
                         <a href="WebServer$.html" title="">WebServer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="WordNet$.html" title=""></a>
+                        <a href="WordNet$.html" title="">WordNet</a>
                       </li>
               </ul>
             </div>
@@ -402,7 +410,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ScriptServer$$Config.html"><span class="name">Config</span></a><span class="params">(<span name="scriptsDir">scriptsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="symbol"><span class="name"><a href="../../ammonite/index.html">pwd / &quot;repl-scripts&quot;</a></span></span></span>, <span name="objectsDir">objectsDir: <span class="extype" name="ammonite.ops.Path">Path</span> = <span class="defval" name='<span class="name"><a href="../../ammonite/index.html">pwd / &quot;core&quot; / &quot;src&quot; / &quot;main&quot; / &quot;scala&quot; / &quot;provingground&quot; / &quot;scripts&quot;</a></span>'>...</span></span>, <span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="ScriptServer$$Config.html"><span class="name">Config</span></a><span class="params">(<span name="scriptsDir">scriptsDir: <a href="../../ammonite/ops/index.html#Path=os.Path" class="extmbr" name="ammonite.ops.Path">Path</a> = <span class="symbol"><span class="name"><a href="../../ammonite/index.html">pwd / &quot;repl-scripts&quot;</a></span></span></span>, <span name="objectsDir">objectsDir: <a href="../../ammonite/ops/index.html#Path=os.Path" class="extmbr" name="ammonite.ops.Path">Path</a> = <span class="defval" name='<span class="name"><a href="../../ammonite/index.html">pwd / &quot;core&quot; / &quot;src&quot; / &quot;main&quot; / &quot;scala&quot; / &quot;provingground&quot; / &quot;scripts&quot;</a></span>'>...</span></span>, <span name="host">host: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;localhost&quot;</span></span>, <span name="port">port: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">8080</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -815,7 +823,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">path</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="ammonite.ops.Path">Path</span></span>
+        <span class="name">path</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="../../ammonite/ops/index.html#Path=os.Path" class="extmbr" name="ammonite.ops.Path">Path</a></span>
       </span>
       
       
@@ -831,7 +839,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">pathRead</span><span class="result">: <span class="extype" name="scopt.Read">Read</span>[<span class="extype" name="ammonite.ops.Path">Path</span>]</span>
+        <span class="name">pathRead</span><span class="result">: <span class="extype" name="scopt.Read">Read</span>[<a href="../../ammonite/ops/index.html#Path=os.Path" class="extmbr" name="ammonite.ops.Path">Path</a>]</span>
       </span>
       
       
