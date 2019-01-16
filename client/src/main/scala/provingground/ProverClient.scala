@@ -374,6 +374,11 @@ object InteractiveProver {
       def compile(): Unit = {
         val text = editor.getValue
 
+        // log("from editor")
+        // log(text)
+        // log(parser.toString)
+        // log(Try(parser.parseContext(text)).toString)
+
         val view: JsDom.TypedTag[Div] =
           Try(
            parser.parseContext(text) // parse(text,parser.context(_))

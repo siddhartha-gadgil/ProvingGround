@@ -33,7 +33,7 @@ object HoTTParser {
 
 case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Context] = Map()) { self =>
   import ctx.namedTerms
-  import fastparse._, NoWhitespace._
+  import fastparse._, SingleLineWhitespace._
 
 
   def +(n: String, t: Term) = HoTTParser(ctx.defineSym(Name(n), t), contextMap)
@@ -52,8 +52,8 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
       P("Prop").map((_) => Prop: Term)
 
   def named[_ : P]: P[Term] =
-    namedTerms.foldRight[P[Term]](predefs) {
-      case ((name, term), parser) => (P(name).map((_) => term) | parser)
+    namedTerms.foldLeft[P[Term]](predefs) {
+      case (parser, (name, term)) => P(parser | P(name).map((_) => term))
     }
 
   def alphachar[_ : P] = CharIn("A-Z", "a-z", "$","@", "_")
@@ -134,7 +134,7 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
 
   import spire.implicits._, spire.math._
 
-  def num[_ : P] = CharIn("0-9").rep.!.map{
+  def num[_ : P] = CharIn("0-9").rep(1).!.map{
     case n => NatRing.Literal(n.toInt : SafeLong)
   }
 
@@ -169,10 +169,6 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
       P(stat ~ block ~ End).map { case (s, v) => s +: v } |
       P(spc ~ "\n" ~ block)
 
-  def parseContext(txt: String) = parse(txt, context(_))
-
-  def parseBlock(txt: String) = parse(txt, block(_))
-
   def context[_ : P]: P[Context] =
     P(spc ~ "//" ~ CharPred(_ != '\n').rep ~ "\n" ~ context) |
       (spc ~ "//" ~ CharPred(_ != '\n').rep ~ End).map((_) => ctx) |
@@ -189,5 +185,10 @@ case class HoTTParser(ctx: Context = Context.Empty, contextMap : Map[String, Con
 //      P(defn ~ context ~ End).map { case (dfn, ct) => ct.defineSym(Name(dfn.name), dfn.value)} |
 //      P(expr ~ context ~ End).map { case (exp, ct) => ct.introduce(exp.term)} |
       P(spc ~ "\n" ~ context)
+
+    def parseContext(txt: String) = parse(txt, context(_))
+
+    def parseBlock(txt: String) = parse(txt, block(_))
+
 
 }
