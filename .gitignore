@@ -129,3 +129,5 @@ data/bird-sentences.txt
 .bloop/
 
 notes/.ipynb_checkpoints/
+
+*.bin
