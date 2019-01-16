@@ -14099,13 +14099,78 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tts</span> <span class="k">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">tts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM(mul(e_l)(e_r))(mul(e_r)(mul(e_r)(e_r)))</span>, <span class="ansi-green-fg">3.962163928556959E-6</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul(mul(e_r)(mul(e_l)(e_l)))(mul(e_l)(mul(e_r)(e_l)))</span>, <span class="ansi-green-fg">4.275649439611634E-7</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_l)(mul(e_l)(e_l)))(mul(e_r)(mul(e_l)(e_l)))</span>,
+        <span class="ansi-green-fg">5.206961720491489E-8</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_r)(mul(e_l)(e_r)))(mul(e_l)(mul(e_l)(e_r)))</span>,
+        <span class="ansi-green-fg">5.206961720491489E-8</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_r)(mul(e_l)(e_r)))(mul(e_r)(e_r))</span>,
+        <span class="ansi-green-fg">1.5897514180770234E-7</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_l)(e_l)(e_r)</span>,
+        <span class="ansi-green-fg">8.400760706952122E-6</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_l)(e_l))(e_l)(mul(e_l)(mul(e_r)(e_r)))(axiom_{eqM(mul(e_l)(a))(a)}(e_l))</span>,
+        <span class="ansi-green-fg">1.1638204827134566E-7</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_l)(e_r)(mul(e_r)(mul(e_r)(e_r)))</span>,
+        <span class="ansi-green-fg">2.372554561977124E-7</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_l)(e_r))(e_l)(mul(e_r)(mul(e_l)(mul(e_r)(e_r))))(axiom_{(eqM(a)(b) \to eqM(b)(a))}(e_l)(mul(e_l)(e_r))(lemma))</span>,
+        <span class="ansi-green-fg">1.5411762537668641E-6</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_r)(mul(e_r)(e_r))</span>,
+        <span class="ansi-green-fg">4.061382346072717E-6</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM(mul(e_r)(e_l))(mul(e_r)(mul(e_l)(e_l)))</span>, <span class="ansi-green-fg">3.962163928556959E-6</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(mul(e_l)(mul(e_l)(e_l)))</span>,
+        <span class="ansi-green-fg">4.831894088560347E-7</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(mul(e_l)(e_l)))(mul(e_l)(mul(e_l)(e_l)))</span>,
+        <span class="ansi-green-fg">5.206961720491489E-8</span>
+...</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -14120,13 +14185,40 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="n">tts</span><span class="o">.</span><span class="n">terms</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="n">eqM</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span><span class="o">))</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res17</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(
+      <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_l)(mul(e_l)(e_r))(e_r)(lemma)(axiom_{eqM(mul(e_l)(a))(a)}(e_r))</span>,
+      <span class="ansi-green-fg">0.012182672536523102</span>
+    )
+  )
+)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
