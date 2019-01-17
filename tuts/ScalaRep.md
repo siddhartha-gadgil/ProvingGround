@@ -12,7 +12,7 @@ A more advanced form of Scala representations also makes symbolic algebra simpli
 
 
 
-```scala mdoc
+```scala mdoc:to-string
 import provingground._
 import HoTT._
 import scalahott._
@@ -29,7 +29,7 @@ case object NatInt extends ScalaTyp[Int]
 There is an alternative implementation using spire which is safe. We see this in the symbolic algebra notes.
 
 
-```scala mdoc
+```scala mdoc:to-string
 NatInt
 ```
 
@@ -38,7 +38,7 @@ NatInt
 The term method converts a scala object, with scala type T say, into a Term, provided there is an implicit representation with scala type T.
 
 
-```scala mdoc
+```scala mdoc:to-string
 import NatInt.rep
 1.term
 ```
@@ -48,39 +48,39 @@ import NatInt.rep
 Given the representation of Int, there are combinators that give representations of, for instance Int => Int => Int. Note also that the type of the resulting term is a type parameter of the scala representations, so we get a refined compile time type
 
 
-```scala mdoc
+```scala mdoc:to-string
 val sum = ((n: Int) => (m: Int) => n + m).term
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 sum(1.term)(2.term)
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 val n = "n" :: NatInt
 sum(n)(2.term)
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 val s = lmbda(n)(sum(n)(2.term))
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 s(3.term)
 ```
 
 We will also define the product
 
 
-```scala mdoc
+```scala mdoc:to-string
 val prod = ((n : Int) => (m: Int) => n * m).term
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 prod(2.term)(4.term)
 ```

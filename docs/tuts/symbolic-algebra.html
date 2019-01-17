@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>Symbolic algebra</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -41,7 +41,7 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-  
+    
   </head>
 
    
@@ -61,20 +61,27 @@ messageStyle: "none",
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="../index.html#">Home</a></li>
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-            </ul>
-          </li>
-      </ul>
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -83,6 +90,7 @@ messageStyle: "none",
       </div><!-- /.container-fluid -->
     </nav>
 <div class="container">
+
 <h1 class="text-center">Symbolic algebra</h1>
 
 <div class="text-justify">
@@ -101,179 +109,94 @@ messageStyle: "none",
 <li>a scala representation</li>
 <li>a (spire) ring structure on the underlying terms.</li>
 </ul>
-<pre><code class="language-scala">scala&gt;    
-
-scala&gt; import provingground._ 
-
-import provingground._
-
-scala&gt; import scalahott._ 
-
+<pre><code class="language-scala">import provingground._
 import scalahott._
-
-scala&gt; import NatRing._ 
-
 import NatRing._
 </code></pre>
-<pre><code class="language-scala">scala&gt; val n = &quot;n&quot; :: NatTyp 
-
-n: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = n
-
-scala&gt; val m = &quot;m&quot; :: NatTyp 
-
-m: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = m
-
-scala&gt; val k = &quot;k&quot; :: NatTyp 
-
-k: RepTerm[spire.math.SafeLong] with HoTT.Subs[RepTerm[spire.math.SafeLong]] = k
+<pre><code class="language-scala">val n = &quot;n&quot; :: NatTyp
+// n: RepTerm[spire.math.SafeLong] = n
+val m = &quot;m&quot; :: NatTyp
+// m: RepTerm[spire.math.SafeLong] = m
+val k = &quot;k&quot; :: NatTyp
+// k: RepTerm[spire.math.SafeLong] = k
 </code></pre>
 <p>Spire implicits let us use the addition and multiplication operations.</p>
-<pre><code class="language-scala">scala&gt; import spire.math._ 
-
-import spire.math._
-
-scala&gt; import spire.algebra._ 
-
+<pre><code class="language-scala">import spire.math._
 import spire.algebra._
-
-scala&gt; import spire.implicits._ 
-
 import spire.implicits._
 </code></pre>
 <h3>Addition and multiplication</h3>
 <p>A sum gives a SigmaTerm, which only stores a set of terms being added.</p>
-<pre><code class="language-scala">scala&gt; n + m 
-
-res15: LocalTerm = (n + m)
-
-scala&gt; (n + m) + n 
-
-res16: LocalTerm = (m + ((prod) (2)) (n))
+<pre><code class="language-scala">n + m
+// res0: LocalTerm = (n + m)
+(n + m) + n
+// res1: LocalTerm = (m + (&lt;function1&gt;) (n))
 </code></pre>
 <p>Addition is commutative and associative, even when it involves repeated terms.</p>
-<pre><code class="language-scala">scala&gt; n + m == m + n 
+<pre><code class="language-scala">n + m == m + n
+// res2: Boolean = true
+(n + m) + k == n + (m + k)
+// res3: Boolean = true
+assert(n + m == m + n)
+assert((n + m) + k == n + (m + k))
 
-res17: Boolean = true
-
-scala&gt; (n + m) + k == n + (m + k) 
-
-res18: Boolean = true
-
-scala&gt; assert(n + m == m + n) 
-
-
-scala&gt; assert((n + m) + k == n + (m + k)) 
-
-
-scala&gt;  
-
-scala&gt; (n + n) + m == (n + m) + n 
-
-res21: Boolean = true
-
-scala&gt; assert{(n + n) + m == (n + m) + n}
+(n + n) + m == (n + m) + n
+// res6: Boolean = true
+assert{(n + n) + m == (n + m) + n}
 </code></pre>
 <p>Similarly, multiplication is commutative and associative, and distributes over addition. Multiplication gives Pi-terms with parameter a map to exponents.</p>
-<pre><code class="language-scala">scala&gt; n * m == m * n 
+<pre><code class="language-scala">n * m == m * n
+// res8: Boolean = true
+assert{n * m == m * n}
 
-res23: Boolean = true
+n * (m * k)
+// res10: LocalTerm = (m * k * n)
 
-scala&gt; assert{n * m == m * n} 
+n * (m + k)
+// res11: LocalTerm = ((m * n) + (k * n))
 
-
-scala&gt;  
-
-scala&gt; n * (m * k) 
-
-res25: LocalTerm = (n * k * m)
-
-scala&gt;  
-
-scala&gt; n * (m + k) 
-
-res26: LocalTerm = ((n * m) + (n * k))
-
-scala&gt;  
-
-scala&gt; assert(n* (m + k) == n * m + n * k)
+assert(n* (m + k) == n * m + n * k)
 </code></pre>
 <p>When literals are involved, the expresssions are simplified</p>
-<pre><code class="language-scala">scala&gt; 1 + (n + 2) 
-
-res28: LocalTerm = ((sum) (3)) (n)
+<pre><code class="language-scala">1 + (n + 2)
+// res13: LocalTerm = (&lt;function1&gt;) (n)
 </code></pre>
 <h3>Symbolic definitions</h3>
 <p>We can use the expressions from these functions in lambdas. For this we need correct substitution.</p>
-<pre><code class="language-scala">scala&gt; import HoTT._ 
+<pre><code class="language-scala">import HoTT._
+val fn = lmbda(n)(n * n)
+// fn: Func[RepTerm[SafeLong], LocalTerm] = (n :  Nat.Typ) ↦ ((n^{2}))
 
-import HoTT._
+fn(3)
+// res14: LocalTerm = 9
 
-scala&gt; val fn = lmbda(n)(n * n) 
+assert(fn(3) == (9: Nat))
 
-fn: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], LocalTerm] = (n :  Nat.Typ) ↦ ((n^{2}))
-
-scala&gt;  
-
-scala&gt; fn(3) 
-
-res31: LocalTerm = 9
-
-scala&gt;  
-
-scala&gt; assert(fn(3) == (9: Nat)) 
-
-
-scala&gt;  
-
-scala&gt; fn(k) 
-
-res33: LocalTerm = (k^{2})
+fn(k)
+// res16: LocalTerm = (k^{2})
 </code></pre>
 <p>We have used an implicit conversion above to view <code>9</code> as a member of the type <code>Nat</code></p>
 <h3>Recursive definitions</h3>
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
-<pre><code class="language-scala">scala&gt; val m = lmbda(n)(prod(n + 1)) 
+<pre><code class="language-scala">val mf = lmbda(n)(prod(n + 1))
+// mf: Func[RepTerm[SafeLong], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ (($quttn :  Nat.Typ) ↦ (($quttn + ($quttn * n))))
+val factorial = Rec(1: Nat, mf)
+// factorial: Rec[LocalTerm] = rec(Nat.Typ)(Nat.Typ)(1)((n :  Nat.Typ) ↦ (($quttn :  Nat.Typ) ↦ (($quttn + ($quttn * n)))))
 
-m: Func[RepTerm[SafeLong] with Subs[RepTerm[SafeLong]], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@71d0248 :  Nat.Typ) ↦ ((provingground.HoTT$Typ$newname$2$@71d0248 + (n * provingground.HoTT$Typ$newname$2$@71d0248))))
-
-scala&gt; val factorial = Rec(1: Nat, m) 
-
-factorial: Rec[LocalTerm] = &lt;function1&gt;
-
-scala&gt;  
-
-scala&gt; factorial(3) 
-
-res36: LocalTerm = 6
-
-scala&gt; factorial(5) 
-
-res37: LocalTerm = 120
-
-scala&gt; assert(factorial(5) == (120 : Nat))
+factorial(3)
+// res17: LocalTerm = 6
+factorial(5)
+// res18: LocalTerm = 120
+assert(factorial(5) == (120 : Nat))
 </code></pre>
 <h3>Simplifying recursive functions</h3>
 <p>If we apply a recursive function to a sum n+k with k a literal (say k = 2), then the result simplifies as much as possible by expanding tail recursively in the literal.</p>
-<pre><code class="language-scala">scala&gt; factorial(k + 2) == factorial(k) * (k + 2) * (k + 1) 
+<pre><code class="language-scala">factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)
+// res20: Boolean = true
 
-res39: Boolean = true
-
-scala&gt;  
-
-scala&gt; assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
+assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
 </code></pre>
-<h4>Git Log when running tutorial</h4>
-<pre><code>commit a83fc238eaaa2f98d8ea8f6e9cbc94aa157f2e41
-Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Mon Sep 17 15:43:03 2018 +0530
-
-    better logging auto search; fails but not serious
-    relevant lemmas are discovered, its a matter of spawning with lemmas
-    together or some such tuning.
-</code></pre>
-<ul>
-<li><strong>Branch</strong> : master</li>
-</ul>
+<h4>Git Log when running tutorial: 953da18e6186b43fed317519b73d717e76909421</h4>
 
 
 </div>

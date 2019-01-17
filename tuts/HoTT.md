@@ -30,7 +30,7 @@ The _core_ project contains code that is agnostic to how it is run. In particula
 We have a family of universes, but mostly use the first one denoted by Type. Given a type, we can construct symbolic objects of that type. We construct such a type _A_.
 
 
-```scala mdoc
+```scala mdoc:to-string
 import provingground._
 import HoTT._
 val A = "A" :: Type
@@ -40,7 +40,7 @@ A == Type.::("A")
 We consider a symbolic object of the type _A_
 
 
-```scala mdoc
+```scala mdoc:to-string
 val a = "a" :: A
 ```
 
@@ -54,7 +54,7 @@ We can construct functions using λ's. Here, for the type _A_, we construct the 
 In this definition, two λ's are used, with the method _lmbda_ telling the TypecompilerType that the result is a (non-dependent) function.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val id = lambda(A)(lmbda(a)(a))
 ```
 
@@ -62,7 +62,7 @@ val id = lambda(A)(lmbda(a)(a))
 The type of the identity function is a mixture of Pi-types and function types. Which of these to use is determined by checking dependence of the type of the value on the varaible in a λ-definition.
 
 
-```scala mdoc
+```scala mdoc:to-string
 id.typ
 lmbda(a)(a).typ
 lmbda(a)(a).typ.dependsOn(A)
@@ -73,7 +73,7 @@ The lambdas have the same effect at runtime. It is checked if the type of the va
 The result is either _LambdaFixed_ or _Lambda_ accordingly.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val indep = lmbda(a)(a)
 val dep = lambda(a)(a)
 indep == dep
@@ -82,7 +82,7 @@ indep == dep
 Note that we have alternative notation for lambdas, the maps to methods `:->` and `:~>`.
 For instance, we can define the identity using these.
 
-```scala mdoc
+```scala mdoc:to-string
 assert(id == A :~> (a :-> a))
 ```
 
@@ -91,7 +91,7 @@ assert(id == A :~> (a :-> a))
 A new variable object, which has the same toString, is created in making lambdas. This is to avoid name clashes.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val l = dep.asInstanceOf[LambdaFixed[Term, Term]]
 l.variable
 l.variable == a
@@ -102,7 +102,7 @@ l.variable == a
 We construct Modus Ponens, as an object in Homotopy Type theory. Note that A ->: B is the function type A → B.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val B = "B" :: Type
 
 val f = "f" :: (A ->: B)
@@ -113,7 +113,7 @@ val mp = lambda(A)(lambda(B)(lmbda(a)(lmbda(f)(f(a)))))
 The type of Modus Ponens is again a mixture of Pi-types and function types.
 
 
-```scala mdoc
+```scala mdoc:to-string
 mp.typ
 ```
 
@@ -121,7 +121,7 @@ mp.typ
 We can apply modus ponens with the roles of _A_ and _B_ reversed. This still works because variable clashes are avoided.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val mpBA = mp(B)(A)
 mpBA.typ == B ->: (B ->: A) ->: A
 ```
@@ -132,7 +132,7 @@ mpBA.typ == B ->: (B ->: A) ->: A
 Lambdas do not depend on the name of the variable.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val aa = "aa" :: A
 lmbda(aa)(aa) == lmbda(a)(a)
 (lmbda(aa)(aa))(a) == a
@@ -144,7 +144,7 @@ lmbda(aa)(aa) == lmbda(a)(a)
 Given a type family, we can construct the corresponding Pi-types and Sigma-types. We start with a formal type family, which is just a symbolic object of the appropriate type.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val Bs = "B(_ : A)" :: (A ->: Type)
 ```
 
@@ -156,7 +156,7 @@ In addition to the case class constructor, there is an agda/shapeless-like  conv
 Note that the !: method just claims and checks a type, and is useful (e.g. here) for documentation.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val fmly = (a !: A) ~>: (Bs(a) ->: A)
 ```
 
@@ -166,13 +166,13 @@ val fmly = (a !: A) ~>: (Bs(a) ->: A)
 There is also a convenience method for defining Sigma types using λs.
 
 
-```scala mdoc
+```scala mdoc:to-string
 Sgma(a !: A, Bs(a))
 ```
 
 
 
-```scala mdoc
+```scala mdoc:to-string
 Sgma(a !: A, Bs(a) ->: Bs(a) ->: A)
 ```
 
@@ -182,7 +182,7 @@ Sgma(a !: A, Bs(a) ->: Bs(a) ->: A)
 Like functions and dependent functions, pairs and dependent pairs can be handled together. The _mkPair_ function assignes the right type after checking dependence, choosing between pair types, pairs and dependent pairs.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val ba = "b(a)" :: Bs(a)
 val b = "b" :: B
 mkPair(A, B)
@@ -192,7 +192,7 @@ mkPair(a, ba).typ
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]]
 ```
 
@@ -202,17 +202,17 @@ mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]]
 We can also construct the plus type _A plus B_, which comes with two inclusion functions.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val AplusB = PlusTyp(A, B)
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 AplusB.incl1(a)
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 AplusB.incl2
 ```
 
@@ -223,13 +223,13 @@ In the above, a λ was used, with a variable automatically generated. These have
 We have an identity type associated to a type _A_, with reflexivity giving terms of this type.
 
 
-```scala mdoc
+```scala mdoc:to-string
 val eqAa = IdentityTyp(A, a, a)
 val ref = Refl(A, a)
 ```
 
 
-```scala mdoc
+```scala mdoc:to-string
 ref.typ == eqAa
 ```
 
@@ -239,7 +239,7 @@ ref.typ == eqAa
 Finally, we have the types corresponding to _True_ and _False_
 
 
-```scala mdoc
+```scala mdoc:to-string
 Unit
 Zero
 Star !: Unit

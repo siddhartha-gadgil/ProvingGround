@@ -9,7 +9,7 @@ We illustrate construction of inductive types, and defining functions on them re
 
 We begin with some imports. The import induction.TLImplicits gives the operations to construct inductive types.
 
-```scala mdoc
+```scala mdoc:to-string
 import provingground._
 import HoTT._
 import induction._
@@ -23,14 +23,14 @@ We do not define inductive types, but instead define the _structure of an induct
 The inductive structure is defined using a DSL to specify constructors. The Boolean type has constants true and false as constructors.
 Constructors are obtained using the `:::` method on a _Constructor pattern_, which for constants is essentially the inductive type itself.
 
-```scala mdoc
+```scala mdoc:to-string
 val Bool = "Boolean" :: Type
 val BoolInd = "true" ::: Bool |: "false" ::: Bool =: Bool
 ```
 
 From the inductive structure, we can obtain the introduction rules.
 
-```scala mdoc
+```scala mdoc:to-string
 val tt :: ff :: HNil = BoolInd.intros
 tt
 ff
@@ -39,7 +39,7 @@ ff
 The most important methods on an inductive structure are the `rec` method for making recursive definition on the inductive type,
 and the corresponding method for dependent functions. The rec method takes as arguments the data giving the definition for the various constructors.
 
-```scala mdoc
+```scala mdoc:to-string
 BoolInd.rec(Bool)
 val recBoolBool = BoolInd.rec(Bool)
 recBoolBool.typ
@@ -50,7 +50,7 @@ recBoolBool.typ
 We can define functions recursively using terms obtained from the `rec` method.
 In the case of Booleans, the arguments are just the value of the function at true and false. The result is a function `f: Bool ->: X` for a type `X`
 
-```scala mdoc
+```scala mdoc:to-string
 val not = recBoolBool(ff)(tt)
 not(ff)
 not(tt)
@@ -59,7 +59,7 @@ assert(not(ff) == tt && not(tt) == ff)
 
 We can similarly define the _and_ function by observing that _and(true)_ is the identity and _and(false)_ is the constant false function.
 
-```scala mdoc
+```scala mdoc:to-string
 val b = "b" :: Bool
 val recBBB = BoolInd.rec(Bool ->: Bool)
 recBBB.typ
@@ -74,7 +74,7 @@ assert(and(tt)(tt)== tt && and(tt)(ff) == ff && and(ff)(tt) == ff && and(ff)(ff)
 The natural numbers `Nat` are an inductive type with two constructors, `zero` and `succ`, of types `Nat` and `Nat ->: Nat`, respectively.
 The method on constructors corresponding to function types we use if `-->>:`, which is used because the domain of the extension is also the type `Nat`. Note that extending the constructor by a constant type is very different (as we see with lists below), and a different method is used.
 
-```scala mdoc
+```scala mdoc:to-string
 val Nat = "Nat" :: Type
 val NatInd = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
 val zero :: succ :: HNil = NatInd.intros
@@ -85,7 +85,7 @@ To define recursively a function `f : Nat ->: X` for a type `X`, the data is
 * `f(zero) : X`, i.e., data of type `X`
 * `f(succ(n)) : X` as a function of `n : Nat` and `x: X`, i.e., data is of the form `Nat ->: X ->: X`
 
-```scala mdoc
+```scala mdoc:to-string
 val recNatBool = NatInd.rec(Bool)
 recNatBool.typ
 val n = "n" :: Nat
@@ -100,7 +100,7 @@ even(three)
 
 A more complicated example is addition of natural numbers.
 
-```scala mdoc
+```scala mdoc:to-string
 val recNNN = NatInd.rec(Nat ->: Nat)
 recNNN.typ
 val m = "m" :: Nat
@@ -123,7 +123,7 @@ A recursively defined function `f` to a type `X` is specified by data:
 
 Note that `f(a)` does not make sense. Hence a different method, `->>:`, is used for such extensions.
 
-```scala mdoc
+```scala mdoc:to-string
 val A = "A" :: Type
 val ListA = "List(A)" :: Type
 val ListAInd = ("nil" ::: ListA) |: ("cons" ::: A ->>: ListA -->>: ListA ) =: ListA
@@ -132,7 +132,7 @@ val nil :: cons :: HNil = ListAInd.intros
 
 We can define the size of a list as a natural number recursively.
 
-```scala mdoc
+```scala mdoc:to-string
 val recLN = ListAInd.rec(Nat)
 recLN.typ
 val a = "a" :: A
@@ -146,7 +146,7 @@ size(cons(a)(cons(a)(nil)))
 Another interesting inductive type is a binary rooted tree. This is our first description.
 We define the number of vertices recursively on this.
 
-```scala mdoc
+```scala mdoc:to-string
 val T = "Tree" :: Type
 val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
 val leaf :: node :: HNil = TInd.intros
@@ -174,7 +174,7 @@ This involves more complex constructors, with an additional method `-|>:`.
 The data for recursively defining `f` is also more complex.
 We define the number of leaves in such a tree recursively.
 
-```scala mdoc
+```scala mdoc:to-string
 val BT = "BinTree" :: Type
 val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
 val bleaf :: bnode :: HNil = BTInd.intros
@@ -196,13 +196,13 @@ leaves(t2n)
 As some expresssions are very long, we import a method "FansiShow" that prints in a more concise way.
 In the REPL, this gives coloured output using ANSI strings.
 
-```scala mdoc
+```scala mdoc:to-string
 import FansiShow._
 ```
 
 We define the double of a number recursively, mainly for use later. Observe the partial simplification.
 
-```scala mdoc
+```scala mdoc:to-string
 val recNN = NatInd.rec(Nat)
 val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
 double(two) == four
@@ -214,7 +214,7 @@ All our recursive definitions so far of functions `f` have ignored `n` in defini
 and are only in terms of `f(n)`. We see a more complex definition, the sum of numbers up to `n`.
 Note that we are defining `sumTo(succ(m))` in terms of `m` and `n = sumTo(m)`, so this is `add(succ(m))(n)`
 
-```scala mdoc
+```scala mdoc:to-string
 val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
 sumTo(one)
 sumTo(three).fansi
@@ -233,7 +233,7 @@ We see an example of such a definition.
 The image is a family `V : Nat ->: Type` which we can think of as vectors of natural numbers indexed by length.
 Just like actual vectors, we have `nil` and `cons` introduction rules, but here they are purely formal.
 
-```scala mdoc
+```scala mdoc:to-string
 val V = "Vec" :: Nat ->: Type
 val nilv = "nil" :: V(zero)
 val consv = "cons" :: n ~>: (Nat ->: V(n) ->: V(succ(n)))
@@ -249,7 +249,7 @@ Namely to define the dependent function `f`, we must specify
 
 We define inductively a countdown function, giving the vector counting down from `n`.
 
-```scala mdoc
+```scala mdoc:to-string
 val indNV = NatInd.induc(V)
 
 val v = "v_m" :: V(m)
@@ -271,7 +271,7 @@ The type family `isEven : Nat ->: Type` gives a type representing whether a natu
 This is an inductive type, but here we simply specify the type by  its introduction rules (constructors).
 Such terms introduced by specifying types are logically _axioms_.
 
-```scala mdoc
+```scala mdoc:to-string
 val isEven = "isEven" :: Nat ->: Type
 val zeroEven = "0even" :: isEven(zero)
 val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
@@ -279,7 +279,7 @@ val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
 
 One can directly see that two and four are even.
 
-```scala mdoc
+```scala mdoc:to-string
 val TwoEven = plusTwoEven(zero)(zeroEven)  !: isEven(two)
 val FourEven = plusTwoEven(two)(TwoEven) !: isEven(four)
 ```
@@ -290,7 +290,7 @@ The _base case_ is inhabited by the constructor of type `isEven(zero)`.
 The _induction step_ for `n` is a term of type `isEven(double(succ(n)))` as a function of `n` and
 the _induction hypothesis_. Note that the induction hypothesis is a term of type `isEven(double(n))`.
 
-```scala mdoc
+```scala mdoc:to-string
 val thmDoubleEven = n ~>: isEven(double(n))
 val hyp = "isEven(double(n))" :: isEven(double(n))
 val inducDoubleEven = NatInd.induc(n :-> isEven(double(n)))
@@ -307,7 +307,7 @@ val pfDoubleEven =
 
 We next prove a more interesting statement, namely that for any natural number `n`, one of `n` and `n+1` is even.
 
-```scala mdoc
+```scala mdoc:to-string
 val succEven = n :-> (isEven(n) || isEven(succ(n)))
 
 val base = succEven(zero).incl1(zeroEven) !: succEven(zero)
@@ -327,7 +327,7 @@ val pf = inducSuccEven(base)(n :~> step) !: thmSuccEven
 We now prove a result that has been a goal, namely that for a function on Natural numbers if `f(n)=f(n+1)` for all n,
 `f` is constant.
 
-```scala mdoc
+```scala mdoc:to-string
 val fn = "f" :: Nat ->: A
 val ass = "assumption" :: n ~>: (fn(n) =:= fn(succ(n)))
 
@@ -353,7 +353,7 @@ Further, the recursion and induction function only allow construction of (depend
 
 A typical example is vectors, defined as a family indexed by their length.
 
-```scala mdoc
+```scala mdoc:to-string
 val Vec = "Vec" :: Nat ->: Type
 
 val VecInd =
@@ -368,7 +368,7 @@ vcons.typ.fansi
 
 We can define function recursively on vectors of all indices. For instance, we can define the size.
 
-```scala mdoc
+```scala mdoc:to-string
 val vn = "v_n" :: Vec(n)
 val recVN = VecInd.rec(Nat)
 val vsize = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m))))))
@@ -380,7 +380,7 @@ assert(vsize(one)(v1) == one)
 
 For a more interesting example, we consider vectors with entries natural numbers, and define the sum of entries.
 
-```scala mdoc
+```scala mdoc:to-string
 val VecN = "Vec(Nat)" :: Nat ->: Type
 val vnn  = "v_n" :: VecN(n)
 val VecNInd =

@@ -10,7 +10,7 @@ We start with some axioms for a Monoid, except that the left and right identitie
 
 First, some imports
 
-```scala mdoc
+```scala mdoc:to-string
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD, _}
 import library._, MonoidSimple._
 import learning._
@@ -18,19 +18,19 @@ import learning._
 
 A Monoid is axiomatized as a type `M` with equality `eqM` and an operation `op := _*_`. We consider the relevant objects and axioms.
 
-```scala mdoc
+```scala mdoc:to-string
 dist1.entropyVec.mkString("\n", "\n", "\n")
 ```
 
 We use a `TermEvolver`, We first generate the types, which includes the theorems.
 The time has not been optimized here to avoid accidental biases.
-```scala mdoc
+```scala mdoc:to-string
 val tv = new TermEvolver(lambdaWeight = 0.0, piWeight = 0.0)
 val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8))
 ```
 
 We shall generate terms. Some experiments show that it is enough to generate with truncation `10^{-5}`.
-```scala mdoc
+```scala mdoc:to-string
 val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5))
 fd.filter(_.typ == eqM(l)(op(l)(r)))
 ```
@@ -39,7 +39,7 @@ tell us that this is one of the best results proved, along with one related by s
 
 A quick way to explore consequences of this discovered lemma is to use the derivative of the evolution.
 We see that we get the proof.
-```scala mdoc
+```scala mdoc:to-string
 val pf = fd.filter(_.typ == eqM(l)(op(l)(r))).supp.head
 val initt = TangVec(dist1, FD.unif(pf))
 val fdt = Truncate(tv.evolve(initt).vec , math.pow(0.1, 4))

@@ -11,6 +11,14 @@ object Tuts {
 
   def gitBranch: String = %%("git", "symbolic-ref", "--short", "HEAD").out.lines.head
 
+  lazy  val gitrep: String =
+  s"""
+     |
+     |#### Git Log when running tutorial: $gitHash
+     |
+ """.stripMargin
+
+
   def mkTut(f: String): String = {
     val top =
       """
@@ -57,13 +65,7 @@ object Tuts {
 
     val allChunks: Vector[String] = spl.head.head +: textTail
 
-    val gitrep: String =
-      s"""
-         |
-         |#### Git Log when running tutorial: $gitHash
-         |
-     """.stripMargin
-
+   
     allChunks.mkString("", "\n", gitrep)
   }
 

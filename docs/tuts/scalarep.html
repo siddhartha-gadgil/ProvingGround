@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>ScalaRep</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -41,7 +41,7 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-  
+    
   </head>
 
    
@@ -61,20 +61,27 @@ messageStyle: "none",
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="../index.html#">Home</a></li>
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-            </ul>
-          </li>
-      </ul>
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -83,92 +90,59 @@ messageStyle: "none",
       </div><!-- /.container-fluid -->
     </nav>
 <div class="container">
+
 <h1 class="text-center">ScalaRep</h1>
 
 <div class="text-justify">
 <h2>Scala Representations</h2>
 <p>Scala objects are integrated with HoTT by using wrappers, combinators and implicit based convenience methods. In this note we look at the basic representations. The main power of this is to provide automatically (through implicits) types and scala bindings for functions from the basic ones.</p>
 <p>A more advanced form of Scala representations also makes symbolic algebra simplifications. The basic form should be used, for example, for group presentations, where simplifications are not expected.</p>
-<pre><code class="language-scala">scala&gt;    
-
-scala&gt; import provingground._ 
-
-import provingground._
-
-scala&gt; import HoTT._ 
-
+<pre><code class="language-scala">import provingground._
 import HoTT._
-
-scala&gt; import scalahott._ 
-
 import scalahott._
-
-scala&gt; import ScalaRep._ 
-
 import ScalaRep._
 </code></pre>
 <p>We consider the type of Natural numbers formed from Integers. This is defined in ScalaRep as:</p>
-<pre><code class="language-scala">scala&gt; NatInt 
-
-res10: NatInt.type = NatInt
+<pre><code class="language-scala">case object NatInt extends ScalaTyp[Int]
+</code></pre>
+<p><strong>Warning:</strong> This is an unsafe type, as Integers can overflow, and there is no checking for positivity.
+There is an alternative implementation using spire which is safe. We see this in the symbolic algebra notes.</p>
+<pre><code class="language-scala">NatInt
+// res0: NatInt.type = NatInt
 </code></pre>
 <h3>Conversion using the term method</h3>
 <p>The term method converts a scala object, with scala type T say, into a Term, provided there is an implicit representation with scala type T.</p>
-<pre><code class="language-scala">scala&gt; import NatInt.rep 
-
-import NatInt.rep
-
-scala&gt; 1.term 
-
-res12: RepTerm[Int] = 1
+<pre><code class="language-scala">import NatInt.rep
+1.term
+// res1: RepTerm[Int] = 1
 </code></pre>
 <h3>Functions to FuncTerms</h3>
 <p>Given the representation of Int, there are combinators that give representations of, for instance Int =&gt; Int =&gt; Int. Note also that the type of the resulting term is a type parameter of the scala representations, so we get a refined compile time type</p>
-<pre><code class="language-scala">scala&gt; val sum = ((n: Int) =&gt; (m: Int) =&gt; n + m).term 
-
-sum: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
+<pre><code class="language-scala">val sum = ((n: Int) =&gt; (m: Int) =&gt; n + m).term
+// sum: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
 </code></pre>
-<pre><code class="language-scala">scala&gt; sum(1.term)(2.term) 
-
-res14: RepTerm[Int] = 3
+<pre><code class="language-scala">sum(1.term)(2.term)
+// res2: RepTerm[Int] = 3
 </code></pre>
-<pre><code class="language-scala">scala&gt; val n = &quot;n&quot; :: NatInt 
-
-n: RepTerm[Int] with Subs[RepTerm[Int]] = n
-
-scala&gt; sum(n)(2.term) 
-
-res16: RepTerm[Int] = ((&lt;function1&gt;) (n)) (2)
+<pre><code class="language-scala">val n = &quot;n&quot; :: NatInt
+// n: RepTerm[Int] = n
+sum(n)(2.term)
+// res3: RepTerm[Int] = ((&lt;function1&gt;) (n)) (2)
 </code></pre>
-<pre><code class="language-scala">scala&gt; val s = lmbda(n)(sum(n)(2.term)) 
-
-s: Func[RepTerm[Int] with Subs[RepTerm[Int]], RepTerm[Int]] = (n :  NatInt) ↦ (((&lt;function1&gt;) (n)) (2))
+<pre><code class="language-scala">val s = lmbda(n)(sum(n)(2.term))
+// s: Func[RepTerm[Int], RepTerm[Int]] = (n :  NatInt) ↦ (((&lt;function1&gt;) (n)) (2))
 </code></pre>
-<pre><code class="language-scala">scala&gt; s(3.term) 
-
-res18: RepTerm[Int] = 5
+<pre><code class="language-scala">s(3.term)
+// res4: RepTerm[Int] = 5
 </code></pre>
 <p>We will also define the product</p>
-<pre><code class="language-scala">scala&gt; val prod = ((n : Int) =&gt; (m: Int) =&gt; n * m).term 
-
-prod: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
+<pre><code class="language-scala">val prod = ((n : Int) =&gt; (m: Int) =&gt; n * m).term
+// prod: Func[RepTerm[Int], Func[RepTerm[Int], RepTerm[Int]]] = &lt;function1&gt;
 </code></pre>
-<pre><code class="language-scala">scala&gt; prod(2.term)(4.term) 
-
-res20: RepTerm[Int] = 8
+<pre><code class="language-scala">prod(2.term)(4.term)
+// res5: RepTerm[Int] = 8
 </code></pre>
-<h4>Git Log when running tutorial</h4>
-<pre><code>commit a83fc238eaaa2f98d8ea8f6e9cbc94aa157f2e41
-Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Mon Sep 17 15:43:03 2018 +0530
-
-    better logging auto search; fails but not serious
-    relevant lemmas are discovered, its a matter of spawning with lemmas
-    together or some such tuning.
-</code></pre>
-<ul>
-<li><strong>Branch</strong> : master</li>
-</ul>
+<h4>Git Log when running tutorial: 953da18e6186b43fed317519b73d717e76909421</h4>
 
 
 </div>

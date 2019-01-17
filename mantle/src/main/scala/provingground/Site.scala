@@ -12,7 +12,7 @@ import scala.xml.Elem
 object Site {
   implicit val wd = pwd
 
-  def mktut() = {
+  def mkDocTuts() = {
     val settings = mdoc.MainSettings().withIn(java.nio.file.Paths.get("tuts"))
     mdoc.Main.process(settings)
   }
@@ -183,7 +183,7 @@ object Site {
 
     def url(relDocsPath: String) = s"${relDocsPath}tuts/$name.html"
 
-    def content: String = fromMD(mkTut(rawContent))
+    def content: String = fromMD(rawContent + "\n" + Tuts.gitrep + "\n")
 
     def output: String =
       page(content, "../", title)
@@ -206,7 +206,7 @@ object Site {
     Tut(name, rawContent, titleOpt(l))
   }
 
-  def allTuts: Seq[Tut] = ls(tutdir).map(getTut)
+  def allTuts: Seq[Tut] = ls(pwd / "out").filter(_.ext == "md").map(getTut)
 
   def tutList(relDocsPath: String): Seq[Elem] =
     Try {
@@ -368,11 +368,11 @@ object Site {
 
     mkLists()
 
-    pack()
+    // pack()
 
     mkDocs()
 
-    assemble()
+    // assemble()
 
     mkHome()
 
