@@ -376,6 +376,8 @@ object Site {
 
     mkHome()
 
+    mkDocTuts()
+
     mkTuts()
 
     mkPosts()

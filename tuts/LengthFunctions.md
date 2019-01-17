@@ -49,14 +49,18 @@ val l = "l" :: FreeGroup ->: QTyp
 val g = "g" :: FreeGroup
 val h = "h" :: FreeGroup
 val n = "n" :: NatTyp
+```
 
+```scala mdoc:to-string
 val triang =
   "triangle-inequality" :: (
     g ~>: (h ~>: (
       (leq(l(g |+| h))(l(g) + l(h)))
     ))
   )
+```
 
+```scala mdoc:to-string
 val conjInv =
   "conjugacy-invariance" :: (
     g ~>: (
@@ -94,13 +98,17 @@ val wy = w |+| y
 val zwbar = z |+| w.inverse
 val wyn = FreeGroup.power(wy)(n)
 val zwbarn = FreeGroup.power(zwbar)(n)
+```
 
+```scala mdoc:to-string
 val c = n :-> (wyn |+| s.inverse |+| t |+| zwbarn) // this is the function we have to bound.
 
 val r = incl(QField)
 
 val f = n :-> (l(s.inverse) + l(t) + ((l(y) + l(z)) * r(n) ) )
+```
 
+```scala mdoc:to-string
 val lemma = n :-> (leq (l(c(n)) )(f(n) ) )
 ```
 
@@ -112,6 +120,9 @@ We use $g^ng^m = g^{n+m}$ (proved in our code) to prove this. The proof is given
 ```scala mdoc:to-string
 val d = n :-> (wy |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| zwbar)
 val dIsc = FreeGroup.rm(s.inverse |+| t |+| zwbarn |+| zwbar) *: (PowerDistributive.pf(wy)(nat(1))(n))
+```
+
+```scala mdoc:to-string
 assert(dIsc.typ == (d(n) =:= c(succ(n))))
 ```
 
@@ -121,6 +132,9 @@ Next, let $b(n) = y(wy)^ns^{-1}t(zw^{-1})^nz$ be the conjugacy-reduced form of $
 val b = n :-> (y |+| wyn |+| s.inverse |+| t |+| zwbarn  |+| z)
 val lbIsld = conjInv(w)(y |+| c(n) |+| z)
 val bIsc = lbIsld && (l *: dIsc)
+```
+
+```scala mdoc:to-string
 assert(bIsc.typ == (l(b(n)) =:= l(c(succ(n))) ))
 ```
 
@@ -141,12 +155,18 @@ Next, we bound $l(b(n))$ (which we know is $l(c(n+ 1)))$ in terms of $l(c(n))$.
 
 ```scala mdoc:to-string
 val lbnBoundedlcnlylz = triang(y)(c(n)) + triang(y |+| c(n))(z)
+```
+
+```scala mdoc:to-string
 assert(lbnBoundedlcnlylz.typ == (leq(l(b(n)))(l(c(n)) + l(y) + l(z))))
 ```
 Now, using the induction hypothesis, we get a bound on $l(b(n))$.
 
 ```scala mdoc:to-string
 val lbnBounded = lbnBoundedlcnlylz + hyp
+```
+
+```scala mdoc:to-string
 assert(lbnBounded.typ == leq(l(b(n)) )(f(succ(n))) )
 ```
 
@@ -156,6 +176,9 @@ Next, we put together $l(c(n+1)) = l(b(n))$ and the bound on $l(b(n))$ to get th
 val bnd = "bound" :: QField.LocalTyp
 val cbnd = bIsc.lift(bnd :-> (leq(bnd)(f(succ(n)) ) ))
 val step = cbnd(lbnBounded)
+```
+
+```scala mdoc:to-string
 assert(step.typ == lemma(succ(n)))
 ```
 
@@ -163,6 +186,9 @@ Finally, the lemma is proved by induction.
 
 ```scala mdoc:to-string
 val lemmaProof = Induc(lemma, baseCase, n :~> (hyp :-> step))
+```
+
+```scala mdoc:to-string
 assert(lemmaProof.typ == (n ~>: (lemma(n))) )
 ```
 
@@ -175,7 +201,9 @@ and to put together equations and inequalities. We introduce terms witnessing th
 val x = "x" :: FreeGroup
 // val g = "g" :: FreeGroup
 val pown = g :-> FreeGroup.power(g)(n)
+```
 
+```scala mdoc:to-string
 val c1 = "x ~ wy" :: (x =:= (s |+| w |+| y |+| s.inverse))
 val c2 = "x ~ zw^{-1}" :: (x =:= (t |+| z |+| w.inverse |+| t.inverse))
 ```
@@ -184,6 +212,9 @@ We deduce using a theorem (in our code) about powers of conjugates that $x^n = s
 ```scala mdoc:to-string
 val xnConjwyn = (pown *: c1) && ConjPower.pf(s)(wy)(n)
 val xnConjzwbarn= (pown *: c2) && ConjPower.pf(t)(zwbar)(n)
+```
+
+```scala mdoc:to-string
 assert(xnConjwyn.typ == (pown(x) =:= (s |+| pown(wy)  |+| s.inverse  ) ) )
 assert(xnConjzwbarn.typ == (pown(x) =:= (t |+| pown(zwbar)  |+| t.inverse  ) ) )
 ```
@@ -192,13 +223,22 @@ We use the above equations to show that $x^nx^n = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1
 ```scala mdoc:to-string
 val t1 = s |+| pown(wy)  |+| s.inverse
 val t2 = t |+| pown(zwbar)  |+| t.inverse
+```
+
+```scala mdoc:to-string
 val xnxnExpr = (FreeGroup.rm(pown(x)) *: xnConjwyn) && (FreeGroup.lm(t1) *: xnConjzwbarn)
+```
+
+```scala mdoc:to-string
 assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
 ```
 
 Using $x^nx^n = x^{2n}$, we get the formula $x^{2n} = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.
 ```scala mdoc:to-string
 val x2nExpr =PowerDistributive.pf(x)(n)(n).sym && xnxnExpr
+```
+
+```scala mdoc:to-string
 assert(x2nExpr.typ == (FreeGroup.power(x)(NatRing.prod(n)(nat(2))) =:= (s |+| c(n) |+| t.inverse)))
 ```
 
@@ -206,7 +246,13 @@ We now bound the length of the right hand side $s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$
 
 ```scala mdoc:to-string
 val thmBound = f(n) + l(s) + l(t.inverse)
+```
+
+```scala mdoc:to-string
 val exprBound = lemmaProof(n) + triang(s)(c(n)) + triang(s |+| c(n))(t.inverse)
+```
+
+```scala mdoc:to-string
 assert(exprBound.typ == leq(l(s |+| c(n) |+| t.inverse ))(thmBound))
 ```
 
@@ -214,7 +260,13 @@ We easily deduce the bound on $l(x^{2n})$ to complete the proof.
 
 ```scala mdoc:to-string
 val thmProof = x2nExpr.sym.lift (g :-> leq(l(g))(thmBound))(exprBound)
+```
+
+```scala mdoc:to-string
 val x2n = FreeGroup.power(x)(NatRing.prod(n)(nat(2)))
+```
+
+```scala mdoc:to-string
 assert(thmProof.typ == leq(l(x2n))(thmBound ))
 
 ```

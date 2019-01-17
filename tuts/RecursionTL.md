@@ -64,6 +64,9 @@ val b = "b" :: Bool
 val recBBB = BoolInd.rec(Bool ->: Bool)
 recBBB.typ
 val and = recBBB(lmbda(b)(b))(lmbda(b)(ff))
+```
+
+```scala mdoc:to-string
 and(tt)(tt)
 and(tt)(ff)
 and(ff)(ff)
@@ -90,6 +93,9 @@ val recNatBool = NatInd.rec(Bool)
 recNatBool.typ
 val n = "n" :: Nat
 val even = recNatBool(tt)(n :-> (b :-> not(b)))
+```
+
+```scala mdoc:to-string
 val one = succ(zero)
 val two = succ(one)
 val three = succ(two)
@@ -106,6 +112,9 @@ recNNN.typ
 val m = "m" :: Nat
 val addn = "add(n)" :: Nat ->: Nat
 val add = recNNN(m :-> m)(n :-> (addn :-> (m :-> (succ(addn(m))) ) ) )
+```
+
+```scala mdoc:to-string
 add(two)(one)
 assert(add(two)(one) == three)
 add(two)(two) == four
@@ -137,7 +146,9 @@ val recLN = ListAInd.rec(Nat)
 recLN.typ
 val a = "a" :: A
 val l = "l" :: ListA
+```
 
+```scala mdoc:to-string
 val size = recLN(zero)(a :-> (l :-> (n :-> (succ(n)))))
 size(nil)
 size(cons(a)(cons(a)(nil)))
@@ -151,17 +162,25 @@ val T = "Tree" :: Type
 val TInd = ("leaf" ::: T) |: ("node" ::: T -->>: T -->>: T) =: T
 val leaf :: node :: HNil = TInd.intros
 val ttt = node(node(leaf)(node(leaf)(leaf)))(node(leaf)(leaf))
+```
 
+```scala mdoc:to-string
 val recTN = TInd.rec(Nat)
 recTN.typ
+```
 
+```scala mdoc:to-string
 val t1 = "t1" :: T
 val t2 = "t2" :: T
 
 val vertices = recTN(one)(t1 :-> (m :->( t2 :-> (n :-> (succ(add(n)(m))  ) ) ) ) )
+```
 
+```scala mdoc:to-string
 vertices(ttt)
+```
 
+```scala mdoc:to-string
 val nine = succ(add(four)(four))
 vertices(ttt) == nine
 assert(vertices(ttt) == nine)
@@ -179,15 +198,26 @@ val BT = "BinTree" :: Type
 val BTInd = ("leaf" ::: BT) |: ("node" ::: (Bool -|>: BT) -->>: BT )  =: BT
 val bleaf :: bnode :: HNil = BTInd.intros
 val recBTN = BTInd.rec(Nat)
+```
+
+```scala mdoc:to-string
 recBTN.typ
+```
+
+```scala mdoc:to-string
 val f = "f" :: Bool ->: BT
 val g = "g" :: Bool ->: Nat
 val leaves = recBTN(one)(f :-> (g :-> (add(g(ff))(g(tt))) ))
 leaves(bleaf)
-// val b = "b" :: Bool
+```
+
+```scala mdoc:to-string
 val t = bnode(b :-> bleaf)
 val recBBT = BoolInd.rec(BT)
 recBBT.typ
+```
+
+```scala mdoc:to-string
 val ttn = recBBT(bleaf)(t)
 val t2n = bnode(ttn)
 leaves(t2n)
@@ -205,6 +235,9 @@ We define the double of a number recursively, mainly for use later. Observe the 
 ```scala mdoc:to-string
 val recNN = NatInd.rec(Nat)
 val double = recNN(zero)(m :-> (n :-> (succ(succ(n)))))
+```
+
+```scala mdoc:to-string
 double(two) == four
 assert(double(two) == four)
 double(succ(n))
@@ -218,8 +251,14 @@ Note that we are defining `sumTo(succ(m))` in terms of `m` and `n = sumTo(m)`, s
 val sumTo = recNN(zero)(m :-> (n :-> (add(succ(m))(n))))
 sumTo(one)
 sumTo(three).fansi
+```
+
+```scala mdoc:to-string
 val ten = succ(nine)
 sumTo(four) == ten
+```
+
+```scala mdoc:to-string
 assert(sumTo(four) == ten)
 ```
 
@@ -254,14 +293,23 @@ val indNV = NatInd.induc(V)
 
 val v = "v_m" :: V(m)
 val countdown = indNV(nilv)(m :~> (v :-> consv(m)(succ(m))(v)) )
+```
+
+```scala mdoc:to-string
 countdown(zero)
 countdown(one)
 countdown(one).fansi
 countdown(three).fansi
+```
+
+```scala mdoc:to-string
 assert(countdown(three) ==
   consv(two)(three)(
     consv(one)(two)(
       consv(zero)(one)(nilv))))
+```
+
+```scala mdoc:to-string
 countdown(zero) == nilv
 countdown(nine).fansi
 ```
@@ -294,6 +342,9 @@ the _induction hypothesis_. Note that the induction hypothesis is a term of type
 val thmDoubleEven = n ~>: isEven(double(n))
 val hyp = "isEven(double(n))" :: isEven(double(n))
 val inducDoubleEven = NatInd.induc(n :-> isEven(double(n)))
+```
+
+```scala mdoc:to-string
 val pfDoubleEven =
   inducDoubleEven(
     zeroEven){
@@ -309,18 +360,30 @@ We next prove a more interesting statement, namely that for any natural number `
 
 ```scala mdoc:to-string
 val succEven = n :-> (isEven(n) || isEven(succ(n)))
+```
 
+```scala mdoc:to-string
 val base = succEven(zero).incl1(zeroEven) !: succEven(zero)
+```
 
+```scala mdoc:to-string
 val thmSuccEven = n ~>: (succEven(n))
+```
 
+```scala mdoc:to-string
 val hyp1 = "n-is-Even" :: isEven(n)
 val hyp2 = "(n+1)-is-Even" :: isEven(succ(n))
+```
 
+```scala mdoc:to-string
 val step = (succEven(n).rec(succEven(succ(n)))){hyp1 :-> (succEven(succ(n)).incl2(plusTwoEven(n)(hyp1)))}{hyp2 :-> (succEven(succ(n)).incl1((hyp2)))}
+```
 
+```scala mdoc:to-string
 val inducSuccEven = NatInd.induc(succEven)
+```
 
+```scala mdoc:to-string
 val pf = inducSuccEven(base)(n :~> step) !: thmSuccEven
 ```
 
@@ -330,16 +393,26 @@ We now prove a result that has been a goal, namely that for a function on Natura
 ```scala mdoc:to-string
 val fn = "f" :: Nat ->: A
 val ass = "assumption" :: n ~>: (fn(n) =:= fn(succ(n)))
+```
 
+```scala mdoc:to-string
 val claim = n :-> (fn(zero) =:= fn(n))
+```
 
+```scala mdoc:to-string
 val sbase = fn(zero).refl
+```
 
+```scala mdoc:to-string
 val shyp = "hypothesis" :: (fn(zero) =:= fn(n))
 val sstep = shyp :-> {IdentityTyp.trans(A)(fn(zero))(fn(n))(fn(succ(n)))(shyp)(ass(n)) }
+```
 
+```scala mdoc:to-string
 val inducClaim = NatInd.induc(claim)
+```
 
+```scala mdoc:to-string
 val spf = inducClaim(sbase)(n :~> sstep) !: (n ~>: (fn(zero) =:= fn(n)))
 
 ```
@@ -360,7 +433,9 @@ val VecInd =
   ("nil" ::: (Vec -> Vec(zero))) |: {
     "cons" ::: n ~>>: (A ->>: (Vec :> Vec(n)) -->>: (Vec -> Vec(succ(n))))
   } =:: Vec
+```
 
+```scala mdoc:to-string
 val vnil :: vcons :: HNil = VecInd.intros
 
 vcons.typ.fansi
@@ -373,6 +448,9 @@ val vn = "v_n" :: Vec(n)
 val recVN = VecInd.rec(Nat)
 val vsize = recVN(zero)(n :~>(a :-> (vn :->(m :->(succ(m))))))
 vsize(zero)(vnil)
+```
+
+```scala mdoc:to-string
 val v1 = vcons(zero)(a)(vnil)
 vsize(one)(v1)
 assert(vsize(one)(v1) == one)
@@ -388,18 +466,29 @@ val VecNInd =
     "cons" ::: n ~>>:
       (Nat ->>: (VecN :> VecN(n)) -->>: (VecN -> VecN(succ(n))))
   } =:: VecN
+```
 
+```scala mdoc:to-string
 val recVNN                  = VecNInd.rec(Nat)
 val vnilN :: vconsN :: HNil = VecNInd.intros
+```
 
+```scala mdoc:to-string
 val k = "k" :: Nat
 val vsum = recVNN(zero)(n :~>(k :-> (vnn :->(m :-> (add(m)(k)) ))))
+```
 
+```scala mdoc:to-string
 vsum(zero)(vnilN)
 val v2 = vconsN(zero)(two)(vnilN)
 vsum(one)(v2)
-assert(vsum(one)(v2) == two)
+```
 
+```scala mdoc:to-string
+assert(vsum(one)(v2) == two)
+```
+
+```scala mdoc:to-string
 val v3 = vconsN(one)(one)(v2)
 v3.fansi
 vsum(two)(v3)

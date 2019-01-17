@@ -32,6 +32,8 @@ val fdT = Truncate(tv.baseEvolveTyps(dist1), math.pow(0.1, 8))
 We shall generate terms. Some experiments show that it is enough to generate with truncation `10^{-5}`.
 ```scala mdoc:to-string
 val fd = Truncate(tv.baseEvolve(dist1), math.pow(0.1, 5))
+```
+```scala mdoc:to-string
 fd.filter(_.typ == eqM(l)(op(l)(r)))
 ```
 We see that wee get a proof of a key lemma. Criteria, based on probabilities of statements and proofs,
@@ -43,7 +45,11 @@ We see that we get the proof.
 val pf = fd.filter(_.typ == eqM(l)(op(l)(r))).supp.head
 val initt = TangVec(dist1, FD.unif(pf))
 val fdt = Truncate(tv.evolve(initt).vec , math.pow(0.1, 4))
+```
+```scala mdoc:to-string
 val tqs = fdt.map(_.typ).filter(fdT(_) > 0).flatten
+```
+```scala mdoc:to-string
 tqs(eqM(l)(r))
 ```
 

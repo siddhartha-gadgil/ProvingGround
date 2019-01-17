@@ -50,9 +50,14 @@ Addition is commutative and associative, even when it involves repeated terms.
 ```scala mdoc:to-string
 n + m == m + n
 (n + m) + k == n + (m + k)
+```
+
+```scala mdoc:to-string
 assert(n + m == m + n)
 assert((n + m) + k == n + (m + k))
+```
 
+```scala mdoc:to-string
 (n + n) + m == (n + m) + n
 assert{(n + n) + m == (n + m) + n}
 ```
@@ -62,7 +67,9 @@ Similarly, multiplication is commutative and associative, and distributes over a
 ```scala mdoc:to-string
 n * m == m * n
 assert{n * m == m * n}
+```
 
+```scala mdoc:to-string
 n * (m * k)
 
 n * (m + k)
@@ -100,7 +107,9 @@ We can define a function f recursively on natural numbers, given the value `f(0)
 ```scala mdoc:to-string
 val mf = lmbda(n)(prod(n + 1))
 val factorial = Rec(1: Nat, mf)
+```
 
+```scala mdoc:to-string
 factorial(3)
 factorial(5)
 assert(factorial(5) == (120 : Nat))
