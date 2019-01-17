@@ -221,6 +221,7 @@ lazy val leanlib =
 lazy val mantle = (project in file("mantle"))
   .settings(
     name := "ProvingGround-mantle",
+    mainClass in (Compile, run) := Some("provingground.interface.MantleCask")
     // resourceDirectory := baseDirectory.value / "docs"
     // scalaJSProjects := Seq(client),
     // pipelineStages in Assets := Seq(scalaJSPipeline)
@@ -229,13 +230,6 @@ lazy val mantle = (project in file("mantle"))
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
 //        .settings(serverSettings : _*)
-  .settings(sourceGenerators in Test += Def.task {
-    val file = (sourceManaged in Test).value / "amm.scala"
-    IO.write(
-      file,
-      s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
-    Seq(file)
-  }.taskValue)
   .dependsOn(coreJVM)
   .dependsOn(server)
   .dependsOn(trepplein)
