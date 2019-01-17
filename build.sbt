@@ -87,7 +87,7 @@ lazy val jvmSettings = Seq(
     "org.slf4j"   % "slf4j-api"    % "1.7.16",
     "org.slf4j"   % "slf4j-simple" % "1.7.16",
     // Last stable release
-    "org.scalanlp" %% "breeze" % "0.13.2",
+//    "org.scalanlp" %% "breeze" % "0.13.2",
     "com.atlassian.commonmark" % "commonmark" % "0.11.0",
     "org.scalameta" %% "mdoc" % "1.2.7",
     "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64"
