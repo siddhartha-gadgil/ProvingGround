@@ -1,4 +1,4 @@
-import sbt.Project.projectToRef
+// import sbt.Project.projectToRef
 
 val scalaV = "2.12.8"
 
@@ -169,7 +169,8 @@ lazy val client = project
   .enablePlugins(ScalaJSPlugin)
   .dependsOn(coreJS)
 
-lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
+lazy val core = sbtcrossproject.crossProject(JSPlatform, JVMPlatform)
+.crossType(sbtcrossproject.CrossType.Pure)
   .settings(commonSettings: _*)
   .settings(name := "ProvingGround-Core")
   .settings(
