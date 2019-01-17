@@ -9,6 +9,12 @@
   border-width: 1px;
 }
 
+.language-scala {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+
 .mini-view {
   overflow-y: auto;
   height: 100px;

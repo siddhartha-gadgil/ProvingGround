@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>ProvingGround</title>
+    <title>HoTT</title>
     <link rel="icon" href="../IIScLogo.jpg">
 
     <!-- Bootstrap -->
@@ -41,7 +41,7 @@ messageStyle: "none",
 <script type="text/javascript" async
       src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
        </script>
-  
+    
   </head>
 
    
@@ -61,20 +61,27 @@ messageStyle: "none",
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="../index.html#">Home</a></li>
+          <ul class="nav navbar-nav" id="left-nav">
+            <li><a href="../index.html">Docs Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
-            </ul>
-          </li>
-      </ul>
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Posts<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href="../scaladoc/provingground/index.html" target="_blank">ScalaDocs</a></li>
             <li> <a href="https://github.com/siddhartha-gadgil/ProvingGround" target="_blank">
-            <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
+              <img src="../GitHub-Mark-Light-32px.png" alt="Github"></img> </a> </li>
 
 
 
@@ -83,6 +90,7 @@ messageStyle: "none",
       </div><!-- /.container-fluid -->
     </nav>
 <div class="container">
+
 <h1 class="text-center">HoTT</h1>
 
 <div class="text-justify">
@@ -102,236 +110,153 @@ messageStyle: "none",
 <p>The <em>core</em> project contains code that is agnostic to how it is run. In particular this also compiles to scala-js.</p>
 <h3>Universes, Symbolic types</h3>
 <p>We have a family of universes, but mostly use the first one denoted by Type. Given a type, we can construct symbolic objects of that type. We construct such a type <em>A</em>.</p>
-<pre><code class="language-scala">scala&gt;    
-
-scala&gt; import provingground._ 
-
-import provingground._
-
-scala&gt; import HoTT._ 
-
+<pre><code class="language-scala">import provingground._
 import HoTT._
-
-scala&gt; val A = &quot;A&quot; :: Type 
-
-A: Typ[Term] with Subs[Typ[Term]] = A
-
-scala&gt; A == Type.::(&quot;A&quot;) 
-
-res9: Boolean = true
+val A = &quot;A&quot; :: Type
+// A: Typ[Term] = A
+A == Type.::(&quot;A&quot;)
+// res0: Boolean = true
 </code></pre>
 <p>We consider a symbolic object of the type <em>A</em></p>
-<pre><code class="language-scala">scala&gt; val a = &quot;a&quot; :: A 
-
-a: Term with Subs[Term] = a
+<pre><code class="language-scala">val a = &quot;a&quot; :: A
+// a: Term = a
 </code></pre>
 <h2>Function types, lambdas, Identity</h2>
 <p>Given types A and B, we have the function type A → B. An element of this is a function from A to B.</p>
 <p>We can construct functions using λ's. Here, for the type <em>A</em>, we construct the identity on <em>A</em> using a lambda. We can then view this as a dependent function of <em>A</em>, giving the identity function.</p>
 <p>In this definition, two λ's are used, with the method <em>lmbda</em> telling the TypecompilerType that the result is a (non-dependent) function.</p>
-<pre><code class="language-scala">scala&gt; val id = lambda(A)(lmbda(a)(a)) 
-
-id: FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]] = (A :  𝒰 _0) ↦ ((a :  A) ↦ (a))
+<pre><code class="language-scala">val id = lambda(A)(lmbda(a)(a))
+// id: FuncLike[Typ[Term], Func[Term, Term]] = (A :  𝒰 _0) ↦ ((a :  A) ↦ (a))
 </code></pre>
 <p>The type of the identity function is a mixture of Pi-types and function types. Which of these to use is determined by checking dependence of the type of the value on the varaible in a λ-definition.</p>
-<pre><code class="language-scala">scala&gt; id.typ 
-
-res12: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Term with Subs[Term]]]] = (A : 𝒰 _0 ) ~&gt; ((A) → (A))
-
-scala&gt; lmbda(a)(a).typ 
-
-res13: Typ[Func[Term with Subs[Term], Term with Subs[Term]]] = (A) → (A)
-
-scala&gt; lmbda(a)(a).typ.dependsOn(A) 
-
-res14: Boolean = true
+<pre><code class="language-scala">id.typ
+// res1: Typ[FuncLike[Typ[Term], Func[Term, Term]]] = (A : 𝒰 _0 ) ~&gt; ((A) → (A))
+lmbda(a)(a).typ
+// res2: Typ[Func[Term, Term]] = (A) → (A)
+lmbda(a)(a).typ.dependsOn(A)
+// res3: Boolean = true
 </code></pre>
 <p>The lambdas have the same effect at runtime. It is checked if the type of the value depends on the variable.
 The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
-<pre><code class="language-scala">scala&gt; val indep = lmbda(a)(a) 
-
-indep: Func[Term with Subs[Term], Term with Subs[Term]] = (a :  A) ↦ (a)
-
-scala&gt; val dep = lambda(a)(a) 
-
-dep: FuncLike[Term with Subs[Term], Term with Subs[Term]] = (a :  A) ↦ (a)
-
-scala&gt; indep == dep 
-
-res17: Boolean = true
+<pre><code class="language-scala">val indep = lmbda(a)(a)
+// indep: Func[Term, Term] = (a :  A) ↦ (a)
+val dep = lambda(a)(a)
+// dep: FuncLike[Term, Term] = (a :  A) ↦ (a)
+indep == dep
+// res4: Boolean = true
 </code></pre>
 <p>Note that we have alternative notation for lambdas, the maps to methods <code>:-&gt;</code> and <code>:~&gt;</code>.
 For instance, we can define the identity using these.</p>
-<pre><code class="language-scala">scala&gt; assert(id == A :~&gt; (a :-&gt; a))
+<pre><code class="language-scala">assert(id == A :~&gt; (a :-&gt; a))
 </code></pre>
 <h3>Hygiene for λs</h3>
 <p>A new variable object, which has the same toString, is created in making lambdas. This is to avoid name clashes.</p>
-<pre><code class="language-scala">scala&gt; val l = dep.asInstanceOf[LambdaFixed[Term, Term]] 
-
-l: LambdaFixed[Term, Term] = (a :  A) ↦ (a)
-
-scala&gt; l.variable 
-
-res20: Term = a
-
-scala&gt; l.variable == a 
-
-res21: Boolean = false
+<pre><code class="language-scala">val l = dep.asInstanceOf[LambdaFixed[Term, Term]]
+// l: LambdaFixed[Term, Term] = (a :  A) ↦ (a)
+l.variable
+// res6: Term = a
+l.variable == a
+// res7: Boolean = false
 </code></pre>
 <h2>Modus Ponens</h2>
 <p>We construct Modus Ponens, as an object in Homotopy Type theory. Note that A -&gt;: B is the function type A → B.</p>
-<pre><code class="language-scala">scala&gt; val B = &quot;B&quot; :: Type 
+<pre><code class="language-scala">val B = &quot;B&quot; :: Type
+// B: Typ[Term] = B
 
-B: Typ[Term] with Subs[Typ[Term]] = B
+val f = &quot;f&quot; :: (A -&gt;: B)
+// f: Func[Term, Term] = f
 
-scala&gt;  
-
-scala&gt; val f = &quot;f&quot; :: (A -&gt;: B) 
-
-f: Func[Term, Term] with Subs[Func[Term, Term]] = f
-
-scala&gt;  
-
-scala&gt; val mp = lambda(A)(lambda(B)(lmbda(a)(lmbda(f)(f(a))))) 
-
-mp: FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]] = (A :  𝒰 _0) ↦ ((B :  𝒰 _0) ↦ ((a :  A) ↦ ((f :  (A) → (B)) ↦ ((f) (a)))))
+val mp = lambda(A)(lambda(B)(lmbda(a)(lmbda(f)(f(a)))))
+// mp: FuncLike[Typ[Term], FuncLike[Typ[Term], Func[Term, Func[Func[Term, Term], Term]]]] = (A :  𝒰 _0) ↦ ((B :  𝒰 _0) ↦ ((a :  A) ↦ ((f :  (A) → (B)) ↦ ((f) (a)))))
 </code></pre>
 <p>The type of Modus Ponens is again a mixture of Pi-types and function types.</p>
-<pre><code class="language-scala">scala&gt; mp.typ 
-
-res25: Typ[FuncLike[Typ[Term] with Subs[Typ[Term]], FuncLike[Typ[Term] with Subs[Typ[Term]], Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]]]]] = (A : 𝒰 _0 ) ~&gt; ((B : 𝒰 _0 ) ~&gt; ((A) → (((A) → (B)) → (B))))
+<pre><code class="language-scala">mp.typ
+// res8: Typ[FuncLike[Typ[Term], FuncLike[Typ[Term], Func[Term, Func[Func[Term, Term], Term]]]]] = (A : 𝒰 _0 ) ~&gt; ((B : 𝒰 _0 ) ~&gt; ((A) → (((A) → (B)) → (B))))
 </code></pre>
 <p>We can apply modus ponens with the roles of <em>A</em> and <em>B</em> reversed. This still works because variable clashes are avoided.</p>
-<pre><code class="language-scala">scala&gt; val mpBA = mp(B)(A) 
-
-mpBA: Func[Term with Subs[Term], Func[Func[Term, Term] with Subs[Func[Term, Term]], Term]] = (a :  B) ↦ ((f :  (B) → (A)) ↦ ((f) (a)))
-
-scala&gt; mpBA.typ == B -&gt;: (B -&gt;: A) -&gt;: A 
-
-res27: Boolean = true
+<pre><code class="language-scala">val mpBA = mp(B)(A)
+// mpBA: Func[Term, Func[Func[Term, Term], Term]] = (a :  B) ↦ ((f :  (B) → (A)) ↦ ((f) (a)))
+mpBA.typ == B -&gt;: (B -&gt;: A) -&gt;: A
+// res9: Boolean = true
 </code></pre>
 <h3>Equality of λs</h3>
 <p>Lambdas do not depend on the name of the variable.</p>
-<pre><code class="language-scala">scala&gt; val aa = &quot;aa&quot; :: A 
-
-aa: Term with Subs[Term] = aa
-
-scala&gt; lmbda(aa)(aa) == lmbda(a)(a) 
-
-res29: Boolean = true
-
-scala&gt; (lmbda(aa)(aa))(a) == a 
-
-res30: Boolean = true
+<pre><code class="language-scala">val aa = &quot;aa&quot; :: A
+// aa: Term = aa
+lmbda(aa)(aa) == lmbda(a)(a)
+// res10: Boolean = true
+(lmbda(aa)(aa))(a) == a
+// res11: Boolean = true
 </code></pre>
 <h2>Dependent types</h2>
 <p>Given a type family, we can construct the corresponding Pi-types and Sigma-types. We start with a formal type family, which is just a symbolic object of the appropriate type.</p>
-<pre><code class="language-scala">scala&gt; val Bs = &quot;B(_ : A)&quot; :: (A -&gt;: Type) 
-
-Bs: Func[Term, Typ[Term]] with Subs[Func[Term, Typ[Term]]] = B(_ : A)
+<pre><code class="language-scala">val Bs = &quot;B(_ : A)&quot; :: (A -&gt;: Type)
+// Bs: Func[Term, Typ[Term]] = B(_ : A)
 </code></pre>
 <h3>Pi-Types</h3>
 <p>In addition to the case class constructor, there is an agda/shapeless-like  convenience method for constructing Pi-types. Namely, given a type expression that depends on a varaible <em>a : A</em>, we can construct the Pi-type correspoding to the obtained λ-expression.</p>
 <p>Note that the !: method just claims and checks a type, and is useful (e.g. here) for documentation.</p>
-<pre><code class="language-scala">scala&gt; val fmly = (a !: A) ~&gt;: (Bs(a) -&gt;: A) 
-
-fmly: GenFuncTyp[Term, Func[Term, Term]] = (a : A ) ~&gt; (((B(_ : A)) (a)) → (A))
+<pre><code class="language-scala">val fmly = (a !: A) ~&gt;: (Bs(a) -&gt;: A)
+// fmly: GenFuncTyp[Term, Func[Term, Term]] = (a : A ) ~&gt; (((B(_ : A)) (a)) → (A))
 </code></pre>
 <h3>Sigma-types</h3>
 <p>There is also a convenience method for defining Sigma types using λs.</p>
-<pre><code class="language-scala">scala&gt; Sgma(a !: A, Bs(a)) 
-
-res33: SigmaTyp[Term, Term] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
+<pre><code class="language-scala">Sgma(a !: A, Bs(a))
+// res12: SigmaTyp[Term, Term] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
 </code></pre>
-<pre><code class="language-scala">scala&gt; Sgma(a !: A, Bs(a) -&gt;: Bs(a) -&gt;: A) 
-
-res34: SigmaTyp[Term, Func[Term, Func[Term, Term]]] = ∑((a :  A) ↦ (((B(_ : A)) (a)) → (((B(_ : A)) (a)) → (A))))
+<pre><code class="language-scala">Sgma(a !: A, Bs(a) -&gt;: Bs(a) -&gt;: A)
+// res13: SigmaTyp[Term, Func[Term, Func[Term, Term]]] = ∑((a :  A) ↦ (((B(_ : A)) (a)) → (((B(_ : A)) (a)) → (A))))
 </code></pre>
 <h2>Pair types</h2>
 <p>Like functions and dependent functions, pairs and dependent pairs can be handled together. The <em>mkPair</em> function assignes the right type after checking dependence, choosing between pair types, pairs and dependent pairs.</p>
-<pre><code class="language-scala">scala&gt; val ba = &quot;b(a)&quot; :: Bs(a) 
-
-ba: Term with Subs[Term] = b(a)
-
-scala&gt; val b = &quot;b&quot; :: B 
-
-b: Term with Subs[Term] = b
-
-scala&gt; mkPair(A, B) 
-
-res37: AbsPair[Term, Term] = ((A) , (B))
-
-scala&gt; mkPair(a, b) 
-
-res38: AbsPair[Term, Term] = ((a) , (b))
-
-scala&gt; mkPair(a, b).typ 
-
-res39: Typ[U] = ((A) , (B))
-
-scala&gt; mkPair(a, ba).typ 
-
-res40: Typ[U] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
+<pre><code class="language-scala">val ba = &quot;b(a)&quot; :: Bs(a)
+// ba: Term = b(a)
+val b = &quot;b&quot; :: B
+// b: Term = b
+mkPair(A, B)
+// res14: AbsPair[Term, Term] = ((A) , (B))
+mkPair(a, b)
+// res15: AbsPair[Term, Term] = ((a) , (b))
+mkPair(a, b).typ
+// res16: Typ[U] = ((A) , (B))
+mkPair(a, ba).typ
+// res17: Typ[U] = ∑((a :  A) ↦ ((B(_ : A)) (a)))
 </code></pre>
-<pre><code class="language-scala">scala&gt; mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]] 
-
-res41: ProdTyp[Term, Term] = ((A) , (B))
+<pre><code class="language-scala">mkPair(A, B).asInstanceOf[ProdTyp[Term, Term]]
+// res18: ProdTyp[Term, Term] = ((A) , (B))
 </code></pre>
 <h2>Plus types</h2>
 <p>We can also construct the plus type <em>A plus B</em>, which comes with two inclusion functions.</p>
-<pre><code class="language-scala">scala&gt; val AplusB = PlusTyp(A, B) 
-
-AplusB: PlusTyp[Term, Term] = PlusTyp(A,B)
+<pre><code class="language-scala">val AplusB = PlusTyp(A, B)
+// AplusB: PlusTyp[Term, Term] = PlusTyp(A,B)
 </code></pre>
-<pre><code class="language-scala">scala&gt; AplusB.incl1(a) 
-
-res43: PlusTyp.FirstIncl[Term, Term] = FirstIncl(PlusTyp(A,B),a)
+<pre><code class="language-scala">AplusB.incl1(a)
+// res19: PlusTyp.FirstIncl[Term, Term] = FirstIncl(PlusTyp(A,B),a)
 </code></pre>
-<pre><code class="language-scala">scala&gt; AplusB.incl2 
-
-res44: Func[Term with Subs[Term], PlusTyp.ScndIncl[Term, Term]] = ($cn :  B) ↦ (ScndIncl(PlusTyp(A,B),$cn))
+<pre><code class="language-scala">AplusB.incl2
+// res20: Func[Term, PlusTyp.ScndIncl[Term, Term]] = ($oongl :  B) ↦ (ScndIncl(PlusTyp(A,B),$oongl))
 </code></pre>
 <p>In the above, a λ was used, with a variable automatically generated. These have names starting with $ to avoid collision with user defined ones.</p>
 <h2>Identity type</h2>
 <p>We have an identity type associated to a type <em>A</em>, with reflexivity giving terms of this type.</p>
-<pre><code class="language-scala">scala&gt; val eqAa = IdentityTyp(A, a, a) 
-
-eqAa: IdentityTyp[Term with Subs[Term]] = a = a
-
-scala&gt; val ref = Refl(A, a) 
-
-ref: Refl[Term with Subs[Term]] = Refl(A,a)
+<pre><code class="language-scala">val eqAa = IdentityTyp(A, a, a)
+// eqAa: IdentityTyp[Term] = a = a
+val ref = Refl(A, a)
+// ref: Refl[Term] = Refl(A,a)
 </code></pre>
-<pre><code class="language-scala">scala&gt; ref.typ == eqAa 
-
-res47: Boolean = true
+<pre><code class="language-scala">ref.typ == eqAa
+// res21: Boolean = true
 </code></pre>
 <h2>The Unit and the  Nought</h2>
 <p>Finally, we have the types corresponding to <em>True</em> and <em>False</em></p>
-<pre><code class="language-scala">scala&gt; Unit 
-
-res48: Unit.type = Unit
-
-scala&gt; Zero 
-
-res49: Zero.type = Zero
-
-scala&gt; Star !: Unit 
-
-res50: Term = Star
+<pre><code class="language-scala">Unit
+// res22: Unit.type = Unit
+Zero
+// res23: Zero.type = Zero
+Star !: Unit
+// res24: Term = Star
 </code></pre>
-<h4>Git Log when running tutorial</h4>
-<pre><code>commit a83fc238eaaa2f98d8ea8f6e9cbc94aa157f2e41
-Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
-Date:   Mon Sep 17 15:43:03 2018 +0530
-
-    better logging auto search; fails but not serious
-    relevant lemmas are discovered, its a matter of spawning with lemmas
-    together or some such tuning.
-</code></pre>
-<ul>
-<li><strong>Branch</strong> : master</li>
-</ul>
+<h4>Git Log when running tutorial: a0ff8fa0335bcc8e88205eb33093c9e48dfebbd8</h4>
 
 
 </div>
