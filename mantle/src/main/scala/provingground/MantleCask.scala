@@ -59,7 +59,7 @@ object MantleRoutes extends cask.Routes {
     println(s"post received:\n$d")
 
     val result =
-      AmmService.replResult(d) match {
+      MDocService.replResult(d) match {
         case Right(z) => "--RESULT--\n" + z
         case Left(z)  => "--ERROR--\n" + z
       }
