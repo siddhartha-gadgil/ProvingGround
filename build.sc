@@ -93,7 +93,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def bin() : define.Command[PathRef] = T.command {
     def ass: PathRef = assembly()
     def name: String = artifactName()
-    cp.over(ass.path, pwd/ "bin" / s"provinground-$name-SNAPSHOT")
+    cp.over(ass.path, pwd/ "bin" / s"provinground-$name-SNAPSHOT.jar")
     ass
   }
 }
