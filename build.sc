@@ -1,5 +1,5 @@
 import mill._
-import scalalib._
+import scalalib._, publish._
 import scalajslib._
 import mill.scalalib.scalafmt._
 import define.{Sources, Task}
@@ -66,8 +66,20 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def scalaVersion= scalaV
   override def ivyDeps = Agg(commonLibs: _*)
   def version = "0.1-SNAPSHOT"
+
+  // def publishVersion = "0.1-SNAPSHOT"
+
   def organization = "in.ac.iisc"
   def name = "ProvingGround"
+
+  // def pomSettings = PomSettings(
+  //     description = "Automated theorem proving through learning in HoTT",
+  //     organization = "in.ac.iisc",
+  //     url = "https://github.com/siddhartha-gadgil/ProvingGround",
+  //     licenses = Seq(License.MIT),
+  //     versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),
+  //     developers = Seq()
+  //   )
 
   // override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
 
@@ -133,13 +145,30 @@ trait JvmModule extends CommonModule {
     }
 }
 
+trait PGPublish extends PublishModule{
+  def publishVersion = "0.1-SNAPSHOT"
+
+    def pomSettings = PomSettings(
+      description = "Automated theorem proving through learning in HoTT",
+      organization = "in.ac.iisc",
+      url = "https://github.com/siddhartha-gadgil/ProvingGround",
+      licenses = Seq(License.MIT),
+      versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),
+      developers = Seq()
+    )
+}
+
 object core extends Module{
 
 
-  object jvm extends CommonModule with SbtModule{
-    // def scalaVersion = "2.12.4"
+  object jvm extends CommonModule with SbtModule with PGPublish{
+
     override def millSourcePath = super.millSourcePath / up
-    // def ivyDeps = Agg(commonLibs: _*)
+    def name = "ProvingGround-Core"
+
+    
+
+
   }
 
   object js extends CommonJSModule with SbtModule{
@@ -150,16 +179,29 @@ object core extends Module{
   }
 }
 
-object trepplein extends SbtModule{
+object trepplein extends SbtModule with PublishModule{
   // def millsourcePath = pwd / 'trepplein
   def scalaVersion = scalaV
   override def ivyDeps =
     Agg(
       ivy"com.github.scopt::scopt:3.7.0"
     )
+
+    def name = "trepplein"
+
+    def publishVersion = "1.0"
+  
+  def pomSettings = PomSettings(
+      description = "Independent type-checker for the dependently typed theorem prover Lean",
+      organization = "trepplein",
+      url = "https://github.com/gebner/trepplein",
+      licenses = Seq(License.`Apache-2.0`),
+      versionControl = VersionControl.github("gebner", "trepplein"),
+      developers = Seq()
+    )
 }
 
-object mantle extends SbtModule with JvmModule{
+object mantle extends SbtModule with JvmModule with PGPublish{
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm, server)
 
   override def mainClass = Some("provingground.interface.MantleCask")
@@ -173,9 +215,11 @@ object mantle extends SbtModule with JvmModule{
 
 
 object leanlib extends Module{
-  object jvm extends CommonModule with SbtModule{
+  object jvm extends CommonModule with SbtModule with PGPublish{
     override def millSourcePath = super.millSourcePath / up
     override def moduleDeps = Seq(core.jvm)
+
+    def name = "ProvingGround-Lean-Library"
   }
 
   object js extends CommonJSModule with SbtModule{
@@ -274,10 +318,12 @@ trait ServerModule extends JvmModule{
      }
 }
 
-object server extends SbtModule with ServerModule {
+object server extends SbtModule with ServerModule with PGPublish {
   override def moduleDeps = Seq(core.jvm)
 
   override def mainClass = Some("provingground.interface.ScriptServer")
+
+  def name = "ProvingGround-Server"
 }
 
 object experiments extends CommonModule{
