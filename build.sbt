@@ -1,4 +1,4 @@
-import sbt.Project.projectToRef
+// import sbt.Project.projectToRef
 
 val scalaV = "2.12.8"
 
@@ -34,12 +34,12 @@ lazy val commonSettings = baseSettings ++ Seq(
     "org.typelevel" %%% "spire"         % "0.16.0",
     "com.lihaoyi"   %%% "fansi"         % "0.2.4",
     "com.lihaoyi"   %%% "upickle"       % "0.7.1",
-    "com.lihaoyi" %%% "fastparse" % "1.0.0",
+    "com.lihaoyi" %%% "fastparse" % "2.1.0",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
     "io.monix"      %%% "monix"         % "3.0.0-RC2",
-    "org.scalameta" %%% "scalameta"     % "3.7.0",
-    "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
+    "org.scalameta" %%% "scalameta"     % "4.1.0",
+    // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
     "com.lihaoyi" %%% "pprint"      % "0.5.3",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.lihaoyi"   %%% "sourcecode"    % "0.1.4"
@@ -87,8 +87,9 @@ lazy val jvmSettings = Seq(
     "org.slf4j"   % "slf4j-api"    % "1.7.16",
     "org.slf4j"   % "slf4j-simple" % "1.7.16",
     // Last stable release
-    "org.scalanlp" %% "breeze" % "0.13.2",
+//    "org.scalanlp" %% "breeze" % "0.13.2",
     "com.atlassian.commonmark" % "commonmark" % "0.11.0",
+    "org.scalameta" %% "mdoc" % "1.2.7",
     "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64"
     // Native libraries are not included by default. add this if you want them (as of 0.7)
     // Native libraries greatly improve performance, but increase jar sizes.
@@ -122,7 +123,7 @@ lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.full,
     "com.lihaoyi"         %% "ammonite-ops"    % ammV,
-    "com.lihaoyi"   %% "upickle"       % "0.6.6",
+    "com.lihaoyi"   %% "upickle"       % "0.7.1",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",
     "com.google.protobuf" % "protobuf-java"    % "2.6.1",
@@ -160,7 +161,7 @@ lazy val client = project
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.2",
       "com.lihaoyi"  %%% "scalatags"   % "0.6.7",
-      "com.lihaoyi"  %%% "upickle"     % "0.6.6",
+      "com.lihaoyi"  %%% "upickle"     % "0.7.1",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
@@ -169,7 +170,8 @@ lazy val client = project
   .enablePlugins(ScalaJSPlugin)
   .dependsOn(coreJS)
 
-lazy val core = (crossProject.crossType(CrossType.Pure) in file("core"))
+lazy val core = sbtcrossproject.crossProject(JSPlatform, JVMPlatform)
+.crossType(sbtcrossproject.CrossType.Pure)
   .settings(commonSettings: _*)
   .settings(name := "ProvingGround-Core")
   .settings(
@@ -219,6 +221,7 @@ lazy val leanlib =
 lazy val mantle = (project in file("mantle"))
   .settings(
     name := "ProvingGround-mantle",
+    mainClass in (Compile, run) := Some("provingground.interface.MantleCask")
     // resourceDirectory := baseDirectory.value / "docs"
     // scalaJSProjects := Seq(client),
     // pipelineStages in Assets := Seq(scalaJSPipeline)
@@ -227,13 +230,6 @@ lazy val mantle = (project in file("mantle"))
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
 //        .settings(serverSettings : _*)
-  .settings(sourceGenerators in Test += Def.task {
-    val file = (sourceManaged in Test).value / "amm.scala"
-    IO.write(
-      file,
-      s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
-    Seq(file)
-  }.taskValue)
   .dependsOn(coreJVM)
   .dependsOn(server)
   .dependsOn(trepplein)
