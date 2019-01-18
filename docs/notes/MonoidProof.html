@@ -13144,7 +13144,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We import the compiler <code>jar</code> of the core of ProvingGround.</p>
+<p>We import the locally published  core of ProvingGround.</p>
 
 </div>
 </div>
@@ -13154,7 +13154,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.core</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`in.ac.iisc::core-jvm:0.1-SNAPSHOT`</span>
 </pre></div>
 
     </div>
@@ -13173,7 +13173,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$       </span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                  </span></pre>
 </div>
 
 </div>
@@ -13437,10 +13437,10 @@ div#notebook {
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">evT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">EvolvedState</span>] = <span class="ansi-yellow-fg">Map</span>(
   <span class="ansi-yellow-fg">FlatMap</span>(
-    <span class="ansi-yellow-fg">FlatMap</span>(<span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, true, true, true), monix.eval.Task$$Lambda$2627/910730285@4f23fde),
-    provingground.learning.TermGenParams$$Lambda$2628/1077355533@65d67e85
+    <span class="ansi-yellow-fg">FlatMap</span>(<span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, true, true, true), monix.eval.Task$$Lambda$3917/695270565@4c1ab2d9),
+    provingground.learning.TermGenParams$$Lambda$3918/976457636@6c30a213
   ),
-  provingground.learning.TermGenParams$$Lambda$2629/1305564386@4ae5c745,
+  provingground.learning.TermGenParams$$Lambda$3919/326935252@59771204,
   <span class="ansi-green-fg">0</span>
 )</pre>
 </div>
@@ -13967,7 +13967,7 @@ div#notebook {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="chart" id="plot-455359022"></div>
+<div class="chart" id="plot-170907007"></div>
 <script>require(['plotly'], function(Plotly) {
   (function () {
   var data0 = {"x":[50.0,100.0,150.0,200.0,250.0,300.0,350.0,400.0,450.0,500.0,550.0,600.0,650.0,700.0,750.0,800.0,850.0,900.0,950.0,1000.0,1050.0,1100.0,1150.0,1200.0,1250.0,1300.0,1350.0,1400.0,1450.0,1500.0,1550.0,1600.0,1650.0,1700.0,1750.0,1800.0,1850.0,1900.0,1950.0,2000.0,2050.0,2100.0,2150.0,2200.0,2250.0,2300.0,2350.0,2400.0,2450.0,2500.0],"name":"((eqM) (e_r)) (e_r)","y":[0.004093884963814422,0.0029042110112584675,0.0022241871666696263,0.0017849119456796458,0.001478836651946792,0.0012542342761125574,0.0010830528574273352,9.487374141636627E-4,8.408840715172144E-4,7.526286593603211E-4,6.792631011516957E-4,6.174539420511921E-4,5.64777580501093E-4,5.194318229818583E-4,4.800503475623939E-4,4.4557966594092885E-4,4.151953550163717E-4,3.8824369940635204E-4,3.6420020562581045E-4,3.426395753639293E-4,3.2321362034625937E-4,3.056347813865209E-4,2.8966366712464015E-4,2.75099518821402E-4,2.617728339597067E-4,2.49539602308827E-4,2.3827676007409732E-4,2.2787857386252617E-4,2.1825374130425126E-4,2.0932304901297565E-4,2.0101746762119383E-4,1.9327659226109787E-4,1.860473580723286E-4,1.7928297617804127E-4,1.729420475362005E-4,1.6698782117561417E-4,1.613875703053529E-4,1.561120651770262E-4,1.5113512577239274E-4,1.4643324067180544E-4,1.4198524104562206E-4,1.377720207607764E-4,1.337762952287362E-4,1.2998239293047833E-4,1.2637607460878742E-4,1.2294437597181493E-4,1.1967547044600642E-4,1.1655854908350263E-4,1.1358371519420541E-4,1.107418916558237E-4],"type":"scatter"};
@@ -13984,7 +13984,7 @@ div#notebook {
   var data = [data0, data1, data2, data3, data4, data5, data6, data7, data8, data9];
   var layout = {"title":"Evolution of the lemma coefficients"};
 
-  Plotly.plot('plot-455359022', data, layout);
+  Plotly.plot('plot-170907007', data, layout);
 })();
 });
       </script>
@@ -14001,7 +14001,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res13</span>: <span class="ansi-green-fg">String</span> = <span class="ansi-green-fg">&#34;plot-455359022&#34;</span></pre>
+<pre><span class="ansi-cyan-fg">res13</span>: <span class="ansi-green-fg">String</span> = <span class="ansi-green-fg">&#34;plot-170907007&#34;</span></pre>
 </div>
 
 </div>
@@ -14086,8 +14086,8 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">tt</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">TermState</span>] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">FlatMap</span>(<span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, true, true, true), monix.eval.Task$$Lambda$2627/910730285@1bf654e4),
-  provingground.learning.TermGenParams$$Lambda$3819/1984874657@1588569d
+  <span class="ansi-yellow-fg">FlatMap</span>(<span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, true, true, true), monix.eval.Task$$Lambda$3917/695270565@63ad49ed),
+  provingground.learning.TermGenParams$$Lambda$4607/1691811780@416d30ba
 )</pre>
 </div>
 
@@ -14219,19 +14219,6 @@ div#notebook {
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
