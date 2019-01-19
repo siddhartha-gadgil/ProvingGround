@@ -69,12 +69,12 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
 
   // def publishVersion = "0.1-SNAPSHOT"
 
-  def organization = "in.ac.iisc"
+  def organization = "in.ac.iisc.math"
   def name = "ProvingGround"
 
   // def pomSettings = PomSettings(
   //     description = "Automated theorem proving through learning in HoTT",
-  //     organization = "in.ac.iisc",
+  //     organization = "in.ac.iisc.math",
   //     url = "https://github.com/siddhartha-gadgil/ProvingGround",
   //     licenses = Seq(License.MIT),
   //     versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),
@@ -150,7 +150,7 @@ trait PGPublish extends PublishModule{
 
     def pomSettings = PomSettings(
       description = "Automated theorem proving through learning in HoTT",
-      organization = "in.ac.iisc",
+      organization = "in.ac.iisc.math",
       url = "https://github.com/siddhartha-gadgil/ProvingGround",
       licenses = Seq(License.MIT),
       versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),
@@ -166,7 +166,7 @@ object core extends Module{
     override def millSourcePath = super.millSourcePath / up
     def name = "ProvingGround-Core"
 
-    
+
 
 
   }
@@ -190,7 +190,7 @@ object trepplein extends SbtModule with PublishModule{
     def name = "trepplein"
 
     def publishVersion = "1.0"
-  
+
   def pomSettings = PomSettings(
       description = "Independent type-checker for the dependently typed theorem prover Lean",
       organization = "trepplein",

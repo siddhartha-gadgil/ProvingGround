@@ -13135,7 +13135,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <em>core</em> project contains code that is agnostic to how it is run. In particular this also compiles to scala-js. However we import <code>mantle</code> here.</p>
+<p>The <em>core</em> project contains code that is agnostic to how it is run. In particular this also compiles to scala-js.</p>
 
 </div>
 </div>
@@ -13145,7 +13145,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provinground-mantle-SNAPSHOT`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`in.ac.iisc.math::core-jvm:0.1-SNAPSHOT`</span>
 </pre></div>
 
     </div>
@@ -13164,7 +13164,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$                                 </span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                       </span></pre>
 </div>
 
 </div>
@@ -13213,7 +13213,7 @@ div#notebook {
 </span>
 <span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">HoTT._
 </span>
-<span class="ansi-cyan-fg">A</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">A</span>
+<span class="ansi-cyan-fg">A</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">A</span>
 <span class="ansi-cyan-fg">res1_4</span>: <span class="ansi-green-fg">Boolean</span> = true</pre>
 </div>
 
@@ -13255,7 +13255,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">a</span>: <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">a</span></pre>
+<pre><span class="ansi-cyan-fg">a</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">a</span></pre>
 </div>
 
 </div>
@@ -13298,7 +13298,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">id</span>: <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>]]] = <span class="ansi-green-fg">(A : 𝒰 ) ↦ (a : A) ↦ a</span></pre>
+<pre><span class="ansi-cyan-fg">id</span>: <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(A : 𝒰 ) ↦ (a : A) ↦ a</span></pre>
 </div>
 
 </div>
@@ -13341,8 +13341,8 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res4_0</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>]]]] = <span class="ansi-green-fg">∏(A : 𝒰 ){ (A → A) }</span>
-<span class="ansi-cyan-fg">res4_1</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>]]] = <span class="ansi-green-fg">(A → A)</span>
+<pre><span class="ansi-cyan-fg">res4_0</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]]] = <span class="ansi-green-fg">∏(A : 𝒰 ){ (A → A) }</span>
+<span class="ansi-cyan-fg">res4_1</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(A → A)</span>
 <span class="ansi-cyan-fg">res4_2</span>: <span class="ansi-green-fg">Boolean</span> = true</pre>
 </div>
 
@@ -13387,8 +13387,8 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">indep</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(a : A) ↦ a</span>
-<span class="ansi-cyan-fg">dep</span>: <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(a : A) ↦ a</span>
+<pre><span class="ansi-cyan-fg">indep</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">(a : A) ↦ a</span>
+<span class="ansi-cyan-fg">dep</span>: <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">(a : A) ↦ a</span>
 <span class="ansi-cyan-fg">res5_2</span>: <span class="ansi-green-fg">Boolean</span> = true</pre>
 </div>
 
@@ -13479,9 +13479,9 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">B</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">B</span>
-<span class="ansi-cyan-fg">f</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">f</span>
-<span class="ansi-cyan-fg">mp</span>: <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Term</span>]]]] = <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (a : A) ↦ (f : (A → B)) ↦ f(a)</span></pre>
+<pre><span class="ansi-cyan-fg">B</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">B</span>
+<span class="ansi-cyan-fg">f</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">f</span>
+<span class="ansi-cyan-fg">mp</span>: <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]]]] = <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (a : A) ↦ (f : (A → B)) ↦ f(a)</span></pre>
 </div>
 
 </div>
@@ -13522,7 +13522,7 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res8</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Term</span>]]]]] = <span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (A → ((A → B) → B)) } }</span></pre>
+<pre><span class="ansi-cyan-fg">res8</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]]]]] = <span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (A → ((A → B) → B)) } }</span></pre>
 </div>
 
 </div>
@@ -13564,7 +13564,7 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">mpBA</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(a : B) ↦ (f : (B → A)) ↦ f(a)</span>
+<pre><span class="ansi-cyan-fg">mpBA</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(a : B) ↦ (f : (B → A)) ↦ f(a)</span>
 <span class="ansi-cyan-fg">res9_1</span>: <span class="ansi-green-fg">Boolean</span> = true</pre>
 </div>
 
@@ -13608,7 +13608,7 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">aa</span>: <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">aa</span>
+<pre><span class="ansi-cyan-fg">aa</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">aa</span>
 <span class="ansi-cyan-fg">res10_1</span>: <span class="ansi-green-fg">Boolean</span> = true
 <span class="ansi-cyan-fg">res10_2</span>: <span class="ansi-green-fg">Boolean</span> = true</pre>
 </div>
@@ -13651,7 +13651,7 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">Bs</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]]] = <span class="ansi-green-fg">B(_ : A)</span></pre>
+<pre><span class="ansi-cyan-fg">Bs</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">B(_ : A)</span></pre>
 </div>
 
 </div>
@@ -13813,8 +13813,8 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">ba</span>: <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">b(a)</span>
-<span class="ansi-cyan-fg">b</span>: <span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">b</span>
+<pre><span class="ansi-cyan-fg">ba</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">b(a)</span>
+<span class="ansi-cyan-fg">b</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">b</span>
 <span class="ansi-cyan-fg">res15_2</span>: <span class="ansi-green-fg">AbsPair</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">A×B</span>
 <span class="ansi-cyan-fg">res15_3</span>: <span class="ansi-green-fg">AbsPair</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">(a , b)</span>
 <span class="ansi-cyan-fg">res15_4</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">U</span>] = <span class="ansi-green-fg">A×B</span>
@@ -13958,7 +13958,7 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res19</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">PlusTyp</span>.<span class="ansi-green-fg">ScndIncl</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">($gr : B) ↦ ScndIncl(PlusTyp(A,B),$gr)</span></pre>
+<pre><span class="ansi-cyan-fg">res19</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">PlusTyp</span>.<span class="ansi-green-fg">ScndIncl</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">($gr : B) ↦ ScndIncl(PlusTyp(A,B),$gr)</span></pre>
 </div>
 
 </div>
@@ -14008,8 +14008,8 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">eqAa</span>: <span class="ansi-green-fg">IdentityTyp</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">a = a</span>
-<span class="ansi-cyan-fg">ref</span>: <span class="ansi-green-fg">Refl</span>[<span class="ansi-green-fg">Term</span> with <span class="ansi-green-fg">Subs</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">Refl(A,a)</span></pre>
+<pre><span class="ansi-cyan-fg">eqAa</span>: <span class="ansi-green-fg">IdentityTyp</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">a = a</span>
+<span class="ansi-cyan-fg">ref</span>: <span class="ansi-green-fg">Refl</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">Refl(A,a)</span></pre>
 </div>
 
 </div>
@@ -14092,19 +14092,6 @@ The result is either <em>LambdaFixed</em> or <em>Lambda</em> accordingly.</p>
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
