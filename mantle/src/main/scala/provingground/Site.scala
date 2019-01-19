@@ -113,6 +113,13 @@ object Site {
                 {postList(relDocsPath)}
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Notebooks<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {notesList(relDocsPath)}
+              </ul>
+            </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li> <a href={s"${relDocsPath}scaladoc/provingground/index.html"} target="_blank">ScalaDocs</a></li>
@@ -175,6 +182,15 @@ object Site {
     } yield ln.drop(6).trim
 
   def filename(s: String) = s.toLowerCase.replaceAll("\\s", "-")
+
+  def gitHash: String = %%("git", "rev-parse", "HEAD").out.lines.head
+
+  lazy  val gitrep: String =
+    s"""
+       |
+     |#### git commit hash when running tutorial: $gitHash
+       |
+ """.stripMargin
 
   case class Tut(name: String, rawContent: String, optTitle: Option[String]) {
     val title = optTitle.getOrElse(name)
@@ -265,6 +281,13 @@ object Site {
     }
   }
 
+  def notesList(relDocsPath: String): Seq[Elem] =
+    for {
+      path : Path <- scala.util.Try(ls(pwd / "docs" / "notes")).getOrElse(List.empty[Path])
+      filename = path.last
+      url = s"$relDocsPath/notes/$filename"
+    } yield <li><a href={url} target="_blank">{filename.toString.dropRight(5)}</a></li>
+
   def getPost(p: Path): Post = {
     val l = ops.read.lines(p).toVector
     val name =
@@ -351,7 +374,7 @@ object Site {
 
   def mkTuts() = {
     allTuts.foreach { (tut) =>
-      pprint.log(s"compiling tutorial ${tut.name}")
+      pprint.log(s"writing tutorial ${tut.name}")
       write.over(tut.target, tut.output)
     }
   }

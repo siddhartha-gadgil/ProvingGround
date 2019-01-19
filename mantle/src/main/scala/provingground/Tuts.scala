@@ -14,7 +14,7 @@ object Tuts {
   lazy  val gitrep: String =
   s"""
      |
-     |#### Git Log when running tutorial: $gitHash
+     |#### git commit hash when running tutorial: $gitHash
      |
  """.stripMargin
 

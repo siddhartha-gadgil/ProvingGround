@@ -67,7 +67,7 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -75,6 +75,13 @@ messageStyle: "none",
                 Posts<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Notebooks<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="..//notes/HoTT.html" target="_blank">HoTT</a></li><li><a href="..//notes/MonoidProof.html" target="_blank">MonoidProof</a></li>
               </ul>
             </li>
           </ul>
@@ -151,10 +158,10 @@ assert{(n + n) + m == (n + m) + n}
 assert{n * m == m * n}
 </code></pre>
 <pre><code class="language-scala">n * (m * k)
-// res10: LocalTerm = (n * k * m)
+// res10: LocalTerm = (k * m * n)
 
 n * (m + k)
-// res11: LocalTerm = ((n * m) + (n * k))
+// res11: LocalTerm = ((m * n) + (k * n))
 
 assert(n* (m + k) == n * m + n * k)
 </code></pre>
@@ -180,9 +187,9 @@ fn(k)
 <h3>Recursive definitions</h3>
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
 <pre><code class="language-scala">val mf = lmbda(n)(prod(n + 1))
-// mf: Func[RepTerm[SafeLong], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ (($qxian :  Nat.Typ) ↦ (($qxian + (n * $qxian))))
+// mf: Func[RepTerm[SafeLong], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ (($qqpte :  Nat.Typ) ↦ (($qqpte + ($qqpte * n))))
 val factorial = Rec(1: Nat, mf)
-// factorial: Rec[LocalTerm] = rec(Nat.Typ)(Nat.Typ)(1)((n :  Nat.Typ) ↦ (($qxian :  Nat.Typ) ↦ (($qxian + (n * $qxian)))))
+// factorial: Rec[LocalTerm] = rec(Nat.Typ)(Nat.Typ)(1)((n :  Nat.Typ) ↦ (($qqpte :  Nat.Typ) ↦ (($qqpte + ($qqpte * n)))))
 </code></pre>
 <pre><code class="language-scala">factorial(3)
 // res17: LocalTerm = 6
@@ -197,7 +204,7 @@ assert(factorial(5) == (120 : Nat))
 
 assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
 </code></pre>
-<h4>Git Log when running tutorial: a0ff8fa0335bcc8e88205eb33093c9e48dfebbd8</h4>
+<h4>git commit hash when running tutorial: 50c223eba441e58c3f78a2a6de6369c51665981f</h4>
 
 
 </div>

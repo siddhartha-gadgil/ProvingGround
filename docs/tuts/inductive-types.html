@@ -67,7 +67,7 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -75,6 +75,13 @@ messageStyle: "none",
                 Posts<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="../posts/computer-assistance-in-homogenous-length-functions.html">2018-1-14-Computer assistance in Homogenous length functions</a></li><li><a href="../posts/tuning-with-tensorflow.html">2017-12-12-Tuning with Tensorflow</a></li><li><a href="../posts/stalling-in-the-lean-import---the-problem-case..html">2017-12-7-Stalling in the lean import - the problem case.</a></li><li><a href="../posts/lean-import-and-propositions.html">2017-12-6-Lean Import and Propositions</a></li><li><a href="../posts/levels-of-parsimony,-as-seen-from-logic-runs.html">2017-11-2-Levels of parsimony, as seen from Logic runs</a></li><li><a href="../posts/improvements-to-searching-and--exploration.html">2017-10-31-Improvements to searching and  exploration</a></li><li><a href="../posts/logic-and-modus-ponens.html">2017-10-25-Logic and Modus Ponens</a></li><li><a href="../posts/prover-components-and-identities-in-a-monoid.html">2017-10-20-Prover Components and Identities in a Monoid</a></li><li><a href="../posts/on-import-from-lean-export-format.html">2017-10-17-On import from Lean Export format</a></li><li><a href="../posts/&quot;quasi-literate-programming&quot;.html">2014-12-31-&quot;Quasi-literate programming&quot;</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Notebooks<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="..//notes/HoTT.html" target="_blank">HoTT</a></li><li><a href="..//notes/MonoidProof.html" target="_blank">MonoidProof</a></li>
               </ul>
             </li>
           </ul>
@@ -382,7 +389,7 @@ Namely to define the dependent function <code>f</code>, we must specify</p>
 </ul>
 <p>We define inductively a countdown function, giving the vector counting down from <code>n</code>.</p>
 <pre><code class="language-scala">val indNV = NatInd.induc(V)
-// indNV: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (Vec) (0)) ↦ ((InducDataSym(succ) :  ($xfpo : Nat ) ~&gt; (((Vec) ($xfpo)) → ((Vec) ((succ) ($xfpo))))) ↦ (ind(Nat)(Vec)(InducDataSym(0))(InducDataSym(succ))))
+// indNV: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (Vec) (0)) ↦ ((InducDataSym(succ) :  ($xfpt : Nat ) ~&gt; (((Vec) ($xfpt)) → ((Vec) ((succ) ($xfpt))))) ↦ (ind(Nat)(Vec)(InducDataSym(0))(InducDataSym(succ))))
 
 val v = &quot;v_m&quot; :: V(m)
 // v: Term = v_m
@@ -435,7 +442,7 @@ the <em>induction hypothesis</em>. Note that the induction hypothesis is a term 
 val hyp = &quot;isEven(double(n))&quot; :: isEven(double(n))
 // hyp: Term = isEven(double(n))
 val inducDoubleEven = NatInd.induc(n :-&gt; isEven(double(n)))
-// inducDoubleEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (isEven) (0)) ↦ ((InducDataSym(succ) :  ($bxaky : Nat ) ~&gt; (((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($bxaky))) → ((isEven) ((succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($bxaky))))))) ↦ (ind(Nat)((n :  Nat) ↦ ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))))(InducDataSym(0))(InducDataSym(succ))))
+// inducDoubleEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  (isEven) (0)) ↦ ((InducDataSym(succ) :  ($bxald : Nat ) ~&gt; (((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($bxald))) → ((isEven) ((succ) ((succ) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) ($bxald))))))) ↦ (ind(Nat)((n :  Nat) ↦ ((isEven) ((rec(Nat)(Nat)(0)((_ :  Nat) ↦ ((n :  Nat) ↦ ((succ) ((succ) (n)))))) (n))))(InducDataSym(0))(InducDataSym(succ))))
 </code></pre>
 <pre><code class="language-scala">val pfDoubleEven =
   inducDoubleEven(
@@ -467,7 +474,7 @@ val hyp2 = &quot;(n+1)-is-Even&quot; :: isEven(succ(n))
 // step: Func[Term, Term] = rec(PlusTyp((isEven) (n),(isEven) ((succ) (n))))(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))))((n-is-Even :  (isEven) (n)) ↦ (ScndIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),((_+2even) (n)) (n-is-Even))))(((n+1)-is-Even :  (isEven) ((succ) (n))) ↦ (FirstIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),(n+1)-is-Even)))
 </code></pre>
 <pre><code class="language-scala">val inducSuccEven = NatInd.induc(succEven)
-// inducSuccEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  PlusTyp((isEven) (0),(isEven) ((succ) (0)))) ↦ ((InducDataSym(succ) :  ($canah : Nat ) ~&gt; ((PlusTyp((isEven) ($canah),(isEven) ((succ) ($canah)))) → (PlusTyp((isEven) ((succ) ($canah)),(isEven) ((succ) ((succ) ($canah))))))) ↦ (ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(InducDataSym(0))(InducDataSym(succ))))
+// inducSuccEven: Func[Term, Func[FuncLike[Term, Func[Term, Term]], FuncLike[Term, Term]]] = (InducDataSym(0) :  PlusTyp((isEven) (0),(isEven) ((succ) (0)))) ↦ ((InducDataSym(succ) :  ($canam : Nat ) ~&gt; ((PlusTyp((isEven) ($canam),(isEven) ((succ) ($canam)))) → (PlusTyp((isEven) ((succ) ($canam)),(isEven) ((succ) ((succ) ($canam))))))) ↦ (ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(InducDataSym(0))(InducDataSym(succ))))
 </code></pre>
 <pre><code class="language-scala">val pf = inducSuccEven(base)(n :~&gt; step) !: thmSuccEven
 // pf: FuncLike[Term, Term] = ind(Nat)((n :  Nat) ↦ (PlusTyp((isEven) (n),(isEven) ((succ) (n)))))(FirstIncl(PlusTyp((isEven) (0),(isEven) ((succ) (0))),0even))((n :  Nat) ↦ (rec(PlusTyp((isEven) (n),(isEven) ((succ) (n))))(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))))((n-is-Even :  (isEven) (n)) ↦ (ScndIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),((_+2even) (n)) (n-is-Even))))(((n+1)-is-Even :  (isEven) ((succ) (n))) ↦ (FirstIncl(PlusTyp((isEven) ((succ) (n)),(isEven) ((succ) ((succ) (n)))),(n+1)-is-Even)))))
@@ -488,13 +495,13 @@ val ass = &quot;assumption&quot; :: n ~&gt;: (fn(n) =:= fn(succ(n)))
 <pre><code class="language-scala">val shyp = &quot;hypothesis&quot; :: (fn(zero) =:= fn(n))
 // shyp: Equality[Term] = hypothesis : ((f) (0) = (f) (n))
 val sstep = shyp :-&gt; {IdentityTyp.trans(A)(fn(zero))(fn(n))(fn(succ(n)))(shyp)(ass(n)) }
-// sstep: Func[Equality[Term], Equality[Term]] = (hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($cbpam :  A) ↦ (($cbpan :  A) ↦ ($cbpam = $cbpan))((f) (0))((f) (n))}{($cbhlq :  A) ↦ (($cbhlr :  A) ↦ ((_ : ($cbhlq = $cbhlr) :  $cbhlq = $cbhlr) ↦ (($cbhlr = (f) ((succ) (n))) → ($cbhlq = (f) ((succ) (n))))))}(($cbhlq :  A) ↦ (($cbinw : ($cbhlq = (f) ((succ) (n))) :  $cbhlq = (f) ((succ) (n))) ↦ ($cbinw : ($cbhlq = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))
+// sstep: Func[Equality[Term], Equality[Term]] = (hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($cbpar :  A) ↦ (($cbpas :  A) ↦ ($cbpar = $cbpas))((f) (0))((f) (n))}{($cbhlv :  A) ↦ (($cbhlw :  A) ↦ ((_ : ($cbhlv = $cbhlw) :  $cbhlv = $cbhlw) ↦ (($cbhlw = (f) ((succ) (n))) → ($cbhlv = (f) ((succ) (n))))))}(($cbhlv :  A) ↦ (($cbiob : ($cbhlv = (f) ((succ) (n))) :  $cbhlv = (f) ((succ) (n))) ↦ ($cbiob : ($cbhlv = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))
 </code></pre>
 <pre><code class="language-scala">val inducClaim = NatInd.induc(claim)
-// inducClaim: Func[Equality[Term], Func[FuncLike[Term, Func[Equality[Term], Equality[Term]]], FuncLike[Term, Equality[Term]]]] = (InducDataSym(0) : ((f) (0) = (f) (0)) :  (f) (0) = (f) (0)) ↦ ((InducDataSym(succ) :  ($cbpcx : Nat ) ~&gt; (((f) (0) = (f) ($cbpcx)) → ((f) (0) = (f) ((succ) ($cbpcx))))) ↦ (ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(InducDataSym(0) : ((f) (0) = (f) (0)))(InducDataSym(succ))))
+// inducClaim: Func[Equality[Term], Func[FuncLike[Term, Func[Equality[Term], Equality[Term]]], FuncLike[Term, Equality[Term]]]] = (InducDataSym(0) : ((f) (0) = (f) (0)) :  (f) (0) = (f) (0)) ↦ ((InducDataSym(succ) :  ($cbpdc : Nat ) ~&gt; (((f) (0) = (f) ($cbpdc)) → ((f) (0) = (f) ((succ) ($cbpdc))))) ↦ (ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(InducDataSym(0) : ((f) (0) = (f) (0)))(InducDataSym(succ))))
 </code></pre>
 <pre><code class="language-scala">val spf = inducClaim(sbase)(n :~&gt; sstep) !: (n ~&gt;: (fn(zero) =:= fn(n)))
-// spf: FuncLike[Term, Equality[Term]] = ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(Refl(A,(f) (0)))((n :  Nat) ↦ ((hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($cbwng :  A) ↦ (($cbwnh :  A) ↦ ($cbwng = $cbwnh))((f) (0))((f) (n))}{($cbhlq :  A) ↦ (($cbhlr :  A) ↦ ((_ : ($cbhlq = $cbhlr) :  $cbhlq = $cbhlr) ↦ (($cbhlr = (f) ((succ) (n))) → ($cbhlq = (f) ((succ) (n))))))}(($cbhlq :  A) ↦ (($cbinw : ($cbhlq = (f) ((succ) (n))) :  $cbhlq = (f) ((succ) (n))) ↦ ($cbinw : ($cbhlq = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))))
+// spf: FuncLike[Term, Equality[Term]] = ind(Nat)((n :  Nat) ↦ ((f) (0) = (f) (n)))(Refl(A,(f) (0)))((n :  Nat) ↦ ((hypothesis : ((f) (0) = (f) (n)) :  (f) (0) = (f) (n)) ↦ (((ind{($cbwnl :  A) ↦ (($cbwnm :  A) ↦ ($cbwnl = $cbwnm))((f) (0))((f) (n))}{($cbhlv :  A) ↦ (($cbhlw :  A) ↦ ((_ : ($cbhlv = $cbhlw) :  $cbhlv = $cbhlw) ↦ (($cbhlw = (f) ((succ) (n))) → ($cbhlv = (f) ((succ) (n))))))}(($cbhlv :  A) ↦ (($cbiob : ($cbhlv = (f) ((succ) (n))) :  $cbhlv = (f) ((succ) (n))) ↦ ($cbiob : ($cbhlv = (f) ((succ) (n))))))) (hypothesis : ((f) (0) = (f) (n)))) ((assumption) (n) : ((f) (n) = (f) ((succ) (n)))) : ((f) (0) = (f) ((succ) (n))))))
 </code></pre>
 <h2>Indexed Inductive types</h2>
 <p>A generalization of inductive types are <em>inductive type families</em>, i.e., inductive types depending on an index.
@@ -515,15 +522,15 @@ val VecInd =
 // vcons: FuncLike[Term, Func[Term, Func[Term, Term]]] = cons
 
 vcons.typ.fansi
-// res45: String = [36m∏[93m([39m$ccepx[33m : [39mNat[93m)[91m{ [39m(A [91m→[39m (Vec($ccepx) [91m→[39m Vec(succ($ccepx))))[91m }[39m
+// res45: String = [36m∏[93m([39m$cceqc[33m : [39mNat[93m)[91m{ [39m(A [91m→[39m (Vec($cceqc) [91m→[39m Vec(succ($cceqc))))[91m }[39m
 </code></pre>
 <p>We can define function recursively on vectors of all indices. For instance, we can define the size.</p>
 <pre><code class="language-scala">val vn = &quot;v_n&quot; :: Vec(n)
 // vn: Term = v_n
 val recVN = VecInd.rec(Nat)
-// recVN: Func[Term, Func[FuncLike[Term, Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  ($cceqj : Nat ) ~&gt; ((A) → (((Vec) ($cceqj)) → ((Nat) → (Nat))))) ↦ (($cceqe :  Nat) ↦ (rec{Vec($cceqe)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
+// recVN: Func[Term, Func[FuncLike[Term, Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  ($cceqo : Nat ) ~&gt; ((A) → (((Vec) ($cceqo)) → ((Nat) → (Nat))))) ↦ (($cceqj :  Nat) ↦ (rec{Vec($cceqj)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
 val vsize = recVN(zero)(n :~&gt;(a :-&gt; (vn :-&gt;(m :-&gt;(succ(m))))))
-// vsize: FuncLike[Term, Func[Term, Term]] = ($cceqe :  Nat) ↦ (rec{Vec($cceqe)}{Nat}(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m)))))))
+// vsize: FuncLike[Term, Func[Term, Term]] = ($cceqj :  Nat) ↦ (rec{Vec($cceqj)}{Nat}(0)((n :  Nat) ↦ ((_ :  A) ↦ ((_ :  (Vec) (n)) ↦ ((m :  Nat) ↦ ((succ) (m)))))))
 vsize(zero)(vnil)
 // res46: Term = 0
 </code></pre>
@@ -546,7 +553,7 @@ val VecNInd =
 // VecNInd: IndexedConstructorSeqDom[HNil :: IndexedConstructorShape.IndexedCnstDepFuncConsShape.type :: IndexedConstructorShape.IndexedCnstFuncConsShape.type :: IndexedConstructorShape.IndexedIndexedFuncConsShape.type :: HNil :: HNil, Term, Func[Term, Typ[Term]], Term :: HNil, Term :: FuncLike[Term, Func[Term, Func[Term, Term]]] :: HNil] = Cons(nil,IndexedIdShape(FuncTypFamily(Nat,IdTypFamily()),0 :: HNil),Cons(cons,IndexedCnstDepFuncConsShape(Nat,n ↦ IndexedCnstFuncConsShape(Nat,IndexedIndexedFuncConsShape(IdIterShape(FuncTypFamily(Nat,IdTypFamily()),n :: HNil),IndexedIdShape(FuncTypFamily(Nat,IdTypFamily()),(succ) (n) :: HNil),n :: HNil))),Empty(Vec(Nat),FuncTypFamily(Nat,IdTypFamily()))))
 </code></pre>
 <pre><code class="language-scala">val recVNN                  = VecNInd.rec(Nat)
-// recVNN: Func[Term, Func[FuncLike[Term, Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  ($ccixd : Nat ) ~&gt; ((Nat) → (((Vec(Nat)) ($ccixd)) → ((Nat) → (Nat))))) ↦ (($cciwy :  Nat) ↦ (rec{Vec(Nat)($cciwy)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
+// recVNN: Func[Term, Func[FuncLike[Term, Func[Term, Func[Term, Func[Term, Term]]]], FuncLike[Term, Func[Term, Term]]]] = (RecDataSym(nil) :  Nat) ↦ ((RecDataSym(cons) :  ($ccixi : Nat ) ~&gt; ((Nat) → (((Vec(Nat)) ($ccixi)) → ((Nat) → (Nat))))) ↦ (($ccixd :  Nat) ↦ (rec{Vec(Nat)($ccixd)}{Nat}(RecDataSym(nil))(RecDataSym(cons)))))
 val vnilN :: vconsN :: HNil = VecNInd.intros
 // vnilN: Term = nil
 // vconsN: FuncLike[Term, Func[Term, Func[Term, Term]]] = cons
@@ -554,7 +561,7 @@ val vnilN :: vconsN :: HNil = VecNInd.intros
 <pre><code class="language-scala">val k = &quot;k&quot; :: Nat
 // k: Term = k
 val vsum = recVNN(zero)(n :~&gt;(k :-&gt; (vnn :-&gt;(m :-&gt; (add(m)(k)) ))))
-// vsum: FuncLike[Term, Func[Term, Term]] = ($cciwy :  Nat) ↦ (rec{Vec(Nat)($cciwy)}{Nat}(0)((n :  Nat) ↦ ((k :  Nat) ↦ ((_ :  (Vec(Nat)) (n)) ↦ ((m :  Nat) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (k)))))))
+// vsum: FuncLike[Term, Func[Term, Term]] = ($ccixd :  Nat) ↦ (rec{Vec(Nat)($ccixd)}{Nat}(0)((n :  Nat) ↦ ((k :  Nat) ↦ ((_ :  (Vec(Nat)) (n)) ↦ ((m :  Nat) ↦ (((rec(Nat)((Nat) → (Nat))((m :  Nat) ↦ (m))((_ :  Nat) ↦ ((add(n) :  (Nat) → (Nat)) ↦ ((m :  Nat) ↦ ((succ) ((add(n)) (m))))))) (m)) (k)))))))
 </code></pre>
 <pre><code class="language-scala">vsum(zero)(vnilN)
 // res49: Term = 0
@@ -573,7 +580,7 @@ vsum(two)(v3)
 // res53: Term = (succ) ((succ) ((succ) (0)))
 assert(vsum(two)(v3) == three)
 </code></pre>
-<h4>Git Log when running tutorial: a0ff8fa0335bcc8e88205eb33093c9e48dfebbd8</h4>
+<h4>git commit hash when running tutorial: 50c223eba441e58c3f78a2a6de6369c51665981f</h4>
 
 
 </div>
