@@ -123,7 +123,7 @@ object MDocService {
     import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
     val outputS = new ByteArrayOutputStream()
     val ps = new PrintStream(outputS)
-    val md = s"```scala mdoc\n$code\n```"
+    val md = s"```scala mdoc:to-string\n$code\n```"
     write.over(pwd / "tmp" / "docs" / "fiddle.md", md)
     val td = java.nio.file.Paths.get("tmp/")
     pprint.log(td)

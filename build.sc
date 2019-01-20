@@ -228,7 +228,7 @@ object leanlib extends Module{
   }
 }
 
-object nlp extends SbtModule with ServerModule{
+object nlp extends SbtModule with ServerModule with PGPublish {
   override def moduleDeps = Seq(core.jvm, mantle)
 
   override def ivyDeps = T{
