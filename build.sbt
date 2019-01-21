@@ -218,13 +218,19 @@ lazy val leanlib =
   .settings(jvmSettings: _*)
   .dependsOn(coreJVM)
 
+// lazy  val rootLocation: File = file(".").getAbsoluteFile
+
 lazy val mantle = (project in file("mantle"))
   .settings(
     name := "ProvingGround-mantle",
+    unmanagedResourceDirectories in Compile += {
+      baseDirectory.in(root).value / "docs"
+    },
+    resources in Compile += (fastOptJS in (client, Compile)).value.data
     // resourceDirectory := baseDirectory.value / "docs"
     // scalaJSProjects := Seq(client),
     // pipelineStages in Assets := Seq(scalaJSPipeline)
-    //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
+    //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full,
   )
   .settings(commonSettings: _*)
   .settings(jvmSettings: _*)
@@ -388,7 +394,7 @@ fork in run := true
 connectInput := true
 outputStrategy := Some(StdoutOutput)
 
-// val root = (project in file("."))
+val root = (project in file("."))
 //   .settings(baseSettings: _*)
 //   .enablePlugins(ScalaUnidocPlugin)
 //   .settings(
