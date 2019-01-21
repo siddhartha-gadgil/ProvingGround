@@ -90,7 +90,7 @@ lazy val jvmSettings = Seq(
     // Last stable release
     // "org.scalanlp" %% "breeze" % "0.13.2",
     "com.atlassian.commonmark" % "commonmark" % "0.11.0",
-    "org.scalameta" %% "mdoc" % "1.2.7",
+    "org.scalameta" %% "mdoc" % "1.2.8",
     "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64"
     // Native libraries are not included by default. add this if you want them (as of 0.7)
     // Native libraries greatly improve performance, but increase jar sizes.
@@ -157,6 +157,7 @@ lazy val client = project
     // sourceMapsDirectories += coreJS.base / "..",
     unmanagedSourceDirectories in Compile := Seq(
       (scalaSource in Compile).value),
+    Compile / fastOptJS / artifactPath := baseDirectory.value / "target" / "out.js",
     resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(

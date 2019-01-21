@@ -31,11 +31,62 @@ object MantleRoutes extends cask.Routes {
     |
   """.stripMargin
 
+  val fiddleHTML =
+  """
+  |<!DOCTYPE html>
+  |
+  |<html>
+  |  <head>
+  |    <title>ProvingGround Fiddle</title>
+  |    <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
+  |    <link rel="icon" href="/resources/IIScLogo.jpg">
+  |    <script src="../resources/js/ace.js" type="text/javascript" charset="utf-8"></script>
+  |    <link rel="stylesheet" href="../resources/css/katex.min.css">
+  |    <script src="../resources/js/katex.min.js" type="text/javascript" charset="utf-8"></script>
+  |   <script src="../resources/js/auto-render.min.js" type="text/javascript" charset="utf-8"></script>
+  |    <link rel="stylesheet" href="../resources/css/github-gist.css">
+  |    <script src="../resources/js/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+  |    <script src="../resources/out.js" type="text/javascript" charset="utf-8"></script>
+  |    <style type="text/css" media="screen">
+  |        .editor {
+  |            height: 300px;
+  |            font-size: 14px;
+  |
+  |        }
+  |        .view {
+  |          overflow-y: auto;
+  |          height: 300px;
+  |        }
+  |        .btn-space {
+  |    margin-right: 5px;
+  |}
+  |    </style>
+  |  </head>
+  |  <body>
+  |
+  |  <div class="container">
+  |    <h2 class="text-center"> ProvingGround Fiddle </h2>
+  |    <p> Any commands entered below are run in an interpreter, with the code of
+  |    the ProvingGround project, <em>excluding</em> the natural language processing component, in the class path.</p>
+  |
+  |
+  |    <div id="edit-div"></div>
+  |  </div>
+  |
+  |  <script>
+  |    CodeEditorJS.main()
+  |    </script>
+  |
+  |  </body>
+  |</html>
+  |
+""".stripMargin
+
 val proverHTML =
   """
     |
     |  <div id="prover-div"></div>
-    |  <script type="text/javascript" src="resources/out.js"></script>
+    |  <script type="text/javascript" src="../resources/out.js"></script>
     |  <script>
     |   mantlemenu.add()
     |   prover.load()
@@ -47,7 +98,7 @@ val proverHTML =
     """
       |
       |  <div id="leanlib-div"></div>
-      |  <script type="text/javascript" src="resources/out.js"></script>
+      |  <script type="text/javascript" src="../resources/out.js"></script>
       |  <script>
       |   mantlemenu.add()
       |   leanlib.load()
@@ -58,7 +109,7 @@ val proverHTML =
   val interactiveProverHTML =
   """
     |<div id="interactive-prover-div"></div>
-    |<script type="text/javascript" src="resources/out.js"></script>
+    |<script type="text/javascript" src="../resources/out.js"></script>
     |  <script>
     |   mantlemenu.add()
     |   interactiveProver.load()
@@ -130,7 +181,7 @@ val proverHTML =
     trySite()
 
   @cask.get("/scripts/index.html")
-  def fiddle() = indexHTML
+  def fiddle() = fiddleHTML
 
   @cask.post("/scripts/kernel")
   def repl(request: cask.Request) = {

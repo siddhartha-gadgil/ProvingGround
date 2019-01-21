@@ -119,6 +119,8 @@ object LeanRoutes extends cask.Routes {
   @cask.get("mods/:file")
   def getMods(file: String): String = {
     val path    = resource / file
+    // pprint.log(path.toString)
+    // pprint.log(read.lines(path).take(10))
     val in      = new java.io.ByteArrayInputStream(read.bytes(path))
     val newMods = getModsFromStream(in)
     mods ++= newMods
