@@ -222,13 +222,6 @@ object LeanRoutes extends cask.Routes {
               pprint.log(p.findDefMod(
                 trepplein.Name(name.split("\\."): _*)).map(_.value), height = 1000)
               sendErr(message)
-//              ammonite.Main(
-//                predefCode = "import provingground._, HoTT._, interface._"
-//              ).run(
-//                "error" -> err,
-//                "parser" -> p,
-//                "name" -> name
-//              )
             }, { (t) =>
               result(name, t)
               defnMap ++= p.defnMap

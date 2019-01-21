@@ -2,7 +2,7 @@ package provingground.interface
 
 import ammonite.ops
 import ops._
-import Tuts._
+// import Tuts._
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 
@@ -199,7 +199,7 @@ object Site {
 
     def url(relDocsPath: String) = s"${relDocsPath}tuts/$name.html"
 
-    def content: String = fromMD(rawContent + "\n" + Tuts.gitrep + "\n")
+    def content: String = fromMD(rawContent + "\n" + gitrep + "\n")
 
     def output: String =
       page(content, "../", title)

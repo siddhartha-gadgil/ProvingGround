@@ -58,7 +58,7 @@ val commonLibs = List(
   ivy"org.typelevel::cats-core::1.4.0",
   ivy"io.monix::monix::3.0.0-RC2",
   ivy"com.lihaoyi::pprint::0.5.2",
-  ivy"com.lihaoyi::sourcecode::0.1.4"//,
+  // ivy"com.lihaoyi::sourcecode::0.1.4"//,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
@@ -67,21 +67,9 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   override def ivyDeps = Agg(commonLibs: _*)
   def version = "0.1-SNAPSHOT"
 
-  // def publishVersion = "0.1-SNAPSHOT"
-
   def organization = "in.ac.iisc.math"
   def name = "ProvingGround"
 
-  // def pomSettings = PomSettings(
-  //     description = "Automated theorem proving through learning in HoTT",
-  //     organization = "in.ac.iisc.math",
-  //     url = "https://github.com/siddhartha-gadgil/ProvingGround",
-  //     licenses = Seq(License.MIT),
-  //     versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),
-  //     developers = Seq()
-  //   )
-
-  // override def scalacPluginIvyDeps = Agg(ivy"org.scalameta:::semanticdb-scalac:4.0.0")
 
   override def scalacOptions =
     Seq("-Ypartial-unification",
@@ -201,8 +189,24 @@ object trepplein extends SbtModule with PublishModule{
     )
 }
 
-object mantle extends SbtModule with JvmModule with PGPublish{
+val mantleLibs = List(
+  ivy"com.lihaoyi:::ammonite:$ammV",
+  ivy"com.lihaoyi::cask:0.1.9",
+  ivy"org.scalameta::scalameta:4.1.0",
+  ivy"com.atlassian.commonmark:commonmark:0.11.0",
+  ivy"org.apache.logging.log4j:log4j-core:2.11.1",
+  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
+  ivy"org.scalameta::mdoc:1.2.8"
+)
+
+
+object mantle extends CommonModule with SbtModule with PGPublish{
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
+
+  override def ivyDeps =
+    T{
+      super.ivyDeps() ++ Agg(mantleLibs: _*)
+    }
 
   override def mainClass = Some("provingground.interface.MantleCask")
 
