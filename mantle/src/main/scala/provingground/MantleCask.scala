@@ -84,8 +84,18 @@ val proverHTML =
   @cask.staticFiles("/docs")
   def docsRoute() = "docs"
 
-  @cask.staticResources("/resources")
-  def public() = "."
+  def getResource(segs: Seq[String]) = {
+    val path = segs.foldLeft[os.ResourcePath](os.resource)(_ / _)
+    val txt = os.read(path)
+    txt
+  }
+
+  @cask.get("/resources", subpath = true)
+  def public(request: cask.Request) = {
+    val segs = request.remainingPathSegments
+    pprint.log(segs)
+    getResource(segs)
+  }
 
   @cask.get("/")
   def root() =
