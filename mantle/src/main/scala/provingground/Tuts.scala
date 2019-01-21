@@ -1,6 +1,6 @@
 package provingground.interface
 
-import Amm._, ammonite.ops._
+import ammonite.ops._
 
 object Tuts {
   implicit val wd: Path = pwd
@@ -21,12 +21,7 @@ object Tuts {
 
   def mkTut(f: String): String = {
     val top =
-      """
-        |import ammonite.ops._
-        |interp.load.cp(pwd / 'out/'mantle/'assembly/'dest/"out.jar")
-        |repl.pprinter.bind(provingground.translation.FansiShow.simplePrint)
-        |repl.prompt() = "scala> "
-      """.stripMargin
+      ""
 
     val spl = f.split("```tut").map(_.split("```").toVector).toVector
 
@@ -37,7 +32,7 @@ object Tuts {
 
     pprint.log(tutcode)
 
-    val output = replResult(tutcode)
+    val output = MDocService.replResult(tutcode).right.get
 
     pprint.log(output)
 

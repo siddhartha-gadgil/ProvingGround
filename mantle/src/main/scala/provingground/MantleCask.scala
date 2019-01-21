@@ -3,7 +3,8 @@ package provingground.interface
 import provingground._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import MantleService._
+import scala.concurrent._
+// import MantleService._
 import io.undertow.websockets.WebSocketConnectionCallback
 import io.undertow.websockets.core.{AbstractReceiveListener, BufferedTextMessage, WebSocketChannel, WebSockets}
 import io.undertow.websockets.spi.WebSocketHttpExchange
@@ -12,6 +13,74 @@ import monix.execution.CancelableFuture
 import scala.util.Try
 
 object MantleRoutes extends cask.Routes {
+  val indexHTML =
+  """
+    |
+    | <p> This is a server to experiment with a few aspects of the ProvingGround project, as well as help with development. The natural
+    | language processing is on a separate server as it has a large additional dependency.</p>
+    |  <ul>
+    |   <li> <a href="build" target="_blank">Build</a> the documentation page.</li>
+    |   <li> <a href="prover.html">Prover experiments</a>: currently one illustration of autonomous proving. </li>
+    |   <li> <a href="scripts/index.html" target="_blank">Fiddle</a>: an interpreter
+    | with much of the code of the ProvingGround project in the class path.</li>
+    |  </ul>
+    |  <script type="text/javascript" src="resources/out.js"></script>
+    |  <script>
+    |   mantlemenu.add()
+    |  </script>
+    |
+  """.stripMargin
+
+val proverHTML =
+  """
+    |
+    |  <div id="prover-div"></div>
+    |  <script type="text/javascript" src="resources/out.js"></script>
+    |  <script>
+    |   mantlemenu.add()
+    |   prover.load()
+    |  </script>
+    |
+  """.stripMargin
+
+  val leanlibHTML =
+    """
+      |
+      |  <div id="leanlib-div"></div>
+      |  <script type="text/javascript" src="resources/out.js"></script>
+      |  <script>
+      |   mantlemenu.add()
+      |   leanlib.load()
+      |  </script>
+      |
+    """.stripMargin
+
+  val interactiveProverHTML =
+  """
+    |<div id="interactive-prover-div"></div>
+    |<script type="text/javascript" src="resources/out.js"></script>
+    |  <script>
+    |   mantlemenu.add()
+    |   interactiveProver.load()
+    |  </script>
+  """.stripMargin
+
+
+  def trySite() =
+  Try(Site.mkHome())
+    .map { (_) =>
+      Future(
+        Try(Site.mkSite())
+          .getOrElse(pprint.log(
+            "Cannot build site, perhaps this is not run from the root of the repo"))
+      )
+      "Building site"
+    }
+    .getOrElse(
+      "Cannot build site, perhaps this is not run from the root of the repo")
+
+
+
   @cask.staticFiles("docs")
   def docsRoute() = "docs"
 
@@ -51,7 +120,7 @@ object MantleRoutes extends cask.Routes {
     trySite()
 
   @cask.get("/scripts/index.html")
-  def fiddle() = AmmService.indexHTML
+  def fiddle() = indexHTML
 
   @cask.post("/scripts/kernel")
   def repl(request: cask.Request) = {

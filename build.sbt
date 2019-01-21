@@ -243,12 +243,37 @@ lazy val mantle = (project in file("mantle"))
     // , TutPlugin
   // )
 
+  lazy val crust = (project in file("crust"))
+  .settings(
+    name := "ProvingGround-crust",
+    // resourceDirectory := baseDirectory.value / "docs"
+    // scalaJSProjects := Seq(client),
+    // pipelineStages in Assets := Seq(scalaJSPipeline)
+    //  libraryDependencies += "com.lihaoyi" % "ammonite" % ammV cross CrossVersion.full
+  )
+  .settings(commonSettings: _*)
+  .settings(jvmSettings: _*)
+//        .settings(serverSettings : _*)
+  .settings(sourceGenerators in Test += Def.task {
+    val file = (sourceManaged in Test).value / "amm.scala"
+    IO.write(
+      file,
+      s"""object amm extends App { ammonite.Main("$initCommands").run() }""")
+    Seq(file)
+  }.taskValue)
+  .dependsOn(coreJVM)
+  .dependsOn(server)
+  .dependsOn(trepplein)
+  .dependsOn(leanlib)
+  .dependsOn(mantle)
+
 
 lazy val exploring = project
   .settings(name := "ProvingGround-exploring",
             libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % ammV)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
+  .dependsOn(crust)
   // .enablePlugins(JavaAppPackaging, UniversalPlugin)
 
 val nlpInitCommands =
@@ -268,6 +293,7 @@ lazy val nlp = (project in file("nlp"))
        .settings(jvmSettings : _*)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
+  .dependsOn(crust)
 
 // lazy val translation = (project in file("translation"))
 //   .settings(name := "ProvingGround-Translation",
@@ -348,6 +374,7 @@ lazy val andrewscurtis = (project in file("andrewscurtis"))
   .settings(acSettings: _*)
   .dependsOn(coreJVM)
   .dependsOn(mantle)
+  .dependsOn(crust)
 
 lazy val normalform = (project in file("normalform"))
   .settings(commonSettings: _*)

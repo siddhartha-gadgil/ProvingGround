@@ -202,7 +202,7 @@ object trepplein extends SbtModule with PublishModule{
 }
 
 object mantle extends SbtModule with JvmModule with PGPublish{
-  override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm, server)
+  override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
 
   override def mainClass = Some("provingground.interface.MantleCask")
 
@@ -210,6 +210,11 @@ object mantle extends SbtModule with JvmModule with PGPublish{
     override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
     def testFrameworks = Seq("org.scalatest.tools.Framework")
   }
+
+}
+
+object crust extends SbtModule with JvmModule with PGPublish {
+  override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm, server, mantle)
 
 }
 
@@ -229,7 +234,7 @@ object leanlib extends Module{
 }
 
 object nlp extends SbtModule with ServerModule with PGPublish {
-  override def moduleDeps = Seq(core.jvm, mantle)
+  override def moduleDeps = Seq(core.jvm, mantle, crust)
 
   override def ivyDeps = T{
     super.ivyDeps() ++  Agg(
@@ -244,10 +249,10 @@ object nlp extends SbtModule with ServerModule with PGPublish {
 }
 
 object jvmRoot extends CommonModule{
-  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server)
+  val projects = Seq(core.jvm, leanlib.jvm, mantle, nlp, server, crust)
 
   override def sources = T.sources{
-    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources() ++ server.sources()
+    core.jvm.sources() ++ leanlib.jvm.sources() ++ mantle.sources() ++ nlp.sources() ++ andrewscurtis.sources() ++ server.sources() ++ crust.sources()
   }
 
   override def ivyDeps = T{
@@ -264,13 +269,13 @@ object jvmRoot extends CommonModule{
 }
 
 object exploring extends JvmModule{
-  override def moduleDeps = Seq(core.jvm, mantle)
+  override def moduleDeps = Seq(core.jvm, mantle, crust)
 }
 
 object realfunctions extends JvmModule
 
 object andrewscurtis extends JvmModule with SbtModule{
-  override def moduleDeps = Seq(core.jvm, mantle)
+  override def moduleDeps = Seq(core.jvm, mantle, crust)
 
   object test extends Tests{
     override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
