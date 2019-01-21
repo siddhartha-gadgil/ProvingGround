@@ -7,7 +7,7 @@ import trepplein._
 
 import scala.meta.{Term => _, Type => _, _}
 import scala.meta
-import ammonite.ops._
+import os._
 
 import scala.collection.immutable
 import scala.util.Try

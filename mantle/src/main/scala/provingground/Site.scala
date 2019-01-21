@@ -1,8 +1,6 @@
 package provingground.interface
 
-import ammonite.ops
-import ops._
-// import Tuts._
+import os._
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 
@@ -10,27 +8,27 @@ import scala.util.Try
 import scala.xml.Elem
 
 object Site {
-  implicit val wd = pwd
+  // implicit val wd = pwd
 
   def mkDocTuts() = {
     val settings = mdoc.MainSettings().withIn(java.nio.file.Paths.get("tuts"))
     mdoc.Main.process(settings)
   }
 
-  def pack() = {
-    pprint.log("packing client")
-    %%("mill", "client.pack")
-  }
+  // def pack() = {
+  //   pprint.log("packing client")
+  //   %%("mill", "client.pack")
+  // }
 
   def mkDocs() = {
     pprint.log("generating scaladocs")
-    %%("mill", "jvmRoot.docs")
+    os.proc("mill", "jvmRoot.docs").call()
   }
 
-  def assemble() = {
-    pprint.log("assembling mantle")
-    %%("mill", "mantle.assembly")
-  }
+  // def assemble() = {
+  //   pprint.log("assembling mantle")
+  //   %%("mill", "mantle.assembly")
+  // }
 
   val mathjax =
     """
@@ -183,7 +181,7 @@ object Site {
 
   def filename(s: String) = s.toLowerCase.replaceAll("\\s", "-")
 
-  def gitHash: String = %%("git", "rev-parse", "HEAD").out.lines.head
+  def gitHash: String = os.proc("git", "rev-parse", "HEAD").call().out.lines.head
 
   lazy  val gitrep: String =
     s"""
@@ -213,7 +211,7 @@ object Site {
   }
 
   def getTut(p: Path): Tut = {
-    val l = ops.read.lines(p).toVector
+    val l = os.read.lines(p).toVector
     val name =
       titleOpt(l).map(filename).getOrElse(
         p.last.dropRight(p.ext.length + 1)
@@ -222,7 +220,7 @@ object Site {
     Tut(name, rawContent, titleOpt(l))
   }
 
-  def allTuts: Seq[Tut] = ls(pwd / "out").filter(_.ext == "md").map(getTut)
+  def allTuts: Seq[Tut] = os.list(pwd / "out").filter(_.ext == "md").map(getTut)
 
   def tutList(relDocsPath: String): Seq[Elem] =
     Try {
@@ -283,13 +281,13 @@ object Site {
 
   def notesList(relDocsPath: String): Seq[Elem] =
     for {
-      path : Path <- scala.util.Try(ls(pwd / "docs" / "notes")).getOrElse(List.empty[Path])
+      path : Path <- scala.util.Try(os.list(pwd / "docs" / "notes")).getOrElse(List.empty[Path])
       filename = path.last
       url = s"${relDocsPath}notes/$filename"
     } yield <li><a href={url} target="_blank">{filename.toString.dropRight(5)}</a></li>
 
   def getPost(p: Path): Post = {
-    val l = ops.read.lines(p).toVector
+    val l = os.read.lines(p).toVector
     val name =
       titleOpt(l).map(filename).getOrElse(
         p.last.dropRight(p.ext.length + 1)
@@ -301,7 +299,7 @@ object Site {
   def postsDir = pwd / "jekyll" / "_posts"
 
   def allPosts: Seq[Post] =
-    ls(postsDir).map(getPost).sortBy(_.date).reverse
+    os.list(postsDir).map(getPost).sortBy(_.date).reverse
 
   def postList(relDocsPath: String): Seq[Elem] =
     Try {
@@ -357,7 +355,7 @@ object Site {
 
   def home =
     page(fromMD(
-           body(ops.read.lines(pwd / "docs" / "index.md").toVector)
+           body(os.read.lines(pwd / "docs" / "index.md").toVector)
              .mkString("", "\n", "")),
          "",
          "ProvingGround: Automated Theorem proving by learning")

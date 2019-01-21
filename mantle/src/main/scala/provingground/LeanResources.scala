@@ -2,7 +2,7 @@ package provingground.interface
 
 import provingground._
 import library.LeanMemo
-import ammonite.ops._
+import os._
 import monix.eval._
 import monix.execution.Scheduler.Implicits.global
 import LeanInterface._

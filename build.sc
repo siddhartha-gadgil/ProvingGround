@@ -190,13 +190,13 @@ object trepplein extends SbtModule with PublishModule{
 }
 
 val mantleLibs = List(
-  ivy"com.lihaoyi:::ammonite:$ammV",
   ivy"com.lihaoyi::cask:0.1.9",
   ivy"org.scalameta::scalameta:4.1.0",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
   ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
-  ivy"org.scalameta::mdoc:1.2.8"
+  ivy"org.scalameta::mdoc:1.2.8",
+  ivy"com.lihaoyi::os-lib:0.2.5"
 )
 
 
@@ -206,6 +206,16 @@ object mantle extends CommonModule with SbtModule with PGPublish{
   override def ivyDeps =
     T{
       super.ivyDeps() ++ Agg(mantleLibs: _*)
+    }
+
+    override def resources: Sources = T.sources {
+      def base: Seq[Path] = super.resources().map(_.path)
+
+      def jsout = client.fastOpt().path / up
+
+      cp.over(jsout / "out.js", jsout / "provingground-js-fastopt.js")
+
+      (base ++ Seq(jsout, pwd / "docs")).map(PathRef(_))
     }
 
   override def mainClass = Some("provingground.interface.MantleCask")

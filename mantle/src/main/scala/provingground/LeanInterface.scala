@@ -1,7 +1,7 @@
 package provingground.interface
 import provingground._, induction._
 
-import ammonite.ops._
+import os._
 import scala.util._
 
 import scala.concurrent._

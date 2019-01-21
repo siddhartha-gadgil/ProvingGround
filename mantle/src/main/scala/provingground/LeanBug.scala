@@ -4,7 +4,7 @@ import trepplein._
 import Name.Str
 import BinderInfo._
 import Level._
-import ammonite.ops._
+import os._
 import monix.eval.Task
 import provingground.library
 

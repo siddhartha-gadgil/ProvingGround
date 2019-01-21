@@ -3,7 +3,7 @@ import java.io.PrintStream
 
 
 object MDocService {
-  import ammonite.ops._
+  import os._
 
   def replResult(code: String): Either[String, String] = {
     pprint.log(code)

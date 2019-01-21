@@ -81,10 +81,10 @@ val proverHTML =
 
 
 
-  @cask.staticFiles("docs")
+  @cask.staticFiles("/docs")
   def docsRoute() = "docs"
 
-  @cask.staticResources("resources")
+  @cask.staticResources("/resources")
   def public() = "."
 
   @cask.get("/")
