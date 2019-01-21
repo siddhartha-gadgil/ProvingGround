@@ -285,7 +285,7 @@ object Site {
     for {
       path : Path <- scala.util.Try(ls(pwd / "docs" / "notes")).getOrElse(List.empty[Path])
       filename = path.last
-      url = s"$relDocsPath/notes/$filename"
+      url = s"${relDocsPath}notes/$filename"
     } yield <li><a href={url} target="_blank">{filename.toString.dropRight(5)}</a></li>
 
   def getPost(p: Path): Post = {

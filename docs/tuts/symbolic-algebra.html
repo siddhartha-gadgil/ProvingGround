@@ -67,7 +67,7 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Tutorials (notes)<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types-(old-style).html">Inductive Types (old style)</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
+                <li><a href="../tuts/hott.html">HoTT</a></li><li><a href="../tuts/left-and-right-identities.html">Left and Right Identities</a></li><li><a href="../tuts/internal-repetition-for-length-functions.html">Internal repetition for length functions</a></li><li><a href="../tuts/inductive-types.html">Inductive Types</a></li><li><a href="../tuts/scalarep.html">ScalaRep</a></li><li><a href="../tuts/symbolic-algebra.html">Symbolic algebra</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -81,7 +81,7 @@ messageStyle: "none",
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Notebooks<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="..//notes/HoTT.html" target="_blank">HoTT</a></li><li><a href="..//notes/MonoidProof.html" target="_blank">MonoidProof</a></li>
+                <li><a href="../notes/HoTT.html" target="_blank">HoTT</a></li><li><a href="../notes/MonoidProof.html" target="_blank">MonoidProof</a></li>
               </ul>
             </li>
           </ul>
@@ -158,10 +158,10 @@ assert{(n + n) + m == (n + m) + n}
 assert{n * m == m * n}
 </code></pre>
 <pre><code class="language-scala">n * (m * k)
-// res10: LocalTerm = (k * m * n)
+// res10: LocalTerm = (m * n * k)
 
 n * (m + k)
-// res11: LocalTerm = ((m * n) + (k * n))
+// res11: LocalTerm = ((m * n) + (n * k))
 
 assert(n* (m + k) == n * m + n * k)
 </code></pre>
@@ -187,9 +187,9 @@ fn(k)
 <h3>Recursive definitions</h3>
 <p>We can define a function f recursively on natural numbers, given the value <code>f(0)</code> and given <code>f(n+1)</code> as a (curryed) function of <code>n+1</code> and <code>f(n)</code>. This expands for literals.</p>
 <pre><code class="language-scala">val mf = lmbda(n)(prod(n + 1))
-// mf: Func[RepTerm[SafeLong], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ (($qqpte :  Nat.Typ) ↦ (($qqpte + ($qqpte * n))))
+// mf: Func[RepTerm[SafeLong], Func[LocalTerm, LocalTerm]] = (n :  Nat.Typ) ↦ (($qqhny :  Nat.Typ) ↦ (($qqhny + ($qqhny * n))))
 val factorial = Rec(1: Nat, mf)
-// factorial: Rec[LocalTerm] = rec(Nat.Typ)(Nat.Typ)(1)((n :  Nat.Typ) ↦ (($qqpte :  Nat.Typ) ↦ (($qqpte + ($qqpte * n)))))
+// factorial: Rec[LocalTerm] = rec(Nat.Typ)(Nat.Typ)(1)((n :  Nat.Typ) ↦ (($qqhny :  Nat.Typ) ↦ (($qqhny + ($qqhny * n)))))
 </code></pre>
 <pre><code class="language-scala">factorial(3)
 // res17: LocalTerm = 6
@@ -204,7 +204,7 @@ assert(factorial(5) == (120 : Nat))
 
 assert{factorial(k + 2) == factorial(k) * (k + 2) * (k + 1)}
 </code></pre>
-<h4>git commit hash when running tutorial: 50c223eba441e58c3f78a2a6de6369c51665981f</h4>
+<h4>git commit hash when running tutorial: aa8a358c9146f117ffcb9b6d42cb98140ffcd36e</h4>
 
 
 </div>
