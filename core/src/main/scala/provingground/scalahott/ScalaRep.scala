@@ -264,15 +264,10 @@ object ScalaRep {
                  fibers.subs(x, y))
   }
 
-  implicit val UnivRep: ScalaRep[
-    Typ[Term],
-    Typ[Term]] = idRep(Type)
+  implicit val UnivRep: ScalaRep[Typ[Term], Typ[Term]] = idRep(Type)
 
-  implicit def scalaUnivRep[A]: ScalaRep[
-    Typ[
-      RepTerm[A]],
-    Typ[
-      RepTerm[A]]] = idRep(ScalaTypUniv[A])
+  implicit def scalaUnivRep[A]: ScalaRep[Typ[RepTerm[A]], Typ[RepTerm[A]]] =
+    idRep(ScalaTypUniv[A])
 
   implicit def idRep[U <: Term with Subs[U]](typ: Typ[U]): ScalaRep[U, U] =
     IdRep(typ)
@@ -433,9 +428,7 @@ object ScalaRep {
       (x, y) match {
         case (u, v: Func[U, X]) if u == this => v
         case _ =>
-          ExtendedFunction(dfn,
-                           domrep.subs(x, y),
-                           codomrep.subs(x, y))
+          ExtendedFunction(dfn, domrep.subs(x, y), codomrep.subs(x, y))
       }
   }
 

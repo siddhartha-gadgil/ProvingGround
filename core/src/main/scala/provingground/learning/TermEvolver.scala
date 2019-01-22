@@ -50,7 +50,8 @@ object TermEvolver {
       TangVec(pd.point.flatMap((a) => f(a).point),
               pd.vec.flatMap((a) => f(a).vec))
 
-    def condMap[B](f: A => Option[B]): T[PD[B]] = lin((p: PD[A]) => p.condMap(f))(pd)
+    def condMap[B](f: A => Option[B]): T[PD[B]] =
+      lin((p: PD[A]) => p.condMap(f))(pd)
 
     def conditioned(pred: A => Boolean): T[PD[A]] =
       lin((p: PD[A]) => p.conditioned(pred))(pd)
@@ -71,9 +72,11 @@ object TermEvolver {
     fd.filter(_.typ.typ == Type).map(_.typ: Typ[Term]).filter(fd(_) > 0)
   }
 
-  def allTheorems(fd: FD[Term], n: Int = 25): Vector[Weighted[Typ[Term]]] = theorems(fd).entropyVec
+  def allTheorems(fd: FD[Term], n: Int = 25): Vector[Weighted[Typ[Term]]] =
+    theorems(fd).entropyVec
 
-  def topTheorems(fd: FD[Term], n: Int = 25): Vector[Weighted[Typ[Term]]] = theorems(fd).entropyVec.take(n)
+  def topTheorems(fd: FD[Term], n: Int = 25): Vector[Weighted[Typ[Term]]] =
+    theorems(fd).entropyVec.take(n)
 }
 
 trait TermEvolution {
@@ -83,9 +86,11 @@ trait TermEvolution {
 
   def baseEvolve(fd: FD[Term]): PD[Term] = evolve(T(fd, FD.empty[Term])).point
 
-  def baseEvolveTyps(fd: FD[Term]): PD[Typ[Term]] = evolveTyps(T(fd, FD.empty[Term])).point
+  def baseEvolveTyps(fd: FD[Term]): PD[Typ[Term]] =
+    evolveTyps(T(fd, FD.empty[Term])).point
 
-  def tangEvolve(base: FD[Term])(vec: FD[Term]): PD[Term] = evolve(T(base, vec)).vec
+  def tangEvolve(base: FD[Term])(vec: FD[Term]): PD[Term] =
+    evolve(T(base, vec)).vec
 
   def tangEvolveTyps(base: FD[Term])(vec: FD[Term]): PD[Typ[Term]] =
     evolveTyps(T(base, vec)).vec
@@ -139,29 +144,34 @@ class TermEvolver(unApp: Double = 0.1,
       evolve(tfd)
     }.conditioned(_.typ == typ)
 
-  def unifAppln(x: PD[ExstFunc], y: PD[Term]): PD[Option[Term]] = (x product y).map {
-    case (fn, arg) => Unify.appln(fn.func, arg)
-  }
+  def unifAppln(x: PD[ExstFunc], y: PD[Term]): PD[Option[Term]] =
+    (x product y).map {
+      case (fn, arg) => Unify.appln(fn.func, arg)
+    }
 
-  val TunifAppln: T[(PD[ExstFunc], PD[Term])] => T[PD[Option[Term]]] = bil(unifAppln)
+  val TunifAppln: T[(PD[ExstFunc], PD[Term])] => T[PD[Option[Term]]] = bil(
+    unifAppln)
 
-  def simpleAppln(funcs: PD[ExstFunc], args: Typ[Term] => PD[Term]): PD[Option[Term]] =
+  def simpleAppln(funcs: PD[ExstFunc],
+                  args: Typ[Term] => PD[Term]): PD[Option[Term]] =
     (funcs fibProduct (_.func.dom, args)).map {
       case (fn, arg) => fn(arg)
     }
 
-  val Tappln: T[(PD[ExstFunc], Typ[Term] => PD[Term])] => T[PD[Option[Term]]] = bil(simpleAppln)
+  val Tappln: T[(PD[ExstFunc], Typ[Term] => PD[Term])] => T[PD[Option[Term]]] =
+    bil(simpleAppln)
 
-  def lambdaMixVar(x: Term, wt: Double, base: => (T[FD[Term]] => T[PD[Term]])): T[FD[Term]] => T[PD[Term]] =
+  def lambdaMixVar(
+      x: Term,
+      wt: Double,
+      base: => (T[FD[Term]] => T[PD[Term]])): T[FD[Term]] => T[PD[Term]] =
     (tfd: T[FD[Term]]) => {
       val dist =
         lin((fd: FD[Term]) => fd * (1 - wt) + (x, wt))(tfd)
       base(dist).map((y) => x :~> y: Term)
     }
 
-  def piMixVar(x: Term,
-               wt: Double,
-               base: => (T[FD[Term]] => T[PD[Typ[Term]]]))
+  def piMixVar(x: Term, wt: Double, base: => (T[FD[Term]] => T[PD[Typ[Term]]]))
     : T[FD[Term]] => T[PD[Typ[Term]]] =
     (tfd: T[FD[Term]]) => {
       val dist =
@@ -169,16 +179,18 @@ class TermEvolver(unApp: Double = 0.1,
       base(dist).map((y) => x ~>: y: Typ[Term])
     }
 
-  def lambdaMixTyp(typ: Typ[Term],
-                   wt: Double,
-                   base: => (T[FD[Term]] => T[PD[Term]])): T[FD[Term]] => T[PD[Term]] = {
+  def lambdaMixTyp(
+      typ: Typ[Term],
+      wt: Double,
+      base: => (T[FD[Term]] => T[PD[Term]])): T[FD[Term]] => T[PD[Term]] = {
     val x = typ.Var
     lambdaMixVar(x, wt, base)
   }
 
   def piMixTyp(typ: Typ[Term],
                wt: Double,
-               base: => (T[FD[Term]] => T[PD[Typ[Term]]])): T[FD[Term]] => T[PD[Typ[Term]]] = {
+               base: => (T[FD[Term]] => T[PD[Typ[Term]]]))
+    : T[FD[Term]] => T[PD[Typ[Term]]] = {
     val x = typ.Var
     piMixVar(x, wt, base)
   }
@@ -213,7 +225,8 @@ object TermEvolutionStep {
 
   // implicit val taskMonad = implicitly[Monad[Task]]
 
-  def obserEv(p: FD[Term], param: Param = Param())(implicit ms: MonixSamples): Observable[TermEvolutionStep[Task]] =
+  def obserEv(p: FD[Term], param: Param = Param())(
+      implicit ms: MonixSamples): Observable[TermEvolutionStep[Task]] =
     Observable
       .fromAsyncStateAction[TermEvolutionStep[Task], TermEvolutionStep[Task]](
         (st: TermEvolutionStep[Task]) => st.succ.map((x) => (x, x)))(
@@ -249,7 +262,8 @@ class TermEvolutionStep[X[_]](val p: FD[Term],
 
   def derivativePD(tang: FD[Term]): PD[Term] = ev.tangEvolve(p)(tang)
 
-  def derivativeFD(tang: FD[Term], n: Int): X[FD[Term]] = sampFD(derivativePD(tang), n)
+  def derivativeFD(tang: FD[Term], n: Int): X[FD[Term]] =
+    sampFD(derivativePD(tang), n)
 
   def derivativeTypsFD(tang: FD[Term], n: Int): X[FD[Typ[Term]]] =
     sampFD(ev.tangEvolveTyps(p)(tang), n)
@@ -257,7 +271,8 @@ class TermEvolutionStep[X[_]](val p: FD[Term],
   lazy val tangSamples: X[Vector[(FD[Term], Int)]] =
     for (nfd <- nextFD; ts <- tangSizes(derTotalSize)(nfd)) yield ts
 
-  def derFDX(vec: Vector[(FD[Term], Int)]): X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
+  def derFDX(vec: Vector[(FD[Term], Int)])
+    : X[Vector[(FD[Term], (FD[Term], FD[Typ[Term]]))]] =
     sequence {
       for {
         (fd, n) <- vec

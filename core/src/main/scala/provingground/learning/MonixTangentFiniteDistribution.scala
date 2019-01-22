@@ -190,9 +190,10 @@ case class MonixTangentFiniteDistribution[State, Boat](
           average(
             baseDistT.flatMap { (baseDist) =>
               val pmfT =
-                baseDist.pmf.flatMap {
-                  case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
-                }
+                baseDist.pmf
+                  .flatMap {
+                    case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
+                  }
                   .map {
                     case (Weighted(x1, p1), node) =>
                       val fiberDistT =
@@ -208,9 +209,10 @@ case class MonixTangentFiniteDistribution[State, Boat](
             },
             baseDistTb.flatMap { (baseDist) =>
               val pmfT =
-                baseDist.pmf.flatMap {
-                  case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
-                }
+                baseDist.pmf
+                  .flatMap {
+                    case wt @ Weighted(x, p) => fiberNodeOpt(x).map(wt -> _)
+                  }
                   .map {
                     case (Weighted(x1, p1), node) =>
                       val fiberDistT =
@@ -231,7 +233,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
           val d1Tb = baseVal(baseInput)
           average(
             d1T.flatMap { d1 =>
-              val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
+              val byBase = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
 //              val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
               val pmfT =
                 byBase.map {

@@ -98,9 +98,10 @@ case class GeneratorEquations[State, Boat](
   lazy val equations: Set[Equation] =
     recurrenceEquations union eventEquations union pairEventEquations union totalProbEquations
 
-  def totalSquare (epsilon: Double) : Expression = equations.map(_.squareError(epsilon)).reduce(_ + _)
+  def totalSquare(epsilon: Double): Expression =
+    equations.map(_.squareError(epsilon)).reduce(_ + _)
 
-  def mse (epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
+  def mse(epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
 
   def nodeCoeffSeqEquations(
       ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {
@@ -287,23 +288,26 @@ case class GeneratorEquations[State, Boat](
         val isleEq = GeneratorEquations(nodeCoeffSeq,
                                         isleInit,
                                         isle.finalMap(boat, finalState))
-        val isleEquations: Set[Equation] = isleEq.equations.map(_.useBoat(boat, isle))
-        val isleFinalProb                = isleEq.finalProbs(isle.islandOutput(boat))
+        val isleEquations: Set[Equation] =
+          isleEq.equations.map(_.useBoat(boat, isle))
+        val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
         val eqTerms =
           for {
             (x, FinalVal(p)) <- isleFinalProb
             y = isle.export(boat, x)
             fve <- finalElemValOpt(y, isle.output)
           } yield
-            EquationTerm(fve, FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
+            EquationTerm(fve,
+                         FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
         (eqTerms, isleEquations)
       case isle: ComplexIsland[o, Y, State, Boat, Double] =>
         val (isleInit, boat, _) = isle.initMap(initState)
         val isleEq = GeneratorEquations(nodeCoeffSeq,
                                         isleInit,
                                         isle.finalMap(boat, finalState))
-        val isleEquations: Set[Equation] = isleEq.equations.map(_.useBoat(boat, ???))
-        val isleFinalProb                = isleEq.finalProbs(isle.islandOutput(boat))
+        val isleEquations: Set[Equation] =
+          isleEq.equations.map(_.useBoat(boat, ???))
+        val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
         val eqTerms =
           for {
             (x, FinalVal(p)) <- isleFinalProb
@@ -335,13 +339,13 @@ case class GeneratorEquations[State, Boat](
     if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
   }
 
-  def eventValue[X, Y](ev: Event[X, Y]) : Double = ev.sort match {
-    case Sort.All()         => 1
-    case Sort.Filter(pred)      =>
-      val b: FD[X] =  sd.value(finalState)(ev.base).filter(pred)
+  def eventValue[X, Y](ev: Event[X, Y]): Double = ev.sort match {
+    case Sort.All() => 1
+    case Sort.Filter(pred) =>
+      val b: FD[X] = sd.value(finalState)(ev.base).filter(pred)
       b.total
     case Sort.Restrict(optMap) =>
-      val b: FD[Y] =  sd.value(finalState)(ev.base).mapOpt(optMap)
+      val b: FD[Y] = sd.value(finalState)(ev.base).mapOpt(optMap)
       b.total
   }
 
@@ -354,11 +358,12 @@ case class GeneratorEquations[State, Boat](
     if (elemProbs.nonEmpty) elemProbs.reduce(_ + _) else FinalVal(ev)
   }
 
-  def pairEventValue[X1, X2, Y](ev: PairEvent[X1, X2, Y]) : Double = {
-    val bp: FD[(X1, X2)] = sd.value(finalState)(ev.base1).zip(sd.value(finalState)(ev.base2))
+  def pairEventValue[X1, X2, Y](ev: PairEvent[X1, X2, Y]): Double = {
+    val bp: FD[(X1, X2)] =
+      sd.value(finalState)(ev.base1).zip(sd.value(finalState)(ev.base2))
     ev.sort match {
-      case Sort.All()         => 1
-      case Sort.Filter(pred)      => bp.filter(pred).total
+      case Sort.All()            => 1
+      case Sort.Filter(pred)     => bp.filter(pred).total
       case Sort.Restrict(optMap) => bp.mapOpt(optMap).total
     }
   }
@@ -372,20 +377,26 @@ case class GeneratorEquations[State, Boat](
   }
 
   lazy val eventValues: Map[VarVal[_], Double] = finalVars.collect {
-    case ev: Event[x, y] => (FinalVal(ev) : VarVal[_]) -> eventValue(ev)
+    case ev: Event[x, y] => (FinalVal(ev): VarVal[_]) -> eventValue(ev)
   }.toMap
 
   lazy val pairEventValues: Map[VarVal[_], Double] = finalVars.collect {
-    case ev: PairEvent[x1, x2, y] => (FinalVal(ev) : VarVal[_]) -> pairEventValue(ev)
+    case ev: PairEvent[x1, x2, y] =>
+      (FinalVal(ev): VarVal[_]) -> pairEventValue(ev)
   }.toMap
 
-  lazy val initElemValues: Map[VarVal[_], Double] = elemInitVars.values.flatten.map{
-    case v: Elem[u]=> (InitialVal(v) : VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
-  }.toMap
+  lazy val initElemValues: Map[VarVal[_], Double] =
+    elemInitVars.values.flatten.map {
+      case v: Elem[u] =>
+        (InitialVal(v): VarVal[_]) -> sd.value(initState)(v.randomVar)(
+          v.element)
+    }.toMap
 
-  lazy val finalElemValues: Map[VarVal[_], Double] = elemInitVars.values.flatten.map{
-    case v: Elem[u]=> (FinalVal(v) : VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
-  }.toMap
+  lazy val finalElemValues: Map[VarVal[_], Double] =
+    elemInitVars.values.flatten.map {
+      case v: Elem[u] =>
+        (FinalVal(v): VarVal[_]) -> sd.value(initState)(v.randomVar)(v.element)
+    }.toMap
 
   lazy val varValues
     : Map[VarVal[_], Double] = initElemValues ++ finalElemValues ++ eventValues ++ pairEventValues

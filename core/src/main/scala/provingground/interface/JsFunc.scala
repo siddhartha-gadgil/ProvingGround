@@ -133,8 +133,8 @@ object TermJson {
       toJs(natProd)("nat-prod") ||
       toJs(natLiteral)("nat-literal") ||
       toJs(natAddMorph)("nat-additive-morphism") ||
-  toJs(foldedTerm)("folded-term") ||
-    toJs(miscAppln)("appln")
+      toJs(foldedTerm)("folded-term") ||
+      toJs(miscAppln)("appln")
 
   def termToJsonGet(t: Term) =
     termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
@@ -206,7 +206,8 @@ object TermJson {
         //buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
-  def jsToFD(exst: ExstInducStrucs)(js: ujson.Value): FiniteDistribution[Term] = {
+  def jsToFD(exst: ExstInducStrucs)(
+      js: ujson.Value): FiniteDistribution[Term] = {
     val pmf =
       js.arr.toVector.map { wp =>
         Weighted(

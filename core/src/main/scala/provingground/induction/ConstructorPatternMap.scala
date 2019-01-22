@@ -294,8 +294,10 @@ object ConstructorPatternMap {
 
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[Cod]])(
         cons: Func[T, HC]): Typ[FuncLike[T, HI]] = {
-      val a        = tail.Var
-      if (a.typ != cons.dom) {pprint.log(a); pprint.log(a.typ); pprint.log(cons.dom); pprint.log(cons)}
+      val a = tail.Var
+      if (a.typ != cons.dom) {
+        pprint.log(a); pprint.log(a.typ); pprint.log(cons.dom); pprint.log(cons)
+      }
       val headcons = cons(a)
       val fibre    = lmbda(a)(head.inducDataTyp(w, xs)(headcons))
       piDefn(a)(head.inducDataTyp(w, xs)(headcons))
@@ -348,7 +350,8 @@ object ConstructorPatternMap {
 
     def subs(x: Term, y: Term) = {
 
-      CnstDepFuncPtnMap(tail.replace(x, y), (t: T) => headfibre(t.replace(y, x)).subs(x, y))
+      CnstDepFuncPtnMap(tail.replace(x, y),
+                        (t: T) => headfibre(t.replace(y, x)).subs(x, y))
     }
     //    type ConstructorType = FuncLike[Term, U]
 
@@ -369,8 +372,10 @@ object ConstructorPatternMap {
 
     def inducDataTyp(w: Typ[H], xs: Func[H, Typ[C]])(
         cons: FuncLike[T, HC]): Typ[InducDataType] = {
-      val a        = tail.Var
-      if (a.typ != cons.dom) {pprint.log(a); pprint.log(a.typ); pprint.log(cons.dom); pprint.log(cons)}
+      val a = tail.Var
+      if (a.typ != cons.dom) {
+        pprint.log(a); pprint.log(a.typ); pprint.log(cons.dom); pprint.log(cons)
+      }
       val headcons = cons(a)
       val fibre    = lmbda(a)(headfibre(a).inducDataTyp(w, xs)(headcons))
       piDefn(a)(headfibre(a).inducDataTyp(w, xs)(headcons))

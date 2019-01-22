@@ -41,7 +41,7 @@ class SymbolicCRing[A: Ring] { self =>
 
   val two: A = ring.plus(ring.one, ring.one)
 
-  val minusone: LocalTerm  = Literal(ring.negate(one))
+  val minusone: LocalTerm = Literal(ring.negate(one))
 
   def negate(x: LocalTerm): LocalTerm = prod(minusone)(x)
 
@@ -352,7 +352,9 @@ class SymbolicCRing[A: Ring] { self =>
     }
   }
 
-  case class AddLiteral(a: A) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+  case class AddLiteral(a: A)
+      extends Func[LocalTerm, LocalTerm]
+      with MiscAppln {
     val func = sum
 
     val arg = Literal(a)
@@ -372,7 +374,7 @@ class SymbolicCRing[A: Ring] { self =>
     def act(y: LocalTerm) = y match {
       case Literal(b)                         => Literal(a + b)
       case Comb(f, Literal(b), v) if f == sum => sum(Literal(a + b))(v)
-      case p                                  =>
+      case p =>
         FormalAppln(this, p)
 //        Comb(sum, Literal(a), p)
     }
@@ -381,7 +383,9 @@ class SymbolicCRing[A: Ring] { self =>
   /**
     * returns function x + _ where x is not a literal and is indecomposable under sum
     */
-  case class AddTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm] with MiscAppln{
+  case class AddTerm(x: LocalTerm)
+      extends Func[LocalTerm, LocalTerm]
+      with MiscAppln {
     val func = sum
 
     val arg = x
@@ -502,7 +506,9 @@ class SymbolicCRing[A: Ring] { self =>
     override def toString = "prod"
   }
 
-  case class multLiteral(b: A) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+  case class multLiteral(b: A)
+      extends Func[LocalTerm, LocalTerm]
+      with MiscAppln {
     val func = prod
 
     val arg = Literal(b)
@@ -536,7 +542,9 @@ class SymbolicCRing[A: Ring] { self =>
     }
   }
 
-  case class multTerm(x: LocalTerm) extends Func[LocalTerm, LocalTerm] with MiscAppln {
+  case class multTerm(x: LocalTerm)
+      extends Func[LocalTerm, LocalTerm]
+      with MiscAppln {
     val func = prod
 
     val arg = x

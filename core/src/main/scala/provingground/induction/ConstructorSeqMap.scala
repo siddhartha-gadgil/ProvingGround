@@ -100,14 +100,17 @@ object ConstructorSeqMap {
   }
 
   case class ConsIndException[C <: Term with Subs[C],
-                  H <: Term with Subs[H],
-                  Cod <: Term with Subs[Cod],
-                  RD <: Term with Subs[RD],
-                  ID <: Term with Subs[ID],
-                  TR <: Term with Subs[TR],
-                  TI <: Term with Subs[TI],
-                  TIntros <: HList](cons: Cons[C, H, Cod, RD, ID, TR, TI, TIntros], fibre: Func[H, Typ[Cod]], error : Throwable)
-                  extends Exception(error.getMessage)
+                              H <: Term with Subs[H],
+                              Cod <: Term with Subs[Cod],
+                              RD <: Term with Subs[RD],
+                              ID <: Term with Subs[ID],
+                              TR <: Term with Subs[TR],
+                              TI <: Term with Subs[TI],
+                              TIntros <: HList](
+      cons: Cons[C, H, Cod, RD, ID, TR, TI, TIntros],
+      fibre: Func[H, Typ[Cod]],
+      error: Throwable)
+      extends Exception(error.getMessage)
 
   /**
     * prepending an introduction rule to [[ConstructorSeqMap]]
@@ -146,14 +149,17 @@ object ConstructorSeqMap {
     import RecursiveDefinition.DataCons
 
     def dataCons(X: Typ[Cod]): DataCons[H, Cod, RD] =
-      DataCons(data(X),
-               defn,
-               tail.recDefn(X),
-               (x: Term) =>
-                 (y: Term) =>
-                   (cod: Typ[Cod]) =>
-                     if (W.replace(x, y) == W && cod.replace(x, y) == cod && subs(x, y) == this) None
-                     else Some(subs(x, y).dataCons(cod.replace(x, y))))
+      DataCons(
+        data(X),
+        defn,
+        tail.recDefn(X),
+        (x: Term) =>
+          (y: Term) =>
+            (cod: Typ[Cod]) =>
+              if (W.replace(x, y) == W && cod
+                    .replace(x, y) == cod && subs(x, y) == this) None
+              else Some(subs(x, y).dataCons(cod.replace(x, y)))
+      )
 
     def recDefn(X: Typ[Cod]) = dataCons(X)
     // RecursiveDefinition.DataCons(
@@ -163,8 +169,9 @@ object ConstructorSeqMap {
       f => lmbda(data(X))(tail.recDataLambda(X)(f))
 
     def inducData(fibre: Func[H, Typ[Cod]]) =
-      scala.util.Try(
-        pattern.inducDataTyp(W, fibre)(cons).symbObj(InducDataSym(cons))).fold(
+      scala.util
+        .Try(pattern.inducDataTyp(W, fibre)(cons).symbObj(InducDataSym(cons)))
+        .fold(
           err => throw ConsIndException(this, fibre, err),
           identity
         )
@@ -181,11 +188,12 @@ object ConstructorSeqMap {
         (x) =>
           (y) =>
             (fib) =>
-              if (W.replace(x, y) == W && fib.replace(x, y) == fib && subs(x, y) == this
-            ) {
+              if (W.replace(x, y) == W && fib
+                    .replace(x, y) == fib && subs(x, y) == this) {
                 // pprint.log(fib.replace(x, y) == fib)
-                None}
-              else Some(subs(x, y).indDataCons(fib.replace(x, y))))
+                None
+              } else Some(subs(x, y).indDataCons(fib.replace(x, y)))
+      )
 
     def inducDefn(fibre: Func[H, Typ[Cod]]) = indDataCons(fibre)
 

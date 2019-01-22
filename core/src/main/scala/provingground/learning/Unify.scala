@@ -57,7 +57,8 @@ object Unify {
           })
     }
 
-  def unifyAll(freeVars: Term => Boolean)(xys: (Term, Term)*): Option[Map[Term, Term]] =
+  def unifyAll(freeVars: Term => Boolean)(
+      xys: (Term, Term)*): Option[Map[Term, Term]] =
     unifyVector(xys.toVector, freeVars)
 
   def unify(lhs: Term,

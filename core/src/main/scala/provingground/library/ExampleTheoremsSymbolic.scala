@@ -19,7 +19,6 @@ object SimpleEvensSym {
   val zeroEven    = "0even" :: isEven(Literal(0))
   val plusTwoEven = "_+2even" :: (n ~>: (isEven(n) ->: isEven(succ(succ(n)))))
 
-
   val double = n :-> (n + n)
 }
 
@@ -41,7 +40,6 @@ object DoubleEvenSym {
 
 object SuccNOrNEvenSym {
   import SimpleEvensSym._
-
 
   val claim = n :-> (isEven(n) || isEven(succ(n)))
 

@@ -252,7 +252,8 @@ object TypFamilyPtn {
     }
 
     def subs(x: Term, y: Term) =
-      DepFuncTypFamily(head.replace(x, y), (u: U) => tailfibre(u.replace(y, x)).subs(x, y))
+      DepFuncTypFamily(head.replace(x, y),
+                       (u: U) => tailfibre(u.replace(y, x)).subs(x, y))
 
     def mapper[C <: Term with Subs[C]] =
       depFuncTypFamilyMapper(tailfibre(head.Var).mapper[C],
@@ -357,12 +358,12 @@ object TypFamilyPtn {
   * building (dependent) functions from such restrictions.
   */
 abstract class TypFamilyMap[H <: Term with Subs[H],
-                          F <: Term with Subs[F],
-                          C <: Term with Subs[C],
-                          Index <: HList : TermList,
-                          IF <: Term with Subs[IF],
-                          IDF <: Term with Subs[IDF],
-                          IDFT <: Term with Subs[IDFT]] {
+                            F <: Term with Subs[F],
+                            C <: Term with Subs[C],
+                            Index <: HList: TermList,
+                            IF <: Term with Subs[IF],
+                            IDF <: Term with Subs[IDF],
+                            IDFT <: Term with Subs[IDFT]] {
 
   /**
     * the underlying pattern (to access methods defined on it)
@@ -593,7 +594,8 @@ object TypFamilyMap {
       tailfibre(ind.head).typRestrict(xs(ind.head), ind.tail)
 
     def subs(x: Term, y: Term) = {
-      DepFuncTypFamilyMap(head.replace(x, y), (u: U) => tailfibre(u.replace(y, x)).subs(x, y))
+      DepFuncTypFamilyMap(head.replace(x, y),
+                          (u: U) => tailfibre(u.replace(y, x)).subs(x, y))
     }
   }
 }
@@ -645,13 +647,13 @@ object TypObj {
   * bridge between [[TypFamilyPtn]] and [[TypFamilyMap]]
   */
 abstract class TypFamilyMapper[H <: Term with Subs[H],
-                             F <: Term with Subs[F],
-                             C <: Term with Subs[C],
-                             Index <: HList : TermList,
-                             IF <: Term with Subs[IF],
-                             IDF <: Term with Subs[IDF],
-                             IDFT <: Term with Subs[IDFT]] {
-  val tlEvidence = implicitly[TermList[Index]]                            
+                               F <: Term with Subs[F],
+                               C <: Term with Subs[C],
+                               Index <: HList: TermList,
+                               IF <: Term with Subs[IF],
+                               IDF <: Term with Subs[IDF],
+                               IDFT <: Term with Subs[IDFT]] {
+  val tlEvidence = implicitly[TermList[Index]]
 
   val mapper: TypFamilyPtn[H, F, Index] => TypFamilyMap[H,
                                                         F,

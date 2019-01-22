@@ -387,9 +387,8 @@ object AdjDiffbleFunction {
 
   implicit def vecSpaceDiffFn[A, B](implicit vsA: VectorSpace[A, Double],
                                     vsB: VectorSpace[B, Double])
-    : _root_.spire.algebra.VectorSpace[
-      AdjDiffbleFunction[A, B],
-      _root_.scala.Double] {} =
+    : _root_.spire.algebra.VectorSpace[AdjDiffbleFunction[A, B],
+                                       _root_.scala.Double] {} =
     new VectorSpace[AdjDiffbleFunction[A, B], Double] {
 
       // Members declared in algebra.ring.AdditiveGroup

@@ -858,8 +858,9 @@ object IndexedConstructorShape {
                                  headfibre(tail.Var).mapper(fmlyMapper))
 
     def subs(x: Term, y: Term) =
-      IndexedCnstDepFuncConsShape(tail.replace(x, y),
-                                  (t: T) => headfibre(t.replace(y, x)).subs(x, y))
+      IndexedCnstDepFuncConsShape(
+        tail.replace(x, y),
+        (t: T) => headfibre(t.replace(y, x)).subs(x, y))
   }
 }
 

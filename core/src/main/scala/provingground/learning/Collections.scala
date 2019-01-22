@@ -143,8 +143,7 @@ object Collections {
 
   object InnerProduct {
     implicit def finiteDistInnerProd[X]
-      : Collections.InnerProduct[
-        FiniteDistribution[X]] =
+      : Collections.InnerProduct[FiniteDistribution[X]] =
       InnerProduct[FiniteDistribution[X]](_ dot _)
 
     implicit class DotOp[V: InnerProduct](a: V) {
@@ -153,13 +152,12 @@ object Collections {
 
     def vdot[V](implicit ip: InnerProduct[V]) = ip.dot
 
-    implicit val realInnerProd
-      : Collections.InnerProduct[
-        _root_.scala.Double] = InnerProduct[Double](_ * _)
+    implicit val realInnerProd: Collections.InnerProduct[_root_.scala.Double] =
+      InnerProduct[Double](_ * _)
 
-    implicit def InnerProductPairs[A, B](implicit ipA: InnerProduct[A],
-                                         ipB: InnerProduct[B])
-      : Collections.InnerProduct[(A, B)] = {
+    implicit def InnerProductPairs[A, B](
+        implicit ipA: InnerProduct[A],
+        ipB: InnerProduct[B]): Collections.InnerProduct[(A, B)] = {
       InnerProduct[(A, B)]((x, y) => ipA.dot(x._1, y._1) + ipB.dot(x._2, y._2))
     }
 
@@ -251,8 +249,8 @@ object Collections {
     def apply(base: B, tang: B, sc: Double) = shift(base, tang, sc)
   }
 
-  implicit def shiftFromVS[V](implicit ls: LinearStructure[V])
-    : Collections.Shift[V] =
+  implicit def shiftFromVS[V](
+      implicit ls: LinearStructure[V]): Collections.Shift[V] =
     Shift((base: V, tang: V, e: Double) => ls.diff(base, ls.mult(e, tang)))
 
   def update[B](init: B, tangent: B, epsilon: Double)(implicit s: Shift[B]) =

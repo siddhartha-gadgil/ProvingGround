@@ -438,23 +438,15 @@ object FreeGroups {
    */
   val nullpres = Presentation(Vector(), 0)
 
-  implicit def writeWord
-    : WriteString[
-      FreeGroups.Word] =
+  implicit def writeWord: WriteString[FreeGroups.Word] =
     WriteString.simple[Word]
 
-  implicit def writePres
-    : WriteString[
-      FreeGroups.Presentation] =
+  implicit def writePres: WriteString[FreeGroups.Presentation] =
     WriteString.simple[Presentation]
 
-  implicit def readWord
-    : ReadString[
-      FreeGroups.Word] =
+  implicit def readWord: ReadString[FreeGroups.Word] =
     ReadString(Word.fromString)
 
-  implicit def readPres
-    : ReadString[
-      FreeGroups.Presentation] =
+  implicit def readPres: ReadString[FreeGroups.Presentation] =
     ReadString(Presentation.fromString)
 }

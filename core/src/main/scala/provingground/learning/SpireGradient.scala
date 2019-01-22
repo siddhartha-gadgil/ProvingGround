@@ -30,7 +30,7 @@ case class SpireGradient(vars: Vector[VarVal[_]],
     vars.zipWithIndex.map {
       case (v, n) =>
         val t: Jet[Double] = Jet.h[Double](n)
-        val r: Double = p.getOrElse(v, 0.0)
+        val r: Double      = p.getOrElse(v, 0.0)
         v -> (t + r)
     }.toMap
 
@@ -58,6 +58,7 @@ case class SpireGradient(vars: Vector[VarVal[_]],
       case Product(x, y)    => jet(p)(x) * jet(p)(y)
       case Literal(value)   => value
       case Quotient(x, y)   => jet(p)(x) / jet(p)(y)
+      case _: Coeff[_]      => throw new Exception("unexpected formal coefficient")
     }
 
 }
@@ -95,7 +96,8 @@ object SpireGradient {
                   klW: Double = 1,
                   eqW: Double = 1,
                   epsilon: Double = math.pow(10, -5)): Sum =
-    (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse(epsilon) * eqW)
+    (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse(
+      epsilon) * eqW)
 
   val sd: StateDistribution[TermState, FD] = TermState.stateFD
 
@@ -135,8 +137,8 @@ object SpireGradient {
           case ev @ Event(base, sort)        => eventProb(finalState)(ev)
           case ev @ PairEvent(base1, base2, sort) =>
             pairEventProb(finalState)(ev)
-          case el:  InIsle[X, TermState, o, Term] =>
-            val (st, newBoat : Term) = el.isle.initMap(initState)
+          case el: InIsle[X, TermState, o, Term] =>
+            val (st, newBoat: Term) = el.isle.initMap(initState)
             varValue(
               st.subs(newBoat, el.boat),
               el.isle.finalMap(el.boat, finalState))(FinalVal(el.isleVar))
@@ -148,8 +150,8 @@ object SpireGradient {
           case ev @ Event(base, sort)        => eventProb(initState)(ev)
           case ev @ PairEvent(base1, base2, sort) =>
             pairEventProb(initState)(ev)
-          case el:  InIsle[X, TermState, o, Term] =>
-            val (st, newBoat : Term) = el.isle.initMap(initState)
+          case el: InIsle[X, TermState, o, Term] =>
+            val (st, newBoat: Term) = el.isle.initMap(initState)
             varValue(
               st.subs(newBoat, el.boat),
               el.isle.finalMap(el.boat, finalState))(InitialVal(el.isleVar))
@@ -166,7 +168,8 @@ case class TermGenCost(ge: GeneratorEquations[TermState, Term],
                        eqW: Double = 1,
                        epsilon: Double = math.pow(10, -5)) {
   val cost
-    : Sum = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge.mse(epsilon) * eqW)
+    : Sum = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge
+    .mse(epsilon) * eqW)
 
   lazy val vars: Vector[VarVal[_]] =
     ge.equations
@@ -174,7 +177,8 @@ case class TermGenCost(ge: GeneratorEquations[TermState, Term],
       .flatMap(expr => Expression.varVals(expr))
       .toVector
 
-  lazy val p: Map[VarVal[_], Double] = vars.map((vv) => vv -> varValue(ge.initState, ge.finalState)(vv)).toMap
+  lazy val p: Map[VarVal[_], Double] =
+    vars.map((vv) => vv -> varValue(ge.initState, ge.finalState)(vv)).toMap
 
   lazy val spireGradient = SpireGradient(vars, p, cost)
 

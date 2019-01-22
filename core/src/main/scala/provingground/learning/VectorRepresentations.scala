@@ -8,7 +8,6 @@ import math._
 
 // import scala.language.implicitConversions
 
-
 case class WeightVect[T](elem: T, vect: Vector[Double]) {
   def scale(s: Double) = WeightVect(elem, vect map (_ * s))
 
@@ -29,17 +28,16 @@ object WeightVect {
     else if (vs.tail.isEmpty) vs.head
     else sum(vs.tail, vs.head)
 
-    def randomVec(length: Int, damp: Double = 0.0) = {
-      val rnd = new Random
-      val raw =
-        ((0 until length) map (_ => damp + (1 - damp) * rnd.nextDouble)).toVector
-      val total = raw.sum
-      raw map (_ * (1 / total))
-    }
+  def randomVec(length: Int, damp: Double = 0.0) = {
+    val rnd = new Random
+    val raw =
+      ((0 until length) map (_ => damp + (1 - damp) * rnd.nextDouble)).toVector
+    val total = raw.sum
+    raw map (_ * (1 / total))
+  }
 
-    lazy val rand = new Random
+  lazy val rand = new Random
 }
-
 
 case class Representation[T](rep: Vector[WeightVect[T]]) extends AnyVal {
   def pmf = rep map (_.weighted)
@@ -91,8 +89,7 @@ case class Representation[T](rep: Vector[WeightVect[T]]) extends AnyVal {
   def feedback(baseweights: T => Double, damp: Double = 0.1) = {
     val rawdiff = for (Weighted(pres, prob) <- pmf)
       yield
-        (Weighted(pres,
-                  baseweights(pres) / (baseweights(pres) * damp + prob)))
+        (Weighted(pres, baseweights(pres) / (baseweights(pres) * damp + prob)))
     val shift = rawdiff.map(_.weight).sum / (support.size)
     val normaldiff = for (Weighted(pres, prob) <- rawdiff)
       yield Weighted(pres, prob - shift)

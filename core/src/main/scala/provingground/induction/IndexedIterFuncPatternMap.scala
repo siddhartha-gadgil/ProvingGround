@@ -530,16 +530,7 @@ object IndexedIterFuncPtnMapper {
       IF <: Term with Subs[IF],
       IDF <: Term with Subs[IDF],
       IDFT <: Term with Subs[IDFT]]
-    : IndexedIterFuncPtnMapper[H,
-                                                              Fb,
-                                                              Index,
-                                                              C,
-                                                              H,
-                                                              C,
-                                                              C,
-                                                              IF,
-                                                              IDF,
-                                                              IDFT] =
+    : IndexedIterFuncPtnMapper[H, Fb, Index, C, H, C, C, IF, IDF, IDFT] =
     new IndexedIterFuncPtnMapper[H, Fb, Index, C, H, C, C, IF, IDF, IDFT] {
       def mapper(
           implicit fmlyMapper: TypFamilyMapper[H,
@@ -576,17 +567,16 @@ object IndexedIterFuncPtnMapper {
                                             IF,
                                             IDF,
                                             IDFT])
-    : IndexedIterFuncPtnMapper[
-      H,
-      Fb,
-      Index,
-      C,
-      Func[TT, V],
-      Func[TT, T],
-      FuncLike[TT, D],
-      IF,
-      IDF,
-      IDFT] =
+    : IndexedIterFuncPtnMapper[H,
+                               Fb,
+                               Index,
+                               C,
+                               Func[TT, V],
+                               Func[TT, T],
+                               FuncLike[TT, D],
+                               IF,
+                               IDF,
+                               IDFT] =
     new IndexedIterFuncPtnMapper[H,
                                  Fb,
                                  Index,
@@ -632,17 +622,16 @@ object IndexedIterFuncPtnMapper {
                                             IF,
                                             IDF,
                                             IDFT])
-    : IndexedIterFuncPtnMapper[
-      H,
-      Fb,
-      Index,
-      C,
-      FuncLike[TT, V],
-      FuncLike[TT, T],
-      FuncLike[TT, D],
-      IF,
-      IDF,
-      IDFT] =
+    : IndexedIterFuncPtnMapper[H,
+                               Fb,
+                               Index,
+                               C,
+                               FuncLike[TT, V],
+                               FuncLike[TT, T],
+                               FuncLike[TT, D],
+                               IF,
+                               IDF,
+                               IDFT] =
     new IndexedIterFuncPtnMapper[H,
                                  Fb,
                                  Index,

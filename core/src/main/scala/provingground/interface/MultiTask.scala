@@ -6,23 +6,34 @@ import monix.eval._
 
 import scala.util.{Failure, Success}
 
-case class MultiTask(jobs: Map[String, String => Task[String]]) extends (String => Task[String]){
-  def apply(inp: String) : Task[String] = {
+case class MultiTask(jobs: Map[String, String => Task[String]])
+    extends (String => Task[String]) {
+  def apply(inp: String): Task[String] = {
     val obj: ujson.Obj = ujson.read(inp).obj
-    val jobName =  obj("job").str
+    val jobName        = obj("job").str
     pprint.log(s"received job request $jobName")
-    val job: String => Task[String] = jobs.getOrElse(jobName, (_) => Task.raiseError(new IllegalArgumentException(s"Cannot find job with name $jobName")))
+    val job: String => Task[String] = jobs.getOrElse(
+      jobName,
+      (_) =>
+        Task.raiseError(
+          new IllegalArgumentException(s"Cannot find job with name $jobName")))
     val data = ujson.write(obj("data"))
-    job(data).materialize.map{
+    job(data).materialize.map {
       case Success(result: String) =>
         pprint.log(s"completed job $jobName")
         ujson.write(
-          ujson.Obj("job" -> ujson.Str(jobName), "data" -> ujson.Str(data), "result" -> ujson.Str(result), "success" -> ujson.Bool(true))
+          ujson.Obj("job"     -> ujson.Str(jobName),
+                    "data"    -> ujson.Str(data),
+                    "result"  -> ujson.Str(result),
+                    "success" -> ujson.Bool(true))
         )
       case Failure(err: Throwable) =>
         pprint.log(s"failed job $jobName")
         ujson.write(
-          ujson.Obj("job" -> ujson.Str(jobName), "data" -> ujson.Str(data), "error" -> ujson.Str(err.getMessage), "success" -> ujson.Bool(false))
+          ujson.Obj("job"     -> ujson.Str(jobName),
+                    "data"    -> ujson.Str(data),
+                    "error"   -> ujson.Str(err.getMessage),
+                    "success" -> ujson.Bool(false))
         )
     }
   }
@@ -32,6 +43,7 @@ case class MultiTask(jobs: Map[String, String => Task[String]]) extends (String 
   def ++(that: MultiTask): MultiTask = MultiTask(jobs ++ that.jobs)
 }
 
-object MultiTask{
-  def apply(kvs: (String, String => Task[String])* ): MultiTask = new MultiTask(kvs.toMap)
+object MultiTask {
+  def apply(kvs: (String, String => Task[String])*): MultiTask =
+    new MultiTask(kvs.toMap)
 }

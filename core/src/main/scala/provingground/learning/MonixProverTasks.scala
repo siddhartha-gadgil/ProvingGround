@@ -52,11 +52,11 @@ object MonixProverTasks {
                       tg: TermGenParams,
                       cutoff: Double,
                       maxtime: FiniteDuration,
-                      vars: Vector[Term] = Vector()): Task[FD[Term]] =
-    {
-      val baseState = TermState(fd, typs(fd), vars)
-      val tangState = TermState(tfd, typs(tfd), vars)
-      tg.monixTangFD(baseState).varDist(tangState)(Terms, cutoff)}
+                      vars: Vector[Term] = Vector()): Task[FD[Term]] = {
+    val baseState = TermState(fd, typs(fd), vars)
+    val tangState = TermState(tfd, typs(tfd), vars)
+    tg.monixTangFD(baseState).varDist(tangState)(Terms, cutoff)
+  }
   // Truncate
   //   .task(tv.evolve(TangVec(fd, tfd)).vec, cutoff, maxtime)
   //   .memoize

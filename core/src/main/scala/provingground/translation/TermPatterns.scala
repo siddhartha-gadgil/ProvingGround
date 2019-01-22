@@ -263,11 +263,11 @@ object TermPatterns {
 
   val natProd = Pattern.check[Term](_ == NatRing.prod)
 
-  val natAddMorph = Pattern.partial[Term, II]{
-    case am : NatRing.AdditiveMorphism[u] =>
-    val x = am.base.dom.Var
-    val y = am.base.dom.Var
-    val z = am.op.asInstanceOf[(Nat, Nat) => Nat](x, y)
+  val natAddMorph = Pattern.partial[Term, II] {
+    case am: NatRing.AdditiveMorphism[u] =>
+      val x = am.base.dom.Var
+      val y = am.base.dom.Var
+      val z = am.op.asInstanceOf[(Nat, Nat) => Nat](x, y)
       (am.base, x :-> y :-> z)
   }
 
@@ -278,12 +278,12 @@ object TermPatterns {
     case Universe(n) => n
   }
 
-  val natLiteral = Pattern.partial[Term, N]{
+  val natLiteral = Pattern.partial[Term, N] {
     case NatRing.Literal(n) => n.toInt
   }
 
-  val foldedTerm = Pattern.partial[Term, IV]{
-    case fd : FoldedTerm[u] => fd.op -> fd.elems.toVector
+  val foldedTerm = Pattern.partial[Term, IV] {
+    case fd: FoldedTerm[u] => fd.op -> fd.elems.toVector
   }
 
   val propUniv = Pattern.check[Term](_ == Prop)
@@ -298,13 +298,12 @@ object TermPatterns {
 
   import scalahott.ScalaRep._
 
-  def getName(sym: AnySym) : Option[Name] =
+  def getName(sym: AnySym): Option[Name] =
     sym match {
       case name: Name => Some(name)
-      case inner : InnerSym[u] =>
+      case inner: InnerSym[u] =>
         getName(inner.outerSym)
     }
-
 
   /**
     * matches a symbolic name, perhaps wrapped in `InnerSym`, returns `Name`

@@ -41,12 +41,12 @@ case class GeneratorVariables[State, Boat](
     rvF match {
       case rv: RandomVar[u] =>
         for {
-        y <- StateDistribution.value(state)(rv).support
+          y <- StateDistribution.value(state)(rv).support
         } yield Elem(y, rv)
       case _ =>
         for {
           x <- varListSupport(rvF.polyDomain)
-          dist : FD[Y] =  StateDistribution.valueAt(state)(rvF, x)
+          dist: FD[Y] = StateDistribution.valueAt(state)(rvF, x)
           y <- dist.support
         } yield Elem(y, rvF.at(x))
     }
@@ -145,52 +145,58 @@ object GeneratorVariables {
     */
   sealed trait Variable[+Y]
 
-  case class Elem[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y]{
+  case class Elem[Y](element: Y, randomVar: RandomVar[Y]) extends Variable[Y] {
     override def toString = s"$element \u2208 $randomVar"
   }
 
   trait ElemList[Dom <: HList]
 
-  object ElemList{
+  object ElemList {
     case object Empty extends ElemList[HNil]
 
-    case class Cons[Y, Z <: HList](head: Elem[Y], tail: ElemList[Z]) extends ElemList[Y :: Z]
+    case class Cons[Y, Z <: HList](head: Elem[Y], tail: ElemList[Z])
+        extends ElemList[Y :: Z]
   }
 
   case class Event[X, Y](base: RandomVar[X], sort: Sort[X, Y])
-      extends Variable[Y]{
-        override def toString = s"{$base \u2208 $sort}"
-      }
+      extends Variable[Y] {
+    override def toString = s"{$base \u2208 $sort}"
+  }
 
   case class PairEvent[X1, X2, Y](base1: RandomVar[X1],
                                   base2: RandomVar[X2],
                                   sort: Sort[(X1, X2), Y])
-      extends Variable[Y]{
-        override def toString = s"{($base1, $base2) \u2208 $sort}"
-      }
+      extends Variable[Y] {
+    override def toString = s"{($base1, $base2) \u2208 $sort}"
+  }
 
-  case class InIsle[Y, State, O, Boat](isleVar: Variable[Y], boat: Boat, isle: Island[Y, State, O, Boat])
+  case class InIsle[Y, State, O, Boat](isleVar: Variable[Y],
+                                       boat: Boat,
+                                       isle: Island[Y, State, O, Boat])
       extends Variable[Y]
 
   case class NodeCoeff[RDom <: HList, Y](
       nodeFamily: GeneratorNodeFamily[RDom, Y])
 //      extends Variable[Unit]
 
-  object Expression{
+  object Expression {
     def varVals(expr: Expression): Set[VarVal[_]] = expr match {
       case value: VarVal[_] => Set(value)
-      case Log(exp)       => varVals(exp)
-      case Sum(x, y)       => varVals(x) union(varVals(y))
-      case Product(x, y)   => varVals(x) union(varVals(y))
-      case Literal(_)   => Set()
-      case Quotient(x, y)  => varVals(x) union(varVals(y))
+      case Log(exp)         => varVals(exp)
+      case Sum(x, y)        => varVals(x) union (varVals(y))
+      case Product(x, y)    => varVals(x) union (varVals(y))
+      case Literal(_)       => Set()
+      case Quotient(x, y)   => varVals(x) union (varVals(y))
     }
   }
 
   sealed trait Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression
 
-    def useBoat[Y, State, O, Boat](boat: Boat, island: Island[Y, State, O, Boat]): Expression = mapVars(InIsle(_, boat, island))
+    def useBoat[Y, State, O, Boat](
+        boat: Boat,
+        island: Island[Y, State, O, Boat]): Expression =
+      mapVars(InIsle(_, boat, island))
 
     def +(that: Expression): Sum = Sum(this, that)
 
@@ -227,7 +233,6 @@ object GeneratorVariables {
     override def toString: String = s"P\u2080($variable)"
   }
 
-
   case class Log(exp: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
 
@@ -258,16 +263,25 @@ object GeneratorVariables {
     def mapVars(f: Variable[_] => Variable[_]): Quotient =
       Quotient(x.mapVars(f), y.mapVars(f))
 
-      override def toString = s"($x) / ($y)"
+    override def toString = s"($x) / ($y)"
+  }
+
+  case class Coeff[Y](node: GeneratorNode[Y], rv: RandomVar[Y])
+      extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
   }
 
   case class Equation(lhs: Expression, rhs: Expression) {
     def mapVars(f: Variable[_] => Variable[_]) =
       Equation(lhs.mapVars(f), rhs.mapVars(f))
 
-    def useBoat[Y, State, O, Boat](boat: Boat, island: Island[Y, State, O, Boat]): Equation = mapVars(InIsle(_, boat, island))
+    def useBoat[Y, State, O, Boat](
+        boat: Boat,
+        island: Island[Y, State, O, Boat]): Equation =
+      mapVars(InIsle(_, boat, island))
 
-    def squareError(epsilon: Double) : Expression = ((lhs - rhs) / (lhs + rhs + Literal(epsilon))).square
+    def squareError(epsilon: Double): Expression =
+      ((lhs - rhs) / (lhs + rhs + Literal(epsilon))).square
 
     override def toString = s"($lhs) == ($rhs)"
   }
@@ -275,8 +289,9 @@ object GeneratorVariables {
   case class EquationTerm(lhs: Expression, rhs: Expression) {
     def *(sc: Expression) = EquationTerm(lhs, rhs * sc)
 
-    def *(x: Double)              = EquationTerm(lhs, rhs * Literal(x))
-    def useBoat[Y, State, O, Boat](boat: Boat, island: Island[Y, State, O, Boat]) =
+    def *(x: Double) = EquationTerm(lhs, rhs * Literal(x))
+    def useBoat[Y, State, O, Boat](boat: Boat,
+                                   island: Island[Y, State, O, Boat]) =
       EquationTerm(lhs, rhs.useBoat(boat, island))
 
     override def toString: String = rhs.toString

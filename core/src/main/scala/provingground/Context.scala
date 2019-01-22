@@ -3,7 +3,6 @@ package provingground
 import HoTT._
 import induction._
 
-
 object Context {
 
   case object Empty extends Context {
@@ -39,8 +38,9 @@ object Context {
                                                 global: Boolean)
       extends Context {
 
-    def subs(x: Term, y: Term) = AppendDefn(init.subs(x, y), defn.subs(x, y), global)
-    val valueOpt : Option[Term] = Some(defn.value)
+    def subs(x: Term, y: Term) =
+      AppendDefn(init.subs(x, y), defn.subs(x, y), global)
+    val valueOpt: Option[Term] = Some(defn.value)
 
     val constants: Vector[Term] = init.constants
 
@@ -62,9 +62,10 @@ object Context {
 
   case class AppendConstant[U <: Term with Subs[U]](init: Context, constant: U)
       extends Context {
-    def subs(x: Term, y: Term) = AppendConstant(init.subs(x, y), constant.subs(x, y))
+    def subs(x: Term, y: Term) =
+      AppendConstant(init.subs(x, y), constant.subs(x, y))
 
-    val valueOpt : Option[Term] = Some(constant)
+    val valueOpt: Option[Term] = Some(constant)
 
     val constants: Vector[Term] = init.constants :+ init.export(constant)
 
@@ -81,11 +82,11 @@ object Context {
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
   }
 
-
-  case class AppendIndDef(init: Context, defn: ExstInducStrucs) extends Context {
+  case class AppendIndDef(init: Context, defn: ExstInducStrucs)
+      extends Context {
     def subs(x: Term, y: Term) = AppendIndDef(init.subs(x, y), defn.subs(x, y))
 
-    val valueOpt : Option[Term] = None
+    val valueOpt: Option[Term] = None
 
     val constants: Vector[Term] = init.constants ++ defn.constants
 
@@ -112,7 +113,8 @@ object Context {
                                                 term: U,
                                                 role: Role)
       extends Context {
-    def subs(x: Term, y: Term) = AppendTerm(init.subs(x, y), term.replace(x, y), role)
+    def subs(x: Term, y: Term) =
+      AppendTerm(init.subs(x, y), term.replace(x, y), role)
 
     val valueOpt: Option[Term] = Some(term)
 
@@ -133,9 +135,10 @@ object Context {
 
   case class AppendVariable[U <: Term with Subs[U]](init: Context, variable: U)
       extends Context {
-    def subs(x: Term, y: Term) = AppendVariable(init.subs(x, y), variable.replace(x, y))
+    def subs(x: Term, y: Term) =
+      AppendVariable(init.subs(x, y), variable.replace(x, y))
 
-    val valueOpt : Option[Term] = Some(variable)
+    val valueOpt: Option[Term] = Some(variable)
 
     val constants: Vector[Term] = init.constants
 
@@ -154,17 +157,16 @@ object Context {
       init.exportTyp(if (t.dependsOn(variable)) variable ~>: t else t)
   }
 
-  def consider(ts: Term*): Context = Empty.consider(ts : _*)
+  def consider(ts: Term*): Context = Empty.consider(ts: _*)
 
-  def apply(kvs: (String, Term)*): Context = Empty(kvs : _*)
-
+  def apply(kvs: (String, Term)*): Context = Empty(kvs: _*)
 
 }
 
 sealed trait Context {
   import Context._
 
-  def subs(x: Term, y: Term) : Context
+  def subs(x: Term, y: Term): Context
 
   val constants: Vector[Term]
 
@@ -208,14 +210,15 @@ sealed trait Context {
 
   def given[U <: Term with Subs[U]](v: Term): Context = addVariable(v)
 
-  def introduce[U <: Term with Subs[U]](t: U, role: Role = Consider): AppendTerm[U] =
+  def introduce[U <: Term with Subs[U]](t: U,
+                                        role: Role = Consider): AppendTerm[U] =
     AppendTerm(this, t, role)
 
   def consider(ts: Term*): Context =
-    ts.foldLeft(this){case (ctx, t) => ctx.introduce(t)}
+    ts.foldLeft(this) { case (ctx, t) => ctx.introduce(t) }
 
   def apply(kvs: (String, Term)*): Context =
-    kvs.foldLeft(this){case (ctx, (k, v)) => ctx.defineSym(Name(k), v)}
+    kvs.foldLeft(this) { case (ctx, (k, v)) => ctx.defineSym(Name(k), v) }
 
   val valueOpt: Option[Term]
 
@@ -227,12 +230,13 @@ sealed trait Context {
         case const @ NamedTerm(name) => name -> const
       }).toMap
 
-  def ++(that: Context) : Context = that match {
-    case Context.Empty        => this
-    case AppendDefn(init, defn : Defn[u], global)     => AppendDefn[u](++(init), defn, global)
-    case ap:  AppendConstant[u] => AppendConstant[u](++(ap.init), ap.constant)
-    case AppendIndDef(init, defn)      => AppendIndDef(++(init), defn)
-    case ap : AppendTerm[u]    => AppendTerm(++(ap.init), ap.term, ap.role)
-    case ap : AppendVariable[u] => AppendVariable(++(ap.init), ap.variable)
+  def ++(that: Context): Context = that match {
+    case Context.Empty => this
+    case AppendDefn(init, defn: Defn[u], global) =>
+      AppendDefn[u](++(init), defn, global)
+    case ap: AppendConstant[u]    => AppendConstant[u](++(ap.init), ap.constant)
+    case AppendIndDef(init, defn) => AppendIndDef(++(init), defn)
+    case ap: AppendTerm[u]        => AppendTerm(++(ap.init), ap.term, ap.role)
+    case ap: AppendVariable[u]    => AppendVariable(++(ap.init), ap.variable)
   }
 }

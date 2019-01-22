@@ -170,8 +170,8 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
 
   def apply[A](ws: Seq[Weighted[A]]) = FD(FiniteDistribution(ws.toVector))
 
-  implicit def td[A](fd: FiniteDistribution[A])
-    : TruncatedDistribution.FD[A] = FD(fd)
+  implicit def td[A](fd: FiniteDistribution[A]): TruncatedDistribution.FD[A] =
+    FD(fd)
 
   case class FD[A](fd: FiniteDistribution[A]) extends TruncatedDistribution[A] {
     def getFD(cutoff: Double) = pruneFD(fd, cutoff)

@@ -199,7 +199,9 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
     val defnData: Vector[Term] = Vector(init, g)
 
     def fromData(data: Vector[Term]): InducFuncLike[Nat, U] =
-      Induc(typFamily, data(0).asInstanceOf[U], data(1).asInstanceOf[FuncLike[Nat, Func[U, U]]])
+      Induc(typFamily,
+            data(0).asInstanceOf[U],
+            data(1).asInstanceOf[FuncLike[Nat, Func[U, U]]])
 
     val depcodom: Func[Nat, Typ[U]] = typFamily
 

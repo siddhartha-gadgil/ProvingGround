@@ -39,8 +39,7 @@ object LinearStructure {
     def |*|(c: Double): A = vs.mult(c, a)
   }
 
-  implicit val RealsAsLinearStructure
-    : LinearStructure[_root_.scala.Double] =
+  implicit val RealsAsLinearStructure: LinearStructure[_root_.scala.Double] =
     LinearStructure[Double](0, (_ + _), (_ * _))
 
   implicit def VectorPairs[A, B](
@@ -66,8 +65,7 @@ object LinearStructure {
     LinearStructure(zerofn, sumfn, multfn)
   }
 
-  implicit def FiniteDistVec[T]: LinearStructure[
-    FiniteDistribution[T]] =
+  implicit def FiniteDistVec[T]: LinearStructure[FiniteDistribution[T]] =
     LinearStructure[FiniteDistribution[T]](FiniteDistribution.empty,
                                            _ ++ _,
                                            (w, d) => d * w)

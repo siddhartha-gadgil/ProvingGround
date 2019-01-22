@@ -46,12 +46,13 @@ object HoTT {
     override def toString: String = name.toString
   }
 
-  object Name{
+  object Name {
     def getName(t: Term): Option[String] = t match {
-      case sym: Symbolic => sym.name match {
-        case Name(name) => Some(name)
-        case _ => None
-      }
+      case sym: Symbolic =>
+        sym.name match {
+          case Name(name) => Some(name)
+          case _          => None
+        }
       case _ => None
     }
   }
@@ -72,18 +73,21 @@ object HoTT {
     def get: Name
   }
 
-  def getName(n: Int) : String =
+  def getName(n: Int): String =
     if (n < 26) ('a' + n).toChar.toString
     else {
       val last = ('a' + (n % 26)).toChar.toString
       getName(n / 26 - 1) + last
     }
 
-  def nameCard(s: String) : Int =
+  def nameCard(s: String): Int =
     if (s.length == 1) s.head - 'a'
-    else (s.head - 'a' + 1) * math.pow(26, (s.length - 1)).toInt + nameCard(s.tail)
+    else
+      (s.head - 'a' + 1) * math.pow(26, (s.length - 1)).toInt + nameCard(s.tail)
 
-  def nextVar(typ: Typ[Term], vars: Vector[Term], prefix: String = "@"): Term = {
+  def nextVar(typ: Typ[Term],
+              vars: Vector[Term],
+              prefix: String = "@"): Term = {
     val cards: Vector[Int] = for {
       t <- vars
       if t.typ == typ
@@ -92,8 +96,6 @@ object HoTT {
     val name = prefix + getName((cards :+ (-1)).max + 1)
     name :: typ
   }
-
-
 
   /**
     * factory for variable names
@@ -2655,11 +2657,12 @@ object HoTT {
               fibers.replace(first, newfirst))
     }
 
-    def indepComponents: Boolean = Try{
-      val newFirst = first.newobj
-      second.replace(first, newFirst) == second.replace(fibers(first),
-                                                        fibers(newFirst))
-    }.getOrElse(true)
+    def indepComponents: Boolean =
+      Try {
+        val newFirst = first.newobj
+        second.replace(first, newFirst) == second.replace(fibers(first),
+                                                          fibers(newFirst))
+      }.getOrElse(true)
 
     def subs(x: Term, y: Term): DepPair[W, U] =
       if (x == this) y.asInstanceOf[DepPair[W, U]]
@@ -3442,11 +3445,15 @@ object HoTT {
               fx.func(x.asInstanceOf[u]) == func(x) && fx.arg.typ == func.dom)
             Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
           else getArg(func)(fx.func)
-        case _ => 
-          if (isProp(func.dom) && isProp(sym.typ)) Some(("_" :: func.dom).asInstanceOf[D]) else None
+        case _ =>
+          if (isProp(func.dom) && isProp(sym.typ))
+            Some(("_" :: func.dom).asInstanceOf[D])
+          else None
       }
-    case res => 
-      if (isProp(func.dom) && isProp(res.typ)) Some(("_" :: func.dom).asInstanceOf[D]) else None
+    case res =>
+      if (isProp(func.dom) && isProp(res.typ))
+        Some(("_" :: func.dom).asInstanceOf[D])
+      else None
   }
 
   /**
