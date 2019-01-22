@@ -314,7 +314,7 @@ case class MonixFiniteDistribution[State, Boat](
             val pmfT =
               baseDist.pmf
                 .flatMap {
-                  case wt @ Weighted(x, _) => fiberNodeOpt(x).map(wt -> _)
+                  case wt @ Weighted(x, _) => fiberNodeOpt(x).map(node => wt -> node)
                 }
                 .map {
                   case (Weighted(_, p1), node) =>

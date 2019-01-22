@@ -73,8 +73,8 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
     vl match {
       case RandomVarList.Nil => Task(FD.unif(HNil.asInstanceOf[Dom]) -> Set.empty[EquationTerm])
       case RandomVarList.Cons(head, tail) =>
-        varDist(initState)(head, epsilon)
-          .zip(varListDist(initState)(tail, epsilon))
+        Task.parZip2( varDist(initState)(head, epsilon)
+          , varListDist(initState)(tail, epsilon))
           .map {
             case ((xfd, eqx), (yfd, eqy )) =>
               (for {
@@ -268,93 +268,132 @@ case class MonixFiniteDistributionEq[State, Boat](
           val initDist = sd.value(initState)(input)
           val eqs = initDist.support.map{x => EquationTerm(initProb(x, input), finalProb(x, input))}
           Task(initDist, eqs)
-        case Map(f, input, _) =>
-          varDist(initState)(input, epsilon).map{case (fd, eqs) => fd.map(f).purge(epsilon) -> eqs}
-        case MapOpt(f, input, _) =>
-          varDist(initState)(input, epsilon).map{case (fd, eqs) => fd.condMap(f).purge(epsilon) -> eqs}
-        case ZipMap(f, input1, input2, _) =>
+        case Map(f, input, output) =>
+          varDist(initState)(input, epsilon).map{case (fd, eqs) => 
+            val meqs = fd.support.map{(x) => EquationTerm(finalProb(f(x), output), finalProb(x, input))}
+            fd.map(f).purge(epsilon) -> eqs.union(meqs)}
+        case MapOpt(f, input, output) =>
+          varDist(initState)(input, epsilon).map{case (fd, eqs) => 
+            val meqs = 
+              for {
+                x <- fd.support
+                y <- f(x)
+              } yield EquationTerm(finalProb(y, output), finalProb(x, input))
+              fd.condMap(f).purge(epsilon) -> eqs.union(meqs)}
+        case ZipMap(f, input1, input2, output) =>
           val d1 = varDist(initState)(input1, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
           val d2 = varDist(initState)(input2, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          d1.zip(d2).map {
+          Task.parZip2(d1, d2).map {
             case ((xd, eqx), (yd, eqy)) =>
-              xd.zip(yd).map { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy)
+            val meqs = 
+              for {
+                x <- xd.support
+                y <- yd.support
+                z = f(x, y)
+              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(x, input2))
+              xd.zip(yd).map { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy union meqs)
           }
-        case ZipMapOpt(f, input1, input2, _) =>
+        case ZipMapOpt(f, input1, input2, output) =>
           val d1 = varDist(initState)(input1, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
           val d2 = varDist(initState)(input2, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          d1.zip(d2).map {
+          Task.parZip2(d1, d2).map {
             case ((xd, eqx), (yd, eqy)) =>
-              xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy)
+              val meqs = 
+              for {
+                x <- xd.support
+                y <- yd.support
+                z <- f(x, y)
+              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(x, input2))
+              xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy union meqs)
           }
-        case ZipFlatMap(baseInput, fiberVar, f, _) =>
+        case ZipFlatMap(baseInput, fiberVar, f, output) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
           baseDistT.flatMap {case (baseDist, baseEqs) =>
-            val pmfT =
+            val pmfEqT =
               baseDist.pmf
                 .map {
                   case Weighted(x1, p1) =>
-                    val fiberDistT =
+                    val fiberDistEqsT =
                       varDist(initState)(fiberVar(x1), epsilon / p1)
                         .map{case (fd, eqs) => fd.flatten -> eqs}
-                    val tv =
-                      fiberDistT
+                    val tve =
+                      fiberDistEqsT
                         .map { case (fiberDist, fiberEqs) =>
-                          for {
-                            Weighted(x2, p2) <- fiberDist.pmf
-                          } yield Weighted(f(x1, x2), p1 * p2)
+                          val fibPMF =
+                            for {
+                              Weighted(x2, p2) <- fiberDist.pmf
+                            } yield Weighted(f(x1, x2), p1 * p2)
+                          val fibEqs =
+                            (for {
+                              Weighted(x2, _) <- fiberDist.pmf
+                            } yield EquationTerm(finalProb(f(x1, x2), output), finalProb(x1, baseInput) * finalProb(x2, fiberVar(x1)))).toSet 
+                          (fibPMF, fibEqs union fiberEqs)
                         }
-                    tv
+                    tve
                 }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten) -> ???)
+            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.flatMap(_._1)) -> vveq.flatMap(_._2).toSet}
           }
-        case FlatMap(baseInput, fiberNode, _) =>
+        case FlatMap(baseInput, fiberNode, output) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
           baseDistT.flatMap {case (baseDist, baseEqs) =>
-            val pmfT =
+            val pmfEqT =
               baseDist.pmf
                 .map {
                   case Weighted(x1, p1) =>
                     val node = fiberNode(x1)
-                    val fiberDistT =
+                    val fiberDistEqT =
                       nodeDist(initState)(node, epsilon / p1)
                         .map{case (fd, eqs) => fd.flatten -> eqs}
-                    fiberDistT
+                    fiberDistEqT
                       .map { case (fiberDist, fiberEqs) =>
-                        fiberDist.pmf.map {
-                          case Weighted(x2, p2) => Weighted(x2, p1 * p2)
-                        }
+                        val fibPMF = 
+                          fiberDist.pmf.map {
+                            case Weighted(x2, p2) => Weighted(x2, p1 * p2)
+                          }
+                        val fibEqs =
+                          fiberDist.pmf.map {
+                            case Weighted(x2, _) => EquationTerm(finalProb(x2, output) , finalProb(x1, baseInput) * finalProb(x2, fiberNode(x1).output))
+                          }.toSet
+                        (fibPMF, fibEqs union fiberEqs)
                       }
                 }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten) -> ???)
+            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet}
           }
-        case FlatMapOpt(baseInput, fiberNodeOpt, _) =>
+        case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
           baseDistT.flatMap { case (baseDist, baseEqs) =>
-            val pmfT =
+            val pmfEqT =
               baseDist.pmf
                 .flatMap {
-                  case wt @ Weighted(x, _) => fiberNodeOpt(x).map(wt -> _)
+                  case wt @ Weighted(x, _) => fiberNodeOpt(x).map(node => wt -> node)
                 }
                 .map {
-                  case (Weighted(_, p1), node) =>
-                    val fiberDistT =
+                  case (Weighted(x1, p1), node) =>
+                    val fiberDistEqT =
                       nodeDist(initState)(node, epsilon / p1)
                         .map{case (fd, eqs) => fd.flatten -> eqs}
-                    fiberDistT
-                      .map { case (fiberDist: FD[Y], fiberEqs) =>
-                        fiberDist.pmf.map {
-                          case Weighted(x2, p2) => Weighted(x2, p1 * p2)
+                        fiberDistEqT
+                        .map { case (fiberDist, fiberEqs) =>
+                          val fibPMF = 
+                            fiberDist.pmf.map {
+                              case Weighted(x2, p2) => Weighted(x2, p1 * p2)
+                            }
+                          val fibEqs =
+                            fiberDist.pmf.map {
+                              case Weighted(x2, _) => EquationTerm(finalProb(x2, output) , finalProb(x1, baseInput) * finalProb(x2, node.output))
+                            }.toSet
+                          (fibPMF, fibEqs union fiberEqs)
                         }
-                      }
+          
                 }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten) -> ???)
+            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet}
           }
-        case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
+        case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
           val d1T = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
           d1T.flatMap { case (d1, d1E) =>
             val byBase      = d1.pmf.groupBy { case Weighted(x, _) => quot(x) } // pmfs grouped by terms in quotient
             val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
-            val pmfT =
+            val pmfEqT =
               byBase.map {
                 case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
                   val d2T =
@@ -365,19 +404,28 @@ case class MonixFiniteDistributionEq[State, Boat](
                       .zip(d2)
                       .map { case (x1, x2) => f(x1, x2) }
                       .flatten // mapped distribution over `z`
-                    d.pmf // terms in pmf over z, should be flatMapped over `z`
+                    val eqs = FD(pmf1)
+                      .zip(d2).support.map {
+                        case (x1, x2) => EquationTerm(finalProb(f(x1, x2), output), finalProb(x1, baseInput) * finalProb(x2, fiberVar(x1)) )
+                      }
+                    (d.pmf, eqs union d2E) 
                   }
               }
-            Task.gather(pmfT).map((vv) => FD(vv.flatten) -> ???)
+              Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet}
           }
         case tc: ThenCondition[o, Y] =>
           import tc._
           val base = nodeDist(initState)(gen, epsilon)
+          val event = Event(tc.gen.output, tc.condition)
+          val finEv= FinalVal(event)
           import Sort._
           condition match {
             case _: All[_]    => base
-            case c: Filter[_] => base.map{case (fd, eqs) =>  fd.conditioned(c.pred).purge(epsilon) -> eqs}
-            case Restrict(f)  => base.map{case (fd, eqs) => fd.condMap(f).purge(epsilon) -> eqs}
+            case c: Filter[_] => base.map{
+              case (fd, eqs) =>  
+              fd.conditioned(c.pred).purge(epsilon) -> eqs}
+            case Restrict(f)  => 
+              base.map{case (fd, eqs) => fd.condMap(f).purge(epsilon) -> eqs}
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
