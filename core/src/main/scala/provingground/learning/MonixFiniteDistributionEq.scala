@@ -423,16 +423,26 @@ case class MonixFiniteDistributionEq[State, Boat](
             case _: All[_]    => base
             case c: Filter[_] => base.map{
               case (fd, eqs) =>  
-              fd.conditioned(c.pred).purge(epsilon) -> eqs}
+              val ceqs = fd.support.filter(c.pred).map{x => EquationTerm(finalProb(x, tc.output), finalProb(x, tc.gen.output) / finEv)}
+              fd.conditioned(c.pred).purge(epsilon) -> (eqs union ceqs)}
             case Restrict(f)  => 
-              base.map{case (fd, eqs) => fd.condMap(f).purge(epsilon) -> eqs}
+              base.map{case (fd, eqs) => 
+                val ceqs = for {
+                  x <- fd.support
+                  y <- f(x)
+                } yield EquationTerm(finalProb(y, tc.output), finalProb(x, tc.gen.output) / finEv)
+                fd.condMap(f).purge(epsilon) -> (eqs union ceqs)}
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
           val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
-          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
+          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island         
           isleOut
-            .map{case (fd, eqs) => fd.map(export(boat, _)).purge(epsilon) -> eqs} // exported result seen outside
+            .map{case (fd, eqs) => 
+              val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+              val bridgeEqs = fd.support.map{x => EquationTerm(finalProb(x, isle.output), 
+                FinalVal(InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)))}
+              fd.map(export(boat, _)).purge(epsilon) -> (isleEqs union bridgeEqs)} // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
           import isle._
           val (isleInit, boat, isleCoeffs) = initMap(initState)
