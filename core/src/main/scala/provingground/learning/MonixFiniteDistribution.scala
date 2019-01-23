@@ -59,8 +59,8 @@ abstract class GenMonixFiniteDistribution[State, Boat](
     vl match {
       case RandomVarList.Nil => Task(FD.unif(HNil))
       case RandomVarList.Cons(head, tail) =>
-        varDist(initState)(head, epsilon)
-          .zip(varListDist(initState)(tail, epsilon))
+      Task.parZip2(varDist(initState)(head, epsilon),
+          varListDist(initState)(tail, epsilon))
           .map {
             case (xfd, yfd) =>
               for {
@@ -256,14 +256,14 @@ case class MonixFiniteDistribution[State, Boat](
         case ZipMap(f, input1, input2, _) =>
           val d1 = varDist(initState)(input1, epsilon).map(_.flatten)
           val d2 = varDist(initState)(input2, epsilon).map(_.flatten)
-          d1.zip(d2).map {
+          Task.parZip2(d1, d2).map {
             case (xd, yd) =>
               xd.zip(yd).map { case (x, y) => f(x, y) }.purge(epsilon)
           }
         case ZipMapOpt(f, input1, input2, _) =>
           val d1 = varDist(initState)(input1, epsilon).map(_.flatten)
           val d2 = varDist(initState)(input2, epsilon).map(_.flatten)
-          d1.zip(d2).map {
+          Task.parZip2(d1, d2).map {
             case (xd, yd) =>
               xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon)
           }

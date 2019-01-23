@@ -73,11 +73,11 @@ case class MonixTangentFiniteDistribution[State, Boat](
           val d2  = varDist(tangentState)(input2, epsilon).map(_.flatten)
           val d2b = baseVal(input2)
           average(
-            d1b.zip(d2).map {
+            Task.parZip2(d1, d2).map {
               case (xd, yd) =>
                 xd.zip(yd).map { case (x, y) => f(x, y) }.purge(epsilon)
             },
-            d1.zip(d2b).map {
+            Task.parZip2(d1, d2).map {
               case (xd, yd) =>
                 xd.zip(yd).map { case (x, y) => f(x, y) }.purge(epsilon)
             }
@@ -88,11 +88,11 @@ case class MonixTangentFiniteDistribution[State, Boat](
           val d2  = varDist(tangentState)(input2, epsilon).map(_.flatten)
           val d2b = baseVal(input2)
           average(
-            d1b.zip(d2).map {
+            Task.parZip2(d1b, d2).map {
               case (xd, yd) =>
                 xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon)
             },
-            d1.zip(d2b).map {
+            Task.parZip2(d1, d2b).map {
               case (xd, yd) =>
                 xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon)
             }

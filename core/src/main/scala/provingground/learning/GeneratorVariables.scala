@@ -270,6 +270,21 @@ object GeneratorVariables {
   case class Coeff[Y](node: GeneratorNode[Y], rv: RandomVar[Y])
       extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
+
+    def expand : RandomVarFamily[_ <: HList, Y] = rv match {
+      case RandomVar.AtCoord(family, _) => family 
+      case simple => simple
+    }
+
+    def getFromCoeffs[State, Boat, V, RDom <: HList, Y](nodeCoeffs : NodeCoeffs[State, Boat, V, RDom, Y]) : Option[V] = 
+      nodeCoeffs match {
+        case NodeCoeffs.Target(_) => None 
+        case cons : NodeCoeffs.Cons[State, Boat, V, RDom, Y] =>
+          if (cons.headGen == node) Some(cons.headCoeff) else getFromCoeffs(cons.tail)
+      }
+
+    def get[State, Boat, V](seq : NodeCoeffSeq[State, Boat, V]) : Option[V] =
+      seq.find(expand).flatMap(getFromCoeffs)
   }
 
   case class Equation(lhs: Expression, rhs: Expression) {
