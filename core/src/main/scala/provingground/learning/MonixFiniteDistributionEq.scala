@@ -51,7 +51,7 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
         case _ =>
           find(randomVar)
             .map { nc =>
-              nodeCoeffDist(initState)(nc, epsilon).map{
+              nodeCoeffDist(initState)(nc, epsilon, randomVar).map{
                 case (fd, eqs) => fd.flatten.safeNormalized -> eqs
               }
             }
@@ -86,17 +86,17 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
 
   def nodeCoeffDist[Y](initState: State)(
       nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
-      epsilon: Double): Task[(FD[Y], Set[EquationTerm])] =
+      epsilon: Double, rv: RandomVar[Y]): Task[(FD[Y], Set[EquationTerm])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationTerm])
     else
       nodeCoeffs match {
         case Target(_) => Task.now(FD.empty[Y] -> Set.empty[EquationTerm])
         case bc: Cons[State, Boat, Double, HNil, Y] =>
           val p: Double = bc.headCoeff
-          val d: Task[(FD[Y], Set[EquationTerm])] =
+          val (d: Task[(FD[Y], Set[EquationTerm])], nc) =
             bc.headGen match {
               case gen: GeneratorNode[Y] =>
-                nodeDist(initState)(gen, epsilon / p) map {case (fd, eqs) => (fd *p, eqs)}
+                (nodeDist(initState)(gen, epsilon / p) map {case (fd, eqs) => (fd *p, eqs)}) -> Coeff(gen, rv)
               case _ =>
                 throw new IllegalArgumentException(
                   "found node family for generating a simple random variable")
@@ -104,9 +104,10 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
           for {
             pa <- d
             (a, eqa) = pa
-            pb <- nodeCoeffDist(initState)(bc.tail, epsilon)
+            eqc = eqa.map{case EquationTerm(lhs, rhs) => EquationTerm(lhs, nc * rhs)}
+            pb <- nodeCoeffDist(initState)(bc.tail, epsilon, rv)
             (b, eqb) = pb
-          } yield (a ++ b, eqa union eqb)
+          } yield (a ++ b, eqc union eqb)
       }
 
   def mapsSum[X, Y](first: Map[X, (FD[Y], Set[EquationTerm])],
