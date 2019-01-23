@@ -187,6 +187,7 @@ object GeneratorVariables {
       case Product(x, y)    => varVals(x) union (varVals(y))
       case Literal(_)       => Set()
       case Quotient(x, y)   => varVals(x) union (varVals(y))
+      case Coeff(_, _) => Set()
     }
   }
 

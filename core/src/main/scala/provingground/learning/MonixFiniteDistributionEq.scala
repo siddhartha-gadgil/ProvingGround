@@ -12,6 +12,8 @@ import scala.concurrent._, duration._
 
 import MonixFiniteDistributionEq._
 
+import scala.util.Try
+
 object MonixFiniteDistributionEq {
   def finalProb[Y](y: Y, rv: RandomVar[Y]) = FinalVal(Elem(y, rv))
 
@@ -407,7 +409,12 @@ case class MonixFiniteDistributionEq[State, Boat](
                       .flatten // mapped distribution over `z`
                     val eqs = FD(pmf1)
                       .zip(d2).support.map {
-                        case (x1, x2) => EquationTerm(finalProb(f(x1, x2), output), finalProb(x1, baseInput) * finalProb(x2, fiberVar(x1)) )
+                        case (x1, x2) =>
+                          EquationTerm(
+                          finalProb(f(x1, x2), output), 
+                          finalProb(x1, baseInput) 
+                          * finalProb(x2, fiberVar(z)) 
+                          )
                       }
                     (d.pmf, eqs union d2E) 
                   }
