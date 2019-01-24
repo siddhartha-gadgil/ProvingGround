@@ -446,7 +446,6 @@ case class MonixFiniteDistributionEq[State, Boat](
           val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island  
           def initStateMap(s: State) = initMap(s)._1   
-          def inPairs = sd.initPairs(initState, initStateMap)
           isleOut
             .map{case (fd, eqs) => 
               val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
