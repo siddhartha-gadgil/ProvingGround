@@ -1044,6 +1044,19 @@ object TermState {
         }
     }
 
+    def islePairs(ts: TermState, variable: Term) = 
+      {
+        val termPairs : Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
+          ts.terms.support.map{x => (RandomVar.Elem(Terms, x), RandomVar.Elem(Terms, variable :~> x))}
+        val typPairs : Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
+          ts.typs.support.map{x => (RandomVar.Elem(Typs, x), RandomVar.Elem(Typs, variable ~>: x))}
+        val goalPairs : Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
+          ts.goals.support.map{x => (RandomVar.Elem(Goals, x), RandomVar.Elem(Goals, variable ~>: x))}
+        termPairs union typPairs union goalPairs
+      }
+
+      
+
 }
 
 import upickle.default.{ReadWriter => RW, macroRW, read, write}

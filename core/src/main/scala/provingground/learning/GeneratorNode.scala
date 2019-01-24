@@ -137,6 +137,8 @@ object RandomVar {
     * @tparam D the distribution (could be representation) that is associated to the random variable
     */
   case class Value[O, D[_]](randVar: RandomVar[O], value: D[O])
+
+  case class Elem[O](randVar: RandomVar[O], value: O)
 }
 
 /**

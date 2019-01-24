@@ -14,6 +14,8 @@ import MonixFiniteDistributionEq._
 
 import scala.util.Try
 
+import GeneratorNode.Island
+
 object MonixFiniteDistributionEq {
   def finalProb[Y](y: Y, rv: RandomVar[Y]) = FinalVal(Elem(y, rv))
 
@@ -22,7 +24,8 @@ object MonixFiniteDistributionEq {
 }
 
 abstract class GenMonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+    islePairs : (State, Boat) => Set[(RandomVar.Elem[_], RandomVar.Elem[_])])(
     implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
   import nodeCoeffSeq.find
@@ -236,9 +239,11 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
   * @tparam State scala type of the initial state
   */
 case class MonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+    islePairs : (State, Boat) => Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
+      (s: State, b: Boat) => Set.empty[(RandomVar.Elem[_], RandomVar.Elem[_])])(
     implicit sd: StateDistribution[State, FD])
-    extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq) {
+    extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq, islePairs) {
 
   /**
     * update coefficients, to be used in complex islands
@@ -247,7 +252,7 @@ case class MonixFiniteDistributionEq[State, Boat](
     */
   def updateAll(
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
-    MonixFiniteDistributionEq(nodeCoeffSeq.updateAll(dataSeq))
+    MonixFiniteDistributionEq(nodeCoeffSeq.updateAll(dataSeq),islePairs)
 
   /**
     * recursively determines the finite distribution given a generator node;
@@ -445,13 +450,16 @@ case class MonixFiniteDistributionEq[State, Boat](
           import isle._
           val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island  
-          def initStateMap(s: State) = initMap(s)._1   
+          val isleIn : Set[EquationTerm] = 
+            islePairs(isleInit, boat.asInstanceOf[Boat]).map {
+              case (x, y) => EquationTerm(InitialVal(InIsle(Elem(y.value, y.randVar), boat, isle)), InitialVal(Elem(x.value, x.randVar)))
+            }  
           isleOut
             .map{case (fd, eqs) => 
               val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
               val bridgeEqs = fd.support.map{x => EquationTerm(finalProb(x, isle.output), 
                 FinalVal(InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)))}
-              fd.map(export(boat, _)).purge(epsilon) -> (isleEqs union bridgeEqs)} // exported result seen outside
+              fd.map(export(boat, _)).purge(epsilon) -> (isleEqs union bridgeEqs union isleIn)} // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
           import isle._
           val (isleInit, boat, isleCoeffs) = initMap(initState)
