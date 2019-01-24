@@ -298,7 +298,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                 x <- xd.support
                 y <- yd.support
                 z = f(x, y)
-              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(x, input2))
+              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(y, input2))
               xd.zip(yd).map { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy union meqs)
           }
         case ZipMapOpt(f, input1, input2, output) =>
@@ -311,7 +311,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                 x <- xd.support
                 y <- yd.support
                 z <- f(x, y)
-              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(x, input2))
+              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(y, input2))
               xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy union meqs)
           }
         case ZipFlatMap(baseInput, fiberVar, f, output) =>
