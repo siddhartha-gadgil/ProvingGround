@@ -269,7 +269,7 @@ case class MonixFiniteDistributionEq[State, Boat](
           Task(FD.unif(x), Set.empty[EquationTerm])
         case Init(input) =>
           val initDist = sd.value(initState)(input)
-          val eqs = initDist.support.map{x => EquationTerm(initProb(x, input), finalProb(x, input))}
+          val eqs = initDist.support.map{x => EquationTerm(finalProb(x, input), initProb(x, input))}
           Task(initDist, eqs)
         case Map(f, input, output) =>
           varDist(initState)(input, epsilon).map{case (fd, eqs) => 
@@ -444,7 +444,9 @@ case class MonixFiniteDistributionEq[State, Boat](
         case isle: Island[Y, State, o, b] =>
           import isle._
           val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
-          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island         
+          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island  
+          def initStateMap(s: State) = initMap(s)._1   
+          def inPairs = sd.initPairs(initState, initStateMap)
           isleOut
             .map{case (fd, eqs) => 
               val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
