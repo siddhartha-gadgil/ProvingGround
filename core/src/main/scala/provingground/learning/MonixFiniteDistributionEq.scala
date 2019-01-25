@@ -436,15 +436,31 @@ case class MonixFiniteDistributionEq[State, Boat](
             case _: All[_]    => base
             case c: Filter[_] => base.map{
               case (fd, eqs) =>  
-              val ceqs = fd.support.filter(c.pred).map{x => EquationTerm(finalProb(x, tc.output), finalProb(x, tc.gen.output) / finEv)}
-              fd.conditioned(c.pred).purge(epsilon) -> (eqs union ceqs)}
+              val ceqs = fd.conditioned(c.pred).support.map{x => EquationTerm(finalProb(x, tc.output), finalProb(x, tc.gen.output) / finEv)}
+              if (ceqs.nonEmpty) {
+                pprint.log(tc.gen.output)
+                pprint.log(tc.output)
+              }
+              val evSupp = fd.conditioned(c.pred).support
+              val evEq : Set[EquationTerm] = 
+                if (evSupp.nonEmpty) 
+                  Set(EquationTerm(finEv, evSupp.map(x => finalProb(x, tc.output)).reduce[Expression](Sum(_, _)))) 
+                else Set()
+              // pprint.log(ceqs)
+              // pprint.log(evEq)
+              fd.conditioned(c.pred).purge(epsilon) -> (eqs union ceqs union evEq)}
             case Restrict(f)  => 
               base.map{case (fd, eqs) => 
                 val ceqs = for {
                   x <- fd.support
                   y <- f(x)
                 } yield EquationTerm(finalProb(y, tc.output), finalProb(x, tc.gen.output) / finEv)
-                fd.condMap(f).purge(epsilon) -> (eqs union ceqs)}
+                val evSupp = fd.condMap(f).flatten.support
+                val evEq  : Set[EquationTerm] = 
+                  if (evSupp.nonEmpty) 
+                  Set(EquationTerm(finEv, evSupp.map(x => finalProb(x, tc.output)).reduce[Expression](Sum(_, _)))) 
+                else Set()
+                fd.condMap(f).purge(epsilon) -> (eqs union ceqs union evEq)}
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
@@ -469,7 +485,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                 initVarElems.map {el =>
                   EquationTerm(InitialVal(InIsle(el, boat, isle)), IsleScale(boat, el) * InitialVal(el))
                 }
-              pprint.log(isleIn.size)
+              // pprint.log(isleIn.size)
               fd.map(export(boat, _)).purge(epsilon) -> (isleEqs union bridgeEqs union isleIn)} // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
           import isle._

@@ -374,7 +374,7 @@ class TermGeneratorNodes[InitState](
   val termsByTyps: ZipFlatMap[Typ[Term], Term, Term] =
     ZipFlatMap[Typ[Term], Term, Term](
       TargetTyps,
-      (typ) => termsWithTyp(typ),
+      termsWithTyp,
       { case (_, term) => term },
       Terms
     )
