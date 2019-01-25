@@ -339,7 +339,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                         }
                     tve
                 }
-            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.flatMap(_._1)) -> vveq.flatMap(_._2).toSet}
+            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.flatMap(_._1)) -> vveq.flatMap(_._2).toSet.union(baseEqs)}
           }
         case FlatMap(baseInput, fiberNode, output) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
@@ -365,7 +365,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                         (fibPMF, fibEqs union fiberEqs)
                       }
                 }
-            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet}
+            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet.union(baseEqs)}
           }
         case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
           val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
@@ -450,15 +450,26 @@ case class MonixFiniteDistributionEq[State, Boat](
           import isle._
           val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island  
-          val isleIn : Set[EquationTerm] = 
-            islePairs(isleInit, boat.asInstanceOf[Boat]).map {
-              case (x, y) => EquationTerm(InitialVal(InIsle(Elem(y.value, y.randVar), boat, isle)), InitialVal(Elem(x.value, x.randVar)))
-            }  
+          // val isleIn : Set[EquationTerm] = 
+          //   islePairs(isleInit, boat.asInstanceOf[Boat]).map {
+          //     case (x, y) => EquationTerm(InitialVal(InIsle(Elem(y.value, y.randVar), boat, isle)), InitialVal(Elem(x.value, x.randVar)))
+          //   }  
           isleOut
             .map{case (fd, eqs) => 
               val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
               val bridgeEqs = fd.support.map{x => EquationTerm(finalProb(x, isle.output), 
                 FinalVal(InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)))}
+              val initVarElems = eqs.flatMap{
+                (eq) =>
+                  Expression.varVals(eq.rhs)
+              }.collect{
+                case InitialVal(Elem(el, rv)) => Elem(el, rv)
+              }
+              val isleIn : Set[EquationTerm] = 
+                initVarElems.map {el =>
+                  EquationTerm(InitialVal(InIsle(el, boat, isle)), IsleScale(boat, el) * InitialVal(el))
+                }
+              pprint.log(isleIn.size)
               fd.map(export(boat, _)).purge(epsilon) -> (isleEqs union bridgeEqs union isleIn)} // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
           import isle._
