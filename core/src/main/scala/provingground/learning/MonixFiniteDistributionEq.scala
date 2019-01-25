@@ -424,7 +424,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                     (d.pmf, eqs union d2E) 
                   }
               }
-              Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet}
+              Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet.union(d1E)}
           }
         case tc: ThenCondition[o, Y] =>
           import tc._
