@@ -190,6 +190,11 @@ object GeneratorVariables {
       case Coeff(_, _) => Set()
       case IsleScale(_, _) => Set()
     }
+
+    def sumTerms(exp: Expression) : Vector[Expression] = exp match{
+      case Sum(a, b) => sumTerms(a) ++ sumTerms(b)
+      case a => Vector(a)
+    }
   }
 
   sealed trait Expression {

@@ -473,7 +473,7 @@ case class MonixFiniteDistributionEq[State, Boat](
           isleOut
             .map{case (fd, eqs) => 
               val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
-              val bridgeEqs = fd.support.map{x => EquationTerm(finalProb(x, isle.output), 
+              val bridgeEqs = fd.support.map{x => EquationTerm(finalProb(export(boat, x), isle.output), 
                 FinalVal(InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)))}
               val initVarElems = eqs.flatMap{
                 (eq) =>
