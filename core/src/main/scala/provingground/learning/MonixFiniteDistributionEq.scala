@@ -24,8 +24,8 @@ object MonixFiniteDistributionEq {
 }
 
 abstract class GenMonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
-    implicit sd: StateDistribution[State, FD]) {
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double]
+)(implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
   import nodeCoeffSeq.find
 
@@ -40,7 +40,8 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
   def varDist[Y](initState: State)(
       randomVar: RandomVar[Y],
       epsilon: Double,
-      limit: FiniteDuration = 3.minutes): Task[(FD[Y], Set[EquationTerm])] =
+      limit: FiniteDuration = 3.minutes
+  ): Task[(FD[Y], Set[EquationTerm])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set())
     else
       randomVar match {
@@ -48,14 +49,14 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
 //          varFamilyDist(initState)(randomVarFmly, epsilon)
 //            .map(_.getOrElse(fullArg, FD.empty[Y]))
           varFamilyDistFunc(initState)(randomVarFmly, epsilon)(fullArg)
-            .map{
+            .map {
               case (fd, eqs) => fd.flatten.safeNormalized -> eqs
             }
             .timeout(limit)
         case _ =>
           find(randomVar)
             .map { nc =>
-              nodeCoeffDist(initState)(nc, epsilon, randomVar).map{
+              nodeCoeffDist(initState)(nc, epsilon, randomVar).map {
                 case (fd, eqs) => fd.flatten.safeNormalized -> eqs
               }
             }
@@ -73,14 +74,19 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
     */
   def varListDist[Dom <: HList](initState: State)(
       vl: RandomVarList[Dom],
-      epsilon: Double): Task[(FD[Dom], Set[EquationTerm])] =
+      epsilon: Double
+  ): Task[(FD[Dom], Set[EquationTerm])] =
     vl match {
-      case RandomVarList.Nil => Task(FD.unif(HNil.asInstanceOf[Dom]) -> Set.empty[EquationTerm])
+      case RandomVarList.Nil =>
+        Task(FD.unif(HNil.asInstanceOf[Dom]) -> Set.empty[EquationTerm])
       case RandomVarList.Cons(head, tail) =>
-        Task.parZip2( varDist(initState)(head, epsilon)
-          , varListDist(initState)(tail, epsilon))
+        Task
+          .parZip2(
+            varDist(initState)(head, epsilon),
+            varListDist(initState)(tail, epsilon)
+          )
           .map {
-            case ((xfd, eqx), (yfd, eqy )) =>
+            case ((xfd, eqx), (yfd, eqy)) =>
               (for {
                 x <- xfd
                 y <- yfd
@@ -90,7 +96,9 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
 
   def nodeCoeffDist[Y](initState: State)(
       nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
-      epsilon: Double, rv: RandomVar[Y]): Task[(FD[Y], Set[EquationTerm])] =
+      epsilon: Double,
+      rv: RandomVar[Y]
+  ): Task[(FD[Y], Set[EquationTerm])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationTerm])
     else
       nodeCoeffs match {
@@ -100,32 +108,40 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
           val (d: Task[(FD[Y], Set[EquationTerm])], nc) =
             bc.headGen match {
               case gen: GeneratorNode[Y] =>
-                (nodeDist(initState)(gen, epsilon / p) map {case (fd, eqs) => (fd *p, eqs)}) -> Coeff(gen, rv)
+                (nodeDist(initState)(gen, epsilon / p) map {
+                  case (fd, eqs) => (fd * p, eqs)
+                }) -> Coeff(gen, rv)
               case _ =>
                 throw new IllegalArgumentException(
-                  "found node family for generating a simple random variable")
+                  "found node family for generating a simple random variable"
+                )
             }
           for {
             pa <- d
             (a, eqa) = pa
-            eqc = eqa.map{case EquationTerm(lhs, rhs) => EquationTerm(lhs, nc * rhs)}
+            eqc = eqa.map {
+              case EquationTerm(lhs, rhs) => EquationTerm(lhs, nc * rhs)
+            }
             pb <- nodeCoeffDist(initState)(bc.tail, epsilon, rv)
             (b, eqb) = pb
           } yield (a ++ b, eqc union eqb)
       }
 
-  def mapsSum[X, Y](first: Map[X, (FD[Y], Set[EquationTerm])],
-                    second: Map[X, (FD[Y], Set[EquationTerm])]): Map[X, (FD[Y], Set[EquationTerm])] =
+  def mapsSum[X, Y](
+      first: Map[X, (FD[Y], Set[EquationTerm])],
+      second: Map[X, (FD[Y], Set[EquationTerm])]
+  ): Map[X, (FD[Y], Set[EquationTerm])] =
     (for {
       k <- first.keySet union second.keySet
-      v1 = first.getOrElse(k, FD.empty[Y] -> Set.empty[EquationTerm]) 
+      v1 = first.getOrElse(k, FD.empty[Y]  -> Set.empty[EquationTerm])
       v2 = second.getOrElse(k, FD.empty[Y] -> Set.empty[EquationTerm])
     } yield (k, (v1._1 ++ v2._1, v1._2 union v2._2))).toMap
 
   def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
       baseDist: Task[FD[Dom]],
-      epsilon: Double): Task[Map[Dom, (FD[Y], Set[EquationTerm])]] =
+      epsilon: Double
+  ): Task[Map[Dom, (FD[Y], Set[EquationTerm])]] =
     if (epsilon > 1) Task(Map())
     else
       nodeCoeffs match {
@@ -134,15 +150,18 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
           val p = bc.headCoeff
           for {
             a <- nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon)
-            b <- nodeCoeffFamilyMap(initState)(bc.tail,
-                                               baseDist,
-                                               epsilon / (1.0 - p))
+            b <- nodeCoeffFamilyMap(initState)(
+              bc.tail,
+              baseDist,
+              epsilon / (1.0 - p)
+            )
           } yield mapsSum(a, b)
       }
 
   def nodeCoeffFamilyDist[Dom <: HList, Y](initState: State)(
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
-      epsilon: Double)(arg: Dom): Task[(FD[Y], Set[EquationTerm])] =
+      epsilon: Double
+  )(arg: Dom): Task[(FD[Y], Set[EquationTerm])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationTerm])
     else
       nodeCoeffs match {
@@ -152,13 +171,15 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
           for {
             pa <- nodeFamilyDistFunc(initState)(bc.headGen, epsilon)(arg)
             pb <- nodeCoeffFamilyDist(initState)(bc.tail, epsilon / (1.0 - p))(
-              arg)
+              arg
+            )
           } yield (pa._1 ++ pb._1, pa._2 union pb._2)
       }
 
   def varFamilyDist[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],
-      epsilon: Double): Task[Map[RDom, (FD[Y], Set[EquationTerm])]] =
+      epsilon: Double
+  ): Task[Map[RDom, (FD[Y], Set[EquationTerm])]] =
     if (epsilon > 1) Task(Map())
     else
       find(randomVarFmly)
@@ -170,7 +191,8 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
 
   def varFamilyDistFunc[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],
-      epsilon: Double)(arg: RDom): Task[(FD[Y], Set[EquationTerm])] =
+      epsilon: Double
+  )(arg: RDom): Task[(FD[Y], Set[EquationTerm])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationTerm])
     else
       find(randomVarFmly)
@@ -182,7 +204,8 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
   def nodeFamilyDist[Dom <: HList, Y](initState: State)(
       generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
       baseDist: Task[FD[Dom]],
-      epsilon: Double): Task[Map[Dom, (FD[Y], Set[EquationTerm])]] =
+      epsilon: Double
+  ): Task[Map[Dom, (FD[Y], Set[EquationTerm])]] =
     generatorNodeFamily match {
       case node: GeneratorNode[Y] =>
         nodeDist(initState)(node, epsilon)
@@ -210,11 +233,14 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
 
   def nodeFamilyDistFunc[Dom <: HList, Y](initState: State)(
       generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
-      epsilon: Double)(arg: Dom): Task[(FD[Y], Set[EquationTerm])] =
+      epsilon: Double
+  )(arg: Dom): Task[(FD[Y], Set[EquationTerm])] =
     generatorNodeFamily match {
       case node: GeneratorNode[Y] =>
-        assert(arg == HNil,
-               s"looking for coordinate $arg in $node which is not a family")
+        assert(
+          arg == HNil,
+          s"looking for coordinate $arg in $node which is not a family"
+        )
         nodeDist(initState)(node, epsilon)
       case f: GeneratorNodeFamily.Pi[Dom, Y] =>
         nodeDist(initState)(f.nodes(arg), epsilon) // actually a task
@@ -224,8 +250,10 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
           .getOrElse(Task.pure(FD.empty[Y] -> Set.empty[EquationTerm]))
     }
 
-  def nodeDist[Y](initState: State)(generatorNode: GeneratorNode[Y],
-                                    epsilon: Double): Task[(FD[Y], Set[EquationTerm])]
+  def nodeDist[Y](initState: State)(
+      generatorNode: GeneratorNode[Y],
+      epsilon: Double
+  ): Task[(FD[Y], Set[EquationTerm])]
 
 }
 
@@ -238,8 +266,8 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
   * @tparam State scala type of the initial state
   */
 case class MonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
-    implicit sd: StateDistribution[State, FD])
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double]
+)(implicit sd: StateDistribution[State, FD])
     extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq) {
 
   /**
@@ -248,7 +276,8 @@ case class MonixFiniteDistributionEq[State, Boat](
     * @return [[MonixFiniteDistribution]] with updated coefficients
     */
   def updateAll(
-      dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
+      dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]
+  ) =
     MonixFiniteDistributionEq(nodeCoeffSeq.updateAll(dataSeq))
 
   /**
@@ -261,8 +290,10 @@ case class MonixFiniteDistributionEq[State, Boat](
     * @tparam Y values of the corresponding random variable
     * @return distribution corresponding to the `output` random variable
     */
-  def nodeDist[Y](initState: State)(generatorNode: GeneratorNode[Y],
-                                    epsilon: Double): Task[(FD[Y], Set[EquationTerm])] =
+  def nodeDist[Y](initState: State)(
+      generatorNode: GeneratorNode[Y],
+      epsilon: Double
+  ): Task[(FD[Y], Set[EquationTerm])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationTerm])
     else {
       import GeneratorNode._
@@ -271,219 +302,351 @@ case class MonixFiniteDistributionEq[State, Boat](
           Task(FD.unif(x), Set.empty[EquationTerm])
         case Init(input) =>
           val initDist = sd.value(initState)(input)
-          val eqs = initDist.support.map{x => EquationTerm(finalProb(x, input), initProb(x, input))}
+          val eqs = initDist.support.map { x =>
+            EquationTerm(finalProb(x, input), initProb(x, input))
+          }
           Task(initDist, eqs)
         case Map(f, input, output) =>
-          varDist(initState)(input, epsilon).map{case (fd, eqs) => 
-            val meqs = fd.support.map{(x) => EquationTerm(finalProb(f(x), output), finalProb(x, input))}
-            fd.map(f).purge(epsilon) -> eqs.union(meqs)}
+          varDist(initState)(input, epsilon).map {
+            case (fd, eqs) =>
+              val meqs = fd.support.map { (x) =>
+                EquationTerm(finalProb(f(x), output), finalProb(x, input))
+              }
+              fd.map(f).purge(epsilon) -> eqs.union(meqs)
+          }
         case MapOpt(f, input, output) =>
-          varDist(initState)(input, epsilon).map{case (fd, eqs) => 
-            val meqs = 
-              for {
-                x <- fd.support
-                y <- f(x)
-              } yield EquationTerm(finalProb(y, output), finalProb(x, input))
-              fd.condMap(f).purge(epsilon) -> eqs.union(meqs)}
+          varDist(initState)(input, epsilon).map {
+            case (fd, eqs) =>
+              val meqs =
+                for {
+                  x <- fd.support
+                  y <- f(x)
+                } yield EquationTerm(finalProb(y, output), finalProb(x, input))
+              fd.condMap(f).purge(epsilon) -> eqs.union(meqs)
+          }
         case ZipMap(f, input1, input2, output) =>
-          val d1 = varDist(initState)(input1, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          val d2 = varDist(initState)(input2, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
+          val d1 = varDist(initState)(input1, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
+          val d2 = varDist(initState)(input2, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
           Task.parZip2(d1, d2).map {
             case ((xd, eqx), (yd, eqy)) =>
-            val meqs = 
-              for {
-                x <- xd.support
-                y <- yd.support
-                z = f(x, y)
-              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(y, input2))
-              xd.zip(yd).map { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy union meqs)
+              val meqs =
+                for {
+                  x <- xd.support
+                  y <- yd.support
+                  z = f(x, y)
+                } yield
+                  EquationTerm(
+                    finalProb(z, output),
+                    finalProb(x, input1) * finalProb(y, input2)
+                  )
+              xd.zip(yd)
+                .map { case (x, y) => f(x, y) }
+                .purge(epsilon) -> (eqx union eqy union meqs)
           }
         case ZipMapOpt(f, input1, input2, output) =>
-          val d1 = varDist(initState)(input1, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          val d2 = varDist(initState)(input2, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
+          val d1 = varDist(initState)(input1, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
+          val d2 = varDist(initState)(input2, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
           Task.parZip2(d1, d2).map {
             case ((xd, eqx), (yd, eqy)) =>
-              val meqs = 
-              for {
-                x <- xd.support
-                y <- yd.support
-                z <- f(x, y)
-              } yield EquationTerm(finalProb(z, output), finalProb(x, input1) * finalProb(y, input2))
-              xd.zip(yd).condMap { case (x, y) => f(x, y) }.purge(epsilon) -> (eqx union eqy union meqs)
+              val meqs =
+                for {
+                  x <- xd.support
+                  y <- yd.support
+                  z <- f(x, y)
+                } yield
+                  EquationTerm(
+                    finalProb(z, output),
+                    finalProb(x, input1) * finalProb(y, input2)
+                  )
+              xd.zip(yd)
+                .condMap { case (x, y) => f(x, y) }
+                .purge(epsilon) -> (eqx union eqy union meqs)
           }
         case ZipFlatMap(baseInput, fiberVar, f, output) =>
-          val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          baseDistT.flatMap {case (baseDist, baseEqs) =>
-            val pmfEqT =
-              baseDist.pmf
-                .map {
-                  case Weighted(x1, p1) =>
-                    val fiberDistEqsT =
-                      varDist(initState)(fiberVar(x1), epsilon / p1)
-                        .map{case (fd, eqs) => fd.flatten -> eqs}
-                    val tve =
-                      fiberDistEqsT
-                        .map { case (fiberDist, fiberEqs) =>
-                          val fibPMF =
-                            for {
-                              Weighted(x2, p2) <- fiberDist.pmf
-                            } yield Weighted(f(x1, x2), p1 * p2)
-                          val fibEqs =
-                            (for {
-                              Weighted(x2, _) <- fiberDist.pmf
-                            } yield EquationTerm(finalProb(f(x1, x2), output), finalProb(x1, baseInput) * finalProb(x2, fiberVar(x1)))).toSet 
-                          (fibPMF, fibEqs union fiberEqs)
-                        }
-                    tve
-                }
-            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.flatMap(_._1)) -> vveq.flatMap(_._2).toSet.union(baseEqs)}
+          val baseDistT = varDist(initState)(baseInput, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
+          baseDistT.flatMap {
+            case (baseDist, baseEqs) =>
+              val pmfEqT =
+                baseDist.pmf
+                  .map {
+                    case Weighted(x1, p1) =>
+                      val fiberDistEqsT =
+                        varDist(initState)(fiberVar(x1), epsilon / p1)
+                          .map { case (fd, eqs) => fd.flatten -> eqs }
+                      val tve =
+                        fiberDistEqsT
+                          .map {
+                            case (fiberDist, fiberEqs) =>
+                              val fibPMF =
+                                for {
+                                  Weighted(x2, p2) <- fiberDist.pmf
+                                } yield Weighted(f(x1, x2), p1 * p2)
+                              val fibEqs =
+                                (for {
+                                  Weighted(x2, _) <- fiberDist.pmf
+                                } yield
+                                  EquationTerm(
+                                    finalProb(f(x1, x2), output),
+                                    finalProb(x1, baseInput) * finalProb(
+                                      x2,
+                                      fiberVar(x1)
+                                    )
+                                  )).toSet
+                              (fibPMF, fibEqs union fiberEqs)
+                          }
+                      tve
+                  }
+              Task.gather(pmfEqT).map {
+                case (vveq) =>
+                  FD(vveq.flatMap(_._1)) -> vveq
+                    .flatMap(_._2)
+                    .toSet
+                    .union(baseEqs)
+              }
           }
         case FlatMap(baseInput, fiberNode, output) =>
-          val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          baseDistT.flatMap {case (baseDist, baseEqs) =>
-            val pmfEqT =
-              baseDist.pmf
-                .map {
-                  case Weighted(x1, p1) =>
-                    val node = fiberNode(x1)
-                    val fiberDistEqT =
-                      nodeDist(initState)(node, epsilon / p1)
-                        .map{case (fd, eqs) => fd.flatten -> eqs}
-                    fiberDistEqT
-                      .map { case (fiberDist, fiberEqs) =>
-                        val fibPMF = 
-                          fiberDist.pmf.map {
-                            case Weighted(x2, p2) => Weighted(x2, p1 * p2)
-                          }
-                        val fibEqs =
-                          fiberDist.pmf.map {
-                            case Weighted(x2, _) => EquationTerm(finalProb(x2, output) , finalProb(x1, baseInput) * finalProb(x2, fiberNode(x1).output))
-                          }.toSet
-                        (fibPMF, fibEqs union fiberEqs)
-                      }
-                }
-            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet.union(baseEqs)}
+          val baseDistT = varDist(initState)(baseInput, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
+          baseDistT.flatMap {
+            case (baseDist, baseEqs) =>
+              val pmfEqT =
+                baseDist.pmf
+                  .map {
+                    case Weighted(x1, p1) =>
+                      val node = fiberNode(x1)
+                      val fiberDistEqT =
+                        nodeDist(initState)(node, epsilon / p1)
+                          .map { case (fd, eqs) => fd.flatten -> eqs }
+                      fiberDistEqT
+                        .map {
+                          case (fiberDist, fiberEqs) =>
+                            val fibPMF =
+                              fiberDist.pmf.map {
+                                case Weighted(x2, p2) => Weighted(x2, p1 * p2)
+                              }
+                            val fibEqs =
+                              fiberDist.pmf.map {
+                                case Weighted(x2, _) =>
+                                  EquationTerm(
+                                    finalProb(x2, output),
+                                    finalProb(x1, baseInput) * finalProb(
+                                      x2,
+                                      fiberNode(x1).output
+                                    )
+                                  )
+                              }.toSet
+                            (fibPMF, fibEqs union fiberEqs)
+                        }
+                  }
+              Task.gather(pmfEqT).map {
+                case (vveq) =>
+                  FD(vveq.map(_._1).flatten) -> vveq
+                    .map(_._2)
+                    .flatten
+                    .toSet
+                    .union(baseEqs)
+              }
           }
         case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
-          val baseDistT = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          baseDistT.flatMap { case (baseDist, baseEqs) =>
-            val pmfEqT =
-              baseDist.pmf
-                .flatMap {
-                  case wt @ Weighted(x, _) => fiberNodeOpt(x).map(node => wt -> node)
-                }
-                .map {
-                  case (Weighted(x1, p1), node) =>
-                    val fiberDistEqT =
-                      nodeDist(initState)(node, epsilon / p1)
-                        .map{case (fd, eqs) => fd.flatten -> eqs}
-                        fiberDistEqT
-                        .map { case (fiberDist, fiberEqs) =>
-                          val fibPMF = 
-                            fiberDist.pmf.map {
-                              case Weighted(x2, p2) => Weighted(x2, p1 * p2)
-                            }
-                          val fibEqs =
-                            fiberDist.pmf.map {
-                              case Weighted(x2, _) => EquationTerm(finalProb(x2, output) , finalProb(x1, baseInput) * finalProb(x2, node.output))
-                            }.toSet
-                          (fibPMF, fibEqs union fiberEqs)
+          val baseDistT = varDist(initState)(baseInput, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
+          baseDistT.flatMap {
+            case (baseDist, baseEqs) =>
+              val pmfEqT =
+                baseDist.pmf
+                  .flatMap {
+                    case wt @ Weighted(x, _) =>
+                      fiberNodeOpt(x).map(node => wt -> node)
+                  }
+                  .map {
+                    case (Weighted(x1, p1), node) =>
+                      val fiberDistEqT =
+                        nodeDist(initState)(node, epsilon / p1)
+                          .map { case (fd, eqs) => fd.flatten -> eqs }
+                      fiberDistEqT
+                        .map {
+                          case (fiberDist, fiberEqs) =>
+                            val fibPMF =
+                              fiberDist.pmf.map {
+                                case Weighted(x2, p2) => Weighted(x2, p1 * p2)
+                              }
+                            val fibEqs =
+                              fiberDist.pmf.map {
+                                case Weighted(x2, _) =>
+                                  EquationTerm(
+                                    finalProb(x2, output),
+                                    finalProb(x1, baseInput) * finalProb(
+                                      x2,
+                                      node.output
+                                    )
+                                  )
+                              }.toSet
+                            (fibPMF, fibEqs union fiberEqs)
                         }
-          
-                }
-            Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet}
+
+                  }
+              Task.gather(pmfEqT).map {
+                case (vveq) =>
+                  FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet
+              }
           }
         case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
-          val d1T = varDist(initState)(baseInput, epsilon).map{case (fd, eqs) => fd.flatten -> eqs}
-          d1T.flatMap { case (d1, d1E) =>
-            val byBase      = d1.pmf.groupBy { case Weighted(x, _) => quot(x) } // pmfs grouped by terms in quotient
-            val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
-            val pmfEqT =
-              byBase.map {
-                case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
-                  val d2T =
-                    varDist(initState)(fiberVar(z), epsilon / baseWeights(z))
-                      .map{case (fd, eqs) => fd.flatten -> eqs} // distribution of the fiber at `z`
-                  d2T.map { case (d2, d2E) =>
-                    val d = FD(pmf1)
-                      .zip(d2)
-                      .map { case (x1, x2) => f(x1, x2) }
-                      .flatten // mapped distribution over `z`
-                    val eqs = FD(pmf1)
-                      .zip(d2).support.map {
-                        case (x1, x2) =>
-                          EquationTerm(
-                          finalProb(f(x1, x2), output), 
-                          finalProb(x1, baseInput) 
-                          * finalProb(x2, fiberVar(z)) 
-                          )
-                      }
-                    (d.pmf, eqs union d2E) 
-                  }
+          val d1T = varDist(initState)(baseInput, epsilon).map {
+            case (fd, eqs) => fd.flatten -> eqs
+          }
+          d1T.flatMap {
+            case (d1, d1E) =>
+              val byBase      = d1.pmf.groupBy { case Weighted(x, _) => quot(x) } // pmfs grouped by terms in quotient
+              val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
+              val pmfEqT =
+                byBase.map {
+                  case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
+                    val d2T =
+                      varDist(initState)(fiberVar(z), epsilon / baseWeights(z))
+                        .map { case (fd, eqs) => fd.flatten -> eqs } // distribution of the fiber at `z`
+                    d2T.map {
+                      case (d2, d2E) =>
+                        val d = FD(pmf1)
+                          .zip(d2)
+                          .map { case (x1, x2) => f(x1, x2) }
+                          .flatten // mapped distribution over `z`
+                        val eqs = FD(pmf1)
+                          .zip(d2)
+                          .support
+                          .map {
+                            case (x1, x2) =>
+                              EquationTerm(
+                                finalProb(f(x1, x2), output),
+                                finalProb(x1, baseInput)
+                                  * finalProb(x2, fiberVar(z))
+                              )
+                          }
+                        (d.pmf, eqs union d2E)
+                    }
+                }
+              Task.gather(pmfEqT).map {
+                case (vveq) =>
+                  FD(vveq.map(_._1).flatten) -> vveq
+                    .map(_._2)
+                    .flatten
+                    .toSet
+                    .union(d1E)
               }
-              Task.gather(pmfEqT).map{case (vveq) => FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet.union(d1E)}
           }
         case tc: ThenCondition[o, Y] =>
           import tc._
-          val base = nodeDist(initState)(gen, epsilon)
+          val base  = nodeDist(initState)(gen, epsilon)
           val event = Event(tc.gen.output, tc.condition)
-          val finEv= FinalVal(event)
+          val finEv = FinalVal(event)
           import Sort._
           condition match {
-            case _: All[_]    => base
-            case c: Filter[_] => base.map{
-              case (fd, eqs) =>  
-              val ceqs = fd.conditioned(c.pred).support.map{x => EquationTerm(finalProb(x, tc.output), finalProb(x, tc.gen.output) / finEv)}
-              if (ceqs.nonEmpty) {
-                // pprint.log(tc.gen.output)
-                // pprint.log(tc.output)
+            case _: All[_] => base
+            case c: Filter[_] =>
+              base.map {
+                case (fd, eqs) =>
+                  val ceqs = fd.conditioned(c.pred).support.map { x =>
+                    EquationTerm(
+                      finalProb(x, tc.output),
+                      finalProb(x, tc.gen.output) / finEv
+                    )
+                  }
+                  if (ceqs.nonEmpty) {
+                    // pprint.log(tc.gen.output)
+                    // pprint.log(tc.output)
+                  }
+                  val evSupp = fd.conditioned(c.pred).support
+                  val evEq: Set[EquationTerm] =
+                    if (evSupp.nonEmpty)
+                      Set(
+                        EquationTerm(
+                          finEv,
+                          evSupp
+                            .map(x => finalProb(x, tc.output))
+                            .reduce[Expression](Sum(_, _))
+                        )
+                      )
+                    else Set()
+                  // pprint.log(ceqs)
+                  // pprint.log(evEq)
+                  fd.conditioned(c.pred)
+                    .purge(epsilon) -> (eqs union ceqs union evEq)
               }
-              val evSupp = fd.conditioned(c.pred).support
-              val evEq : Set[EquationTerm] = 
-                if (evSupp.nonEmpty) 
-                  Set(EquationTerm(finEv, evSupp.map(x => finalProb(x, tc.output)).reduce[Expression](Sum(_, _)))) 
-                else Set()
-              // pprint.log(ceqs)
-              // pprint.log(evEq)
-              fd.conditioned(c.pred).purge(epsilon) -> (eqs union ceqs union evEq)}
-            case Restrict(f)  => 
-              base.map{case (fd, eqs) => 
-                val ceqs = for {
-                  x <- fd.support
-                  y <- f(x)
-                } yield EquationTerm(finalProb(y, tc.output), finalProb(x, tc.gen.output) / finEv)
-                val evSupp = fd.condMap(f).flatten.support
-                val evEq  : Set[EquationTerm] = 
-                  if (evSupp.nonEmpty) 
-                  Set(EquationTerm(finEv, evSupp.map(x => finalProb(x, tc.output)).reduce[Expression](Sum(_, _)))) 
-                else Set()
-                fd.condMap(f).purge(epsilon) -> (eqs union ceqs union evEq)}
+            case Restrict(f) =>
+              base.map {
+                case (fd, eqs) =>
+                  val ceqs = for {
+                    x <- fd.support
+                    y <- f(x)
+                  } yield
+                    EquationTerm(
+                      finalProb(y, tc.output),
+                      finalProb(x, tc.gen.output) / finEv
+                    )
+                  val evSupp = fd.condMap(f).flatten.support
+                  val evEq: Set[EquationTerm] =
+                    if (evSupp.nonEmpty)
+                      Set(
+                        EquationTerm(
+                          finEv,
+                          evSupp
+                            .map(x => finalProb(x, tc.output))
+                            .reduce[Expression](Sum(_, _))
+                        )
+                      )
+                    else Set()
+                  fd.condMap(f).purge(epsilon) -> (eqs union ceqs union evEq)
+              }
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
           val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
-          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island  
-          // val isleIn : Set[EquationTerm] = 
+          val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
+          // val isleIn : Set[EquationTerm] =
           //   islePairs(isleInit, boat.asInstanceOf[Boat]).map {
           //     case (x, y) => EquationTerm(InitialVal(InIsle(Elem(y.value, y.randVar), boat, isle)), InitialVal(Elem(x.value, x.randVar)))
-          //   }  
+          //   }
           isleOut
-            .map{case (fd, eqs) => 
-              val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
-              val bridgeEqs = fd.support.map{x => EquationTerm(finalProb(export(boat, x), isle.output), 
-                FinalVal(InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)))}
-              val initVarElems = eqs.flatMap{
-                (eq) =>
-                  Expression.varVals(eq.rhs)
-              }.collect{
-                case InitialVal(Elem(el, rv)) => Elem(el, rv)
-              }
-              val isleIn : Set[EquationTerm] = 
-                initVarElems.map {el =>
-                  EquationTerm(InitialVal(InIsle(el, boat, isle)), IsleScale(boat, el) * InitialVal(el))
+            .map {
+              case (fd, eqs) =>
+                val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+                val bridgeEqs = fd.support.map { x =>
+                  EquationTerm(
+                    finalProb(export(boat, x), isle.output),
+                    FinalVal(
+                      InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)
+                    )
+                  )
                 }
-              // pprint.log(isleIn.size)
-              fd.map(export(boat, _)).purge(epsilon) -> (isleEqs union bridgeEqs union isleIn)} // exported result seen outside
+                val initVarElems = eqs
+                  .flatMap { (eq) =>
+                    Expression.varVals(eq.rhs)
+                  }
+                  .collect {
+                    case InitialVal(Elem(el, rv)) => Elem(el, rv)
+                  }
+                val isleIn: Set[EquationTerm] =
+                  initVarElems.map { el =>
+                    EquationTerm(
+                      InitialVal(InIsle(el, boat, isle)),
+                      IsleScale(boat, el) * InitialVal(el)
+                    )
+                  }
+                // pprint.log(isleIn.size)
+                fd.map(export(boat, _))
+                  .purge(epsilon) -> (isleEqs union bridgeEqs union isleIn)
+            } // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
           import isle._
           val (isleInit, boat, isleCoeffs) = initMap(initState)
@@ -491,7 +654,9 @@ case class MonixFiniteDistributionEq[State, Boat](
             updateAll(isleCoeffs.toSeq) // coefficients changed to those for the island
               .varDist(isleInit)(islandOutput(boat), epsilon)
           isleOut
-          .map{case (fd, eqs) => fd.map(export(boat, _)).purge(epsilon) -> eqs} // exported result seen outside
+            .map {
+              case (fd, eqs) => fd.map(export(boat, _)).purge(epsilon) -> eqs
+            } // exported result seen outside
       }
     }
 }
