@@ -24,8 +24,7 @@ object MonixFiniteDistributionEq {
 }
 
 abstract class GenMonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
-    islePairs : (State, Boat) => Set[(RandomVar.Elem[_], RandomVar.Elem[_])])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
     implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
   import nodeCoeffSeq.find
@@ -239,11 +238,9 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
   * @tparam State scala type of the initial state
   */
 case class MonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
-    islePairs : (State, Boat) => Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
-      (s: State, b: Boat) => Set.empty[(RandomVar.Elem[_], RandomVar.Elem[_])])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
     implicit sd: StateDistribution[State, FD])
-    extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq, islePairs) {
+    extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands
@@ -252,7 +249,7 @@ case class MonixFiniteDistributionEq[State, Boat](
     */
   def updateAll(
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
-    MonixFiniteDistributionEq(nodeCoeffSeq.updateAll(dataSeq),islePairs)
+    MonixFiniteDistributionEq(nodeCoeffSeq.updateAll(dataSeq))
 
   /**
     * recursively determines the finite distribution given a generator node;
@@ -438,8 +435,8 @@ case class MonixFiniteDistributionEq[State, Boat](
               case (fd, eqs) =>  
               val ceqs = fd.conditioned(c.pred).support.map{x => EquationTerm(finalProb(x, tc.output), finalProb(x, tc.gen.output) / finEv)}
               if (ceqs.nonEmpty) {
-                pprint.log(tc.gen.output)
-                pprint.log(tc.output)
+                // pprint.log(tc.gen.output)
+                // pprint.log(tc.output)
               }
               val evSupp = fd.conditioned(c.pred).support
               val evEq : Set[EquationTerm] = 
