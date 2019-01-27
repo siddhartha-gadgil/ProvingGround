@@ -191,6 +191,17 @@ object GeneratorVariables {
       case IsleScale(_, _) => Set()
     }
 
+    def atoms(expr: Expression): Set[Expression] = expr match {
+      case value: VarVal[_] => Set(value)
+      case Log(exp)         => atoms(exp)
+      case Sum(x, y)        => atoms(x) union (atoms(y))
+      case Product(x, y)    => atoms(x) union (atoms(y))
+      case Literal(_)       => Set()
+      case Quotient(x, y)   => atoms(x) union (atoms(y))
+      case coeff @ Coeff(_, _) => Set(coeff)
+      case sc @ IsleScale(_, _) => Set(sc)
+    }
+
     def sumTerms(exp: Expression) : Vector[Expression] = exp match{
       case Sum(a, b) => sumTerms(a) ++ sumTerms(b)
       case a => Vector(a)
