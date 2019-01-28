@@ -5,6 +5,7 @@ import HList._
 import provingground.learning.GeneratorNode._
 
 import scala.language.higherKinds
+import scala.util._
 
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
@@ -16,7 +17,8 @@ import scala.language.higherKinds
   */
 case class GeneratorVariables[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
-    state: State)(implicit sd: StateDistribution[State, FD]) {
+    state: State
+)(implicit sd: StateDistribution[State, FD]) {
 
 //  pprint.log(s"Generating variables from $state")
 
@@ -37,7 +39,8 @@ case class GeneratorVariables[State, Boat](
   import GeneratorVariables._
 
   def varFamilyVars[Dom <: HList, Y](
-      rvF: RandomVarFamily[Dom, Y]): Set[GeneratorVariables.Variable[_]] =
+      rvF: RandomVarFamily[Dom, Y]
+  ): Set[GeneratorVariables.Variable[_]] =
     rvF match {
       case rv: RandomVar[u] =>
         for {
@@ -57,7 +60,8 @@ case class GeneratorVariables[State, Boat](
     )
 
   def generatorVars[Y](
-      generatorNode: GeneratorNode[Y]): Set[GeneratorVariables.Variable[_]] =
+      generatorNode: GeneratorNode[Y]
+  ): Set[GeneratorVariables.Variable[_]] =
     generatorNode match {
       case tc: ThenCondition[o, Y] =>
         Set(GeneratorVariables.Event(tc.gen.output, tc.condition))
@@ -68,7 +72,8 @@ case class GeneratorVariables[State, Boat](
           GeneratorVariables
             .PairEvent(zm.input1, zm.input2, Sort.Restrict[(o1, o2), Y] {
               case (x, y) => zm.f(x, y)
-            }))
+            })
+        )
       case fm: FlatMap[o, Y] =>
         varSupport(fm.baseInput).flatMap((x) => generatorVars(fm.fiberNode(x)))
       case fm: FlatMapOpt[o, Y] =>
@@ -90,17 +95,19 @@ case class GeneratorVariables[State, Boat](
 
   def generatorFamilyVars[Dom <: HList, O](
       generatorNodeFamily: GeneratorNodeFamily[Dom, O],
-      output: RandomVarFamily[Dom, O]): Set[Variable[_]] =
+      output: RandomVarFamily[Dom, O]
+  ): Set[Variable[_]] =
     generatorNodeFamily match {
       case p: GeneratorNodeFamily.Pi[Dom, O] =>
-        varListSupport(output.polyDomain).flatMap((x) =>
-          generatorVars(p.nodes(x)))
+        varListSupport(output.polyDomain)
+          .flatMap((x) => generatorVars(p.nodes(x)))
       case p: GeneratorNodeFamily.PiOpt[Dom, O] =>
         varListSupport(output.polyDomain).flatMap(
           (x) =>
             p.nodesOpt(x)
               .toSet
-              .flatMap((node: GeneratorNode[O]) => generatorVars(node)))
+              .flatMap((node: GeneratorNode[O]) => generatorVars(node))
+        )
       case node: GeneratorNode[O] => generatorVars(node)
     }
 
@@ -109,20 +116,22 @@ case class GeneratorVariables[State, Boat](
       case _: NodeCoeffSeq.Empty[State, Boat, Double] => Set()
       case ncs: NodeCoeffSeq.Cons[State, Boat, Double, rd, y] =>
         nodeSeqVars(ncs.tail) union {
-          ncs.head.nodeFamilies.flatMap(nf =>
-            generatorFamilyVars[rd, y](nf, ncs.head.output))
+          ncs.head.nodeFamilies
+            .flatMap(nf => generatorFamilyVars[rd, y](nf, ncs.head.output))
         }
     }
 
   lazy val allVars: Set[Variable[_]] = outputVars union nodeSeqVars(
-    nodeCoeffSeq)
+    nodeCoeffSeq
+  )
 
 }
 
 object GeneratorVariables {
-  def variableValue[Y, State, Boat](boatMap: (Boat, State) => State,
-                                    state: State)(
-      implicit sd: StateDistribution[State, FD]): Variable[Y] => Double = {
+  def variableValue[Y, State, Boat](
+      boatMap: (Boat, State) => State,
+      state: State
+  )(implicit sd: StateDistribution[State, FD]): Variable[Y] => Double = {
     case rv @ Elem(element, randomVar) =>
       val fd = StateDistribution.value(state)(randomVar)
       fd(element)
@@ -163,20 +172,23 @@ object GeneratorVariables {
     override def toString = s"{$base \u2208 $sort}"
   }
 
-  case class PairEvent[X1, X2, Y](base1: RandomVar[X1],
-                                  base2: RandomVar[X2],
-                                  sort: Sort[(X1, X2), Y])
-      extends Variable[Y] {
+  case class PairEvent[X1, X2, Y](
+      base1: RandomVar[X1],
+      base2: RandomVar[X2],
+      sort: Sort[(X1, X2), Y]
+  ) extends Variable[Y] {
     override def toString = s"{($base1, $base2) \u2208 $sort}"
   }
 
-  case class InIsle[Y, State, O, Boat](isleVar: Variable[Y],
-                                       boat: Boat,
-                                       isle: Island[Y, State, O, Boat])
-      extends Variable[Y]
+  case class InIsle[Y, State, O, Boat](
+      isleVar: Variable[Y],
+      boat: Boat,
+      isle: Island[Y, State, O, Boat]
+  ) extends Variable[Y]
 
   case class NodeCoeff[RDom <: HList, Y](
-      nodeFamily: GeneratorNodeFamily[RDom, Y])
+      nodeFamily: GeneratorNodeFamily[RDom, Y]
+  )
 //      extends Variable[Unit]
 
   object Expression {
@@ -187,24 +199,24 @@ object GeneratorVariables {
       case Product(x, y)    => varVals(x) union (varVals(y))
       case Literal(_)       => Set()
       case Quotient(x, y)   => varVals(x) union (varVals(y))
-      case Coeff(_, _) => Set()
-      case IsleScale(_, _) => Set()
+      case Coeff(_, _)      => Set()
+      case IsleScale(_, _)  => Set()
     }
 
     def atoms(expr: Expression): Set[Expression] = expr match {
-      case value: VarVal[_] => Set(value)
-      case Log(exp)         => atoms(exp)
-      case Sum(x, y)        => atoms(x) union (atoms(y))
-      case Product(x, y)    => atoms(x) union (atoms(y))
-      case Literal(_)       => Set()
-      case Quotient(x, y)   => atoms(x) union (atoms(y))
-      case coeff @ Coeff(_, _) => Set(coeff)
+      case value: VarVal[_]     => Set(value)
+      case Log(exp)             => atoms(exp)
+      case Sum(x, y)            => atoms(x) union (atoms(y))
+      case Product(x, y)        => atoms(x) union (atoms(y))
+      case Literal(_)           => Set()
+      case Quotient(x, y)       => atoms(x) union (atoms(y))
+      case coeff @ Coeff(_, _)  => Set(coeff)
       case sc @ IsleScale(_, _) => Set(sc)
     }
 
-    def sumTerms(exp: Expression) : Vector[Expression] = exp match{
+    def sumTerms(exp: Expression): Vector[Expression] = exp match {
       case Sum(a, b) => sumTerms(a) ++ sumTerms(b)
-      case a => Vector(a)
+      case a         => Vector(a)
     }
   }
 
@@ -213,7 +225,8 @@ object GeneratorVariables {
 
     def useBoat[Y, State, O, Boat](
         boat: Boat,
-        island: Island[Y, State, O, Boat]): Expression =
+        island: Island[Y, State, O, Boat]
+    ): Expression =
       mapVars(InIsle(_, boat, island))
 
     def +(that: Expression): Sum = Sum(this, that)
@@ -288,26 +301,54 @@ object GeneratorVariables {
       extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
 
-    def expand : RandomVarFamily[_ <: HList, Y] = rv match {
-      case RandomVar.AtCoord(family, _) => family 
-      case simple => simple
+    def expand: RandomVarFamily[_ <: HList, Y] = rv match {
+      case RandomVar.AtCoord(family, _) => family
+      case simple                       => simple
     }
-  
-    def getFromCoeffs[State, Boat, V, RDom <: HList, Y](nodeCoeffs : NodeCoeffs[State, Boat, V, RDom, Y]) : Option[V] = 
-      nodeCoeffs match {
-        case NodeCoeffs.Target(_) => None 
-        case cons : NodeCoeffs.Cons[State, Boat, V, RDom, Y] =>
-          if (cons.headGen == node) Some(cons.headCoeff) else getFromCoeffs(cons.tail)
+
+    def getFromCoeffs[State, Boat, V, RDom <: HList, Y](
+        nodeCoeffs: NodeCoeffs[State, Boat, V, RDom, Y]
+    ): Option[V] =
+      (nodeCoeffs, rv) match {
+        case (NodeCoeffs.Target(_), _) => None
+        case (
+            cons: NodeCoeffs.Cons[State, Boat, V, RDom, Y],
+            RandomVar.AtCoord(family, arg)
+            ) =>
+          cons.headGen match {
+            case fmly: GeneratorNodeFamily.Pi[u, v] =>
+              // pprint.log(Try(fmly.nodes(arg.asInstanceOf[u])))
+              // pprint.log(arg)
+              // pprint.log(node)
+              // pprint.log(family)
+              if (Try(fmly.nodes(arg.asInstanceOf[u])).toOption == Some(node))
+                Some(cons.headCoeff)
+              else getFromCoeffs(cons.tail)
+            case fmly: GeneratorNodeFamily.PiOpt[u, v] =>
+              //  pprint.log(Try(fmly.nodesOpt(arg.asInstanceOf[u])))
+              //  pprint.log(arg)
+              //  pprint.log(node)
+              //  pprint.log(family)
+              if (Try(fmly.nodesOpt(arg.asInstanceOf[u])).toOption.flatten == Some(
+                    node
+                  ))
+                Some(cons.headCoeff)
+              else getFromCoeffs(cons.tail)
+            case _ => getFromCoeffs(cons.tail)
+          }
+
+        case (cons: NodeCoeffs.Cons[State, Boat, V, RDom, Y], _) =>
+          if (cons.headGen == node) Some(cons.headCoeff)
+          else getFromCoeffs(cons.tail)
       }
 
-    def get[State, Boat, V](seq : NodeCoeffSeq[State, Boat, V]) : Option[V] =
+    def get[State, Boat, V](seq: NodeCoeffSeq[State, Boat, V]): Option[V] =
       seq.find(expand).flatMap(getFromCoeffs)
   }
 
   case class IsleScale[Boat, Y](boat: Boat, elem: Elem[Y]) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]) : Expression = this
+    def mapVars(f: Variable[_] => Variable[_]): Expression = this
   }
-
 
   case class Equation(lhs: Expression, rhs: Expression) {
     def mapVars(f: Variable[_] => Variable[_]) =
@@ -315,7 +356,8 @@ object GeneratorVariables {
 
     def useBoat[Y, State, O, Boat](
         boat: Boat,
-        island: Island[Y, State, O, Boat]): Equation =
+        island: Island[Y, State, O, Boat]
+    ): Equation =
       mapVars(InIsle(_, boat, island))
 
     def squareError(epsilon: Double): Expression =
@@ -328,8 +370,10 @@ object GeneratorVariables {
     def *(sc: Expression) = EquationTerm(lhs, rhs * sc)
 
     def *(x: Double) = EquationTerm(lhs, rhs * Literal(x))
-    def useBoat[Y, State, O, Boat](boat: Boat,
-                                   island: Island[Y, State, O, Boat]) =
+    def useBoat[Y, State, O, Boat](
+        boat: Boat,
+        island: Island[Y, State, O, Boat]
+    ) =
       EquationTerm(lhs, rhs.useBoat(boat, island))
 
     override def toString: String = rhs.toString
