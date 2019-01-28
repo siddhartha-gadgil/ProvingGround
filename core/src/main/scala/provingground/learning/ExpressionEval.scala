@@ -38,7 +38,7 @@ object ExpressionEval{
                 case Log(a)             => math.log(recExp(init, a))
                 case Product(x, y)        => recExp(init, x) * recExp(init, y)
                 case Literal(x)           => x
-                case Quotient(x, y)       => if (recExp(init, y) != 0)  recExp(init, x) / recExp(init, y) else 0
+                case Quotient(x, y)       => if (recExp(init, y) != 0)  recExp(init, x) / recExp(init, y) else recExp(init, x)
                 case _ => 0
             }
         )
