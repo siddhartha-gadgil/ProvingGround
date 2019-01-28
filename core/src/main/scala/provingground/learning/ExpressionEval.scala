@@ -45,6 +45,6 @@ object ExpressionEval{
 
     def nextMap(init: Map[Expression, Double], equations: Set[Equation]) : Map[Expression, Double] =
             {
-                init ++ equations.map(eq => eq.lhs -> recExp(init, eq.rhs))
+                init ++ equations.map(eq => eq.lhs -> recExp(init, eq.rhs)).filter(_._2 != 0)
             }.toMap
 }
