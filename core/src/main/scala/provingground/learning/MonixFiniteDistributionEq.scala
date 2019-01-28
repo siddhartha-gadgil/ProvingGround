@@ -137,26 +137,7 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
       v2 = second.getOrElse(k, FD.empty[Y] -> Set.empty[EquationTerm])
     } yield (k, (v1._1 ++ v2._1, v1._2 union v2._2))).toMap
 
-  def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
-      baseDist: Task[FD[Dom]],
-      epsilon: Double
-  ): Task[Map[Dom, (FD[Y], Set[EquationTerm])]] =
-    if (epsilon > 1) Task(Map())
-    else
-      nodeCoeffs match {
-        case Target(_) => Task(Map())
-        case bc: Cons[State, Boat, Double, Dom, Y] =>
-          val p = bc.headCoeff
-          for {
-            a <- nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon)
-            b <- nodeCoeffFamilyMap(initState)(
-              bc.tail,
-              baseDist,
-              epsilon / (1.0 - p)
-            )
-          } yield mapsSum(a, b)
-      }
+
 
   def nodeCoeffFamilyDist[Dom <: HList, Y](initState: State)(
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
@@ -188,35 +169,7 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
         }
         .getOrElse(Task.now(FD.empty[Y] -> Set.empty[EquationTerm]))
 
-  def nodeFamilyDist[Dom <: HList, Y](initState: State)(
-      generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
-      baseDist: Task[FD[Dom]],
-      epsilon: Double
-  ): Task[Map[Dom, (FD[Y], Set[EquationTerm])]] =
-    generatorNodeFamily match {
-      case node: GeneratorNode[Y] =>
-        nodeDist(initState)(node, epsilon)
-          .map((t) => Map(HNil -> t))
-      case f: GeneratorNodeFamily.Pi[Dom, Y] =>
-        baseDist.flatMap { (bd) =>
-          val kvs =
-            for {
-              Weighted(arg, p) <- bd.pmf
-              dt = nodeDist(initState)(f.nodes(arg), epsilon / p) // actually a task
-            } yield dt.map(d => arg -> d)
-          Task.gather(kvs).map(_.toMap)
-        }
-      case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
-        baseDist.flatMap { (bd) =>
-          val kvs =
-            for {
-              Weighted(arg, p) <- bd.pmf
-              node             <- f.nodesOpt(arg)
-              dt = nodeDist(initState)(node, epsilon / p) // actually a task
-            } yield dt.map(d => arg -> d)
-          Task.gather(kvs).map(_.toMap)
-        }
-    }
+
 
   def nodeFamilyDistFunc[Dom <: HList, Y](initState: State)(
       generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
