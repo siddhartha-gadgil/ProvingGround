@@ -169,25 +169,12 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
         case bc: Cons[State, Boat, Double, Dom, Y] =>
           val p = bc.headCoeff
           for {
-            pa <- nodeFamilyDistFunc(initState)(bc.headGen, epsilon)(arg)
-            pb <- nodeCoeffFamilyDist(initState)(bc.tail, epsilon / (1.0 - p))(
+            pa <- nodeFamilyDistFunc(initState)(bc.headGen, epsilon / p)(arg) // FIXME : should scale cutoff
+            pb <- nodeCoeffFamilyDist(initState)(bc.tail, epsilon)(
               arg
             )
-          } yield (pa._1 ++ pb._1, pa._2 union pb._2)
+          } yield ((pa._1 * p) ++ pb._1, pa._2 union pb._2)
       }
-
-  def varFamilyDist[RDom <: HList, Y](initState: State)(
-      randomVarFmly: RandomVarFamily[RDom, Y],
-      epsilon: Double
-  ): Task[Map[RDom, (FD[Y], Set[EquationTerm])]] =
-    if (epsilon > 1) Task(Map())
-    else
-      find(randomVarFmly)
-        .map { nc =>
-          val base = varListDist(initState)(nc.output.polyDomain, epsilon)
-          nodeCoeffFamilyMap(initState)(nc, base.map(_._1), epsilon)
-        }
-        .getOrElse(Task(Map()))
 
   def varFamilyDistFunc[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],

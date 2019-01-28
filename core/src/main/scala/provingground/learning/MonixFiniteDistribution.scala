@@ -100,23 +100,6 @@ abstract class GenMonixFiniteDistribution[State, Boat](
       v = first.getOrElse(k, FD.empty[Y]) ++ second.getOrElse(k, FD.empty[Y])
     } yield (k, v)).toMap
 
-  def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
-      baseDist: Task[FD[Dom]],
-      epsilon: Double): Task[Map[Dom, FD[Y]]] =
-    if (epsilon > 1) Task(Map())
-    else
-      nodeCoeffs match {
-        case Target(_) => Task(Map())
-        case bc: Cons[State, Boat, Double, Dom, Y] =>
-          val p = bc.headCoeff
-          for {
-            a <- nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon)
-            b <- nodeCoeffFamilyMap(initState)(bc.tail,
-                                               baseDist,
-                                               epsilon / (1.0 - p))
-          } yield mapsSum(a, b)
-      }
 
   def nodeCoeffFamilyDist[Dom <: HList, Y](initState: State)(
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
@@ -128,23 +111,12 @@ abstract class GenMonixFiniteDistribution[State, Boat](
         case bc: Cons[State, Boat, Double, Dom, Y] =>
           val p = bc.headCoeff
           for {
-            a <- nodeFamilyDistFunc(initState)(bc.headGen, epsilon)(arg)
-            b <- nodeCoeffFamilyDist(initState)(bc.tail, epsilon / (1.0 - p))(
+            a <- nodeFamilyDistFunc(initState)(bc.headGen, epsilon / p)(arg)
+            b <- nodeCoeffFamilyDist(initState)(bc.tail, epsilon)(
               arg)
           } yield a ++ b
       }
 
-  def varFamilyDist[RDom <: HList, Y](initState: State)(
-      randomVarFmly: RandomVarFamily[RDom, Y],
-      epsilon: Double): Task[Map[RDom, FD[Y]]] =
-    if (epsilon > 1) Task(Map())
-    else
-      find(randomVarFmly)
-        .map { nc =>
-          val base = varListDist(initState)(nc.output.polyDomain, epsilon)
-          nodeCoeffFamilyMap(initState)(nc, base, epsilon)
-        }
-        .getOrElse(Task(Map()))
 
   def varFamilyDistFunc[RDom <: HList, Y](initState: State)(
       randomVarFmly: RandomVarFamily[RDom, Y],

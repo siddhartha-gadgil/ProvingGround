@@ -1158,7 +1158,7 @@ case class TermGenParams(appW: Double = 0.1,
                          typFromFamilyW: Double = 0.05,
                          sigmaW: Double = 0.05,
                          varWeight: Double = 0.3,
-                         goalWeight: Double = 0.5,
+                         goalWeight: Double = 0.7,
                          typVsFamily: Double = 0.5) { tg =>
   object Gen
       extends TermGeneratorNodes[TermState](
@@ -1217,11 +1217,11 @@ case class TermGenParams(appW: Double = 0.1,
 
   val termsByTypNodes
     : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
-    (TermsWithTyp.init       -> termInit) ::
+    (TermsWithTyp.init       -> (termInit * (1 - goalWeight))) ::
       (wtN(applnNode)        -> appW) ::
       (wtN(unifApplnNode)    -> unAppW) ::
       (wtN(applnByArgNode)   -> argAppW) ::
-      (lambdaByTypNodeFamily -> lmW) ::
+      (lambdaByTypNodeFamily -> (termInit * goalWeight + lmW)) ::
       TermsWithTyp.target[TermState, Term, Double, Term]
 
   val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
