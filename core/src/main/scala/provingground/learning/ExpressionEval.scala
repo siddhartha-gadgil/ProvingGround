@@ -7,6 +7,8 @@ import monix.eval._
 
 import GeneratorVariables._, Expression._
 
+import annotation.tailrec 
+
 
 import MonixFiniteDistributionEq._
 
@@ -47,6 +49,28 @@ object ExpressionEval{
             {
                 init ++ equations.map(eq => eq.lhs -> recExp(init, eq.rhs)).filter(_._2 != 0)
             }.toMap
+
+    @tailrec
+    def stableSupportMap(init: Map[Expression, Double], equations: Set[Equation]) : Map[Expression, Double] = {
+        val newMap = nextMap(init, equations)
+        if (newMap.keySet == init.keySet) newMap else stableSupportMap(newMap, equations)
+    }
+
+    @tailrec
+    def iterateMap(init: Map[Expression, Double], equations: Set[Equation], steps: Int) : Map[Expression, Double] = 
+        if (steps < 1) init else iterateMap(nextMap(init, equations), equations, steps - 1)
+
+
+    def mapRatio[A](m1: Map[A, Double], m2: Map[A, Double]) : Double = {
+        require(m1.keySet == m2.keySet, "comparing maps with different supports")
+        m1.map{case (k, v) => math.max(v / m2(k), (m2(k) / v))}.max
+    }
+
+    @tailrec
+    def stableMap(init: Map[Expression, Double], equations: Set[Equation], maxRatio: Double = 1.01) : Map[Expression, Double] = {
+        val newMap = nextMap(init, equations)
+        if ((newMap.keySet == init.keySet) && mapRatio(newMap, init) < maxRatio) newMap else stableMap(newMap, equations, maxRatio)
+    }
 }
 
 trait EvolvedEquations[State, Boat]{
