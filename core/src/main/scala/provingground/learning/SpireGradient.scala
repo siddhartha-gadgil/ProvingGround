@@ -59,6 +59,7 @@ case class SpireGradient(vars: Vector[VarVal[_]],
       case Literal(value)   => value
       case Quotient(x, y)   => jet(p)(x) / jet(p)(y)
       case _: Coeff[_]      => throw new Exception("unexpected formal coefficient")
+      case IsleScale(_, _)      => throw new Exception("unexpected formal coefficient")
     }
 
 }
@@ -91,7 +92,7 @@ object SpireGradient {
   def h(ts: Vector[Term]): Expression =
     ts.map((t) => InitialVal(Elem(t, Terms))).reduce[Expression](_ + _)
 
-  def termGenCost(ge: GeneratorEquations[TermState, Term],
+  def termGenCost(ge: EvolvedEquations[TermState, Term],
                   hW: Double = 1,
                   klW: Double = 1,
                   eqW: Double = 1,
@@ -162,7 +163,7 @@ object SpireGradient {
 
 import SpireGradient._
 
-case class TermGenCost(ge: GeneratorEquations[TermState, Term],
+case class TermGenCost(ge: EvolvedEquations[TermState, Term],
                        hW: Double = 1,
                        klW: Double = 1,
                        eqW: Double = 1,

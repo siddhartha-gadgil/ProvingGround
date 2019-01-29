@@ -1254,16 +1254,16 @@ case class TermGenParams(appW: Double = 0.1,
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
-  def equationsGen(initState: TermState,
-                   finalState: TermState): GeneratorEquations[TermState, Term] =
-    GeneratorEquations(nodeCoeffSeq, initState, finalState)
+  // def equationsGen(initState: TermState,
+  //                  finalState: TermState): GeneratorEquations[TermState, Term] =
+  //   GeneratorEquations(nodeCoeffSeq, initState, finalState)
 
-  def spireGrad(initState: TermState,
-                finalState: TermState,
-                hW: Double = 1,
-                klW: Double = 1,
-                eqW: Double = 1): SpireGradient =
-    TermGenCost(equationsGen(initState, finalState), hW, klW, eqW).spireGradient
+  // def spireGrad(initState: TermState,
+  //               finalState: TermState,
+  //               hW: Double = 1,
+  //               klW: Double = 1,
+  //               eqW: Double = 1): SpireGradient =
+  //   TermGenCost(equationsGen(initState, finalState), hW, klW, eqW).spireGradient
 
   def nextStateTask(initState: TermState,
                     epsilon: Double,
@@ -1285,13 +1285,13 @@ case class TermGenParams(appW: Double = 0.1,
   //                     limit: FiniteDuration = 3.minutes): EvolvedState =
   //   evolvedStateTask(initState, epsilon, limit).runSyncUnsafe(limit)
 
-  def nextStateWithEqnsTask(initState: TermState,
-                            epsilon: Double,
-                            limit: FiniteDuration = 3.minutes)
-    : Task[(TermState, Set[GeneratorVariables.Equation])] =
-    nextStateTask(initState, epsilon, limit).map { finalState =>
-      (finalState, equationsGen(initState, finalState).equations)
-    }
+  // def nextStateWithEqnsTask(initState: TermState,
+  //                           epsilon: Double,
+  //                           limit: FiniteDuration = 3.minutes)
+  //   : Task[(TermState, Set[GeneratorVariables.Equation])] =
+  //   nextStateTask(initState, epsilon, limit).map { finalState =>
+  //     (finalState, equationsGen(initState, finalState).equations)
+  //   }
 
   def nextTangStateTask(baseState: TermState,
                         tangState: TermState,
@@ -1312,10 +1312,16 @@ case class TermGenParams(appW: Double = 0.1,
       .map(_.flatten)
 }
 
+trait EvolvedStateLike{
+  val init: TermState
+  val result: TermState
+  val params: TermGenParams
+}
+
 case class EvolvedState(init: TermState,
                         result: TermState,
                         params: TermGenParams,
-                        epsilon: Double)
+                        epsilon: Double) extends EvolvedStateLike
 
 import ujson.Js
 

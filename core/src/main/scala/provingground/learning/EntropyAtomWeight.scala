@@ -94,7 +94,7 @@ object EntropyAtomWeight {
                       initWeight)
 
   def evolvedLemmaGens(
-      ev: EvolvedState): Vector[(Typ[Term], EntropyAtomWeight)] =
+      ev: EvolvedStateLike): Vector[(Typ[Term], EntropyAtomWeight)] =
     ev.result.thmsBySt.supp
       .filter(!ev.init.terms.map(_.typ).supp.contains(_))
       .map(
@@ -107,7 +107,7 @@ object EntropyAtomWeight {
             ev.params.termInit
         ))
 
-  def evolvedLemmaIters(ev: EvolvedState,
+  def evolvedLemmaIters(ev: EvolvedStateLike,
                         sc: Double = 1): Vector[(Typ[Term], Iterator[Double])] =
     evolvedLemmaGens(ev).map {
       case (lemma, ew) => lemma -> ew.iter(sc)

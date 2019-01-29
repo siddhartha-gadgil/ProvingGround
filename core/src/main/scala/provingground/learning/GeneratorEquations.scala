@@ -12,7 +12,7 @@ import scala.util.Try
 case class GeneratorEquations[State, Boat](
     nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
     initState: State,
-    finalState: State)(implicit sd: StateDistribution[State, FD]) {
+    finalState: State)(implicit sd: StateDistribution[State, FD]) extends EvolvedEquations[State, Boat] {
   pprint.log(initState)
   pprint.log(finalState)
 
@@ -98,10 +98,6 @@ case class GeneratorEquations[State, Boat](
   lazy val equations: Set[Equation] =
     recurrenceEquations union eventEquations union pairEventEquations union totalProbEquations
 
-  def totalSquare(epsilon: Double): Expression =
-    equations.map(_.squareError(epsilon)).reduce(_ + _)
-
-  def mse(epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
 
   def nodeCoeffSeqEquations(
       ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {

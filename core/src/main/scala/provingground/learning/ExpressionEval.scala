@@ -48,3 +48,16 @@ object ExpressionEval{
                 init ++ equations.map(eq => eq.lhs -> recExp(init, eq.rhs)).filter(_._2 != 0)
             }.toMap
 }
+
+trait EvolvedEquations[State, Boat]{
+    val initState : State 
+    val finalState : State
+    val equations: Set[Equation]
+  
+    def totalSquare(epsilon: Double): Expression =
+    equations.map(_.squareError(epsilon)).reduce(_ + _)
+  
+    def mse(epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
+  
+  }
+  
