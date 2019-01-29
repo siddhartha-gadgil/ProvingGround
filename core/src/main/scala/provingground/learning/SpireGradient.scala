@@ -63,7 +63,7 @@ case class SpireGradient(
         case Product(x, y)  => jet(p)(x) * jet(p)(y)
         case Literal(value) => value
         case Quotient(x, y) => jet(p)(x) / jet(p)(y)
-        case coeff => p(coeff)
+        case coeff          => p(coeff)
 
       }
     )
@@ -176,7 +176,7 @@ object SpireGradient {
 
 import SpireGradient._
 
-class TermGenEqCost(
+abstract class TermGenEqCost(
     ge: EvolvedEquations[TermState, Term],
     hW: Double = 1,
     klW: Double = 1,
@@ -186,6 +186,19 @@ class TermGenEqCost(
   val cost
       : Expression = (kl(ge.finalState) * klW) + (h(ge.initState.terms.supp) * hW) + (ge
     .mse(epsilon) * eqW)
+
+  lazy val vars: Vector[VarVal[_]] =
+    ge.equations
+      .flatMap(eq => Set(eq.lhs, eq.rhs))
+      .flatMap(expr => Expression.varVals(expr))
+      .toVector
+
+  val p: Map[Expression, Double]
+
+  lazy val spireGradient = SpireGradient(vars, p, cost)
+
+  def grad(epsilon: Double = 1): Map[Expression, Double] =
+    spireGradient.gradient(epsilon)
 }
 
 case class TermGenCost(
@@ -195,18 +208,6 @@ case class TermGenCost(
     eqW: Double = 1,
     epsilon: Double = math.pow(10, -5)
 ) extends TermGenEqCost(ge, hW, klW, eqW, epsilon) {
-  lazy val vars: Vector[VarVal[_]] =
-    ge.equations
-      .flatMap(eq => Set(eq.lhs, eq.rhs))
-      .flatMap(expr => Expression.varVals(expr))
-      .toVector
-
   lazy val p: Map[Expression, Double] =
     vars.map((vv) => vv -> varValue(ge.initState, ge.finalState)(vv)).toMap
-
-  lazy val spireGradient = SpireGradient(vars, p, cost)
-
-  def grad(epsilon: Double = 1): Map[Expression, Double] =
-    spireGradient.gradient(epsilon)
-
 }
