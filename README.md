@@ -42,8 +42,16 @@ These will be frequently updated with new features.
 
 #### From Source
 
-At present the best way to interact with most of the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)). Note that _trepplein_ is a git submodule and is a dependency of part of the code, so you will have to [https://git-scm.com/book/en/v2/Git-Tools-Submodules#_cloning_submodules](update submodule).
-
+At present the best way to interact with most of the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)).  
+Note that _trepplein_ is a git submodule and is a dependency of part of the code, so you will have to [clone submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_cloning_submodules).  
+The simpliest way to do this is to clone the project with submodules :
+```
+git clone --recurse-submodules --single-branch https://github.com/siddhartha-gadgil/ProvingGround.git
+```
+or if you have already clone the project without submodules, you can fetch them afterwards :
+```
+git submodule update --init
+```
 To pop up a console with most of the code in scope, install [mill](https://www.lihaoyi.com/mill/) and run:
 ```
 mill -i mantle.repl
