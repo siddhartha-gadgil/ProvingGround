@@ -45,9 +45,14 @@ object ExpressionEval{
             }
         )
 
+    def stabRecExp(init: Map[Expression, Double], exp: Expression, prev: Option[Double]) : Double = {
+        val y = recExp(init, exp)
+        math.sqrt(prev.getOrElse(y) * y)
+    }
+    
     def nextMap(init: Map[Expression, Double], equations: Set[Equation]) : Map[Expression, Double] =
             {
-                init ++ equations.map(eq => eq.lhs -> recExp(init, eq.rhs)).filter(_._2 != 0)
+                init ++ equations.map(eq => eq.lhs -> stabRecExp(init, eq.rhs, init.get(eq.lhs))).filter(_._2 != 0)
             }.toMap
 
     @tailrec
