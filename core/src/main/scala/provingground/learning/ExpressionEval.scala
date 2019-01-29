@@ -58,6 +58,7 @@ trait EvolvedEquations[State, Boat]{
     equations.map(_.squareError(epsilon)).reduce(_ + _)
   
     def mse(epsilon: Double): Expression = totalSquare(epsilon) / (equations.size)
+    
   
   }
   
