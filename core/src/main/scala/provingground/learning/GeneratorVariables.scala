@@ -2,8 +2,8 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode._
-
+import provingground.learning.GeneratorNode.{Map => GMap,  _
+}
 import scala.language.higherKinds
 import scala.util._
 
@@ -218,6 +218,13 @@ object GeneratorVariables {
       case Sum(a, b) => sumTerms(a) ++ sumTerms(b)
       case a         => Vector(a)
     }
+
+    def h[A](pDist: Map[A, Expression]) : Expression = pDist.map{case (_, p) => -p * Log(p)}.reduce[Expression](_ + _)
+
+    def kl[A](pDist: Map[A, Expression], qDist: Map[A, Expression]): Expression = 
+      pDist.map{
+        case (a, p) => p * Log(p / qDist(a))
+      }.reduce[Expression](_ + _)
   }
 
   sealed trait Expression {
@@ -317,18 +324,10 @@ object GeneratorVariables {
             ) =>
           cons.headGen match {
             case fmly: GeneratorNodeFamily.Pi[u, v] =>
-              // pprint.log(Try(fmly.nodes(arg.asInstanceOf[u])))
-              // pprint.log(arg)
-              // pprint.log(node)
-              // pprint.log(family)
               if (Try(fmly.nodes(arg.asInstanceOf[u])).toOption == Some(node))
                 Some(cons.headCoeff)
               else getFromCoeffs(cons.tail)
             case fmly: GeneratorNodeFamily.PiOpt[u, v] =>
-              //  pprint.log(Try(fmly.nodesOpt(arg.asInstanceOf[u])))
-              //  pprint.log(arg)
-              //  pprint.log(node)
-              //  pprint.log(family)
               if (Try(fmly.nodesOpt(arg.asInstanceOf[u])).toOption.flatten == Some(
                     node
                   ))

@@ -96,7 +96,7 @@ object SpireGradient {
   }
 
   def h(ts: Vector[Term]): Expression =
-    ts.map((t) => InitialVal(Elem(t, Terms))).reduce[Expression](_ + _)
+    ts.map((t) => InitialVal(Elem(t, Terms))).map(p => -p * Log(p)).reduce[Expression](_ + _)
 
   def termGenCost(
       ge: EvolvedEquations[TermState, Term],
