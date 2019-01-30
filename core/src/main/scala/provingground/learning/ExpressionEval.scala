@@ -1,5 +1,5 @@
 package provingground.learning
-import provingground.{FiniteDistribution => FD, _}
+import provingground.{FiniteDistribution => FD, _}, HoTT._
 import shapeless.HList._
 import shapeless._
 
@@ -17,12 +17,28 @@ import scala.util.Try
 object ExpressionEval{
     val sd = implicitly[StateDistribution[TermState, FD]]
 
+    def isIsleVar(elem : Elem[_]) : Boolean = elem match {
+        case Elem(x: Symbolic, _) => 
+            x.name match {
+                case Name(name) => name.startsWith("@")
+                case _ => false
+            }
+        case Elem(ExstFunc.Wrap(x: Symbolic), _) => 
+        x.name match {
+            case Name(name) => name.startsWith("@")
+            case _ => false
+        }
+        case _ => false
+    }
+
     def initVal(exp: Expression, tg: TermGenParams, ts: TermState) : Option[Double] = 
         exp match {
             case cf @ Coeff(_, _) => cf.get(tg.nodeCoeffSeq)
-            case InitialVal(Elem(el, rv)) => 
+            case InitialVal(elem @ Elem(el, rv)) => 
                 val base = sd.value(ts)(rv)(el)
-                if (base >0) Some(base) else Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
+                if (base >0) Some(base) 
+                else if (isIsleVar(elem)) Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
+                else throw new Exception(s"no initial value for $elem")
             case IsleScale(_, _) => Some((1.0 - tg.varWeight))
             case _ => None
         }
