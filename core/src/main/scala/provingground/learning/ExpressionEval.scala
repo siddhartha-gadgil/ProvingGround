@@ -33,12 +33,12 @@ object ExpressionEval {
   def initVal(
       exp: Expression,
       tg: TermGenParams,
-      ts: TermState
+      initialState: TermState
   ): Option[Double] =
     exp match {
       case cf @ Coeff(_, _) => cf.get(tg.nodeCoeffSeq)
       case InitialVal(elem @ Elem(el, rv)) =>
-        val base = sd.value(ts)(rv)(el)
+        val base = sd.value(initialState)(rv)(el)
         if (base > 0) Some(base)
         else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
@@ -50,11 +50,11 @@ object ExpressionEval {
   def initMap(
       atoms: Set[Expression],
       tg: TermGenParams,
-      ts: TermState
+      initialState: TermState
   ): Map[Expression, Double] =
     (for {
       exp   <- atoms
-      value <- initVal(exp, tg, ts)
+      value <- initVal(exp, tg, initialState)
     } yield exp -> value).toMap
 
   def recExp(init: Map[Expression, Double], exp: Expression): Double =
@@ -133,7 +133,8 @@ import spire.implicits._
 import ExpressionEval._
 
 case class ExpressionEval(
-    ts : TermState, // the initial state
+    initialState : TermState, 
+    finalState : TermState,
     equations: Set[Equation],
     tg: TermGenParams,
     maxRatio: Double = 1.01
@@ -141,7 +142,7 @@ case class ExpressionEval(
   val atoms = equations
     .map(_.lhs)
     .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
-  val init: Map[Expression, Double]      = initMap(atoms, tg, ts)
+  val init: Map[Expression, Double]      = initMap(atoms, tg, initialState)
 
   val finalDist: Map[Expression, Double] = stableMap(init, equations, maxRatio)
  
@@ -150,6 +151,14 @@ case class ExpressionEval(
   val initTerms = keys.collect {
     case InitialVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
   }
+
+  val finalTerms : Set[Term] = keys.collect {
+    case FinalVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
+  }.toSet
+
+  val finalTyps  = sd.value(finalState)(Typs)
+
+
   val initVars = initTerms.map { t =>
     InitialVal(Elem(t, Terms))
   }
@@ -200,6 +209,27 @@ case class ExpressionEval(
 
       }
     )
+
+    val genTerms : Map[Term, Expression] = initTerms.map(t => t -> InitialVal(Elem(t, Terms))).toMap
+
+    val thmSet = finalTyps.support.toSet.intersect(finalTerms.map(_.typ)).filter(!isUniv(_))
+  
+    val thmsByStatement : Map[Typ[Term], Expression] = finalTyps.filter(typ => thmSet.contains(typ)).safeNormalized.toMap.mapValues(Literal(_))
+  
+  
+    def proofExpression(typ: Typ[Term]) = finalTerms.filter(_.typ == typ).map(t => FinalVal(Elem(t, Terms))).reduce[Expression](_ + _)
+  
+    val thmsByProof : Map[Typ[Term], Expression] = thmSet.map(typ => typ -> proofExpression(typ)).toMap
+  
+    val hExp : Expression = Expression.h(genTerms)
+  
+    val klExp : Expression = Expression.kl(thmsByStatement, thmsByProof)
+
+    lazy val matchKL : Expression = equations.map(_.klError).reduce(_ + _)
+
+    def cost(hW: Double = 1, klW: Double = 1, matchW : Double = 1) : Expression = 
+      (hExp * hW) + (klExp * klW) + (matchKL * matchW * (1.0 / tg.termInit))
+  
 }
 
 trait EvolvedEquations[State, Boat] {

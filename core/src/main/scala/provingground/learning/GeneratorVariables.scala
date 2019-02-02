@@ -362,6 +362,9 @@ object GeneratorVariables {
     def squareError(epsilon: Double): Expression =
       ((lhs - rhs) / (lhs + rhs + Literal(epsilon))).square
 
+    lazy val klError : Expression = 
+      lhs * Log(lhs / rhs)
+
     override def toString = s"($lhs) == ($rhs)"
   }
 
