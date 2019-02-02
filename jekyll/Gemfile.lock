@@ -71,7 +71,7 @@ GEM
       listen (= 3.1.5)
       mercenary (~> 0.3)
       minima (= 2.4.1)
-      nokogiri (>= 1.8.1, < 2.0)
+      nokogiri (>= 1.8.5, < 2.0)
       rouge (= 2.2.1)
       terminal-table (~> 1.4)
     github-pages-health-check (1.7.3)
