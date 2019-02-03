@@ -250,6 +250,20 @@ case class ExpressionEval(
     variableIndex.mapValues(j => costJet.infinitesimal(j))
   }
 
+  def shifted(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
+      p: Map[Expression, Double],
+      epsilon: Double = 0.1
+  ) = {
+    val q = shift(hW, klW, matchW)(p)
+    for { (x, w) <- p } yield x -> (w - epsilon * q.getOrElse(x, 0.0))
+  }
+
+  def iterator(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
+      p: Map[Expression, Double],
+      epsilon: Double = 0.1
+  ) =
+    Iterator.iterate(p)(q => shifted(hW, klW, matchW)(q, epsilon))
+
 }
 
 trait EvolvedEquations[State, Boat] {
