@@ -2707,7 +2707,7 @@ object HoTT {
       induced(f)(lhs)(rhs)(self)
 
     def lift[V <: Term with Subs[V]](f: Func[U, Typ[V]]): Func[V, V] =
-      apf(f)(lhs)(rhs)(self)
+      transport(f)(lhs)(rhs)(self)
   }
 
   /**
@@ -3011,9 +3011,9 @@ object HoTT {
     }
 
     /**
-      * apf: term with type `x = y -> f(x) -> f(y)` as function of `x` and `y`
+      * transport: term with type `x = y -> f(x) -> f(y)` as function of `x` and `y`
       */
-    def apf[U <: Term with Subs[U], V <: Term with Subs[V]](
+    def transport[U <: Term with Subs[U], V <: Term with Subs[V]](
         f: Func[U, Typ[V]])
       : FuncLike[U, FuncLike[U, Func[Equality[U], Func[V, V]]]] = {
       val x         = f.dom.Var
