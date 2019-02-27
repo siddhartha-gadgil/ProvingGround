@@ -117,11 +117,11 @@ object QField extends SymbolicField[Rational] {
 
   val w = "w" :: LocalTyp
 
-  import IdentityTyp.transport
+  import IdentityTyp.apf
 
   val transpEqL =
     x :~> (
-      y :~> (z :~> (transport(w :-> (leq(w)(x)))(y)(z)))
+      y :~> (z :~> (apf(w :-> (leq(w)(x)))(y)(z)))
     ) !: x ~>: (
       y ~>: (
         z ~>: (
@@ -132,7 +132,7 @@ object QField extends SymbolicField[Rational] {
 
   val transpEqR =
     x :~> (
-      y :~> (z :~> (transport(w :-> (leq(x)(w)))(y)(z)))
+      y :~> (z :~> (apf(w :-> (leq(x)(w)))(y)(z)))
     ) !: x ~>: (
       y ~>: (
         z ~>: (
