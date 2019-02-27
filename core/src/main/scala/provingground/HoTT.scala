@@ -3024,6 +3024,18 @@ object HoTT {
       val baseCase  = x :~> (id(f(x)))
       inducFn(baseCase)
     }
+
+    def apf[U <: Term with Subs[U], V <: Term with Subs[V]](
+      f: Func[U, Typ[V]])
+      : FuncLike[U, FuncLike[U, Func[Equality[U], Equality[Typ[V]]]]] = {
+    val x         = f.dom.Var
+    val y         = f.dom.Var
+    val p         = IdentityTyp(f.dom, x, y).Var
+    val typFamily = lambda(x)(lambda(y)(lmbda(p)((f(x) =:= f(y)))))
+    val inducFn   = induc(f.dom, typFamily)
+    val baseCase  = x :~> (f(x).refl)
+    inducFn(baseCase)
+  }
   }
 
   //	implicit def richTerm(term: Term with Subs[Term]) = RichTerm(term)
