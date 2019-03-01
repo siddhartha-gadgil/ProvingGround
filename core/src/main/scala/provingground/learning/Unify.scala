@@ -133,6 +133,28 @@ object Unify {
         case _ => None
       })
 
+  def targetCodomain(func: Term,
+                codomain: Term,
+                freeVars: Vector[Term] = Vector()): Option[Term] =
+    unify(func.typ, codomain, (t) => freeVars.contains(t)).map{
+      unifMap => multisub(func, unifMap)
+    }.orElse{
+      func match {
+        case fn: FuncLike[u, v] =>
+          val l = funcToLambda(fn)
+          targetCodomain(l.value, codomain, l.variable +: freeVars).orElse{
+            codomain match {
+              case pd: PiDefn[a, b] if pd.domain == fn.dom =>
+                val target = pd.value.replace(pd.variable, l.variable)
+                targetCodomain(l.value, target, freeVars).map{t => lambda(l.variable)(t)} 
+              case _ =>
+                None
+            }
+          }
+        case _ => None
+      }
+    }
+
   def purgeInv(r1: Term,
                inv1: Set[(Term, Term)],
                r2: Term,
