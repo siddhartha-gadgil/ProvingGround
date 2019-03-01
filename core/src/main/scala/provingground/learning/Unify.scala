@@ -137,7 +137,10 @@ object Unify {
                 codomain: Term,
                 freeVars: Vector[Term] = Vector()): Option[Term] =
     unify(func.typ, codomain, (t) => freeVars.contains(t)).map{
-      unifMap => multisub(func, unifMap)
+      unifMap => 
+        val value = multisub(func, unifMap)
+        val extraVars = freeVars.filter(x => !unifMap.keySet.contains(x))
+        polyLambda(extraVars.reverse.toList, value)
     }.orElse{
       func match {
         case fn: FuncLike[u, v] =>
