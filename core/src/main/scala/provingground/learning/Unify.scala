@@ -88,6 +88,8 @@ object Unify {
           unifyAll(freevars)(x.first -> y.first, x.second -> y.second)
         case (f1 @ FormalAppln(a, b), f2 @ FormalAppln(c, d)) =>
           unifyAll(freevars)(a -> c, b -> d, f1.typ -> f2.typ)
+        case (f1 @ MiscAppln(a, b), f2 @ MiscAppln(c, d)) =>
+          unifyAll(freevars)(a -> c, b -> d, f1.typ -> f2.typ)
         case (f: LambdaLike[u, v], g: LambdaLike[w, x]) =>
           unify(f.variable, g.variable, freevars) flatMap
             ((m) => {
@@ -104,7 +106,7 @@ object Unify {
   def subsApply(func: Term,
                 arg: Term,
                 unifMap: Map[Term, Term],
-                freeVars: Vector[Term]) = {
+                freeVars: Vector[Term]): Option[Term] = {
     val fn         = multisub(func, unifMap)
     val x          = multisub(arg, unifMap)
     val lambdaVars = freeVars filter ((x) => !(unifMap.keySet contains x))
@@ -112,12 +114,13 @@ object Unify {
     Try(polyLambda(lambdaVars.toList, fn(x))).toOption
   }
 
-  def unifApply(func: Term, arg: Term, freeVars: Vector[Term]) = func match {
-    case fn: FuncLike[u, v] =>
-      unify(fn.dom, arg.typ, (t) => freeVars contains t) flatMap
-        (subsApply(func, arg, _, freeVars))
-    case _ => None
-  }
+  def unifApply(func: Term, arg: Term, freeVars: Vector[Term]): Option[Term] =
+    func match {
+      case fn: FuncLike[u, v] =>
+        unify(fn.dom, arg.typ, (t) => freeVars contains t) flatMap
+          (subsApply(func, arg, _, freeVars))
+      case _ => None
+    }
 
   def appln(func: Term,
             arg: Term,
@@ -130,11 +133,36 @@ object Unify {
         case _ => None
       })
 
+  def targetCodomain(func: Term,
+                codomain: Term,
+                freeVars: Vector[Term] = Vector()): Option[Term] =
+    unify(func.typ, codomain, (t) => freeVars.contains(t)).map{
+      unifMap => 
+        val value = multisub(func, unifMap)
+        val extraVars = freeVars.filter(x => !unifMap.keySet.contains(x))
+        polyLambda(extraVars.reverse.toList, value)
+    }.orElse{
+      func match {
+        case fn: FuncLike[u, v] =>
+          val l = funcToLambda(fn)
+          targetCodomain(l.value, codomain, l.variable +: freeVars).orElse{
+            codomain match {
+              case pd: PiDefn[a, b] if pd.domain == fn.dom =>
+                val target = pd.value.replace(pd.variable, l.variable)
+                targetCodomain(l.value, target, freeVars).map{t => lambda(l.variable)(t)} 
+              case _ =>
+                None
+            }
+          }
+        case _ => None
+      }
+    }
+
   def purgeInv(r1: Term,
                inv1: Set[(Term, Term)],
                r2: Term,
                inv2: Set[(Term, Term)],
-               freeVars: Term => Boolean) = {
+               freeVars: Term => Boolean): Set[(Term, Term)] = {
     val imageOpt =
       unify(r1, r2, freeVars) map
         ((uniMap) =>
@@ -150,7 +178,7 @@ object Unify {
   def purgeVector(r2: Term,
                   inv2: Set[(Term, Term)],
                   invVector: Vector[(Term, Set[(Term, Term)])],
-                  freeVars: Term => Boolean) =
+                  freeVars: Term => Boolean): (Term, Set[(Term, Term)]) =
     invVector.foldRight((r2, inv2)) {
       case (ri1, ri2) =>
         (ri2._1, purgeInv(ri1._1, ri1._2, ri2._1, ri2._2, freeVars))
@@ -162,13 +190,14 @@ object Unify {
     fxs match {
       case List() => accum
       case head :: tail =>
-        val needHead = (tail find
-          ((fx) => !unifyAll(isVar)(fx._1 -> head._1, fx._2 -> head._2).isEmpty)).isEmpty
+        val needHead = !(tail exists ((fx) =>
+          unifyAll(isVar)(fx._1 -> head._1, fx._2 -> head._2).isDefined))
         if (needHead) purgedPairsList(tail, head :: accum)
         else purgedPairsList(tail, accum)
     }
 
-  def purgedPairs(fxs: Set[(Term, Term)]) = purgedPairsList(fxs.toList).toSet
+  def purgedPairs(fxs: Set[(Term, Term)]): Set[(Term, Term)] =
+    purgedPairsList(fxs.toList).toSet
 
   @tailrec
   def purgedInvVector(invVector: Vector[(Term, Set[(Term, Term)])],

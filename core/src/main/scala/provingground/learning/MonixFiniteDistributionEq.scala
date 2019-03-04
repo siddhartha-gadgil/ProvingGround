@@ -398,9 +398,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                   }
               Task.gather(pmfEqT).map {
                 case (vveq) =>
-                  FD(vveq.map(_._1).flatten) -> vveq
-                    .map(_._2)
-                    .flatten
+                  FD(vveq.flatMap(_._1)) -> vveq.flatMap(_._2)
                     .toSet
                     .union(baseEqs)
               }

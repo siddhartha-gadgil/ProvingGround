@@ -805,6 +805,8 @@ object TermRandomVars {
     */
   case object Typs extends RandomVar[Typ[Term]]
 
+  case object IsleDomains extends RandomVar[Typ[Term]]
+
   val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](TypOpt)
 
   case object Goals extends RandomVar[Typ[Term]]
@@ -1183,6 +1185,7 @@ object TermState {
           case InducDefns                   => state.inds.map(x => x: T)
           case InducStrucs                  => state.inds.map(_.ind).map(x => x: T)
           case Goals                        => state.goals.map(x => x: T)
+          case IsleDomains                  => state.typs.map(x => x: T)
           case RandomVar.AtCoord(fmly, arg) => valueAt(state)(fmly, arg)
         }
 
@@ -1292,7 +1295,13 @@ case class TermGenParams(
       (typFoldNode      -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
-  val goalNodes = (Init(Goals) -> 1.0) :: Goals
+  val goalNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] = (Init(
+    Goals) -> 1.0) :: Goals
+    .target[TermState, Term, Double, Typ[Term]]
+
+  val isleDomainsNode
+    : NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] = (GeneratorNode
+    .Map(identity[Typ[Term]], Typs, IsleDomains) -> 1.0) :: IsleDomains
     .target[TermState, Term, Double, Typ[Term]]
 
   val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
@@ -1342,7 +1351,7 @@ case class TermGenParams(
       FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
-    funcWithDomNodes +: targTypNodes +: goalNodes +:
+    funcWithDomNodes +: targTypNodes +: goalNodes +: isleDomainsNode +:
       termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 

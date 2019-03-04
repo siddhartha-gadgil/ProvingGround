@@ -6,6 +6,7 @@ import implicits._
 import shapeless._
 import Fold._
 object falseInd {
-  lazy val value = ConstructorSeqTL(ConstructorSeqDom.Empty.byTyp("false" :: Prop),
-                               "false" :: Prop)
+  lazy val value = ConstructorSeqTL(
+    ConstructorSeqDom.Empty.byTyp("false" :: Prop),
+    "false" :: Prop)
 }
