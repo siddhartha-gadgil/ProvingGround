@@ -433,7 +433,7 @@ class TermGeneratorNodes[InitState](
       dom: Term
   ): GeneratorNode[Term] =
     FlatMapOpt[Term, Term](
-      termsWithTyp(typFamilyTarget(ind.typFamily).get),
+      termsWithTyp(typFamilyTarget(dom).get), 
       (codom: Term) => {
         val fnOpt = ind.ind.inducOpt(dom, codom)
         fnOpt.map { fn =>
