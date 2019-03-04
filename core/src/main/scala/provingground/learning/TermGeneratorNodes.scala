@@ -255,10 +255,10 @@ class TermGeneratorNodes[InitState](
     )
 
   val typAsCodNodeFamily
-    : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
-  GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
-    case typ :: HNil => foldedTargetFunctionNode(typ)
-  }, TermsWithTyp)
+      : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => foldedTargetFunctionNode(typ)
+    }, TermsWithTyp)
 
   /**
     * lambda island for generating function with specified domain
@@ -392,11 +392,14 @@ class TermGeneratorNodes[InitState](
     else
       t match {
         case fn: FuncLike[u, v] =>
-          Some(FlatMapOpt(
-            termsWithTyp(fn.dom),
-            (x: Term) => foldFuncTarget(fn(x.asInstanceOf[u]), target, output),
-            output
-          ))
+          Some(
+            FlatMapOpt(
+              termsWithTyp(fn.dom),
+              (x: Term) =>
+                foldFuncTarget(fn(x.asInstanceOf[u]), target, output),
+              output
+            )
+          )
         case _ =>
           None
       }
@@ -433,7 +436,7 @@ class TermGeneratorNodes[InitState](
       dom: Term
   ): GeneratorNode[Term] =
     FlatMapOpt[Term, Term](
-      termsWithTyp(typFamilyTarget(dom).get), 
+      termsWithTyp(typFamilyTarget(dom).get),
       (codom: Term) => {
         val fnOpt = ind.ind.inducOpt(dom, codom)
         fnOpt.map { fn =>
@@ -473,22 +476,26 @@ class TermGeneratorNodes[InitState](
   def domainForDefn(ind: ExstInducDefn) =
     domainForStruct(ind.ind, ind.typFamily, ind)
 
-  def goalDomain(ind: ExstInducStrucs, fmly: Term, target: Term) : Option[Term] = 
-  (ind, fmly) match {
-    case (_: ExstInducStrucs.OrElse, _) => None
-    case (
-        ExstInducStrucs.LambdaInduc(variable, structure),
-        fn: FuncLike[u, v]
-        ) if variable.typ == fn.dom =>
+  def goalDomain(
+      ind: ExstInducStrucs,
+      fmly: Term,
+      target: Typ[Term]
+  ): Option[Term] =
+    (ind, fmly) match {
+      case (_: ExstInducStrucs.OrElse, _) => None
+      case (
+          ExstInducStrucs.LambdaInduc(variable, structure),
+          fn: FuncLike[u, v]
+          ) if variable.typ == fn.dom =>
         val x = fn.dom.Var
         goalDomain(structure.subs(variable, x), fn(x.asInstanceOf[u]), target)
-    case (ExstInducStrucs.LambdaInduc(_, _), _) => None
-    case (_, dom)                                 => 
-      for {
-        tp <- typFamilyTarget(dom)
-        if target.typ == tp
-      } yield dom
-  }
+      case (ExstInducStrucs.LambdaInduc(_, _), _) => None
+      case (_, dom) =>
+        for {
+          tp <- typFamilyTarget(dom)
+          if target == tp
+        } yield dom
+    }
 
   val domainForDefnNodeFamily
       : GeneratorNodeFamily[ExstInducDefn :: HNil, Term] =
@@ -517,12 +524,29 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  def targetInducFuncsFolded(ind: ExstInducDefn, target: Typ[Term]) =
+    goalDomain(ind.ind, ind.typFamily, target).map { dom =>
+      inducFuncsFoldedGivenDom(ind, dom)
+    }
+
   val inducFuncFoldedNode: GeneratorNode[Term] =
     FlatMap[ExstInducDefn, Term](
       InducDefns,
       defn => inducFuncsFolded(defn),
       Terms
     )
+
+  def targetInducNode(typ: Typ[Term]) =
+    FlatMapOpt[ExstInducDefn, Term](
+      InducDefns,
+      defn => targetInducFuncsFolded(defn, typ),
+      termsWithTyp(typ)
+    )
+
+  val targetInducNodeFamily =
+    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => targetInducNode(typ)
+    }, TermsWithTyp)
 
   /**
     * induction function for a specific structure, picking the type family
@@ -1018,11 +1042,12 @@ object TermRandomVars {
   def domForInduc(defn: ExstInducDefn) =
     RandomVar.AtCoord(DomForInduc, defn :: HNil)
 
-  case object FuncForCod extends RandomVar.SimpleFamily[Typ[Term], Term](
-    Typs
-  )
+  case object FuncForCod
+      extends RandomVar.SimpleFamily[Typ[Term], Term](
+        Typs
+      )
 
-  def funcForCod(cod: Typ[Term]) = 
+  def funcForCod(cod: Typ[Term]) =
     RandomVar.AtCoord(FuncForCod, cod :: HNil)
 
   /**
@@ -1395,7 +1420,8 @@ case class TermGenParams(
       (typFoldNode      -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
-  val goalNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] = (Init(
+  val goalNodes
+      : NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] = (Init(
     Goals
   ) -> 1.0) :: Goals
     .target[TermState, Term, Double, Typ[Term]]
