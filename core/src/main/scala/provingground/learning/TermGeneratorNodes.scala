@@ -419,7 +419,7 @@ class TermGeneratorNodes[InitState](
 
   def domainForDefn(ind: ExstInducDefn) = domainForStruct(ind.ind, ind.typFamily, ind)
 
-  val domainForDefnNodeFamily = 
+  val domainForDefnNodeFamily : GeneratorNodeFamily[ExstInducDefn :: HNil, Term]  = 
   GeneratorNodeFamily.BasePiOpt[ExstInducDefn :: HNil, Term]({
     case defn :: HNil => domainForDefn(defn)
     }, DomForInduc)
@@ -431,6 +431,12 @@ class TermGeneratorNodes[InitState](
           Terms
         )
 
+  val recFuncFoldedNode : GeneratorNode[Term] = 
+    FlatMap[ExstInducDefn, Term](
+      InducDefns,
+      defn => recFuncsFolded(defn),
+      Terms
+    )
 
   /**
     * induction function for a specific structure, picking the type family
