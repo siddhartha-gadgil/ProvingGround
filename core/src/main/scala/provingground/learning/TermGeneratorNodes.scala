@@ -34,24 +34,23 @@ class TermGeneratorNodes[InitState](
     inIsle: (Term, InitState) => InitState
 ) {
 
-  case object Appln extends ((ExstFunc, Term) => Term){
+  case object Appln extends ((ExstFunc, Term) => Term) {
     def apply(fn: ExstFunc, arg: Term) = appln(fn, arg)
 
     override def toString = "Appln"
   }
 
-  case object FlipAppln extends ((Term, ExstFunc) => Term){
+  case object FlipAppln extends ((Term, ExstFunc) => Term) {
     def apply(arg: Term, fn: ExstFunc) = appln(fn, arg)
 
     override def toString = "FlipAppn"
   }
 
-  case object UnifApplnOpt extends ((ExstFunc, Term) => Option[Term]){
+  case object UnifApplnOpt extends ((ExstFunc, Term) => Option[Term]) {
     def apply(fn: ExstFunc, arg: Term) = unifApplnOpt(fn, arg)
 
     override def toString = "UnifApplnOpt"
   }
-  
 
   /**
     * function application with unification to get terms
@@ -167,7 +166,8 @@ class TermGeneratorNodes[InitState](
       inIsle
     )
 
-  case object LambdaIsle extends (Typ[Term] => Island[Term, InitState, Term, Term]){
+  case object LambdaIsle
+      extends (Typ[Term] => Island[Term, InitState, Term, Term]) {
     def apply(typ: Typ[Term]) = lambdaIsle(typ)
 
     override def toString = "LambdaIsle"
@@ -182,11 +182,12 @@ class TermGeneratorNodes[InitState](
       inIsle
     )
 
-    case object LambdaTypFamilyIsle extends (Typ[Term] => GeneratorNode[ExstFunc]){
-      def apply(typ: Typ[Term]) = lambdaTypFamilyIsle(typ)
-  
-      override def toString = "LambdaTypFamilyIsle"
-    }
+  case object LambdaTypFamilyIsle
+      extends (Typ[Term] => GeneratorNode[ExstFunc]) {
+    def apply(typ: Typ[Term]) = lambdaTypFamilyIsle(typ)
+
+    override def toString = "LambdaTypFamilyIsle"
+  }
 
   /**
     * A node  for targeting a (dependent function) type, with variable of the domain generated and the co-domain
@@ -245,7 +246,8 @@ class TermGeneratorNodes[InitState](
     * @return distribution of functions
     */
   def lambdaIsleForFuncWithDomain(
-      dom: Typ[Term]): Island[ExstFunc, InitState, Term, Term] =
+      dom: Typ[Term]
+  ): Island[ExstFunc, InitState, Term, Term] =
     Island[ExstFunc, InitState, Term, Term](
       funcsWithDomain(dom),
       CRV(Terms),
@@ -276,13 +278,13 @@ class TermGeneratorNodes[InitState](
     * aggregated over all types
     */
   val lambdaByTypNodeFamily
-    : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
+      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
       case typ :: HNil => nodeForTyp(typ)
     }, TermsWithTyp)
 
   val lambdaForFuncWithDomFamily
-    : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], ExstFunc] =
+      : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], ExstFunc] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, ExstFunc](
       { case dom :: HNil => lambdaIsleForFuncWithDomain(dom) },
       FuncsWithDomain
@@ -331,9 +333,11 @@ class TermGeneratorNodes[InitState](
   def foldTypFamily(w: Term): GeneratorNode[Typ[Term]] = w match {
     case typ: Typ[Term] => Atom(typ, Typs)
     case fn: FuncLike[u, v] =>
-      FlatMap(termsWithTyp(fn.dom),
-              (x: Term) => foldTypFamily(fn(x.asInstanceOf[u])),
-              Typs)
+      FlatMap(
+        termsWithTyp(fn.dom),
+        (x: Term) => foldTypFamily(fn(x.asInstanceOf[u])),
+        Typs
+      )
   }
 
   val typFoldNode: FlatMap[ExstFunc, Typ[Term]] =
@@ -343,9 +347,11 @@ class TermGeneratorNodes[InitState](
       Typs
     )
 
-  def foldFunc(t: Term,
-               depth: Int,
-               output: RandomVar[Term]): GeneratorNode[Term] =
+  def foldFunc(
+      t: Term,
+      depth: Int,
+      output: RandomVar[Term]
+  ): GeneratorNode[Term] =
     if (depth < 1) Atom(t, output)
     else
       t match {
@@ -353,7 +359,8 @@ class TermGeneratorNodes[InitState](
           FlatMap(
             termsWithTyp(fn.dom),
             (x: Term) => foldFunc(fn(x.asInstanceOf[u]), depth - 1, output),
-            output)
+            output
+          )
       }
 
   /**
@@ -362,10 +369,68 @@ class TermGeneratorNodes[InitState](
     * @return distribution of functions
     */
   def recFuncsForStruc(
-      ind: ExstInducStrucs): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
+      ind: ExstInducStrucs
+  ): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
     ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
       case (x, y) => ind.recOpt(x, y).flatMap(FuncOpt)
     }, Typs, Typs, Funcs)
+
+  def recFuncsFoldedGivenDom(
+      ind: ExstInducDefn,
+      dom: Term
+  ): GeneratorNode[Term] =
+    FlatMapOpt[Typ[Term], Term](
+      Typs,
+      (codom: Typ[Term]) => {
+        val fnOpt = ind.ind.recOpt(dom, codom)
+        fnOpt.map { fn =>
+          foldFunc(fn, ind.intros.size, Terms)
+        }
+      },
+      Terms
+    )
+
+  def domainForStruct(
+      ind: ExstInducStrucs,
+      fmly: Term,
+      defn: ExstInducDefn
+  ): Option[GeneratorNode[Term]] =
+    (ind, fmly) match {
+      case (_: ExstInducStrucs.OrElse, _) => None
+      case (
+          ExstInducStrucs.LambdaInduc(variable, structure),
+          fn: FuncLike[u, v]
+          ) if variable.typ == fn.dom =>
+        Some(
+          FlatMapOpt[Term, Term](
+            termsWithTyp(fn.dom),
+            x =>
+              domainForStruct(
+                structure.subs(variable, x),
+                fn(x.asInstanceOf[u]),
+                defn
+              ),
+            domForInduc(defn)
+          )
+        )
+      case (ExstInducStrucs.LambdaInduc(_, _), _) => None
+      case (_, t)                                 => Some(GeneratorNode.Atom(t, domForInduc(defn)))
+    }
+
+  def domainForDefn(ind: ExstInducDefn) = domainForStruct(ind.ind, ind.typFamily, ind)
+
+  val domainForDefnNodeFamily = 
+  GeneratorNodeFamily.BasePiOpt[ExstInducDefn :: HNil, Term]({
+    case defn :: HNil => domainForDefn(defn)
+    }, DomForInduc)
+
+  def recFuncsFolded(ind: ExstInducDefn) : GeneratorNode[Term] = 
+        FlatMap[Term, Term](
+          domForInduc(ind),
+          dom => recFuncsFoldedGivenDom(ind, dom),
+          Terms
+        )
+
 
   /**
     * induction function for a specific structure, picking the type family
@@ -373,7 +438,8 @@ class TermGeneratorNodes[InitState](
     * @return distribution of functions
     */
   def inducFuncsForStruc(
-      ind: ExstInducStrucs): ZipMapOpt[Typ[Term], Term, ExstFunc] =
+      ind: ExstInducStrucs
+  ): ZipMapOpt[Typ[Term], Term, ExstFunc] =
     ZipMapOpt[Typ[Term], Term, ExstFunc]({
       case (x, y) => ind.inducOpt(x, y).flatMap(FuncOpt)
     }, Typs, Terms, Funcs)
@@ -398,11 +464,11 @@ class TermGeneratorNodes[InitState](
       Funcs
     )
 
-    case object Proj2 extends ((Typ[Term], Term) => Term){
-      def apply(a: Typ[Term], b: Term) = b
+  case object Proj2 extends ((Typ[Term], Term) => Term) {
+    def apply(a: Typ[Term], b: Term) = b
 
-      override def toString = "Proj2"
-    }
+    override def toString = "Proj2"
+  }
 
   /**
     * terms generated by first choosing type and then term with the type;
@@ -424,9 +490,10 @@ class TermGeneratorNodes[InitState](
     * @return distribution of types for introduction rules
     */
   def selfHeadNode(
-      inductiveTyp: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+      inductiveTyp: Typ[Term]
+  ): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
-      IntroRuleTypes(inductiveTyp), // output
+      IntroRuleTypes(inductiveTyp),      // output
       CRV(IntroRuleTypes(inductiveTyp)), // output from island
       addVar(inductiveTyp),
       PiApply,
@@ -441,8 +508,9 @@ class TermGeneratorNodes[InitState](
     * @param typ the type `C` by which we are extending the introduction rule type
     * @return distribution of introduction rule types
     */
-  def otherHeadIsle(inductiveTyp: Typ[Term])(
-      typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+  def otherHeadIsle(
+      inductiveTyp: Typ[Term]
+  )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IntroRuleTypes(inductiveTyp),
       CRV(IntroRuleTypes(inductiveTyp)),
@@ -470,7 +538,8 @@ class TermGeneratorNodes[InitState](
     * @return distribution on existential inductive structures
     */
   def simpleInductiveStructure(
-      inductiveTyp: Typ[Term]): Map[Vector[Typ[Term]], ExstInducStrucs] =
+      inductiveTyp: Typ[Term]
+  ): Map[Vector[Typ[Term]], ExstInducStrucs] =
     Map[Vector[Typ[Term]], ExstInducStrucs](
       introTyps => {
         val intros = introTyps.map(getVar)
@@ -487,14 +556,17 @@ class TermGeneratorNodes[InitState](
     * @return distribution on existential inductive structures
     */
   def simpleInductiveDefn(
-      inductiveTyp: Typ[Term]): Map[Vector[Typ[Term]], ExstInducDefn] =
+      inductiveTyp: Typ[Term]
+  ): Map[Vector[Typ[Term]], ExstInducDefn] =
     Map[Vector[Typ[Term]], ExstInducDefn](
       introTyps => {
         val intros = introTyps.map(getVar)
-        ExstInducDefn(inductiveTyp,
-                      intros,
-                      ExstInducStrucs.get(inductiveTyp, intros),
-                      Vector())
+        ExstInducDefn(
+          inductiveTyp,
+          intros,
+          ExstInducStrucs.get(inductiveTyp, intros),
+          Vector()
+        )
       },
       RandomVector(IntroRuleTypes(inductiveTyp)),
       InducDefns
@@ -534,8 +606,9 @@ class TermGeneratorNodes[InitState](
     * @param typ the type by which it is extended
     * @return distribution of types
     */
-  def iterFuncIsle(targetTyp: Typ[Term])(
-      typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+  def iterFuncIsle(
+      targetTyp: Typ[Term]
+  )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IterFuncTypTo(targetTyp),
       CRV(IntroRuleTypes(targetTyp)),
@@ -598,8 +671,9 @@ class TermGeneratorNodes[InitState](
     * @param typ the type by which to extends
     * @return distribution on types
     */
-  def indexedOtherHeadIsle(typF: Term)(
-      typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+  def indexedOtherHeadIsle(
+      typF: Term
+  )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IndexedIntroRuleTyps(typF),
       CRV(IndexedIntroRuleTyps(typF)),
@@ -637,8 +711,9 @@ class TermGeneratorNodes[InitState](
     * @param typ the type by which we are extending
     * @return distribution on types.
     */
-  def indexedIterFuncIsle(targetTyp: Term)(
-      typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+  def indexedIterFuncIsle(
+      targetTyp: Term
+  )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IndexedIterFuncTypTo(targetTyp),
       CRV(IndexedIntroRuleTyps(targetTyp)),
@@ -708,19 +783,17 @@ object TermRandomVars {
     override def toString = s"$WithTyp(typ)"
   }
 
-  case object TypFn extends (Term => Typ[Term]){
+  case object TypFn extends (Term => Typ[Term]) {
     def apply(tp: Term) = tp.typ
 
     override def toString = "typeOf(_)"
   }
 
-  case object DomFn extends (ExstFunc => Typ[Term]){
+  case object DomFn extends (ExstFunc => Typ[Term]) {
     def apply(fn: ExstFunc) = fn.dom
 
     override def toString = "domOf"
   }
-
-  
 
   /**
     * distribution of terms
@@ -754,8 +827,8 @@ object TermRandomVars {
       )
 
   case class PiOutput[U <: Term with Subs[U], V <: Term with Subs[V]](
-      pd: PiDefn[U, V])
-      extends (Term => RandomVar[Term]) {
+      pd: PiDefn[U, V]
+  ) extends (Term => RandomVar[Term]) {
     def apply(x: Term): RandomVar[Term] =
       termsWithTyp(pd.fibers(x.asInstanceOf[U]))
   }
@@ -764,7 +837,8 @@ object TermRandomVars {
     Sort.Filter[Term](WithTyp(typ))
 
   def withTypNode(
-      node: GeneratorNode[Term]): GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
+      node: GeneratorNode[Term]
+  ): GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
     node.pi(withTypSort, TermsWithTyp)
 
   /**
@@ -775,7 +849,7 @@ object TermRandomVars {
   def termsWithTyp(typ: Typ[Term]): RandomVar[Term] =
     RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
 
-  case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]){
+  case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]) {
     def apply(typ: Typ[Term]) = RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
 
     override def toString = "TermsWithTyp"
@@ -815,14 +889,18 @@ object TermRandomVars {
   def funcWithDomSort(dom: Typ[Term]): Sort.Filter[ExstFunc] =
     Sort.Filter[ExstFunc](_.dom == dom)
 
-  def funcWithDomNode(node: GeneratorNode[ExstFunc])
-    : GeneratorNodeFamily[Typ[Term] :: HNil, ExstFunc] =
+  def funcWithDomNode(
+      node: GeneratorNode[ExstFunc]
+  ): GeneratorNodeFamily[Typ[Term] :: HNil, ExstFunc] =
     node.pi(funcWithDomSort, FuncsWithDomain)
 
-  def funcWithDomTermNode(node: GeneratorNode[Term])
-    : GeneratorNodeFamily[::[Typ[Term], HNil], ExstFunc] =
-    node.pi((dom: Typ[Term]) => Sort.Restrict[Term, ExstFunc](FuncWithDom(dom)),
-            FuncsWithDomain)
+  def funcWithDomTermNode(
+      node: GeneratorNode[Term]
+  ): GeneratorNodeFamily[::[Typ[Term], HNil], ExstFunc] =
+    node.pi(
+      (dom: Typ[Term]) => Sort.Restrict[Term, ExstFunc](FuncWithDom(dom)),
+      FuncsWithDomain
+    )
 
   /**
     * distribution of functions with a specified domain
@@ -832,11 +910,18 @@ object TermRandomVars {
   def funcsWithDomain(typ: Typ[Term]): RandomVar[ExstFunc] =
     RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
 
-  case object FuncsWithDomainFn extends (Typ[Term] => RandomVar[ExstFunc]){
+  case object FuncsWithDomainFn extends (Typ[Term] => RandomVar[ExstFunc]) {
     def apply(typ: Typ[Term]) = RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
 
     override def toString = "FuncsWithDomain"
   }
+
+  case object DomForInduc
+      extends RandomVar.SimpleFamily[ExstInducDefn, Term](
+        InducDefns
+      )
+
+  def domForInduc(defn: ExstInducDefn) = RandomVar.AtCoord(DomForInduc, defn:: HNil)
 
   /**
     * distribution of existential inductive structures
@@ -927,10 +1012,12 @@ case class RandomVector[X](base: RandomVar[X]) extends RandomVar[Vector[X]] {
   def empty: Atom[Vector[X]] = just[Vector[X]](Vector(), this)
 
   def cons: ZipMap[X, Vector[X], Vector[X]] =
-    ZipMap[X, Vector[X], Vector[X]]({ case (x, ys) => x +: ys },
-                                    base,
-                                    this,
-                                    this)
+    ZipMap[X, Vector[X], Vector[X]](
+      { case (x, ys) => x +: ys },
+      base,
+      this,
+      this
+    )
 }
 
 /**
@@ -940,19 +1027,23 @@ case class RandomVector[X](base: RandomVar[X]) extends RandomVar[Vector[X]] {
   * @param vars variables, over which we may take closures
   * @param inds inductive type definitions
   */
-case class TermState(terms: FD[Term],
-                     typs: FD[Typ[Term]],
-                     vars: Vector[Term] = Vector(),
-                     inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
-                     goals: FD[Typ[Term]] = FD.empty,
-                     context: Context = Context.Empty) {
+case class TermState(
+    terms: FD[Term],
+    typs: FD[Typ[Term]],
+    vars: Vector[Term] = Vector(),
+    inds: FD[ExstInducDefn] = FD.empty[ExstInducDefn],
+    goals: FD[Typ[Term]] = FD.empty,
+    context: Context = Context.Empty
+) {
   def subs(x: Term, y: Term) =
-    TermState(terms.map(_.replace(x, y)),
-              typs.map(_.replace(x, y)),
-              vars.map(_.replace(x, y)),
-              inds.map(_.subs(x, y)),
-              goals.map(_.replace(x, y)),
-              context.subs(x, y))
+    TermState(
+      terms.map(_.replace(x, y)),
+      typs.map(_.replace(x, y)),
+      vars.map(_.replace(x, y)),
+      inds.map(_.subs(x, y)),
+      goals.map(_.replace(x, y)),
+      context.subs(x, y)
+    )
 
   // pprint.log(context.variables)
 
@@ -993,12 +1084,14 @@ case class TermState(terms: FD[Term],
       typOpt(x)
         .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
         .getOrElse(typs)
-    TermState(newTerms,
-              newTyps,
-              x +: vars,
-              inds,
-              newGoals.flatten,
-              context.addVariable(x)) -> x
+    TermState(
+      newTerms,
+      newTyps,
+      x +: vars,
+      inds,
+      newGoals.flatten,
+      context.addVariable(x)
+    ) -> x
   }
 
   def tangent(x: Term): TermState =
@@ -1061,8 +1154,8 @@ object TermState {
     val goals = jsToFD(context.inducStruct)(obj("goals")).map {
       case tp: Typ[Term] => tp
     }
-    val vars = obj("variables").arr.toVector.map((t) =>
-      jsToTermExst(context.inducStruct)(t).get)
+    val vars = obj("variables").arr.toVector
+      .map((t) => jsToTermExst(context.inducStruct)(t).get)
     val inds = FD.empty[ExstInducDefn] //InducJson.jsToFD(context.inducStruct)(obj("inductive-structures"))
     TermState(terms, typs, vars, inds, goals, context)
   }
@@ -1093,9 +1186,9 @@ object TermState {
           case RandomVar.AtCoord(fmly, arg) => valueAt(state)(fmly, arg)
         }
 
-      def valueAt[Dom <: HList, T](state: TermState)(
-          randomVarFmly: RandomVarFamily[Dom, T],
-          fullArg: Dom): FD[T] =
+      def valueAt[Dom <: HList, T](
+          state: TermState
+      )(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): FD[T] =
         (randomVarFmly, fullArg) match {
           case (TermsWithTyp, typ :: HNil) =>
             state.terms.conditioned(_.typ == typ).map(x => x: T)
@@ -1107,18 +1200,21 @@ object TermState {
         }
     }
 
-    def islePairs(ts: TermState, variable: Term) = 
-      {
-        val termPairs : Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
-          ts.terms.support.map{x => (RandomVar.Elem(Terms, x), RandomVar.Elem(Terms, variable :~> x))}
-        val typPairs : Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
-          ts.typs.support.map{x => (RandomVar.Elem(Typs, x), RandomVar.Elem(Typs, variable ~>: x))}
-        val goalPairs : Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = 
-          ts.goals.support.map{x => (RandomVar.Elem(Goals, x), RandomVar.Elem(Goals, variable ~>: x))}
-        termPairs union typPairs union goalPairs
+  def islePairs(ts: TermState, variable: Term) = {
+    val termPairs: Set[(RandomVar.Elem[_], RandomVar.Elem[_])] =
+      ts.terms.support.map { x =>
+        (RandomVar.Elem(Terms, x), RandomVar.Elem(Terms, variable :~> x))
       }
-
-      
+    val typPairs: Set[(RandomVar.Elem[_], RandomVar.Elem[_])] =
+      ts.typs.support.map { x =>
+        (RandomVar.Elem(Typs, x), RandomVar.Elem(Typs, variable ~>: x))
+      }
+    val goalPairs: Set[(RandomVar.Elem[_], RandomVar.Elem[_])] =
+      ts.goals.support.map { x =>
+        (RandomVar.Elem(Goals, x), RandomVar.Elem(Goals, variable ~>: x))
+      }
+    termPairs union typPairs union goalPairs
+  }
 
 }
 
@@ -1149,17 +1245,19 @@ object TermGenParams {
 
 import TermGenParams._
 
-case class TermGenParams(appW: Double = 0.1,
-                         unAppW: Double = 0.1,
-                         argAppW: Double = 0.1,
-                         lmW: Double = 0.1,
-                         piW: Double = 0.1,
-                         termsByTypW: Double = 0.05,
-                         typFromFamilyW: Double = 0.05,
-                         sigmaW: Double = 0.05,
-                         varWeight: Double = 0.3,
-                         goalWeight: Double = 0.7,
-                         typVsFamily: Double = 0.5) { tg =>
+case class TermGenParams(
+    appW: Double = 0.1,
+    unAppW: Double = 0.1,
+    argAppW: Double = 0.1,
+    lmW: Double = 0.1,
+    piW: Double = 0.1,
+    termsByTypW: Double = 0.05,
+    typFromFamilyW: Double = 0.05,
+    sigmaW: Double = 0.05,
+    varWeight: Double = 0.3,
+    goalWeight: Double = 0.7,
+    typVsFamily: Double = 0.5
+) { tg =>
   object Gen
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => applyFunc(fn.func, arg) },
@@ -1216,7 +1314,7 @@ case class TermGenParams(appW: Double = 0.1,
       TypFamilies.target[TermState, Term, Double, ExstFunc]
 
   val termsByTypNodes
-    : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
+      : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
     (TermsWithTyp.init       -> (termInit * (1 - goalWeight))) ::
       (wtN(applnNode)        -> appW) ::
       (wtN(unifApplnNode)    -> unAppW) ::
@@ -1235,7 +1333,7 @@ case class TermGenParams(appW: Double = 0.1,
       TargetTyps.target[TermState, Term, Double, Term]
 
   val funcWithDomNodes
-    : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, ExstFunc] =
+      : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, ExstFunc] =
     (FuncsWithDomain.init         -> termInit) ::
       (fdtN(applnNode)            -> appW) ::
       (fdtN(unifApplnNode)        -> unAppW) ::
@@ -1265,17 +1363,21 @@ case class TermGenParams(appW: Double = 0.1,
   //               eqW: Double = 1): SpireGradient =
   //   TermGenCost(equationsGen(initState, finalState), hW, klW, eqW).spireGradient
 
-  def nextStateTask(initState: TermState,
-                    epsilon: Double,
-                    limit: FiniteDuration = 3.minutes): Task[TermState] =
+  def nextStateTask(
+      initState: TermState,
+      epsilon: Double,
+      limit: FiniteDuration = 3.minutes
+  ): Task[TermState] =
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
       typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
     } yield TermState(terms, typs, initState.vars, initState.inds)
 
-  def evolvedStateTask(initState: TermState,
-                       epsilon: Double,
-                       limit: FiniteDuration = 3.minutes): Task[EvolvedState] =
+  def evolvedStateTask(
+      initState: TermState,
+      epsilon: Double,
+      limit: FiniteDuration = 3.minutes
+  ): Task[EvolvedState] =
     nextStateTask(initState, epsilon, limit).map(
       result => EvolvedState(initState, result, tg, epsilon)
     )
@@ -1293,35 +1395,41 @@ case class TermGenParams(appW: Double = 0.1,
   //     (finalState, equationsGen(initState, finalState).equations)
   //   }
 
-  def nextTangStateTask(baseState: TermState,
-                        tangState: TermState,
-                        epsilon: Double,
-                        vars: Vector[Term] = Vector(),
-                        limit: FiniteDuration = 3.minutes): Task[TermState] =
+  def nextTangStateTask(
+      baseState: TermState,
+      tangState: TermState,
+      epsilon: Double,
+      vars: Vector[Term] = Vector(),
+      limit: FiniteDuration = 3.minutes
+  ): Task[TermState] =
     for {
       terms <- monixTangFD(baseState).varDist(tangState)(Terms, epsilon, limit)
       typs  <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon, limit)
     } yield TermState(terms, typs, baseState.vars, baseState.inds)
 
-  def findProof(initState: TermState,
-                typ: Typ[Term],
-                epsilon: Double,
-                limit: FiniteDuration = 3.minutes): Task[FD[Term]] =
+  def findProof(
+      initState: TermState,
+      typ: Typ[Term],
+      epsilon: Double,
+      limit: FiniteDuration = 3.minutes
+  ): Task[FD[Term]] =
     monixFD
       .varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon, limit)
       .map(_.flatten)
 }
 
-trait EvolvedStateLike{
+trait EvolvedStateLike {
   val init: TermState
   val result: TermState
   val params: TermGenParams
 }
 
-case class EvolvedState(init: TermState,
-                        result: TermState,
-                        params: TermGenParams,
-                        epsilon: Double) extends EvolvedStateLike
+case class EvolvedState(
+    init: TermState,
+    result: TermState,
+    params: TermGenParams,
+    epsilon: Double
+) extends EvolvedStateLike
 
 import ujson.Js
 

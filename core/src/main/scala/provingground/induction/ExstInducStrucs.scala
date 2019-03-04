@@ -63,15 +63,15 @@ object ExstInducStrucs {
 
     def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]): Option[Term] =
       dom match {
-        case FormalAppln(fmly, value) if value.typ == variable.typ =>
-          struct.subs(variable, value).recOpt(dom, cod)
+        case FormalAppln(fmly, arg) if arg.typ == variable.typ =>
+          struct.subs(variable, arg).recOpt(dom, cod)
         case _ => None
       }
 
     def inducOpt(dom: Term, cod: Term): Option[Term] =
       dom match {
-        case FormalAppln(fmly, value) if value.typ == variable.typ =>
-          struct.subs(variable, value).inducOpt(dom, cod)
+        case FormalAppln(fmly, arg) if arg.typ == variable.typ =>
+          struct.subs(variable, arg).inducOpt(dom, cod)
         case _ => None
       }
 

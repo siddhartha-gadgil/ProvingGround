@@ -223,6 +223,11 @@ object GeneratorNodeFamily {
       extends GeneratorNodeFamily[Dom, O]
       with PiOpt[Dom, O]
 
+  def simplePiOpt[D , O](
+    nodesOpt: D => Option[GeneratorNode[O]],
+      outputFamily: RandomVarFamily[D :: HNil, O]
+    ) = BasePiOpt[D :: HNil, O]({case x :: HNil => nodesOpt(x)}, outputFamily)
+
 }
 
 /**
