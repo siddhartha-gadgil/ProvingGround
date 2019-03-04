@@ -390,6 +390,21 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  def inducFuncsFoldedGivenDom(
+    ind: ExstInducDefn,
+    dom: Term
+): GeneratorNode[Term] =
+  FlatMapOpt[Term, Term](
+    termsWithTyp(typFamilyTarget(ind.typFamily).get),
+    (codom: Term) => {
+      val fnOpt = ind.ind.inducOpt(dom, codom)
+      fnOpt.map { fn =>
+        foldFunc(fn, ind.intros.size, Terms)
+      }
+    },
+    Terms
+  )
+
   def domainForStruct(
       ind: ExstInducStrucs,
       fmly: Term,
@@ -435,6 +450,20 @@ class TermGeneratorNodes[InitState](
     FlatMap[ExstInducDefn, Term](
       InducDefns,
       defn => recFuncsFolded(defn),
+      Terms
+    )
+
+  def inducFuncsFolded(ind: ExstInducDefn) : GeneratorNode[Term] = 
+  FlatMap[Term, Term](
+    domForInduc(ind),
+    dom => inducFuncsFoldedGivenDom(ind, dom),
+    Terms
+  )
+
+  val inducFuncFoldedNode : GeneratorNode[Term] = 
+    FlatMap[ExstInducDefn, Term](
+      InducDefns,
+      defn => inducFuncsFolded(defn),
       Terms
     )
 
