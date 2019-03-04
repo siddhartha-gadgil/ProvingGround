@@ -473,6 +473,23 @@ class TermGeneratorNodes[InitState](
   def domainForDefn(ind: ExstInducDefn) =
     domainForStruct(ind.ind, ind.typFamily, ind)
 
+  def goalDomain(ind: ExstInducStrucs, fmly: Term, target: Term) : Option[Term] = 
+  (ind, fmly) match {
+    case (_: ExstInducStrucs.OrElse, _) => None
+    case (
+        ExstInducStrucs.LambdaInduc(variable, structure),
+        fn: FuncLike[u, v]
+        ) if variable.typ == fn.dom =>
+        val x = fn.dom.Var
+        goalDomain(structure.subs(variable, x), fn(x.asInstanceOf[u]), target)
+    case (ExstInducStrucs.LambdaInduc(_, _), _) => None
+    case (_, dom)                                 => 
+      for {
+        tp <- typFamilyTarget(dom)
+        if target.typ == tp
+      } yield dom
+  }
+
   val domainForDefnNodeFamily
       : GeneratorNodeFamily[ExstInducDefn :: HNil, Term] =
     GeneratorNodeFamily.BasePiOpt[ExstInducDefn :: HNil, Term]({
