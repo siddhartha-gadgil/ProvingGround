@@ -34,18 +34,27 @@ class TermGeneratorNodes[InitState](
     inIsle: (Term, InitState) => InitState
 ) {
 
+  /**
+    * Wrapper for application to allow equality and  `toString` to work.
+    */
   case object Appln extends ((ExstFunc, Term) => Term) {
     def apply(fn: ExstFunc, arg: Term) = appln(fn, arg)
 
     override def toString = "Appln"
   }
 
+  /**
+    * Wrapper for flipped application to allow equality and  `toString` to work.
+    */
   case object FlipAppln extends ((Term, ExstFunc) => Term) {
     def apply(arg: Term, fn: ExstFunc) = appln(fn, arg)
 
     override def toString = "FlipAppn"
   }
 
+  /**
+    * Wrapper for unified application to allow equality and  `toString` to work.
+    */
   case object UnifApplnOpt extends ((ExstFunc, Term) => Option[Term]) {
     def apply(fn: ExstFunc, arg: Term) = unifApplnOpt(fn, arg)
 
@@ -53,7 +62,7 @@ class TermGeneratorNodes[InitState](
   }
 
   /**
-    * function application with unification to get terms
+    * function application with unification node to get terms
     */
   val unifApplnNode: ZipMapOpt[ExstFunc, Term, Term] =
     ZipMapOpt[ExstFunc, Term, Term](
@@ -63,6 +72,9 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+    * function application with unification starting with type families, but with output not conditioned.
+    */
   val typUnifApplnBase: ZipMapOpt[ExstFunc, Term, Term] =
     ZipMapOpt[ExstFunc, Term, Term](
       UnifApplnOpt,
@@ -71,9 +83,15 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+    * function application with unification starting with type families, with output conditioned to be a type.
+    */
   val typUnifApplnNode: GeneratorNode[Typ[Term]] =
     typUnifApplnBase | (typSort, Typs)
 
+  /**
+    * function application with unification starting with type families, with output conditioned to be a type family.
+    */
   val typFamilyUnifApplnNode: GeneratorNode[ExstFunc] =
     typUnifApplnBase | (typFamilySort, TypFamilies)
 
@@ -89,6 +107,9 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+    * function application to get terms by choosing a type family and then a term in its domain, but without conditioning
+    */
   val typApplnBase: FiberProductMap[ExstFunc, Term, Typ[Term], Term] =
     FiberProductMap[ExstFunc, Term, Typ[Term], Term](
       DomFn,
@@ -98,8 +119,14 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+    * function application to get types by choosing a type family and then a term in its domain, but without conditioning
+    */
   val typApplnNode: GeneratorNode[Typ[Term]] = typApplnBase | (typSort, Typs)
 
+  /**
+    * function application to get type families by choosing a type family and then a term in its domain, but without conditioning
+    */
   val typFamilyApplnNode: GeneratorNode[ExstFunc] =
     typApplnBase | (typFamilySort, TypFamilies)
 
@@ -126,24 +153,36 @@ class TermGeneratorNodes[InitState](
     override def toString: String = randomVar.toString
   }
 
+  /**
+    * Wrapper for lambda to allow equality and  `toString` to work.
+    */
   case object LamApply extends ((Term, Term) => Term) {
     def apply(x: Term, y: Term): FuncLike[Term, Term] = x :~> y
 
     override def toString = "Lambda"
   }
 
+  /**
+    * Wrapper for Pi to allow equality and  `toString` to work.
+    */
   case object PiApply extends ((Term, Typ[Term]) => Typ[Term]) {
     def apply(x: Term, y: Typ[Term]): Typ[FuncLike[Term, Term]] = pi(x)(y)
 
     override def toString = "Pi"
   }
 
+  /**
+    * Wrapper for Sigma to allow equality and  `toString` to work.
+    */
   case object SigmaApply extends ((Term, Typ[Term]) => Typ[Term]) {
     def apply(x: Term, y: Typ[Term]): Typ[AbsPair[Term, Term]] = sigma(x)(y)
 
     override def toString = "Sigma"
   }
 
+  /**
+    * Wrapper for lambda giving functions to allow equality and  `toString` to work.
+    */
   case object LamFunc extends ((Term, Term) => ExstFunc) {
     def apply(x: Term, y: Term): ExstFunc = ExstFunc(x :~> y)
 
@@ -166,6 +205,9 @@ class TermGeneratorNodes[InitState](
       inIsle
     )
 
+  /**
+    * Wrapper for lambda island to allow equality and  `toString` to work.
+    */
   case object LambdaIsle
       extends (Typ[Term] => Island[Term, InitState, Term, Term]) {
     def apply(typ: Typ[Term]) = lambdaIsle(typ)
@@ -173,6 +215,14 @@ class TermGeneratorNodes[InitState](
     override def toString = "LambdaIsle"
   }
 
+  /**
+    * An island to generate lambda terms that are type families, i.e., terms are generated withing the island and exported as lambdas;
+    * the initial state of the island has a new variable mixed in.
+    * Within the island types and type families are generated.
+    *
+    * @param typ the domain of the lambda
+    * @return
+    */
   def lambdaTypFamilyIsle(typ: Typ[Term]): GeneratorNode[ExstFunc] =
     Island[ExstFunc, InitState, Term, Term](
       TypFamilies,
@@ -182,6 +232,9 @@ class TermGeneratorNodes[InitState](
       inIsle
     )
 
+  /**
+    * Wrapper for lambda island tageting type families to allow equality and  `toString` to work.
+    */
   case object LambdaTypFamilyIsle
       extends (Typ[Term] => GeneratorNode[ExstFunc]) {
     def apply(typ: Typ[Term]) = lambdaTypFamilyIsle(typ)
@@ -240,6 +293,10 @@ class TermGeneratorNodes[InitState](
       case _ => None
     }
 
+  /**
+    * Node for generating functions that target a codomain;
+    * they are not applied yet, instead form terms of a customised random variable.
+    */
   def codomainNode(typ: Typ[Term]): GeneratorNode[Term] =
     MapOpt[ExstFunc, Term](
       fn => Unify.targetCodomain(fn.func, typ),
@@ -247,6 +304,19 @@ class TermGeneratorNodes[InitState](
       funcForCod(typ)
     )
 
+  /**
+    * Node family for generating functions that target a codomain;
+    * they are not applied yet, instead form terms of a customised random variable.
+    */
+  val codomainNodeFamily
+      : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => codomainNode(typ)
+    }, TermsWithTyp)
+
+  /**
+    * Node for generating terms of a type (if possible) by multiple applications of functions tageting the type.
+    */
   def foldedTargetFunctionNode(typ: Typ[Term]) =
     FlatMapOpt[Term, Term](
       funcForCod(typ),
@@ -254,11 +324,14 @@ class TermGeneratorNodes[InitState](
       termsWithTyp(typ)
     )
 
+  /**
+    * Node for generating terms of a type (if possible) by multiple applications of functions tageting the type.
+    */
   val typAsCodNodeFamily
-    : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
-  GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
-    case typ :: HNil => foldedTargetFunctionNode(typ)
-  }, TermsWithTyp)
+      : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => foldedTargetFunctionNode(typ)
+    }, TermsWithTyp)
 
   /**
     * lambda island for generating function with specified domain
@@ -286,6 +359,9 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+    /**
+    * node combining lambda islands targeting type families aggregated by type
+    */
   val lambdaTypFamilyNode: FlatMap[Typ[Term], ExstFunc] =
     FlatMap(
       Typs,
@@ -303,6 +379,10 @@ class TermGeneratorNodes[InitState](
       case typ :: HNil => nodeForTyp(typ)
     }, TermsWithTyp)
 
+  /**
+    * nodes combining lambdas with given domain that are  (dependent) function types,
+    * aggregated over all domains
+    */
   val lambdaForFuncWithDomFamily
       : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], ExstFunc] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, ExstFunc](
@@ -324,6 +404,11 @@ class TermGeneratorNodes[InitState](
       inIsle
     )
 
+     /**
+    * island to generate Sigma-Types by taking variables with specified domain, similar to [[lambdaIsle]]
+    * @param typ the domain for
+    * @return distribution of types
+    */
   def sigmaIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
@@ -343,6 +428,9 @@ class TermGeneratorNodes[InitState](
       Typs
     )
 
+    /**
+    * aggregate generation of Sigma-types from islands
+    */
   val sigmaNode: FlatMap[Typ[Term], Typ[Term]] =
     FlatMap(
       Typs,
@@ -350,6 +438,9 @@ class TermGeneratorNodes[InitState](
       Typs
     )
 
+    /**
+     * Node for fully folding a type family to get types
+     */ 
   def foldTypFamily(w: Term): GeneratorNode[Typ[Term]] = w match {
     case typ: Typ[Term] => Atom(typ, Typs)
     case fn: FuncLike[u, v] =>
@@ -360,6 +451,9 @@ class TermGeneratorNodes[InitState](
       )
   }
 
+  /**
+     * Node family for fully folding type families to get types
+     */ 
   val typFoldNode: FlatMap[ExstFunc, Typ[Term]] =
     FlatMap(
       TypFamilies,
@@ -367,6 +461,10 @@ class TermGeneratorNodes[InitState](
       Typs
     )
 
+    /**
+     * Node for folding a function (or term) with a speficied number of arguments 
+     * to get terms.
+     */ 
   def foldFunc(
       t: Term,
       depth: Int,
@@ -383,6 +481,10 @@ class TermGeneratorNodes[InitState](
           )
       }
 
+      /**
+     * Node for folding a function (or term) with a speficied target type 
+     * to optionally get terms with the target type.
+     */
   def foldFuncTarget(
       t: Term,
       target: Typ[Term],
@@ -392,17 +494,22 @@ class TermGeneratorNodes[InitState](
     else
       t match {
         case fn: FuncLike[u, v] =>
-          Some(FlatMapOpt(
-            termsWithTyp(fn.dom),
-            (x: Term) => foldFuncTarget(fn(x.asInstanceOf[u]), target, output),
-            output
-          ))
+          Some(
+            FlatMapOpt(
+              termsWithTyp(fn.dom),
+              (x: Term) =>
+                foldFuncTarget(fn(x.asInstanceOf[u]), target, output),
+              output
+            )
+          )
         case _ =>
           None
       }
 
   /**
-    * recursive functions from a specific inductive structure, picking the codomain
+    * recursive functions from a specific inductive structure, picking the codomain,
+    * this is the simplest form, where the domain is not selected and so is usually wrong;
+    * further just the function is returned, not with data applied
     * @param ind the inductive structure
     * @return distribution of functions
     */
@@ -413,6 +520,12 @@ class TermGeneratorNodes[InitState](
       case (x, y) => ind.recOpt(x, y).flatMap(FuncOpt)
     }, Typs, Typs, Funcs)
 
+
+  /**
+   * Recursive definition given an inductive definition and a domain, 
+   * i.e., recursion function with data of the right type folded in.
+   * Examples of domains are `Nat`, `Vec(A)` and `Fin`
+   */
   def recFuncsFoldedGivenDom(
       ind: ExstInducDefn,
       dom: Term
@@ -428,6 +541,11 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+    /**
+   * Recursive definition given an inductive definition and a domain, 
+   * i.e., recursion function with data of the right type folded in.
+   * Examples of domains are `Nat`, `Vec(A)` and `Fin`
+   */
   def inducFuncsFoldedGivenDom(
       ind: ExstInducDefn,
       dom: Term
@@ -443,6 +561,14 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+   * Generating domains for a given inductive structure, with an inductive definition also given.
+   * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+   * The structure is specified separately as it may have some parameters applied, so be different from 
+   * the one corresponding to the definition; similarly we start with the full type family of the definition,
+   * e.g. `Vec`, but fill in parameters to get e.g. `Vec(Nat)`.
+   * Note that if there are no parameters the type family is returned
+   */ 
   def domainForStruct(
       ind: ExstInducStrucs,
       fmly: Term,
@@ -470,15 +596,27 @@ class TermGeneratorNodes[InitState](
       case (_, t)                                 => Some(GeneratorNode.Atom(t, domForInduc(defn)))
     }
 
+  /**
+   * Generating domains for a given inductive structure, with an inductive definition also given.
+   * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+   */ 
   def domainForDefn(ind: ExstInducDefn) =
     domainForStruct(ind.ind, ind.typFamily, ind)
 
+  /**
+   * Node family for generating domains for a given inductive structure, with an inductive definition also given.
+   * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+   */ 
   val domainForDefnNodeFamily
       : GeneratorNodeFamily[ExstInducDefn :: HNil, Term] =
     GeneratorNodeFamily.BasePiOpt[ExstInducDefn :: HNil, Term]({
       case defn :: HNil => domainForDefn(defn)
     }, DomForInduc)
 
+  /**
+   * Recursive definitions from a given inductive definition by generating a domain and
+   * invoking the node getting codomain and recursion data
+   */ 
   def recFuncsFolded(ind: ExstInducDefn): GeneratorNode[Term] =
     FlatMap[Term, Term](
       domForInduc(ind),
@@ -486,6 +624,10 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+   * Node for recursive definitions picking an inductive definition, generating a domain and
+   * invoking the node getting codomain and recursion data
+   */
   val recFuncFoldedNode: GeneratorNode[Term] =
     FlatMap[ExstInducDefn, Term](
       InducDefns,
@@ -493,6 +635,10 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+   * Inductive definitions from a given inductive definition by generating a domain and
+   * invoking the node getting codomain and recursion data
+   */ 
   def inducFuncsFolded(ind: ExstInducDefn): GeneratorNode[Term] =
     FlatMap[Term, Term](
       domForInduc(ind),
@@ -500,6 +646,10 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+  /**
+   * Node for recursive definitions picking an inductive definition, generating a domain and
+   * invoking the node getting codomain and recursion data
+   */
   val inducFuncFoldedNode: GeneratorNode[Term] =
     FlatMap[ExstInducDefn, Term](
       InducDefns,
@@ -1001,11 +1151,12 @@ object TermRandomVars {
   def domForInduc(defn: ExstInducDefn) =
     RandomVar.AtCoord(DomForInduc, defn :: HNil)
 
-  case object FuncForCod extends RandomVar.SimpleFamily[Typ[Term], Term](
-    Typs
-  )
+  case object FuncForCod
+      extends RandomVar.SimpleFamily[Typ[Term], Term](
+        Typs
+      )
 
-  def funcForCod(cod: Typ[Term]) = 
+  def funcForCod(cod: Typ[Term]) =
     RandomVar.AtCoord(FuncForCod, cod :: HNil)
 
   /**
@@ -1378,7 +1529,8 @@ case class TermGenParams(
       (typFoldNode      -> typFromFamilyW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
-  val goalNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] = (Init(
+  val goalNodes
+      : NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] = (Init(
     Goals
   ) -> 1.0) :: Goals
     .target[TermState, Term, Double, Typ[Term]]

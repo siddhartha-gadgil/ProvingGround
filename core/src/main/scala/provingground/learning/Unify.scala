@@ -133,6 +133,10 @@ object Unify {
         case _ => None
       })
 
+  /**
+   * Given a function and a target type, optionally returns a function with eventual codomain the given type;
+   * this is done by attempting to unify, filling in parameters where they are determined and returing lambdas if all parameters work. 
+   */
   def targetCodomain(func: Term,
                 codomain: Term,
                 freeVars: Vector[Term] = Vector()): Option[Term] =

@@ -172,8 +172,16 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy">EntropyAtomWeight</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="trait" href="EvolvedEquations.html" title=""></a>
+                        <a href="EvolvedEquations.html" title="">EvolvedEquations</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="EvolvedState.html" title=""></a>
                         <a href="EvolvedState.html" title="">EvolvedState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="EvolvedStateLike.html" title=""></a>
+                        <a href="EvolvedStateLike.html" title="">EvolvedStateLike</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -186,6 +194,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="EvolverVariables$.html" title=""></a>
                         <a class="trait" href="EvolverVariables.html" title="Variables in an evolver; not all need to be used in a give case"></a>
                         <a href="EvolverVariables.html" title="Variables in an evolver; not all need to be used in a give case">EvolverVariables</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ExpressionEval$.html" title=""></a>
+                        <a class="class" href="ExpressionEval.html" title=""></a>
+                        <a href="ExpressionEval.html" title="">ExpressionEval</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducer$.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
                         <a class="class" href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
@@ -210,6 +222,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="GenMonixFiniteDistribution.html" title=""></a>
                         <a href="GenMonixFiniteDistribution.html" title="">GenMonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GenMonixFiniteDistributionEq.html" title=""></a>
+                        <a href="GenMonixFiniteDistributionEq.html" title="">GenMonixFiniteDistributionEq</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="GenTruncatedFiniteDistribution.html" title=""></a>
@@ -262,6 +278,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixFiniteDistributionEq$.html" title=""></a>
+                        <a class="class" href="MonixFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistributionEq</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed."></a>
@@ -416,6 +436,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermGenCost.html" title="">TermGenCost</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenEqCost.html" title=""></a>
+                        <a href="TermGenEqCost.html" title="">TermGenEqCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="TermGenJson$.html" title=""></a>
                         <a href="TermGenJson$.html" title="">TermGenJson</a>
                       </li><li class="current-entities indented2">
@@ -519,7 +543,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">TermGenParams</span><span class="params">(<span name="appW">appW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="unAppW">unAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="argAppW">argAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="lmW">lmW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="piW">piW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="termsByTypW">termsByTypW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="typFromFamilyW">typFromFamilyW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="sigmaW">sigmaW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="goalWeight">goalWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>, <span name="typVsFamily">typVsFamily: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">TermGenParams</span><span class="params">(<span name="appW">appW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="unAppW">unAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="argAppW">argAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="lmW">lmW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="piW">piW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="termsByTypW">termsByTypW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="typFromFamilyW">typFromFamilyW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="sigmaW">sigmaW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="goalWeight">goalWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.7</span></span>, <span name="typVsFamily">typVsFamily: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -601,7 +625,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">TermGenParams</span><span class="params">(<span name="appW">appW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="unAppW">unAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="argAppW">argAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="lmW">lmW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="piW">piW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="termsByTypW">termsByTypW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="typFromFamilyW">typFromFamilyW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="sigmaW">sigmaW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="goalWeight">goalWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>, <span name="typVsFamily">typVsFamily: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>)</span>
+        <span class="name">TermGenParams</span><span class="params">(<span name="appW">appW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="unAppW">unAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="argAppW">argAppW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="lmW">lmW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="piW">piW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>, <span name="termsByTypW">termsByTypW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="typFromFamilyW">typFromFamilyW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="sigmaW">sigmaW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.05</span></span>, <span name="varWeight">varWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.3</span></span>, <span name="goalWeight">goalWeight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.7</span></span>, <span name="typVsFamily">typVsFamily: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.5</span></span>)</span>
       </span>
       
       
@@ -874,22 +898,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.learning.TermGenParams#equationsGen" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="equationsGen(initState:provingground.learning.TermState,finalState:provingground.learning.TermState):provingground.learning.GeneratorEquations[provingground.learning.TermState,provingground.HoTT.Term]"></a><a id="equationsGen(TermState,TermState):GeneratorEquations[TermState,Term]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/TermGenParams.html#equationsGen(initState:provingground.learning.TermState,finalState:provingground.learning.TermState):provingground.learning.GeneratorEquations[provingground.learning.TermState,provingground.HoTT.Term]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equationsGen</span><span class="params">(<span name="initState">initState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="finalState">finalState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>)</span><span class="result">: <a href="GeneratorEquations.html" class="extype" name="provingground.learning.GeneratorEquations">GeneratorEquations</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
-      </span>
-      
-      
     </li><li name="provingground.learning.TermGenParams#evolvedStateTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="evolvedStateTask(initState:provingground.learning.TermState,epsilon:Double,limit:scala.concurrent.duration.FiniteDuration):monix.eval.Task[provingground.learning.EvolvedState]"></a><a id="evolvedStateTask(TermState,Double,FiniteDuration):Task[EvolvedState]"></a>
       <span class="permalink">
@@ -1066,6 +1074,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.learning.TermGenParams#isleDomainsNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isleDomainsNode:provingground.learning.NodeCoeffs.Cons[provingground.learning.TermState,provingground.HoTT.Term,Double,shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="isleDomainsNode:Cons[TermState,Term,Double,HNil,Typ[Term]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGenParams.html#isleDomainsNode:provingground.learning.NodeCoeffs.Cons[provingground.learning.TermState,provingground.HoTT.Term,Double,shapeless.HNil,provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isleDomainsNode</span><span class="result">: <a href="NodeCoeffs$$Cons.html" class="extype" name="provingground.learning.NodeCoeffs.Cons">Cons</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="shapeless.HNil">HNil</span>, <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermGenParams#lmW" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lmW:Double"></a>
       <span class="permalink">
@@ -1143,22 +1167,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">nextStateTask</span><span class="params">(<span name="initState">initState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>, <span name="limit">limit: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span> = <span class="symbol"><span class="name"><a href="../../scala/index.html">3.minutes</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>]</span>
-      </span>
-      
-      
-    </li><li name="provingground.learning.TermGenParams#nextStateWithEqnsTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="nextStateWithEqnsTask(initState:provingground.learning.TermState,epsilon:Double,limit:scala.concurrent.duration.FiniteDuration):monix.eval.Task[(provingground.learning.TermState,Set[provingground.learning.GeneratorVariables.Equation])]"></a><a id="nextStateWithEqnsTask(TermState,Double,FiniteDuration):Task[(TermState,Set[Equation])]"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/TermGenParams.html#nextStateWithEqnsTask(initState:provingground.learning.TermState,epsilon:Double,limit:scala.concurrent.duration.FiniteDuration):monix.eval.Task[(provingground.learning.TermState,Set[provingground.learning.GeneratorVariables.Equation])]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">nextStateWithEqnsTask</span><span class="params">(<span name="initState">initState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>, <span name="limit">limit: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span> = <span class="symbol"><span class="name"><a href="../../scala/index.html">3.minutes</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[(<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorVariables$$Equation.html" class="extype" name="provingground.learning.GeneratorVariables.Equation">Equation</a>])]</span>
       </span>
       
       
@@ -1261,22 +1269,6 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">sigmaW</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      
-      
-    </li><li name="provingground.learning.TermGenParams#spireGrad" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="spireGrad(initState:provingground.learning.TermState,finalState:provingground.learning.TermState,hW:Double,klW:Double,eqW:Double):provingground.learning.SpireGradient"></a><a id="spireGrad(TermState,TermState,Double,Double,Double):SpireGradient"></a>
-      <span class="permalink">
-      <a href="../../provingground/learning/TermGenParams.html#spireGrad(initState:provingground.learning.TermState,finalState:provingground.learning.TermState,hW:Double,klW:Double,eqW:Double):provingground.learning.SpireGradient" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">spireGrad</span><span class="params">(<span name="initState">initState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="finalState">finalState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="eqW">eqW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="result">: <a href="SpireGradient.html" class="extype" name="provingground.learning.SpireGradient">SpireGradient</a></span>
       </span>
       
       

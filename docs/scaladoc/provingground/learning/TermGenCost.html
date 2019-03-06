@@ -172,8 +172,16 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy">EntropyAtomWeight</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="trait" href="EvolvedEquations.html" title=""></a>
+                        <a href="EvolvedEquations.html" title="">EvolvedEquations</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="EvolvedState.html" title=""></a>
                         <a href="EvolvedState.html" title="">EvolvedState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="EvolvedStateLike.html" title=""></a>
+                        <a href="EvolvedStateLike.html" title="">EvolvedStateLike</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="EvolverEquations$.html" title=""></a>
                         <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
@@ -186,6 +194,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="EvolverVariables$.html" title=""></a>
                         <a class="trait" href="EvolverVariables.html" title="Variables in an evolver; not all need to be used in a give case"></a>
                         <a href="EvolverVariables.html" title="Variables in an evolver; not all need to be used in a give case">EvolverVariables</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ExpressionEval$.html" title=""></a>
+                        <a class="class" href="ExpressionEval.html" title=""></a>
+                        <a href="ExpressionEval.html" title="">ExpressionEval</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="FineDeducer$.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
                         <a class="class" href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
@@ -210,6 +222,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="GenMonixFiniteDistribution.html" title=""></a>
                         <a href="GenMonixFiniteDistribution.html" title="">GenMonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GenMonixFiniteDistributionEq.html" title=""></a>
+                        <a href="GenMonixFiniteDistributionEq.html" title="">GenMonixFiniteDistributionEq</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="GenTruncatedFiniteDistribution.html" title=""></a>
@@ -262,6 +278,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixFiniteDistributionEq$.html" title=""></a>
+                        <a class="class" href="MonixFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistributionEq</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed."></a>
@@ -416,6 +436,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="" title="">TermGenCost</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="TermGenEqCost.html" title=""></a>
+                        <a href="TermGenEqCost.html" title="">TermGenEqCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="TermGenJson$.html" title=""></a>
                         <a href="TermGenJson$.html" title="">TermGenJson</a>
                       </li><li class="current-entities indented2">
@@ -517,7 +541,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">TermGenCost</span><span class="params">(<span name="ge">ge: <a href="GeneratorEquations.html" class="extype" name="provingground.learning.GeneratorEquations">GeneratorEquations</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="eqW">eqW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="../../scala/index.html">math.pow(10, -5)</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">TermGenCost</span><span class="params">(<span name="ge">ge: <a href="EvolvedEquations.html" class="extype" name="provingground.learning.EvolvedEquations">EvolvedEquations</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="eqW">eqW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="../../scala/index.html">math.pow(10, -5)</a></span></span></span>)</span><span class="result"> extends <a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -526,12 +550,12 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
                 <span class="toggle diagram-link">
                   Type Hierarchy
                 </span>
-                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 196.00 118.00" height="118pt" width="196pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 192,-114 192,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.learning.TermGenCost (this class)" xlink:href="#inheritance-diagram"><path d="M132.1667,-49C132.1667,-49 46.8333,-49 46.8333,-49 42.6667,-49 38.5,-44.8333 38.5,-40.6667 38.5,-40.6667 38.5,-32.3333 38.5,-32.3333 38.5,-28.1667 42.6667,-24 46.8333,-24 46.8333,-24 132.1667,-24 132.1667,-24 136.3333,-24 140.5,-28.1667 140.5,-32.3333 140.5,-32.3333 140.5,-40.6667 140.5,-40.6667 140.5,-44.8333 136.3333,-49 132.1667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="48.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="69.5" text-anchor="start">TermGenCost</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="scala.Product"><path d="M68.6667,-110C68.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 68.6667,-85 68.6667,-85 72.8333,-85 77,-89.1667 77,-93.3333 77,-93.3333 77,-101.6667 77,-101.6667 77,-105.8333 72.8333,-110 68.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31.5" text-anchor="start">Product</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="TermGenCost is a subtype of Product"><path d="M53.6359,-79.3963C61.7837,-69.6509 71.6326,-57.8708 78.9463,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="51.6776,-77.9189 49.0672,-84.8608 55.4368,-81.0619 51.6776,-77.9189" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Serializable"><path d="M179.6667,-110C179.6667,-110 103.3333,-110 103.3333,-110 99.1667,-110 95,-105.8333 95,-101.6667 95,-101.6667 95,-93.3333 95,-93.3333 95,-89.1667 99.1667,-85 103.3333,-85 103.3333,-85 179.6667,-85 179.6667,-85 183.8333,-85 188,-89.1667 188,-93.3333 188,-93.3333 188,-101.6667 188,-101.6667 188,-105.8333 183.8333,-110 179.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="105.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="126.5" text-anchor="start">Serializable</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="TermGenCost is a subtype of Serializable"><path d="M126.0673,-79.3963C117.7598,-69.6509 107.7178,-57.8708 100.2606,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="124.3199,-81.123 130.7256,-84.8608 128.0489,-77.9442 124.3199,-81.123" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 326.50 118.00" height="118pt" width="327pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 322.5,-114 322.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.learning.TermGenCost (this class)" xlink:href="#inheritance-diagram"><path d="M211.6667,-49C211.6667,-49 126.3333,-49 126.3333,-49 122.1667,-49 118,-44.8333 118,-40.6667 118,-40.6667 118,-32.3333 118,-32.3333 118,-28.1667 122.1667,-24 126.3333,-24 126.3333,-24 211.6667,-24 211.6667,-24 215.8333,-24 220,-28.1667 220,-32.3333 220,-32.3333 220,-40.6667 220,-40.6667 220,-44.8333 215.8333,-49 211.6667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="128" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="149" text-anchor="start">TermGenCost</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.learning.TermGenEqCost" xlink:href="TermGenEqCost.html#inheritance-diagram"><path d="M103.6667,-110C103.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 103.6667,-85 103.6667,-85 107.8333,-85 112,-89.1667 112,-93.3333 112,-93.3333 112,-101.6667 112,-101.6667 112,-105.8333 107.8333,-110 103.6667,-110" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-104.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31" text-anchor="start">TermGenEqCost</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="TermGenCost is a subtype of TermGenEqCost"><path d="M86.0444,-81.2814C104.71,-71.2052 128.3513,-58.4431 145.6163,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="84.4096,-79.3796 79.4137,-84.8608 86.7373,-83.6914 84.4096,-79.3796" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Product"><path d="M199.1667,-110C199.1667,-110 138.8333,-110 138.8333,-110 134.6667,-110 130.5,-105.8333 130.5,-101.6667 130.5,-101.6667 130.5,-93.3333 130.5,-93.3333 130.5,-89.1667 134.6667,-85 138.8333,-85 138.8333,-85 199.1667,-85 199.1667,-85 203.3333,-85 207.5,-89.1667 207.5,-93.3333 207.5,-93.3333 207.5,-101.6667 207.5,-101.6667 207.5,-105.8333 203.3333,-110 199.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="141" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="162" text-anchor="start">Product</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="TermGenCost is a subtype of Product"><path d="M169,-77.7386C169,-68.3393 169,-57.3803 169,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="166.5501,-77.8607 169,-84.8608 171.4501,-77.8608 166.5501,-77.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Serializable"><path d="M310.1667,-110C310.1667,-110 233.8333,-110 233.8333,-110 229.6667,-110 225.5,-105.8333 225.5,-101.6667 225.5,-101.6667 225.5,-93.3333 225.5,-93.3333 225.5,-89.1667 229.6667,-85 233.8333,-85 233.8333,-85 310.1667,-85 310.1667,-85 314.3333,-85 318.5,-89.1667 318.5,-93.3333 318.5,-93.3333 318.5,-101.6667 318.5,-101.6667 318.5,-105.8333 314.3333,-110 310.1667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="236" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="257" text-anchor="start">Serializable</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="TermGenCost is a subtype of Serializable"><path d="M244.6144,-81.2814C227.6006,-71.2052 206.0515,-58.4431 190.3143,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="243.3869,-83.4017 250.6583,-84.8608 245.8838,-79.1856 243.3869,-83.4017" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
                 <div id="diagram-controls" class="hiddenContent">
                   <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
                   <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
@@ -562,7 +586,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.learning.TermGenCost"><span>TermGenCost</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.learning.TermGenCost"><span>TermGenCost</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="provingground.learning.TermGenEqCost"><span>TermGenEqCost</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
                   <span class="filtertype">Implicitly<br />
@@ -588,9 +612,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.learning.TermGenCost#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(ge:provingground.learning.GeneratorEquations[provingground.learning.TermState,provingground.HoTT.Term],hW:Double,klW:Double,eqW:Double,epsilon:Double):provingground.learning.TermGenCost"></a><a id="&lt;init&gt;:TermGenCost"></a>
+      <a id="&lt;init&gt;(ge:provingground.learning.EvolvedEquations[provingground.learning.TermState,provingground.HoTT.Term],hW:Double,klW:Double,eqW:Double,epsilon:Double):provingground.learning.TermGenCost"></a><a id="&lt;init&gt;:TermGenCost"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGenCost.html#&lt;init&gt;(ge:provingground.learning.GeneratorEquations[provingground.learning.TermState,provingground.HoTT.Term],hW:Double,klW:Double,eqW:Double,epsilon:Double):provingground.learning.TermGenCost" title="Permalink">
+      <a href="../../provingground/learning/TermGenCost.html#&lt;init&gt;(ge:provingground.learning.EvolvedEquations[provingground.learning.TermState,provingground.HoTT.Term],hW:Double,klW:Double,eqW:Double,epsilon:Double):provingground.learning.TermGenCost" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -599,7 +623,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">TermGenCost</span><span class="params">(<span name="ge">ge: <a href="GeneratorEquations.html" class="extype" name="provingground.learning.GeneratorEquations">GeneratorEquations</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="eqW">eqW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="../../scala/index.html">math.pow(10, -5)</a></span></span></span>)</span>
+        <span class="name">TermGenCost</span><span class="params">(<span name="ge">ge: <a href="EvolvedEquations.html" class="extype" name="provingground.learning.EvolvedEquations">EvolvedEquations</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="eqW">eqW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="../../scala/index.html">math.pow(10, -5)</a></span></span></span>)</span>
       </span>
       
       
@@ -744,10 +768,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.TermGenCost#cost" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cost:provingground.learning.GeneratorVariables.Sum"></a><a id="cost:Sum"></a>
+    </li><li name="provingground.learning.TermGenEqCost#cost" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="cost:provingground.learning.GeneratorVariables.Expression"></a><a id="cost:Expression"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGenCost.html#cost:provingground.learning.GeneratorVariables.Sum" title="Permalink">
+      <a href="../../provingground/learning/TermGenCost.html#cost:provingground.learning.GeneratorVariables.Expression" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -756,10 +780,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">cost</span><span class="result">: <a href="GeneratorVariables$$Sum.html" class="extype" name="provingground.learning.GeneratorVariables.Sum">Sum</a></span>
+        <span class="name">cost</span><span class="result">: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a></dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((TermGenCost)⇒Boolean,⇒Any):TermGenCost"></a>
       <span class="permalink">
@@ -934,9 +958,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.learning.TermGenCost#ge" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ge:provingground.learning.GeneratorEquations[provingground.learning.TermState,provingground.HoTT.Term]"></a><a id="ge:GeneratorEquations[TermState,Term]"></a>
+      <a id="ge:provingground.learning.EvolvedEquations[provingground.learning.TermState,provingground.HoTT.Term]"></a><a id="ge:EvolvedEquations[TermState,Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGenCost.html#ge:provingground.learning.GeneratorEquations[provingground.learning.TermState,provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/learning/TermGenCost.html#ge:provingground.learning.EvolvedEquations[provingground.learning.TermState,provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -945,7 +969,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">ge</span><span class="result">: <a href="GeneratorEquations.html" class="extype" name="provingground.learning.GeneratorEquations">GeneratorEquations</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">ge</span><span class="result">: <a href="EvolvedEquations.html" class="extype" name="provingground.learning.EvolvedEquations">EvolvedEquations</a>[<a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       
@@ -968,10 +992,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.TermGenCost#grad" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="grad(epsilon:Double):Map[provingground.learning.GeneratorVariables.VarVal[_],Double]"></a><a id="grad(Double):Map[VarVal[_],Double]"></a>
+    </li><li name="provingground.learning.TermGenEqCost#grad" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="grad(epsilon:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="grad(Double):Map[Expression,Double]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGenCost.html#grad(epsilon:Double):Map[provingground.learning.GeneratorVariables.VarVal[_],Double]" title="Permalink">
+      <a href="../../provingground/learning/TermGenCost.html#grad(epsilon:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -980,10 +1004,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">grad</span><span class="params">(<span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$VarVal.html" class="extype" name="provingground.learning.GeneratorVariables.VarVal">VarVal</a>[_], <span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">grad</span><span class="params">(<span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a></dd></dl></div>
     </li><li name="provingground.learning.TermGenCost#hW" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="hW:Double"></a>
       <span class="permalink">
@@ -1086,10 +1110,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.TermGenCost#p" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="p:Map[provingground.learning.GeneratorVariables.VarVal[_],Double]"></a><a id="p:Map[VarVal[_],Double]"></a>
+    </li><li name="provingground.learning.TermGenCost#p" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="p:Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="p:Map[Expression,Double]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGenCost.html#p:Map[provingground.learning.GeneratorVariables.VarVal[_],Double]" title="Permalink">
+      <a href="../../provingground/learning/TermGenCost.html#p:Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1098,11 +1122,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">p</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$VarVal.html" class="extype" name="provingground.learning.GeneratorVariables.VarVal">VarVal</a>[_], <span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">p</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
-      
-    </li><li name="provingground.learning.TermGenCost#spireGradient" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.TermGenCost">TermGenCost</a> → <a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a></dd></dl></div>
+    </li><li name="provingground.learning.TermGenEqCost#spireGradient" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="spireGradient:provingground.learning.SpireGradient"></a><a id="spireGradient:SpireGradient"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGenCost.html#spireGradient:provingground.learning.SpireGradient" title="Permalink">
@@ -1117,7 +1141,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">spireGradient</span><span class="result">: <a href="SpireGradient.html" class="extype" name="provingground.learning.SpireGradient">SpireGradient</a></span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -1134,7 +1158,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.learning.TermGenCost#vars" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.TermGenEqCost#vars" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="vars:Vector[provingground.learning.GeneratorVariables.VarVal[_]]"></a><a id="vars:Vector[VarVal[_]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TermGenCost.html#vars:Vector[provingground.learning.GeneratorVariables.VarVal[_]]" title="Permalink">
@@ -1149,7 +1173,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">vars</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="GeneratorVariables$$VarVal.html" class="extype" name="provingground.learning.GeneratorVariables.VarVal">VarVal</a>[_]]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
@@ -1256,6 +1280,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="provingground.learning.TermGenEqCost">
+              <h3>Inherited from <a href="TermGenEqCost.html" class="extype" name="provingground.learning.TermGenEqCost">TermGenEqCost</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
