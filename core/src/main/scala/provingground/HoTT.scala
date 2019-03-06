@@ -3411,12 +3411,12 @@ object HoTT {
 
   def typFamilyTarget : Term => Option[Typ[Term]] = {
     case tp: Typ[_]        => Some(tp ->: Type)
-    case f: Func[u, v]     => typFamilyTarget(f.codom).map((tp) => f.dom ->: tp)
     case f: FuncLike[u, v] => 
       val x = f.dom.Var
-      typFamilyTarget(f.depcodom(x)).map(tp => x ~>: tp)
+      typFamilyTarget(f(x.asInstanceOf[u])).map(tp => x ~>: tp)
     case _                 => None
   }
+
 
   /**
     * returns whether term is a universe

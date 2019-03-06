@@ -551,7 +551,7 @@ class TermGeneratorNodes[InitState](
       dom: Term
   ): GeneratorNode[Term] =
     FlatMapOpt[Term, Term](
-      termsWithTyp(typFamilyTarget(ind.typFamily).get),
+      termsWithTyp(typFamilyTarget(dom).get),
       (codom: Term) => {
         val fnOpt = ind.ind.inducOpt(dom, codom)
         fnOpt.map { fn =>
@@ -604,6 +604,32 @@ class TermGeneratorNodes[InitState](
     domainForStruct(ind.ind, ind.typFamily, ind)
 
   /**
+   * Node family for generating domains targeting a specifed type
+   *  for a given inductive structure, with an inductive definition also given.
+   * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+   */ 
+  def goalDomain(
+      ind: ExstInducStrucs,
+      fmly: Term,
+      target: Typ[Term]
+  ): Option[Term] =
+    (ind, fmly) match {
+      case (_: ExstInducStrucs.OrElse, _) => None
+      case (
+          ExstInducStrucs.LambdaInduc(variable, structure),
+          fn: FuncLike[u, v]
+          ) if variable.typ == fn.dom =>
+        val x = fn.dom.Var
+        goalDomain(structure.subs(variable, x), fn(x.asInstanceOf[u]), target)
+      case (ExstInducStrucs.LambdaInduc(_, _), _) => None
+      case (_, dom) =>
+        for {
+          tp <- typFamilyTarget(dom)
+          if target == tp
+        } yield dom
+    }
+
+    /**
    * Node family for generating domains for a given inductive structure, with an inductive definition also given.
    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
    */ 
@@ -646,6 +672,17 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
+
+  /**
+   * Node for recursive definitions targeting a specific type 
+   * picking an inductive definition, generating a domain and
+   * invoking the node getting codomain and recursion data
+   */
+  def targetInducFuncsFolded(ind: ExstInducDefn, target: Typ[Term]) =
+    goalDomain(ind.ind, ind.typFamily, target).map { dom =>
+      inducFuncsFoldedGivenDom(ind, dom)
+    }
+
   /**
    * Node for recursive definitions picking an inductive definition, generating a domain and
    * invoking the node getting codomain and recursion data
@@ -656,6 +693,18 @@ class TermGeneratorNodes[InitState](
       defn => inducFuncsFolded(defn),
       Terms
     )
+
+  def targetInducNode(typ: Typ[Term]) =
+    FlatMapOpt[ExstInducDefn, Term](
+      InducDefns,
+      defn => targetInducFuncsFolded(defn, typ),
+      termsWithTyp(typ)
+    )
+
+  val targetInducNodeFamily =
+    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => targetInducNode(typ)
+    }, TermsWithTyp)
 
   /**
     * induction function for a specific structure, picking the type family
