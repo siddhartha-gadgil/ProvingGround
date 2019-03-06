@@ -686,6 +686,6 @@ object IndexedConstructorSeqDom {
     val intros = pattern.symbcons(name, W) :: tail.intros
 
     def subs(x: Term, y: Term) =
-      Cons(name, pattern.subs(x, y), tail.subs(x, y))
+      Cons(name.subs(x, y), pattern.subs(x, y), tail.subs(x, y))
   }
 }
