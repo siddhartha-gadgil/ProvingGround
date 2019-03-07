@@ -608,25 +608,25 @@ class TermGeneratorNodes[InitState](
    *  for a given inductive structure, with an inductive definition also given.
    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
    */ 
-  def goalDomain(
+  def goalDomainFmly(
       ind: ExstInducStrucs,
       fmly: Term,
       target: Typ[Term]
-  ): Option[Term] =
-    (ind, fmly) match {
-      case (_: ExstInducStrucs.OrElse, _) => None
+  ): Option[(Term, Term)] =
+    (ind, fmly, target) match {
+      case (_: ExstInducStrucs.OrElse, _, _) => None
       case (
           ExstInducStrucs.LambdaInduc(variable, structure),
-          fn: FuncLike[u, v]
-          ) if variable.typ == fn.dom =>
+          fn: FuncLike[u, v],
+          gf: GenFuncTyp[uu, vv]
+          ) if variable.typ == fn.dom && variable.typ == gf.domain =>
         val x = fn.dom.Var
-        goalDomain(structure.subs(variable, x), fn(x.asInstanceOf[u]), target)
-      case (ExstInducStrucs.LambdaInduc(_, _), _) => None
-      case (_, dom) =>
+        goalDomainFmly(structure.subs(variable, x), fn(x.asInstanceOf[u]), gf.fib(x.asInstanceOf[uu]))
+      case (ExstInducStrucs.LambdaInduc(_, _), _, _) => None
+      case (_, dom, targ) =>
         for {
-          tp <- typFamilyTarget(dom)
-          if target == tp
-        } yield dom
+          tp <- getTypFamily(dom, targ)
+        } yield dom -> tp
     }
 
     /**
@@ -679,8 +679,12 @@ class TermGeneratorNodes[InitState](
    * invoking the node getting codomain and recursion data
    */
   def targetInducFuncsFolded(ind: ExstInducDefn, target: Typ[Term]) =
-    goalDomain(ind.ind, ind.typFamily, target).map { dom =>
-      inducFuncsFoldedGivenDom(ind, dom)
+    goalDomainFmly(ind.ind, ind.typFamily, target).flatMap { 
+      case (dom, targ) =>
+        val fnOpt = ind.ind.inducOpt(dom, targ)
+        fnOpt.map { fn =>
+          foldFunc(fn, ind.intros.size, Terms)
+      }
     }
 
   /**

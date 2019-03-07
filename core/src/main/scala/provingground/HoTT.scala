@@ -3417,6 +3417,15 @@ object HoTT {
     case _                 => None
   }
 
+  def getTypFamily(dom: Term, target: Typ[Term]) : Option[Term] = (dom, target) match {
+    case (typ: Typ[u], gf: GenFuncTyp[v, w]) if gf.domain == typ => 
+      val x = typ.Var 
+      Some(x :-> gf.fib(x.asInstanceOf[v]))
+    case (fn: FuncLike[x, y], gf: GenFuncTyp[v, w]) if gf.domain == fn.dom =>
+      val x = fn.dom.Var 
+      getTypFamily(fn(x.asInstanceOf[x]), gf.fib(x.asInstanceOf[v])).map{y => x :~> y}
+    case _ => None 
+  }
 
   /**
     * returns whether term is a universe
