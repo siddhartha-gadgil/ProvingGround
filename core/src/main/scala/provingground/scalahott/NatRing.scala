@@ -274,7 +274,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
   }
 
   lazy val exstInducDefn =
-    ExstInducDefn(Type, Vector(zero, succ), this, Vector())
+    ExstInducDefn(Type, Vector(zero, succ), this)
 
   lazy val context = Context.Empty
     .defineInduc(this)

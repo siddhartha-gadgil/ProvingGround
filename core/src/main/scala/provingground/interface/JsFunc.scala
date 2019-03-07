@@ -390,9 +390,6 @@ object InducJson {
           (elem.intros.map((t) => termToJsonGet(t))): _*
         ),
         "structure" -> toJson(elem.ind),
-        "parameters" -> ujson.Arr(
-          (elem.parameters.map((t) => termToJsonGet(t))): _*
-        ),
         "weight" -> ujson.Num(p)
       )
     ujson.Arr(pmf: _*)
@@ -440,7 +437,7 @@ object InducJson {
           .toVector
           .map((t) => jsToTermExst(exst)(t).get)
         Weighted(
-          ExstInducDefn(typFamily, intros, ind, parameters),
+          ExstInducDefn(typFamily, intros, ind),
           wp.obj("weight").num
         )
       }

@@ -838,8 +838,7 @@ class TermGeneratorNodes[InitState](
         ExstInducDefn(
           inductiveTyp,
           intros,
-          ExstInducStrucs.get(inductiveTyp, intros),
-          Vector()
+          ExstInducStrucs.get(inductiveTyp, intros)
         )
       },
       RandomVector(IntroRuleTypes(inductiveTyp)),
