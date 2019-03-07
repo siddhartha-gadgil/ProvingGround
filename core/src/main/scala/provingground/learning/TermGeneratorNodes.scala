@@ -312,7 +312,7 @@ class TermGeneratorNodes[InitState](
       : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
       case typ :: HNil => codomainNode(typ)
-    }, TermsWithTyp)
+    }, FuncForCod)
 
   /**
     * Node for generating terms of a type (if possible) by multiple applications of functions tageting the type.
@@ -331,7 +331,7 @@ class TermGeneratorNodes[InitState](
       : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
       case typ :: HNil => foldedTargetFunctionNode(typ)
-    }, TermsWithTyp)
+    }, FuncForCod)
 
   /**
     * lambda island for generating function with specified domain
@@ -1597,6 +1597,10 @@ case class TermGenParams(
     .Map(identity[Typ[Term]], Typs, IsleDomains) -> 1.0) :: IsleDomains
     .target[TermState, Term, Double, Typ[Term]]
 
+  val funcForCodNodes = 
+    (codomainNodeFamily -> 1.0) ::
+    FuncForCod.target[TermState, Term, Double, Term]
+
   val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
     (Init(Funcs)                            -> termInit) ::
       ((applnNode | (funcSort, Funcs))      -> appW) ::
@@ -1644,7 +1648,7 @@ case class TermGenParams(
       FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
-    funcWithDomNodes +: targTypNodes +: goalNodes +: isleDomainsNode +: inducDomainNodes +: inducNodes +:
+    funcWithDomNodes +: targTypNodes +: goalNodes +: isleDomainsNode +: inducDomainNodes +: inducNodes +: funcForCodNodes +:
       termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
       NodeCoeffSeq.Empty[TermState, Term, Double]()
 

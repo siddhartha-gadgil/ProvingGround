@@ -143,7 +143,7 @@ object Unify {
     unify(func.typ, codomain, (t) => freeVars.contains(t)).map{
       unifMap => 
         val value = multisub(func, unifMap)
-        val extraVars = freeVars.filter(x => !unifMap.keySet.contains(x))
+        val extraVars = freeVars.filter(x => !unifMap.keySet.contains(x)).map{t => multisub(t, unifMap)}
         polyLambda(extraVars.reverse.toList, value)
     }.orElse{
       func match {
