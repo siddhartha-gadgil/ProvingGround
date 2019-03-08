@@ -10,6 +10,7 @@ jdk:
 script:
   - curl -L -o ~/bin/mill https://github.com/lihaoyi/mill/releases/download/0.3.4/0.3.4 && chmod +x ~/bin/mill
   # - mill bloop.integrations.mill.Bloop/install
+  - mill -i all __.compile
   - mill -i all __.test
 
 
