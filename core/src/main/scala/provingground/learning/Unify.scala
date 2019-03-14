@@ -44,8 +44,10 @@ object Unify {
       case head +: tail =>
         unify(head._1, head._2, freeVars) flatMap
           ((subMap) => {
-            val newVars =
-              (x: Term) => freeVars(x) && !(subMap.keySet contains x)
+            val dualFreeVars = 
+              (x: Term) => freeVars(multisub(x, subMap.map{case (a, b) => (b, a)}))
+            val newVars = // FIXME dual change for freeVars               
+              (x: Term) => dualFreeVars(x) && !(subMap.keySet contains x)
             val newTail =
               tail map {
                 case (a, b) =>
@@ -149,11 +151,20 @@ object Unify {
       func match {
         case fn: FuncLike[u, v] =>
           val l = funcToLambda(fn)
-          targetCodomain(l.value, codomain, l.variable +: freeVars).orElse{
+          targetCodomain(l.value, codomain, freeVars :+ l.variable).orElse{
             codomain match {
-              case pd: PiDefn[a, b] if pd.domain == fn.dom =>
+              case pd: PiDefn[a, b] if pd.domain == fn.dom => 
                 val target = pd.value.replace(pd.variable, l.variable)
                 targetCodomain(l.value, target, freeVars).map{t => lambda(l.variable)(t)} 
+              case pd: PiDefn[a, b] =>
+                unify(fn.dom, pd.domain, (t) => freeVars.contains(t)).flatMap{unifMap => 
+                  val variable = multisub(pd.variable, unifMap)
+                  val value = multisub(pd.value, unifMap)
+                  val extraVars = freeVars.filter(x => !unifMap.keySet.contains(x)).map{t => multisub(t, unifMap)}
+                  val target = value.replace(variable, l.variable)
+                  targetCodomain(value, target, extraVars).map{t => lambda(variable)(t)} 
+                }
+
               case _ =>
                 None
             }
