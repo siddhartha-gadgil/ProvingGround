@@ -13,6 +13,16 @@ object Unify {
       case (a, b) +: tail => multisub(x.replace(a, b), tail.toMap)
     }
 
+  def extraVars(v: Vector[Term], m: Map[Term, Term]): Vector[Term] = 
+    v match {
+      case Vector() => Vector()
+      case head +: tail =>
+        m.get(head).map{value => 
+          val newTail = tail.map(z => z.replace(head, value))
+          extraVars(newTail, m)
+        }.getOrElse(head +: extraVars(tail, m))        
+    }
+
   def dependsOn(term: Term): Vector[Term] => Boolean = {
     case Vector() => false
     case x +: ys  => term.dependsOn(x) || dependsOn(term)(ys)
@@ -145,8 +155,9 @@ object Unify {
     unify(func.typ, codomain, (t) => freeVars.contains(t)).map{
       unifMap => 
         val value = multisub(func, unifMap)
-        val extraVars = freeVars.filter(x => !unifMap.keySet.contains(x)).map{t => multisub(t, unifMap)}
-        polyLambda(extraVars.reverse.toList, value)
+        pprint.log(unifMap.keySet -- freeVars.toSet)
+        val exVars = extraVars(freeVars, unifMap)
+        polyLambda(exVars.reverse.toList, value)
     }.orElse{
       func match {
         case fn: FuncLike[u, v] =>
@@ -160,9 +171,10 @@ object Unify {
                 unify(fn.dom, pd.domain, (t) => freeVars.contains(t)).flatMap{unifMap => 
                   val variable = multisub(pd.variable, unifMap)
                   val value = multisub(pd.value, unifMap)
-                  val extraVars = freeVars.filter(x => !unifMap.keySet.contains(x)).map{t => multisub(t, unifMap)}
+                  pprint.log(unifMap.keySet -- freeVars.toSet)
+                  val exVars = extraVars(freeVars, unifMap)
                   val target = value.replace(variable, l.variable)
-                  targetCodomain(value, target, extraVars).map{t => lambda(variable)(t)} 
+                  targetCodomain(value, target, exVars).map{t => lambda(variable)(t)} 
                 }
 
               case _ =>
