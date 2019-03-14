@@ -46,7 +46,7 @@ object Unify {
           ((subMap) => {
             val dualFreeVars = 
               (x: Term) => freeVars(multisub(x, subMap.map{case (a, b) => (b, a)}))
-            val newVars = // FIXME dual change for freeVars               
+            val newVars =                
               (x: Term) => dualFreeVars(x) && !(subMap.keySet contains x)
             val newTail =
               tail map {
