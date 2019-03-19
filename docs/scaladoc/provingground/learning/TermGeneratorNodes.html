@@ -260,6 +260,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form">GeometricDistribution</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="GramSchmidt$.html" title=""></a>
+                        <a href="GramSchmidt$.html" title="">GramSchmidt</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="object" href="HoTTgen$.html" title=""></a>
                         <a href="HoTTgen$.html" title="">HoTTgen</a>
                       </li><li class="current-entities indented2">
@@ -1162,6 +1166,26 @@ to optionally get terms with the target type.</p>
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#goalDomainFmly" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="goalDomainFmly(ind:provingground.induction.ExstInducStrucs,fmly:provingground.HoTT.Term,target:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[(provingground.HoTT.Term,provingground.HoTT.Term)]"></a><a id="goalDomainFmly(ExstInducStrucs,Term,Typ[Term]):Option[(Term,Term)]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#goalDomainFmly(ind:provingground.induction.ExstInducStrucs,fmly:provingground.HoTT.Term,target:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[(provingground.HoTT.Term,provingground.HoTT.Term)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">goalDomainFmly</span><span class="params">(<span name="ind">ind: <a href="../induction/ExstInducStrucs.html" class="extype" name="provingground.induction.ExstInducStrucs">ExstInducStrucs</a></span>, <span name="fmly">fmly: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="target">target: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>)]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Node family for generating domains targeting a specifed type
+ for a given inductive structure, with an inductive definition also given.</p><div class="fullcomment"><div class="comment cmt"><p>Node family for generating domains targeting a specifed type
+ for a given inductive structure, with an inductive definition also given.
+Examples of domains are <code>Nat</code>, <code>Vec(A)</code> and <code>Fin</code>.
+</p></div></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
@@ -1941,6 +1965,57 @@ we must separately specify how to build an introduction rules, as well as a vect
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes#targetInducFuncsFolded" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="targetInducFuncsFolded(ind:provingground.induction.ExstInducDefn,target:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[provingground.learning.GeneratorNode[provingground.HoTT.Term]]"></a><a id="targetInducFuncsFolded(ExstInducDefn,Typ[Term]):Option[GeneratorNode[Term]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#targetInducFuncsFolded(ind:provingground.induction.ExstInducDefn,target:provingground.HoTT.Typ[provingground.HoTT.Term]):Option[provingground.learning.GeneratorNode[provingground.HoTT.Term]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">targetInducFuncsFolded</span><span class="params">(<span name="ind">ind: <a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a></span>, <span name="target">target: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="GeneratorNode.html" class="extype" name="provingground.learning.GeneratorNode">GeneratorNode</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Node for recursive definitions targeting a specific type
+picking an inductive definition, generating a domain and
+invoking the node getting codomain and recursion data
+</p>
+    </li><li name="provingground.learning.TermGeneratorNodes#targetInducNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="targetInducNode(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMapOpt[provingground.induction.ExstInducDefn,provingground.HoTT.Term]"></a><a id="targetInducNode(Typ[Term]):FlatMapOpt[ExstInducDefn,Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#targetInducNode(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorNode.FlatMapOpt[provingground.induction.ExstInducDefn,provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">targetInducNode</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorNode$$FlatMapOpt.html" class="extype" name="provingground.learning.GeneratorNode.FlatMapOpt">FlatMapOpt</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TermGeneratorNodes#targetInducNodeFamily" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="targetInducNodeFamily:provingground.learning.GeneratorNodeFamily.BasePi[provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.Term]"></a><a id="targetInducNodeFamily:BasePi[::[Typ[Term],HNil],Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes.html#targetInducNodeFamily:provingground.learning.GeneratorNodeFamily.BasePi[provingground.HoTT.Typ[provingground.HoTT.Term]::shapeless.HNil,provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">targetInducNodeFamily</span><span class="result">: <a href="GeneratorNodeFamily$$BasePi.html" class="extype" name="provingground.learning.GeneratorNodeFamily.BasePi">BasePi</a>[<span class="extype" name="shapeless.::">::</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="shapeless.HNil">HNil</span>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.TermGeneratorNodes#termsByTyps" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="termsByTyps:provingground.learning.GeneratorNode.ZipFlatMap[provingground.HoTT.Typ[provingground.HoTT.Term],provingground.HoTT.Term,provingground.HoTT.Term]"></a><a id="termsByTyps:ZipFlatMap[Typ[Term],Term,Term]"></a>
       <span class="permalink">

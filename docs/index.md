@@ -42,13 +42,13 @@ These will be frequently updated with new features.
 
 At present the best way to interact with most of the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)). To pop up a console with most of the code in scope, install [mill](https://www.lihaoyi.com/mill/) and run:
 ```
-mill mantle.repl
+mill -i mantle.repl
 ```
 
 for the HoTT implementation etc, or
 
 ```
-mill nlp.repl
+mill -i nlp.repl
 ```
 for the natural language processing part.
 

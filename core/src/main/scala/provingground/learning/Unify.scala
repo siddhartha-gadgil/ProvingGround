@@ -155,7 +155,7 @@ object Unify {
     unify(func.typ, codomain, (t) => freeVars.contains(t)).map{
       unifMap => 
         val value = multisub(func, unifMap)
-        pprint.log(unifMap.keySet -- freeVars.toSet)
+        // pprint.log(unifMap.keySet -- freeVars.toSet)
         val exVars = extraVars(freeVars, unifMap)
         polyLambda(exVars.reverse.toList, value)
     }.orElse{
