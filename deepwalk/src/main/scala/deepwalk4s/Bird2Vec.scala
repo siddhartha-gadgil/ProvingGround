@@ -12,6 +12,8 @@ import org.deeplearning4j.text.sentenceiterator.BasicLineIterator
 import java.io.File
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor._
 
+
+@deprecated("data moved out, did not work well", "March 2019")
 object Bird2Vec {
   val data = pwd / "data"
 
