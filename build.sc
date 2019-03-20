@@ -154,6 +154,7 @@ object core extends Module{
     override def millSourcePath = super.millSourcePath / up
     def name = "ProvingGround-Core"
 
+    def artifactName = "provingground-core-jvm"
 
 
 
@@ -203,6 +204,8 @@ val mantleLibs = List(
 object mantle extends CommonModule with SbtModule with PGPublish{
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
 
+  def artifactName = "provingground-mantle"
+
   override def ivyDeps =
     T{
       super.ivyDeps() ++ Agg(mantleLibs: _*)
@@ -230,6 +233,7 @@ object mantle extends CommonModule with SbtModule with PGPublish{
 object crust extends SbtModule with JvmModule with PGPublish {
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm, server, mantle)
 
+  def artifactName = "provingground-crust"
 }
 
 
@@ -257,7 +261,11 @@ object nlp extends SbtModule with ServerModule with PGPublish {
       ivy"com.google.protobuf:protobuf-java:2.6.1",
       ivy"edu.mit:jwi:2.2.3"
     )
+  
+    
   }
+
+  def artifactName = "provingground-nlp"
 
   override def mainClass = Some("provingground.interface.ParserCask")
 }
@@ -343,6 +351,8 @@ object server extends SbtModule with ServerModule with PGPublish {
   override def mainClass = Some("provingground.interface.ScriptServer")
 
   def name = "ProvingGround-Server"
+
+  def artifactName = "provingground-server"
 }
 
 object experiments extends CommonModule{
@@ -356,7 +366,7 @@ object deepwalk extends JvmModule{
   override def ivyDeps =
     super.ivyDeps() ++ Agg(
       ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta",
-      ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta",
+      ivy"org.deeplearning4j:deeplearning4j-provingground-nlp:1.0.0-beta",
       ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta",
       ivy"org.nd4j:nd4j-native-platform:1.0.0-beta"
     )
