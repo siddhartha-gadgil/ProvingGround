@@ -6,7 +6,7 @@ res0: Int = 2
 
 Let's do it with Jupyter
 ```scala
-import $ivy.`in.ac.iisc::provingground-core:0.1-SNAPSHOT`
+import $ivy.`in.ac.iisc::provingground-core:0.1.0`
 import provingground.HoTT._
 val A = "A" :: Type
 ```

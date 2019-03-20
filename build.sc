@@ -65,9 +65,9 @@ val commonLibs = List(
 trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def scalaVersion= scalaV
   override def ivyDeps = Agg(commonLibs: _*)
-  def version = "0.1-SNAPSHOT"
+  def version = "0.1.0"
 
-  def organization = "in.ac.iisc.math"
+  def organization = "io.github.siddhartha-gadgil"
   def name = "ProvingGround"
 
 
@@ -134,11 +134,11 @@ trait JvmModule extends CommonModule {
 }
 
 trait PGPublish extends PublishModule{
-  def publishVersion = "0.1-SNAPSHOT"
+  def publishVersion = "0.1.0"
 
     def pomSettings = PomSettings(
       description = "Automated theorem proving through learning in HoTT",
-      organization = "in.ac.iisc.math",
+      organization = "io.github.siddhartha-gadgil",
       url = "https://github.com/siddhartha-gadgil/ProvingGround",
       licenses = Seq(License.MIT),
       versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),

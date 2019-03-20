@@ -21,8 +21,8 @@ scalacOptions += "-Yrangepos"
 lazy val jsProjects = Seq(client)
 
 lazy val baseSettings = Seq(
-  version := "0.1-SNAPSHOT",
-  organization := "in.ac.iisc.math" //, scalaVersion := scalaV
+  version := "0.1.0",
+  organization := "io.github.siddhartha-gadgil" //, scalaVersion := scalaV
 )
 
 lazy val commonSettings = baseSettings ++ Seq(
