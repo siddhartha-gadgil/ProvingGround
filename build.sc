@@ -142,7 +142,7 @@ trait PGPublish extends PublishModule{
       url = "https://github.com/siddhartha-gadgil/ProvingGround",
       licenses = Seq(License.MIT),
       versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),
-      developers = Seq()
+      developers = Seq(Developer("siddhartha-gadgil", "Siddhartha Gadgil","https://github.com/siddhartha-gadgil"))
     )
 }
 

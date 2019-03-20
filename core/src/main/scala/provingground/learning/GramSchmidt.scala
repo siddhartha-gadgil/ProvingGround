@@ -19,8 +19,8 @@ object GramSchmidt{
             case init :+ last =>
                 val onInit = orthonormal(init)
                 val perpLast = makePerpFromON(onInit, last)
-                val onLast = perpLast.normalize
-                onInit :+ onLast       
+                val onLast =  perpLast.normalize
+                if (perpLast.norm > 0) onInit :+ perpLast.normalize else onInit      
             }
 
     def onVec(vv: Vector[Vector[Double]]) = orthonormal(vv)

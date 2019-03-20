@@ -238,6 +238,24 @@ case class ExpressionEval(
 
   val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
 
+  val eqnExpressions: Vector[Expression] =
+      equations.toVector.map{eq => eq.lhs - eq.rhs}
+
+  def eqnGradients(p: Map[Expression, Double]) : Vector[Vector[Double]] = 
+      eqnExpressions.map{
+        exp => jet(p)(exp).infinitesimal.toVector
+      }
+
+  def entropy(hW: Double = 1, klW: Double = 1): Expression =
+      (hExp * hW) + (klExp * klW)
+
+  def entropyProjection(hW: Double = 1, klW: Double = 1)(
+    p: Map[Expression, Double]) : Vector[Double] = {
+      val gradient = jet(p)(entropy(hW, klW)).infinitesimal.toVector
+      GramSchmidt.perpVec(eqnGradients(p), gradient)
+    }
+
+  // The below code using matching error. We should use orthogonal projections instead.
   lazy val matchKL: Expression = equations.map(_.klError).reduce(_ + _)
 
   def cost(hW: Double = 1, klW: Double = 1, matchW: Double = 1): Expression =
