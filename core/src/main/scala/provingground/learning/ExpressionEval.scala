@@ -147,7 +147,7 @@ case class ExpressionEval(
   val finalDist: Map[Expression, Double] = stableMap(init, equations, maxRatio)
 
   val keys      = finalDist.keys.toVector
-  val finalVars = keys.filter(_.isInstanceOf[FinalVal[_]])
+  // val finalVars = keys.filter(_.isInstanceOf[FinalVal[_]])
   val initTerms = keys.collect {
     case InitialVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
   }
@@ -156,11 +156,16 @@ case class ExpressionEval(
     case FinalVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
   }.toSet
 
+  // val isleVars: Vector[Expression] = keys.collect {
+  //   case InitialVal(el @ Elem(t: Term, Terms)) if isIsleVar(el) => InitialVal(el)
+  //   case FinalVal(el @ Elem(t: Term, Terms)) if isIsleVar(el) => FinalVal(el)
+  // }.toVector
+
   val finalTyps = sd.value(finalState)(Typs)
 
-  val initVars = initTerms.map { t =>
-    InitialVal(Elem(t, Terms))
-  }
+  // val initVars = initTerms.map { t =>
+  //   InitialVal(Elem(t, Terms))
+  // }
   val funcTotal: Expression = initTerms
     .filter(isFunc)
     .map { t =>
@@ -174,7 +179,9 @@ case class ExpressionEval(
     }
     .fold[Expression](Literal(0))(_ + _)
 
-  val vars = initVars ++ finalVars
+  val vars = 
+    equations.flatMap(eq => Set(eq.lhs, eq.rhs)).flatMap(exp => Expression.varVals(exp).map(t => t: Expression)).toVector
+  //  initVars ++ finalVars
 
   lazy val variableIndex: Map[Expression, Int] =
     vars.zipWithIndex.toMap
