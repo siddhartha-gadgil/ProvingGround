@@ -63,6 +63,7 @@ object ExpressionEval {
       exp match {
         case Sum(a, b)     => recExp(init, a) + recExp(init, b)
         case Log(a)        => math.log(recExp(init, a))
+        case Exp(a)        => math.exp(recExp(init, a))
         case Product(x, y) => recExp(init, x) * recExp(init, y)
         case Literal(x)    => x
         case Quotient(x, y) =>
@@ -192,10 +193,12 @@ case class ExpressionEval(
 
   def spireVarProbs(p: Map[Expression, Double]): Map[Expression, Jet[Double]] =
     vars.zipWithIndex.map {
-      case (v, n) =>
+      case (v, n) if p.getOrElse(v, 0.0) > 0 =>
         val t: Jet[Double] = Jet.h[Double](n)
-        val r: Double      = p.getOrElse(v, 0.0)
-        v -> (t + r)
+        val r: Double      = p(v)
+        val x = log(r / (1.0 - r)) + t // value after inverse sigmoid
+        val y = exp(t)/ (1 + exp(t)) // tangent before sigmoid
+        v -> y
     }.toMap
 
   def jet(p: Map[Expression, Double])(expr: Expression): Jet[Double] =
@@ -203,6 +206,7 @@ case class ExpressionEval(
       expr,
       expr match {
         case Log(exp)       => log(jet(p)(exp))
+        case Exp(x)         => exp(jet(p)(x))
         case Sum(x, y)      => jet(p)(x) + jet(p)(y)
         case Product(x, y)  => jet(p)(x) * jet(p)(y)
         case Literal(value) => value
@@ -252,6 +256,17 @@ case class ExpressionEval(
       eqnExpressions.map{
         exp => jet(p)(exp).infinitesimal.toVector
       }
+
+  def gradShift(p: Map[Expression, Double], t: Vector[Double], epsilon: Double = 1) : Map[Expression, Double] = {
+    p.map{
+      case (expr, y) =>
+        variableIndex.get(expr).map{
+          n => 
+            val x = log(y / (1 - y)) + (t(n) * epsilon)
+            expr -> (exp(x)/ 1 + exp(x))
+        }.getOrElse(expr -> y)
+    }
+  }
 
   def entropy(hW: Double = 1, klW: Double = 1): Expression =
       (hExp * hW) + (klExp * klW)

@@ -195,6 +195,7 @@ object GeneratorVariables {
     def varVals(expr: Expression): Set[VarVal[_]] = expr match {
       case value: VarVal[_] => Set(value)
       case Log(exp)         => varVals(exp)
+      case Exp(x)           => varVals(x)
       case Sum(x, y)        => varVals(x) union (varVals(y))
       case Product(x, y)    => varVals(x) union (varVals(y))
       case Literal(_)       => Set()
@@ -206,6 +207,7 @@ object GeneratorVariables {
     def atoms(expr: Expression): Set[Expression] = expr match {
       case value: VarVal[_]     => Set(value)
       case Log(exp)             => atoms(exp)
+      case Exp(x)               => atoms(x)
       case Sum(x, y)            => atoms(x) union (atoms(y))
       case Product(x, y)        => atoms(x) union (atoms(y))
       case Literal(_)           => Set()
@@ -277,6 +279,16 @@ object GeneratorVariables {
     override def toString = s"log($exp)"
   }
 
+  case class Exp(exp: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Expression = Exp(exp.mapVars(f))
+
+    override def toString = s"exp($exp)" 
+  }
+
+  def sigmoid(x: Expression) = Exp(x) / (Exp(x) + Literal(1))
+
+  def inverseSigmoid(y: Expression) = Log(y / (Literal(1) - y))
+
   case class Sum(x: Expression, y: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Sum =
       Sum(x.mapVars(f), y.mapVars(f))
@@ -303,6 +315,7 @@ object GeneratorVariables {
 
     override def toString = s"($x) / ($y)"
   }
+
 
   case class Coeff[Y](node: GeneratorNode[Y], rv: RandomVar[Y])
       extends Expression {

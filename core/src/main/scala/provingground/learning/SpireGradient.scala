@@ -59,6 +59,7 @@ case class SpireGradient(
       expr,
       expr match {
         case Log(exp)       => log(jet(p)(exp))
+        case Exp(x)         => exp(jet(p)(x))
         case Sum(x, y)      => jet(p)(x) + jet(p)(y)
         case Product(x, y)  => jet(p)(x) * jet(p)(y)
         case Literal(value) => value
