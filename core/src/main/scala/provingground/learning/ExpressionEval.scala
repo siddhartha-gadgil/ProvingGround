@@ -195,9 +195,13 @@ case class ExpressionEval(
     vars.zipWithIndex.map {
       case (v, n) if p.getOrElse(v, 0.0) > 0 =>
         val t: Jet[Double] = Jet.h[Double](n)
-        val r: Double      = p(v)
-        val x = log(r / (1.0 - r)) + t // value after inverse sigmoid
-        val y = exp(t)/ (1 + exp(t)) // tangent before sigmoid
+        // pprint.log(t)
+        val r: Jet[Double]      = p(v)
+        // pprint.log(r)
+        val d : Jet[Double] = r + (-1)
+        val lx = log(r / d)  // value after inverse sigmoid
+        val x = lx + t
+        val y = exp(t)/ (exp(t) + 1.0) // tangent before sigmoid
         v -> y
     }.toMap
 
@@ -262,7 +266,7 @@ case class ExpressionEval(
       case (expr, y) =>
         variableIndex.get(expr).map{
           n => 
-            val x = log(y / (1 - y)) + (t(n) * epsilon)
+            val x = log(y / (1 - y)) - (t(n) * epsilon)
             expr -> (exp(x)/ 1 + exp(x))
         }.getOrElse(expr -> y)
     }
