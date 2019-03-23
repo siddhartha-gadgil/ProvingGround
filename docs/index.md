@@ -7,9 +7,9 @@ This is a system under development for automated theorem proving. More concretel
 
 The one success of this project so far has been its role in the [Polymath 14 project](http://math.iisc.ac.in/~gadgil/presentations/HomogeneousLengths.html).
 
-## Try it with no installation
+## Try it with zero installation
 
-You can try the project with no installation on _scastie_, for example the [HoTT worksheet](https://scastie.scala-lang.org/siddhartha-gadgil/0DqN82WeQk2W0nqSYQpolA). 
+You can try the project with zero installation on _scastie_, for example the [HoTT worksheet](https://scastie.scala-lang.org/siddhartha-gadgil/0DqN82WeQk2W0nqSYQpolA). 
 If you want to try your own worksheet add the library `provvingground-core-jvm` (which can be found with scastie's search). More worksheets and info will be posted soon.
 
 ## Foundations
