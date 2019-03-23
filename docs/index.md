@@ -7,6 +7,11 @@ This is a system under development for automated theorem proving. More concretel
 
 The one success of this project so far has been its role in the [Polymath 14 project](http://math.iisc.ac.in/~gadgil/presentations/HomogeneousLengths.html).
 
+## Try it with no installation
+
+You can try the project with no installation on _scastie_, for example the [HoTT worksheet](https://scastie.scala-lang.org/siddhartha-gadgil/0DqN82WeQk2W0nqSYQpolA). 
+If you want to try your own worksheet add the library `provvingground-core-jvm` (which can be found with scastie's search). More worksheets and info will be posted soon.
+
 ## Foundations
 
 The foundations we use are **Homotopy Type Theory** combined with symbolic algebra. This is crucial to our approach as the result is proofs that are not much more complex than real world mathematics - as illustrated, for example, in the [PolyMath lemma](tuts/internal-repetition-for-length-functions.html). Note that much of that note is the fully expanded proofs as reported by the system - the code describing the proofs is not long.
