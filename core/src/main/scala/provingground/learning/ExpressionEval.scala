@@ -236,9 +236,7 @@ case class ExpressionEval(
     vars.zipWithIndex.map {
       case (v, n) if p.getOrElse(v, 0.0) > 0 =>
         val t: Jet[Double] = Jet.h[Double](n)
-        // pprint.log(t)
         val r: Jet[Double] = p(v)
-        // pprint.log(r)
         val d: Jet[Double] = r + (-1)
         val lx             = log(r / d) // value after inverse sigmoid
         val x              = lx + t
@@ -364,6 +362,21 @@ case class ExpressionEval(
       p: Map[Expression, Double] = finalDist
   ): Iterator[Map[Expression, Double]] =
     Iterator.iterate(p)(q => gradShift(q, entropyProjection(hW, klW)(q)))
+
+  def jetMap(jet: Jet[Double]) : Map[Expression, Double] = 
+    (for {
+      (x, j) <- vars.zipWithIndex 
+      y= jet.infinitesimal(j) 
+      if y > 0
+    } yield x -> y ).toMap
+
+
+  def resolveOpt(exp: Expression) : Option[Expression] = 
+    equations.find(_.lhs == exp).map(_.rhs)
+
+    // Should correct for sigmoid transformation
+  def backStep(exp: Expression, p: Map[Expression, Double] = finalDist) : Map[Expression, Double] =
+    jetMap(jet(p)(resolveOpt(exp).getOrElse(Literal(0))))
 
   // The below code using matching error. We should use orthogonal projections instead as above.
   lazy val matchKL: Expression = equations.map(_.klError).reduce(_ + _)
