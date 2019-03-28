@@ -16,6 +16,9 @@ import scala.util.Try
 object ExpressionEval {
   val sd = implicitly[StateDistribution[TermState, FD]]
 
+  /**
+    * checks whether an element is a variable in an island
+    */
   def isIsleVar(elem: Elem[_]): Boolean = elem match {
     case Elem(x: Symbolic, _) =>
       x.name match {
@@ -30,6 +33,9 @@ object ExpressionEval {
     case _ => false
   }
 
+  /**
+    * Initial value of an atomic expression
+    */
   def initVal(
       exp: Expression,
       tg: TermGenParams,
@@ -47,6 +53,9 @@ object ExpressionEval {
       case _               => None
     }
 
+  /**
+    * Given a collection of atoms, returns map with values for them.
+    */
   def initMap(
       atoms: Set[Expression],
       tg: TermGenParams,
@@ -57,6 +66,9 @@ object ExpressionEval {
       value <- initVal(exp, tg, initialState)
     } yield exp -> value).toMap
 
+  /**
+    * Recursively calculate or update the value on expression, given initial values.
+    */
   def recExp(init: Map[Expression, Double], exp: Expression): Double =
     init.getOrElse(
       exp,
@@ -73,6 +85,10 @@ object ExpressionEval {
       }
     )
 
+  /**
+    * Stabilized recursive expression, taking geometric mean with the previous value if defined.
+    * This is to avoid oscillations.
+    */
   def stabRecExp(
       init: Map[Expression, Double],
       exp: Expression,
@@ -82,6 +98,9 @@ object ExpressionEval {
     math.sqrt(prev.getOrElse(y) * y)
   }
 
+  /**
+    * Updating a map given equations by replacing terms that are the lhs of an equation with rhs evaluated.
+    */
   def nextMap(
       init: Map[Expression, Double],
       equations: Set[Equation]
@@ -91,6 +110,9 @@ object ExpressionEval {
       .filter(_._2 != 0)
   }.toMap
 
+  /**
+    * Iteratively update a map given equations until the support is stable (so we can safely calculate ratios).
+    */
   @tailrec
   def stableSupportMap(
       init: Map[Expression, Double],
@@ -115,6 +137,9 @@ object ExpressionEval {
     m1.map { case (k, v) => math.max(v / m2(k), (m2(k) / v)) }.max
   }
 
+  /**
+    * Iteratively update a map by equations till it is stable, i.e. almost satisfies the equations.
+    */
   @tailrec
   def stableMap(
       init: Map[Expression, Double],
@@ -138,41 +163,49 @@ case class ExpressionEval(
     finalState: TermState,
     equations: Set[Equation],
     tg: TermGenParams,
-    maxRatio: Double = 1.01
+    maxRatio: Double = 1.01,
+    epsilon: Double = 1.0
 ) {
+
+  /**
+    * the atomic expressions in the equations
+    */
   val atoms = equations
     .map(_.lhs)
     .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   val init: Map[Expression, Double] = initMap(atoms, tg, initialState)
 
+  /**
+    * The final distributions, obtained from the initial one by finding an almost solution.
+    */
   val finalDist: Map[Expression, Double] = stableMap(init, equations, maxRatio)
 
-  val keys      = finalDist.keys.toVector
-  // val finalVars = keys.filter(_.isInstanceOf[FinalVal[_]])
+  val keys = finalDist.keys.toVector
+
+  /**
+    * Terms in the initial distributions, used to calculate total weights of functions etc
+    */
   val initTerms = keys.collect {
     case InitialVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
   }
 
+  /**
+    * Terms in the final (i.e. evolved) distribution
+    */
   val finalTerms: Set[Term] = keys.collect {
     case FinalVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
   }.toSet
 
-  // val isleVars: Vector[Expression] = keys.collect {
-  //   case InitialVal(el @ Elem(t: Term, Terms)) if isIsleVar(el) => InitialVal(el)
-  //   case FinalVal(el @ Elem(t: Term, Terms)) if isIsleVar(el) => FinalVal(el)
-  // }.toVector
-
+  // TODO check if we need this or should be using the equations instead
   val finalTyps = sd.value(finalState)(Typs)
 
-  // val initVars = initTerms.map { t =>
-  //   InitialVal(Elem(t, Terms))
-  // }
   val funcTotal: Expression = initTerms
     .filter(isFunc)
     .map { t =>
       InitialVal(Elem(t, Terms))
     }
     .fold[Expression](Literal(0))(_ + _)
+
   val typFamilyTotal = initTerms
     .filter(isTypFamily)
     .map { t =>
@@ -180,9 +213,14 @@ case class ExpressionEval(
     }
     .fold[Expression](Literal(0))(_ + _)
 
-  val vars = 
-    equations.flatMap(eq => Set(eq.lhs, eq.rhs)).flatMap(exp => Expression.varVals(exp).map(t => t: Expression)).toVector
-  //  initVars ++ finalVars
+  /**
+    * Vector of all variables. This is frozen so that their indices can be used.
+    */
+  val vars =
+    equations
+      .flatMap(eq => Set(eq.lhs, eq.rhs))
+      .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
+      .toVector
 
   lazy val variableIndex: Map[Expression, Int] =
     vars.zipWithIndex.toMap
@@ -191,20 +229,26 @@ case class ExpressionEval(
 
   implicit val jetField: Field[Jet[Double]] = implicitly[Field[Jet[Double]]]
 
+  /**
+    * Jets for variables. These are transformed using the sigmoid so they are in (0, 1)
+    */
   def spireVarProbs(p: Map[Expression, Double]): Map[Expression, Jet[Double]] =
     vars.zipWithIndex.map {
       case (v, n) if p.getOrElse(v, 0.0) > 0 =>
         val t: Jet[Double] = Jet.h[Double](n)
         // pprint.log(t)
-        val r: Jet[Double]      = p(v)
+        val r: Jet[Double] = p(v)
         // pprint.log(r)
-        val d : Jet[Double] = r + (-1)
-        val lx = log(r / d)  // value after inverse sigmoid
-        val x = lx + t
-        val y = exp(t)/ (exp(t) + 1.0) // tangent before sigmoid
+        val d: Jet[Double] = r + (-1)
+        val lx             = log(r / d) // value after inverse sigmoid
+        val x              = lx + t
+        val y              = exp(t) / (exp(t) + 1.0) // tangent before sigmoid
         v -> y
     }.toMap
 
+  /**
+    * Recursive jet for an expression, with variables transformed by sigmoid.
+    */
   def jet(p: Map[Expression, Double])(expr: Expression): Jet[Double] =
     spireVarProbs(p).getOrElse(
       expr,
@@ -228,6 +272,9 @@ case class ExpressionEval(
       }
     )
 
+  /**
+    * Terms of the generating distribution
+    */
   val genTerms: Map[Term, Expression] =
     initTerms.map(t => t -> InitialVal(Elem(t, Terms))).toMap
 
@@ -249,39 +296,76 @@ case class ExpressionEval(
   val thmsByProof: Map[Typ[Term], Expression] =
     thmSet.map(typ => typ -> proofExpression(typ)).toMap
 
+  /**
+    * Expression for entropy of the generating distribution
+    */
   val hExp: Expression = Expression.h(genTerms)
 
+  /**
+    * Expression for Kullback-Liebler divergence of proofs from statements of theorems.
+    */
   val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
 
+  /**
+    * Expressions for equations.
+    */
   val eqnExpressions: Vector[Expression] =
-      equations.toVector.map{eq => eq.lhs - eq.rhs}
+    equations.toVector.map { eq =>
+      eq.lhs - eq.rhs
+    }
 
-  def eqnGradients(p: Map[Expression, Double]) : Vector[Vector[Double]] = 
-      eqnExpressions.map{
-        exp => jet(p)(exp).infinitesimal.toVector
-      }
+  /**
+    * Gradients of equations for expression
+    */
+  def eqnGradients(p: Map[Expression, Double]): Vector[Vector[Double]] =
+    eqnExpressions.map { exp =>
+      jet(p)(exp).infinitesimal.toVector
+    }
 
-  def gradShift(p: Map[Expression, Double], t: Vector[Double], epsilon: Double = 1) : Map[Expression, Double] = {
-    p.map{
+  /**
+    * Shift downwards by the gradient, mapped by sigmoids.
+    */
+  def gradShift(
+      p: Map[Expression, Double],
+      t: Vector[Double],
+      eps: Double = epsilon
+  ): Map[Expression, Double] = {
+    p.map {
       case (expr, y) =>
-        variableIndex.get(expr).map{
-          n => 
-            val x = log(y / (1 - y)) - (t(n) * epsilon)
-            expr -> (exp(x)/ 1 + exp(x))
-        }.getOrElse(expr -> y)
+        variableIndex
+          .get(expr)
+          .map { n =>
+            val x = log(y / (1 - y)) - (t(n) * eps)
+            expr -> (exp(x) / 1 + exp(x))
+          }
+          .getOrElse(expr -> y)
     }
   }
 
+  /**
+    * Expression for composite entropy.
+    */
   def entropy(hW: Double = 1, klW: Double = 1): Expression =
-      (hExp * hW) + (klExp * klW)
+    (hExp * hW) + (klExp * klW)
 
+  /**
+    * Composite entropy projected perpendicular to the equations.
+    */
   def entropyProjection(hW: Double = 1, klW: Double = 1)(
-    p: Map[Expression, Double]) : Vector[Double] = {
-      val gradient = jet(p)(entropy(hW, klW)).infinitesimal.toVector
-      GramSchmidt.perpVec(eqnGradients(p), gradient)
-    }
+      p: Map[Expression, Double]
+  ): Vector[Double] = {
+    val gradient = jet(p)(entropy(hW, klW)).infinitesimal.toVector
+    GramSchmidt.perpVec(eqnGradients(p), gradient)
+  }
 
-  // The below code using matching error. We should use orthogonal projections instead.
+  def iterator(
+      hW: Double = 1,
+      klW: Double = 1,
+      p: Map[Expression, Double] = finalDist
+  ): Iterator[Map[Expression, Double]] =
+    Iterator.iterate(p)(q => gradShift(q, entropyProjection(hW, klW)(q)))
+
+  // The below code using matching error. We should use orthogonal projections instead as above.
   lazy val matchKL: Expression = equations.map(_.klError).reduce(_ + _)
 
   def cost(hW: Double = 1, klW: Double = 1, matchW: Double = 1): Expression =
@@ -302,7 +386,7 @@ case class ExpressionEval(
     for { (x, w) <- p } yield x -> (w - epsilon * q.getOrElse(x, 0.0))
   }
 
-  def iterator(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
+  def iteratorMatched(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
       p: Map[Expression, Double],
       epsilon: Double = 0.1
   ) =
