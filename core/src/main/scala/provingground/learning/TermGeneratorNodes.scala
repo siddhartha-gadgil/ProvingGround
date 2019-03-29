@@ -1543,6 +1543,10 @@ case class TermGenParams(
     termsByTypW: Double = 0.05,
     typFromFamilyW: Double = 0.05,
     sigmaW: Double = 0.05,
+    recDefW: Double = 0,
+    inducDefW : Double = 0,
+    typAsCodW: Double = 0,
+    targetInducW: Double = 0,
     varWeight: Double = 0.3,
     goalWeight: Double = 0.7,
     typVsFamily: Double = 0.5
@@ -1559,9 +1563,9 @@ case class TermGenParams(
   import Gen._, GeneratorNode._,
   TermRandomVars.{withTypNode => wtN, funcWithDomTermNode => fdtN}
 
-  val termInit: Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW
+  val termInit: Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW - recDefW - inducDefW
 
-  val typInit: Double = 1.0 - appW - unAppW - piW - sigmaW - typFromFamilyW
+  val typInit: Double = 1.0 - appW - unAppW - piW - sigmaW - typFromFamilyW - recDefW - inducDefW
 
   val termNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
     (Init(Terms)      -> termInit) ::
@@ -1570,6 +1574,8 @@ case class TermGenParams(
       (applnByArgNode -> argAppW) ::
       (lambdaNode     -> lmW) ::
       (termsByTyps    -> termsByTypW) ::
+      (recFuncFoldedNode -> recDefW) ::
+      (inducFuncFoldedNode -> inducDefW) ::
       Terms.target[TermState, Term, Double, Term]
 
   val typNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] =
@@ -1579,6 +1585,8 @@ case class TermGenParams(
       (piNode           -> piW) ::
       (sigmaNode        -> sigmaW) ::
       (typFoldNode      -> typFromFamilyW) ::
+      ((recFuncFoldedNode | (typSort, Typs)) -> recDefW) ::
+      ((inducFuncFoldedNode | (typSort, Typs)) -> inducDefW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
   val inducNodes =
@@ -1612,24 +1620,30 @@ case class TermGenParams(
       ((applnByArgNode | (funcSort, Funcs)) -> argAppW) ::
       ((lambdaNode | (funcSort, Funcs))     -> lmW) ::
       ((termsByTyps | (funcSort, Funcs))    -> termsByTypW) ::
+      ((recFuncFoldedNode | (funcSort, Funcs)) -> recDefW) ::
+      ((inducFuncFoldedNode | (funcSort, Funcs)) -> inducDefW) ::
       Funcs.target[TermState, Term, Double, ExstFunc]
 
   val typFamilyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
     (Init(TypFamilies)                           -> termInit) ::
       (typFamilyApplnNode                        -> appW) ::
       (typFamilyUnifApplnNode                    -> unAppW) ::
-      ((applnByArgNode | (typFamilySort, Funcs)) -> argAppW) ::
+      ((applnByArgNode | (typFamilySort, TypFamilies)) -> argAppW) ::
       (lambdaTypFamilyNode                       -> lmW) ::
-      ((termsByTyps | (typFamilySort, Funcs))    -> termsByTypW) ::
+      ((termsByTyps | (typFamilySort, TypFamilies))    -> termsByTypW) ::
+      ((recFuncFoldedNode | (typFamilySort, TypFamilies)) -> recDefW) ::
+      ((inducFuncFoldedNode | (typFamilySort, TypFamilies)) -> inducDefW) ::
       TypFamilies.target[TermState, Term, Double, ExstFunc]
 
   val termsByTypNodes
       : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
-    (TermsWithTyp.init       -> (termInit * (1 - goalWeight))) ::
+    (TermsWithTyp.init       -> (termInit * (1 - goalWeight - typAsCodW - targetInducW))) ::
       (wtN(applnNode)        -> appW) ::
       (wtN(unifApplnNode)    -> unAppW) ::
       (wtN(applnByArgNode)   -> argAppW) ::
       (lambdaByTypNodeFamily -> (termInit * goalWeight + lmW)) ::
+      (typAsCodNodeFamily -> typAsCodW) ::
+      (targetInducNodeFamily -> targetInducW) ::
       TermsWithTyp.target[TermState, Term, Double, Term]
 
   val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
@@ -1662,17 +1676,6 @@ case class TermGenParams(
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
-  // def equationsGen(initState: TermState,
-  //                  finalState: TermState): GeneratorEquations[TermState, Term] =
-  //   GeneratorEquations(nodeCoeffSeq, initState, finalState)
-
-  // def spireGrad(initState: TermState,
-  //               finalState: TermState,
-  //               hW: Double = 1,
-  //               klW: Double = 1,
-  //               eqW: Double = 1): SpireGradient =
-  //   TermGenCost(equationsGen(initState, finalState), hW, klW, eqW).spireGradient
-
   def nextStateTask(
       initState: TermState,
       epsilon: Double,
@@ -1691,19 +1694,6 @@ case class TermGenParams(
     nextStateTask(initState, epsilon, limit).map(
       result => EvolvedState(initState, result, tg, epsilon)
     )
-
-  // def getEvolvedState(initState: TermState,
-  //                     epsilon: Double,
-  //                     limit: FiniteDuration = 3.minutes): EvolvedState =
-  //   evolvedStateTask(initState, epsilon, limit).runSyncUnsafe(limit)
-
-  // def nextStateWithEqnsTask(initState: TermState,
-  //                           epsilon: Double,
-  //                           limit: FiniteDuration = 3.minutes)
-  //   : Task[(TermState, Set[GeneratorVariables.Equation])] =
-  //   nextStateTask(initState, epsilon, limit).map { finalState =>
-  //     (finalState, equationsGen(initState, finalState).equations)
-  //   }
 
   def nextTangStateTask(
       baseState: TermState,
