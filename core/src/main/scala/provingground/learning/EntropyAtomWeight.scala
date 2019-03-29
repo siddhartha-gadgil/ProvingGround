@@ -49,7 +49,7 @@ case class EntropyAtomWeight(h0: Double,
     totIterator(x, sc).map { (y) =>
       1 / (1 + exp(y))
     }
-  }
+  }.takeWhile(z => z * initWeight > q0) // truncating when a lemma has low weight
 
   def pairIterator(sc: Double = 1): Iterator[(Double, Option[Double])] =
     Iterator
