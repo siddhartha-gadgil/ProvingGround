@@ -13,6 +13,8 @@ import MonixFiniteDistributionEq._
 
 import scala.util.Try
 
+import MapVS._
+
 object ExpressionEval {
   val sd = implicitly[StateDistribution[TermState, FD]]
 
@@ -363,12 +365,17 @@ case class ExpressionEval(
   ): Iterator[Map[Expression, Double]] =
     Iterator.iterate(p)(q => gradShift(q, entropyProjection(hW, klW)(q)))
 
-  def jetMap(jet: Jet[Double]) : Map[Expression, Double] = 
+    /**
+     * Jet converted to map, scaled for probabilities
+     */ 
+  def jetMap(jet: Jet[Double], p: Map[Expression, Double] = finalDist) : Map[Expression, Double] = 
     (for {
       (x, j) <- vars.zipWithIndex 
-      y= jet.infinitesimal(j) 
-      if y > 0
-    } yield x -> y ).toMap
+      v= jet.infinitesimal(j) 
+      if v > 0
+      y = p(x)
+      w = v * (exp(y) + 1) * (exp(y) + 1)/ exp(y)
+    } yield x -> w ).toMap
 
 
   def resolveOpt(exp: Expression) : Option[Expression] = 
@@ -378,6 +385,8 @@ case class ExpressionEval(
   def backStep(exp: Expression, p: Map[Expression, Double] = finalDist) : Map[Expression, Double] =
     jetMap(jet(p)(resolveOpt(exp).getOrElse(Literal(0))))
 
+
+  // ------------------------------------------  
   // The below code using matching error. We should use orthogonal projections instead as above.
   lazy val matchKL: Expression = equations.map(_.klError).reduce(_ + _)
 
