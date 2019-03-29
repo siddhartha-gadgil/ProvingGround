@@ -158,7 +158,7 @@ object Unify {
         // pprint.log(unifMap.keySet -- freeVars.toSet)
         val exVars = extraVars(freeVars, unifMap)
         polyLambda(exVars.reverse.toList, value)
-    }.orElse{
+    .orElse{
       func match {
         case fn: FuncLike[u, v] =>
           val l = funcToLambda(fn)

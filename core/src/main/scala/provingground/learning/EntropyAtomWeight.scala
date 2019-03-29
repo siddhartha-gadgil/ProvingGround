@@ -21,7 +21,7 @@ case class EntropyAtomWeight(h0: Double,
 
   private val t: Jet[Double] = Jet.h[Double](0)
 
-  def pInit(x: Double): Jet[Double] = 1 / (1 + exp(x + t))
+  def pInit(x: Double): Jet[Double] = 1 / (1 + exp(x + t)) // Variant of logistic
 
   def q1(x: Double): Jet[Double] = pInit(x) * initWeight
 
@@ -45,7 +45,7 @@ case class EntropyAtomWeight(h0: Double,
     Iterator.iterate(x)(y => totShifted(y, sc))
 
   def iter(sc: Double = 1): Iterator[Double] = {
-    val x = log(1.0 / q0 - 1)
+    val x = log((1.0 - q0)/ q0) // the inverse of the strange logistic
     totIterator(x, sc).map { (y) =>
       1 / (1 + exp(y))
     }
