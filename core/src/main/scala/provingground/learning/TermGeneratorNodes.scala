@@ -38,7 +38,7 @@ class TermGeneratorNodes[InitState](
     * Wrapper for application to allow equality and  `toString` to work.
     */
   case object Appln extends ((ExstFunc, Term) => Term) {
-    def apply(fn: ExstFunc, arg: Term) = appln(fn, arg)
+    def apply(fn: ExstFunc, arg: Term): Term = appln(fn, arg)
 
     override def toString = "Appln"
   }
@@ -47,7 +47,7 @@ class TermGeneratorNodes[InitState](
     * Wrapper for flipped application to allow equality and  `toString` to work.
     */
   case object FlipAppln extends ((Term, ExstFunc) => Term) {
-    def apply(arg: Term, fn: ExstFunc) = appln(fn, arg)
+    def apply(arg: Term, fn: ExstFunc): Term = appln(fn, arg)
 
     override def toString = "FlipAppn"
   }
@@ -56,7 +56,7 @@ class TermGeneratorNodes[InitState](
     * Wrapper for unified application to allow equality and  `toString` to work.
     */
   case object UnifApplnOpt extends ((ExstFunc, Term) => Option[Term]) {
-    def apply(fn: ExstFunc, arg: Term) = unifApplnOpt(fn, arg)
+    def apply(fn: ExstFunc, arg: Term): Option[Term] = unifApplnOpt(fn, arg)
 
     override def toString = "UnifApplnOpt"
   }
@@ -237,7 +237,7 @@ class TermGeneratorNodes[InitState](
     */
   case object LambdaTypFamilyIsle
       extends (Typ[Term] => GeneratorNode[ExstFunc]) {
-    def apply(typ: Typ[Term]) = lambdaTypFamilyIsle(typ)
+    def apply(typ: Typ[Term]): GeneratorNode[ExstFunc] = lambdaTypFamilyIsle(typ)
 
     override def toString = "LambdaTypFamilyIsle"
   }
@@ -317,7 +317,7 @@ class TermGeneratorNodes[InitState](
   /**
     * Node for generating terms of a type (if possible) by multiple applications of functions tageting the type.
     */
-  def foldedTargetFunctionNode(typ: Typ[Term]) =
+  def foldedTargetFunctionNode(typ: Typ[Term]): FlatMapOpt[Term, Term] =
     FlatMapOpt[Term, Term](
       funcForCod(typ),
       t => foldFuncTarget(t, typ, termsWithTyp(typ)),
@@ -600,7 +600,7 @@ class TermGeneratorNodes[InitState](
    * Generating domains for a given inductive structure, with an inductive definition also given.
    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
    */ 
-  def domainForDefn(ind: ExstInducDefn) =
+  def domainForDefn(ind: ExstInducDefn): Option[GeneratorNode[Term]] =
     domainForStruct(ind.ind, ind.typFamily, ind)
 
   /**
@@ -678,7 +678,7 @@ class TermGeneratorNodes[InitState](
    * picking an inductive definition, generating a domain and
    * invoking the node getting codomain and recursion data
    */
-  def targetInducFuncsFolded(ind: ExstInducDefn, target: Typ[Term]) =
+  def targetInducFuncsFolded(ind: ExstInducDefn, target: Typ[Term]): Option[GeneratorNode[Term]] =
     goalDomainFmly(ind.ind, ind.typFamily, target).flatMap { 
       case (dom, targ) =>
         val fnOpt = ind.ind.inducOpt(dom, targ)
@@ -698,14 +698,15 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  def targetInducNode(typ: Typ[Term]) =
+  def targetInducNode(typ: Typ[Term]): FlatMapOpt[ExstInducDefn, Term] =
     FlatMapOpt[ExstInducDefn, Term](
       InducDefns,
       defn => targetInducFuncsFolded(defn, typ),
       termsWithTyp(typ)
     )
 
-  val targetInducNodeFamily =
+  val targetInducNodeFamily
+    : GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term] =
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
       case typ :: HNil => targetInducNode(typ)
     }, TermsWithTyp)
@@ -743,7 +744,7 @@ class TermGeneratorNodes[InitState](
     )
 
   case object Proj2 extends ((Typ[Term], Term) => Term) {
-    def apply(a: Typ[Term], b: Term) = b
+    def apply(a: Typ[Term], b: Term): Term = b
 
     override def toString = "Proj2"
   }
@@ -1061,13 +1062,13 @@ object TermRandomVars {
   }
 
   case object TypFn extends (Term => Typ[Term]) {
-    def apply(tp: Term) = tp.typ
+    def apply(tp: Term) : Typ[Term] = tp.typ
 
     override def toString = "typeOf(_)"
   }
 
   case object DomFn extends (ExstFunc => Typ[Term]) {
-    def apply(fn: ExstFunc) = fn.dom
+    def apply(fn: ExstFunc): Typ[Term] = fn.dom
 
     override def toString = "domOf"
   }
@@ -1342,10 +1343,10 @@ case class TermState(
 
   lazy val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
     (for {
-      Weighted(x, p) <- thmsBySt.pmf
-      q = thmsByPf(x)
-      h = -p / (q * math.log(q))
-    } yield (x, p, q, h)).toVector.sortBy(_._4).reverse
+    Weighted(x, p) <- thmsBySt.pmf
+    q = thmsByPf(x)
+    h = -p / (q * math.log(q))
+  } yield (x, p, q, h)).sortBy(_._4).reverse
 
   lazy val pfSet: Vector[Term] =
     terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
@@ -1365,6 +1366,7 @@ case class TermState(
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
     val newGoals: FD[Typ[Term]] = goals.map {
       case pd: PiDefn[u, v] if pd.domain == typ => pd.fibers(x.asInstanceOf[u])
+      case ft: FuncTyp[u, v] if ft.dom == typ => ft.codom
       case tp                                   => tp
     }
 
@@ -1390,7 +1392,6 @@ case class TermState(
 
   import interface._, TermJson._
 
-  import ujson.Js
 
   def json: ujson.Obj = {
     ujson.Obj(
@@ -1453,7 +1454,7 @@ object TermState {
     */
   implicit val stateFD: StateDistribution[TermState, FD] =
     new StateDistribution[TermState, FD] {
-      def isEmpty(state: TermState) =
+      def isEmpty(state: TermState): Boolean =
         state.terms.support.isEmpty && state.typs.support.isEmpty
 
       def value[T](state: TermState)(randomVar: RandomVar[T]): FD[T] =
@@ -1489,7 +1490,7 @@ object TermState {
         }
     }
 
-  def islePairs(ts: TermState, variable: Term) = {
+  def islePairs(ts: TermState, variable: Term): Set[(RandomVar.Elem[_], RandomVar.Elem[_])] = {
     val termPairs: Set[(RandomVar.Elem[_], RandomVar.Elem[_])] =
       ts.terms.support.map { x =>
         (RandomVar.Elem(Terms, x), RandomVar.Elem(Terms, variable :~> x))
@@ -1514,19 +1515,19 @@ object TermGenParams {
 
   case class AddVar(typ: Typ[Term], wt: Double)
       extends (TermState => (TermState, Term)) {
-    def apply(ts: TermState) = ts.addVar(typ, wt)
+    def apply(ts: TermState): (TermState, Term) = ts.addVar(typ, wt)
 
     override def toString = "AddVar"
   }
 
   case object GetVar extends (Typ[Term] => Term) {
-    def apply(typ: Typ[Term]) = typ.Var
+    def apply(typ: Typ[Term]): Term = typ.Var
 
     override def toString = "GetVar"
   }
 
   case object InIsle extends ((Term, TermState) => TermState) {
-    def apply(t: Term, state: TermState) = state.inIsle(t)
+    def apply(t: Term, state: TermState): TermState = state.inIsle(t)
 
     override def toString = "InIsle"
   }
@@ -1589,11 +1590,13 @@ case class TermGenParams(
       ((inducFuncFoldedNode | (typSort, Typs)) -> inducDefW) ::
       Typs.target[TermState, Term, Double, Typ[Term]]
 
-  val inducNodes =
+  val inducNodes
+    : NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstInducDefn] =
   (Init(InducDefns)         -> 1.0) ::
     InducDefns.target[TermState, Term, Double, ExstInducDefn]
 
-  val inducDomainNodes =
+  val inducDomainNodes
+    : NodeCoeffs.Cons[TermState, Term, Double, ExstInducDefn :: HNil, Term] =
     (domainForDefnNodeFamily         -> 1.0) ::
       DomForInduc.target[TermState, Term, Double, Term]
 
@@ -1609,7 +1612,8 @@ case class TermGenParams(
     .Map(identity[Typ[Term]], Typs, IsleDomains) -> 1.0) :: IsleDomains
     .target[TermState, Term, Double, Typ[Term]]
 
-  val funcForCodNodes = 
+  val funcForCodNodes
+    : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
     (codomainNodeFamily -> 1.0) ::
     FuncForCod.target[TermState, Term, Double, Term]
 
@@ -1731,7 +1735,6 @@ case class EvolvedState(
     epsilon: Double
 ) extends EvolvedStateLike
 
-import ujson.Js
 
 object TermGenJson {
 
