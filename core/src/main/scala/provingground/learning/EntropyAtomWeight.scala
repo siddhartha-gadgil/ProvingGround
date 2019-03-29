@@ -44,12 +44,12 @@ case class EntropyAtomWeight(h0: Double,
   def totIterator(x: Double, sc: Double = 1): Iterator[Double] =
     Iterator.iterate(x)(y => totShifted(y, sc))
 
-  def iter(sc: Double = 1): Iterator[Double] = {
-    val x = log((1.0 - q0)/ q0) // the inverse of the strange logistic
+  def iter(sc: Double = 1, prune: Boolean = false): Iterator[Double] = {
+    val x = log(1.0/ q0 -1) 
     totIterator(x, sc).map { (y) =>
       1 / (1 + exp(y))
     }
-  }.takeWhile(z => z * initWeight > q0) // truncating when a lemma has low weight
+  }.takeWhile(z => !prune || (z * initWeight > q0)) // truncating when a lemma has low weight
 
   def pairIterator(sc: Double = 1): Iterator[(Double, Option[Double])] =
     Iterator
@@ -108,8 +108,8 @@ object EntropyAtomWeight {
         ))
 
   def evolvedLemmaIters(ev: EvolvedStateLike,
-                        sc: Double = 1): Vector[(Typ[Term], Iterator[Double])] =
+                        sc: Double = 1, prune: Boolean = false): Vector[(Typ[Term], Iterator[Double])] =
     evolvedLemmaGens(ev).map {
-      case (lemma, ew) => lemma -> ew.iter(sc)
+      case (lemma, ew) => lemma -> ew.iter(sc, prune)
     }
 }

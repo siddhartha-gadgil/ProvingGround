@@ -182,12 +182,12 @@ case class ExpressionEval(
     */
   val finalDist: Map[Expression, Double] = stableMap(init, equations, maxRatio)
 
-  val keys = finalDist.keys.toVector
+  val keys: Vector[Expression] = finalDist.keys.toVector
 
   /**
     * Terms in the initial distributions, used to calculate total weights of functions etc
     */
-  val initTerms = keys.collect {
+  val initTerms: Vector[Term] = keys.collect {
     case InitialVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
   }
 
@@ -199,7 +199,7 @@ case class ExpressionEval(
   }.toSet
 
   // TODO check if we need this or should be using the equations instead
-  val finalTyps = sd.value(finalState)(Typs)
+  val finalTyps: FD[Typ[Term]] = sd.value(finalState)(Typs)
 
   val funcTotal: Expression = initTerms
     .filter(isFunc)
@@ -208,7 +208,7 @@ case class ExpressionEval(
     }
     .fold[Expression](Literal(0))(_ + _)
 
-  val typFamilyTotal = initTerms
+  val typFamilyTotal: Expression = initTerms
     .filter(isTypFamily)
     .map { t =>
       InitialVal(Elem(t, Terms))
@@ -218,7 +218,7 @@ case class ExpressionEval(
   /**
     * Vector of all variables. This is frozen so that their indices can be used.
     */
-  val vars =
+  val vars: Vector[Expression] =
     equations
       .flatMap(eq => Set(eq.lhs, eq.rhs))
       .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
@@ -278,16 +278,16 @@ case class ExpressionEval(
   val genTerms: Map[Term, Expression] =
     initTerms.map(t => t -> InitialVal(Elem(t, Terms))).toMap
 
-  val thmSet =
+  val thmSet: Set[Typ[Term]] =
     finalTyps.support.toSet.intersect(finalTerms.map(_.typ)).filter(!isUniv(_))
 
   val thmsByStatement: Map[Typ[Term], Expression] = finalTyps
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
-    .mapValues(Literal(_))
+    .mapValues(Literal)
 
-  def proofExpression(typ: Typ[Term]) =
+  def proofExpression(typ: Typ[Term]): Expression =
     finalTerms
       .filter(_.typ == typ)
       .map(t => FinalVal(Elem(t, Terms)))
@@ -342,6 +342,13 @@ case class ExpressionEval(
     }
   }
 
+  def stableGradShift(
+      p: Map[Expression, Double],
+      t: Vector[Double],
+      eps: Double = epsilon
+  ): Map[Expression, Double] =
+    stableMap(gradShift(p, t, eps), equations)
+
   /**
     * Expression for composite entropy.
     */
@@ -363,30 +370,49 @@ case class ExpressionEval(
       klW: Double = 1,
       p: Map[Expression, Double] = finalDist
   ): Iterator[Map[Expression, Double]] =
-    Iterator.iterate(p)(q => gradShift(q, entropyProjection(hW, klW)(q)))
+    Iterator.iterate(p)(q => stableGradShift(q, entropyProjection(hW, klW)(q)))
 
-    /**
-     * Jet converted to map, scaled for probabilities
-     */ 
-  def jetMap(jet: Jet[Double], p: Map[Expression, Double] = finalDist) : Map[Expression, Double] = 
+  /**
+    * Optimal value, more precisely stable under gradient flow.
+    *
+    * @param hW entropy weight
+    * @param klW Kullback-Liebler weight
+    * @param p Initial distribution
+    * @return
+    */
+  def optimum(
+      hW: Double = 1,
+      klW: Double = 1,
+      p: Map[Expression, Double] = finalDist
+  ): Map[Expression, Double] = {
+    val newMap = stableGradShift(p, entropyProjection(hW, klW)(p))
+    if (newMap.keySet == init.keySet) newMap
+    else optimum(hW, klW, newMap)
+  }
+
+  /**
+    * Jet converted to map, scaled for probabilities
+    */
+  def jetMap(jet: Jet[Double],
+             p: Map[Expression, Double] = finalDist): Map[Expression, Double] =
     (for {
-      (x, j) <- vars.zipWithIndex 
-      v= jet.infinitesimal(j) 
+      (x, j) <- vars.zipWithIndex
+      v = jet.infinitesimal(j)
       if v > 0
       y = p(x)
-      w = v * (exp(y) + 1) * (exp(y) + 1)/ exp(y)
-    } yield x -> w ).toMap
+      w = v * (exp(y) + 1) * (exp(y) + 1) / exp(y)
+    } yield x -> w).toMap
 
-
-  def resolveOpt(exp: Expression) : Option[Expression] = 
+  def resolveOpt(exp: Expression): Option[Expression] =
     equations.find(_.lhs == exp).map(_.rhs)
 
-    // Should correct for sigmoid transformation
-  def backStep(exp: Expression, p: Map[Expression, Double] = finalDist) : Map[Expression, Double] =
+  // Should correct for sigmoid transformation
+  def backStep(
+      exp: Expression,
+      p: Map[Expression, Double] = finalDist): Map[Expression, Double] =
     jetMap(jet(p)(resolveOpt(exp).getOrElse(Literal(0))))
 
-
-  // ------------------------------------------  
+  // ------------------------------------------
   // The below code using matching error. We should use orthogonal projections instead as above.
   lazy val matchKL: Expression = equations.map(_.klError).reduce(_ + _)
 
@@ -403,7 +429,7 @@ case class ExpressionEval(
   def shifted(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
       p: Map[Expression, Double],
       epsilon: Double = 0.1
-  ) = {
+  ): Map[Expression, Double] = {
     val q = shift(hW, klW, matchW)(p)
     for { (x, w) <- p } yield x -> (w - epsilon * q.getOrElse(x, 0.0))
   }
