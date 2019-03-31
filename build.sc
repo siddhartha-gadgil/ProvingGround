@@ -70,6 +70,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def organization = "io.github.siddhartha-gadgil"
   def name = "ProvingGround"
 
+  override def artifactName = T{"provingground-"+super.artifactName()}
 
   override def scalacOptions =
     Seq("-Ypartial-unification",
@@ -93,7 +94,14 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def bin() : define.Command[PathRef] = T.command {
     def ass: PathRef = assembly()
     def name: String = artifactName()
-    cp.over(ass.path, pwd/ "bin" / s"provinground-$name-SNAPSHOT")
+    cp.over(ass.path, pwd/ "bin" / s"$name.fat.jar")
+    ass
+  }
+
+  def slimbin() : define.Command[PathRef] = T.command {
+    def ass: PathRef = jar()
+    def name: String = artifactName()
+    cp.over(ass.path, pwd/ "bin" / s"$name.slim.jar")
     ass
   }
 }
@@ -154,7 +162,7 @@ object core extends Module{
     override def millSourcePath = super.millSourcePath / up
     def name = "ProvingGround-Core"
 
-    def artifactName = "provingground-core-jvm"
+    // def artifactName = "provingground-core-jvm"
 
 
 
@@ -204,7 +212,7 @@ val mantleLibs = List(
 object mantle extends CommonModule with SbtModule with PGPublish{
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
 
-  def artifactName = "provingground-mantle"
+  // def artifactName = "provingground-mantle"
 
   override def ivyDeps =
     T{
@@ -233,7 +241,7 @@ object mantle extends CommonModule with SbtModule with PGPublish{
 object crust extends SbtModule with JvmModule with PGPublish {
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm, server, mantle)
 
-  def artifactName = "provingground-crust"
+  // def artifactName = "provingground-crust"
 }
 
 
@@ -265,7 +273,7 @@ object nlp extends SbtModule with ServerModule with PGPublish {
     
   }
 
-  def artifactName = "provingground-nlp"
+  // def artifactName = "provingground-nlp"
 
   override def mainClass = Some("provingground.interface.ParserCask")
 }
@@ -352,7 +360,7 @@ object server extends SbtModule with ServerModule with PGPublish {
 
   def name = "ProvingGround-Server"
 
-  def artifactName = "provingground-server"
+  // def artifactName = "provingground-server"
 }
 
 object experiments extends CommonModule{

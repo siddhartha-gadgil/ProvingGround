@@ -144,7 +144,7 @@ val proverHTML =
   @cask.get("/resources", subpath = true)
   def public(request: cask.Request) = {
     val segs = request.remainingPathSegments
-    pprint.log(segs)
+    // pprint.log(segs)
     getResource(segs)
   }
 
