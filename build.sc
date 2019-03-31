@@ -4,9 +4,7 @@ import scalajslib._
 import mill.scalalib.scalafmt._
 import define.{Sources, Task}
 import ammonite.ops._
-//import coursier.maven.MavenRepository
-// import $ivy.`ch.epfl.scala::mill-bloop:1.2.3`
-// import $ivy.`fun.valycorp::mill-ensime:0.0.1`
+import $ivy.`org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r`
 
 
 trait MetalsModule extends ScalaModule{
@@ -129,7 +127,8 @@ val jvmLibs = List(
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
   ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
-  ivy"org.scalameta::mdoc:1.2.8"
+  ivy"org.scalameta::mdoc:1.2.8",
+  ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r"
 )
 
 
@@ -205,9 +204,21 @@ val mantleLibs = List(
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
   ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:1.2.8",
-  ivy"com.lihaoyi::os-lib:0.2.5"
+  ivy"com.lihaoyi::os-lib:0.2.5",
+  ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r"
 )
 
+def gitlog() = {
+  import java.io._
+  import org.eclipse.jgit._
+  import storage.file._
+  val builder = new FileRepositoryBuilder()
+  val repo = builder.findGitDir(new File(".")).readEnvironment(). build()
+  val git = new api.Git(repo)
+  import scala.collection.JavaConversions._
+  val log = git.log().call().head
+  write.over(pwd / "mantle" /"src" /"main" / "resources" / "gitlog.txt", log.name)
+}
 
 object mantle extends CommonModule with SbtModule with PGPublish{
   override def moduleDeps = Seq(core.jvm, trepplein, leanlib.jvm)
@@ -221,6 +232,8 @@ object mantle extends CommonModule with SbtModule with PGPublish{
 
     override def resources: Sources = T.sources {
       def base: Seq[Path] = super.resources().map(_.path)
+
+      gitlog()
 
       def jsout = client.fastOpt().path / up
 
