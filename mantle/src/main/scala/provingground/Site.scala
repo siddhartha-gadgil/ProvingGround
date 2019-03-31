@@ -8,27 +8,18 @@ import scala.util.Try
 import scala.xml.Elem
 
 object Site {
-  // implicit val wd = pwd
 
   def mkDocTuts() = {
     val settings = mdoc.MainSettings().withIn(java.nio.file.Paths.get("tuts"))
     mdoc.Main.process(settings)
   }
 
-  // def pack() = {
-  //   pprint.log("packing client")
-  //   %%("mill", "client.pack")
-  // }
+
 
   def mkDocs() = {
     pprint.log("generating scaladocs")
     os.proc("mill", "jvmRoot.docs").call()
   }
-
-  // def assemble() = {
-  //   pprint.log("assembling mantle")
-  //   %%("mill", "mantle.assembly")
-  // }
 
   val mathjax =
     """
@@ -181,7 +172,9 @@ object Site {
 
   def filename(s: String) = s.toLowerCase.replaceAll("\\s", "-")
 
-  def gitHash: String = os.proc("git", "rev-parse", "HEAD").call().out.lines.head
+  def gitHash: String =
+    os.read(os.resource/ "gitlog.txt")
+    // os.proc("git", "rev-parse", "HEAD").call().out.lines.head
 
   lazy  val gitrep: String =
     s"""

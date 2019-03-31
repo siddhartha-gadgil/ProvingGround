@@ -7,9 +7,10 @@ object Tuts {
 
   def tutdir : Path = pwd / 'mantle / 'src / 'main / 'tut
 
-  def gitHash: String = %%("git", "rev-parse", "HEAD").out.lines.head
+  def gitHash: String =
+    read(resource / "gitlog.txt") 
+    // %%("git", "rev-parse", "HEAD").out.lines.head
 
-  def gitBranch: String = %%("git", "symbolic-ref", "--short", "HEAD").out.lines.head
 
   lazy  val gitrep: String =
   s"""

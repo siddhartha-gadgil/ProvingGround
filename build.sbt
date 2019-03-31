@@ -91,15 +91,8 @@ lazy val jvmSettings = Seq(
     // "org.scalanlp" %% "breeze" % "0.13.2",
     "com.atlassian.commonmark" % "commonmark" % "0.11.0",
     "org.scalameta" %% "mdoc" % "1.2.8",
-    "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64"
-    // Native libraries are not included by default. add this if you want them (as of 0.7)
-    // Native libraries greatly improve performance, but increase jar sizes.
-    // It also packages various blas implementations, which have licenses that may or may not
-    // be compatible with the Apache License. No GPL code, as best I know.
-    // "org.scalanlp" %% "breeze-natives" % "0.12",
-    // The visualization library is distributed separately as well.
-    // It depends on LGPL code
-    // "org.scalanlp" %% "breeze-viz" % "0.12"
+    "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64",
+    "org.eclipse.jgit" % "org.eclipse.jgit" % "3.5.0.201409260305-r"
   )
   // ,
   // resources in Compile += (fastOptJS in (client, Compile)).value.data
