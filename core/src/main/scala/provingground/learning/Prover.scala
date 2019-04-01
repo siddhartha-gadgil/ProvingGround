@@ -13,9 +13,9 @@ import GeneratorVariables._
 import EntropyAtomWeight._
 
 case class Prover(
-    initState: TermState,
-    tg: TermGenParams,
-    cutoff: Double,
+    initState: TermState = TermState(FiniteDistribution.empty, FiniteDistribution.empty),
+    tg: TermGenParams = TermGenParams(),
+    cutoff: Double = math.pow(10, -4),
     limit: FiniteDuration = 3.minutes,
     maxRatio: Double = 1.01,
     scale: Double = 1.0,
@@ -24,6 +24,57 @@ case class Prover(
     hW: Double = 1,
     klW: Double = 1
 ) {
+  // Convenience for generation
+  def addTerms(terms: (Term, Double)*): Prover =  {
+    val total = terms.map(_._2).sum
+    val td = initState.terms * (1 - total) ++ FiniteDistribution(terms.map{case (x, p) => Weighted(x, p)})
+    val ts = initState.copy(terms = td)
+    this.copy(initState = ts)
+  }
+
+  lazy val typesByRestrict: Prover = {
+    val typd = initState.terms.collect{case tp: Typ[Term] => tp}.safeNormalized
+    val ts = initState.copy(typs = typd)
+    this.copy(initState = ts)
+  }
+
+  lazy val typesByMap: Prover = {
+    val typd = initState.terms.map(_.typ)
+    val ts = initState.copy(typs = typd)
+    this.copy(initState = ts)
+  }
+
+  def addVars(terms: (Term, Double)*): Prover =  {
+    val total = terms.map(_._2).sum
+    val td = initState.terms * (1 - total) ++ FiniteDistribution(terms.map{case (x, p) => Weighted(x, p)})
+    val allVars = initState.vars ++ terms.map(_._1).toVector
+    val ts = initState.copy(terms = td.safeNormalized, vars = allVars)
+    this.copy(initState = ts)
+  }
+
+  def addTypes(typs: (Typ[Term], Double)*): Prover =  {
+    val total = typs.map(_._2).sum
+    val typd = initState.typs * (1 - total) ++ FiniteDistribution(typs.map{case (x, p) => Weighted(x, p)})
+    val ts = initState.copy(typs = typd.safeNormalized)
+    this.copy(initState = ts)
+  }
+
+  def addAxioms(typs: (Typ[Term], Double)*): Prover =  {
+    val total = typs.map(_._2).sum
+    val td = initState.terms * (1 - total) ++ FiniteDistribution(typs.map{case (x, p) => Weighted("axiom":: x, p)})
+    val ts = initState.copy(terms = td.safeNormalized)
+    this.copy(initState = ts)
+  }
+
+  def addGoals(typs: (Typ[Term], Double)*): Prover =  {
+    val total = typs.map(_._2).sum
+    val typd = initState.goals * (1 - total) ++ FiniteDistribution(typs.map{case (x, p) => Weighted(x, p)})
+    val ts = initState.copy(goals = typd.safeNormalized)
+    this.copy(initState = ts)
+  }
+
+
+  // Proving etc
   val nextStateT: Task[TermState] =
     tg.nextStateTask(initState, cutoff, limit).memoize
 
