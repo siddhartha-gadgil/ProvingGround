@@ -48,7 +48,8 @@ case class Prover(
     val total = terms.map(_._2).sum
     val td = initState.terms * (1 - total) ++ FiniteDistribution(terms.map{case (x, p) => Weighted(x, p)})
     val allVars = initState.vars ++ terms.map(_._1).toVector
-    val ts = initState.copy(terms = td.safeNormalized, vars = allVars)
+    val ctx = terms.foldLeft(initState.context){case (cx: Context, (y,_)) => cx.addVariable(y)}
+    val ts = initState.copy(terms = td.safeNormalized, vars = allVars, context = ctx)
     this.copy(initState = ts)
   }
 
@@ -70,6 +71,26 @@ case class Prover(
     val total = typs.map(_._2).sum
     val typd = initState.goals * (1 - total) ++ FiniteDistribution(typs.map{case (x, p) => Weighted(x, p)})
     val ts = initState.copy(goals = typd.safeNormalized)
+    this.copy(initState = ts)
+  }
+
+  def addInd(typ: Typ[Term], intros: Term*)(params: Vector[Term] = Vector(), weight: Double = 1): Prover = {
+    import induction._
+    val str0 = ExstInducStrucs.get(typ, intros.toVector)
+    val str = params.foldRight(str0){case (x, s) => ExstInducStrucs.LambdaInduc(x, s)}
+    val dfn = ExstInducDefn(typ, intros.toVector, str)
+    val indsNew = initState.inds * (1 - weight) ++ FiniteDistribution.unif(dfn)
+    val ts = initState.copy(inds = indsNew)
+    this.copy(initState = ts)
+  }
+
+  def addIndexedInd(typ: Term, intros: Term*)(params: Vector[Term] = Vector(), weight: Double = 1): Prover = {
+    import induction._
+    val str0 = ExstInducStrucs.getIndexed(typ, intros.toVector)
+    val str = params.foldRight(str0){case (x, s) => ExstInducStrucs.LambdaInduc(x, s)}
+    val dfn = ExstInducDefn(typ, intros.toVector, str)
+    val indsNew = initState.inds * (1 - weight) ++ FiniteDistribution.unif(dfn)
+    val ts = initState.copy(inds = indsNew)
     this.copy(initState = ts)
   }
 
