@@ -21,7 +21,7 @@ cache:
   directories:
     - $HOME/.ivy2/cache
     - $HOME/.mill/ammonite/cache/
-    # - $HOME/.coursier/cache/
+    - $HOME/.coursier/cache/
 
 before_cache:
   # Tricks to avoid unnecessary cache updates
