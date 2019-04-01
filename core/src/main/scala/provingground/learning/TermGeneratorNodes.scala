@@ -1725,6 +1725,10 @@ trait EvolvedStateLike {
   val init: TermState
   val result: TermState
   val params: TermGenParams
+
+  val goalsAttained: Set[Typ[Term]] = init.goals.support.intersect(result.terms.support.map(_.typ))
+
+  val foundGoal: Boolean = goalsAttained.nonEmpty
 }
 
 case class EvolvedState(

@@ -1,22 +1,21 @@
 package provingground.learning
 import provingground.{FiniteDistribution => FD, _}, HoTT._
-import shapeless.HList._
-import shapeless._
 
-import monix.eval._
 
 import GeneratorVariables._, Expression._, TermRandomVars._
 
 import annotation.tailrec
 
-import MonixFiniteDistributionEq._
-
-import scala.util.Try
 
 import MapVS._
 
 object ExpressionEval {
-  val sd = implicitly[StateDistribution[TermState, FD]]
+  val sd: StateDistribution[TermState, FD] = implicitly[StateDistribution[TermState, FD]]
+
+  def dist[Y](rv: RandomVar[Y], p: Map[Expression, Double]): FD[Y] = {
+    val pmf = p.collect{case (FinalVal(Elem(x, randomVar)), p) if rv == randomVar => Weighted(x.asInstanceOf[Y], p)}
+    FD(pmf)
+  }
 
   /**
     * checks whether an element is a variable in an island

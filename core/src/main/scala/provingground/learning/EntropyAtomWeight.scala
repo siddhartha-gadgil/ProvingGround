@@ -1,8 +1,11 @@
 package provingground.learning
-import provingground._, HoTT._
-
+import provingground._
+import HoTT._
 import spire.math._
 import spire.implicits._
+import monix.eval._
+
+import scala.concurrent.duration._
 
 /**
   * Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy
@@ -120,6 +123,25 @@ object EntropyAtomWeight {
       p = it.drop(steps).toStream.head
       tpW = ev.result.thmsBySt(tp)
       if p > tpW * ev.params.termInit
-    } yield tp -> p
+    }
+
+      yield tp -> p
+  }
+
+  def lemmaDist(ev: EvolvedStateLike, steps: Int,
+                sc: Double = 1): FiniteDistribution[Term] = FiniteDistribution(lemmaWeights(ev, steps, sc).map{case (tp, p) => Weighted("lemma" :: tp, p)})
+
+  def findGoal(init : TermState, base: TermState, tg: TermGenParams, steps: Int, maxDepth: Int, cutoff: Double,
+  limit: FiniteDuration = 3.minutes, sc: Double = 1): Task[FiniteDistribution[Term]] = {
+    val pfs = base.terms.filter(x => base.goals(x.typ) > 0)
+    Task(pfs).flatMap {
+      case p if p.support.nonEmpty => Task(p)
+      case _ if maxDepth == 0 => Task(FiniteDistribution.empty)
+      case _ =>
+        val ev = EvolvedState(init, base, tg, cutoff)
+        val td = lemmaDist(ev, steps, sc)
+        val nextTST = tg.nextTangStateTask(base, TermState(td, FiniteDistribution.empty), cutoff, limit)
+        nextTST.flatMap{result => findGoal(init, result, tg, steps, maxDepth - 1, cutoff, limit, sc)}
+      }
   }
 }
