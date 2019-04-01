@@ -1703,7 +1703,6 @@ case class TermGenParams(
       baseState: TermState,
       tangState: TermState,
       epsilon: Double,
-      vars: Vector[Term] = Vector(),
       limit: FiniteDuration = 3.minutes
   ): Task[TermState] =
     for {

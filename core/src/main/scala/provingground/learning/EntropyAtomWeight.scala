@@ -112,4 +112,14 @@ object EntropyAtomWeight {
     evolvedLemmaGens(ev).map {
       case (lemma, ew) => lemma -> ew.iter(sc, prune)
     }
+
+  def lemmaWeights(ev: EvolvedStateLike, steps: Int,
+                   sc: Double = 1): Vector[(Typ[Term], Double)] = {
+    for {
+      (tp, it) <- evolvedLemmaIters(ev, sc)
+      p = it.drop(steps).toStream.head
+      tpW = ev.result.thmsBySt(tp)
+      if p > tpW * ev.params.termInit
+    } yield tp -> p
+  }
 }
