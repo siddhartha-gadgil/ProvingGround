@@ -11,7 +11,11 @@ trait Printer[A]{
   def viewLines(a: A, lines: Int): String
 }
 
-object Printer{
+trait FallbackPrinter{
+  implicit def fallbackPrinter[A] : Printer[A] = Printer.simple((a) => a.toString)
+}
+
+object Printer extends FallbackPrinter{
   def simple[A](fn: A => String) : Printer[A] = new Printer[A] {
     override def viewLines(a: A, lines: Int): String = fn(a)
   }
@@ -75,13 +79,6 @@ object Display extends FallbackDisplay {
       println()
     }
 
-  implicit def fromPrinter[A](implicit printer: Printer[A]): Display[A] = new Display[A] {
-    def display(a: A, lines: Int): Unit =
-      println(printer.viewLines(a, lines))
-
-    def pretty(a: A, lines: Int): Unit =
-      pp.tokenize(printer.viewLines(a, lines), pp.defaultWidth, pp.defaultHeight, pp.defaultIndent, 0).foreach(print)
-  }
 
   implicit def taskDisplay[A](implicit d: Display[A]) : Display[Task[A]] = new Display[Task[A]] {
     override def display(ta: Task[A], lines: Int): Unit =
@@ -101,10 +98,11 @@ object Display extends FallbackDisplay {
 trait FallbackDisplay{
   val pp: PPrinter = pprint.PPrinter(additionalHandlers = fansiHandler)
 
-  implicit def fallbackDisplay[A]: Display[A] = new Display[A] {
-    override def display(a: A, lines: Int): Unit = print(a.toString)
+  implicit def fromPrinter[A](implicit printer: Printer[A]): Display[A] = new Display[A] {
+    def display(a: A, lines: Int): Unit =
+      println(printer.viewLines(a, lines))
 
-    override def pretty(a: A, lines: Int): Unit =
-      pp.tokenize(pp(a), pp.defaultWidth, pp.defaultHeight, pp.defaultIndent, 0).foreach(print)
+    def pretty(a: A, lines: Int): Unit =
+      pp.tokenize(printer.viewLines(a, lines), pp.defaultWidth, pp.defaultHeight, pp.defaultIndent, 0).foreach(print)
   }
 }
