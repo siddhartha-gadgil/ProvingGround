@@ -79,6 +79,39 @@ object Display extends FallbackDisplay {
       println()
     }
 
+  implicit def termDisplay[U<: Term]: Display[U] = new Display[U] {
+    override def display(a: U, lines: Int): Unit = print(a)
+
+    override def pretty(a: U, lines: Int): Unit = print(a.fansi)
+  }
+
+  implicit def vecDisplay[A](implicit d: Display[A]): Display[Vector[A]] = new Display[Vector[A]] {
+    override def display(a: Vector[A], lines: Int): Unit =
+      if (lines < 0) a.foreach(x => {d.display(x, lines); println()}) else a.take(lines).foreach(x => {d.display(x, lines); println()})
+
+    override def pretty(a: Vector[A], lines: Int): Unit =
+      if (lines < 0) a.foreach(x => {d.pretty(x, lines); println()}) else a.take(lines).foreach(x => {d.pretty(x, lines); println()})
+  }
+
+  implicit def pairDisplay[A, B](implicit dA: Display[A], dB: Display[B]): Display[(A, B)] = new Display[(A, B)] {
+    override def display(a: (A, B), lines: Int): Unit = {
+      dA.display(a._1, lines)
+      print(" -> ")
+      dB.display(a._2, lines)
+    }
+
+    override def pretty(a: (A, B), lines: Int): Unit = {
+      dA.pretty(a._1, lines)
+      print(" -> ")
+      dB.pretty(a._2, lines)
+    }
+  }
+
+  implicit def numDisplay[A: Numeric] : Display[A] = new Display[A] {
+    override def display(a: A, lines: Int): Unit = print(a)
+
+    override def pretty(a: A, lines: Int): Unit = print(a)
+  }
 
   implicit def taskDisplay[A](implicit d: Display[A]) : Display[Task[A]] = new Display[Task[A]] {
     override def display(ta: Task[A], lines: Int): Unit =
@@ -93,10 +126,24 @@ object Display extends FallbackDisplay {
         ta.foreach(a => d.pretty(a, lines))
       }
   }
+
+  implicit def fdDisplay[A](implicit d: Display[A]): Display[FiniteDistribution[A]] = new Display[FiniteDistribution[A]] {
+    override def display(a: FiniteDistribution[A], lines: Int): Unit =
+      Display.display(a.entropyVec.map{case Weighted(x, p) => x -> p}, lines)
+
+    override def pretty(a: FiniteDistribution[A], lines: Int): Unit = ???
+  }
 }
 
 trait FallbackDisplay{
   val pp: PPrinter = pprint.PPrinter(additionalHandlers = fansiHandler)
+
+  implicit def fallback[A]: Display[A] = new Display[A] {
+    override def display(a: A, lines: Int): Unit = print(a)
+
+    override def pretty(a: A, lines: Int): Unit =
+      pp.tokenize(a.toString, pp.defaultWidth, pp.defaultHeight, pp.defaultIndent, 0).foreach(print)
+  }
 
   implicit def fromPrinter[A](implicit printer: Printer[A]): Display[A] = new Display[A] {
     def display(a: A, lines: Int): Unit =
