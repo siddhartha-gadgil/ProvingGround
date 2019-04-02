@@ -8,13 +8,28 @@ import provingground.learning.GeneratorNode.{Map, MapOpt}
 import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
-import com.sun.org.apache.xalan.internal.utils.XMLSecurityManager.Limit
 import monix.eval.Task
 import provingground.interface.{ContextJson, MultiTask}
 
 import scala.concurrent._
 import duration._
-import monix.execution.Scheduler.Implicits.global
+
+import upickle.default.{ReadWriter => RW, macroRW, read, write, readwriter}
+
+case class TypSolver(solve: Typ[Term] => Option[Term] = (_) => None)
+    extends (Typ[Term] => Option[Term]) {
+  def apply(typ: Typ[Term]): Option[Term] = solve(typ).map(_ !: typ)
+
+  def ||(that: TypSolver): TypSolver = {
+    val orSolve = (x: Typ[Term]) => solve(x) orElse (that.solve(x))
+    TypSolver(orSolve)
+  }
+}
+
+object TypSolver{
+  implicit def rw: RW[TypSolver] =
+    readwriter[String].bimap((_) => "empty-solver", (_) => TypSolver())
+}
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -31,7 +46,8 @@ class TermGeneratorNodes[InitState](
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => InitState => (InitState, Term),
     getVar: Typ[Term] => Term,
-    inIsle: (Term, InitState) => InitState
+    inIsle: (Term, InitState) => InitState,
+    solver: TypSolver = TypSolver()
 ) {
 
   /**
@@ -211,7 +227,7 @@ class TermGeneratorNodes[InitState](
     */
   case object LambdaIsle
       extends (Typ[Term] => Island[Term, InitState, Term, Term]) {
-    def apply(typ: Typ[Term]) = lambdaIsle(typ)
+    def apply(typ: Typ[Term]): Island[Term, InitState, Term, Term] = lambdaIsle(typ)
 
     override def toString = "LambdaIsle"
   }
@@ -393,6 +409,10 @@ class TermGeneratorNodes[InitState](
       FuncsWithDomain
     )
 
+  val solveFamily: GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term] =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => solver(typ).map(Atom(_, termsWithTyp(typ)))
+    }, TermsWithTyp)
   /**
     * island to generate Pi-Types by taking variables with specified domain, similar to [[lambdaIsle]]
     *
@@ -1185,6 +1205,8 @@ object TermRandomVars {
     def fromGoal: Map[Typ[Term], Typ[Term]] = Map(identity, Goals, TargetTyps)
 
     def fromTyp: Map[Typ[Term], Typ[Term]] = Map(identity, Typs, TargetTyps)
+
+    def fromNegTyp : Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
   }
 
   /**
@@ -1552,7 +1574,7 @@ object TermState {
 
 }
 
-import upickle.default.{ReadWriter => RW, macroRW, read, write}
+
 
 object TermGenParams {
   implicit def rw: RW[TermGenParams] = macroRW
@@ -1594,7 +1616,10 @@ case class TermGenParams(
     targetInducW: Double = 0,
     varWeight: Double = 0.3,
     goalWeight: Double = 0.7,
-    typVsFamily: Double = 0.5
+    typVsFamily: Double = 0.5,
+    negTargetW : Double = 0,
+    solverW : Double = 0,
+    solver : TypSolver = TypSolver()
 ) { tg =>
   object Gen
       extends TermGeneratorNodes[TermState](
@@ -1602,7 +1627,8 @@ case class TermGenParams(
         { case (fn, arg) => Unify.appln(fn.func, arg) },
         AddVar(_, varWeight),
         GetVar,
-        InIsle
+        InIsle,
+        solver
       )
 
   import Gen._, GeneratorNode._,
@@ -1687,13 +1713,14 @@ case class TermGenParams(
 
   val termsByTypNodes
       : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
-    (TermsWithTyp.init       -> (termInit * (1 - goalWeight - typAsCodW - targetInducW))) ::
+    (TermsWithTyp.init       -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
       (wtN(applnNode)        -> appW) ::
       (wtN(unifApplnNode)    -> unAppW) ::
       (wtN(applnByArgNode)   -> argAppW) ::
       (lambdaByTypNodeFamily -> (termInit * goalWeight + lmW)) ::
       (typAsCodNodeFamily    -> typAsCodW) ::
       (targetInducNodeFamily -> targetInducW) ::
+      (solveFamily -> solverW) ::
       TermsWithTyp.target[TermState, Term, Double, Term]
 
   val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
@@ -1703,7 +1730,8 @@ case class TermGenParams(
 
   val targTypNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
     (TargetTyps.fromGoal  -> goalWeight) ::
-      (TargetTyps.fromTyp -> (1.0 - goalWeight)) ::
+      (TargetTyps.fromTyp -> (1.0 - goalWeight - negTargetW)) ::
+      (TargetTyps.fromNegTyp -> negTargetW) ::
       TargetTyps.target[TermState, Term, Double, Term]
 
   val funcWithDomNodes
