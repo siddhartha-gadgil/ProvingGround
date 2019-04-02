@@ -123,10 +123,8 @@ object EntropyAtomWeight {
       p = it.drop(steps).toStream.head
       tpW = ev.result.thmsBySt(tp)
       if p > tpW * ev.params.termInit
-    }
-
-      yield tp -> p
-  }
+    } yield tp -> p
+  }.sortBy(- _._2)
 
   def lemmaDist(ev: EvolvedStateLike, steps: Int,
                 sc: Double = 1): FiniteDistribution[Term] = FiniteDistribution(lemmaWeights(ev, steps, sc).map{case (tp, p) => Weighted("lemma" :: tp, p)})

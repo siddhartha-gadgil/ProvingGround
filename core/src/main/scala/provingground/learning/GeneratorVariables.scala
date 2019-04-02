@@ -391,7 +391,7 @@ object GeneratorVariables {
     ) =
       EquationTerm(lhs, rhs.useBoat(boat, island))
 
-    override def toString: String = rhs.toString
+    override def toString: String = s"($lhs =) $rhs"
 
     def mapVars(f: Variable[_] => Variable[_]) =
       EquationTerm(lhs.mapVars(f), rhs.mapVars(f))
