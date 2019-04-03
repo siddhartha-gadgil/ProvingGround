@@ -131,7 +131,8 @@ object Display extends FallbackDisplay {
     override def display(a: FiniteDistribution[A], lines: Int): Unit =
       Display.display(a.entropyVec.map{case Weighted(x, p) => x -> p}, lines)
 
-    override def pretty(a: FiniteDistribution[A], lines: Int): Unit = ???
+    override def pretty(a: FiniteDistribution[A], lines: Int): Unit =
+      Display.pretty(a.entropyVec.map{case Weighted(x, p) => x -> p}, lines)
   }
 }
 

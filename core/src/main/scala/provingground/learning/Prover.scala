@@ -96,10 +96,10 @@ case class Prover(
 
 
   // Proving etc
-  val nextStateT: Task[TermState] =
+  val nextState: Task[TermState] =
     tg.nextStateTask(initState, cutoff, limit).memoize
 
-  val evolvedStateT: Task[EvolvedState] = nextStateT
+  val evolvedState: Task[EvolvedState] = nextState
     .map(
       result => EvolvedState(initState, result, tg, cutoff)
     )
@@ -111,35 +111,35 @@ case class Prover(
   val pairT: Task[(FiniteDistribution[Term], Set[EquationTerm])] =
     mfd.varDist(initState)(Terms, cutoff)
 
-  val equationTermsT: Task[Set[EquationTerm]] = pairT.map(_._2).memoize
+  val equationTerms: Task[Set[EquationTerm]] = pairT.map(_._2).memoize
 
-  val equationsT: Task[Set[Equation]] = equationTermsT.map { eqs =>
+  val equations: Task[Set[Equation]] = equationTerms.map { eqs =>
     groupEquations(eqs)
   }.memoize
 
-  val expressionEvalT: Task[ExpressionEval] =
+  val expressionEval: Task[ExpressionEval] =
     (for {
-      fs  <- nextStateT
-      eqs <- equationsT
+      fs  <- nextState
+      eqs <- equations
     } yield ExpressionEval(initState, fs, eqs, tg)).memoize
 
-  val lemmaWeightsT: Task[Vector[(Typ[Term], Double)]] =
+  val lemmas: Task[Vector[(Typ[Term], Double)]] =
     (for {
-      ev <- evolvedStateT
+      ev <- evolvedState
     } yield lemmaWeights(ev, steps, scale)).memoize
 
   val withLemmas: Task[Prover] =
     for {
-      lws <- lemmaWeightsT
+      lws <- lemmas
       lfd = FiniteDistribution(lws.map {
         case (tp, p) => Weighted("lemma" :: tp, p)
       })
       lInit = initState.copy(terms = (initState.terms ++ lfd).safeNormalized)
     } yield this.copy(initState = lInit)
 
-  val seekT: Task[FiniteDistribution[Term]] =
+  val seek: Task[FiniteDistribution[Term]] =
     for {
-      base <- nextStateT
+      base <- nextState
       goals <- findGoal(
         initState,
         base,
@@ -152,7 +152,7 @@ case class Prover(
       )
     } yield goals
 
-  val optimalInit: Task[Prover] = expressionEvalT.map{
+  val optimalInit: Task[Prover] = expressionEval.map{
     ev =>
       val p = ev.optimum(hW, klW)
       val td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
