@@ -12,6 +12,8 @@ import GeneratorVariables._
 
 import EntropyAtomWeight._
 
+import scalahott.NatRing
+
 case class Prover(
     initState: TermState = TermState(FiniteDistribution.empty, FiniteDistribution.empty),
     tg: TermGenParams = TermGenParams(),
@@ -94,6 +96,24 @@ case class Prover(
     this.copy(initState = ts)
   }
 
+  lazy val noIsles: Prover = this.copy(tg = tg.copy(lmW = 0, piW = 0))
+
+  def isleWeight(w: Double): Prover = this.copy(tg = tg.copy(lmW = w, piW = w))
+
+  def backwardWeight(w: Double): Prover = this.copy(tg = tg.copy(typAsCodW = w, targetInducW = w))
+
+  def negateTypes(w: Double) : Prover = this.copy(tg= tg.copy(negTargetW = w))
+
+  def natInduction(w: Double = 1.0): Prover = {
+    val mixin =initState.inds + (NatRing.exstInducDefn, w)
+    this.copy(initState.copy(inds = mixin.safeNormalized))
+  }
+
+  def addSolver(solver: TypSolver): Prover =
+    {
+      val expanded = tg.solver || solver
+      this.copy(tg = tg.copy(solver = expanded))
+    }
 
   // Proving etc
   val nextState: Task[TermState] =

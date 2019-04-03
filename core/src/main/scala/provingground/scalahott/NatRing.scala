@@ -273,10 +273,10 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
     Rec(r.Literal(base.zero), step)
   }
 
-  lazy val exstInducDefn =
+  lazy val exstInducDefn: ExstInducDefn =
     ExstInducDefn(Type, Vector(zero, succ), this)
 
-  lazy val context = Context.Empty
+  lazy val context: Context = Context.Empty
     .defineInduc(this)
     .defineSym(Name("zero"), Literal(0))
     .defineSym(Name("succ"), succ)

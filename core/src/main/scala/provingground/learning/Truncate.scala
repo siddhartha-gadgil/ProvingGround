@@ -101,7 +101,7 @@ object Truncate {
             }
           case mx: Mixin[u] =>
             Task
-              .zip2(task(mx.first, epsilon / mx.p, maxtime),
+              .parZip2(task(mx.first, epsilon / mx.p, maxtime),
                     task(mx.second, epsilon / mx.q, maxtime))
               .map {
                 case (first, second) => {
@@ -110,7 +110,7 @@ object Truncate {
               }
           case mx: MixinOpt[u] =>
             Task
-              .zip2(task(mx.first, epsilon / mx.p, maxtime),
+              .parZip2(task(mx.first, epsilon / mx.p, maxtime),
                     task(mx.second, epsilon / mx.q, maxtime))
               .map {
                 case (first, second) =>
@@ -142,7 +142,7 @@ object Truncate {
               }
             }
           case prod: Product[u, v] =>
-            Task.zip2(task(prod.first, epsilon, maxtime),
+            Task.parZip2(task(prod.first, epsilon, maxtime),
                       task(prod.second, epsilon, maxtime)) map {
               case (first, second) =>
                 val pmf1 = first.pmf
@@ -187,7 +187,7 @@ object Truncate {
           case Scaled(base, sc) =>
             task(base, epsilon / sc, maxtime)
           case Sum(first, second) =>
-            Task.zip2(task(first, epsilon, maxtime),
+            Task.parZip2(task(first, epsilon, maxtime),
                       task(second, epsilon, maxtime)) map {
               case (fst, scnd) => (fst ++ scnd).flatten
             }
