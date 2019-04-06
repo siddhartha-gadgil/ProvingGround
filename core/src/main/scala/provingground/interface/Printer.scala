@@ -48,7 +48,7 @@ object Printer extends FallbackPrinter {
       case ((a, b), l) => s"(${p1.viewLines(a, l)}, ${p2.viewLines(b, l)})"
     }
 
-  implicit def termPrint[U <: Term with Subs[U]]: Printer[U] =
+  implicit def termPrint[U <: Term]: Printer[U] =
     Printer.simple(t => t.fansi)
 
   implicit def vecPrint[A](implicit p: Printer[A]): Printer[Vector[A]] =
@@ -63,7 +63,28 @@ object Printer extends FallbackPrinter {
       implicit p: Printer[A]
   ): Printer[FiniteDistribution[A]] =
     (a: FiniteDistribution[A], lines: Int) =>
-      view(a.entropyVec.map { case Weighted(x, p) => x -> p }, lines)
+      view(a.pmfVec)
+
+  import provingground.learning.GeneratorVariables._
+
+  implicit def equationPrint : Printer[Equation] = Printer.simple(eq => s"${view(eq.lhs)} = ${view(eq.rhs)}")
+
+  implicit def eqTermPrint : Printer[EquationTerm] = Printer.simple(eq => s"${view(eq.lhs)} = ${view(eq.rhs)} + ...")
+
+  def exprView(expr: Expression): String = expr match {
+    case value: VarVal[_] => value match {
+      case FinalVal(variable) => s"p_f(${view(variable)})"
+      case InitialVal(variable) => s"p_0(${view(variable)})"
+    }
+    case Log(exp) => s"log(${exprView(exp)})"
+    case Exp(exp) => s"exp(${exprView(exp)})"
+    case Sum(x, y) => s"${exprView(x)} + ${exprView(y)}"
+    case Product(x, y) => s"${exprView(x)} * ${exprView(y)}"
+    case Literal(value) => view(value)
+    case Quotient(x, y) => s"${exprView(x)} / ${exprView(y)}"
+    case Coeff(node, rv) => s"coefficient(node = ${view(node)}, variable = ${view(rv)})"
+    case IsleScale(boat, elem) => s"isle_scale(boat = ${view(boat)}, element = ${view(elem)})"
+  }
 }
 
 trait Display[A] {
@@ -84,45 +105,6 @@ object Display extends FallbackDisplay {
     println()
   }
 
-  implicit def termDisplay[U <: Term]: Display[U] = new Display[U] {
-    override def display(a: U, lines: Int): Unit = print(a)
-
-    override def pretty(a: U, lines: Int): Unit = print(a.fansi)
-  }
-
-  implicit def vecDisplay[A](implicit d: Display[A]): Display[Vector[A]] =
-    new Display[Vector[A]] {
-      override def display(a: Vector[A], lines: Int): Unit =
-        if (lines < 0) a.foreach(x => { d.display(x, lines); println() })
-        else a.take(lines).foreach(x => { d.display(x, lines); println() })
-
-      override def pretty(a: Vector[A], lines: Int): Unit =
-        if (lines < 0) a.foreach(x => { d.pretty(x, lines); println() })
-        else a.take(lines).foreach(x => { d.pretty(x, lines); println() })
-    }
-
-  implicit def pairDisplay[A, B](
-      implicit dA: Display[A],
-      dB: Display[B]
-  ): Display[(A, B)] = new Display[(A, B)] {
-    override def display(a: (A, B), lines: Int): Unit = {
-      dA.display(a._1, lines)
-      print(" -> ")
-      dB.display(a._2, lines)
-    }
-
-    override def pretty(a: (A, B), lines: Int): Unit = {
-      dA.pretty(a._1, lines)
-      print(" -> ")
-      dB.pretty(a._2, lines)
-    }
-  }
-
-  implicit def numDisplay[A: Numeric]: Display[A] = new Display[A] {
-    override def display(a: A, lines: Int): Unit = print(a)
-
-    override def pretty(a: A, lines: Int): Unit = print(a)
-  }
 
   implicit def taskDisplay[A](implicit d: Display[A]): Display[Task[A]] =
     new Display[Task[A]] {
@@ -137,33 +119,10 @@ object Display extends FallbackDisplay {
       }
     }
 
-  implicit def fdDisplay[A](
-      implicit d: Display[A]
-  ): Display[FiniteDistribution[A]] = new Display[FiniteDistribution[A]] {
-    override def display(a: FiniteDistribution[A], lines: Int): Unit =
-      Display.display(a.entropyVec.map { case Weighted(x, p) => x -> p }, lines)
-
-    override def pretty(a: FiniteDistribution[A], lines: Int): Unit =
-      Display.fansi(a.entropyVec.map { case Weighted(x, p) => x -> p }, lines)
-  }
 }
 
 trait FallbackDisplay {
   val pp: PPrinter = pprint.PPrinter(additionalHandlers = fansiHandler)
-
-  implicit def fallback[A]: Display[A] = new Display[A] {
-    override def display(a: A, lines: Int): Unit = print(a)
-
-    override def pretty(a: A, lines: Int): Unit =
-      pp.tokenize(
-          a.toString,
-          pp.defaultWidth,
-          pp.defaultHeight,
-          pp.defaultIndent,
-          0
-        )
-        .foreach(print)
-  }
 
   implicit def fromPrinter[A](implicit printer: Printer[A]): Display[A] =
     new Display[A] {

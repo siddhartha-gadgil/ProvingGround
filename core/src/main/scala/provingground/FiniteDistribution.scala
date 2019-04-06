@@ -161,7 +161,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     FiniteDistribution(newpmf)
   }
 
-  def collect[S](f: PartialFunction[T, S]) = mapOpt(f.lift)
+  def collect[S](f: PartialFunction[T, S]): FiniteDistribution[S] = mapOpt(f.lift)
 
   def zip[S](that: FiniteDistribution[S]): FiniteDistribution[(T, S)] = {
     val newpmf =
@@ -227,7 +227,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def next: T = Weighted.pick(posmf(), random.nextDouble * postotal())
 
   override def toString: String = {
-    val sortedpmf = pmf.toSeq.sortBy(1 - _.weight)
+    val sortedpmf = pmf.sortBy(1 - _.weight)
     val terms = (for (Weighted(elem, wt) <- sortedpmf)
       yield elem.toString + " : " + wt.toString + ", ").foldLeft("")(_ + _)
     "[" + terms.dropRight(2) + "]"
@@ -252,6 +252,8 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def entropyVec: Vector[Weighted[T]] =
     supp.map((x) => Weighted(x, entropy(x))).sortBy(_.weight)
 
+  def pmfVec : Vector[(T, Double)] = pmf.map{case Weighted(elem, weight) => elem -> weight}.sortBy(- _._2)
+
   def split(groups: Int): Map[Int, FiniteDistribution[T]] = {
     val rand = new scala.util.Random
 
@@ -273,7 +275,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     * however values outside support are ignored.
     * warning: should come after ++ to ensure implementation choice.
     *
-    * @param baseweights
+    * @param baseweights base weights
     */
   def rawfeedback(baseweights: T => Double,
                   damp: Double = 0.1,
@@ -293,7 +295,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     * smoothed to ensure at most proportional to the target probability
     * warning: should come after ++ to ensure implementation choice.
     *
-    * @param baseweights
+    * @param baseweights base weights
     */
   def smoothedFeedback(baseweights: T => Double,
                        damp: Double = 0.1,

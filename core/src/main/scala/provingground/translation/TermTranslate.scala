@@ -1,24 +1,24 @@
 package provingground.translation
 
-import provingground._, HoTT._
-
+import provingground._
+import HoTT._
 import UnicodeSyms.UnivSym
-
 import fansi._
-
 import fansi.Color._
+
+import scala.util.matching.Regex
 
 object FansiTranslate {
   import TermPatterns._
 
-  val syms = UnicodeSyms
+  val syms: HoTT.UnicodeSyms.type = UnicodeSyms
 
-  def apply(x: Term) =
+  def apply(x: Term): String =
     fansiTrans(x) map (_.toString()) getOrElse (x.toString())
 
   // import fansi.Color.LightRed
 
-  val fansiTrans =
+  val fansiTrans: Translator.OrElse[Term, Str] =
     Translator.Empty[Term, Str] || formalAppln >>> {
       case (func, arg) => func ++ "(" ++ arg ++ ")"
     } || funcTyp >>> {
@@ -27,16 +27,19 @@ object FansiTranslate {
     } || lambdaTriple >>> {
       case ((variable, typ), value) =>
         (Str("(") ++ variable ++ Yellow(" : ") ++ typ ++ ") " ++ LightRed(
-          syms.MapsTo) ++ " " ++ value)
+          syms.MapsTo
+        ) ++ " " ++ value)
     } || piTriple >>> {
       case ((variable, typ), value) =>
         (Cyan(Str(syms.Pi)) ++ LightYellow("(") ++ variable ++ Yellow(" : ") ++ typ ++ LightYellow(
-          ")") ++ LightRed("{ ") ++ value ++ LightRed(" }"))
+          ")"
+        ) ++ LightRed("{ ") ++ value ++ LightRed(" }"))
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
         (Cyan(Str(syms.Sigma)) ++ LightYellow("(") ++ variable ++ Yellow(" : ") ++ LightRed(
-          "{ ") ++ value ++ LightRed(" }"))
-    } || universe >>> { (n) =>
+          "{ "
+        ) ++ value ++ LightRed(" }"))
+    } || universe >>> { (_) =>
       (LightCyan(Str(UnivSym)))
     } || symName >>> ((s) => (Str(s))) || symString >>> ((s) => (Str(s))) ||
       prodTyp >>> { case (first, second) => (first ++ syms.Prod ++ second) } ||
@@ -88,20 +91,21 @@ object FansiTranslate {
 object TeXTranslate {
   import TermPatterns._
 
-  val syms = UnicodeSyms
+  val syms: HoTT.UnicodeSyms.type = UnicodeSyms
 
-  val dolName = """\$([a-z]+)""".r
+  val dolName: Regex = """\$([a-z]+)""".r
 
-  def hatDol(s: String) =
+  def hatDol(s: String): String =
     dolName.replaceAllIn(s, (m) => s"\\\\widehat\\{${m.group(1)}\\}")
 
-  def apply(x: Term, underscoreEscape: Boolean = false) =
+  def apply(x: Term, underscoreEscape: Boolean = false): String =
     hatDol(
-      texTrans(underscoreEscape)(x) map (_.toString()) getOrElse (x.toString()))
+      texTrans(underscoreEscape)(x) map (_.toString()) getOrElse (x.toString())
+    )
 
   // import fansi.Color.LightRed
 
-  def texTrans(underscoreEscape: Boolean) =
+  def texTrans(underscoreEscape: Boolean): Translator.OrElse[Term, String] =
     Translator.Empty[Term, String] || formalAppln >>> {
       case (func, arg) => func ++ "(" ++ arg ++ ")"
     } || funcTyp >>> {
@@ -118,10 +122,12 @@ object TeXTranslate {
         s"""(\\sum\\limits_{$variable : $typ} $value)"""
     } || universe >>> { (n) =>
       s"""\\mathcal{U}_$n"""
-    } || symName >>> ((s) =>
-      if (s == "_") "\\_"
-      else if (underscoreEscape) s.replace("_", "\\_")
-      else s) ||
+    } || symName >>> (
+        (s) =>
+          if (s == "_") "\\_"
+          else if (underscoreEscape) s.replace("_", "\\_")
+          else s
+      ) ||
       prodTyp >>> { case (first, second) => s"""($first \\times $second)""" } ||
       absPair >>> {
         case (first, second) => s"""($first, $second)"""
@@ -134,7 +140,8 @@ object TeXTranslate {
       indRecFunc >>> {
         case (domW, (index, (dom, (codom, defnData)))) =>
           defnData.foldLeft(
-            s"rec_{$domW ; ${index.mkString("(", ")(", ")")}}($codom)") {
+            s"rec_{$domW ; ${index.mkString("(", ")(", ")")}}($codom)"
+          ) {
             case (head, d) => s"$head($d)"
           }
       } ||
@@ -173,7 +180,6 @@ object FansiShow {
 
   implicit def term[U <: Term]: FansiShow[U] = new FansiShow[U] {
     def show(x: U) = FansiTranslate(x)
-    // FansiFormat(x).toString
   }
 
   import pprint._
@@ -182,14 +188,17 @@ object FansiShow {
     case t: Term                          => Tree.Literal(FansiTranslate(t))
     case sym: AnySym                      => Tree.Literal(sym.toString)
     case w: andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
+    case s: String                        => Tree.Literal(s)
   }
 
   val fansiPrint: PPrinter =
     pprint.PPrinter.Color.copy(additionalHandlers = fansiHandler)
 
   val simpleHandler: PartialFunction[Any, Tree] = {
-    case t: Term     => Tree.Literal(t.toString)
-    case sym: AnySym => Tree.Literal(sym.toString)
+    case t: Term                          => Tree.Literal(t.toString)
+    case sym: AnySym                      => Tree.Literal(sym.toString)
+    case w: andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
+    case s: String                        => Tree.Literal(s)
   }
 
   val simplePrint: PPrinter =
@@ -215,16 +224,18 @@ object FansiShow {
     }
 
   implicit def tuple3[U1: FansiShow, U2: FansiShow, U3: FansiShow]
-    : FansiShow[(U1, U2, U3)] =
+      : FansiShow[(U1, U2, U3)] =
     new FansiShow[(U1, U2, U3)] {
       def show(tup: (U1, U2, U3)): String =
         (tup._1.fansi, tup._2.fansi, tup._3.fansi).toString
     }
 
-  implicit def tuple4[U1: FansiShow,
-                      U2: FansiShow,
-                      U3: FansiShow,
-                      U4: FansiShow]: FansiShow[(U1, U2, U3, U4)] =
+  implicit def tuple4[
+      U1: FansiShow,
+      U2: FansiShow,
+      U3: FansiShow,
+      U4: FansiShow
+  ]: FansiShow[(U1, U2, U3, U4)] =
     new FansiShow[(U1, U2, U3, U4)] {
       def show(tup: (U1, U2, U3, U4)): String =
         (tup._1.fansi, tup._2.fansi, tup._3.fansi, tup._4.fansi).toString
@@ -241,7 +252,7 @@ object FansiShow {
   implicit def mapp[U: FansiShow, V: FansiShow]: FansiShow[Map[U, V]] =
     new FansiShow[Map[U, V]] {
       def show(m: Map[U, V]) =
-        (for ((x, y) <- m) yield (x.fansi, y.fansi)).toMap.toString
+        (for ((x, y) <- m) yield (x.fansi, y.fansi)).toString
     }
 
   implicit def weighted[U: FansiShow]: FansiShow[Weighted[U]] =
@@ -252,7 +263,7 @@ object FansiShow {
 
   implicit def fd[U: FansiShow]: FansiShow[FiniteDistribution[U]] =
     new FansiShow[FiniteDistribution[U]] {
-      def show(x: FiniteDistribution[U]) =
+      def show(x: FiniteDistribution[U]): String =
         (x.flatten.sort map (_.fansi)).pmf.fansi
     }
 }
