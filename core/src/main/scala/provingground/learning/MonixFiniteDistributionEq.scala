@@ -444,7 +444,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                   }
               Task.gather(pmfEqT).map {
                 case (vveq) =>
-                  FD(vveq.map(_._1).flatten) -> vveq.map(_._2).flatten.toSet
+                  FD(vveq.flatMap(_._1)) -> vveq.flatMap(_._2).toSet
               }
           }
         case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
@@ -483,9 +483,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                 }
               Task.gather(pmfEqT).map {
                 case (vveq) =>
-                  FD(vveq.map(_._1).flatten) -> vveq
-                    .map(_._2)
-                    .flatten
+                  FD(vveq.flatMap(_._1)) -> vveq.flatMap(_._2)
                     .toSet
                     .union(d1E)
               }
@@ -507,10 +505,6 @@ case class MonixFiniteDistributionEq[State, Boat](
                       finalProb(x, tc.gen.output) / finEv
                     )
                   }
-                  if (ceqs.nonEmpty) {
-                    // pprint.log(tc.gen.output)
-                    // pprint.log(tc.output)
-                  }
                   val evSupp = fd.conditioned(c.pred).support
                   val evEq: Set[EquationTerm] =
                     if (evSupp.nonEmpty)
@@ -519,12 +513,10 @@ case class MonixFiniteDistributionEq[State, Boat](
                           finEv,
                           evSupp
                             .map(x => finalProb(x, tc.output))
-                            .reduce[Expression](Sum(_, _))
+                            .reduce[Expression](Sum)
                         )
                       )
                     else Set()
-                  // pprint.log(ceqs)
-                  // pprint.log(evEq)
                   fd.conditioned(c.pred)
                     .purge(epsilon) -> (eqs union ceqs union evEq)
               }
@@ -547,7 +539,7 @@ case class MonixFiniteDistributionEq[State, Boat](
                           finEv,
                           evSupp
                             .map(x => finalProb(x, tc.output))
-                            .reduce[Expression](Sum(_, _))
+                            .reduce[Expression](Sum)
                         )
                       )
                     else Set()
@@ -605,3 +597,4 @@ case class MonixFiniteDistributionEq[State, Boat](
       }
     }
 }
+

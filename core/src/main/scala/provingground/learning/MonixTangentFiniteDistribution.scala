@@ -8,7 +8,7 @@ import scala.language.higherKinds
 import monix.eval._
 
 object MonixTangentFiniteDistribution {
-  def average[V](x: Task[FD[V]], y: Task[FD[V]]) =
+  def average[V](x: Task[FD[V]], y: Task[FD[V]]): Task[FD[V]] =
     for {
       a <- x
       b <- y
@@ -41,7 +41,7 @@ case class MonixTangentFiniteDistribution[State, Boat](
 
   import StateDistribution._
 
-  def baseVal[Y](rd: RandomVar[Y]) = Task(sd.value(baseState)(rd))
+  def baseVal[Y](rd: RandomVar[Y]): Task[FD[Y]] = Task(sd.value(baseState)(rd))
 
   /**
     * recursively determines the finite distribution given a generator node;
