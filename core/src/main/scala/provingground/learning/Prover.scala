@@ -125,6 +125,12 @@ case class Prover(
     )
     .memoize
 
+  val theoremsByStatement : Task[FiniteDistribution[Typ[Term]]] = nextState.map(_.thmsBySt)
+
+  val theoremsByProof: Task[FiniteDistribution[Typ[Term]]] = nextState.map(_.thmsByPf)
+
+  val unknownStatements: Task[FiniteDistribution[Typ[Term]]] = nextState.map(_.unknownStatements)
+
   val mfd: MonixFiniteDistributionEq[TermState, Term] =
     MonixFiniteDistributionEq(tg.nodeCoeffSeq)
 
@@ -179,5 +185,25 @@ case class Prover(
       val ts = initState.copy(terms = td)
       this.copy(initState = ts)
   }
+
+  val functionsForGoals: Task[FiniteDistribution[Term]] =
+    (nextState.flatMap{
+      fs: TermState =>
+        Task.gather(fs.remainingGoals.pmf.map{
+          case Weighted(goal, p) =>
+            val codomainTarget: Task[FiniteDistribution[Term]] =  tg.monixFD.nodeDist(initState)(tg.Gen.codomainNode(goal), cutoff).map(_ * p)
+            val inductionTarget: Task[FiniteDistribution[Term]] =  tg.monixFD.nodeDist(initState)(tg.Gen.targetInducBackNode(goal), cutoff).map(_ * p)
+            for {
+              dcd <- codomainTarget
+              did <- inductionTarget
+            } yield (dcd ++ did).safeNormalized
+        })
+    }).map(vfd => vfd.foldLeft(FiniteDistribution.empty[Term])(_ ++ _))
+
+  val subgoals: Task[FiniteDistribution[Typ[Term]]] =
+    for {
+      funcs <- functionsForGoals
+      fs <- nextState
+    } yield funcs.flatMap(fs.subGoalsFromFunc _)
 
 }

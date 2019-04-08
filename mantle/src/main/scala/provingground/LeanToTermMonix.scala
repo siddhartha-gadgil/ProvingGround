@@ -3,13 +3,13 @@ import provingground._
 import induction._
 
 import scala.concurrent._, duration._
-import monix.execution.Scheduler.Implicits.global
+//import monix.execution.Scheduler.Implicits.global
 import monix.eval._
 import monix.reactive._
 import monix.tail._
-import cats._
+//import cats._
 import translation.FansiShow._
-import scala.collection.mutable.{Set => mSet, Map => mMap}
+import scala.collection.mutable.{Set => mSet}
 
 import HoTT.{Name => _, _}
 
@@ -23,37 +23,55 @@ object LeanToTermMonix {
     case _        => false
   }
 
-  def domVarFlag(introTyp: Typ[Term], typF: Term) : Vector[Boolean] =
+  def domVarFlag(introTyp: Typ[Term], typF: Term): Vector[Boolean] =
     introTyp match {
-      case pd: PiDefn[u, v] => (pd.domain.dependsOn(typF)) +: domVarFlag(pd.value, typF)
-      case ft : FuncTyp[u, v] => (ft.dom.dependsOn(typF)) +: domVarFlag(ft.codom, typF)
+      case pd: PiDefn[u, v] =>
+        (pd.domain.dependsOn(typF)) +: domVarFlag(pd.value, typF)
+      case ft: FuncTyp[u, v] =>
+        (ft.dom.dependsOn(typF)) +: domVarFlag(ft.codom, typF)
       case _ => Vector()
     }
 
   /**
     * shuffles the dat variables from leans convention where they are last to an interleaved form.
+    *
     * @param intro the introduction rule
     * @param typF the inductive type
     * @param data the recursion data
     */
-  def introShuffle(intro: Term, typF: Term, data: Term, numParams: Int): Term = {
-    val flag = domVarFlag(intro.typ, typF).drop(numParams)
+  def introShuffle(
+      intro: Term,
+      typF: Term,
+      data: Term,
+      numParams: Int
+  ): Term = {
+    val flag    = domVarFlag(intro.typ, typF).drop(numParams)
     val codSize = flag.count(identity)
-    pprint.log(s"${data.typ.fansi}, ${flag}, ${intro.typ.fansi}")
+    pprint.log(s"${data.typ.fansi}, $flag, ${intro.typ.fansi}")
     println(intro.typ.fansi)
     println(data.fansi)
     println(data.typ.fansi)
-    if (codSize < 2) data else {
+    if (codSize < 2) data
+    else {
       val (allVars, value) = getVars(data, flag.size + codSize)
       val (baseVars: Vector[Term], codVars: Vector[Term]) =
         allVars.splitAt(flag.size)
-        // val (vars, _) = maxLambda(intro)
-        // val domVars = vars.filter(_.typ.dependsOn(typF)) // number of variables in the codomain
-      val domVars = baseVars.zip(flag).filter(_._2).map(_._1)
+      // val (vars, _) = maxLambda(intro)
+      // val domVars = vars.filter(_.typ.dependsOn(typF)) // number of variables in the codomain
+      val domVars  = baseVars.zip(flag).filter(_._2).map(_._1)
       val varPairs = domVars.zip(codVars)
-      val interLeaved = baseVars.flatMap((v) => varPairs.find(_._1 == v).map{case (a, b) => Vector(a, b)}.getOrElse(Vector(v)))
+      val interLeaved = baseVars.flatMap(
+        (v) =>
+          varPairs
+            .find(_._1 == v)
+            .map { case (a, b) => Vector(a, b) }
+            .getOrElse(Vector(v))
+      )
 
-      pprint.log(s"${domVars.size} domain vars in $intro for $typF; all variable types ${allVars.map(_.typ)}")
+      pprint.log(
+        s"${domVars.size} domain vars in $intro for $typF; all variable types ${allVars
+          .map(_.typ)}"
+      )
       println(allVars.map(_.fansi))
       println(interLeaved.map(_.fansi))
       polyLambda(interLeaved.toList, value)
@@ -61,8 +79,6 @@ object LeanToTermMonix {
   }
 
   def proofLift: (Term, Term) => Task[Term] = {
-//    case (w: Typ[u], pt: PiDefn[x, y]) if pt.domain == w =>
-//      Task.pure(lmbda(pt.variable)(pt.value)) // FIXME do not need this case
     case (w: Typ[u], tp: Typ[v]) =>
       Task.eval { (w.Var) :-> tp } // should be in all cases
     case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
@@ -86,11 +102,13 @@ object LeanToTermMonix {
         .map(lambda(l.variable)(_))
     case (l: LambdaLike[u, v], tp) if isProp(l.dom) =>
       pprint.log(
-        s"unifying for ${l.fansi} with value type ${l.value.typ} to type ${tp.fansi}")
+        s"unifying for ${l.fansi} with value type ${l.value.typ} to type ${tp.fansi}"
+      )
       witUnify(l.value, tp)
     case (y, pd: PiDefn[u, v]) if isProp(pd.domain) =>
       pprint.log(
-        s"unifying for ${pd.fansi} with value type ${pd.value.typ} to type ${y}")
+        s"unifying for ${pd.fansi} with value type ${pd.value.typ} to type $y"
+      )
       witUnify(y, pd.value).map(lambda(pd.variable)(_))
     case (l: LambdaLike[u, v], tp) =>
       for {
@@ -137,7 +155,8 @@ object LeanToTermMonix {
       .orElse(
         if (isProp(x.typ)) {
           pprint.log(
-            s"skipping application of ${x.fansi} to ${f.fansi} of typ ${f.typ.fansi}")
+            s"skipping application of ${x.fansi} to ${f.fansi} of typ ${f.typ.fansi}"
+          )
           Some(f)
         } else None
       )
@@ -167,21 +186,27 @@ object LeanToTermMonix {
     v match {
       case Vector() => ft
       case x +: ys =>
-        applyFuncWitFold(ft.map(
-                           (f) => applyFuncWit(f, x)
-                         ),
-                         ys)
+        applyFuncWitFold(
+          ft.map(
+            (f) => applyFuncWit(f, x)
+          ),
+          ys
+        )
     }
 
-  def applyFuncOptWitFold(ft: Task[Option[Term]],
-                          v: Vector[Option[Term]]): Task[Option[Term]] =
+  def applyFuncOptWitFold(
+      ft: Task[Option[Term]],
+      v: Vector[Option[Term]]
+  ): Task[Option[Term]] =
     v match {
       case Vector() => ft
       case x +: ys =>
-        applyFuncOptWitFold(ft.map(
-                              (f) => applyOptFuncWit(f, x)
-                            ),
-                            ys)
+        applyFuncOptWitFold(
+          ft.map(
+            (f) => applyOptFuncWit(f, x)
+          ),
+          ys
+        )
     }
 
   def introsFold(ind: TermIndMod, p: Vector[Term]): Vector[Term] =
@@ -197,8 +222,10 @@ object LeanToTermMonix {
         getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
-  def getRecSimple(ind: SimpleIndMod,
-                   argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
+  def getRecSimple(
+      ind: SimpleIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[Term] = {
     def getInd(p: Vector[Term]) =
       ConstructorSeqTL
         .getExst(toTyp(foldFuncLean(ind.typF, p)), introsFold(ind, p))
@@ -213,8 +240,8 @@ object LeanToTermMonix {
         case l: LambdaLike[u, v] =>
           l.value match {
             case tp: Typ[u] =>
-              if (tp.dependsOn(l.variable))(indNew.inducE(
-                (l.variable: Term) :-> (tp: Typ[u])))
+              if (tp.dependsOn(l.variable))(indNew
+                .inducE((l.variable: Term) :-> (tp: Typ[u])))
               else (indNew.recE(tp))
           }
         case fn: FuncLike[u, v] =>
@@ -238,8 +265,10 @@ object LeanToTermMonix {
     }
   }
 
-  def getRecIndexed(ind: IndexedIndMod,
-                    argsFmlyTerm: Task[Vector[Term]]): Task[Term] = {
+  def getRecIndexed(
+      ind: IndexedIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[Term] = {
     def getInd(p: Vector[Term]) =
       TypFamilyExst
         .getIndexedConstructorSeq(foldFuncLean(ind.typF, p), introsFold(ind, p))
@@ -273,14 +302,19 @@ object LeanToTermMonix {
 
   val empty = LeanToTermMonix(Map(), Map())
 
-  def fromMods(mods: Vector[Modification], init: LeanToTermMonix = empty) =
+  def fromMods(
+      mods: Vector[Modification],
+      init: LeanToTermMonix = empty
+  ): Task[LeanToTermMonix] =
     mods.foldLeft(Task.pure(init)) {
       case (l, m) => l.flatMap(_.add(m))
     }
 
-  def addChunk(mods: Vector[Modification],
-               init: Task[LeanToTermMonix] = Task.eval(empty),
-               limit: FiniteDuration = 3.minutes) =
+  def addChunk(
+      mods: Vector[Modification],
+      init: Task[LeanToTermMonix] = Task.eval(empty),
+      limit: FiniteDuration = 3.minutes
+  ): Task[LeanToTermMonix] =
     mods
       .foldLeft(init) {
         case (l, m) =>
@@ -291,10 +325,12 @@ object LeanToTermMonix {
       }
       .memoize
 
-  def observable(mods: Vector[Modification],
-                 init: LeanToTermMonix = empty,
-                 limit: FiniteDuration = 5.minutes,
-                 logErr: (Modification, Throwable) => Unit = (_, _) => {}) =
+  def observable(
+      mods: Vector[Modification],
+      init: LeanToTermMonix = empty,
+      limit: FiniteDuration = 5.minutes,
+      logErr: (Modification, Throwable) => Unit = (_, _) => {}
+  ): Observable[LeanToTermMonix] =
     Observable.fromIterable(mods).flatScan[LeanToTermMonix](init) {
       case (l, m) =>
         Observable.fromTask(
@@ -306,11 +342,13 @@ object LeanToTermMonix {
         )
     }
 
-  def iterant(mods: Vector[Modification],
-              init: LeanToTermMonix = empty,
-              limit: FiniteDuration = 5.minutes,
-              logErr: (Modification, Throwable) => Unit = (_, _) => {},
-              recoverAll: Boolean = true) =
+  def iterant(
+      mods: Vector[Modification],
+      init: LeanToTermMonix = empty,
+      limit: FiniteDuration = 5.minutes,
+      logErr: (Modification, Throwable) => Unit = (_, _) => {},
+      recoverAll: Boolean = true
+  ): Iterant[Task, LeanToTermMonix] =
     Iterant
       .fromIterable[Task, Modification](mods)
       .scanEval[LeanToTermMonix](Task.pure(init)) {
@@ -332,17 +370,19 @@ object LeanToTermMonix {
   object RecIterAp {
     def unapply(exp: Expr): Option[(Name, Vector[Expr])] = exp match {
       case Const(Name.Str(prefix, "rec"), _) => Some((prefix, Vector()))
-      case App(func, arg) =>
-        unapply(func).map { case (name, vec) => (name, vec :+ arg) }
+      case App(fn, x) =>
+        unapply(fn).map { case (name, vec) => (name, vec :+ x) }
       case _ => None
     }
   }
 
 // internal parser
-  def parse(exp: Expr,
-            vars: Vector[Term],
-            ltm: LeanToTermMonix,
-            mods: Vector[Modification]): Task[(Term, LeanToTermMonix)] = {
+  def parse(
+      exp: Expr,
+      vars: Vector[Term],
+      ltm: LeanToTermMonix,
+      mods: Vector[Modification]
+  ): Task[(Term, LeanToTermMonix)] = {
     parseWork += exp
     def getNamed(name: Name) =
       ltm.defnMap.get(name).map((t) => Task.pure(t -> ltm))
@@ -405,7 +445,7 @@ object LeanToTermMonix {
           (value, ltm2) = p2
         } yield
           value match {
-            case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
+            case FormalAppln(fn, argu) if argu == x && fn.indepOf(x) =>
               fn -> ltm2
             case y if domain.prettyName.toString == "_" => y -> ltm2
             case _ =>
@@ -453,7 +493,8 @@ object LeanToTermMonix {
       vec: Vector[Expr],
       vars: Vector[Term],
       ltm: LeanToTermMonix,
-      mods: Vector[Modification]): Task[(Vector[Term], LeanToTermMonix)] =
+      mods: Vector[Modification]
+  ): Task[(Vector[Term], LeanToTermMonix)] =
     vec match {
       case Vector() => Task.pure(Vector() -> ltm)
       case x +: ys =>
@@ -465,33 +506,39 @@ object LeanToTermMonix {
         } yield (head +: tail, parse2)
     }
 
-  def getValue(t: Term,
-               n: Int,
-               accum: Vector[Term]): Task[(Term, Vector[Term])] =
+  def getValue(
+      t: Term,
+      n: Int,
+      accum: Vector[Term]
+  ): Task[(Term, Vector[Term])] =
     (t, n) match {
       case (x, 0) => Task.eval(x -> accum)
-      case (l: LambdaLike[u, v], n) if n > 0 =>
-        getValue(l.value, n - 1, accum :+ l.variable)
-      case (fn: FuncLike[u, v], n) if n > 0 =>
+      case (l: LambdaLike[u, v], m) if m > 0 =>
+        getValue(l.value, m - 1, accum :+ l.variable)
+      case (fn: FuncLike[u, v], m) if m > 0 =>
         val x = fn.dom.Var
-        getValue(fn(x), n - 1, accum :+ x)
+        getValue(fn(x), m - 1, accum :+ x)
       case _ => throw new Exception("getValue failed")
     }
 
-  def withDefn(name: Name,
-               exp: Expr,
-               ltm: LeanToTermMonix,
-               mods: Vector[Modification]) =
+  def withDefn(
+      name: Name,
+      exp: Expr,
+      ltm: LeanToTermMonix,
+      mods: Vector[Modification]
+  ): Task[LeanToTermMonix] =
     for {
       pr <- parse(exp, Vector(), ltm, mods)
       (term, ltm) = pr
       modified    = ltm.addDefnMap(name, term)
     } yield modified
 
-  def withAxiom(name: Name,
-                ty: Expr,
-                ltm: LeanToTermMonix,
-                mods: Vector[Modification]) =
+  def withAxiom(
+      name: Name,
+      ty: Expr,
+      ltm: LeanToTermMonix,
+      mods: Vector[Modification]
+  ): Task[LeanToTermMonix] =
     for {
       pr <- parse(ty, Vector(), ltm, mods)
       (typ, ltm) = pr
@@ -533,9 +580,11 @@ object LeanToTermMonix {
       } yield res
   }
 
-  def withMod(mod: Modification,
-              ltm: LeanToTermMonix,
-              mods: Vector[Modification]): Task[LeanToTermMonix] = mod match {
+  def withMod(
+      mod: Modification,
+      ltm: LeanToTermMonix,
+      mods: Vector[Modification]
+  ): Task[LeanToTermMonix] = mod match {
     case ind: IndMod =>
       val isPropn = isPropnFn(ind.ty)
       val name    = ind.name
@@ -545,10 +594,12 @@ object LeanToTermMonix {
         indTyp             = toTyp(indTypTerm)
         typF               = name.toString :: indTyp
         withTyp            = ltm1.addDefnMap(name, typF)
-        introsPair <- foldAxiomSeq(Vector(),
-                                   ind.intros,
-                                   Task.pure(withTyp),
-                                   mods)
+        introsPair <- foldAxiomSeq(
+          Vector(),
+          ind.intros,
+          Task.pure(withTyp),
+          mods
+        )
         (intros, withIntros) = introsPair
         typValuePar <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePar match {
@@ -558,8 +609,10 @@ object LeanToTermMonix {
             IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
         }
       } yield
-        LeanToTermMonix(withIntros.defnMap,
-                        withIntros.termIndModMap + (ind.name -> indMod))
+        LeanToTermMonix(
+          withIntros.defnMap,
+          withIntros.termIndModMap + (ind.name -> indMod)
+        )
     case ax: AxiomMod =>
       withAxiom(ax.name, ax.ty, ltm, mods)
     case df: DefMod =>
@@ -578,17 +631,18 @@ object LeanToTermMonix {
     case QuotMod =>
       import quotient._
       Vector(quot, quotLift, quotMk, quotInd).map(_.name)
-    case mod =>
+    case _ =>
       Vector(mod.name)
   }
 
-  def findMod(name: Name, mods: Vector[Modification]) =
+  def findMod(name: Name, mods: Vector[Modification]): Option[Modification] =
     mods.find((mod) => modNames(mod).contains(name))
 
   def defFromMod(
       name: Name,
       ltm: LeanToTermMonix,
-      mods: Vector[Modification]): Option[Task[(Term, LeanToTermMonix)]] =
+      mods: Vector[Modification]
+  ): Option[Task[(Term, LeanToTermMonix)]] =
     findMod(name, mods).map { (mod) =>
       pprint.log(s"Using ${mod.name}")
       for {
@@ -599,7 +653,8 @@ object LeanToTermMonix {
   def indModFromMod(
       name: Name,
       ltm: LeanToTermMonix,
-      mods: Vector[Modification]): Option[Task[(TermIndMod, LeanToTermMonix)]] =
+      mods: Vector[Modification]
+  ): Option[Task[(TermIndMod, LeanToTermMonix)]] =
     findMod(name, mods).map { (mod) =>
       for {
         ltm1 <- withMod(mod, ltm, mods)
@@ -608,19 +663,23 @@ object LeanToTermMonix {
 
 }
 
-case class RecFoldException(indMod: TermIndMod,
-                            recFn: Term,
-                            argsFmlyTerm: Vector[Term],
-                            vec: Vector[Term],
-                            fail: ApplnFailException)
-    extends IllegalArgumentException(
-      s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail")
+case class RecFoldException(
+    indMod: TermIndMod,
+    recFn: Term,
+    argsFmlyTerm: Vector[Term],
+    vec: Vector[Term],
+    fail: ApplnFailException
+) extends IllegalArgumentException(
+      s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail"
+    )
 
-case class LeanToTermMonix(defnMap: Map[Name, Term],
-                           termIndModMap: Map[Name, TermIndMod]) { self =>
+case class LeanToTermMonix(
+    defnMap: Map[Name, Term],
+    termIndModMap: Map[Name, TermIndMod]
+) { self =>
   import LeanToTermMonix._
 
-  def defnOpt(exp: Expr) =
+  def defnOpt(exp: Expr): Option[Term] =
     exp match {
       case Const(name, _) => defnMap.get(name)
       case _              => None
@@ -657,9 +716,11 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
         } yield res
 
       case App(f, a) =>
-        Task
-          .defer(parse(f, vars))
-          .zipMap(Task.defer(parse(a, vars)))(applyFuncWit)
+        Task.parZip2(
+          Task
+            .defer(parse(f, vars)),
+          Task.defer(parse(a, vars))
+        )(applyFuncWit)
       case Lam(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
@@ -668,7 +729,7 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
           value <- parse(body, x +: vars)
         } yield
           value match {
-            case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) => fn
+            case FormalAppln(fn, argu) if argu == x && fn.indepOf(x) => fn
             case y if domain.prettyName.toString == "_"            => y
             case _ =>
               lambda(x)(value)
@@ -707,14 +768,18 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
       vec.map(parse(_, vars))
     }
 
-  def parseTypVec(vec: Vector[Expr],
-                  vars: Vector[Term]): Task[Vector[Typ[Term]]] =
+  def parseTypVec(
+      vec: Vector[Expr],
+      vars: Vector[Term]
+  ): Task[Vector[Typ[Term]]] =
     Task.gather {
       vec.map(parseTyp(_, vars))
     }
 
-  def parseSymVec(vec: Vector[(Name, Expr)],
-                  vars: Vector[Term]): Task[Vector[(Name, Term)]] =
+  def parseSymVec(
+      vec: Vector[(Name, Expr)],
+      vars: Vector[Term]
+  ): Task[Vector[(Name, Term)]] =
     Task.gather {
       for {
         (name, expr) <- vec
@@ -724,24 +789,24 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
         } yield (name, name.toString :: tp)
     }
 
-  def parseSym(name: Name, ty: Expr, vars: Vector[Term]) =
+  def parseSym(name: Name, ty: Expr, vars: Vector[Term]): Task[Term] =
     parseTyp(ty, vars).map(name.toString :: _)
 
-  def parseVar(b: Binding, vars: Vector[Term]) =
+  def parseVar(b: Binding, vars: Vector[Term]): Task[Term] =
     parseSym(b.prettyName, b.ty, vars)
 
-  def addDefnMap(name: Name, term: Term) =
+  def addDefnMap(name: Name, term: Term): LeanToTermMonix =
     self.copy(defnMap = self.defnMap + (name -> term))
 
-  def addDefnVal(name: Name, value: Expr, tp: Expr) =
+  def addDefnVal(name: Name, value: Expr, tp: Expr): Task[LeanToTermMonix] =
     parse(value, Vector())
       .map((t) => addDefnMap(name, t))
 
-  def addAxiom(name: Name, ty: Expr) =
+  def addAxiom(name: Name, ty: Expr): Task[LeanToTermMonix] =
     parseSym(name, ty, Vector())
       .map(addDefnMap(name, _))
 
-  def addAxioms(axs: Vector[(Name, Expr)]) = {
+  def addAxioms(axs: Vector[(Name, Expr)]): Task[LeanToTermMonix] = {
     val taskVec = axs.map {
       case (name, ty) => parseSym(name, ty, Vector()).map((t) => (name, t))
     }
@@ -786,8 +851,10 @@ case class LeanToTermMonix(defnMap: Map[Name, Term],
           IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
       }
     } yield
-      LeanToTermMonix(withTypDef.defnMap ++ namedIntros,
-                      termIndModMap + (ind.name -> indMod))
+      LeanToTermMonix(
+        withTypDef.defnMap ++ namedIntros,
+        termIndModMap + (ind.name -> indMod)
+      )
   }
 
   def add(mod: Modification): Task[LeanToTermMonix] = mod match {

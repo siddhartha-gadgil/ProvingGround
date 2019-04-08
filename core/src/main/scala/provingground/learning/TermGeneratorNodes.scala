@@ -718,6 +718,16 @@ class TermGeneratorNodes[InitState](
         }
     }
 
+  def targetInducFuncs(
+                        ind: ExstInducDefn,
+                        target: Typ[Term]
+                      ): Option[Term] =
+    goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
+      case (dom, targ) =>
+        val fnOpt = ind.ind.inducOpt(dom, targ)
+        fnOpt
+    }
+
   /**
     * Node for recursive definitions picking an inductive definition, generating a domain and
     * invoking the node getting codomain and recursion data
@@ -734,6 +744,13 @@ class TermGeneratorNodes[InitState](
       InducDefns,
       defn => targetInducFuncsFolded(defn, typ),
       termsWithTyp(typ)
+    )
+
+  def targetInducBackNode(typ: Typ[Term]): MapOpt[ExstInducDefn, Term] =
+    MapOpt[ExstInducDefn, Term](
+      defn => targetInducFuncs(defn, typ),
+      InducDefns,
+      Terms
     )
 
   val targetInducNodeFamily
@@ -1404,6 +1421,31 @@ case class TermState(
     terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
   lazy val thmsBySt: FD[Typ[Term]] =
     typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
+
+  lazy val unknownStatements: FD[Typ[Term]] =
+    typs.filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0).safeNormalized
+
+  lazy val remainingGoals: FD[Typ[Term]] =
+    goals.filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0).safeNormalized
+
+  def subGoalsFromFunc(f: Term): FD[Typ[Term]] = f match {
+    case fn: FuncLike[u, v] =>
+      val typ = fn.dom
+      if (thmsByPf(typ) == 0) {
+        val base = FD.unif(typ: Typ[Term])
+        val x = typ.Var
+        val g = fn(x.asInstanceOf[u])
+        val rec =
+          if (g.typ.dependsOn(x)) FD.empty[Typ[Term]]
+          else subGoalsFromFunc(g)
+        (base ++ rec).safeNormalized
+      }
+      else {
+        val pfs = terms.filter(_.typ == typ)
+        pfs.flatMap(pf => subGoalsFromFunc(fn(pf.asInstanceOf[u])))
+      }
+    case _ => FD.empty
+  }
 
   lazy val thmWeights: Vector[(Typ[Term], Double, Double, Double)] =
     (for {
