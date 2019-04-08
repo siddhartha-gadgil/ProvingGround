@@ -720,7 +720,7 @@ case class LeanToTermMonix(
           Task
             .defer(parse(f, vars)),
           Task.defer(parse(a, vars))
-        )(applyFuncWit)
+        ).map{case (fn, x) => applyFuncWit(fn, x)}
       case Lam(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
