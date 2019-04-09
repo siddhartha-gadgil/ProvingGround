@@ -4,7 +4,7 @@ import provingground._
 import translation._
 
 import scala.util.Try
-import ujson.Js
+import ujson.{Js, Obj}
 import StanfordParser._
 import TreeToMath._
 import edu.stanford.nlp.trees.Tree
@@ -13,15 +13,15 @@ import scala.util.Try
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object ParserRoutes extends cask.Routes {
-  def parseResult(txt: String) = {
+object NLPParser{
+  def parseResult(txt: String): Obj = {
     val texParsed: TeXParsed          = TeXParsed(txt)
     val tree: Tree                    = texParsed.parsed
     val baseExpr: MathExpr                = mathExprTree(tree).get
     val strictParsed                  = mathExpr(tree).nonEmpty
     def polyExprOpt : Option[MathExpr] =
-      // None
-      texParsed.polyParsed.map(mathExpr(_)).flatten.headOption
+    // None
+      texParsed.polyParsed.flatMap(mathExpr(_)).headOption
     val expr =
       if (strictParsed) baseExpr
       else {
@@ -34,7 +34,6 @@ object ParserRoutes extends cask.Routes {
     val proseTree: NlpProse.ProseTree = texParsed.proseTree
     // println(proseTree.view)
     val code = {
-      // println(pprint.PPrinter.BlackWhite(expr))
       pprint.PPrinter.BlackWhite(expr, height=500)
     }
     // Try(format(s"object ConstituencyParsed {$expr}").get)
@@ -47,6 +46,12 @@ object ParserRoutes extends cask.Routes {
       "deptree" -> proseTree.view.replace("\n", "")
     )
   }
+}
+
+import NLPParser._
+
+object ParserRoutes extends cask.Routes {
+
 
   @cask.get("/nlp.html")
   def nlp(): String = {
@@ -82,6 +87,6 @@ object ParserRoutes extends cask.Routes {
 }
 
 object ParserCask extends cask.Main(ParserRoutes, MantleRoutes, LeanRoutes) {
-  override def port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
-  override def host = Try(sys.env("IP")).getOrElse("localhost")
+  override def port: Int = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
+  override def host: String = Try(sys.env("IP")).getOrElse("localhost")
 }

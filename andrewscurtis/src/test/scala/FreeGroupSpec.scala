@@ -171,7 +171,7 @@ class PresentationSpec extends FlatSpec {
     val d      = Word(Vector(-2, -1, 3, 2, 1, 2))
     val p      = Presentation(Vector(a, b, c), 3)
     val result = Presentation(Vector(a, d, c), 3)
-    assert(p.conjRelators(1, 0) === result)
+    assert(p.conjRelations(1, 0) === result)
     assert(Presentation.conjRelators(p, 1, 0) === result)
   }
 

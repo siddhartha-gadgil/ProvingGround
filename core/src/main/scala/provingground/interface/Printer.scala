@@ -6,6 +6,9 @@ import pprint.PPrinter
 import provingground.translation.FansiShow._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
+import ujson._
+
+import scala.collection.mutable.ArrayBuffer
 
 trait Printer[A] {
   def viewLines(a: A, lines: Int): String
@@ -84,6 +87,25 @@ object Printer extends FallbackPrinter {
     case Quotient(x, y) => s"${exprView(x)} / ${exprView(y)}"
     case Coeff(node, rv) => s"coefficient(node = ${view(node)}, variable = ${view(rv)})"
     case IsleScale(boat, elem) => s"isle_scale(boat = ${view(boat)}, element = ${view(elem)})"
+  }
+
+  implicit val jsPrinter : Printer[ujson.Obj] = new Printer[Obj] {
+    def viewValue(js: ujson.Value, lines: Int): String =
+      js match {
+        case Str(value) => value
+        case Obj(value) => viewLines(value, lines)
+        case Arr(value) =>
+          value.map(viewValue(_, lines)).mkString("\n\n")
+        case Num(value) => value.toString
+        case bool: Bool => bool.toString()
+        case Null => ""
+      }
+
+    override def viewLines(a: Obj, lines: Int): String =
+      a.value.map{
+        case (title, value) =>
+          s"$title:\n"
+      }.mkString("\n\n")
   }
 }
 
