@@ -116,11 +116,8 @@ object LeanRoutes extends cask.Routes {
   def memInducDefs(): String =
     uwrite(ujson.Arr(termIndModMap.values.toSeq.map(indModView): _*))
 
-  @cask.get("mods/:file")
-  def getMods(file: String): String = {
+  def getModsJs(file: String) : ujson.Value = {
     val path    = resource / file
-    // pprint.log(path.toString)
-    // pprint.log(read.lines(path).take(10))
     val in      = new java.io.ByteArrayInputStream(read.bytes(path))
     val newMods = getModsFromStream(in)
     mods ++= newMods
@@ -133,8 +130,12 @@ object LeanRoutes extends cask.Routes {
       }
       ujson.Obj("type" -> tp, "name" -> ujson.Str(m.name.toString))
     }: _*)
-//    pprint.log(res)
-    uwrite(res)
+    res
+  }
+
+  @cask.get("mods/:file")
+  def getMods(file: String): String = {
+    uwrite(getModsJs(file))
   }
 
   var channels: ArrayBuffer[WebSocketChannel] = ArrayBuffer()

@@ -46,6 +46,11 @@ object NLPParser{
       "deptree" -> proseTree.view.replace("\n", "")
     )
   }
+
+  def parseView(txt: String): Obj = {
+    val obj = parseResult(txt)
+    Obj("tree" -> obj("tree"), "expr" -> obj("expr"), "parsed" -> obj("parsed"))
+  }
 }
 
 import NLPParser._
@@ -69,7 +74,7 @@ object ParserRoutes extends cask.Routes {
     ujson.write(parseResult(txt))
   }
 
-  val mainHTML =
+  val mainHTML: String =
     """
       |   <link rel="stylesheet" href="resources/css/nlp.css">
       |    <div id="constituency-parser"></div>
