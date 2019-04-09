@@ -35,33 +35,33 @@ object AndrewsCurtis {
   case class DynDst[V, E](vrtdst: FiniteDistribution[V],
                           edgdst: FiniteDistribution[E],
                           cntn: Double) {
-    def probV(v: V) = vrtdst(v)
+    def probV(v: V): Double = vrtdst(v)
 
-    def probE(e: E) = edgdst(e)
+    def probE(e: E): Double = edgdst(e)
 
-    def ++(that: DynDst[V, E]) =
+    def ++(that: DynDst[V, E]): DynDst[V, E] =
       DynDst(vrtdst ++ that.vrtdst, edgdst ++ that.edgdst, cntn + that.cntn)
 
-    def addV(v: V, p: Double) = DynDst(vrtdst + (v, p), edgdst, cntn)
+    def addV(v: V, p: Double): DynDst[V, E] = DynDst(vrtdst + (v, p), edgdst, cntn)
 
-    def addE(e: E, p: Double) = DynDst(vrtdst, edgdst + (e, p), cntn)
+    def addE(e: E, p: Double): DynDst[V, E] = DynDst(vrtdst, edgdst + (e, p), cntn)
 
-    def updtV(vd: FiniteDistribution[V]) = DynDst(vd, edgdst, cntn)
+    def updtV(vd: FiniteDistribution[V]): DynDst[V, E] = DynDst(vd, edgdst, cntn)
 
-    def updtE(ed: FiniteDistribution[E]) = DynDst(vrtdst, ed, cntn)
+    def updtE(ed: FiniteDistribution[E]): DynDst[V, E] = DynDst(vrtdst, ed, cntn)
 
-    def updtC(c: Double) = DynDst(vrtdst, edgdst, c)
+    def updtC(c: Double): DynDst[V, E] = DynDst(vrtdst, edgdst, c)
 
-    def addC(p: Double) = DynDst(vrtdst, edgdst, cntn + p)
+    def addC(p: Double): DynDst[V, E] = DynDst(vrtdst, edgdst, cntn + p)
 
-    def normalized(c: Double) =
+    def normalized(c: Double): DynDst[V, E] =
       DynDst(vrtdst.normalized(c), edgdst.normalized(c), cntn)
 
-    def flatten = DynDst(vrtdst.flatten, edgdst.flatten, cntn)
+    def flatten: DynDst[V, E] = DynDst(vrtdst.flatten, edgdst.flatten, cntn)
   }
 
   object DynDst {
-    def empty[V, E] =
+    def empty[V, E]: DynDst[V, E] =
       DynDst(FiniteDistribution.empty[V], FiniteDistribution.empty[E], 0)
   }
 
@@ -143,21 +143,21 @@ object AndrewsCurtis {
   def allMoves(pres: Presentation): MoveType => List[Move] = {
     case ACStabMv => List(ACStab)
     case ACDeStabMv =>
-      if (pres.ACstabilized) List(ACDeStab) else List()
+      if (pres.acStabilized) List(ACDeStab) else List()
     case RtMultMv =>
       val n = pres.rank
-      (for (j <- 0 to n - 1; k <- 0 to n - 1 if j != k)
+      (for (j <- 0 until n; k <- 0 until n if j != k)
         yield RtMult(j, k)).toList
     case LftMultMv =>
       val n = pres.rank
-      (for (j <- 0 to n - 1; k <- 0 to n - 1 if j != k)
+      (for (j <- 0 until n; k <- 0 until n if j != k)
         yield LftMult(j, k)).toList
     case ConjMv =>
       val n = pres.rank
-      (for (j <- 0 to n - 1; k <- -n to n if k != 0) yield Conj(j, k)).toList
+      (for (j <- 0 until n; k <- -n to n if k != 0) yield Conj(j, k)).toList
     case InvMv =>
       val n = pres.rank
-      (for (j <- 0 to n - 1) yield Inv(j)).toList
+      (for (j <- 0 until n) yield Inv(j)).toList
   }
 
   private val vrtdst = FiniteDistribution(Set(Weighted(nullpres, 1.0)))
@@ -171,39 +171,39 @@ object AndrewsCurtis {
   }
 
   case object ACStab extends Move {
-    def apply(p: Presentation) = p.ACstab
+    def apply(p: Presentation): FreeGroups.Presentation = p.acStab
 
-    val mvType = ACStabMv
+    val mvType: ACMoveType = ACStabMv
   }
 
   case object ACDeStab extends Move {
-    def apply(p: Presentation) = p.ACdestab
+    def apply(p: Presentation): FreeGroups.Presentation = p.acDestabilized
 
-    val mvType = ACStabMv
+    val mvType : ACMoveType = ACStabMv
   }
 
   case class RtMult(k: Int, l: Int) extends Move {
-    def apply(p: Presentation) = p.rtmult(k, l)
+    def apply(p: Presentation): FreeGroups.Presentation = p.rtmult(k, l)
 
-    val mvType = ACStabMv
+    val mvType : ACMoveType = ACStabMv
   }
 
   case class LftMult(k: Int, l: Int) extends Move {
-    val mvType = ACStabMv
+    val mvType : ACMoveType = ACStabMv
 
-    def apply(p: Presentation) = p.lftmult(k, l)
+    def apply(p: Presentation): FreeGroups.Presentation = p.lftmult(k, l)
   }
 
   case class Conj(k: Int, l: Int) extends Move {
-    def apply(p: Presentation) = p.conj(k, l)
+    def apply(p: Presentation): FreeGroups.Presentation = p.conj(k, l)
 
-    val mvType = ACStabMv
+    val mvType : ACMoveType= ACStabMv
   }
 
   case class Inv(k: Int) extends Move {
-    def apply(p: Presentation) = p.inv(k)
+    def apply(p: Presentation): FreeGroups.Presentation = p.inv(k)
 
-    val mvType = ACStabMv
+    val mvType : ACMoveType = ACStabMv
   }
 
   /*
@@ -222,26 +222,26 @@ object AndrewsCurtis {
 
   case class AtomicChain(head: Vert) extends Chain {
     // choose the head, then don't continue
-    def prob(d: DynDstbn) = d.probV(head) * (1 - d.cntn)
+    def prob(d: DynDstbn): Double = d.probV(head) * (1 - d.cntn)
 
-    val foot = head
+    val foot: Vert = head
 
-    lazy val moveStack = List()
+    lazy val moveStack : List[Move] = List()
   }
 
   case class RecChain(start: Chain, move: Move) extends Chain {
-    val head = move(start.head)
+    val head: Vert = move(start.head)
 
-    lazy val foot = start.foot
+    lazy val foot: Vert = start.foot
 
-    lazy val moveStack = move :: start.moveStack
+    lazy val moveStack: List[Move] = move :: start.moveStack
     /*
      * start.prob = probability of reaching start and not continuing.
      * multiply by the probability of continuing from start and making the given move.
      * The latter involves diving by the multiplicity of the move type.
      * We need to multiply by the probability of not continuing, but this is part of start.prob already.
      */
-    def prob(d: DynDstbn) =
+    def prob(d: DynDstbn): Double =
       start.prob(d) * d.probE(move.mvType) * d.cntn / multiplicity(head.rank)(
         move.mvType)
   }
@@ -265,17 +265,17 @@ object AndrewsCurtis {
           subchains(start, tail :+ move, accum + addMoves(chain, tail))
       }
 
-    def apply(foot: Vert, moveStack: List[Move]) =
+    def apply(foot: Vert, moveStack: List[Move]): Chain =
       addMoves(AtomicChain(foot), moveStack)
 
-    def offspring(chain: Chain) =
+    def offspring(chain: Chain): List[RecChain] =
       for (mvTyp <- MoveTypeList; mv <- allMoves(chain.head)(mvTyp))
         yield RecChain(chain, mv)
 
-    def fullnextgen(chains: Set[Chain]) =
+    def fullnextgen(chains: Set[Chain]): Set[Chain] =
       (chains flatMap (offspring(_))) ++ chains
 
-    def prunednextgen(chains: Set[Chain], prune: Chain => Boolean) =
+    def prunednextgen(chains: Set[Chain], prune: Chain => Boolean): Set[Chain] =
       (chains filter (prune(_)) flatMap (offspring(_))) ++ chains
 
     /*
@@ -295,7 +295,7 @@ object AndrewsCurtis {
           accum.addV(head, mult * (1 - d.cntn)) addC (-mult * d.probV(head))
         case chn @ RecChain(start, move) =>
           // Number of moves of the given move type for the presentation.
-          val multplcty = multiplicity(chain.head.rank)(move.mvType)
+          val multplcty: Long = multiplicity(chain.head.rank)(move.mvType)
           val newmult =
             mult * d.probE(move.mvType) * d.cntn / multplcty // to be passed on to the previous chain
           val mvTypWeight = start.prob(d) * d.cntn / multplcty
@@ -309,7 +309,7 @@ object AndrewsCurtis {
   /*
    * The distribution on presentations via head of chains induced by that on presentations, moves and continuation.
    */
-  def dstbn(chains: Set[Chain], d: DynDstbn) = {
+  def dstbn(chains: Set[Chain], d: DynDstbn): FiniteDistribution[Vert] = {
     val fdchains = FiniteDistribution(
       for (chn <- chains) yield Weighted(chn, chn.prob(d)))
     (fdchains map ((chn: Chain) => chn.head)).flatten
@@ -320,7 +320,7 @@ object AndrewsCurtis {
    */
   def backpropdstbn(chains: Set[Chain],
                     feedback: FiniteDistribution[Vert],
-                    d: DynDstbn) = {
+                    d: DynDstbn): DynDst[_root_.provingground.andrewscurtis.FreeGroups.Presentation, MoveType] = {
     //    val empty = FiniteDistribution[DynObj](Set())
     val empty = DynDst(FiniteDistribution.empty[Presentation],
                        FiniteDistribution.empty[MoveType],
@@ -343,7 +343,7 @@ object AndrewsCurtis {
    * A high (raw) feedback is for a simple distribution needing a lot of moves.
    */
   def dstbnFeedback(presdstbn: FiniteDistribution[Vert],
-                    bgwt: Vert => Double) = {
+                    bgwt: Vert => Double): FiniteDistribution[Vert] = {
     val dstbnpmf = presdstbn.pmf
     val fdbkrawpmf = for (Weighted(pres, prob) <- dstbnpmf)
       yield (Weighted(pres, bgwt(pres) / prob))
@@ -361,8 +361,8 @@ object AndrewsCurtis {
                 d: DynDstbn,
                 bgwt: Vert => Double,
                 epsilon: Double,
-                threshold: Double = 0) = {
-    val presdstbn       = dstbn(chains.toSet, d)
+                threshold: Double = 0): DynDst[FreeGroups.Presentation, AndrewsCurtis.ACMoveType] = {
+    val presdstbn       = dstbn(chains, d)
     val feedback        = dstbnFeedback(presdstbn, bgwt) * epsilon
     val shift: DynDstbn = backpropdstbn(chains, feedback, d)
     (d ++ shift).normalized(threshold)
@@ -383,7 +383,7 @@ object AndrewsCurtis {
   /*
    * Presentations in the support of the evolving distribution.
    */
-  def presSupp(d: DynDstbn) = (d.vrtdst.pmf map (_.elem)).toSet
+  def presSupp(d: DynDstbn): Set[_root_.provingground.andrewscurtis.FreeGroups.Presentation] = (d.vrtdst.pmf map (_.elem)).toSet
 
   /*
    * The initial chains, based on the dynamic distribution, from which chains are generated.
@@ -410,14 +410,14 @@ object AndrewsCurtis {
   def tuneFlowCutoff(d: DynDstbn,
                      bgwt: Vert => Double,
                      epsilon: Double,
-                     cutoff: Double) = {
+                     cutoff: Double): DynDst[FreeGroups.Presentation, AndrewsCurtis.ACMoveType] = {
     dstbnflow(chainGenCutoff(initChains(d), d, cutoff), d, bgwt, epsilon)
   }
 
   /*
    * The best chain for a presentation. We record these (perhaps in MongoDb) while forgetting other chains.
    */
-  def bestChain(pres: Vert, chains: Set[Chain], d: DynDstbn) =
+  def bestChain(pres: Vert, chains: Set[Chain], d: DynDstbn): Chain =
     chains filter (_.head == pres) maxBy (_.prob(d))
 
   /*
@@ -447,7 +447,7 @@ object AndrewsCurtis {
                           tuneLoops: Int = 25,
                           growLoops: Int = 15) {
 
-    def bgwt = ACbgWt(presCntn, wrdCntn)
+    def bgwt: Vert => Double = ACbgWt(presCntn, wrdCntn)
 
     def tuneflow: DynDstbn => DynDstbn =
       tuneFlowCutoff(_, bgwt, epsilon, cutoff)

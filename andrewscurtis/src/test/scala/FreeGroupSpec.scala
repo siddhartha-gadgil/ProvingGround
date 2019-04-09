@@ -182,8 +182,8 @@ class PresentationSpec extends FlatSpec {
     val d      = Word(Vector(4))
     val p      = Presentation(Vector(a, b, c), 3)
     val result = Presentation(Vector(d, a, b, c), 4)
-    assert(p.ACstab === result)
-    assert(Presentation.ACstab(p) === result)
+    assert(p.acStab === result)
+    assert(Presentation.acStabilized(p) === result)
   }
 
   it should "allow Tietze stablization, i.e, adding the identity word" in {
@@ -202,8 +202,8 @@ class PresentationSpec extends FlatSpec {
     val d  = Word(Vector(4))
     val p1 = Presentation(Vector(a, b, c), 4)
     val p2 = Presentation(Vector(a, b, d), 4)
-    assert(p1.ACstabilized === false)
-    assert(p2.ACstabilized === true)
+    assert(p1.acStabilized === false)
+    assert(p2.acStabilized === true)
   }
 }
 

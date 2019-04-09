@@ -18,22 +18,22 @@ object FreeGroups {
   /**
     * String for a letter, e.g. a, a! (for a inverse)
     */
-  def letterString(n: Int) =
+  def letterString(n: Int): String =
     if (n > 0) ('a' + n - 1).toChar.toString + "."
     else ('a' - n - 1).toChar.toString + "!."
 
   /**
     * unicode string for a letter, e.g. "a" or "\bar{a}"
     */
-  def letterUnic(n: Int) =
+  def letterUnic(n: Int): String =
     if (n > 0) ('a' + n - 1).toChar.toString
     else ('a' - n - 1).toChar.toString + '\u0305'.toString
 
   object Word {
     implicit val freeGroup: Group[Word] = new Group[Word] {
       val empty                     = Word(Vector())
-      def combine(x: Word, y: Word) = x * y
-      def inverse(x: Word)          = x.inv
+      def combine(x: Word, y: Word): Word = x * y
+      def inverse(x: Word): Word = x.inv
     }
 
     implicit def rw: RW[Word] = macroRW
@@ -82,7 +82,7 @@ object FreeGroups {
     /**
       * word from a string.
       */
-    def apply(w: String) = fromString(w)
+    def apply(w: String): Word = fromString(w)
 
     /**
       * the identity
@@ -92,7 +92,7 @@ object FreeGroups {
 
   /**
     * A word in a free group.
-    * @param ls letters of the words represented as integers; 1 represents a, -1 represents a^{-1}
+    * @param ls letters of the words represented as integers; 1 represents a, -1 represents `a^{-1}`
     */
   case class Word(ls: Vector[Int]) extends AnyVal {
 
@@ -101,47 +101,48 @@ object FreeGroups {
       */
     def reduce: Word = {
       ls match {
-        case x +: y +: zs if x == -y => Word(zs).reduce
         case x +: ys =>
-          if (Word(ys).isReduced) x +: Word(ys).reduce
-          else (x +: Word(ys).reduce).reduce
+          Word(ys).reduce match{
+            case Word(head +: tail) if head == -x => Word(tail)
+            case that => x +: that
+          }
         case _ => this
       }
     }
 
-    def isReduced = (this == reduce)
+    def isReduced: Boolean = (this == reduce)
 
     /**
       * string representation
       */
-    def toPlainString =
+    def toPlainString: String =
       ((ls map (letterString(_))).foldLeft("")(_ + _)).dropRight(1)
 
-    override def toString = if (ls.isEmpty) "1" else toUnicode
+    override def toString: String = if (ls.isEmpty) "1" else toUnicode
 
-    def ++(that: Word) = Word(ls ++ that.ls).reduce
+    def ++(that: Word): Word = Word(ls ++ that.ls).reduce
 
     /**
       * unicode representation.
       */
-    def toUnicode = ((ls map (letterUnic(_))).foldLeft("")(_ + _))
+    def toUnicode: String = ((ls map (letterUnic(_))).foldLeft("")(_ + _))
 
     /**
       * letter prepended to word, not reduced
       */
-    def +:(let: Int) = Word(let +: ls)
+    def +:(let: Int): Word = Word(let +: ls)
 
-    def :+(let: Int) = Word(ls :+ let)
-
-    /**
-      * inverse
-      */
-    def inv = Word(ls.reverse map ((n) => -n))
+    def :+(let: Int): Word = Word(ls :+ let)
 
     /**
       * inverse
       */
-    def ! = inv
+    def inv: Word = Word(ls.reverse map ((n) => -n))
+
+    /**
+      * inverse
+      */
+    def ! : Word = inv
 
     /**
       * returns this to kth power.
@@ -155,33 +156,33 @@ object FreeGroups {
     /**
       * raise to nth power.
       */
-    def ^(n: Int) = pow(n)
+    def ^(n: Int): Word = pow(n)
 
     /**
       * multiply and reduce
       */
-    def *(that: Word) = Word(ls ++ that.ls).reduce
+    def *(that: Word): Word = Word(ls ++ that.ls).reduce
 
     /**
       * conjugate
       */
-    def conj(that: Word) = (that.inv * this * that).reduce
+    def conj(that: Word): Word = (that.inv * this * that).reduce
 
     /**
       * conjugate
       */
-    def ^(that: Word) = conj(that)
+    def ^(that: Word): Word = conj(that)
 
     /**
       * conjugate by a generator (or its inverse)
       */
-    def conjGen(k: Int) = Word((-k) +: (ls :+ (k))).reduce
+    def conjGen(k: Int): Word = Word((-k) +: (ls :+ (k))).reduce
 
     /**
       * conjugate by a generator (or its inverse).
       * @param k index of generator, starting at 1.
       */
-    def ^^(k: Int) = conjGen(k)
+    def ^^(k: Int): Word = conjGen(k)
 
     /**
       * largest generator in the free group.
@@ -194,13 +195,13 @@ object FreeGroups {
     /**
       * remove generators of rank and above.
       */
-    def rmvtop(rank: Int) = Word(ls filter (_.abs < rank))
+    def rmvtop(rank: Int): Word = Word(ls filter (_.abs < rank))
   }
 
   /**
     * weight of a word, for a generation process where we extend with some probability, picking letters at random.
     */
-  def wordWeight(w: Word, wrdCntn: Double, rank: Double) =
+  def wordWeight(w: Word, wrdCntn: Double, rank: Double): Double =
     (1 - wrdCntn) * math.pow(wrdCntn / (2 * rank), w.ls.length)
 
   /*
@@ -219,12 +220,12 @@ object FreeGroups {
     /**
       * number of relations
       */
-    val sz = rels.length
+    val sz: Int = rels.length
 
     /**
       * string without  unicode.
       */
-    def toPlainString = {
+    def toPlainString: String = {
       val gens =
         (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toVector
           .mkString(",")
@@ -236,7 +237,7 @@ object FreeGroups {
     /**
       * unicode string
       */
-    def toUnicode = {
+    def toUnicode: String = {
       val gens =
         (for (j <- 0 to rank - 1) yield ('a' + j).toChar.toString).toVector
           .mkString(",")
@@ -248,12 +249,12 @@ object FreeGroups {
     /**
       * unicode string
       */
-    override def toString = toUnicode
+    override def toString: String = toUnicode
 
     /**
       * defect of the presentation.
       */
-    val defect = rank - sz
+    val defect: Int = rank - sz
 
     /**
       * largest generator appearing in relation.
@@ -266,7 +267,7 @@ object FreeGroups {
     /**
       * returns presentation with ith element inverted.
       */
-    def inv(k: Int) = {
+    def inv(k: Int): Presentation = {
       val result =
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(i).inv else rels(i)
@@ -277,7 +278,7 @@ object FreeGroups {
     /**
       * presentation with kth relation multiplied on the right by the lth relation.
       */
-    def rtmult(k: Int, l: Int) = {
+    def rtmult(k: Int, l: Int): Presentation = {
       val result =
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(k) * rels(l) else rels(i)
@@ -285,7 +286,7 @@ object FreeGroups {
       Presentation(result.toVector, rank)
     }
 
-    def rtmultinv(k: Int, l: Int) = {
+    def rtmultinv(k: Int, l: Int): Presentation = {
       val result =
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(k) * (rels(l).inv) else rels(i)
@@ -296,7 +297,7 @@ object FreeGroups {
     /**
       * presentation with kth relation multiplied on the right by the ith relation.
       */
-    def lftmult(k: Int, l: Int) = {
+    def lftmult(k: Int, l: Int): Presentation = {
       val result =
         (0 to sz - 1) map { (i) =>
           if (i == k) rels(l) * rels(k) else rels(i)
@@ -304,7 +305,7 @@ object FreeGroups {
       Presentation(result.toVector, rank)
     }
 
-    def lftmultinv(k: Int, l: Int) = {
+    def lftmultinv(k: Int, l: Int): Presentation = {
       val result =
         (0 to sz - 1) map { (i) =>
           if (i == k) (rels(l).inv) * rels(k) else rels(i)
@@ -312,7 +313,7 @@ object FreeGroups {
       Presentation(result.toVector, rank)
     }
 
-    def transpose(k: Int, l: Int) = {
+    def transpose(k: Int, l: Int): Presentation = {
       def flipped: Int => Word = {
         case `k` => rels(l)
         case `l` => rels(k)
@@ -326,9 +327,9 @@ object FreeGroups {
     /**
       * presentation with kth relation conjugated by generator with index l.
       */
-    def conj(k: Int, l: Int) = {
+    def conj(k: Int, l: Int): Presentation = {
       val result =
-        (0 to sz - 1) map { (i) =>
+        0 until sz map { (i) =>
           if (i == k) rels(k) ^^ l else rels(i)
         }
       Presentation(result.toVector, rank)
@@ -337,9 +338,9 @@ object FreeGroups {
     /**
       * presentation with the kth relation conjugated by the lth relation
       */
-    def conjRelators(k: Int, l: Int) = {
+    def conjRelations(k: Int, l: Int): Presentation = {
       val result =
-        (0 to sz - 1) map { (i) =>
+        0 until sz map { (i) =>
           if (i == k) rels(k) ^ rels(l) else rels(i)
         }
       Presentation(result.toVector, rank)
@@ -348,22 +349,22 @@ object FreeGroups {
     /**
       * Andrews-Curtis stabilization
       */
-    def ACstab = Presentation(Word(Vector(rank + 1)) +: rels, rank + 1)
+    def acStab: Presentation = Presentation(Word(Vector(rank + 1)) +: rels, rank + 1)
 
     /**
       * Tietze stabilization.
       */
-    def ttzStab = Presentation(Word(Vector()) +: rels, rank)
+    def ttzStab: Presentation = Presentation(Word(Vector()) +: rels, rank)
 
     /**
       * returns whether Andrews-Curtis stabilized.
       */
-    def ACstabilized = rels contains (Word(Vector(rank)))
+    def acStabilized: Boolean = rels contains (Word(Vector(rank)))
 
     /**
       * (unsafe) Andrews-Curtis destabilization.
       */
-    def ACdestab = {
+    def acDestabilized: Presentation = {
       val newrels =
         rels filter ((w: Word) => w != Word(Vector(rank + 1))) map
           (_.rmvtop(rank))
@@ -378,7 +379,7 @@ object FreeGroups {
     /**
       *  parses string to a presentation.
       */
-    def fromString(s: String) = {
+    def fromString(s: String): Presentation = {
       val ss                      = s.replaceAll("[ <>]", "")
       val genWord +: relWord +: _ = ss.split(";").toVector
       val rank                    = genWord.split(",").length
@@ -392,7 +393,7 @@ object FreeGroups {
     def apply(rank: Int, ws: String*): Presentation =
       Presentation(ws.toVector map (Word.fromString), rank)
 
-    def balanced(ws: String*) = {
+    def balanced(ws: String*): Presentation = {
       val rels = ws.toVector map (Word.fromString(_))
       Presentation(rels, rels.length)
     }
@@ -405,16 +406,16 @@ object FreeGroups {
     /**
       * moves implemented as functions
       */
-    def id(pres: Presentation)                      = pres
-    def inv(pres: Presentation, k: Int)             = pres.inv(k)
-    def rtmult(pres: Presentation, k: Int, l: Int)  = pres.rtmult(k, l)
-    def lftmult(pres: Presentation, k: Int, l: Int) = pres.lftmult(k, l)
-    def conj(pres: Presentation, k: Int, l: Int)    = pres.conj(k, l)
-    def conjRelators(pres: Presentation, k: Int, l: Int) =
-      pres.conjRelators(k, l)
-    def ACstab(pres: Presentation)   = pres.ACstab
-    def ttzStab(pres: Presentation)  = pres.ttzStab
-    def ACdestab(pres: Presentation) = pres.ACdestab
+    def id(pres: Presentation): Presentation = pres
+    def inv(pres: Presentation, k: Int): Presentation = pres.inv(k)
+    def rtmult(pres: Presentation, k: Int, l: Int): Presentation = pres.rtmult(k, l)
+    def lftmult(pres: Presentation, k: Int, l: Int): Presentation = pres.lftmult(k, l)
+    def conj(pres: Presentation, k: Int, l: Int): Presentation = pres.conj(k, l)
+    def conjRelators(pres: Presentation, k: Int, l: Int): Presentation =
+      pres.conjRelations(k, l)
+    def acStabilized(pres: Presentation): Presentation = pres.acStab
+    def ttzStab(pres: Presentation): Presentation = pres.ttzStab
+    def acDestabilized(pres: Presentation): Presentation = pres.acDestabilized
 
     /**
       * weight where number of relations is fixed.
@@ -428,7 +429,7 @@ object FreeGroups {
 
   def presentationWeight(pres: Presentation,
                          presCntn: Double,
-                         wrdCntn: Double) = {
+                         wrdCntn: Double): Double = {
     val wordwts = pres.rels map (wordWeight(_, wrdCntn, pres.rank))
     (1 - presCntn) * math.pow(presCntn, pres.sz) * ((wordwts :\ 1.0)(_ * _))
   }
@@ -436,7 +437,7 @@ object FreeGroups {
   /*
    * Empty presentation
    */
-  val nullpres = Presentation(Vector(), 0)
+  val nullpres: Presentation = Presentation(Vector(), 0)
 
   implicit def writeWord: WriteString[FreeGroups.Word] =
     WriteString.simple[Word]
