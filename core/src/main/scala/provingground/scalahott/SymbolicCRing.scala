@@ -94,7 +94,7 @@ class SymbolicCRing[A: Ring] { self =>
       l.reduceRight((a: LocalTerm, b: LocalTerm) => sum(a)(b))
     }
 
-    def newobj: RepTerm[A] = LocalTyp.obj
+    def newobj: LocalTerm = LocalTyp.obj
 
     val head: LocalTerm = elems.head
 
@@ -198,6 +198,8 @@ class SymbolicCRing[A: Ring] { self =>
 
     def newobj: LocalTerm = LocalTyp.obj
 
+    def exponent(x: LocalTerm): Int = multElems.getOrElse(x, 0)
+
     lazy val atomize: List[LocalTerm] = {
       multElems.toList flatMap {
         case (x, e) =>
@@ -297,9 +299,9 @@ class SymbolicCRing[A: Ring] { self =>
   case object sum extends Func[LocalTerm, Func[LocalTerm, LocalTerm]] {
     val dom: LocalTyp.type = LocalTyp
 
-    val codom: FuncTyp[LocalTerm, RepTerm[A]] = LocalTyp ->: LocalTyp
+    val codom: FuncTyp[LocalTerm, LocalTerm] = LocalTyp ->: LocalTyp
 
-    val typ: FuncTyp[LocalTerm, Func[LocalTerm, RepTerm[A]]] = dom ->: codom
+    val typ: FuncTyp[LocalTerm, Func[LocalTerm, LocalTerm]] = dom ->: codom
 
     def subs(x: Term, y: Term): sum.type = this
 
@@ -307,7 +309,7 @@ class SymbolicCRing[A: Ring] { self =>
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
 
-    def act(x: LocalTerm): Func[RepTerm[A], RepTerm[A]] = x match {
+    def act(x: LocalTerm): Func[LocalTerm, LocalTerm] = x match {
       case Literal(a) =>
         if (a == zero) {
           val x = LocalTyp.Var
@@ -341,7 +343,7 @@ class SymbolicCRing[A: Ring] { self =>
 
     val codom: LocalTyp.type = LocalTyp
 
-    val typ: FuncTyp[LocalTerm, RepTerm[A]] = LocalTyp ->: LocalTyp
+    val typ: FuncTyp[LocalTerm, LocalTerm] = LocalTyp ->: LocalTyp
 
     def subs(x: Term, y: Term): AddLiteral = this
 
@@ -374,7 +376,7 @@ class SymbolicCRing[A: Ring] { self =>
 
     val codom: LocalTyp.type = LocalTyp
 
-    val typ: FuncTyp[LocalTerm, RepTerm[A]] = LocalTyp ->: LocalTyp
+    val typ: FuncTyp[LocalTerm, LocalTerm] = LocalTyp ->: LocalTyp
 
     def subs(x: Term, y: Term): AddTerm = this
 
@@ -400,7 +402,7 @@ class SymbolicCRing[A: Ring] { self =>
     }
   }
 
-  def funcSum(f: LocalTerm => LocalTerm, g: LocalTerm => LocalTerm): Func[RepTerm[A], LocalTerm] = {
+  def funcSum(f: LocalTerm => LocalTerm, g: LocalTerm => LocalTerm): Func[LocalTerm, LocalTerm] = {
     val x = LocalTyp.Var
     lmbda(x)(sum(f(x))(g(x)))
   }
@@ -446,9 +448,9 @@ class SymbolicCRing[A: Ring] { self =>
   case object prod extends Func[LocalTerm, Func[LocalTerm, LocalTerm]] {
     val dom: LocalTyp.type = LocalTyp
 
-    val codom: FuncTyp[LocalTerm, RepTerm[A]] = LocalTyp ->: LocalTyp
+    val codom: FuncTyp[LocalTerm, LocalTerm] = LocalTyp ->: LocalTyp
 
-    val typ: FuncTyp[LocalTerm, Func[LocalTerm, RepTerm[A]]] = dom ->: codom
+    val typ: FuncTyp[LocalTerm, Func[LocalTerm, LocalTerm]] = dom ->: codom
 
     def subs(x: Term, y: Term): prod.type = this
 
@@ -484,11 +486,11 @@ class SymbolicCRing[A: Ring] { self =>
     override def toString = "prod"
   }
 
-  val divides: FuncLike[RepTerm[A], FuncLike[RepTerm[A], IdentityTyp[LocalTerm]]] = {
+  val divides: FuncLike[LocalTerm, FuncLike[LocalTerm, SigmaTyp[LocalTerm, Equality[LocalTerm]]]] = {
     val x = LocalTyp.Var
     val y = LocalTyp.Var
     val z = LocalTyp.Var
-    x :~> (y :~> (prod(z)(x) =:= y))
+    x :~> (y :~> (z &: (prod(z)(x) =:= y)))
   }
 
   case class multLiteral(b: A)
@@ -504,7 +506,7 @@ class SymbolicCRing[A: Ring] { self =>
 
     val codom: LocalTyp.type = LocalTyp
 
-    val typ: FuncTyp[LocalTerm, RepTerm[A]] = LocalTyp ->: LocalTyp
+    val typ: FuncTyp[LocalTerm, LocalTerm] = LocalTyp ->: LocalTyp
 
     def subs(x: Term, y: Term): multLiteral = this
 
@@ -538,7 +540,7 @@ class SymbolicCRing[A: Ring] { self =>
 
     val codom: LocalTyp.type = LocalTyp
 
-    val typ: FuncTyp[LocalTerm, RepTerm[A]] = LocalTyp ->: LocalTyp
+    val typ: FuncTyp[LocalTerm, LocalTerm] = LocalTyp ->: LocalTyp
 
     def subs(x: Term, y: Term): multTerm = this
 

@@ -29,6 +29,11 @@ case class TypSolver(solve: Typ[Term] => Option[Term] = (_) => None)
 object TypSolver{
   implicit def rw: RW[TypSolver] =
     readwriter[String].bimap((_) => "empty-solver", (_) => TypSolver())
+
+  val idSolver = TypSolver{
+    case id :IdentityTyp[u] if id.lhs == id.rhs => Some(id.lhs.refl)
+    case _ => None
+  }
 }
 
 /**
