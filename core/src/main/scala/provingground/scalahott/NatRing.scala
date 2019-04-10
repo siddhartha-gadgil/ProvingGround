@@ -15,7 +15,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
 
   override lazy val predicate: SafeLong => Boolean = n => 0 <= n
 
-  override def toString    = "Nat"
+  override def toString: String = "Nat"
   val x: Nat               = "x" :: LocalTyp
   val succ: Func[Nat, Nat] = lmbda(x)(x + 1)
 

@@ -7,10 +7,18 @@ import spire.implicits._
 
 import scala.language.implicitConversions
 
-object IntRing extends SymbolicCRing[SafeLong]{
+object IntRing extends SymbolicCRing[SafeLong] {
   type Ints = LocalTerm
+
+  override def toString: String = "Ints"
 
   val IntTyp: IntRing.LocalTyp.type = LocalTyp
 
   implicit def intLiteral(n: Int): Ints = Literal(n)
+
+  val natIncl: SymbolicCRing.Homomorphism[SafeLong, SafeLong] =
+    SymbolicCRing.Homomorphism(NatRing, this, identity[SafeLong])
+
+  val ratIncl: SymbolicCRing.Homomorphism[SafeLong, Rational] =
+    SymbolicCRing.Homomorphism(this, QField, (x: SafeLong) => x: Rational)
 }

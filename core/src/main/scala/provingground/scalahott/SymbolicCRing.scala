@@ -58,30 +58,37 @@ class SymbolicCRing[A: Ring] { self =>
   }
 
   object Literal extends ScalaSym[LocalTerm, A](LocalTyp, predicate) {
-    def fromInt(n: Int): LocalTerm  = Literal(ring.fromInt(n))
+    def fromInt(n: Int): LocalTerm = Literal(ring.fromInt(n))
   }
 
   object Comb {
     def unapply(term: Term): Option[(Op, LocalTerm, LocalTerm)] = term match {
       case MiscAppln(MiscAppln(op, x), y) =>
         Try(
-          (op.asInstanceOf[Op],
-           x.asInstanceOf[LocalTerm],
-           y.asInstanceOf[LocalTerm])).toOption
+          (
+            op.asInstanceOf[Op],
+            x.asInstanceOf[LocalTerm],
+            y.asInstanceOf[LocalTerm]
+          )
+        ).toOption
       case _ => None
     }
 
-    def apply(op: Func[LocalTerm, Func[LocalTerm, LocalTerm]],
-              x: LocalTerm,
-              y: LocalTerm) =
+    def apply(
+        op: Func[LocalTerm, Func[LocalTerm, LocalTerm]],
+        x: LocalTerm,
+        y: LocalTerm
+    ) =
       FormalAppln(FormalAppln(op, x), y)
   }
 
   case class SigmaTerm(elems: Set[LocalTerm])
       extends LocalTerm
       with FoldedTerm[LocalTerm] {
-    require(elems.size > 1,
-            s"Cannot create Sigma term of set $elems with less than 2 elements")
+    require(
+      elems.size > 1,
+      s"Cannot create Sigma term of set $elems with less than 2 elements"
+    )
 
     override def toString: String = elems.mkString("(", " + ", ")")
 
@@ -118,9 +125,10 @@ class SymbolicCRing[A: Ring] { self =>
   }
 
   object SigmaTerm {
-    def reduce(el: Iterable[LocalTerm]) : LocalTerm = {
-      if (el.isEmpty) Literal(zero) else
-      if (el.size == 1) el.head else SigmaTerm(el.toSet)
+    def reduce(el: Iterable[LocalTerm]): LocalTerm = {
+      if (el.isEmpty) Literal(zero)
+      else if (el.size == 1) el.head
+      else SigmaTerm(el.toSet)
     }
 
     import LitProd.addReduce
@@ -155,19 +163,20 @@ class SymbolicCRing[A: Ring] { self =>
     /**
       * (optionally) returns a single term (w.r.t. +) after summing if simplification takes place.
       */
-    def addReduce(x: LocalTerm, y: LocalTerm): Option[LocalTerm] = (x, y) match {
-      case (t, z) if z == Literal(zero) => Some(t)
-      case (z, t) if z == Literal(zero) => Some(t)
-      case (LitProd(a, u), LitProd(b, v)) if u == v =>
-        Some(LitProd(a + b, u))
-      case (LitProd(a, u), v) if u == v =>
-        Some(LitProd(ring.plus(a, ring.one), u))
-      case (v, LitProd(a, u)) if u == v =>
-        Some(LitProd(ring.plus(a, ring.one), u))
-      case (u, v) if u == v =>
-        Some(LitProd(two, u))
-      case _ => None
-    }
+    def addReduce(x: LocalTerm, y: LocalTerm): Option[LocalTerm] =
+      (x, y) match {
+        case (t, z) if z == Literal(zero) => Some(t)
+        case (z, t) if z == Literal(zero) => Some(t)
+        case (LitProd(a, u), LitProd(b, v)) if u == v =>
+          Some(LitProd(a + b, u))
+        case (LitProd(a, u), v) if u == v =>
+          Some(LitProd(ring.plus(a, ring.one), u))
+        case (v, LitProd(a, u)) if u == v =>
+          Some(LitProd(ring.plus(a, ring.one), u))
+        case (u, v) if u == v =>
+          Some(LitProd(two, u))
+        case _ => None
+      }
   }
 
   /**
@@ -284,7 +293,7 @@ class SymbolicCRing[A: Ring] { self =>
           case _                       => None
         }
       case FormalAppln(r, b: LocalTerm) if reciprocalOpt.contains(r) => Some(b)
-      case _                                                        => None
+      case _                                                         => None
     }
 
     def base(y: LocalTerm): LocalTerm = y match {
@@ -296,7 +305,6 @@ class SymbolicCRing[A: Ring] { self =>
       case Reciprocal(a) => -1
       case _             => 1
     }
-
 
     object Formal {
       def apply(x: LocalTerm) = FormalAppln(reciprocal, x)
@@ -314,7 +322,8 @@ class SymbolicCRing[A: Ring] { self =>
 
     def newobj: Func[LocalTerm, Func[LocalTerm, LocalTerm]] =
       throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)")
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
 
     def act(x: LocalTerm): Func[LocalTerm, LocalTerm] = x match {
       case Literal(a) =>
@@ -356,7 +365,8 @@ class SymbolicCRing[A: Ring] { self =>
 
     def newobj: Func[LocalTerm, LocalTerm] =
       throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)")
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
 
     def act(y: LocalTerm): LocalTerm = y match {
       case Literal(b)                         => Literal(a + b)
@@ -389,7 +399,8 @@ class SymbolicCRing[A: Ring] { self =>
 
     def newobj: Func[LocalTerm, LocalTerm] =
       throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)")
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
 
     def act(y: LocalTerm): LocalTerm = {
       //      println(s"AddTerm($x) applied to $y")
@@ -409,22 +420,26 @@ class SymbolicCRing[A: Ring] { self =>
     }
   }
 
-  def funcSum(f: LocalTerm => LocalTerm, g: LocalTerm => LocalTerm): Func[LocalTerm, LocalTerm] = {
+  def funcSum(
+      f: LocalTerm => LocalTerm,
+      g: LocalTerm => LocalTerm
+  ): Func[LocalTerm, LocalTerm] = {
     val x = LocalTyp.Var
     lmbda(x)(sum(f(x))(g(x)))
   }
 
   case class AdditiveMorphism[U <: LocalTerm with Subs[U]](
       base: Func[LocalTerm, U],
-      op: (U, U) => U)
-      extends Func[LocalTerm, LocalTerm] {
+      op: (U, U) => U
+  ) extends Func[LocalTerm, LocalTerm] {
     val dom: LocalTyp.type = LocalTyp
 
     val codom: Typ[U] = base.codom
 
     val typ: FuncTyp[LocalTerm, U] = LocalTyp ->: codom
 
-    def subs(x: Term, y: Term): AdditiveMorphism[U] = AdditiveMorphism(base.subs(x, y), op)
+    def subs(x: Term, y: Term): AdditiveMorphism[U] =
+      AdditiveMorphism(base.subs(x, y), op)
 
     def newobj: AdditiveMorphism[U] = AdditiveMorphism(base.newobj, op)
 
@@ -436,9 +451,11 @@ class SymbolicCRing[A: Ring] { self =>
   }
 
   @annotation.tailrec
-  final def posPower(x: LocalTerm,
-                     n: Int,
-                     accum: LocalTerm = Literal(one)): LocalTerm = {
+  final def posPower(
+      x: LocalTerm,
+      n: Int,
+      accum: LocalTerm = Literal(one)
+  ): LocalTerm = {
     require(n >= 0, s"attempted to compute negative power $n of $x recursively")
     if (n == 0) accum
     else posPower(x, n - 1, prod(x)(accum))
@@ -463,7 +480,8 @@ class SymbolicCRing[A: Ring] { self =>
 
     def newobj: Func[LocalTerm, Func[LocalTerm, LocalTerm]] =
       throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)")
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
 
     def act(x: LocalTerm): Func[LocalTerm, LocalTerm] = x match {
       case Literal(a) =>
@@ -474,8 +492,10 @@ class SymbolicCRing[A: Ring] { self =>
           val x = LocalTyp.Var
           lmbda(x)(Literal(zero))
         } else
-          AdditiveMorphism(multLiteral(a),
-                           (x: LocalTerm, y: LocalTerm) => sum(x)(y))
+          AdditiveMorphism(
+            multLiteral(a),
+            (x: LocalTerm, y: LocalTerm) => sum(x)(y)
+          )
       case Comb(op, u, v) if op == prod =>
         composition(prod(u), prod(v))
       case Comb(op, u, v) if op == sum =>
@@ -493,22 +513,24 @@ class SymbolicCRing[A: Ring] { self =>
     override def toString = "prod"
   }
 
-  val divides: FuncLike[LocalTerm, FuncLike[LocalTerm, SigmaTyp[LocalTerm, Equality[LocalTerm]]]] = {
+  val divides
+      : FuncLike[LocalTerm, FuncLike[LocalTerm, SigmaTyp[LocalTerm, Equality[
+        LocalTerm
+      ]]]] = {
     val x = LocalTyp.Var
     val y = LocalTyp.Var
     val z = LocalTyp.Var
     x :~> (y :~> (z &: (prod(z)(x) =:= y)))
   }
 
-
   case class multLiteral(b: A)
       extends Func[LocalTerm, LocalTerm]
       with MiscAppln {
     val func: prod.type = prod
 
-    val arg: LocalTerm  = Literal(b)
+    val arg: LocalTerm = Literal(b)
 
-    val x : LocalTerm = Literal(b)
+    val x: LocalTerm = Literal(b)
 
     val dom: LocalTyp.type = LocalTyp
 
@@ -520,7 +542,8 @@ class SymbolicCRing[A: Ring] { self =>
 
     def newobj: Func[LocalTerm, LocalTerm] =
       throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)")
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
 
     def act(y: LocalTerm): LocalTerm = y match {
       case Literal(a)                          => Literal(b * a)
@@ -552,9 +575,10 @@ class SymbolicCRing[A: Ring] { self =>
 
     def subs(x: Term, y: Term): multTerm = this
 
-    def newobj: Func[LocalTerm, LocalTerm]  =
+    def newobj: Func[LocalTerm, LocalTerm] =
       throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)")
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
 
     def act(y: LocalTerm): LocalTerm = y match {
       case Literal(a)                          => prod(Literal(a))(x)
@@ -572,7 +596,7 @@ class SymbolicCRing[A: Ring] { self =>
   implicit val cringStructure: CRing[LocalTerm] = new CRing[LocalTerm] {
     val zero: LocalTerm = Literal(ring.zero)
 
-    val one: LocalTerm  = Literal(ring.one)
+    val one: LocalTerm = Literal(ring.one)
 
     def plus(x: LocalTerm, y: LocalTerm): LocalTerm = self.sum(x)(y)
 
@@ -602,5 +626,34 @@ object SymbolicCRing {
         case _             => None
       }
     case _ => None
+  }
+
+  case class Homomorphism[A: Ring, B: Ring](
+      domRing: SymbolicCRing[A],
+      codomRing: SymbolicCRing[B],
+      f: A => B
+  ) extends Func[RepTerm[A], RepTerm[B]] {
+    def act(
+        arg: RepTerm[A]
+    ): RepTerm[B] = arg match {
+      case domRing.Literal(x) => codomRing.Literal(f(x))
+      case domRing.Comb(op, x, y) if op == domRing.sum => codomRing.sum(act(x))(act(y))
+      case domRing.Comb(op, x, y) if op == domRing.prod => codomRing.prod(act(x))(act(y))
+      case domRing.SigmaTerm(elems) => codomRing.SigmaTerm(elems.map(act))
+      case domRing.PiTerm(multElems) => codomRing.PiTerm(multElems.map{case (x, n) => (act(x), n)})
+    }
+
+    val dom: domRing.LocalTyp.type = domRing.LocalTyp
+
+    val codom: Typ[RepTerm[B]] = codomRing.LocalTyp
+
+    val typ: FuncTyp[RepTerm[A], RepTerm[B]] = dom ->: codom
+
+    def subs(x: Term, y: Term): Func[RepTerm[A], RepTerm[B]] = this
+
+    def newobj: Func[RepTerm[A], RepTerm[B]] =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
   }
 }
