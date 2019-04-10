@@ -204,10 +204,10 @@ class LeanParser(initMods: Seq[Modification],
     for {
       indMod <- getMemTermIndMod(name, exp)
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-      argsFmlyTerm <- parseVec(argsFmly, vars).cancelable
+      argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
       recFnT = getRec(indMod, argsFmlyTerm)
       _      = pprint.log(s"$vars")
-      vec <- parseVec(xs, vars).cancelable // TODO should interleave data with intro rules.
+      vec <- parseVec(xs, vars).executeWithOptions(_.enableAutoCancelableRunLoops) // TODO should interleave data with intro rules.
       vecInter = indMod.interleaveData(vec) // Use this
       _ = pprint.log(s"${vec.map(_.fansi)}")
       _ = if (vec != vecInter) {
@@ -232,7 +232,7 @@ class LeanParser(initMods: Seq[Modification],
     for {
       indMod <- getMemTermIndMod(name, exp)
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-      argsFmlyTerm <- parseVec(argsFmly, vars).cancelable
+      argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
       indOpt = indMod match {
         case sm: SimpleIndMod => Some(sm.getInd(argsFmlyTerm.init))
         case _                => None
@@ -244,17 +244,17 @@ class LeanParser(initMods: Seq[Modification],
         (recArgsVec, residue) = LeanParser.splitVec(ind.seqDom.introArgsVec, ys)
         indicesVec            = recDataExpr.map(LeanInterface.varsUsed)
         resOptTask: Task[Option[Term]] = for { // Task
-          recData <- parseVec(recDataExpr, vars).cancelable
+          recData <- parseVec(recDataExpr, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
           recFn   <- recFnT
-          withRecDataTask = Task(foldFuncLean(recFn, recData)).cancelable
+          withRecDataTask = Task(foldFuncLean(recFn, recData)).executeWithOptions(_.enableAutoCancelableRunLoops)
           optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
-            case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices).cancelable
+            case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices).executeWithOptions(_.enableAutoCancelableRunLoops)
           })
           optParsedAll <- optParsedAllTask
           withRecArgsOptTask = applyFuncOptFold(withRecDataTask.map(Some(_)),
                                                 optParsedAll.flatten)
           withRecArgsOpt <- withRecArgsOptTask
-          residueTerms   <- parseVec(residue, vars).cancelable
+          residueTerms   <- parseVec(residue, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
           foldOpt = withRecArgsOpt.map((f) =>
             applyFuncFold(Task.pure(f), residueTerms))
           fold <- Task.sequence(foldOpt.toVector)
@@ -309,18 +309,18 @@ class LeanParser(initMods: Seq[Modification],
         case App(f, a) =>
           // pprint.log(s"Applying $f to $a")
           for {
-            func <- parse(f, vars).cancelable
-            arg  <- parse(a, vars).cancelable
+            func <- parse(f, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+            arg  <- parse(a, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
             res = fold(func)(arg)
             // _ = pprint.log(s"got result for $f($a)")
           } yield res
         case Lam(domain, body) =>
           // pprint.log(s"lambda $domain, $body")
           for {
-            domTerm <- parse(domain.ty, vars).cancelable
+            domTerm <- parse(domain.ty, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
             domTyp  <- Task.eval(toTyp(domTerm))
             x = getNextVarName(vars, maxIndex(body)) :: domTyp
-            value <- parse(body, x +: vars).cancelable
+            value <- parse(body, x +: vars).executeWithOptions(_.enableAutoCancelableRunLoops)
           } yield
             value match {
               case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
@@ -342,10 +342,10 @@ class LeanParser(initMods: Seq[Modification],
         case Pi(domain, body) =>
           // pprint.log(s"pi $domain, $body")
           for {
-            domTerm <- parse(domain.ty, vars).cancelable
-            domTyp  <- Task.eval(toTyp(domTerm)).cancelable
+            domTerm <- parse(domain.ty, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+            domTyp  <- Task.eval(toTyp(domTerm)).executeWithOptions(_.enableAutoCancelableRunLoops)
             x = getNextVarName(vars, maxIndex(body)) :: domTyp
-            value <- parse(body, x +: vars).cancelable
+            value <- parse(body, x +: vars).executeWithOptions(_.enableAutoCancelableRunLoops)
             cod   <- Task.eval(toTyp(value))
           } yield
             if (LeanInterface.usesVar(body, 0)) piDefn(x)(cod)
@@ -353,11 +353,11 @@ class LeanParser(initMods: Seq[Modification],
         case Let(domain, value, body) =>
           // pprint.log(s"let $domain, $value, $body")
           for {
-            domTerm <- parse(domain.ty, vars).cancelable
+            domTerm <- parse(domain.ty, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
             domTyp  <- Task.eval(toTyp(domTerm))
             x = getNextVarName(vars, maxIndex(body)) :: domTyp
-            valueTerm <- parse(value, vars).cancelable
-            bodyTerm  <- parse(body, x +: vars).cancelable
+            valueTerm <- parse(value, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+            bodyTerm  <- parse(body, x +: vars).executeWithOptions(_.enableAutoCancelableRunLoops)
           } yield bodyTerm.replace(x, valueTerm)
         case e => Task.raiseError(UnParsedException(e))
       }
@@ -388,8 +388,8 @@ class LeanParser(initMods: Seq[Modification],
       case Vector() => Task.pure(Vector())
       case x +: ys =>
         for {
-          head <- parse(x, vars).cancelable
-          tail <- parseVec(ys, vars).cancelable
+          head <- parse(x, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+          tail <- parseVec(ys, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
         } yield (head +: tail)
     }
 
@@ -400,8 +400,8 @@ class LeanParser(initMods: Seq[Modification],
       case Vector() => Task.pure(Vector())
       case (x, m) +: ys =>
         for {
-          tail <- parseOptVec(ys, vars, indices).cancelable
-          headOpt <- if (indices.contains(m)) parse(x, vars).cancelable.map(Option(_))
+          tail <- parseOptVec(ys, vars, indices).executeWithOptions(_.enableAutoCancelableRunLoops)
+          headOpt <- if (indices.contains(m)) parse(x, vars).executeWithOptions(_.enableAutoCancelableRunLoops).map(Option(_))
           else Task.pure(None)
         } yield (headOpt +: tail)
     }
@@ -421,7 +421,7 @@ class LeanParser(initMods: Seq[Modification],
 
   def withDefn(name: Name, exp: Expr): Task[Unit] =
     for {
-      term <- parse(exp, Vector()).cancelable
+      term <- parse(exp, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
       _ = {
         pprint.log(s"Defined $name"); log(Defined(name, term));
         defnMap += name -> term
@@ -430,7 +430,7 @@ class LeanParser(initMods: Seq[Modification],
 
   def withAxiom(name: Name, ty: Expr): Task[Unit] =
     for {
-      typ <- parse(ty, Vector()).cancelable
+      typ <- parse(ty, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
       term = (name.toString) :: toTyp(typ)
       _ = {
         pprint.log(s"Defined $name"); log(Defined(name, term));
@@ -455,7 +455,7 @@ class LeanParser(initMods: Seq[Modification],
       Task(accum)
     case (name, ty) +: ys =>
       for {
-        typ <- parse(ty, Vector()).cancelable
+        typ <- parse(ty, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
         // (typ, ltm1) = pr
         term = (name.toString) :: toTyp(typ)
         _ = {
@@ -471,7 +471,7 @@ class LeanParser(initMods: Seq[Modification],
       val isPropn = isPropnFn(ind.ty)
       val name    = ind.name
       for {
-        indTypTerm <- parse(ind.ty, Vector()).cancelable
+        indTypTerm <- parse(ind.ty, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
         // (indTypTerm, ltm1) = pr
         indTyp = toTyp(indTypTerm)
         typF   = name.toString :: indTyp
