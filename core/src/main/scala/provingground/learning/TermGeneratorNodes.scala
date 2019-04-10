@@ -30,8 +30,20 @@ object TypSolver{
   implicit def rw: RW[TypSolver] =
     readwriter[String].bimap((_) => "empty-solver", (_) => TypSolver())
 
-  val idSolver = TypSolver{
-    case id :IdentityTyp[u] if id.lhs == id.rhs => Some(id.lhs.refl)
+  def partial(pf: PartialFunction[Typ[Term], Term]): TypSolver = TypSolver(pf.lift)
+
+  val idSolver: TypSolver = TypSolver.partial {
+    case id: IdentityTyp[u] if id.lhs == id.rhs => id.lhs.refl
+  }
+
+  import scalahott._
+  val leqNatSolver: TypSolver = TypSolver{
+    case NatRing.LEQ(a, b) => NatRing.findLEQ(a, b)
+    case _ => None
+  }
+
+  val divNatSolver: TypSolver = TypSolver{
+    case NatRing.DIV(a, b) => NatRing.findDivisibilty(a, b)
     case _ => None
   }
 }

@@ -20,7 +20,7 @@ import spire.implicits._
   *
   * Any term should be of the following forms:
   *
-  * With respect to addition, if p denoted non-literal terms indecomposable with respect to addition (e.g. a product):
+  * With respect to addition, if `p` denotes non-literal terms indecomposable with respect to addition (e.g. a product):
   *
   * * literal c
   * * p
@@ -116,6 +116,11 @@ class SymbolicCRing[A: Ring] { self =>
   }
 
   object SigmaTerm {
+    def reduce(el: Iterable[LocalTerm]) : LocalTerm = {
+      if (el.isEmpty) Literal(zero) else
+      if (el.size == 1) el.head else SigmaTerm(el.toSet)
+    }
+
     import LitProd.addReduce
 
     /**
@@ -492,6 +497,7 @@ class SymbolicCRing[A: Ring] { self =>
     val z = LocalTyp.Var
     x :~> (y :~> (z &: (prod(z)(x) =:= y)))
   }
+
 
   case class multLiteral(b: A)
       extends Func[LocalTerm, LocalTerm]
