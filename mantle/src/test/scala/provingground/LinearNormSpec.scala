@@ -5,7 +5,7 @@ import LinNormBound._
 
 import org.scalatest.FlatSpec
 
-import NatRing.{Literal => nat, _}, QField.{Literal => rat, _},
+import NatRing.{Literal => nat, leq => leqNat, _}, QField.{Literal => rat, _},
 FreeGroup.{Literal => elem, _}
 
 class LinearNormSpec extends FlatSpec {
