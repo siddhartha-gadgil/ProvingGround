@@ -10,157 +10,10 @@ import spire.implicits._
 
 import scala.language.implicitConversions
 
-
-object QField extends SymbolicField[Rational] {
-  override def toString = "Q"
-
-  val QTyp: QField.LocalTyp.type = LocalTyp
-
-  sealed trait PosWit extends Term with Subs[PosWit] {
-    val value: LocalTerm
-
-    lazy val typ = Pos(value)
-
-    def +(that: PosWit) = PosWitSum(this, that)
-  }
-
-  case class PosWitSum(a: PosWit, b: PosWit) extends PosWit {
-    lazy val value: QField.LocalTerm = a.value + b.value
-
-    def newobj: PosWit =
-      throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)"
-      )
-
-    def subs(x: Term, y: Term) = PosWitSum(a.replace(x, y), b.replace(x, y))
-  }
-
-  case class PosWitProd(a: PosWit, b: PosWit) extends PosWit {
-    lazy val value: QField.LocalTerm = a.value * b.value
-
-    def newobj: PosWit =
-      throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)"
-      )
-
-    def subs(x: Term, y: Term) = PosWitSum(a.replace(x, y), b.replace(x, y))
-  }
-
-  case class PosLiteral(a: Rational) extends PosWit {
-    require(a >= 0, s"Rational number $a not positive")
-
-    val value: QField.LocalTerm = Literal(a)
-
-    def newobj: PosLiteral =
-      throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)"
-      )
-
-    def subs(x: Term, y: Term): PosLiteral = this
-  }
-
-  case object PosZero extends PosWit {
-
-    val value: QField.LocalTerm = Literal(0)
-
-    def newobj: PosZero.type =
-      throw new IllegalArgumentException(
-        s"trying to use the constant $this as a variable (or a component of one)"
-      )
-
-    def subs(x: Term, y: Term): PosZero.type = this
-  }
-
-  case class SymbPosWit(name: AnySym, value: LocalTerm)
-      extends PosWit
-      with Symbolic {
-    override def toString: String = name.toString + " : (" + typ.toString + ")"
-
-    def newobj: SymbPosWit = SymbPosWit(InnerSym[Term](this), value)
-
-    def subs(x: Term, y: Term): PosWit =
-      if (x == this) y.asInstanceOf[PosWit]
-      else {
-        def symbobj(sym: AnySym) = (typ.replace(x, y): Pos).symbObj(sym)
-        symSubs(symbobj)(x, y)(name)
-      }
-  }
-
-  case class Pos(value: LocalTerm) extends Typ[PosWit] with Subs[Pos] {
-    def subs(x: Term, y: Term) = Pos(value.replace(x, y))
-
-    type Obj = PosWit
-
-    val typ: Universe = Type
-
-    def newobj: Pos = Pos(value.newobj)
-
-    def variable(sym: AnySym) = SymbPosWit(sym, value)
-  }
-
-  val x: RepTerm[Rational] = "x" :: LocalTyp
-
-  val y: RepTerm[Rational] = "y" :: LocalTyp
-
-  lazy val leq
-      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], Pos]] = x :~> (y :~> Pos(
-    y - x
-  ))
-
-  // val possum = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x + y))))
-  //
-  // val posprod = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x * y))))
-
-  val dichotomy: FuncLike[RepTerm[Rational], Term] =
-    "positivity-dichotomy" :: (x ~>: (Pos(x) || Pos(-x)))
-
-  val posAndNegPos
-      : FuncLike[RepTerm[Rational], FuncLike[Pos, FuncLike[Pos, Equality[
-        RepTerm[Rational]
-      ]]]] =
-    "positive-and-negation-positive" :: (
-      x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
-    )
-
-  val z: RepTerm[Rational] = "z" :: LocalTyp
-
-  val w: RepTerm[Rational] = "w" :: LocalTyp
-
-  import IdentityTyp.transport
-
-  val transpEqL
-      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
-        RepTerm[Rational],
-        Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
-      ]]] =
-    x :~> (
-      y :~> (z :~> (transport(w :-> (leq(w)(x)))(y)(z)))
-    ) !: x ~>: (
-      y ~>: (
-        z ~>: (
-          (y =:= z) ->: leq(y)(x) ->: leq(z)(x)
-        )
-      )
-    )
-
-  val transpEqR
-      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
-        RepTerm[Rational],
-        Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
-      ]]] =
-    x :~> (
-      y :~> (z :~> (transport(w :-> (leq(x)(w)))(y)(z)))
-    ) !: x ~>: (
-      y ~>: (
-        z ~>: (
-          (y =:= z) ->: leq(x)(y) ->: leq(x)(z)
-        )
-      )
-    )
-}
-
 object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
   type Nat = LocalTerm
+
+  override lazy val predicate: SafeLong => Boolean = n => 0 <= n
 
   override def toString    = "Nat"
   val x: Nat               = "x" :: LocalTyp
@@ -371,7 +224,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
       case _ => None
     }
 
-  def findDivisibilty(x: Nat, y: Nat): Option[AbsPair[Nat, Equality[Nat]]] =
+  def findDivisibility(x: Nat, y: Nat): Option[AbsPair[Nat, Equality[Nat]]] =
     findFactor(x, y).map { z: Nat =>
       DepPair(z, y.refl, divides(x)(y).fibers) !: divides(x)(y)
     }

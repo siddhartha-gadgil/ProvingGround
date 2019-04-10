@@ -37,11 +37,13 @@ import spire.implicits._
 class SymbolicCRing[A: Ring] { self =>
   val ring: Ring[A] = implicitly[Ring[A]]
 
+  lazy val predicate: A => Boolean = (_) => true // override this
+
   import ring.{zero, one}
 
   val two: A = ring.plus(ring.one, ring.one)
 
-  val minusone: LocalTerm = Literal(ring.negate(one))
+  lazy val minusone: LocalTerm = Literal(ring.negate(one))
 
   def negate(x: LocalTerm): LocalTerm = prod(minusone)(x)
 
@@ -55,7 +57,7 @@ class SymbolicCRing[A: Ring] { self =>
     override type Obj = LocalTerm
   }
 
-  object Literal extends ScalaSym[LocalTerm, A](LocalTyp) {
+  object Literal extends ScalaSym[LocalTerm, A](LocalTyp, predicate) {
     def fromInt(n: Int): LocalTerm  = Literal(ring.fromInt(n))
   }
 

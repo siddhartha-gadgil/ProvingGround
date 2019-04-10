@@ -43,7 +43,7 @@ object TypSolver{
   }
 
   val divNatSolver: TypSolver = TypSolver{
-    case NatRing.DIV(a, b) => NatRing.findDivisibilty(a, b)
+    case NatRing.DIV(a, b) => NatRing.findDivisibility(a, b)
     case _ => None
   }
 }
