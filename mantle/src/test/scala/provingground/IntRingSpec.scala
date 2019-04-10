@@ -65,9 +65,9 @@ class IntRingSpec extends FlatSpec {
 
     assert(1 + (n + 2) == n + 3)
 
-//    val fn = lmbda(n)(n * n)
-//
-//    assert(fn(3) == (9: SafeLong))
+    val fn = lmbda(n)(n * n)
+
+    assert(fn(3) == (9: Ints))
 
   }
 }

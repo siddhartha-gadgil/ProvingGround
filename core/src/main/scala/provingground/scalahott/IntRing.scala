@@ -21,4 +21,15 @@ object IntRing extends SymbolicCRing[SafeLong] {
 
   val ratIncl: SymbolicCRing.Homomorphism[SafeLong, Rational] =
     SymbolicCRing.Homomorphism(this, QField, (x: SafeLong) => x: Rational)
+
+  lazy val Positive: Func[RepTerm[SafeLong], Typ[Term]] = {
+    val x = IntTyp.Var
+    x :-> QField.Pos(ratIncl(x))
+  }
+
+  lazy val LEQ: Func[Func[RepTerm[SafeLong], RepTerm[SafeLong]], Typ[Term]] = {
+    val x = IntTyp.Var
+    val y = IntTyp.Var
+    x :-> y :-> Positive(y - x)
+  }
 }
