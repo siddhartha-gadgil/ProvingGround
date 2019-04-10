@@ -4,6 +4,7 @@ import provingground._
 import HoTT._
 import ScalaRep._
 import provingground.induction.{ExstInducDefn, ExstInducStrucs}
+import provingground.translation.TestTrait.A
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -15,7 +16,7 @@ import annotation.tailrec
 object QField extends SymbolicField[Rational] {
   override def toString = "Q"
 
-  val QTyp = LocalTyp
+  val QTyp: QField.LocalTyp.type = LocalTyp
 
   sealed trait PosWit extends Term with Subs[PosWit] {
     val value: LocalTerm
@@ -26,9 +27,9 @@ object QField extends SymbolicField[Rational] {
   }
 
   case class PosWitSum(a: PosWit, b: PosWit) extends PosWit {
-    lazy val value = a.value + b.value
+    lazy val value: QField.LocalTerm = a.value + b.value
 
-    def newobj =
+    def newobj: PosWit =
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
 
@@ -36,9 +37,9 @@ object QField extends SymbolicField[Rational] {
   }
 
   case class PosWitProd(a: PosWit, b: PosWit) extends PosWit {
-    lazy val value = a.value * b.value
+    lazy val value: QField.LocalTerm = a.value * b.value
 
-    def newobj =
+    def newobj: PosWit =
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
 
@@ -48,34 +49,34 @@ object QField extends SymbolicField[Rational] {
   case class PosLiteral(a: Rational) extends PosWit {
     require(a >= 0, s"Rational number $a not positive")
 
-    val value = Literal(a)
+    val value: QField.LocalTerm = Literal(a)
 
-    def newobj =
+    def newobj : PosLiteral =
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
 
-    def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term): PosLiteral = this
   }
 
   case object PosZero extends PosWit {
 
-    val value = Literal(0)
+    val value: QField.LocalTerm  = Literal(0)
 
-    def newobj =
+    def newobj : PosZero.type =
       throw new IllegalArgumentException(
         s"trying to use the constant $this as a variable (or a component of one)")
 
-    def subs(x: Term, y: Term) = this
+    def subs(x: Term, y: Term): PosZero.type = this
   }
 
   case class SymbPosWit(name: AnySym, value: LocalTerm)
       extends PosWit
       with Symbolic {
-    override def toString = name.toString + " : (" + typ.toString + ")"
+    override def toString: String = name.toString + " : (" + typ.toString + ")"
 
-    def newobj = SymbPosWit(InnerSym[Term](this), value)
+    def newobj : SymbPosWit = SymbPosWit(InnerSym[Term](this), value)
 
-    def subs(x: Term, y: Term) =
+    def subs(x: Term, y: Term): PosWit =
       if (x == this) y.asInstanceOf[PosWit]
       else {
         def symbobj(sym: AnySym) = (typ.replace(x, y): Pos).symbObj(sym)
@@ -88,38 +89,38 @@ object QField extends SymbolicField[Rational] {
 
     type Obj = PosWit
 
-    val typ = Type
+    val typ: Universe = Type
 
-    def newobj = Pos(value.newobj)
+    def newobj : Pos = Pos(value.newobj)
 
     def variable(sym: AnySym) = SymbPosWit(sym, value)
   }
 
-  val x = "x" :: LocalTyp
+  val x: RepTerm[Rational] = "x" :: LocalTyp
 
-  val y = "y" :: LocalTyp
+  val y: RepTerm[Rational] = "y" :: LocalTyp
 
-  lazy val leq = x :~> (y :~> Pos(y - x))
+  lazy val leq: FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], Pos]] = x :~> (y :~> Pos(y - x))
 
   // val possum = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x + y))))
   //
   // val posprod = x :~> (y :~> (Pos(x) ~>: (Pos(y) ~>: Pos(x * y))))
 
-  val dichotomy =
+  val dichotomy: FuncLike[RepTerm[Rational], Term] =
     "positivity-dichotomy" :: (x ~>: (Pos(x) || Pos(-x)))
 
-  val posAndNegPos =
+  val posAndNegPos: FuncLike[RepTerm[Rational], FuncLike[Pos, FuncLike[Pos, Equality[RepTerm[Rational]]]]] =
     "positive-and-negation-positive" :: (
       x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
     )
 
-  val z = "z" :: LocalTyp
+  val z: RepTerm[Rational] = "z" :: LocalTyp
 
-  val w = "w" :: LocalTyp
+  val w: RepTerm[Rational] = "w" :: LocalTyp
 
   import IdentityTyp.transport
 
-  val transpEqL =
+  val transpEqL: FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]]]] =
     x :~> (
       y :~> (z :~> (transport(w :-> (leq(w)(x)))(y)(z)))
     ) !: x ~>: (
@@ -130,7 +131,7 @@ object QField extends SymbolicField[Rational] {
       )
     )
 
-  val transpEqR =
+  val transpEqR: FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]]]] =
     x :~> (
       y :~> (z :~> (transport(w :-> (leq(x)(w)))(y)(z)))
     ) !: x ~>: (
@@ -147,13 +148,20 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
   val x: LocalTerm                     = "x" :: LocalTyp
   val succ: Func[LocalTerm, LocalTerm] = lmbda(x)(x + 1)
 
-  val zero = Literal(0)
+  val zero: NatRing.LocalTerm  = Literal(0)
 
-  val NatTyp = LocalTyp
+  val NatTyp: NatRing.LocalTyp.type = LocalTyp
 
   type Nat = LocalTerm
 
   implicit def intLiteral(n: Int): Nat = Literal(n)
+
+  val leq: FuncLike[RepTerm[SafeLong], FuncLike[RepTerm[SafeLong], IdentityTyp[NatRing.LocalTerm]]] = {
+    val x = LocalTyp.Var
+    val y = LocalTyp.Var
+    val z = LocalTyp.Var
+    x :~> (y :~> (sum(z)(x) =:= y))
+  }
 
   def recDefn[U <: Term with Subs[U]](n: SafeLong,
                                       formal: U,
@@ -162,25 +170,25 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
 
   case class Rec[U <: Term with Subs[U]](init: U, g: Func[Nat, Func[U, U]])
       extends RecFunc[Nat, U] { self =>
-    def h = (n: SafeLong) => g(Literal(n))
+    def h: SafeLong => Func[U, U] = (n: SafeLong) => g(Literal(n))
 
     val defnData: Vector[Term] = Vector(init, g)
 
     def fromData(data: Vector[Term]): RecFunc[Nat, U] =
       Rec(data(0).asInstanceOf[U], data(1).asInstanceOf[Func[Nat, Func[U, U]]])
 
-    val dom           = NatTyp
+    val dom: NatRing.LocalTyp.type = NatTyp
     val codom: Typ[U] = init.typ.asInstanceOf[Typ[U]]
 
     val typ: FuncTyp[LocalTerm, U] = dom ->: codom
 
-    def subs(x: Term, y: Term) = Rec(init.replace(x, y), g.replace(x, y))
+    def subs(x: Term, y: Term) : Rec[U] = Rec(init.replace(x, y), g.replace(x, y))
     def newobj: Rec[U]         = this
 
     def act(x: LocalTerm): U = x match {
       case Literal(n) => recDefn(n, init, h)
-      case LiteralSum(n, x) =>
-        recDefn(n, Rec(init, g)(x), (k: SafeLong) => g(sum(Literal(k))(x)))
+      case LiteralSum(n, a) =>
+        recDefn(n, Rec(init, g)(a), (k: SafeLong) => g(sum(Literal(k))(a)))
       case _ => FormalAppln[Nat, U](self, x)
     }
   }
@@ -192,7 +200,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
       with Subs[Induc[U]] { self =>
     def h: SafeLong => Func[U, U] = (n: SafeLong) => g(Literal(n))
 
-    val dom = NatTyp
+    val dom: NatRing.LocalTyp.type = NatTyp
 
     val typ = PiDefn(typFamily)
 
@@ -211,10 +219,10 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
 
     def act(x: LocalTerm): U = x match {
       case Literal(n) => recDefn(n, init, h)
-      case LiteralSum(n, x) =>
+      case LiteralSum(n, a) =>
         recDefn(n,
-                Induc(typFamily, init, g)(x),
-                (k: SafeLong) => g(sum(Literal(k))(x)))
+                Induc(typFamily, init, g)(a),
+                (k: SafeLong) => g(sum(Literal(k))(a)))
       case _ => FormalAppln[Nat, U](self, x)
     }
   }

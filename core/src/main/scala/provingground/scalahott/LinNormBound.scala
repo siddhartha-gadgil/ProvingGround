@@ -1,64 +1,61 @@
 package provingground.scalahott
 
-import provingground._, andrewscurtis.FreeGroups._
-
+import provingground._
+import andrewscurtis.FreeGroups._
 import HoTT._
-
 import LinNormBound._
-
 import spire.implicits._
-
 import spire.math._
-
-import NatRing.{Literal => nat, _}, QField.{Literal => rat, _},
-FreeGroup.{Literal => elem, _}
+import NatRing.{Literal => nat, leq => leqNat, _}
+import QField.{Literal => rat, _}
+import FreeGroup.{Literal => elem, _}
 
 sealed abstract class LinNormBound(val word: Word, val bound: Rational) {
-  lazy val theorem = upbound(elem(word))(rat(bound))
+  lazy val theorem: Pos = upbound(elem(word))(rat(bound))
 
-  val bnd = rat(bound)
+  val bnd: QField.LocalTerm with Subs[QField.LocalTerm] = rat(bound)
 
-  val el = elem(word)
+  val el: FreeGroup.LocalTerm = elem(word)
 
   val wit: Term
 
-  lazy val proof = wit !: theorem
+  lazy val proof: PosWit = wit !: theorem
 
-  lazy val fullProof = lambdaClosure(expvars)(proof)
+  lazy val fullProof: Term = lambdaClosure(expvars)(proof)
 
-  lazy val fullTheorem = fullProof.typ
+  lazy val fullTheorem : Typ[Term] = fullProof.typ
 
-  def ++(that: LinNormBound) = Triang(this, that)
+  def ++(that: LinNormBound): LinNormBound = Triang(this, that)
 
-  def *:(n: Int) = ConjGen(n, this)
+  def *:(n: Int): LinNormBound = ConjGen(n, this)
 
-  def +:(n: Int) = Gen(n) ++ this
+  def +:(n: Int): LinNormBound = Gen(n) ++ this
 }
 
 object LinNormBound {
   // Some variables
-  val g = "g" :: FreeGroup
-  val h = "h" :: FreeGroup
-  val n = "n" :: NatTyp
-  val x = "x" :: QTyp
-  val y = "y" :: QTyp
+  val g: RepTerm[Word] = "g" :: FreeGroup
+  val h: RepTerm[Word] = "h" :: FreeGroup
+  val n: RepTerm[SafeLong] = "n" :: NatTyp
+  val x: RepTerm[Rational] = "x" :: QTyp
+  val y: RepTerm[Rational] = "y" :: QTyp
 
   // The length function
-  val l = "l" :: FreeGroup ->: QTyp
+  val l: Func[RepTerm[Word], RepTerm[Rational]] = "l" :: FreeGroup ->: QTyp
 
   // Notation
-  val upbound = g :~> (x :~> leq(l(g))(x))
-  val pos     = Pos(l(FreeGroup.e))
+  val upbound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], Pos]] = g :~> (x :~> leq(l(g))(x))
+  val pos: Pos = Pos(l(FreeGroup.e))
 
   // The axioms
-  lazy val triang =
+  lazy val triang: FuncLike[RepTerm[Word], FuncLike[RepTerm[Word], PosWit]] =
     "triangle-inequality" :: (
       g ~>: (h ~>: (
         (leq(l(g |+| h))(l(g) + l(h)))
       ))
     )
 
-  lazy val conjInv =
+  lazy val conjInv: FuncLike[RepTerm[Word], FuncLike[RepTerm[Word], Equality[RepTerm[Rational]]]] =
     "conjugacy-invariance" :: (
       g ~>: (
         h ~>: (
@@ -67,12 +64,12 @@ object LinNormBound {
       )
     )
 
-  lazy val symmetry =
+  lazy val symmetry: FuncLike[RepTerm[Word], Equality[RepTerm[Rational]]] =
     "symmetry" :: g ~>: {
       l(g) =:= l(g.inverse)
     }
 
-  lazy val powerBound =
+  lazy val powerBound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], FuncLike[RepTerm[SafeLong], FuncLike[PosWit, PosWit]]]] =
     "homogeneity" :: (
       g ~>: (
         x ~>: (
@@ -85,23 +82,23 @@ object LinNormBound {
       )
     )
 
-  lazy val gen = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
+  lazy val gen: Func[RepTerm[SafeLong], RepTerm[Word]] = (NatRing.LocalTyp.rep -->: FreeGroup.rep)((n: SafeLong) =>
     Word(Vector(n.toInt)))
 
-  val NtoQ = NatRing.incl(QField)
-  val nr   = NtoQ(n)
+  val NtoQ: Func[NatRing.LocalTerm, QField.LocalTerm] = NatRing.incl(QField)
+  val nr: QField.LocalTerm = NtoQ(n)
 
-  lazy val genBound =
+  lazy val genBound: FuncLike[RepTerm[SafeLong], PosWit] =
     "generator-bound" :: (
       n ~>: (
         leq(l(gen(n)))(rat(1))
       )
     )
 
-  lazy val expvars = Vector(l, triang, conjInv, symmetry, powerBound, genBound)
+  lazy val expvars : Vector[Term] = Vector(l, triang, conjInv, symmetry, powerBound, genBound)
 
   // Derived lemmas in HoTT
-  lazy val triangBound = {
+  lazy val triangBound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[PosWit, FuncLike[PosWit, PosWit]]]]]] = {
     val b1  = "b1" :: leq(l(g))(x)
     val b2  = "b2" :: leq(l(h))(y)
     val res = triang(g)(h) + b1 + b2: PosWit
@@ -111,7 +108,7 @@ object LinNormBound {
     )))))
   }
 
-  lazy val invBound = {
+  lazy val invBound: FuncLike[RepTerm[Word], FuncLike[RepTerm[Rational], FuncLike[PosWit, PosWit]]] = {
     val hyp = "hyp" :: (leq(l(g))(x))
     val bx  = y :-> leq(y)(x)
     g :~> (
@@ -127,18 +124,18 @@ object LinNormBound {
   case class Gen(n: Int) extends LinNormBound(Word(Vector(n)), 1) {
     require(n != 0, "No generator with index 0")
 
-    lazy val wit =
+    lazy val wit: PosWit =
       if (n > 0) genBound(nat(n))
       else invBound(gen(nat(-n)))(rat(1))(genBound(nat(-n)))
 
-    override val toString = Word(Vector(n)).toString
+    override val toString: String = Word(Vector(n)).toString
   }
 
   case class ConjGen(n: Int, pf: LinNormBound)
       extends LinNormBound(pf.word.conjGen(-n), pf.bound) {
     require(n != 0, "No generator with index 0")
 
-    lazy val wit = {
+    lazy val wit: PosWit = {
       val g      = if (n > 0) gen(nat(n)) else gen(nat(-n)).inverse
       val conjEq = conjInv(g)(pf.el)
       transpEqL(bnd)(l(pf.el))(l(el))(conjEq)(pf.proof)
@@ -147,7 +144,7 @@ object LinNormBound {
 
   case class Triang(pf1: LinNormBound, pf2: LinNormBound)
       extends LinNormBound(pf1.word ++ pf2.word, pf1.bound + pf2.bound) {
-    lazy val wit =
+    lazy val wit: PosWit =
       triangBound(pf1.el)(pf2.el)(pf1.bnd)(pf2.bnd)(pf1.proof)(pf2.proof)
   }
 
@@ -156,7 +153,7 @@ object LinNormBound {
     require(pf.word == baseword.pow(n),
             s"The element ${pf.word} is not the ${n}th power of $baseword")
 
-    lazy val wit =
+    lazy val wit: PosWit =
       powerBound(el)(pf.bnd)(nat(n))(pf.proof)
   }
 
