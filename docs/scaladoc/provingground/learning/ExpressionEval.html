@@ -275,6 +275,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="IterateDyn$.html" title=""></a>
                         <a href="IterateDyn$.html" title="">IterateDyn</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="MapVS$.html" title=""></a>
+                        <a class="class" href="MapVS.html" title=""></a>
+                        <a href="MapVS.html" title="">MapVS</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MemoState$.html" title=""></a>
                         <a class="class" href="MemoState.html" title=""></a>
                         <a href="MemoState.html" title="">MemoState</a>
@@ -299,6 +303,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixTangentFiniteDistribution</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="MonixTangentFiniteDistributionEq$.html" title=""></a>
+                        <a class="class" href="MonixTangentFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixTangentFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixTangentFiniteDistributionEq</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="NextSample.html" title=""></a>
                         <a href="NextSample.html" title="">NextSample</a>
@@ -318,6 +326,14 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="ProofEntropies$.html" title=""></a>
                         <a class="class" href="ProofEntropies.html" title=""></a>
                         <a href="ProofEntropies.html" title="">ProofEntropies</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="Prover.html" title=""></a>
+                        <a href="Prover.html" title="">Prover</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="ProverStep.html" title=""></a>
+                        <a href="ProverStep.html" title="">ProverStep</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="ProverTasks$.html" title=""></a>
@@ -507,6 +523,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="class" href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
                         <a href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TruncatedFiniteDistribution</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="TypSolver$.html" title=""></a>
+                        <a class="class" href="TypSolver.html" title=""></a>
+                        <a href="TypSolver.html" title="">TypSolver</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="Unify$.html" title=""></a>
                         <a href="Unify$.html" title="">Unify</a>
@@ -547,7 +567,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ExpressionEval</span><span class="params">(<span name="initialState">initialState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="finalState">finalState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="equations">equations: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorVariables$$Equation.html" class="extype" name="provingground.learning.GeneratorVariables.Equation">Equation</a>]</span>, <span name="tg">tg: <a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a></span>, <span name="maxRatio">maxRatio: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.01</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ExpressionEval</span><span class="params">(<span name="initialState">initialState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="finalState">finalState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="equations">equations: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorVariables$$Equation.html" class="extype" name="provingground.learning.GeneratorVariables.Equation">Equation</a>]</span>, <span name="tg">tg: <a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a></span>, <span name="maxRatio">maxRatio: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.01</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -618,9 +638,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.learning.ExpressionEval#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(initialState:provingground.learning.TermState,finalState:provingground.learning.TermState,equations:Set[provingground.learning.GeneratorVariables.Equation],tg:provingground.learning.TermGenParams,maxRatio:Double):provingground.learning.ExpressionEval"></a><a id="&lt;init&gt;:ExpressionEval"></a>
+      <a id="&lt;init&gt;(initialState:provingground.learning.TermState,finalState:provingground.learning.TermState,equations:Set[provingground.learning.GeneratorVariables.Equation],tg:provingground.learning.TermGenParams,maxRatio:Double,epsilon:Double):provingground.learning.ExpressionEval"></a><a id="&lt;init&gt;:ExpressionEval"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval.html#&lt;init&gt;(initialState:provingground.learning.TermState,finalState:provingground.learning.TermState,equations:Set[provingground.learning.GeneratorVariables.Equation],tg:provingground.learning.TermGenParams,maxRatio:Double):provingground.learning.ExpressionEval" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#&lt;init&gt;(initialState:provingground.learning.TermState,finalState:provingground.learning.TermState,equations:Set[provingground.learning.GeneratorVariables.Equation],tg:provingground.learning.TermGenParams,maxRatio:Double,epsilon:Double):provingground.learning.ExpressionEval" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -629,7 +649,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ExpressionEval</span><span class="params">(<span name="initialState">initialState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="finalState">finalState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="equations">equations: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorVariables$$Equation.html" class="extype" name="provingground.learning.GeneratorVariables.Equation">Equation</a>]</span>, <span name="tg">tg: <a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a></span>, <span name="maxRatio">maxRatio: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.01</span></span>)</span>
+        <span class="name">ExpressionEval</span><span class="params">(<span name="initialState">initialState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="finalState">finalState: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="equations">equations: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorVariables$$Equation.html" class="extype" name="provingground.learning.GeneratorVariables.Equation">Equation</a>]</span>, <span name="tg">tg: <a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a></span>, <span name="maxRatio">maxRatio: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.01</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>)</span>
       </span>
       
       
@@ -751,9 +771,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.learning.ExpressionEval#atoms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="atoms:scala.collection.immutable.Set[provingground.learning.GeneratorVariables.Expression]"></a><a id="atoms:Set[Expression]"></a>
+      <a id="atoms:Set[provingground.learning.GeneratorVariables.Expression]"></a><a id="atoms:Set[Expression]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval.html#atoms:scala.collection.immutable.Set[provingground.learning.GeneratorVariables.Expression]" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#atoms:Set[provingground.learning.GeneratorVariables.Expression]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -762,7 +782,24 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">atoms</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]</span>
+        <span class="name">atoms</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">the atomic expressions in the equations
+</p>
+    </li><li name="provingground.learning.ExpressionEval#backStep" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="backStep(exp:provingground.learning.GeneratorVariables.Expression,p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="backStep(Expression,Map[Expression,Double]):Map[Expression,Double]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#backStep(exp:provingground.learning.GeneratorVariables.Expression,p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">backStep</span><span class="params">(<span name="exp">exp: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>, <span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="#finalDist:Map[provingground.learning.GeneratorVariables.Expression,Double]">finalDist</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
       
@@ -917,7 +954,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">entropy</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="result">: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
       </span>
       
-      
+      <p class="shortcomment cmt">Expression for composite entropy.</p>
     </li><li name="provingground.learning.ExpressionEval#entropyProjection" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="entropyProjection(hW:Double,klW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Vector[Double]"></a><a id="entropyProjection(Double,Double)(Map[Expression,Double]):Vector[Double]"></a>
       <span class="permalink">
@@ -931,6 +968,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">entropyProjection</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Composite entropy projected perpendicular to the equations.</p>
+    </li><li name="provingground.learning.ExpressionEval#epsilon" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="epsilon:Double"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#epsilon:Double" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">epsilon</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
       
@@ -965,7 +1018,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">eqnExpressions</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Expressions for equations.</p>
     </li><li name="provingground.learning.ExpressionEval#eqnGradients" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="eqnGradients(p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Vector[Vector[Double]]"></a><a id="eqnGradients(Map[Expression,Double]):Vector[Vector[Double]]"></a>
       <span class="permalink">
@@ -981,7 +1034,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">eqnGradients</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Gradients of equations for expression
+</p>
     </li><li name="provingground.learning.ExpressionEval#equations" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="equations:Set[provingground.learning.GeneratorVariables.Equation]"></a><a id="equations:Set[Equation]"></a>
       <span class="permalink">
@@ -1013,7 +1067,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">finalDist</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">The final distributions, obtained from the initial one by finding an almost solution.</p>
     </li><li name="provingground.learning.ExpressionEval#finalState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="finalState:provingground.learning.TermState"></a><a id="finalState:TermState"></a>
       <span class="permalink">
@@ -1030,7 +1084,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
-    </li><li name="provingground.learning.ExpressionEval#finalTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.ExpressionEval#finalTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalTerms:Set[provingground.HoTT.Term]"></a><a id="finalTerms:Set[Term]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/ExpressionEval.html#finalTerms:Set[provingground.HoTT.Term]" title="Permalink">
@@ -1045,7 +1099,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">finalTerms</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Terms in the final (i.e.</p><div class="fullcomment"><div class="comment cmt"><p>Terms in the final (i.e. evolved) distribution
+</p></div></div>
     </li><li name="provingground.learning.ExpressionEval#finalTyps" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="finalTyps:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="finalTyps:FiniteDistribution[Typ[Term]]"></a>
       <span class="permalink">
@@ -1138,7 +1193,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">genTerms</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Terms of the generating distribution
+</p>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
@@ -1159,9 +1215,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
               
         </dd></dl></div>
     </li><li name="provingground.learning.ExpressionEval#gradShift" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="gradShift(p:Map[provingground.learning.GeneratorVariables.Expression,Double],t:Vector[Double],epsilon:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="gradShift(Map[Expression,Double],Vector[Double],Double):Map[Expression,Double]"></a>
+      <a id="gradShift(p:Map[provingground.learning.GeneratorVariables.Expression,Double],t:Vector[Double],eps:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="gradShift(Map[Expression,Double],Vector[Double],Double):Map[Expression,Double]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval.html#gradShift(p:Map[provingground.learning.GeneratorVariables.Expression,Double],t:Vector[Double],epsilon:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#gradShift(p:Map[provingground.learning.GeneratorVariables.Expression,Double],t:Vector[Double],eps:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1170,10 +1226,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">gradShift</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="t">t: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Double">Double</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">gradShift</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="t">t: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Double">Double</span>]</span>, <span name="eps">eps: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="#epsilon:Double">epsilon</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Shift downwards by the gradient, mapped by sigmoids.</p>
     </li><li name="provingground.learning.ExpressionEval#hExp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="hExp:provingground.learning.GeneratorVariables.Expression"></a><a id="hExp:Expression"></a>
       <span class="permalink">
@@ -1189,7 +1245,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">hExp</span><span class="result">: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
       </span>
       
-      
+      <p class="shortcomment cmt">Expression for entropy of the generating distribution
+</p>
     </li><li name="provingground.learning.ExpressionEval#init" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="init:Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="init:Map[Expression,Double]"></a>
       <span class="permalink">
@@ -1207,9 +1264,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.learning.ExpressionEval#initTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="initTerms:scala.collection.immutable.Vector[provingground.HoTT.Term]"></a><a id="initTerms:Vector[Term]"></a>
+      <a id="initTerms:Vector[provingground.HoTT.Term]"></a><a id="initTerms:Vector[Term]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval.html#initTerms:scala.collection.immutable.Vector[provingground.HoTT.Term]" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#initTerms:Vector[provingground.HoTT.Term]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1218,10 +1275,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">initTerms</span><span class="result">: <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+        <span class="name">initTerms</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Terms in the initial distributions, used to calculate total weights of functions etc
+</p>
     </li><li name="provingground.learning.ExpressionEval#initialState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="initialState:provingground.learning.TermState"></a><a id="initialState:TermState"></a>
       <span class="permalink">
@@ -1255,9 +1313,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.learning.ExpressionEval#iterator" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="iterator(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):Iterator[Map[provingground.learning.GeneratorVariables.Expression,Double]]"></a><a id="iterator(Double,Double,Double)(Map[Expression,Double],Double):Iterator[Map[Expression,Double]]"></a>
+      <a id="iterator(hW:Double,klW:Double,p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Iterator[Map[provingground.learning.GeneratorVariables.Expression,Double]]"></a><a id="iterator(Double,Double,Map[Expression,Double]):Iterator[Map[Expression,Double]]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval.html#iterator(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):Iterator[Map[provingground.learning.GeneratorVariables.Expression,Double]]" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#iterator(hW:Double,klW:Double,p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Iterator[Map[provingground.learning.GeneratorVariables.Expression,Double]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1266,7 +1324,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iterator</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="matchW">matchW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.Iterator">Iterator</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]]</span>
+        <span class="name">iterator</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="#finalDist:Map[provingground.learning.GeneratorVariables.Expression,Double]">finalDist</a></span></span></span>)</span><span class="result">: <a href="../../scala/index.html#Iterator[+A]=Iterator[A]" class="extmbr" name="scala.Iterator">Iterator</a>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.ExpressionEval#iteratorMatched" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="iteratorMatched(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):Iterator[Map[provingground.learning.GeneratorVariables.Expression,Double]]"></a><a id="iteratorMatched(Double,Double,Double)(Map[Expression,Double],Double):Iterator[Map[Expression,Double]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#iteratorMatched(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):Iterator[Map[provingground.learning.GeneratorVariables.Expression,Double]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">iteratorMatched</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="matchW">matchW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>)</span><span class="result">: <a href="../../scala/index.html#Iterator[+A]=Iterator[A]" class="extmbr" name="scala.Iterator">Iterator</a>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]]</span>
       </span>
       
       
@@ -1285,7 +1359,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">jet</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="params">(<span name="expr">expr: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>)</span><span class="result">: <span class="extype" name="spire.math.Jet">Jet</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Recursive jet for an expression, with variables transformed by sigmoid.</p>
     </li><li name="provingground.learning.ExpressionEval#jetField" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="jetField:spire.algebra.Field[spire.math.Jet[Double]]"></a><a id="jetField:Field[Jet[Double]]"></a>
       <span class="permalink">
@@ -1302,6 +1376,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.ExpressionEval#jetMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="jetMap(jet:spire.math.Jet[Double],p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="jetMap(Jet[Double],Map[Expression,Double]):Map[Expression,Double]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#jetMap(jet:spire.math.Jet[Double],p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">jetMap</span><span class="params">(<span name="jet">jet: <span class="extype" name="spire.math.Jet">Jet</span>[<span class="extype" name="scala.Double">Double</span>]</span>, <span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="#finalDist:Map[provingground.learning.GeneratorVariables.Expression,Double]">finalDist</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Jet converted to map, scaled for probabilities
+</p>
     </li><li name="provingground.learning.ExpressionEval#keys" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="keys:Vector[provingground.learning.GeneratorVariables.Expression]"></a><a id="keys:Vector[Expression]"></a>
       <span class="permalink">
@@ -1333,7 +1424,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">klExp</span><span class="result">: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
       </span>
       
-      
+      <p class="shortcomment cmt">Expression for Kullback-Liebler divergence of proofs from statements of theorems.</p>
     </li><li name="provingground.learning.ExpressionEval#matchKL" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="matchKL:provingground.learning.GeneratorVariables.Expression"></a><a id="matchKL:Expression"></a>
       <span class="permalink">
@@ -1420,6 +1511,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.ExpressionEval#optimum" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="optimum(hW:Double,klW:Double,p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="optimum(Double,Double,Map[Expression,Double]):Map[Expression,Double]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#optimum(hW:Double,klW:Double,p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">optimum</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="#finalDist:Map[provingground.learning.GeneratorVariables.Expression,Double]">finalDist</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Optimal value, more precisely stable under gradient flow.</p><div class="fullcomment"><div class="comment cmt"><p>Optimal value, more precisely stable under gradient flow.
+</p></div><dl class="paramcmts block"><dt class="param">hW</dt><dd class="cmt"><p>entropy weight</p></dd><dt class="param">klW</dt><dd class="cmt"><p>Kullback-Liebler weight</p></dd><dt class="param">p</dt><dd class="cmt"><p>Initial distribution</p></dd></dl></div>
     </li><li name="provingground.learning.ExpressionEval#proofExpression" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="proofExpression(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.learning.GeneratorVariables.Expression"></a><a id="proofExpression(Typ[Term]):Expression"></a>
       <span class="permalink">
@@ -1433,6 +1541,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">proofExpression</span><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.ExpressionEval#resolveOpt" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="resolveOpt(exp:provingground.learning.GeneratorVariables.Expression):Option[provingground.learning.GeneratorVariables.Expression]"></a><a id="resolveOpt(Expression):Option[Expression]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#resolveOpt(exp:provingground.learning.GeneratorVariables.Expression):Option[provingground.learning.GeneratorVariables.Expression]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">resolveOpt</span><span class="params">(<span name="exp">exp: <a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]</span>
       </span>
       
       
@@ -1453,9 +1577,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.learning.ExpressionEval#shifted" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="shifted(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):scala.collection.immutable.Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="shifted(Double,Double,Double)(Map[Expression,Double],Double):Map[Expression,Double]"></a>
+      <a id="shifted(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="shifted(Double,Double,Double)(Map[Expression,Double],Double):Map[Expression,Double]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval.html#shifted(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):scala.collection.immutable.Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#shifted(hW:Double,klW:Double,matchW:Double)(p:Map[provingground.learning.GeneratorVariables.Expression,Double],epsilon:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1464,11 +1588,11 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">shifted</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="matchW">matchW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">shifted</span><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>, <span name="matchW">matchW: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.1</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
       
-    </li><li name="provingground.learning.ExpressionEval#spireVarProbs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.ExpressionEval#spireVarProbs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="spireVarProbs(p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,spire.math.Jet[Double]]"></a><a id="spireVarProbs(Map[Expression,Double]):Map[Expression,Jet[Double]]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/ExpressionEval.html#spireVarProbs(p:Map[provingground.learning.GeneratorVariables.Expression,Double]):Map[provingground.learning.GeneratorVariables.Expression,spire.math.Jet[Double]]" title="Permalink">
@@ -1481,6 +1605,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">spireVarProbs</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="spire.math.Jet">Jet</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Jets for variables.</p><div class="fullcomment"><div class="comment cmt"><p>Jets for variables. These are transformed using the sigmoid so they are in (0, 1)
+</p></div></div>
+    </li><li name="provingground.learning.ExpressionEval#stableGradShift" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="stableGradShift(p:Map[provingground.learning.GeneratorVariables.Expression,Double],t:Vector[Double],eps:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]"></a><a id="stableGradShift(Map[Expression,Double],Vector[Double],Double):Map[Expression,Double]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#stableGradShift(p:Map[provingground.learning.GeneratorVariables.Expression,Double],t:Vector[Double],eps:Double):Map[provingground.learning.GeneratorVariables.Expression,Double]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stableGradShift</span><span class="params">(<span name="p">p: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>, <span name="t">t: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Double">Double</span>]</span>, <span name="eps">eps: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="#epsilon:Double">epsilon</a></span></span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       
       
@@ -1517,9 +1658,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       
     </li><li name="provingground.learning.ExpressionEval#thmSet" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="thmSet:scala.collection.immutable.Set[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="thmSet:Set[Typ[Term]]"></a>
+      <a id="thmSet:Set[provingground.HoTT.Typ[provingground.HoTT.Term]]"></a><a id="thmSet:Set[Typ[Term]]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval.html#thmSet:scala.collection.immutable.Set[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval.html#thmSet:Set[provingground.HoTT.Typ[provingground.HoTT.Term]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1528,7 +1669,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">thmSet</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+        <span class="name">thmSet</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
       </span>
       
       
@@ -1596,7 +1737,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
-    </li><li name="provingground.learning.ExpressionEval#vars" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="provingground.learning.ExpressionEval#vars" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="vars:Vector[provingground.learning.GeneratorVariables.Expression]"></a><a id="vars:Vector[Expression]"></a>
       <span class="permalink">
       <a href="../../provingground/learning/ExpressionEval.html#vars:Vector[provingground.learning.GeneratorVariables.Expression]" title="Permalink">
@@ -1611,7 +1752,8 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="name">vars</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="GeneratorVariables$$Expression.html" class="extype" name="provingground.learning.GeneratorVariables.Expression">Expression</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">Vector of all variables.</p><div class="fullcomment"><div class="comment cmt"><p>Vector of all variables. This is frozen so that their indices can be used.
+</p></div></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">

@@ -601,7 +601,7 @@ class LeanParser(initMods: Seq[Modification],
           val seq =
             ConstructorSeqTL
               .getExst(toTyp(foldFuncLean(mod.typF, p)),
-                       LeanToTermMonix.introsFold(mode, p))
+                       LeanToTermMonix.introsFold(mod, p))
               .value
           codeGen.consSeq(seq)
         case mod: IndexedIndMod =>

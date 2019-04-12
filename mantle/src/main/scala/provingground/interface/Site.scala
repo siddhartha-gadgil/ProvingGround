@@ -362,7 +362,7 @@ object Site {
        |</html>
    """.stripMargin
 
-  def home =
+  def home: String =
     page(
       fromMD(
         body(os.read.lines(pwd / "docs" / "index.md").toVector)

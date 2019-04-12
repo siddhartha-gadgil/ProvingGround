@@ -139,9 +139,17 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="SymbolicCRing$Comb$.html" title=""></a>
                         <a href="SymbolicCRing$Comb$.html" title="">Comb</a>
                       </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="NatRing$$DIV$.html" title=""></a>
+                        <a href="NatRing$$DIV$.html" title="">DIV</a>
+                      </li><li class="current-entities indented3">
                         <a class="object" href="NatRing$$Induc$.html" title=""></a>
                         <a class="class" href="NatRing$$Induc.html" title=""></a>
                         <a href="NatRing$$Induc.html" title="">Induc</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="NatRing$$LEQ$.html" title=""></a>
+                        <a href="NatRing$$LEQ$.html" title="">LEQ</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="object" href="SymbolicCRing$LitProd$.html" title="matching, building for formal product with a literal"></a>
@@ -500,9 +508,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
             This conversion will take place only if an implicit value of type <span class="extype" name="scala.math.Ordering">Ordering</span>[<a href="" class="extype" name="provingground.scalahott.NatRing.Rec">Rec</a>[<span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]] is in scope.
           </dd><dt>Definition Classes</dt><dd>Ordered</dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Rec#act" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="act(x:provingground.scalahott.NatRing.LocalTerm):U"></a><a id="act(NatRing.LocalTerm):U"></a>
+      <a id="act(x:provingground.scalahott.NatRing.Nat):U"></a><a id="act(Nat):U"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$$Rec.html#act(x:provingground.scalahott.NatRing.LocalTerm):U" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#act(x:provingground.scalahott.NatRing.Nat):U" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -511,7 +519,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">act</span><span class="params">(<span name="x">x: <a href="NatRing$.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">NatRing.LocalTerm</a></span>)</span><span class="result">: <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span></span>
+        <span class="name">act</span><span class="params">(<span name="x">x: <a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a></span>)</span><span class="result">: <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span></span>
       </span>
       
       <p class="shortcomment cmt">the action of the function to define:
@@ -603,7 +611,9 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="name">canApply</span><span class="params">(<span name="arg">arg: <a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      <p class="shortcomment cmt">checks if application is valid; can override to allow for example resizing universes</p><div class="fullcomment"><div class="comment cmt"><p>checks if application is valid; can override to allow for example resizing universes</p></div><dl class="paramcmts block"><dt class="param">arg</dt><dd class="cmt"><p>the argument</p></dd><dt>returns</dt><dd class="cmt"><p>whether the argument has the correct type.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+      <p class="shortcomment cmt">checks if application is valid; can override to allow for example resizing universes
+</p><div class="fullcomment"><div class="comment cmt"><p>checks if application is valid; can override to allow for example resizing universes
+</p></div><dl class="paramcmts block"><dt class="param">arg</dt><dd class="cmt"><p>the argument</p></dd><dt>returns</dt><dd class="cmt"><p>whether the argument has the correct type.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -1219,9 +1229,9 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../HoTT$$RecFunc.html" class="extype" name="provingground.HoTT.RecFunc">RecFunc</a> → Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="provingground.scalahott.NatRing.Rec#typ" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="typ:provingground.HoTT.FuncTyp[provingground.scalahott.NatRing.LocalTerm,U]"></a><a id="typ:FuncTyp[NatRing.LocalTerm,U]"></a>
+      <a id="typ:provingground.HoTT.FuncTyp[provingground.scalahott.NatRing.Nat,U]"></a><a id="typ:FuncTyp[Nat,U]"></a>
       <span class="permalink">
-      <a href="../../provingground/scalahott/NatRing$$Rec.html#typ:provingground.HoTT.FuncTyp[provingground.scalahott.NatRing.LocalTerm,U]" title="Permalink">
+      <a href="../../provingground/scalahott/NatRing$$Rec.html#typ:provingground.HoTT.FuncTyp[provingground.scalahott.NatRing.Nat,U]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1230,7 +1240,7 @@ components are substituted.</p></div><dl class="attributes block"> <dt>Definitio
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">typ</span><span class="result">: <a href="../HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<a href="NatRing$.html#LocalTerm=provingground.scalahott.RepTerm[A]" class="extmbr" name="provingground.scalahott.NatRing.LocalTerm">NatRing.LocalTerm</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
+        <span class="name">typ</span><span class="result">: <a href="../HoTT$$FuncTyp.html" class="extype" name="provingground.HoTT.FuncTyp">FuncTyp</a>[<a href="NatRing$.html#Nat=provingground.scalahott.NatRing.LocalTerm" class="extmbr" name="provingground.scalahott.NatRing.Nat">Nat</a>, <span class="extype" name="provingground.scalahott.NatRing.Rec.U">U</span>]</span>
       </span>
       
       <p class="shortcomment cmt">the HoTT-type of the term
