@@ -9,17 +9,17 @@ import scala.xml.Elem
 
 object Site {
 
-  def mkDocTuts() = {
+  def mkDocTuts(): Int = {
     val settings = mdoc.MainSettings().withIn(java.nio.file.Paths.get("tuts"))
     mdoc.Main.process(settings)
   }
 
-  def mkDocs() = {
+  def mkDocs(): CommandResult = {
     pprint.log("generating scaladocs")
     os.proc("mill", "jvmRoot.docs").call()
   }
 
-  val mathjax =
+  val mathjax: String =
     """
       |<!-- mathjax config similar to math.stackexchange -->
       |<script type="text/x-mathjax-config">
@@ -154,15 +154,15 @@ object Site {
     renderer.render(document).replace("$<code>", "$").replace("</code>$", "$")
   }
 
-  def threeDash(s: String) = s.trim == "---"
+  def threeDash(s: String): Boolean = s.trim == "---"
 
-  def withTop(l: Vector[String]) =
-    (l.filter(threeDash).size == 2) && threeDash(l.head)
+  def withTop(l: Vector[String]): Boolean =
+    (l.count(threeDash) == 2) && threeDash(l.head)
 
-  def body(l: Vector[String]) =
+  def body(l: Vector[String]): Vector[String] =
     if (withTop(l)) l.tail.dropWhile((l) => !threeDash(l)).tail else l
 
-  def topmatter(lines: Vector[String]) =
+  def topmatter(lines: Vector[String]): Option[Vector[String]] =
     if (withTop(lines)) Some(lines.tail.takeWhile((l) => !threeDash(l)))
     else None
 
@@ -172,7 +172,7 @@ object Site {
       ln <- tm.find(_.startsWith("title: "))
     } yield ln.drop(6).trim
 
-  def filename(s: String) = s.toLowerCase.replaceAll("\\s", "-")
+  def filename(s: String): String = s.toLowerCase.replaceAll("\\s", "-")
 
   def gitHash: String =
     os.read(os.resource / "gitlog.txt")
@@ -186,9 +186,9 @@ object Site {
  """.stripMargin
 
   case class Tut(name: String, rawContent: String, optTitle: Option[String]) {
-    val title = optTitle.getOrElse(name)
+    val title: String = optTitle.getOrElse(name)
 
-    val target = pwd / "docs" / "tuts" / s"$name.html"
+    val target: Path = pwd / "docs" / "tuts" / s"$name.html"
 
     def url(relDocsPath: String) = s"${relDocsPath}tuts/$name.html"
 
@@ -197,10 +197,9 @@ object Site {
     def output: String =
       page(content, "../", title)
 
-    def save = write.over(target, output)
+    def save(): Unit = write.over(target, output)
 
     def json: ujson.Obj = {
-      import ujson._
       ujson.Obj("name" -> name, "title" -> title)
     }
   }
@@ -257,12 +256,12 @@ object Site {
       optDate: Option[(Int, Int, Int)],
       optTitle: Option[String]
   ) {
-    lazy val title = optTitle.getOrElse(name)
+    lazy val title: String = optTitle.getOrElse(name)
 
-    lazy val dateString =
+    lazy val dateString: String =
       optDate.map { case (y, m, d) => s"$y-$m-$d-" }.getOrElse("")
 
-    val target = pwd / "docs" / "posts" / s"$name.html"
+    val target: Path = pwd / "docs" / "posts" / s"$name.html"
 
     def url(relDocsPath: String) = s"${relDocsPath}posts/$name.html"
 
@@ -271,10 +270,9 @@ object Site {
     def output: String =
       page(fromMD(content), "../", title)
 
-    def save = write.over(target, output)
+    def save(): Unit = write.over(target, output)
 
     def json: ujson.Obj = {
-      import ujson._
       ujson.Obj("name" -> name, "title" -> title, "date" -> dateString)
     }
   }
@@ -301,7 +299,7 @@ object Site {
     Post(name, content, dateOpt(l), titleOpt(l))
   }
 
-  def postsDir = pwd / "jekyll" / "_posts"
+  def postsDir: Path = pwd / "jekyll" / "_posts"
 
   def allPosts: Seq[Post] =
     os.list(postsDir).map(getPost).sortBy(_.date).reverse
@@ -375,21 +373,21 @@ object Site {
   def mkHome(): Unit =
     write.over(pwd / "docs" / "index.html", home)
 
-  def mkLists() = {
+  def mkLists(): Unit = {
     val tutsJs = ujson.Arr(allTuts.map(_.json): _*)
     write.over(pwd / "docs" / "tut-list.json", tutsJs.toString)
     val postsJs = ujson.Arr(allPosts.map(_.json): _*)
     write.over(pwd / "docs" / "posts-list.json", postsJs.toString())
   }
 
-  def mkTuts() = {
+  def mkTuts(): Unit = {
     allTuts.foreach { (tut) =>
       pprint.log(s"writing tutorial ${tut.name}")
       write.over(tut.target, tut.output)
     }
   }
 
-  def mkPosts() = {
+  def mkPosts(): Unit = {
     allPosts.foreach { (post) =>
       pprint.log(s"saving post ${post.name} written on ${post.dateString}")
       write.over(post.target, post.output)

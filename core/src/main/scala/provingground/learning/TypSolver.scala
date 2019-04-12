@@ -25,7 +25,7 @@ object TypSolver {
       ujson.Obj("first" -> fst.toJson, "second" -> snd.toJson)
   }
 
-  implicit case object IdSolver
+  case object IdSolver
     extends TypSolver({
       case id: IdentityTyp[u] if id.lhs == id.rhs => Some(id.lhs.refl)
       case _                                      => None
@@ -43,4 +43,11 @@ object TypSolver {
       case NatRing.DIV(a, b) => NatRing.findDivisibility(a, b)
       case _                 => None
     })
+
+  case object LeqQSolver extends TypSolver({
+    case QField.Pos(x) => QField.showPositive(x)
+    case _ => None
+  })
+
+  implicit val coreSolver : TypSolver = IdSolver || LeqNatSolver || DivNatSolver || LeqQSolver
 }
