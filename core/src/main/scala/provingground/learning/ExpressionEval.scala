@@ -2,18 +2,15 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD, _}, HoTT._
 
 
-import GeneratorVariables._, Expression._, TermRandomVars._
+import GeneratorVariables._,  TermRandomVars._
 
 import annotation.tailrec
-
-
-import MapVS._
 
 object ExpressionEval {
   val sd: StateDistribution[TermState, FD] = implicitly[StateDistribution[TermState, FD]]
 
   def dist[Y](rv: RandomVar[Y], p: Map[Expression, Double]): FD[Y] = {
-    val pmf = p.collect{case (FinalVal(Elem(x, randomVar)), p) if rv == randomVar => Weighted(x.asInstanceOf[Y], p)}
+    val pmf = p.collect{case (FinalVal(Elem(x, randomVar)), prob) if rv == randomVar => Weighted(x.asInstanceOf[Y], prob)}
     FD(pmf)
   }
 
@@ -109,7 +106,7 @@ object ExpressionEval {
     init ++ equations
       .map(eq => eq.lhs -> stabRecExp(init, eq.rhs, init.get(eq.lhs)))
       .filter(_._2 != 0)
-  }.toMap
+  }
 
   /**
     * Iteratively update a map given equations until the support is stable (so we can safely calculate ratios).
@@ -171,7 +168,7 @@ case class ExpressionEval(
   /**
     * the atomic expressions in the equations
     */
-  val atoms = equations
+  val atoms: Set[Expression] = equations
     .map(_.lhs)
     .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   val init: Map[Expression, Double] = initMap(atoms, tg, initialState)
@@ -241,7 +238,7 @@ case class ExpressionEval(
         val d: Jet[Double] = r + (-1)
         val lx             = log(r / d) // value after inverse sigmoid
         val x              = lx + t
-        val y              = exp(t) / (exp(t) + 1.0) // tangent before sigmoid
+        val y              = exp(x) / (exp(x) + 1.0) // tangent before sigmoid
         v -> y
     }.toMap
 
@@ -278,7 +275,7 @@ case class ExpressionEval(
     initTerms.map(t => t -> InitialVal(Elem(t, Terms))).toMap
 
   val thmSet: Set[Typ[Term]] =
-    finalTyps.support.toSet.intersect(finalTerms.map(_.typ)).filter(!isUniv(_))
+    finalTyps.support.intersect(finalTerms.map(_.typ)).filter(!isUniv(_))
 
   val thmsByStatement: Map[Typ[Term], Expression] = finalTyps
     .filter(typ => thmSet.contains(typ))
@@ -436,7 +433,7 @@ case class ExpressionEval(
   def iteratorMatched(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
       p: Map[Expression, Double],
       epsilon: Double = 0.1
-  ) =
+  ): Iterator[Map[Expression, Double]] =
     Iterator.iterate(p)(q => shifted(hW, klW, matchW)(q, epsilon))
 
 }

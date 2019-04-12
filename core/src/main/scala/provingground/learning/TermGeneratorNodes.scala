@@ -8,45 +8,9 @@ import provingground.learning.GeneratorNode.{Map, MapOpt}
 import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
-import monix.eval.Task
-import provingground.interface.{ContextJson, MultiTask}
 
-import scala.concurrent._
-import duration._
 
-import upickle.default.{ReadWriter => RW, macroRW, read, write, readwriter}
 
-case class TypSolver(solve: Typ[Term] => Option[Term] = (_) => None)
-    extends (Typ[Term] => Option[Term]) {
-  def apply(typ: Typ[Term]): Option[Term] = solve(typ).map(_ !: typ)
-
-  def ||(that: TypSolver): TypSolver = {
-    val orSolve = (x: Typ[Term]) => solve(x) orElse (that.solve(x))
-    TypSolver(orSolve)
-  }
-}
-
-object TypSolver{
-  implicit def rw: RW[TypSolver] =
-    readwriter[String].bimap((_) => "empty-solver", (_) => TypSolver())
-
-  def partial(pf: PartialFunction[Typ[Term], Term]): TypSolver = TypSolver(pf.lift)
-
-  val idSolver: TypSolver = TypSolver.partial {
-    case id: IdentityTyp[u] if id.lhs == id.rhs => id.lhs.refl
-  }
-
-  import scalahott._
-  val leqNatSolver: TypSolver = TypSolver{
-    case NatRing.LEQ(a, b) => NatRing.findLEQ(a, b)
-    case _ => None
-  }
-
-  val divNatSolver: TypSolver = TypSolver{
-    case NatRing.DIV(a, b) => NatRing.findDivisibility(a, b)
-    case _ => None
-  }
-}
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -63,8 +27,10 @@ class TermGeneratorNodes[InitState](
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => InitState => (InitState, Term),
     getVar: Typ[Term] => Term,
-    inIsle: (Term, InitState) => InitState,
-    solver: TypSolver = TypSolver()
+    inIsle: (Term, InitState) => InitState
+)(
+    implicit
+    solver: TypSolver
 ) {
 
   /**
@@ -244,7 +210,8 @@ class TermGeneratorNodes[InitState](
     */
   case object LambdaIsle
       extends (Typ[Term] => Island[Term, InitState, Term, Term]) {
-    def apply(typ: Typ[Term]): Island[Term, InitState, Term, Term] = lambdaIsle(typ)
+    def apply(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
+      lambdaIsle(typ)
 
     override def toString = "LambdaIsle"
   }
@@ -360,7 +327,7 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-    * Node for generating terms of a type (if possible) by multiple applications of functions tageting the type.
+    * Node for generating terms of a type (if possible) by multiple applications of functions targeting the type.
     */
   val typAsCodNodeFamily
       : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
@@ -430,6 +397,7 @@ class TermGeneratorNodes[InitState](
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
       case typ :: HNil => solver(typ).map(Atom(_, termsWithTyp(typ)))
     }, TermsWithTyp)
+
   /**
     * island to generate Pi-Types by taking variables with specified domain, similar to [[lambdaIsle]]
     *
@@ -736,9 +704,9 @@ class TermGeneratorNodes[InitState](
     }
 
   def targetInducFuncs(
-                        ind: ExstInducDefn,
-                        target: Typ[Term]
-                      ): Option[Term] =
+      ind: ExstInducDefn,
+      target: Typ[Term]
+  ): Option[Term] =
     goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
       case (dom, targ) =>
         val fnOpt = ind.ind.inducOpt(dom, targ)
@@ -1240,7 +1208,7 @@ object TermRandomVars {
 
     def fromTyp: Map[Typ[Term], Typ[Term]] = Map(identity, Typs, TargetTyps)
 
-    def fromNegTyp : Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
+    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
   }
 
   /**
@@ -1440,24 +1408,27 @@ case class TermState(
     typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
 
   lazy val unknownStatements: FD[Typ[Term]] =
-    typs.filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0).safeNormalized
+    typs
+      .filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0)
+      .safeNormalized
 
   lazy val remainingGoals: FD[Typ[Term]] =
-    goals.filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0).safeNormalized
+    goals
+      .filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0)
+      .safeNormalized
 
   def subGoalsFromFunc(f: Term): FD[Typ[Term]] = f match {
     case fn: FuncLike[u, v] =>
       val typ = fn.dom
       if (thmsByPf(typ) == 0) {
         val base = FD.unif(typ: Typ[Term])
-        val x = typ.Var
-        val g = fn(x.asInstanceOf[u])
+        val x    = typ.Var
+        val g    = fn(x.asInstanceOf[u])
         val rec =
           if (g.typ.dependsOn(x)) FD.empty[Typ[Term]]
           else subGoalsFromFunc(g)
         (base ++ rec).safeNormalized
-      }
-      else {
+      } else {
         val pfs = terms.filter(_.typ == typ)
         pfs.flatMap(pf => subGoalsFromFunc(fn(pf.asInstanceOf[u])))
       }
@@ -1633,272 +1604,3 @@ object TermState {
 
 }
 
-
-
-object TermGenParams {
-  implicit def rw: RW[TermGenParams] = macroRW
-
-  case class AddVar(typ: Typ[Term], wt: Double)
-      extends (TermState => (TermState, Term)) {
-    def apply(ts: TermState): (TermState, Term) = ts.addVar(typ, wt)
-
-    override def toString = "AddVar"
-  }
-
-  case object GetVar extends (Typ[Term] => Term) {
-    def apply(typ: Typ[Term]): Term = typ.Var
-
-    override def toString = "GetVar"
-  }
-
-  case object InIsle extends ((Term, TermState) => TermState) {
-    def apply(t: Term, state: TermState): TermState = state.inIsle(t)
-
-    override def toString = "InIsle"
-  }
-}
-
-import TermGenParams._
-
-case class TermGenParams(
-    appW: Double = 0.1,
-    unAppW: Double = 0.1,
-    argAppW: Double = 0.1,
-    lmW: Double = 0.1,
-    piW: Double = 0.1,
-    termsByTypW: Double = 0.05,
-    typFromFamilyW: Double = 0.05,
-    sigmaW: Double = 0.05,
-    recDefW: Double = 0,
-    inducDefW: Double = 0,
-    typAsCodW: Double = 0,
-    targetInducW: Double = 0,
-    varWeight: Double = 0.3,
-    goalWeight: Double = 0.7,
-    typVsFamily: Double = 0.5,
-    negTargetW : Double = 0,
-    solverW : Double = 0,
-    solver : TypSolver = TypSolver()
-) { tg =>
-  object Gen
-      extends TermGeneratorNodes[TermState](
-        { case (fn, arg) => applyFunc(fn.func, arg) },
-        { case (fn, arg) => Unify.appln(fn.func, arg) },
-        AddVar(_, varWeight),
-        GetVar,
-        InIsle,
-        solver
-      )
-
-  import Gen._, GeneratorNode._,
-  TermRandomVars.{withTypNode => wtN, funcWithDomTermNode => fdtN}
-
-  val termInit
-      : Double = 1.0 - appW - unAppW - argAppW - lmW - termsByTypW - recDefW - inducDefW
-
-  val typInit
-      : Double = 1.0 - appW - unAppW - piW - sigmaW - typFromFamilyW - recDefW - inducDefW
-
-  val termNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
-    (Init(Terms)           -> termInit) ::
-      (applnNode           -> appW) ::
-      (unifApplnNode       -> unAppW) ::
-      (applnByArgNode      -> argAppW) ::
-      (lambdaNode          -> lmW) ::
-      (termsByTyps         -> termsByTypW) ::
-      (recFuncFoldedNode   -> recDefW) ::
-      (inducFuncFoldedNode -> inducDefW) ::
-      Terms.target[TermState, Term, Double, Term]
-
-  val typNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] =
-    (Init(Typs)                                -> typInit) ::
-      (typApplnNode                            -> appW) ::
-      (typUnifApplnNode                        -> unAppW) ::
-      (piNode                                  -> piW) ::
-      (sigmaNode                               -> sigmaW) ::
-      (typFoldNode                             -> typFromFamilyW) ::
-      ((recFuncFoldedNode | (typSort, Typs))   -> recDefW) ::
-      ((inducFuncFoldedNode | (typSort, Typs)) -> inducDefW) ::
-      Typs.target[TermState, Term, Double, Typ[Term]]
-
-  val inducNodes
-      : NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstInducDefn] =
-    (Init(InducDefns) -> 1.0) ::
-      InducDefns.target[TermState, Term, Double, ExstInducDefn]
-
-  val inducDomainNodes
-      : NodeCoeffs.Cons[TermState, Term, Double, ExstInducDefn :: HNil, Term] =
-    (domainForDefnNodeFamily -> 1.0) ::
-      DomForInduc.target[TermState, Term, Double, Term]
-
-  val goalNodes
-      : NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[Term]] = (Init(
-    Goals
-  ) -> 1.0) :: Goals
-    .target[TermState, Term, Double, Typ[Term]]
-
-  val isleDomainsNode: NodeCoeffs.Cons[TermState, Term, Double, HNil, Typ[
-    Term
-  ]] = (GeneratorNode
-    .Map(identity[Typ[Term]], Typs, IsleDomains) -> 1.0) :: IsleDomains
-    .target[TermState, Term, Double, Typ[Term]]
-
-  val funcForCodNodes
-      : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
-    (codomainNodeFamily -> 1.0) ::
-      FuncForCod.target[TermState, Term, Double, Term]
-
-  val funcNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
-    (Init(Funcs)                                 -> termInit) ::
-      ((applnNode | (funcSort, Funcs))           -> appW) ::
-      ((unifApplnNode | (funcSort, Funcs))       -> unAppW) ::
-      ((applnByArgNode | (funcSort, Funcs))      -> argAppW) ::
-      ((lambdaNode | (funcSort, Funcs))          -> lmW) ::
-      ((termsByTyps | (funcSort, Funcs))         -> termsByTypW) ::
-      ((recFuncFoldedNode | (funcSort, Funcs))   -> recDefW) ::
-      ((inducFuncFoldedNode | (funcSort, Funcs)) -> inducDefW) ::
-      Funcs.target[TermState, Term, Double, ExstFunc]
-
-  val typFamilyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, ExstFunc] =
-    (Init(TypFamilies)                                      -> termInit) ::
-      (typFamilyApplnNode                                   -> appW) ::
-      (typFamilyUnifApplnNode                               -> unAppW) ::
-      ((applnByArgNode | (typFamilySort, TypFamilies))      -> argAppW) ::
-      (lambdaTypFamilyNode                                  -> lmW) ::
-      ((termsByTyps | (typFamilySort, TypFamilies))         -> termsByTypW) ::
-      ((recFuncFoldedNode | (typFamilySort, TypFamilies))   -> recDefW) ::
-      ((inducFuncFoldedNode | (typFamilySort, TypFamilies)) -> inducDefW) ::
-      TypFamilies.target[TermState, Term, Double, ExstFunc]
-
-  val termsByTypNodes
-      : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, Term] =
-    (TermsWithTyp.init       -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
-      (wtN(applnNode)        -> appW) ::
-      (wtN(unifApplnNode)    -> unAppW) ::
-      (wtN(applnByArgNode)   -> argAppW) ::
-      (lambdaByTypNodeFamily -> (termInit * goalWeight + lmW)) ::
-      (typAsCodNodeFamily    -> typAsCodW) ::
-      (targetInducNodeFamily -> targetInducW) ::
-      (solveFamily -> solverW) ::
-      TermsWithTyp.target[TermState, Term, Double, Term]
-
-  val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
-    (TypsAndFamilies.fromTyp        -> typVsFamily) ::
-      (TypsAndFamilies.fromFamilies -> (1.0 - typVsFamily)) ::
-      TypsAndFamilies.target[TermState, Term, Double, Term]
-
-  val targTypNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
-    (TargetTyps.fromGoal  -> goalWeight) ::
-      (TargetTyps.fromTyp -> (1.0 - goalWeight - negTargetW)) ::
-      (TargetTyps.fromNegTyp -> negTargetW) ::
-      TargetTyps.target[TermState, Term, Double, Term]
-
-  val funcWithDomNodes
-      : NodeCoeffs.Cons[TermState, Term, Double, Typ[Term] :: HNil, ExstFunc] =
-    (FuncsWithDomain.init         -> termInit) ::
-      (fdtN(applnNode)            -> appW) ::
-      (fdtN(unifApplnNode)        -> unAppW) ::
-      (fdtN(applnByArgNode)       -> argAppW) ::
-      (lambdaForFuncWithDomFamily -> lmW) ::
-      FuncsWithDomain.target[TermState, Term, Double, ExstFunc]
-
-  val nodeCoeffSeq: NodeCoeffSeq[TermState, Term, Double] =
-    funcWithDomNodes +: targTypNodes +: goalNodes +: isleDomainsNode +: inducDomainNodes +: inducNodes +: funcForCodNodes +:
-      termNodes +: typNodes +: funcNodes +: typFamilyNodes +: typOrFmlyNodes +: funcWithDomNodes +: termsByTypNodes +:
-      NodeCoeffSeq.Empty[TermState, Term, Double]()
-
-  lazy val monixFD: MonixFiniteDistribution[TermState, Term] =
-    MonixFiniteDistribution(nodeCoeffSeq)
-
-  def monixTangFD(baseState: TermState) =
-    MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
-
-  def nextStateTask(
-      initState: TermState,
-      epsilon: Double,
-      limit: FiniteDuration = 3.minutes
-  ): Task[TermState] =
-    for {
-      terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
-      typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
-    } yield TermState(terms, typs, initState.vars, initState.inds)
-
-  def evolvedStateTask(
-      initState: TermState,
-      epsilon: Double,
-      limit: FiniteDuration = 3.minutes
-  ): Task[EvolvedState] =
-    nextStateTask(initState, epsilon, limit).map(
-      result => EvolvedState(initState, result, tg, epsilon)
-    )
-
-  def nextTangStateTask(
-      baseState: TermState,
-      tangState: TermState,
-      epsilon: Double,
-      limit: FiniteDuration = 3.minutes
-  ): Task[TermState] =
-    for {
-      terms <- monixTangFD(baseState).varDist(tangState)(Terms, epsilon, limit)
-      typs  <- monixTangFD(baseState).varDist(tangState)(Typs, epsilon, limit)
-    } yield TermState(terms, typs, baseState.vars, baseState.inds)
-
-  def findProof(
-      initState: TermState,
-      typ: Typ[Term],
-      epsilon: Double,
-      limit: FiniteDuration = 3.minutes
-  ): Task[FD[Term]] =
-    monixFD
-      .varDist(initState)(TermsWithTyp.at(typ :: HNil), epsilon, limit)
-      .map(_.flatten)
-}
-
-trait EvolvedStateLike {
-  val init: TermState
-  val result: TermState
-  val params: TermGenParams
-
-  val goalsAttained: Set[Typ[Term]] =
-    init.goals.support.intersect(result.terms.support.map(_.typ))
-
-  val foundGoal: Boolean = goalsAttained.nonEmpty
-}
-
-case class EvolvedState(
-    init: TermState,
-    result: TermState,
-    params: TermGenParams,
-    epsilon: Double
-) extends EvolvedStateLike
-
-object TermGenJson {
-
-  def nextStateTask(inp: String): Task[String] = {
-    val obj           = ujson.read(inp).obj
-    val termGenParams = read[TermGenParams](obj("generator-parameters").str)
-    val epsilon       = obj("epsilon").num
-    val initState     = TermState.fromJson(obj("initial-state"))
-    val task          = termGenParams.nextStateTask(initState, epsilon)
-    task.map { (ts) =>
-      write(ts.json)
-    }
-  }
-
-  def nextTangStateTask(inp: String): Task[String] = {
-    val obj           = read[ujson.Value](inp).obj
-    val termGenParams = read[TermGenParams](obj("generator-parameters").str)
-    val epsilon       = obj("epsilon").num
-    val baseState     = TermState.fromJson(obj("initial-state"))
-    val tangState     = TermState.fromJson(obj("tangent-state"))
-    val task          = termGenParams.nextTangStateTask(baseState, tangState, epsilon)
-    task.map((ts) => write(ts.json))
-  }
-
-  val all =
-    MultiTask(
-      "step"         -> nextStateTask,
-      "tangent-step" -> nextTangStateTask
-    )
-
-}

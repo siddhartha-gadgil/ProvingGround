@@ -2,25 +2,20 @@ package provingground.interface
 import provingground._
 import induction._
 
-import scala.concurrent._
-import duration._
 import monix.execution.Scheduler.Implicits.global
 import monix.eval._
-import monix.reactive._
-import monix.tail._
-import cats._
 import translation.FansiShow._
 
-import scala.collection.mutable.{ArrayBuffer, Map => mMap, Set => mSet}
+import scala.collection.mutable.{ArrayBuffer, Map => mMap}
 import HoTT.{Name => _, _}
 import monix.execution.CancelableFuture
 
 import math.max
 import trepplein._
 
-import scala.meta
-
 import LeanInterface._
+import ujson.Arr
+
 import scala.util.Try
 
 object LeanParser {
@@ -49,8 +44,8 @@ object LeanParser {
   case class Parsed(expr: Expr) extends Log
 
   trait Logger extends (Log => Unit){logger =>
-    def &&(that: Logger) = new Logger{
-      def apply(l: Log): Unit = {logger(l) ; that(l)}
+    def &&(that: Logger): Logger = (l: Log) => {
+      logger(l); that(l)
     }
   }
 
@@ -94,11 +89,10 @@ object LeanParser {
     newName
   }
 
-  import upickle.default._, ujson.Js
 
-  import translation._, TermJson._
+  import TermJson._
 
-  def jsDef(parser: LeanParser) = {
+  def jsDef(parser: LeanParser): Arr = {
     val jsDefs = parser.defnMap.toVector.map {
       case (name, term) =>
         ujson.Obj("name" -> ujson.Str(name.toString), "term" -> termToJson(term).get)
@@ -106,7 +100,7 @@ object LeanParser {
     ujson.Arr(jsDefs: _*)
   }
 
-  def jsTermIndMod(parser: LeanParser) = {
+  def jsTermIndMod(parser: LeanParser): Arr = {
     val jsIndMods = parser.termIndModMap.toVector map {
       case (name, tim) =>
         ujson.Obj(
@@ -157,7 +151,7 @@ class LeanParser(initMods: Seq[Modification],
                  indTaskMap: Map[Name, Task[TermIndMod]] = Map(),
                  log: LeanParser.Logger = LeanParser.Logger.nop) {
 
-  val mods = ArrayBuffer(initMods : _*)
+  val mods: ArrayBuffer[Modification] = ArrayBuffer(initMods : _*)
 
   def addMods(m: Seq[Modification]) : Unit =  mods ++= m
 
@@ -280,7 +274,7 @@ class LeanParser(initMods: Seq[Modification],
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
     // memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
-    memParsed.map(Task.pure(_)).getOrElse {
+    memParsed.map(Task.pure).getOrElse {
       parseWork += exp
       log(ParseWork(exp))
 
@@ -411,11 +405,11 @@ class LeanParser(initMods: Seq[Modification],
                accum: Vector[Term]): Task[(Term, Vector[Term])] =
     (t, n) match {
       case (x, 0) => Task.eval(x -> accum)
-      case (l: LambdaLike[u, v], n) if n > 0 =>
-        getValue(l.value, n - 1, accum :+ l.variable)
-      case (fn: FuncLike[u, v], n) if n > 0 =>
+      case (l: LambdaLike[u, v], m) if m > 0 =>
+        getValue(l.value, m - 1, accum :+ l.variable)
+      case (fn: FuncLike[u, v], m) if m > 0 =>
         val x = fn.dom.Var
-        getValue(fn(x), n - 1, accum :+ x)
+        getValue(fn(x), m - 1, accum :+ x)
       case _ => throw new Exception("getValue failed")
     }
 
@@ -423,7 +417,7 @@ class LeanParser(initMods: Seq[Modification],
     for {
       term <- parse(exp, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
       _ = {
-        pprint.log(s"Defined $name"); log(Defined(name, term));
+        pprint.log(s"Defined $name"); log(Defined(name, term))
         defnMap += name -> term
       }
     } yield ()
@@ -433,7 +427,7 @@ class LeanParser(initMods: Seq[Modification],
       typ <- parse(ty, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
       term = (name.toString) :: toTyp(typ)
       _ = {
-        pprint.log(s"Defined $name"); log(Defined(name, term));
+        pprint.log(s"Defined $name"); log(Defined(name, term))
         defnMap += name -> term
       }
     } yield ()
@@ -459,7 +453,7 @@ class LeanParser(initMods: Seq[Modification],
         // (typ, ltm1) = pr
         term = (name.toString) :: toTyp(typ)
         _ = {
-          pprint.log(s"Defined $name"); log(Defined(name, term));
+          pprint.log(s"Defined $name"); log(Defined(name, term))
           defnMap += name -> term
         }
         res <- foldAxiomSeq(term +: accum, ys)
@@ -476,16 +470,16 @@ class LeanParser(initMods: Seq[Modification],
         indTyp = toTyp(indTypTerm)
         typF   = name.toString :: indTyp
         _ = {
-          pprint.log(s"Defined $name"); log(Defined(name, typF));
+          pprint.log(s"Defined $name"); log(Defined(name, typF))
           defnMap += name -> typF
         }
         intros <- foldAxiomSeq(Vector(), ind.intros).map(_.reverse)
         // (intros, withIntros) = introsPair
         typValuePair <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePair match {
-          case (typ: Typ[Term], params) =>
+          case (_ : Typ[Term], params) =>
             SimpleIndMod(ind.name, typF, intros, params.size, isPropn)
-          case (t, params) =>
+          case (_, params) =>
             IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
         }
         _ = { log(DefinedInduc(name, indMod)); termIndModMap += ind.name -> indMod }
@@ -541,7 +535,7 @@ class LeanParser(initMods: Seq[Modification],
     case Pi(domain, body)  => max(maxIndex(domain.ty) + 1, maxIndex(body) + 1)
     case Let(domain, value, body) =>
       Vector(maxIndex(domain.ty), maxIndex(value), maxIndex(body) + 1).max
-    case Const(name @ Name.Str(prefix, "rec"), _) =>
+    case Const(name @ Name.Str(_, "rec"), _) =>
       findRecChildren(name)
         .map((v) => v.map(maxIndex).max * 2 + 1)
         .getOrElse(throw new Exception(s"could not find name $name"))
@@ -606,15 +600,15 @@ class LeanParser(initMods: Seq[Modification],
         case mod: SimpleIndMod =>
           val seq =
             ConstructorSeqTL
-              .getExst(toTyp(foldFuncLean(ind.typF, p)),
-                       LeanToTermMonix.introsFold(ind, p))
+              .getExst(toTyp(foldFuncLean(mod.typF, p)),
+                       LeanToTermMonix.introsFold(mode, p))
               .value
           codeGen.consSeq(seq)
         case mod: IndexedIndMod =>
           val indSeq =
             TypFamilyExst
-              .getIndexedConstructorSeq(foldFuncLean(ind.typF, p),
-                                        LeanToTermMonix.introsFold(ind, p))
+              .getIndexedConstructorSeq(foldFuncLean(mod.typF, p),
+                                        LeanToTermMonix.introsFold(mod, p))
               .value
           codeGen.indexedConsSeqDom(indSeq)
       }
