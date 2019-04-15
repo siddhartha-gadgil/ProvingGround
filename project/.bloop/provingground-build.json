@@ -27,7 +27,7 @@
             "/home/gadgil/.ivy2/cache/org.typelevel/cats-kernel_2.12/jars/cats-kernel_2.12-1.0.1.jar",
             "/home/gadgil/.ivy2/cache/org.spire-math/jawn-parser_2.12/jars/jawn-parser_2.12-0.11.1.jar",
             "/home/gadgil/.ivy2/cache/io.circe/circe-derivation_2.12/jars/circe-derivation_2.12-0.9.0-M3.jar",
-            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.4.4.jar",
+            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.5.0.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scala-js/sbt-scalajs/jars/sbt-scalajs-0.6.25.jar",
             "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-tools_2.12/jars/scalajs-tools_2.12-0.6.25.jar",
             "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-ir_2.12/jars/scalajs-ir_2.12-0.6.25.jar",
@@ -229,10 +229,10 @@
                 "-deprecation"
             ],
             "jars" : [
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar"
             ],
             "setup" : {
@@ -464,11 +464,11 @@
                 {
                     "organization" : "org.scalameta",
                     "name" : "sbt-metals",
-                    "version" : "0.4.4",
+                    "version" : "0.5.0",
                     "artifacts" : [
                         {
                             "name" : "sbt-metals",
-                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.4.4.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.5.0.jar"
                         }
                     ]
                 },
