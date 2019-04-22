@@ -9,8 +9,69 @@ import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
 
+import TermGeneratorNodes._
 
+/**
+  * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
+  * to be used for generating distributions, obtaining equations etc.
+  * The object contains helpers and other static objects.
+  */
 
+object TermGeneratorNodes{
+  /**
+    * Constant random variable, for fibers for islands
+    *
+    * @param randomVar the random variable
+    * @tparam O scala type of the random variable
+    */
+    case class CRV[O](randomVar: RandomVar[O]) extends (Term => RandomVar[O]) {
+      def apply(t: Term): RandomVar[O] = randomVar
+  
+      override def toString: String = randomVar.toString
+    }
+  
+    /**
+      * Wrapper for lambda to allow equality and  `toString` to work.
+      */
+    case object LamApply extends ((Term, Term) => Term) {
+      def apply(x: Term, y: Term): FuncLike[Term, Term] = x :~> y
+  
+      override def toString = "Lambda"
+    }
+  
+    /**
+      * Wrapper for Pi to allow equality and  `toString` to work.
+      */
+    case object PiApply extends ((Term, Typ[Term]) => Typ[Term]) {
+      def apply(x: Term, y: Typ[Term]): Typ[FuncLike[Term, Term]] = pi(x)(y)
+  
+      override def toString = "Pi"
+    }
+  
+    /**
+      * Wrapper for Sigma to allow equality and  `toString` to work.
+      */
+    case object SigmaApply extends ((Term, Typ[Term]) => Typ[Term]) {
+      def apply(x: Term, y: Typ[Term]): Typ[AbsPair[Term, Term]] = sigma(x)(y)
+  
+      override def toString = "Sigma"
+    }
+  
+    /**
+      * Wrapper for lambda giving functions to allow equality and  `toString` to work.
+      */
+    case object LamFunc extends ((Term, Term) => ExstFunc) {
+      def apply(x: Term, y: Term): ExstFunc = ExstFunc(x :~> y)
+  
+      override def toString = "Lambda"
+    }
+
+    case object Proj2 extends ((Typ[Term], Term) => Term) {
+      def apply(a: Typ[Term], b: Term): Term = b
+  
+      override def toString = "Proj2"
+    }
+}
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -141,53 +202,6 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-  /**
-    * Constant random variable, for fibers for islands
-    *
-    * @param randomVar the random variable
-    * @tparam O scala type of the random variable
-    */
-  case class CRV[O](randomVar: RandomVar[O]) extends (Term => RandomVar[O]) {
-    def apply(t: Term): RandomVar[O] = randomVar
-
-    override def toString: String = randomVar.toString
-  }
-
-  /**
-    * Wrapper for lambda to allow equality and  `toString` to work.
-    */
-  case object LamApply extends ((Term, Term) => Term) {
-    def apply(x: Term, y: Term): FuncLike[Term, Term] = x :~> y
-
-    override def toString = "Lambda"
-  }
-
-  /**
-    * Wrapper for Pi to allow equality and  `toString` to work.
-    */
-  case object PiApply extends ((Term, Typ[Term]) => Typ[Term]) {
-    def apply(x: Term, y: Typ[Term]): Typ[FuncLike[Term, Term]] = pi(x)(y)
-
-    override def toString = "Pi"
-  }
-
-  /**
-    * Wrapper for Sigma to allow equality and  `toString` to work.
-    */
-  case object SigmaApply extends ((Term, Typ[Term]) => Typ[Term]) {
-    def apply(x: Term, y: Typ[Term]): Typ[AbsPair[Term, Term]] = sigma(x)(y)
-
-    override def toString = "Sigma"
-  }
-
-  /**
-    * Wrapper for lambda giving functions to allow equality and  `toString` to work.
-    */
-  case object LamFunc extends ((Term, Term) => ExstFunc) {
-    def apply(x: Term, y: Term): ExstFunc = ExstFunc(x :~> y)
-
-    override def toString = "Lambda"
-  }
 
   /**
     * An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
@@ -322,7 +336,7 @@ class TermGeneratorNodes[InitState](
   def foldedTargetFunctionNode(typ: Typ[Term]): FlatMapOpt[Term, Term] =
     FlatMapOpt[Term, Term](
       funcForCod(typ),
-      t => foldFuncTarget(t, typ, termsWithTyp(typ)),
+      t => foldFuncTargetNode(t, typ, termsWithTyp(typ)),
       termsWithTyp(typ)
     )
 
@@ -475,7 +489,7 @@ class TermGeneratorNodes[InitState](
     * Node for folding a function (or term) with a speficied number of arguments
     * to get terms.
     */
-  def foldFunc(
+  def foldFuncNode(
       t: Term,
       depth: Int,
       output: RandomVar[Term]
@@ -486,7 +500,7 @@ class TermGeneratorNodes[InitState](
         case fn: FuncLike[u, v] =>
           FlatMap(
             termsWithTyp(fn.dom),
-            (x: Term) => foldFunc(fn(x.asInstanceOf[u]), depth - 1, output),
+            (x: Term) => foldFuncNode(fn(x.asInstanceOf[u]), depth - 1, output),
             output
           )
       }
@@ -495,7 +509,7 @@ class TermGeneratorNodes[InitState](
     * Node for folding a function (or term) with a speficied target type
     * to optionally get terms with the target type.
     */
-  def foldFuncTarget(
+  def foldFuncTargetNode(
       t: Term,
       target: Typ[Term],
       output: RandomVar[Term]
@@ -508,7 +522,7 @@ class TermGeneratorNodes[InitState](
             FlatMapOpt(
               termsWithTyp(fn.dom),
               (x: Term) =>
-                foldFuncTarget(fn(x.asInstanceOf[u]), target, output),
+                foldFuncTargetNode(fn(x.asInstanceOf[u]), target, output),
               output
             )
           )
@@ -524,7 +538,7 @@ class TermGeneratorNodes[InitState](
     * @param ind the inductive structure
     * @return distribution of functions
     */
-  def recFuncsForStruc(
+  def recFuncsForStrucNode(
       ind: ExstInducStrucs
   ): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
     ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
@@ -536,7 +550,7 @@ class TermGeneratorNodes[InitState](
     * i.e., recursion function with data of the right type folded in.
     * Examples of domains are `Nat`, `Vec(A)` and `Fin`
     */
-  def recFuncsFoldedGivenDom(
+  def recFuncsFoldedGivenDomNode(
       ind: ExstInducDefn,
       dom: Term
   ): GeneratorNode[Term] =
@@ -545,7 +559,7 @@ class TermGeneratorNodes[InitState](
       (codom: Typ[Term]) => {
         val fnOpt = ind.ind.recOpt(dom, codom)
         fnOpt.map { fn =>
-          foldFunc(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size, Terms)
         }
       },
       Terms
@@ -556,7 +570,7 @@ class TermGeneratorNodes[InitState](
     * i.e., recursion function with data of the right type folded in.
     * Examples of domains are `Nat`, `Vec(A)` and `Fin`
     */
-  def inducFuncsFoldedGivenDom(
+  def inducFuncsFoldedGivenDomNode(
       ind: ExstInducDefn,
       dom: Term
   ): GeneratorNode[Term] =
@@ -565,7 +579,7 @@ class TermGeneratorNodes[InitState](
       (codom: Term) => {
         val fnOpt = ind.ind.inducOpt(dom, codom)
         fnOpt.map { fn =>
-          foldFunc(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size, Terms)
         }
       },
       Terms
@@ -660,7 +674,7 @@ class TermGeneratorNodes[InitState](
   def recFuncsFolded(ind: ExstInducDefn): GeneratorNode[Term] =
     FlatMap[Term, Term](
       domForInduc(ind),
-      dom => recFuncsFoldedGivenDom(ind, dom),
+      dom => recFuncsFoldedGivenDomNode(ind, dom),
       Terms
     )
 
@@ -682,7 +696,7 @@ class TermGeneratorNodes[InitState](
   def inducFuncsFolded(ind: ExstInducDefn): GeneratorNode[Term] =
     FlatMap[Term, Term](
       domForInduc(ind),
-      dom => inducFuncsFoldedGivenDom(ind, dom),
+      dom => inducFuncsFoldedGivenDomNode(ind, dom),
       Terms
     )
 
@@ -699,7 +713,7 @@ class TermGeneratorNodes[InitState](
       case (dom, targ) =>
         val fnOpt = ind.ind.inducOpt(dom, targ)
         fnOpt.map { fn =>
-          foldFunc(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size, Terms)
         }
     }
 
@@ -763,7 +777,7 @@ class TermGeneratorNodes[InitState](
   val recFuncs: FlatMap[ExstInducStrucs, ExstFunc] =
     FlatMap(
       InducStrucs,
-      recFuncsForStruc,
+      recFuncsForStrucNode,
       Funcs
     )
 
@@ -777,11 +791,6 @@ class TermGeneratorNodes[InitState](
       Funcs
     )
 
-  case object Proj2 extends ((Typ[Term], Term) => Term) {
-    def apply(a: Typ[Term], b: Term): Term = b
-
-    override def toString = "Proj2"
-  }
 
   /**
     * terms generated by first choosing type and then term with the type;
