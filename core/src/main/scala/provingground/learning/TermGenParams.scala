@@ -65,7 +65,13 @@ object TermGenParams {
   }
 }
 
-
+case class TermGenParamsNodes(tg: TermGenParams) extends TermGeneratorNodes[TermState](
+  { case (fn, arg) =>applyFunc(fn.func, arg) },
+  { case (fn, arg) => Unify.appln(fn.func, arg) },
+  AddVar(_, tg.varWeight),
+  GetVar,
+  InIsle
+)
 
 case class TermGenParams(
                           appW: Double = 0.1,
@@ -85,15 +91,10 @@ case class TermGenParams(
                           typVsFamily: Double = 0.5,
                           negTargetW: Double = 0,
                           solverW: Double = 0
-                        )(implicit solver: TypSolver) { tg =>
-  object Gen
-    extends TermGeneratorNodes[TermState](
-      { case (fn, arg) => applyFunc(fn.func, arg) },
-      { case (fn, arg) => Unify.appln(fn.func, arg) },
-      AddVar(_, varWeight),
-      GetVar,
-      InIsle
-    )
+                        ) { tg =>
+
+
+  val Gen = TermGenParamsNodes(this)
 
   val toJson: ujson.Value =
     ujson.Obj(
