@@ -122,15 +122,6 @@ object HoTT {
   import scala.language.existentials
 
   /**
-    * A term of type U with its HoTT-type of scala-type Typ[U].
-    * refines terms by specifying the scala type of `_.typ`
-    */
-  case class TypedTerm[+U <: Term with Subs[U]](term: U, typ: Typ[U]) {
-    def replace(x: Term, y: Term) =
-      TypedTerm(term.replace(x, y), typ.replace(x, y))
-  }
-
-  /**
     * A HoTT term.
     */
   trait Term extends Subs[Term] { self =>
@@ -139,11 +130,6 @@ object HoTT {
       * the HoTT-type of the term
       */
     val typ: Typ[U] forSome { type U >: (self.type) <: Term with Subs[U] }
-
-    /**
-      * Term with somewhat refined type.
-      */
-    lazy val typed = TypedTerm(self: self.type, typ)
 
     /**
       * returns whether `this` depends on `that`
@@ -381,9 +367,6 @@ object HoTT {
       */
     val typ: Univ
 
-    override lazy val typed: TypedTerm[Typ[Term]] =
-      TypedTerm(this: this.type, typ)
-
     lazy val typlevel: Int = univlevel(typ)
 
     /** A symbolic object with this HoTT type, and with scala-type Obj*/
@@ -392,9 +375,6 @@ object HoTT {
     /** A symbolic object with this HoTT type, and with scala-type Obj*/
     def symbObj(name: AnySym): U with Subs[U] = variable(name)
 
-    /** A typed symbolic object with this HoTT type, and with scala-type Obj*/
-    def typedVar(name: AnySym): TypedTerm[U] =
-      TypedTerm[U](variable(name), this)
 
     /** symbolic object with given name*/
     def ::(name: String): U = symbObj(Name(name))
@@ -407,8 +387,7 @@ object HoTT {
       */
     def Var(implicit factory: NameFactory): U = getVar[U](this)
 
-    def typedVar(implicit factory: NameFactory): TypedTerm[U] =
-      getTypedVar(this)
+  
 
     /**
       * function type:  `this -> that`
@@ -1069,8 +1048,6 @@ object HoTT {
     lazy val typ: ProdTyp[U, V] =
       ProdTyp(first.typ.asInstanceOf[Typ[U]], second.typ.asInstanceOf[Typ[V]])
 
-    override lazy val typed: TypedTerm[PairTerm[U, V]] =
-      TypedTerm(this: this.type, typ)
 
     def newobj: PairTerm[U, V] = {
       val newfirst = first.newobj
@@ -1449,8 +1426,6 @@ object HoTT {
 
     val typ: Typ[FuncLike[W, U]]
 
-    override lazy val typed: TypedTerm[FuncLike[W, U]] =
-      TypedTerm(this: this.type, typ)
 
     val dom: Typ[W]
 
@@ -1617,8 +1592,6 @@ object HoTT {
 
     val typ: Typ[Func[W, U]]
 
-    override lazy val typed: TypedTerm[Func[W, U]] =
-      TypedTerm(this: this.type, typ)
 
     val depcodom: W => Typ[U] = _ => codom
 
@@ -2264,8 +2237,6 @@ object HoTT {
 
     lazy val fibers = LambdaFixed(variable, value)
 
-    override lazy val typed: TypedTerm[Typ[Term]] =
-      TypedTerm(this: this.type, typ)
 
     override def variable(name: AnySym): FuncLike[W, U] =
       // DepSymbolicFunc(name, fibers)
@@ -2306,9 +2277,6 @@ object HoTT {
     lazy val typ: Typ[Typ[Term]] = Universe(
       max(univlevel(fibers.codom), univlevel(fibers.dom.typ))
     )
-
-    override lazy val typed: TypedTerm[Typ[Term]] =
-      TypedTerm(this: this.type, typ)
 
     override def variable(name: AnySym): FuncLike[W, U] =
       DepSymbolicFunc[W, U](name, fibers)
@@ -3410,10 +3378,6 @@ object HoTT {
   )(implicit factory: NameFactory): U =
     typ.symbObj(factory.get)
 
-  def getTypedVar[U <: Term with Subs[U]](
-      typ: Typ[U]
-  )(implicit factory: NameFactory): TypedTerm[U] =
-    typ.typedVar(factory.get)
 
   /**
     * returns whether term is a variable
