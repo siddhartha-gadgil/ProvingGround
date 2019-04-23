@@ -408,33 +408,6 @@ case class ExpressionEval(
       p: Map[Expression, Double] = finalDist): Map[Expression, Double] =
     jetMap(jet(p)(resolveOpt(exp).getOrElse(Literal(0))))
 
-  // ------------------------------------------
-  // The below code using matching error. We should use orthogonal projections instead as above.
-  lazy val matchKL: Expression = equations.map(_.klError).reduce(_ + _)
-
-  def cost(hW: Double = 1, klW: Double = 1, matchW: Double = 1): Expression =
-    (hExp * hW) + (klExp * klW) + (matchKL * matchW * (1.0 / tg.termInit))
-
-  def shift(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
-      p: Map[Expression, Double]
-  ): Map[Expression, Double] = {
-    val costJet: Jet[Double] = jet(p)(cost(hW, klW, matchW))
-    variableIndex.mapValues(j => costJet.infinitesimal(j))
-  }
-
-  def shifted(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
-      p: Map[Expression, Double],
-      epsilon: Double = 0.1
-  ): Map[Expression, Double] = {
-    val q = shift(hW, klW, matchW)(p)
-    for { (x, w) <- p } yield x -> (w - epsilon * q.getOrElse(x, 0.0))
-  }
-
-  def iteratorMatched(hW: Double = 1, klW: Double = 1, matchW: Double = 1)(
-      p: Map[Expression, Double],
-      epsilon: Double = 0.1
-  ): Iterator[Map[Expression, Double]] =
-    Iterator.iterate(p)(q => shifted(hW, klW, matchW)(q, epsilon))
 
 }
 

@@ -14,6 +14,12 @@ import EntropyAtomWeight._
 
 import scalahott.NatRing
 
+/**
+ * Collect local/generative/tactical proving;
+ * this includes configuration and learning but excludes strategy and attention.
+ * This can be called in a loop generating goals based on unproved theorems,
+ * using representation/deep learning with attention focussed or interactively.
+ */
 case class LocalProver(
     initState: TermState =
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
