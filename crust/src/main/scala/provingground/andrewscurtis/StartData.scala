@@ -57,8 +57,8 @@ case class StartData(name: String,
 
   def log = {
     val query = BSONDocument("name" -> name)
-    val prevStarts = actorsDB
-      .find(query)
+    val prevStarts = actorsDB.flatMap(_.
+      find(query)
       .cursor[BSONDocument]()
       .headOption
       .map(
@@ -66,7 +66,7 @@ case class StartData(name: String,
           (docOpt flatMap
             (_.getAs[String]("start-data") map ((s: String) =>
               uread[List[StartData]](s))))
-            .getOrElse(List()))
+            .getOrElse(List())))
     val updatedStartsFut = prevStarts map (this :: _)
     val futDoc =
       updatedStartsFut map
@@ -77,7 +77,7 @@ case class StartData(name: String,
     val res = futDoc.map(
       (doc) =>
         //println(doc)
-        actorsDB.insert(doc))
+        actorsDB.foreach(_.insert(doc)))
     (futDoc, res)
   }
 

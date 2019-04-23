@@ -207,7 +207,7 @@ object ACMongo extends ACWriter {
     */
   def getFutElemsStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    elemsDBFut.map(_.find(selector).cursor[ACElem]().collect[Vector]())
+    elemsDBFut.flatMap(_.find(selector).cursor[ACElem]().collect[Vector]())
   }
 
   /**
@@ -215,7 +215,7 @@ object ACMongo extends ACWriter {
     */
   def getFutThmElemsStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    thmsDB.map(_.find(selector).cursor[ACThm]().collect[Vector]())
+    thmsDB.flatMap(_.find(selector).cursor[ACThm]().collect[Vector]())
   }
 
   /**
@@ -256,12 +256,12 @@ object ACMongo extends ACWriter {
     * get elements given only actor name (as future, option)
     */
   def getFutOptElems(name: String) =
-    getFutOptLoops(name) flatMap
+    (getFutOptLoops(name) flatMap
       ({
         case Some(loops) =>
           getFutElemsStep(name, loops - 1) map ((vec) => Some(vec))
         case None => Future.successful(None)
-      })
+      }))
 
   /**
     * get theorems given only actor name (as future, option)
@@ -367,20 +367,20 @@ object ACMongo extends ACWriter {
       .find(query)
       .sort(BSONDocument("loops" -> 1))
       . // should check if should use 1 or "increasing"
-      cursor[ACThm]()
-    cursor.collect[Stream]()
+      cursor[ACThm]())
+    cursor.flatMap(_.collect[Stream]())
   }
 
   def allThmWeights(name: String) = {
     val query  = BSONDocument("name" -> name) // matches against pickled theorem
-    val cursor = thmsDB.find(query).cursor[ACThm]()
-    cursor.collect[Vector]()
+    val cursor = thmsDB.map(_.find(query).cursor[ACThm]())
+    cursor.flatMap(_.collect[Vector]())
   }
 
   def thmSupp(name: String) = {
     val query  = BSONDocument("name" -> name) // matches against pickled theorem
-    val cursor = thmsDB.find(query).cursor[ACThm]()
-    cursor.collect[Set]() map ((fut) => fut map (_.pres)) map (_.toVector)
+    val cursor = thmsDB.map(_.find(query).cursor[ACThm]())
+    cursor.flatMap(_.collect[Set]() map ((fut) => fut map (_.pres)) map (_.toVector))
   }
 
   def thmView(
