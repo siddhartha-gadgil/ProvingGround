@@ -207,7 +207,7 @@ object ACMongo extends ACWriter {
     */
   def getFutElemsStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    elemsDBFut.flatMap(_.find(selector).cursor[ACElem]().collect[Vector]())
+    elemsDBFut.flatMap(_.find(selector).cursor[ACElem]().collect[Vector](-1, Cursor.FailOnError[Vector[ACElem]]()) )
   }
 
   /**
@@ -215,7 +215,7 @@ object ACMongo extends ACWriter {
     */
   def getFutThmElemsStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    thmsDB.flatMap(_.find(selector).cursor[ACThm]().collect[Vector]())
+    thmsDB.flatMap(_.find(selector).cursor[ACThm]().collect[Vector](-1, Cursor.FailOnError[Vector[ACThm]]()) )
   }
 
   /**
@@ -229,13 +229,13 @@ object ACMongo extends ACWriter {
 
   def getFutActors() = {
     val entries =
-      actorsDB.map(_.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]())
+      actorsDB.map(_.find(BSONDocument()).cursor[BSONDocument]().collect[Vector](-1, Cursor.FailOnError[Vector[BSONDocument]]()) )
     entries.flatMap(_.map ((vec) => (vec map (_.getAs[String]("name"))).flatten))
   }
 
   def getFutStartData() = {
     val entries =
-      actorsDB.flatMap(_.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]())
+      actorsDB.flatMap(_.find(BSONDocument()).cursor[BSONDocument]().collect[Vector](-1, Cursor.FailOnError[Vector[BSONDocument]]()) )
     entries map
       ((vec) =>
         (vec map
@@ -368,19 +368,19 @@ object ACMongo extends ACWriter {
       .sort(BSONDocument("loops" -> 1))
       . // should check if should use 1 or "increasing"
       cursor[ACThm]())
-    cursor.flatMap(_.collect[Stream]())
+    cursor.flatMap(_.collect[Stream](-1, Cursor.FailOnError[Stream[ACThm]]()))
   }
 
   def allThmWeights(name: String) = {
     val query  = BSONDocument("name" -> name) // matches against pickled theorem
     val cursor = thmsDB.map(_.find(query).cursor[ACThm]())
-    cursor.flatMap(_.collect[Vector]())
+    cursor.flatMap(_.collect[Vector](-1, Cursor.FailOnError[Vector[ACThm]]()))
   }
 
   def thmSupp(name: String) = {
     val query  = BSONDocument("name" -> name) // matches against pickled theorem
     val cursor = thmsDB.map(_.find(query).cursor[ACThm]())
-    cursor.flatMap(_.collect[Set]() map ((fut) => fut map (_.pres)) map (_.toVector))
+    cursor.flatMap(_.collect[Set](-1, Cursor.FailOnError[Set[ACThm]]()) map ((fut) => fut map (_.pres)) map (_.toVector))
   }
 
   def thmView(
