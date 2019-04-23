@@ -403,7 +403,7 @@ case class GeneratorTF[State, Boat](
                 } yield EquationTerm(fve, p / condition)
             }
             (eqT, baseData)
-          case isle: Island[Y, State, o, b] =>
+          case isle: Island[_, State, o, b] =>
             val (isleInit, boat) = isle.initMap(initState)
             val fs               = isle.finalMap(boat, finalState)
             if (sd.isEmpty(fs)) (Set.empty[EquationTerm], TFData.empty)
@@ -427,7 +427,7 @@ case class GeneratorTF[State, Boat](
                     FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
               (eqTerms, baseData ++ isleData)
             }
-          case isle: ComplexIsland[o, Y, State, Boat, Double] =>
+          case isle: ComplexIsland[o, _, State, Boat, _] =>
             val (isleInit, boat, _) = isle.initMap(initState)
             val isleEq =
               GeneratorTF(nodeCoeffSeq,
@@ -631,7 +631,7 @@ case class GeneratorTF[State, Boat](
             }
             (eqT, baseData)
           }
-        case isle: Island[Y, State, o, b] =>
+        case isle: Island[_, State, o, b] =>
           Task {
             val (isleInit, boat) = isle.initMap(initState)
             val fs               = isle.finalMap(boat, finalState)
@@ -657,7 +657,7 @@ case class GeneratorTF[State, Boat](
               (eqTerms, baseData ++ isleData)
             }
           }
-        case isle: ComplexIsland[o, Y, State, Boat, Double] =>
+        case isle: ComplexIsland[o, _, State, Boat, _] =>
           Task {
             val (isleInit, boat, _) = isle.initMap(initState)
             val isleEq =

@@ -279,7 +279,7 @@ case class GeneratorEquations[State, Boat](
             } yield EquationTerm(fve, p / condition)
         }
         (eqT, Set())
-      case isle: Island[Y, State, o, b] =>
+      case isle: Island[_, State, o, b] =>
         val (isleInit, boat) = isle.initMap(initState)
         val isleEq = GeneratorEquations(nodeCoeffSeq,
                                         isleInit,
@@ -296,7 +296,7 @@ case class GeneratorEquations[State, Boat](
             EquationTerm(fve,
                          FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
         (eqTerms, isleEquations)
-      case isle: ComplexIsland[o, Y, State, Boat, Double] =>
+      case isle: ComplexIsland[o, _, State, Boat, _] =>
         val (isleInit, boat, _) = isle.initMap(initState)
         val isleEq = GeneratorEquations(nodeCoeffSeq,
                                         isleInit,

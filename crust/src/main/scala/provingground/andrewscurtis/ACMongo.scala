@@ -31,42 +31,42 @@ object ACMongo extends ACWriter {
   /**
     * The database for andrews-curtis runs.
     */
-  implicit lazy val db: DefaultDB = connection("provingground-andrewscurtis")
+  implicit lazy val dbFut: Future[DefaultDB] = connection.database("provingground-andrewscurtis")
 
   /**
     * Collection for andrews-curtis elements - elements have all the info.
     */
-  lazy val elemsDB = db("elements")
+  lazy val elemsDBFut = dbFut.map(_("elements"))
 
-  val elemsInd = elemsDB.indexesManager
+  val elemsInd = elemsDBFut.map(_.indexesManager)
 
   val index = new Index(
     Seq("name" -> IndexType.Ascending, "loops" -> IndexType.Descending))
 
-  elemsInd.ensure(index) // index elements by actor name and loops (descending).
+  elemsInd.foreach(_.ensure(index)) // index elements by actor name and loops (descending).
 
   /**
     * collections of theorems, with total weights.
     */
-  lazy val thmsDB = db("theorems")
+  lazy val thmsDB = dbFut.map(_("theorems"))
 
-  val thmsInd = thmsDB.indexesManager
+  val thmsInd = thmsDB.map(_.indexesManager)
 
-  thmsInd.ensure(index) // index theoreme by actor name and loops (descending)
+  thmsInd.foreach(_.ensure(index)) // index theoreme by actor name and loops (descending)
 
   val thmsPresIndex = new Index(Seq("presentation" -> IndexType.Hashed))
 
-  thmsInd.ensure(thmsPresIndex) // also index by hhashed presentation
+  thmsInd.foreach(_.ensure(thmsPresIndex)) // also index by hhashed presentation
 
   /**
     * collection for actor data: names, loops run and anything else stored.
     */
-  lazy val actorsDB = db("actors")
+  lazy val actorsDB = dbFut.map(_("actors"))
 
   /**
     * collection for weights of moves.
     */
-  lazy val moveWeightsDB = db("moveweights")
+  lazy val moveWeightsDB = dbFut.map(_("moveweights"))
 
   /**
     * implicit writer for AC elements
@@ -164,19 +164,19 @@ object ACMongo extends ACWriter {
     * insert element in AC element collection
     */
   def addElem(el: ACElem) =
-    elemsDB.insert(el)
+    elemsDBFut.foreach(_.insert(el))
 
   /**
     * insert theorem in collection
     */
   def addThm(thm: ACThm) =
-    thmsDB.insert(thm)
+    thmsDB.foreach(_.insert(thm))
 
   /**
     * insert move weights in collection.
     */
   def addMoveWeight(wts: ACMoveWeights) =
-    moveWeightsDB.insert(wts)
+    moveWeightsDB.foreach(_.insert(wts))
 
   /**
     * update number of loops of an actor;
@@ -191,15 +191,15 @@ object ACMongo extends ACWriter {
     val modifier =
       BSONDocument("$set" -> BSONDocument("loops" -> loops)) //update
 
-    val checkCursor = actorsDB.find(selector).cursor[BSONDocument]()
+    val checkCursor = actorsDB.map(_.find(selector).cursor[BSONDocument]())
 
     val emptyFut =
-      checkCursor.headOption map (_.isEmpty) // check if entry for actor exists.
+      checkCursor.flatMap(_.headOption map (_.isEmpty)) // check if entry for actor exists.
 
     emptyFut map
       ((check) =>
-        if (check) actorsDB.insert(init)
-        else actorsDB.update(selector, modifier))
+        if (check) actorsDB.foreach(_.insert(init))
+        else actorsDB.foreach(_.update(selector, modifier)))
   }
 
   /**
@@ -207,7 +207,7 @@ object ACMongo extends ACWriter {
     */
   def getFutElemsStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    elemsDB.find(selector).cursor[ACElem]().collect[Vector]()
+    elemsDBFut.map(_.find(selector).cursor[ACElem]().collect[Vector]())
   }
 
   /**
@@ -215,7 +215,7 @@ object ACMongo extends ACWriter {
     */
   def getFutThmElemsStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    thmsDB.find(selector).cursor[ACThm]().collect[Vector]()
+    thmsDB.map(_.find(selector).cursor[ACThm]().collect[Vector]())
   }
 
   /**
@@ -223,19 +223,19 @@ object ACMongo extends ACWriter {
     */
   def getFutOptFDMStep(name: String, loops: Int) = {
     val selector = BSONDocument("name" -> name, "loops" -> loops)
-    moveWeightsDB.find(selector).cursor[ACMoveWeights]().headOption map
-      ((opt) => opt map (_.fdM))
+    moveWeightsDB.flatMap(_.find(selector).cursor[ACMoveWeights]().headOption map
+      ((opt) => opt map (_.fdM)))
   }
 
   def getFutActors() = {
     val entries =
-      actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
-    entries map ((vec) => (vec map (_.getAs[String]("name"))).flatten)
+      actorsDB.map(_.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]())
+    entries.flatMap(_.map ((vec) => (vec map (_.getAs[String]("name"))).flatten))
   }
 
   def getFutStartData() = {
     val entries =
-      actorsDB.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]()
+      actorsDB.flatMap(_.find(BSONDocument()).cursor[BSONDocument]().collect[Vector]())
     entries map
       ((vec) =>
         (vec map
@@ -248,7 +248,7 @@ object ACMongo extends ACWriter {
     */
   def getFutOptLoops(name: String) = {
     val selector = BSONDocument("name" -> name)
-    val futOpt   = actorsDB.find(selector).cursor[BSONDocument]().headOption
+    val futOpt   = actorsDB.flatMap(_.find(selector).cursor[BSONDocument]().headOption)
     futOpt map ((opt) => (opt) flatMap ((doc) => doc.getAs[Int]("loops")))
   }
 
@@ -363,7 +363,7 @@ object ACMongo extends ACWriter {
   def thmWeights(thm: Presentation, name: String) = {
     val query =
       BSONDocument("presentation" -> uwrite(thm), "name" -> name) // matches against pickled theorem
-    val cursor = thmsDB
+    val cursor = thmsDB.map(_
       .find(query)
       .sort(BSONDocument("loops" -> 1))
       . // should check if should use 1 or "increasing"
