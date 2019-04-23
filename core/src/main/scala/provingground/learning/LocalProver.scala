@@ -14,7 +14,7 @@ import EntropyAtomWeight._
 
 import scalahott.NatRing
 
-case class Prover(
+case class LocalProver(
     initState: TermState =
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
     tg: TermGenParams = TermGenParams(),
@@ -26,9 +26,11 @@ case class Prover(
     maxDepth: Int = 10,
     hW: Double = 1,
     klW: Double = 1
-) extends ProverStep {
+) extends LocalProverStep {
   // Convenience for generation
-  def addTerms(terms: (Term, Double)*): Prover = {
+  def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff/scale)
+
+  def addTerms(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
     val td = initState.terms * (1 - total) ++ FiniteDistribution(terms.map {
       case (x, p) => Weighted(x, p)
@@ -37,19 +39,19 @@ case class Prover(
     this.copy(initState = ts)
   }
 
-  lazy val typesByRestrict: Prover = {
+  lazy val typesByRestrict: LocalProver = {
     val typd = initState.terms.collect { case tp: Typ[Term] => tp }.safeNormalized
     val ts   = initState.copy(typs = typd)
     this.copy(initState = ts)
   }
 
-  lazy val typesByMap: Prover = {
+  lazy val typesByMap: LocalProver = {
     val typd = initState.terms.map(_.typ)
     val ts   = initState.copy(typs = typd)
     this.copy(initState = ts)
   }
 
-  def addVars(terms: (Term, Double)*): Prover = {
+  def addVars(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
     val td = initState.terms * (1 - total) ++ FiniteDistribution(terms.map {
       case (x, p) => Weighted(x, p)
@@ -63,7 +65,7 @@ case class Prover(
     this.copy(initState = ts)
   }
 
-  def addTypes(typs: (Typ[Term], Double)*): Prover = {
+  def addTypes(typs: (Typ[Term], Double)*): LocalProver = {
     val total = typs.map(_._2).sum
     val typd = initState.typs * (1 - total) ++ FiniteDistribution(typs.map {
       case (x, p) => Weighted(x, p)
@@ -72,7 +74,7 @@ case class Prover(
     this.copy(initState = ts)
   }
 
-  def addAxioms(typs: (Typ[Term], Double)*): Prover = {
+  def addAxioms(typs: (Typ[Term], Double)*): LocalProver = {
     val total = typs.map(_._2).sum
     val td = initState.terms * (1 - total) ++ FiniteDistribution(typs.map {
       case (x, p) => Weighted("axiom" :: x, p)
@@ -81,7 +83,7 @@ case class Prover(
     this.copy(initState = ts)
   }
 
-  def addGoals(typs: (Typ[Term], Double)*): Prover = {
+  def addGoals(typs: (Typ[Term], Double)*): LocalProver = {
     val total = typs.map(_._2).sum
     val typd = initState.goals * (1 - total) ++ FiniteDistribution(typs.map {
       case (x, p) => Weighted(x, p)
@@ -93,7 +95,7 @@ case class Prover(
   def addInd(
       typ: Typ[Term],
       intros: Term*
-  )(params: Vector[Term] = Vector(), weight: Double = 1): Prover = {
+  )(params: Vector[Term] = Vector(), weight: Double = 1): LocalProver = {
     import induction._
     val str0 = ExstInducStrucs.get(typ, intros.toVector)
     val str = params.foldRight(str0) {
@@ -108,7 +110,7 @@ case class Prover(
   def addIndexedInd(
       typ: Term,
       intros: Term*
-  )(params: Vector[Term] = Vector(), weight: Double = 1): Prover = {
+  )(params: Vector[Term] = Vector(), weight: Double = 1): LocalProver = {
     import induction._
     val str0 = ExstInducStrucs.getIndexed(typ, intros.toVector)
     val str = params.foldRight(str0) {
@@ -120,16 +122,16 @@ case class Prover(
     this.copy(initState = ts)
   }
 
-  lazy val noIsles: Prover = this.copy(tg = tg.copy(lmW = 0, piW = 0))
+  lazy val noIsles: LocalProver = this.copy(tg = tg.copy(lmW = 0, piW = 0))
 
-  def isleWeight(w: Double): Prover = this.copy(tg = tg.copy(lmW = w, piW = w))
+  def isleWeight(w: Double): LocalProver = this.copy(tg = tg.copy(lmW = w, piW = w))
 
-  def backwardWeight(w: Double): Prover =
+  def backwardWeight(w: Double): LocalProver =
     this.copy(tg = tg.copy(typAsCodW = w, targetInducW = w))
 
-  def negateTypes(w: Double): Prover = this.copy(tg = tg.copy(negTargetW = w))
+  def negateTypes(w: Double): LocalProver = this.copy(tg = tg.copy(negTargetW = w))
 
-  def natInduction(w: Double = 1.0): Prover = {
+  def natInduction(w: Double = 1.0): LocalProver = {
     val mixin = initState.inds + (NatRing.exstInducDefn, w)
     this.copy(initState.copy(inds = mixin.safeNormalized))
   }
@@ -148,7 +150,7 @@ case class Prover(
   val equationTerms: Task[Set[EquationTerm]] = pairT.map(_._2).memoize
 
   // Generating provers using results
-  val withLemmas: Task[Prover] =
+  val withLemmas: Task[LocalProver] =
     for {
       lws <- lemmas
       lfd = FiniteDistribution(lws.map {
@@ -157,7 +159,7 @@ case class Prover(
       lInit = initState.copy(terms = (initState.terms ++ lfd).safeNormalized)
     } yield this.copy(initState = lInit)
 
-  val optimalInit: Task[Prover] = expressionEval.map { ev =>
+  val optimalInit: Task[LocalProver] = expressionEval.map { ev =>
     val p                            = ev.optimum(hW, klW)
     val td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
     val ts                           = initState.copy(terms = td)
@@ -166,7 +168,7 @@ case class Prover(
 
 }
 
-trait ProverStep {
+trait LocalProverStep {
   val initState: TermState
   val nextState: Task[TermState]
   val tg: TermGenParams

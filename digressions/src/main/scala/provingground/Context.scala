@@ -5,7 +5,41 @@ import provingground.HoTT._
 //import scala.reflect.runtime.universe.{Try => UnivTry, Function => FunctionUniv, _}
 import annotation._
 import provingground.InductiveTypes._
-import Deprec._
+import MiniVerse._
+
+object MiniVerse {
+
+  /**
+    * returns type family, but needs a universe specified as the codomain.
+    */
+  def typFamilyDefn[W <: Term with Subs[W], U <: Term with Subs[U]](
+      dom: Typ[W],
+      codom: Typ[Typ[U]],
+      f: W => Typ[U]
+  ): FuncDefn[W, Typ[U]] = {
+    new FuncDefn[W, Typ[U]](f, dom, codom)
+  }
+
+  
+}
+
+case class MiniVerse[U <: Term with Subs[U]](sample: Typ[U])
+      extends Typ[Typ[U]] {
+    type Obj = Typ[U]
+
+    lazy val typ: MiniVerse[Typ[U]] = MiniVerse[Typ[U]](this)
+
+    def variable(name: AnySym): Typ[U] = sample
+
+    def newobj =
+      throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
+
+    def subs(x: Term, y: Term): MiniVerse[U] = this
+  }
+
+
 
 /**
   * Contexts, from which objects can be exported.
