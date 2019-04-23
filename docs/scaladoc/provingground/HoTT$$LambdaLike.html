@@ -231,8 +231,8 @@ Includes:
                         <a href="HoTT$$FuncDefn.html" title="A function defined by a scala function">FuncDefn</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="HoTT$$FuncLike.html" title="Terms that are functions or dependent functions, is a scala function, but the apply is not directly defined - instead the method act is defined."></a>
-                        <a href="HoTT$$FuncLike.html" title="Terms that are functions or dependent functions, is a scala function, but the apply is not directly defined - instead the method act is defined.">FuncLike</a>
+                        <a class="trait" href="HoTT$$FuncLike.html" title="Terms that are functions or dependent functions, is a scala function, but the apply is not directly defined - instead the method FuncLike#act is defined."></a>
+                        <a href="HoTT$$FuncLike.html" title="Terms that are functions or dependent functions, is a scala function, but the apply is not directly defined - instead the method FuncLike#act is defined.">FuncLike</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="HoTT$$FuncTyp.html" title="Function type - pure, not dependent."></a>
@@ -493,7 +493,8 @@ Includes:
  variable is mapped to value.
  This may or may not be a dependent function.
  If it is required at compile time that it is not dependent,
-and hence has scala type Func, then use the class <a href="HoTT$$LambdaFixed.html" class="extype" name="provingground.HoTT.LambdaFixed">LambdaFixed</a></p></div><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>Equality is overriden here, so that pure functions disguised as dependent ones
+and hence has scala type Func, then use the class <a href="HoTT$$LambdaFixed.html" class="extype" name="provingground.HoTT.LambdaFixed">LambdaFixed</a>
+</p></div><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>Equality is overriden here, so that pure functions disguised as dependent ones
 can be equal to undisguised pure functions.</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
@@ -922,7 +923,9 @@ checks HoTT-type of argument is in the domain and throws exception if it fails.
         <span class="name">canApply</span><span class="params">(<span name="arg">arg: <span class="extype" name="provingground.HoTT.LambdaLike.X">X</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      <p class="shortcomment cmt">checks if application is valid; can override to allow for example resizing universes</p><div class="fullcomment"><div class="comment cmt"><p>checks if application is valid; can override to allow for example resizing universes</p></div><dl class="paramcmts block"><dt class="param">arg</dt><dd class="cmt"><p>the argument</p></dd><dt>returns</dt><dd class="cmt"><p>whether the argument has the correct type.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
+      <p class="shortcomment cmt">checks if application is valid; can override to allow for example resizing universes
+</p><div class="fullcomment"><div class="comment cmt"><p>checks if application is valid; can override to allow for example resizing universes
+</p></div><dl class="paramcmts block"><dt class="param">arg</dt><dd class="cmt"><p>the argument</p></dd><dt>returns</dt><dd class="cmt"><p>whether the argument has the correct type.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.HoTT.LambdaLike">LambdaLike</a> → <a href="HoTT$$FuncLike.html" class="extype" name="provingground.HoTT.FuncLike">FuncLike</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">

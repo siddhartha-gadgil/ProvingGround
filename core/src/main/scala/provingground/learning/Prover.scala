@@ -134,10 +134,6 @@ case class Prover(
     this.copy(initState.copy(inds = mixin.safeNormalized))
   }
 
-  def addSolver(solver: TypSolver): Prover = {
-    val expanded = tg.solver || solver
-    this.copy(tg = tg.copy(solver = expanded))
-  }
 
   // Proving etc
   val nextState: Task[TermState] =

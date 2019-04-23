@@ -35,7 +35,7 @@ import provingground._, HoTT._
 
 import scalahott._, andrewscurtis.FreeGroups._
 import spire.implicits._
-import NatRing.{ x=>_,  Literal => nat, _}, QField.{w => _, x =>_, y=>_, z=>_, Literal => rat, _}, FreeGroup.{Literal => elem, _}
+import NatRing.{ x=>_,  Literal => nat, leq => natLeq, _}, QField.{w => _, x =>_, y=>_, z=>_, Literal => rat, _}, FreeGroup.{Literal => elem, _}
 import Theorems.{PowerDistributive, ConjPower}
 ```
 

@@ -8,7 +8,6 @@ import spire.implicits._
 
 import scala.language.implicitConversions
 
-
 object QField extends SymbolicField[Rational] {
   override def toString = "Q"
 
@@ -70,7 +69,7 @@ object QField extends SymbolicField[Rational] {
   }
 
   case class SymbPosWit(name: AnySym, value: LocalTerm)
-    extends PosWit
+      extends PosWit
       with Symbolic {
     override def toString: String = name.toString + " : (" + typ.toString + ")"
 
@@ -101,7 +100,7 @@ object QField extends SymbolicField[Rational] {
   val y: RepTerm[Rational] = "y" :: LocalTyp
 
   lazy val leq
-  : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], Pos]] = x :~> (y :~> Pos(
+      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], Pos]] = x :~> (y :~> Pos(
     y - x
   ))
 
@@ -113,12 +112,42 @@ object QField extends SymbolicField[Rational] {
     "positivity-dichotomy" :: (x ~>: (Pos(x) || Pos(-x)))
 
   val posAndNegPos
-  : FuncLike[RepTerm[Rational], FuncLike[Pos, FuncLike[Pos, Equality[
-    RepTerm[Rational]
-    ]]]] =
+      : FuncLike[RepTerm[Rational], FuncLike[Pos, FuncLike[Pos, Equality[
+        RepTerm[Rational]
+      ]]]] =
     "positive-and-negation-positive" :: (
       x ~>: (Pos(x) ~>: (Pos(-x) ~>: (x =:= Literal(0))))
-      )
+    )
+
+  val squarePositive: FuncLike[RepTerm[Rational], PosWit] =
+    "square-positive" :: x ~>: Pos(x * x)
+
+  val sumPositive: FuncLike[RepTerm[Rational], FuncLike[
+    RepTerm[Rational],
+    Func[PosWit, Func[PosWit, PosWit]]
+  ]] =
+    "sum-positive" :: x ~>: (y ~>: (Pos(x) ->: Pos(y) ->: Pos(x + y)))
+
+  def showPositive(x: LocalTerm): Option[PosWit] = x match {
+    case Literal(a) if a >= 0 => Some(PosLiteral(a))
+    case PiTerm(multElems) =>
+      if (multElems.exists(_._2 % 2 == 1)) None
+      else {
+        val sqrt = PiTerm(multElems.map { case (a, n) => (a, n / 2) })
+        Some(squarePositive(sqrt))
+      }
+    case Comb(`sum`, a, b) =>
+      for {
+        pf1 <- showPositive(a)
+        pf2 <- showPositive(b)
+      } yield sumPositive(a)(b)(pf1)(pf2)
+    case SigmaTerm(elems) =>
+      elems.map(y => showPositive(y).map(y -> _)).reduce[Option[(LocalTerm, PosWit)]]{
+        case (Some((a, pa)), Some((b, pb))) => Some((a + b) -> sumPositive(a)(b)(pa)(pb))
+        case _ => None
+      }.map(_._2)
+    case _ => None
+  }
 
   val z: RepTerm[Rational] = "z" :: LocalTyp
 
@@ -127,32 +156,33 @@ object QField extends SymbolicField[Rational] {
   import IdentityTyp.transport
 
   val transpEqL
-  : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
-    RepTerm[Rational],
-    Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
-    ]]] =
+      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
+        RepTerm[Rational],
+        Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
+      ]]] =
     x :~> (
       y :~> (z :~> (transport(w :-> (leq(w)(x)))(y)(z)))
-      ) !: x ~>: (
+    ) !: x ~>: (
       y ~>: (
         z ~>: (
           (y =:= z) ->: leq(y)(x) ->: leq(z)(x)
-          )
         )
       )
+    )
 
   val transpEqR
-  : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
-    RepTerm[Rational],
-    Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
-    ]]] =
+      : FuncLike[RepTerm[Rational], FuncLike[RepTerm[Rational], FuncLike[
+        RepTerm[Rational],
+        Func[Equality[RepTerm[Rational]], Func[PosWit, PosWit]]
+      ]]] =
     x :~> (
       y :~> (z :~> (transport(w :-> (leq(x)(w)))(y)(z)))
-      ) !: x ~>: (
+    ) !: x ~>: (
       y ~>: (
         z ~>: (
           (y =:= z) ->: leq(x)(y) ->: leq(x)(z)
-          )
         )
       )
+    )
+
 }
