@@ -375,7 +375,6 @@ object HoTT {
     /** A symbolic object with this HoTT type, and with scala-type Obj*/
     def symbObj(name: AnySym): U with Subs[U] = variable(name)
 
-
     /** symbolic object with given name*/
     def ::(name: String): U = symbObj(Name(name))
 
@@ -386,8 +385,6 @@ object HoTT {
       * new variable from a factory.
       */
     def Var(implicit factory: NameFactory): U = getVar[U](this)
-
-  
 
     /**
       * function type:  `this -> that`
@@ -407,7 +404,6 @@ object HoTT {
     ): GenFuncTyp[V, UU] = {
       piDefn(variable)(this: Typ[UU])
     }
-
 
     /**
       * returns product type, mainly to use for "and" for structures
@@ -678,13 +674,72 @@ object HoTT {
     * Empty type
     */
   case object Zero extends SmallTyp {
-    def rec[U <: Term with Subs[U]](codom: Typ[U]): Func[Term, U] =
-      (Zero ->: codom).symbObj(vacuousSym)
+    case class RecFn[U <: Term with Subs[U]](codom: Typ[U])
+        extends RecFunc[Term, U] {
+      val defnData: Vector[Term] = Vector()
+
+      def fromData(data: Vector[Term]) = this
+
+      def act(arg: provingground.HoTT.Term): U = codom.symbObj(vacuousSym)
+
+      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = Zero
+
+      def subs(
+          x: provingground.HoTT.Term,
+          y: provingground.HoTT.Term
+      ): provingground.HoTT.Func[provingground.HoTT.Term, U] =
+        RecFn(codom.replace(x, y))
+
+      val typ: provingground.HoTT.Typ[
+        provingground.HoTT.Func[provingground.HoTT.Term, U]
+      ] = Zero ->: codom
+
+      def newobj: provingground.HoTT.Func[provingground.HoTT.Term, U]
+        with provingground.HoTT.Subs[
+          provingground.HoTT.Func[provingground.HoTT.Term, U]
+        ] = throw new IllegalArgumentException(
+        s"trying to use the constant $this as a variable (or a component of one)"
+      )
+
+    }
+
+    case class InducFn[U <: Term with Subs[U]](depcodom: Func[Term, Typ[U]])
+        extends InducFuncLike[Term, U] {
+      val defnData: Vector[Term] = Vector()
+
+      def fromData(
+          data: Vector[provingground.HoTT.Term]
+      ): provingground.HoTT.InducFuncLike[provingground.HoTT.Term, U] = this
+      def act(arg: provingground.HoTT.Term): U =
+        PiDefn(depcodom).symbObj(vacuousSym)(arg)
+      val dom: provingground.HoTT.Typ[provingground.HoTT.Term] = Zero
+      def subs(
+          x: provingground.HoTT.Term,
+          y: provingground.HoTT.Term
+      ): provingground.HoTT.FuncLike[provingground.HoTT.Term, U] =
+        InducFn(depcodom.replace(x, y))
+      val typ: provingground.HoTT.Typ[
+        provingground.HoTT.FuncLike[provingground.HoTT.Term, U]
+      ] = PiDefn(depcodom)
+
+      def newobj: provingground.HoTT.FuncLike[provingground.HoTT.Term, U]
+        with provingground.HoTT.Subs[
+          provingground.HoTT.FuncLike[provingground.HoTT.Term, U]
+        ] =
+        throw new IllegalArgumentException(
+          s"trying to use the constant $this as a variable (or a component of one)"
+        )
+
+    }
+
+    def rec[U <: Term with Subs[U]](codom: Typ[U]): RecFunc[Term, U] =
+      RecFn(codom)
 
     def induc[U <: Term with Subs[U]](
         depcodom: Func[Term, Typ[U]]
-    ): FuncLike[Term, U] =
-      PiDefn(depcodom).symbObj(vacuousSym)
+    ): InducFuncLike[Term, U] =
+      InducFn(depcodom)
+      // PiDefn(depcodom).symbObj(vacuousSym)
   }
 
   /**
@@ -1048,7 +1103,6 @@ object HoTT {
     lazy val typ: ProdTyp[U, V] =
       ProdTyp(first.typ.asInstanceOf[Typ[U]], second.typ.asInstanceOf[Typ[V]])
 
-
     def newobj: PairTerm[U, V] = {
       val newfirst = first.newobj
       PairTerm(newfirst, second replace (first, newfirst))
@@ -1068,7 +1122,6 @@ object HoTT {
       with Subs[AbsPair[U, V]] {
     val first: U
     val second: V
-
 
     override def toString = s"""(($first) , ($second))"""
   }
@@ -1426,7 +1479,6 @@ object HoTT {
 
     val typ: Typ[FuncLike[W, U]]
 
-
     val dom: Typ[W]
 
     val depcodom: W => Typ[U]
@@ -1591,7 +1643,6 @@ object HoTT {
     val codom: Typ[U]
 
     val typ: Typ[Func[W, U]]
-
 
     val depcodom: W => Typ[U] = _ => codom
 
@@ -1856,7 +1907,6 @@ object HoTT {
 
   }
 
-
   /**
     * lambda which is known to be pure, i.e., have fixed codomain;
     * this is reflected in its scala class;
@@ -1908,7 +1958,6 @@ object HoTT {
       }
     }
   }
-
 
   /**
     * term as a symbol
@@ -2032,7 +2081,6 @@ object HoTT {
     else LambdaFixed(newvar, newValue)
     // }
   }
-
 
   /**
     * constructor for pi-Types;
@@ -2236,7 +2284,6 @@ object HoTT {
     lazy val typ: Typ[Typ[Term]] = Universe(univlevel(value.typ))
 
     lazy val fibers = LambdaFixed(variable, value)
-
 
     override def variable(name: AnySym): FuncLike[W, U] =
       // DepSymbolicFunc(name, fibers)
@@ -3187,7 +3234,7 @@ object HoTT {
         firstCase: FuncLike[U, W],
         secondCase: FuncLike[V, W]
     ) extends InducFuncLike[Term, W] {
-      val defnData : Vector[Term] = Vector(firstCase, secondCase)
+      val defnData: Vector[Term] = Vector(firstCase, secondCase)
 
       def fromData(data: Vector[Term]) =
         InducFn(
@@ -3377,7 +3424,6 @@ object HoTT {
       typ: Typ[U]
   )(implicit factory: NameFactory): U =
     typ.symbObj(factory.get)
-
 
   /**
     * returns whether term is a variable

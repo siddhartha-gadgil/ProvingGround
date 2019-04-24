@@ -34,7 +34,7 @@ object NatDecEq{
 
     val diag = diagInd(Star)(m :~> (p :-> p))
 
-    assert(diag.typ == n ~>: (AreEqual(n)(n)), "wrong induction family")
+    // assert(diag.typ == n ~>: (AreEqual(n)(n)), "wrong induction family")
 
     val target = n :~> (m :~> (("_" :: (n =:= m)) :-> AreEqual(n)(m)))
 
@@ -44,5 +44,10 @@ object NatDecEq{
 
     val decEqPf = indEq(diag) 
 
-    assert(decEqPf.typ == decEqThm, "Proved the wrong theorem")
+    // assert(decEqPf.typ == decEqThm, "Proved the wrong theorem")
+
+    def showNatGT(x: Nat, y: Nat) : Option[HoTT.Func[HoTT.Equality[Nat],HoTT.Term]] = (x, y) match {
+        case (Literal(a), Literal(b)) if a != b => Some(decEqPf(Literal(a))(Literal(b)))
+        case _ => None
+    }
 }

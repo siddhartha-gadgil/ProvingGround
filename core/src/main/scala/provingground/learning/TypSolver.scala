@@ -31,7 +31,7 @@ object TypSolver {
       case _                                      => None
     })
 
-  import scalahott._
+  import scalahott._, NatRing._
   case object LeqNatSolver
     extends TypSolver({
       case NatRing.LEQ(a, b) => NatRing.findLEQ(a, b)
@@ -49,5 +49,11 @@ object TypSolver {
     case _ => None
   })
 
-  implicit val coreSolver : TypSolver = IdSolver || LeqNatSolver || DivNatSolver || LeqQSolver
+  import provingground.library.NatDecEq
+  case object NatNEQSolver extends TypSolver({
+    case FuncTyp(IdentityTyp(NatTyp, x : Nat, y: Nat), Zero) => NatDecEq.showNatGT(x, y)
+    case _ => None
+  })
+
+  implicit val coreSolver : TypSolver = IdSolver || LeqNatSolver || DivNatSolver || LeqQSolver || NatNEQSolver
 }
