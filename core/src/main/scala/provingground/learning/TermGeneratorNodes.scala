@@ -16,61 +16,61 @@ import TermGeneratorNodes._
   * to be used for generating distributions, obtaining equations etc.
   * The object contains helpers and other static objects.
   */
+object TermGeneratorNodes {
 
-object TermGeneratorNodes{
   /**
     * Constant random variable, for fibers for islands
     *
     * @param randomVar the random variable
     * @tparam O scala type of the random variable
     */
-    case class CRV[O](randomVar: RandomVar[O]) extends (Term => RandomVar[O]) {
-      def apply(t: Term): RandomVar[O] = randomVar
-  
-      override def toString: String = randomVar.toString
-    }
-  
-    /**
-      * Wrapper for lambda to allow equality and  `toString` to work.
-      */
-    case object LamApply extends ((Term, Term) => Term) {
-      def apply(x: Term, y: Term): FuncLike[Term, Term] = x :~> y
-  
-      override def toString = "Lambda"
-    }
-  
-    /**
-      * Wrapper for Pi to allow equality and  `toString` to work.
-      */
-    case object PiApply extends ((Term, Typ[Term]) => Typ[Term]) {
-      def apply(x: Term, y: Typ[Term]): Typ[FuncLike[Term, Term]] = pi(x)(y)
-  
-      override def toString = "Pi"
-    }
-  
-    /**
-      * Wrapper for Sigma to allow equality and  `toString` to work.
-      */
-    case object SigmaApply extends ((Term, Typ[Term]) => Typ[Term]) {
-      def apply(x: Term, y: Typ[Term]): Typ[AbsPair[Term, Term]] = sigma(x)(y)
-  
-      override def toString = "Sigma"
-    }
-  
-    /**
-      * Wrapper for lambda giving functions to allow equality and  `toString` to work.
-      */
-    case object LamFunc extends ((Term, Term) => ExstFunc) {
-      def apply(x: Term, y: Term): ExstFunc = ExstFunc(x :~> y)
-  
-      override def toString = "Lambda"
-    }
+  case class CRV[O](randomVar: RandomVar[O]) extends (Term => RandomVar[O]) {
+    def apply(t: Term): RandomVar[O] = randomVar
 
-    case object Proj2 extends ((Typ[Term], Term) => Term) {
-      def apply(a: Typ[Term], b: Term): Term = b
-  
-      override def toString = "Proj2"
-    }
+    override def toString: String = randomVar.toString
+  }
+
+  /**
+    * Wrapper for lambda to allow equality and  `toString` to work.
+    */
+  case object LamApply extends ((Term, Term) => Term) {
+    def apply(x: Term, y: Term): FuncLike[Term, Term] = x :~> y
+
+    override def toString = "Lambda"
+  }
+
+  /**
+    * Wrapper for Pi to allow equality and  `toString` to work.
+    */
+  case object PiApply extends ((Term, Typ[Term]) => Typ[Term]) {
+    def apply(x: Term, y: Typ[Term]): Typ[FuncLike[Term, Term]] = pi(x)(y)
+
+    override def toString = "Pi"
+  }
+
+  /**
+    * Wrapper for Sigma to allow equality and  `toString` to work.
+    */
+  case object SigmaApply extends ((Term, Typ[Term]) => Typ[Term]) {
+    def apply(x: Term, y: Typ[Term]): Typ[AbsPair[Term, Term]] = sigma(x)(y)
+
+    override def toString = "Sigma"
+  }
+
+  /**
+    * Wrapper for lambda giving functions to allow equality and  `toString` to work.
+    */
+  case object LamFunc extends ((Term, Term) => ExstFunc) {
+    def apply(x: Term, y: Term): ExstFunc = ExstFunc(x :~> y)
+
+    override def toString = "Lambda"
+  }
+
+  case object Proj2 extends ((Typ[Term], Term) => Term) {
+    def apply(a: Typ[Term], b: Term): Term = b
+
+    override def toString = "Proj2"
+  }
 }
 
 /**
@@ -201,7 +201,6 @@ class TermGeneratorNodes[InitState](
       Terms,
       Terms
     )
-
 
   /**
     * An island to generate lambda terms, i.e., terms are generated withing the island and exported as lambdas;
@@ -348,6 +347,34 @@ class TermGeneratorNodes[InitState](
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
       case typ :: HNil => foldedTargetFunctionNode(typ)
     }, FuncForCod)
+
+  def typViaZeroNodeOpt(
+      typ: Typ[Term]
+  ): Option[GeneratorNode.Map[HoTT.Term, HoTT.Term]] = typ match {
+    case ft: FuncTyp[u, v] =>
+      val A                        = ft.dom
+      val a                        = A.Var
+      val zeroVar: RandomVar[Term] = termsWithTyp(A ->: Zero)
+      def fn(contraTerm: Term) = {
+        val contra = contraTerm.asInstanceOf[Func[u, Term]]
+        a :-> Zero.rec(ft.codom)(contra(a))
+      }
+      Some(GeneratorNode.Map(fn, zeroVar, termsWithTyp(typ)))
+    case ft: PiDefn[u, v] =>
+      val A                        = ft.domain
+      val a                        = A.Var
+      val zeroVar: RandomVar[Term] = termsWithTyp(A ->: Zero)
+      def fn(contraTerm: Term) = {
+        val contra = contraTerm.asInstanceOf[Func[u, Term]]
+        a :-> Zero.rec(ft.fibers(a))(contra(a))
+      }
+      Some(GeneratorNode.Map(fn, zeroVar, termsWithTyp(typ)))
+    case _ => None
+  }
+
+  val typViaZeroFamily
+      : GeneratorNodeFamily.BasePiOpt[HoTT.Typ[HoTT.Term] :: HNil, HoTT.Term] =
+    GeneratorNodeFamily.simplePiOpt(typViaZeroNodeOpt, TermsWithTyp)
 
   /**
     * lambda island for generating function with specified domain
@@ -790,7 +817,6 @@ class TermGeneratorNodes[InitState](
       inducFuncsForStruc,
       Funcs
     )
-
 
   /**
     * terms generated by first choosing type and then term with the type;
@@ -1612,4 +1638,3 @@ object TermState {
   }
 
 }
-

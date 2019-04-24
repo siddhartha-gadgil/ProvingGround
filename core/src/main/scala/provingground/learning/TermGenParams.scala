@@ -38,7 +38,8 @@ object TermGenParams {
       goalWeight = m("goal-weight").num,
       typVsFamily = m("types-versus-families").num,
       negTargetW = m("negation-target").num,
-      solverW = m("solver-weight").num
+      solverW = m("solver-weight").num,
+      contraW = m("contradiction-weight").num
     )
   }
 
@@ -111,7 +112,8 @@ case class TermGenParams(
     goalWeight: Double = 0.7,
     typVsFamily: Double = 0.5,
     negTargetW: Double = 0,
-    solverW: Double = 0
+    solverW: Double = 0,
+    contraW: Double = 0
 ) { tg =>
 
   val Gen = TermGenParamsNodes(this)
@@ -134,7 +136,8 @@ case class TermGenParams(
       "goal-weight"             -> goalWeight,
       "types-versus-families"   -> typVsFamily,
       "negation-target"         -> negTargetW,
-      "solver-weight"           -> solverW
+      "solver-weight"           -> solverW,
+      "contradiction-weight"    -> contraW
     )
 
   import Gen._, GeneratorNode._,
@@ -227,6 +230,7 @@ case class TermGenParams(
       (typAsCodNodeFamily    -> typAsCodW) ::
       (targetInducNodeFamily -> targetInducW) ::
       (solveFamily           -> solverW) ::
+      (typViaZeroFamily      -> contraW) ::
       TermsWithTyp.target[TermState, Term, Double, Term]
 
   val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Term, Double, HNil, Term] =
