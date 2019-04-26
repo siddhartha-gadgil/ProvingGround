@@ -1,11 +1,12 @@
 package provingground.library
 
 import provingground._, induction._, scalahott._, HoTT._
-import NatRing._
+import Nats.{Nat => NatTyp, _}
+import NatInd.{rec, induc}
 // import spire.implicits._
 
 
-object NatDecEq{
+object NatsDecEq{
     private val n = "n" :: NatTyp
     private val m = "m" :: NatTyp
     private val k = "k" :: NatTyp
@@ -46,8 +47,5 @@ object NatDecEq{
 
     // assert(decEqPf.typ == decEqThm, "Proved the wrong theorem")
 
-    def showNatGT(x: Nat, y: Nat) : Option[HoTT.Func[HoTT.Equality[Nat],HoTT.Term]] = (x, y) match {
-        case (Literal(a), Literal(b)) if a != b => Some(decEqPf(Literal(a))(Literal(b)))
-        case _ => None
-    }
+
 }
