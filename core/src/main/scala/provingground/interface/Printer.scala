@@ -72,7 +72,7 @@ object Printer extends FallbackPrinter {
   implicit def equationPrint: Printer[Equation] =
     Printer.simple(eq => s"${view(eq.lhs)} = ${view(eq.rhs)}")
 
-  implicit def eqTermPrint: Printer[EquationTerm] =
+  implicit def eqTermPrint: Printer[EquationNode] =
     Printer.simple(eq => s"${view(eq.lhs)} = ${view(eq.rhs)} + ...")
 
   def exprView(expr: Expression): String = expr match {

@@ -150,10 +150,10 @@ case class LocalProver(
   val mfd: MonixFiniteDistributionEq[TermState, Term] =
     MonixFiniteDistributionEq(tg.nodeCoeffSeq)
 
-  val pairT: Task[(FiniteDistribution[Term], Set[EquationTerm])] =
+  val pairT: Task[(FiniteDistribution[Term], Set[EquationNode])] =
     mfd.varDist(initState)(Terms, cutoff)
 
-  val equationTerms: Task[Set[EquationTerm]] = pairT.map(_._2).memoize
+  val equationTerms: Task[Set[EquationNode]] = pairT.map(_._2).memoize
 
   // Generating provers using results
   val withLemmas: Task[LocalProver] =
@@ -199,7 +199,7 @@ trait LocalProverStep {
   val unknownStatements: Task[FiniteDistribution[Typ[Term]]] =
     nextState.map(_.unknownStatements)
 
-  val equationTerms: Task[Set[EquationTerm]]
+  val equationTerms: Task[Set[EquationNode]]
 
   val equations: Task[Set[Equation]] = equationTerms.map { eqs =>
     groupEquations(eqs)

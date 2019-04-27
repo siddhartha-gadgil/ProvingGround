@@ -381,23 +381,23 @@ object GeneratorVariables {
     override def toString = s"($lhs) == ($rhs)"
   }
 
-  case class EquationTerm(lhs: Expression, rhs: Expression) {
-    def *(sc: Expression) = EquationTerm(lhs, rhs * sc)
+  case class EquationNode(lhs: Expression, rhs: Expression) {
+    def *(sc: Expression) = EquationNode(lhs, rhs * sc)
 
-    def *(x: Double) = EquationTerm(lhs, rhs * Literal(x))
+    def *(x: Double) = EquationNode(lhs, rhs * Literal(x))
     def useBoat[Y, State, O, Boat](
         boat: Boat,
         island: Island[Y, State, O, Boat]
     ) =
-      EquationTerm(lhs, rhs.useBoat(boat, island))
+      EquationNode(lhs, rhs.useBoat(boat, island))
 
     override def toString: String = s"($lhs =) $rhs"
 
     def mapVars(f: Variable[_] => Variable[_]) =
-      EquationTerm(lhs.mapVars(f), rhs.mapVars(f))
+      EquationNode(lhs.mapVars(f), rhs.mapVars(f))
   }
 
-  def groupEquations(ts: Set[EquationTerm]): Set[Equation] =
+  def groupEquations(ts: Set[EquationNode]): Set[Equation] =
     ts.groupBy(_.lhs)
       .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
       .toSet

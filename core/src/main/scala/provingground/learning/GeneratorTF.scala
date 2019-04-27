@@ -219,7 +219,7 @@ case class GeneratorTF[State, Boat](
 
   def nodeCoeffsEquationTerms[Dom <: HList, Y](
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
-      x: Dom): (Set[EquationTerm], TFData) =
+      x: Dom): (Set[EquationNode], TFData) =
     nodeCoeffs match {
       case NodeCoeffs.Target(output) => (Set(), baseData)
       case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
@@ -232,7 +232,7 @@ case class GeneratorTF[State, Boat](
           case pf: GeneratorNodeFamily.PiOpt[Dom, Y] =>
             pf.nodesOpt(x)
               .map(nodeEquationTerms)
-              .getOrElse(Set.empty[EquationTerm] -> baseData)
+              .getOrElse(Set.empty[EquationNode] -> baseData)
           case _ =>
             throw new Exception(
               s"node family ${bc.headGen} with output ${bc.output} in $nodeCoeffs not a family")
@@ -260,10 +260,10 @@ case class GeneratorTF[State, Boat](
       Set()
     )
 
-  val nodeMap: mMap[GeneratorNode[_], (Set[EquationTerm], TFData)] = mMap()
+  val nodeMap: mMap[GeneratorNode[_], (Set[EquationNode], TFData)] = mMap()
 
   def nodeEquationTerms[Y](
-      node: GeneratorNode[Y]): (Set[EquationTerm], TFData) =
+      node: GeneratorNode[Y]): (Set[EquationNode], TFData) =
     nodeMap.getOrElse(
       node, {
 //        pprint.log(node)
@@ -272,19 +272,19 @@ case class GeneratorTF[State, Boat](
             val eqTerms =
               initProbs(input).map {
                 case (x, _) =>
-                  EquationTerm(FinalVal(Elem(x, input)),
+                  EquationNode(FinalVal(Elem(x, input)),
                                InitialVal(Elem(x, input)))
               }
             (eqTerms, baseData)
           case Atom(x, input) =>
             val eqTerm =
-              EquationTerm(FinalVal(Elem(x, input)), FinalVal(Elem(x, input)))
+              EquationNode(FinalVal(Elem(x, input)), FinalVal(Elem(x, input)))
             (Set(eqTerm), baseData)
           case GeneratorNode.Map(f, input, output) =>
             val eqTerms =
               finalProbs(input).flatMap {
                 case (x, p) =>
-                  finalElemValOpt(f(x), output).map(EquationTerm(_, p))
+                  finalElemValOpt(f(x), output).map(EquationNode(_, p))
               }
             (eqTerms, baseData)
           case MapOpt(f, input, output) =>
@@ -294,7 +294,7 @@ case class GeneratorTF[State, Boat](
                   f(x).flatMap { y =>
                     val condition = FinalVal(Event(input, Sort.Restrict(f)))
                     finalElemValOpt(y, output).map(
-                      EquationTerm(_, p / condition))
+                      EquationNode(_, p / condition))
                   }
               }
             (eqTerms, baseData)
@@ -304,7 +304,7 @@ case class GeneratorTF[State, Boat](
                 (x1, p1) <- finalProbs(input1)
                 (x2, p2) <- finalProbs(input2)
                 fve      <- finalElemValOpt(f(x1, x2), output)
-              } yield EquationTerm(fve, p1 * p2)
+              } yield EquationNode(fve, p1 * p2)
             (eqTerms, baseData)
           case zm: ZipMapOpt[o1, o2, Y] =>
             val eqTerms =
@@ -317,10 +317,10 @@ case class GeneratorTF[State, Boat](
                   }))
                 y   <- zm.f(x1, x2)
                 fve <- finalElemValOpt(y, zm.output)
-              } yield EquationTerm(fve, p1 * p2 / condition)
+              } yield EquationNode(fve, p1 * p2 / condition)
             (eqTerms, baseData)
           case FlatMap(baseInput, fiberNode, output) =>
-            val eqTerms: Set[EquationTerm] = for {
+            val eqTerms: Set[EquationNode] = for {
               (x, p) <- finalProbs(baseInput)
               // _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
               eqT <- nodeEquationTerms(fiberNode(x))._1
@@ -331,7 +331,7 @@ case class GeneratorTF[State, Boat](
             } yield eqn
             (eqTerms, allData.foldLeft(baseData)(_ ++ _))
           case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
-            val eqTerms: Set[EquationTerm] = for {
+            val eqTerms: Set[EquationNode] = for {
               (x, p)                   <- finalProbs(baseInput)
               (node: GeneratorNode[Y]) <- fiberNodeOpt(x).toSet
               // _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
@@ -349,7 +349,7 @@ case class GeneratorTF[State, Boat](
                 (x1, p1) <- finalProbs(baseInput)
                 (x2, p2) <- finalProbs(fiberVar(x1))
                 fve      <- finalElemValOpt(f(x1, x2), output)
-              } yield EquationTerm(fve, p1 * p2)
+              } yield EquationNode(fve, p1 * p2)
             (eqTerms, baseData)
           case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
             val d1     = finalProbs(baseInput)
@@ -375,7 +375,7 @@ case class GeneratorTF[State, Boat](
                 }
                 (y, p) <- d
                 fve    <- finalElemValOpt(y, output)
-              } yield EquationTerm(fve, p)
+              } yield EquationNode(fve, p)
             (eqT.toSet, baseData)
           case tc: ThenCondition[o, Y] =>
             val base = finalProbs(tc.gen.output)
@@ -385,7 +385,7 @@ case class GeneratorTF[State, Boat](
                   (x, p) <- base
 
                   fve <- finalElemValOpt(x, tc.output)
-                } yield EquationTerm(fve, p)
+                } yield EquationNode(fve, p)
 
               case s @ Sort.Filter(pred) =>
                 val condition = FinalVal(Event(tc.gen.output, s))
@@ -393,20 +393,20 @@ case class GeneratorTF[State, Boat](
                   (x, p) <- base
                   if pred(x)
                   fve <- finalElemValOpt(x, tc.output)
-                } yield EquationTerm(fve, p / condition)
+                } yield EquationNode(fve, p / condition)
               case s @ Sort.Restrict(optMap) =>
                 val condition = FinalVal(Event(tc.gen.output, s))
                 for {
                   (x, p) <- base
                   y      <- optMap(x)
                   fve    <- finalElemValOpt(x, tc.output)
-                } yield EquationTerm(fve, p / condition)
+                } yield EquationNode(fve, p / condition)
             }
             (eqT, baseData)
           case isle: Island[_, State, o, b] =>
             val (isleInit, boat) = isle.initMap(initState)
             val fs               = isle.finalMap(boat, finalState)
-            if (sd.isEmpty(fs)) (Set.empty[EquationTerm], TFData.empty)
+            if (sd.isEmpty(fs)) (Set.empty[EquationNode], TFData.empty)
             else {
               val isleEqNew =
                 GeneratorTF(nodeCoeffSeq, isleInit, fs)
@@ -422,7 +422,7 @@ case class GeneratorTF[State, Boat](
                   y = isle.export(boat, x)
                   fve <- finalElemValOpt(y, isle.output)
                 } yield
-                  EquationTerm(
+                  EquationNode(
                     fve,
                     FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
               (eqTerms, baseData ++ isleData)
@@ -442,7 +442,7 @@ case class GeneratorTF[State, Boat](
                 y = isle.export(boat, x)
                 fve <- finalElemValOpt(y, isle.output)
               } yield
-                EquationTerm(fve,
+                EquationNode(fve,
                              FinalVal(GeneratorVariables.InIsle(p, boat, ???)))
             (eqTerms, baseData ++ isleData)
 
@@ -456,7 +456,7 @@ case class GeneratorTF[State, Boat](
     )
 
   def nodeEquationTermsTask[Y](
-      node: GeneratorNode[Y]): Task[(Set[EquationTerm], TFData)] =
+      node: GeneratorNode[Y]): Task[(Set[EquationNode], TFData)] =
     if (nodeMap.keySet.contains(node)) Task.now(nodeMap(node))
     else {
       //        pprint.log(node)
@@ -466,7 +466,7 @@ case class GeneratorTF[State, Boat](
             val eqTerms =
               initProbs(input).map {
                 case (x, _) =>
-                  EquationTerm(FinalVal(Elem(x, input)),
+                  EquationNode(FinalVal(Elem(x, input)),
                                InitialVal(Elem(x, input)))
               }
             (eqTerms, baseData)
@@ -474,7 +474,7 @@ case class GeneratorTF[State, Boat](
         case Atom(x, input) =>
           Task {
             val eqTerm =
-              EquationTerm(FinalVal(Elem(x, input)), FinalVal(Elem(x, input)))
+              EquationNode(FinalVal(Elem(x, input)), FinalVal(Elem(x, input)))
             (Set(eqTerm), baseData)
           }
         case GeneratorNode.Map(f, input, output) =>
@@ -482,7 +482,7 @@ case class GeneratorTF[State, Boat](
             val eqTerms =
               finalProbs(input).flatMap {
                 case (x, p) =>
-                  finalElemValOpt(f(x), output).map(EquationTerm(_, p))
+                  finalElemValOpt(f(x), output).map(EquationNode(_, p))
               }
             (eqTerms, baseData)
           }
@@ -494,7 +494,7 @@ case class GeneratorTF[State, Boat](
                   f(x).flatMap { y =>
                     val condition = FinalVal(Event(input, Sort.Restrict(f)))
                     finalElemValOpt(y, output).map(
-                      EquationTerm(_, p / condition))
+                      EquationNode(_, p / condition))
                   }
               }
             (eqTerms, baseData)
@@ -506,7 +506,7 @@ case class GeneratorTF[State, Boat](
                 (x1, p1) <- finalProbs(input1)
                 (x2, p2) <- finalProbs(input2)
                 fve      <- finalElemValOpt(f(x1, x2), output)
-              } yield EquationTerm(fve, p1 * p2)
+              } yield EquationNode(fve, p1 * p2)
             (eqTerms, baseData)
           }
         case zm: ZipMapOpt[o1, o2, Y] =>
@@ -521,16 +521,16 @@ case class GeneratorTF[State, Boat](
                   }))
                 y   <- zm.f(x1, x2)
                 fve <- finalElemValOpt(y, zm.output)
-              } yield EquationTerm(fve, p1 * p2 / condition)
+              } yield EquationNode(fve, p1 * p2 / condition)
             (eqTerms, baseData)
           }
         case FlatMap(baseInput, fiberNode, output) =>
           val weightedTasks
-            : Set[(Task[(Set[EquationTerm], TFData)], FinalVal[_])] =
+            : Set[(Task[(Set[EquationNode], TFData)], FinalVal[_])] =
             for {
               (x, p) <- finalProbs(baseInput)
             } yield nodeEquationTermsTask(fiberNode(x)).memoize -> p
-          val eqTermTask: Task[Set[EquationTerm]] =
+          val eqTermTask: Task[Set[EquationNode]] =
             Task
               .gather(weightedTasks.map {
                 case (tsk, p) => tsk.map { case (eqTS, _) => eqTS.map(_ * p) }
@@ -546,12 +546,12 @@ case class GeneratorTF[State, Boat](
           } yield (eqTerms, data)
         case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
           val weightedTasks
-            : Set[(Task[(Set[EquationTerm], TFData)], FinalVal[_])] =
+            : Set[(Task[(Set[EquationNode], TFData)], FinalVal[_])] =
             for {
               (x, p) <- finalProbs(baseInput)
               node   <- fiberNodeOpt(x)
             } yield nodeEquationTermsTask(node).memoize -> p
-          val eqTermTask: Task[Set[EquationTerm]] =
+          val eqTermTask: Task[Set[EquationNode]] =
             Task
               .gather(weightedTasks.map {
                 case (tsk, p) => tsk.map { case (eqTS, _) => eqTS.map(_ * p) }
@@ -572,7 +572,7 @@ case class GeneratorTF[State, Boat](
                 (x1, p1) <- finalProbs(baseInput)
                 (x2, p2) <- finalProbs(fiberVar(x1))
                 fve      <- finalElemValOpt(f(x1, x2), output)
-              } yield EquationTerm(fve, p1 * p2)
+              } yield EquationNode(fve, p1 * p2)
             (eqTerms, baseData)
           }
         case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
@@ -600,7 +600,7 @@ case class GeneratorTF[State, Boat](
                 }
                 (y, p) <- d
                 fve    <- finalElemValOpt(y, output)
-              } yield EquationTerm(fve, p)
+              } yield EquationNode(fve, p)
             (eqT.toSet, baseData)
           }
         case tc: ThenCondition[o, Y] =>
@@ -612,7 +612,7 @@ case class GeneratorTF[State, Boat](
                   (x, p) <- base
 
                   fve <- finalElemValOpt(x, tc.output)
-                } yield EquationTerm(fve, p)
+                } yield EquationNode(fve, p)
 
               case s @ Sort.Filter(pred) =>
                 val condition = FinalVal(Event(tc.gen.output, s))
@@ -620,14 +620,14 @@ case class GeneratorTF[State, Boat](
                   (x, p) <- base
                   if pred(x)
                   fve <- finalElemValOpt(x, tc.output)
-                } yield EquationTerm(fve, p / condition)
+                } yield EquationNode(fve, p / condition)
               case s @ Sort.Restrict(optMap) =>
                 val condition = FinalVal(Event(tc.gen.output, s))
                 for {
                   (x, p) <- base
                   y      <- optMap(x)
                   fve    <- finalElemValOpt(x, tc.output)
-                } yield EquationTerm(fve, p / condition)
+                } yield EquationNode(fve, p / condition)
             }
             (eqT, baseData)
           }
@@ -635,7 +635,7 @@ case class GeneratorTF[State, Boat](
           Task {
             val (isleInit, boat) = isle.initMap(initState)
             val fs               = isle.finalMap(boat, finalState)
-            if (sd.isEmpty(fs)) (Set.empty[EquationTerm], TFData.empty)
+            if (sd.isEmpty(fs)) (Set.empty[EquationNode], TFData.empty)
             else {
               val isleEqNew =
                 GeneratorTF(nodeCoeffSeq, isleInit, fs)
@@ -651,7 +651,7 @@ case class GeneratorTF[State, Boat](
                   y = isle.export(boat, x)
                   fve <- finalElemValOpt(y, isle.output)
                 } yield
-                  EquationTerm(
+                  EquationNode(
                     fve,
                     FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
               (eqTerms, baseData ++ isleData)
@@ -673,7 +673,7 @@ case class GeneratorTF[State, Boat](
                 y = isle.export(boat, x)
                 fve <- finalElemValOpt(y, isle.output)
               } yield
-                EquationTerm(fve,
+                EquationNode(fve,
                              FinalVal(GeneratorVariables.InIsle(p, boat, ???)))
             (eqTerms, baseData ++ isleData)
 
@@ -688,7 +688,7 @@ case class GeneratorTF[State, Boat](
 
   def nodeCoeffsEquationTermsTask[Dom <: HList, Y](
       nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
-      x: Dom): Task[(Set[EquationTerm], TFData)] =
+      x: Dom): Task[(Set[EquationNode], TFData)] =
     nodeCoeffs match {
       case NodeCoeffs.Target(output) => Task.now((Set(), baseData))
       case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
@@ -700,7 +700,7 @@ case class GeneratorTF[State, Boat](
           case pf: GeneratorNodeFamily.PiOpt[Dom, Y] =>
             pf.nodesOpt(x)
               .map(nodeEquationTermsTask)
-              .getOrElse(Task.now(Set.empty[EquationTerm] -> baseData))
+              .getOrElse(Task.now(Set.empty[EquationNode] -> baseData))
           case _ =>
             throw new Exception(
               s"node family ${bc.headGen} with output ${bc.output} in $nodeCoeffs not a family")
@@ -735,7 +735,7 @@ case class GeneratorTF[State, Boat](
             groupEquations(terms) -> data
         }
       case fmly =>
-        val tskSet: Set[Task[(Set[EquationTerm], TFData)]] =
+        val tskSet: Set[Task[(Set[EquationNode], TFData)]] =
           finalElemIndices(nodeCoeffs.output).map { x =>
             nodeCoeffsEquationTermsTask(nodeCoeffs, x).memoize
           }

@@ -14,9 +14,9 @@ import MonixFiniteDistributionEq._, MonixTangentFiniteDistributionEq._
 
 object MonixTangentFiniteDistributionEq {
   def average[V](
-      x: Task[(FD[V], Set[EquationTerm])],
-      y: Task[(FD[V], Set[EquationTerm])]
-  ): Task[(FD[V], Set[EquationTerm])] =
+      x: Task[(FD[V], Set[EquationNode])],
+      y: Task[(FD[V], Set[EquationNode])]
+  ): Task[(FD[V], Set[EquationNode])] =
     for {
       a <- x
       b <- y
@@ -34,7 +34,7 @@ object MonixTangentFiniteDistributionEq {
 case class MonixTangentFiniteDistributionEq[State, Boat](
                                                           nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
                                                           baseState: State,
-                                                          baseEquations: Set[EquationTerm]
+                                                          baseEquations: Set[EquationNode]
 )(implicit sd: StateDistribution[State, FD])
     extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq) {
 
@@ -53,7 +53,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
       baseEquations
     )
 
-  def baseVal[Y](rd: RandomVar[Y]): Task[(FD[Y], Set[EquationTerm])] =
+  def baseVal[Y](rd: RandomVar[Y]): Task[(FD[Y], Set[EquationNode])] =
     Task(sd.value(baseState)(rd) -> baseEquations)
 
   /**
@@ -70,24 +70,24 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
-  ): Task[(FD[Y], Set[EquationTerm])] =
-    if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationTerm])
+  ): Task[(FD[Y], Set[EquationNode])] =
+    if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationNode])
     else {
       import GeneratorNode._
       generatorNode match {
         case Atom(x, _) =>
-          Task(FD.unif(x), Set.empty[EquationTerm])
+          Task(FD.unif(x), Set.empty[EquationNode])
         case Init(input) =>
           val initDist = sd.value(initState)(input)
           val eqs = initDist.support.map { x =>
-            EquationTerm(finalProb(x, input), coeff * initProb(x, input))
+            EquationNode(finalProb(x, input), coeff * initProb(x, input))
           }
           Task(initDist, eqs)
         case Map(f, input, output) =>
           varDist(initState)(input, epsilon).map {
             case (fd, eqs) =>
               val meqs = fd.support.map { (x) =>
-                EquationTerm(
+                EquationNode(
                   finalProb(f(x), output),
                   coeff * finalProb(x, input)
                 )
@@ -102,7 +102,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                   x <- fd.support
                   y <- f(x)
                 } yield
-                  EquationTerm(
+                  EquationNode(
                     finalProb(y, output),
                     coeff * finalProb(x, input)
                   )
@@ -125,7 +125,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                   y <- yd.support
                   z = f(x, y)
                 } yield
-                  EquationTerm(
+                  EquationNode(
                     finalProb(z, output),
                     coeff * finalProb(x, input1) * finalProb(y, input2)
                   )
@@ -141,7 +141,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                   y <- yd.support
                   z = f(x, y)
                 } yield
-                  EquationTerm(
+                  EquationNode(
                     finalProb(z, output),
                     coeff * finalProb(x, input1) * finalProb(y, input2)
                   )
@@ -167,7 +167,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                   y <- yd.support
                   z <- f(x, y)
                 } yield
-                  EquationTerm(
+                  EquationNode(
                     finalProb(z, output),
                     coeff * finalProb(x, input1) * finalProb(y, input2)
                   )
@@ -183,7 +183,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                   y <- yd.support
                   z <- f(x, y)
                 } yield
-                  EquationTerm(
+                  EquationNode(
                     finalProb(z, output),
                     coeff * finalProb(x, input1) * finalProb(y, input2)
                   )
@@ -218,7 +218,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                                   (for {
                                     Weighted(x2, _) <- fiberDist.pmf
                                   } yield
-                                    EquationTerm(
+                                    EquationNode(
                                       finalProb(f(x1, x2), output),
                                       coeff * finalProb(x1, baseInput) * finalProb(
                                         x2,
@@ -258,7 +258,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                                   (for {
                                     Weighted(x2, _) <- fiberDist.pmf
                                   } yield
-                                    EquationTerm(
+                                    EquationNode(
                                       finalProb(f(x1, x2), output),
                                       coeff * finalProb(x1, baseInput) * finalProb(
                                         x2,
@@ -303,7 +303,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                               val fibEqs =
                                 fiberDist.pmf.map {
                                   case Weighted(x2, _) =>
-                                    EquationTerm(
+                                    EquationNode(
                                       finalProb(x2, output),
                                       coeff * finalProb(x1, baseInput) * finalProb(
                                         x2,
@@ -342,7 +342,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                               val fibEqs =
                                 fiberDist.pmf.map {
                                   case Weighted(x2, _) =>
-                                    EquationTerm(
+                                    EquationNode(
                                       finalProb(x2, output),
                                       coeff * finalProb(x1, baseInput) * finalProb(
                                         x2,
@@ -391,7 +391,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                               val fibEqs =
                                 fiberDist.pmf.map {
                                   case Weighted(x2, _) =>
-                                    EquationTerm(
+                                    EquationNode(
                                       finalProb(x2, output),
                                       coeff * finalProb(x1, baseInput) * finalProb(
                                         x2,
@@ -431,7 +431,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                               val fibEqs =
                                 fiberDist.pmf.map {
                                   case Weighted(x2, _) =>
-                                    EquationTerm(
+                                    EquationNode(
                                       finalProb(x2, output),
                                       coeff * finalProb(x1, baseInput) * finalProb(
                                         x2,
@@ -476,7 +476,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                         .support
                         .map {
                           case (x1, x2) =>
-                            EquationTerm(
+                            EquationNode(
                               finalProb(f(x1, x2), output),
                               coeff * finalProb(x1, baseInput)
                                 * finalProb(x2, fiberVar(z))
@@ -515,7 +515,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                         .support
                         .map {
                           case (x1, x2) =>
-                            EquationTerm(
+                            EquationNode(
                               finalProb(f(x1, x2), output),
                               coeff * finalProb(x1, baseInput)
                                 * finalProb(x2, fiberVar(z))
@@ -546,16 +546,16 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
               base.map {
                 case (fd, eqs) =>
                   val ceqs = fd.conditioned(c.pred).support.map { x =>
-                    EquationTerm(
+                    EquationNode(
                       finalProb(x, tc.output),
                       finalProb(x, tc.gen.output) / finEv
                     )
                   }
                   val evSupp = fd.conditioned(c.pred).support
-                  val evEq: Set[EquationTerm] =
+                  val evEq: Set[EquationNode] =
                     if (evSupp.nonEmpty)
                       Set(
-                        EquationTerm(
+                        EquationNode(
                           finEv,
                           evSupp
                             .map(x => finalProb(x, tc.output))
@@ -573,15 +573,15 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                     x <- fd.support
                     y <- f(x)
                   } yield
-                    EquationTerm(
+                    EquationNode(
                       finalProb(y, tc.output),
                       finalProb(x, tc.gen.output) / finEv
                     )
                   val evSupp = fd.condMap(f).flatten.support
-                  val evEq: Set[EquationTerm] =
+                  val evEq: Set[EquationNode] =
                     if (evSupp.nonEmpty)
                       Set(
-                        EquationTerm(
+                        EquationNode(
                           finEv,
                           evSupp
                             .map(x => finalProb(x, tc.output))
@@ -601,7 +601,7 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
               case (fd, eqs) =>
                 val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
                 val bridgeEqs = fd.support.map { x =>
-                  EquationTerm(
+                  EquationNode(
                     finalProb(export(boat, x), isle.output),
                     coeff * FinalVal(
                       InIsle(Elem(x, isle.islandOutput(boat)), boat, isle)
@@ -615,9 +615,9 @@ case class MonixTangentFiniteDistributionEq[State, Boat](
                   .collect {
                     case InitialVal(Elem(el, rv)) => Elem(el, rv)
                   }
-                val isleIn: Set[EquationTerm] =
+                val isleIn: Set[EquationNode] =
                   initVarElems.map { el =>
-                    EquationTerm(
+                    EquationNode(
                       InitialVal(InIsle(el, boat, isle)),
                       IsleScale(boat, el) * InitialVal(el)
                     )
