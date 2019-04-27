@@ -13,7 +13,9 @@ import monix.execution.AsyncQueue
 trait IterantRunner[S, A, M] {
   val evolve: S => Task[(A, S)]
 
-  def onCommand(state: S, c: M): S // for now, incomplete tasks are cancelled
+  val cancelOnCommand: Boolean
+
+  def onCommand(state: S, c: M): S
 
   def unsafeIterant(init: S): Iterant[Task, A] =
     Iterant.fromStateActionL(evolve)(Task.pure(init))
@@ -36,21 +38,30 @@ trait IterantRunner[S, A, M] {
         case Left(((a, s), fr)) =>
           (Result(a), Running(s, fr.join))
         case Right((fas, req @ Command(c))) =>
-          fas.cancel
-          (Ack(req), Running(onCommand(state, c), pollTask))
+          val unfinishedT: Task[A] =
+            if (cancelOnCommand) {
+              fas.cancel
+              Task.never
+            } else fas.join.map(_._1)
+          (Ack(req, unfinishedT), Running(onCommand(state, c), pollTask))
         case Right((fas, Halt())) =>
           fas.cancel
-          ((Ack(Halt()), Halted(state)))
+          ((Ack(Halt(), Task.never), Halted(state)))
       }
     case Halted(_) => Task.never
   }
 
-  def iterant(init: Task[S]) : Iterant[Task, Output[A,M]] = {
-      val initState : Task[State[S, M]] = init.map{s => Running(s, pollTask)}
-      val base = Iterant.fromStateActionL(spawn)(initState)
-      base.takeWhile(running)
+  def baseIterant(init: Task[S]): Iterant[Task, Output[A, M]] = {
+    val initState: Task[State[S, M]] = init.map { s =>
+      Running(s, pollTask)
+    }
+    val base = Iterant.fromStateActionL(spawn)(initState)
+    base.takeWhile(running)
   }
 
+  def iterant(init: Task[S]): Iterant[Task, Output[A, M]] =
+    if (cancelOnCommand) baseIterant(init)
+    else withDelayed(iterant(init))
 
 }
 
@@ -65,7 +76,8 @@ object IterantRunner {
 
   case class Result[A, M](result: A) extends Output[A, M]
 
-  case class Ack[A, M](req: Request[M]) extends Output[A, M]
+  case class Ack[A, M](req: Request[M], unfinished: Task[A])
+      extends Output[A, M]
 
   sealed trait State[S, M]
 
@@ -74,8 +86,21 @@ object IterantRunner {
 
   case class Halted[S, M](state: S) extends State[S, M]
 
-  def running[S, M] : Output[S, M] => Boolean = {
-      case Ack(Halt()) => false
-      case _ => true
+  def running[S, M]: Output[S, M] => Boolean = {
+    case Ack(Halt(), _) => false
+    case _              => true
   }
+
+  def delayed[A, M](
+      iter: Iterant[Task, Output[A, M]]
+  ): Iterant[Task, Output[A, M]] = {
+    val taskIter = iter.collect {
+      case Ack(req, unfinished) =>
+        unfinished.map(Result[A, M](_))
+    }
+    taskIter.scanEval(Task.never) { case (_, aT) => aT }
+  }
+
+  def withDelayed[A, M](iter: Iterant[Task, Output[A, M]]) =
+    iter.interleave(delayed(iter))
 }
