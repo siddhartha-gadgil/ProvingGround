@@ -10,7 +10,6 @@ import cats._
 import cats.implicits._
 import provingground.induction.{ExstInducDefn, ExstInducStrucs}
 import provingground.scalahott.NatRing
-import ujson.Value
 
 import scala.util.matching.Regex
 
@@ -22,9 +21,9 @@ trait JsFunc[F[_]] {
 
 object JsFunc {
   implicit val idJS: JsFunc[Id] = new JsFunc[Id] {
-    def encode(t: ujson.Value): Value = t
+    def encode(t: ujson.Value): ujson.Value = t
 
-    def decode(js: ujson.Value): Value = js
+    def decode(js: ujson.Value): ujson.Value = js
   }
 
   import Functors._
@@ -50,7 +49,7 @@ object JsFunc {
   implicit val vecJs: JsFunc[Vector] = new JsFunc[Vector] {
     def encode(t: Vector[ujson.Value]) = ujson.Arr(t: _*)
 
-    def decode(js: ujson.Value): Vector[Value] = js.arr.toVector
+    def decode(js: ujson.Value): Vector[ujson.Value] = js.arr.toVector
   }
 
   implicit def pairJS[X[_], Y[_]](
@@ -60,7 +59,7 @@ object JsFunc {
       def encode(t: (X[ujson.Value], Y[ujson.Value])) =
         ujson.Obj("first" -> xJs.encode(t._1), "second" -> yJs.encode(t._2))
 
-      def decode(js: ujson.Value): (X[Value], Y[Value]) =
+      def decode(js: ujson.Value): (X[ujson.Value], Y[ujson.Value]) =
         (xJs.decode(js("first")), yJs.decode(js("second")))
     }
 
@@ -102,7 +101,7 @@ object TermJson {
 
   implicit val travNamed: Traverse[Named] = traversePair[S, Id]
 
-  val termToJson: Translator.OrElse[Term, Value] =
+  val termToJson: Translator.OrElse[Term, ujson.Value] =
     toJs(universe)("universe") ||
       toJs(formalAppln)("appln") ||
       toJs(lambdaTriple)("lambda") ||
@@ -152,7 +151,7 @@ object TermJson {
   def jsonToTerm(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
       indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
-        (_) => None): Translator.OrElse[Value, Term] =
+        (_) => None): Translator.OrElse[ujson.Value, Term] =
     jsonToTermBase ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (x, (y, v)) =>
@@ -170,7 +169,7 @@ object TermJson {
           buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
-  def jsToTermExst(exst: ExstInducStrucs): Translator.OrElse[Value, Term] =
+  def jsToTermExst(exst: ExstInducStrucs): Translator.OrElse[ujson.Value, Term] =
     jsonToTermBase ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (dom: Term, (cod: Term, data: Vector[Term])) =>
@@ -218,7 +217,7 @@ object TermJson {
     FiniteDistribution(pmf)
   }
 
-  val jsonToTermBase: Translator.OrElse[Value, Term] =
+  val jsonToTermBase: Translator.OrElse[ujson.Value, Term] =
     jsToBuild[Term, N]("universe")((n) => Universe(n)) ||
       jsToBuild[Term, II]("appln") { case (func, arg) => fold(func)(arg) } ||
       jsToBuild[Term, III]("lambda") {
