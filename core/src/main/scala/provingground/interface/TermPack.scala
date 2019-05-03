@@ -56,33 +56,33 @@ object MsgFunc {
       yMsg: MsgFunc[Y]): MsgFunc[({ type Z[A] = (X[A], Y[A]) })#Z] =
     new MsgFunc[({ type Z[A] = (X[A], Y[A]) })#Z] {
       def encode(t: (X[upack.Msg], Y[upack.Msg])) =
-        upack.Obj(upack.Str("Fst") -> xMsg.encode(t._1), upack.Str("Snd") -> yMsg.encode(t._2))
+        upack.Obj(upack.Str("1") -> xMsg.encode(t._1), upack.Str("2") -> yMsg.encode(t._2))
 
       def decode(msg: upack.Msg): (X[upack.Msg], Y[upack.Msg]) =
-        (xMsg.decode(msg.obj(upack.Str("Fst"))), yMsg.decode(msg.obj(upack.Str("Snd"))))
+        (xMsg.decode(msg.obj(upack.Str("1"))), yMsg.decode(msg.obj(upack.Str("2"))))
     }
 
   import Translator._
 
-  def toMsg[I, F[_]](pat: Pattern[I, F])(name: String, header: upack.Msg = upack.Str("intro"))(
+  def toMsg[I, F[_]](pat: Pattern[I, F])(name: String, header: upack.Msg = upack.Str("In"))(
       implicit msgF: MsgFunc[F]): Translator[I, upack.Msg] =
     pat >>> { (msg) =>
-      upack.Obj(header -> upack.Str(name), upack.Str("Tree") -> msgF.encode(msg))
+      upack.Obj(header -> upack.Str(name), upack.Str("T") -> msgF.encode(msg))
     }
 
-  def msgToOpt[I, F[_]: Traverse](name: String, header: upack.Msg = upack.Str("intro"))(
+  def msgToOpt[I, F[_]: Traverse](name: String, header: upack.Msg = upack.Str("In"))(
       build: F[I] => Option[I])(
       implicit msgF: MsgFunc[F]): Translator[upack.Msg, I] = {
     val pat = Pattern[upack.Msg, F] { (msg) =>
-      if (msg.obj(header) == upack.Str(name)) Some(msgF.decode(msg.obj(upack.Str("Tree")))) else None
+      if (msg.obj(header) == upack.Str(name)) Some(msgF.decode(msg.obj(upack.Str("T")))) else None
     }
     pat >> build
   }
 
-  def msgToBuild[I, F[_]: Traverse](name: String, header: upack.Msg = upack.Str("intro"))(
+  def msgToBuild[I, F[_]: Traverse](name: String, header: upack.Msg = upack.Str("In"))(
       build: F[I] => I)(implicit msgF: MsgFunc[F]): Translator[upack.Msg, I] = {
     val pat = Pattern[upack.Msg, F] { (msg) =>
-      if (msg.obj(header) == upack.Str(name)) Some(msgF.decode(msg.obj(upack.Str("Tree")))) else None
+      if (msg.obj(header) == upack.Str(name)) Some(msgF.decode(msg.obj(upack.Str("T")))) else None
     }
     pat >>> build
   }
@@ -100,77 +100,77 @@ object TermPack {
 
   implicit val travNamed: Traverse[Named] = traversePair[S, Id]
 
-  val termToPack: Translator.OrElse[Term, upack.Msg] =
-    toMsg(universe)("universe") ||
-      toMsg(formalAppln)("appln") ||
-      toMsg(lambdaTriple)("lambda") ||
-      toMsg(sigmaTriple)("sigma") ||
-      toMsg(piTriple)("pi") ||
-      toMsg(prodTyp)("product-type") ||
+  val termToMsg: Translator.OrElse[Term, upack.Msg] =
+    toMsg(universe)("U") ||
+      toMsg(formalAppln)("Ap") ||
+      toMsg(lambdaTriple)("\u03bb") ||
+      toMsg(sigmaTriple)("\u03c3") ||
+      toMsg(piTriple)("\u03c0") ||
+      toMsg(prodTyp)("\u03a0") ||
       toMsg(absPair)("pair") ||
-      toMsg(plusTyp)("plus-type") ||
-      toMsg(funcTyp)("func-type") ||
-      toMsg(star)("star") ||
-      toMsg(unit)("unit-type") ||
-      toMsg(zero)("zero-type") ||
-      toMsg(prop)("prop-universe") ||
-      toMsg(indInducFunc)("indexed-inductive-function") ||
-      toMsg(indRecFunc)("indexed-recursive-function") ||
-      toMsg(recFunc)("recursive-function") ||
-      toMsg(inducFunc)("inductive-function") ||
-      toMsg(hashSymbolic)("symbolic") ||
-      toMsg(firstIncl)("first-inclusion") ||
-      toMsg(secondIncl)("second-inclusion") ||
-      toMsg(identityTyp)("equality") ||
-      toMsg(refl)("reflexivity") ||
-      toMsg(natTyp)("nat-type") ||
-      toMsg(natUniv)("nat-univ") ||
-      toMsg(natZero)("nat-zero") ||
-      toMsg(natSucc)("nat-succ") ||
-      toMsg(natSum)("nat-sum") ||
-      toMsg(natProd)("nat-prod") ||
-      toMsg(natLiteral)("nat-literal") ||
+      toMsg(plusTyp)("\u03a3") ||
+      toMsg(funcTyp)(UnicodeSyms.Arrow) ||
+      toMsg(star)("*") ||
+      toMsg(unit)("One") ||
+      toMsg(zero)("Void") ||
+      toMsg(prop)("Prop") ||
+      toMsg(indInducFunc)("IInd") ||
+      toMsg(indRecFunc)("IRec") ||
+      toMsg(recFunc)("Rec") ||
+      toMsg(inducFunc)("Ind") ||
+      toMsg(hashSymbolic)("Sym") ||
+      toMsg(firstIncl)("i1") ||
+      toMsg(secondIncl)("i2") ||
+      toMsg(identityTyp)("=") ||
+      toMsg(refl)("=") ||
+      toMsg(natTyp)("Nat") ||
+      toMsg(natUniv)("NatU") ||
+      toMsg(natZero)("0N") ||
+      toMsg(natSucc)("succN") ||
+      toMsg(natSum)("+N") ||
+      toMsg(natProd)("*N") ||
+      toMsg(natLiteral)("NL") ||
       toMsg(natAddMorph)("nat-additive-morphism") ||
       toMsg(foldedTerm)("folded-term") ||
-      toMsg(miscAppln)("appln")
+      toMsg(miscAppln)("Ap")
 
-  def termToPackGet(t: Term) =
-    termToPack(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
+  def termToMsgGet(t: Term) =
+    termToMsg(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
 
-  def fdPack(fd: FiniteDistribution[Term]): upack.Arr = {
+  def fdMsg(fd: FiniteDistribution[Term]): upack.Arr = {
     val pmf = for {
       Weighted(elem, p) <- fd.pmf
-      tmsg               <- termToPack(elem)
+      tmsg               <- termToMsg(elem)
     } yield upack.Obj(upack.Str("term") -> tmsg, upack.Str("weight") -> upack.Float64(p))
     upack.Arr(pmf: _*)
   }
 
   import induction._
 
-  def msgonToTerm(
+  def msgToTerm(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
       indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
         (_) => None): Translator.OrElse[upack.Msg, Term] =
-    msgonToTermBase ||
-      msgToOpt[Term, IIV]("recursive-function") {
+    msgToTermBase ||
+      msgToOpt[Term, IIV]("Rec") {
         case (x, (y, v)) =>
           buildRecDef(inds)(x, (y, v))
       } ||
-      msgToOpt[Term, IIV]("inductive-function") {
+      msgToOpt[Term, IIV]("Ind") {
         case (x, (y, v)) => buildIndDef(inds)(x, (y, v))
       } ||
-      msgToOpt[Term, IVIIV]("indexed-recursive-function") {
+      msgToOpt[Term, IVIIV]("IRec") {
         case (u, (w, (x, (y, v)))) =>
           buildIndRecDef(indexedInds)(w, (x, (y, v)))
       } ||
-      msgToOpt[Term, IVIIV]("indexed-inductive-function") {
+      msgToOpt[Term, IVIIV]("IInd") {
         case (u, (w, (x, (y, v)))) =>
           buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
   def msgToTermExst(exst: ExstInducStrucs): Translator.OrElse[upack.Msg, Term] =
-    msgonToTermBase ||
-      msgToOpt[Term, IIV]("recursive-function") {
+    msgToTermBase ||
+      msgToOpt[Term, IIV]("Rec") {
         case (dom: Term, (cod: Term, data: Vector[Term])) =>
           for {
             codom <- typOpt(cod)
@@ -178,13 +178,13 @@ object TermPack {
           } yield (fn /: data)(fold(_)(_))
         //buildRecDef(inds)(x, (y, v))
       } ||
-      msgToOpt[Term, IIV]("inductive-function") {
+      msgToOpt[Term, IIV]("Ind") {
         case (dom: Term, (cod: Term, data: Vector[Term])) =>
           for {
             fn <- exst.inducOpt(dom, cod)
           } yield (fn /: data)(fold(_)(_))
       } ||
-      msgToOpt[Term, IVIIV]("indexed-recursive-function") {
+      msgToOpt[Term, IVIIV]("IRec") {
         case (_,
               (index: Vector[Term],
                (dom: Term, (cod: Term, data: Vector[Term])))) =>
@@ -192,16 +192,16 @@ object TermPack {
             codom <- typOpt(cod)
             fn    <- exst.recOpt(dom, codom)
           } yield
-            (fn /: (data ++ index))(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
+            (fn /: (data ++ index))(fold(_)(_)) 
       } ||
-      msgToOpt[Term, IVIIV]("indexed-inductive-function") {
+      msgToOpt[Term, IVIIV]("IInd") {
         case (_,
               (index: Vector[Term],
                (dom: Term, (cod: Term, data: Vector[Term])))) =>
           for {
             fn <- exst.inducOpt(dom, cod)
           } yield (fn /: (data ++ index))(fold(_)(_))
-        //buildIndIndDef(indexedInds)(w, (x, (y, v)))
+        
       }
 
   def msgToFD(exst: ExstInducStrucs)(
@@ -216,37 +216,37 @@ object TermPack {
     FiniteDistribution(pmf)
   }
 
-  val msgonToTermBase: Translator.OrElse[upack.Msg, Term] =
-    msgToBuild[Term, N]("universe")((n) => Universe(n)) ||
-      msgToBuild[Term, II]("appln") { case (func, arg) => fold(func)(arg) } ||
-      msgToBuild[Term, III]("lambda") {
+  val msgToTermBase: Translator.OrElse[upack.Msg, Term] =
+    msgToBuild[Term, N]("U")((n) => Universe(n)) ||
+      msgToBuild[Term, II]("Ap") { case (func, arg) => fold(func)(arg) } ||
+      msgToBuild[Term, III]("\u03bb") {
         case ((variable, typ), value) => variable :~> value
       } ||
-      msgToBuild[Term, III]("equality") {
+      msgToBuild[Term, III]("=") {
         case ((dom, lhs), rhs) => lhs =:= rhs
       } ||
-      msgToBuild[Term, III]("pi") {
+      msgToBuild[Term, III]("\u03c0") {
         case ((variable, typ), value: Typ[u]) => variable ~>: value
         case (x, y)                           => unmatched(x, y)
       } ||
-      msgToBuild[Term, III]("sigma") {
+      msgToBuild[Term, III]("\u03c3") {
         case ((variable, typ), value: Typ[u]) => sigma(variable)(value)
         case (x, y)                           => unmatched(x, y)
       } ||
-      msgToBuild[Term, II]("product-type") {
+      msgToBuild[Term, II]("\u03a0") {
         case (x: Typ[u], y: Typ[v]) => ProdTyp(x, y)
         case (x, y)                 => unmatched(x, y)
       } ||
-      msgToBuild[Term, II]("plus-type") {
+      msgToBuild[Term, II]("\u03a3") {
         case (x: Typ[u], y: Typ[v]) => PlusTyp(x, y)
         case (x, y)                 => unmatched(x, y)
       } ||
       msgToBuild[Term, II]("pair") { case (x, y) => mkPair(x, y) } ||
-      msgToBuild[Term, II]("func-type") {
+      msgToBuild[Term, II](UnicodeSyms.Arrow) {
         case (x: Typ[u], y: Typ[v]) => FuncTyp(x, y)
         case (x, y)                 => unmatched(x, y)
       } ||
-      msgToBuild[Term, II]("reflexivity") {
+      msgToBuild[Term, II]("=") {
         case (dom: Typ[u], value: Term) => Refl(dom, value)
         case (x, y)                     => unmatched(x, y)
       } ||
@@ -256,37 +256,37 @@ object TermPack {
             case (a: Term, b: Term) => applyFunc(applyFunc(op, a), b)
           }
       } ||
-      msgToBuild[Term, Un]("star") { (_) =>
+      msgToBuild[Term, Un]("*") { (_) =>
         Star
       } ||
-      msgToBuild[Term, Un]("unit-type") { (_) =>
+      msgToBuild[Term, Un]("One") { (_) =>
         Unit
       } ||
-      msgToBuild[Term, Un]("zero-type") { (_) =>
+      msgToBuild[Term, Un]("Void") { (_) =>
         Zero
       } ||
-      msgToBuild[Term, Un]("prop-universe") { (_) =>
+      msgToBuild[Term, Un]("Prop") { (_) =>
         Prop
       } ||
-      msgToBuild[Term, Un]("nat-type") { (_) =>
+      msgToBuild[Term, Un]("Nat") { (_) =>
         NatRing.NatTyp
       } ||
-      msgToBuild[Term, Un]("nat-univ") { (_) =>
+      msgToBuild[Term, Un]("NatU") { (_) =>
         NatRing.NatTyp.typ
       } ||
-      msgToBuild[Term, Un]("nat-zero") { (_) =>
+      msgToBuild[Term, Un]("0N") { (_) =>
         NatRing.zero
       } ||
-      msgToBuild[Term, Un]("nat-succ") { (_) =>
+      msgToBuild[Term, Un]("succN") { (_) =>
         NatRing.succ
       } ||
-      msgToBuild[Term, Un]("nat-sum") { (_) =>
+      msgToBuild[Term, Un]("+N") { (_) =>
         NatRing.sum
       } ||
-      msgToBuild[Term, Un]("nat-prod") { (_) =>
+      msgToBuild[Term, Un]("*N") { (_) =>
         NatRing.prod
       } ||
-      msgToBuild[Term, N]("nat-literal") { (n) =>
+      msgToBuild[Term, N]("NL") { (n) =>
         NatRing.Literal(n)
       } ||
       msgToBuild[Term, II]("nat-additive-morphism") {
@@ -296,26 +296,26 @@ object TermPack {
             op.asInstanceOf[(NatRing.Nat, NatRing.Nat) => NatRing.Nat])
 
       } ||
-      msgToBuild[Term, II]("first-inclusion") {
+      msgToBuild[Term, II]("i1") {
         case (tp: PlusTyp[u, v], x) => tp.incl1(x.asInstanceOf[u])
         case (x, y)                 => unmatched(x, y)
       } ||
-      msgToBuild[Term, II]("second-inclusion") {
+      msgToBuild[Term, II]("i2") {
         case (tp: PlusTyp[u, v], x) => tp.incl2(x.asInstanceOf[v])
         case (x, y)                 => unmatched(x, y)
       } ||
-      msgToOpt[Term, IIV]("recursive-function") {
+      msgToOpt[Term, IIV]("Rec") {
         case (a, (b, v)) =>
           // println(s"building base recursive type $a codomain $b data $v")
           val fn = buildRecDef()
           fn(a, (b, v))
       } ||
-      msgToOpt[Term, IIV]("inductive-function") {
+      msgToOpt[Term, IIV]("Ind") {
         case (a, (b, v)) =>
           val fn = buildIndDef()
           fn(a, (b, v))
       } ||
-      msgToOpt[Term, IVIIV]("indexed-recursive-function") {
+      msgToOpt[Term, IVIIV]("IRec") {
         case (u, (w, (a, (b, v)))) =>
           // println(s"building indexed recursive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn  = buildIndRecDef()
@@ -323,7 +323,7 @@ object TermPack {
           println(s"result: $res")
           res
       } ||
-      msgToOpt[Term, IVIIV]("indexed-inductive-function") {
+      msgToOpt[Term, IVIIV]("IInd") {
         case (u, (w, (a, (b, v)))) =>
           // println(s"building indexed inductive:\n index $w,\n type $a,\n codomain $b,\n data $v\n\n")
           val fn  = buildIndIndDef()
@@ -331,7 +331,7 @@ object TermPack {
           // println(s"result: $res")
           res
       } ||
-      msgToBuild[Term, Named]("symbolic") {
+      msgToBuild[Term, Named]("Sym") {
         case (name, tp: Typ[u]) => deHash(name) :: tp
         case (x, y)             => unmatched(x, y)
       }(travNamed, implicitly[MsgFunc[Named]])
@@ -345,66 +345,66 @@ object TermPack {
 object InducPack {
   import TermPack._, ExstInducStrucs._
 
-  def toPack(exst: ExstInducStrucs): upack.Msg = exst match {
-    case Base    => upack.Obj(upack.Str("intro") -> upack.Str("base"))
-    case NatRing => upack.Obj(upack.Str("intro") -> upack.Str("nat-ring"))
+  def toMsg(exst: ExstInducStrucs): upack.Msg = exst match {
+    case Base    => upack.Obj(upack.Str("In") -> upack.Str("base"))
+    case NatRing => upack.Obj(upack.Str("In") -> upack.Str("nat-ring"))
     case OrElse(first, second) =>
       upack.Obj(
-        upack.Str("intro")  -> upack.Str("or-else"),
-        upack.Str("first")  -> toPack(first),
-        upack.Str("second") -> toPack(second)
+        upack.Str("In")  -> upack.Str("or-else"),
+        upack.Str("first")  -> toMsg(first),
+        upack.Str("second") -> toMsg(second)
       )
     case LambdaInduc(x, struc) =>
       upack.Obj(
-        upack.Str("intro")     -> upack.Str("lambda"),
-        upack.Str("variable")  -> termToPackGet(x),
-        upack.Str("structure") -> toPack(struc)
+        upack.Str("In")     -> upack.Str("\u03bb"),
+        upack.Str("variable")  -> termToMsgGet(x),
+        upack.Str("structure") -> toMsg(struc)
       )
     case ConsSeqExst(cs, intros) =>
       upack.Obj(
-        upack.Str("intro") -> upack.Str("constructor-sequence"),
-        upack.Str("type")  -> termToPackGet(cs.typ),
+        upack.Str("In") -> upack.Str("constructor-sequence"),
+        upack.Str("type")  -> termToMsgGet(cs.typ),
         upack.Str("intros") -> upack.Arr(intros.map { (t) =>
-          termToPackGet(t)
+          termToMsgGet(t)
         }: _*)
       )
     case ind @ IndConsSeqExst(cs, intros) =>
       upack.Obj(
-        upack.Str("intro") -> upack.Str("indexed-constructor-sequence"),
-        upack.Str("type")  -> termToPackGet(ind.fmly),
+        upack.Str("In") -> upack.Str("indexed-constructor-sequence"),
+        upack.Str("type")  -> termToMsgGet(ind.fmly),
         upack.Str("intros") -> upack.Arr(intros.map { (t) =>
-          termToPackGet(t)
+          termToMsgGet(t)
         }: _*)
       )
   }
 
-  def fdPack(fd: FiniteDistribution[ExstInducDefn]): upack.Arr = {
+  def fdMsg(fd: FiniteDistribution[ExstInducDefn]): upack.Arr = {
     val pmf = for {
       Weighted(elem, p) <- fd.pmf
     } yield
       upack.Obj(
-        upack.Str("type-family") -> termToPackGet(elem.typFamily),
+        upack.Str("type-family") -> termToMsgGet(elem.typFamily),
         upack.Str("introduction-rules") -> upack.Arr(
-          (elem.intros.map((t) => termToPackGet(t))): _*
+          (elem.intros.map((t) => termToMsgGet(t))): _*
         ),
-        upack.Str("structure") -> toPack(elem.ind),
+        upack.Str("structure") -> toMsg(elem.ind),
         upack.Str("weight") -> upack.Float64(p)
       )
     upack.Arr(pmf: _*)
   }
 
-  def fromPack(init: ExstInducStrucs)(msg: upack.Msg): ExstInducStrucs =
-    msg.obj(upack.Str("intro")).str match {
+  def fromMsg(init: ExstInducStrucs)(msg: upack.Msg): ExstInducStrucs =
+    msg.obj(upack.Str("In")).str match {
       case "base"     => Base
       case "nat-ring" => NatRing
       case "or-else" =>
         OrElse(
-          fromPack(init)(msg.obj(upack.Str("first"))),
-          fromPack(init)(msg.obj(upack.Str("second")))
+          fromMsg(init)(msg.obj(upack.Str("first"))),
+          fromMsg(init)(msg.obj(upack.Str("second")))
         )
-      case "lambda" =>
+      case "\u03bb" =>
         val x     = msgToTermExst(init)(msg.obj(upack.Str("variable"))).get
-        val struc = fromPack(init)(msg.obj(upack.Str("structure")))
+        val struc = fromMsg(init)(msg.obj(upack.Str("structure")))
         LambdaInduc(x, struc)
       case "constructor-sequence" =>
         val typ = msgToTermExst(init)(msg.obj(upack.Str("type"))).flatMap(typOpt).get
@@ -422,7 +422,7 @@ object InducPack {
       msg: upack.Msg): FiniteDistribution[ExstInducDefn] = {
     val pmf =
       msg.arr.toVector.map { wp =>
-        val ind       = fromPack(exst)(wp.obj(upack.Str("structure")))
+        val ind       = fromMsg(exst)(wp.obj(upack.Str("structure")))
         val typFamily = msgToTermExst(exst)(wp.obj(upack.Str("type-family"))).get
         val intros = wp
           .obj(upack.Str("introduction-rules"))
@@ -446,13 +446,13 @@ object InducPack {
 
 object ContextPack {
   import Context._, TermPack._
-  def toPack(ctx: Context): upack.Msg = ctx match {
-    case Empty => upack.Obj(upack.Str("intro") -> upack.Str("empty"))
+  def toMsg(ctx: Context): upack.Msg = ctx match {
+    case Empty => upack.Obj(upack.Str("In") -> upack.Str("empty"))
     case AppendConstant(init, constant: Term) =>
       upack.Obj(
-        upack.Str("intro")    -> upack.Str("append-constant"),
-        upack.Str("init")     -> toPack(init),
-        upack.Str("constant") -> termToPackGet(constant)
+        upack.Str("In")    -> upack.Str("append-constant"),
+        upack.Str("init")     -> toMsg(init),
+        upack.Str("constant") -> termToMsgGet(constant)
       )
     case AppendTerm(init, expr: Term, role: Role) =>
       val rl = role match {
@@ -460,38 +460,38 @@ object ContextPack {
         case Context.Consider => upack.Str("consider")
       }
       upack.Obj(
-        upack.Str("intro") -> upack.Str("append-term"),
-        upack.Str("init")  -> toPack(init),
-        upack.Str("term")  -> termToPackGet(expr),
+        upack.Str("In") -> upack.Str("append-term"),
+        upack.Str("init")  -> toMsg(init),
+        upack.Str("term")  -> termToMsgGet(expr),
         upack.Str("role")  -> rl
       )
     case AppendVariable(init, expr: Term) =>
       upack.Obj(
-        upack.Str("intro")      -> upack.Str("append-variable"),
-        upack.Str("init")       -> toPack(init),
-        upack.Str("expression") -> termToPackGet(expr)
+        upack.Str("In")      -> upack.Str("append-variable"),
+        upack.Str("init")       -> toMsg(init),
+        upack.Str("expression") -> termToMsgGet(expr)
       )
     case AppendDefn(init, defn, global) =>
       upack.Obj(
-        upack.Str("intro")  -> upack.Str("append-definition"),
-        upack.Str("name")   -> termToPackGet(defn.name),
-        upack.Str("init")   -> toPack(init),
-        upack.Str("value")  -> termToPackGet(defn.valueTerm),
+        upack.Str("In")  -> upack.Str("append-definition"),
+        upack.Str("name")   -> termToMsgGet(defn.name),
+        upack.Str("init")   -> toMsg(init),
+        upack.Str("value")  -> termToMsgGet(defn.valueTerm),
         upack.Str("global") -> upack.Bool(global)
       )
     case AppendIndDef(init, defn) =>
       upack.Obj(
-        upack.Str("intro") -> upack.Str("append-inductive-definition"),
-        upack.Str("defn")  -> InducPack.toPack(defn),
-        upack.Str("init")  -> toPack(init)
+        upack.Str("In") -> upack.Str("append-inductive-definition"),
+        upack.Str("defn")  -> InducPack.toMsg(defn),
+        upack.Str("init")  -> toMsg(init)
       )
   }
 
-  def fromPack(msg: upack.Msg): Context =
-    msg.obj(upack.Str("intro")).str match {
+  def fromMsg(msg: upack.Msg): Context =
+    msg.obj(upack.Str("In")).str match {
       case "empty" => Empty
       case "append-term" =>
-        val init = fromPack(msg.obj(upack.Str("init")))
+        val init = fromMsg(msg.obj(upack.Str("init")))
         val term = msgToTermExst(init.inducStruct)(msg.obj(upack.Str("term"))).get
         val role = msg.obj(upack.Str("role")).str match {
           case "assert"   => Assert
@@ -499,21 +499,21 @@ object ContextPack {
         }
         AppendTerm(init, term, role)
       case "append-constant" =>
-        val init = fromPack(msg.obj(upack.Str("init")))
+        val init = fromMsg(msg.obj(upack.Str("init")))
         val term = msgToTermExst(init.inducStruct)(msg.obj(upack.Str("constant"))).get
         AppendConstant(init, term)
       case "append-variable" =>
-        val init = fromPack(msg.obj(upack.Str("init")))
+        val init = fromMsg(msg.obj(upack.Str("init")))
         val term = msgToTermExst(init.inducStruct)(msg.obj(upack.Str("variable"))).get
         AppendVariable(init, term)
       case "append-definition" =>
-        val init  = fromPack(msg.obj(upack.Str("init")))
+        val init  = fromMsg(msg.obj(upack.Str("init")))
         val name  = msgToTermExst(init.inducStruct)(msg.obj(upack.Str("name"))).get
         val value = msgToTermExst(init.inducStruct)(msg.obj(upack.Str("value"))).get
         AppendDefn(init, Defn(name, value), msg.obj(upack.Str("global")).bool)
       case "append-inductive-definition" =>
-        val init = fromPack(msg.obj(upack.Str("init")))
-        val defn = InducPack.fromPack(init.inducStruct)(msg.obj(upack.Str("defn")))
+        val init = fromMsg(msg.obj(upack.Str("init")))
+        val defn = InducPack.fromMsg(init.inducStruct)(msg.obj(upack.Str("defn")))
         AppendIndDef(init, defn)
     }
 }
