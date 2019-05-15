@@ -29,6 +29,36 @@ object GramSchmidt{
 
 }
 
+object MonixGramSchmidt{
+    import monix.eval._
+
+    def makePerpFromON[V](orthonormals: Vector[V], vec: V)(implicit vs: InnerProductSpace[V, Double]) : Task[V] = 
+        Task.eval(orthonormals.isEmpty) flatMap {
+            case true => Task.now(vec)
+            case false =>
+                for {
+                    recVec <- makePerpFromON(orthonormals.init, vec)
+                    minusProj = -1.0 * (orthonormals.last dot recVec)
+                } yield vs.plus(recVec, (minusProj *: orthonormals.last)) 
+        }
+
+    def orthonormal[V](v: Vector[V])(implicit vs: InnerProductSpace[V, Double]) : Task[Vector[V]] = 
+        Task.eval(v.isEmpty) flatMap {
+            case true => Task.now(Vector())
+            case false =>
+                import v._
+                for {
+                    onInit <- orthonormal(init)
+                    perpLast <- makePerpFromON(onInit, last)
+                    onLast =  perpLast.normalize
+                } yield if (perpLast.norm > 0) onInit :+ perpLast.normalize else onInit      
+            }
+
+    def onVec(vv: Vector[Vector[Double]]) : Task[Vector[Vector[Double]]] = orthonormal(vv)
+
+    def perpVec(vv: Vector[Vector[Double]], v: Vector[Double]) : Task[Vector[Double]] = onVec(vv).flatMap( makePerpFromON(_ , v))
+}
+
 case class MapVS[A]() extends VectorSpace[Map[A, Double], Double]{
 def negate(x: Map[A,Double]): Map[A,Double] = 
     x.map{case (x, w) => (x, -w)}
