@@ -233,8 +233,8 @@ case class ExpressionEval(
     * Jets for variables. These are transformed using the sigmoid so they are in (0, 1)
     */
   def spireVarProbs(p: Map[Expression, Double]): Map[Expression, Jet[Double]] =
-    vars.zipWithIndex.map {
-      case (v, n) if p.getOrElse(v, 0.0) > 0 =>
+    vars.zipWithIndex.collect {
+      case (v, n) if p.getOrElse(v, 0.0) > 0 && p(v) < 1 =>
         val t: Jet[Double] = Jet.h[Double](n)
         val r: Jet[Double] = p(v)
         val d: Jet[Double] = (r + (-1)) * (-1)
