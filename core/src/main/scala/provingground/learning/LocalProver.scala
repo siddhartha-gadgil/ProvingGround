@@ -186,39 +186,39 @@ trait LocalProverStep {
   val maxDepth: Int
   val limit: FiniteDuration
 
-  val evolvedState: Task[EvolvedState] = nextState
+  lazy val evolvedState: Task[EvolvedState] = nextState
     .map(
       result => EvolvedState(initState, result, tg, cutoff)
     )
     .memoize
 
-  val theoremsByStatement: Task[FiniteDistribution[Typ[Term]]] =
+  lazy val theoremsByStatement: Task[FiniteDistribution[Typ[Term]]] =
     nextState.map(_.thmsBySt)
 
-  val theoremsByProof: Task[FiniteDistribution[Typ[Term]]] =
+  lazy val theoremsByProof: Task[FiniteDistribution[Typ[Term]]] =
     nextState.map(_.thmsByPf)
 
-  val unknownStatements: Task[FiniteDistribution[Typ[Term]]] =
+  lazy val unknownStatements: Task[FiniteDistribution[Typ[Term]]] =
     nextState.map(_.unknownStatements)
 
   val equationTerms: Task[Set[EquationNode]]
 
-  val equations: Task[Set[Equation]] = equationTerms.map { eqs =>
+  lazy val equations: Task[Set[Equation]] = equationTerms.map { eqs =>
     groupEquations(eqs)
   }.memoize
 
-  val expressionEval: Task[ExpressionEval] =
+  lazy val expressionEval: Task[ExpressionEval] =
     (for {
       fs  <- nextState
       eqs <- equations
     } yield ExpressionEval(initState, fs, eqs, tg)).memoize
 
-  val lemmas: Task[Vector[(Typ[Term], Double)]] =
+  lazy val lemmas: Task[Vector[(Typ[Term], Double)]] =
     (for {
       ev <- evolvedState
     } yield lemmaWeights(ev, steps, scale)).memoize
 
-  val seek: Task[FiniteDistribution[Term]] =
+  lazy val seek: Task[FiniteDistribution[Term]] =
     for {
       base <- nextState
       goals <- findGoal(
@@ -233,7 +233,7 @@ trait LocalProverStep {
       )
     } yield goals
 
-  val functionsForGoals: Task[FiniteDistribution[Term]] =
+  lazy val functionsForGoals: Task[FiniteDistribution[Term]] =
     (nextState
       .flatMap { fs: TermState =>
         Task.gather(fs.remainingGoals.pmf.map {
@@ -252,7 +252,7 @@ trait LocalProverStep {
       })
       .map(vfd => vfd.foldLeft(FiniteDistribution.empty[Term])(_ ++ _))
 
-  val subgoals: Task[FiniteDistribution[Typ[Term]]] =
+  lazy val subgoals: Task[FiniteDistribution[Typ[Term]]] =
     for {
       funcs <- functionsForGoals
       fs    <- nextState

@@ -542,6 +542,8 @@ object IndexedIterFuncPtnMapper {
                                                IDFT]) = {
         case IdIterShape(fmly, index) =>
           IdIterPtnMap(fmlyMapper.mapper(fmly), index)
+        case sh => 
+          throw new Exception(s"cannot map shape $sh with mapper $this")
       }
     }
 
@@ -597,6 +599,8 @@ object IndexedIterFuncPtnMapper {
                                                IDFT]) = {
         case FuncShape(tail, head) =>
           IndexedFuncIterPtnMap(tail, hm.mapper(fmlyMapper)(head))
+          case sh => 
+          throw new Exception(s"cannot map shape $sh with mapper $this")
       }
     }
 
@@ -654,6 +658,8 @@ object IndexedIterFuncPtnMapper {
           IndexedDepFuncIterPtnMap(
             tail,
             (t: TT) => hm.mapper(fmlyMapper)(headfibre(t)))
+        case sh => 
+            throw new Exception(s"cannot map shape $sh with mapper $this")
       }
     }
 }

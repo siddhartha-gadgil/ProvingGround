@@ -47,12 +47,18 @@ object HoTT {
   }
 
   object Name {
+    def nameFromSym(sym: AnySym) : Option[String] = sym match {
+      case Name(name) => Some(name)
+      case LeftProjSym(name) => nameFromSym(name)
+      case RightProjSym(name) => nameFromSym(name)
+      case _ => None
+    }
+
     def getName(t: Term): Option[String] = t match {
       case sym: Symbolic =>
-        sym.name match {
-          case Name(name) => Some(name)
-          case _          => None
-        }
+        nameFromSym(sym.name)
+      case PairTerm(first : Term, _) => getName(first)
+      case DepPair(first: Term, second, fibers) => getName(first)
       case _ => None
     }
   }

@@ -28,6 +28,8 @@ object ExpressionEval {
         case Name(name) => name.startsWith("@")
         case _          => false
       }
+    case Elem(x : Term, _) => 
+      Name.getName(x).map(_.startsWith(("@"))).getOrElse(false)
     case _ => false
   }
 
