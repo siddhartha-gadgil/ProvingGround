@@ -167,12 +167,21 @@ case class LocalProver(
       lInit = initState.copy(terms = (initState.terms ++ lfd).safeNormalized)
     } yield this.copy(initState = lInit)
 
-  val optimalInit: Task[LocalProver] = expressionEval.map { ev =>
+  val optimalInit0: Task[LocalProver] = expressionEval.map { ev =>
     val p                            = ev.optimum(hW, klW)
     val td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
     val ts                           = initState.copy(terms = td)
     this.copy(initState = ts)
   }
+
+  val optimalInit: Task[LocalProver] = 
+    for {
+      ev <- expressionEval
+      p                            <- ev.optimumTask(hW, klW)
+      td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
+      ts                           = initState.copy(terms = td)
+     } yield this.copy(initState = ts)
+  
 
 }
 

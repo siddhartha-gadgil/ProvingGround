@@ -1,6 +1,6 @@
 package provingground.learning
 import provingground.{FiniteDistribution => FD, _}, HoTT._
-
+import monix.eval._, monix.tail._
 
 import GeneratorVariables._,  TermRandomVars._
 
@@ -270,6 +270,41 @@ case class ExpressionEval(
       }
     )
 
+  def jetTask(p: Map[Expression, Double])(expr: Expression): Task[Jet[Double]] =
+  spireVarProbs(p).get(expr). map(Task.now(_)).getOrElse(   
+    expr match {
+      case Log(exp)       => jetTask(p)(exp).map(j => log(j))
+      case Exp(x)         => jetTask(p)(x).map(j => exp(j))
+      case Sum(x, y)      => 
+         for {
+           a <- jetTask(p)(x) 
+           b <- jetTask(p)(y)
+         } yield a + b
+      case Product(x, y)  => 
+        for {
+          a <- jetTask(p)(x) 
+          b <- jetTask(p)(y)
+        } yield a * b
+      case Literal(value) => Task.now(value)
+      case Quotient(x, y) => 
+        for {
+          a <- jetTask(p)(x) 
+          b <- jetTask(p)(y)
+        } yield a / b
+      case iv @ InitialVal(el @ Elem(_, _)) =>
+        el match {
+          case Elem(fn: ExstFunc, Funcs) =>
+            jetTask(p)(InitialVal(Elem(fn.func, Terms)) / funcTotal)
+          case Elem(t: Term, TypFamilies) =>
+            jetTask(p)(InitialVal(Elem(t, Terms)) / typFamilyTotal)
+          case _ => Task(p(iv))
+        }
+      case otherCase => Task(p(otherCase))
+
+    }
+  )
+
+
   /**
     * Terms of the generating distribution
     */
@@ -320,6 +355,11 @@ case class ExpressionEval(
       jet(p)(exp).infinitesimal.toVector
     }
 
+    def eqnGradientsTask(p: Map[Expression, Double]): Task[Vector[Vector[Double]]] =
+    Task.gather( eqnExpressions.map { exp =>
+      jetTask(p)(exp).map(_.infinitesimal.toVector)
+    })
+
   /**
     * Shift downwards by the gradient, mapped by sigmoids.
     */
@@ -363,12 +403,33 @@ case class ExpressionEval(
     GramSchmidt.perpVec(eqnGradients(p), gradient)
   }
 
+  def entropyProjectionTask(hW: Double = 1, klW: Double = 1)(
+      p: Map[Expression, Double]
+  ): Task[Vector[Double]] = for {
+      der <- jetTask(p)(entropy(hW, klW))
+      gradient =  der.infinitesimal.toVector
+      eqg <- eqnGradientsTask(p)
+  } yield GramSchmidt.perpVec(eqg, gradient)
+
   def iterator(
       hW: Double = 1,
       klW: Double = 1,
       p: Map[Expression, Double] = finalDist
   ): Iterator[Map[Expression, Double]] =
     Iterator.iterate(p)(q => stableGradShift(q, entropyProjection(hW, klW)(q)))
+
+  def iterant(
+      hW: Double = 1,
+      klW: Double = 1,
+      p: Map[Expression, Double] = finalDist
+  ): Iterant[Task, Map[Expression, Double]] =
+    Iterant.fromStateActionL[Task, Map[Expression, Double], Map[Expression, Double]]{q => 
+      for {
+        epg <- entropyProjectionTask(hW, klW)(q)
+        s = stableGradShift(q, epg) 
+      } yield (s, s)
+    }(Task.now( p))
+
 
   /**
     * Optimal value, more precisely stable under gradient flow.
@@ -388,6 +449,19 @@ case class ExpressionEval(
     if ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))   newMap 
     else optimum(hW, klW, newMap)
   }
+
+  def optimumTask(
+      hW: Double = 1,
+      klW: Double = 1,
+      p: Map[Expression, Double] = finalDist,
+      maxRatio: Double = 1.01
+  ): Task[Map[Expression, Double]] = 
+  for {
+    epg <- entropyProjectionTask(hW, klW)(p)
+    newMap = stableGradShift(p, epg)
+    stable =  ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio)) 
+    recRes <- Task.defer(optimumTask(hW, klW, newMap))
+  } yield if (stable) newMap else recRes
 
   /**
     * Jet converted to map, scaled for probabilities
