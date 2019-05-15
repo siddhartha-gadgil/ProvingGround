@@ -374,7 +374,7 @@ case class ExpressionEval(
           .get(expr)
           .map { n =>
             val x = log(y / (1 - y)) - (t(n) * eps)
-            expr -> (exp(x) / 1 + exp(x))
+            expr -> exp(x) / (1 + exp(x))
           }
           .getOrElse(expr -> y)
     }
