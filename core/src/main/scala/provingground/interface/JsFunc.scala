@@ -449,28 +449,28 @@ object ContextJson {
   import Context._, TermJson._
   def toJson(ctx: Context): ujson.Value = ctx match {
     case Empty => ujson.Obj("intro" -> "empty")
-    case AppendConstant(init, constant: Term) =>
+    case ac : AppendConstant[u] =>
       ujson.Obj(
         "intro"    -> "append-constant",
-        "init"     -> toJson(init),
-        "constant" -> termToJsonGet(constant)
+        "init"     -> toJson(ac.init),
+        "constant" -> termToJsonGet(ac.constant)
       )
-    case AppendTerm(init, expr: Term, role: Role) =>
-      val rl = role match {
+    case at:  AppendTerm[u] =>
+      val rl = at.role match {
         case Context.Assert   => ujson.Str("assert")
         case Context.Consider => ujson.Str("consider")
       }
       ujson.Obj(
         "intro" -> "append-term",
-        "init"  -> toJson(init),
-        "term"  -> termToJsonGet(expr),
+        "init"  -> toJson(at.init),
+        "term"  -> termToJsonGet(at.term),
         "role"  -> rl
       )
-    case AppendVariable(init, expr: Term) =>
+    case av: AppendVariable[u] =>
       ujson.Obj(
         "intro"      -> "append-variable",
-        "init"       -> toJson(init),
-        "expression" -> termToJsonGet(expr)
+        "init"       -> toJson(av.init),
+        "expression" -> termToJsonGet(av.variable)
       )
     case AppendDefn(init, defn, global) =>
       ujson.Obj(

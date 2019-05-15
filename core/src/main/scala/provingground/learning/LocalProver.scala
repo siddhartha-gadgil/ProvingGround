@@ -130,6 +130,8 @@ case class LocalProver(
 
   lazy val noIsles: LocalProver = this.copy(tg = tg.copy(lmW = 0, piW = 0))
 
+  def params(params: TermGenParams) = this.copy(tg = params)
+
   def isleWeight(w: Double): LocalProver = this.copy(tg = tg.copy(lmW = w, piW = w))
 
   def backwardWeight(w: Double): LocalProver =

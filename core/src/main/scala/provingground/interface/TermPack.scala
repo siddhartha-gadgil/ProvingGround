@@ -448,28 +448,28 @@ object ContextPack {
   import Context._, TermPack._
   def toMsg(ctx: Context): upack.Msg = ctx match {
     case Empty => upack.Obj(upack.Str("In") -> upack.Str("empty"))
-    case AppendConstant(init, constant: Term) =>
+    case ac:  AppendConstant[u] =>
       upack.Obj(
         upack.Str("In")    -> upack.Str("append-constant"),
-        upack.Str("init")     -> toMsg(init),
-        upack.Str("constant") -> termToMsgGet(constant)
+        upack.Str("init")     -> toMsg(ac.init),
+        upack.Str("constant") -> termToMsgGet(ac.constant)
       )
-    case AppendTerm(init, expr: Term, role: Role) =>
-      val rl = role match {
+    case at : AppendTerm[u] =>
+      val rl = at.role match {
         case Context.Assert   => upack.Str("assert")
         case Context.Consider => upack.Str("consider")
       }
       upack.Obj(
         upack.Str("In") -> upack.Str("append-term"),
-        upack.Str("init")  -> toMsg(init),
-        upack.Str("term")  -> termToMsgGet(expr),
+        upack.Str("init")  -> toMsg(at.init),
+        upack.Str("term")  -> termToMsgGet(at.term),
         upack.Str("role")  -> rl
       )
-    case AppendVariable(init, expr: Term) =>
+    case av: AppendVariable[u] =>
       upack.Obj(
         upack.Str("In")      -> upack.Str("append-variable"),
-        upack.Str("init")       -> toMsg(init),
-        upack.Str("expression") -> termToMsgGet(expr)
+        upack.Str("init")       -> toMsg(av.init),
+        upack.Str("expression") -> termToMsgGet(av.variable)
       )
     case AppendDefn(init, defn, global) =>
       upack.Obj(
