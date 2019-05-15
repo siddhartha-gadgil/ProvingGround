@@ -237,7 +237,7 @@ case class ExpressionEval(
       case (v, n) if p.getOrElse(v, 0.0) > 0 =>
         val t: Jet[Double] = Jet.h[Double](n)
         val r: Jet[Double] = p(v)
-        val d: Jet[Double] = r + (-1)
+        val d: Jet[Double] = (r + (-1)) * (-1)
         val lx             = log(r / d) // value after inverse sigmoid
         val x              = lx + t
         val y              = exp(x) / (exp(x) + 1.0) // tangent before sigmoid
@@ -381,10 +381,11 @@ case class ExpressionEval(
   def optimum(
       hW: Double = 1,
       klW: Double = 1,
-      p: Map[Expression, Double] = finalDist
+      p: Map[Expression, Double] = finalDist,
+      maxRatio: Double = 1.01
   ): Map[Expression, Double] = {
     val newMap = stableGradShift(p, entropyProjection(hW, klW)(p))
-    if (newMap.keySet == init.keySet) newMap
+    if ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))   newMap 
     else optimum(hW, klW, newMap)
   }
 
