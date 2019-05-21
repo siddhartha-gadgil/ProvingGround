@@ -189,6 +189,7 @@ object FansiShow {
     case sym: AnySym                      => Tree.Literal(sym.toString)
     case w: andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
     case s: String                        => Tree.Literal(s)
+    case stream : Stream[a] => Tree.Literal("[" + stream.head.toString+" ..." )
   }
 
   val fansiPrint: PPrinter =
@@ -199,6 +200,7 @@ object FansiShow {
     case sym: AnySym                      => Tree.Literal(sym.toString)
     case w: andrewscurtis.FreeGroups.Word => Tree.Literal(w.toString)
     case s: String                        => Tree.Literal(s)
+    case stream : Stream[a] => Tree.Literal("[" + stream.head.toString+" ..." )
   }
 
   val simplePrint: PPrinter =
