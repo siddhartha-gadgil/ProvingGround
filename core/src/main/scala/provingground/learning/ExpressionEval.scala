@@ -236,7 +236,7 @@ case class ExpressionEval(
   val finalVarGroups : Map[(RandomVar[_], Vector[_]),Set[GeneratorVariables.Expression]] = atoms.collect {
     case FinalVal(variable) => variable
   }.flatMap(x => elemContext(x).map(y => x -> y)).groupBy(_._2).mapValues{
-    s => s.map{case (x , _) => InitialVal(x) : Expression}
+    s => s.map{case (x , _) => FinalVal(x) : Expression}
   }
 
   def expressionGroup(exp: Expression) : Option[Set[Expression]] = exp match {
@@ -248,7 +248,11 @@ case class ExpressionEval(
   def normalizedMap(p: Map[Expression, Double])  = p map {
     case (exp, value) =>
       expressionGroup(exp).map{s =>
-        val total = s.map(x => p.getOrElse(x, 0.0)).sum
+        val total = s.toVector.map(x => p.getOrElse(x, 0.0)).sum
+        // pprint.log(s)
+        // pprint.log(total)
+        // pprint.log(value)
+        // pprint.log(exp)
         exp -> value / total
       }.getOrElse(exp -> value)
   }
