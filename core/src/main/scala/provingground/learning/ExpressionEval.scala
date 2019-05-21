@@ -253,7 +253,7 @@ case class ExpressionEval(
         // pprint.log(total)
         // pprint.log(value)
         // pprint.log(exp)
-        exp -> value / total
+        if (total > 0) exp -> value / total else exp -> value
       }.getOrElse(exp -> value)
   }
 
@@ -419,6 +419,8 @@ case class ExpressionEval(
   ): Map[Expression, Double] = {
     p.map {
       case (expr, y) =>
+        if (y == 0 || y == 1) expr -> y
+        else
         variableIndex
           .get(expr)
           .map { n =>
