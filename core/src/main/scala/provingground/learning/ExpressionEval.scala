@@ -461,7 +461,8 @@ case class ExpressionEval(
       der <- jetTask(p)(entropy(hW, klW))
       gradient = der.infinitesimal.toVector
       eqg <- eqnGradientsTask(p)
-    } yield GramSchmidt.perpVec(eqg, gradient)
+      res <- MonixGramSchmidt.perpVec(eqg, gradient)
+    } yield res
 
   def iterator(
       hW: Double = 1,
