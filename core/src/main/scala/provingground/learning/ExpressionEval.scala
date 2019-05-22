@@ -18,6 +18,11 @@ object ExpressionEval {
     FD(pmf)
   }
 
+  def generators(p: Map[Expression, Double]) = 
+      FD(
+               p.collect{case (InitialVal(Elem(x: Term, Terms)), p) => Weighted(x, p)}
+               )
+
   /**
     * checks whether an element is a variable in an island
     */
@@ -485,6 +490,18 @@ case class ExpressionEval(
         s = stableGradShift(q, epg)
       } yield (s, s)
     }(Task.now(p))
+
+  def generatorIterant(
+    hW: Double = 1,
+    klW: Double = 1,
+    p: Map[Expression, Double] = finalDist
+): Iterant[Task,FD[Term]] =
+  Iterant.fromStateActionL[Task, Map[Expression, Double], FD[Term]] { q =>
+    for {
+      epg <- entropyProjectionTask(hW, klW)(q)
+      s = stableGradShift(q, epg)
+    } yield (generators(s), s)
+  }(Task.now(p))
 
   /**
     * Optimal value, more precisely stable under gradient flow.
