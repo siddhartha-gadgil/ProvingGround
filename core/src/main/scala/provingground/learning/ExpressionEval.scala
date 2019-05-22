@@ -18,10 +18,10 @@ object ExpressionEval {
     FD(pmf)
   }
 
-  def generators(p: Map[Expression, Double]) = 
-      FD(
-               p.collect{case (InitialVal(Elem(x: Term, Terms)), p) => Weighted(x, p)}
-               )
+  def generators(p: Map[Expression, Double]) =
+    FD(
+      p.collect { case (InitialVal(Elem(x: Term, Terms)), p) => Weighted(x, p) }
+    )
 
   /**
     * checks whether an element is a variable in an island
@@ -232,36 +232,51 @@ case class ExpressionEval(
     }
     .fold[Expression](Literal(0))(_ + _)
 
-  val initVarGroups : Map[(RandomVar[_], Vector[_]),Set[GeneratorVariables.Expression]] = atoms.collect {
-    case InitialVal(variable) => variable
-  }.flatMap(x => elemContext(x).map(y => x -> y)).groupBy(_._2).mapValues{
-    s => s.map{case (x , _) => InitialVal(x) : Expression}
-  }
+  val initVarGroups
+      : Map[(RandomVar[_], Vector[_]), Set[GeneratorVariables.Expression]] =
+    atoms
+      .collect {
+        case InitialVal(variable) => variable
+      }
+      .flatMap(x => elemContext(x).map(y => x -> y))
+      .groupBy(_._2)
+      .mapValues { s =>
+        s.map { case (x, _) => InitialVal(x): Expression }
+      }
 
-  val finalVarGroups : Map[(RandomVar[_], Vector[_]),Set[GeneratorVariables.Expression]] = atoms.collect {
-    case FinalVal(variable) => variable
-  }.flatMap(x => elemContext(x).map(y => x -> y)).groupBy(_._2).mapValues{
-    s => s.map{case (x , _) => FinalVal(x) : Expression}
-  }
+  val finalVarGroups
+      : Map[(RandomVar[_], Vector[_]), Set[GeneratorVariables.Expression]] =
+    atoms
+      .collect {
+        case FinalVal(variable) => variable
+      }
+      .flatMap(x => elemContext(x).map(y => x -> y))
+      .groupBy(_._2)
+      .mapValues { s =>
+        s.map { case (x, _) => FinalVal(x): Expression }
+      }
 
-  def expressionGroup(exp: Expression) : Option[Set[Expression]] = exp match {
-    case InitialVal(variable) => elemContext(variable).flatMap(v => initVarGroups.get(v))
-    case FinalVal(variable) => elemContext(variable).flatMap(v => finalVarGroups.get(v))
+  def expressionGroup(exp: Expression): Option[Set[Expression]] = exp match {
+    case InitialVal(variable) =>
+      elemContext(variable).flatMap(v => initVarGroups.get(v))
+    case FinalVal(variable) =>
+      elemContext(variable).flatMap(v => finalVarGroups.get(v))
     case _ => None
   }
 
-  def normalizedMap(p: Map[Expression, Double])  = p map {
+  def normalizedMap(p: Map[Expression, Double]) = p map {
     case (exp, value) =>
-      expressionGroup(exp).map{s =>
-        val total = s.toVector.map(x => p.getOrElse(x, 0.0)).sum
-        // pprint.log(s)
-        // pprint.log(total)
-        // pprint.log(value)
-        // pprint.log(exp)
-        if (total > 0) exp -> value / total else exp -> value
-      }.getOrElse(exp -> value)
+      expressionGroup(exp)
+        .map { s =>
+          val total = s.toVector.map(x => p.getOrElse(x, 0.0)).sum
+          // pprint.log(s)
+          // pprint.log(total)
+          // pprint.log(value)
+          // pprint.log(exp)
+          if (total > 0) exp -> value / total else exp -> value
+        }
+        .getOrElse(exp -> value)
   }
-
 
   /**
     * Vector of all variables. This is frozen so that their indices can be used.
@@ -426,13 +441,13 @@ case class ExpressionEval(
       case (expr, y) =>
         if (y == 0 || y == 1) expr -> y
         else
-        variableIndex
-          .get(expr)
-          .map { n =>
-            val x = log(y / (1 - y)) - (t(n) * eps)
-            expr -> exp(x) / (1 + exp(x))
-          }
-          .getOrElse(expr -> y)
+          variableIndex
+            .get(expr)
+            .map { n =>
+              val x = log(y / (1 - y)) - (t(n) * eps)
+              expr -> exp(x) / (1 + exp(x))
+            }
+            .getOrElse(expr -> y)
     }
   }
 
@@ -492,16 +507,16 @@ case class ExpressionEval(
     }(Task.now(p))
 
   def generatorIterant(
-    hW: Double = 1,
-    klW: Double = 1,
-    p: Map[Expression, Double] = finalDist
-): Iterant[Task,FD[Term]] =
-  Iterant.fromStateActionL[Task, Map[Expression, Double], FD[Term]] { q =>
-    for {
-      epg <- entropyProjectionTask(hW, klW)(q)
-      s = stableGradShift(q, epg)
-    } yield (generators(s), s)
-  }(Task.now(p))
+      hW: Double = 1,
+      klW: Double = 1,
+      p: Map[Expression, Double] = finalDist
+  ): Iterant[Task, FD[Term]] =
+    Iterant.fromStateActionL[Task, Map[Expression, Double], FD[Term]] { q =>
+      for {
+        epg <- entropyProjectionTask(hW, klW)(q)
+        s = stableGradShift(q, epg)
+      } yield (generators(s), s)
+    }(Task.now(p))
 
   /**
     * Optimal value, more precisely stable under gradient flow.
@@ -535,6 +550,30 @@ case class ExpressionEval(
       recRes <- Task.defer(optimumTask(hW, klW, newMap))
     } yield if (stable) newMap else recRes
 
+  // Backward step to see what terms were used in a given term.
+
+  def resolveOpt(exp: Expression): Option[Expression] =
+    equations.find(_.lhs == exp).map(_.rhs)
+
+  def rhs(exp: Expression): Expression = resolveOpt(exp).getOrElse(Literal(0))
+
+  def unitJet(p: Map[Expression, Double], exp: Expression): Jet[Double] =
+    spireVarProbs(p)(exp)
+
+  // Jets rewritten as maps of expression
+  def jetCoordinates(
+      jet: Jet[Double]
+  ): Map[Expression, Double] =
+    (for {
+      (x, j) <- vars.zipWithIndex
+      v = jet.infinitesimal(j)
+      if v != 0
+    } yield x -> v).toMap
+
+  def backMap(p: Map[Expression, Double], exp: Expression) =
+    jetCoordinates(jet(p)(rhs(exp)))
+
+  /// Old approach to backshifting, start clean and use as needed.
   /**
     * Jet converted to map, scaled for probabilities
     */
@@ -545,20 +584,22 @@ case class ExpressionEval(
     (for {
       (x, j) <- vars.zipWithIndex
       v = jet.infinitesimal(j)
-      if v > 0
+      if v > 0 // FIXME negative case?
       y = p(x)
-      w = v * (exp(y) + 1) * (exp(y) + 1) / exp(y)
+      w = v * (exp(y) + 1) * (exp(y) + 1) / exp(y) // FIXME this makes no sense as y is a probability, should inverse transform at least.
     } yield x -> w).toMap
-
-  def resolveOpt(exp: Expression): Option[Expression] =
-    equations.find(_.lhs == exp).map(_.rhs)
 
   // Should correct for sigmoid transformation
   def backStep(
       exp: Expression,
       p: Map[Expression, Double] = finalDist
-  ): Map[Expression, Double] =
-    jetMap(jet(p)(resolveOpt(exp).getOrElse(Literal(0))))
+  ): Map[Expression, Double] = {
+    val x   = spireVarProbs(p)(exp)
+    val rhs = resolveOpt(exp).getOrElse(Literal(0))
+    val t   = jet(p)(rhs)
+    ???
+  }
+  // jetMap(jet(p)(resolveOpt(exp).getOrElse(Literal(0))))
 
 }
 
