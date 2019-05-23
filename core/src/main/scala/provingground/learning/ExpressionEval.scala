@@ -562,44 +562,19 @@ case class ExpressionEval(
 
   // Jets rewritten as maps of expression
   def jetCoordinates(
-      jet: Jet[Double]
+      p: Map[Expression, Double],
+      jt: Jet[Double]
   ): Map[Expression, Double] =
     (for {
       (x, j) <- vars.zipWithIndex
-      v = jet.infinitesimal(j)
+      v = jt.infinitesimal(j)
       if v != 0
-    } yield x -> v).toMap
+      scale = jet(p)(x).infinitesimal(j)
+    } yield x -> v / scale).toMap
 
-  def backMap(p: Map[Expression, Double], exp: Expression) =
-    jetCoordinates(jet(p)(rhs(exp)))
+  def backMap(p: Map[Expression, Double], exp: Expression) : Map[Expression, Double] =
+    jetCoordinates(p, jet(p)(rhs(exp)))
 
-  /// Old approach to backshifting, start clean and use as needed.
-  /**
-    * Jet converted to map, scaled for probabilities
-    */
-  def jetMap(
-      jet: Jet[Double],
-      p: Map[Expression, Double] = finalDist
-  ): Map[Expression, Double] =
-    (for {
-      (x, j) <- vars.zipWithIndex
-      v = jet.infinitesimal(j)
-      if v > 0 // FIXME negative case?
-      y = p(x)
-      w = v * (exp(y) + 1) * (exp(y) + 1) / exp(y) // FIXME this makes no sense as y is a probability, should inverse transform at least.
-    } yield x -> w).toMap
-
-  // Should correct for sigmoid transformation
-  def backStep(
-      exp: Expression,
-      p: Map[Expression, Double] = finalDist
-  ): Map[Expression, Double] = {
-    val x   = spireVarProbs(p)(exp)
-    val rhs = resolveOpt(exp).getOrElse(Literal(0))
-    val t   = jet(p)(rhs)
-    ???
-  }
-  // jetMap(jet(p)(resolveOpt(exp).getOrElse(Literal(0))))
 
 }
 
