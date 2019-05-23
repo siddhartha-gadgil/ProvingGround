@@ -155,7 +155,7 @@ case class LocalProver(
   val pairT: Task[(FiniteDistribution[Term], Set[EquationNode])] =
     mfd.varDist(initState)(Terms, cutoff)
 
-  val equationTerms: Task[Set[EquationNode]] = pairT.map(_._2).memoize
+  val equationNodes: Task[Set[EquationNode]] = pairT.map(_._2).memoize
 
   // Generating provers using results
   val withLemmas: Task[LocalProver] =
@@ -210,9 +210,9 @@ trait LocalProverStep {
   lazy val unknownStatements: Task[FiniteDistribution[Typ[Term]]] =
     nextState.map(_.unknownStatements)
 
-  val equationTerms: Task[Set[EquationNode]]
+  val equationNodes: Task[Set[EquationNode]]
 
-  lazy val equations: Task[Set[Equation]] = equationTerms.map { eqs =>
+  lazy val equations: Task[Set[Equation]] = equationNodes.map { eqs =>
     groupEquations(eqs)
   }.memoize
 

@@ -103,4 +103,25 @@ object IterantRunner {
 
   def withDelayed[A, M](iter: Iterant[Task, Output[A, M]]) =
     iter.interleave(delayed(iter))
+
+  def tillStable[S](iter: Iterant[Task, S], isStable: (S, S) => Boolean) = {
+    val withHistory: Iterant[Task, (Option[S], Option[S])] = // the iterant with two steps before and one step before
+      iter.scan[(Option[S], Option[S])](None -> None) {
+        case ((oa, ob), s) => (ob, Some(s))
+      }
+
+    withHistory.takeWhile{
+      case (Some(a), Some(b)) => isStable(a, b)
+      case _ => false
+    }
+  }
+
+  def resultOpt[S](iter: Iterant[Task, S], isStable: (S, S) => Boolean) : Task[Option[S]] =
+    tillStable(iter, isStable).lastOptionL.map{
+      opOp => 
+        for {
+          pair <- opOp
+          z <- pair._2
+        } yield z
+    }
 }
