@@ -572,10 +572,44 @@ case class ExpressionEval(
       scale = jet(p)(x).infinitesimal(j)
     } yield x -> v / scale).toMap
 
-  def backMap(p: Map[Expression, Double], exp: Expression) : Map[Expression, Double] =
+  def backMap(
+      p: Map[Expression, Double],
+      exp: Expression
+  ): Map[Expression, Double] =
     jetCoordinates(p, jet(p)(rhs(exp)))
 
+  val mvs: VectorSpace[Map[GeneratorVariables.Expression, Double], Double] =
+    implicitly[VectorSpace[Map[Expression, Double], Double]]
 
+  @annotation.tailrec
+  final def recFullBackMap(
+      p: Map[Expression, Double],
+      base: Map[Expression, Double],
+      cutoff: Double,
+      accum: Map[Expression, Double]
+  ): Map[Expression, Double] =
+    if (base.isEmpty) accum
+    else {
+      val nextBase = MapVS.compose(base, backMap(p, _)).filter {
+        case (exp, v) => math.abs(v) > cutoff
+      }
+      val nextAccum = mvs.plus(accum, base)
+      recFullBackMap(p, nextBase, cutoff, nextAccum)
+    }
+
+  def fullBackMap(
+      p: Map[Expression, Double],
+      base: Map[Expression, Double],
+      cutoff: Double
+  ): Map[Expression, Double] =
+    recFullBackMap(p, base, cutoff, Map())
+
+  def fullBackMapExp(
+      p: Map[Expression, Double],
+      exp: Expression,
+      cutoff: Double
+  ): Map[Expression, Double] =
+    recFullBackMap(p, Map(exp -> 1), cutoff, Map())
 }
 
 trait EvolvedEquations[State, Boat] {
