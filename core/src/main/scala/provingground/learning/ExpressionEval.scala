@@ -294,113 +294,160 @@ case class ExpressionEval(
 
   implicit val jetField: Field[Jet[Double]] = implicitly[Field[Jet[Double]]]
 
-  case class WithP(p: Map[Expression, Double]){
+  case class WithP(p: Map[Expression, Double]) {
     lazy val spireVarProbs: Map[Expression, Jet[Double]] =
-    vars.zipWithIndex.collect {
-      case (v, n) if p.getOrElse(v, 0.0) > 0 && p(v) < 1 =>
-        val t: Jet[Double] = Jet.h[Double](n)
-        val r: Jet[Double] = p(v)
-        val d: Jet[Double] = (r + (-1)) * (-1)
-        val lx             = log(r / d) // value after inverse sigmoid
-        val x              = lx + t
-        val y              = exp(x) / (exp(x) + 1.0) // tangent before sigmoid
-        v -> y
-    }.toMap
-  
+      vars.zipWithIndex.collect {
+        case (v, n) if p.getOrElse(v, 0.0) > 0 && p(v) < 1 =>
+          val t: Jet[Double] = Jet.h[Double](n)
+          val r: Jet[Double] = p(v)
+          val d: Jet[Double] = (r + (-1)) * (-1)
+          val lx             = log(r / d) // value after inverse sigmoid
+          val x              = lx + t
+          val y              = exp(x) / (exp(x) + 1.0) // tangent before sigmoid
+          v -> y
+      }.toMap
 
-  /**
-    * Recursive jet for an expression, with variables transformed by sigmoid.
-    */
-  def jet(expr: Expression): Jet[Double] =
-    spireVarProbs.getOrElse(
-      expr,
-      expr match {
-        case Log(exp)       => log(jet(exp))
-        case Exp(x)         => exp(jet(x))
-        case Sum(x, y)      => jet(x) + jet(y)
-        case Product(x, y)  => jet(x) * jet(y)
-        case Literal(value) => value
-        case Quotient(x, y) => jet(x) / jet(y)
-        case iv @ InitialVal(el @ Elem(_, _)) =>
-          el match {
-            case Elem(fn: ExstFunc, Funcs) =>
-              jet(InitialVal(Elem(fn.func, Terms)) / funcTotal)
-            case Elem(t: Term, TypFamilies) =>
-              jet(InitialVal(Elem(t, Terms)) / typFamilyTotal)
-            case _ => p(iv)
-          }
-        case otherCase => p(otherCase)
-
-      }
-    )
-
-  def jetTask(expr: Expression): Task[Jet[Double]] =
-    spireVarProbs
-      .get(expr)
-      .map(Task.now(_))
-      .getOrElse(
+    /**
+      * Recursive jet for an expression, with variables transformed by sigmoid.
+      */
+    def jet(expr: Expression): Jet[Double] =
+      spireVarProbs.getOrElse(
+        expr,
         expr match {
-          case Log(exp) => jetTask(exp).map(j => log(j))
-          case Exp(x)   => jetTask(x).map(j => exp(j))
-          case Sum(x, y) =>
-            for {
-              a <- jetTask(x)
-              b <- jetTask(y)
-            } yield a + b
-          case Product(x, y) =>
-            for {
-              a <- jetTask(x)
-              b <- jetTask(y)
-            } yield a * b
-          case Literal(value) => Task.now(value)
-          case Quotient(x, y) =>
-            for {
-              a <- jetTask(x)
-              b <- jetTask(y)
-            } yield a / b
+          case Log(exp)       => log(jet(exp))
+          case Exp(x)         => exp(jet(x))
+          case Sum(x, y)      => jet(x) + jet(y)
+          case Product(x, y)  => jet(x) * jet(y)
+          case Literal(value) => value
+          case Quotient(x, y) => jet(x) / jet(y)
           case iv @ InitialVal(el @ Elem(_, _)) =>
             el match {
               case Elem(fn: ExstFunc, Funcs) =>
-                jetTask(InitialVal(Elem(fn.func, Terms)) / funcTotal)
+                jet(InitialVal(Elem(fn.func, Terms)) / funcTotal)
               case Elem(t: Term, TypFamilies) =>
-                jetTask(InitialVal(Elem(t, Terms)) / typFamilyTotal)
-              case _ => Task(p(iv))
+                jet(InitialVal(Elem(t, Terms)) / typFamilyTotal)
+              case _ => p(iv)
             }
-          case otherCase => Task(p(otherCase))
+          case otherCase => p(otherCase)
 
         }
       )
 
-/**
-    * Gradients of equations for expression
-    */
-  lazy val eqnGradients: Vector[Vector[Double]] =
-    eqnExpressions.map { exp =>
-      jet(exp).infinitesimal.toVector
-    }
+    def jetTask(expr: Expression): Task[Jet[Double]] =
+      spireVarProbs
+        .get(expr)
+        .map(Task.now(_))
+        .getOrElse(
+          expr match {
+            case Log(exp) => jetTask(exp).map(j => log(j))
+            case Exp(x)   => jetTask(x).map(j => exp(j))
+            case Sum(x, y) =>
+              for {
+                a <- jetTask(x)
+                b <- jetTask(y)
+              } yield a + b
+            case Product(x, y) =>
+              for {
+                a <- jetTask(x)
+                b <- jetTask(y)
+              } yield a * b
+            case Literal(value) => Task.now(value)
+            case Quotient(x, y) =>
+              for {
+                a <- jetTask(x)
+                b <- jetTask(y)
+              } yield a / b
+            case iv @ InitialVal(el @ Elem(_, _)) =>
+              el match {
+                case Elem(fn: ExstFunc, Funcs) =>
+                  jetTask(InitialVal(Elem(fn.func, Terms)) / funcTotal)
+                case Elem(t: Term, TypFamilies) =>
+                  jetTask(InitialVal(Elem(t, Terms)) / typFamilyTotal)
+                case _ => Task(p(iv))
+              }
+            case otherCase => Task(p(otherCase))
 
-  val eqnGradientsTask: Task[Vector[Vector[Double]]] =
-    Task.gather(eqnExpressions.map { exp =>
-      jetTask(exp).map(_.infinitesimal.toVector)
-    })
-
+          }
+        )
 
     /**
-    * Composite entropy projected perpendicular to the equations.
-    */
-  def entropyProjection(hW: Double = 1, klW: Double = 1): Vector[Double] = {
-  val gradient = jet(entropy(hW, klW)).infinitesimal.toVector
-  GramSchmidt.perpVec(eqnGradients, gradient)
-}
+      * Gradients of equations for expression
+      */
+    lazy val eqnGradients: Vector[Vector[Double]] =
+      eqnExpressions.map { exp =>
+        jet(exp).infinitesimal.toVector
+      }
 
-def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]] =
-  for {
-    der <- jetTask(entropy(hW, klW))
-    gradient = der.infinitesimal.toVector
-    eqg <- eqnGradientsTask
-    res <- MonixGramSchmidt.perpVec(eqg, gradient)
-  } yield res
+    val eqnGradientsTask: Task[Vector[Vector[Double]]] =
+      Task.gather(eqnExpressions.map { exp =>
+        jetTask(exp).map(_.infinitesimal.toVector)
+      })
+
+    /**
+      * Composite entropy projected perpendicular to the equations.
+      */
+    def entropyProjection(hW: Double = 1, klW: Double = 1): Vector[Double] = {
+      val gradient = jet(entropy(hW, klW)).infinitesimal.toVector
+      GramSchmidt.perpVec(eqnGradients, gradient)
+    }
+
+    def entropyProjectionTask(
+        hW: Double = 1,
+        klW: Double = 1
+    ): Task[Vector[Double]] =
+      for {
+        der <- jetTask(entropy(hW, klW))
+        gradient = der.infinitesimal.toVector
+        eqg <- eqnGradientsTask
+        res <- MonixGramSchmidt.perpVec(eqg, gradient)
+      } yield res
+
+    // Jets rewritten as maps of expression
+    def jetCoordinates(
+        jt: Jet[Double]
+    ): Map[Expression, Double] =
+      (for {
+        (x, j) <- vars.zipWithIndex
+        v = jt.infinitesimal(j)
+        if v != 0
+        scale = WithP(p).jet(x).infinitesimal(j)
+      } yield x -> v / scale).toMap
+
+    def backMap(
+        exp: Expression
+    ): Map[Expression, Double] =
+      jetCoordinates(jet(rhs(exp)))
+
+    @annotation.tailrec
+    final def recFullBackMap(
+        base: Map[Expression, Double],
+        cutoff: Double,
+        accum: Map[Expression, Double]
+    ): Map[Expression, Double] =
+      if (base.isEmpty) accum
+      else {
+        val nextBase = MapVS.compose(base, backMap(_)).filter {
+          case (exp, v) => math.abs(v) > cutoff
+        }
+        val nextAccum = mvs.plus(accum, base)
+        recFullBackMap(nextBase, cutoff, nextAccum)
+      }
+
+    def fullBackMap(
+        base: Map[Expression, Double],
+        cutoff: Double
+    ): Map[Expression, Double] =
+      recFullBackMap(base, cutoff, Map())
+
+    def fullBackMapExp(
+        exp: Expression,
+        cutoff: Double
+    ): Map[Expression, Double] =
+      recFullBackMap(Map(exp -> 1), cutoff, Map())
+
   }
+
+  lazy val Final = WithP(finalDist)
 
   /**
     * Terms of the generating distribution
@@ -444,8 +491,6 @@ def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]]
       eq.lhs - eq.rhs
     }
 
-  
-
   /**
     * Shift downwards by the gradient, mapped by sigmoids.
     */
@@ -481,14 +526,14 @@ def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]]
   def entropy(hW: Double = 1, klW: Double = 1): Expression =
     (hExp * hW) + (klExp * klW)
 
-  
-
   def iterator(
       hW: Double = 1,
       klW: Double = 1,
       p: Map[Expression, Double] = finalDist
   ): Iterator[Map[Expression, Double]] =
-    Iterator.iterate(p)(q => stableGradShift(q, WithP(q).entropyProjection(hW, klW) ))
+    Iterator.iterate(p)(
+      q => stableGradShift(q, WithP(q).entropyProjection(hW, klW))
+    )
 
   def iterant(
       hW: Double = 1,
@@ -500,7 +545,7 @@ def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]]
       Double
     ]] { q =>
       for {
-        epg <- WithP(q). entropyProjectionTask(hW, klW)
+        epg <- WithP(q).entropyProjectionTask(hW, klW)
         s = stableGradShift(q, epg)
       } yield (s, s)
     }(Task.now(p))
@@ -512,7 +557,7 @@ def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]]
   ): Iterant[Task, FD[Term]] =
     Iterant.fromStateActionL[Task, Map[Expression, Double], FD[Term]] { q =>
       for {
-        epg <- WithP(q). entropyProjectionTask(hW, klW)
+        epg <- WithP(q).entropyProjectionTask(hW, klW)
         s = stableGradShift(q, epg)
       } yield (generators(s), s)
     }(Task.now(p))
@@ -531,7 +576,7 @@ def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]]
       p: Map[Expression, Double] = finalDist,
       maxRatio: Double = 1.01
   ): Map[Expression, Double] = {
-    val newMap = stableGradShift(p, WithP(p). entropyProjection(hW, klW) )
+    val newMap = stableGradShift(p, WithP(p).entropyProjection(hW, klW))
     if ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio)) newMap
     else optimum(hW, klW, newMap)
   }
@@ -543,7 +588,7 @@ def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]]
       maxRatio: Double = 1.01
   ): Task[Map[Expression, Double]] =
     for {
-      epg <- WithP(p). entropyProjectionTask(hW, klW)
+      epg <- WithP(p).entropyProjectionTask(hW, klW)
       newMap = stableGradShift(p, epg)
       stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
       recRes <- Task.defer(optimumTask(hW, klW, newMap))
@@ -557,58 +602,11 @@ def entropyProjectionTask(hW: Double = 1, klW: Double = 1): Task[Vector[Double]]
   def rhs(exp: Expression): Expression = resolveOpt(exp).getOrElse(Literal(0))
 
   def unitJet(p: Map[Expression, Double], exp: Expression): Jet[Double] =
-    WithP(p). spireVarProbs(exp)
-
-  // Jets rewritten as maps of expression
-  def jetCoordinates(
-      p: Map[Expression, Double],
-      jt: Jet[Double]
-  ): Map[Expression, Double] =
-    (for {
-      (x, j) <- vars.zipWithIndex
-      v = jt.infinitesimal(j)
-      if v != 0
-      scale = WithP(p). jet (x).infinitesimal(j)
-    } yield x -> v / scale).toMap
-
-  def backMap(
-      p: Map[Expression, Double],
-      exp: Expression
-  ): Map[Expression, Double] =
-    jetCoordinates(p, WithP(p). jet(rhs(exp)))
+    WithP(p).spireVarProbs(exp)
 
   val mvs: VectorSpace[Map[GeneratorVariables.Expression, Double], Double] =
     implicitly[VectorSpace[Map[Expression, Double], Double]]
 
-  @annotation.tailrec
-  final def recFullBackMap(
-      p: Map[Expression, Double],
-      base: Map[Expression, Double],
-      cutoff: Double,
-      accum: Map[Expression, Double]
-  ): Map[Expression, Double] =
-    if (base.isEmpty) accum
-    else {
-      val nextBase = MapVS.compose(base, backMap(p, _)).filter {
-        case (exp, v) => math.abs(v) > cutoff
-      }
-      val nextAccum = mvs.plus(accum, base)
-      recFullBackMap(p, nextBase, cutoff, nextAccum)
-    }
-
-  def fullBackMap(
-      p: Map[Expression, Double],
-      base: Map[Expression, Double],
-      cutoff: Double
-  ): Map[Expression, Double] =
-    recFullBackMap(p, base, cutoff, Map())
-
-  def fullBackMapExp(
-      p: Map[Expression, Double],
-      exp: Expression,
-      cutoff: Double
-  ): Map[Expression, Double] =
-    recFullBackMap(p, Map(exp -> 1), cutoff, Map())
 }
 
 trait EvolvedEquations[State, Boat] {
