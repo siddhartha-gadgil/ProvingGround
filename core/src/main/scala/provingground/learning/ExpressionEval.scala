@@ -269,10 +269,6 @@ case class ExpressionEval(
       expressionGroup(exp)
         .map { s =>
           val total = s.toVector.map(x => p.getOrElse(x, 0.0)).sum
-          // pprint.log(s)
-          // pprint.log(total)
-          // pprint.log(value)
-          // pprint.log(exp)
           if (total > 0) exp -> value / total else exp -> value
         }
         .getOrElse(exp -> value)
