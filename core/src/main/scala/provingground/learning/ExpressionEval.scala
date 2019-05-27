@@ -67,6 +67,7 @@ object ExpressionEval {
         if (base > 0) Some(base)
         else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
+        else if (rv == Goals) Some(0.5) // just a quick-fix
         else throw new Exception(s"no initial value for $elem")
       case IsleScale(_, _) => Some((1.0 - tg.varWeight))
       case _               => None
