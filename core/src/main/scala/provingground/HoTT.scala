@@ -577,11 +577,11 @@ object HoTT {
     case fx: ApplnSym[w, u] =>
       val fn = fx.func.replace(x, y)
       val z = fx.arg.replace(x, y).asInstanceOf[w] 
-      pprint.log(x)
-      pprint.log(y)
-      pprint.log(x == y)
-      pprint.log(fn)
-      pprint.log(z)
+      // pprint.log(x)
+      // pprint.log(y)
+      // pprint.log(x == y)
+      // pprint.log(fn)
+      // pprint.log(z)
       Try(fn(z)).toOption
     case _ => None
   }
@@ -1836,10 +1836,10 @@ object HoTT {
     lazy val dom: Typ[X] = variable.typ.asInstanceOf[Typ[X]]
 
     override def usesVar(t: Term): Boolean = {
-      pprint.log(t)
-      pprint.log(variable)
-      pprint.log(value)
-      t.dependsOn(variable) || value.usesVar(t)
+      // pprint.log(t)
+      // pprint.log(variable)
+      // pprint.log(value)
+      (t == variable) || value.usesVar(t)
     }
 
     override def toString =
