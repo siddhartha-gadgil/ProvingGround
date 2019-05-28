@@ -13,13 +13,14 @@ import GeneratorVariables._
 import EntropyAtomWeight._
 
 import scalahott.NatRing
+import monix.tail.Iterant
 
 /**
- * Collect local/generative/tactical proving;
- * this includes configuration and learning but excludes strategy and attention.
- * This can be called in a loop generating goals based on unproved theorems,
- * using representation/deep learning with attention focussed or interactively.
- */
+  * Collect local/generative/tactical proving;
+  * this includes configuration and learning but excludes strategy and attention.
+  * This can be called in a loop generating goals based on unproved theorems,
+  * using representation/deep learning with attention focussed or interactively.
+  */
 case class LocalProver(
     initState: TermState =
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
@@ -34,7 +35,7 @@ case class LocalProver(
     klW: Double = 1
 ) extends LocalProverStep {
   // Convenience for generation
-  def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff/scale)
+  def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff / scale)
 
   def addTerms(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
@@ -132,18 +133,19 @@ case class LocalProver(
 
   def params(params: TermGenParams) = this.copy(tg = params)
 
-  def isleWeight(w: Double): LocalProver = this.copy(tg = tg.copy(lmW = w, piW = w))
+  def isleWeight(w: Double): LocalProver =
+    this.copy(tg = tg.copy(lmW = w, piW = w))
 
   def backwardWeight(w: Double): LocalProver =
     this.copy(tg = tg.copy(typAsCodW = w, targetInducW = w))
 
-  def negateTypes(w: Double): LocalProver = this.copy(tg = tg.copy(negTargetW = w))
+  def negateTypes(w: Double): LocalProver =
+    this.copy(tg = tg.copy(negTargetW = w))
 
   def natInduction(w: Double = 1.0): LocalProver = {
     val mixin = initState.inds + (NatRing.exstInducDefn, w)
     this.copy(initState.copy(inds = mixin.safeNormalized))
   }
-
 
   // Proving etc
   val nextState: Task[TermState] =
@@ -168,20 +170,19 @@ case class LocalProver(
     } yield this.copy(initState = lInit)
 
   val optimalInit0: Task[LocalProver] = expressionEval.map { ev =>
-    val p                            = ev.optimum(hW, klW)
+    val p                            = ev.optimum(hW, klW, cutoff, ev.finalDist, maxRatio)
     val td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
     val ts                           = initState.copy(terms = td)
     this.copy(initState = ts)
   }
 
-  val optimalInit: Task[LocalProver] = 
+  val optimalInit: Task[LocalProver] =
     for {
       ev <- expressionEval
-      p                            <- ev.optimumTask(hW, klW)
+      p  <- ev.optimumTask(hW, klW, cutoff, ev.finalDist, maxRatio)
       td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
       ts                           = initState.copy(terms = td)
-     } yield this.copy(initState = ts)
-  
+    } yield this.copy(initState = ts)
 
 }
 
@@ -194,6 +195,8 @@ trait LocalProverStep {
   val steps: Int
   val maxDepth: Int
   val limit: FiniteDuration
+  val hW: Double
+  val klW: Double
 
   lazy val evolvedState: Task[EvolvedState] = nextState
     .map(
@@ -267,4 +270,10 @@ trait LocalProverStep {
       fs    <- nextState
     } yield funcs.flatMap(fs.subGoalsFromFunc _)
 
+  lazy val generatorIterant: Iterant[Task, FiniteDistribution[HoTT.Term]] =
+    Iterant
+      .liftF(expressionEval)
+      .flatMap(ev => ev.generatorIterant(hW, klW, cutoff, ev.finalDist))
+
+  lazy val tunedGenerators : Task[FiniteDistribution[HoTT.Term]] = generatorIterant.take(steps).lastOptionL.map(os => os.getOrElse(initState.terms))
 }

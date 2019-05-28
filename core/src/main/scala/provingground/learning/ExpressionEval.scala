@@ -553,13 +553,14 @@ case class ExpressionEval(
   def generatorIterant(
       hW: Double = 1,
       klW: Double = 1,
+      cutoff: Double,
       p: Map[Expression, Double] = finalDist
   ): Iterant[Task, FD[Term]] =
     Iterant.fromStateActionL[Task, Map[Expression, Double], FD[Term]] { q =>
       for {
         epg <- WithP(q).entropyProjectionTask(hW, klW)
         s = stableGradShift(q, epg)
-      } yield (generators(s), s)
+      } yield (generators(s).purge(cutoff).safeNormalized , s)
     }(Task.now(p))
 
   /**
@@ -573,25 +574,27 @@ case class ExpressionEval(
   def optimum(
       hW: Double = 1,
       klW: Double = 1,
+      cutoff: Double,
       p: Map[Expression, Double] = finalDist,
       maxRatio: Double = 1.01
   ): Map[Expression, Double] = {
     val newMap = stableGradShift(p, WithP(p).entropyProjection(hW, klW))
     if ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio)) newMap
-    else optimum(hW, klW, newMap)
+    else optimum(hW, klW, cutoff, newMap, maxRatio)
   }
 
   def optimumTask(
       hW: Double = 1,
       klW: Double = 1,
+      cutoff: Double,
       p: Map[Expression, Double] = finalDist,
       maxRatio: Double = 1.01
   ): Task[Map[Expression, Double]] =
     for {
       epg <- WithP(p).entropyProjectionTask(hW, klW)
-      newMap = stableGradShift(p, epg)
+      newMap = stableGradShift(p, epg).filter(t => t._2 > cutoff)
       stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
-      recRes <- Task.defer(optimumTask(hW, klW, newMap))
+      recRes <- Task.defer(optimumTask(hW, klW, cutoff, newMap, maxRatio))
     } yield if (stable) newMap else recRes
 
   // Backward step to see what terms were used in a given term.

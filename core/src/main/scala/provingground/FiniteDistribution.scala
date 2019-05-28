@@ -23,8 +23,6 @@ object FiniteDistribution {
       FiniteDistribution(_)
     )
 
-  // choose default implementation
-  //  def apply[T](pmf: Traversable[Weighted[T]], epsilon: Double = 0.0) : FiniteDistribution[T] = FiniteDistributionSet(Weighted.flatten(pmf.toSeq).toSet, epsilon)
   def apply[T](pmf: Traversable[Weighted[T]]): FiniteDistribution[T] =
     FiniteDistribution(pmf.toVector)
 
@@ -136,6 +134,11 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   def purge(epsilon: Double): FiniteDistribution[T] =
     filter((t: T) => apply(t) > epsilon)
+
+  def inRatioBall(that: FiniteDistribution[T], ratio: Double) : Boolean = 
+    (that.support == support) && {
+      support.forall(t => math.max(this(t)/ that(t), that(t)/ this(t)) < ratio)
+    }
 
   def *(sc: Double): FiniteDistribution[T] =
     FiniteDistribution(pmf map (_.scale(sc)))
