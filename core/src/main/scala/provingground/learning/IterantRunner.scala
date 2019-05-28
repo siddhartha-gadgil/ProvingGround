@@ -111,8 +111,8 @@ object IterantRunner {
       }
 
     withHistory.takeWhile{
-      case (Some(a), Some(b)) => isStable(a, b)
-      case _ => false
+      case (Some(a), Some(b)) => !isStable(a, b)
+      case _ => true
     }
   }
 
