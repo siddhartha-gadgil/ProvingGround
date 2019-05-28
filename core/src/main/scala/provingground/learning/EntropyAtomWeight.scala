@@ -15,16 +15,19 @@ import scala.concurrent.duration._
   * @param q0 the initial proof weight of the element
   * @param initWeight the weight of the initial distribution in generation of terms
   */
-case class EntropyAtomWeight(h0: Double,
-                             kl0: Double,
-                             p0: Double,
-                             q0: Double,
-                             initWeight: Double) {
+case class EntropyAtomWeight(
+    h0: Double,
+    kl0: Double,
+    p0: Double,
+    q0: Double,
+    initWeight: Double
+) {
   implicit val jetDim: JetDim = JetDim(1)
 
   private val t: Jet[Double] = Jet.h[Double](0)
 
-  def pInit(x: Double): Jet[Double] = 1 / (1 + exp(x + t)) // Variant of logistic
+  def pInit(x: Double): Jet[Double] =
+    1 / (1 + exp(x + t)) // Variant of logistic
 
   def q1(x: Double): Jet[Double] = pInit(x) * initWeight
 
@@ -48,7 +51,7 @@ case class EntropyAtomWeight(h0: Double,
     Iterator.iterate(x)(y => totShifted(y, sc))
 
   def iter(sc: Double = 1, prune: Boolean = false): Iterator[Double] = {
-    val x = log(1.0/ q0 -1) 
+    val x = log(1.0 / q0 - 1)
     totIterator(x, sc).map { (y) =>
       1 / (1 + exp(y))
     }
@@ -63,8 +66,10 @@ case class EntropyAtomWeight(h0: Double,
       }
       .map { case (x, s) => 1.0 / (1 + exp(x)) -> s }
 
-  def prunedPairIterator(cutoff: Double,
-                         sc: Double = 1): Iterator[(Double, Option[Double])] =
+  def prunedPairIterator(
+      cutoff: Double,
+      sc: Double = 1
+  ): Iterator[(Double, Option[Double])] =
     pairIterator(sc).takeWhile {
       case (_, optShift) => optShift.forall(_ > cutoff)
     }
@@ -85,19 +90,24 @@ object EntropyAtomWeight {
     * @tparam A the type of objects of the initial distribution, e.g. terms
     * @tparam B the type of objects of the final distribution, e.g. types
     */
-  def apply[A, B](genDist: FiniteDistribution[A],
-                  pDist: FiniteDistribution[B],
-                  qDist: FiniteDistribution[B],
-                  elem: B,
-                  initWeight: Double): EntropyAtomWeight =
-    EntropyAtomWeight(FiniteDistribution.entropy(genDist),
-                      pDist.klDivergence(qDist),
-                      pDist(elem),
-                      qDist(elem),
-                      initWeight)
+  def apply[A, B](
+      genDist: FiniteDistribution[A],
+      pDist: FiniteDistribution[B],
+      qDist: FiniteDistribution[B],
+      elem: B,
+      initWeight: Double
+  ): EntropyAtomWeight =
+    EntropyAtomWeight(
+      FiniteDistribution.entropy(genDist),
+      pDist.klDivergence(qDist),
+      pDist(elem),
+      qDist(elem),
+      initWeight
+    )
 
   def evolvedLemmaGens(
-      ev: EvolvedStateLike): Vector[(Typ[Term], EntropyAtomWeight)] =
+      ev: EvolvedStateLike
+  ): Vector[(Typ[Term], EntropyAtomWeight)] =
     ev.result.thmsBySt.supp
       .filter(!ev.init.terms.map(_.typ).supp.contains(_))
       .map(
@@ -108,38 +118,108 @@ object EntropyAtomWeight {
             ev.result.thmsByPf,
             lem,
             ev.params.termInit
-        ))
+          )
+      )
 
-  def evolvedLemmaIters(ev: EvolvedStateLike,
-                        sc: Double = 1, prune: Boolean = false): Vector[(Typ[Term], Iterator[Double])] =
+  def proofWeightIter(
+      ev: EvolvedStateLike,
+      pf: Term,
+      weight: Double,
+      cutoff: Double,
+      sc: Double = 1,
+      prune: Boolean = false
+  ) =
+    EntropyAtomWeight[Term, Typ[Term]](
+      ev.init.terms,
+      ev.result.thmsBySt,
+      ev.result.thmsByPf,
+      pf.typ,
+      ev.params.termInit * weight
+    ).iter(sc, prune).takeWhile(_ > cutoff)
+
+  def proofWeightTuned(
+      ev: EvolvedStateLike,
+      pf: Term,
+      weight: Double,
+      cutoff: Double,
+      steps: Int,
+      sc: Double = 1,
+      prune: Boolean = false
+  ): Option[(Term, Double)] =
+    proofWeightIter(ev, pf, weight, cutoff, sc, prune).toStream
+      .drop(steps)
+      .headOption
+      .map(pf -> _)
+
+  def tunedProofs(
+      ev: EvolvedStateLike,
+      pfs: Vector[(Term, Double)],
+      cutoff: Double,
+      steps: Int,
+      sc: Double = 1,
+      prune: Boolean = false
+  ): Vector[(Term, Double)] =
+    pfs.map {
+      case (pf, w) => proofWeightTuned(ev, pf, w, cutoff, steps, sc, prune)
+    }.flatten
+
+  def evolvedLemmaIters(
+      ev: EvolvedStateLike,
+      sc: Double = 1,
+      prune: Boolean = false
+  ): Vector[(Typ[Term], Iterator[Double])] =
     evolvedLemmaGens(ev).map {
       case (lemma, ew) => lemma -> ew.iter(sc, prune)
     }
 
-  def lemmaWeights(ev: EvolvedStateLike, steps: Int,
-                   sc: Double = 1): Vector[(Typ[Term], Double)] = {
+  def lemmaWeights(
+      ev: EvolvedStateLike,
+      steps: Int,
+      sc: Double = 1
+  ): Vector[(Typ[Term], Double)] = {
     for {
       (tp, it) <- evolvedLemmaIters(ev, sc)
-      p = it.drop(steps).toStream.head
+      p   = it.drop(steps).toStream.head
       tpW = ev.result.thmsBySt(tp)
       if p > tpW * ev.params.termInit
     } yield tp -> p
-  }.sortBy(- _._2)
+  }.sortBy(-_._2)
 
-  def lemmaDist(ev: EvolvedStateLike, steps: Int,
-                sc: Double = 1): FiniteDistribution[Term] = FiniteDistribution(lemmaWeights(ev, steps, sc).map{case (tp, p) => Weighted("lemma" :: tp, p)})
+  def lemmaDist(
+      ev: EvolvedStateLike,
+      steps: Int,
+      sc: Double = 1
+  ): FiniteDistribution[Term] =
+    FiniteDistribution(lemmaWeights(ev, steps, sc).map {
+      case (tp, p) => Weighted("lemma" :: tp, p)
+    })
 
-  def findGoal(init : TermState, base: TermState, tg: TermGenParams, steps: Int, maxDepth: Int, cutoff: Double,
-  limit: FiniteDuration = 3.minutes, sc: Double = 1): Task[FiniteDistribution[Term]] = {
+  def findGoal(
+      init: TermState,
+      base: TermState,
+      tg: TermGenParams,
+      steps: Int,
+      maxDepth: Int,
+      cutoff: Double,
+      limit: FiniteDuration = 3.minutes,
+      sc: Double = 1
+  ): Task[FiniteDistribution[Term]] = {
     val pfs = base.terms.filter(x => base.goals(x.typ) > 0)
     Task(pfs).flatMap {
       case p if p.support.nonEmpty => Task(p)
-      case _ if maxDepth == 0 => Task(FiniteDistribution.empty)
+      case _ if maxDepth == 0      => Task(FiniteDistribution.empty)
       case _ =>
         val ev = EvolvedState(init, base, tg, cutoff)
         val td = lemmaDist(ev, steps, sc)
-        val nextTST = tg.nextTangStateTask(base, TermState(td, FiniteDistribution.empty), cutoff, limit)
-        nextTST.flatMap{result => findGoal(init, result, tg, steps, maxDepth - 1, cutoff, limit, sc)}
-      }
+        val nextTST = tg.nextTangStateTask(
+          base,
+          TermState(td, FiniteDistribution.empty),
+          cutoff,
+          limit
+        )
+        nextTST.flatMap { result =>
+          findGoal(init, result, tg, steps, maxDepth - 1, cutoff, limit, sc)
+        }
+    }
   }
 }
