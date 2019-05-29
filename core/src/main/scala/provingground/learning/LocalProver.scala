@@ -271,7 +271,7 @@ trait LocalProverStep {
   // These are candidate generators
   lazy val proofComponents: Task[Vector[(HoTT.Term, Double)]] = for {
     basePfs <- proofTerms
-    pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0)
+    pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0).map{case (x, _) => x -> 1.0}
     ev <- evolvedState
   } yield EntropyAtomWeight.tunedProofs(ev, pfs, cutoff, steps, hW, klW, scale)
 
