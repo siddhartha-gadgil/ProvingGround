@@ -59,7 +59,7 @@ object MonixGramSchmidt{
     def perpVec(vv: Vector[Vector[Double]], v: Vector[Double]) : Task[Vector[Double]] = onVec(vv).flatMap( makePerpFromON(_ , v))
 }
 
-case class MapVS[A]() extends VectorSpace[Map[A, Double], Double]{
+case class MapVS[A]() extends InnerProductSpace[Map[A, Double], Double]{
 def negate(x: Map[A,Double]): Map[A,Double] = 
     x.map{case (x, w) => (x, -w)}
 
@@ -72,7 +72,9 @@ def timesl(r: Double,v: Map[A,Double]): Map[A,Double] =
     v.map{case (x, w) => (x, r* w)}
 
 implicit def scalar: spire.algebra.Field[Double] = implicitly
-    
+
+def dot(v: Map[A, Double], w: Map[A, Double]) = 
+    (v.keySet.union(w.keySet)).map{x => v.getOrElse(x, 0.0) * w.getOrElse(x, 0.0)}.sum
 }
 
 object MapVS{
