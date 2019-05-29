@@ -242,7 +242,7 @@ trait LocalProverStep {
   lazy val lemmas: Task[Vector[(Typ[Term], Double)]] =
     (for {
       ev <- evolvedState
-    } yield lemmaWeights(ev, steps, scale)).memoize
+    } yield lemmaWeights(ev, steps, hW, klW, scale)).memoize
 
   lazy val lemmaProofs: Task[FiniteDistribution[HoTT.Term]] =
     for {
@@ -273,7 +273,7 @@ trait LocalProverStep {
     basePfs <- proofTerms
     pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0)
     ev <- evolvedState
-  } yield EntropyAtomWeight.tunedProofs(ev, pfs, cutoff, steps, scale)
+  } yield EntropyAtomWeight.tunedProofs(ev, pfs, cutoff, steps, hW, klW, scale)
 
   lazy val seek: Task[FiniteDistribution[Term]] =
     for {
@@ -285,6 +285,7 @@ trait LocalProverStep {
         steps,
         maxDepth,
         cutoff,
+        hW, klW,
         limit,
         scale
       )

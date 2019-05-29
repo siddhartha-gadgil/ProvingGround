@@ -1438,9 +1438,12 @@ case class TermState(
   // pprint.log(context.variables)
 
   lazy val thmsByPf: FD[Typ[Term]] =
-    terms.map(_.typ).flatten.filter((t) => typs(t) > 0).safeNormalized
+    terms.map(_.typ).flatten.filter((t) => typs(t) + goals(t) > 0).safeNormalized
   lazy val thmsBySt: FD[Typ[Term]] =
     typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
+
+  def goalThmsBySt(goalW: Double) =
+    (typs ++ goals).filter(terms.map(_.typ)(_) > 0).flatten.safeNormalized
 
   lazy val unknownStatements: FD[Typ[Term]] =
     typs

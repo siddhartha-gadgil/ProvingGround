@@ -272,7 +272,7 @@ case class TermGenParams(
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
       typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
-    } yield TermState(terms, typs, initState.vars, initState.inds)
+    } yield TermState(terms, typs, initState.vars, initState.inds, initState.goals, initState.context)
 
   def evolvedStateTask(
       initState: TermState,

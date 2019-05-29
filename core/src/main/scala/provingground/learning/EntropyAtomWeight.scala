@@ -20,7 +20,9 @@ case class EntropyAtomWeight(
     kl0: Double,
     p0: Double,
     q0: Double,
-    initWeight: Double
+    initWeight: Double,
+    hW: Double,
+    klW: Double,
 ) {
   implicit val jetDim: JetDim = JetDim(1)
 
@@ -42,7 +44,7 @@ case class EntropyAtomWeight(
     kl0 - ((1 - p0) * log(1 - p)) - (p0 * log(1 - q + (q / q0)))
   }
 
-  def tot(x: Double): Jet[Double] = kl1(x) + h1(x)
+  def tot(x: Double): Jet[Double] = (kl1(x) *klW ) + (h1(x) * hW)
 
   def totShifted(x: Double, sc: Double = 1): Double =
     x - (tot(x).infinitesimal(0) * sc)
@@ -95,29 +97,37 @@ object EntropyAtomWeight {
       pDist: FiniteDistribution[B],
       qDist: FiniteDistribution[B],
       elem: B,
-      initWeight: Double
+      initWeight: Double,
+      hW: Double,
+      klW: Double
   ): EntropyAtomWeight =
     EntropyAtomWeight(
       FiniteDistribution.entropy(genDist),
       pDist.klDivergence(qDist),
       pDist(elem),
       qDist(elem),
-      initWeight
+      initWeight,
+      hW,
+      klW
     )
 
   def evolvedLemmaGens(
-      ev: EvolvedStateLike
+      ev: EvolvedStateLike,
+      hW: Double, 
+      klW: Double
   ): Vector[(Typ[Term], EntropyAtomWeight)] =
-    ev.result.thmsBySt.supp
+    ev.result.goalThmsBySt(ev.params.goalWeight).supp
       .filter(!ev.init.terms.map(_.typ).supp.contains(_))
       .map(
         lem =>
           lem -> EntropyAtomWeight[Term, Typ[Term]](
             ev.init.terms,
-            ev.result.thmsBySt,
+            ev.result.goalThmsBySt(ev.params.goalWeight),
             ev.result.thmsByPf,
             lem,
-            ev.params.termInit
+            ev.params.termInit,
+            hW,
+            klW
           )
       )
 
@@ -126,15 +136,17 @@ object EntropyAtomWeight {
       pf: Term,
       weight: Double,
       cutoff: Double,
+      hW: Double, 
+      klW: Double,
       sc: Double = 1,
       prune: Boolean = false
   ) =
     EntropyAtomWeight[Term, Typ[Term]](
       ev.init.terms,
-      ev.result.thmsBySt,
+      ev.result.goalThmsBySt(ev.params.goalWeight),
       ev.result.thmsByPf,
       pf.typ,
-      ev.params.termInit * weight
+      ev.params.termInit * weight,hW, klW
     ).iter(sc, prune).takeWhile(_ > cutoff)
 
   def proofWeightTuned(
@@ -143,10 +155,12 @@ object EntropyAtomWeight {
       weight: Double,
       cutoff: Double,
       steps: Int,
+      hW: Double, 
+      klW: Double,
       sc: Double = 1,
       prune: Boolean = false
   ): Option[(Term, Double)] =
-    proofWeightIter(ev, pf, weight, cutoff, sc, prune).toStream
+    proofWeightIter(ev, pf, weight, cutoff, hW, klW, sc, prune).toStream
       .drop(steps)
       .headOption
       .map(pf -> _)
@@ -156,31 +170,37 @@ object EntropyAtomWeight {
       pfs: Vector[(Term, Double)],
       cutoff: Double,
       steps: Int,
+      hW: Double, 
+      klW: Double,
       sc: Double = 1,
       prune: Boolean = false
   ): Vector[(Term, Double)] =
     pfs.map {
-      case (pf, w) => proofWeightTuned(ev, pf, w, cutoff, steps, sc, prune)
+      case (pf, w) => proofWeightTuned(ev, pf, w, cutoff, steps, hW, klW, sc, prune)
     }.flatten
 
   def evolvedLemmaIters(
       ev: EvolvedStateLike,
+      hW: Double, 
+      klW: Double,
       sc: Double = 1,
       prune: Boolean = false
   ): Vector[(Typ[Term], Iterator[Double])] =
-    evolvedLemmaGens(ev).map {
+    evolvedLemmaGens(ev, hW, klW).map {
       case (lemma, ew) => lemma -> ew.iter(sc, prune)
     }
 
   def lemmaWeights(
       ev: EvolvedStateLike,
       steps: Int,
+      hW: Double, 
+      klW: Double,
       sc: Double = 1
   ): Vector[(Typ[Term], Double)] = {
     for {
-      (tp, it) <- evolvedLemmaIters(ev, sc)
+      (tp, it) <- evolvedLemmaIters(ev, hW, klW, sc)
       p   = it.drop(steps).toStream.head
-      tpW = ev.result.thmsBySt(tp)
+      tpW = ev.result.goalThmsBySt(ev.params.goalWeight)(tp)
       if p > tpW * ev.params.termInit
     } yield tp -> p
   }.sortBy(-_._2)
@@ -188,9 +208,11 @@ object EntropyAtomWeight {
   def lemmaDist(
       ev: EvolvedStateLike,
       steps: Int,
+      hW: Double, 
+      klW: Double,
       sc: Double = 1
   ): FiniteDistribution[Term] =
-    FiniteDistribution(lemmaWeights(ev, steps, sc).map {
+    FiniteDistribution(lemmaWeights(ev, steps, hW, klW, sc).map {
       case (tp, p) => Weighted("lemma" :: tp, p)
     })
 
@@ -201,6 +223,8 @@ object EntropyAtomWeight {
       steps: Int,
       maxDepth: Int,
       cutoff: Double,
+      hW: Double, 
+      klW: Double,
       limit: FiniteDuration = 3.minutes,
       sc: Double = 1
   ): Task[FiniteDistribution[Term]] = {
@@ -210,7 +234,7 @@ object EntropyAtomWeight {
       case _ if maxDepth == 0      => Task(FiniteDistribution.empty)
       case _ =>
         val ev = EvolvedState(init, base, tg, cutoff)
-        val td = lemmaDist(ev, steps, sc)
+        val td = lemmaDist(ev, steps, hW, klW, sc)
         val nextTST = tg.nextTangStateTask(
           base,
           TermState(td, FiniteDistribution.empty),
@@ -218,7 +242,7 @@ object EntropyAtomWeight {
           limit
         )
         nextTST.flatMap { result =>
-          findGoal(init, result, tg, steps, maxDepth - 1, cutoff, limit, sc)
+          findGoal(init, result, tg, steps, maxDepth - 1, cutoff, hW, klW, limit, sc)
         }
     }
   }
