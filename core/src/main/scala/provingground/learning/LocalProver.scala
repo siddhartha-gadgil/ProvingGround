@@ -15,11 +15,11 @@ import EntropyAtomWeight._
 import scalahott.NatRing
 
 /**
- * Collect local/generative/tactical proving;
- * this includes configuration and learning but excludes strategy and attention.
- * This can be called in a loop generating goals based on unproved theorems,
- * using representation/deep learning with attention focussed or interactively.
- */
+  * Collect local/generative/tactical proving;
+  * this includes configuration and learning but excludes strategy and attention.
+  * This can be called in a loop generating goals based on unproved theorems,
+  * using representation/deep learning with attention focussed or interactively.
+  */
 case class LocalProver(
     initState: TermState =
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
@@ -34,7 +34,7 @@ case class LocalProver(
     klW: Double = 1
 ) extends LocalProverStep {
   // Convenience for generation
-  def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff/scale)
+  def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff / scale)
 
   def addTerms(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
@@ -132,18 +132,19 @@ case class LocalProver(
 
   def params(params: TermGenParams) = this.copy(tg = params)
 
-  def isleWeight(w: Double): LocalProver = this.copy(tg = tg.copy(lmW = w, piW = w))
+  def isleWeight(w: Double): LocalProver =
+    this.copy(tg = tg.copy(lmW = w, piW = w))
 
   def backwardWeight(w: Double): LocalProver =
     this.copy(tg = tg.copy(typAsCodW = w, targetInducW = w))
 
-  def negateTypes(w: Double): LocalProver = this.copy(tg = tg.copy(negTargetW = w))
+  def negateTypes(w: Double): LocalProver =
+    this.copy(tg = tg.copy(negTargetW = w))
 
   def natInduction(w: Double = 1.0): LocalProver = {
     val mixin = initState.inds + (NatRing.exstInducDefn, w)
     this.copy(initState.copy(inds = mixin.safeNormalized))
   }
-
 
   // Proving etc
   val nextState: Task[TermState] =
@@ -174,15 +175,19 @@ case class LocalProver(
     this.copy(initState = ts)
   }
 
-  val optimalInit: Task[LocalProver] = 
+  val optimalInit: Task[LocalProver] =
     for {
       ev <- expressionEval
-      p                            <- ev.optimumTask(hW, klW)
+      p  <- ev.optimumTask(hW, klW)
       td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
       ts                           = initState.copy(terms = td)
-     } yield this.copy(initState = ts)
-  
+    } yield this.copy(initState = ts)
 
+  lazy val tunedInit: Task[FiniteDistribution[HoTT.Term]] =
+    expressionEval.flatMap { ev =>
+      val itrnt = ev.generatorIterant(hW, klW).map(_.purge(cutoff).safeNormalized)
+      itrnt.take(steps).lastOptionL.map(op => op.getOrElse(initState.terms))
+    }
 }
 
 trait LocalProverStep {
@@ -227,30 +232,35 @@ trait LocalProverStep {
       ev <- evolvedState
     } yield lemmaWeights(ev, steps, scale)).memoize
 
-  lazy val lemmaProofs: Task[FiniteDistribution[HoTT.Term]] = 
+  lazy val lemmaProofs: Task[FiniteDistribution[HoTT.Term]] =
     for {
-      v <- lemmas
+      v  <- lemmas
       ns <- nextState
       terms = ns.terms
-    } yield v.map{
-      case (tp, w) => terms.filter(_.typ == tp)
-    }.fold(FiniteDistribution.empty[Term])(_ ++ _)
+    } yield
+      v.map {
+          case (tp, w) => terms.filter(_.typ == tp)
+        }
+        .fold(FiniteDistribution.empty[Term])(_ ++ _)
 
   lazy val proofTerms = {
-    val pfExpsT = lemmaProofs.map(_.pmf.map{
+    val pfExpsT = lemmaProofs.map(_.pmf.map {
       case Weighted(x, t) => FinalVal(Elem(x, Terms)) -> t
-    } )
+    })
     for {
       pfExps <- pfExpsT
-      ev <- expressionEval
-    } yield ev.Final.fullBackMap(pfExps.toMap, cutoff).toVector.collect{case (FinalVal(Elem(x : Term, Terms)), w) => (x, w)}
+      ev     <- expressionEval
+    } yield
+      ev.Final.fullBackMap(pfExps.toMap, cutoff).toVector.collect {
+        case (FinalVal(Elem(x: Term, Terms)), w) => (x, w)
+      }
   }
 
   // These are candidate generators
-  lazy val proofComponents : Task[Vector[(HoTT.Term, Double)]] = for {
-      basePfs <- proofTerms
-      pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0 )
-      ev <- evolvedState 
+  lazy val proofComponents: Task[Vector[(HoTT.Term, Double)]] = for {
+    basePfs <- proofTerms
+    pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0)
+    ev <- evolvedState
   } yield EntropyAtomWeight.tunedProofs(ev, pfs, cutoff, steps, scale)
 
   lazy val seek: Task[FiniteDistribution[Term]] =
