@@ -1442,6 +1442,12 @@ object HoTT {
       type V = Y
     }
 
+    case object GetFunc extends (ExstFunc => Term){
+      def apply(f: ExstFunc) = f.func
+
+      override def toString(): String = "GetFunc"
+    }
+
     def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](
         fn: FuncLike[X, Y]
     ): ExstFunc = Wrap(fn)

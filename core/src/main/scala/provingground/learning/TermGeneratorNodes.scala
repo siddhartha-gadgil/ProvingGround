@@ -30,6 +30,12 @@ object TermGeneratorNodes {
     override def toString: String = randomVar.toString
   }
 
+  case class Idty[A]() extends (A => A){
+    def apply(a: A) = a
+
+    override def toString = "Identity"
+  }
+
   /**
     * Wrapper for lambda to allow equality and  `toString` to work.
     */
@@ -102,6 +108,8 @@ class TermGeneratorNodes[InitState](
 
     override def toString = "Appln"
   }
+
+  
 
   /**
     * Wrapper for flipped application to allow equality and  `toString` to work.
@@ -1019,7 +1027,7 @@ class TermGeneratorNodes[InitState](
     */
   def indexedInducIdNode(typF: Typ[Term]): Map[Typ[Term], Typ[Term]] =
     Map[Typ[Term], Typ[Term]](
-      identity,
+      Idty(),
       TypsFromFamily(typF),
       IndexedIntroRuleTyps(typF)
     )
@@ -1232,16 +1240,16 @@ object TermRandomVars {
 
   case object TypsAndFamilies extends RandomVar[Term] {
     lazy val fromTyp: Map[Typ[Term], Term] =
-      Map[Typ[Term], Term]((x) => x, Typs, TypsAndFamilies)
+      Map[Typ[Term], Term](Idty(), Typs, TypsAndFamilies)
 
     lazy val fromFamilies: Map[ExstFunc, Term] =
-      Map[ExstFunc, Term](_.func, TypFamilies, TypsAndFamilies)
+      Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
   }
 
   case object TargetTyps extends RandomVar[Typ[Term]] {
-    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(identity, Goals, TargetTyps)
+    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(Idty(), Goals, TargetTyps)
 
-    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(identity, Typs, TargetTyps)
+    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(Idty(), Typs, TargetTyps)
 
     def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
   }
