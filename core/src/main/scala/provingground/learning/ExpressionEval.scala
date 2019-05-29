@@ -515,7 +515,15 @@ case class ExpressionEval(
       t: Vector[Double],
       eps: Double = epsilon
   ): Map[Expression, Double] =
-    normalizedMap(stableMap(gradShift(p, t, eps), equations))
+    {
+      val newMap =  normalizedMap(stableMap(gradShift(p, t, eps), equations))
+      // if (p.keySet == newMap.keySet) pprint.log(mapRatio(p, newMap))
+      // else {
+      //   pprint.log(p.keySet -- newMap.keySet)
+      //   pprint.log(newMap.keySet -- p.keySet)
+      // }
+      newMap
+    }
 
   /**
     * Expression for composite entropy.
@@ -584,12 +592,16 @@ case class ExpressionEval(
       p: Map[Expression, Double] = finalDist,
       maxRatio: Double = 1.01
   ): Task[Map[Expression, Double]] =
-    for {
+    (for {
       epg <- WithP(p).entropyProjectionTask(hW, klW)
       newMap = stableGradShift(p, epg)
       stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
-      recRes <- Task.defer(optimumTask(hW, klW, newMap))
-    } yield if (stable) newMap else recRes
+      // _ = pprint.log(stable)
+    } yield stable -> newMap).flatMap{
+      case (true, m) => Task.now(m)
+      case (false, m) => optimumTask(hW, klW, m)
+    }
+
 
   // Backward step to see what terms were used in a given term.
 
