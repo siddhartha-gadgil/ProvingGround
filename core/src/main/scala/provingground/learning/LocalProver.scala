@@ -159,9 +159,11 @@ case class LocalProver(
   val pairT: Task[(FiniteDistribution[Term], Set[EquationNode])] =
     mfd.varDist(initState)(Terms, cutoff)
 
-  def varDist[Y](rv: RandomVar[Y]) : Task[FiniteDistribution[Y]] = mf.varDist(initState)(rv, cutoff, limit)
+  def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
+    mf.varDist(initState)(rv, cutoff, limit)
 
-  def nodeDist[Y](node: GeneratorNode[Y]) : Task[FiniteDistribution[Y]] = mf.nodeDist(initState)(node, cutoff)
+  def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
+    mf.nodeDist(initState)(node, cutoff)
 
   val equationNodes: Task[Set[EquationNode]] = pairT.map(_._2).memoize
 
@@ -189,6 +191,12 @@ case class LocalProver(
       td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
       ts                           = initState.copy(terms = td)
     } yield this.copy(initState = ts)
+
+  lazy val tunedInit: Task[LocalProver] =
+    tunedGenerators.map { td =>
+      val ts = initState.copy(terms = td)
+      this.copy(initState = ts)
+    }
 
 }
 
@@ -270,7 +278,7 @@ trait LocalProverStep {
       })
       .map(vfd => vfd.foldLeft(FiniteDistribution.empty[Term])(_ ++ _))
 
-  lazy val subgoals: Task[FiniteDistribution[Typ[Term]]] =
+  lazy val subGoals: Task[FiniteDistribution[Typ[Term]]] =
     for {
       funcs <- functionsForGoals
       fs    <- nextState
@@ -281,5 +289,9 @@ trait LocalProverStep {
       .liftF(expressionEval)
       .flatMap(ev => ev.generatorIterant(hW, klW, cutoff, ev.finalDist))
 
-  lazy val tunedGenerators : Task[FiniteDistribution[HoTT.Term]] = generatorIterant.take(steps).lastOptionL.map(os => os.getOrElse(initState.terms))
+  lazy val tunedGenerators: Task[FiniteDistribution[HoTT.Term]] =
+    generatorIterant
+      .take(steps)
+      .lastOptionL
+      .map(os => os.getOrElse(initState.terms))
 }
