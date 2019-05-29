@@ -236,7 +236,7 @@ trait LocalProverStep {
       case (tp, w) => terms.filter(_.typ == tp)
     }.fold(FiniteDistribution.empty[Term])(_ ++ _)
 
-  val proofTerms = {
+  lazy val proofTerms = {
     val pfExpsT = lemmaProofs.map(_.pmf.map{
       case Weighted(x, t) => FinalVal(Elem(x, Terms)) -> t
     } )
@@ -247,7 +247,7 @@ trait LocalProverStep {
   }
 
   // These are candidate generators
-  val proofComponents : Task[Vector[(HoTT.Term, Double)]] = for {
+  lazy val proofComponents : Task[Vector[(HoTT.Term, Double)]] = for {
       basePfs <- proofTerms
       pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0 )
       ev <- evolvedState 
