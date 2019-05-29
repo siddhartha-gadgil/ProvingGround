@@ -67,6 +67,7 @@ object ExpressionEval {
         if (base > 0) Some(base)
         else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
+        else if (rv == Goals) Some(0.5) // just a quick-fix
         else throw new Exception(s"no initial value for $elem")
       case IsleScale(_, _) => Some((1.0 - tg.varWeight))
       case _               => None
@@ -269,10 +270,6 @@ case class ExpressionEval(
       expressionGroup(exp)
         .map { s =>
           val total = s.toVector.map(x => p.getOrElse(x, 0.0)).sum
-          // pprint.log(s)
-          // pprint.log(total)
-          // pprint.log(value)
-          // pprint.log(exp)
           if (total > 0) exp -> value / total else exp -> value
         }
         .getOrElse(exp -> value)
@@ -518,7 +515,15 @@ case class ExpressionEval(
       t: Vector[Double],
       eps: Double = epsilon
   ): Map[Expression, Double] =
-    normalizedMap(stableMap(gradShift(p, t, eps), equations))
+    {
+      val newMap =  normalizedMap(stableMap(gradShift(p, t, eps), equations))
+      // if (p.keySet == newMap.keySet) pprint.log(mapRatio(p, newMap))
+      // else {
+      //   pprint.log(p.keySet -- newMap.keySet)
+      //   pprint.log(newMap.keySet -- p.keySet)
+      // }
+      newMap
+    }
 
   /**
     * Expression for composite entropy.
@@ -590,12 +595,16 @@ case class ExpressionEval(
       p: Map[Expression, Double] = finalDist,
       maxRatio: Double = 1.01
   ): Task[Map[Expression, Double]] =
-    for {
+    (for {
       epg <- WithP(p).entropyProjectionTask(hW, klW)
       newMap = stableGradShift(p, epg).filter(t => t._2 > cutoff)
       stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
-      recRes <- Task.defer(optimumTask(hW, klW, cutoff, newMap, maxRatio))
-    } yield if (stable) newMap else recRes
+      // _ = pprint.log(stable)
+    } yield stable -> newMap).flatMap{
+      case (true, m) => Task.now(m)
+      case (false, m) => optimumTask(hW, klW, cutoff, m)
+    }
+
 
   // Backward step to see what terms were used in a given term.
 

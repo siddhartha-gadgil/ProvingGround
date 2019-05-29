@@ -244,6 +244,37 @@ trait LocalProverStep {
       ev <- evolvedState
     } yield lemmaWeights(ev, steps, scale)).memoize
 
+  lazy val lemmaProofs: Task[FiniteDistribution[HoTT.Term]] =
+    for {
+      v  <- lemmas
+      ns <- nextState
+      terms = ns.terms
+    } yield
+      v.map {
+          case (tp, w) => terms.filter(_.typ == tp)
+        }
+        .fold(FiniteDistribution.empty[Term])(_ ++ _)
+
+  lazy val proofTerms = {
+    val pfExpsT = lemmaProofs.map(_.pmf.map {
+      case Weighted(x, t) => FinalVal(Elem(x, Terms)) -> t
+    })
+    for {
+      pfExps <- pfExpsT
+      ev     <- expressionEval
+    } yield
+      ev.Final.fullBackMap(pfExps.toMap, cutoff).toVector.collect {
+        case (FinalVal(Elem(x: Term, Terms)), w) => (x, w)
+      }
+  }
+
+  // These are candidate generators
+  lazy val proofComponents: Task[Vector[(HoTT.Term, Double)]] = for {
+    basePfs <- proofTerms
+    pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0)
+    ev <- evolvedState
+  } yield EntropyAtomWeight.tunedProofs(ev, pfs, cutoff, steps, scale)
+
   lazy val seek: Task[FiniteDistribution[Term]] =
     for {
       base <- nextState

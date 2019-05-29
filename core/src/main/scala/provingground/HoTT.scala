@@ -140,10 +140,10 @@ object HoTT {
     /**
       * returns whether `this` depends on `that`
       */
-    def dependsOn(that: Term): Boolean = {
-      val newVar = that.newobj //innervar(that)
+    def dependsOn(that: Term): Boolean = Try{
+      val newVar = that.newobj
       replace(that, newVar) != this
-    }
+    }.getOrElse(false)
 
     /**
       * returns whether `this` is independent of `that`.
@@ -575,7 +575,14 @@ object HoTT {
           None
       }
     case fx: ApplnSym[w, u] =>
-      Try((fx.func.replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])).toOption
+      val fn = fx.func.replace(x, y)
+      val z = fx.arg.replace(x, y).asInstanceOf[w] 
+      // pprint.log(x)
+      // pprint.log(y)
+      // pprint.log(x == y)
+      // pprint.log(fn)
+      // pprint.log(z)
+      Try(fn(z)).toOption
     case _ => None
   }
 
@@ -1828,8 +1835,12 @@ object HoTT {
 
     lazy val dom: Typ[X] = variable.typ.asInstanceOf[Typ[X]]
 
-    override def usesVar(t: Term): Boolean =
-      t.dependsOn(variable) || value.usesVar(t)
+    override def usesVar(t: Term): Boolean = {
+      // pprint.log(t)
+      // pprint.log(variable)
+      // pprint.log(value)
+      (t == variable) || value.usesVar(t)
+    }
 
     override def toString =
       s"""(${variable.toString} :  ${variable.typ.toString}) $MapsTo (${value.toString})"""
@@ -2012,7 +2023,7 @@ object HoTT {
 
     lazy val outerSym: AnySym = outer.name
 
-    override def toString: String = variable.name.toString
+    override def toString: String = "`" + variable.name.toString
     // match {
     //  case sym: Symbolic => sym.name.toString
     //  case x             => x.toString
