@@ -12,11 +12,13 @@ class ForceDirected[A, V](
     dim: Int,
     R: Double
 )(implicit vs: InnerProductSpace[V, Double]) {
+    val symEdges = edges ++ (edges.map{case ((x, y), w) => ((y, x), w)})
+
   def norm(v: V): Double = sqrt(vs.dot(v, v))
 
-  def coulomb(v: V): V = vs.timesl(pow(norm(v) * coulomb, 3), v)
+  def coulomb(v: V): V = vs.timesl(pow(norm(v) * coulomb, -3), v)
 
-  def elastic(v: V): V = vs.timesl(elasticity, v)
+  def elastic(v: V): V = vs.timesl(-elasticity, v)
 
   def vertexForce(x: V, y: V): V = {
     val v = x - y
@@ -27,7 +29,7 @@ class ForceDirected[A, V](
     position.map {
       case (a, v) =>
         val totalForce = vs.sum(
-          edges
+          symEdges
             .collect { case ((x, y), w) if x == a => y -> w}
             .toVector
             .map{case (b, w) => vs.timesl(w, vertexForce(position(a), position(b)))}
@@ -51,7 +53,7 @@ class ForceDirected[A, V](
   }
 
   def energy(position: Map[A, V]): Double =
-    edges.toVector.map {
+    symEdges.toVector.map {
       case ((x, y), w) => w * edgeEnergy(position(x), position(y))
     }.sum
 }
