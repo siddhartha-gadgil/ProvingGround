@@ -297,7 +297,7 @@ class TermGeneratorNodes[InitState](
       case pt: ProdTyp[u, v] =>
         Some(
           ZipMap[Term, Term, Term](
-            { case (a, b) => PairTerm(a.asInstanceOf[u], b.asInstanceOf[v]) },
+            PTTerm(pt),
             termsWithTyp(pt.first),
             termsWithTyp(pt.second),
             termsWithTyp(pt)
@@ -307,13 +307,30 @@ class TermGeneratorNodes[InitState](
         Some(
           ZipFlatMap[Term, Term, Term](
             termsWithTyp(pt.fibers.dom),
-            (x) => termsWithTyp(pt.fibers(x.asInstanceOf[u])), {
-              case (a, b) => pt.paircons(a.asInstanceOf[u])(b.asInstanceOf[v])
-            },
+            STFibVar(pt), 
+            STTerm(pt),
             termsWithTyp(pt)
           )
         )
       case _ => None
+    }
+  
+    case class PTTerm[U <: Term with Subs[U], V <: Term with Subs[V]](pt: ProdTyp[U, V]) extends ((Term, Term) => Term){
+      def apply(a: Term, b: Term) =  PairTerm(a.asInstanceOf[U], b.asInstanceOf[V]) 
+
+      override def toString(): String = s"PTTerm($pt)"
+    }
+
+    case class STTerm[U <: Term with Subs[U], V <: Term with Subs[V]](pt: SigmaTyp[U, V]) extends ((Term, Term) => Term){
+      def apply(a: Term, b: Term) =  pt.paircons(a.asInstanceOf[U])(b.asInstanceOf[V]) 
+
+      override def toString(): String = s"STTerm($pt)"
+    }
+
+    case class STFibVar[U <: Term with Subs[U], V <: Term with Subs[V]](pt: SigmaTyp[U, V]) extends (Term => RandomVar[Term]){
+      def apply(x: Term) =  termsWithTyp(pt.fibers(x.asInstanceOf[U]))
+
+      override def toString(): String = s"STFibVar($pt)"
     }
 
   /**
@@ -1452,6 +1469,11 @@ case class TermState(
 
   def goalThmsBySt(goalW: Double) =
     (typs ++ goals).filter(terms.map(_.typ)(_) > 0).flatten.safeNormalized
+
+  lazy val successes : Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] = 
+    goals.filter(goal => terms.map(_.typ)(goal) > 0).pmf.map{
+      case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
+    }
 
   lazy val unknownStatements: FD[Typ[Term]] =
     typs

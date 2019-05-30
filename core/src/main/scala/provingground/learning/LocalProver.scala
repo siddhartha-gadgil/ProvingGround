@@ -239,6 +239,8 @@ trait LocalProverStep {
       eqs <- equations
     } yield ExpressionEval(initState, fs, eqs, tg)).memoize
 
+  lazy val successes  = nextState.map(_.successes)
+
   lazy val lemmas: Task[Vector[(Typ[Term], Double)]] =
     (for {
       ev <- evolvedState
