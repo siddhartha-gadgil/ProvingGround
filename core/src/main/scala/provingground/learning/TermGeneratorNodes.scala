@@ -30,7 +30,7 @@ object TermGeneratorNodes {
     override def toString: String = randomVar.toString
   }
 
-  case class Idty[A]() extends (A => A){
+  case class Idty[A]() extends (A => A) {
     def apply(a: A) = a
 
     override def toString = "Identity"
@@ -108,8 +108,6 @@ class TermGeneratorNodes[InitState](
 
     override def toString = "Appln"
   }
-
-  
 
   /**
     * Wrapper for flipped application to allow equality and  `toString` to work.
@@ -307,31 +305,64 @@ class TermGeneratorNodes[InitState](
         Some(
           ZipFlatMap[Term, Term, Term](
             termsWithTyp(pt.fibers.dom),
-            STFibVar(pt), 
+            STFibVar(pt),
             STTerm(pt),
             termsWithTyp(pt)
           )
         )
       case _ => None
     }
-  
-    case class PTTerm[U <: Term with Subs[U], V <: Term with Subs[V]](pt: ProdTyp[U, V]) extends ((Term, Term) => Term){
-      def apply(a: Term, b: Term) =  PairTerm(a.asInstanceOf[U], b.asInstanceOf[V]) 
 
-      override def toString(): String = s"PTTerm($pt)"
+  case class Incl1[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: PlusTyp[U, V]
+  ) extends (Term => Term) {
+    def apply(x: Term) = pt.i(x.asInstanceOf[U])
+  }
+
+  def incl1Node(typ: Typ[Term]): Option[GeneratorNode[Term]] =
+    typ match {
+      case pt: PlusTyp[u, v] =>
+        Some(Map(Incl1(pt), termsWithTyp(pt.first), termsWithTyp(typ)))
+      case _ => None
     }
 
-    case class STTerm[U <: Term with Subs[U], V <: Term with Subs[V]](pt: SigmaTyp[U, V]) extends ((Term, Term) => Term){
-      def apply(a: Term, b: Term) =  pt.paircons(a.asInstanceOf[U])(b.asInstanceOf[V]) 
+  case class Incl2[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: PlusTyp[U, V]
+  ) extends (Term => Term) {
+    def apply(x: Term) = pt.j(x.asInstanceOf[V])
+  }
 
-      override def toString(): String = s"STTerm($pt)"
+  def incl2Node(typ: Typ[Term]): Option[GeneratorNode[Term]] =
+    typ match {
+      case pt: PlusTyp[u, v] =>
+        Some(Map(Incl2(pt), termsWithTyp(pt.second), termsWithTyp(typ)))
+      case _ => None
     }
 
-    case class STFibVar[U <: Term with Subs[U], V <: Term with Subs[V]](pt: SigmaTyp[U, V]) extends (Term => RandomVar[Term]){
-      def apply(x: Term) =  termsWithTyp(pt.fibers(x.asInstanceOf[U]))
+  case class PTTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: ProdTyp[U, V]
+  ) extends ((Term, Term) => Term) {
+    def apply(a: Term, b: Term) = PairTerm(a.asInstanceOf[U], b.asInstanceOf[V])
 
-      override def toString(): String = s"STFibVar($pt)"
-    }
+    override def toString(): String = s"PTTerm($pt)"
+  }
+
+  case class STTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: SigmaTyp[U, V]
+  ) extends ((Term, Term) => Term) {
+    def apply(a: Term, b: Term) =
+      pt.paircons(a.asInstanceOf[U])(b.asInstanceOf[V])
+
+    override def toString(): String = s"STTerm($pt)"
+  }
+
+  case class STFibVar[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: SigmaTyp[U, V]
+  ) extends (Term => RandomVar[Term]) {
+    def apply(x: Term) = termsWithTyp(pt.fibers(x.asInstanceOf[U]))
+
+    override def toString(): String = s"STFibVar($pt)"
+  }
 
   /**
     * Node for generating functions that target a codomain;
@@ -439,14 +470,26 @@ class TermGeneratorNodes[InitState](
     )
 
   /**
-    * nodes combining lambdas targeting types that are  (dependent) function types,
+    * nodes combining backward reasoning targeting types that are  (dependent) function types,
     * aggregated over all types
     */
-  val lambdaByTypNodeFamily
+  val backwardTypNodeFamily
       : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
       case typ :: HNil => nodeForTyp(typ)
     }, TermsWithTyp)
+
+  val incl1TypNodeFamily
+      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => incl1Node(typ)
+    }, TermsWithTyp)
+
+  val incl2TypNodeFamily
+    : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
+  GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+    case typ :: HNil => incl2Node(typ)
+  }, TermsWithTyp)
 
   /**
     * nodes combining lambdas with given domain that are  (dependent) function types,
@@ -1463,15 +1506,19 @@ case class TermState(
   // pprint.log(context.variables)
 
   lazy val thmsByPf: FD[Typ[Term]] =
-    terms.map(_.typ).flatten.filter((t) => typs(t) + goals(t) > 0).safeNormalized
+    terms
+      .map(_.typ)
+      .flatten
+      .filter((t) => typs(t) + goals(t) > 0)
+      .safeNormalized
   lazy val thmsBySt: FD[Typ[Term]] =
     typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
 
   def goalThmsBySt(goalW: Double) =
     (typs ++ goals).filter(terms.map(_.typ)(_) > 0).flatten.safeNormalized
 
-  lazy val successes : Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] = 
-    goals.filter(goal => terms.map(_.typ)(goal) > 0).pmf.map{
+  lazy val successes: Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] =
+    goals.filter(goal => terms.map(_.typ)(goal) > 0).pmf.map {
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 

@@ -226,7 +226,9 @@ case class TermGenParams(
       (wtN(applnNode)        -> appW) ::
       (wtN(unifApplnNode)    -> unAppW) ::
       (wtN(applnByArgNode)   -> argAppW) ::
-      (lambdaByTypNodeFamily -> (termInit * goalWeight + lmW)) ::
+      (backwardTypNodeFamily -> (termInit * goalWeight + lmW)) ::
+      (incl1TypNodeFamily -> (termInit * goalWeight + lmW)/2) ::
+      (incl2TypNodeFamily -> (termInit * goalWeight + lmW)/2) ::
       (typAsCodNodeFamily    -> typAsCodW) ::
       (targetInducNodeFamily -> targetInducW) ::
       (solveFamily           -> solverW) ::
