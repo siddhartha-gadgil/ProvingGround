@@ -763,7 +763,10 @@ object HoTT {
     case pd: ProdTyp[u, v]         => PlusTyp(negate(pd.first), negate(pd.second))
     case pt: PlusTyp[u, v]         => ProdTyp(negate(pt.first), negate(pt.second))
     case pt: PiDefn[u, v]          => SigmaTyp(lmbda(pt.variable)(negate(pt.value) ))
-    case st: SigmaTyp[u, v]        => PiDefn(st.fibers)
+    case st: SigmaTyp[u, v]        => 
+      val x = st.fibers.dom.Var
+      val y = st.fibers(x.asInstanceOf[u])
+      PiDefn(x, negate(y))
     case Unit                      => Zero
     case Zero                      => Unit
     case tp                        => tp ->: Zero
