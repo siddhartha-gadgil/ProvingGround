@@ -316,20 +316,9 @@ class TermGeneratorNodes[InitState](
   def curryForTyp(typ: Typ[Term]): Option[GeneratorNode[Term]] =
     typ match {
       case ft: FuncTyp[u, v] =>
-        ft.dom match {
-          case pt: ProdTyp[x, y] =>
-            val fn       = pt.rec(ft.codom)
-            val curryDom = fn.dom
-            Some(
-              GeneratorNode.Map(
-                ApplyFunc(fn),
-                termsWithTyp(curryDom),
-                termsWithTyp(ft)
-              )
-            )
-          case pt: SigmaTyp[x, y] =>
-            val fn       = pt.rec(ft.codom)
-            val curryDom = fn.dom
+        ExstInducStrucs.Base.recOpt(ft.dom, ft.codom).flatMap{
+          case fn : Func[a, b] =>
+          val curryDom = fn.dom
             Some(
               GeneratorNode.Map(
                 ApplyFunc(fn),
