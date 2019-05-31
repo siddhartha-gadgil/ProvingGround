@@ -227,6 +227,7 @@ case class TermGenParams(
       (wtN(unifApplnNode)    -> unAppW) ::
       (wtN(applnByArgNode)   -> argAppW) ::
       (backwardTypNodeFamily -> (termInit * goalWeight + lmW)) ::
+      (curryBackwardTypNodeFamily -> (termInit * goalWeight + lmW)) :: // Warning: excess total weight
       (incl1TypNodeFamily -> (termInit * goalWeight + lmW)/2) ::
       (incl2TypNodeFamily -> (termInit * goalWeight + lmW)/2) ::
       (typAsCodNodeFamily    -> typAsCodW) ::

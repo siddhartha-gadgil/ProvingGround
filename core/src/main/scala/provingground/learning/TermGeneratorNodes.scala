@@ -313,6 +313,43 @@ class TermGeneratorNodes[InitState](
       case _ => None
     }
 
+  def curryForTyp(typ: Typ[Term]): Option[GeneratorNode[Term]] =
+    typ match {
+      case ft: FuncTyp[u, v] =>
+        ft.dom match {
+          case pt: ProdTyp[x, y] =>
+            val fn       = pt.rec(ft.codom)
+            val curryDom = fn.dom
+            Some(
+              GeneratorNode.Map(
+                ApplyFunc(fn),
+                termsWithTyp(curryDom),
+                termsWithTyp(ft)
+              )
+            )
+          case pt: SigmaTyp[x, y] =>
+            val fn       = pt.rec(ft.codom)
+            val curryDom = fn.dom
+            Some(
+              GeneratorNode.Map(
+                ApplyFunc(fn),
+                termsWithTyp(curryDom),
+                termsWithTyp(ft)
+              )
+            )
+          case _ => None
+        }
+      case _ => None
+    }
+
+  case class ApplyFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
+      fn: Func[U, V]
+  ) extends (Term => Term) {
+    def apply(t: Term) = fn(t.asInstanceOf[U])
+
+    override def toString(): String = s"ApplyFunc($fn)"
+  }
+
   case class Incl1[U <: Term with Subs[U], V <: Term with Subs[V]](
       pt: PlusTyp[U, V]
   ) extends (Term => Term) {
@@ -477,6 +514,12 @@ class TermGeneratorNodes[InitState](
       : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
       case typ :: HNil => nodeForTyp(typ)
+    }, TermsWithTyp)
+
+  val curryBackwardTypNodeFamily
+      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => curryForTyp(typ)
     }, TermsWithTyp)
 
   val incl1TypNodeFamily
@@ -805,7 +848,7 @@ class TermGeneratorNodes[InitState](
       target: Typ[Term]
   ): Option[GeneratorNode[Term]] =
     target match {
-      case ft: FuncTyp[u, v] => 
+      case ft: FuncTyp[u, v] =>
         val fnOpt = ind.ind.recOpt(ft.dom, ft.codom)
         fnOpt.map { fn =>
           foldFuncNode(fn, ind.intros.size, Terms)
@@ -825,7 +868,7 @@ class TermGeneratorNodes[InitState](
       target: Typ[Term]
   ): Option[Term] =
     target match {
-      case ft: FuncTyp[u, v] => 
+      case ft: FuncTyp[u, v] =>
         ind.ind.recOpt(ft.dom, ft.codom)
       case _ =>
         goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
