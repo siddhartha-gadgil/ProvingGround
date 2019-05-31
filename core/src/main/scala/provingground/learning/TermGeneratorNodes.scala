@@ -316,7 +316,7 @@ class TermGeneratorNodes[InitState](
   def curryForTyp(typ: Typ[Term]): Option[GeneratorNode[Term]] =
     typ match {
       case ft: FuncTyp[u, v] =>
-        ExstInducStrucs.Base.recOpt(ft.dom, ft.codom).flatMap{
+        ExstInducStrucs.SimpleBase.recOpt(ft.dom, ft.codom).flatMap{
           case fn : Func[a, b] =>
           val curryDom = fn.dom
             Some(
@@ -376,8 +376,15 @@ class TermGeneratorNodes[InitState](
   case class STTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
       pt: SigmaTyp[U, V]
   ) extends ((Term, Term) => Term) {
-    def apply(a: Term, b: Term) =
+    def apply(a: Term, b: Term) = {
+      // pprint.log(pt)
+      // pprint.log(a)
+      // pprint.log(b)
+      // pprint.log(a.typ)
+      // pprint.log(b.typ)
+      // pprint.log(pt.paircons.typ)
       pt.paircons(a.asInstanceOf[U])(b.asInstanceOf[V])
+    }
 
     override def toString(): String = s"STTerm($pt)"
   }

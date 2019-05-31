@@ -130,6 +130,51 @@ object ExstInducStrucs {
     IndConsSeqExst(indTyp, intros)(fmly.subst)
   }
 
+  case object SimpleBase extends ExstInducStrucs {
+    def subs(x: Term, y: Term): SimpleBase.type = this
+
+    val constants = Vector(Zero, Unit, Star)
+
+    def recOpt[C <: Term with Subs[C]](dom: Term, cod: Typ[C]): Option[Term] =
+      dom match {
+        case pt: ProdTyp[u, v] =>
+          Some(pt.rec(cod))
+        case Unit =>
+          Some(Unit.rec(cod))
+        case pt: PlusTyp[u, v] =>
+          Some(pt.rec(cod))
+        case pt: SigmaTyp[u, v] =>
+          Some(pt.rec(cod))
+        case _ =>
+          None
+      }
+
+    def inducOpt(dom: Term, cod: Term): Option[Term] =
+      dom match {
+        case pt: ProdTyp[u, v] =>
+          val x    = pt.first.Var
+          val y    = pt.second.Var
+          for{
+            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+            fmly = x :-> (y :-> tp)
+          } yield pt.induc(fmly)
+        case Unit =>
+          Some(Unit.induc(fm(Unit, cod)))
+        case pt: PlusTyp[u, v] =>
+          Some(pt.induc(fm(pt, cod)))
+        case pt: SigmaTyp[u, v] =>
+          val x    = pt.fibers.dom.Var
+          val y    = pt.fibers(x).Var
+          for{
+            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+            fmly = x :-> (y :-> tp)
+          } yield pt.induc(fmly)
+        case _ =>
+          None
+      }
+
+  }
+
   case object Base extends ExstInducStrucs {
     def subs(x: Term, y: Term): Base.type = this
 
