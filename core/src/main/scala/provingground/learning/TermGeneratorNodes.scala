@@ -315,7 +315,9 @@ class TermGeneratorNodes[InitState](
 
   def curryForTyp(typ: Typ[Term]): Option[GeneratorNode[Term]] =
     typ match {
-      case ft: FuncTyp[u, v] =>
+      case ft: FuncTyp[u, v] => 
+        if (ft.dom == Zero) Some(GeneratorNode.Atom(Zero.rec(ft.codom), termsWithTyp(typ)))
+        else 
         ExstInducStrucs.SimpleBase.recOpt(ft.dom, ft.codom).flatMap{
           case fn : Func[a, b] =>
           val curryDom = fn.dom
