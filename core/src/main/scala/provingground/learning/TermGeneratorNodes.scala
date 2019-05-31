@@ -486,10 +486,10 @@ class TermGeneratorNodes[InitState](
     }, TermsWithTyp)
 
   val incl2TypNodeFamily
-    : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
-  GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
-    case typ :: HNil => incl2Node(typ)
-  }, TermsWithTyp)
+      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => incl2Node(typ)
+    }, TermsWithTyp)
 
   /**
     * nodes combining lambdas with given domain that are  (dependent) function types,
@@ -804,11 +804,19 @@ class TermGeneratorNodes[InitState](
       ind: ExstInducDefn,
       target: Typ[Term]
   ): Option[GeneratorNode[Term]] =
-    goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
-      case (dom, targ) =>
-        val fnOpt = ind.ind.inducOpt(dom, targ)
+    target match {
+      case ft: FuncTyp[u, v] => 
+        val fnOpt = ind.ind.recOpt(ft.dom, ft.codom)
         fnOpt.map { fn =>
           foldFuncNode(fn, ind.intros.size, Terms)
+        }
+      case _ =>
+        goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
+          case (dom, targ) =>
+            val fnOpt = ind.ind.inducOpt(dom, targ)
+            fnOpt.map { fn =>
+              foldFuncNode(fn, ind.intros.size, Terms)
+            }
         }
     }
 
@@ -816,10 +824,15 @@ class TermGeneratorNodes[InitState](
       ind: ExstInducDefn,
       target: Typ[Term]
   ): Option[Term] =
-    goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
-      case (dom, targ) =>
-        val fnOpt = ind.ind.inducOpt(dom, targ)
-        fnOpt
+    target match {
+      case ft: FuncTyp[u, v] => 
+        ind.ind.recOpt(ft.dom, ft.codom)
+      case _ =>
+        goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
+          case (dom, targ) =>
+            val fnOpt = ind.ind.inducOpt(dom, targ)
+            fnOpt
+        }
     }
 
   /**

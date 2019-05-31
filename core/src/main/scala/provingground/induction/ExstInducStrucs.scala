@@ -4,6 +4,7 @@ import provingground._, HoTT._
 import shapeless._
 import scala.language.existentials
 
+import scala.util.Try
 /**
   * term level inductive structures for runtime contexts
   */
@@ -157,9 +158,10 @@ object ExstInducStrucs {
         case pt: ProdTyp[u, v] =>
           val x    = pt.first.Var
           val y    = pt.second.Var
-          val tp   = fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]
-          val fmly = x :-> (y :-> tp)
-          Some(pt.induc(fmly))
+          for{
+            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+            fmly = x :-> (y :-> tp)
+          } yield pt.induc(fmly)
         case Zero =>
           Some(Zero.induc(fm(Zero, cod)))
         case Unit =>
@@ -169,9 +171,10 @@ object ExstInducStrucs {
         case pt: SigmaTyp[u, v] =>
           val x    = pt.fibers.dom.Var
           val y    = pt.fibers(x).Var
-          val tp   = fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]
-          val fmly = x :-> (y :-> tp)
-          Some(pt.induc(fmly))
+          for{
+            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+            fmly = x :-> (y :-> tp)
+          } yield pt.induc(fmly)
         case idt: IdentityTyp[u] =>
           Some(
             IdentityTyp.induc(

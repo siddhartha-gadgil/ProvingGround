@@ -3351,6 +3351,20 @@ object HoTT {
       )
   }
 
+  def foldOpt(fn: Term)(args: Term*): Option[Term] = (fn, args.toList) match {
+    case (t, List()) => Some(t)
+    case (f: FuncLike[u, _], x :: ys) if f.dom == x.typ =>
+      foldOpt(f.applyUnchecked(x.asInstanceOf[u]))(ys: _*)
+    case (f: FuncLike[u, _], x :: ys) if isWitness(x) =>
+      foldOpt(f)(ys: _*)
+    case (t, x :: ys) if isWitness(x) =>
+      foldOpt(t)(ys: _*)
+    case (f: FuncLike[u, _], x :: ys) =>
+      None
+    case (t, x :: ys) =>
+      None
+  }
+
   /**
     * convenience methods to apply methods of special scala types such as functions
     * without the compiler knowing that the object has the special type.
