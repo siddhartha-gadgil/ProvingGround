@@ -16,13 +16,13 @@ class ForceDirected[A, V](
 
   def norm(v: V): Double = sqrt(vs.dot(v, v))
 
-  def coulomb(v: V): V = vs.timesl(pow(norm(v) * coulomb, -3), v)
+  def coulomb(v: V): V = (pow(norm(v) * coulomb, -3)) *: v
 
-  def elastic(v: V): V = vs.timesl(-elasticity, v)
+  def elastic(v: V): V = (-elasticity) *: v
 
   def vertexForce(x: V, y: V): V = {
     val v = x - y
-    vs.plus(coulomb(v), elastic(v))
+    coulomb(v) + elastic(v)
   }
 
   def shift(position: Map[A, V], scale: Double): Map[A, V] =
@@ -32,9 +32,9 @@ class ForceDirected[A, V](
           symEdges
             .collect { case ((x, y), w) if x == a => y -> w}
             .toVector
-            .map{case (b, w) => vs.timesl(w, vertexForce(position(a), position(b)))}
+            .map{case (b, w) => w *: vertexForce(position(a), position(b))}
         )
-        a -> vs.plus(v, vs.timesl(scale, totalForce))
+        a -> (v + ( scale *: totalForce))
     }
 
   @annotation.tailrec

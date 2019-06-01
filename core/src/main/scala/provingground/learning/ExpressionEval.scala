@@ -448,7 +448,7 @@ case class ExpressionEval(
         val nextBase = MapVS.compose(base, backMap(_)).filter {
           case (exp, v) => math.abs(v) > cutoff
         }
-        val nextAccum = mvs.plus(accum, base)
+        val nextAccum = accum + base
         recFullBackMap(nextBase, cutoff, nextAccum)
       }
 
