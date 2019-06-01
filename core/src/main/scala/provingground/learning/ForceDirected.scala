@@ -14,7 +14,7 @@ class ForceDirected[A, V](
 )(implicit vs: InnerProductSpace[V, Double]) {
     val symEdges = edges ++ (edges.map{case ((x, y), w) => ((y, x), w)})
 
-  def norm(v: V): Double = sqrt(vs.dot(v, v))
+  def norm(v: V): Double = sqrt(v dot v)
 
   def coulomb(v: V): V = (pow(norm(v) * coulomb, -3)) *: v
 

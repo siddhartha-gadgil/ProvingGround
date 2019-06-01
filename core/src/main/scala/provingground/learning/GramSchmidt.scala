@@ -72,38 +72,38 @@ object MonixGramSchmidt {
   ): Task[Vector[Double]] = onVec(vv).flatMap(makePerpFromON(_, v))
 }
 
-case class MapVS[A]() extends InnerProductSpace[Map[A, Double], Double] {
-  def negate(x: Map[A, Double]): Map[A, Double] =
-    x.map { case (x, w) => (x, -w) }
+// case class MapVS[A]() extends InnerProductSpace[Map[A, Double], Double] {
+//   def negate(x: Map[A, Double]): Map[A, Double] =
+//     x.map { case (x, w) => (x, -w) }
 
-  def zero: Map[A, Double] = Map()
+//   def zero: Map[A, Double] = Map()
 
-  def plus(x: Map[A, Double], y: Map[A, Double]): Map[A, Double] =
-    (x.toVector ++ y.toVector).groupBy(_._1).mapValues(v => v.map(_._2).sum)
+//   def plus(x: Map[A, Double], y: Map[A, Double]): Map[A, Double] =
+//     (x.toVector ++ y.toVector).groupBy(_._1).mapValues(v => v.map(_._2).sum)
 
-  def timesl(r: Double, v: Map[A, Double]): Map[A, Double] =
-    v.map { case (x, w) => (x, r * w) }
+//   def timesl(r: Double, v: Map[A, Double]): Map[A, Double] =
+//     v.map { case (x, w) => (x, r * w) }
 
-  implicit def scalar: spire.algebra.Field[Double] = implicitly
+//   implicit def scalar: spire.algebra.Field[Double] = implicitly
 
-  def dot(v: Map[A, Double], w: Map[A, Double]) =
-    (v.keySet
-      .union(w.keySet))
-      .map { x =>
-        v.getOrElse(x, 0.0) * w.getOrElse(x, 0.0)
-      }
-      .sum
-}
+//   def dot(v: Map[A, Double], w: Map[A, Double]) =
+//     (v.keySet
+//       .union(w.keySet))
+//       .map { x =>
+//         v.getOrElse(x, 0.0) * w.getOrElse(x, 0.0)
+//       }
+//       .sum
+// }
 
 object MapVS {
-  implicit def mapVS[A]: VectorSpace[Map[A, Double], Double] = MapVS()
+//   implicit def mapVS[A]: VectorSpace[Map[A, Double], Double] = MapVS()
 
   def compose[A](
       base: Map[A, Double],
       step: A => Map[A, Double]
   ): Map[A, Double] = {
-    val vs     = MapVS[A]()
-    val groups = base.map { case (x, p) => vs.timesl(p, step(x)) }
+    // val vs     = MapVS[A]()
+    val groups = base.map { case (x, p) => p *: step(x) }
     groups.map(_.toVector).flatten.groupBy(_._1).mapValues(v => v.map(_._2).sum)
   }
 }
