@@ -237,7 +237,7 @@ trait LocalProverStep {
     (for {
       fs  <- nextState
       eqs <- equations
-    } yield ExpressionEval(initState, fs, eqs, tg)).memoize
+    } yield ExpressionEval.fromStates(initState, fs, eqs, tg)).memoize
 
   lazy val successes  = nextState.map(_.successes)
 

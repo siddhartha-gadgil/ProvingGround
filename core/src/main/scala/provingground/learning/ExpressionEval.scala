@@ -67,7 +67,7 @@ object ExpressionEval {
         if (base > 0) Some(base)
         else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
-        else if (rv == Goals) Some(0.5) // just a quick-fix
+        else if (rv == Goals) Some(0.5)           // just a quick-fix
         else throw new Exception(s"no initial value for $elem")
       case IsleScale(_, _) => Some((1.0 - tg.varWeight))
       case _               => None
@@ -171,6 +171,28 @@ object ExpressionEval {
       newMap
     else stableMap(newMap, equations, maxRatio)
   }
+
+  def eqAtoms(equations: Set[Equation]) =
+    equations
+      .map(_.lhs)
+      .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
+
+  def fromStates(
+      initialState: TermState,
+      finalState: TermState,
+      equations: Set[Equation],
+      tg: TermGenParams,
+      maxRatio: Double = 1.01,
+      epsilon: Double = 1.0
+  ) =
+    ExpressionEval(
+      initMap(eqAtoms(equations), tg, initialState),
+      finalState.typs,
+      equations,
+      tg,
+      maxRatio,
+      epsilon
+    )
 }
 
 import spire.algebra._
@@ -179,8 +201,8 @@ import spire.implicits._
 import ExpressionEval._
 
 case class ExpressionEval(
-    initialState: TermState,
-    finalState: TermState,
+    init: Map[Expression, Double],
+    finalTyps: FD[Typ[Term]],
     equations: Set[Equation],
     tg: TermGenParams,
     maxRatio: Double = 1.01,
@@ -193,7 +215,7 @@ case class ExpressionEval(
   val atoms: Set[Expression] = equations
     .map(_.lhs)
     .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
-  val init: Map[Expression, Double] = initMap(atoms, tg, initialState)
+  // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
 
   /**
     * The final distributions, obtained from the initial one by finding an almost solution.
@@ -217,7 +239,7 @@ case class ExpressionEval(
   }.toSet
 
   // should we use the equations instead?
-  val finalTyps: FD[Typ[Term]] = sd.value(finalState)(Typs)
+  // val finalTyps: FD[Typ[Term]] = sd.value(finalState)(Typs)
 
   val funcTotal: Expression = initTerms
     .filter(isFunc)
@@ -514,16 +536,15 @@ case class ExpressionEval(
       p: Map[Expression, Double],
       t: Vector[Double],
       eps: Double = epsilon
-  ): Map[Expression, Double] =
-    {
-      val newMap =  normalizedMap(stableMap(gradShift(p, t, eps), equations))
-      // if (p.keySet == newMap.keySet) pprint.log(mapRatio(p, newMap))
-      // else {
-      //   pprint.log(p.keySet -- newMap.keySet)
-      //   pprint.log(newMap.keySet -- p.keySet)
-      // }
-      newMap
-    }
+  ): Map[Expression, Double] = {
+    val newMap = normalizedMap(stableMap(gradShift(p, t, eps), equations))
+    // if (p.keySet == newMap.keySet) pprint.log(mapRatio(p, newMap))
+    // else {
+    //   pprint.log(p.keySet -- newMap.keySet)
+    //   pprint.log(newMap.keySet -- p.keySet)
+    // }
+    newMap
+  }
 
   /**
     * Expression for composite entropy.
@@ -565,7 +586,7 @@ case class ExpressionEval(
       for {
         epg <- WithP(q).entropyProjectionTask(hW, klW)
         s = stableGradShift(q, epg)
-      } yield (generators(s).purge(cutoff).safeNormalized , s)
+      } yield (generators(s).purge(cutoff).safeNormalized, s)
     }(Task.now(p))
 
   /**
@@ -600,11 +621,10 @@ case class ExpressionEval(
       newMap = stableGradShift(p, epg).filter(t => t._2 > cutoff)
       stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
       // _ = pprint.log(stable)
-    } yield stable -> newMap).flatMap{
-      case (true, m) => Task.now(m)
+    } yield stable -> newMap).flatMap {
+      case (true, m)  => Task.now(m)
       case (false, m) => optimumTask(hW, klW, cutoff, m)
     }
-
 
   // Backward step to see what terms were used in a given term.
 
