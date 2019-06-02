@@ -58,14 +58,14 @@ object TFData {
 }
 
 object GeneratorTF {
-  def fromEvolved(ev: EvolvedState): GeneratorTF[TermState, HoTT.Term] =
+  def fromEvolved(ev: EvolvedState): GeneratorTF[TermState] =
     GeneratorTF(ev.params.nodeCoeffSeq, ev.init, ev.result)
 
-  val gset: collection.mutable.Set[GeneratorTF[_, _]] = collection.mutable.Set()
+  val gset: collection.mutable.Set[GeneratorTF[_]] = collection.mutable.Set()
 }
 
-case class GeneratorTF[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+case class GeneratorTF[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double],
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) {
   // pprint.log(initState)
@@ -185,7 +185,7 @@ case class GeneratorTF[State, Boat](
   lazy val tfData: TFData = recData.copy(equations = equations)
 
   def nodeCoeffSeqEquations(
-      ncs: NodeCoeffSeq[State, Boat, Double]): (Set[Equation], TFData) =
+      ncs: NodeCoeffSeq[State, Double]): (Set[Equation], TFData) =
     ncs match {
       case NodeCoeffSeq.Empty()          => Set() -> TFData.empty
       case NodeCoeffSeq.Cons(head, tail) =>
@@ -197,7 +197,7 @@ case class GeneratorTF[State, Boat](
     }
 
   def nodeCoeffsEquations[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y])
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y])
     : (Set[Equation], TFData) =
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
@@ -218,11 +218,11 @@ case class GeneratorTF[State, Boat](
     }
 
   def nodeCoeffsEquationTerms[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       x: Dom): (Set[EquationNode], TFData) =
     nodeCoeffs match {
       case NodeCoeffs.Target(output) => (Set(), baseData)
-      case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
+      case bc: NodeCoeffs.Cons[State, Double, Dom, Y] =>
         val (hts, hes) = bc.headGen match {
           case gen: GeneratorNode[Y] =>
             // pprint.log(gen)
@@ -427,7 +427,7 @@ case class GeneratorTF[State, Boat](
                     FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
               (eqTerms, baseData ++ isleData)
             }
-          case isle: ComplexIsland[o, _, State, Boat, _] =>
+          case isle: ComplexIsland[o, _, State, boat, _] =>
             val (isleInit, boat, _) = isle.initMap(initState)
             val isleEq =
               GeneratorTF(nodeCoeffSeq,
@@ -657,7 +657,7 @@ case class GeneratorTF[State, Boat](
               (eqTerms, baseData ++ isleData)
             }
           }
-        case isle: ComplexIsland[o, _, State, Boat, _] =>
+        case isle: ComplexIsland[o, _, State, boat, _] =>
           Task {
             val (isleInit, boat, _) = isle.initMap(initState)
             val isleEq =
@@ -687,11 +687,11 @@ case class GeneratorTF[State, Boat](
     }
 
   def nodeCoeffsEquationTermsTask[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       x: Dom): Task[(Set[EquationNode], TFData)] =
     nodeCoeffs match {
       case NodeCoeffs.Target(output) => Task.now((Set(), baseData))
-      case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
+      case bc: NodeCoeffs.Cons[State, Double, Dom, Y] =>
         val tsk = bc.headGen match {
           case gen: GeneratorNode[Y] =>
             nodeEquationTermsTask(gen)
@@ -714,7 +714,7 @@ case class GeneratorTF[State, Boat](
     }
 
   def nodeCoeffSeqEquationsTask(
-      ncs: NodeCoeffSeq[State, Boat, Double]): Task[(Set[Equation], TFData)] =
+      ncs: NodeCoeffSeq[State, Double]): Task[(Set[Equation], TFData)] =
     ncs match {
       case NodeCoeffSeq.Empty() => Task.now(Set() -> TFData.empty)
       case NodeCoeffSeq.Cons(head, tail) =>
@@ -725,7 +725,7 @@ case class GeneratorTF[State, Boat](
     }
 
   def nodeCoeffsEquationsTask[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y])
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y])
     : Task[(Set[Equation], TFData)] =
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>

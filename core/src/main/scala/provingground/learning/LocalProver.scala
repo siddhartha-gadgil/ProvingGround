@@ -151,7 +151,7 @@ case class LocalProver(
   val nextState: Task[TermState] =
     tg.nextStateTask(initState, cutoff, limit).memoize
 
-  val mfd: MonixFiniteDistributionEq[TermState, Term] =
+  val mfd: MonixFiniteDistributionEq[TermState] =
     MonixFiniteDistributionEq(tg.nodeCoeffSeq)
 
   lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq)

@@ -70,9 +70,9 @@ object SortList {
 class RandomVarFamily[Dom <: HList, +O](val polyDomain: RandomVarList[Dom],
                                         val rangeFamily: Dom => Sort[_, O] =
                                           (_: Dom) => Sort.All[O]()) {
-  def target[State, Boat, V, Y >: O]
-    : NodeCoeffs.Target[State, Boat, V, Dom, Y] =
-    NodeCoeffs.Target[State, Boat, V, Dom, Y](this)
+  def target[State, V, Y >: O]
+    : NodeCoeffs.Target[State, V, Dom, Y] =
+    NodeCoeffs.Target[State, V, Dom, Y](this)
 
   def at(x: Dom) = RandomVar.AtCoord(this, x)
 
@@ -170,7 +170,7 @@ sealed trait GeneratorNodeFamily[Dom <: HList, +O] {
 // sealed trait BaseGeneratorNodeFamily[Dom <: HList, +O]
 //     extends GeneratorNodeFamily[Dom, O]
 
-sealed trait RecursiveGeneratorNodeFamily[Dom <: HList, State, Boat, +O]
+sealed trait RecursiveGeneratorNodeFamily[Dom <: HList, State, +O]
     extends GeneratorNodeFamily[Dom, O]
 
 object GeneratorNodeFamily {
@@ -186,10 +186,10 @@ object GeneratorNodeFamily {
   /**
     * A family of recursive generation functions, given as a function.
     */
-  case class RecPi[State, Boat, Dom <: HList, +O](
-      nodes: Dom => RecursiveGeneratorNode[State, Boat, O],
+  case class RecPi[State, Dom <: HList, +O](
+      nodes: Dom => RecursiveGeneratorNode[State, O],
       outputFamily: RandomVarFamily[Dom, O])
-      extends RecursiveGeneratorNodeFamily[Dom, State, Boat, O]
+      extends RecursiveGeneratorNodeFamily[Dom, State, O]
       with Pi[Dom, O]
 
   /**
@@ -208,10 +208,10 @@ object GeneratorNodeFamily {
   /**
     * A family of recursive generation functions, given as a function.
     */
-  case class RecPiOpt[State, Boat, Dom <: HList, +O](
-      nodesOpt: Dom => Option[RecursiveGeneratorNode[State, Boat, O]],
+  case class RecPiOpt[State, Dom <: HList, +O](
+      nodesOpt: Dom => Option[RecursiveGeneratorNode[State, O]],
       outputFamily: RandomVarFamily[Dom, O])
-      extends RecursiveGeneratorNodeFamily[Dom, State, Boat, O]
+      extends RecursiveGeneratorNodeFamily[Dom, State, O]
       with PiOpt[Dom, O]
 
   /**
@@ -273,13 +273,13 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
 //
 // }
 
-sealed trait RecursiveGeneratorNode[State, Boat, +O]
+sealed trait RecursiveGeneratorNode[State, +O]
     extends GeneratorNode[O]
-    with RecursiveGeneratorNodeFamily[HNil, State, Boat, O] {
+    with RecursiveGeneratorNodeFamily[HNil, State, O] {
   // def |[S >: O, T](
   //     condition: Sort[S, T],
-  //     output: RandomVar[T]): RecursiveGeneratorNode[State, Boat, T] =
-  //   RecursiveThenCondition[State, Boat, S, T](gen = this,
+  //     output: RandomVar[T]): RecursiveGeneratorNode[State, T] =
+  //   RecursiveThenCondition[State, S, T](gen = this,
   //                                             output = output,
   //                                             condition = condition)
 
@@ -437,11 +437,11 @@ object GeneratorNode {
   ) extends GeneratorNode[Y]
       with ThenCondition[O, Y]
 
-  case class RecursiveThenCondition[State, Boat, O, Y](
-      gen: RecursiveGeneratorNode[State, Boat, O],
+  case class RecursiveThenCondition[State, O, Y](
+      gen: RecursiveGeneratorNode[State, O],
       output: RandomVar[Y],
       condition: Sort[O, Y]
-  ) extends RecursiveGeneratorNode[State, Boat, Y]
+  ) extends RecursiveGeneratorNode[State, Y]
       with ThenCondition[O, Y]
 
   /**
@@ -464,7 +464,7 @@ object GeneratorNode {
       initMap: InitState => (InitState, Boat),
       export: (Boat, O) => Y,
       finalMap: (Boat, InitState) => InitState
-  ) extends RecursiveGeneratorNode[InitState, Boat, Y]
+  ) extends RecursiveGeneratorNode[InitState, Y]
 
   /**
     * An `island`, i.e., a full map from initial state to all required distributions,
@@ -488,7 +488,7 @@ object GeneratorNode {
                              Set[GeneratorNodeFamily.Value[_ <: HList, _, V]]),
       export: (Boat, O) => Y,
       finalMap: (Boat, InitState) => InitState
-  ) extends RecursiveGeneratorNode[InitState, Boat, Y]
+  ) extends RecursiveGeneratorNode[InitState, Y]
 
 }
 
@@ -699,22 +699,22 @@ case class GeneratorData[V](
     varsToResolve: Vector[RandomVar[_]]
 )
 
-sealed trait NodeCoeffSeq[State, Boat, V] {
-  def +:[RDom <: HList, Y](head: NodeCoeffs[State, Boat, V, RDom, Y]) =
+sealed trait NodeCoeffSeq[State, V] {
+  def +:[RDom <: HList, Y](head: NodeCoeffs[State, V, RDom, Y]) =
     NodeCoeffSeq.Cons(head, this)
 
   val nodeFamilies: Set[GeneratorNodeFamily[_ <: HList, _]]
 
   def find[RDom <: HList, Y](randomVar: RandomVarFamily[RDom, Y])
-    : Option[NodeCoeffs[State, Boat, V, RDom, Y]]
+    : Option[NodeCoeffs[State, V, RDom, Y]]
 
   val outputs: Vector[RandomVarFamily[_ <: HList, _]]
 
   def update[RDom <: HList, Y](
-      data: GeneratorNodeFamily.Value[RDom, Y, V]): NodeCoeffSeq[State, Boat, V]
+      data: GeneratorNodeFamily.Value[RDom, Y, V]): NodeCoeffSeq[State, V]
 
   def updateAll(dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, V]])
-    : NodeCoeffSeq[State, Boat, V] =
+    : NodeCoeffSeq[State, V] =
     dataSeq.foldLeft(this)(_ update _)
 
   def getCoeff[RDom <: HList, Y](gen: GeneratorNodeFamily[RDom, Y]): Option[V]
@@ -722,16 +722,16 @@ sealed trait NodeCoeffSeq[State, Boat, V] {
 }
 
 object NodeCoeffSeq {
-  case class Empty[State, Boat, V]() extends NodeCoeffSeq[State, Boat, V] {
+  case class Empty[State, V]() extends NodeCoeffSeq[State, V] {
     def find[RDom <: HList, Y](randomVar: RandomVarFamily[RDom, Y])
-      : Option[NodeCoeffs[State, Boat, V, RDom, Y]] = None
+      : Option[NodeCoeffs[State, V, RDom, Y]] = None
 
     val outputs: Vector[RandomVarFamily[_ <: HList, _]] = Vector()
 
     val nodeFamilies: Set[GeneratorNodeFamily[_ <: HList, _]] = Set()
 
     def update[RDom <: HList, Y](
-        data: GeneratorNodeFamily.Value[RDom, Y, V]): Empty[State, Boat, V] =
+        data: GeneratorNodeFamily.Value[RDom, Y, V]): Empty[State, V] =
       this
 
     def getCoeff[RDom <: HList, Y](
@@ -739,17 +739,17 @@ object NodeCoeffSeq {
 
   }
 
-  case class Cons[State, Boat, V, RDom <: HList, Y](
-      head: NodeCoeffs[State, Boat, V, RDom, Y],
-      tail: NodeCoeffSeq[State, Boat, V])
-      extends NodeCoeffSeq[State, Boat, V] {
+  case class Cons[State, V, RDom <: HList, Y](
+      head: NodeCoeffs[State, V, RDom, Y],
+      tail: NodeCoeffSeq[State, V])
+      extends NodeCoeffSeq[State, V] {
     def find[VarRDom <: HList, VarY](randomVar: RandomVarFamily[VarRDom, VarY])
-      : Option[NodeCoeffs[State, Boat, V, VarRDom, VarY]] =
+      : Option[NodeCoeffs[State, V, VarRDom, VarY]] =
       tail
         .find(randomVar)
         .orElse(
           if (head.output == randomVar)
-            Some(head.asInstanceOf[NodeCoeffs[State, Boat, V, VarRDom, VarY]])
+            Some(head.asInstanceOf[NodeCoeffs[State, V, VarRDom, VarY]])
           else None
         )
 
@@ -761,7 +761,7 @@ object NodeCoeffSeq {
         x: GeneratorNodeFamily[_ <: HList, _])
 
     def update[D <: HList, O](data: GeneratorNodeFamily.Value[D, O, V])
-      : NodeCoeffSeq[State, Boat, V] =
+      : NodeCoeffSeq[State, V] =
       this.copy(head = head.update(data))
 
     def getCoeff[RDom <: HList, Y](
@@ -771,24 +771,24 @@ object NodeCoeffSeq {
   }
 }
 
-sealed trait NodeCoeffs[State, Boat, V, RDom <: HList, Y] {
+sealed trait NodeCoeffs[State, V, RDom <: HList, Y] {
   val output: RandomVarFamily[RDom, Y]
 
   val nodeFamilies: Set[GeneratorNodeFamily[RDom, Y]]
 
   def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
-    : Option[NodeCoeffs[State, Boat, V, RDom, Y]]
+    : Option[NodeCoeffs[State, V, RDom, Y]]
 
   import scala.util.Try
 
   def update[D <: HList, O](data: GeneratorNodeFamily.Value[D, O, V])
-    : NodeCoeffs[State, Boat, V, RDom, Y] =
+    : NodeCoeffs[State, V, RDom, Y] =
     Try {
       updateOpt(data.asInstanceOf[GeneratorNodeFamily.Value[RDom, Y, V]])
     }.toOption.flatten.getOrElse(this)
 
   def updateAll(dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, V]])
-    : NodeCoeffs[State, Boat, V, RDom, Y] =
+    : NodeCoeffs[State, V, RDom, Y] =
     dataSeq.foldLeft(this)(_ update _)
 
   import NodeCoeffs._
@@ -798,16 +798,16 @@ sealed trait NodeCoeffs[State, Boat, V, RDom <: HList, Y] {
 
   def getCoeff[RD <: HList, YY](gen: GeneratorNodeFamily[RD, YY]): Option[V]
 
-//  def ::(head: (RecursiveGeneratorNodeFamily[RDom, State, Boat, Y], V)) =
+//  def ::(head: (RecursiveGeneratorNodeFamily[RDom, State, Y], V)) =
 //    RecCons(head._1, head._2, this)
 }
 
 object NodeCoeffs {
-  case class Target[State, Boat, V, RDom <: HList, Y](
+  case class Target[State, V, RDom <: HList, Y](
       output: RandomVarFamily[RDom, Y]
-  ) extends NodeCoeffs[State, Boat, V, RDom, Y] {
+  ) extends NodeCoeffs[State, V, RDom, Y] {
     def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
-      : Option[NodeCoeffs[State, Boat, V, RDom, Y]] = None
+      : Option[NodeCoeffs[State, V, RDom, Y]] = None
 
     val nodeFamilies: Set[GeneratorNodeFamily[RDom, Y]] = Set()
 
@@ -816,11 +816,11 @@ object NodeCoeffs {
 
   }
 
-  sealed trait Cons[State, Boat, V, RDom <: HList, Y]
-      extends NodeCoeffs[State, Boat, V, RDom, Y] {
+  sealed trait Cons[State, V, RDom <: HList, Y]
+      extends NodeCoeffs[State, V, RDom, Y] {
     val headGen: GeneratorNodeFamily[RDom, Y]
     val headCoeff: V
-    val tail: NodeCoeffs[State, Boat, V, RDom, Y]
+    val tail: NodeCoeffs[State, V, RDom, Y]
 
     def getCoeff[RD <: HList, YY](gen: GeneratorNodeFamily[RD, YY]): Option[V] =
       tail.getCoeff(gen).orElse {
@@ -830,24 +830,24 @@ object NodeCoeffs {
   }
 
   object Cons {
-    def apply[State, Boat, V, RDom <: HList, Y](
+    def apply[State, V, RDom <: HList, Y](
         headGen: GeneratorNodeFamily[RDom, Y],
         headCoeff: V,
-        tail: NodeCoeffs[State, Boat, V, RDom, Y]
-    ): Cons[State, Boat, V, RDom, Y] =
+        tail: NodeCoeffs[State, V, RDom, Y]
+    ): Cons[State, V, RDom, Y] =
       headGen match {
         case value: GeneratorNodeFamily[RDom, Y] =>
           BaseCons(value, headCoeff, tail)
-        // case value: RecursiveGeneratorNodeFamily[RDom, State, Boat, Y] => RecCons(value, headCoeff, tail)
+        // case value: RecursiveGeneratorNodeFamily[RDom, State, Y] => RecCons(value, headCoeff, tail)
       }
 
   }
 
-  case class BaseCons[State, Boat, V, RDom <: HList, Y](
+  case class BaseCons[State, V, RDom <: HList, Y](
       headGen: GeneratorNodeFamily[RDom, Y],
       headCoeff: V,
-      tail: NodeCoeffs[State, Boat, V, RDom, Y]
-  ) extends Cons[State, Boat, V, RDom, Y] {
+      tail: NodeCoeffs[State, V, RDom, Y]
+  ) extends Cons[State, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
 
 //    require(
@@ -858,16 +858,16 @@ object NodeCoeffs {
       : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
 
     def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
-      : Option[BaseCons[State, Boat, V, RDom, Y]] =
+      : Option[BaseCons[State, V, RDom, Y]] =
       if (data.family == headGen) Some(this.copy(headCoeff = data.value))
       else None
   }
 
-  case class RecCons[State, Boat, V, RDom <: HList, Y](
-      headGen: RecursiveGeneratorNodeFamily[RDom, State, Boat, Y],
+  case class RecCons[State, V, RDom <: HList, Y](
+      headGen: RecursiveGeneratorNodeFamily[RDom, State, Y],
       headCoeff: V,
-      tail: NodeCoeffs[State, Boat, V, RDom, Y]
-  ) extends Cons[State, Boat, V, RDom, Y] {
+      tail: NodeCoeffs[State, V, RDom, Y]
+  ) extends Cons[State, V, RDom, Y] {
     val output: RandomVarFamily[RDom, Y] = tail.output
 
 //    require(
@@ -878,7 +878,7 @@ object NodeCoeffs {
       : Set[GeneratorNodeFamily[RDom, Y]] = tail.nodeFamilies + headGen
 
     def updateOpt(data: GeneratorNodeFamily.Value[RDom, Y, V])
-      : Option[RecCons[State, Boat, V, RDom, Y]] =
+      : Option[RecCons[State, V, RDom, Y]] =
       if (data.family == headGen) Some(this.copy(headCoeff = data.value))
       else None
   }
@@ -951,16 +951,15 @@ object GeometricDistribution {
 
   val shift: Map[Int, Int] = Map((n: Int) => n + 1, GeomVar, GeomVar)
 
-  val nodeCoeffs: NodeCoeffs[VarValueSet[FD], Unit, Double, HNil, Int] =
+  val nodeCoeffs: NodeCoeffs[VarValueSet[FD],  Double, HNil, Int] =
     (init, 0.5) :: (shift, 0.5) :: GeomVar
-      .target[VarValueSet[FD], Unit, Double, Int]
+      .target[VarValueSet[FD], Double, Int]
 
   val nodeCoeffSeq: NodeCoeffSeq.Cons[VarValueSet[FD],
-                                      Unit,
                                       Double,
                                       HNil,
                                       Int] = nodeCoeffs +: NodeCoeffSeq
-    .Empty[VarValueSet[FD], Unit, Double]()
+    .Empty[VarValueSet[FD], Double]()
 
   val initState: VarValueSet[FD] =
     VarValueSet[FD](Set(RandomVar.Value[Int, FD](GeomVar, FD.unif(0))), Set())

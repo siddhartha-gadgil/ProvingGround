@@ -23,10 +23,10 @@ object MonixTangentFiniteDistribution {
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class MonixTangentFiniteDistribution[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+case class MonixTangentFiniteDistribution[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double],
     baseState: State)(implicit sd: StateDistribution[State, FD])
-    extends GenMonixFiniteDistribution[State, Boat](nodeCoeffSeq) {
+    extends GenMonixFiniteDistribution[State](nodeCoeffSeq) {
 
   import MonixTangentFiniteDistribution._
 

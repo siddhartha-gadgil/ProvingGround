@@ -31,12 +31,12 @@ object MonixTangentFiniteDistributionEq {
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class MonixTangentFiniteDistributionEq[State, Boat](
-                                                          nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+case class MonixTangentFiniteDistributionEq[State](
+                                                          nodeCoeffSeq: NodeCoeffSeq[State, Double],
                                                           baseState: State,
                                                           baseEquations: Set[EquationNode]
 )(implicit sd: StateDistribution[State, FD])
-    extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq) {
+    extends GenMonixFiniteDistributionEq[State](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands

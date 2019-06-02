@@ -18,11 +18,11 @@ object TangentFiniteDistribution {
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class TangentFiniteDistribution[State, Boat](
+case class TangentFiniteDistribution[State](
     baseState: State,
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
     implicit sd: StateDistribution[State, FD])
-    extends GenTruncatedFiniteDistribution[State, Boat](nodeCoeffSeq) {
+    extends GenTruncatedFiniteDistribution[State](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands

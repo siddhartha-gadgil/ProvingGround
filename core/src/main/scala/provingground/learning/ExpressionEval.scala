@@ -641,7 +641,7 @@ case class ExpressionEval(
 
 }
 
-trait EvolvedEquations[State, Boat] {
+trait EvolvedEquations[State] {
   val initState: State
   val finalState: State
   val equations: Set[Equation]
