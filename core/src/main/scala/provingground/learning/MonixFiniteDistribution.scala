@@ -8,8 +8,8 @@ import monix.eval._
 
 import scala.concurrent._, duration._
 
-abstract class GenMonixFiniteDistribution[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+abstract class GenMonixFiniteDistribution[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
     implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
   import nodeCoeffSeq.find
@@ -71,13 +71,13 @@ abstract class GenMonixFiniteDistribution[State, Boat](
     }
 
   def nodeCoeffDist[Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, HNil, Y],
       epsilon: Double): Task[FD[Y]] =
     if (epsilon > 1) Task.now(FD.empty[Y])
     else
       nodeCoeffs match {
         case Target(_) => Task.now(FD.empty[Y])
-        case bc: Cons[State, Boat, Double, HNil, Y] =>
+        case bc: Cons[State, Double, HNil, Y] =>
           val p: Double = bc.headCoeff
           val d: Task[FD[Y]] =
             bc.headGen match {
@@ -102,13 +102,13 @@ abstract class GenMonixFiniteDistribution[State, Boat](
 
 
   def nodeCoeffFamilyDist[Dom <: HList, Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       epsilon: Double)(arg: Dom): Task[FD[Y]] =
     if (epsilon > 1) Task(FD.empty[Y])
     else
       nodeCoeffs match {
         case Target(_) => Task(FD.empty[Y])
-        case bc: Cons[State, Boat, Double, Dom, Y] =>
+        case bc: Cons[State, Double, Dom, Y] =>
           val p = bc.headCoeff
           for {
             a <- nodeFamilyDistFunc(initState)(bc.headGen, epsilon / p)(arg)
@@ -187,10 +187,10 @@ abstract class GenMonixFiniteDistribution[State, Boat](
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class MonixFiniteDistribution[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+case class MonixFiniteDistribution[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
     implicit sd: StateDistribution[State, FD])
-    extends GenMonixFiniteDistribution[State, Boat](nodeCoeffSeq) {
+    extends GenMonixFiniteDistribution[State](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands

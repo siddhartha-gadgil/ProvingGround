@@ -10,7 +10,7 @@ object TruncatedFiniteDistribution {
   import GeometricDistribution._
 
   object Geom
-      extends TruncatedFiniteDistribution[VarValueSet[FD], Unit](
+      extends TruncatedFiniteDistribution[VarValueSet[FD]](
         nodeCoeffSeq
       )
 
@@ -18,8 +18,8 @@ object TruncatedFiniteDistribution {
     Geom.varDist(initState)(GeomVar, epsilon)
 }
 
-abstract class GenTruncatedFiniteDistribution[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+abstract class GenTruncatedFiniteDistribution[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
     implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
   import StateDistribution._
@@ -70,13 +70,13 @@ abstract class GenTruncatedFiniteDistribution[State, Boat](
     }
 
   def nodeCoeffDist[Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, HNil, Y],
       epsilon: Double): FD[Y] =
     if (epsilon > 1) FD.empty[Y]
     else
       nodeCoeffs match {
         case Target(_) => FD.empty[Y]
-        case bc: Cons[State, Boat, Double, HNil, Y] =>
+        case bc: Cons[State, Double, HNil, Y] =>
           val p: Double = bc.headCoeff
           val d: FD[Y] =
             bc.headGen match {
@@ -97,20 +97,20 @@ abstract class GenTruncatedFiniteDistribution[State, Boat](
     } yield (k, v)).toMap
 
   def nodeCoeffFamilyMap[Dom <: HList, Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       baseDist: FD[Dom],
       epsilon: Double): Map[Dom, FD[Y]] =
     if (epsilon > 1) Map()
     else
       nodeCoeffs match {
         case Target(_) => Map()
-        case bc: BaseCons[State, Boat, Double, Dom, Y] =>
+        case bc: BaseCons[State, Double, Dom, Y] =>
           val p = bc.headCoeff
           mapsSum(nodeFamilyDist(initState)(bc.headGen, baseDist, epsilon),
                   nodeCoeffFamilyMap(initState)(bc.tail,
                                                 baseDist,
                                                 epsilon / (1.0 - p)))
-        case rc: RecCons[State, Boat, Double, Dom, Y] =>
+        case rc: RecCons[State, Double, Dom, Y] =>
           val p = rc.headCoeff
           mapsSum(nodeFamilyDist(initState)(rc.headGen, baseDist, epsilon),
                   nodeCoeffFamilyMap(initState)(rc.tail,
@@ -167,10 +167,10 @@ abstract class GenTruncatedFiniteDistribution[State, Boat](
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class TruncatedFiniteDistribution[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double])(
+case class TruncatedFiniteDistribution[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
     implicit sd: StateDistribution[State, FD])
-    extends GenTruncatedFiniteDistribution[State, Boat](nodeCoeffSeq) {
+    extends GenTruncatedFiniteDistribution[State](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands

@@ -14,8 +14,8 @@ import scala.util._
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class GeneratorVariables[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+case class GeneratorVariables[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double],
     state: State
 )(implicit sd: StateDistribution[State, FD]) {
 
@@ -110,10 +110,10 @@ case class GeneratorVariables[State, Boat](
       case node: GeneratorNode[O] => generatorVars(node)
     }
 
-  def nodeSeqVars(nc: NodeCoeffSeq[State, Boat, Double]): Set[Variable[_]] =
+  def nodeSeqVars(nc: NodeCoeffSeq[State, Double]): Set[Variable[_]] =
     nc match {
-      case _: NodeCoeffSeq.Empty[State, Boat, Double] => Set()
-      case ncs: NodeCoeffSeq.Cons[State, Boat, Double, rd, y] =>
+      case _: NodeCoeffSeq.Empty[State, Double] => Set()
+      case ncs: NodeCoeffSeq.Cons[State, Double, rd, y] =>
         nodeSeqVars(ncs.tail) union {
           ncs.head.nodeFamilies
             .flatMap(nf => generatorFamilyVars[rd, y](nf, ncs.head.output))
@@ -127,8 +127,8 @@ case class GeneratorVariables[State, Boat](
 }
 
 object GeneratorVariables {
-  def variableValue[Y, State, Boat](
-      boatMap: (Boat, State) => State,
+  def variableValue[Y, State](
+      // boatMap: (Boat, State) => State,
       state: State
   )(implicit sd: StateDistribution[State, FD]): Variable[Y] => Double = {
     case rv @ Elem(element, randomVar) =>
@@ -142,8 +142,8 @@ object GeneratorVariables {
       val fd1 = StateDistribution.value(state)(base1)
       val fd2 = StateDistribution.value(state)(base2)
       fd1.zip(fd2).filter(sort.pred).total
-    case isle: InIsle[y, State, o, Boat] =>
-      val x = variableValue(boatMap, boatMap(isle.boat, state))
+    case isle: InIsle[y, State, o, boat] =>
+      val x = variableValue(isle.isle.finalMap(isle.boat, state))
       x(isle.isleVar)
   }
 
@@ -330,13 +330,13 @@ object GeneratorVariables {
       case simple                       => simple
     }
 
-    def getFromCoeffs[State, Boat, V, RDom <: HList, Y](
-        nodeCoeffs: NodeCoeffs[State, Boat, V, RDom, Y]
+    def getFromCoeffs[State, V, RDom <: HList, Y](
+        nodeCoeffs: NodeCoeffs[State, V, RDom, Y]
     ): Option[V] =
       (nodeCoeffs, rv) match {
         case (NodeCoeffs.Target(_), _) => None
         case (
-            cons: NodeCoeffs.Cons[State, Boat, V, RDom, Y],
+            cons: NodeCoeffs.Cons[State, V, RDom, Y],
             RandomVar.AtCoord(family, arg)
             ) =>
           cons.headGen match {
@@ -353,12 +353,12 @@ object GeneratorVariables {
             case _ => getFromCoeffs(cons.tail)
           }
 
-        case (cons: NodeCoeffs.Cons[State, Boat, V, RDom, Y], _) =>
+        case (cons: NodeCoeffs.Cons[State, V, RDom, Y], _) =>
           if (cons.headGen == node) Some(cons.headCoeff)
           else getFromCoeffs(cons.tail)
       }
 
-    def get[State, Boat, V](seq: NodeCoeffSeq[State, Boat, V]): Option[V] =
+    def get[State, V](seq: NodeCoeffSeq[State, V]): Option[V] =
       seq.find(expand).flatMap(getFromCoeffs)
   }
 
@@ -370,7 +370,7 @@ object GeneratorVariables {
     def mapVars(f: Variable[_] => Variable[_]) =
       Equation(lhs.mapVars(f), rhs.mapVars(f))
 
-    def useBoat[Y, State, O, Boat](
+    def useBoat[Y, State, Boat, O](
         boat: Boat,
         island: Island[Y, State, O, Boat]
     ): Equation =

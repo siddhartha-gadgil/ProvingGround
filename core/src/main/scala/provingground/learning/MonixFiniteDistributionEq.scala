@@ -23,8 +23,8 @@ object MonixFiniteDistributionEq {
 
 }
 
-abstract class GenMonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double]
+abstract class GenMonixFiniteDistributionEq[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double]
 )(implicit sd: StateDistribution[State, FD]) {
   import NodeCoeffs._
   import nodeCoeffSeq.find
@@ -95,7 +95,7 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
     }
 
   def nodeCoeffDist[Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, HNil, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, HNil, Y],
       epsilon: Double,
       rv: RandomVar[Y]
   ): Task[(FD[Y], Set[EquationNode])] =
@@ -103,7 +103,7 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
     else
       nodeCoeffs match {
         case Target(_) => Task.now(FD.empty[Y] -> Set.empty[EquationNode])
-        case bc: Cons[State, Boat, Double, HNil, Y] =>
+        case bc: Cons[State, Double, HNil, Y] =>
           val p: Double = bc.headCoeff
           val (d: Task[(FD[Y], Set[EquationNode])], nc) =
             bc.headGen match {
@@ -141,14 +141,14 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
 
 
   def nodeCoeffFamilyDist[Dom <: HList, Y](initState: State)(
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       epsilon: Double
   )(arg: Dom): Task[(FD[Y], Set[EquationNode])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationNode])
     else
       nodeCoeffs match {
         case Target(_) => Task.now(FD.empty[Y] -> Set.empty[EquationNode])
-        case bc: Cons[State, Boat, Double, Dom, Y] =>
+        case bc: Cons[State, Double, Dom, Y] =>
           val p = bc.headCoeff
           for {
             pa <- nodeFamilyDistFunc(initState)(bc.headGen, epsilon / p)(arg) 
@@ -211,10 +211,10 @@ abstract class GenMonixFiniteDistributionEq[State, Boat](
   * @param sd finite distributions from the initial state corresponding to random variables and families
   * @tparam State scala type of the initial state
   */
-case class MonixFiniteDistributionEq[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double]
+case class MonixFiniteDistributionEq[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double]
 )(implicit sd: StateDistribution[State, FD])
-    extends GenMonixFiniteDistributionEq[State, Boat](nodeCoeffSeq) {
+    extends GenMonixFiniteDistributionEq[State](nodeCoeffSeq) {
 
   /**
     * update coefficients, to be used in complex islands

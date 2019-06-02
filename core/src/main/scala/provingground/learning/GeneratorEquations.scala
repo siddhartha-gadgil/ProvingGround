@@ -9,10 +9,10 @@ import GeneratorVariables._
 
 import scala.util.Try
 
-case class GeneratorEquations[State, Boat](
-    nodeCoeffSeq: NodeCoeffSeq[State, Boat, Double],
+case class GeneratorEquations[State](
+    nodeCoeffSeq: NodeCoeffSeq[State, Double],
     initState: State,
-    finalState: State)(implicit sd: StateDistribution[State, FD]) extends EvolvedEquations[State, Boat] {
+    finalState: State)(implicit sd: StateDistribution[State, FD]) extends EvolvedEquations[State] {
   pprint.log(initState)
   pprint.log(finalState)
 
@@ -100,14 +100,14 @@ case class GeneratorEquations[State, Boat](
 
 
   def nodeCoeffSeqEquations(
-      ncs: NodeCoeffSeq[State, Boat, Double]): Set[Equation] = ncs match {
+      ncs: NodeCoeffSeq[State, Double]): Set[Equation] = ncs match {
     case NodeCoeffSeq.Empty() => Set()
     case NodeCoeffSeq.Cons(head, tail) =>
       nodeCoeffsEquations(head) union nodeCoeffSeqEquations(tail)
   }
 
   def nodeCoeffsEquations[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y]): Set[Equation] =
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y]): Set[Equation] =
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
         val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
@@ -120,11 +120,11 @@ case class GeneratorEquations[State, Boat](
     }
 
   def nodeCoeffsEquationTerms[Dom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, Boat, Double, Dom, Y],
+      nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       x: Dom): (Set[EquationNode], Set[Equation]) =
     nodeCoeffs match {
       case NodeCoeffs.Target(output) => (Set(), Set())
-      case bc: NodeCoeffs.Cons[State, Boat, Double, Dom, Y] =>
+      case bc: NodeCoeffs.Cons[State, Double, Dom, Y] =>
         val (hts, hes) = bc.headGen match {
           case gen: GeneratorNode[Y] =>
             nodeEquationTerms(gen)
@@ -296,7 +296,7 @@ case class GeneratorEquations[State, Boat](
             EquationNode(fve,
                          FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
         (eqTerms, isleEquations)
-      case isle: ComplexIsland[o, _, State, Boat, _] =>
+      case isle: ComplexIsland[o, _, State, b, _] =>
         val (isleInit, boat, _) = isle.initMap(initState)
         val isleEq = GeneratorEquations(nodeCoeffSeq,
                                         isleInit,

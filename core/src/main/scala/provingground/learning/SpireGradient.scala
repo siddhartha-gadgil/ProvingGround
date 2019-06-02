@@ -100,7 +100,7 @@ object SpireGradient {
     ts.map((t) => InitialVal(Elem(t, Terms))).map(p => -p * Log(p)).reduce[Expression](_ + _)
 
   def termGenCost(
-      ge: EvolvedEquations[TermState, Term],
+      ge: EvolvedEquations[TermState],
       hW: Double = 1,
       klW: Double = 1,
       eqW: Double = 1,
@@ -178,7 +178,7 @@ object SpireGradient {
 import SpireGradient._
 
 abstract class TermGenEqCost(
-    ge: EvolvedEquations[TermState, Term],
+    ge: EvolvedEquations[TermState],
     hW: Double = 1,
     klW: Double = 1,
     eqW: Double = 1,
@@ -203,7 +203,7 @@ abstract class TermGenEqCost(
 }
 
 case class TermGenCost(
-    ge: EvolvedEquations[TermState, Term],
+    ge: EvolvedEquations[TermState],
     hW: Double = 1,
     klW: Double = 1,
     eqW: Double = 1,
