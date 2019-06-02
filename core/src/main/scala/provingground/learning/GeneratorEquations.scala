@@ -279,7 +279,7 @@ case class GeneratorEquations[State, Boat](
             } yield EquationNode(fve, p / condition)
         }
         (eqT, Set())
-      case isle: Island[_, State, o, b] =>
+      case isle: Island[y, State, o, b] =>
         val (isleInit, boat) = isle.initMap(initState)
         val isleEq = GeneratorEquations(nodeCoeffSeq,
                                         isleInit,

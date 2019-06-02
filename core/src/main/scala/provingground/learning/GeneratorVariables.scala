@@ -2,8 +2,7 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD}
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{Map => GMap,  _
-}
+import provingground.learning.GeneratorNode.{Map => GMap, _}
 import scala.language.higherKinds
 import scala.util._
 
@@ -221,12 +220,18 @@ object GeneratorVariables {
       case a         => Vector(a)
     }
 
-    def h[A](pDist: Map[A, Expression]) : Expression = pDist.map{case (_, p) => -p * Log(p)}.reduce[Expression](_ + _)
+    def h[A](pDist: Map[A, Expression]): Expression =
+      pDist.map { case (_, p) => -p * Log(p) }.reduce[Expression](_ + _)
 
-    def kl[A](pDist: Map[A, Expression], qDist: Map[A, Expression]): Expression = 
-      pDist.map{
-        case (a, p) => p * Log(p / qDist(a))
-      }.reduce[Expression](_ + _)
+    def kl[A](
+        pDist: Map[A, Expression],
+        qDist: Map[A, Expression]
+    ): Expression =
+      pDist
+        .map {
+          case (a, p) => p * Log(p / qDist(a))
+        }
+        .reduce[Expression](_ + _)
   }
 
   sealed trait Expression {
@@ -282,7 +287,7 @@ object GeneratorVariables {
   case class Exp(exp: Expression) extends Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression = Exp(exp.mapVars(f))
 
-    override def toString = s"exp($exp)" 
+    override def toString = s"exp($exp)"
   }
 
   def sigmoid(x: Expression) = Exp(x) / (Exp(x) + Literal(1))
@@ -315,7 +320,6 @@ object GeneratorVariables {
 
     override def toString = s"($x) / ($y)"
   }
-
 
   case class Coeff[Y](node: GeneratorNode[Y], rv: RandomVar[Y])
       extends Expression {
@@ -375,7 +379,7 @@ object GeneratorVariables {
     def squareError(epsilon: Double): Expression =
       ((lhs - rhs) / (lhs + rhs + Literal(epsilon))).square
 
-    lazy val klError : Expression = 
+    lazy val klError: Expression =
       lhs * Log(lhs / rhs)
 
     override def toString = s"($lhs) == ($rhs)"
@@ -401,4 +405,16 @@ object GeneratorVariables {
     ts.groupBy(_.lhs)
       .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
       .toSet
+
+  def splitEquation(eq: Equation): Set[EquationNode] = eq match {
+    case Equation(lhs, Sum(y1, y2)) =>
+      splitEquation(Equation(lhs, y1)) union (splitEquation(Equation(lhs, y2)))
+    case Equation(lhs, rhs) => Set(EquationNode(lhs, rhs))
+  }
+
+  def rebuildEquations(eqs: Set[Equation]) =
+    groupEquations(eqs.flatMap(splitEquation(_)))
+
+  def mergeEquations(eqs: Set[Equation] *) =
+    rebuildEquations(eqs.reduce(_ union _))
 }
