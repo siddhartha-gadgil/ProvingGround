@@ -171,11 +171,10 @@ case class LocalProver(
       for {
         baseState <- nextState
         tangState: TermState = baseState.tangent(x)
-        ns <- tg.nextTangStateTask(baseState, tangState, cutoff * weight, limit)
         eqnds <- equationNodes
         mfdt = MonixTangentFiniteDistributionEq(tg.nodeCoeffSeq, baseState, eqnds)
         teqnds <- mfdt.varDist(tangState)(Terms, cutoff * weight, limit).map(_._2)
-        tExpEval = ExpressionEval.fromStates(tangState, ns, Equation.group(teqnds), tg, maxRatio, scale)
+        tExpEval = ExpressionEval.fromStates(tangState, baseState, Equation.group(teqnds), tg, maxRatio, scale)
         expEv <- expressionEval
     } yield expEv.avgInit(tExpEval)
 
