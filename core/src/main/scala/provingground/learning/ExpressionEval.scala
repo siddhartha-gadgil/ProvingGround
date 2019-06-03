@@ -183,7 +183,7 @@ object ExpressionEval {
       equations: Set[Equation],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
-      epsilon: Double = 1.0
+      scale: Double = 1.0
   ) =
     ExpressionEval(
       initMap(eqAtoms(equations), tg, initialState),
@@ -191,7 +191,7 @@ object ExpressionEval {
       equations,
       tg,
       maxRatio,
-      epsilon
+      scale
     )
 }
 
@@ -206,8 +206,18 @@ case class ExpressionEval(
     equations: Set[Equation],
     tg: TermGenParams,
     maxRatio: Double = 1.01,
-    epsilon: Double = 1.0
+    scale: Double = 1.0
 ) {
+
+  def avgInit(that: ExpressionEval) = 
+    ExpressionEval(
+      (0.5 *: init) + (0.5 *: that.init),
+      finalTyps,
+      Equation.merge(equations, that.equations),
+      tg,
+      maxRatio,
+      scale
+    )
 
   /**
     * the atomic expressions in the equations
@@ -516,7 +526,7 @@ case class ExpressionEval(
   def gradShift(
       p: Map[Expression, Double],
       t: Vector[Double],
-      eps: Double = epsilon
+      eps: Double = scale
   ): Map[Expression, Double] = {
     p.map {
       case (expr, y) =>
@@ -535,7 +545,7 @@ case class ExpressionEval(
   def stableGradShift(
       p: Map[Expression, Double],
       t: Vector[Double],
-      eps: Double = epsilon
+      eps: Double = scale
   ): Map[Expression, Double] = {
     val newMap = normalizedMap(stableMap(gradShift(p, t, eps), equations))
     // if (p.keySet == newMap.keySet) pprint.log(mapRatio(p, newMap))

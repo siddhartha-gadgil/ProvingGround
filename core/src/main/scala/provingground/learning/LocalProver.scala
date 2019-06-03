@@ -167,6 +167,21 @@ case class LocalProver(
 
   val equationNodes: Task[Set[EquationNode]] = pairT.map(_._2).memoize
 
+  def tangentExpressionEval(x: Term, weight: Double = 1.0) = 
+      for {
+        baseState <- nextState
+        tangState: TermState = baseState.tangent(x)
+        ns <- tg.nextTangStateTask(baseState, tangState, cutoff * weight, limit)
+        eqnds <- equationNodes
+        mfdt = MonixTangentFiniteDistributionEq(tg.nodeCoeffSeq, baseState, eqnds)
+        teqnds <- mfdt.varDist(tangState)(Terms, cutoff * weight, limit).map(_._2)
+        tExpEval = ExpressionEval.fromStates(tangState, ns, Equation.group(teqnds), tg, maxRatio, scale)
+        expEv <- expressionEval
+    } yield expEv.avgInit(tExpEval)
+
+
+
+
   // Generating provers using results
   val withLemmas: Task[LocalProver] =
     for {
@@ -239,6 +254,7 @@ trait LocalProverStep {
       eqs <- equations
     } yield ExpressionEval.fromStates(initState, fs, eqs, tg)).memoize
 
+    
   lazy val successes  = nextState.map(_.successes)
 
   lazy val lemmas: Task[Vector[(Typ[Term], Double)]] =
