@@ -5,7 +5,7 @@ import HList._
 import provingground.learning.GeneratorNode.{FlatMap, Island, ThenCondition}
 
 import scala.language.higherKinds
-import GeneratorVariables._
+import GeneratorVariables._, Expression._
 
 import scala.util.Try
 
@@ -111,11 +111,11 @@ case class GeneratorEquations[State](
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
         val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
-        groupEquations(terms) union eqs
+        Equation.group(terms) union eqs
       case fmly =>
         finalElemIndices(nodeCoeffs.output).flatMap { x =>
           val (terms, eqs) = nodeCoeffsEquationTerms(nodeCoeffs, x)
-          groupEquations(terms) union eqs
+          Equation.group(terms) union eqs
         }
     }
 

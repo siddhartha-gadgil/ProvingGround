@@ -1,6 +1,6 @@
 package provingground.interface
 
-import provingground._
+import provingground._, learning._
 import HoTT._
 import pprint.PPrinter
 import provingground.translation.FansiShow._
@@ -67,7 +67,7 @@ object Printer extends FallbackPrinter {
   ): Printer[FiniteDistribution[A]] =
     (a: FiniteDistribution[A], lines: Int) => view(a.pmfVec)
 
-  import provingground.learning.GeneratorVariables._
+  import provingground.learning.GeneratorVariables._, Expression._
 
   implicit def equationPrint: Printer[Equation] =
     Printer.simple(eq => s"${view(eq.lhs)} = ${view(eq.rhs)}")

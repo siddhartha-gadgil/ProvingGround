@@ -8,7 +8,7 @@ import duration._
 
 import TermRandomVars._
 
-import GeneratorVariables._
+import GeneratorVariables._, Expression._
 
 import EntropyAtomWeight._
 
@@ -230,7 +230,7 @@ trait LocalProverStep {
   val equationNodes: Task[Set[EquationNode]]
 
   lazy val equations: Task[Set[Equation]] = equationNodes.map { eqs =>
-    groupEquations(eqs)
+    Equation.group(eqs)
   }.memoize
 
   lazy val expressionEval: Task[ExpressionEval] =

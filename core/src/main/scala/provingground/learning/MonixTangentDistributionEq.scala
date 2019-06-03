@@ -6,7 +6,7 @@ import shapeless._
 import scala.language.higherKinds
 import monix.eval._
 
-import GeneratorVariables._
+import GeneratorVariables._, Expression._
 
 import scala.concurrent._, duration._
 

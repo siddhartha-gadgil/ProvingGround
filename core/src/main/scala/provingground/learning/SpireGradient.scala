@@ -7,7 +7,7 @@ import spire.implicits._
 
 import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 
-import GeneratorVariables._
+import GeneratorVariables._, Expression.{kl => klExp, h => hExp, _}
 
 case class SpireGradient(
     vars: Vector[Expression],

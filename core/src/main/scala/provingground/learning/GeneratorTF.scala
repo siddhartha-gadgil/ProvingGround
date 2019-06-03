@@ -4,7 +4,7 @@ import shapeless._
 import HList._
 
 import scala.language.higherKinds
-import GeneratorVariables._
+import GeneratorVariables._, Expression._
 import scala.collection.mutable.{Map => mMap}
 
 import scala.util.Try
@@ -203,12 +203,12 @@ case class GeneratorTF[State](
       case _: RandomVar[Y] =>
         // pprint.log(nodeCoeffs.output)
         val (terms, data) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
-        groupEquations(terms) -> data
+        Equation.group(terms) -> data
       case fmly =>
         val eqns = finalElemIndices(nodeCoeffs.output).flatMap { x =>
           // pprint.log(x)
           val (terms, _) = nodeCoeffsEquationTerms(nodeCoeffs, x)
-          groupEquations(terms)
+          Equation.group(terms)
         }
         val dataSeq = finalElemIndices(nodeCoeffs.output).map { x =>
           nodeCoeffsEquationTerms(nodeCoeffs, x)._2
@@ -732,7 +732,7 @@ case class GeneratorTF[State](
         // pprint.log(nodeCoeffs.output)
         nodeCoeffsEquationTermsTask(nodeCoeffs, HNil).map {
           case (terms, data) =>
-            groupEquations(terms) -> data
+            Equation.group(terms) -> data
         }
       case fmly =>
         val tskSet: Set[Task[(Set[EquationNode], TFData)]] =
@@ -742,7 +742,7 @@ case class GeneratorTF[State](
         val eqnTask: Task[Set[Equation]] = Task
           .gather(tskSet.map(s => s.map(_._1)))
           .map(_.flatten)
-          .map(groupEquations)
+          .map(Equation.group)
         val dataTask: Task[TFData] = Task
           .gather(tskSet.map(s => s.map(_._2)))
           .map(_.foldLeft(baseData)(_ ++ _))

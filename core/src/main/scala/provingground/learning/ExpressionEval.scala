@@ -2,7 +2,7 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD, _}, HoTT._
 import monix.eval._, monix.tail._
 
-import GeneratorVariables._, TermRandomVars._
+import GeneratorVariables._, TermRandomVars._, Expression._
 
 import annotation.tailrec
 
@@ -256,7 +256,7 @@ case class ExpressionEval(
     .fold[Expression](Literal(0))(_ + _)
 
   val initVarGroups
-      : Map[(RandomVar[_], Vector[_]), Set[GeneratorVariables.Expression]] =
+      : Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
       .collect {
         case InitialVal(variable) => variable
@@ -268,7 +268,7 @@ case class ExpressionEval(
       }
 
   val finalVarGroups
-      : Map[(RandomVar[_], Vector[_]), Set[GeneratorVariables.Expression]] =
+      : Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
       .collect {
         case FinalVal(variable) => variable
@@ -636,7 +636,7 @@ case class ExpressionEval(
   def unitJet(p: Map[Expression, Double], exp: Expression): Jet[Double] =
     WithP(p).spireVarProbs(exp)
 
-  val mvs: VectorSpace[Map[GeneratorVariables.Expression, Double], Double] =
+  val mvs: VectorSpace[Map[Expression, Double], Double] =
     implicitly[VectorSpace[Map[Expression, Double], Double]]
 
 }
