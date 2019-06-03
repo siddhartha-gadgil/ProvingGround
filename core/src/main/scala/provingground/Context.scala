@@ -22,6 +22,14 @@ object Context {
 
     def exportTyp(typ: Typ[Term]): Typ[Term] = typ
 
+    def exportStrict(t: Term): Term = t
+
+    def exportTypStrict(typ: Typ[Term]): Typ[Term] = typ
+
+    def importOpt(t: Term): Option[Term] = Some(t)
+
+    def importTypOpt(t: Typ[Term]): Option[Typ[Term]] = Some(t)
+
     val valueOpt: Option[Term] = None
   }
 
@@ -33,10 +41,11 @@ object Context {
     def subs(x: Term, y: Term) = Defn(name.replace(x, y), value.replace(x, y))
   }
 
-  case class AppendDefn[U <: Term with Subs[U]](init: Context,
-                                                defn: Defn[U],
-                                                global: Boolean)
-      extends Context {
+  case class AppendDefn[U <: Term with Subs[U]](
+      init: Context,
+      defn: Defn[U],
+      global: Boolean
+  ) extends Context {
 
     def subs(x: Term, y: Term) =
       AppendDefn(init.subs(x, y), defn.subs(x, y), global)
@@ -58,6 +67,16 @@ object Context {
 
     def exportTyp(t: Typ[Term]): Typ[Term] =
       init.exportTyp(t.replace(defn.name, defn.value))
+
+    def exportStrict(t: Term): Term =
+      init.exportStrict(t.replace(defn.name, defn.value))
+
+    def exportTypStrict(typ: Typ[Term]): Typ[Term] =
+      init.exportTypStrict(typ.replace(defn.name, defn.value))
+
+    def importOpt(t: Term): Option[Term] = Some(t)
+
+    def importTypOpt(t: Typ[Term]): Option[Typ[Term]] = Some(t)
   }
 
   case class AppendConstant[U <: Term with Subs[U]](init: Context, constant: U)
@@ -80,6 +99,14 @@ object Context {
     def export(t: Term): Term = init.export(t)
 
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
+
+    def exportStrict(t: Term): Term = init.exportStrict(t)
+
+    def exportTypStrict(typ: Typ[Term]): Typ[Term] = init.exportTypStrict(typ)
+
+    def importOpt(t: Term): Option[Term] = init.importOpt(t)
+
+    def importTypOpt(t: Typ[Term]): Option[Typ[Term]] = init.importTypOpt(t)
   }
 
   case class AppendIndDef(init: Context, defn: ExstInducStrucs)
@@ -101,6 +128,14 @@ object Context {
     def export(t: Term): Term = init.export(t)
 
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
+
+    def exportStrict(t: Term): Term = init.exportStrict(t)
+
+    def exportTypStrict(typ: Typ[Term]): Typ[Term] = init.exportTypStrict(typ)
+
+    def importOpt(t: Term): Option[Term] = init.importOpt(t)
+
+    def importTypOpt(t: Typ[Term]): Option[Typ[Term]] = init.importTypOpt(t)
   }
 
   sealed trait Role
@@ -109,10 +144,11 @@ object Context {
 
   case object Consider extends Role
 
-  case class AppendTerm[U <: Term with Subs[U]](init: Context,
-                                                term: U,
-                                                role: Role)
-      extends Context {
+  case class AppendTerm[U <: Term with Subs[U]](
+      init: Context,
+      term: U,
+      role: Role
+  ) extends Context {
     def subs(x: Term, y: Term) =
       AppendTerm(init.subs(x, y), term.replace(x, y), role)
 
@@ -131,6 +167,14 @@ object Context {
     def export(t: Term): Term = init.export(t)
 
     def exportTyp(t: Typ[Term]): Typ[Term] = init.exportTyp(t)
+
+    def exportStrict(t: Term): Term = init.exportStrict(t)
+
+    def exportTypStrict(typ: Typ[Term]): Typ[Term] = init.exportTypStrict(typ)
+
+    def importOpt(t: Term): Option[Term] = init.importOpt(t)
+
+    def importTypOpt(t: Typ[Term]): Option[Typ[Term]] = init.importTypOpt(t)
   }
 
   case class AppendVariable[U <: Term with Subs[U]](init: Context, variable: U)
@@ -155,6 +199,23 @@ object Context {
 
     def exportTyp(t: Typ[Term]): Typ[Term] =
       init.exportTyp(if (t.dependsOn(variable)) variable ~>: t else t)
+
+    def exportStrict(t: Term): Term = init.exportStrict(variable :~> t)
+
+    def exportTypStrict(typ: Typ[Term]): Typ[Term] =
+      init.exportTypStrict(variable ~>: typ)
+
+    def importOpt(t: Term): Option[Term] = 
+      init.importOpt(t).flatMap{
+        case lm: LambdaLike[u, v] if lm.dom == variable.typ => Some(lm.value.replace(lm.variable, variable))
+        case _ => None
+      }
+
+    def importTypOpt(t: Typ[Term]): Option[Typ[Term]] = 
+      init.importTypOpt(t).flatMap{
+        case pd: PiDefn[u, v] if pd.domain == variable.typ => Some(pd.value.replace(pd.variable, variable))
+        case _ => None
+      }
   }
 
   def consider(ts: Term*): Context = Empty.consider(ts: _*)
@@ -186,6 +247,14 @@ sealed trait Context {
 
   def exportTyp(typ: Typ[Term]): Typ[Term]
 
+  def exportStrict(t: Term): Term
+
+  def exportTypStrict(typ: Typ[Term]): Typ[Term]
+
+  def importOpt(t: Term): Option[Term]
+
+  def importTypOpt(t: Typ[Term]): Option[Typ[Term]]
+
   def define[U <: Term with Subs[U]](name: Term, value: U) =
     AppendDefn(this, Defn(name, value), global = true)
 
@@ -210,8 +279,10 @@ sealed trait Context {
 
   def given[U <: Term with Subs[U]](v: Term): Context = addVariable(v)
 
-  def introduce[U <: Term with Subs[U]](t: U,
-                                        role: Role = Consider): AppendTerm[U] =
+  def introduce[U <: Term with Subs[U]](
+      t: U,
+      role: Role = Consider
+  ): AppendTerm[U] =
     AppendTerm(this, t, role)
 
   def consider(ts: Term*): Context =

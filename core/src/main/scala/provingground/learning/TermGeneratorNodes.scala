@@ -1297,6 +1297,19 @@ object TermRandomVars {
 
   case object Goals extends RandomVar[Typ[Term]]
 
+  case class ContextTerms(ctx: Context) extends RandomVar[Term]
+
+  case class ContextTyps(ctx: Context) extends RandomVar[Typ[Term]]
+
+  def contextTermNode(ctx: Context, varWeight: Double) : GeneratorNode[Term] = 
+    Island[Term, TermState, Term, Unit](
+      ContextTerms(ctx),
+      (_) => Terms,
+      ts => (ts.contextInit(ctx, varWeight), ()),
+      {case (_, term) => ctx.export(term)},
+      {case (_, ts) => ts.contextImport(ctx)}
+    )
+
   /**
     * distribution of functions : as existentials, not as terms
     */
@@ -1690,6 +1703,38 @@ case class TermState(
       },
       Context.AppendVariable(context, x)
     )
+
+  def contextExport(ctx: Context) =
+      TermState(
+        terms.map(ctx.exportStrict(_)),
+        typs.map(ctx.exportTypStrict(_)),
+        vars.filterNot(ctx.variables.contains(_)),
+        inds,
+        goals.map(ctx.exportTypStrict(_)),
+        Context.Empty
+      )
+
+  def contextInit(ctx: Context, varWeight: Double) = {
+    val typVars = ctx.variables.collect{case tp: Typ[u] => tp: Typ[Term]}
+    TermState(
+      ((terms * (1 - varWeight)) ++ (FD.uniform(ctx.variables) * varWeight)).safeNormalized,
+      ((typs * (1 - varWeight)) ++ (FD.uniform(typVars) * varWeight)).safeNormalized,
+      vars ++ ctx.variables,
+      inds,
+      goals.mapOpt(ctx.importTypOpt(_)),
+      ctx
+    )
+  }
+
+  def contextImport(ctx: Context) =
+      TermState(
+        terms.mapOpt(ctx.importOpt(_)),
+        typs.mapOpt(ctx.importTypOpt(_)),
+        vars ++ ctx.variables,
+        inds,
+        goals.mapOpt(ctx.importTypOpt(_)),
+        ctx
+      )
 }
 
 object TermState {
