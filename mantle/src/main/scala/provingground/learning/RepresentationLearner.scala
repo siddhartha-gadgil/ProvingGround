@@ -67,3 +67,13 @@ class RepresentationLearner[A](
         elems.map{a => a -> vectors.getWordVector(indexMap(a).toString)}.toMap
 
 }
+
+object RepresentationLearner{
+  def fromEquationNodes(eqs: Set[EquationNode], numPaths: Int, length: Int) : RepresentationLearner[GeneratorVariables.Variable[_]] = 
+    {
+      val m = EquationNode.backMap(eqs)
+      val bp = new BackPaths(m)
+      val paths = bp.randomPaths(numPaths, length)
+      new RepresentationLearner(paths)
+    }
+}
