@@ -76,9 +76,11 @@ case class ForceDirectedVectors[A](
       dim,
       R
     ) {
-  val gaussian = spire.random.Gaussian[Double](0, R)
 
-  def gaussianVector(n: Int) = gaussian.sample[Vector](n)
+  import spire.random._
+  val gaussian : Dist[Double] = spire.random.Gaussian[Double](0, R)
+
+  def gaussianVector(n: Int) : Vector[Double] = gaussian.sample[Vector](n)
 
   def randomPosition: Map[A, Vector[Double]] =
     vertices.map { a =>

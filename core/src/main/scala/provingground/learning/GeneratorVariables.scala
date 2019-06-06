@@ -246,6 +246,18 @@ object Expression {
     case a         => Vector(a)
   }
 
+  def varFactors(exp: Expression) : Vector[Variable[_]] = exp match {
+    case FinalVal(v: Variable[_]) => Vector(v)
+    case Product(x, y) => varFactors(x) ++ varFactors(y)
+    case _ => Vector()
+  }
+
+  def coeffFactor(exp: Expression) : Option[Coeff[_]] = exp match {
+    case cf: Coeff[_] => Some(cf)
+    case Product(x, y) => coeffFactor(x) orElse(coeffFactor(y))
+    case _ => None
+  }
+
   def h[A](pDist: Map[A, Expression]): Expression =
     pDist.map { case (_, p) => -p * Log(p) }.reduce[Expression](_ + _)
 
@@ -389,6 +401,13 @@ case class Equation(lhs: Expression, rhs: Expression) {
   override def toString = s"($lhs) == ($rhs)"
 }
 
+object EquationNode{
+  def backMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[_],Set[Set[GeneratorVariables.Variable[_]]]] = 
+    eqs.collect{
+      case EquationNode(FinalVal(v: Variable[_]), rhs) => (v : Variable[_] )-> varFactors(rhs).toSet
+    }.groupBy(_._1).mapValues(s => s.map(_._2))
+}
+
 case class EquationNode(lhs: Expression, rhs: Expression) {
   def *(sc: Expression) = EquationNode(lhs, rhs * sc)
 
@@ -404,6 +423,8 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
   def mapVars(f: Variable[_] => Variable[_]) =
     EquationNode(lhs.mapVars(f), rhs.mapVars(f))
 }
+
+
 
 object Equation{
   def group(ts: Set[EquationNode]): Set[Equation] =
