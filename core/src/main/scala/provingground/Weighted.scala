@@ -19,7 +19,11 @@ object Weighted {
     if (t - dist.head.weight < 0) dist.head.elem
     else pick(dist.tail, t - dist.head.weight)
 
-  implicit def rw[A: ReadWriter]: ReadWriter[Weighted[A]] = ???
+  implicit def rw[A: ReadWriter]: ReadWriter[Weighted[A]] = 
+    readwriter[ujson.Value].bimap(
+      {case Weighted(elem, weight) => ujson.Obj("element" -> write(elem), "weight" -> ujson.Num(weight))}, 
+      json => Weighted(read[A](json.obj("element")), json.obj("weight").num)
+      )
 
   def sumWeigths[T](seq: Seq[Weighted[T]]) = seq.map(_.weight).sum
 
