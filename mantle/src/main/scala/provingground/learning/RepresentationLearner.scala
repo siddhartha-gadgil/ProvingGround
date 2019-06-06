@@ -28,6 +28,8 @@ class RepresentationLearner[A](
   val elemMap
       : Map[Int, A] = elems.zipWithIndex.map { case (a, n) => (n, a) }.toMap
 
+  val elemCount : Map[A, Int] = elems.groupBy(identity(_)).mapValues(_.size)
+
   val indexMap: Map[A, Int] = elems.zipWithIndex.toMap
 
   def seq(v: Vector[A]) = new Sequence(v.map(a => IntElem(indexMap(a))).asJava)
