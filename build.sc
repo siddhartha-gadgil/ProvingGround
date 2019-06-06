@@ -205,7 +205,11 @@ val mantleLibs = List(
   ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:1.2.8",
   ivy"com.lihaoyi::os-lib:0.2.5",
-  ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r"
+  ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r",
+  ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta4",
+  ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta4",
+  ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta4",
+    ivy"org.nd4j:nd4j-native-platform:1.0.0-beta4"
 )
 
 def gitlog() = {

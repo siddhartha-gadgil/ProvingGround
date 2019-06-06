@@ -302,24 +302,21 @@ lazy val nlp = (project in file("nlp"))
 //   .settings(baseSettings: _*)
 //   .dependsOn(coreJVM)
 
-// lazy val deepwalk = (project in file("deepwalk"))
-//   .settings(
-//     name := "DeepWalk4s",
-//     classpathTypes += "maven-plugin",
-//     libraryDependencies ++= Seq(
-//       "org.deeplearning4j" % "deeplearning4j-core"  % "0.7.2",
-//       "org.deeplearning4j" % "deeplearning4j-graph" % "0.7.2",
-//       "org.nd4j"           % "nd4j-native-platform" % "0.7.2",
-//       "org.deeplearning4j" % "deeplearning4j-nlp"   % "0.7.2",
-// //              "org.deeplearning4j" % "deeplearning4j-ui" % "0.7.2",
-//       "org.nd4j"    % "nd4j-native"   % "0.7.2",
-//       "com.lihaoyi" % "ammonite"      % ammV % "test" cross CrossVersion.full,
-//       "com.lihaoyi" %% "ammonite-ops" % ammV
-//     )
-//   )
-//   .settings(baseSettings: _*)
-//   .settings(initialCommands in (Test, console) :=
-//     s"""ammonite.Main("import scala.collection.JavaConversions._").run() """)
+lazy val deepwalk = (project in file("deepwalk"))
+  .settings(
+    name := "DeepWalk4s",
+    classpathTypes += "maven-plugin",
+    libraryDependencies ++= Seq(
+      "org.deeplearning4j" % "deeplearning4j-core"  % "1.0.0-beta4",
+      "org.deeplearning4j" % "deeplearning4j-graph" % "1.0.0-beta4",
+      "org.nd4j"           % "nd4j-native-platform" % "1.0.0-beta4",
+      "org.deeplearning4j" % "deeplearning4j-nlp"   % "1.0.0-beta4",
+//              "org.deeplearning4j" % "deeplearning4j-ui" % "1.0.0-beta4",
+      "org.nd4j"    % "nd4j-native"   % "1.0.0-beta4"
+    )
+  )
+  .settings(baseSettings: _*)
+  
 
 // lazy val playServer = (project in file("play-server"))
 //   .enablePlugins(PlayScala)
