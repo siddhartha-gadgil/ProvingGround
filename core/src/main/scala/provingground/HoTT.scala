@@ -185,7 +185,7 @@ object HoTT {
 
       val res =
         if (isWitness(x) || x == y) self.asInstanceOf[U with Subs[U]]
-        else if (self == x) y.asInstanceOf[U with Subs[U]]
+        else if (self == x) Try(y.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
         else
           (x, y) match {
             case (ab: AbsPair[u, v], cd: AbsPair[w, x])
