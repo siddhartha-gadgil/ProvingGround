@@ -28,7 +28,7 @@ class RepresentationLearner[A](
   val elemMap
       : Map[Int, A] = elems.zipWithIndex.map { case (a, n) => (n, a) }.toMap
 
-  val elemCount : Map[A, Int] = elems.groupBy(identity(_)).mapValues(_.size)
+  val elemCount: Map[A, Int] = elems.groupBy(identity(_)).mapValues(_.size)
 
   val indexMap: Map[A, Int] = elems.zipWithIndex.toMap
 
@@ -72,7 +72,7 @@ class RepresentationLearner[A](
 }
 
 object RepresentationLearner {
-  def equationNodesSampled(
+  def equationNodesBranchedSampled(
       eqs: Set[EquationNode],
       numPaths: Int,
       length: Int,
@@ -83,6 +83,23 @@ object RepresentationLearner {
     val m     = EquationNode.backMap(eqs)
     val bp    = new BackPaths(m)
     val paths = bp.randomPaths(numPaths, length)
-    new RepresentationLearner(paths,vectorLength, minWordFrequency, batchSize)
+    new RepresentationLearner(paths, vectorLength, minWordFrequency, batchSize)
+  }
+
+  import Expression.Coeff
+
+  def equationNodesSampled(
+      eqs: Set[EquationNode],
+      numPaths: Int,
+      length: Int,
+      coeffWeights: Coeff[_] => Double = (_) => 1,
+      vectorLength: Int = 150,
+      minWordFrequency: Int = 5,
+      batchSize: Int = 250
+  ): RepresentationLearner[GeneratorVariables.Variable[_]] = {
+    val m     = EquationNode.backCoeffMap(eqs)
+    val bp    = WeightedBackPaths(m, coeffWeights)
+    val paths = bp.unifRandomPaths(numPaths, length)
+    new RepresentationLearner(paths, vectorLength, minWordFrequency, batchSize)
   }
 }

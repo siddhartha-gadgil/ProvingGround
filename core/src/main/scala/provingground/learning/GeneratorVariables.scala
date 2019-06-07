@@ -406,6 +406,12 @@ object EquationNode{
     eqs.collect{
       case EquationNode(FinalVal(v: Variable[_]), rhs) => (v : Variable[_] )-> varFactors(rhs).toSet
     }.groupBy(_._1).mapValues(s => s.map(_._2))
+
+  def backCoeffMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Vector[(Expression.Coeff[_], Vector[GeneratorVariables.Variable[_]])]] = 
+  eqs.collect{
+    case EquationNode(FinalVal(v: Variable[_]), rhs) => (v : Variable[_] )-> coeffFactor(rhs).map(cf => (cf : Coeff[_] ) -> varFactors(rhs))
+  }.groupBy(_._1).mapValues(s => s.toVector.map(_._2).flatten)
+
 }
 
 case class EquationNode(lhs: Expression, rhs: Expression) {
