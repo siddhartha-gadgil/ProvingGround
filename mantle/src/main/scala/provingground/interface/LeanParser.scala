@@ -200,17 +200,17 @@ class LeanParser(initMods: Seq[Modification],
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
       argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
       recFnT = getRec(indMod, argsFmlyTerm)
-      _      = pprint.log(s"$vars")
-      vec <- parseVec(xs, vars).executeWithOptions(_.enableAutoCancelableRunLoops) // TODO should interleave data with intro rules.
-      vecInter = indMod.interleaveData(vec) // Use this
-      _ = pprint.log(s"${vec.map(_.fansi)}")
-      _ = if (vec != vecInter) {
-        pprint.log(s"$vecInter replaces $vec")
-        println(vecInter.map(_.fansi))
-        println(vec.map(_.fansi))
-        println(vecInter.map(_.typ.fansi))
-        println(vec.map(_.typ.fansi))
-      }
+      // _      = pprint.log(s"$vars")
+      vec <- parseVec(xs, vars).executeWithOptions(_.enableAutoCancelableRunLoops) 
+      vecInter = indMod.interleaveData(vec) 
+      // _ = pprint.log(s"${vec.map(_.fansi)}")
+      // _ = if (vec != vecInter) {
+      //   pprint.log(s"$vecInter replaces $vec")
+      //   println(vecInter.map(_.fansi))
+      //   println(vec.map(_.fansi))
+      //   println(vecInter.map(_.typ.fansi))
+      //   println(vec.map(_.typ.fansi))
+      // }
       recFn <- recFnT
       resT = Task(foldFuncLean(recFn, vecInter)).onErrorRecoverWith {
         case err: ApplnFailException =>
