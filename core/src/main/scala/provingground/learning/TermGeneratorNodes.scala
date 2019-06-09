@@ -77,6 +77,33 @@ object TermGeneratorNodes {
 
     override def toString = "Proj2"
   }
+
+  case class AddVar(typ: Typ[Term], wt: Double)
+      extends (TermState => (TermState, Term)) {
+    def apply(ts: TermState): (TermState, Term) = ts.addVar(typ, wt)
+
+    override def toString = "AddVar"
+  }
+
+  case object GetVar extends (Typ[Term] => Term) {
+    def apply(typ: Typ[Term]): Term = typ.Var
+
+    override def toString = "GetVar"
+  }
+
+  case object InIsle extends ((Term, TermState) => TermState) {
+    def apply(t: Term, state: TermState): TermState = state.inIsle(t)
+
+    override def toString = "InIsle"
+  }
+
+  case object Base extends TermGeneratorNodes[TermState](
+    { case (fn, arg) => applyFunc(fn.func, arg) },
+    { case (fn, arg) => Unify.appln(fn.func, arg) },
+    AddVar(_, 0.3),
+    GetVar,
+    InIsle
+  )
 }
 
 /**

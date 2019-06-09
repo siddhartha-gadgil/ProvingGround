@@ -13,7 +13,7 @@ import interface._
 import scala.concurrent._
 import duration._
 import upickle.default.{read, write, ReadWriter => RW, readwriter}
-import TermGenParams._
+import TermGenParams._, TermGeneratorNodes._
 import ujson.Value
 
 import scala.collection.mutable
@@ -66,24 +66,6 @@ object TermGenParams {
   implicit def rw: RW[TermGenParams] =
     readwriter[ujson.Value].bimap(_.toJson, fromJson)
 
-  case class AddVar(typ: Typ[Term], wt: Double)
-      extends (TermState => (TermState, Term)) {
-    def apply(ts: TermState): (TermState, Term) = ts.addVar(typ, wt)
-
-    override def toString = "AddVar"
-  }
-
-  case object GetVar extends (Typ[Term] => Term) {
-    def apply(typ: Typ[Term]): Term = typ.Var
-
-    override def toString = "GetVar"
-  }
-
-  case object InIsle extends ((Term, TermState) => TermState) {
-    def apply(t: Term, state: TermState): TermState = state.inIsle(t)
-
-    override def toString = "InIsle"
-  }
 }
 
 case class TermGenParamsNodes(tg: TermGenParams)
@@ -116,7 +98,8 @@ case class TermGenParams(
     contraW: Double = 0
 ) { tg =>
 
-  val Gen = TermGenParamsNodes(this)
+  val Gen: TermGeneratorNodes[TermState] =
+    if (varWeight == 0.3) TermGeneratorNodes.Base else TermGenParamsNodes(this)
 
   val toJson: ujson.Value =
     ujson.Obj(
@@ -171,8 +154,7 @@ case class TermGenParams(
       ((inducFuncFoldedNode | (typSort, Typs)) -> inducDefW) ::
       Typs.target[TermState, Double, Typ[Term]]
 
-  val inducNodes
-      : NodeCoeffs.Cons[TermState, Double, HNil, ExstInducDefn] =
+  val inducNodes: NodeCoeffs.Cons[TermState, Double, HNil, ExstInducDefn] =
     (Init(InducDefns) -> 1.0) ::
       InducDefns.target[TermState, Double, ExstInducDefn]
 
@@ -181,8 +163,7 @@ case class TermGenParams(
     (domainForDefnNodeFamily -> 1.0) ::
       DomForInduc.target[TermState, Double, Term]
 
-  val goalNodes
-      : NodeCoeffs.Cons[TermState, Double, HNil, Typ[Term]] = (Init(
+  val goalNodes: NodeCoeffs.Cons[TermState, Double, HNil, Typ[Term]] = (Init(
     Goals
   ) -> 1.0) :: Goals
     .target[TermState, Double, Typ[Term]]
@@ -222,18 +203,18 @@ case class TermGenParams(
 
   val termsByTypNodes
       : NodeCoeffs.Cons[TermState, Double, Typ[Term] :: HNil, Term] =
-    (TermsWithTyp.init       -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
-      (wtN(applnNode)        -> appW) ::
-      (wtN(unifApplnNode)    -> unAppW) ::
-      (wtN(applnByArgNode)   -> argAppW) ::
-      (backwardTypNodeFamily -> (termInit * goalWeight + lmW)) ::
+    (TermsWithTyp.init            -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
+      (wtN(applnNode)             -> appW) ::
+      (wtN(unifApplnNode)         -> unAppW) ::
+      (wtN(applnByArgNode)        -> argAppW) ::
+      (backwardTypNodeFamily      -> (termInit * goalWeight + lmW)) ::
       (curryBackwardTypNodeFamily -> (termInit * goalWeight + lmW)) :: // Warning: excess total weight
-      (incl1TypNodeFamily -> (termInit * goalWeight + lmW)/2) ::
-      (incl2TypNodeFamily -> (termInit * goalWeight + lmW)/2) ::
-      (typAsCodNodeFamily    -> typAsCodW) ::
-      (targetInducNodeFamily -> targetInducW) ::
-      (solveFamily           -> solverW) ::
-      (typViaZeroFamily      -> contraW) ::
+      (incl1TypNodeFamily         -> (termInit * goalWeight + lmW) / 2) ::
+      (incl2TypNodeFamily         -> (termInit * goalWeight + lmW) / 2) ::
+      (typAsCodNodeFamily         -> typAsCodW) ::
+      (targetInducNodeFamily      -> targetInducW) ::
+      (solveFamily                -> solverW) ::
+      (typViaZeroFamily           -> contraW) ::
       TermsWithTyp.target[TermState, Double, Term]
 
   val typOrFmlyNodes: NodeCoeffs.Cons[TermState, Double, HNil, Term] =
@@ -275,7 +256,15 @@ case class TermGenParams(
     for {
       terms <- monixFD.varDist(initState)(Terms, epsilon, limit)
       typs  <- monixFD.varDist(initState)(Typs, epsilon, limit)
-    } yield TermState(terms, typs, initState.vars, initState.inds, initState.goals, initState.context)
+    } yield
+      TermState(
+        terms,
+        typs,
+        initState.vars,
+        initState.inds,
+        initState.goals,
+        initState.context
+      )
 
   def evolvedStateTask(
       initState: TermState,
