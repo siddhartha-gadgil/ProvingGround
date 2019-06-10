@@ -33,6 +33,70 @@ class LeanParserEq(
       indTaskMap: Map[Name, Task[TermIndMod]],
       log: LeanParser.Logger
     ) {
+
+  def funcFoldEqs(fn: Term, depth: Int, args: Vector[Term], result: Term) : Set[EquationNode] = 
+        if (depth < 1) Set()
+        else {
+            val coeff = Coeff(tg.foldFuncNode(fn, depth), Terms) 
+            val x = args.head
+            val y = fold(fn)(x)
+            val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
+            val eq = EquationNode(
+                FinalVal(Elem(result, FuncFoldVar(fn, depth))),
+                coeff * FinalVal(Elem(x, termsWithTyp(x.typ))) * FinalVal(Elem(result, tailVar))
+                )
+            funcFoldEqs(y, depth -1, args.tail, result) + eq
+        }
+
+  def recAppEq(
+      name: Name,
+      args: Vector[Expr],
+      exp: Expr,
+      vars: Vector[Term]
+  ): Task[(Term, Set[EquationNode])] =
+    for {
+      indMod <- getMemTermIndMod(name, exp)
+      (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
+      argsFmlyTermEq <- parseVecEq(argsFmly, vars).executeWithOptions(
+        _.enableAutoCancelableRunLoops
+      )
+      recFnT = getRec(indMod, argsFmlyTermEq._1)
+      vecEq <- parseVecEq(xs, vars).executeWithOptions(
+        _.enableAutoCancelableRunLoops
+      )
+      vecInter = indMod.interleaveData(vecEq._1)
+      recFn <- recFnT
+      resT = Task(foldFuncLean(recFn, vecInter)).onErrorRecoverWith {
+        case err: ApplnFailException =>
+          throw RecFoldException(indMod, recFn, argsFmlyTermEq._1, vecInter, err)
+      }
+      res <- resT
+      target = recFn.typ
+      ind <- getExstInduc(indMod, argsFmlyTermEq._1)
+    } yield {        
+        val node = tg.targetInducFuncsFolded(ind, target).get
+        val coeff = Coeff(node, Terms)
+        val depth = ind.intros.size
+        val foldVar = if (depth == 0) AtomVar(res) else FuncFoldVar(recFn, depth)
+        val baseEq = 
+            EquationNode(
+                FinalVal(Elem(res, Terms)),
+                coeff * FinalVal(Elem(target, Typs)) * FinalVal(Elem(res, foldVar))
+            )
+        val foldEqs = funcFoldEqs(recFn, depth, vecInter, res)
+        res -> ((argsFmlyTermEq._2 union vecEq._2 union foldEqs) + baseEq)
+    }
+
+    def parseVecEq(vec: Vector[Expr], vars: Vector[Term]): Task[(Vector[Term], Set[EquationNode])] =
+    vec match {
+      case Vector() => Task.pure(Vector() -> Set())
+      case x +: ys =>
+        for {
+          head <- parseEq(x, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+          tail <- parseVecEq(ys, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+        } yield (head._1 +: tail._1) -> (head._2 union tail._2)
+    }
+
   def parseEq(
       exp: Expr,
       vars: Vector[Term] = Vector()
@@ -57,7 +121,7 @@ class LeanParserEq(
       case RecIterAp(name, args) =>
         pprint.log(s"Seeking RecIterAp $name, $args, $vars")
         pprint.log(s"${vars.headOption.map(isWitness)}")
-        recApp(name, args, exp, vars).map(_ -> ???)
+        recAppEq(name, args, exp, vars)
 
       case App(f, a) =>
         // pprint.log(s"Applying $f to $a")

@@ -222,6 +222,16 @@ object LeanToTermMonix {
         getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
+  def getExstInduc(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[ExstInducDefn] =
+  ind match {
+    case smp: SimpleIndMod =>
+      // pprint.log(s"Getting rec using simple IndMod ${ind.name}")
+      getSimpleExstInduc(smp, Task.pure(argsFmlyTerm))
+    case indInd: IndexedIndMod =>
+      // pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
+      getIndexedExstInduc(indInd, Task.pure(argsFmlyTerm))
+  }
+
   def getSimpleExstInduc(
       ind: SimpleIndMod,
       argsFmlyTerm: Task[Vector[Term]]
