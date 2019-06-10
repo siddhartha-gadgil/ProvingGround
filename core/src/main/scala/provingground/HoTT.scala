@@ -1885,8 +1885,8 @@ object HoTT {
 
     override def equals(that: Any): Boolean = that match {
       case l: LambdaLike[u, v] if l.variable.typ == variable.typ =>
-        l.value.replace(l.variable, variable) == value &&
-          value.replace(variable, l.variable) == l.value
+        Try(l.value.replace(l.variable, variable) == value &&
+          value.replace(variable, l.variable) == l.value).getOrElse(false)
       case _ => false
     }
 
