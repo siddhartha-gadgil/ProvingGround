@@ -181,10 +181,10 @@ object HoTT {
       *
       */
     def replace(x: Term, y: Term): U with Subs[U] = {
-      Subs.hook(self.asInstanceOf[U], x, y)
+      Try(Subs.hook(self.asInstanceOf[U], x, y))
 
       val res =
-        if (isWitness(x) || x == y) self.asInstanceOf[U with Subs[U]]
+        if (isWitness(x) || x == y) Try(self.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
         else if (self == x) Try(y.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
         else
           (x, y) match {
@@ -212,7 +212,7 @@ object HoTT {
             case _ => subs(x, y)
           }
 
-      Subs.doneHook(self.asInstanceOf[U], x, y, res)
+      Try(Subs.doneHook(self.asInstanceOf[U], x, y, res))
       res
     }
 
