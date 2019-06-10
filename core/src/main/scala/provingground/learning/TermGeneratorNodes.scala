@@ -654,17 +654,16 @@ class TermGeneratorNodes[InitState](
     */
   def foldFuncNode(
       t: Term,
-      depth: Int,
-      output: RandomVar[Term]
-  ): GeneratorNode[Term] =
-    if (depth < 1) Atom(t, output)
+      depth: Int)
+      : GeneratorNode[Term] =
+    if (depth < 1) Atom(t, AtomVar(t))
     else
       t match {
         case fn: FuncLike[u, v] =>
           FlatMap(
             termsWithTyp(fn.dom),
-            (x: Term) => foldFuncNode(fn(x.asInstanceOf[u]), depth - 1, output),
-            output
+            (x: Term) => foldFuncNode(fn(x.asInstanceOf[u]), depth - 1),
+            FuncFoldVar(t, depth)
           )
       }
 
@@ -722,7 +721,7 @@ class TermGeneratorNodes[InitState](
       (codom: Typ[Term]) => {
         val fnOpt = ind.ind.recOpt(dom, codom)
         fnOpt.map { fn =>
-          foldFuncNode(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size)
         }
       },
       Terms
@@ -742,7 +741,7 @@ class TermGeneratorNodes[InitState](
       (codom: Term) => {
         val fnOpt = ind.ind.inducOpt(dom, codom)
         fnOpt.map { fn =>
-          foldFuncNode(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size)
         }
       },
       Terms
@@ -876,14 +875,14 @@ class TermGeneratorNodes[InitState](
       case ft: FuncTyp[u, v] =>
         val fnOpt = ind.ind.recOpt(ft.dom, ft.codom)
         fnOpt.map { fn =>
-          foldFuncNode(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size)
         }
       case _ =>
         goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
           case (dom, targ) =>
             val fnOpt = ind.ind.inducOpt(dom, targ)
             fnOpt.map { fn =>
-              foldFuncNode(fn, ind.intros.size, Terms)
+              foldFuncNode(fn, ind.intros.size)
             }
         }
     }
@@ -1473,6 +1472,10 @@ object TermRandomVars {
     * distribution of existential inductive definitions
     */
   case object InducDefns extends RandomVar[ExstInducDefn]
+
+  case class AtomVar[U](atom: U) extends RandomVar[U]
+
+  case class FuncFoldVar(func: Term, depth: Int) extends RandomVar[Term]
 
   /**
     * atomic distribution to be included in generation
