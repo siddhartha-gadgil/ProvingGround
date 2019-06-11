@@ -74,7 +74,12 @@ case class MonixTangentFiniteDistributionEq[State](
   ): Task[(FD[Y], Set[EquationNode])] =
     if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationNode])
     else {
-      import GeneratorNode._
+      val lookup =
+          memo
+            .getNodeDist(initState, generatorNode, epsilon)
+            .map(op => Task.now(op))
+        import GeneratorNode._
+        val resultT: Task[(FD[Y], Set[EquationNode])] = lookup getOrElse {
       generatorNode match {
         case Atom(x, _) =>
           Task(FD.unif(x), Set.empty[EquationNode])
@@ -638,5 +643,7 @@ case class MonixTangentFiniteDistributionEq[State](
               case (fd, eqs) => fd.map(export(boat, _)).purge(epsilon) -> eqs
             } // exported result seen outside
       }
+    }
+    resultT
     }
 }
