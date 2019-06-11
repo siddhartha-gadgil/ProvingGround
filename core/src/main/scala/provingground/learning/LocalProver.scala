@@ -152,12 +152,12 @@ case class LocalProver(
     tg.nextStateTask(initState, cutoff, limit).memoize
 
   val mfd: MonixFiniteDistributionEq[TermState] =
-    MonixFiniteDistributionEq(tg.nodeCoeffSeq)
+    MonixFiniteDistributionEq(tg.nodeCoeffSeq, limit)
 
   lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq)
 
   val pairT: Task[(FiniteDistribution[Term], Set[EquationNode])] =
-    mfd.varDist(initState)(Terms, cutoff)
+    mfd.varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff)
 
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
     mf.varDist(initState)(rv, cutoff, limit)
@@ -172,8 +172,8 @@ case class LocalProver(
         baseState <- nextState
         tangState: TermState = baseState.tangent(x)
         eqnds <- equationNodes
-        mfdt = MonixTangentFiniteDistributionEq(tg.nodeCoeffSeq, baseState, eqnds)
-        teqnds <- mfdt.varDist(tangState)(Terms, cutoff * weight, limit).map(_._2)
+        mfdt = MonixTangentFiniteDistributionEq(tg.nodeCoeffSeq, baseState, eqnds, limit)
+        teqnds <- mfdt.varDist(tangState, EqDistMemo.empty[TermState])(Terms, cutoff * weight).map(_._2)
         tExpEval = ExpressionEval.fromStates(tangState, baseState, Equation.group(teqnds), tg, maxRatio, scale)
         expEv <- expressionEval
     } yield expEv.avgInit(tExpEval)
