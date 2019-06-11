@@ -835,8 +835,10 @@ object HoTT {
     def induc[U <: Term with Subs[U]](
         depcodom: Func[Term, Typ[U]]
     ): FuncLike[U, FuncLike[Term, U]] = {
+      val d = Unit.Var
       val x = depcodom(Star).Var
-      x :~> (InducFn(depcodom, x): FuncLike[Term, U])
+      if(depcodom(d).dependsOn(d)==false) { x :~> (RecFn(depcodom(d), x): Func[Term,U])}
+      else{x :~> (InducFn(depcodom, x): FuncLike[Term, U])}
     }
   }
 
