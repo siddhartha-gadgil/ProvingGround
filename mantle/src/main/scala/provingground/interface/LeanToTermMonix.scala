@@ -222,6 +222,32 @@ object LeanToTermMonix {
         getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
+  def getExstInduc(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[ExstInducDefn] =
+  ind match {
+    case smp: SimpleIndMod =>
+      // pprint.log(s"Getting rec using simple IndMod ${ind.name}")
+      getSimpleExstInduc(smp, Task.pure(argsFmlyTerm))
+    case indInd: IndexedIndMod =>
+      // pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
+      getIndexedExstInduc(indInd, Task.pure(argsFmlyTerm))
+  }
+
+  def getSimpleExstInduc(
+      ind: SimpleIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[ExstInducDefn] =
+    argsFmlyTerm.map { argsFmly =>
+      val params = argsFmly.init
+      val typ    = toTyp(foldFuncLean(ind.typF, params))
+      val intros = introsFold(ind, params)
+      val str0   = ExstInducStrucs.get(typ, introsFold(ind, params))
+      val str = params.foldRight(str0) {
+        case (x, s) => ExstInducStrucs.LambdaInduc(x, s)
+      }
+      val dfn = ExstInducDefn(typ, intros.toVector, str)
+      dfn
+    }
+
   def getRecSimple(
       ind: SimpleIndMod,
       argsFmlyTerm: Task[Vector[Term]]
@@ -264,6 +290,22 @@ object LeanToTermMonix {
 
     }
   }
+
+  def getIndexedExstInduc(
+      ind: IndexedIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[ExstInducDefn] =
+    argsFmlyTerm.map { argsFmly =>
+      val params = argsFmly.init
+      val typF    = foldFuncLean(ind.typF, params)
+      val intros = introsFold(ind, params)
+      val str0   = ExstInducStrucs.getIndexed(typF, introsFold(ind, params))
+      val str = params.foldRight(str0) {
+        case (x, s) => ExstInducStrucs.LambdaInduc(x, s)
+      }
+      val dfn = ExstInducDefn(typF, intros.toVector, str)
+      dfn
+    }
 
   def getRecIndexed(
       ind: IndexedIndMod,
@@ -716,11 +758,13 @@ case class LeanToTermMonix(
         } yield res
 
       case App(f, a) =>
-        Task.parZip2(
-          Task
-            .defer(parse(f, vars)),
-          Task.defer(parse(a, vars))
-        ).map{case (fn, x) => applyFuncWit(fn, x)}
+        Task
+          .parZip2(
+            Task
+              .defer(parse(f, vars)),
+            Task.defer(parse(a, vars))
+          )
+          .map { case (fn, x) => applyFuncWit(fn, x) }
       case Lam(domain, body) =>
         for {
           domTerm <- parse(domain.ty, vars)
@@ -730,7 +774,7 @@ case class LeanToTermMonix(
         } yield
           value match {
             case FormalAppln(fn, argu) if argu == x && fn.indepOf(x) => fn
-            case y if domain.prettyName.toString == "_"            => y
+            case y if domain.prettyName.toString == "_"              => y
             case _ =>
               lambda(x)(value)
             // if (value.typ.dependsOn(x)) LambdaTerm(x, value)

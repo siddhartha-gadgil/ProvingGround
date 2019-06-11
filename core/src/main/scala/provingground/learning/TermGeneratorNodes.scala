@@ -77,6 +77,33 @@ object TermGeneratorNodes {
 
     override def toString = "Proj2"
   }
+
+  case class AddVar(typ: Typ[Term], wt: Double)
+      extends (TermState => (TermState, Term)) {
+    def apply(ts: TermState): (TermState, Term) = ts.addVar(typ, wt)
+
+    override def toString = "AddVar"
+  }
+
+  case object GetVar extends (Typ[Term] => Term) {
+    def apply(typ: Typ[Term]): Term = typ.Var
+
+    override def toString = "GetVar"
+  }
+
+  case object InIsle extends ((Term, TermState) => TermState) {
+    def apply(t: Term, state: TermState): TermState = state.inIsle(t)
+
+    override def toString = "InIsle"
+  }
+
+  case object Base extends TermGeneratorNodes[TermState](
+    { case (fn, arg) => applyFunc(fn.func, arg) },
+    { case (fn, arg) => Unify.appln(fn.func, arg) },
+    AddVar(_, 0.3),
+    GetVar,
+    InIsle
+  )
 }
 
 /**
@@ -627,17 +654,16 @@ class TermGeneratorNodes[InitState](
     */
   def foldFuncNode(
       t: Term,
-      depth: Int,
-      output: RandomVar[Term]
-  ): GeneratorNode[Term] =
-    if (depth < 1) Atom(t, output)
+      depth: Int)
+      : GeneratorNode[Term] =
+    if (depth < 1) Atom(t, AtomVar(t))
     else
       t match {
         case fn: FuncLike[u, v] =>
           FlatMap(
             termsWithTyp(fn.dom),
-            (x: Term) => foldFuncNode(fn(x.asInstanceOf[u]), depth - 1, output),
-            output
+            (x: Term) => foldFuncNode(fn(x.asInstanceOf[u]), depth - 1),
+            FuncFoldVar(t, depth)
           )
       }
 
@@ -695,7 +721,7 @@ class TermGeneratorNodes[InitState](
       (codom: Typ[Term]) => {
         val fnOpt = ind.ind.recOpt(dom, codom)
         fnOpt.map { fn =>
-          foldFuncNode(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size)
         }
       },
       Terms
@@ -715,7 +741,7 @@ class TermGeneratorNodes[InitState](
       (codom: Term) => {
         val fnOpt = ind.ind.inducOpt(dom, codom)
         fnOpt.map { fn =>
-          foldFuncNode(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size)
         }
       },
       Terms
@@ -849,14 +875,14 @@ class TermGeneratorNodes[InitState](
       case ft: FuncTyp[u, v] =>
         val fnOpt = ind.ind.recOpt(ft.dom, ft.codom)
         fnOpt.map { fn =>
-          foldFuncNode(fn, ind.intros.size, Terms)
+          foldFuncNode(fn, ind.intros.size)
         }
       case _ =>
         goalDomainFmly(ind.ind, ind.typFamily, target).flatMap {
           case (dom, targ) =>
             val fnOpt = ind.ind.inducOpt(dom, targ)
             fnOpt.map { fn =>
-              foldFuncNode(fn, ind.intros.size, Terms)
+              foldFuncNode(fn, ind.intros.size)
             }
         }
     }
@@ -1446,6 +1472,10 @@ object TermRandomVars {
     * distribution of existential inductive definitions
     */
   case object InducDefns extends RandomVar[ExstInducDefn]
+
+  case class AtomVar[U](atom: U) extends RandomVar[U]
+
+  case class FuncFoldVar(func: Term, depth: Int) extends RandomVar[Term]
 
   /**
     * atomic distribution to be included in generation

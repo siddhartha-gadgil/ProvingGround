@@ -181,11 +181,11 @@ object HoTT {
       *
       */
     def replace(x: Term, y: Term): U with Subs[U] = {
-      Subs.hook(self.asInstanceOf[U], x, y)
+      Try(Subs.hook(self.asInstanceOf[U], x, y))
 
       val res =
-        if (isWitness(x) || x == y) self.asInstanceOf[U with Subs[U]]
-        else if (self == x) y.asInstanceOf[U with Subs[U]]
+        if (isWitness(x) || x == y) Try(self.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
+        else if (self == x) Try(y.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
         else
           (x, y) match {
             case (ab: AbsPair[u, v], cd: AbsPair[w, x])
@@ -212,7 +212,7 @@ object HoTT {
             case _ => subs(x, y)
           }
 
-      Subs.doneHook(self.asInstanceOf[U], x, y, res)
+      Try(Subs.doneHook(self.asInstanceOf[U], x, y, res))
       res
     }
 
@@ -1885,8 +1885,8 @@ object HoTT {
 
     override def equals(that: Any): Boolean = that match {
       case l: LambdaLike[u, v] if l.variable.typ == variable.typ =>
-        l.value.replace(l.variable, variable) == value &&
-          value.replace(variable, l.variable) == l.value
+        Try(l.value.replace(l.variable, variable) == value &&
+          value.replace(variable, l.variable) == l.value).getOrElse(false)
       case _ => false
     }
 
