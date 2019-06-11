@@ -13,14 +13,14 @@ import scala.concurrent._, duration._
 import MonixFiniteDistributionEq._, MonixTangentFiniteDistributionEq._
 
 object MonixTangentFiniteDistributionEq {
-  def average[V](
-      x: Task[(FD[V], Set[EquationNode])],
-      y: Task[(FD[V], Set[EquationNode])]
-  ): Task[(FD[V], Set[EquationNode])] =
+  def average[V, State](
+      x: Task[(FD[V], Set[EquationNode], EqDistMemo[State])],
+      y: Task[(FD[V], Set[EquationNode], EqDistMemo[State])]
+  ): Task[(FD[V], Set[EquationNode], EqDistMemo[State])] =
     for {
       a <- x
       b <- y
-    } yield (a._1 ++ b._1).safeNormalized -> (a._2 union b._2)
+    } yield ((a._1 ++ b._1).safeNormalized, (a._2 union b._2), a._3 ++ b._3 )
 }
 
 /**
@@ -71,38 +71,38 @@ case class MonixTangentFiniteDistributionEq[State](
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
-  ): Task[(FD[Y], Set[EquationNode])] =
-    if (epsilon > 1) Task.now((FD.empty[Y] , Set.empty[EquationNode]))
+  ): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
+    if (epsilon > 1) Task.now((FD.empty[Y] , Set.empty[EquationNode], memo))
     else {
       val lookup =
           memo
             .getNodeDist(initState, generatorNode, epsilon)
-            .map(op => Task.now(op))
+            .map{case (fd, eq) => Task.now((fd, eq, memo))}
         import GeneratorNode._
-        val resultT: Task[(FD[Y], Set[EquationNode])] = lookup getOrElse {
+        val resultT: Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] = lookup getOrElse {
       generatorNode match {
         case Atom(x, _) =>
-          Task(FD.unif(x), Set.empty[EquationNode])
+          Task(FD.unif(x), Set.empty[EquationNode], memo)
         case Init(input) =>
           val initDist = sd.value(initState)(input)
           val eqs = initDist.support.map { x =>
             EquationNode(finalProb(x, input), coeff * initProb(x, input))
           }
-          Task(initDist, eqs)
+          Task(initDist, eqs, memo)
         case Map(f, input, output) =>
           varDist(initState, memo)(input, epsilon).map {
-            case (fd, eqs) =>
+            case (fd, eqs, rm) =>
               val meqs = fd.support.map { (x) =>
                 EquationNode(
                   finalProb(f(x), output),
                   coeff * finalProb(x, input)
                 )
               }
-              (fd.map(f).purge(epsilon) , eqs.union(meqs))
+              (fd.map(f).purge(epsilon) , eqs.union(meqs), memo ++ rm)
           }
         case MapOpt(f, input, output) =>
           varDist(initState, memo)(input, epsilon).map {
-            case (fd, eqs) =>
+            case (fd, eqs, rm) =>
               val meqs =
                 for {
                   x <- fd.support
@@ -112,19 +112,19 @@ case class MonixTangentFiniteDistributionEq[State](
                     finalProb(y, output),
                     coeff * finalProb(x, input)
                   )
-              (fd.condMap(f).purge(epsilon) , eqs.union(meqs))
+              (fd.condMap(f).purge(epsilon) , eqs.union(meqs), memo ++ rm)
           }
         case ZipMap(f, input1, input2, output) =>
           val d1t = varDist(initState, memo)(input1, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, m1) => (fd.flatten , eqs, m1)
           }
           val d1b = baseVal(input1)
           val d2t = varDist(initState, memo)(input2, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, m2) => (fd.flatten , eqs, m2)
           }
           val d2b = baseVal(input2)
           val bt = Task.parZip2(d1b, d2t).map {
-            case ((xd, eqx), (yd, eqy)) =>
+            case ((xd, eqx), (yd, eqy, my)) =>
               val meqs =
                 for {
                   x <- xd.support
@@ -137,10 +137,10 @@ case class MonixTangentFiniteDistributionEq[State](
                   )
               (xd.zip(yd)
                 .map { case (x, y) => f(x, y) }
-                .purge(epsilon) , (eqx union eqy union meqs))
+                .purge(epsilon) , (eqx union eqy union meqs), memo ++  my)
           }
           val tb = Task.parZip2(d1t, d2b).map {
-            case ((xd, eqx), (yd, eqy)) =>
+            case ((xd, eqx, mx), (yd, eqy)) =>
               val meqs =
                 for {
                   x <- xd.support
@@ -153,20 +153,20 @@ case class MonixTangentFiniteDistributionEq[State](
                   )
               (xd.zip(yd)
                 .map { case (x, y) => f(x, y) }
-                .purge(epsilon) , (eqx union eqy union meqs))
+                .purge(epsilon) , (eqx union eqy union meqs), memo ++ mx)
           }
           average(bt, tb)
         case ZipMapOpt(f, input1, input2, output) =>
           val d1t = varDist(initState, memo)(input1, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, rm) => (fd.flatten , eqs, rm)
           }
           val d1b = baseVal(input1)
           val d2t = varDist(initState, memo)(input2, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, rm) => (fd.flatten , eqs, rm)
           }
           val d2b = baseVal(input2)
           val bt = Task.parZip2(d1b, d2t).map {
-            case ((xd, eqx), (yd, eqy)) =>
+            case ((xd, eqx), (yd, eqy, my)) =>
               val meqs =
                 for {
                   x <- xd.support
@@ -179,10 +179,10 @@ case class MonixTangentFiniteDistributionEq[State](
                   )
               (xd.zip(yd)
                 .condMap { case (x, y) => f(x, y) }
-                .purge(epsilon) , (eqx union eqy union meqs))
+                .purge(epsilon) , (eqx union eqy union meqs), memo ++ my)
           }
           val tb = Task.parZip2(d1t, d2b).map {
-            case ((xd, eqx), (yd, eqy)) =>
+            case ((xd, eqx, mx), (yd, eqy)) =>
               val meqs =
                 for {
                   x <- xd.support
@@ -195,12 +195,12 @@ case class MonixTangentFiniteDistributionEq[State](
                   )
               (xd.zip(yd)
                 .condMap { case (x, y) => f(x, y) }
-                .purge(epsilon) , (eqx union eqy union meqs))
+                .purge(epsilon) , (eqx union eqy union meqs), memo ++ mx)
           }
           average(bt, tb)
         case ZipFlatMap(baseInput, fiberVar, f, output) =>
           val baseDistT = varDist(initState, memo)(baseInput, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, rm) => (fd.flatten , eqs, rm)
           }
           average(
             baseVal(baseInput).flatMap {
@@ -211,11 +211,11 @@ case class MonixTangentFiniteDistributionEq[State](
                       case Weighted(x1, p1) =>
                         val fiberDistEqsT =
                           varDist(initState, memo)(fiberVar(x1), epsilon / p1)
-                            .map { case (fd, eqs) => (fd.flatten , eqs) }
+                            .map { case (fd, eqs, rm) => (fd.flatten , eqs, rm) }
                         val tve =
                           fiberDistEqsT
                             .map {
-                              case (fiberDist, fiberEqs) =>
+                              case (fiberDist, fiberEqs, mf) =>
                                 val fibPMF =
                                   for {
                                     Weighted(x2, p2) <- fiberDist.pmf
@@ -231,7 +231,7 @@ case class MonixTangentFiniteDistributionEq[State](
                                         fiberVar(x1)
                                       )
                                     )).toSet
-                                (fibPMF, fibEqs union fiberEqs)
+                                (fibPMF, fibEqs union fiberEqs, mf)
                             }
                         tve
                     }
@@ -240,11 +240,11 @@ case class MonixTangentFiniteDistributionEq[State](
                     (FD(vveq.flatMap(_._1)) , vveq
                       .flatMap(_._2)
                       .toSet
-                      .union(baseEqs))
+                      .union(baseEqs), vveq.map(_._3).foldLeft(memo)(_ ++ _))
                 }
             },
             baseDistT.flatMap {
-              case (baseDist, baseEqs) =>
+              case (baseDist, baseEqs, mb) =>
                 val pmfEqT =
                   baseDist.pmf
                     .map {
@@ -280,13 +280,13 @@ case class MonixTangentFiniteDistributionEq[State](
                     (FD(vveq.flatMap(_._1)) , vveq
                       .flatMap(_._2)
                       .toSet
-                      .union(baseEqs))
+                      .union(baseEqs), memo ++ mb )
                 }
             }
           )
         case FlatMap(baseInput, fiberNode, output) =>
           val baseDistT = varDist(initState, memo)(baseInput, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, rm) => (fd.flatten , eqs, rm)
           }
           average(
             baseVal(baseInput).flatMap {
@@ -298,10 +298,10 @@ case class MonixTangentFiniteDistributionEq[State](
                         val node = fiberNode(x1)
                         val fiberDistEqT =
                           nodeDist(initState, memo)(node, epsilon / p1, coeff)
-                            .map { case (fd, eqs) => (fd.flatten , eqs) }
+                            .map { case (fd, eqs, rm) => (fd.flatten , eqs, rm) }
                         fiberDistEqT
                           .map {
-                            case (fiberDist, fiberEqs) =>
+                            case (fiberDist, fiberEqs, mf) =>
                               val fibPMF =
                                 fiberDist.pmf.map {
                                   case Weighted(x2, p2) => Weighted(x2, p1 * p2)
@@ -317,7 +317,7 @@ case class MonixTangentFiniteDistributionEq[State](
                                       )
                                     )
                                 }.toSet
-                              (fibPMF, fibEqs union fiberEqs)
+                              (fibPMF, fibEqs union fiberEqs, mf)
                           }
                     }
                 Task.gather(pmfEqT).map {
@@ -325,11 +325,11 @@ case class MonixTangentFiniteDistributionEq[State](
                     (FD(vveq.flatMap(_._1)) , vveq
                       .flatMap(_._2)
                       .toSet
-                      .union(baseEqs))
+                      .union(baseEqs), vveq.map(_._3).foldLeft(memo)(_ ++ _))
                 }
             },
             baseDistT.flatMap {
-              case (baseDist, baseEqs) =>
+              case (baseDist, baseEqs, mb) =>
                 val pmfEqT =
                   baseDist.pmf
                     .map {
@@ -364,14 +364,14 @@ case class MonixTangentFiniteDistributionEq[State](
                     (FD(vveq.flatMap(_._1)) , vveq
                       .flatMap(_._2)
                       .toSet
-                      .union(baseEqs))
+                      .union(baseEqs), memo ++ mb)
                 }
             }
           )
 
         case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
           val baseDistT = varDist(initState, memo)(baseInput, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, rm) => (fd.flatten , eqs, rm)
           }
           average(
             baseVal(baseInput).flatMap {
@@ -386,10 +386,10 @@ case class MonixTangentFiniteDistributionEq[State](
                       case (Weighted(x1, p1), node) =>
                         val fiberDistEqT =
                           nodeDist(initState, memo)(node, epsilon / p1, coeff)
-                            .map { case (fd, eqs) => (fd.flatten , eqs) }
+                            .map { case (fd, eqs, mf) => (fd.flatten , eqs, mf) }
                         fiberDistEqT
                           .map {
-                            case (fiberDist, fiberEqs) =>
+                            case (fiberDist, fiberEqs, mf) =>
                               val fibPMF =
                                 fiberDist.pmf.map {
                                   case Weighted(x2, p2) => Weighted(x2, p1 * p2)
@@ -405,17 +405,17 @@ case class MonixTangentFiniteDistributionEq[State](
                                       )
                                     )
                                 }.toSet
-                              (fibPMF, fibEqs union fiberEqs)
+                              (fibPMF, fibEqs union fiberEqs, mf)
                           }
 
                     }
                 Task.gather(pmfEqT).map {
                   case (vveq) =>
-                    (FD(vveq.flatMap(_._1)) , vveq.flatMap(_._2).toSet)
+                    (FD(vveq.flatMap(_._1)) , vveq.flatMap(_._2).toSet, vveq.map(_._3).foldLeft(memo)(_ ++ _))
                 }
             },
             baseDistT.flatMap {
-              case (baseDist, baseEqs) =>
+              case (baseDist, baseEqs, mb) =>
                 val pmfEqT =
                   baseDist.pmf
                     .flatMap {
@@ -451,18 +451,18 @@ case class MonixTangentFiniteDistributionEq[State](
                     }
                 Task.gather(pmfEqT).map {
                   case (vveq) =>
-                    (FD(vveq.flatMap(_._1)) , vveq.flatMap(_._2).toSet)
+                    (FD(vveq.flatMap(_._1)) , vveq.flatMap(_._2).toSet, memo ++ mb)
                 }
             }
           )
         case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
           val d1T = varDist(initState, memo)(baseInput, epsilon).map {
-            case (fd, eqs) => (fd.flatten , eqs)
+            case (fd, eqs, rm) => (fd.flatten , eqs, rm)
           }
           val d1Tb = baseVal(baseInput)
           average(
             d1T.flatMap {
-              case (d1, d1E) =>
+              case (d1, d1E, m1) =>
                 val byBase      = d1.pmf.groupBy { case Weighted(x, _) => quot(x) } // pmfs grouped by terms in quotient
               val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
               val pmfEqT =
@@ -496,7 +496,7 @@ case class MonixTangentFiniteDistributionEq[State](
                     (FD(vveq.flatMap(_._1)) , vveq
                       .flatMap(_._2)
                       .toSet
-                      .union(d1E))
+                      .union(d1E), memo ++ m1)
                 }
             }
             ,
@@ -509,9 +509,9 @@ case class MonixTangentFiniteDistributionEq[State](
                   case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
                     val d2T =
                       varDist(initState, memo)(fiberVar(z), epsilon / baseWeights(z))
-                        .map { case (fd, eqs) => (fd.flatten , eqs) } // distribution of the fiber at `z`
+                        .map { case (fd, eqs, mf) => (fd.flatten , eqs, mf) } // distribution of the fiber at `z`
                     d2T.map {
-                      case (d2, d2E) =>
+                      case (d2, d2E, m2) =>
                         val d = FD(pmf1)
                           .zip(d2)
                           .map { case (x1, x2) => f(x1, x2) }
@@ -527,7 +527,7 @@ case class MonixTangentFiniteDistributionEq[State](
                                 * finalProb(x2, fiberVar(z))
                             )
                         }
-                        (d.pmf, eqs union d2E)
+                        (d.pmf, eqs union d2E, m2)
                     }
                 }
                 Task.gather(pmfEqT).map {
@@ -535,7 +535,7 @@ case class MonixTangentFiniteDistributionEq[State](
                     (FD(vveq.flatMap(_._1)) , vveq
                       .flatMap(_._2)
                       .toSet
-                      .union(d1E))
+                      .union(d1E), vveq.map(_._3).foldLeft(memo)(_ ++ _))
                 }
             }
           )
@@ -550,7 +550,7 @@ case class MonixTangentFiniteDistributionEq[State](
             case _: All[_] => base
             case c: Filter[_] =>
               base.map {
-                case (fd, eqs) =>
+                case (fd, eqs, rm) =>
                   val ceqs = fd.conditioned(c.pred).support.map { x =>
                     EquationNode(
                       finalProb(x, tc.output),
@@ -570,11 +570,11 @@ case class MonixTangentFiniteDistributionEq[State](
                       )
                     else Set()
                   (fd.conditioned(c.pred)
-                    .purge(epsilon) , (eqs union ceqs union evEq))
+                    .purge(epsilon) , (eqs union ceqs union evEq), memo ++ rm)
               }
             case Restrict(f) =>
               base.map {
-                case (fd, eqs) =>
+                case (fd, eqs, rm) =>
                   val ceqs = for {
                     x <- fd.support
                     y <- f(x)
@@ -595,7 +595,7 @@ case class MonixTangentFiniteDistributionEq[State](
                         )
                       )
                     else Set()
-                  (fd.condMap(f).purge(epsilon) , (eqs union ceqs union evEq))
+                  (fd.condMap(f).purge(epsilon) , (eqs union ceqs union evEq), memo ++ rm)
               }
           }
         case isle: Island[Y, State, o, b] =>
@@ -604,7 +604,7 @@ case class MonixTangentFiniteDistributionEq[State](
           val isleOut          = varDist(isleInit, memo)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map {
-              case (fd, eqs) =>
+              case (fd, eqs, rm) =>
                 val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
                 val bridgeEqs = fd.support.map { x =>
                   EquationNode(
@@ -630,7 +630,7 @@ case class MonixTangentFiniteDistributionEq[State](
                   }
                 // pprint.log(isleIn.size)
                 (fd.map(export(boat, _))
-                  .purge(epsilon) , (isleEqs union bridgeEqs union isleIn))
+                  .purge(epsilon) , (isleEqs union bridgeEqs union isleIn), memo ++ rm)
             } // exported result seen outside
         case isle: ComplexIsland[o, Y, State, b, Double] =>
           import isle._
@@ -640,10 +640,10 @@ case class MonixTangentFiniteDistributionEq[State](
               .varDist(isleInit, memo)(islandOutput(boat), epsilon)
           isleOut
             .map {
-              case (fd, eqs) => (fd.map(export(boat, _)).purge(epsilon) , eqs)
+              case (fd, eqs, rm) => (fd.map(export(boat, _)).purge(epsilon) , eqs, memo ++ rm)
             } // exported result seen outside
       }
     }
-    resultT
+    resultT.map{case (fd, eq, rm) => (fd, eq, memo ++ rm + (initState, generatorNode, epsilon, fd, eq))}
     }
 }

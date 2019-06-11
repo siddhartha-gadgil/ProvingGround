@@ -157,7 +157,7 @@ case class LocalProver(
   lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq)
 
   val pairT: Task[(FiniteDistribution[Term], Set[EquationNode])] =
-    mfd.varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff)
+    mfd.varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff).map{case (fd, eq, _) => (fd, eq)}
 
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
     mf.varDist(initState)(rv, cutoff, limit)
