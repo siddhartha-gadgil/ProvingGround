@@ -36,7 +36,7 @@ case class EqDistMemo[State](
       rv: RandomVar[Y],
       cutoff: Double
   ): Option[(FD[Y], Set[EquationNode])] =
-    varDists.get(state -> rv).filter(_._1 < cutoff).map {
+    varDists.get(state -> rv).filter(_._1 <= cutoff).map {
       case (_, fd, eqs) =>
         (fd.map[Y](_.asInstanceOf[Y]).purge(cutoff).safeNormalized, eqs)
     }
@@ -46,7 +46,7 @@ case class EqDistMemo[State](
       node: GeneratorNode[Y],
       cutoff: Double
   ): Option[(FD[Y], Set[EquationNode])] =
-    nodeDists.get(state -> node).filter(_._1 < cutoff).map {
+    nodeDists.get(state -> node).filter(_._1 <= cutoff).map {
       case (_, fd, eqs) =>
         (fd.map[Y](_.asInstanceOf[Y]).purge(cutoff).safeNormalized, eqs)
     }

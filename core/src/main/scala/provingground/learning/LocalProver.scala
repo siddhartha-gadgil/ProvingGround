@@ -156,8 +156,8 @@ case class LocalProver(
 
   lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq)
 
-  val pairT: Task[(FiniteDistribution[Term], Set[EquationNode])] =
-    mfd.varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff).map{case (fd, eq, _) => (fd, eq)}
+  val tripleT: Task[(FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])] =
+    mfd.varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff).map{case (fd, eq, memo) => (fd, eq, memo)}
 
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
     mf.varDist(initState)(rv, cutoff, limit)
@@ -165,7 +165,7 @@ case class LocalProver(
   def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
     mf.nodeDist(initState)(node, cutoff)
 
-  val equationNodes: Task[Set[EquationNode]] = pairT.map(_._2).memoize
+  lazy val equationNodes: Task[Set[EquationNode]] = tripleT.map(_._2).memoize
 
   def tangentExpressionEval(x: Term, weight: Double = 1.0) = 
       for {
