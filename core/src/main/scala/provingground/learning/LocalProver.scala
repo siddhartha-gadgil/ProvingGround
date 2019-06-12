@@ -148,38 +148,80 @@ case class LocalProver(
   }
 
   // Proving etc
-  val nextState: Task[TermState] =
+  lazy val nextStateDirect: Task[TermState] =
     tg.nextStateTask(initState, cutoff, limit).memoize
 
-  val mfd: MonixFiniteDistributionEq[TermState] =
+  lazy val mfd: MonixFiniteDistributionEq[TermState] =
     MonixFiniteDistributionEq(tg.nodeCoeffSeq, limit)
 
   lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq)
 
-  val tripleT: Task[(FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])] =
-    mfd.varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff).map{case (fd, eq, memo) => (fd, eq, memo)}
+  val tripleT: Task[
+    (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
+  ] =
+    mfd
+      .varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff)
+      .map { case (fd, eq, memo) => (fd, eq, memo) }
+      .memoize
+
+  val tripleTypT: Task[
+    (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
+  ] =
+    mfd
+      .varDist(initState, EqDistMemo.empty[TermState])(Typs, cutoff)
+      .map { case (fd, eq, memo) => (fd, eq, memo) }
+      .memoize
+
+  lazy val nextState: Task[TermState] =
+    for {
+      terms <- tripleT.map(_._1)
+      typs  <- tripleTypT.map(_._1)
+    } yield
+      TermState(
+        terms,
+        typs,
+        initState.vars,
+        initState.inds,
+        initState.goals,
+        initState.context
+      )
 
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
-    mf.varDist(initState)(rv, cutoff, limit)
+    mfd.varDist(initState)(rv, cutoff).map(_._1)
 
   def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
-    mf.nodeDist(initState)(node, cutoff)
+    mfd.nodeDist(initState)(node, cutoff, Expression.Coeff(node, node.output)).map(_._1)
 
-  lazy val equationNodes: Task[Set[EquationNode]] = tripleT.map(_._2).memoize
+  lazy val equationNodes: Task[Set[EquationNode]] =
+    for {
+      terms <- tripleT.map(_._2)
+      typs  <- tripleTypT.map(_._2)
+    } yield terms ++ typs
 
-  def tangentExpressionEval(x: Term, weight: Double = 1.0) = 
-      for {
-        baseState <- nextState
-        tangState: TermState = baseState.tangent(x)
-        eqnds <- equationNodes
-        mfdt = MonixTangentFiniteDistributionEq(tg.nodeCoeffSeq, baseState, eqnds, limit)
-        teqnds <- mfdt.varDist(tangState, EqDistMemo.empty[TermState])(Terms, cutoff * weight).map(_._2)
-        tExpEval = ExpressionEval.fromStates(tangState, baseState, Equation.group(teqnds), tg, maxRatio, scale)
-        expEv <- expressionEval
+  def tangentExpressionEval(x: Term, weight: Double = 1.0) : Task[ExpressionEval] =
+    for {
+      baseState <- nextState
+      tangState: TermState = baseState.tangent(x)
+      eqnds <- equationNodes
+      mfdt = MonixTangentFiniteDistributionEq(
+        tg.nodeCoeffSeq,
+        baseState,
+        eqnds,
+        limit
+      )
+      teqnds <- mfdt
+        .varDist(tangState, EqDistMemo.empty[TermState])(Terms, cutoff * weight)
+        .map(_._2)
+      tExpEval = ExpressionEval.fromStates(
+        tangState,
+        baseState,
+        Equation.group(teqnds),
+        tg,
+        maxRatio,
+        scale
+      )
+      expEv <- expressionEval
     } yield expEv.avgInit(tExpEval)
-
-
-
 
   // Generating provers using results
   val withLemmas: Task[LocalProver] =
@@ -253,8 +295,7 @@ trait LocalProverStep {
       eqs <- equations
     } yield ExpressionEval.fromStates(initState, fs, eqs, tg)).memoize
 
-    
-  lazy val successes  = nextState.map(_.successes)
+  lazy val successes = nextState.map(_.successes)
 
   lazy val lemmas: Task[Vector[(Typ[Term], Double)]] =
     (for {
@@ -288,7 +329,9 @@ trait LocalProverStep {
   // These are candidate generators
   lazy val proofComponents: Task[Vector[(HoTT.Term, Double)]] = for {
     basePfs <- proofTerms
-    pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0).map{case (x, _) => x -> 1.0}
+    pfs = basePfs.filter(pfw => initState.terms(pfw._1) == 0).map {
+      case (x, _) => x -> 1.0
+    }
     ev <- evolvedState
   } yield EntropyAtomWeight.tunedProofs(ev, pfs, cutoff, steps, hW, klW, scale)
 
@@ -302,7 +345,8 @@ trait LocalProverStep {
         steps,
         maxDepth,
         cutoff,
-        hW, klW,
+        hW,
+        klW,
         limit,
         scale
       )

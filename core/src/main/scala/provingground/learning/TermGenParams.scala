@@ -245,6 +245,8 @@ case class TermGenParams(
   lazy val monixFD: MonixFiniteDistribution[TermState] =
     MonixFiniteDistribution(nodeCoeffSeq)
 
+  lazy val monixEqFD : MonixFiniteDistributionEq[TermState] = MonixFiniteDistributionEq(nodeCoeffSeq)
+
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
 
@@ -265,6 +267,7 @@ case class TermGenParams(
         initState.goals,
         initState.context
       )
+    
 
   def evolvedStateTask(
       initState: TermState,
