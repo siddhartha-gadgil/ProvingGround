@@ -127,35 +127,35 @@ abstract class GenMonixFiniteDistributionEq[State](
     * @tparam Y values of the random variable
     * @return finite distribution for the given random variable
     */
-  def varDist[Y](initState: State, memo: EqDistMemo[State])(
+  def varDist[Y](initState: State, memo: EqDistMemo[State] = EqDistMemo.empty[State])(
       randomVar: RandomVar[Y],
       epsilon: Double
   ): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
     if (epsilon > 1) Task.now((FD.empty[Y], Set(), memo))
     else {
       val lookup =
-        memo.getVarDist(initState, randomVar, epsilon).map(op => Task.now(op))
+        memo.getVarDist(initState, randomVar, epsilon).map{case (fd, eq) => Task.now((fd, eq, memo))}
       val resultT = lookup getOrElse {
         randomVar match {
           case RandomVar.AtCoord(randomVarFmly, fullArg) =>
             varFamilyDistFunc(initState, memo)(randomVarFmly, epsilon)(fullArg)
               .map {
-                case (fd, eqs) => fd.flatten.safeNormalized -> eqs
+                case (fd, eqs, memo) => (fd.flatten.safeNormalized, eqs, memo)
               }
               .timeout(limit)
           case _ =>
             find(randomVar)
               .map { nc =>
                 nodeCoeffDist(initState, memo)(nc, epsilon, randomVar).map {
-                  case (fd, eqs) => fd.flatten.safeNormalized -> eqs
+                  case (fd, eqs, memo) => (fd.flatten.safeNormalized, eqs, memo)
                 }
               }
-              .getOrElse(Task.now(FD.empty[Y] -> Set.empty[EquationNode]))
+              .getOrElse(Task.now((FD.empty[Y], Set.empty[EquationNode], memo)))
               .timeout(limit)
         }
       }
       resultT.map {
-        case (fd, eq) =>
+        case (fd, eq, memo) =>
           (fd, eq, memo + (initState, randomVar, epsilon, fd, eq))
       }
     }
@@ -164,19 +164,19 @@ abstract class GenMonixFiniteDistributionEq[State](
       nodeCoeffs: NodeCoeffs[State, Double, HNil, Y],
       epsilon: Double,
       rv: RandomVar[Y]
-  ): Task[(FD[Y], Set[EquationNode])] =
-    if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationNode])
+  ): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
+    if (epsilon > 1) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
     else
       nodeCoeffs match {
-        case Target(_) => Task.now(FD.empty[Y] -> Set.empty[EquationNode])
+        case Target(_) => Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
         case bc: Cons[State, Double, HNil, Y] =>
           val p: Double = bc.headCoeff
-          val (d: Task[(FD[Y], Set[EquationNode])], nc) =
+          val (d: Task[(FD[Y], Set[EquationNode], EqDistMemo[State])], nc) =
             bc.headGen match {
               case gen: GeneratorNode[Y] =>
                 val coeff = Coeff(gen, rv)
                 (nodeDist(initState, memo)(gen, epsilon / p, coeff) map {
-                  case (fd, eqs, _) => (fd * p, eqs)
+                  case (fd, eqs, m) => (fd * p, eqs, m)
                 }) -> Coeff(gen, rv)
               case _ =>
                 throw new IllegalArgumentException(
@@ -185,24 +185,24 @@ abstract class GenMonixFiniteDistributionEq[State](
             }
           for {
             pa <- d
-            (a, eqa) = pa
+            (a, eqa, ma) = pa
             eqc = eqa.map {
               case EquationNode(lhs, rhs) => EquationNode(lhs, rhs)
             }
             pb <- nodeCoeffDist(initState, memo)(bc.tail, epsilon, rv)
-            (b, eqb) = pb
-          } yield (a ++ b, eqc union eqb)
+            (b, eqb, mb) = pb
+          } yield (a ++ b, eqc union eqb, memo ++ ma ++ mb)
       }
 
   def mapsSum[X, Y](
-      first: Map[X, (FD[Y], Set[EquationNode])],
-      second: Map[X, (FD[Y], Set[EquationNode])]
-  ): Map[X, (FD[Y], Set[EquationNode])] =
+      first: Map[X, (FD[Y], Set[EquationNode], EqDistMemo[State])],
+      second: Map[X, (FD[Y], Set[EquationNode], EqDistMemo[State])]
+  ): Map[X, (FD[Y], Set[EquationNode], EqDistMemo[State])] =
     (for {
       k <- first.keySet union second.keySet
-      v1 = first.getOrElse(k, FD.empty[Y]  -> Set.empty[EquationNode])
-      v2 = second.getOrElse(k, FD.empty[Y] -> Set.empty[EquationNode])
-    } yield (k, (v1._1 ++ v2._1, v1._2 union v2._2))).toMap
+      v1 = first.getOrElse(k, (FD.empty[Y], Set.empty[EquationNode], EqDistMemo.empty[State]))
+      v2 = second.getOrElse(k, (FD.empty[Y], Set.empty[EquationNode], EqDistMemo.empty[State]))
+    } yield (k, (v1._1 ++ v2._1, v1._2 union v2._2, v1._3 ++ v2._3))).toMap
 
   def nodeCoeffFamilyDist[Dom <: HList, Y](
       initState: State,
@@ -210,11 +210,11 @@ abstract class GenMonixFiniteDistributionEq[State](
   )(
       nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       epsilon: Double
-  )(arg: Dom): Task[(FD[Y], Set[EquationNode])] =
-    if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationNode])
+  )(arg: Dom): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
+    if (epsilon > 1) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
     else
       nodeCoeffs match {
-        case Target(_) => Task.now(FD.empty[Y] -> Set.empty[EquationNode])
+        case Target(_) => Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
         case bc: Cons[State, Double, Dom, Y] =>
           val p = bc.headCoeff
           for {
@@ -224,7 +224,7 @@ abstract class GenMonixFiniteDistributionEq[State](
             pb <- nodeCoeffFamilyDist(initState, memo)(bc.tail, epsilon)(
               arg
             )
-          } yield ((pa._1 * p) ++ pb._1, pa._2 union pb._2)
+          } yield ((pa._1 * p) ++ pb._1, pa._2 union pb._2, pa._3 ++ pb._3)
       }
 
   def varFamilyDistFunc[RDom <: HList, Y](
@@ -233,14 +233,14 @@ abstract class GenMonixFiniteDistributionEq[State](
   )(
       randomVarFmly: RandomVarFamily[RDom, Y],
       epsilon: Double
-  )(arg: RDom): Task[(FD[Y], Set[EquationNode])] =
-    if (epsilon > 1) Task.now(FD.empty[Y] -> Set.empty[EquationNode])
+  )(arg: RDom): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
+    if (epsilon > 1) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
     else
       find(randomVarFmly)
         .map { nc =>
           nodeCoeffFamilyDist(initState, memo)(nc, epsilon)(arg)
         }
-        .getOrElse(Task.now(FD.empty[Y] -> Set.empty[EquationNode]))
+        .getOrElse(Task.now((FD.empty[Y], Set.empty[EquationNode], memo)))
 
   def nodeFamilyDistFunc[Dom <: HList, Y](
       initState: State,
@@ -248,7 +248,7 @@ abstract class GenMonixFiniteDistributionEq[State](
   )(
       generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
       epsilon: Double
-  )(arg: Dom): Task[(FD[Y], Set[EquationNode])] =
+  )(arg: Dom): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
     generatorNodeFamily match {
       case node: GeneratorNode[Y] =>
         assert(
@@ -257,23 +257,23 @@ abstract class GenMonixFiniteDistributionEq[State](
         )
         val coeff = Coeff(node, generatorNodeFamily.outputFamily.at(arg))
         nodeDist(initState, memo)(node, epsilon, coeff).map {
-          case (fd, eq, _) => (fd, eq)
+          case (fd, eq, m) => (fd, eq, m)
         }
       case f: GeneratorNodeFamily.Pi[Dom, Y] =>
         val coeff =
           Coeff(f.nodes(arg), generatorNodeFamily.outputFamily.at(arg))
         nodeDist(initState, memo)(f.nodes(arg), epsilon, coeff).map {
-          case (fd, eq, _) => (fd, eq)
+          case (fd, eq, m) => (fd, eq, m)
         } // actually a task
       case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
         f.nodesOpt(arg)
           .map { (node) =>
             val coeff = Coeff(node, generatorNodeFamily.outputFamily.at(arg))
             nodeDist(initState, memo)(node, epsilon, coeff).map {
-              case (fd, eq, _) => (fd, eq)
+              case (fd, eq, m) => (fd, eq, m)
             }
           }
-          .getOrElse(Task.pure(FD.empty[Y] -> Set.empty[EquationNode]))
+          .getOrElse(Task.pure((FD.empty[Y], Set.empty[EquationNode], memo)))
     }
 
   def nodeDist[Y](initState: State, memo: EqDistMemo[State])(
@@ -318,7 +318,7 @@ case class MonixFiniteDistributionEq[State](
     * @tparam Y values of the corresponding random variable
     * @return distribution corresponding to the `output` random variable
     */
-  def nodeDist[Y](initState: State, memo: EqDistMemo[State])(
+  def nodeDist[Y](initState: State, memo: EqDistMemo[State] = EqDistMemo.empty[State])(
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
