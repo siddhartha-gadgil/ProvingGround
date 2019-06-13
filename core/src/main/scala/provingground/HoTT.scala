@@ -3313,9 +3313,15 @@ object HoTT {
       val (a, b)     = (first.Var, second.Var)
       val firstData  = (a ~>: depcodom(incl1(a))).Var
       val secondData = (b ~>: depcodom(incl2(b))).Var
-      firstData :~>
-        (secondData :~>
-          (InducFn(depcodom, firstData, secondData): FuncLike[Term, W]))
+      val x = plustyp.Var
+      if(!depcodom(x).dependsOn(x)) 
+      {
+        val firstData  = (first ->: depcodom(x)).Var
+      val secondData = (second ->: depcodom(x)).Var
+      (firstData :->   (secondData :-> (PlusTyp.RecFn(first, second, depcodom(x), firstData, secondData): Func[Term, W  ]))).asInstanceOf[FuncLike[FuncLike[U, W], FuncLike[FuncLike[V, W], FuncLike[Term, W]]]]
+      }
+      else{ firstData :~>(secondData :~>   (InducFn(depcodom, firstData, secondData): FuncLike[Term, W]))
+      }
     }
 
     def subs(x: Term, y: Term) =
