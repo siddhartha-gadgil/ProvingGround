@@ -1106,7 +1106,10 @@ object HoTT {
       val xy     = prod.Var
       val (x, y) = (xy.first, xy.second)
       val d      = (x ~>: (y ~>: targetFmly(x)(y))).Var
-      d :-> (InducFn(targetFmly, d): FuncLike[PairTerm[U, V], W])
+      if(!targetFmly(x)(y).dependsOn(x) && !targetFmly(x)(y).dependsOn(y)) 
+      { val dd = (first ->: (second ->: targetFmly(x)(y))).Var
+        (dd :-> (RecFn(targetFmly(x)(y), dd): Func[PairTerm[U, V], W])).asInstanceOf[Func[FuncLike[U, FuncLike[V, W]], FuncLike[PairTerm[U, V], W]]]}
+      else {d :-> (InducFn(targetFmly, d): FuncLike[PairTerm[U, V], W])}
     }
   }
 
@@ -2663,7 +2666,11 @@ object HoTT {
       val xy     = prod.Var
       val (x, y) = (xy.first, xy.second)
       val d      = (x ~>: (y ~>: targetFmly(x)(y))).Var
-      d :-> (InducFn(targetFmly, d): FuncLike[AbsPair[W, U], V])
+      if(!targetFmly(x)(y).dependsOn(x) && !targetFmly(x)(y).dependsOn(y))
+      { val a = fibers.dom.Var
+        val dd = (a ~>: (fibers(a) ->: targetFmly(x)(y))).Var
+        (dd :-> (RecFn(targetFmly(x)(y), dd): FuncLike[AbsPair[W, U], V])).asInstanceOf[Func[FuncLike[W, FuncLike[U, V]], FuncLike[AbsPair[W, U], V]]]}
+      else {d :-> (InducFn(targetFmly, d): FuncLike[AbsPair[W, U], V])}
     }
   }
 
