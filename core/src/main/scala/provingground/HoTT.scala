@@ -837,7 +837,7 @@ object HoTT {
     ): FuncLike[U, FuncLike[Term, U]] = {
       val d = Unit.Var
       val x = depcodom(Star).Var
-      if(depcodom(d).dependsOn(d)==false) { x :~> (RecFn(depcodom(d), x): Func[Term,U])}
+      if(!depcodom(d).dependsOn(d)) { x :~> (RecFn(depcodom(d), x): Func[Term,U])}
       else{x :~> (InducFn(depcodom, x): FuncLike[Term, U])}
     }
   }
