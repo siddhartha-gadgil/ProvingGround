@@ -18,7 +18,174 @@ import ujson.Arr
 
 import scala.util.Try
 
+import scala.collection.mutable.{Set => mSet}
+
+// import LeanToTermMonix.{RecIterAp, getRec, isPropnFn, parseWork, introsFold}
+
 object LeanParser {
+  val parseWork: mSet[Expr] = mSet()
+
+  def proofLift: (Term, Term) => Task[Term] = {
+    case (w: Typ[u], tp: Typ[v]) =>
+      Task.eval { (w.Var) :-> tp } // should be in all cases
+    case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
+      val x = w.dom.Var
+      proofLift(w(x), tp(x.asInstanceOf[a]))
+        .map((g: Term) => x :~> (g: Term))
+    case _ => throw new Exception("could not lift proof")
+  }
+
+
+  def isPropnFn(e: Expr): Boolean = e match {
+    case Pi(_, t) => isPropnFn(t)
+    case Sort(l)  => l == Level.Zero
+    case _        => false
+  }
+
+  def introsFold(ind: TermIndMod, p: Vector[Term]): Vector[Term] =
+    ind.intros.map((rule) => foldFuncLean(rule, p))
+
+  def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
+    ind match {
+      case smp: SimpleIndMod =>
+        // pprint.log(s"Getting rec using simple IndMod ${ind.name}")
+        getRecSimple(smp, Task.pure(argsFmlyTerm))
+      case indInd: IndexedIndMod =>
+        // pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
+        getRecIndexed(indInd, Task.pure(argsFmlyTerm))
+    }
+
+  def getExstInduc(
+      ind: TermIndMod,
+      argsFmlyTerm: Vector[Term]
+  ): Task[ExstInducDefn] =
+    ind match {
+      case smp: SimpleIndMod =>
+        // pprint.log(s"Getting rec using simple IndMod ${ind.name}")
+        getSimpleExstInduc(smp, Task.pure(argsFmlyTerm))
+      case indInd: IndexedIndMod =>
+        // pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
+        getIndexedExstInduc(indInd, Task.pure(argsFmlyTerm))
+    }
+
+  def getSimpleExstInduc(
+      ind: SimpleIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[ExstInducDefn] =
+    argsFmlyTerm.map { argsFmly =>
+      val params = argsFmly.init
+      val typ    = toTyp(foldFuncLean(ind.typF, params))
+      val intros = introsFold(ind, params)
+      val str0   = ExstInducStrucs.get(typ, introsFold(ind, params))
+      val str = params.foldRight(str0) {
+        case (x, s) => ExstInducStrucs.LambdaInduc(x, s)
+      }
+      val dfn = ExstInducDefn(typ, intros.toVector, str)
+      dfn
+    }
+
+  def getRecSimple(
+      ind: SimpleIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[Term] = {
+    def getInd(p: Vector[Term]) =
+      ConstructorSeqTL
+        .getExst(toTyp(foldFuncLean(ind.typF, p)), introsFold(ind, p))
+        .value
+    val newParamsTask = argsFmlyTerm map (_.init)
+    newParamsTask.flatMap { (newParams) =>
+      val indNew =
+        getInd(newParams)
+
+      val fmlyOpt = argsFmlyTerm map (_.last)
+      fmlyOpt map {
+        case l: LambdaLike[u, v] =>
+          l.value match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(l.variable))(indNew
+                .inducE((l.variable: Term) :-> (tp: Typ[u])))
+              else (indNew.recE(tp))
+          }
+        case fn: FuncLike[u, v] =>
+          val x = fn.dom.Var
+          val y = fn(x)
+          y match {
+            case tp: Typ[u] =>
+              if (tp.dependsOn(x)) {
+                (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+              } else (indNew.recE(tp))
+          }
+        case pt: PiDefn[u, v] if ind.isPropn && pt.domain == indNew.typ =>
+          indNew.inducE(lmbda(pt.variable: Term)(pt.value))
+        case tp: Typ[u] if (ind.isPropn) =>
+          val x = tp.Var
+          if (tp.dependsOn(x)) {
+            (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+          } else (indNew.recE(tp))
+      }
+
+    }
+  }
+
+  def getIndexedExstInduc(
+      ind: IndexedIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[ExstInducDefn] =
+    argsFmlyTerm.map { argsFmly =>
+      val params = argsFmly.init
+      val typF   = foldFuncLean(ind.typF, params)
+      val intros = introsFold(ind, params)
+      val str0   = ExstInducStrucs.getIndexed(typF, introsFold(ind, params))
+      val str = params.foldRight(str0) {
+        case (x, s) => ExstInducStrucs.LambdaInduc(x, s)
+      }
+      val dfn = ExstInducDefn(typF, intros.toVector, str)
+      dfn
+    }
+
+  def getRecIndexed(
+      ind: IndexedIndMod,
+      argsFmlyTerm: Task[Vector[Term]]
+  ): Task[Term] = {
+    def getInd(p: Vector[Term]) =
+      TypFamilyExst
+        .getIndexedConstructorSeq(foldFuncLean(ind.typF, p), introsFold(ind, p))
+        .value
+    val newParamsTask = argsFmlyTerm map (_.init)
+    newParamsTask.flatMap { (newParams) =>
+      val indNew =
+        getInd(newParams)
+      val fmlOptRaw = argsFmlyTerm map (_.last)
+      val fmlOpt =
+        if (ind.isPropn)
+          fmlOptRaw.flatMap((fib) => proofLift(indNew.W, fib))
+        else
+          fmlOptRaw
+      val recOptTask =
+        for {
+          fml <- fmlOpt
+          codOpt = indNew.family.constFinalCod(fml)
+        } yield codOpt.map((cod) => indNew.recE(cod))
+      val inducTask =
+        fmlOpt.map((fib) => indNew.inducE(fib))
+      for {
+        recOpt <- recOptTask
+        induc  <- inducTask
+      } yield recOpt.getOrElse(induc)
+
+    }
+  }
+
+  object RecIterAp {
+    def unapply(exp: Expr): Option[(Name, Vector[Expr])] = exp match {
+      case Const(Name.Str(prefix, "rec"), _) => Some((prefix, Vector()))
+      case App(fn, x) =>
+        unapply(fn).map { case (name, vec) => (name, vec :+ x) }
+      case _ => None
+    }
+  }
+
+
   case class ParseException(exps: Vector[Expr],
                             vars: Vector[Term],
                             error: Exception)
@@ -57,8 +224,8 @@ object LeanParser {
     def dispatch(send: String => Unit): Logger = Logger({
       case LeanParser.Defined(name, _)      => send(s"defined $name")
       case LeanParser.DefinedInduc(name, _) => send(s"defined inductive $name")
-      case LeanParser.ParseWork(expr)    => send(s"started parsing $expr; current queue : ${LeanToTermMonix.parseWork.size}")
-      case LeanParser.Parsed(expr)       => send(s"finished parsing $expr; current queue : ${LeanToTermMonix.parseWork.size}")
+      case LeanParser.ParseWork(expr)    => send(s"started parsing $expr; current queue : ${parseWork.size}")
+      case LeanParser.Parsed(expr)       => send(s"finished parsing $expr; current queue : ${parseWork.size}")
     })
   }
 
@@ -156,7 +323,7 @@ class LeanParser(initMods: Seq[Modification],
   def addMods(m: Seq[Modification]) : Unit =  mods ++= m
 
   import LeanParser._
-  import LeanToTermMonix.{RecIterAp, getRec, isPropnFn, parseWork}
+  
 
   val defnMap: mMap[Name, Term] = mMap()
 
@@ -601,14 +768,14 @@ class LeanParser(initMods: Seq[Modification],
           val seq =
             ConstructorSeqTL
               .getExst(toTyp(foldFuncLean(mod.typF, p)),
-                       LeanToTermMonix.introsFold(mod, p))
+                       introsFold(mod, p))
               .value
           codeGen.consSeq(seq)
         case mod: IndexedIndMod =>
           val indSeq =
             TypFamilyExst
               .getIndexedConstructorSeq(foldFuncLean(mod.typF, p),
-                                        LeanToTermMonix.introsFold(mod, p))
+                                        introsFold(mod, p))
               .value
           codeGen.indexedConsSeqDom(indSeq)
       }

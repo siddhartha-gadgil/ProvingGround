@@ -20,6 +20,7 @@ import scala.util.Try
 import provingground.learning.TermGeneratorNodes
 
 import TermRandomVars._, GeneratorVariables._, Expression._
+import LeanParser._
 
 class LeanParserEq(
     initMods: Seq[Modification],
