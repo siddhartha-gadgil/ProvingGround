@@ -1887,8 +1887,10 @@ object HoTT {
 
     override def equals(that: Any): Boolean = that match {
       case l: LambdaLike[u, v] if l.variable.typ == variable.typ =>
-        Try(l.value.replace(l.variable, variable) == value &&
-          value.replace(variable, l.variable) == l.value).getOrElse(false)
+        // Try(
+          l.value.replace(l.variable, variable) == value &&
+          value.replace(variable, l.variable) == l.value
+          // ).getOrElse(false)
       case _ => false
     }
 
@@ -2314,8 +2316,8 @@ object HoTT {
     lazy val fibers = LambdaFixed(variable, value)
 
     override def variable(name: AnySym): FuncLike[W, U] =
-      // DepSymbolicFunc(name, fibers)
-      PiSymbolicFunc(name, variable, value)
+      if (value.dependsOn(variable)) PiSymbolicFunc(name, variable, value)
+      else (SymbolicFunc(name, variable.typ.asInstanceOf[Typ[W]], value))
 
     def newobj: PiDefn[W, U] = {
       val newvar = variable.newobj
