@@ -167,7 +167,7 @@ object HoTT {
     * specify result of substitution
     * a typical class is closed under substitution.
     */
-  trait Subs[+U <: Term] { self =>
+  trait Subs[+U <: Term] { self : U with Subs[U] with Term =>
 
     /**
       *  substitute x by y recursively in `this`.
