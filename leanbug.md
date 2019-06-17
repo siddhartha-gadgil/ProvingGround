@@ -1,7 +1,7 @@
 # Lean bug
 
 
-While using lean parser server for `decidable.rec_false`, which has lean code as follows:
+While using lean parser server for `decidable.rec_on_false`, which has lean code as follows:
 
 ```haskell
 def rec_on_false [h : decidable p] {h₁ : p → Sort u} {h₂ : ¬p → Sort u} (h₃ : ¬p) (h₄ : h₂ h₃)
@@ -13,17 +13,26 @@ where `decidable.rec_on` parses to:
 
 ```scala
 val decidable.rec_on =
-    (`'n : Prop) ↦
+    (`'n : Prop) ↦  // parameter
         (
-            (`'o : ((decidable) (`'n)) → (𝒰 _0)) ↦
-                ((`'p : (decidable) (`'n)) ↦
-                    (
-                        (```'q : (`'q : (`'n) → (false) ) ~> ((`'o) (((decidable.is_false) (`'n)) (`'q)))) ↦
-                            (
-                                (```'r : (_ : `'n ) ~> ((`'o) (((decidable.is_true) (`'n)) (_)))) ↦
-                                    ((ind((decidable) (`'n))((``$eo : (decidable) (`'n)) ↦
-                                        ((`'o) (``$eo)))(```'q)(```'r)) (`'p)))
-                            )))
+            (`'o : ((decidable) (`'n)) → (𝒰 _0)) ↦ // family
+                (
+                    (`'p : (decidable) (`'n)) ↦ // main variable
+                        (
+                            (```'q : (`'q : (`'n) → (false) ) ~> ((`'o) (((decidable.is_false) (`'n)) (`'q)))) ↦ // dependence on data for is_false
+                                (
+                                    (```'r : (_ : `'n ) ~> ((`'o) (((decidable.is_true) (`'n)) (_)))) ↦ // dependence on data for is_true
+                                        ((ind((decidable) (`'n))
+                                            (  // the family
+                                                (``$eo : (decidable) (`'n)) ↦
+                                                    ((`'o) (``$eo))
+                                            )
+                                            (```'q)  // the is_false case
+                                            (```'r)  // the is_true case
+                                        ) (`'p))) // applied to the main variable
+                                )
+                )
+        )
 ```
 
 we get the following session:
@@ -46,7 +55,7 @@ provingground.interface.LeanInterface.introShuffle:47 s"${data.typ.fansi}, $flag
 ∏(_ : 'n){ 'o(decidable.is_true('n)(_)) }
 provingground.interface.LeanParser#withDefn x$69:587 s"Defined $name": "Defined decidable.rec_on"
 provingground.interface.LeanRoutes.parse:224 message: """while parsing decidable.rec_on_false, got provingground.interface.LeanParser$ParseException: provingground.HoTT$ApplnFailException: function (`````'q :  (`'q : ('u) → (false) ) ~> (('w) (_))) ↦ ((`````'r :  (_ : 'u ) ~> (('w) (_))) ↦ ((ind((decidable) ('u))((```$eo :  (decidable) ('u)) ↦ (('w) (_)))(`````'q)(`````'r)) ('v))) with domain(optional) Some((`'q : ('u) → (false) ) ~> (('w) (_))) cannot act on given term (_ :  ('u) → (false)) ↦ ('z) with type (('u) → (false)) → (('x) ('y))
- Modifier: 
+ Modifier:
  Some(λ {p : Prop} [h : @decidable p] {h_0 : (∀ (a : p), Sort u)}
   {h_1 : (∀ (a : @not p), Sort u)} (h_2 : @not p) (h_3 : h_1 h_2),
 @decidable.rec_on.{u} p
@@ -66,8 +75,9 @@ isolating the culprit:
 ```scala
 λ {p : Prop} [h : @decidable p] {h_0 : (∀ (a : p), Sort u)}{h_1 : (∀ (a : @not p), Sort u)} (h_2 : @not p) (h_3 : h_1 h_2),
     @decidable.rec_on.{u} p
-        (λ (x : @decidable p),
-            @decidable.rec_on.{u+1} p (λ (x_0 : @decidable p), Sort u) x h_1 h_0)
+        (λ (x : @decidable p),  // the family (implicit)
+            @decidable.rec_on.{u+1} p (λ (x_0 : @decidable p), Sort u) x h_1 h_0
+        )
         h
         (λ (h_4 : @not p), h_3)
         (λ (h_4 : p),
@@ -75,6 +85,16 @@ isolating the culprit:
                 (@decidable.rec_on.{u+1} p (λ (x : @decidable p), Sort u)
                     (@decidable.is_true p h_4) h_1 h_0
                 ) (h_2 h_4))
+```
+
+the function and argument expressions are:
+
+```scala
+val fe = @decidable.rec_on.{u} #5
+  (λ (x : @decidable #5),
+  @decidable.rec_on.{u+1} #6 (λ (x_0 : @decidable #6), Sort u) x #3 #4) #4
+
+val ae = λ (h : @not #5), #1
 ```
 
 With the final detailed line:
@@ -106,7 +126,7 @@ Some(
               Binding(Str(, "h\u2084"), App(Var(1), Var(0)), Default),
               App(
                 App(
-                  App(
+                  App( // func below this
                     App(
                       App(
                         Const(Str(Str(, "decidable"), "rec_on"), Vector(Param(Str(, "u")))),
@@ -118,7 +138,7 @@ Some(
                           App(Const(Str(, "decidable"), Vector()), Var(5)),
                           Default
                         ),
-                        App(
+                        App(  
                           App(
                             App(
                               App(
@@ -147,11 +167,11 @@ Some(
                       )
                     ),
                     Var(4)
-                  ),
+                  ), // func above this, arg below
                   Lam(
                     Binding(Str(, "h"), App(Const(Str(, "not"), Vector()), Var(5)), Default),
                     Var(1)
-                  )
+                  )  // end of arg
                 ),
                 Lam(
                   Binding(Str(, "h"), Var(5), Default),

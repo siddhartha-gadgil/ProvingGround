@@ -197,6 +197,8 @@ object LeanParser {
       }
   }
 
+  class ApplnParseException(val fe: Expr, val ae: Expr, func: Term, arg: Term, val vars: Vector[Term]) extends ApplnFailException(func, arg)
+
   case class LambdaFormException(variable: Term, value: Term, error: Throwable) extends Exception(error.getMessage)
 
 
@@ -472,7 +474,7 @@ class LeanParser(initMods: Seq[Modification],
           for {
             func <- parse(f, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
             arg  <- parse(a, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            res = fold(func)(arg)
+            res = Try(fold(func)(arg)).getOrElse(throw new ApplnParseException(f, a, func, arg, vars))
             // _ = pprint.log(s"got result for $f($a)")
           } yield res
         case Lam(domain, body) =>
