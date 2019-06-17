@@ -181,10 +181,10 @@ object HoTT {
       *
       */
     def replace(x: Term, y: Term): U with Subs[U] = {
-      Try(Subs.hook(self.asInstanceOf[U], x, y))
+      Try(Subs.hook(self, x, y))
 
       val res =
-        if (isWitness(x) || x == y) Try(self.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
+        if (isWitness(x) || x == y) Try(self : U with Subs[U]).getOrElse(subs(x, y))
         else if (self == x) Try(y.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
         else
           (x, y) match {
@@ -2316,6 +2316,7 @@ object HoTT {
     lazy val fibers = LambdaFixed(variable, value)
 
     override def variable(name: AnySym): FuncLike[W, U] =
+      // PiSymbolicFunc(name, variable, value)
       if (value.dependsOn(variable)) PiSymbolicFunc(name, variable, value)
       else (SymbolicFunc(name, variable.typ.asInstanceOf[Typ[W]], value))
 

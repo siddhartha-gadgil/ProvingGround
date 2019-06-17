@@ -18,7 +18,64 @@ import scala.collection.mutable.{Map => mMap, ArrayBuffer}
 
 import LeanInterface._
 
+
 object LeanInterface {
+  def domVarFlag(introTyp: Typ[Term], typF: Term): Vector[Boolean] =
+  introTyp match {
+    case pd: PiDefn[u, v] =>
+      (pd.domain.dependsOn(typF)) +: domVarFlag(pd.value, typF)
+    case ft: FuncTyp[u, v] =>
+      (ft.dom.dependsOn(typF)) +: domVarFlag(ft.codom, typF)
+    case _ => Vector()
+  }
+
+    /**
+    * shuffles the dat variables from leans convention where they are last to an interleaved form.
+    *
+    * @param intro the introduction rule
+    * @param typF the inductive type
+    * @param data the recursion data
+    */
+    def introShuffle(
+      intro: Term,
+      typF: Term,
+      data: Term,
+      numParams: Int
+  ): Term = {
+    val flag    = domVarFlag(intro.typ, typF).drop(numParams)
+    val codSize = flag.count(identity)
+    pprint.log(s"${data.typ.fansi}, $flag, ${intro.typ.fansi}")
+    println(intro.typ.fansi)
+    println(data.fansi)
+    println(data.typ.fansi)
+    if (codSize < 2) data
+    else {
+      val (allVars, value) = getVars(data, flag.size + codSize)
+      val (baseVars: Vector[Term], codVars: Vector[Term]) =
+        allVars.splitAt(flag.size)
+      // val (vars, _) = maxLambda(intro)
+      // val domVars = vars.filter(_.typ.dependsOn(typF)) // number of variables in the codomain
+      val domVars  = baseVars.zip(flag).filter(_._2).map(_._1)
+      val varPairs = domVars.zip(codVars)
+      val interLeaved = baseVars.flatMap(
+        (v) =>
+          varPairs
+            .find(_._1 == v)
+            .map { case (a, b) => Vector(a, b) }
+            .getOrElse(Vector(v))
+      )
+
+      pprint.log(
+        s"${domVars.size} domain vars in $intro for $typF; all variable types ${allVars
+          .map(_.typ)}"
+      )
+      println(allVars.map(_.fansi))
+      println(interLeaved.map(_.fansi))
+      polyLambda(interLeaved.toList, value)
+    }
+  }
+
+
   /**
     * fill in witnesses if proposition, including within lambdas
     **/
@@ -202,10 +259,12 @@ sealed trait TermIndMod {
 
   val typF: Term
 
+  
+
   def interleaveData(v: Vector[Term]) : Vector[Term] = {
     val (dataBase, extra) = v.splitAt(intros.size)
     val newBase = (intros.zip(dataBase)).map{
-      case (in, dat) => LeanToTermMonix.introShuffle(in, typF, dat, numParams)
+      case (in, dat) => introShuffle(in, typF, dat, numParams)
     }
     newBase ++ extra
   }
