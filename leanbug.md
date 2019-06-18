@@ -70,21 +70,21 @@ provingground.interface.LeanRoutes.parse:225 p.findDefMod(
                 trepplein.Name(name.split("\\."): _*)).map(_.value):
 ```
 
-isolating the culprit:
+isolating the culprit (shifting subscripts to match full form):
 
 ```scala
-λ {p : Prop} [h : @decidable p] {h_0 : (∀ (a : p), Sort u)}{h_1 : (∀ (a : @not p), Sort u)} (h_2 : @not p) (h_3 : h_1 h_2),
+λ {p : Prop} [h : @decidable p] {h_1 : (∀ (a : p), Sort u)}{h_2 : (∀ (a : @not p), Sort u)} (h_3 : @not p) (h_4 : h_2 h_3),
     @decidable.rec_on.{u} p
         (λ (x : @decidable p),  // the family (implicit)
-            @decidable.rec_on.{u+1} p (λ (x_0 : @decidable p), Sort u) x h_1 h_0
+            @decidable.rec_on.{u+1} p (λ (x_0 : @decidable p), Sort u) x h_2 h_1
         )
         h
-        (λ (h_4 : @not p), h_3)
-        (λ (h_4 : p),
+        (λ (h_5 : @not p), h_4)
+        (λ (h_5 : p),
             @false.rec.{u}
                 (@decidable.rec_on.{u+1} p (λ (x : @decidable p), Sort u)
-                    (@decidable.is_true p h_4) h_1 h_0
-                ) (h_2 h_4))
+                    (@decidable.is_true p h_5) h_2 h_1
+                ) (h_3 h_5))
 ```
 
 the function and argument expressions are:
@@ -107,13 +107,13 @@ Some(
       Binding(Str(, "h"), App(Const(Str(, "decidable"), Vector()), Var(0)), InstImplicit),
       Lam(
         Binding(
-          Str(, "h\u2081"),
+          Str(, "h\u2081"),   // h: p -> U
           Pi(Binding(Str(, "a"), Var(1), Default), Sort(Param(Str(, "u")))),
           Implicit
         ),
         Lam(
           Binding(
-            Str(, "h\u2082"),
+            Str(, "h\u2082"),  // h2: not(p) -> U (or Prop)
             Pi(
               Binding(Str(, "a"), App(Const(Str(, "not"), Vector()), Var(2)), Default),
               Sort(Param(Str(, "u")))
@@ -121,7 +121,7 @@ Some(
             Implicit
           ),
           Lam(
-            Binding(Str(, "h\u2083"), App(Const(Str(, "not"), Vector()), Var(3)), Default),
+            Binding(Str(, "h\u2083"), App(Const(Str(, "not"), Vector()), Var(3)), Default), // h3: not(p)
             Lam(
               Binding(Str(, "h\u2084"), App(Var(1), Var(0)), Default),
               App(
@@ -130,7 +130,7 @@ Some(
                     App(
                       App(
                         Const(Str(Str(, "decidable"), "rec_on"), Vector(Param(Str(, "u")))),
-                        Var(5)
+                        Var(5) // p
                       ),
                       Lam(
                         Binding(
@@ -147,7 +147,7 @@ Some(
                                     Str(Str(, "decidable"), "rec_on"),
                                     Vector(Succ(Param(Str(, "u"))))
                                   ),
-                                  Var(6)
+                                  Var(6) // p
                                 ),
                                 Lam(
                                   Binding(
@@ -158,11 +158,11 @@ Some(
                                   Sort(Param(Str(, "u")))
                                 )
                               ),
-                              Var(0)
+                              Var(0)  // _x : decidable(p)
                             ),
-                            Var(3)
+                            Var(3) // h_2 : not(p) -> U
                           ),
-                          Var(4)
+                          Var(4) // h_1 : decidable(p)
                         )
                       )
                     ),
@@ -170,7 +170,7 @@ Some(
                   ), // func above this, arg below
                   Lam(
                     Binding(Str(, "h"), App(Const(Str(, "not"), Vector()), Var(5)), Default),
-                    Var(1)
+                    Var(1) // = h_4 : h_2(h_3)
                   )  // end of arg
                 ),
                 Lam(
@@ -203,7 +203,7 @@ Some(
                               Var(0)
                             )
                           ),
-                          Var(3)
+                          Var(3) 
                         ),
                         Var(4)
                       )
