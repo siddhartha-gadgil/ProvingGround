@@ -644,7 +644,7 @@ object HoTT {
     type Obj = Term
 
     def variable(name: AnySym): SymbObj[Term] =
-      SymbObj(Name("_"), this)
+      SymbObj(name, this)
 
     def elem: SymbProp = this
 
@@ -662,7 +662,8 @@ object HoTT {
     case _             => false
   }
 
-  def witVar[U <: Term with Subs[U]](t: U): U =
+  def witVar[U <: Term with Subs[U]](t: U): U = 
+  // t
     "_" :: t.typ.asInstanceOf[Typ[U]]
 
   /**
@@ -932,9 +933,13 @@ object HoTT {
 
   }
 
-  def isProp(x: Typ[Term]): Boolean = (x.typ) match {
+  def isProp(x: Typ[Term]): Boolean = x.typ match {
     case _: Prop.type => true
-    case _            => false
+    case _            => 
+      x match {
+        case ft :FuncTyp[u, v] => isProp(ft.dom) && isProp(ft.codom)
+        case _ => false
+      }
   }
 
   def isPropFmly(t: Typ[Term]): Boolean = t match {
@@ -1737,7 +1742,9 @@ object HoTT {
       (dom == arg.typ) || (isUniv(dom) && isUniv(arg.typ))
 
     def act(arg: W): U =
-      if (dom == arg.typ) codom.symbObj(ApplnSym(this, arg))
+      if (dom == arg.typ) {
+        if (isProp(dom)) codom.symbObj(ApplnSym(this, witVar(arg)))
+        else codom.symbObj(ApplnSym(this, arg))}
       else
         codom
           .replace(dom, arg.typ)
@@ -2105,7 +2112,10 @@ object HoTT {
     // else {
     val newvar   = variable.newobj
     val newValue = value.replace(variable, newvar)
-    if (newValue == value) LambdaFixed(witVar(variable), value)
+    if (newValue == value) LambdaFixed(
+      // witVar(variable), 
+      variable,
+      value)
     else if (value.typ != newValue.typ)
       LambdaTerm(newvar, newValue)
     else LambdaFixed(newvar, newValue)
@@ -2201,7 +2211,10 @@ object HoTT {
     // assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
     // assert(newvar.typ == variable.typ, s"variable $variable changed type")
     //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
-    if (newValue == value) LambdaFixed(witVar(variable), value)
+    if (newValue == value) LambdaFixed(
+      // witVar(variable), 
+      variable,
+      value)
     else LambdaFixed(newvar, newValue)
     // }
   }
@@ -3594,14 +3607,16 @@ object HoTT {
             Try(Some(fx.arg.asInstanceOf[D])).getOrElse(None)
           else getArg(func)(fx.func)
         case _ =>
-          if (isProp(func.dom) && isProp(sym.typ))
-            Some(("_" :: func.dom))
-          else None
+          // if (isProp(func.dom) && isProp(sym.typ))
+          //   Some(("_" :: func.dom))
+          // else 
+          None
       }
     case res =>
-      if (isProp(func.dom) && isProp(res.typ))
-        Some(("_" :: func.dom))
-      else None
+      // if (isProp(func.dom) && isProp(res.typ))
+      //   Some(("_" :: func.dom))
+      // else 
+      None
   }
 
   /**
