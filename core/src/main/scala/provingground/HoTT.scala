@@ -47,19 +47,19 @@ object HoTT {
   }
 
   object Name {
-    def nameFromSym(sym: AnySym) : Option[String] = sym match {
-      case Name(name) => Some(name)
-      case LeftProjSym(name) => nameFromSym(name)
+    def nameFromSym(sym: AnySym): Option[String] = sym match {
+      case Name(name)         => Some(name)
+      case LeftProjSym(name)  => nameFromSym(name)
       case RightProjSym(name) => nameFromSym(name)
-      case _ => None
+      case _                  => None
     }
 
     def getName(t: Term): Option[String] = t match {
       case sym: Symbolic =>
         nameFromSym(sym.name)
-      case PairTerm(first : Term, _) => getName(first)
+      case PairTerm(first: Term, _)             => getName(first)
       case DepPair(first: Term, second, fibers) => getName(first)
-      case _ => None
+      case _                                    => None
     }
   }
 
@@ -140,10 +140,11 @@ object HoTT {
     /**
       * returns whether `this` depends on `that`
       */
-    def dependsOn(that: Term): Boolean = Try{
-      val newVar = that.newobj
-      replace(that, newVar) != this
-    }.getOrElse(false)
+    def dependsOn(that: Term): Boolean =
+      Try {
+        val newVar = that.newobj
+        replace(that, newVar) != this
+      }.getOrElse(false)
 
     /**
       * returns whether `this` is independent of `that`.
@@ -167,7 +168,7 @@ object HoTT {
     * specify result of substitution
     * a typical class is closed under substitution.
     */
-  trait Subs[+U <: Term] { self : U with Subs[U] with Term =>
+  trait Subs[+U <: Term] { self: U with Subs[U] with Term =>
 
     /**
       *  substitute x by y recursively in `this`.
@@ -184,8 +185,10 @@ object HoTT {
       Try(Subs.hook(self, x, y))
 
       val res =
-        if (isWitness(x) || x == y) Try(self : U with Subs[U]).getOrElse(subs(x, y))
-        else if (self == x) Try(y.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
+        if (isWitness(x) || x == y)
+          Try(self: U with Subs[U]).getOrElse(subs(x, y))
+        else if (self == x)
+          Try(y.asInstanceOf[U with Subs[U]]).getOrElse(subs(x, y))
         else
           (x, y) match {
             case (ab: AbsPair[u, v], cd: AbsPair[w, x])
@@ -197,18 +200,19 @@ object HoTT {
               replace(f, g) replace (a, b)
             case (MiscAppln(f, a), MiscAppln(g, b)) =>
               replace(f, g) replace (a, b)
-            case (xs: Symbolic, _)
-                if (x.typ != y.typ) && (y.typ).symbObj(xs.name).typ == y.typ =>
-              val typchange = replace(x.typ, y.typ)
-//             if (self != typchange) {  pprint.log(self, height = 300)
-//              pprint.log(typchange, height = 300)}
-              typchange replace ((y.typ).symbObj(xs.name), y)
             case (FuncTyp(a, b), FuncTyp(c, d)) =>
               replace(a, c) replace (b, d)
             case (PiDefn(a: Term, b), PiDefn(c: Term, d)) =>
               replace(a, c) replace (b, d)
             case (PiTyp(fib1), PiTyp(fib2)) =>
               replace(fib1, fib2)
+            case (xs: Symbolic, _)
+                if !resizedEqual(x.typ, y.typ) && ((y.typ).symbObj(xs.name).typ == y.typ) =>
+              val typchange = replace(x.typ, y.typ)
+//             if (self != typchange) {  pprint.log(self, height = 300)
+//              pprint.log(typchange, height = 300)}
+              typchange replace ((y.typ).symbObj(xs.name), y)
+
             case _ => subs(x, y)
           }
 
@@ -576,7 +580,7 @@ object HoTT {
       }
     case fx: ApplnSym[w, u] =>
       val fn = fx.func.replace(x, y)
-      val z = fx.arg.replace(x, y).asInstanceOf[w] 
+      val z  = fx.arg.replace(x, y).asInstanceOf[w]
       // pprint.log(x)
       // pprint.log(y)
       // pprint.log(x == y)
@@ -662,8 +666,8 @@ object HoTT {
     case _             => false
   }
 
-  def witVar[U <: Term with Subs[U]](t: U): U = 
-  // t
+  def witVar[U <: Term with Subs[U]](t: U): U =
+    // t
     "_" :: t.typ.asInstanceOf[Typ[U]]
 
   /**
@@ -753,7 +757,7 @@ object HoTT {
         depcodom: Func[Term, Typ[U]]
     ): InducFuncLike[Term, U] =
       InducFn(depcodom)
-      // PiDefn(depcodom).symbObj(vacuousSym)
+    // PiDefn(depcodom).symbObj(vacuousSym)
   }
 
   /**
@@ -763,14 +767,14 @@ object HoTT {
     case FuncTyp(tp: Typ[u], Zero) => tp
     case pd: ProdTyp[u, v]         => PlusTyp(negate(pd.first), negate(pd.second))
     case pt: PlusTyp[u, v]         => ProdTyp(negate(pt.first), negate(pt.second))
-    case pt: PiDefn[u, v]          => SigmaTyp(lmbda(pt.variable)(negate(pt.value) ))
-    case st: SigmaTyp[u, v]        => 
+    case pt: PiDefn[u, v]          => SigmaTyp(lmbda(pt.variable)(negate(pt.value)))
+    case st: SigmaTyp[u, v] =>
       val x = st.fibers.dom.Var
       val y = st.fibers(x.asInstanceOf[u])
       PiDefn(x, negate(y))
-    case Unit                      => Zero
-    case Zero                      => Unit
-    case tp                        => tp ->: Zero
+    case Unit => Zero
+    case Zero => Unit
+    case tp   => tp ->: Zero
   }
 
   /**
@@ -838,8 +842,11 @@ object HoTT {
     ): FuncLike[U, FuncLike[Term, U]] = {
       val d = Unit.Var
       val x = depcodom(Star).Var
-      if(depcodom(d).dependsOn(d)==false) { x :~> (RecFn(depcodom(d), x): Func[Term,U])}
-      else{x :~> (InducFn(depcodom, x): FuncLike[Term, U])}
+      if (depcodom(d).dependsOn(d) == false) {
+        x :~> (RecFn(depcodom(d), x): Func[Term, U])
+      } else {
+        x :~> (InducFn(depcodom, x): FuncLike[Term, U])
+      }
     }
   }
 
@@ -935,10 +942,10 @@ object HoTT {
 
   def isProp(x: Typ[Term]): Boolean = x.typ match {
     case _: Prop.type => true
-    case _            => 
+    case _ =>
       x match {
-        case ft :FuncTyp[u, v] => isProp(ft.dom) && isProp(ft.codom)
-        case _ => false
+        case ft: FuncTyp[u, v] => isProp(ft.dom) && isProp(ft.codom)
+        case _                 => false
       }
   }
 
@@ -1452,7 +1459,7 @@ object HoTT {
       type V = Y
     }
 
-    case object GetFunc extends (ExstFunc => Term){
+    case object GetFunc extends (ExstFunc => Term) {
       def apply(f: ExstFunc) = f.func
 
       override def toString(): String = "GetFunc"
@@ -1744,8 +1751,8 @@ object HoTT {
     def act(arg: W): U =
       if (dom == arg.typ) {
         if (isProp(dom)) codom.symbObj(ApplnSym(this, witVar(arg)))
-        else codom.symbObj(ApplnSym(this, arg))}
-      else
+        else codom.symbObj(ApplnSym(this, arg))
+      } else
         codom
           .replace(dom, arg.typ)
           .symbObj(ApplnSym(replace(dom, arg.typ), arg))
@@ -1895,9 +1902,9 @@ object HoTT {
     override def equals(that: Any): Boolean = that match {
       case l: LambdaLike[u, v] if l.variable.typ == variable.typ =>
         // Try(
-          l.value.replace(l.variable, variable) == value &&
+        l.value.replace(l.variable, variable) == value &&
           value.replace(variable, l.variable) == l.value
-          // ).getOrElse(false)
+      // ).getOrElse(false)
       case _ => false
     }
 
@@ -2112,10 +2119,12 @@ object HoTT {
     // else {
     val newvar   = variable.newobj
     val newValue = value.replace(variable, newvar)
-    if (newValue == value) LambdaFixed(
-      // witVar(variable), 
-      variable,
-      value)
+    if (newValue == value)
+      LambdaFixed(
+        // witVar(variable),
+        variable,
+        value
+      )
     else if (value.typ != newValue.typ)
       LambdaTerm(newvar, newValue)
     else LambdaFixed(newvar, newValue)
@@ -2211,10 +2220,12 @@ object HoTT {
     // assert(newvar != variable, s"new variable of type ${newvar.typ} not new")
     // assert(newvar.typ == variable.typ, s"variable $variable changed type")
     //    LambdaTypedFixed(newvar.typed, value.replace(variable, newvar).typed)
-    if (newValue == value) LambdaFixed(
-      // witVar(variable), 
-      variable,
-      value)
+    if (newValue == value)
+      LambdaFixed(
+        // witVar(variable),
+        variable,
+        value
+      )
     else LambdaFixed(newvar, newValue)
     // }
   }
@@ -3612,13 +3623,13 @@ object HoTT {
         case _ =>
           // if (isProp(func.dom) && isProp(sym.typ))
           //   Some(("_" :: func.dom))
-          // else 
+          // else
           None
       }
     case res =>
       // if (isProp(func.dom) && isProp(res.typ))
       //   Some(("_" :: func.dom))
-      // else 
+      // else
       None
   }
 
