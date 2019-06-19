@@ -208,9 +208,9 @@ object LeanParser {
   ) extends Exception(error.toString) {
     val exps: Vector[Expr] = expVars.map(_._1)
     val vars: Vector[Term] = expVars.last._2
-    def apl: Option[(Expr, Expr, ApplnFailException)] =
+    def apl: Option[(Expr, Expr, ApplnParseException)] =
       (exps.head, error) match {
-        case (App(f, x), er: ApplnFailException) => Some((f, x, er))
+        case (App(f, x), er: ApplnParseException) => Some((f, x, er))
         case _                                   => None
       }
 

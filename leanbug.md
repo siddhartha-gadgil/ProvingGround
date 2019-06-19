@@ -1,106 +1,141 @@
-# Lean bug
+# Lean non-bug
 
-While using lean parser server for `and.dcases_on`. This can be narrowed down to the following expression involving `and` with the application of the second `n`.
+While using lean parser server for `eq_of_heq` (mapping heterogeneous to ordinary equality), we get an error. This turns out to be another case where we should use equality of terms with the same type if it is a proposition.
+
+As this uses `heq.rec_on`, for reference:
 
 ```scala
-λ {a b : Prop} {C : (∀ (h : @and a b), Sort l)} (n : @and a b)
-  (e_1 : (∀ (left : a) (right : b), C (@and.intro a b left right))), // variables a, b, C, n and e_1
-    @and.rec.{l} a b (∀ (h : @and a b), C h) // parameters and family for rec
-        (λ (left : a) (right : b) (a_0 : @and a b), e_1 left right)
-        n n
+@ heqRecOn
+res11: Term =
+  ('t : 𝒰 ) ↦
+    ('u : 't) ↦
+      ('v : ∏('v : 𝒰 ){ ('v → 𝒰 ) }) ↦
+        ('w : 𝒰 ) ↦
+          ('x : 'w) ↦
+            ('y : heq('t)('u)('w)('x)) ↦
+              ('z : 'v('t)('u)) ↦
+                induc_{
+                   (A : 𝒰 ) ↦
+                      heq('t)('u)(A) ;
+                        (B : 𝒰 ) ↦
+                          (b : B) ↦
+                            (p : heq('t)('u)(B)(b)) ↦
+                            'v(B)(b)
+                   }('z)('y)
+
+@ heqRecOn.typ
+res12: Typ[U] = ∏('t : 𝒰 ){ ∏('u : 't){ ∏('v : ∏('v : 𝒰 ){ ('v → 𝒰 ) }){ ∏('w : 𝒰 ){ ∏('x : 'w){ (heq('t)('u)('w)('x) → ('v('t)('u) → 'v('w)('x))) } } } } }
 ```
 
-which in full form is:
+The variables in context are:
 
 ```scala
+@ fail2.vars.map(t => t ->t.typ) 
+res9: Vector[(Term, Typ[U]) forSome { type U >: t <: Term with Subs[U]; val t: Term }] = Vector(
+  ('ag, heq('aa)('ab)('ae)('af)),
+  ('af, 'ae),
+  ('ae, 𝒰 ),
+  ('ad, heq('aa)('ab)('aa)('ac)),
+  ('ac, 'aa),
+  ('ab, 'aa),
+  ('aa, 𝒰 )
+)
+```
+
+We get an application failure, with the relevant expressions and functions being:
+
+```scala
+val fail2.fe.toString =
+  @heq.rec_on.{0 u} #6 #5
+    (λ (x : Sort u) (x_0 : x),
+      ∀ (h : @eq.{u+1} Sort u #8 x),
+        @eq.{u} ((λ (x_1 : Sort u), x_1) x)
+        (@eq.rec_on.{u u+1} Sort u #9 (λ (x_1 : Sort u), x_1) x h #8) x_0
+    ) #2 #1 #0
+
+
+val fail2.ae.toString =
+  λ (h : @eq.{u+1} Sort u #6 #6),
+      @rfl.{u} ((λ (x : Sort u), x) #7)
+  (@eq.rec_on.{u u+1} Sort u #7 (λ (x : Sort u), x) #7 h #6)
+
+@ fail2.func
+res13: Term = 
+('z : ∏('aj : eq(𝒰 )('aa)('aa)){ eq('aa)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('aj))('ab) }) ↦ //.the type of this matters
+    induc_{ (A : 𝒰 ) ↦ heq('aa)('ab)(A) ; (B : 𝒰 ) ↦ (b : B) ↦ (p : heq('aa)('ab)(B)(b)) ↦ ∏('aj : eq(𝒰 )('aa)(B)){ eq(B)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('aj))(b) } }('z)('ag)
+
+@ fail2.arg
+res14: Term = ('ah : eq(𝒰 )('aa)('aa)) ↦ eq.refl('aa)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('ah))
+
+@ fail2.domOpt.get
+res15: Typ[Term] = ∏('aj : eq(𝒰 )('aa)('aa)){ eq('aa)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('aj))('ab) }
+
+@ fail2.arg.typ
+res16: Typ[U] = ∏('ah : eq(𝒰 )('aa)('aa)){ eq('aa)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('ah))(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('ah)) }
+```
+
+Finally, here is the full description of `eq_of_heq`.
+
+```scala
+λ {α : Sort u} {a a_0 : α} (h : @heq.{u} α a α a_0),
+(λ (this :
+      (∀ (α_0 : Sort u) (a_1 : α_0) (h_0 : @heq.{u} α a α_0 a_1)
+        (h_1 : @eq.{u+1} Sort u α α_0),
+      @eq.{u} ((λ (x : Sort u), x) α_0)
+        (@eq.rec_on.{u u+1} Sort u α (λ (x : Sort u), x) α_0 h_1 a) a_1)),
+  (λ (this_0 :
+        @eq.{u} ((λ (x : Sort u), x) α)
+          (@eq.rec_on.{u u+1} Sort u α (λ (x : Sort u), x) α
+            (@eq.refl.{u+1} Sort u α) a) a_0),
+    this_0) (this α a_0 h (@eq.refl.{u+1} Sort u α)))
+  (λ (α_0 : Sort u) (a_1 : α_0) (h_0 : @heq.{u} α a α_0 a_1),
+  @heq.rec_on.{0 u} α a // the function begins here
+    (λ (x : Sort u) (x_0 : x),
+    ∀ (h_1 : @eq.{u+1} Sort u α x),
+    @eq.{u} ((λ (x_1 : Sort u), x_1) x)
+      (@eq.rec_on.{u u+1} Sort u α (λ (x_1 : Sort u), x_1) x h_1 a
+      ) x_0) α_0 a_1
+        h_0 // the function ends, argument below
+    (λ (h_1 : @eq.{u+1} Sort u α α),
+      @rfl.{u} ((λ (x : Sort u), x) α)
+        (@eq.rec_on.{u u+1} Sort u α (λ (x : Sort u), x) α h_1 a))) // the argument ends
+```
+
+```scala
+val argExp =
 Lam(
-  Binding(Str(, a), Sort(Zero), Implicit),
-  Lam(
-    Binding(Str(, b), Sort(Zero), Implicit),
-    Lam(
-      Binding(
-        Str(, C),
-        Pi(
-          Binding(Str(, h), App(App(Const(Str(, and), Vector()), Var(1)), Var(0)), Default),
-          Sort(Param(Str(, l)))
-        ),
-        Implicit
-      ),
-      Lam(
-        Binding(Str(, n), App(App(Const(Str(, and), Vector()), Var(2)), Var(1)), Default),
-        Lam(
-          Binding(
-            Str(, e_1),
-            Pi(
-              Binding(Str(, left), Var(3), Default),
-              Pi(
-                Binding(Str(, right), Var(3), Default),
-                App(
-                  Var(3),
-                  App(
-                    App(App(App(Const(Str(Str(, and), intro), Vector()), Var(5)), Var(4)), Var(1)),
-                    Var(0)
-                  )
-                )
-              )
-            ),
-            Default
-          ),
+  Binding(
+    Str(, h₂),
+    App(
+      App(App(Const(Str(, eq), Vector(Succ(Param(Str(, u))))), Sort(Param(Str(, u)))), Var(6)),
+      Var(6)
+    ),
+    Default
+  ),
+  App(
+    App(
+      Const(Str(, rfl), Vector(Param(Str(, u)))),
+      App(Lam(Binding(Str(, _x), Sort(Param(Str(, u))), Default), Var(0)), Var(7))
+    ),
+    App(
+      App(
+        App(
           App(
             App(
               App(
-                App(
-                  App(App(Const(Str(Str(, and), rec), Vector(Param(Str(, l)))), Var(4)), Var(3)),
-                  Pi(
-                    Binding(
-                      Str(, h),
-                      App(App(Const(Str(, and), Vector()), Var(4)), Var(3)),
-                      Default
-                    ),
-                    App(Var(3), Var(0))
-                  )
-                ),
-                Lam(
-                  Binding(Str(, left), Var(4), Default),
-                  Lam(
-                    Binding(Str(, right), Var(4), Default),
-                    Lam(
-                      Binding(
-                        Str(, _),
-                        App(App(Const(Str(, and), Vector()), Var(6)), Var(5)),
-                        Default
-                      ),
-                      App(App(Var(3), Var(2)), Var(1))
-                    )
-                  )
-                )
+                Const(Str(Str(, eq), rec_on), Vector(Param(Str(, u)), Succ(Param(Str(, u))))),
+                Sort(Param(Str(, u)))
               ),
-              Var(1)
+              Var(7)
             ),
-            Var(1)
-          )
-        )
-      )
+            Lam(Binding(Str(, _x), Sort(Param(Str(, u))), Default), Var(0))
+          ),
+          Var(7)
+        ),
+        Var(0)
+      ),
+      Var(6)
     )
   )
 )
-
 ```
-
-For contrast, a case with a bug earlier that now works (and also has the peculiar double `n`):
-
-```scala
-λ {a : @nat} {C : (∀ (a_1 : @nat) (h : @nat.less_than_or_equal a a_1), Prop)}
-  {a_0 : @nat} (n : @nat.less_than_or_equal a a_0)
-  (e_1 : C a (@nat.less_than_or_equal.refl a))
-  (e_2 :
-    (∀ {b : @nat} (a_1 : @nat.less_than_or_equal a b),
-    C (@nat.succ b) (@nat.less_than_or_equal.step a b a_1))),
-        @nat.less_than_or_equal.rec a
-           (λ (a_1 : @nat), ∀ (h : @nat.less_than_or_equal a a_1), C a_1 h)
-              (λ (a_1 : @nat.less_than_or_equal a a), e_1)
-            (λ {b : @nat} (a_1 : @nat.less_than_or_equal a b)
-              (ih : (∀ (h : @nat.less_than_or_equal a b), C b h))
-              (a_2 : @nat.less_than_or_equal a (@nat.succ b)),
-                 e_2 b a_1) a_0 n n
-  ```
