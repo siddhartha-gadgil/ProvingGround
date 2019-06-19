@@ -496,15 +496,6 @@ object LeanToTermMonix {
 
 }
 
-case class RecFoldException(
-    indMod: TermIndMod,
-    recFn: Term,
-    argsFmlyTerm: Vector[Term],
-    vec: Vector[Term],
-    fail: ApplnFailException
-) extends IllegalArgumentException(
-      s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail"
-    )
 
 @deprecated("use LeanParser", "buggy, avoid")
     case class LeanToTermMonix(
@@ -544,7 +535,7 @@ case class RecFoldException(
           resTask = applyFuncWitFold(recFnT, vec)
             .onErrorRecoverWith {
               case err: ApplnFailException =>
-                throw RecFoldException(indMod, recFn, argsFmlyTerm, vec, err)
+                throw RecFoldException(indMod, argsFmly, recFn, argsFmlyTerm, vec, err)
             }
           res <- resTask
         } yield res

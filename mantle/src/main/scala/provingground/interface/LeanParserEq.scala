@@ -13,7 +13,7 @@ import monix.execution.CancelableFuture
 import math.max
 import trepplein._
 
-import LeanInterface._, LeanToTermMonix._, LeanParser._
+import LeanInterface._, LeanParser._
 import ujson.Arr
 
 import scala.util.Try
@@ -78,6 +78,7 @@ class LeanParserEq(
         case err: ApplnFailException =>
           throw RecFoldException(
             indMod,
+            args,
             recFn,
             argsFmlyTermEq._1,
             vecInter,
@@ -291,8 +292,8 @@ class LeanParserEq(
 
   }.onErrorRecoverWith {
     case pe: ParseException =>
-      Task.raiseError(ParseException(pe.exps :+ exp, pe.vars, pe.error))
+      Task.raiseError(ParseException(pe.expVars :+ (exp -> vars) , pe.error))
     case error: Exception =>
-      Task.raiseError(ParseException(Vector(exp), vars, error))
+      Task.raiseError(ParseException(Vector(exp -> vars), error))
   }
 }

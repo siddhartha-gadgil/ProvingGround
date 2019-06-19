@@ -110,6 +110,7 @@ object LeanInterface {
     case fn: FuncLike[u, v] if fn.dom == arg.typ =>
       fn.applyUnchecked(arg.asInstanceOf[u])
     case fn if isWitness(arg) =>
+      println(fansi.Color.Red("Warning: Special Rule for Lean"))
       pprint.log(fn)
       pprint.log(arg)
       fn
@@ -117,6 +118,7 @@ object LeanInterface {
       witLess(arg)
         .find(_.typ == fn.dom)
         .map{x =>
+          println(fansi.Color.Red("Warning: Special Rule for Lean"))
           pprint.log(s"$arg becomes $x for $fn")
           fn.applyUnchecked(x.asInstanceOf[u])}
         .getOrElse(throw new ApplnFailException(func, arg))
@@ -409,6 +411,15 @@ case class IndexedIndMod(name: Name,
 
   import implicits._
 
+  val proofLiftOpt: (Term, Term) => Option[Term] = {
+    case (w: Typ[u], tp: Typ[v]) => Some { (w.Var) :-> tp }
+    case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
+      val x = w.dom.Var
+      proofLiftOpt(w(x), tp(x.asInstanceOf[a]))
+        .map((g: Term) => x :~> (g: Term))
+    case _ => None
+  }
+
   def getRecOpt(argsFmlyTerm: Option[Vector[Term]]): Option[Term] = {
     val newParamsOpt = argsFmlyTerm map (_.init)
     newParamsOpt.flatMap { (newParams) =>
@@ -417,7 +428,7 @@ case class IndexedIndMod(name: Name,
       val fmlOptRaw = argsFmlyTerm map (_.last)
       val fmlOpt =
         if (isPropn)
-          fmlOptRaw.flatMap((fib) => LeanToTerm.proofLiftOpt(indNew.W, fib))
+          fmlOptRaw.flatMap((fib) => proofLiftOpt(indNew.W, fib))
         else fmlOptRaw
       val recOpt =
         for {
@@ -430,6 +441,15 @@ case class IndexedIndMod(name: Name,
     }
   }
 
+  val proofLiftTry: (Term, Term) => Try[Term] = {
+    case (w: Typ[u], tp: Typ[v]) => Success { (w.Var) :-> tp }
+    case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
+      val x = w.dom.Var
+      Try(proofLiftTry(w(x), tp(x.asInstanceOf[a]))).flatten
+        .map((g: Term) => x :~> (g: Term))
+    case _ => Failure(new Exception("could not lift proof"))
+  }
+
   def getRecTry(argsFmlyTerm: Try[Vector[Term]]): Try[Term] = {
     val newParamsTry = argsFmlyTerm map (_.init)
     newParamsTry.flatMap { (newParams) =>
@@ -438,7 +458,7 @@ case class IndexedIndMod(name: Name,
       val fmlOptRaw = argsFmlyTerm map (_.last)
       val fmlOpt =
         if (isPropn)
-          fmlOptRaw.flatMap((fib) => LeanToTerm.proofLift(indNew.W, fib))
+          fmlOptRaw.flatMap((fib) => proofLiftTry(indNew.W, fib))
         else fmlOptRaw
       val recOpt =
         for {

@@ -20,7 +20,18 @@ import scala.util.Try
 
 import scala.collection.mutable.{Set => mSet}
 
-// import LeanToTermMonix.{RecIterAp, getRec, isPropnFn, parseWork, introsFold}
+
+case class RecFoldException(
+    indMod: TermIndMod,
+    argFmlyExps: Vector[Expr],
+    recFn: Term,
+    argsFmlyTerm: Vector[Term],
+    vec: Vector[Term],
+    fail: ApplnFailException
+) extends IllegalArgumentException(
+      s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail"
+    )
+
 
 object LeanParser {
   val parseWork: mSet[Expr] = mSet()
@@ -186,10 +197,11 @@ object LeanParser {
   }
 
 
-  case class ParseException(exps: Vector[Expr],
-                            vars: Vector[Term],
+  case class ParseException(expVars: Vector[(Expr, Vector[Term])],
                             error: Exception)
       extends Exception(error.toString) {
+        val exps : Vector[Expr] = expVars.map(_._1)
+        val vars : Vector[Term] = expVars.last._2
     def apl: Option[(Expr, Expr, ApplnFailException)] =
       (exps.head, error) match {
         case (App(f, x), er: ApplnFailException) => Some((f, x, er))
@@ -383,7 +395,7 @@ class LeanParser(initMods: Seq[Modification],
       recFn <- recFnT
       resT = Task(foldFuncLean(recFn, vecInter)).onErrorRecoverWith {
         case err: ApplnFailException =>
-          throw RecFoldException(indMod, recFn, argsFmlyTerm, vecInter, err)
+          throw RecFoldException(indMod, args, recFn, argsFmlyTerm, vecInter, err)
       }
       res <- resT
     } yield res
@@ -541,9 +553,9 @@ class LeanParser(initMods: Seq[Modification],
     }
   }.onErrorRecoverWith {
     case pe: ParseException =>
-      Task.raiseError(ParseException(pe.exps :+ exp, pe.vars, pe.error))
+      Task.raiseError(ParseException(pe.expVars :+ (exp -> vars) , pe.error))
     case error: Exception =>
-      Task.raiseError(ParseException(Vector(exp), vars, error))
+      Task.raiseError(ParseException(Vector(exp -> vars), error))
   }
 
   def parseVec(vec: Vector[Expr], vars: Vector[Term]): Task[Vector[Term]] =

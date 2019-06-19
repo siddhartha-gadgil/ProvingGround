@@ -707,24 +707,6 @@ object LeanToTerm {
     case _        => false
   }
 
-  val proofLift: (Term, Term) => Try[Term] = {
-    case (w: Typ[u], tp: Typ[v]) => Success { (w.Var) :-> tp }
-    case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
-      val x = w.dom.Var
-      Try(proofLift(w(x), tp(x.asInstanceOf[a]))).flatten
-        .map((g: Term) => x :~> (g: Term))
-    case _ => Failure(new Exception("could not lift proof"))
-  }
-
-  val proofLiftOpt: (Term, Term) => Option[Term] = {
-    case (w: Typ[u], tp: Typ[v]) => Some { (w.Var) :-> tp }
-    case (w: FuncLike[u, v], tp: FuncLike[a, b]) if w.dom == tp.dom =>
-      val x = w.dom.Var
-      proofLiftOpt(w(x), tp(x.asInstanceOf[a]))
-        .map((g: Term) => x :~> (g: Term))
-    case _ => None
-  }
-
   def optSequence[A](vec: Vector[Option[A]]): Option[Vector[A]] =
     if (vec.contains(None)) None else Some(vec.map(_.get))
 }
