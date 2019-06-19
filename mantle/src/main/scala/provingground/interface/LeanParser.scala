@@ -20,7 +20,6 @@ import scala.util.Try
 
 import scala.collection.mutable.{Set => mSet}
 
-
 case class RecFoldException(
     indMod: TermIndMod,
     argFmlyExps: Vector[Expr],
@@ -32,9 +31,16 @@ case class RecFoldException(
       s"Failure to fold recursive Function for ${indMod.name}, recursion function $recFn with error $fail"
     )
 
-
 object LeanParser {
   val parseWork: mSet[Expr] = mSet()
+
+  def load(s: String = "basic"): LeanParser = {
+    val name = s"$s.lean.export"
+    val path = os.resource / name
+    val in   = new java.io.ByteArrayInputStream(os.read.bytes(path))
+    val mods = provingground.interface.LeanInterface.getModsFromStream(in)
+    new LeanParser(mods)
+  }
 
   def proofLift: (Term, Term) => Task[Term] = {
     case (w: Typ[u], tp: Typ[v]) =>
@@ -45,7 +51,6 @@ object LeanParser {
         .map((g: Term) => x :~> (g: Term))
     case _ => throw new Exception("could not lift proof")
   }
-
 
   def isPropnFn(e: Expr): Boolean = e match {
     case Pi(_, t) => isPropnFn(t)
@@ -132,7 +137,7 @@ object LeanParser {
           // val x = tp.Var
           // if (tp.dependsOn(x)) {
           //   (indNew.inducE((x: Term) :-> (tp: Typ[u])))
-          // } else 
+          // } else
           (indNew.recE(tp))
       }
 
@@ -197,23 +202,34 @@ object LeanParser {
     }
   }
 
-
-  case class ParseException(expVars: Vector[(Expr, Vector[Term])],
-                            error: Exception)
-      extends Exception(error.toString) {
-        val exps : Vector[Expr] = expVars.map(_._1)
-        val vars : Vector[Term] = expVars.last._2
+  case class ParseException(
+      expVars: Vector[(Expr, Vector[Term])],
+      error: Exception
+  ) extends Exception(error.toString) {
+    val exps: Vector[Expr] = expVars.map(_._1)
+    val vars: Vector[Term] = expVars.last._2
     def apl: Option[(Expr, Expr, ApplnFailException)] =
       (exps.head, error) match {
         case (App(f, x), er: ApplnFailException) => Some((f, x, er))
         case _                                   => None
       }
+
+    def recfl: Option[RecFoldException] = error match {
+      case e: RecFoldException => Some(e)
+      case _                   => None
+    }
   }
 
-  class ApplnParseException(val fe: Expr, val ae: Expr, func: Term, arg: Term, val vars: Vector[Term]) extends ApplnFailException(func, arg)
+  class ApplnParseException(
+      val fe: Expr,
+      val ae: Expr,
+      func: Term,
+      arg: Term,
+      val vars: Vector[Term]
+  ) extends ApplnFailException(func, arg)
 
-  case class LambdaFormException(variable: Term, value: Term, error: Throwable) extends Exception(error.getMessage)
-
+  case class LambdaFormException(variable: Term, value: Term, error: Throwable)
+      extends Exception(error.getMessage)
 
   sealed trait Log
 
@@ -225,7 +241,7 @@ object LeanParser {
 
   case class Parsed(expr: Expr) extends Log
 
-  trait Logger extends (Log => Unit){logger =>
+  trait Logger extends (Log => Unit) { logger =>
     def &&(that: Logger): Logger = (l: Log) => {
       logger(l); that(l)
     }
@@ -236,16 +252,22 @@ object LeanParser {
 
     val nop: Logger = Logger((_) => ())
 
-    def dispatch(send: String => Unit): Logger = Logger({
-      case LeanParser.Defined(name, _)      => send(s"defined $name")
-      case LeanParser.DefinedInduc(name, _) => send(s"defined inductive $name")
-      case LeanParser.ParseWork(expr)    => send(s"started parsing $expr; current queue : ${parseWork.size}")
-      case LeanParser.Parsed(expr)       => send(s"finished parsing $expr; current queue : ${parseWork.size}")
-    })
+    def dispatch(send: String => Unit): Logger =
+      Logger({
+        case LeanParser.Defined(name, _) => send(s"defined $name")
+        case LeanParser.DefinedInduc(name, _) =>
+          send(s"defined inductive $name")
+        case LeanParser.ParseWork(expr) =>
+          send(s"started parsing $expr; current queue : ${parseWork.size}")
+        case LeanParser.Parsed(expr) =>
+          send(s"finished parsing $expr; current queue : ${parseWork.size}")
+      })
   }
 
-  def splitVec[A](sizes: Vector[Int],
-                  vec: Vector[A]): (Vector[Vector[A]], Vector[A]) =
+  def splitVec[A](
+      sizes: Vector[Int],
+      vec: Vector[A]
+  ): (Vector[Vector[A]], Vector[A]) =
     sizes match {
       case Vector() => (Vector(), vec)
       case n +: ms =>
@@ -271,13 +293,15 @@ object LeanParser {
     newName
   }
 
-
   import TermJson._
 
   def jsDef(parser: LeanParser): Arr = {
     val jsDefs = parser.defnMap.toVector.map {
       case (name, term) =>
-        ujson.Obj("name" -> ujson.Str(name.toString), "term" -> termToJson(term).get)
+        ujson.Obj(
+          "name" -> ujson.Str(name.toString),
+          "term" -> termToJson(term).get
+        )
     }
     ujson.Arr(jsDefs: _*)
   }
@@ -304,8 +328,10 @@ object LeanParser {
   def apply(filename: String): LeanParser =
     new LeanParser(LeanInterface.getMods(filename))
 
-  def applyFuncOptFold(ft: Task[Option[Term]],
-                       v: Vector[Option[Term]]): Task[Option[Term]] =
+  def applyFuncOptFold(
+      ft: Task[Option[Term]],
+      v: Vector[Option[Term]]
+  ): Task[Option[Term]] =
     v match {
       case Vector() => ft
       case xo +: ys =>
@@ -313,38 +339,42 @@ object LeanParser {
           ft.map(
             (fo) => fo.flatMap((f) => xo.flatMap((x) => applyFuncOpt(f, x)))
           ),
-          ys)
+          ys
+        )
     }
 
   def applyFuncFold(ft: Task[Term], v: Vector[Term]): Task[Term] =
     v match {
       case Vector() => ft
       case x +: ys =>
-        applyFuncFold(ft.map(
-                        (f) => applyFuncLean(f, x)
-                      ),
-                      ys)
+        applyFuncFold(
+          ft.map(
+            (f) => applyFuncLean(f, x)
+          ),
+          ys
+        )
     }
 
 }
 
-class LeanParser(initMods: Seq[Modification],
-                 defTaskMap: Map[Name, Task[Term]] = Map(),
-                 indTaskMap: Map[Name, Task[TermIndMod]] = Map(),
-                 log: LeanParser.Logger = LeanParser.Logger.nop) {
+class LeanParser(
+    initMods: Seq[Modification],
+    defTaskMap: Map[Name, Task[Term]] = Map(),
+    indTaskMap: Map[Name, Task[TermIndMod]] = Map(),
+    log: LeanParser.Logger = LeanParser.Logger.nop
+) {
 
-  val mods: ArrayBuffer[Modification] = ArrayBuffer(initMods : _*)
+  val mods: ArrayBuffer[Modification] = ArrayBuffer(initMods: _*)
 
-  def addMods(m: Seq[Modification]) : Unit =  mods ++= m
+  def addMods(m: Seq[Modification]): Unit = mods ++= m
 
   import LeanParser._
-  
 
   val defnMap: mMap[Name, Term] = mMap()
 
   val termIndModMap: mMap[Name, TermIndMod] = mMap()
 
-  def update() : Unit = {
+  def update(): Unit = {
     import library._
     defnMap ++= LeanMemo.defMap
     termIndModMap ++= LeanMemo.indMap
@@ -373,18 +403,24 @@ class LeanParser(initMods: Seq[Modification],
         termIndModMap.get(name).map((t) => Task.pure(t))
       )
 
-  def recApp(name: Name,
-             args: Vector[Expr],
-             exp: Expr,
-             vars: Vector[Term]): Task[Term] =
+  def recApp(
+      name: Name,
+      args: Vector[Expr],
+      exp: Expr,
+      vars: Vector[Term]
+  ): Task[Term] =
     for {
       indMod <- getMemTermIndMod(name, exp)
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-      argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+      argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(
+        _.enableAutoCancelableRunLoops
+      )
       recFnT = getRec(indMod, argsFmlyTerm)
       // _      = pprint.log(s"$vars")
-      vec <- parseVec(xs, vars).executeWithOptions(_.enableAutoCancelableRunLoops) 
-      vecInter = indMod.interleaveData(vec) 
+      vec <- parseVec(xs, vars).executeWithOptions(
+        _.enableAutoCancelableRunLoops
+      )
+      vecInter = indMod.interleaveData(vec)
       // _ = pprint.log(s"${vec.map(_.fansi)}")
       // _ = if (vec != vecInter) {
       //   pprint.log(s"$vecInter replaces $vec")
@@ -396,19 +432,30 @@ class LeanParser(initMods: Seq[Modification],
       recFn <- recFnT
       resT = Task(foldFuncLean(recFn, vecInter)).onErrorRecoverWith {
         case err: ApplnFailException =>
-          throw RecFoldException(indMod, args, recFn, argsFmlyTerm, vecInter, err)
+          throw RecFoldException(
+            indMod,
+            args,
+            recFn,
+            argsFmlyTerm,
+            vecInter,
+            err
+          )
       }
       res <- resT
     } yield res
 
-  def recAppSkips(name: Name,
-                  args: Vector[Expr],
-                  exp: Expr,
-                  vars: Vector[Term]): Task[Option[Term]] =
+  def recAppSkips(
+      name: Name,
+      args: Vector[Expr],
+      exp: Expr,
+      vars: Vector[Term]
+  ): Task[Option[Term]] =
     for {
       indMod <- getMemTermIndMod(name, exp)
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-      argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+      argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(
+        _.enableAutoCancelableRunLoops
+      )
       indOpt = indMod match {
         case sm: SimpleIndMod => Some(sm.getInd(argsFmlyTerm.init))
         case _                => None
@@ -420,19 +467,29 @@ class LeanParser(initMods: Seq[Modification],
         (recArgsVec, residue) = LeanParser.splitVec(ind.seqDom.introArgsVec, ys)
         indicesVec            = recDataExpr.map(LeanInterface.varsUsed)
         resOptTask: Task[Option[Term]] = for { // Task
-          recData <- parseVec(recDataExpr, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-          recFn   <- recFnT
-          withRecDataTask = Task(foldFuncLean(recFn, recData)).executeWithOptions(_.enableAutoCancelableRunLoops)
+          recData <- parseVec(recDataExpr, vars).executeWithOptions(
+            _.enableAutoCancelableRunLoops
+          )
+          recFn <- recFnT
+          withRecDataTask = Task(foldFuncLean(recFn, recData))
+            .executeWithOptions(_.enableAutoCancelableRunLoops)
           optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
-            case (vec, indices) => parseOptVec(vec.zipWithIndex, vars, indices).executeWithOptions(_.enableAutoCancelableRunLoops)
+            case (vec, indices) =>
+              parseOptVec(vec.zipWithIndex, vars, indices)
+                .executeWithOptions(_.enableAutoCancelableRunLoops)
           })
           optParsedAll <- optParsedAllTask
-          withRecArgsOptTask = applyFuncOptFold(withRecDataTask.map(Some(_)),
-                                                optParsedAll.flatten)
+          withRecArgsOptTask = applyFuncOptFold(
+            withRecDataTask.map(Some(_)),
+            optParsedAll.flatten
+          )
           withRecArgsOpt <- withRecArgsOptTask
-          residueTerms   <- parseVec(residue, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-          foldOpt = withRecArgsOpt.map((f) =>
-            applyFuncFold(Task.pure(f), residueTerms))
+          residueTerms <- parseVec(residue, vars).executeWithOptions(
+            _.enableAutoCancelableRunLoops
+          )
+          foldOpt = withRecArgsOpt.map(
+            (f) => applyFuncFold(Task.pure(f), residueTerms)
+          )
           fold <- Task.sequence(foldOpt.toVector)
         } yield fold.headOption
       } yield resOptTask // Option
@@ -443,15 +500,48 @@ class LeanParser(initMods: Seq[Modification],
   def getTask(name: String): Task[Term] =
     parse(Const(Name(name.split("\\."): _*), Vector()))
 
-  def get(name: String): CancelableFuture[Term] =
+  def getFut(name: String): CancelableFuture[Term] =
     getTask(name).runToFuture
 
-  def getIndTask(s: String): Task[TermIndMod] =
-    {
-      val name = Name(s.split("\\.") : _*)
-      val exp = Const(name, Vector())
-      getMemTermIndMod(name, exp)
-    }
+  def get(name: String): Term = getTask(name).runSyncUnsafe()
+
+  def getTry(name: String): Try[Term] =
+    getTask(name).materialize.runSyncUnsafe()
+
+  def getError(name: String) : Option[ParseException] = 
+    getTry(name).fold(
+      err => err match {
+        case pe : ParseException => Some(pe)
+        case _ => None
+      },
+      _ => None
+    )
+
+  def getIndTask(s: String): Task[TermIndMod] = {
+    val name = Name(s.split("\\."): _*)
+    val exp  = Const(name, Vector())
+    getMemTermIndMod(name, exp)
+  }
+
+  def getInd(s: String) = getIndTask(s).runSyncUnsafe()
+
+  def findDef(s: String): Option[DefMod] = {
+    val name = trepplein.Name(s.split("\\."): _*)
+    mods.find(_.name == name).collect { case df: DefMod => df }
+  }
+
+  def findInd(s: String): Option[IndMod] = {
+    val name = trepplein.Name(s.split("\\."): _*)
+    mods.find(_.name == name).collect { case df: IndMod => df }
+  }
+
+  def allNames(init: String = "") =
+    mods
+      .filter(_.name.toString.startsWith(init))
+      .map(_.name.toString)
+
+  def topNames(init: String = "") =
+    allNames(init).map(s => s.split("\\.").headOption).flatten.distinct
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
@@ -485,55 +575,65 @@ class LeanParser(initMods: Seq[Modification],
         case App(f, a) =>
           // pprint.log(s"Applying $f to $a")
           for {
-            func <- parse(f, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            arg  <- parse(a, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            res = Try(applyFuncLean(func, arg)).getOrElse(throw new ApplnParseException(f, a, func, arg, vars))
+            func <- parse(f, vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+            arg <- parse(a, vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+            res = Try(applyFuncLean(func, arg))
+              .getOrElse(throw new ApplnParseException(f, a, func, arg, vars))
             // _ = pprint.log(s"got result for $f($a)")
           } yield res
         case Lam(domain, body) =>
           // pprint.log(s"lambda $domain, $body")
           for {
-            domTerm <- parse(domain.ty, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            domTyp  <- Task.eval(toTyp(domTerm))
+            domTerm <- parse(domain.ty, vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+            domTyp <- Task.eval(toTyp(domTerm))
             x = getNextVarName(vars, maxIndex(body)) :: domTyp
-            value <- parse(body, x +: vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+            value <- parse(body, x +: vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
           } yield
             value match {
               case FormalAppln(fn, arg) if arg == x && fn.indepOf(x) =>
                 pprint.log(fn)
                 fn
               // case y if domain.prettyName.toString == "_" => y
-              case _                                      =>
+              case _ =>
                 // if (value.typ.dependsOn(x)) LambdaTerm(x, value)
                 // else LambdaFixed(x, value)
-               Try(lambda(x)(value)).fold(err => {
-                 pprint.log(value)
-                 pprint.log(x)
-                 pprint.log(x.typ)
-                 throw LambdaFormException(x, value, err)
-               }
-                 ,res => res
-               )
+                Try(lambda(x)(value)).fold(err => {
+                  pprint.log(value)
+                  pprint.log(x)
+                  pprint.log(x.typ)
+                  throw LambdaFormException(x, value, err)
+                }, res => res)
             }
         case Pi(domain, body) =>
           // pprint.log(s"pi $domain, $body")
           for {
-            domTerm <- parse(domain.ty, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            domTyp  <- Task.eval(toTyp(domTerm)).executeWithOptions(_.enableAutoCancelableRunLoops)
+            domTerm <- parse(domain.ty, vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+            domTyp <- Task
+              .eval(toTyp(domTerm))
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
             x = getNextVarName(vars, maxIndex(body)) :: domTyp
-            value <- parse(body, x +: vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            cod   <- Task.eval(toTyp(value))
+            value <- parse(body, x +: vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+            cod <- Task.eval(toTyp(value))
           } yield
             if (LeanInterface.usesVar(body, 0)) piDefn(x)(cod)
             else x.typ ->: cod
         case Let(domain, value, body) =>
           // pprint.log(s"let $domain, $value, $body")
           for {
-            domTerm <- parse(domain.ty, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            domTyp  <- Task.eval(toTyp(domTerm))
+            domTerm <- parse(domain.ty, vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+            domTyp <- Task.eval(toTyp(domTerm))
             x = getNextVarName(vars, maxIndex(body)) :: domTyp
-            valueTerm <- parse(value, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            bodyTerm  <- parse(body, x +: vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+            valueTerm <- parse(value, vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+            bodyTerm <- parse(body, x +: vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
           } yield bodyTerm.replace(x, valueTerm)
         case e => Task.raiseError(UnParsedException(e))
       }
@@ -554,7 +654,7 @@ class LeanParser(initMods: Seq[Modification],
     }
   }.onErrorRecoverWith {
     case pe: ParseException =>
-      Task.raiseError(ParseException(pe.expVars :+ (exp -> vars) , pe.error))
+      Task.raiseError(ParseException(pe.expVars :+ (exp -> vars), pe.error))
     case error: Exception =>
       Task.raiseError(ParseException(Vector(exp -> vars), error))
   }
@@ -564,27 +664,40 @@ class LeanParser(initMods: Seq[Modification],
       case Vector() => Task.pure(Vector())
       case x +: ys =>
         for {
-          head <- parse(x, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-          tail <- parseVec(ys, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
+          head <- parse(x, vars).executeWithOptions(
+            _.enableAutoCancelableRunLoops
+          )
+          tail <- parseVec(ys, vars).executeWithOptions(
+            _.enableAutoCancelableRunLoops
+          )
         } yield (head +: tail)
     }
 
-  def parseOptVec(vec: Vector[(Expr, Int)],
-                  vars: Vector[Term],
-                  indices: Set[Int]): Task[Vector[Option[Term]]] =
+  def parseOptVec(
+      vec: Vector[(Expr, Int)],
+      vars: Vector[Term],
+      indices: Set[Int]
+  ): Task[Vector[Option[Term]]] =
     vec match {
       case Vector() => Task.pure(Vector())
       case (x, m) +: ys =>
         for {
-          tail <- parseOptVec(ys, vars, indices).executeWithOptions(_.enableAutoCancelableRunLoops)
-          headOpt <- if (indices.contains(m)) parse(x, vars).executeWithOptions(_.enableAutoCancelableRunLoops).map(Option(_))
+          tail <- parseOptVec(ys, vars, indices).executeWithOptions(
+            _.enableAutoCancelableRunLoops
+          )
+          headOpt <- if (indices.contains(m))
+            parse(x, vars)
+              .executeWithOptions(_.enableAutoCancelableRunLoops)
+              .map(Option(_))
           else Task.pure(None)
         } yield (headOpt +: tail)
     }
 
-  def getValue(t: Term,
-               n: Int,
-               accum: Vector[Term]): Task[(Term, Vector[Term])] =
+  def getValue(
+      t: Term,
+      n: Int,
+      accum: Vector[Term]
+  ): Task[(Term, Vector[Term])] =
     (t, n) match {
       case (x, 0) => Task.eval(x -> accum)
       case (l: LambdaLike[u, v], m) if m > 0 =>
@@ -597,7 +710,8 @@ class LeanParser(initMods: Seq[Modification],
 
   def withDefn(name: Name, exp: Expr): Task[Unit] =
     for {
-      term <- parse(exp, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
+      term <- parse(exp, Vector())
+        .executeWithOptions(_.enableAutoCancelableRunLoops)
       _ = {
         pprint.log(s"Defined $name"); log(Defined(name, term))
         defnMap += name -> term
@@ -606,7 +720,8 @@ class LeanParser(initMods: Seq[Modification],
 
   def withAxiom(name: Name, ty: Expr): Task[Unit] =
     for {
-      typ <- parse(ty, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
+      typ <- parse(ty, Vector())
+        .executeWithOptions(_.enableAutoCancelableRunLoops)
       term = (name.toString) :: toTyp(typ)
       _ = {
         pprint.log(s"Defined $name"); log(Defined(name, term))
@@ -625,13 +740,16 @@ class LeanParser(initMods: Seq[Modification],
     }
 
 // Like withAxiomSeq but returns the axioms
-  def foldAxiomSeq(accum: Vector[Term],
-                   axs: Vector[(Name, Expr)]): Task[Vector[Term]] = axs match {
+  def foldAxiomSeq(
+      accum: Vector[Term],
+      axs: Vector[(Name, Expr)]
+  ): Task[Vector[Term]] = axs match {
     case Vector() =>
       Task(accum)
     case (name, ty) +: ys =>
       for {
-        typ <- parse(ty, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
+        typ <- parse(ty, Vector())
+          .executeWithOptions(_.enableAutoCancelableRunLoops)
         // (typ, ltm1) = pr
         term = (name.toString) :: toTyp(typ)
         _ = {
@@ -647,7 +765,8 @@ class LeanParser(initMods: Seq[Modification],
       val isPropn = isPropnFn(ind.ty)
       val name    = ind.name
       for {
-        indTypTerm <- parse(ind.ty, Vector()).executeWithOptions(_.enableAutoCancelableRunLoops)
+        indTypTerm <- parse(ind.ty, Vector())
+          .executeWithOptions(_.enableAutoCancelableRunLoops)
         // (indTypTerm, ltm1) = pr
         indTyp = toTyp(indTypTerm)
         typF   = name.toString :: indTyp
@@ -659,12 +778,14 @@ class LeanParser(initMods: Seq[Modification],
         // (intros, withIntros) = introsPair
         typValuePair <- getValue(typF, ind.numParams, Vector())
         indMod = typValuePair match {
-          case (_ : Typ[Term], params) =>
+          case (_: Typ[Term], params) =>
             SimpleIndMod(ind.name, typF, intros, params.size, isPropn)
           case (_, params) =>
             IndexedIndMod(ind.name, typF, intros, params.size, isPropn)
         }
-        _ = { log(DefinedInduc(name, indMod)); termIndModMap += ind.name -> indMod }
+        _ = {
+          log(DefinedInduc(name, indMod)); termIndModMap += ind.name -> indMod
+        }
       } yield ()
 
     case ax: AxiomMod =>
@@ -679,7 +800,9 @@ class LeanParser(initMods: Seq[Modification],
       withAxiomSeq(axs)
   }
 
-  val allIntros: ArrayBuffer[(Name, Expr)] = mods.collect { case ind: IndMod => ind.intros }.flatten
+  val allIntros: ArrayBuffer[(Name, Expr)] = mods.collect {
+    case ind: IndMod => ind.intros
+  }.flatten
 
   def findDefMod(name: Name): Option[DefMod] =
     mods.collectFirst {
@@ -760,7 +883,9 @@ class LeanParser(initMods: Seq[Modification],
 
   def defNames: ArrayBuffer[Name] = mods.collect { case df: DefMod => df.name }
 
-  def allIndNames: ArrayBuffer[Name] = mods.collect { case ind: IndMod => ind.name }
+  def allIndNames: ArrayBuffer[Name] = mods.collect {
+    case ind: IndMod => ind.name
+  }
 
   import translation.CodeGen
 
@@ -782,15 +907,16 @@ class LeanParser(initMods: Seq[Modification],
         case mod: SimpleIndMod =>
           val seq =
             ConstructorSeqTL
-              .getExst(toTyp(foldFuncLean(mod.typF, p)),
-                       introsFold(mod, p))
+              .getExst(toTyp(foldFuncLean(mod.typF, p)), introsFold(mod, p))
               .value
           codeGen.consSeq(seq)
         case mod: IndexedIndMod =>
           val indSeq =
             TypFamilyExst
-              .getIndexedConstructorSeq(foldFuncLean(mod.typF, p),
-                                        introsFold(mod, p))
+              .getIndexedConstructorSeq(
+                foldFuncLean(mod.typF, p),
+                introsFold(mod, p)
+              )
               .value
           codeGen.indexedConsSeqDom(indSeq)
       }
@@ -798,9 +924,12 @@ class LeanParser(initMods: Seq[Modification],
     val cp = p.map(codeGen(_).get)
     cp.foldRight(codeOpt.get) {
       case (x, y) =>
-        meta.Term.Apply(meta.Term.Select(meta.Term.Name("Subst"), meta.Term.Name("Lambda")), List(x, y))
-        // q"Subst.Lambda($x, $y)"
-      }
+        meta.Term.Apply(
+          meta.Term.Select(meta.Term.Name("Subst"), meta.Term.Name("Lambda")),
+          List(x, y)
+        )
+      // q"Subst.Lambda($x, $y)"
+    }
   }
 
 }
