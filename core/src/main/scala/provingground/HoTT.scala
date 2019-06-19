@@ -2412,6 +2412,9 @@ object HoTT {
 
     def act(arg: W): U = depcodom(arg).symbObj(ApplnSym(this, arg))
 
+    override def canApply(arg: W): Boolean =
+      (dom == arg.typ) || (isUniv(dom) && isUniv(arg.typ))
+
     def newobj: PiSymbolicFunc[W, U] = {
       // val newvar = variable.newobj
       PiSymbolicFunc(

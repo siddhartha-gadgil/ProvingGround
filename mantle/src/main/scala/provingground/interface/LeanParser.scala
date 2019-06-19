@@ -126,13 +126,14 @@ object LeanParser {
                 (indNew.inducE((x: Term) :-> (tp: Typ[u])))
               } else (indNew.recE(tp))
           }
-        case pt: PiDefn[u, v] if ind.isPropn && pt.domain == indNew.typ =>
-          indNew.inducE(lmbda(pt.variable: Term)(pt.value))
+        // case pt: PiDefn[u, v] if ind.isPropn && pt.domain == indNew.typ =>
+        //   indNew.inducE(lmbda(pt.variable: Term)(pt.value))
         case tp: Typ[u] if (ind.isPropn) =>
-          val x = tp.Var
-          if (tp.dependsOn(x)) {
-            (indNew.inducE((x: Term) :-> (tp: Typ[u])))
-          } else (indNew.recE(tp))
+          // val x = tp.Var
+          // if (tp.dependsOn(x)) {
+          //   (indNew.inducE((x: Term) :-> (tp: Typ[u])))
+          // } else 
+          (indNew.recE(tp))
       }
 
     }
@@ -486,7 +487,7 @@ class LeanParser(initMods: Seq[Modification],
           for {
             func <- parse(f, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
             arg  <- parse(a, vars).executeWithOptions(_.enableAutoCancelableRunLoops)
-            res = Try(fold(func)(arg)).getOrElse(throw new ApplnParseException(f, a, func, arg, vars))
+            res = Try(applyFuncLean(func, arg)).getOrElse(throw new ApplnParseException(f, a, func, arg, vars))
             // _ = pprint.log(s"got result for $f($a)")
           } yield res
         case Lam(domain, body) =>
