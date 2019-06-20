@@ -1975,14 +1975,6 @@ object HoTT {
 
     val dep = false
 
-    // override def equals(that: Any) = that match {
-    //   case LambdaFixed(x: Term, y: Term) if (x.typ == variable.typ) =>
-    //     y.replace(x, variable) == value
-    //   case LambdaTerm(x: Term, y: Term) if x.typ == variable.typ =>
-    //       y.replace(x, variable) == value
-    //   case _ => false
-    // }
-
     def newobj: LambdaFixed[X, Y] = {
       val newvar = variable.newobj
       LambdaFixed(newvar, value.replace(variable, newvar))
