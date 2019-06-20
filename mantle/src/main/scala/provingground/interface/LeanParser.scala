@@ -444,58 +444,6 @@ class LeanParser(
       res <- resT
     } yield res
 
-  def recAppSkips(
-      name: Name,
-      args: Vector[Expr],
-      exp: Expr,
-      vars: Vector[Term]
-  ): Task[Option[Term]] =
-    for {
-      indMod <- getMemTermIndMod(name, exp)
-      (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
-      argsFmlyTerm <- parseVec(argsFmly, vars).executeWithOptions(
-        _.enableAutoCancelableRunLoops
-      )
-      indOpt = indMod match {
-        case sm: SimpleIndMod => Some(sm.getInd(argsFmlyTerm.init))
-        case _                => None
-      }
-      resOpt: Option[Task[Option[Term]]] = for { // Option
-        ind <- indOpt
-        recFnT                = getRec(indMod, argsFmlyTerm)
-        (recDataExpr, ys)     = xs.splitAt(ind.seqDom.numIntros)
-        (recArgsVec, residue) = LeanParser.splitVec(ind.seqDom.introArgsVec, ys)
-        indicesVec            = recDataExpr.map(LeanInterface.varsUsed)
-        resOptTask: Task[Option[Term]] = for { // Task
-          recData <- parseVec(recDataExpr, vars).executeWithOptions(
-            _.enableAutoCancelableRunLoops
-          )
-          recFn <- recFnT
-          withRecDataTask = Task(foldFuncLean(recFn, recData))
-            .executeWithOptions(_.enableAutoCancelableRunLoops)
-          optParsedAllTask = Task.sequence(recArgsVec.zip(indicesVec).map {
-            case (vec, indices) =>
-              parseOptVec(vec.zipWithIndex, vars, indices)
-                .executeWithOptions(_.enableAutoCancelableRunLoops)
-          })
-          optParsedAll <- optParsedAllTask
-          withRecArgsOptTask = applyFuncOptFold(
-            withRecDataTask.map(Some(_)),
-            optParsedAll.flatten
-          )
-          withRecArgsOpt <- withRecArgsOptTask
-          residueTerms <- parseVec(residue, vars).executeWithOptions(
-            _.enableAutoCancelableRunLoops
-          )
-          foldOpt = withRecArgsOpt.map(
-            (f) => applyFuncFold(Task.pure(f), residueTerms)
-          )
-          fold <- Task.sequence(foldOpt.toVector)
-        } yield fold.headOption
-      } yield resOptTask // Option
-      resFlat = Task.sequence(resOpt.toVector).map(_.headOption.flatten)
-      tsk <- resFlat
-    } yield tsk // Task
 
   def getTask(name: String): Task[Term] =
     parse(Const(Name(name.split("\\."): _*), Vector()))

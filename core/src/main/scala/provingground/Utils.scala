@@ -36,15 +36,15 @@ object Utils {
         case (MiscAppln(f1, a1), MiscAppln(f2, a2)) =>
           deducedEqual(f1, f2, base) && deducedEqual(a1, a2, base)
         case (l1: LambdaLike[u1, v1], l2: LambdaLike[u2, v2]) =>
-          deducedEqual(l1.variable, l2.variable, base) && deducedEqual(
+          deducedEqual(l1.variable.typ, l2.variable.typ, base) && deducedEqual(
             l1.value,
-            l2.value.replace(l1.variable, l2.variable),
+            l2.value.replace(l2.variable, l1.variable),
             base
           )
         case (l1: PiDefn[u1, v1], l2: PiDefn[u2, v2]) =>
-          deducedEqual(l1.variable, l2.variable, base) && deducedEqual(
+          deducedEqual(l1.variable.typ, l2.variable.typ, base) && deducedEqual(
             l1.value,
-            l2.value.replace(l1.variable, l2.variable),
+            l2.value.replace(l2.variable, l1.variable),
             base
           )
         case (s1: SigmaTyp[u1, v1], s2: SigmaTyp[u2, v2]) =>

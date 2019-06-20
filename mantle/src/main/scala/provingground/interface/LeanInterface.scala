@@ -18,25 +18,24 @@ import scala.collection.mutable.{Map => mMap, ArrayBuffer}
 
 import LeanInterface._
 
-
 object LeanInterface {
   def domVarFlag(introTyp: Typ[Term], typF: Term): Vector[Boolean] =
-  introTyp match {
-    case pd: PiDefn[u, v] =>
-      (pd.domain.dependsOn(typF)) +: domVarFlag(pd.value, typF)
-    case ft: FuncTyp[u, v] =>
-      (ft.dom.dependsOn(typF)) +: domVarFlag(ft.codom, typF)
-    case _ => Vector()
-  }
+    introTyp match {
+      case pd: PiDefn[u, v] =>
+        (pd.domain.dependsOn(typF)) +: domVarFlag(pd.value, typF)
+      case ft: FuncTyp[u, v] =>
+        (ft.dom.dependsOn(typF)) +: domVarFlag(ft.codom, typF)
+      case _ => Vector()
+    }
 
-    /**
+  /**
     * shuffles the dat variables from leans convention where they are last to an interleaved form.
     *
     * @param intro the introduction rule
     * @param typF the inductive type
     * @param data the recursion data
     */
-    def introShuffle(
+  def introShuffle(
       intro: Term,
       typF: Term,
       data: Term,
@@ -75,17 +74,19 @@ object LeanInterface {
     }
   }
 
-
   /**
     * fill in witnesses if proposition, including within lambdas
     **/
   def witLess(t: Term): Vector[Term] = {
     val topFilled: Vector[Term] = t match {
-      case l : LambdaLike[u, v] if isWitness(l.variable) =>
+      case l: LambdaLike[u, v] if isWitness(l.variable) =>
         l.variable.typ match {
-          case pd : PiDefn[u, v] if isWitness(pd.variable) /* && isPropFmly(pd.typ)*/ =>
+          case pd: PiDefn[u, v]
+              if isWitness(pd.variable) /* && isPropFmly(pd.typ)*/ =>
             val x = "_" :: pd.value
-            pprint.log(s"nested witnesses: ${l.variable}, , ${pd.variable}, ${pd.value}, ${isWitness(pd.variable)}")
+            pprint.log(
+              s"nested witnesses: ${l.variable}, , ${pd.variable}, ${pd.value}, ${isWitness(pd.variable)}"
+            )
             witLess(l.value) ++ witLess(l.value).map(lambda(x))
           case _ => witLess(l.value)
         }
@@ -95,9 +96,11 @@ object LeanInterface {
       case _ => Vector()
     }
     val recFilled = t match {
-      case l: LambdaFixed[u, v] => witLess(l.value).map(LambdaFixed(l.variable, _))
-      case l: LambdaTerm[u, v] => witLess(l.value).map(LambdaTerm(l.variable, _))
-      case _                   => Vector(t)
+      case l: LambdaFixed[u, v] =>
+        witLess(l.value).map(LambdaFixed(l.variable, _))
+      case l: LambdaTerm[u, v] =>
+        witLess(l.value).map(LambdaTerm(l.variable, _))
+      case _ => Vector(t)
     }
 
 //    pprint.log(recFilled)
@@ -107,7 +110,10 @@ object LeanInterface {
 
   def applyFuncLean(func: Term, arg: Term): Term = func match {
     // case fn: Func[u, v] if isWitness(arg) => "_" :: fn.codom
-    case fn: FuncLike[u, v] if Try(fn.canApply(arg.asInstanceOf[u])).getOrElse(false) =>
+    case fn: FuncLike[u, v]
+        if (Utils.deducedEqual(fn.dom, arg.typ, Utils.proofsEqual)) || Try(
+          fn.canApply(arg.asInstanceOf[u])
+        ).getOrElse(false) =>
       fn.applyUnchecked(arg.asInstanceOf[u])
     case fn if isWitness(arg) =>
       println(fansi.Color.Red("Warning: Special Rule for Lean"))
@@ -117,18 +123,17 @@ object LeanInterface {
     case fn: FuncLike[u, v] =>
       witLess(arg)
         .find(_.typ == fn.dom)
-        .map{x =>
+        .map { x =>
           println(fansi.Color.Red("Warning: Special Rule for Lean"))
           pprint.log(s"$arg becomes $x for $fn")
-          fn.applyUnchecked(x.asInstanceOf[u])}
+          fn.applyUnchecked(x.asInstanceOf[u])
+        }
         .getOrElse(throw new ApplnFailException(func, arg))
     case _ => throw new ApplnFailException(func, arg)
   }
 
-
   def foldFuncLean(func: Term, args: Vector[Term]): Term =
     args.foldLeft(func)(applyFuncLean) // FIXME should just apply a function
-
 
   def consts(expr: Expr): Vector[Name] = expr match {
     case Const(name, _)   => Vector(name)
@@ -202,20 +207,28 @@ object LeanInterface {
   }
 
   @annotation.tailrec
-  def defnNames(mods: Vector[Modification],
-                accum: Vector[Name] = Vector()): Vector[Name] = mods match {
+  def defnNames(
+      mods: Vector[Modification],
+      accum: Vector[Name] = Vector()
+  ): Vector[Name] = mods match {
     case Vector() => accum
     case IndMod(name, _, ty, numParams, intros) +: tail =>
-      defnNames(tail,
-                name +: Name.Str(name, "rec") +: intros.map(_._1) ++: accum)
+      defnNames(
+        tail,
+        name +: Name.Str(name, "rec") +: intros.map(_._1) ++: accum
+      )
     case DefMod(name, _, ty, value) +: tail => defnNames(tail, name +: accum)
     case AxiomMod(name, _, ty) +: tail      => defnNames(tail, name +: accum)
     case QuotMod +: tail =>
-      defnNames(tail,
-                Vector(Name("quot"),
-                       Name("quot", "ind"),
-                       Name("quot", "mk"),
-                       Name("quot", "lift")) ++: accum)
+      defnNames(
+        tail,
+        Vector(
+          Name("quot"),
+          Name("quot", "ind"),
+          Name("quot", "mk"),
+          Name("quot", "lift")
+        ) ++: accum
+      )
   }
 
   def defnExprs(mods: Vector[Modification]): Vector[Expr] = mods.collect {
@@ -240,7 +253,8 @@ object LeanInterface {
       a: Term,
       b: Term,
       numParams: Int,
-      accum: Vector[(Term, Term)] = Vector()): Option[Vector[(Term, Term)]] =
+      accum: Vector[(Term, Term)] = Vector()
+  ): Option[Vector[(Term, Term)]] =
     (a, b, numParams) match {
       case (x, y, 0) if x == y => Some(accum)
       case (FormalAppln(func1, arg1), FormalAppln(func2, arg2), n) if n > 0 =>
@@ -251,8 +265,6 @@ object LeanInterface {
     }
 }
 
-
-
 sealed trait TermIndMod {
   val name: Name
   val intros: Vector[Term]
@@ -261,41 +273,34 @@ sealed trait TermIndMod {
 
   val typF: Term
 
-  
-
-  def interleaveData(v: Vector[Term]) : Vector[Term] = {
+  def interleaveData(v: Vector[Term]): Vector[Term] = {
     val (dataBase, extra) = v.splitAt(intros.size)
-    val newBase = (intros.zip(dataBase)).map{
+    val newBase = (intros.zip(dataBase)).map {
       case (in, dat) => introShuffle(in, typF, dat, numParams)
     }
     newBase ++ extra
   }
 
-
-  def introsFold(p: Vector[Term]): Vector[Term] = intros.map((rule) => foldFuncLean(rule, p))
+  def introsFold(p: Vector[Term]): Vector[Term] =
+    intros.map((rule) => foldFuncLean(rule, p))
 
   val recName = Name.Str(name, "rec")
-
 
   def getRecTry(argsFmlyTerm: Try[Vector[Term]]): Try[Term]
 
   def getRecOpt(argsFmlyTerm: Option[Vector[Term]]): Option[Term]
 }
 
-
-case class SimpleIndMod(name: Name,
-                        typF: Term,
-                        intros: Vector[Term],
-                        numParams: Int,
-                        isPropn: Boolean)
-    extends TermIndMod {
-
+case class SimpleIndMod(
+    name: Name,
+    typF: Term,
+    intros: Vector[Term],
+    numParams: Int,
+    isPropn: Boolean
+) extends TermIndMod {
 
   def getInd(p: Vector[Term]) =
     ConstructorSeqTL.getExst(toTyp(foldFuncLean(typF, p)), introsFold(p)).value
-
-
-
 
   import LeanInterface.unifier
 
@@ -314,8 +319,8 @@ case class SimpleIndMod(name: Name,
           // println(s"family seen: ${l.fansi} : ${l.typ.fansi}")
           l.value match {
             case tp: Typ[u] =>
-              if (tp.dependsOn(l.variable))(indNew.inducE(
-                (l.variable: Term) :-> (tp: Typ[u])))
+              if (tp.dependsOn(l.variable))(indNew
+                .inducE((l.variable: Term) :-> (tp: Typ[u])))
               else (indNew.recE(tp))
           }
         case fn: FuncLike[u, v] =>
@@ -330,7 +335,7 @@ case class SimpleIndMod(name: Name,
           }
         case pt: PiDefn[u, v] if isPropn && pt.domain == indNew.typ =>
           indNew.inducE(
-            (pt.variable : Term) :-> pt.value
+            (pt.variable: Term) :-> pt.value
             // LambdaFixedpt.variable, pt.value)
           )
         case tp: Typ[u] if (isPropn) =>
@@ -354,8 +359,8 @@ case class SimpleIndMod(name: Name,
           // println(s"family seen: ${l.fansi} : ${l.typ.fansi}")
           l.value match {
             case tp: Typ[u] =>
-              if (tp.dependsOn(l.variable))(indNew.inducE(
-                (l.variable: Term) :-> (tp: Typ[u])))
+              if (tp.dependsOn(l.variable))(indNew
+                .inducE((l.variable: Term) :-> (tp: Typ[u])))
               else (indNew.recE(tp))
           }
         case fn: FuncLike[u, v] =>
@@ -370,7 +375,7 @@ case class SimpleIndMod(name: Name,
           }
         case pt: PiDefn[u, v] if isPropn && pt.domain == indNew.typ =>
           indNew.inducE(
-            (pt.variable : Term) :-> pt.value
+            (pt.variable: Term) :-> pt.value
             // LambdaFixed(pt.variable, pt.value)
           )
         case tp: Typ[u] if (isPropn) =>
@@ -384,28 +389,29 @@ case class SimpleIndMod(name: Name,
   }
 }
 
-case class NoIndexedInducE(mod: IndexedIndMod,
-                           fmlOpt: Option[Term],
-                           exp: Expr,
-                           W: Term,
-                           family: Any,
-                           newParams: Vector[Term]
-                           // predef: (Expr, Option[Typ[Term]]) => Option[Term]
+case class NoIndexedInducE(
+    mod: IndexedIndMod,
+    fmlOpt: Option[Term],
+    exp: Expr,
+    W: Term,
+    family: Any,
+    newParams: Vector[Term]
+    // predef: (Expr, Option[Typ[Term]]) => Option[Term]
 ) extends Exception("no final cod")
 
-case class IndexedIndMod(name: Name,
-                         typF: Term,
-                         intros: Vector[Term],
-                         numParams: Int,
-                         isPropn: Boolean)
-    extends TermIndMod {
+case class IndexedIndMod(
+    name: Name,
+    typF: Term,
+    intros: Vector[Term],
+    numParams: Int,
+    isPropn: Boolean
+) extends TermIndMod {
   // val typF = foldFuncLean(typF, params)
 
   def getInd(p: Vector[Term]) =
     TypFamilyExst
       .getIndexedConstructorSeq(foldFuncLean(typF, p), introsFold(p))
       .value
-
 
   import LeanInterface.unifier
 
