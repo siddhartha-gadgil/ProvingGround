@@ -65,7 +65,10 @@ res13: Term =
     induc_{ (A : 𝒰 ) ↦ heq('aa)('ab)(A) ; (B : 𝒰 ) ↦ (b : B) ↦ (p : heq('aa)('ab)(B)(b)) ↦ ∏('aj : eq(𝒰 )('aa)(B)){ eq(B)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('aj))(b) } }('z)('ag)
 
 @ fail2.arg
-res14: Term = ('ah : eq(𝒰 )('aa)('aa)) ↦ eq.refl('aa)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('ah))
+res14: Term = 
+  ('ah : eq(𝒰 )('aa)('aa)) ↦ eq.refl('aa)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)
+    ('ah) // `'ah` has type eq(𝒰 )('aa)('aa) so is equal to reflexivity; the expression resolves to `'ab`
+    )
 
 @ fail2.domOpt.get
 res15: Typ[Term] = ∏('aj : eq(𝒰 )('aa)('aa)){ eq('aa)(induc_{ eq(𝒰 )('aa) ; ($ch : 𝒰 ) ↦ ($ci : eq(𝒰 )('aa)($ch)) ↦ $ch }('ab)('aj))('ab) }

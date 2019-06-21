@@ -633,16 +633,23 @@ case class MonixFiniteDistributionEq[State](
                     }
                     val evSupp = fd.conditioned(c.pred).support
                     val evEq: Set[EquationNode] =
-                      if (evSupp.nonEmpty)
-                        Set(
+                        evSupp.map(
+                          x =>
                           EquationNode(
                             finEv,
-                            evSupp
-                              .map(x => finalProb(x, tc.output))
-                              .reduce[Expression](Sum)
+                            finalProb(x, tc.output)
                           )
                         )
-                      else Set()
+                    // if (evSupp.nonEmpty)
+                      //   Set(
+                      //     EquationNode(
+                      //       finEv,
+                      //       evSupp
+                      //         .map(x => finalProb(x, tc.output))
+                      //         .reduce[Expression](Sum)
+                      //     )
+                      //   )
+                      // else Set()
                     (
                       fd.conditioned(c.pred)
                         .purge(epsilon),
@@ -663,16 +670,23 @@ case class MonixFiniteDistributionEq[State](
                       )
                     val evSupp = fd.condMap(f).flatten.support
                     val evEq: Set[EquationNode] =
-                      if (evSupp.nonEmpty)
-                        Set(
-                          EquationNode(
-                            finEv,
-                            evSupp
-                              .map(x => finalProb(x, tc.output))
-                              .reduce[Expression](Sum)
-                          )
+                      evSupp.map(
+                        x =>
+                        EquationNode(
+                          finEv,
+                          finalProb(x, tc.output)
                         )
-                      else Set()
+                      )
+                    // if (evSupp.nonEmpty)
+                      //   Set(
+                      //     EquationNode(
+                      //       finEv,
+                      //       evSupp
+                      //         .map(x => finalProb(x, tc.output))
+                      //         .reduce[Expression](Sum)
+                      //     )
+                      //   )
+                      // else Set()
                     (
                       fd.condMap(f)
                         .purge(epsilon),

@@ -559,16 +559,13 @@ case class MonixTangentFiniteDistributionEq[State](
                   }
                   val evSupp = fd.conditioned(c.pred).support
                   val evEq: Set[EquationNode] =
-                    if (evSupp.nonEmpty)
-                      Set(
-                        EquationNode(
-                          finEv,
-                          evSupp
-                            .map(x => finalProb(x, tc.output))
-                            .reduce[Expression](Sum)
-                        )
-                      )
-                    else Set()
+                  evSupp.map(
+                    x =>
+                    EquationNode(
+                      finEv,
+                      finalProb(x, tc.output)
+                    )
+                  )
                   (fd.conditioned(c.pred)
                     .purge(epsilon) , (eqs union ceqs union evEq), memo ++ rm)
               }
@@ -585,16 +582,13 @@ case class MonixTangentFiniteDistributionEq[State](
                     )
                   val evSupp = fd.condMap(f).flatten.support
                   val evEq: Set[EquationNode] =
-                    if (evSupp.nonEmpty)
-                      Set(
-                        EquationNode(
-                          finEv,
-                          evSupp
-                            .map(x => finalProb(x, tc.output))
-                            .reduce[Expression](Sum)
-                        )
-                      )
-                    else Set()
+                  evSupp.map(
+                    x =>
+                    EquationNode(
+                      finEv,
+                      finalProb(x, tc.output)
+                    )
+                  )
                   (fd.condMap(f).purge(epsilon) , (eqs union ceqs union evEq), memo ++ rm)
               }
           }

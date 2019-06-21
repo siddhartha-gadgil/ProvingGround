@@ -168,7 +168,6 @@ object core extends Module{
   }
 
   object js extends CommonJSModule with SbtModule{
-    // def scalaVersion = "2.12.4"
     override def scalaJSVersion = "0.6.25"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
