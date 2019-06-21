@@ -114,7 +114,13 @@ object LeanInterface {
         if (Utils.deducedEqual(fn.dom, arg.typ, Utils.proofsEqual)) || Try(
           fn.canApply(arg.asInstanceOf[u])
         ).getOrElse(false) =>
-      fn.applyUnchecked(arg.asInstanceOf[u])
+      Try(fn.applyUnchecked(arg.asInstanceOf[u])).fold(
+        error =>  {
+          val codom = fn.depcodom(fn.dom.Var)
+          if (isProp(codom)) "_" :: codom else throw error
+        },
+        term => term
+      )
     case fn if isWitness(arg) =>
       println(fansi.Color.Red("Warning: Special Rule for Lean"))
       pprint.log(fn)

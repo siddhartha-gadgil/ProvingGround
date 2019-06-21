@@ -143,7 +143,7 @@ object IndexedConstructorPatternMap {
     }
 
     def inducDefCase(cons: H, data: C, f: => IDF): Term => Option[C] = {
-      case (t: Term) if t == cons => Some(data)
+      case (t: Term) if t == cons || (isProp(cons.typ) && (t.typ == cons.typ)) => Some(data)
       case _                      => None
     }
   }
