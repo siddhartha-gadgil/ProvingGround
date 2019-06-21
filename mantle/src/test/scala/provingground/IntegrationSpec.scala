@@ -222,7 +222,7 @@ class SigmaTypeSpec extends FlatSpec {
   "User defined id function with built-in Sigma type" should "be defined properly" in {
     val recSABSAB = Sgma(a !: A, B(a)).rec(Sgma(a !: A, B(a)))
     val id =
-      recSABSAB(a :~> (b :-> mkPair(a, b).asInstanceOf[DepPair[Term, Term]]))
+      recSABSAB(a :~> (b :-> mkPair(a, b).asInstanceOf[AbsPair[Term, Term]]))
     assert(id(pair) === pair)
   }
 

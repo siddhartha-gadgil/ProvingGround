@@ -38,7 +38,7 @@ object InducPairs {
 
   val g = "g" :: toC
 
-  val abDep = DepPair(a, bs(a), Bs)
+  val abDep : AbsPair[Term, Term] = DepPair(a, bs(a), Bs)
 
   val recSigma =
     lambda(A)(lambda(B)(lambda(C)(lambda(g)(lambda(abDep)(g(a)(bs(a)))))))

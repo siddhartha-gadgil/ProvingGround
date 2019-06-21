@@ -255,7 +255,7 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
 
   def findDifference(x: Nat, y: Nat): Option[Nat] = findDifferenceFlip(y, x)
 
-  def findLEQ(x: Nat, y: Nat): Option[DepPair[Nat, Equality[Nat]]] =
+  def findLEQ(x: Nat, y: Nat): Option[AbsPair[Nat, Equality[Nat]]] =
     findDifferenceFlip(x, y).map { d =>
       DepPair(d, y.refl, leq(x)(y).fibers) !: leq(x)(y)
     }

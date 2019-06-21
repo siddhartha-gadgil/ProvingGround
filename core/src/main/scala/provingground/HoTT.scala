@@ -2513,15 +2513,15 @@ object HoTT {
     */
   case class SigmaTyp[W <: Term with Subs[W], U <: Term with Subs[U]](
       fibers: TypFamily[W, U]
-  ) extends Typ[DepPair[W, U]]
+  ) extends Typ[AbsPair[W, U]]
       with Subs[SigmaTyp[W, U]] { prod =>
     lazy val typ = Universe(
       max(univlevel(fibers.codom), univlevel(fibers.dom.typ))
     )
 
-    type Obj = DepPair[W, U]
+    type Obj = AbsPair[W, U]
 
-    def variable(name: AnySym): DepPair[W, U] = {
+    def variable(name: AnySym): AbsPair[W, U] = {
       val a = fibers.dom.symbObj(LeftProjSym(name))
       val b = fibers(a).symbObj(RightProjSym(name))
       DepPair(a, b, fibers)
@@ -2530,10 +2530,10 @@ object HoTT {
     /**
       * introduction rule for the Sigma type
       */
-    lazy val paircons: FuncLike[W, Func[U, DepPair[W, U]]] = {
+    lazy val paircons: FuncLike[W, Func[U, AbsPair[W, U]]] = {
       val a = fibers.dom.Var
       val b = (fibers(a)).Var
-      lambda(a)(lmbda(b)(DepPair(a, b, fibers)))
+      lambda(a)(lmbda(b)(DepPair(a, b, fibers) : AbsPair[W, U]))
     }
 
     /**
@@ -2670,7 +2670,7 @@ object HoTT {
       second: U,
       fibers: TypFamily[W, U]
   ) extends Term
-      with Subs[DepPair[W, U]]
+      // with Subs[DepPair[W, U]]
       with AbsPair[W, U] {
     lazy val typ = SigmaTyp(fibers)
 
