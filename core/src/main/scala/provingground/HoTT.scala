@@ -207,7 +207,9 @@ object HoTT {
             case (PiTyp(fib1), PiTyp(fib2)) =>
               replace(fib1, fib2)
             case (xs: Symbolic, _)
-                if !resizedEqual(x.typ, y.typ) && ((y.typ).symbObj(xs.name).typ == y.typ) =>
+                if !resizedEqual(x.typ, y.typ) && ((y.typ)
+                  .symbObj(xs.name)
+                  .typ == y.typ) =>
               val typchange = replace(x.typ, y.typ)
 //             if (self != typchange) {  pprint.log(self, height = 300)
 //              pprint.log(typchange, height = 300)}
@@ -580,13 +582,10 @@ object HoTT {
       }
     case fx: ApplnSym[w, u] =>
       val fn = fx.func.replace(x, y)
-      val z  = fx.arg.replace(x, y).asInstanceOf[w]
-      // pprint.log(x)
-      // pprint.log(y)
-      // pprint.log(x == y)
-      // pprint.log(fn)
-      // pprint.log(z)
-      Try(fn(z)).toOption
+      Try {
+        val z = fx.arg.replace(x, y).asInstanceOf[w]
+        fn(z)
+      }.toOption
     case _ => None
   }
 
@@ -595,11 +594,6 @@ object HoTT {
     */
   def symSubs[U <: Term](symbobj: AnySym => U)(x: Term, y: Term): AnySym => U =
     (sym) => {
-      // case fx: ApplnSym[w, u] =>
-      //   Try((fx.func
-      //         .replace(x, y))(fx.arg.replace(x, y).asInstanceOf[w])
-      //         .asInstanceOf[U]) getOrElse symbobj(fx)
-      // case sym => symbobj(sym.subs(x, y))
       evalSym(symbobj)(x, y)(sym)
         .flatMap((t) => Try(t.asInstanceOf[U]).toOption)
         .getOrElse(symbobj(sym.subs(x, y)))
@@ -770,7 +764,7 @@ object HoTT {
     case pt: PiDefn[u, v]          => SigmaTyp(lmbda(pt.variable)(negate(pt.value)))
     case st: SigmaTyp[u, v] =>
       val x = st.fibers.dom.Var
-      val y = st.fibers(x.asInstanceOf[u])
+      val y = st.fibers(x)
       PiDefn(x, negate(y))
     case Unit => Zero
     case Zero => Unit
@@ -1232,7 +1226,7 @@ object HoTT {
       case g: GenFuncTyp[u, v] =>
         g.domain == domain && {
           val x = domain.Var
-          g.fib(x.asInstanceOf[u]) == fib(x)
+          Try(g.fib(x.asInstanceOf[u]) == fib(x)).getOrElse(false)
         }
       case _ => false
     }
@@ -1823,7 +1817,7 @@ object HoTT {
     case (gt1: GenFuncTyp[x1, y1], gt2: GenFuncTyp[x2, y2])
         if gt1.domain == gt2.domain =>
       val x = gt1.domain.Var
-      resizedEqual(gt1.fib(x.asInstanceOf[x1]), gt2.fib(x.asInstanceOf[x2]))
+      Try(resizedEqual(gt1.fib(x), gt2.fib(x.asInstanceOf[x2]))).getOrElse(false)
     case _ => false
   }
 
@@ -2043,17 +2037,8 @@ object HoTT {
     lazy val outerSym: AnySym = outer.name
 
     override def toString: String = "`" + variable.name.toString
-    // match {
-    //  case sym: Symbolic => sym.name.toString
-    //  case x             => x.toString
-    // }
 
     def subs(x: Term, y: Term): InnerSym[U] = {
-      // val newvar = outer.replace(x, y) match {
-      //   case sym: Symbolic => sym.asInstanceOf[U with Symbolic]
-      //   case _             => variable
-      // }
-      //      outer = newvar
       this
     }
   }
@@ -2071,29 +2056,6 @@ object HoTT {
     case _                => sym
   }
 
-  /**
-    * variable of given type with string as in given variable.
-    */
-  /*  private def innervar[U <: Term with Subs[U]](variable: U): U = {
-    val typ = variable.typ.asInstanceOf[Typ[U]]
-    val newvar = InnerSym(variable)
-    variable match {
-      case PairTerm(a: Term, b: Term) => PairTerm(
-        a.typ.symbObj(newvar),
-        b.typ.symbObj(newvar)
-      ).asInstanceOf[U]
-      case ProdTyp(a: Term, b: Term) => ProdTyp(
-        a.typ.symbObj(newvar),
-        b.typ.symbObj(newvar)
-      ).asInstanceOf[U]
-      case DepPair(a: Term, b: Term, fibre) => DepPair[Term, Term](
-        a.typ.symbObj(newvar),
-        b.typ.symbObj(newvar), fibre.asInstanceOf[TypFamily[Term, Term]]
-      ).asInstanceOf[U]
-      case _ => typ.symbObj(newvar)
-    }
-
-  }*/
 
   /**
     * constructor for an (in general) dependent lambda;
@@ -2175,7 +2137,7 @@ object HoTT {
           (lt.variable +: xs, y)
         case ft: FuncLike[u, v] =>
           val x       = ft.dom.Var
-          val (xs, y) = getVars(ft(x.asInstanceOf[u]), n - 1)
+          val (xs, y) = getVars(ft(x), n - 1)
           (x +: xs, y)
         case _ =>
           throw new Exception(s"expected lambda but got $t with type ${t.typ}")
@@ -3535,7 +3497,7 @@ object HoTT {
     case tp: Typ[_] => Some(tp ->: Type)
     case f: FuncLike[u, v] =>
       val x = f.dom.Var
-      typFamilyTarget(f(x.asInstanceOf[u])).map(tp => x ~>: tp)
+      typFamilyTarget(f(x)).map(tp => x ~>: tp)
     case _ => None
   }
 
