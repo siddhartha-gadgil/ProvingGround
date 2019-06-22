@@ -1396,8 +1396,21 @@ object HoTT {
     case _ => throw new ApplnFailException(func, arg)
   }
 
+  case class MereWitness(value: Term) extends AnySym{
+    def subs(x: Term, y: Term): AnySym = MereWitness(Try(value.replace(x, y)).getOrElse(value))
+
+    override def toString = s"<$value>"
+
+    override def equals(that: Any) = that match {
+      case _ : MereWitness => true 
+      case _ => false
+    }
+
+    override val hashCode = 2147
+  }
+
   def applyFuncOpt(func: Term, arg: Term): Option[Term] = func match {
-    case fn: Func[u, v] if isWitness(arg) => Some("_" :: fn.codom)
+    case fn: Func[u, v] if isWitness(arg) => Some(fn.codom.symbObj(MereWitness(arg)))
     case fn: FuncLike[u, v] if fn.canApply(arg.asInstanceOf[u]) =>
       Some(fn.applyUnchecked(arg.asInstanceOf[u]))
     case _ => None

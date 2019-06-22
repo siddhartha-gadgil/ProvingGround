@@ -678,7 +678,11 @@ object CodeGen {
       case (typ, value) =>
       meta.Term.Apply(meta.Term.Select(meta.Term.Name("PlusTyp"), meta.Term.Name("ScndIncl")), List(typ, value))
        // q"PlusTyp.ScndIncl($typ, $value)"
-    } || refl >>> {
+    } || mereWitness >>> {
+      case (tp, value) => 
+        val wit = meta.Term.Apply(meta.Term.Name("MereWitness"), List(value))
+        meta.Term.Apply(meta.Term.Select(tp, meta.Term.Name("symbObj")), List(wit))
+    }|| refl >>> {
       case (typ, term) =>
       meta.Term.Apply(meta.Term.Name("Refl"), List(typ, term))
       // q"Refl($typ, $term)"

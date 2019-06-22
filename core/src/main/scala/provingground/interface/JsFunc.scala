@@ -120,6 +120,7 @@ object TermJson {
       toJs(recFunc)("recursive-function") ||
       toJs(inducFunc)("inductive-function") ||
       toJs(hashSymbolic)("symbolic") ||
+      toJs(mereWitness)("witness") ||
       toJs(firstIncl)("first-inclusion") ||
       toJs(secondIncl)("second-inclusion") ||
       toJs(identityTyp)("equality") ||
@@ -335,7 +336,10 @@ object TermJson {
       jsToBuild[Term, Named]("symbolic") {
         case (name, tp: Typ[u]) => deHash(name) :: tp
         case (x, y)             => unmatched(x, y)
-      }(travNamed, implicitly[JsFunc[Named]])
+      }(travNamed, implicitly[JsFunc[Named]]) ||
+      jsToBuild[Term, II]("Witness"){
+        case (tp, value) => toTyp(tp).symbObj(MereWitness(value))
+      }
 
   val hashReg: Regex = "_[0-9][0-9]+".r
 

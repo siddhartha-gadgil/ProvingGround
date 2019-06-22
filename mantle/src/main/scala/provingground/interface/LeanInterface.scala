@@ -117,7 +117,7 @@ object LeanInterface {
       Try(fn.applyUnchecked(arg.asInstanceOf[u])).fold(
         error =>  {
           val codom = fn.depcodom(fn.dom.Var)
-          if (isProp(codom)) "_" :: codom else throw error
+          if (isProp(codom)) codom.symbObj(MereWitness(arg)) else throw error
         },
         term => term
       )

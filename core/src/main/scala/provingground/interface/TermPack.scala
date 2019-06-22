@@ -119,6 +119,7 @@ object TermPack {
       toMsg(recFunc)("Rec") ||
       toMsg(inducFunc)("Ind") ||
       toMsg(hashSymbolic)("Sym") ||
+      toMsg(mereWitness)("Witness") ||
       toMsg(firstIncl)("i1") ||
       toMsg(secondIncl)("i2") ||
       toMsg(identityTyp)("=") ||
@@ -334,7 +335,10 @@ object TermPack {
       msgToBuild[Term, Named]("Sym") {
         case (name, tp: Typ[u]) => deHash(name) :: tp
         case (x, y)             => unmatched(x, y)
-      }(travNamed, implicitly[MsgFunc[Named]])
+      }(travNamed, implicitly[MsgFunc[Named]]) ||
+      msgToBuild[Term, II]("Witness"){
+        case (tp, value) => toTyp(tp).symbObj(MereWitness(value))
+      }
 
   val hashReg: Regex = "_[0-9][0-9]+".r
 

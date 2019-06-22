@@ -329,6 +329,16 @@ object TermPatterns {
     case _ => None
   }(namedTrav)
 
+  val mereWitness = Pattern[Term, II] {
+    case sym: Symbolic with Term =>
+      outerSym(sym).name match {
+        case MereWitness(value) =>
+          Some((sym.typ, value))
+        case _ => None
+      }
+    case _ => None
+  }
+
   /**
     * matches a symbolic name, perhaps wrapped in `InnerSym`, returns the name as a `String`
     */
