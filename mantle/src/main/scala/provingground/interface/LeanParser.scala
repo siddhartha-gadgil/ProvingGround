@@ -171,7 +171,7 @@ object LeanParser {
       val str = params.foldRight(str0) {
         case (x, s) => ExstInducStrucs.LambdaInduc(x, s)
       }
-      val dfn = ExstInducDefn(typF, intros.toVector, str)
+      val dfn = ExstInducDefn(ind.typF, intros.toVector, str)
       dfn
     }
 
