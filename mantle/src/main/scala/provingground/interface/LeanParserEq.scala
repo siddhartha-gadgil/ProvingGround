@@ -22,6 +22,16 @@ import provingground.learning.TermGeneratorNodes
 import TermRandomVars._, GeneratorVariables._, Expression._
 import LeanParser._
 
+object LeanParserEq{
+  def load(s: String = "basic"): LeanParserEq = {
+    val name = s"$s.lean.export"
+    val path = os.resource / name
+    val in   = new java.io.ByteArrayInputStream(os.read.bytes(path))
+    val mods = LeanInterface.getModsFromStream(in)
+    new LeanParserEq(mods)
+  }
+}
+
 class LeanParserEq(
     initMods: Seq[Modification],
     defTaskMap: Map[Name, Task[Term]] = Map(),
@@ -63,7 +73,7 @@ class LeanParserEq(
       vars: Vector[Term]
   ): Task[(Term, Set[EquationNode])] =
     for {
-      indMod <- getMemTermIndMod(name, exp)
+      indMod <- getMemTermIndModEq(name, exp)
       (argsFmly, xs) = args.splitAt(indMod.numParams + 1)
       argsFmlyTermEq <- parseVecEq(argsFmly, vars).executeWithOptions(
         _.enableAutoCancelableRunLoops
@@ -122,6 +132,129 @@ class LeanParserEq(
   //     } yield (head._1 +: tail._1) -> (head._2 union tail._2)
   // }
 
+  val defnMapEq: mMap[Name, (Term, Set[EquationNode])] = mMap()
+
+  def withDefnEq(name: Name, exp: Expr): Task[Unit] =
+    for {
+      termEq <- parseEq(exp, Vector())
+        .executeWithOptions(_.enableAutoCancelableRunLoops)
+      _ = {
+        pprint.log(s"Defined $name"); log(Defined(name, termEq._1))
+        defnMapEq += name -> termEq
+      }
+    } yield ()
+
+  def indModFromModEq(name: Name): Option[Task[TermIndMod]] =
+    findMod(name, mods).map { (mod) =>
+      // pprint.log(s"Using ${mod.name}")
+      for {
+        _ <- withModEq(mod)
+      } yield (termIndModMap(name))
+    }
+
+  def getMemTermIndModEq(name: Name, exp: Expr): Task[TermIndMod] =
+    getTermIndMod(name)
+      .orElse(indModFromModEq(name))
+      .getOrElse(
+        Task.raiseError(UnParsedException(exp))
+      )
+
+
+  def withAxiomEq(name: Name, ty: Expr): Task[Unit] =
+    for {
+      typEq <- parseEq(ty, Vector())
+        .executeWithOptions(_.enableAutoCancelableRunLoops)
+      term = (name.toString) :: toTyp(typEq._1)
+      _ = {
+        pprint.log(s"Defined $name"); log(Defined(name, term))
+        defnMapEq += name -> (term, typEq._2)
+      }
+    } yield ()
+
+  def withAxiomSeqEq(axs: Vector[(Name, Expr)]): Task[Unit] =
+    axs match {
+      case Vector() => Task(())
+      case (name, ty) +: ys =>
+        for {
+          _ <- withAxiomEq(name, ty)
+          _ <- withAxiomSeqEq(ys)
+        } yield ()
+    }
+
+
+  def foldAxiomSeqEq(
+      accum: (Vector[Term], Set[EquationNode]),
+      axs: Vector[(Name, Expr)]
+  ): Task[(Vector[Term], Set[EquationNode])] = axs match {
+    case Vector() =>
+      Task(accum)
+    case (name, ty) +: ys =>
+      for {
+        typEq <- parseEq(ty, Vector())
+          .executeWithOptions(_.enableAutoCancelableRunLoops)
+        // (typ, ltm1) = pr
+        term = (name.toString) :: toTyp(typEq._1)
+        _ = {
+          pprint.log(s"Defined $name"); log(Defined(name, term))
+          defnMapEq += name -> (term, typEq._2)
+        }
+        res <- foldAxiomSeqEq(((accum._1) :+ term,typEq._2 union accum._2), ys)
+      } yield res
+  }
+
+  def withModEq(mod: Modification): Task[Unit] = mod match {
+    case ind: IndMod =>
+      val isPropn = isPropnFn(ind.ty)
+      val name    = ind.name
+      for {
+        indTypTermEq <- parseEq(ind.ty, Vector())
+          .executeWithOptions(_.enableAutoCancelableRunLoops)
+        // (indTypTerm, ltm1) = pr
+        (indTypTerm, indEqs) = indTypTermEq
+        indTyp = toTyp(indTypTerm)
+        typF   = name.toString :: indTyp
+        _ = {
+          pprint.log(s"Defined $name"); log(Defined(name, typF))
+          defnMapEq += name -> (typF, indEqs)
+        }
+        introsEq <- foldAxiomSeqEq(Vector() -> Set(), ind.intros)
+        // (intros, withIntros) = introsPair
+        typValuePair <- getValue(typF, ind.numParams, Vector())
+        indMod = typValuePair match {
+          case (_: Typ[Term], params) =>
+            SimpleIndMod(ind.name, typF, introsEq._1, params.size, isPropn)
+          case (_, params) =>
+            IndexedIndMod(ind.name, typF, introsEq._1, params.size, isPropn)
+        }
+        _ = {
+          log(DefinedInduc(name, indMod)); termIndModMap += ind.name -> indMod
+        }
+      } yield ()
+
+    case ax: AxiomMod =>
+      withAxiomEq(ax.name, ax.ty)
+    case df: DefMod =>
+      withDefnEq(df.name, df.value)
+    case QuotMod =>
+      import quotient._
+      val axs = Vector(quot, quotLift, quotMk, quotInd).map { (ax) =>
+        (ax.name, ax.ty)
+      }
+      withAxiomSeqEq(axs)
+  }
+
+
+  def defFromModEq(name: Name): Option[Task[(Term, Set[EquationNode])]] =
+    findMod(name, mods).map { (mod) =>
+      // pprint.log(s"Using ${mod.name}")
+      for {
+        _ <- withModEq(mod)
+      } yield (defnMapEq(name))
+    }
+
+  def getNamedEq(name: Name) : Option[Task[(HoTT.Term, Set[EquationNode])]] = 
+    getNamed(name).map(tsk => tsk.map(term => (term, Set.empty[EquationNode])))
+
   def parseEq(
       exp: Expr,
       vars: Vector[Term] = Vector()
@@ -131,14 +264,13 @@ class LeanParserEq(
     log(ParseWork(exp))
     val resTask: Task[(Term, Set[EquationNode])] = exp match {
       case Const(name, _) =>
-        getNamed(name)
+        getNamedEq(name)
           .orElse {
-            defFromMod(name)
+            defFromModEq(name)
           }
           .getOrElse(
             Task.raiseError(UnParsedException(exp))
           )
-          .map(_ -> ???)
 
       case Sort(Level.Zero) => Task.pure(Prop    -> Set())
       case Sort(_)          => Task.pure(Type    -> Set())
@@ -158,7 +290,8 @@ class LeanParserEq(
               .executeWithOptions(_.enableAutoCancelableRunLoops)
           )
           (funcEqs, argEqs) = pair
-          res               = fold(funcEqs._1)(argEqs._1)
+          res               =  Try(applyFuncLean(funcEqs._1, argEqs._1))
+          .getOrElse(throw new ApplnParseException(f, a, funcEqs._1, argEqs._1, vars))
           // _ = pprint.log(s"got result for $f($a)")
           eq = EquationNode(
             FinalVal(Elem(res, Terms)),
@@ -296,4 +429,26 @@ class LeanParserEq(
     case error: Exception =>
       Task.raiseError(ParseException(Vector(exp -> vars), error))
   }
+
+  def getEqTask(name: String) =
+    parseEq(Const(Name(name.split("\\."): _*), Vector()))
+
+  def getEqFut(name: String) =
+    getEqTask(name).runToFuture
+
+  def getEq(name: String)= getEqTask(name).runSyncUnsafe()
+
+  def getEqTry(name: String) =
+    getEqTask(name).materialize.runSyncUnsafe()
+
+  def getEqError(name: String) : Option[ParseException] = 
+    getTry(name).fold(
+      err => err match {
+        case pe : ParseException => Some(pe)
+        case _ => None
+      },
+      _ => None
+    )
+
+
 }

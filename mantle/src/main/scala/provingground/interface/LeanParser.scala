@@ -58,6 +58,21 @@ object LeanParser {
     case _        => false
   }
 
+  def getValue(
+    t: Term,
+    n: Int,
+    accum: Vector[Term]
+): Task[(Term, Vector[Term])] =
+  (t, n) match {
+    case (x, 0) => Task.eval(x -> accum)
+    case (l: LambdaLike[u, v], m) if m > 0 =>
+      getValue(l.value, m - 1, accum :+ l.variable)
+    case (fn: FuncLike[u, v], m) if m > 0 =>
+      val x = fn.dom.Var
+      getValue(fn(x), m - 1, accum :+ x)
+    case _ => throw new Exception("getValue failed")
+  }
+
   def introsFold(ind: TermIndMod, p: Vector[Term]): Vector[Term] =
     ind.intros.map((rule) => foldFuncLean(rule, p))
 
@@ -641,20 +656,6 @@ class LeanParser(
         } yield (headOpt +: tail)
     }
 
-  def getValue(
-      t: Term,
-      n: Int,
-      accum: Vector[Term]
-  ): Task[(Term, Vector[Term])] =
-    (t, n) match {
-      case (x, 0) => Task.eval(x -> accum)
-      case (l: LambdaLike[u, v], m) if m > 0 =>
-        getValue(l.value, m - 1, accum :+ l.variable)
-      case (fn: FuncLike[u, v], m) if m > 0 =>
-        val x = fn.dom.Var
-        getValue(fn(x), m - 1, accum :+ x)
-      case _ => throw new Exception("getValue failed")
-    }
 
   def withDefn(name: Name, exp: Expr): Task[Unit] =
     for {
