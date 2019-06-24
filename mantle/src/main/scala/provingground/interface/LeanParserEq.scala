@@ -22,7 +22,7 @@ import provingground.learning.TermGeneratorNodes
 import TermRandomVars._, GeneratorVariables._, Expression._
 import LeanParser._
 
-object LeanParserEq{
+object LeanParserEq {
   def load(s: String = "basic"): LeanParserEq = {
     val name = s"$s.lean.export"
     val path = os.resource / name
@@ -99,7 +99,10 @@ class LeanParserEq(
       target = recFn.typ
       ind <- getExstInduc(indMod, argsFmlyTermEq._1)
     } yield {
-      val node    = tg.targetInducFuncsFolded(ind, target).get
+      val nodeOpt    = tg.targetInducFuncsFolded(ind, target)
+      pprint.log(ind.typFamily.toString())
+      pprint.log(target.toString())
+      val node = nodeOpt.get
       val coeff   = Coeff(node, Terms)
       val depth   = ind.intros.size
       val foldVar = if (depth == 0) AtomVar(res) else FuncFoldVar(recFn, depth)
@@ -117,7 +120,7 @@ class LeanParserEq(
       vars: Vector[Term]
   ): Task[(Vector[Term], Set[EquationNode])] =
     Task
-      .gather {
+      .sequence {
         vec.map(exp => parseEq(exp, vars))
       }
       .map(
@@ -159,7 +162,6 @@ class LeanParserEq(
         Task.raiseError(UnParsedException(exp))
       )
 
-
   def withAxiomEq(name: Name, ty: Expr): Task[Unit] =
     for {
       typEq <- parseEq(ty, Vector())
@@ -181,7 +183,6 @@ class LeanParserEq(
         } yield ()
     }
 
-
   def foldAxiomSeqEq(
       accum: (Vector[Term], Set[EquationNode]),
       axs: Vector[(Name, Expr)]
@@ -189,6 +190,7 @@ class LeanParserEq(
     case Vector() =>
       Task(accum)
     case (name, ty) +: ys =>
+      pprint.log(s"seeking $name : ${ty.toString}")
       for {
         typEq <- parseEq(ty, Vector())
           .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -198,7 +200,7 @@ class LeanParserEq(
           pprint.log(s"Defined $name"); log(Defined(name, term))
           defnMapEq += name -> (term, typEq._2)
         }
-        res <- foldAxiomSeqEq(((accum._1) :+ term,typEq._2 union accum._2), ys)
+        res <- foldAxiomSeqEq(((accum._1) :+ term, typEq._2 union accum._2), ys)
       } yield res
   }
 
@@ -211,12 +213,14 @@ class LeanParserEq(
           .executeWithOptions(_.enableAutoCancelableRunLoops)
         // (indTypTerm, ltm1) = pr
         (indTypTerm, indEqs) = indTypTermEq
-        indTyp = toTyp(indTypTerm)
-        typF   = name.toString :: indTyp
+        indTyp               = toTyp(indTypTerm)
+        typF                 = name.toString :: indTyp
         _ = {
           pprint.log(s"Defined $name"); log(Defined(name, typF))
           defnMapEq += name -> (typF, indEqs)
         }
+        _ = pprint.log(s"seeking intros: ${ind.intros.map(_.toString)}")
+        _ = pprint.log(defnMapEq.get(name).toString)
         introsEq <- foldAxiomSeqEq(Vector() -> Set(), ind.intros)
         // (intros, withIntros) = introsPair
         typValuePair <- getValue(typF, ind.numParams, Vector())
@@ -243,7 +247,6 @@ class LeanParserEq(
       withAxiomSeqEq(axs)
   }
 
-
   def defFromModEq(name: Name): Option[Task[(Term, Set[EquationNode])]] =
     findMod(name, mods).map { (mod) =>
       // pprint.log(s"Using ${mod.name}")
@@ -252,10 +255,14 @@ class LeanParserEq(
       } yield (defnMapEq(name))
     }
 
-  def getNamedEq(name: Name) : Option[Task[(HoTT.Term, Set[EquationNode])]] = 
-    getNamed(name).map(tsk => tsk.map(term => (term, Set.empty[EquationNode])))
-
-  def parseEq(
+  def getNamedEq(name: Name): Option[Task[(HoTT.Term, Set[EquationNode])]] =
+    defTaskMap
+      .get(name).map(tsk => tsk.map(term => (term, Set.empty[EquationNode] )))
+      .orElse(
+        defnMapEq.get(name).map((t) => Task.pure(t))
+      )
+ 
+    def parseEq(
       exp: Expr,
       vars: Vector[Term] = Vector()
   ): Task[(Term, Set[EquationNode])] = {
@@ -264,6 +271,7 @@ class LeanParserEq(
     log(ParseWork(exp))
     val resTask: Task[(Term, Set[EquationNode])] = exp match {
       case Const(name, _) =>
+        pprint.log(s"seeking $name")
         getNamedEq(name)
           .orElse {
             defFromModEq(name)
@@ -283,15 +291,21 @@ class LeanParserEq(
       case App(f, a) =>
         // pprint.log(s"Applying $f to $a")
         for {
-          pair <- Task.parZip2(
-            parseEq(f, vars)
-              .executeWithOptions(_.enableAutoCancelableRunLoops),
-            parseEq(a, vars)
-              .executeWithOptions(_.enableAutoCancelableRunLoops)
-          )
-          (funcEqs, argEqs) = pair
-          res               =  Try(applyFuncLean(funcEqs._1, argEqs._1))
-          .getOrElse(throw new ApplnParseException(f, a, funcEqs._1, argEqs._1, vars))
+          // pair <- Task.parZip2(
+          //   parseEq(f, vars)
+          //     .executeWithOptions(_.enableAutoCancelableRunLoops),
+          //   parseEq(a, vars)
+          //     .executeWithOptions(_.enableAutoCancelableRunLoops)
+          // )
+          // (funcEqs, argEqs) = pair
+          funcEqs <- parseEq(f, vars)
+            .executeWithOptions(_.enableAutoCancelableRunLoops)
+          argEqs <- parseEq(a, vars)
+            .executeWithOptions(_.enableAutoCancelableRunLoops)
+          res = Try(applyFuncLean(funcEqs._1, argEqs._1))
+            .getOrElse(
+              throw new ApplnParseException(f, a, funcEqs._1, argEqs._1, vars)
+            )
           // _ = pprint.log(s"got result for $f($a)")
           eq = EquationNode(
             FinalVal(Elem(res, Terms)),
@@ -346,7 +360,7 @@ class LeanParserEq(
                 pprint.log(x)
                 pprint.log(x.typ)
                 throw LambdaFormException(x, value, err)
-              }, res => res -> ???)
+              }, res => res -> allEqs)
           }
         }
       case Pi(domain, body) =>
@@ -425,7 +439,7 @@ class LeanParserEq(
 
   }.onErrorRecoverWith {
     case pe: ParseException =>
-      Task.raiseError(ParseException(pe.expVars :+ (exp -> vars) , pe.error))
+      Task.raiseError(ParseException(pe.expVars :+ (exp -> vars), pe.error))
     case error: Exception =>
       Task.raiseError(ParseException(Vector(exp -> vars), error))
   }
@@ -436,19 +450,19 @@ class LeanParserEq(
   def getEqFut(name: String) =
     getEqTask(name).runToFuture
 
-  def getEq(name: String)= getEqTask(name).runSyncUnsafe()
+  def getEq(name: String) = getEqTask(name).runSyncUnsafe()
 
   def getEqTry(name: String) =
     getEqTask(name).materialize.runSyncUnsafe()
 
-  def getEqError(name: String) : Option[ParseException] = 
-    getTry(name).fold(
-      err => err match {
-        case pe : ParseException => Some(pe)
-        case _ => None
-      },
+  def getEqError(name: String): Option[ParseException] =
+    getEqTry(name).fold(
+      err =>
+        err match {
+          case pe: ParseException => Some(pe)
+          case _                  => None
+        },
       _ => None
     )
-
 
 }
