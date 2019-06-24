@@ -21,6 +21,7 @@ import provingground.learning.TermGeneratorNodes
 
 import TermRandomVars._, GeneratorVariables._, Expression._
 import LeanParser._
+import provingground.translation.FansiShow._
 
 object LeanParserEq {
   def load(s: String = "basic"): LeanParserEq = {
@@ -96,12 +97,15 @@ class LeanParserEq(
           )
       }
       res <- resT
-      target = recFn.typ
+      target = foldFuncLean(recFn, vecInter.take(indMod.intros.size)).typ
       ind <- getExstInduc(indMod, argsFmlyTermEq._1)
     } yield {
       val nodeOpt    = tg.targetInducFuncsFolded(ind, target)
-      pprint.log(ind.typFamily.toString())
-      pprint.log(target.toString())
+      pprint.log(vecInter.size)
+      pprint.log(ind.intros.size)
+      fansiPrint.log(ind.typFamily)
+      fansiPrint.log(target.fansi)
+      fansiPrint.log(recFn.fansi)
       val node = nodeOpt.get
       val coeff   = Coeff(node, Terms)
       val depth   = ind.intros.size
