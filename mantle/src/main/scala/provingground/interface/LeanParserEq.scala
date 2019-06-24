@@ -100,22 +100,22 @@ class LeanParserEq(
       target = foldFuncLean(recFn, vecInter.take(indMod.intros.size)).typ
       ind <- getExstInduc(indMod, argsFmlyTermEq._1)
     } yield {
-      val nodeOpt = tg.targetInducFuncsFolded(ind, target)
-      pprint.log(vecInter.size)
-      pprint.log(ind.intros.size)
-      fansiPrint.log(ind.typFamily)
-      fansiPrint.log(target.fansi)
-      fansiPrint.log(recFn.fansi)
-      val node = nodeOpt.getOrElse(
-        throw RecFoldException(
-          indMod,
-          args,
-          recFn,
-          argsFmlyTermEq._1,
-          vecInter,
-          new ApplnFailException(recFn, target) // Nonsense
-        )
-      )
+      val node = tg.targetInducNode(target)
+      // pprint.log(vecInter.size)
+      // pprint.log(ind.intros.size)
+      // fansiPrint.log(ind.typFamily)
+      // fansiPrint.log(target.fansi)
+      // fansiPrint.log(recFn.fansi)
+      // val node = nodeOpt.getOrElse(
+      //   throw RecFoldException(
+      //     indMod,
+      //     args,
+      //     recFn,
+      //     argsFmlyTermEq._1,
+      //     vecInter,
+      //     new ApplnFailException(recFn, target) // Nonsense
+      //   )
+      // )
       val coeff   = Coeff(node, Terms)
       val depth   = ind.intros.size
       val foldVar = if (depth == 0) AtomVar(res) else FuncFoldVar(recFn, depth)

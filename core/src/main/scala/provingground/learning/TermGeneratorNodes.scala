@@ -804,13 +804,13 @@ class TermGeneratorNodes[InitState](
       case (
           ExstInducStrucs.LambdaInduc(variable, structure),
           fn: FuncLike[u, v],
-          gf: GenFuncTyp[uu, vv]
-          ) if variable.typ == fn.dom && variable.typ == gf.domain =>
+          _
+          ) if variable.typ == fn.dom =>
         val x = fn.dom.Var
         goalDomainFmly(
           structure.subs(variable, x),
           fn(x.asInstanceOf[u]),
-          gf.fib(x.asInstanceOf[uu])
+          target
         )
       case (ExstInducStrucs.LambdaInduc(_, _), _, _) => None
       case (_, dom, targ) =>
