@@ -60,7 +60,7 @@ class LeanParserEq(
       val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
       val eq = EquationNode(
         FinalVal(Elem(result, FuncFoldVar(fn, depth))),
-        coeff * FinalVal(Elem(x, termsWithTyp(x.typ))) * FinalVal(
+        coeff * FinalVal(Elem(x, TermGeneratorNodes.termsWithTyp(x.typ))) * FinalVal(
           Elem(result, tailVar)
         )
       )
@@ -324,7 +324,7 @@ class LeanParserEq(
           eq = EquationNode(
             FinalVal(Elem(res, Terms)),
             Coeff(tg.applnNode, Terms) * FinalVal(
-              Elem(funcEqs._1, termsWithTyp(funcEqs._1.typ))
+              Elem(funcEqs._1, TermGeneratorNodes.termsWithTyp(funcEqs._1.typ))
             ) * FinalVal(Elem(argEqs._1, Terms))
           )
         } yield res -> (funcEqs._2.union(argEqs._2) + eq)
