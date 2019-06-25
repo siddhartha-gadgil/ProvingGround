@@ -311,6 +311,17 @@ object GeneratorNode {
   case class Atom[X](value: X, output: RandomVar[X]) extends GeneratorNode[X]
 
   /**
+    * atomic distribution to be included in generation
+    *
+    * @param value the atom
+    * @param rv random variable whose distribution is specified
+    * @tparam X scala type of the random variable
+    * @return node for inclusion
+    */
+    def just[X](value: X, rv: RandomVar[X]) =
+      Atom(value, rv)
+
+  /**
     * generator node for mapping
     * @param f the function
     * @param input the input random variable

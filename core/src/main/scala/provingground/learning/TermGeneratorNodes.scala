@@ -97,13 +97,289 @@ object TermGeneratorNodes {
     override def toString = "InIsle"
   }
 
-  case object Base extends TermGeneratorNodes[TermState](
-    { case (fn, arg) => applyFunc(fn.func, arg) },
-    { case (fn, arg) => Unify.appln(fn.func, arg) },
-    AddVar(_, 0.3),
-    GetVar,
-    InIsle
-  )
+  case object Base
+      extends TermGeneratorNodes[TermState](
+        { case (fn, arg) => applyFunc(fn.func, arg) },
+        { case (fn, arg) => Unify.appln(fn.func, arg) },
+        AddVar(_, 0.3),
+        GetVar,
+        InIsle
+      )
+
+  case class Incl1[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: PlusTyp[U, V]
+  ) extends (Term => Term) {
+    def apply(x: Term) = pt.i(x.asInstanceOf[U])
+  }
+
+  def incl1Node(typ: Typ[Term]): Option[GeneratorNode[Term]] =
+    typ match {
+      case pt: PlusTyp[u, v] =>
+        Some(Map(Incl1(pt), termsWithTyp(pt.first), termsWithTyp(typ)))
+      case _ => None
+    }
+
+  case class Incl2[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: PlusTyp[U, V]
+  ) extends (Term => Term) {
+    def apply(x: Term) = pt.j(x.asInstanceOf[V])
+  }
+
+  def incl2Node(typ: Typ[Term]): Option[GeneratorNode[Term]] =
+    typ match {
+      case pt: PlusTyp[u, v] =>
+        Some(Map(Incl2(pt), termsWithTyp(pt.second), termsWithTyp(typ)))
+      case _ => None
+    }
+
+  case class ApplyFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
+      fn: Func[U, V]
+  ) extends (Term => Term) {
+    def apply(t: Term) = fn(t.asInstanceOf[U])
+
+    override def toString(): String = s"ApplyFunc($fn)"
+  }
+
+  case class PTTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: ProdTyp[U, V]
+  ) extends ((Term, Term) => Term) {
+    def apply(a: Term, b: Term) = PairTerm(a.asInstanceOf[U], b.asInstanceOf[V])
+
+    override def toString(): String = s"PTTerm($pt)"
+  }
+
+  case class STTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: SigmaTyp[U, V]
+  ) extends ((Term, Term) => Term) {
+    def apply(a: Term, b: Term) = {
+      pt.paircons(a.asInstanceOf[U])(b.asInstanceOf[V])
+    }
+
+    override def toString(): String = s"STTerm($pt)"
+  }
+
+  /**
+    * distribution of functions : as existentials, not as terms
+    */
+  case object Funcs extends RandomVar[ExstFunc]
+
+  val funcSort: Sort[Term, ExstFunc] =
+    Sort.Restrict[Term, ExstFunc](FuncOpt)
+
+  /**
+    * family of distributions of terms with specified type
+    */
+  case object TermsWithTyp
+      extends RandomVar.SimpleFamily[Typ[Term], Term](
+        Typs,
+        (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
+      )
+
+  /**
+    * distribution of terms with a specific type
+    *
+    * @param typ the type
+    * @return distribution at type
+    */
+  def termsWithTyp(typ: Typ[Term]): RandomVar[Term] =
+    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
+  case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]) {
+    def apply(typ: Typ[Term]) = RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
+    override def toString = "TermsWithTyp"
+  }
+
+  /**
+    * distribution of type families
+    */
+  case object TypFamilies extends RandomVar[ExstFunc]
+
+  val typFamilySort: Sort[Term, ExstFunc] =
+    Sort.Restrict[Term, ExstFunc](TypFamilyOpt)
+
+  case object TypsAndFamilies extends RandomVar[Term] {
+    lazy val fromTyp: Map[Typ[Term], Term] =
+      Map[Typ[Term], Term](Idty(), Typs, TypsAndFamilies)
+
+    lazy val fromFamilies: Map[ExstFunc, Term] =
+      Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
+  }
+
+  case object TargetTyps extends RandomVar[Typ[Term]] {
+    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(Idty(), Goals, TargetTyps)
+
+    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(Idty(), Typs, TargetTyps)
+
+    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
+  }
+
+  case class STFibVar[U <: Term with Subs[U], V <: Term with Subs[V]](
+      pt: SigmaTyp[U, V]
+  ) extends (Term => RandomVar[Term]) {
+    def apply(x: Term) = termsWithTyp(pt.fibers(x.asInstanceOf[U]))
+
+    override def toString(): String = s"STFibVar($pt)"
+  }
+
+  /**
+    * Node for generating functions that target a codomain;
+    * they are not applied yet, instead form terms of a customised random variable.
+    */
+  def codomainNode(typ: Typ[Term]): GeneratorNode[Term] =
+    MapOpt[ExstFunc, Term](
+      fn => Unify.targetCodomain(fn.func, typ),
+      Funcs,
+      funcForCod(typ)
+    )
+
+  /**
+    * Node family for generating functions that target a codomain;
+    * they are not applied yet, instead form terms of a customised random variable.
+    */
+  val codomainNodeFamily
+      : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => codomainNode(typ)
+    }, FuncForCod)
+
+  def typViaZeroNodeOpt(
+      typ: Typ[Term]
+  ): Option[GeneratorNode.Map[HoTT.Term, HoTT.Term]] = typ match {
+    case ft: FuncTyp[u, v] =>
+      val A                        = ft.dom
+      val a                        = A.Var
+      val zeroVar: RandomVar[Term] = termsWithTyp(A ->: Zero)
+      def fn(contraTerm: Term) = {
+        val contra = contraTerm.asInstanceOf[Func[u, Term]]
+        a :-> Zero.rec(ft.codom)(contra(a))
+      }
+      Some(GeneratorNode.Map(fn, zeroVar, termsWithTyp(typ)))
+    case ft: PiDefn[u, v] =>
+      val A                        = ft.domain
+      val a                        = A.Var
+      val zeroVar: RandomVar[Term] = termsWithTyp(A ->: Zero)
+      def fn(contraTerm: Term) = {
+        val contra = contraTerm.asInstanceOf[Func[u, Term]]
+        a :-> Zero.rec(ft.fibers(a))(contra(a))
+      }
+      Some(GeneratorNode.Map(fn, zeroVar, termsWithTyp(typ)))
+    case _ => None
+  }
+
+  val typViaZeroFamily
+      : GeneratorNodeFamily.BasePiOpt[HoTT.Typ[HoTT.Term] :: HNil, HoTT.Term] =
+    GeneratorNodeFamily.simplePiOpt(typViaZeroNodeOpt, TermsWithTyp)
+
+  val incl1TypNodeFamily
+      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => incl1Node(typ)
+    }, TermsWithTyp)
+
+  val incl2TypNodeFamily
+      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
+    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
+      case typ :: HNil => incl2Node(typ)
+    }, TermsWithTyp)
+
+  /**
+    * recursive functions from a specific inductive structure, picking the codomain,
+    * this is the simplest form, where the domain is not selected and so is usually wrong;
+    * further just the function is returned, not with data applied
+    *
+    * @param ind the inductive structure
+    * @return distribution of functions
+    */
+  def recFuncsForStrucNode(
+      ind: ExstInducStrucs
+  ): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
+    ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
+      case (x, y) => ind.recOpt(x, y).flatMap(FuncOpt)
+    }, Typs, Typs, Funcs)
+
+  /**
+    * Generating domains for a given inductive structure, with an inductive definition also given.
+    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+    * The structure is specified separately as it may have some parameters applied, so be different from
+    * the one corresponding to the definition; similarly we start with the full type family of the definition,
+    * e.g. `Vec`, but fill in parameters to get e.g. `Vec(Nat)`.
+    * Note that if there are no parameters the type family is returned
+    */
+  def domainForStruct(
+      ind: ExstInducStrucs,
+      fmly: Term,
+      defn: ExstInducDefn
+  ): Option[GeneratorNode[Term]] =
+    (ind, fmly) match {
+      case (_: ExstInducStrucs.OrElse, _) => None
+      case (
+          ExstInducStrucs.LambdaInduc(variable, structure),
+          fn: FuncLike[u, v]
+          ) if variable.typ == fn.dom =>
+        Some(
+          FlatMapOpt[Term, Term](
+            termsWithTyp(fn.dom),
+            x =>
+              domainForStruct(
+                structure.subs(variable, x),
+                fn(x.asInstanceOf[u]),
+                defn
+              ),
+            domForInduc(defn)
+          )
+        )
+      case (ExstInducStrucs.LambdaInduc(_, _), _) => None
+      case (_, t)                                 => Some(GeneratorNode.Atom(t, domForInduc(defn)))
+    }
+
+  /**
+    * Generating domains for a given inductive structure, with an inductive definition also given.
+    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+    */
+  def domainForDefn(ind: ExstInducDefn): Option[GeneratorNode[Term]] =
+    domainForStruct(ind.ind, ind.typFamily, ind)
+
+  /**
+    * Node family for generating domains targeting a specifed type
+    *  for a given inductive structure, with an inductive definition also given.
+    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+    */
+  def goalDomainFmly(
+      ind: ExstInducStrucs,
+      fmly: Term,
+      target: Typ[Term]
+  ): Option[(Term, Term)] =
+    (ind, fmly, target) match {
+      case (_: ExstInducStrucs.OrElse, _, _) => None
+      case (
+          ExstInducStrucs.LambdaInduc(variable, structure),
+          fn: FuncLike[u, v],
+          _
+          ) if variable.typ == fn.dom =>
+        val x = fn.dom.Var
+        goalDomainFmly(
+          structure.subs(variable, x),
+          fn(x.asInstanceOf[u]),
+          target
+        )
+      case (ExstInducStrucs.LambdaInduc(_, _), _, _) => None
+      case (_, dom, targ) =>
+        for {
+          tp <- getTypFamily(dom, targ)
+        } yield dom -> tp
+    }
+
+  /**
+    * Node family for generating domains for a given inductive structure, with an inductive definition also given.
+    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+    */
+  val domainForDefnNodeFamily
+      : GeneratorNodeFamily[ExstInducDefn :: HNil, Term] =
+    GeneratorNodeFamily.BasePiOpt[ExstInducDefn :: HNil, Term]({
+      case defn :: HNil => domainForDefn(defn)
+    }, DomForInduc)
+
 }
 
 /**
@@ -342,110 +618,24 @@ class TermGeneratorNodes[InitState](
 
   def curryForTyp(typ: Typ[Term]): Option[GeneratorNode[Term]] =
     typ match {
-      case ft: FuncTyp[u, v] => 
-        if (ft.dom == Zero) Some(GeneratorNode.Atom(Zero.rec(ft.codom), termsWithTyp(typ)))
-        else 
-        ExstInducStrucs.SimpleBase.recOpt(ft.dom, ft.codom).flatMap{
-          case fn : Func[a, b] =>
-          val curryDom = fn.dom
-            Some(
-              GeneratorNode.Map(
-                ApplyFunc(fn),
-                termsWithTyp(curryDom),
-                termsWithTyp(ft)
+      case ft: FuncTyp[u, v] =>
+        if (ft.dom == Zero)
+          Some(GeneratorNode.Atom(Zero.rec(ft.codom), termsWithTyp(typ)))
+        else
+          ExstInducStrucs.SimpleBase.recOpt(ft.dom, ft.codom).flatMap {
+            case fn: Func[a, b] =>
+              val curryDom = fn.dom
+              Some(
+                GeneratorNode.Map(
+                  ApplyFunc(fn),
+                  termsWithTyp(curryDom),
+                  termsWithTyp(ft)
+                )
               )
-            )
-          case _ => None
-        }
+            case _ => None
+          }
       case _ => None
     }
-
-  case class ApplyFunc[U <: Term with Subs[U], V <: Term with Subs[V]](
-      fn: Func[U, V]
-  ) extends (Term => Term) {
-    def apply(t: Term) = fn(t.asInstanceOf[U])
-
-    override def toString(): String = s"ApplyFunc($fn)"
-  }
-
-  case class Incl1[U <: Term with Subs[U], V <: Term with Subs[V]](
-      pt: PlusTyp[U, V]
-  ) extends (Term => Term) {
-    def apply(x: Term) = pt.i(x.asInstanceOf[U])
-  }
-
-  def incl1Node(typ: Typ[Term]): Option[GeneratorNode[Term]] =
-    typ match {
-      case pt: PlusTyp[u, v] =>
-        Some(Map(Incl1(pt), termsWithTyp(pt.first), termsWithTyp(typ)))
-      case _ => None
-    }
-
-  case class Incl2[U <: Term with Subs[U], V <: Term with Subs[V]](
-      pt: PlusTyp[U, V]
-  ) extends (Term => Term) {
-    def apply(x: Term) = pt.j(x.asInstanceOf[V])
-  }
-
-  def incl2Node(typ: Typ[Term]): Option[GeneratorNode[Term]] =
-    typ match {
-      case pt: PlusTyp[u, v] =>
-        Some(Map(Incl2(pt), termsWithTyp(pt.second), termsWithTyp(typ)))
-      case _ => None
-    }
-
-  case class PTTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
-      pt: ProdTyp[U, V]
-  ) extends ((Term, Term) => Term) {
-    def apply(a: Term, b: Term) = PairTerm(a.asInstanceOf[U], b.asInstanceOf[V])
-
-    override def toString(): String = s"PTTerm($pt)"
-  }
-
-  case class STTerm[U <: Term with Subs[U], V <: Term with Subs[V]](
-      pt: SigmaTyp[U, V]
-  ) extends ((Term, Term) => Term) {
-    def apply(a: Term, b: Term) = {
-      // pprint.log(pt)
-      // pprint.log(a)
-      // pprint.log(b)
-      // pprint.log(a.typ)
-      // pprint.log(b.typ)
-      // pprint.log(pt.paircons.typ)
-      pt.paircons(a.asInstanceOf[U])(b.asInstanceOf[V])
-    }
-
-    override def toString(): String = s"STTerm($pt)"
-  }
-
-  case class STFibVar[U <: Term with Subs[U], V <: Term with Subs[V]](
-      pt: SigmaTyp[U, V]
-  ) extends (Term => RandomVar[Term]) {
-    def apply(x: Term) = termsWithTyp(pt.fibers(x.asInstanceOf[U]))
-
-    override def toString(): String = s"STFibVar($pt)"
-  }
-
-  /**
-    * Node for generating functions that target a codomain;
-    * they are not applied yet, instead form terms of a customised random variable.
-    */
-  def codomainNode(typ: Typ[Term]): GeneratorNode[Term] =
-    MapOpt[ExstFunc, Term](
-      fn => Unify.targetCodomain(fn.func, typ),
-      Funcs,
-      funcForCod(typ)
-    )
-
-  /**
-    * Node family for generating functions that target a codomain;
-    * they are not applied yet, instead form terms of a customised random variable.
-    */
-  val codomainNodeFamily
-      : GeneratorNodeFamily.BasePi[::[Typ[Term], HNil], Term] =
-    GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
-      case typ :: HNil => codomainNode(typ)
-    }, FuncForCod)
 
   /**
     * Node for generating terms of a type (if possible) by multiple applications of functions tageting the type.
@@ -465,34 +655,6 @@ class TermGeneratorNodes[InitState](
     GeneratorNodeFamily.BasePi[Typ[Term] :: HNil, Term]({
       case typ :: HNil => foldedTargetFunctionNode(typ)
     }, FuncForCod)
-
-  def typViaZeroNodeOpt(
-      typ: Typ[Term]
-  ): Option[GeneratorNode.Map[HoTT.Term, HoTT.Term]] = typ match {
-    case ft: FuncTyp[u, v] =>
-      val A                        = ft.dom
-      val a                        = A.Var
-      val zeroVar: RandomVar[Term] = termsWithTyp(A ->: Zero)
-      def fn(contraTerm: Term) = {
-        val contra = contraTerm.asInstanceOf[Func[u, Term]]
-        a :-> Zero.rec(ft.codom)(contra(a))
-      }
-      Some(GeneratorNode.Map(fn, zeroVar, termsWithTyp(typ)))
-    case ft: PiDefn[u, v] =>
-      val A                        = ft.domain
-      val a                        = A.Var
-      val zeroVar: RandomVar[Term] = termsWithTyp(A ->: Zero)
-      def fn(contraTerm: Term) = {
-        val contra = contraTerm.asInstanceOf[Func[u, Term]]
-        a :-> Zero.rec(ft.fibers(a))(contra(a))
-      }
-      Some(GeneratorNode.Map(fn, zeroVar, termsWithTyp(typ)))
-    case _ => None
-  }
-
-  val typViaZeroFamily
-      : GeneratorNodeFamily.BasePiOpt[HoTT.Typ[HoTT.Term] :: HNil, HoTT.Term] =
-    GeneratorNodeFamily.simplePiOpt(typViaZeroNodeOpt, TermsWithTyp)
 
   /**
     * lambda island for generating function with specified domain
@@ -545,18 +707,6 @@ class TermGeneratorNodes[InitState](
       : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
     GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
       case typ :: HNil => curryForTyp(typ)
-    }, TermsWithTyp)
-
-  val incl1TypNodeFamily
-      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
-    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
-      case typ :: HNil => incl1Node(typ)
-    }, TermsWithTyp)
-
-  val incl2TypNodeFamily
-      : GeneratorNodeFamily.BasePiOpt[::[Typ[Term], HNil], Term] =
-    GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term]({
-      case typ :: HNil => incl2Node(typ)
     }, TermsWithTyp)
 
   /**
@@ -652,10 +802,7 @@ class TermGeneratorNodes[InitState](
     * Node for folding a function (or term) with a speficied number of arguments
     * to get terms.
     */
-  def foldFuncNode(
-      t: Term,
-      depth: Int)
-      : GeneratorNode[Term] =
+  def foldFuncNode(t: Term, depth: Int): GeneratorNode[Term] =
     if (depth < 1) Atom(t, AtomVar(t))
     else
       t match {
@@ -691,21 +838,6 @@ class TermGeneratorNodes[InitState](
         case _ =>
           None
       }
-
-  /**
-    * recursive functions from a specific inductive structure, picking the codomain,
-    * this is the simplest form, where the domain is not selected and so is usually wrong;
-    * further just the function is returned, not with data applied
-    *
-    * @param ind the inductive structure
-    * @return distribution of functions
-    */
-  def recFuncsForStrucNode(
-      ind: ExstInducStrucs
-  ): ZipMapOpt[Typ[Term], Typ[Term], ExstFunc] =
-    ZipMapOpt[Typ[Term], Typ[Term], ExstFunc]({
-      case (x, y) => ind.recOpt(x, y).flatMap(FuncOpt)
-    }, Typs, Typs, Funcs)
 
   /**
     * Recursive definition given an inductive definition and a domain,
@@ -746,88 +878,6 @@ class TermGeneratorNodes[InitState](
       },
       Terms
     )
-
-  /**
-    * Generating domains for a given inductive structure, with an inductive definition also given.
-    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
-    * The structure is specified separately as it may have some parameters applied, so be different from
-    * the one corresponding to the definition; similarly we start with the full type family of the definition,
-    * e.g. `Vec`, but fill in parameters to get e.g. `Vec(Nat)`.
-    * Note that if there are no parameters the type family is returned
-    */
-  def domainForStruct(
-      ind: ExstInducStrucs,
-      fmly: Term,
-      defn: ExstInducDefn
-  ): Option[GeneratorNode[Term]] =
-    (ind, fmly) match {
-      case (_: ExstInducStrucs.OrElse, _) => None
-      case (
-          ExstInducStrucs.LambdaInduc(variable, structure),
-          fn: FuncLike[u, v]
-          ) if variable.typ == fn.dom =>
-        Some(
-          FlatMapOpt[Term, Term](
-            termsWithTyp(fn.dom),
-            x =>
-              domainForStruct(
-                structure.subs(variable, x),
-                fn(x.asInstanceOf[u]),
-                defn
-              ),
-            domForInduc(defn)
-          )
-        )
-      case (ExstInducStrucs.LambdaInduc(_, _), _) => None
-      case (_, t)                                 => Some(GeneratorNode.Atom(t, domForInduc(defn)))
-    }
-
-  /**
-    * Generating domains for a given inductive structure, with an inductive definition also given.
-    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
-    */
-  def domainForDefn(ind: ExstInducDefn): Option[GeneratorNode[Term]] =
-    domainForStruct(ind.ind, ind.typFamily, ind)
-
-  /**
-    * Node family for generating domains targeting a specifed type
-    *  for a given inductive structure, with an inductive definition also given.
-    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
-    */
-  def goalDomainFmly(
-      ind: ExstInducStrucs,
-      fmly: Term,
-      target: Typ[Term]
-  ): Option[(Term, Term)] =
-    (ind, fmly, target) match {
-      case (_: ExstInducStrucs.OrElse, _, _) => None
-      case (
-          ExstInducStrucs.LambdaInduc(variable, structure),
-          fn: FuncLike[u, v],
-          _
-          ) if variable.typ == fn.dom =>
-        val x = fn.dom.Var
-        goalDomainFmly(
-          structure.subs(variable, x),
-          fn(x.asInstanceOf[u]),
-          target
-        )
-      case (ExstInducStrucs.LambdaInduc(_, _), _, _) => None
-      case (_, dom, targ) =>
-        for {
-          tp <- getTypFamily(dom, targ)
-        } yield dom -> tp
-    }
-
-  /**
-    * Node family for generating domains for a given inductive structure, with an inductive definition also given.
-    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
-    */
-  val domainForDefnNodeFamily
-      : GeneratorNodeFamily[ExstInducDefn :: HNil, Term] =
-    GeneratorNodeFamily.BasePiOpt[ExstInducDefn :: HNil, Term]({
-      case defn :: HNil => domainForDefn(defn)
-    }, DomForInduc)
 
   /**
     * Recursive definitions from a given inductive definition by generating a domain and
@@ -1261,300 +1311,6 @@ class TermGeneratorNodes[InitState](
 
 }
 
-object TermRandomVars {
-
-  case object TypOpt extends (Term => Option[Typ[Term]]) {
-    def apply(t: Term): Option[Typ[Term]] = typOpt(t)
-
-    override def toString = "TypOpt"
-  }
-
-  case object FuncOpt extends (Term => Option[ExstFunc]) {
-    def apply(t: Term): Option[ExstFunc] = ExstFunc.opt(t)
-
-    override def toString = "FuncOpt"
-  }
-
-  case object TypFamilyOpt extends (Term => Option[ExstFunc]) {
-    def apply(t: Term): Option[ExstFunc] =
-      ExstFunc.opt(t).filter((fn) => isTypFamily(fn.func))
-
-    override def toString = "TypFamilyOpt"
-  }
-
-  case class FuncWithDom(dom: Typ[Term]) extends (Term => Option[ExstFunc]) {
-    def apply(t: Term): Option[ExstFunc] =
-      ExstFunc.opt(t).filter((fn) => fn.dom == dom)
-
-    override def toString = s"FuncWithDom($dom)"
-  }
-
-  case class WithTyp(typ: Typ[Term]) extends (Term => Boolean) {
-    def apply(t: Term): Boolean = t.typ == typ
-
-    override def toString = s"$WithTyp(typ)"
-  }
-
-  case object TypFn extends (Term => Typ[Term]) {
-    def apply(tp: Term): Typ[Term] = tp.typ
-
-    override def toString = "typeOf(_)"
-  }
-
-  case object DomFn extends (ExstFunc => Typ[Term]) {
-    def apply(fn: ExstFunc): Typ[Term] = fn.dom
-
-    override def toString = "domOf"
-  }
-
-  /**
-    * distribution of terms
-    */
-  case object Terms extends RandomVar[Term]
-
-  /**
-    * distribution of types
-    */
-  case object Typs extends RandomVar[Typ[Term]]
-
-  case object IsleDomains extends RandomVar[Typ[Term]]
-
-  val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](TypOpt)
-
-  case object Goals extends RandomVar[Typ[Term]]
-
-  case class ContextTerms(ctx: Context) extends RandomVar[Term]
-
-  case class ContextTyps(ctx: Context) extends RandomVar[Typ[Term]]
-
-  def contextTermNode(ctx: Context, varWeight: Double) : GeneratorNode[Term] = 
-    Island[Term, TermState, Term, Unit](
-      ContextTerms(ctx),
-      (_) => Terms,
-      ts => (ts.contextInit(ctx, varWeight), ()),
-      {case (_, term) => ctx.export(term)},
-      {case (_, ts) => ts.contextImport(ctx)}
-    )
-
-  /**
-    * distribution of functions : as existentials, not as terms
-    */
-  case object Funcs extends RandomVar[ExstFunc]
-
-  val funcSort: Sort[Term, ExstFunc] =
-    Sort.Restrict[Term, ExstFunc](FuncOpt)
-
-  /**
-    * family of distributions of terms with specified type
-    */
-  case object TermsWithTyp
-      extends RandomVar.SimpleFamily[Typ[Term], Term](
-        Typs,
-        (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
-      )
-
-  case class PiOutput[U <: Term with Subs[U], V <: Term with Subs[V]](
-      pd: PiDefn[U, V]
-  ) extends (Term => RandomVar[Term]) {
-    def apply(x: Term): RandomVar[Term] =
-      termsWithTyp(pd.fibers(x.asInstanceOf[U]))
-  }
-
-  def withTypSort(typ: Typ[Term]): Sort[Term, Term] =
-    Sort.Filter[Term](WithTyp(typ))
-
-  def withTypNode(
-      node: GeneratorNode[Term]
-  ): GeneratorNodeFamily[Typ[Term] :: HNil, Term] =
-    node.pi(withTypSort, TermsWithTyp)
-
-  /**
-    * distribution of terms with a specific type
-    *
-    * @param typ the type
-    * @return distribution at type
-    */
-  def termsWithTyp(typ: Typ[Term]): RandomVar[Term] =
-    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
-
-  case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]) {
-    def apply(typ: Typ[Term]) = RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
-
-    override def toString = "TermsWithTyp"
-  }
-
-  /**
-    * distribution of type families
-    */
-  case object TypFamilies extends RandomVar[ExstFunc]
-
-  val typFamilySort: Sort[Term, ExstFunc] =
-    Sort.Restrict[Term, ExstFunc](TypFamilyOpt)
-
-  case object TypsAndFamilies extends RandomVar[Term] {
-    lazy val fromTyp: Map[Typ[Term], Term] =
-      Map[Typ[Term], Term](Idty(), Typs, TypsAndFamilies)
-
-    lazy val fromFamilies: Map[ExstFunc, Term] =
-      Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
-  }
-
-  case object TargetTyps extends RandomVar[Typ[Term]] {
-    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(Idty(), Goals, TargetTyps)
-
-    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(Idty(), Typs, TargetTyps)
-
-    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
-  }
-
-  /**
-    * family of distribution of (existential) functions with specifed domain.
-    */
-  case object FuncsWithDomain
-      extends RandomVar.SimpleFamily[Typ[Term], ExstFunc](
-        Typs,
-        (typ: Typ[Term]) => Sort.Filter[ExstFunc](_.dom == typ)
-      )
-
-  def funcWithDomSort(dom: Typ[Term]): Sort.Filter[ExstFunc] =
-    Sort.Filter[ExstFunc](_.dom == dom)
-
-  def funcWithDomNode(
-      node: GeneratorNode[ExstFunc]
-  ): GeneratorNodeFamily[Typ[Term] :: HNil, ExstFunc] =
-    node.pi(funcWithDomSort, FuncsWithDomain)
-
-  def funcWithDomTermNode(
-      node: GeneratorNode[Term]
-  ): GeneratorNodeFamily[::[Typ[Term], HNil], ExstFunc] =
-    node.pi(
-      (dom: Typ[Term]) => Sort.Restrict[Term, ExstFunc](FuncWithDom(dom)),
-      FuncsWithDomain
-    )
-
-  /**
-    * distribution of functions with a specified domain
-    *
-    * @param typ the domain
-    * @return distribution at domain
-    */
-  def funcsWithDomain(typ: Typ[Term]): RandomVar[ExstFunc] =
-    RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
-
-  case object FuncsWithDomainFn extends (Typ[Term] => RandomVar[ExstFunc]) {
-    def apply(typ: Typ[Term]) = RandomVar.AtCoord(FuncsWithDomain, typ :: HNil)
-
-    override def toString = "FuncsWithDomain"
-  }
-
-  case object DomForInduc
-      extends RandomVar.SimpleFamily[ExstInducDefn, Term](
-        InducDefns
-      )
-
-  def domForInduc(defn: ExstInducDefn) =
-    RandomVar.AtCoord(DomForInduc, defn :: HNil)
-
-  case object FuncForCod
-      extends RandomVar.SimpleFamily[Typ[Term], Term](
-        Typs
-      )
-
-  def funcForCod(cod: Typ[Term]) =
-    RandomVar.AtCoord(FuncForCod, cod :: HNil)
-
-  /**
-    * distribution of existential inductive structures
-    */
-  case object InducStrucs extends RandomVar[ExstInducStrucs]
-
-  /**
-    * distribution of existential inductive definitions
-    */
-  case object InducDefns extends RandomVar[ExstInducDefn]
-
-  case class AtomVar[U](atom: U) extends RandomVar[U]
-
-  case class FuncFoldVar(func: Term, depth: Int) extends RandomVar[Term]
-
-  /**
-    * atomic distribution to be included in generation
-    *
-    * @param value the atom
-    * @param rv random variable whose distribution is specified
-    * @tparam X scala type of the random variable
-    * @return node for inclusion
-    */
-  def just[X](value: X, rv: RandomVar[X]) =
-    GeneratorNode.Atom(value, rv)
-
-  /**
-    * distribution of introduction rules for an inductive type
-    *
-    * @param inductiveTyp the inductive type being defined
-    */
-  case class IntroRuleTypes(inductiveTyp: Typ[Term])
-      extends RandomVar[Typ[Term]]
-
-  /**
-    * the introduction with just the target type
-    *
-    * @param inductiveTyp the inductive type being defined
-    * @return node for inclusion
-    */
-  def inducHeadNode(inductiveTyp: Typ[Term]): Atom[Typ[Term]] =
-    just(inductiveTyp, IntroRuleTypes(inductiveTyp))
-
-  /**
-    * distribution of `f`, `f(x)`, `f(x)(y)` etc
-    *
-    * @param func the function to apply
-    */
-  case class PartiallyApplied(func: Term) extends RandomVar[Term]
-
-  /**
-    * atomic distribution `f` for partial application
-    *
-    * @param f the function
-    * @return node to include
-    */
-  def partiallyApplySelf(f: Term): Atom[Term] =
-    just(f, PartiallyApplied(f))
-
-  /**
-    * iterated function types targeting a given type, typically used in introduction rules
-    *
-    * @param typ the final type
-    */
-  case class IterFuncTypTo(typ: Typ[Term]) extends RandomVar[Typ[Term]]
-
-  /**
-    * type family types, e.g. `A -> Type`, for indexed induction
-    */
-  val typFamilyTypes: RandomVar[Term] = IterFuncTypTo(Type)
-
-  /**
-    * distribution of types obtained by full application in a type family
-    *
-    * @param typF the type family
-    */
-  case class TypsFromFamily(typF: Term) extends RandomVar[Typ[Term]]
-
-  /**
-    * distribution of introduction rules for an indexed inductive type
-    *
-    * @param typF the type family
-    */
-  case class IndexedIntroRuleTyps(typF: Term) extends RandomVar[Typ[Term]]
-
-  /**
-    * iterated function type targetting a fully applied type family
-    *
-    * @param typF the type family
-    */
-  case class IndexedIterFuncTypTo(typF: Term) extends RandomVar[Typ[Term]]
-
-}
 
 /**
   * distributions of vectors from a base distribution
@@ -1735,20 +1491,22 @@ case class TermState(
     )
 
   def contextExport(ctx: Context) =
-      TermState(
-        terms.map(ctx.exportStrict(_)),
-        typs.map(ctx.exportTypStrict(_)),
-        vars.filterNot(ctx.variables.contains(_)),
-        inds,
-        goals.map(ctx.exportTypStrict(_)),
-        Context.Empty
-      )
+    TermState(
+      terms.map(ctx.exportStrict(_)),
+      typs.map(ctx.exportTypStrict(_)),
+      vars.filterNot(ctx.variables.contains(_)),
+      inds,
+      goals.map(ctx.exportTypStrict(_)),
+      Context.Empty
+    )
 
   def contextInit(ctx: Context, varWeight: Double) = {
-    val typVars = ctx.variables.collect{case tp: Typ[u] => tp: Typ[Term]}
+    val typVars = ctx.variables.collect { case tp: Typ[u] => tp: Typ[Term] }
     TermState(
-      ((terms * (1 - varWeight)) ++ (FD.uniform(ctx.variables) * varWeight)).safeNormalized,
-      ((typs * (1 - varWeight)) ++ (FD.uniform(typVars) * varWeight)).safeNormalized,
+      ((terms * (1 - varWeight)) ++ (FD
+        .uniform(ctx.variables) * varWeight)).safeNormalized,
+      ((typs * (1 - varWeight)) ++ (FD
+        .uniform(typVars) * varWeight)).safeNormalized,
       vars ++ ctx.variables,
       inds,
       goals.mapOpt(ctx.importTypOpt(_)),
@@ -1757,14 +1515,14 @@ case class TermState(
   }
 
   def contextImport(ctx: Context) =
-      TermState(
-        terms.mapOpt(ctx.importOpt(_)),
-        typs.mapOpt(ctx.importTypOpt(_)),
-        vars ++ ctx.variables,
-        inds,
-        goals.mapOpt(ctx.importTypOpt(_)),
-        ctx
-      )
+    TermState(
+      terms.mapOpt(ctx.importOpt(_)),
+      typs.mapOpt(ctx.importTypOpt(_)),
+      vars ++ ctx.variables,
+      inds,
+      goals.mapOpt(ctx.importTypOpt(_)),
+      ctx
+    )
 }
 
 object TermState {

@@ -358,7 +358,7 @@ trait LocalProverStep {
         Task.gather(fs.remainingGoals.pmf.map {
           case Weighted(goal, p) =>
             val codomainTarget: Task[FiniteDistribution[Term]] = tg.monixFD
-              .nodeDist(initState)(tg.Gen.codomainNode(goal), cutoff)
+              .nodeDist(initState)(TermGeneratorNodes.codomainNode(goal), cutoff)
               .map(_ * p)
             val inductionTarget: Task[FiniteDistribution[Term]] = tg.monixFD
               .nodeDist(initState)(tg.Gen.targetInducBackNode(goal), cutoff)
