@@ -4,10 +4,7 @@ import provingground.{FiniteDistribution => FD, ProbabilityDistribution => PD}
 import HoTT._
 import shapeless._
 import HList._
-import provingground.learning.GeneratorNode.{
-  BaseThenCondition,
-  RecursiveThenCondition
-}
+import provingground.learning.GeneratorNode. {Map =>_, _}
 import provingground.learning.GeneratorNodeFamily.BasePi
 
 import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
@@ -140,6 +137,25 @@ object RandomVar {
 
   case class Elem[O](randVar: RandomVar[O], value: O)
 }
+
+/**
+  * distributions of vectors from a base distribution
+  *
+  * @param base the base distribution
+  * @tparam X scala type of the base
+  */
+  case class RandomVector[X](base: RandomVar[X]) extends RandomVar[Vector[X]] {
+    def empty: Atom[Vector[X]] = just[Vector[X]](Vector(), this)
+  
+    def cons: ZipMap[X, Vector[X], Vector[X]] =
+      ZipMap[X, Vector[X], Vector[X]](
+        { case (x, ys) => x +: ys },
+        base,
+        this,
+        this
+      )
+  }
+  
 
 /**
   * List of random variables, e.g. input of simple generator nodes.
