@@ -397,10 +397,8 @@ class TermGeneratorNodes[InitState](
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
     addVar: Typ[Term] => InitState => (InitState, Term),
     getVar: Typ[Term] => Term,
-    inIsle: (Term, InitState) => InitState
-)(
-    implicit
-    solver: TypSolver
+    inIsle: (Term, InitState) => InitState,
+    solver : TypSolver = TypSolver.coreSolver
 ) {
 
   /**

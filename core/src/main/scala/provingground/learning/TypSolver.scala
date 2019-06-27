@@ -55,5 +55,5 @@ object TypSolver {
     case _ => None
   })
 
-  implicit val coreSolver : TypSolver = IdSolver || LeqNatSolver || DivNatSolver || LeqQSolver || NatNEQSolver
+  val coreSolver : TypSolver = IdSolver || LeqNatSolver || DivNatSolver || LeqQSolver || NatNEQSolver
 }
