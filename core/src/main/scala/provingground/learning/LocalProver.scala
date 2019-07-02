@@ -309,7 +309,7 @@ trait LocalProverStep {
       terms = ns.terms
     } yield
       v.map {
-          case (tp, w) => terms.filter(_.typ == tp)
+          case (tp, w) =>  terms.filter(_.typ == tp).safeNormalized * w
         }
         .fold(FiniteDistribution.empty[Term])(_ ++ _)
 

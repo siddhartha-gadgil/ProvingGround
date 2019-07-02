@@ -200,8 +200,8 @@ object EntropyAtomWeight {
     for {
       (tp, it) <- evolvedLemmaIters(ev, hW, klW, sc)
       p   = it.drop(steps).toStream.head
-      tpW = ev.result.goalThmsBySt(ev.params.goalWeight)(tp)
-      if p > tpW * ev.params.termInit
+      // tpW = ev.result.goalThmsBySt(ev.params.goalWeight)(tp)
+      // if p > tpW * ev.params.termInit
     } yield tp -> p
   }.sortBy(-_._2)
 
