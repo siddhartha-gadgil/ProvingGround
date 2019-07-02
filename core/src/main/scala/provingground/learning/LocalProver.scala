@@ -190,7 +190,9 @@ case class LocalProver(
     mfd.varDist(initState)(rv, cutoff).map(_._1)
 
   def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
-    mfd.nodeDist(initState)(node, cutoff, Expression.Coeff(node, node.output)).map(_._1)
+    mfd
+      .nodeDist(initState)(node, cutoff, Expression.Coeff(node, node.output))
+      .map(_._1)
 
   lazy val equationNodes: Task[Set[EquationNode]] =
     for {
@@ -198,7 +200,10 @@ case class LocalProver(
       typs  <- tripleTypT.map(_._2)
     } yield terms ++ typs
 
-  def tangentExpressionEval(x: Term, weight: Double = 1.0) : Task[ExpressionEval] =
+  def tangentExpressionEval(
+      x: Term,
+      weight: Double = 1.0
+  ): Task[ExpressionEval] =
     for {
       baseState <- nextState
       tangState: TermState = baseState.tangent(x)
@@ -222,6 +227,30 @@ case class LocalProver(
       )
       expEv <- expressionEval
     } yield expEv.avgInit(tExpEval)
+
+  def tangentProver(
+      x: Term,
+      weight: Double = 1.0
+  ) : Task[LocalTangentProver] =
+    for {
+      baseState <- nextState
+      tangState: TermState = baseState.tangent(x)
+      eqnds <- equationNodes
+    } yield
+      LocalTangentProver(
+        initState,
+        eqnds,
+        tangState,
+        tg,
+        cutoff,
+        limit,
+        maxRatio,
+        scale,
+        steps,
+        maxDepth,
+        hW,
+        klW
+      )
 
   // Generating provers using results
   lazy val withLemmas: Task[LocalProver] =
@@ -309,7 +338,7 @@ trait LocalProverStep {
       terms = ns.terms
     } yield
       v.map {
-          case (tp, w) =>  terms.filter(_.typ == tp).safeNormalized * w
+          case (tp, w) => terms.filter(_.typ == tp).safeNormalized * w
         }
         .fold(FiniteDistribution.empty[Term])(_ ++ _)
 
@@ -358,7 +387,10 @@ trait LocalProverStep {
         Task.gather(fs.remainingGoals.pmf.map {
           case Weighted(goal, p) =>
             val codomainTarget: Task[FiniteDistribution[Term]] = tg.monixFD
-              .nodeDist(initState)(TermGeneratorNodes.codomainNode(goal), cutoff)
+              .nodeDist(initState)(
+                TermGeneratorNodes.codomainNode(goal),
+                cutoff
+              )
               .map(_ * p)
             val inductionTarget: Task[FiniteDistribution[Term]] = tg.monixFD
               .nodeDist(initState)(tg.Gen.targetInducBackNode(goal), cutoff)
@@ -387,4 +419,66 @@ trait LocalProverStep {
       .take(steps)
       .lastOptionL
       .map(os => os.getOrElse(initState.terms))
+}
+
+case class LocalTangentProver(
+    initState: TermState =
+      TermState(FiniteDistribution.empty, FiniteDistribution.empty),
+    initEquations: Set[EquationNode],
+    tangentState: TermState,
+    tg: TermGenParams = TermGenParams(),
+    cutoff: Double = math.pow(10, -4),
+    limit: FiniteDuration = 3.minutes,
+    maxRatio: Double = 1.01,
+    scale: Double = 1.0,
+    steps: Int = 10000,
+    maxDepth: Int = 10,
+    hW: Double = 1,
+    klW: Double = 1
+) extends LocalProverStep {
+
+  val mfd: MonixTangentFiniteDistributionEq[TermState] =
+    MonixTangentFiniteDistributionEq(
+      tg.nodeCoeffSeq,
+      initState,
+      initEquations,
+      limit
+    )
+
+  lazy val tripleT: Task[
+    (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
+  ] =
+    mfd
+      .varDist(tangentState, EqDistMemo.empty[TermState])(Terms, cutoff)
+      .map { case (fd, eq, memo) => (fd, eq, memo) }
+      .memoize
+
+  lazy val tripleTypT: Task[
+    (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
+  ] =
+    mfd
+      .varDist(tangentState, EqDistMemo.empty[TermState])(Typs, cutoff)
+      .map { case (fd, eq, memo) => (fd, eq, memo) }
+      .memoize
+
+  lazy val nextState: Task[TermState] =
+    for {
+      terms <- tripleT.map(_._1)
+      typs  <- tripleTypT.map(_._1)
+    } yield
+      TermState(
+        terms,
+        typs,
+        initState.vars,
+        initState.inds,
+        initState.goals,
+        initState.context
+      )
+
+  lazy val equationNodes: Task[Set[EquationNode]] =
+    for {
+      terms <- tripleT.map(_._2)
+      typs  <- tripleTypT.map(_._2)
+    } yield terms ++ typs
+
 }
