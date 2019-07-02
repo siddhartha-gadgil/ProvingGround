@@ -238,7 +238,7 @@ case class LocalProver(
       eqnds <- equationNodes
     } yield
       LocalTangentProver(
-        initState,
+        baseState,
         eqnds,
         tangState,
         tg,
