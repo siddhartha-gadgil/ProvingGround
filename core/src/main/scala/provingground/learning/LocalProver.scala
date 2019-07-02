@@ -156,7 +156,7 @@ case class LocalProver(
 
   lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq)
 
-  val tripleT: Task[
+  lazy val tripleT: Task[
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
@@ -164,7 +164,7 @@ case class LocalProver(
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
-  val tripleTypT: Task[
+  lazy val tripleTypT: Task[
     (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
@@ -224,7 +224,7 @@ case class LocalProver(
     } yield expEv.avgInit(tExpEval)
 
   // Generating provers using results
-  val withLemmas: Task[LocalProver] =
+  lazy val withLemmas: Task[LocalProver] =
     for {
       lws <- lemmas
       lfd = FiniteDistribution(lws.map {
@@ -233,14 +233,14 @@ case class LocalProver(
       lInit = initState.copy(terms = (initState.terms ++ lfd).safeNormalized)
     } yield this.copy(initState = lInit)
 
-  val optimalInit0: Task[LocalProver] = expressionEval.map { ev =>
+  lazy val optimalInit0: Task[LocalProver] = expressionEval.map { ev =>
     val p                            = ev.optimum(hW, klW, cutoff, ev.finalDist, maxRatio)
     val td: FiniteDistribution[Term] = ExpressionEval.dist(Terms, p)
     val ts                           = initState.copy(terms = td)
     this.copy(initState = ts)
   }
 
-  val optimalInit: Task[LocalProver] =
+  lazy val optimalInit: Task[LocalProver] =
     for {
       ev <- expressionEval
       p  <- ev.optimumTask(hW, klW, cutoff, ev.finalDist, maxRatio)
