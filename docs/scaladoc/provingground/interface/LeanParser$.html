@@ -131,6 +131,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="ContextJson$.html" title=""></a>
                         <a href="ContextJson$.html" title="">ContextJson</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="ContextPack$.html" title=""></a>
+                        <a href="ContextPack$.html" title="">ContextPack</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Display$.html" title=""></a>
                         <a class="trait" href="Display.html" title=""></a>
                         <a href="Display.html" title="">Display</a>
@@ -163,6 +167,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="InducJson$.html" title=""></a>
                         <a href="InducJson$.html" title="">InducJson</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="InducPack$.html" title=""></a>
+                        <a href="InducPack$.html" title="">InducPack</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="JsFunc$.html" title=""></a>
                         <a class="trait" href="JsFunc.html" title=""></a>
                         <a href="JsFunc.html" title="">JsFunc</a>
@@ -190,6 +198,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="" title=""></a>
                         <a class="class" href="LeanParser.html" title=""></a>
                         <a href="LeanParser.html" title="">LeanParser</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="LeanParserEq$.html" title=""></a>
+                        <a class="class" href="LeanParserEq.html" title=""></a>
+                        <a href="LeanParserEq.html" title="">LeanParserEq</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="LeanResources$.html" title=""></a>
@@ -234,6 +246,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="MonoidServer$.html" title=""></a>
                         <a href="MonoidServer$.html" title="">MonoidServer</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MsgFunc$.html" title=""></a>
+                        <a class="trait" href="MsgFunc.html" title=""></a>
+                        <a href="MsgFunc.html" title="">MsgFunc</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="MultiTask$.html" title=""></a>
                         <a class="class" href="MultiTask.html" title=""></a>
@@ -322,6 +338,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="TermObj$.html" title=""></a>
                         <a href="TermObj$.html" title="">TermObj</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermPack$.html" title=""></a>
+                        <a href="TermPack$.html" title="">TermPack</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="TermSampler$.html" title=""></a>
                         <a class="class" href="TermSampler.html" title=""></a>
@@ -434,7 +454,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.interface.LeanParser.Defined" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.interface.LeanParser.ApplnParseException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ApplnParseExceptionextendsHoTT.ApplnFailException"></a><a id="ApplnParseException:ApplnParseException"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#ApplnParseExceptionextendsHoTT.ApplnFailException" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$ApplnParseException.html"><span class="name">ApplnParseException</span></a><span class="result"> extends <a href="../HoTT$$ApplnFailException.html" class="extype" name="provingground.HoTT.ApplnFailException">ApplnFailException</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.Defined" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="DefinedextendsLeanParser.LogwithProductwithSerializable"></a><a id="Defined:Defined"></a>
       <span class="permalink">
       <a href="../../provingground/interface/LeanParser$.html#DefinedextendsLeanParser.LogwithProductwithSerializable" title="Permalink">
@@ -526,7 +562,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="LeanParser$$ParseException.html"><span class="name">ParseException</span></a><span class="params">(<span name="exps">exps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="trepplein.Expr">Expr</span>]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="error">error: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>)</span><span class="result"> extends <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="LeanParser$$ParseException.html"><span class="name">ParseException</span></a><span class="params">(<span name="expVars">expVars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="trepplein.Expr">Expr</span>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])]</span>, <span name="error">error: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>)</span><span class="result"> extends <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
@@ -779,6 +815,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.LeanParser#getExstInduc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getExstInduc(ind:provingground.interface.TermIndMod,argsFmlyTerm:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.induction.ExstInducDefn]"></a><a id="getExstInduc(TermIndMod,Vector[Term]):Task[ExstInducDefn]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#getExstInduc(ind:provingground.interface.TermIndMod,argsFmlyTerm:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.induction.ExstInducDefn]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getExstInduc</span><span class="params">(<span name="ind">ind: <a href="TermIndMod.html" class="extype" name="provingground.interface.TermIndMod">TermIndMod</a></span>, <span name="argsFmlyTerm">argsFmlyTerm: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#getIndexedExstInduc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getIndexedExstInduc(ind:provingground.interface.IndexedIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.induction.ExstInducDefn]"></a><a id="getIndexedExstInduc(IndexedIndMod,Task[Vector[Term]]):Task[ExstInducDefn]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#getIndexedExstInduc(ind:provingground.interface.IndexedIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.induction.ExstInducDefn]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getIndexedExstInduc</span><span class="params">(<span name="ind">ind: <a href="IndexedIndMod.html" class="extype" name="provingground.interface.IndexedIndMod">IndexedIndMod</a></span>, <span name="argsFmlyTerm">argsFmlyTerm: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.interface.LeanParser#getNextVarName" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="getNextVarName(vecs:Vector[provingground.HoTT.Term],n:Int):String"></a><a id="getNextVarName(Vector[Term],Int):String"></a>
       <span class="permalink">
@@ -792,6 +860,86 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">getNextVarName</span><span class="params">(<span name="vecs">vecs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#getRec" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getRec(ind:provingground.interface.TermIndMod,argsFmlyTerm:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Term]"></a><a id="getRec(TermIndMod,Vector[Term]):Task[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#getRec(ind:provingground.interface.TermIndMod,argsFmlyTerm:Vector[provingground.HoTT.Term]):monix.eval.Task[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getRec</span><span class="params">(<span name="ind">ind: <a href="TermIndMod.html" class="extype" name="provingground.interface.TermIndMod">TermIndMod</a></span>, <span name="argsFmlyTerm">argsFmlyTerm: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#getRecIndexed" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getRecIndexed(ind:provingground.interface.IndexedIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.HoTT.Term]"></a><a id="getRecIndexed(IndexedIndMod,Task[Vector[Term]]):Task[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#getRecIndexed(ind:provingground.interface.IndexedIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getRecIndexed</span><span class="params">(<span name="ind">ind: <a href="IndexedIndMod.html" class="extype" name="provingground.interface.IndexedIndMod">IndexedIndMod</a></span>, <span name="argsFmlyTerm">argsFmlyTerm: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#getRecSimple" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getRecSimple(ind:provingground.interface.SimpleIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.HoTT.Term]"></a><a id="getRecSimple(SimpleIndMod,Task[Vector[Term]]):Task[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#getRecSimple(ind:provingground.interface.SimpleIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getRecSimple</span><span class="params">(<span name="ind">ind: <a href="SimpleIndMod.html" class="extype" name="provingground.interface.SimpleIndMod">SimpleIndMod</a></span>, <span name="argsFmlyTerm">argsFmlyTerm: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#getSimpleExstInduc" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSimpleExstInduc(ind:provingground.interface.SimpleIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.induction.ExstInducDefn]"></a><a id="getSimpleExstInduc(SimpleIndMod,Task[Vector[Term]]):Task[ExstInducDefn]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#getSimpleExstInduc(ind:provingground.interface.SimpleIndMod,argsFmlyTerm:monix.eval.Task[Vector[provingground.HoTT.Term]]):monix.eval.Task[provingground.induction.ExstInducDefn]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSimpleExstInduc</span><span class="params">(<span name="ind">ind: <a href="SimpleIndMod.html" class="extype" name="provingground.interface.SimpleIndMod">SimpleIndMod</a></span>, <span name="argsFmlyTerm">argsFmlyTerm: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#getValue" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getValue(t:provingground.HoTT.Term,n:Int,accum:Vector[provingground.HoTT.Term]):monix.eval.Task[(provingground.HoTT.Term,Vector[provingground.HoTT.Term])]"></a><a id="getValue(Term,Int,Vector[Term]):Task[(Term,Vector[Term])]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#getValue(t:provingground.HoTT.Term,n:Int,accum:Vector[provingground.HoTT.Term]):monix.eval.Task[(provingground.HoTT.Term,Vector[provingground.HoTT.Term])]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getValue</span><span class="params">(<span name="t">t: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>, <span name="accum">accum: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])]</span>
       </span>
       
       
@@ -814,6 +962,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.LeanParser#introsFold" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="introsFold(ind:provingground.interface.TermIndMod,p:Vector[provingground.HoTT.Term]):Vector[provingground.HoTT.Term]"></a><a id="introsFold(TermIndMod,Vector[Term]):Vector[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#introsFold(ind:provingground.interface.TermIndMod,p:Vector[provingground.HoTT.Term]):Vector[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">introsFold</span><span class="params">(<span name="ind">ind: <a href="TermIndMod.html" class="extype" name="provingground.interface.TermIndMod">TermIndMod</a></span>, <span name="p">p: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
@@ -830,6 +994,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="provingground.interface.LeanParser#isPropnFn" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isPropnFn(e:trepplein.Expr):Boolean"></a><a id="isPropnFn(Expr):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#isPropnFn(e:trepplein.Expr):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isPropnFn</span><span class="params">(<span name="e">e: <span class="extype" name="trepplein.Expr">Expr</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      
     </li><li name="provingground.interface.LeanParser#jsDef" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="jsDef(parser:provingground.interface.LeanParser):ujson.Arr"></a><a id="jsDef(LeanParser):Arr"></a>
       <span class="permalink">
@@ -859,6 +1039,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">jsTermIndMod</span><span class="params">(<span name="parser">parser: <a href="LeanParser.html" class="extype" name="provingground.interface.LeanParser">LeanParser</a></span>)</span><span class="result">: <span class="extype" name="ujson.Arr">Arr</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#load" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="load(s:String):provingground.interface.LeanParser"></a><a id="load(String):LeanParser"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#load(s:String):provingground.interface.LeanParser" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;basic&quot;</span></span>)</span><span class="result">: <a href="LeanParser.html" class="extype" name="provingground.interface.LeanParser">LeanParser</a></span>
       </span>
       
       
@@ -916,6 +1112,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.interface.LeanParser#parseWork" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="parseWork:scala.collection.mutable.Set[trepplein.Expr]"></a><a id="parseWork:Set[Expr]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#parseWork:scala.collection.mutable.Set[trepplein.Expr]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">parseWork</span><span class="result">: <span class="extype" name="scala.collection.mutable.Set">Set</span>[<span class="extype" name="trepplein.Expr">Expr</span>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser#proofLift" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="proofLift:(provingground.HoTT.Term,provingground.HoTT.Term)=&gt;monix.eval.Task[provingground.HoTT.Term]"></a><a id="proofLift:(Term,Term)⇒Task[Term]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#proofLift:(provingground.HoTT.Term,provingground.HoTT.Term)=&gt;monix.eval.Task[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">proofLift</span><span class="result">: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="monix.eval.Task">Task</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.interface.LeanParser#shiftedName" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="shiftedName(n:Int,lastName:String):String"></a><a id="shiftedName(Int,String):String"></a>
       <span class="permalink">
@@ -1080,6 +1308,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <a title="" href="LeanParser$$Logger$.html"><span class="name">Logger</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.RecIterAp" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecIterAp"></a><a id="RecIterAp:RecIterAp"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$.html#RecIterAp" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LeanParser$$RecIterAp$.html"><span class="name">RecIterAp</span></a>
       </span>
       
       

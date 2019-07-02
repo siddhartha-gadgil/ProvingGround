@@ -124,6 +124,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="provingground.interface">interface</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="class" href="LeanParser$$ApplnParseException.html" title=""></a>
+                        <a href="LeanParser$$ApplnParseException.html" title="">ApplnParseException</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="class" href="LeanParser$$Defined.html" title=""></a>
                         <a href="LeanParser$$Defined.html" title="">Defined</a>
                       </li><li class="current-entities indented3">
@@ -154,6 +158,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="LeanParser$$Parsed.html" title=""></a>
                         <a href="LeanParser$$Parsed.html" title="">Parsed</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="LeanParser$$RecIterAp$.html" title=""></a>
+                        <a href="LeanParser$$RecIterAp$.html" title="">RecIterAp</a>
                       </li>
               </ul>
             </div>
@@ -177,7 +185,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ParseException</span><span class="params">(<span name="exps">exps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="trepplein.Expr">Expr</span>]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="error">error: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>)</span><span class="result"> extends <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ParseException</span><span class="params">(<span name="expVars">expVars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="trepplein.Expr">Expr</span>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])]</span>, <span name="error">error: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>)</span><span class="result"> extends <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -248,9 +256,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="provingground.interface.LeanParser.ParseException#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(exps:Vector[trepplein.Expr],vars:Vector[provingground.HoTT.Term],error:Exception):provingground.interface.LeanParser.ParseException"></a><a id="&lt;init&gt;:ParseException"></a>
+      <a id="&lt;init&gt;(expVars:Vector[(trepplein.Expr,Vector[provingground.HoTT.Term])],error:Exception):provingground.interface.LeanParser.ParseException"></a><a id="&lt;init&gt;:ParseException"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/LeanParser$$ParseException.html#&lt;init&gt;(exps:Vector[trepplein.Expr],vars:Vector[provingground.HoTT.Term],error:Exception):provingground.interface.LeanParser.ParseException" title="Permalink">
+      <a href="../../provingground/interface/LeanParser$$ParseException.html#&lt;init&gt;(expVars:Vector[(trepplein.Expr,Vector[provingground.HoTT.Term])],error:Exception):provingground.interface.LeanParser.ParseException" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -259,7 +267,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ParseException</span><span class="params">(<span name="exps">exps: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="trepplein.Expr">Expr</span>]</span>, <span name="vars">vars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="error">error: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>)</span>
+        <span class="name">ParseException</span><span class="params">(<span name="expVars">expVars: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="trepplein.Expr">Expr</span>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])]</span>, <span name="error">error: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>)</span>
       </span>
       
       
@@ -381,9 +389,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
     </li><li name="provingground.interface.LeanParser.ParseException#apl" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apl:Option[(trepplein.Expr,trepplein.Expr,provingground.HoTT.ApplnFailException)]"></a><a id="apl:Option[(Expr,Expr,ApplnFailException)]"></a>
+      <a id="apl:Option[(trepplein.Expr,trepplein.Expr,provingground.interface.LeanParser.ApplnParseException)]"></a><a id="apl:Option[(Expr,Expr,ApplnParseException)]"></a>
       <span class="permalink">
-      <a href="../../provingground/interface/LeanParser$$ParseException.html#apl:Option[(trepplein.Expr,trepplein.Expr,provingground.HoTT.ApplnFailException)]" title="Permalink">
+      <a href="../../provingground/interface/LeanParser$$ParseException.html#apl:Option[(trepplein.Expr,trepplein.Expr,provingground.interface.LeanParser.ApplnParseException)]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -392,7 +400,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apl</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="trepplein.Expr">Expr</span>, <span class="extype" name="trepplein.Expr">Expr</span>, <a href="../HoTT$$ApplnFailException.html" class="extype" name="provingground.HoTT.ApplnFailException">ApplnFailException</a>)]</span>
+        <span class="name">apl</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="trepplein.Expr">Expr</span>, <span class="extype" name="trepplein.Expr">Expr</span>, <a href="LeanParser$$ApplnParseException.html" class="extype" name="provingground.interface.LeanParser.ApplnParseException">ApplnParseException</a>)]</span>
       </span>
       
       
@@ -545,6 +553,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">error</span><span class="result">: <a href="../../scala/index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.interface.LeanParser.ParseException#expVars" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="expVars:Vector[(trepplein.Expr,Vector[provingground.HoTT.Term])]"></a><a id="expVars:Vector[(Expr,Vector[Term])]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$$ParseException.html#expVars:Vector[(trepplein.Expr,Vector[provingground.HoTT.Term])]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">expVars</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<span class="extype" name="trepplein.Expr">Expr</span>, <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>])]</span>
       </span>
       
       
@@ -858,6 +882,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
+    </li><li name="provingground.interface.LeanParser.ParseException#recfl" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="recfl:Option[provingground.interface.RecFoldException]"></a><a id="recfl:Option[RecFoldException]"></a>
+      <span class="permalink">
+      <a href="../../provingground/interface/LeanParser$$ParseException.html#recfl:Option[provingground.interface.RecFoldException]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">recfl</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="RecFoldException.html" class="extype" name="provingground.interface.RecFoldException">RecFoldException</a>]</span>
+      </span>
+      
+      
     </li><li name="java.lang.Throwable#setStackTrace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="setStackTrace(x$1:Array[StackTraceElement]):Unit"></a><a id="setStackTrace(Array[StackTraceElement]):Unit"></a>
       <span class="permalink">
