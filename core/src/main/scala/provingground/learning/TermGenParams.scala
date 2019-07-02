@@ -74,7 +74,7 @@ case class TermGenParamsNodes(tg: TermGenParams)
       { case (fn, arg) => Unify.appln(fn.func, arg) },
       AddVar(_, tg.varWeight),
       GetVar,
-      InIsle
+      EnterIsle
     )
 
 case class TermGenParams(

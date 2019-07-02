@@ -2,7 +2,7 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD, _}, HoTT._
 import monix.eval._, monix.tail._
 
-import GeneratorVariables._, TermRandomVars._, Expression._, TermGeneratorNodes.{InIsle => _, _}
+import GeneratorVariables._, TermRandomVars._, Expression._, TermGeneratorNodes.{_}
 
 import annotation.tailrec
 
