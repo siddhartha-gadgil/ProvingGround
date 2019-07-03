@@ -127,9 +127,9 @@ import TermGeneratorNodes._
     ) -> x
   }
 
-  def tangent(x: Term): TermState =
+  def tangent(xs: Term*): TermState =
     this.copy(
-      terms = FD.unif(x),
+      terms = FD.uniform(xs),
       typs = FD.empty
     )
 

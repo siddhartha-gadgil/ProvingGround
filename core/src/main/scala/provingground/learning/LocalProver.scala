@@ -229,12 +229,10 @@ case class LocalProver(
     } yield expEv.avgInit(tExpEval)
 
   def tangentProver(
-      x: Term,
-      weight: Double = 1.0
-  ) : Task[LocalTangentProver] =
+      xs: Term*) : Task[LocalTangentProver] =
     for {
       baseState <- nextState
-      tangState: TermState = baseState.tangent(x)
+      tangState: TermState = baseState.tangent(xs : _*)
       eqnds <- equationNodes
     } yield
       LocalTangentProver(
@@ -467,8 +465,8 @@ case class LocalTangentProver(
       typs  <- tripleTypT.map(_._1)
     } yield
       TermState(
-        terms,
-        typs,
+        (terms ++ initState.terms).safeNormalized,
+        (typs ++ initState.typs).safeNormalized,
         initState.vars,
         initState.inds,
         initState.goals,
