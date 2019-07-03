@@ -30,14 +30,6 @@ object TermGeneratorNodes {
     override def toString: String = randomVar.toString
   }
 
-  /**
-    * Wrapper for identity to allow equality and  `toString` to work.
-    */
-  case class Idty[A]() extends (A => A) {
-    def apply(a: A) = a
-
-    override def toString = "Identity"
-  }
 
   /**
     * Wrapper for lambda to allow equality and  `toString` to work.

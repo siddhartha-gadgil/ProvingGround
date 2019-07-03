@@ -182,8 +182,6 @@ object GeneratorVariables {
   )
 //      extends Variable[Unit]
 
-
-  
 }
 
 import GeneratorVariables._, Expression._
@@ -246,16 +244,16 @@ object Expression {
     case a         => Vector(a)
   }
 
-  def varFactors(exp: Expression) : Vector[Variable[_]] = exp match {
+  def varFactors(exp: Expression): Vector[Variable[_]] = exp match {
     case FinalVal(v: Variable[_]) => Vector(v)
-    case Product(x, y) => varFactors(x) ++ varFactors(y)
-    case _ => Vector()
+    case Product(x, y)            => varFactors(x) ++ varFactors(y)
+    case _                        => Vector()
   }
 
-  def coeffFactor(exp: Expression) : Option[Coeff[_]] = exp match {
-    case cf: Coeff[_] => Some(cf)
-    case Product(x, y) => coeffFactor(x) orElse(coeffFactor(y))
-    case _ => None
+  def coeffFactor(exp: Expression): Option[Coeff[_]] = exp match {
+    case cf: Coeff[_]  => Some(cf)
+    case Product(x, y) => coeffFactor(x) orElse (coeffFactor(y))
+    case _             => None
   }
 
   def h[A](pDist: Map[A, Expression]): Expression =
@@ -271,116 +269,113 @@ object Expression {
       }
       .reduce[Expression](_ + _)
 
-
-
-sealed trait VarVal[+Y] extends Expression {
-  val variable: Variable[Y]
-}
-
-case class FinalVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
-  def mapVars(f: Variable[_] => Variable[_]): Expression =
-    FinalVal(f(variable))
-
-  override def toString: String = s"P\u2081($variable)"
-}
-
-case class InitialVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
-  def mapVars(f: Variable[_] => Variable[_]): Expression =
-    InitialVal(f(variable))
-
-  override def toString: String = s"P\u2080($variable)"
-}
-
-case class Log(exp: Expression) extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
-
-  override def toString = s"log($exp)"
-}
-
-case class Exp(exp: Expression) extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Expression = Exp(exp.mapVars(f))
-
-  override def toString = s"exp($exp)"
-}
-
-def sigmoid(x: Expression) = Exp(x) / (Exp(x) + Literal(1))
-
-def inverseSigmoid(y: Expression) = Log(y / (Literal(1) - y))
-
-case class Sum(x: Expression, y: Expression) extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Sum =
-    Sum(x.mapVars(f), y.mapVars(f))
-
-  override def toString = s"($x) + ($y)"
-}
-
-case class Product(x: Expression, y: Expression) extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Product =
-    Product(x.mapVars(f), y.mapVars(f))
-
-  override def toString = s"($x) * ($y)"
-}
-
-case class Literal(value: Double) extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Literal = this
-
-  override def toString: String = value.toString
-}
-
-case class Quotient(x: Expression, y: Expression) extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Quotient =
-    Quotient(x.mapVars(f), y.mapVars(f))
-
-  override def toString = s"($x) / ($y)"
-}
-
-case class Coeff[Y](node: GeneratorNode[Y], rv: RandomVar[Y])
-    extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
-
-  def expand: RandomVarFamily[_ <: HList, Y] = rv match {
-    case RandomVar.AtCoord(family, _) => family
-    case simple                       => simple
+  sealed trait VarVal[+Y] extends Expression {
+    val variable: Variable[Y]
   }
 
-  def getFromCoeffs[State, V, RDom <: HList, Y](
-      nodeCoeffs: NodeCoeffs[State, V, RDom, Y]
-  ): Option[V] =
-    (nodeCoeffs, rv) match {
-      case (NodeCoeffs.Target(_), _) => None
-      case (
-          cons: NodeCoeffs.Cons[State, V, RDom, Y],
-          RandomVar.AtCoord(family, arg)
-          ) =>
-        cons.headGen match {
-          case fmly: GeneratorNodeFamily.Pi[u, v] =>
-            if (Try(fmly.nodes(arg.asInstanceOf[u])).toOption == Some(node))
-              Some(cons.headCoeff)
-            else getFromCoeffs(cons.tail)
-          case fmly: GeneratorNodeFamily.PiOpt[u, v] =>
-            if (Try(fmly.nodesOpt(arg.asInstanceOf[u])).toOption.flatten == Some(
-                  node
-                ))
-              Some(cons.headCoeff)
-            else getFromCoeffs(cons.tail)
-          case _ => getFromCoeffs(cons.tail)
-        }
+  case class FinalVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
+    def mapVars(f: Variable[_] => Variable[_]): Expression =
+      FinalVal(f(variable))
 
-      case (cons: NodeCoeffs.Cons[State, V, RDom, Y], _) =>
-        if (cons.headGen == node) Some(cons.headCoeff)
-        else getFromCoeffs(cons.tail)
+    override def toString: String = s"P\u2081($variable)"
+  }
+
+  case class InitialVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
+    def mapVars(f: Variable[_] => Variable[_]): Expression =
+      InitialVal(f(variable))
+
+    override def toString: String = s"P\u2080($variable)"
+  }
+
+  case class Log(exp: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
+
+    override def toString = s"log($exp)"
+  }
+
+  case class Exp(exp: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Expression = Exp(exp.mapVars(f))
+
+    override def toString = s"exp($exp)"
+  }
+
+  def sigmoid(x: Expression) = Exp(x) / (Exp(x) + Literal(1))
+
+  def inverseSigmoid(y: Expression) = Log(y / (Literal(1) - y))
+
+  case class Sum(x: Expression, y: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Sum =
+      Sum(x.mapVars(f), y.mapVars(f))
+
+    override def toString = s"($x) + ($y)"
+  }
+
+  case class Product(x: Expression, y: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Product =
+      Product(x.mapVars(f), y.mapVars(f))
+
+    override def toString = s"($x) * ($y)"
+  }
+
+  case class Literal(value: Double) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Literal = this
+
+    override def toString: String = value.toString
+  }
+
+  case class Quotient(x: Expression, y: Expression) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Quotient =
+      Quotient(x.mapVars(f), y.mapVars(f))
+
+    override def toString = s"($x) / ($y)"
+  }
+
+  case class Coeff[Y](node: GeneratorNode[Y], rv: RandomVar[Y])
+      extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
+
+    def expand: RandomVarFamily[_ <: HList, Y] = rv match {
+      case RandomVar.AtCoord(family, _) => family
+      case simple                       => simple
     }
 
-  def get[State, V](seq: NodeCoeffSeq[State, V]): Option[V] =
-    seq.find(expand).flatMap(getFromCoeffs)
-}
+    def getFromCoeffs[State, V, RDom <: HList, Y](
+        nodeCoeffs: NodeCoeffs[State, V, RDom, Y]
+    ): Option[V] =
+      (nodeCoeffs, rv) match {
+        case (NodeCoeffs.Target(_), _) => None
+        case (
+            cons: NodeCoeffs.Cons[State, V, RDom, Y],
+            RandomVar.AtCoord(family, arg)
+            ) =>
+          cons.headGen match {
+            case fmly: GeneratorNodeFamily.Pi[u, v] =>
+              if (Try(fmly.nodes(arg.asInstanceOf[u])).toOption == Some(node))
+                Some(cons.headCoeff)
+              else getFromCoeffs(cons.tail)
+            case fmly: GeneratorNodeFamily.PiOpt[u, v] =>
+              if (Try(fmly.nodesOpt(arg.asInstanceOf[u])).toOption.flatten == Some(
+                    node
+                  ))
+                Some(cons.headCoeff)
+              else getFromCoeffs(cons.tail)
+            case _ => getFromCoeffs(cons.tail)
+          }
 
-case class IsleScale[Boat, Y](boat: Boat, elem: Elem[Y]) extends Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Expression = this
-}
+        case (cons: NodeCoeffs.Cons[State, V, RDom, Y], _) =>
+          if (cons.headGen == node) Some(cons.headCoeff)
+          else getFromCoeffs(cons.tail)
+      }
+
+    def get[State, V](seq: NodeCoeffSeq[State, V]): Option[V] =
+      seq.find(expand).flatMap(getFromCoeffs)
+  }
+
+  case class IsleScale[Boat, Y](boat: Boat, elem: Elem[Y]) extends Expression {
+    def mapVars(f: Variable[_] => Variable[_]): Expression = this
+  }
 
 }
-
 
 case class Equation(lhs: Expression, rhs: Expression) {
   def mapVars(f: Variable[_] => Variable[_]) =
@@ -401,16 +396,32 @@ case class Equation(lhs: Expression, rhs: Expression) {
   override def toString = s"($lhs) == ($rhs)"
 }
 
-object EquationNode{
-  def backMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[_],Set[Set[GeneratorVariables.Variable[_]]]] = 
-    eqs.collect{
-      case EquationNode(FinalVal(v: Variable[_]), rhs) => (v : Variable[_] )-> varFactors(rhs).toSet
-    }.groupBy(_._1).mapValues(s => s.map(_._2))
+object EquationNode {
+  def backMap(eqs: Set[EquationNode]): Map[GeneratorVariables.Variable[_], Set[
+    Set[GeneratorVariables.Variable[_]]
+  ]] =
+    eqs
+      .collect {
+        case EquationNode(FinalVal(v: Variable[_]), rhs) =>
+          (v: Variable[_]) -> varFactors(rhs).toSet
+      }
+      .groupBy(_._1)
+      .mapValues(s => s.map(_._2))
 
-  def backCoeffMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Vector[(Expression.Coeff[_], Vector[GeneratorVariables.Variable[_]])]] = 
-  eqs.collect{
-    case EquationNode(FinalVal(v: Variable[_]), rhs) => (v : Variable[_] )-> coeffFactor(rhs).map(cf => (cf : Coeff[_] ) -> varFactors(rhs))
-  }.groupBy(_._1).mapValues(s => s.toVector.map(_._2).flatten)
+  def backCoeffMap(
+      eqs: Set[EquationNode]
+  ): Map[GeneratorVariables.Variable[Any], Vector[
+    (Expression.Coeff[_], Vector[GeneratorVariables.Variable[_]])
+  ]] =
+    eqs
+      .collect {
+        case EquationNode(FinalVal(v: Variable[_]), rhs) =>
+          (v: Variable[_]) -> coeffFactor(rhs).map(
+            cf => (cf: Coeff[_]) -> varFactors(rhs)
+          )
+      }
+      .groupBy(_._1)
+      .mapValues(s => s.toVector.map(_._2).flatten)
 
 }
 
@@ -430,23 +441,21 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
     EquationNode(lhs.mapVars(f), rhs.mapVars(f))
 }
 
-
-
-object Equation{
+object Equation {
   def group(ts: Set[EquationNode]): Set[Equation] =
-  ts.groupBy(_.lhs)
-    .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
-    .toSet
+    ts.groupBy(_.lhs)
+      .map { case (lhs, rhss) => Equation(lhs, rhss.map(_.rhs).reduce(_ + _)) }
+      .toSet
 
-def split(eq: Equation): Set[EquationNode] = eq match {
-  case Equation(lhs, Sum(y1, y2)) =>
-    split(Equation(lhs, y1)) union (split(Equation(lhs, y2)))
-  case Equation(lhs, rhs) => Set(EquationNode(lhs, rhs))
-}
+  def split(eq: Equation): Set[EquationNode] = eq match {
+    case Equation(lhs, Sum(y1, y2)) =>
+      split(Equation(lhs, y1)) union (split(Equation(lhs, y2)))
+    case Equation(lhs, rhs) => Set(EquationNode(lhs, rhs))
+  }
 
-def rebuild(eqs: Set[Equation]) =
-  group(eqs.flatMap(split(_)))
+  def rebuild(eqs: Set[Equation]) =
+    group(eqs.flatMap(split(_)))
 
-def merge(eqs: Set[Equation] *) =
-  rebuild(eqs.reduce(_ union _))
+  def merge(eqs: Set[Equation]*) =
+    rebuild(eqs.reduce(_ union _))
 }

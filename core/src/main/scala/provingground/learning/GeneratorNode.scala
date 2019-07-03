@@ -271,43 +271,9 @@ sealed trait GeneratorNode[+O] extends GeneratorNodeFamily[HNil, O] {
     piFmly({ case x :: HNil => conditionFamily(x) }, outputFamily)
 }
 
-// sealed trait BaseGeneratorNode[I <: HList, +O]
-//     extends GeneratorNode[O]
-//     with BaseGeneratorNodeFamily[HNil, O] {
-//   val inputList: RandomVarList[I]
-//
-//   // def |[S >: O, T](condition: Sort[S, T],
-//   //                  output: RandomVar[T]): BaseGeneratorNode[I, T] =
-//   //   BaseThenCondition[I, S, T](this, output, condition)
-//
-//   // def piFmly[Dom <: HList, S >: O, T](
-//   //     conditionFamily: Dom => Sort[S, T],
-//   //     outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
-//   //   GeneratorNodeFamily.BasePi(
-//   //     (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
-//   //     outputFamily)
-//
-// }
-
 sealed trait RecursiveGeneratorNode[State, +O]
     extends GeneratorNode[O]
-    with RecursiveGeneratorNodeFamily[HNil, State, O] {
-  // def |[S >: O, T](
-  //     condition: Sort[S, T],
-  //     output: RandomVar[T]): RecursiveGeneratorNode[State, T] =
-  //   RecursiveThenCondition[State, S, T](gen = this,
-  //                                             output = output,
-  //                                             condition = condition)
-
-  // def piFmly[Dom <: HList, S >: O, T](
-  //     conditionFamily: Dom => Sort[S, T],
-  //     outputFamily: RandomVarFamily[Dom, T]): GeneratorNodeFamily[Dom, T] =
-  //   GeneratorNodeFamily.BasePi(
-  //     (x: Dom) => this | (conditionFamily(x), outputFamily.at(x)),
-  //     outputFamily)
-
-}
-
+    with RecursiveGeneratorNodeFamily[HNil, State, O]
 object GeneratorNode {
 
   /**
@@ -463,6 +429,21 @@ object GeneratorNode {
       condition: Sort[O, Y]
   ) extends GeneratorNode[Y]
       with ThenCondition[O, Y]
+
+  /**
+    * Wrapper for identity to allow equality and  `toString` to work.
+    */
+    case class Idty[A]() extends (A => A) {
+      def apply(a: A) = a
+  
+      override def toString = "Identity"
+    }
+
+  def conditionedVar[O, Y](
+    input: RandomVar[O],
+    output : RandomVar[Y],
+    condition: Sort[O, Y]
+  ) = BaseThenCondition(Map[O, O](Idty(), input, input), output, condition)
 
   case class RecursiveThenCondition[State, O, Y](
       gen: RecursiveGeneratorNode[State, O],
