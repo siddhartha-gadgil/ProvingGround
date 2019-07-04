@@ -56,9 +56,14 @@ import TermGeneratorNodes._
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 
+  def isProd(typ: Typ[Term]) = typ match {
+    case _ : ProdTyp[u, v] => true
+    case _ => false
+  }
+
   lazy val unknownStatements: FD[Typ[Term]] =
     typs
-      .filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0)
+      .filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0 && !isProd(typ))
       .safeNormalized
 
   lazy val remainingGoals: FD[Typ[Term]] =
