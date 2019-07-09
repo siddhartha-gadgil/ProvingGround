@@ -54,7 +54,7 @@ class LeanParserEq(
   ): Set[EquationNode] =
     if (depth < 1) Set()
     else {
-      val coeff   = Coeff(tg.foldFuncNode(fn, depth), Terms)
+      val coeff   = Coeff(tg.foldFuncNode(fn, depth))
       val x       = args.head
       val y       = fold(fn)(x)
       val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
@@ -102,7 +102,7 @@ class LeanParserEq(
     } yield {
       val nodeOpt = tg.targetInducFuncsFolded(ind, target)
       val node = nodeOpt.getOrElse(tg.targetInducNode(target))
-      val coeff   = Coeff(node, Terms)
+      val coeff   = Coeff(node)
       val depth   = ind.intros.size
       val foldVar = if (depth == 0) AtomVar(res) else FuncFoldVar(recFn, depth)
       val baseEq =
@@ -309,7 +309,7 @@ class LeanParserEq(
           // _ = pprint.log(s"got result for $f($a)")
           eq = EquationNode(
             FinalVal(Elem(res, Terms)),
-            Coeff(tg.applnNode, Terms) * FinalVal(
+            Coeff(tg.applnNode) * FinalVal(
               Elem(funcEqs._1, TermGeneratorNodes.termsWithTyp(funcEqs._1.typ))
             ) * FinalVal(Elem(argEqs._1, Terms))
           )
@@ -325,7 +325,7 @@ class LeanParserEq(
             .executeWithOptions(_.enableAutoCancelableRunLoops)
         } yield {
           val isle    = tg.lambdaIsle(domTyp)
-          val coeff   = Coeff(tg.lambdaIsle(domTyp), Terms)
+          val coeff   = Coeff(tg.lambdaIsle(domTyp))
           val eqs     = valueEq._2
           val isleEqs = eqs.map(_.mapVars((t) => InIsle(t, x, isle)))
           val initVarElems = eqs
@@ -377,7 +377,7 @@ class LeanParserEq(
           cod <- Task.eval(toTyp(valueEq._1))
         } yield {
           val isle    = tg.piIsle(domTyp)
-          val coeff   = Coeff(tg.lambdaIsle(domTyp), Terms)
+          val coeff   = Coeff(tg.lambdaIsle(domTyp))
           val eqs     = valueEq._2
           val isleEqs = eqs.map(_.mapVars((t) => InIsle(t, x, isle)))
           val initVarElems = eqs
