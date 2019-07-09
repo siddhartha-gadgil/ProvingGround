@@ -191,7 +191,7 @@ case class LocalProver(
 
   def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
     mfd
-      .nodeDist(initState)(node, cutoff, Expression.Coeff(node, node.output))
+      .nodeDist(initState)(node, cutoff, Expression.Coeff(node))
       .map(_._1)
 
   lazy val equationNodes: Task[Set[EquationNode]] =

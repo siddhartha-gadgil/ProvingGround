@@ -61,7 +61,7 @@ object ExpressionEval {
       initialState: TermState
   ): Option[Double] =
     exp match {
-      case cf @ Coeff(_, _) => cf.get(tg.nodeCoeffSeq)
+      case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq)
       case InitialVal(elem @ Elem(el, rv)) =>
         val base = sd.value(initialState)(rv)(el)
         if (base > 0) Some(base)

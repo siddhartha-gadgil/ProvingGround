@@ -174,10 +174,10 @@ abstract class GenMonixFiniteDistributionEq[State](
           val (d: Task[(FD[Y], Set[EquationNode], EqDistMemo[State])], nc) =
             bc.headGen match {
               case gen: GeneratorNode[Y] =>
-                val coeff = Coeff(gen, rv)
+                val coeff = Coeff(gen)
                 (nodeDist(initState, memo)(gen, epsilon / p, coeff) map {
                   case (fd, eqs, m) => (fd * p, eqs, m)
-                }) -> Coeff(gen, rv)
+                }) -> Coeff(gen)
               case _ =>
                 throw new IllegalArgumentException(
                   "found node family for generating a simple random variable"
@@ -255,20 +255,20 @@ abstract class GenMonixFiniteDistributionEq[State](
           arg == HNil,
           s"looking for coordinate $arg in $node which is not a family"
         )
-        val coeff = Coeff(node, generatorNodeFamily.outputFamily.at(arg))
+        val coeff = Coeff(node)
         nodeDist(initState, memo)(node, epsilon, coeff).map {
           case (fd, eq, m) => (fd, eq, m)
         }
       case f: GeneratorNodeFamily.Pi[Dom, Y] =>
         val coeff =
-          Coeff(f.nodes(arg), generatorNodeFamily.outputFamily.at(arg))
+          Coeff(f.nodes(arg))
         nodeDist(initState, memo)(f.nodes(arg), epsilon, coeff).map {
           case (fd, eq, m) => (fd, eq, m)
         } // actually a task
       case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
         f.nodesOpt(arg)
           .map { (node) =>
-            val coeff = Coeff(node, generatorNodeFamily.outputFamily.at(arg))
+            val coeff = Coeff(node)
             nodeDist(initState, memo)(node, epsilon, coeff).map {
               case (fd, eq, m) => (fd, eq, m)
             }

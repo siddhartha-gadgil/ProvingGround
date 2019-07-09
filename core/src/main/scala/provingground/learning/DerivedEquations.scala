@@ -13,7 +13,7 @@ object DerivedEquations {
       output: RandomVar[Y],
       condition: Sort[O, Y]
   ) =
-    Coeff(conditionedVar(input, output, condition), output) * finalProb(
+    Coeff(conditionedVar(input, output, condition)) * finalProb(
       a,
       input
     )
@@ -21,7 +21,7 @@ object DerivedEquations {
   def asTarget(typ: Typ[Term]) =
     EquationNode(
       finalProb(typ, TargetTyps),
-      Coeff(TargetTyps.fromTyp, TargetTyps) * finalProb(typ, Typs)
+      Coeff(TargetTyps.fromTyp) * finalProb(typ, Typs)
     )
 
   def targets(typs: Set[Typ[Term]]): Set[EquationNode] = typs.map(asTarget(_))
@@ -70,7 +70,7 @@ object DerivedEquations {
         Some(
           EquationNode(
             eqn.lhs,
-            Coeff(applnByArgNode, Terms) * finalProb(a, Terms) * finalProb(
+            Coeff(applnByArgNode) * finalProb(a, Terms) * finalProb(
               f,
               funcsWithDomain(a.typ)
             )
@@ -83,7 +83,7 @@ object DerivedEquations {
           Some(
             EquationNode(
               eqn.lhs,
-              Coeff(applnNode, Terms) * finalProb(f, Funcs) * finalProb(
+              Coeff(applnNode) * finalProb(f, Funcs) * finalProb(
                 a,
                 termsWithTyp(f.dom)
               )

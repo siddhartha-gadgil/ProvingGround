@@ -87,8 +87,8 @@ object Printer extends FallbackPrinter {
     case Product(x, y)  => s"${exprView(x)} * ${exprView(y)}"
     case Literal(value) => view(value)
     case Quotient(x, y) => s"${exprView(x)} / ${exprView(y)}"
-    case Coeff(node, rv) =>
-      s"coefficient(node = ${view(node)}, variable = ${view(rv)})"
+    case cf @ Coeff(node) =>
+      s"coefficient(node = ${view(node)}, variable = ${view(cf.rv)})"
     case IsleScale(boat, elem) =>
       s"isle_scale(boat = ${view(boat)}, element = ${view(elem)})"
   }

@@ -223,7 +223,7 @@ object Expression {
     case Product(x, y)    => varVals(x) union (varVals(y))
     case Literal(_)       => Set()
     case Quotient(x, y)   => varVals(x) union (varVals(y))
-    case Coeff(_, _)      => Set()
+    case Coeff(_)      => Set()
     case IsleScale(_, _)  => Set()
   }
 
@@ -235,7 +235,7 @@ object Expression {
     case Product(x, y)        => atoms(x) union (atoms(y))
     case Literal(_)           => Set()
     case Quotient(x, y)       => atoms(x) union (atoms(y))
-    case coeff @ Coeff(_, _)  => Set(coeff)
+    case coeff @ Coeff(_)  => Set(coeff)
     case sc @ IsleScale(_, _) => Set(sc)
   }
 
@@ -330,8 +330,9 @@ object Expression {
     override def toString = s"($x) / ($y)"
   }
 
-  case class Coeff[Y](node: GeneratorNode[Y], rv: RandomVar[Y])
+  case class Coeff[Y](node: GeneratorNode[Y])
       extends Expression {
+    val rv = node.output
     def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
 
     def expand: RandomVarFamily[_ <: HList, Y] = rv match {
