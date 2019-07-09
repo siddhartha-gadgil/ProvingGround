@@ -4,7 +4,9 @@ import provingground._, HoTT._
 import GeneratorVariables._, Expression._, TermRandomVars._, GeneratorNode._,
 TermGeneratorNodes._
 
-object DerivedEquations {
+class DerivedEquations(
+    tg: TermGeneratorNodes[TermState] = TermGeneratorNodes.Base
+) {
   def finalProb[X](a: X, rv: RandomVar[X]): Expression = FinalVal(Elem(a, rv))
 
   def conditionedProb[O, Y](
@@ -59,7 +61,7 @@ object DerivedEquations {
       }
       .getOrElse(Set.empty[EquationNode])
 
-  import TermGeneratorNodes.Base._
+  import tg._
 
   def applnFlip(eqn: EquationNode): Option[EquationNode] =
     (coeffFactor(eqn.rhs), varFactors(eqn.rhs)) match {
@@ -76,19 +78,87 @@ object DerivedEquations {
             )
           )
         )
-        case (
-            Some(`applnByArgNode`),
-            Vector(Elem(Terms, a : Term), Elem(_, f: ExstFunc))
-            ) =>
-          Some(
-            EquationNode(
-              eqn.lhs,
-              Coeff(applnNode) * finalProb(f, Funcs) * finalProb(
-                a,
-                termsWithTyp(f.dom)
-              )
+      case (
+          Some(`applnByArgNode`),
+          Vector(Elem(Terms, a: Term), Elem(_, f: ExstFunc))
+          ) =>
+        Some(
+          EquationNode(
+            eqn.lhs,
+            Coeff(applnNode) * finalProb(f, Funcs) * finalProb(
+              a,
+              termsWithTyp(f.dom)
             )
           )
+        )
       case _ => None
     }
+
+  def funcFoldEqs(
+      fn: Term,
+      depth: Int,
+      args: Vector[Term],
+      result: Term
+  ): Set[EquationNode] =
+    if (depth < 1) Set()
+    else {
+      val coeff   = Coeff(tg.foldFuncNode(fn, depth))
+      val x       = args.head
+      val y       = fold(fn)(x)
+      val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
+      val eq = EquationNode(
+        FinalVal(Elem(result, FuncFoldVar(fn, depth))),
+        coeff * FinalVal(Elem(x, TermGeneratorNodes.termsWithTyp(x.typ))) * FinalVal(
+          Elem(result, tailVar)
+        )
+      )
+      funcFoldEqs(y, depth - 1, args.tail, result) + eq
+    }
+
+  def formalEquations(t: Term) : Set[EquationNode] = t match {
+    case MiscAppln(fn: FuncLike[u, v], a) =>
+      val f   = ExstFunc(fn)
+      val lhs = finalProb(t, Terms)
+      Set(
+        EquationNode(
+          lhs,
+          Coeff(applnNode) * finalProb(f, Funcs) * finalProb(
+            a,
+            termsWithTyp(f.dom)
+          )
+        ),
+        EquationNode(
+          lhs,
+          Coeff(applnByArgNode) * finalProb(a, Terms) * finalProb(
+            f,
+            funcsWithDomain(a.typ)
+          )
+        )
+      )
+    case lt: LambdaLike[u, v] =>
+      val coeff   = Coeff(tg.lambdaIsle(lt.dom))
+      val x = lt.variable
+      val isle    = tg.lambdaIsle(lt.dom)
+      Set(
+        EquationNode(
+              FinalVal(Elem(lt, Terms)),
+              coeff * FinalVal(
+                InIsle(Elem(lt.value, isle.islandOutput(x)), x, isle)
+              )
+            )
+      )
+    case pd: PiDefn[u, v] =>
+    val coeff   = Coeff(tg.piIsle(pd.domain))
+    val x = pd.variable
+    val isle    = tg.piIsle(pd.domain)
+    Set(
+      EquationNode(
+            FinalVal(Elem(pd, Typs)),
+            coeff * FinalVal(
+              InIsle(Elem(pd.value, isle.islandOutput(x)), x, isle)
+            )
+          )
+    )
+    case _ => Set()
+  }
 }

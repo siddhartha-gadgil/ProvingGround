@@ -344,7 +344,7 @@ class LeanParserEq(
             }
           val bridgeEq =
             EquationNode(
-              FinalVal(Elem(valueEq._1, Terms)),
+              FinalVal(Elem(x :~> valueEq._1, Terms)),
               coeff * FinalVal(
                 InIsle(Elem(valueEq._1, isle.islandOutput(x)), x, isle)
               )
