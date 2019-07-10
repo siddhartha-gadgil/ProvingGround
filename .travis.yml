@@ -2,16 +2,16 @@
 sudo: false
 language: scala
 scala:
-- 2.12.6
+- 2.12.8
 jdk:
 - oraclejdk8
 
 # codecov
 script:
-  - curl -L -o ~/bin/mill https://github.com/lihaoyi/mill/releases/download/0.3.6/0.3.6 && chmod +x ~/bin/mill
+  # - curl -L -o ~/bin/mill https://github.com/lihaoyi/mill/releases/download/0.3.6/0.3.6 && chmod +x ~/bin/mill
   # - mill bloop.integrations.mill.Bloop/install
-  - mill -i all __.compile
-  - mill -i all __.test
+  - ./mill -i all __.compile
+  - ./mill -i all __.test
 
 
 
