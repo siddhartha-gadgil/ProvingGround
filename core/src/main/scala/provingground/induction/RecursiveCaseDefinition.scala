@@ -54,6 +54,8 @@ object RecursiveDefinition {
       extends RecursiveDefinition[H, C] {
     val defnData = Vector()
 
+    lazy val baseFunc: ExstFunc = ExstFunc(this)
+
     def fromData(data: Vector[Term]) = this
 
     val typ = dom ->: codom
@@ -93,6 +95,8 @@ object RecursiveDefinition {
     val typ = dom ->: codom
 
     val defnData = data +: tail.defnData
+
+    lazy val baseFunc: ExstFunc = tail.baseFunc
 
     def fromData(data: Vector[Term]) =
       DataCons(data.head.asInstanceOf[D],
@@ -168,6 +172,8 @@ sealed abstract class IndexedRecursiveDefinition[H <: Term with Subs[H],
     val codom = X
 
     val defnData = self.defnData
+
+    lazy val baseFunc: ExstFunc = ExstFunc(???)
 
     def fromData(data: Vector[Term]) = self.fromData(data).Funcs(ind)
 

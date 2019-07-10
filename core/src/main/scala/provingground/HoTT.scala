@@ -690,6 +690,8 @@ object HoTT {
         extends RecFunc[Term, U] {
       val defnData: Vector[Term] = Vector()
 
+      def baseFunc: ExstFunc = ExstFunc(rec(codom))
+
       def fromData(data: Vector[Term]) = this
 
       def act(arg: provingground.HoTT.Term): U = codom.symbObj(vacuousSym)
@@ -780,6 +782,8 @@ object HoTT {
       val dom: Unit.type = Unit
 
       val defnData: Vector[U] = Vector(data)
+
+      def baseFunc: ExstFunc = ExstFunc(rec(codom))
 
       def fromData(data: Vector[Term]) = RecFn(codom, data.head.asInstanceOf[U])
 
@@ -1026,6 +1030,8 @@ object HoTT {
       lazy val dom: ProdTyp[U, V] = prod
 
       val defnData: Vector[Func[U, Func[V, W]]] = Vector(data)
+
+      def baseFunc: ExstFunc = ExstFunc(rec(codom))
 
       def fromData(data: Vector[Term]) =
         RecFn(codom, data.head.asInstanceOf[Func[U, Func[V, W]]])
@@ -1611,6 +1617,8 @@ object HoTT {
       * definition data for all introduction  rules.
       */
     val defnData: Vector[Term]
+
+    def baseFunc: ExstFunc
 
     def fromData(data: Vector[Term]): RecFunc[W, U]
 
@@ -2577,6 +2585,8 @@ object HoTT {
 
       val defnData: Vector[FuncLike[W, Func[U, V]]] = Vector(data)
 
+      def baseFunc: ExstFunc = ExstFunc(rec(codom))
+
       def fromData(data: Vector[Term]) =
         RecFn(codom, data.head.asInstanceOf[FuncLike[W, Func[U, V]]])
 
@@ -2618,6 +2628,8 @@ object HoTT {
       lazy val dom: SigmaTyp[W, U] = prod
 
       val defnData: Vector[FuncLike[W, FuncLike[U, V]]] = Vector(data)
+
+      def baseFunc: ExstFunc = ExstFunc(induc(targetFmly))
 
       def fromData(data: Vector[Term]) =
         InducFn(targetFmly, data.head.asInstanceOf[FuncLike[W, FuncLike[U, V]]])
@@ -2879,6 +2891,8 @@ object HoTT {
 
       val defnData: Vector[Func[U, V]] = Vector(data)
 
+      def baseFunc: ExstFunc = ExstFunc(rec(domain, target))
+
       def fromData(data: Vector[Term]) =
         RecFn(domain, target, data.head.asInstanceOf[Func[U, V]], start, end)
 
@@ -2936,6 +2950,8 @@ object HoTT {
         )
 
       val defnData: Vector[FuncLike[U, V]] = Vector(data)
+
+      def baseFunc: ExstFunc = ExstFunc(induc(domain, targetFmly))
 
       def fromData(data: Vector[Term]) =
         InducFn(
@@ -3173,6 +3189,8 @@ object HoTT {
         secondCase: Func[V, W]
     ) extends RecFunc[Term, W] {
       val defnData: Vector[Term] = Vector(firstCase, secondCase)
+
+      def baseFunc: ExstFunc = ExstFunc(PlusTyp(first, second).rec(codom))
 
       def fromData(data: Vector[Term]) =
         RecFn(
