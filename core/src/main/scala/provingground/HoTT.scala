@@ -1287,6 +1287,12 @@ object HoTT {
       */
     val defnData: Vector[Term]
 
+    def baseFunction : ExstFunc = 
+    {
+      val vars : Vector[Term] = defnData.map(t => t.typ.Var)
+      ExstFunc.opt(polyLambda(vars.toList, this)).get
+    }
+
     def fromData(data: Vector[Term]): InducFuncLike[W, U]
 
     override def usesVar(t: Term): Boolean = defnData.exists(_.usesVar(t))
@@ -1611,6 +1617,12 @@ object HoTT {
       * definition data for all introduction  rules.
       */
     val defnData: Vector[Term]
+
+    def baseFunction : ExstFunc = 
+    {
+      val vars : Vector[Term] = defnData.map(t => t.typ.Var)
+      ExstFunc.opt(polyLambda(vars.toList, this)).get
+    }
 
     def fromData(data: Vector[Term]): RecFunc[W, U]
 
