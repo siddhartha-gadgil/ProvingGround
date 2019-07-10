@@ -2546,6 +2546,8 @@ object HoTT {
 
     type Obj = AbsPair[W, U]
 
+    lazy val fib : LambdaFixed[W, Typ[U]] = funcToLambdaFixed(fibers)
+
     def variable(name: AnySym): AbsPair[W, U] = {
       val a = fibers.dom.symbObj(LeftProjSym(name))
       val b = fibers(a).symbObj(RightProjSym(name))
@@ -3564,6 +3566,15 @@ object HoTT {
       val x = f.dom.Var
       LambdaTerm(x, f(x))
   }
+
+  def funcToLambdaFixed[U <: Term with Subs[U], V <: Term with Subs[V]](
+    fn: Func[U, V]
+): LambdaFixed[U, V] = fn match {
+  case l: LambdaFixed[U, V] => l
+  case f: Func[U, V] =>
+    val x = f.dom.Var
+    LambdaFixed(x, f(x))
+}
 
   def asLambdas[U <: Term with Subs[U]](term: U): Option[U] = term match {
     case LambdaFixed(x: Term, y: Term) =>

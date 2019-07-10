@@ -159,6 +159,40 @@ class DerivedEquations(
             )
           )
     )
+    case pd: SigmaTyp[u, v] =>
+    val coeff   = Coeff(tg.sigmaIsle(pd.fib.dom))
+    val x = pd.fib.variable
+    val isle    = tg.sigmaIsle(pd.fib.dom)
+    Set(
+      EquationNode(
+            FinalVal(Elem(pd, Typs)),
+            coeff * FinalVal(
+              InIsle(Elem(pd.fib.value, isle.islandOutput(x)), x, isle)
+            )
+          )
+    )
+    case rf: RecFunc[u, v] =>
+      val direct = EquationNode(
+        FinalVal(Elem(rf, Terms)),
+        Coeff(tg.targetInducNode(rf.typ)) *
+        finalProb(rf.typ, TargetTyps)
+      )
+      val offspring = (rf.defnData :+ rf.typ).toSet.flatMap(formalEquations(_))
+      offspring + direct
+    case rf: InducFuncLike[u, v] =>
+      val direct = EquationNode(
+        FinalVal(Elem(rf, Terms)),
+        Coeff(tg.targetInducNode(rf.typ)) *
+        finalProb(rf.typ, TargetTyps)
+      )
+      val offspring = (rf.defnData :+ rf.typ).toSet.flatMap(formalEquations(_))
+      offspring + direct
     case _ => Set()
   }
+
+  def initEquations(s: Set[Expression]) : Set[EquationNode] = 
+    s.collect{
+      case FinalVal(Elem(t, rv)) => 
+        EquationNode(finalProb(t, Terms), Coeff(Init(rv)) * InitialVal(Elem(t, rv)) )
+    }
 }
