@@ -94,25 +94,52 @@ class DerivedEquations(
       case _ => None
     }
 
-  def funcFoldEqs(
-      fn: Term,
-      depth: Int,
-      args: Vector[Term],
-      result: Term
-  ): Set[EquationNode] =
-    if (depth < 1) Set()
-    else {
-      val coeff   = Coeff(tg.foldFuncNode(fn, depth))
-      val x       = args.head
-      val y       = fold(fn)(x)
-      val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
-      val eq = EquationNode(
-        FinalVal(Elem(result, FuncFoldVar(fn, depth))),
-        coeff * FinalVal(Elem(x, TermGeneratorNodes.termsWithTyp(x.typ))) * FinalVal(
-          Elem(result, tailVar)
+  // def funcFoldEqs(
+  //     fn: Term,
+  //     depth: Int,
+  //     args: Vector[Term],
+  //     result: Term
+  // ): Set[EquationNode] =
+  //   if (depth < 1) Set()
+  //   else {
+  //     val coeff   = Coeff(tg.foldFuncNode(fn, depth))
+  //     val x       = args.head
+  //     val y       = fold(fn)(x)
+  //     val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
+  //     val eq = EquationNode(
+  //       FinalVal(Elem(result, FuncFoldVar(fn, depth))),
+  //       coeff * FinalVal(Elem(x, TermGeneratorNodes.termsWithTyp(x.typ))) * FinalVal(
+  //         Elem(result, tailVar)
+  //       )
+  //     )
+  //     funcFoldEqs(y, depth - 1, args.tail, result) + eq
+  //   }
+
+  def funcFoldEqs(fn: Term, args: Vector[Term], accum: Set[EquationNode] = Set()): Set[EquationNode] = 
+    args match {
+      case Vector() => accum
+      case   a +: ys =>
+        val tailFunc = fold(fn)(a)
+        val f = ExstFunc.opt(fn).get
+        val lhs = finalProb(tailFunc, Terms)
+        val headEqs = Set(
+          EquationNode(
+            lhs,
+            Coeff(applnNode) * finalProb(f, Funcs) * finalProb(
+              a,
+              termsWithTyp(f.dom)
+            )
+          ),
+          EquationNode(
+            lhs,
+            Coeff(applnByArgNode) * finalProb(a, Terms) * finalProb(
+              f,
+              funcsWithDomain(a.typ)
+            )
+          )
         )
-      )
-      funcFoldEqs(y, depth - 1, args.tail, result) + eq
+        funcFoldEqs(tailFunc, ys, headEqs union(accum))
+
     }
 
   def formalEquations(t: Term): Set[EquationNode] = t match {
@@ -135,6 +162,10 @@ class DerivedEquations(
           )
         )
       )
+    case idt: IdentityTyp[u] => 
+      funcFoldEqs(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
+    case idt: Refl[u] => 
+      funcFoldEqs(IdentityTyp.reflTerm, Vector(idt.dom, idt.value))
     case lt: LambdaLike[u, v] =>
       val coeff = Coeff(tg.lambdaIsle(lt.dom))
       val x     = lt.variable

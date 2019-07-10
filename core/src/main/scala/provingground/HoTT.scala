@@ -2869,6 +2869,9 @@ object HoTT {
       IdentityTyp(lhs.typ.asInstanceOf[Typ[U]], lhs, rhs)
     }
 
+    
+    
+
     /**
       * recursive definition on identity type families
       */
@@ -3112,8 +3115,11 @@ object HoTT {
 
     lazy val A: Typ[Term]        = Type.Var
     lazy val x: Term             = A.Var
+    lazy val y: Term             = A.Var
     lazy val B: Typ[Term]        = Type.Var
     lazy val f: Func[Term, Term] = (A ->: B).Var
+
+    lazy val idFunc:  FuncLike[Typ[Term],Func[Term,Func[Term,IdentityTyp[Term]]]] = A :~> (x :->  (y :-> IdentityTyp(A, x, x)))
 
     lazy val symmTerm: FuncLike[Typ[Term], FuncLike[
       Term,
