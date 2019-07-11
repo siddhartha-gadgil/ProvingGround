@@ -129,7 +129,7 @@ case class LocalProver(
     this.copy(initState = ts)
   }
 
-  lazy val noIsles: LocalProver = this.copy(tg = tg.copy(lmW = 0, piW = 0))
+  lazy val noIsles: LocalProver = this.copy(tg = tg.copy(lmW = 0, piW = 0, sigmaW = 0))
 
   def params(params: TermGenParams) = this.copy(tg = params)
 
