@@ -138,6 +138,13 @@ import TermGeneratorNodes._
       typs = FD.empty
     )
 
+  def distTangent(fd: FD[Term]): TermState =
+  this.copy(
+    terms = fd,
+    typs = FD.empty
+  )
+
+
   import interface._, TermJson._
 
   def json: ujson.Obj = {

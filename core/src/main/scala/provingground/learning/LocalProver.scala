@@ -26,7 +26,7 @@ case class LocalProver(
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
     tg: TermGenParams = TermGenParams(),
     cutoff: Double = math.pow(10, -4),
-    limit: FiniteDuration = 3.minutes,
+    limit: FiniteDuration = 12.minutes,
     maxRatio: Double = 1.01,
     scale: Double = 1.0,
     steps: Int = 10000,
@@ -240,7 +240,7 @@ case class LocalProver(
         eqnds,
         tangState,
         tg,
-        cutoff,
+        cutoff, 
         limit,
         maxRatio,
         scale,
@@ -249,6 +249,31 @@ case class LocalProver(
         hW,
         klW
       )
+
+    def distTangentProver(fd: FiniteDistribution[Term], tangentCutoff: Double = cutoff) : Task[LocalTangentProver] =
+    for {
+      baseState <- nextState
+      tangState: TermState = baseState.distTangent(fd)
+      eqnds <- equationNodes
+    } yield
+      LocalTangentProver(
+        baseState,
+        eqnds,
+        tangState,
+        tg,
+        tangentCutoff, 
+        limit,
+        maxRatio,
+        scale,
+        steps,
+        maxDepth,
+        hW,
+        klW
+      )
+
+    def proofTangent(tangentCutoff: Double = cutoff) : Task[LocalTangentProver] = 
+      lemmaProofs.flatMap(fd => distTangentProver(fd.safeNormalized, tangentCutoff))
+
 
   // Generating provers using results
   lazy val withLemmas: Task[LocalProver] =
