@@ -4,7 +4,7 @@ language: scala
 scala:
 - 2.12.8
 jdk:
-- opendk8
+- openjdk8
 
 # codecov
 script:
