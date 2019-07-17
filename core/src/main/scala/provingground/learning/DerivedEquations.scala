@@ -94,13 +94,17 @@ class DerivedEquations(
       case _ => None
     }
 
-  def funcFoldEqs(fn: Term, args: Vector[Term], accum: Set[EquationNode] = Set()): Set[EquationNode] = 
+  def funcFoldEqs(
+      fn: Term,
+      args: Vector[Term],
+      accum: Set[EquationNode] = Set()
+  ): Set[EquationNode] =
     args match {
       case Vector() => accum
-      case   a +: ys =>
+      case a +: ys =>
         val tailFunc = fold(fn)(a)
-        val f = ExstFunc.opt(fn).get
-        val lhs = finalProb(tailFunc, Terms)
+        val f        = ExstFunc.opt(fn).get
+        val lhs      = finalProb(tailFunc, Terms)
         val headEqs = Set(
           EquationNode(
             lhs,
@@ -117,7 +121,7 @@ class DerivedEquations(
             )
           )
         )
-        funcFoldEqs(tailFunc, ys, headEqs union(accum))
+        funcFoldEqs(tailFunc, ys, headEqs union (accum))
 
     }
 
@@ -141,34 +145,74 @@ class DerivedEquations(
           )
         )
       )
-    case idt: IdentityTyp[u] => 
+    case idt: IdentityTyp[u] =>
       funcFoldEqs(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
-    case idt: Refl[u] => 
+    case idt: Refl[u] =>
       funcFoldEqs(IdentityTyp.reflTerm, Vector(idt.dom, idt.value))
     case lt: LambdaLike[u, v] =>
       val coeff = Coeff(tg.lambdaIsle(lt.dom))
-      val x     = lt.variable
+      val boat  = lt.variable
       val isle  = tg.lambdaIsle(lt.dom)
-      Set(
-        EquationNode(
-          FinalVal(Elem(lt, Terms)),
-          coeff * FinalVal(
-            InIsle(Elem(lt.value, isle.islandOutput(x)), x, isle)
-          )
+      val eqs = formalEquations(lt.value)
+      val isleEqs =
+        eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+      val bridgeEq = EquationNode(
+        FinalVal(Elem(lt, Terms)),
+        coeff * FinalVal(
+          InIsle(Elem(lt.value, isle.islandOutput(boat)), boat, isle)
         )
       )
+      val initVarElems = eqs
+        .flatMap { (eq) =>
+          Expression.varVals(eq.rhs)
+        }
+        .collect {
+          case InitialVal(Elem(el, rv)) => Elem(el, rv)
+        }
+      val isleIn: Set[EquationNode] =
+        initVarElems.map { el =>
+          val rhs =
+            if (boat == el.element)
+              (IsleScale(boat, el) * -1) + Literal(1)
+            else IsleScale(boat, el) * InitialVal(el)
+          EquationNode(
+            InitialVal(InIsle(el, boat, isle)),
+            rhs
+          )
+        }
+      isleIn.union(isleEqs) + bridgeEq
     case pd: PiDefn[u, v] =>
       val coeff = Coeff(tg.piIsle(pd.domain))
-      val x     = pd.variable
+      val boat     = pd.variable
       val isle  = tg.piIsle(pd.domain)
-      Set(
-        EquationNode(
-          FinalVal(Elem(pd, Typs)),
-          coeff * FinalVal(
-            InIsle(Elem(pd.value, isle.islandOutput(x)), x, isle)
-          )
+      val eqs = formalEquations(pd.value)
+      val isleEqs =
+        eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+      val bridgeEq = EquationNode(
+        FinalVal(Elem(pd, Terms)),
+        coeff * FinalVal(
+          InIsle(Elem(pd.value, isle.islandOutput(boat)), boat, isle)
         )
       )
+      val initVarElems = eqs
+        .flatMap { (eq) =>
+          Expression.varVals(eq.rhs)
+        }
+        .collect {
+          case InitialVal(Elem(el, rv)) => Elem(el, rv)
+        }
+      val isleIn: Set[EquationNode] =
+        initVarElems.map { el =>
+          val rhs =
+            if (boat == el.element)
+              (IsleScale(boat, el) * -1) + Literal(1)
+            else IsleScale(boat, el) * InitialVal(el)
+          EquationNode(
+            InitialVal(InIsle(el, boat, isle)),
+            rhs
+          )
+        }
+      isleIn.union(isleEqs) + bridgeEq
     case pd: SigmaTyp[u, v] =>
       val coeff = Coeff(tg.sigmaIsle(pd.fib.dom))
       val x     = pd.fib.variable
@@ -223,20 +267,24 @@ class DerivedEquations(
           Coeff(node) * finalProb(i2.value, termsWithTyp(i2.typ.second))
         )
       }.toSet
-    case pair @ PairTerm(first : Term, second: Term) => 
-      nodeForTyp(pair.typ).map{
-        node =>
+    case pair @ PairTerm(first: Term, second: Term) =>
+      nodeForTyp(pair.typ).map { node =>
         EquationNode(
           finalProb(pair, Terms),
-          Coeff(node) * finalProb(first, termsWithTyp(first.typ)) * finalProb(second, termsWithTyp(second.typ))
+          Coeff(node) * finalProb(first, termsWithTyp(first.typ)) * finalProb(
+            second,
+            termsWithTyp(second.typ)
+          )
         )
       }.toSet
-    case pair @ DepPair(first : Term, second: Term,_) => 
-      nodeForTyp(pair.typ).map{
-        node =>
+    case pair @ DepPair(first: Term, second: Term, _) =>
+      nodeForTyp(pair.typ).map { node =>
         EquationNode(
           finalProb(pair, Terms),
-          Coeff(node) * finalProb(first, termsWithTyp(first.typ)) * finalProb(second, termsWithTyp(second.typ))
+          Coeff(node) * finalProb(first, termsWithTyp(first.typ)) * finalProb(
+            second,
+            termsWithTyp(second.typ)
+          )
         )
       }.toSet
     case _ => Set()
