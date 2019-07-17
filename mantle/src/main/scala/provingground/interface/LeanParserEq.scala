@@ -101,7 +101,7 @@ class LeanParserEq(
       ind <- getExstInduc(indMod, argsFmlyTermEq._1)
     } yield {
       val nodeOpt = tg.targetInducFuncsFolded(ind, target)
-      val node = nodeOpt.getOrElse(tg.targetInducNode(target))
+      val node    = nodeOpt.getOrElse(tg.targetInducNode(target))
       val coeff   = Coeff(node)
       val depth   = ind.intros.size
       val foldVar = if (depth == 0) AtomVar(res) else FuncFoldVar(recFn, depth)
@@ -337,9 +337,12 @@ class LeanParserEq(
             }
           val isleIn: Set[EquationNode] =
             initVarElems.map { el =>
+              val rhs =
+                if (x == el.element) (IsleScale(x, el) * -1) + Literal(1)
+                else IsleScale(x, el) * InitialVal(el)
               EquationNode(
                 InitialVal(InIsle(el, x, isle)),
-                IsleScale(x, el) * InitialVal(el)
+                rhs
               )
             }
           val bridgeEq =

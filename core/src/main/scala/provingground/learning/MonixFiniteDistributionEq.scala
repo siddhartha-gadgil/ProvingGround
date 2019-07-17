@@ -103,7 +103,7 @@ case class EqDistMemo[State](
         addNodes(ys, accum + [u] (s, r, c, fd.asInstanceOf[FD[u]], eq))
     }
 
-  def ++(that: EqDistMemo[State]): EqDistMemo[State] = 
+  def ++(that: EqDistMemo[State]): EqDistMemo[State] =
     addVars(that.varDists.toVector).addNodes(that.nodeDists.toVector)
 
 }
@@ -127,14 +127,19 @@ abstract class GenMonixFiniteDistributionEq[State](
     * @tparam Y values of the random variable
     * @return finite distribution for the given random variable
     */
-  def varDist[Y](initState: State, memo: EqDistMemo[State] = EqDistMemo.empty[State])(
+  def varDist[Y](
+      initState: State,
+      memo: EqDistMemo[State] = EqDistMemo.empty[State]
+  )(
       randomVar: RandomVar[Y],
       epsilon: Double
   ): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
     if (epsilon > 1) Task.now((FD.empty[Y], Set(), memo))
     else {
       val lookup =
-        memo.getVarDist(initState, randomVar, epsilon).map{case (fd, eq) => Task.now((fd, eq, memo))}
+        memo.getVarDist(initState, randomVar, epsilon).map {
+          case (fd, eq) => Task.now((fd, eq, memo))
+        }
       val resultT = lookup getOrElse {
         randomVar match {
           case RandomVar.AtCoord(randomVarFmly, fullArg) =>
@@ -200,8 +205,14 @@ abstract class GenMonixFiniteDistributionEq[State](
   ): Map[X, (FD[Y], Set[EquationNode], EqDistMemo[State])] =
     (for {
       k <- first.keySet union second.keySet
-      v1 = first.getOrElse(k, (FD.empty[Y], Set.empty[EquationNode], EqDistMemo.empty[State]))
-      v2 = second.getOrElse(k, (FD.empty[Y], Set.empty[EquationNode], EqDistMemo.empty[State]))
+      v1 = first.getOrElse(
+        k,
+        (FD.empty[Y], Set.empty[EquationNode], EqDistMemo.empty[State])
+      )
+      v2 = second.getOrElse(
+        k,
+        (FD.empty[Y], Set.empty[EquationNode], EqDistMemo.empty[State])
+      )
     } yield (k, (v1._1 ++ v2._1, v1._2 union v2._2, v1._3 ++ v2._3))).toMap
 
   def nodeCoeffFamilyDist[Dom <: HList, Y](
@@ -318,7 +329,10 @@ case class MonixFiniteDistributionEq[State](
     * @tparam Y values of the corresponding random variable
     * @return distribution corresponding to the `output` random variable
     */
-  def nodeDist[Y](initState: State, memo: EqDistMemo[State] = EqDistMemo.empty[State])(
+  def nodeDist[Y](
+      initState: State,
+      memo: EqDistMemo[State] = EqDistMemo.empty[State]
+  )(
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
@@ -633,23 +647,23 @@ case class MonixFiniteDistributionEq[State](
                     }
                     val evSupp = fd.conditioned(c.pred).support
                     val evEq: Set[EquationNode] =
-                        evSupp.map(
-                          x =>
+                      evSupp.map(
+                        x =>
                           EquationNode(
                             finEv,
                             finalProb(x, tc.output)
                           )
-                        )
+                      )
                     // if (evSupp.nonEmpty)
-                      //   Set(
-                      //     EquationNode(
-                      //       finEv,
-                      //       evSupp
-                      //         .map(x => finalProb(x, tc.output))
-                      //         .reduce[Expression](Sum)
-                      //     )
-                      //   )
-                      // else Set()
+                    //   Set(
+                    //     EquationNode(
+                    //       finEv,
+                    //       evSupp
+                    //         .map(x => finalProb(x, tc.output))
+                    //         .reduce[Expression](Sum)
+                    //     )
+                    //   )
+                    // else Set()
                     (
                       fd.conditioned(c.pred)
                         .purge(epsilon),
@@ -672,21 +686,21 @@ case class MonixFiniteDistributionEq[State](
                     val evEq: Set[EquationNode] =
                       evSupp.map(
                         x =>
-                        EquationNode(
-                          finEv,
-                          finalProb(x, tc.output)
-                        )
+                          EquationNode(
+                            finEv,
+                            finalProb(x, tc.output)
+                          )
                       )
                     // if (evSupp.nonEmpty)
-                      //   Set(
-                      //     EquationNode(
-                      //       finEv,
-                      //       evSupp
-                      //         .map(x => finalProb(x, tc.output))
-                      //         .reduce[Expression](Sum)
-                      //     )
-                      //   )
-                      // else Set()
+                    //   Set(
+                    //     EquationNode(
+                    //       finEv,
+                    //       evSupp
+                    //         .map(x => finalProb(x, tc.output))
+                    //         .reduce[Expression](Sum)
+                    //     )
+                    //   )
+                    // else Set()
                     (
                       fd.condMap(f)
                         .purge(epsilon),
@@ -721,9 +735,13 @@ case class MonixFiniteDistributionEq[State](
                     }
                   val isleIn: Set[EquationNode] =
                     initVarElems.map { el =>
+                      val rhs =
+                        if (boat == el.element)
+                          (IsleScale(boat, el) * -1) + Literal(1)
+                        else IsleScale(boat, el) * InitialVal(el)
                       EquationNode(
                         InitialVal(InIsle(el, boat, isle)),
-                        IsleScale(boat, el) * InitialVal(el)
+                        rhs
                       )
                     }
                   // pprint.log(isleIn.size)

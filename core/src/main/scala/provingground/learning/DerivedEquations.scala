@@ -94,27 +94,6 @@ class DerivedEquations(
       case _ => None
     }
 
-  // def funcFoldEqs(
-  //     fn: Term,
-  //     depth: Int,
-  //     args: Vector[Term],
-  //     result: Term
-  // ): Set[EquationNode] =
-  //   if (depth < 1) Set()
-  //   else {
-  //     val coeff   = Coeff(tg.foldFuncNode(fn, depth))
-  //     val x       = args.head
-  //     val y       = fold(fn)(x)
-  //     val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
-  //     val eq = EquationNode(
-  //       FinalVal(Elem(result, FuncFoldVar(fn, depth))),
-  //       coeff * FinalVal(Elem(x, TermGeneratorNodes.termsWithTyp(x.typ))) * FinalVal(
-  //         Elem(result, tailVar)
-  //       )
-  //     )
-  //     funcFoldEqs(y, depth - 1, args.tail, result) + eq
-  //   }
-
   def funcFoldEqs(fn: Term, args: Vector[Term], accum: Set[EquationNode] = Set()): Set[EquationNode] = 
     args match {
       case Vector() => accum
