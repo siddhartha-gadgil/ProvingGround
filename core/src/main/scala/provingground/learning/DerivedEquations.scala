@@ -28,6 +28,45 @@ class DerivedEquations(
 
   def targets(typs: Set[Typ[Term]]): Set[EquationNode] = typs.map(asTarget(_))
 
+  def recTargets(vals: Set[VarVal[_]]): Set[EquationNode] = {
+    val base = vals.collect {
+      case FinalVal(Elem(typ: Typ[u], Typs)) => asTarget(typ)
+    }
+    val inner = vals
+      .collect {
+        case FinalVal(InIsle(variable, boat, isle)) => ((boat, isle), FinalVal(variable) : VarVal[_])
+      }
+      .groupBy(_._1)
+      .mapValues(s => s.map(_._2)).toSet
+    val innerEqs = inner.flatMap{
+      case ((boat, isle), s) => recTargets(s).map(_.mapVars((x) => InIsle(x, boat, isle)))
+    }
+    base union innerEqs
+  }
+
+  def expressionInIsle(exp: Expression, boat: Any, isle: Island[_, _, _, _]) : Option[Expression] = exp match {
+    case FinalVal(InIsle(variable, b, isl)) if b == boat && isl == isle => Some(FinalVal(variable)) 
+    case Coeff(node) => Some(Coeff(node))
+    case Product(x, y) => 
+      for {
+        a <- expressionInIsle(x, boat, isle)
+        b <- expressionInIsle(y, boat, isle)
+      } yield Product(a, b)
+  }
+
+  def recursiveDerived(init: Set[EquationNode], step : => (Set[EquationNode] => Set[EquationNode])) : Set[EquationNode] = {
+    val base = step(init)
+    val inner = init.collect{
+      case EquationNode(FinalVal(InIsle(variable, boat, isle)), rhs) =>
+        expressionInIsle(rhs, boat, isle).map(r => ((boat, isle), EquationNode(FinalVal(variable), r)))
+    }.flatten.groupBy(_._1)
+    .mapValues(s => s.map(_._2)).toSet
+  val innerEqs = inner.flatMap{
+      case ((boat, isle), s) => recursiveDerived(s, step).map(_.mapVars((x) => InIsle(x, boat, isle)))
+    }
+    base union innerEqs
+  }
+
   def conditionWithTyp(t: Term): EquationNode =
     EquationNode(
       finalProb(t, termsWithTyp(t.typ)),
@@ -153,7 +192,7 @@ class DerivedEquations(
       val coeff = Coeff(tg.lambdaIsle(lt.dom))
       val boat  = lt.variable
       val isle  = tg.lambdaIsle(lt.dom)
-      val eqs = formalEquations(lt.value)
+      val eqs   = formalEquations(lt.value)
       val isleEqs =
         eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
       val bridgeEq = EquationNode(
@@ -183,9 +222,9 @@ class DerivedEquations(
       isleIn.union(isleEqs) + bridgeEq
     case pd: PiDefn[u, v] =>
       val coeff = Coeff(tg.piIsle(pd.domain))
-      val boat     = pd.variable
+      val boat  = pd.variable
       val isle  = tg.piIsle(pd.domain)
-      val eqs = formalEquations(pd.value)
+      val eqs   = formalEquations(pd.value)
       val isleEqs =
         eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
       val bridgeEq = EquationNode(
