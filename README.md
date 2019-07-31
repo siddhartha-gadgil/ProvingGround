@@ -1,4 +1,5 @@
 # ProvingGround
+
 Proving Ground: Tools for Automated Mathematics
 
 A system under development for (semi-)automated theorem proving, with foundations *homotopy type theory*, using
@@ -8,8 +9,7 @@ A system under development for (semi-)automated theorem proving, with foundation
 [![codecov.io](http://codecov.io/github/siddhartha-gadgil/ProvingGround/coverage.svg)](https://codecov.io/gh/siddhartha-gadgil/ProvingGround)
 [![Ohloh](http://www.ohloh.net/p/ProvingGround/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/ProvingGround) [![Join the chat at https://gitter.im/siddhartha-gadgil/ProvingGround](https://badges.gitter.im/siddhartha-gadgil/ProvingGround.svg)](https://gitter.im/siddhartha-gadgil/ProvingGround?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-
-## Documentation:
+## Documentation
 
 * The main documentation is on the [website](http://siddhartha-gadgil.github.io/ProvingGround/) , including [scaladocs](http://siddhartha-gadgil.github.io/ProvingGround/scaladoc/provingground/index.html).
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
@@ -17,7 +17,7 @@ A system under development for (semi-)automated theorem proving, with foundation
 
 ## Try it with zero installation
 
-You can try the project with zero installation on _scastie_, for example the [HoTT worksheet](https://scastie.scala-lang.org/siddhartha-gadgil/0DqN82WeQk2W0nqSYQpolA). 
+You can try the project with zero installation on _scastie_, for example the [HoTT worksheet](https://scastie.scala-lang.org/siddhartha-gadgil/0DqN82WeQk2W0nqSYQpolA).
 If you want to try your own worksheet add the library `provvingground-core-jvm` (which can be found with scastie's search). More worksheets and info will be posted soon.
 
 ## Contributors
@@ -33,7 +33,7 @@ The principal developer is [Siddhartha Gadgil](http://math.iisc.ac.in/~gadgil) (
 
 ## Running
 
-#### Servers
+### Servers
 
 Two rudimentary servers are available as binaries, which you can download and run. You need Java 8 installed. In Unix systems you may need to run `chmod +x ...` to make the files executable.
 
@@ -45,37 +45,69 @@ Note that the second server also includes most of the first server.
 
 These will be frequently updated with new features.
 
-#### From Source
+### From Source
 
 At present the best way to interact with most of the code is to use a console in either [mill](https://www.lihaoyi.com/mill/) or `sbt` (the primary build tool is now [mill](https://www.lihaoyi.com/mill/)).  
 Note that _trepplein_ is a git submodule and is a dependency of part of the code, so you will have to [clone submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_cloning_submodules).  
 The simpliest way to do this is to clone the project with submodules :
-```
+
+```bash
 git clone --recurse-submodules --single-branch https://github.com/siddhartha-gadgil/ProvingGround.git
 ```
+
 or if you have already clone the project without submodules, you can fetch them afterwards :
-```
+
+```bash
 git submodule update --init
 ```
-To pop up a console with most of the code in scope, install [mill](https://www.lihaoyi.com/mill/) and run:
-```
-mill -i mantle.repl
+
+To pop up a console with the core code in scope, run (you need Java 8 installed, but mill need not be installed as it has a bootstrap script):
+
+```bash
+./mill -i core.jvm.repl
 ```
 
-for the HoTT implementation etc, or
+For running with some IO code (e.g. parsing lean exports), instead run
 
+```bash
+./mill -i mantle.repl
 ```
-mill -i nlp.repl
+
+and
+
+```bash
+./mill -i nlp.repl
 ```
+
 for the natural language processing part.
 
 To experiment with _natural language processing_, a basic server can be started by running
+
+```bash
+./mill nlp.run
 ```
-mill nlp.run
-```
+
 and going to `localhost:8080` on the browser. To experiment with the code, you can use the `--watch` flag so the system restarts after shutting down from the browser.
 
 Similarly, one can experiment with a small part of the HoTT implementation by running
+
+```bash
+./mill mantle.run
 ```
-mill mantle.run
+
+### Using a Notebook interface
+
+A useful way to experiment is to use a _notebook_ instead of a repl session to ensure persistence. To do this:
+
+* Install [Jupyter](https://jupyter.org/) and the [almond kernel](https://almond.sh/)
+* Publish the project locally using (for the core)
+
+```bash
+./mill core.jvm.publishLocal
+```
+
+Run _jupyter-lab_ and begin the code in a notebook with
+
+```scala
+import $ivy.`io.github.siddhartha-gadgil::provingground-core-jvm:0.1.1-SNAPSHOT`
 ```
