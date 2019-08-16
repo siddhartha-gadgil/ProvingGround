@@ -9,6 +9,8 @@ import spire.algebra._
 import spire.implicits._
 
 import upickle.default._
+import provingground.scalahott.IntTypes.Fin
+import cats.effect.syntax.`package`.all
 
 //import LinearStructure._
 
@@ -41,6 +43,18 @@ object FiniteDistribution {
     val prob = 1.0 / s.size
     val pmf  = s map (Weighted(_, prob))
     FiniteDistribution(pmf)
+  }
+
+  def reSample[A](fd: FiniteDistribution[A], size: Double, allowEmpty: Boolean = false) : FiniteDistribution[A] = 
+  {
+    val support = fd.support.filter(x => fd(x) < random.nextDouble * size)
+    val newFD = FiniteDistribution(support.map(x => Weighted(x, fd(x) * random.nextDouble))).safeNormalized
+    if (allowEmpty || support.nonEmpty)  newFD else 
+      {
+        require(fd.support.nonEmpty, "cannot get non-empty sample from an empty distribution")
+        reSample(fd, size, allowEmpty)
+      }
+
   }
 
   def rawUnif[A](s: Traversable[A]): FiniteDistribution[A] =
