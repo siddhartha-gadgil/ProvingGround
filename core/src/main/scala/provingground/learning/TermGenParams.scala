@@ -43,6 +43,18 @@ object TermGenParams {
     )
   }
 
+  lazy val rnd = new scala.util.Random
+
+  def randomScale(tg: TermGenParams, scale: Double = 1.0, logShift: Double = 0) : TermGenParams = {
+    def shift(v: ujson.Value) :ujson.Value = {
+      val sc = rnd.nextGaussian() * scale - logShift
+      ujson.Num(v.num * math.exp(sc))
+    }
+    val jsonMap = tg.toJson.obj.mapValues(shift(_))
+    val jsObj = ujson.Obj(collection.mutable.LinkedHashMap(jsonMap.toSeq:_ *))
+    fromJson(jsObj)
+  }
+
   val zero = TermGenParams(
     appW = 0,
     unAppW = 0,
