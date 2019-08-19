@@ -3,6 +3,19 @@ import HoTT._
 import scala.util.Try
 
 object Utils {
+  def addToPartition[A](element: A, relation: (A, A) => Boolean, groups: Vector[Vector[A]]) : Vector[Vector[A]] = 
+    groups match {
+      case Vector() => if (relation(element, element)) Vector(Vector(element)) else Vector() // allow for non-reflexive relations by discarding elements
+      case head +: tail =>
+        if (relation(element, head.head)) (head :+ element) +: tail else 
+        head +: addToPartition(element, relation, tail)
+    }
+
+  def partition[A](elements : Vector[A], relation: (A, A) => Boolean): Vector[Vector[A]] = elements match {
+    case Vector() => Vector()
+    case head +: tail => addToPartition(head, relation, partition(tail, relation))
+  }
+
   import monix.eval._
 
   def refinedTask[A](

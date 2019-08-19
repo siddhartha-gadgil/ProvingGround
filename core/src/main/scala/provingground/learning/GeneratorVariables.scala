@@ -256,6 +256,13 @@ object Expression {
     case _             => None
   }
 
+  def variance(v: Vector[Expression]) : Expression = 
+    if (v.isEmpty) Literal(0)
+    else {
+      val mean = v.reduce(Sum(_,_)) / v.size
+      v.map(x => (x - mean) * (x - mean) : Expression).reduce(Sum(_, _)) / v.size
+    }
+
   def h[A](pDist: Map[A, Expression]): Expression =
     pDist.map { case (_, p) => -p * Log(p) }.reduce[Expression](_ + _)
 
@@ -370,6 +377,42 @@ object Expression {
 
     def get[State, V](seq: NodeCoeffSeq[State, V]): Option[V] =
       seq.find(expand).flatMap(getFromCoeffs)
+
+    def sameFamilyFromCoeffs[State, V, RDom<: HList, YY](that : Coeff[YY], nodeCoeffs: NodeCoeffs[State, V, RDom, Y]) : Boolean =
+        (nodeCoeffs, rv, that.rv) match {
+          case (NodeCoeffs.Target(_), _, _) => false
+          case (
+              cons: NodeCoeffs.Cons[State, V, RDom, Y],
+              RandomVar.AtCoord(family, arg),
+              RandomVar.AtCoord(family1, arg1)
+              ) if family1 == family =>
+            cons.headGen match {
+              case fmly: GeneratorNodeFamily.Pi[u, v] =>
+                if (
+                  Try(fmly.nodes(arg.asInstanceOf[u])).toOption == Some(node) &&
+                  Try(fmly.nodes(arg1.asInstanceOf[u])).toOption == Some(that.node)
+                  )
+                  true
+                else sameFamilyFromCoeffs(that, cons.tail)
+              case fmly: GeneratorNodeFamily.PiOpt[u, v] =>
+                if (Try(fmly.nodesOpt(arg.asInstanceOf[u])).toOption.flatten == Some(
+                      node
+                    ) &&
+                    Try(fmly.nodesOpt(arg1.asInstanceOf[u])).toOption.flatten == Some(
+                      that.node)
+                    )
+                  true
+                else sameFamilyFromCoeffs(that, cons.tail)
+              case _ => this == that
+            }
+  
+          case (cons: NodeCoeffs.Cons[State, V, RDom, Y], _, _) =>
+            if (cons.headGen == node) node == that.node 
+            else sameFamilyFromCoeffs(that, cons.tail)
+        }
+      
+    def sameFamily[State, V, YY](that: Coeff[YY], seq: NodeCoeffSeq[State, V]): Boolean =
+      seq.find(expand).map(sameFamilyFromCoeffs(that, _)).getOrElse(false)
   }
 
   case class IsleScale[Boat, Y](boat: Boat, elem: Elem[Y]) extends Expression {
