@@ -256,6 +256,18 @@ object Expression {
     case _             => None
   }
 
+  def coefficients(exp: Expression) : Set[Coeff[_]] = exp match {
+    case value: VarVal[_] => Set()
+    case Log(exp)         => coefficients(exp)
+    case Exp(x)           => coefficients(x)
+    case Sum(x, y)        => coefficients(x) union (coefficients(y))
+    case Product(x, y)    => coefficients(x) union (coefficients(y))
+    case Literal(_)       => Set()
+    case Quotient(x, y)   => coefficients(x) union (coefficients(y))
+    case cf @ Coeff(_)      => Set(cf)
+    case IsleScale(_, _)  => Set()
+  }
+
   def variance(v: Vector[Expression]) : Expression = 
     if (v.isEmpty) Literal(0)
     else {

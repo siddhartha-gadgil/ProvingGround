@@ -190,6 +190,7 @@ object ExpressionEval {
       finalState.typs,
       equations,
       tg,
+      false,
       maxRatio,
       scale
     )
@@ -205,6 +206,7 @@ case class ExpressionEval(
     finalTyps: FD[Typ[Term]],
     equations: Set[Equation],
     tg: TermGenParams,
+    coeffsAsVars: Boolean = false,
     maxRatio: Double = 1.01,
     scale: Double = 1.0
 ) {
@@ -215,6 +217,7 @@ case class ExpressionEval(
       finalTyps,
       Equation.merge(equations, that.equations),
       tg,
+      coeffsAsVars,
       maxRatio,
       scale
     )
@@ -310,11 +313,24 @@ case class ExpressionEval(
   /**
     * Vector of all variables. This is frozen so that their indices can be used.
     */
-  val vars: Vector[Expression] =
+  val valueVars: Vector[Expression] =
     equations
       .flatMap(eq => Set(eq.lhs, eq.rhs))
       .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
       .toVector
+
+  lazy val coefficients : Vector[Coeff[_]] =
+  equations
+    .flatMap(eq => Set(eq.lhs, eq.rhs))
+    .flatMap(exp => Expression.coefficients(exp))
+    .toVector
+
+  lazy val coeffVariance : Expression = 
+    Utils.partition[Coeff[_]](coefficients, 
+    {case (c1, c2) => c1.sameFamily(c2, tg.nodeCoeffSeq)}
+    ).map(v => Expression.variance(v)).fold[Expression](Literal(0))(Sum(_, _))
+
+  lazy val vars = if (coeffsAsVars) valueVars ++ coefficients  else  valueVars
 
   lazy val variableIndex: Map[Expression, Int] =
     vars.zipWithIndex.toMap
@@ -511,6 +527,14 @@ case class ExpressionEval(
     * Expression for Kullback-Liebler divergence of proofs from statements of theorems.
     */
   val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
+
+  lazy val finalTermMap : Map[Term, Expression] = finalTerms.map{t => t -> FinalVal(Elem(t, Terms))}.toMap
+
+  lazy val finalTermEntropy: Expression = Expression.h(finalTermMap)
+
+  lazy val finalTypMap : Map[Term, Expression] = finalTyps.support.map{t => t -> FinalVal(Elem(t, Terms))}.toMap
+
+  lazy val finalTypEntropy: Expression = Expression.h(finalTypMap)
 
   /**
     * Expressions for equations.
