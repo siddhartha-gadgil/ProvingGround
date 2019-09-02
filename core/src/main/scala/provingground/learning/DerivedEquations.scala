@@ -34,35 +34,53 @@ class DerivedEquations(
     }
     val inner = vals
       .collect {
-        case FinalVal(InIsle(variable, boat, isle)) => ((boat, isle), FinalVal(variable) : VarVal[_])
+        case FinalVal(InIsle(variable, boat, isle)) =>
+          ((boat, isle), FinalVal(variable): VarVal[_])
       }
       .groupBy(_._1)
-      .mapValues(s => s.map(_._2)).toSet
-    val innerEqs = inner.flatMap{
-      case ((boat, isle), s) => recTargets(s).map(_.mapVars((x) => InIsle(x, boat, isle)))
+      .mapValues(s => s.map(_._2))
+      .toSet
+    val innerEqs = inner.flatMap {
+      case ((boat, isle), s) =>
+        recTargets(s).map(_.mapVars((x) => InIsle(x, boat, isle)))
     }
     base union innerEqs
   }
 
-  def expressionInIsle(exp: Expression, boat: Any, isle: Island[_, _, _, _]) : Option[Expression] = exp match {
-    case FinalVal(InIsle(variable, b, isl)) if b == boat && isl == isle => Some(FinalVal(variable)) 
+  def expressionInIsle(
+      exp: Expression,
+      boat: Any,
+      isle: Island[_, _, _, _]
+  ): Option[Expression] = exp match {
+    case FinalVal(InIsle(variable, b, isl)) if b == boat && isl == isle =>
+      Some(FinalVal(variable))
     case Coeff(node) => Some(Coeff(node))
-    case Product(x, y) => 
+    case Product(x, y) =>
       for {
         a <- expressionInIsle(x, boat, isle)
         b <- expressionInIsle(y, boat, isle)
       } yield Product(a, b)
   }
 
-  def recursiveDerived(init: Set[EquationNode], step : => (Set[EquationNode] => Set[EquationNode])) : Set[EquationNode] = {
+  def recursiveDerived(
+      init: Set[EquationNode],
+      step: => (Set[EquationNode] => Set[EquationNode])
+  ): Set[EquationNode] = {
     val base = step(init)
-    val inner = init.collect{
-      case EquationNode(FinalVal(InIsle(variable, boat, isle)), rhs) =>
-        expressionInIsle(rhs, boat, isle).map(r => ((boat, isle), EquationNode(FinalVal(variable), r)))
-    }.flatten.groupBy(_._1)
-    .mapValues(s => s.map(_._2)).toSet
-  val innerEqs = inner.flatMap{
-      case ((boat, isle), s) => recursiveDerived(s, step).map(_.mapVars((x) => InIsle(x, boat, isle)))
+    val inner = init
+      .collect {
+        case EquationNode(FinalVal(InIsle(variable, boat, isle)), rhs) =>
+          expressionInIsle(rhs, boat, isle).map(
+            r => ((boat, isle), EquationNode(FinalVal(variable), r))
+          )
+      }
+      .flatten
+      .groupBy(_._1)
+      .mapValues(s => s.map(_._2))
+      .toSet
+    val innerEqs = inner.flatMap {
+      case ((boat, isle), s) =>
+        recursiveDerived(s, step).map(_.mapVars((x) => InIsle(x, boat, isle)))
     }
     base union innerEqs
   }
@@ -99,6 +117,16 @@ class DerivedEquations(
         )
       }
       .getOrElse(Set.empty[EquationNode])
+
+  def conditionAsTypFamily(t: Term): Set[EquationNode] =
+    if (isTypFamily(t))
+      Set(
+        EquationNode(
+          finalProb(t, TypFamilies),
+          conditionedProb(t, Terms, TypFamilies, typFamilySort)
+        )
+      )
+    else Set.empty[EquationNode]
 
   import tg._
 
@@ -331,11 +359,22 @@ class DerivedEquations(
 
   def initEquations(s: Set[Expression]): Set[EquationNode] =
     s.collect {
-      case FinalVal(Elem(t, rv)) =>
+      case FinalVal(Elem(t, rv))
+          if Set[RandomVar[_]](Terms, Typs, InducDefns, Goals).contains(rv) =>
         EquationNode(
           finalProb(t, Terms),
           Coeff(Init(rv)) * InitialVal(Elem(t, rv))
         )
     }
+
+  def initCheck(exp: Expression) =
+    Expression.atoms(exp).exists {
+        case InitialVal(Elem(_, rv)) =>
+          Set[RandomVar[_]](Terms, Typs, InducDefns, Goals).contains(rv)
+        case _ => true      
+    }
+
+  def initPurge(s: Set[EquationNode]) = 
+    s.filterNot(eq => initCheck(eq.rhs))
 
 }
