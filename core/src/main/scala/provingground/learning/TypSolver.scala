@@ -56,4 +56,8 @@ object TypSolver {
   })
 
   val coreSolver : TypSolver = IdSolver || LeqNatSolver || DivNatSolver || LeqQSolver || NatNEQSolver
+
+  case class LookupSolver(terms: Set[Term]) extends TypSolver(
+    typ => if (terms.exists(_.typ == typ)) Some(s"lookup$hashCode" :: typ) else None
+  )
 }
