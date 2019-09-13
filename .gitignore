@@ -130,3 +130,5 @@ data/bird-sentences.txt
 notes/.ipynb_checkpoints/
 
 *.bin
+
+*.jar
