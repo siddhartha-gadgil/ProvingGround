@@ -93,6 +93,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
     def ass: PathRef = assembly()
     def name: String = artifactName()
     cp.over(ass.path, pwd/ "bin" / s"$name.fat.jar")
+    cp.over(ass.path, pwd/ "notes" / "bin" / s"$name-${glog.abbreviate(7).name}.fat.jar")
     ass
   }
 
@@ -211,7 +212,7 @@ val mantleLibs = List(
     ivy"org.nd4j:nd4j-native-platform:1.0.0-beta4"
 )
 
-def gitlog() = {
+def glog = {
   import java.io._
   import org.eclipse.jgit._
   import storage.file._
@@ -219,8 +220,11 @@ def gitlog() = {
   val repo = builder.findGitDir(new File(".")).readEnvironment(). build()
   val git = new api.Git(repo)
   import scala.collection.JavaConversions._
-  val log = git.log().call().head
-  write.over(pwd / "mantle" /"src" /"main" / "resources" / "gitlog.txt", log.name)
+  git.log().call().head
+}
+
+def gitlog() = {
+  write.over(pwd / "mantle" /"src" /"main" / "resources" / "gitlog.txt", glog.name)
 }
 
 object mantle extends CommonModule with SbtModule with PGPublish{
