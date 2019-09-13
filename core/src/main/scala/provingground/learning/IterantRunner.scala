@@ -18,7 +18,7 @@ trait IterantRunner[S, A, M] {
   def onCommand(state: S, c: M): S
 
   def unsafeIterant(init: S): Iterant[Task, A] =
-    Iterant.fromStateActionL(evolve)(Task.pure(init))
+    Iterant.fromLazyStateAction(evolve)(Task.pure(init))
 
   val requestQueue = AsyncQueue.unbounded[Request[M]]()
 
@@ -55,7 +55,7 @@ trait IterantRunner[S, A, M] {
     val initState: Task[State[S, M]] = init.map { s =>
       Running(s, pollTask)
     }
-    val base = Iterant.fromStateActionL(spawn)(initState)
+    val base = Iterant.fromLazyStateAction(spawn)(initState)
     base.takeWhile(running)
   }
 

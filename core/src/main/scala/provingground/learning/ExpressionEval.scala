@@ -600,7 +600,7 @@ case class ExpressionEval(
       klW: Double = 1,
       p: Map[Expression, Double] = finalDist
   ): Iterant[Task, Map[Expression, Double]] =
-    Iterant.fromStateActionL[Task, Map[Expression, Double], Map[
+    Iterant.fromLazyStateAction[Task, Map[Expression, Double], Map[
       Expression,
       Double
     ]] { q =>
@@ -616,7 +616,7 @@ case class ExpressionEval(
       cutoff: Double,
       p: Map[Expression, Double] = finalDist
   ): Iterant[Task, FD[Term]] =
-    Iterant.fromStateActionL[Task, Map[Expression, Double], FD[Term]] { q =>
+    Iterant.fromLazyStateAction[Task, Map[Expression, Double], FD[Term]] { q =>
       for {
         epg <- WithP(q).entropyProjectionTask(hW, klW)
         s = stableGradShift(q, epg)

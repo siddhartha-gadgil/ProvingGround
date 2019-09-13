@@ -37,7 +37,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "com.lihaoyi" %%% "fastparse" % "2.1.0",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
     "org.typelevel" %%% "cats-core"     % "1.1.0",
-    "io.monix"      %%% "monix"         % "3.0.0-RC2",
+    "io.monix"      %%% "monix"         % "3.0.0",
     "org.scalameta" %%% "scalameta"     % "4.1.0",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
     "com.lihaoyi" %%% "pprint"      % "0.5.3",
