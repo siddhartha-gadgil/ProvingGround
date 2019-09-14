@@ -16,6 +16,7 @@ s"""
 <html>
     <head>
         <title>ProvingGround Notebooks</title>
+        <link rel="icon" href="../IIScLogo.jpg">
         <link href="../css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
