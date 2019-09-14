@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>NaturalLanguageParsing-simple-examples</title>
+<title>2019-09-13-workflow</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13116,405 +13116,27 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Natural-language-parsing">Natural language parsing<a class="anchor-link" href="#Natural-language-parsing">&#182;</a></h1><p>To parse a sentence, we run the Stanford dependency parser, match patterns and use combinators for translating.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.siddhartha-gadgil::provingground-nlp:0.1.0`</span>
-<span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`edu.stanford.nlp:stanford-corenlp:3.7.0`</span>
+<h2 id="Goal">Goal<a class="anchor-link" href="#Goal">&#182;</a></h2><p>This is meant to try out the workflow, taking advantage of the filling in of future computations.</p>
+<h2 id="Before-starting">Before starting<a class="anchor-link" href="#Before-starting">&#182;</a></h2><p>In the console, we begin with</p>
+<div class="highlight"><pre><span></span>mill core.jvm.publishLocal
 </pre></div>
+<h2 id="First-steps">First steps<a class="anchor-link" href="#First-steps">&#182;</a></h2><ul>
+<li>print out the git log HEAD for replication</li>
+<li>import with ivy,</li>
+<li>import provingground and the main packages,</li>
+<li>bind to REPL to avoid verbose output.</li>
+</ul>
 
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[1]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                                     
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                        </span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">interp</span><span class="o">.</span><span class="n">load</span><span class="o">.</span><span class="n">ivy</span><span class="o">(</span><span class="n">coursier</span><span class="o">.</span><span class="nc">Dependency</span><span class="o">(</span>
-      <span class="n">coursier</span><span class="o">.</span><span class="nc">Module</span><span class="o">(</span><span class="s">&quot;edu.stanford.nlp&quot;</span><span class="o">,</span> <span class="s">&quot;stanford-corenlp&quot;</span><span class="o">),</span>
-      <span class="s">&quot;3.7.0&quot;</span><span class="o">,</span>
-      <span class="n">attributes</span> <span class="k">=</span> <span class="n">coursier</span><span class="o">.</span><span class="nc">Attributes</span><span class="o">(</span><span class="n">classifier</span> <span class="k">=</span> <span class="s">&quot;models&quot;</span><span class="o">)</span>
-    <span class="o">)</span>
-  <span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">edu.stanford._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">edu.stanford._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">edu.stanford.nlp._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">edu.stanford.nlp._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">trees.Tree</span>
-<span class="k">import</span> <span class="nn">simple._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">trees.Tree
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">simple._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">sent</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Sentence</span><span class="o">(</span><span class="s">&quot;if a prime number P divides MN, P divides one of M and N&quot;</span><span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">sent</span>: <span class="ansi-green-fg">Sentence</span> = if a prime number P divides MN, P divides one of M and N</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tree</span><span class="k">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">parse</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tree</span>: <span class="ansi-green-fg">Tree</span> = (ROOT (S (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))) (, ,) (NP (NNP P)) (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))))))</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span><span class="o">,</span> <span class="n">translation</span><span class="o">.</span><span class="k">_</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._, translation._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">TreePatterns._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">TreePatterns._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">scala.collection.JavaConversions._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">scala.collection.JavaConversions._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">st</span> <span class="k">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">subTrees</span><span class="o">.</span><span class="n">toList</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">st</span>: <span class="ansi-green-fg">List</span>[<span class="ansi-green-fg">Tree</span>] = <span class="ansi-yellow-fg">List</span>(
-  (, ,),
-  (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))),
-  (NNP P),
-  (CD one),
-  M,
-  N,
-  (NN P),
-  P,
-  (NN number),
-  number,
-  (VP (VBZ divides) (NP (NNP MN))),
-  (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N))))),
-  (NP (DT a) (JJ prime) (NN number) (NN P)),
-  (NP (NNP MN)),
-  (NP (NNP P)),
-  divides,
-  and,
-  (ROOT (S (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))) (, ,) (NP (NNP P)) (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N))))))),
-  of,
-  (NP (NNP M) (CC and) (NNP N)),
-  (NNP M),
-  if,
-  (NNP N),
-  (JJ prime),
-  prime,
-  a,
-  MN,
-  (PP (IN of) (NP (NNP M) (CC and) (NNP N))),
-  (NP (CD one)),
-  (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))),
-  (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN)))),
-  one,
-  ,,
-...</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">matches</span> <span class="k">=</span> <span class="n">st</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="nc">IfTree</span><span class="o">.</span><span class="n">unapply</span><span class="o">).</span><span class="n">flatten</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">sys.process._</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;git log -1&quot;</span><span class="o">.!!)</span>
 </pre></div>
 
     </div>
@@ -13524,6 +13146,22 @@ div#notebook {
 <div class="output_wrapper">
 <div class="output">
 
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>commit a6ae52a12ec053bbe0202927e570658e8131e43c
+Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
+Date:   Fri Sep 13 15:18:38 2019 +0530
+
+    removed lfs
+
+</pre>
+</div>
+</div>
 
 <div class="output_area">
 
@@ -13533,13 +13171,174 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">matches</span>: <span class="ansi-green-fg">List</span>[(<span class="ansi-green-fg">cats</span>.<span class="ansi-green-fg">package</span>.<span class="ansi-green-fg">Id</span>[<span class="ansi-green-fg">Tree</span>], <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Tree</span>])] = <span class="ansi-yellow-fg">List</span>(
-  (
-    (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN)))),
-    <span class="ansi-yellow-fg">Vector</span>(
-      (NP (NNP P)),
-      (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))))
-    )
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">sys.process._
+</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.siddhartha-gadgil::provingground-core-jvm:0.1.0`</span>
+<span class="c1">// import $ivy.`io.monix::monix:3.0.0`</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[30]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                                          
+// import $ivy.`io.monix::monix:3.0.0`</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span><span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">translation</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[31]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._, interface._, learning._, translation._, HoTT._</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We will now explore without notes.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tg</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[32]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">tg</span>: <span class="ansi-green-fg">TermGenParams</span> = <span class="ansi-yellow-fg">TermGenParams</span>(
+  <span class="ansi-green-fg">0.1</span>,
+  <span class="ansi-green-fg">0.1</span>,
+  <span class="ansi-green-fg">0.1</span>,
+  <span class="ansi-green-fg">0.1</span>,
+  <span class="ansi-green-fg">0.1</span>,
+  <span class="ansi-green-fg">0.05</span>,
+  <span class="ansi-green-fg">0.05</span>,
+  <span class="ansi-green-fg">0.05</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.3</span>,
+  <span class="ansi-green-fg">0.7</span>,
+  <span class="ansi-green-fg">0.5</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">terms</span> <span class="k">=</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">[</span><span class="kt">Term</span><span class="o">](</span><span class="nc">Type</span><span class="o">,</span> <span class="nc">Unit</span><span class="o">,</span> <span class="nc">Zero</span><span class="o">,</span> <span class="nc">Star</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[33]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">terms</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.25</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.25</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.25</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(Star, <span class="ansi-green-fg">0.25</span>)
   )
 )</pre>
 </div>
@@ -13552,16 +13351,458 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">typs</span> <span class="k">=</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">[</span><span class="kt">Typ</span><span class="o">[</span><span class="kt">Term</span><span class="o">]](</span><span class="nc">Type</span><span class="o">,</span> <span class="nc">Unit</span><span class="o">,</span> <span class="nc">Zero</span><span class="o">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[34]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">typs</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3333333333333333</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.3333333333333333</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.3333333333333333</span>)
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">terms</span><span class="o">,</span> <span class="n">typs</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">lp</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[35]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.25</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.25</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.25</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(Star, <span class="ansi-green-fg">0.25</span>)
+    )
+  ),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3333333333333333</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.3333333333333333</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.3333333333333333</span>)
+    )
+  ),
+  <span class="ansi-yellow-fg">Vector</span>(),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  Empty
+)
+<span class="ansi-cyan-fg">lp</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.25</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.25</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.25</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Star, <span class="ansi-green-fg">0.25</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.3333333333333333</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">Vector</span>(),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    Empty
+  ),
+  <span class="ansi-yellow-fg">TermGenParams</span>(
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.3</span>,
+    <span class="ansi-green-fg">0.7</span>,
+    <span class="ansi-green-fg">0.5</span>,
+    <span class="ansi-green-fg">0.0</span>,
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As everything important is supposed to be memoized, we can calculate anything and intermediate steps are remembered. So we calculate theorems.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">thmsT</span> <span class="k">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">theoremsByStatement</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[19]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">thmsT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]]] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">Map</span>(
+      <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, false),
+      provingground.learning.LocalProver$$Lambda$2484/1295738439@28f0d7b9,
+      <span class="ansi-green-fg">0</span>
+    ),
+    provingground.learning.LocalProver$$Lambda$2485/2069605659@5d0be5ed
+  ),
+  provingground.learning.LocalProverStep$$Lambda$2486/1615995408@28b2db83,
+  <span class="ansi-green-fg">0</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">thmsF</span> <span class="k">=</span> <span class="n">thmsT</span><span class="o">.</span><span class="n">materialize</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_text output_subarea ">
+<pre><span class="ansi-cyan-fg">thmsF</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]]]] = <span class="ansi-yellow-fg">Success</span>(
+  <span class="ansi-yellow-fg">Failure</span>(
+    java.util.concurrent.TimeoutException: Task timed-out after 12 minutes of inactivity
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">thmsF</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res24</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]]]]] = <span class="ansi-yellow-fg">Some</span>(
+  <span class="ansi-yellow-fg">Success</span>(
+    <span class="ansi-yellow-fg">Failure</span>(
+      java.util.concurrent.TimeoutException: Task timed-out after 12 minutes of inactivity
+    )
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The main result of this experiment was a failure. Should investigate further. This could be because corrections for equations lead to a slowdown. Should try without generating equations.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lp0</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.01</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[36]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lp0</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.25</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.25</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.25</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Star, <span class="ansi-green-fg">0.25</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Unit, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(Zero, <span class="ansi-green-fg">0.3333333333333333</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">Vector</span>(),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    Empty
+  ),
+  <span class="ansi-yellow-fg">TermGenParams</span>(
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.3</span>,
+    <span class="ansi-green-fg">0.7</span>,
+    <span class="ansi-green-fg">0.5</span>,
+    <span class="ansi-green-fg">0.0</span>,
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">nsT</span> <span class="k">=</span> <span class="n">lp0</span><span class="o">.</span><span class="n">nextState</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[37]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">nsT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">TermState</span>] = <span class="ansi-yellow-fg">FlatMap</span>(
+  <span class="ansi-yellow-fg">Map</span>(
+    <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, false),
+    provingground.learning.LocalProver$$Lambda$2484/1295738439@28f0d7b9,
+    <span class="ansi-green-fg">0</span>
+  ),
+  provingground.learning.LocalProver$$Lambda$2485/2069605659@52900737
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">nsF</span> <span class="k">=</span> <span class="n">nsT</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_text output_subarea ">
+<pre><span class="ansi-cyan-fg">nsF</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">TermState</span>] = <span class="ansi-green-fg">[running future]</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">nsF</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[29]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res28</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">TermState</span>]] = <span class="ansi-green-fg">None</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Error with even a low cutoff, so clearly a bug. But the code ran fine in a REPL, so notebook issue.</p>
+
+</div>
+</div>
 </div>
     </div>
   </div>

@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>NaturalLanguageParsing-simple-examples</title>
+<title>Futures</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13116,7 +13116,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Natural-language-parsing">Natural language parsing<a class="anchor-link" href="#Natural-language-parsing">&#182;</a></h1><p>To parse a sentence, we run the Stanford dependency parser, match patterns and use combinators for translating.</p>
+<h1 id="Experiments-with-concurrency.">Experiments with concurrency.<a class="anchor-link" href="#Experiments-with-concurrency.">&#182;</a></h1><p>Result values, both anonymous and named, are <em>updated when complete</em>. Even works with <code>flatMap</code>. Amazing!</p>
 
 </div>
 </div>
@@ -13126,8 +13126,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.siddhartha-gadgil::provingground-nlp:0.1.0`</span>
-<span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`edu.stanford.nlp:stanford-corenlp:3.7.0`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">scala.concurrent._</span>
 </pre></div>
 
     </div>
@@ -13146,9 +13145,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                                     
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                        </span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">scala.concurrent._</span></pre>
 </div>
 
 </div>
@@ -13162,25 +13159,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">interp</span><span class="o">.</span><span class="n">load</span><span class="o">.</span><span class="n">ivy</span><span class="o">(</span><span class="n">coursier</span><span class="o">.</span><span class="nc">Dependency</span><span class="o">(</span>
-      <span class="n">coursier</span><span class="o">.</span><span class="nc">Module</span><span class="o">(</span><span class="s">&quot;edu.stanford.nlp&quot;</span><span class="o">,</span> <span class="s">&quot;stanford-corenlp&quot;</span><span class="o">),</span>
-      <span class="s">&quot;3.7.0&quot;</span><span class="o">,</span>
-      <span class="n">attributes</span> <span class="k">=</span> <span class="n">coursier</span><span class="o">.</span><span class="nc">Attributes</span><span class="o">(</span><span class="n">classifier</span> <span class="k">=</span> <span class="s">&quot;models&quot;</span><span class="o">)</span>
-    <span class="o">)</span>
-  <span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">edu.stanford._</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">implicit</span> <span class="k">val</span> <span class="n">ec</span> <span class="k">=</span> <span class="nc">ExecutionContext</span><span class="o">.</span><span class="n">global</span>
 </pre></div>
 
     </div>
@@ -13193,13 +13172,60 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[3]:</div>
+    <div class="prompt output_prompt">Out[2]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">edu.stanford._</span></pre>
+<pre><span class="ansi-cyan-fg">ec</span>: <span class="ansi-green-fg">ExecutionContextExecutor</span> = scala.concurrent.impl.ExecutionContextImpl@59f67f30</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="nc">Future</span><span class="o">(</span><span class="n">println</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">))</span>
+<span class="nc">Future</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Hello
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res2_0</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Unit</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res2_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>)</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -13213,30 +13239,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">edu.stanford.nlp._</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">edu.stanford.nlp._</span></pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -13246,8 +13252,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">trees.Tree</span>
-<span class="k">import</span> <span class="nn">simple._</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span> <span class="mi">3</span><span class="o">}</span>
 </pre></div>
 
     </div>
@@ -13260,15 +13265,14 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[5]:</div>
+    <div class="prompt"></div>
 
 
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">trees.Tree
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">simple._</span></pre>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res4</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>)</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -13282,7 +13286,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">sent</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Sentence</span><span class="o">(</span><span class="s">&quot;if a prime number P divides MN, P divides one of M and N&quot;</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">10000</span><span class="o">);</span> <span class="mi">30</span><span class="o">}</span>
 </pre></div>
 
     </div>
@@ -13295,13 +13299,14 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[6]:</div>
+    <div class="prompt"></div>
 
 
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">sent</span>: <span class="ansi-green-fg">Sentence</span> = if a prime number P divides MN, P divides one of M and N</pre>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res5</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">30</span></span>)</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -13315,7 +13320,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tree</span><span class="k">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">parse</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span> <span class="mi">3</span> <span class="o">;</span> <span class="n">println</span><span class="o">(</span><span class="s">&quot;completed&quot;</span><span class="o">)}</span>
 </pre></div>
 
     </div>
@@ -13328,13 +13333,14 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt"></div>
 
 
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tree</span>: <span class="ansi-green-fg">Tree</span> = (ROOT (S (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))) (, ,) (NP (NNP P)) (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))))))</pre>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res6</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Unit</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(())</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -13348,7 +13354,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span><span class="o">,</span> <span class="n">translation</span><span class="o">.</span><span class="k">_</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">n</span> <span class="k">=</span> <span class="mi">3</span>
+<span class="k">val</span> <span class="n">fut</span> <span class="k">=</span> <span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span> <span class="n">n</span><span class="o">}</span>
 </pre></div>
 
     </div>
@@ -13361,13 +13368,15 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[8]:</div>
+    <div class="prompt"></div>
 
 
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._, translation._</span></pre>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">n</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span> = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">fut</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>)</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -13381,7 +13390,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">TreePatterns._</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">fut</span> <span class="k">=</span> <span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span> <span class="mi">3</span><span class="o">}</span>
+<span class="k">val</span> <span class="n">fut1</span> <span class="k">=</span> <span class="n">fut</span><span class="o">.</span><span class="n">flatMap</span><span class="o">{</span><span class="n">k</span> <span class="k">=&gt;</span> <span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">5000</span><span class="o">);</span> <span class="n">k</span> <span class="o">*</span> <span class="n">k</span><span class="o">}}</span>
 </pre></div>
 
     </div>
@@ -13394,13 +13404,15 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[9]:</div>
+    <div class="prompt"></div>
 
 
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">TreePatterns._</span></pre>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">fut</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>)</span></span>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">fut1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9</span></span>)</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -13414,7 +13426,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">scala.collection.JavaConversions._</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">futVec</span> <span class="k">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">10</span><span class="o">).</span><span class="n">toVector</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">n</span><span class="o">);</span> <span class="n">n</span><span class="o">})</span>
+<span class="k">val</span> <span class="n">allDone</span> <span class="k">=</span> <span class="nc">Future</span><span class="o">.</span><span class="n">sequence</span><span class="o">(</span><span class="n">futVec</span><span class="o">)</span>
 </pre></div>
 
     </div>
@@ -13427,13 +13440,26 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt"></div>
 
 
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">scala.collection.JavaConversions._</span></pre>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">futVec</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>]] = <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9</span></span>)</span></span>,
+  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10</span></span>)</span></span>
+)
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">allDone</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10</span></span>))</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -13447,7 +13473,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">st</span> <span class="k">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">subTrees</span><span class="o">.</span><span class="n">toList</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">sys.process._</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;git log -1&quot;</span><span class="o">.!!)</span>
 </pre></div>
 
     </div>
@@ -13460,47 +13487,30 @@ div#notebook {
 
 <div class="output_area">
 
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>commit a6ae52a12ec053bbe0202927e570658e8131e43c
+Author: Siddhartha Gadgil &lt;siddhartha.gadgil@gmail.com&gt;
+Date:   Fri Sep 13 15:18:38 2019 +0530
+
+    removed lfs
+
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
     <div class="prompt output_prompt">Out[11]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">st</span>: <span class="ansi-green-fg">List</span>[<span class="ansi-green-fg">Tree</span>] = <span class="ansi-yellow-fg">List</span>(
-  (, ,),
-  (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))),
-  (NNP P),
-  (CD one),
-  M,
-  N,
-  (NN P),
-  P,
-  (NN number),
-  number,
-  (VP (VBZ divides) (NP (NNP MN))),
-  (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N))))),
-  (NP (DT a) (JJ prime) (NN number) (NN P)),
-  (NP (NNP MN)),
-  (NP (NNP P)),
-  divides,
-  and,
-  (ROOT (S (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))) (, ,) (NP (NNP P)) (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N))))))),
-  of,
-  (NP (NNP M) (CC and) (NNP N)),
-  (NNP M),
-  if,
-  (NNP N),
-  (JJ prime),
-  prime,
-  a,
-  MN,
-  (PP (IN of) (NP (NNP M) (CC and) (NNP N))),
-  (NP (CD one)),
-  (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))),
-  (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN)))),
-  one,
-  ,,
-...</pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">sys.process._
+</span></pre>
 </div>
 
 </div>
@@ -13514,7 +13524,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">matches</span> <span class="k">=</span> <span class="n">st</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="nc">IfTree</span><span class="o">.</span><span class="n">unapply</span><span class="o">).</span><span class="n">flatten</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.monix::monix:3.0.0`</span>
 </pre></div>
 
     </div>
@@ -13533,15 +13543,223 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">matches</span>: <span class="ansi-green-fg">List</span>[(<span class="ansi-green-fg">cats</span>.<span class="ansi-green-fg">package</span>.<span class="ansi-green-fg">Id</span>[<span class="ansi-green-fg">Tree</span>], <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Tree</span>])] = <span class="ansi-yellow-fg">List</span>(
-  (
-    (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN)))),
-    <span class="ansi-yellow-fg">Vector</span>(
-      (NP (NNP P)),
-      (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))))
-    )
-  )
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                      </span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.eval._</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>completed
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.eval._</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="nc">Task</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res13</span>: <span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">Eval</span>(
+  ammonite.$sess.cmd13$Helper$$Lambda$3072/1120741855@5649034
 )</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">task3</span> <span class="k">=</span> <span class="nc">Task</span><span class="o">.</span><span class="n">deferFuture</span><span class="o">(</span><span class="nc">Future</span><span class="o">{</span><span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">6000</span><span class="o">);</span> <span class="mi">3</span><span class="o">}(</span><span class="n">ec</span><span class="o">)).</span><span class="n">memoize</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">task3</span>: <span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<span class="k">val</span> <span class="n">fut3</span> <span class="k">=</span> <span class="n">task3</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">import </span></span><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
+</span></span>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">fut3</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>)</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">task3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res16</span>: <span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">task3</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res17</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3</span></span>)</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
