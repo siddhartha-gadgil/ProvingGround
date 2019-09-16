@@ -17220,6 +17220,198 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[122]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lp0</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="nc">TermState</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">),</span> <span class="n">f</span><span class="o">),</span> <span class="nc">FiniteDistribution</span><span class="o">(</span><span class="n">A</span> <span class="o">-&gt;</span> <span class="mf">0.01</span><span class="o">,</span> <span class="n">B</span> <span class="o">-&gt;</span> <span class="mf">0.99</span><span class="o">)),</span> <span class="n">hW</span> <span class="k">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">klW</span> <span class="k">=</span> <span class="mi">10</span><span class="o">).</span><span class="n">noIsles</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[122]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lp0</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">f(a)</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">f</span>, <span class="ansi-green-fg">0.3333333333333333</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.01</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">B</span>, <span class="ansi-green-fg">0.99</span>))),
+    <span class="ansi-yellow-fg">Vector</span>(),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    Empty
+  ),
+  <span class="ansi-yellow-fg">TermGenParams</span>(
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.3</span>,
+    <span class="ansi-green-fg">0.7</span>,
+    <span class="ansi-green-fg">0.5</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>
+  ),
+  <span class="ansi-green-fg">1.0E-4</span>,
+  12 minutes,
+  <span class="ansi-green-fg">1.01</span>,
+  <span class="ansi-green-fg">1.0</span>,
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[125]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">gT0</span> <span class="k">=</span> <span class="n">lp0</span><span class="o">.</span><span class="n">expressionEval</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">e</span> <span class="k">=&gt;</span> <span class="n">e</span><span class="o">.</span><span class="n">generatorIterant</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mf">0.000001</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="n">finalDist</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">100</span><span class="o">).</span><span class="n">toListL</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">zipWithIndex</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span><span class="o">))</span> <span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[125]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">gT0</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">List</span>[(<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Int</span>)]] = <span class="ansi-yellow-fg">FlatMap</span>(
+  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+  ammonite.$sess.cmd124$Helper$$Lambda$4309/1555064469@cfdaac4
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[126]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">gF0</span> <span class="k">=</span> <span class="n">gT0</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">gF0</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">List</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">List</span></span>(
+    (
+      <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f(a)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.3412860700619766</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.32410031980599935</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.334613610132024</span></span>)
+        )
+      ),
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0</span></span>
+    ),
+    (
+      <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f(a)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.3339306190134751</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.3249955986746654</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.34107378231185953</span></span>)
+        )
+      ),
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">15</span></span>
+    ),
+    (
+      <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f(a)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.32669198377935166</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.3258766646667746</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.3474313515538737</span></span>)
+        )
+      ),
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">30</span></span>
+    ),
+    (
+      <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f(a)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.319576042233069</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">f</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.3267428021220995</span></span>),
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.35368115564483155</span></span>)
+        )
+...</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Correction-needed">Correction needed<a class="anchor-link" href="#Correction-needed">&#182;</a></h2><ul>
+<li>One can always reduce Kullback-Liebler by increasing all probabilities. Normalizing only partly acts against this.</li>
+<li>The best approach is probably to add total probability equations, at least for initial and final values of terms.</li>
+</ul>
+
+</div>
+</div>
+</div>
     </div>
   </div>
 </body>
