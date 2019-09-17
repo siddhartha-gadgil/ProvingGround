@@ -536,13 +536,21 @@ case class ExpressionEval(
 
   lazy val finalTypEntropy: Expression = Expression.h(finalTypMap)
 
+  lazy val initTermsSum = initTerms.map{
+    case t => InitialVal(Elem(t, Terms))
+  }.fold(Expression.Literal(0)){(t1, t2) => Sum(t1, t2)}
+
+  lazy val finalTermsSum = finalTerms.map{
+    case t => FinalVal(Elem(t, Terms))
+  }.fold(Expression.Literal(0)){(t1, t2) => Sum(t1, t2)}
+
   /**
     * Expressions for equations.
     */
   val eqnExpressions: Vector[Expression] =
     equations.toVector.map { eq =>
       eq.lhs - eq.rhs
-    }
+    } ++ Vector(initTermsSum, finalTermsSum)
 
   /**
     * Shift downwards by the gradient, mapped by sigmoids.
