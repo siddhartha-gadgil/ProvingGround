@@ -13861,7 +13861,46 @@ defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">l
 
 <div class="output_html rendered_html output_subarea ">
 <div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">bF1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Option</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">TermState</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">bF1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Option</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">TermState</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Some</span></span>(
+    (
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">12</span></span>,
+      <span style="color: yellow"><span class="ansi-yellow-fg">TermState</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → B×(A → B)×B)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.163449689928203E-8</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → B×(B → B)×B)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.163449689928203E-8</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → B×(A → B)×B)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.1634496899282045E-8</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → B×(B → B)×B)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.1634496899282045E-8</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((`@a_1 , @a_2) : (B → B)×A) ↦ (@a : (B → A)) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.452919559175791E-8</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((`@a_1 , @a_2) : (B → B)×A) ↦ (@a : (A → A)) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.452919559175791E-8</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((`@a_1 , @a_2) : (A → B)×A) ↦ (@a : (B → A)) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.452919559175791E-8</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((`@a_1 , @a_2) : (A → B)×A) ↦ (@a : (A → A)) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.452919559175791E-8</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → A)) ↦ ((`@a_1 , @a_2) : (B → B)×A) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7.890030698070726E-8</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → A)) ↦ ((`@a_1 , @a_2) : (A → B)×A) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7.890030698070726E-8</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → A)) ↦ ((`@a_1 , @a_2) : (B → B)×A) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7.902015938489659E-8</span></span>
+            ),
+...</span></span></span></code></pre>
 </div>
 </div>
 
@@ -13942,7 +13981,7 @@ defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">l
 
 <div class="output_html rendered_html output_subarea ">
 <div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">mp1F</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">mp1F</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.221107012939598E-5</span></span>)</span></span></span></code></pre>
 </div>
 </div>
 
@@ -14023,74 +14062,8 @@ defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">l
 
 <div class="output_html rendered_html output_subarea ">
 <div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res45</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res45</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0199736008575996</span></span>)</span></span></span></code></pre>
 </div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">mp1F</span><span class="o">.</span><span class="n">value</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[52]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res51</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">Double</span>]] = <span class="ansi-green-fg">None</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">bF1</span><span class="o">.</span><span class="n">value</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[53]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res52</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]]] = <span class="ansi-green-fg">None</span></pre>
 </div>
 
 </div>
@@ -14102,7 +14075,7 @@ defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">l
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This strangely did not complete. Should run in a fresh worksheet.</p>
+<h2 id="Conclusion-2">Conclusion 2<a class="anchor-link" href="#Conclusion-2">&#182;</a></h2><p>When we had variables $A$ and $B$ this did discover Modus Ponens (though it took a long time to run as it ran through 12 steps).</p>
 
 </div>
 </div>
