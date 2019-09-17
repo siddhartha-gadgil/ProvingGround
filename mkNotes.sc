@@ -10,18 +10,19 @@ def item(p: os.Path) = {
     val name = p.last
     s"""<li><a href="$name.html">$name</a></li>"""
 }
-val allItems = notes.map(item).mkString("\n")
+val allItems = notes.filter(_.last.startsWith("20")).sortBy(_.last).reverse.map(item).mkString("\n")
 val index =
 s"""
 <html>
     <head>
-        <title>ProvingGround Notebooks</title>
+        <title>ProvingGround Working Notebooks</title>
         <link rel="icon" href="../IIScLogo.jpg">
         <link href="../css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="container">
-            <h2> ProvingGround Notebooks </h2>
+            <h2> ProvingGround Working Notebooks </h2>
+            <p> These are the working notes. Each one should import a jar with a short commit for replication</p>
             <ul>
             $allItems
             </ul>
