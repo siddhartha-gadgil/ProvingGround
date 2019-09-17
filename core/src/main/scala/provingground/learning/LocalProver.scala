@@ -173,7 +173,7 @@ case class LocalProver(
       .memoize
 
   lazy val nextState: Task[TermState] =
-    for {
+    {for {
       terms <- tripleT.map(_._1)
       typs  <- tripleTypT.map(_._1)
     } yield
@@ -185,6 +185,7 @@ case class LocalProver(
         initState.goals,
         initState.context
       )
+  }.memoize
 
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
     mfd.varDist(initState)(rv, cutoff).map(_._1)
