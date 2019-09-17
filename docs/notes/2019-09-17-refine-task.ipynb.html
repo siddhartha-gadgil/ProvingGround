@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>NaturalLanguageParsing-simple-examples</title>
+<title>2019-09-17-refine-task</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13116,7 +13116,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Natural-language-parsing">Natural language parsing<a class="anchor-link" href="#Natural-language-parsing">&#182;</a></h1><p>To parse a sentence, we run the Stanford dependency parser, match patterns and use combinators for translating.</p>
+<h2 id="Generating-with-successive-refinements">Generating with successive refinements<a class="anchor-link" href="#Generating-with-successive-refinements">&#182;</a></h2><p>The goal is to keep generating distributions from just <code>Type</code>, <code>Zero</code>, <code>One</code> and <code>Star</code> till we timeout</p>
 
 </div>
 </div>
@@ -13126,8 +13126,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.siddhartha-gadgil::provingground-nlp:0.1.0`</span>
-<span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`edu.stanford.nlp:stanford-corenlp:3.7.0`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-09effc3.fat.jar`</span>
 </pre></div>
 
     </div>
@@ -13146,9 +13145,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                                     
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                        </span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$                                           </span></pre>
 </div>
 
 </div>
@@ -13162,25 +13159,15 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">interp</span><span class="o">.</span><span class="n">load</span><span class="o">.</span><span class="n">ivy</span><span class="o">(</span><span class="n">coursier</span><span class="o">.</span><span class="nc">Dependency</span><span class="o">(</span>
-      <span class="n">coursier</span><span class="o">.</span><span class="nc">Module</span><span class="o">(</span><span class="s">&quot;edu.stanford.nlp&quot;</span><span class="o">,</span> <span class="s">&quot;stanford-corenlp&quot;</span><span class="o">),</span>
-      <span class="s">&quot;3.7.0&quot;</span><span class="o">,</span>
-      <span class="n">attributes</span> <span class="k">=</span> <span class="n">coursier</span><span class="o">.</span><span class="nc">Attributes</span><span class="o">(</span><span class="n">classifier</span> <span class="k">=</span> <span class="s">&quot;models&quot;</span><span class="o">)</span>
-    <span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
+<span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
+  <span class="n">p</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span>
+    <span class="n">additionalHandlers</span> <span class="k">=</span> <span class="n">p</span><span class="o">.</span><span class="n">additionalHandlers</span><span class="o">.</span><span class="n">orElse</span> <span class="o">{</span>
+      <span class="n">translation</span><span class="o">.</span><span class="nc">FansiShow</span><span class="o">.</span><span class="n">fansiHandler</span>
+    <span class="o">}</span>
   <span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">edu.stanford._</span>
+<span class="o">}</span>
 </pre></div>
 
     </div>
@@ -13193,13 +13180,14 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[3]:</div>
+    <div class="prompt output_prompt">Out[2]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">edu.stanford._</span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._, learning._ 
+</span></pre>
 </div>
 
 </div>
@@ -13210,10 +13198,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">edu.stanford.nlp._</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">terms</span> <span class="k">=</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">[</span><span class="kt">Term</span><span class="o">](</span><span class="nc">Type</span><span class="o">,</span> <span class="nc">Unit</span><span class="o">,</span> <span class="nc">Zero</span><span class="o">,</span> <span class="nc">Star</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">typs</span> <span class="k">=</span> <span class="nc">FiniteDistribution</span><span class="o">[</span><span class="kt">Typ</span><span class="o">[</span><span class="kt">Term</span><span class="o">]](</span><span class="nc">Type</span> <span class="o">-&gt;</span> <span class="mf">0.8</span><span class="o">,</span> <span class="nc">Unit</span> <span class="o">-&gt;</span> <span class="mf">0.05</span><span class="o">,</span> <span class="nc">Zero</span> <span class="o">-&gt;</span> <span class="mf">0.15</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">terms</span><span class="o">,</span> <span class="n">typs</span><span class="o">)</span>
 </pre></div>
 
     </div>
@@ -13226,321 +13216,39 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[19]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">edu.stanford.nlp._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">trees.Tree</span>
-<span class="k">import</span> <span class="nn">simple._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">trees.Tree
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">simple._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">sent</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Sentence</span><span class="o">(</span><span class="s">&quot;if a prime number P divides MN, P divides one of M and N&quot;</span><span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">sent</span>: <span class="ansi-green-fg">Sentence</span> = if a prime number P divides MN, P divides one of M and N</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tree</span><span class="k">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">parse</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tree</span>: <span class="ansi-green-fg">Tree</span> = (ROOT (S (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))) (, ,) (NP (NNP P)) (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))))))</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span><span class="o">,</span> <span class="n">translation</span><span class="o">.</span><span class="k">_</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._, translation._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">TreePatterns._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">TreePatterns._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">scala.collection.JavaConversions._</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">scala.collection.JavaConversions._</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">st</span> <span class="k">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">subTrees</span><span class="o">.</span><span class="n">toList</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">st</span>: <span class="ansi-green-fg">List</span>[<span class="ansi-green-fg">Tree</span>] = <span class="ansi-yellow-fg">List</span>(
-  (, ,),
-  (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))),
-  (NNP P),
-  (CD one),
-  M,
-  N,
-  (NN P),
-  P,
-  (NN number),
-  number,
-  (VP (VBZ divides) (NP (NNP MN))),
-  (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N))))),
-  (NP (DT a) (JJ prime) (NN number) (NN P)),
-  (NP (NNP MN)),
-  (NP (NNP P)),
-  divides,
-  and,
-  (ROOT (S (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))) (, ,) (NP (NNP P)) (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N))))))),
-  of,
-  (NP (NNP M) (CC and) (NNP N)),
-  (NNP M),
-  if,
-  (NNP N),
-  (JJ prime),
-  prime,
-  a,
-  MN,
-  (PP (IN of) (NP (NNP M) (CC and) (NNP N))),
-  (NP (CD one)),
-  (SBAR (IN if) (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN))))),
-  (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN)))),
-  one,
-  ,,
-...</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">matches</span> <span class="k">=</span> <span class="n">st</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="nc">IfTree</span><span class="o">.</span><span class="n">unapply</span><span class="o">).</span><span class="n">flatten</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">matches</span>: <span class="ansi-green-fg">List</span>[(<span class="ansi-green-fg">cats</span>.<span class="ansi-green-fg">package</span>.<span class="ansi-green-fg">Id</span>[<span class="ansi-green-fg">Tree</span>], <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Tree</span>])] = <span class="ansi-yellow-fg">List</span>(
-  (
-    (S (NP (DT a) (JJ prime) (NN number) (NN P)) (VP (VBZ divides) (NP (NNP MN)))),
-    <span class="ansi-yellow-fg">Vector</span>(
-      (NP (NNP P)),
-      (VP (VBZ divides) (NP (NP (CD one)) (PP (IN of) (NP (NNP M) (CC and) (NNP N)))))
-    )
+<pre><span class="ansi-cyan-fg">terms</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.25</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.25</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.25</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Star</span>, <span class="ansi-green-fg">0.25</span>)
   )
+)
+<span class="ansi-cyan-fg">typs</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.8</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.05</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.15</span>))
+)
+<span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.25</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.25</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.25</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Star</span>, <span class="ansi-green-fg">0.25</span>)
+    )
+  ),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.8</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.05</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.15</span>))
+  ),
+  <span class="ansi-yellow-fg">Vector</span>(),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  Empty
 )</pre>
 </div>
 
@@ -13552,16 +13260,852 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<span class="k">def</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">).</span><span class="n">sharpen</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">n</span><span class="o">))</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
+</span>
+defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">lp</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">ns</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="o">).</span><span class="n">nextState</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">ns</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">ns</span><span class="o">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">ns</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bt</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">bestTask</span><span class="o">((</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">30</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">ns</span><span class="o">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">bt</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">FlatMap</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">Map</span>(
+      <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+      ammonite.$sess.cmd20$Helper$$Lambda$3316/1857030182@487cdc04,
+      <span class="ansi-green-fg">0</span>
+    ),
+    &lt;function1&gt;
+  ),
+  provingground.Utils$$$Lambda$2797/1331520012@313b87a8
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bf</span> <span class="k">=</span> <span class="n">bt</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">bf</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Option</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">TermState</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Some</span></span>(
+    (
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6</span></span>,
+      <span style="color: yellow"><span class="ansi-yellow-fg">TermState</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((`@a_1 , @a_2) : Zero×Unit) ↦ (`@a_1 , @a_2)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7.645998680079035E-6</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → Unit)) ↦ (@a : 𝒰 ) ↦ Zero</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.517892735935752E-6</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → (𝒰  → 𝒰 ))) ↦ (@a : 𝒰 ) ↦ @a</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.1804754011091535E-6</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((@a_1 , @a_2) : ∑(@b : { @b }) ↦ (@a : Zero) ↦ @a</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.01190918028899E-6</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : Zero) ↦ ((@a_1 , @a_2) : ∑(@a : { @a }) ↦ @a</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.2467826993966145E-6</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : Unit) ↦ (@b : Unit) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.675612414478823E-6</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : Unit) ↦ (@a : Unit) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.9580566691582557E-5</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((@a_1 , @a_2) : ∏(@a : 𝒰 ){ @a }×𝒰 ) ↦ Zero</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.049120033340579E-5</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : 𝒰 ) ↦ (@a : (𝒰  → @a)) ↦ @a(Zero)</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.5162235209130345E-5</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : ∏(@a : (𝒰  → 𝒰 )){ @a(Zero) }) ↦ Zero</span></span>,
+...</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">A</span> <span class="k">=</span> <span class="s">&quot;A&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
+<span class="k">val</span> <span class="n">tsT</span> <span class="k">=</span> <span class="n">bt</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">A</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">A</span>
+<span class="ansi-cyan-fg">tsT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">TermState</span>] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">FlatMap</span>(
+      <span class="ansi-yellow-fg">Map</span>(
+        <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+        ammonite.$sess.cmd20$Helper$$Lambda$3316/1857030182@487cdc04,
+        <span class="ansi-green-fg">0</span>
+      ),
+      &lt;function1&gt;
+    ),
+    provingground.Utils$$$Lambda$2797/1331520012@313b87a8
+  ),
+  ammonite.$sess.cmd23$Helper$$Lambda$3327/584491755@78827119,
+  <span class="ansi-green-fg">0</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">typT</span> <span class="k">=</span> <span class="n">tsT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typs</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">typT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]]] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">FlatMap</span>(
+      <span class="ansi-yellow-fg">Map</span>(
+        <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+        ammonite.$sess.cmd20$Helper$$Lambda$3316/1857030182@487cdc04,
+        <span class="ansi-green-fg">0</span>
+      ),
+      &lt;function1&gt;
+    ),
+    provingground.Utils$$$Lambda$2797/1331520012@313b87a8
+  ),
+  scala.Function1$$Lambda$275/1928301845@cf5ea27,
+  <span class="ansi-green-fg">1</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tpEntF</span> <span class="k">=</span> <span class="n">typT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">entropyVec</span><span class="o">).</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">tpEntF</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Weighted</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]]]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.8078050867367692</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Zero</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.6097510317946515</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Unit</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.2090690705515024</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.340830790910955</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.089677361566008</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">𝒰 ×𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.1329723987132665</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Zero → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.36387423075097</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@b : { @b }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.8633807799533875</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Unit → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.982157826902726</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → Zero)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7.510536353513168</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Zero×𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">7.749556307221009</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">𝒰 ×Zero</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.309134125358288</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Zero → Zero)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.432093949328355</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → Unit)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.64368937897977</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">@a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.653969363416635</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Unit×𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.813826584691428</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Unit → Zero)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.056511499582138</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → 𝒰 ) → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.342305425670816</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">𝒰 ×Unit</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.47305629964443</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Zero → Unit)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.603976101330538</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(∏(@b : 𝒰 ){ @b } → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.612955775479282</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Zero×Zero</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.825857128597626</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰 ×𝒰  → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.84297195684661</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → 𝒰 )×𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.041755741683657</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Unit → Unit)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.101750058946411</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@b : 𝒰 ){ (@b → 𝒰 ) }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.121346425654883</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((Zero → 𝒰 ) → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.239869713657626</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → (𝒰  → 𝒰 ))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.267398585305962</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">𝒰 ×𝒰 ×𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.294682800285921</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }×𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.342990045833728</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(∑(@b : { @b } → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.603776397675402</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∏(@c : 𝒰 ){ @c })</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.647962531183406</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Zero → (𝒰  → 𝒰 ))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.771142522472788</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">𝒰 ×(𝒰  → 𝒰 )</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">10.984979105509309</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Zero×Unit</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">11.021335678591345</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Unit×Zero</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">11.10642318364355</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Zero → 𝒰 )×𝒰 </span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">11.143552517731386</span></span>),
+...</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">B</span> <span class="k">=</span> <span class="s">&quot;B&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
+<span class="k">val</span> <span class="nc">MP</span> <span class="k">=</span> <span class="n">A</span> <span class="o">~&gt;:</span> <span class="o">(</span><span class="n">B</span> <span class="o">~&gt;:</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[27]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">B</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">B</span>
+<span class="ansi-cyan-fg">MP</span>: <span class="ansi-green-fg">GenFuncTyp</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]]]] = <span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (A → ((A → B) → B)) } }</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">typT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="nc">MP</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res27</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0</span></span>)</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">idTyp</span> <span class="k">=</span> <span class="n">A</span> <span class="o">~&gt;:</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="n">A</span><span class="o">)</span>
+<span class="n">typT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="n">idTyp</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">idTyp</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">GenFuncTyp</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Func</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ (A → A) }</span></span>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res28_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.952353241132993E-4</span></span>)</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h2><ul>
+<li>Repeated running of tasks is okay.</li>
+<li>However, we see single shot generation is pretty weak.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">lp1</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="nc">TermState</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">),</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">))).</span><span class="n">sharpen</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">n</span><span class="o">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[30]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">lp1</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">ns1</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">(</span><span class="n">n</span><span class="o">).</span><span class="n">nextState</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">ns</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">ns</span><span class="o">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[31]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">ns1</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bT1</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">bestTask</span><span class="o">((</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">30</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">ns1</span><span class="o">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[41]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">bT1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">FlatMap</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">Map</span>(
+      <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+      ammonite.$sess.cmd30$Helper$$Lambda$3446/1142216442@2a9f3987,
+      <span class="ansi-green-fg">0</span>
+    ),
+    &lt;function1&gt;
+  ),
+  provingground.Utils$$$Lambda$2797/1331520012@786eee75
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bF1</span> <span class="k">=</span> <span class="n">bT1</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">bF1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Option</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">TermState</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">mp1T</span> <span class="k">=</span> <span class="n">bT1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">typs</span><span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[43]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">mp1T</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">FlatMap</span>(
+      <span class="ansi-yellow-fg">Map</span>(
+        <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+        ammonite.$sess.cmd30$Helper$$Lambda$3446/1142216442@2a9f3987,
+        <span class="ansi-green-fg">0</span>
+      ),
+      &lt;function1&gt;
+    ),
+    provingground.Utils$$$Lambda$2797/1331520012@786eee75
+  ),
+  ammonite.$sess.cmd42$Helper$$Lambda$3457/424448485@f71aa6e,
+  <span class="ansi-green-fg">0</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">mp1F</span> <span class="k">=</span> <span class="n">mp1T</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">mp1F</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">typs1T</span> <span class="k">=</span> <span class="n">bT1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">typs</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[45]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">typs1T</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]]] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">FlatMap</span>(
+      <span class="ansi-yellow-fg">Map</span>(
+        <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+        ammonite.$sess.cmd30$Helper$$Lambda$3446/1142216442@2a9f3987,
+        <span class="ansi-green-fg">0</span>
+      ),
+      &lt;function1&gt;
+    ),
+    provingground.Utils$$$Lambda$2797/1331520012@786eee75
+  ),
+  ammonite.$sess.cmd44$Helper$$Lambda$3464/1416231077@4a8a7522,
+  <span class="ansi-green-fg">0</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">typs1T</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res45</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">mp1F</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[52]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res51</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">Double</span>]] = <span class="ansi-green-fg">None</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">bF1</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[53]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res52</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">scala</span>.<span class="ansi-green-fg">util</span>.<span class="ansi-green-fg">Try</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]]] = <span class="ansi-green-fg">None</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This strangely did not complete. Should run in a fresh worksheet.</p>
+
+</div>
+</div>
 </div>
     </div>
   </div>
