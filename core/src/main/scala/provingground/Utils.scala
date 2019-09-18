@@ -29,13 +29,14 @@ object Utils {
 
   def bestTask[A](
       taskSeq: Seq[Task[A]],
+      done : A => Boolean = (a : A) => false,
       accum: Option[A] = None
   ): Task[Option[A]] =
     taskSeq.headOption
       .map(
         _.materialize.flatMap(
           t =>
-            t.fold((_) => Task.now(accum), a => bestTask(taskSeq.tail, Some(a)))
+            t.fold((_) => Task.now(accum), a => if (done(a)) Task.now(Some(a)) else bestTask(taskSeq.tail, done, Some(a)))
         )
       )
       .getOrElse(Task.now(accum))
