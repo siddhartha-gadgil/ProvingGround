@@ -72,29 +72,6 @@ object MonixGramSchmidt {
   ): Task[Vector[Double]] = onVec(vv).flatMap(makePerpFromON(_, v))
 }
 
-// case class MapVS[A]() extends InnerProductSpace[Map[A, Double], Double] {
-//   def negate(x: Map[A, Double]): Map[A, Double] =
-//     x.map { case (x, w) => (x, -w) }
-
-//   def zero: Map[A, Double] = Map()
-
-//   def plus(x: Map[A, Double], y: Map[A, Double]): Map[A, Double] =
-//     (x.toVector ++ y.toVector).groupBy(_._1).mapValues(v => v.map(_._2).sum)
-
-//   def timesl(r: Double, v: Map[A, Double]): Map[A, Double] =
-//     v.map { case (x, w) => (x, r * w) }
-
-//   implicit def scalar: spire.algebra.Field[Double] = implicitly
-
-//   def dot(v: Map[A, Double], w: Map[A, Double]) =
-//     (v.keySet
-//       .union(w.keySet))
-//       .map { x =>
-//         v.getOrElse(x, 0.0) * w.getOrElse(x, 0.0)
-//       }
-//       .sum
-// }
-
 object MapVS {
 //   implicit def mapVS[A]: VectorSpace[Map[A, Double], Double] = MapVS()
 
@@ -106,4 +83,73 @@ object MapVS {
     val groups = base.map { case (x, p) => p *: step(x) }
     groups.map(_.toVector).flatten.groupBy(_._1).mapValues(v => v.map(_._2).sum)
   }
+}
+
+object FieldGramSchmidt{
+  def makePerpFromON[V, F](orthonormals: Vector[V], vec: V)(
+      implicit vs: InnerProductSpace[V, F], field: Field[F], roots: NRoot[F]
+  ): V =
+    orthonormals match {
+      case Vector() => vec
+      case init :+ last =>
+        val recVec    = makePerpFromON(init, vec)
+        val minusProj = -1.0 * (last dot recVec)
+        recVec + (minusProj *: last)
+    }
+
+  def orthonormal[V, F](
+      v: Vector[V]
+  )(implicit vs: InnerProductSpace[V, F], field: Field[F], roots: NRoot[F]): Vector[V] =
+    v match {
+      case Vector() => Vector()
+      case init :+ last =>
+        val onInit   = orthonormal(init)
+        val perpLast = makePerpFromON(onInit, last)
+        val onLast   = perpLast.normalize
+        if (perpLast.norm != 0) onInit :+ perpLast.normalize else onInit
+    }
+
+  def onVec[F](vv: Vector[Vector[F]])(implicit field: Field[F], roots: NRoot[F]) = orthonormal(vv)
+
+  def perpVec[F](vv: Vector[Vector[F]], v: Vector[F])(implicit field: Field[F], roots: NRoot[F]) =
+    makePerpFromON(onVec(vv), v)
+
+}
+
+object MonixFieldGramSchmidt {
+  import monix.eval._
+
+  def makePerpFromON[V, F](orthonormals: Vector[V], vec: V)(
+      implicit vs: InnerProductSpace[V, F], field: Field[F], roots: NRoot[F]
+  ): Task[V] =
+    Task.eval(orthonormals.isEmpty) flatMap {
+      case true => Task.now(vec)
+      case false =>
+        for {
+          recVec <- makePerpFromON(orthonormals.init, vec)
+          minusProj = -1.0 * (orthonormals.last dot recVec)
+        } yield recVec + (minusProj *: orthonormals.last)
+    }
+
+  def orthonormal[V, F](
+      v: Vector[V]
+  )(implicit vs: InnerProductSpace[V, F], field: Field[F], roots: NRoot[F]): Task[Vector[V]] =
+    Task.eval(v.isEmpty) flatMap {
+      case true => Task.now(Vector())
+      case false =>
+        import v._
+        for {
+          onInit   <- orthonormal(init)
+          perpLast <- makePerpFromON(onInit, last)
+          onLast = perpLast.normalize
+        } yield if (perpLast.norm != 0) onInit :+ perpLast.normalize else onInit
+    }
+
+  def onVec[F](vv: Vector[Vector[F]])(implicit field: Field[F], roots: NRoot[F]) : Task[Vector[Vector[F]]] =
+    orthonormal(vv)
+
+  def perpVec[F](
+      vv: Vector[Vector[F]],
+      v: Vector[F]
+  )(implicit field: Field[F], roots: NRoot[F]): Task[Vector[F]] = onVec(vv).flatMap(makePerpFromON(_, v))
 }

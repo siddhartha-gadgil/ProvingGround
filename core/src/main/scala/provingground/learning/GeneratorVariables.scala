@@ -431,6 +431,39 @@ object Expression {
     def mapVars(f: Variable[_] => Variable[_]): Expression = this
   }
 
+  import spire.algebra._, spire.implicits._
+
+  implicit lazy val field : Field[Expression] = new Field[Expression]{
+  // Members declared in algebra.ring.AdditiveGroup
+  def negate(x: Expression): Expression = x * -1
+  
+  // Members declared in algebra.ring.AdditiveMonoid
+  def zero: Expression = Literal(0)
+  
+  // Members declared in algebra.ring.AdditiveSemigroup
+  def plus(x: Expression,y: Expression): Expression = Sum(x, y)
+  
+  // Members declared in spire.algebra.GCDRing
+  def gcd(a: Expression,b: Expression)(implicit ev: spire.algebra.Eq[Expression]): Expression = one
+  def lcm(a: Expression,b: Expression)(implicit ev: spire.algebra.Eq[Expression]): Expression = a * b
+  
+  // Members declared in algebra.ring.MultiplicativeGroup
+  def div(x: Expression,y: Expression): Expression = x / y
+  
+  // Members declared in algebra.ring.MultiplicativeMonoid
+  def one: Expression = Literal(1)
+  
+  // Members declared in algebra.ring.MultiplicativeSemigroup
+  def times(x: Expression,y: Expression): Expression = x * y
+  }
+
+  implicit lazy val nroot: NRoot[Expression] = 
+    new NRoot[Expression]{
+      def nroot(a: Expression, n: Int) = Exp(Log(a) * (1.0/n))
+
+      def fpow(a: Expression, b: Expression): Expression = Exp(Log(a) * b)
+    }
+
 }
 
 case class Equation(lhs: Expression, rhs: Expression) {
