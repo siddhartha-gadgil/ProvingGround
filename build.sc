@@ -93,7 +93,9 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
     def ass: PathRef = assembly()
     def name: String = artifactName()
     cp.over(ass.path, pwd/ "bin" / s"$name.fat.jar")
-    cp.over(ass.path, pwd/ "notes" / "bin" / s"$name-${glog.abbreviate(7).name}.fat.jar")
+    val hashName = s"$name-${glog.abbreviate(7).name}.fat.jar"
+    cp.over(ass.path, pwd/ "notes" / "bin" / hashName)
+    pprint.log("import $cp.bin." + s"`$hashName`")
     ass
   }
 
