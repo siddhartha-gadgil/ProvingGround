@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>ScalaRep</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>2019-09-18-refine-till-success</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11771,23 +11771,12 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Scala-Representations">Scala Representations<a class="anchor-link" href="#Scala-Representations">&#182;</a></h2><p>Scala objects are integrated with HoTT by using wrappers, combinators and implicit based convenience methods. In this note we look at the basic representations. The main power of this is to provide automatically (through implicits) types and scala bindings for functions from the basic ones.</p>
-<p>A more advanced form of Scala representations also makes symbolic algebra simplifications. The basic form should be used, for example, for group presentations, where simplifications are not expected.</p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$ivy.</span><span class="n">`io.github.siddhartha-gadgil::provingground-core-jvm:0.1.0`</span>
-<span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-3d48753.fat.jar`</span>
 </pre></div>
 
 </div>
@@ -11806,9 +11795,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$ivy.$                                       
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._</span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$                                           </span></pre>
 </div>
 
 </div>
@@ -11822,9 +11809,15 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span>
-<span class="k">import</span> <span class="nn">HoTT._</span><span class="o">,</span> <span class="n">scalahott</span><span class="o">.</span><span class="k">_</span>
-<span class="k">import</span> <span class="nn">ScalaRep._</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
+<span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
+  <span class="n">p</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span>
+    <span class="n">additionalHandlers</span> <span class="k">=</span> <span class="n">p</span><span class="o">.</span><span class="n">additionalHandlers</span><span class="o">.</span><span class="n">orElse</span> <span class="o">{</span>
+      <span class="n">translation</span><span class="o">.</span><span class="nc">FansiShow</span><span class="o">.</span><span class="n">fansiHandler</span>
+    <span class="o">}</span>
+  <span class="o">)</span>
+<span class="o">}</span>
 </pre></div>
 
 </div>
@@ -11843,11 +11836,8 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">HoTT._, scalahott._
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">ScalaRep._</span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._, learning._ 
+</span></pre>
 </div>
 
 </div>
@@ -11855,25 +11845,15 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We consider the type of Natural numbers formed from Integers. This is defined in ScalaRep as:</p>
-<div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">object</span> <span class="nc">NatInt</span> <span class="k">extends</span> <span class="nc">ScalaTyp</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
-</pre></div>
-<p><strong>Warning:</strong> This is an unsafe type, as Integers can overflow, and there is no checking for positivity.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="nc">NatInt</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">A</span> <span class="k">=</span> <span class="s">&quot;A&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
+<span class="k">val</span> <span class="n">B</span> <span class="k">=</span> <span class="s">&quot;B&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
+<span class="k">val</span> <span class="nc">MPAB</span> <span class="k">=</span> <span class="n">A</span> <span class="o">-&gt;:</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">B</span>
 </pre></div>
 
 </div>
@@ -11892,7 +11872,9 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res2</span>: <span class="ansi-green-fg">NatInt</span>.type = NatInt</pre>
+<pre><span class="ansi-cyan-fg">A</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">A</span>
+<span class="ansi-cyan-fg">B</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">B</span>
+<span class="ansi-cyan-fg">MPAB</span>: <span class="ansi-green-fg">FuncTyp</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(A → ((A → B) → B))</span></pre>
 </div>
 
 </div>
@@ -11900,23 +11882,13 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Conversion-using-the-term-method">Conversion using the term method<a class="anchor-link" href="#Conversion-using-the-term-method">&#182;</a></h3><p>The term method converts a scala object, with scala type T say, into a Term, provided there is an implicit representation with scala type T.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">NatInt.rep</span>
-<span class="mf">1.</span><span class="n">term</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="nc">TermState</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">),</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">))).</span><span class="n">sharpen</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">n</span><span class="o">))</span>
 </pre></div>
 
 </div>
@@ -11935,9 +11907,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">NatInt.rep
-</span>
-<span class="ansi-cyan-fg">res3_1</span>: <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">ScalaSymbol</span>(<span class="ansi-green-fg">1</span>), NatInt)</pre>
+<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">lp</span></pre>
 </div>
 
 </div>
@@ -11945,22 +11915,13 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Functions-to-FuncTerms">Functions to FuncTerms<a class="anchor-link" href="#Functions-to-FuncTerms">&#182;</a></h3><p>Given the representation of Int, there are combinators that give representations of, for instance Int =&gt; Int =&gt; Int. Note also that the type of the resulting term is a type parameter of the scala representations, so we get a refined compile time type</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">sum</span> <span class="k">=</span> <span class="o">((</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">m</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">+</span> <span class="n">m</span><span class="o">).</span><span class="n">term</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">ns</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="o">).</span><span class="n">nextState</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">ns</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">ns</span><span class="o">}</span>
 </pre></div>
 
 </div>
@@ -11979,11 +11940,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">sum</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>], <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>]]] = <span class="ansi-yellow-fg">ExtendedFunction</span>(
-  ammonite.$sess.cmd4$Helper$$Lambda$2363/1189219296@57a4cd68,
-  <span class="ansi-yellow-fg">SimpleRep</span>(NatInt),
-  <span class="ansi-yellow-fg">FuncRep</span>(<span class="ansi-yellow-fg">SimpleRep</span>(NatInt), <span class="ansi-yellow-fg">SimpleRep</span>(NatInt))
-)</pre>
+<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">ns</span></pre>
 </div>
 
 </div>
@@ -11997,7 +11954,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">sum</span><span class="o">(</span><span class="mf">1.</span><span class="n">term</span><span class="o">)(</span><span class="mf">2.</span><span class="n">term</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bT</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">bestTask</span><span class="o">[(</span><span class="kt">Int</span>, <span class="kt">TermState</span><span class="o">)]((</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">30</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">ns</span><span class="o">),</span> <span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">s</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">typs</span><span class="o">(</span><span class="nc">MPAB</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">}</span> <span class="o">)</span>
 </pre></div>
 
 </div>
@@ -12016,7 +11973,17 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res5</span>: <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">ScalaSymbol</span>(<span class="ansi-green-fg">3</span>), NatInt)</pre>
+<pre><span class="ansi-cyan-fg">bT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">FlatMap</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">Map</span>(
+      <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+      ammonite.$sess.cmd4$Helper$$Lambda$2992/1338910073@2ae5f5c4,
+      <span class="ansi-green-fg">0</span>
+    ),
+    &lt;function1&gt;
+  ),
+  provingground.Utils$$$Lambda$2995/258308422@24541db0
+)</pre>
 </div>
 
 </div>
@@ -12030,8 +11997,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">n</span> <span class="k">=</span> <span class="s">&quot;n&quot;</span> <span class="o">::</span> <span class="nc">NatInt</span>
-<span class="n">sum</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="mf">2.</span><span class="n">term</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<span class="k">val</span> <span class="n">bF</span> <span class="k">=</span> <span class="n">bT</span><span class="o">.</span><span class="n">runToFuture</span>
 </pre></div>
 
 </div>
@@ -12044,31 +12011,54 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[7]:</div>
+<div class="prompt"></div>
 
 
 
 
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">n</span>: <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">Name</span>(<span class="ansi-green-fg">&#34;n&#34;</span>), NatInt)
-<span class="ansi-cyan-fg">res6_1</span>: <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">RepSymbObj</span>(
-  <span class="ansi-yellow-fg">ApplnSym</span>(
-    <span class="ansi-yellow-fg">SymbolicFunc</span>(
-      <span class="ansi-yellow-fg">ApplnSym</span>(
-        <span class="ansi-yellow-fg">ExtendedFunction</span>(
-          ammonite.$sess.cmd4$Helper$$Lambda$2363/1189219296@57a4cd68,
-          <span class="ansi-yellow-fg">SimpleRep</span>(NatInt),
-          <span class="ansi-yellow-fg">FuncRep</span>(<span class="ansi-yellow-fg">SimpleRep</span>(NatInt), <span class="ansi-yellow-fg">SimpleRep</span>(NatInt))
-        ),
-        <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">Name</span>(<span class="ansi-green-fg">&#34;n&#34;</span>), NatInt)
-      ),
-      NatInt,
-      NatInt
-    ),
-    <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">ScalaSymbol</span>(<span class="ansi-green-fg">2</span>), NatInt)
-  ),
-  NatInt
-)</pre>
+<div class="output_text output_subarea ">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
+</span>
+<span class="ansi-cyan-fg">bF</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">Success</span>(
+  <span class="ansi-yellow-fg">Some</span>(
+    (
+      <span class="ansi-green-fg">1</span>,
+      <span class="ansi-yellow-fg">TermState</span>(
+        <span class="ansi-yellow-fg">FiniteDistribution</span>(
+          <span class="ansi-yellow-fg">Vector</span>(
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.4128465718655667</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : B×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @b</span>, <span class="ansi-green-fg">6.468975597469228E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @a</span>, <span class="ansi-green-fg">4.5282829182284584E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : A×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ B</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+...</pre>
 </div>
 
 </div>
@@ -12082,7 +12072,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">s</span> <span class="k">=</span> <span class="n">lmbda</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">sum</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="mf">2.</span><span class="n">term</span><span class="o">))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">bF</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">typs</span><span class="o">(</span><span class="nc">MPAB</span><span class="o">))</span>
 </pre></div>
 
 </div>
@@ -12095,33 +12085,13 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[8]:</div>
+<div class="prompt"></div>
 
 
 
 
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">s</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>], <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>]] = <span class="ansi-yellow-fg">LambdaFixed</span>(
-  <span class="ansi-yellow-fg">RepSymbObj</span>(n, NatInt),
-  <span class="ansi-yellow-fg">RepSymbObj</span>(
-    <span class="ansi-yellow-fg">ApplnSym</span>(
-      <span class="ansi-yellow-fg">SymbolicFunc</span>(
-        <span class="ansi-yellow-fg">ApplnSym</span>(
-          <span class="ansi-yellow-fg">ExtendedFunction</span>(
-            ammonite.$sess.cmd4$Helper$$Lambda$2363/1189219296@57a4cd68,
-            <span class="ansi-yellow-fg">SimpleRep</span>(NatInt),
-            <span class="ansi-yellow-fg">FuncRep</span>(<span class="ansi-yellow-fg">SimpleRep</span>(NatInt), <span class="ansi-yellow-fg">SimpleRep</span>(NatInt))
-          ),
-          <span class="ansi-yellow-fg">RepSymbObj</span>(n, NatInt)
-        ),
-        NatInt,
-        NatInt
-      ),
-      <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">ScalaSymbol</span>(<span class="ansi-green-fg">2</span>), NatInt)
-    ),
-    NatInt
-  )
-)</pre>
+<div class="output_text output_subarea ">
+<pre><span class="ansi-cyan-fg">res7</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Success</span>(<span class="ansi-green-fg">7.529314129678205E-5</span>)</pre>
 </div>
 
 </div>
@@ -12135,7 +12105,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">s</span><span class="o">(</span><span class="mf">3.</span><span class="n">term</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bT2</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">bestTask</span><span class="o">[(</span><span class="kt">Int</span>, <span class="kt">TermState</span><span class="o">)]((-</span><span class="mi">5</span> <span class="n">to</span> <span class="mi">25</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">ns</span><span class="o">),</span> <span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">s</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">typs</span><span class="o">(</span><span class="nc">MPAB</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">}</span> <span class="o">)</span>
 </pre></div>
 
 </div>
@@ -12154,52 +12124,16 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res8</span>: <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">ScalaSymbol</span>(<span class="ansi-green-fg">5</span>), NatInt)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We will also define the product</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">prod</span> <span class="k">=</span> <span class="o">((</span><span class="n">n</span> <span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">m</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">m</span><span class="o">).</span><span class="n">term</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">prod</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>], <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>]]] = <span class="ansi-yellow-fg">ExtendedFunction</span>(
-  ammonite.$sess.cmd9$Helper$$Lambda$2430/434006696@6c9e4bf0,
-  <span class="ansi-yellow-fg">SimpleRep</span>(NatInt),
-  <span class="ansi-yellow-fg">FuncRep</span>(<span class="ansi-yellow-fg">SimpleRep</span>(NatInt), <span class="ansi-yellow-fg">SimpleRep</span>(NatInt))
+<pre><span class="ansi-cyan-fg">bT2</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">FlatMap</span>(
+  <span class="ansi-yellow-fg">FlatMap</span>(
+    <span class="ansi-yellow-fg">Map</span>(
+      <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+      ammonite.$sess.cmd4$Helper$$Lambda$2992/1338910073@561b4154,
+      <span class="ansi-green-fg">0</span>
+    ),
+    &lt;function1&gt;
+  ),
+  provingground.Utils$$$Lambda$2995/258308422@2f1e61e0
 )</pre>
 </div>
 
@@ -12211,10 +12145,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">prod</span><span class="o">(</span><span class="mf">2.</span><span class="n">term</span><span class="o">)(</span><span class="mf">4.</span><span class="n">term</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bF2</span> <span class="k">=</span> <span class="n">bT2</span><span class="o">.</span><span class="n">runToFuture</span>
 </pre></div>
 
 </div>
@@ -12227,13 +12161,52 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[11]:</div>
+<div class="prompt"></div>
 
 
 
 
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res10</span>: <span class="ansi-green-fg">RepTerm</span>[<span class="ansi-green-fg">Int</span>] = <span class="ansi-yellow-fg">RepSymbObj</span>(<span class="ansi-yellow-fg">ScalaSymbol</span>(<span class="ansi-green-fg">8</span>), NatInt)</pre>
+<div class="output_text output_subarea ">
+<pre><span class="ansi-cyan-fg">bF2</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">Success</span>(
+  <span class="ansi-yellow-fg">Some</span>(
+    (
+      <span class="ansi-green-fg">1</span>,
+      <span class="ansi-yellow-fg">TermState</span>(
+        <span class="ansi-yellow-fg">FiniteDistribution</span>(
+          <span class="ansi-yellow-fg">Vector</span>(
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.4128465718655667</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : B×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @b</span>, <span class="ansi-green-fg">6.468975597469228E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @a</span>, <span class="ansi-green-fg">4.5282829182284584E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : A×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ B</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
+...</pre>
 </div>
 
 </div>
