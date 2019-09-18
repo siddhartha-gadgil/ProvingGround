@@ -75,6 +75,8 @@ object TermGenParams {
     solverW = 0
   )
 
+  def apple(w: Double = 0.1) = zero.copy(appW = w, unAppW = w)
+
   implicit def rw: RW[TermGenParams] =
     readwriter[ujson.Value].bimap(_.toJson, fromJson)
 

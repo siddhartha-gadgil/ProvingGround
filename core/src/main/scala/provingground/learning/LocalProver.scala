@@ -272,6 +272,37 @@ case class LocalProver(
         klW
       )
 
+    def splitTangentProvers(terms: Vector[(Term, Double)]) :  Task[Vector[LocalTangentProver]] = 
+    for {
+      baseState <- nextState
+      eqnds <- equationNodes
+    } yield
+     terms.map {
+       case (t, w) =>
+       LocalTangentProver(
+        baseState,
+        eqnds,
+        baseState.tangent(t),
+        tg,
+        cutoff / w, 
+        limit,
+        maxRatio,
+        scale,
+        steps,
+        maxDepth,
+        hW,
+        klW
+      )
+     }
+
+     def splitLemmaProvers(scale: Double = 1) :  Task[Vector[LocalTangentProver]] = 
+      lemmas.flatMap{
+        v =>
+          val pfs = v.map{case (tp, w) => ("proof" :: tp, w)}
+          splitTangentProvers(pfs)
+      }
+      
+
     def proofTangent(tangentCutoff: Double = cutoff) : Task[LocalTangentProver] = 
       lemmaProofs.flatMap(fd => distTangentProver(fd.safeNormalized, tangentCutoff))
 
@@ -460,6 +491,8 @@ case class LocalTangentProver(
     hW: Double = 1,
     klW: Double = 1
 ) extends LocalProverStep {
+
+  def apple(w: Double = 0.1) = this.copy(tg = TermGenParams.apple(w))
 
   val mfd: MonixTangentFiniteDistributionEq[TermState] =
     MonixTangentFiniteDistributionEq(
