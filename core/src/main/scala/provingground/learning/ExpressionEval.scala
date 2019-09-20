@@ -2,7 +2,8 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD, _}, HoTT._
 import monix.eval._, monix.tail._
 
-import GeneratorVariables._, TermRandomVars._, Expression._, TermGeneratorNodes.{_}
+import GeneratorVariables._, TermRandomVars._, Expression._,
+TermGeneratorNodes.{_}
 
 import annotation.tailrec
 
@@ -180,20 +181,29 @@ object ExpressionEval {
   def fromStates(
       initialState: TermState,
       finalState: TermState,
-      equations: Set[Equation],
-      tg: TermGenParams,
-      maxRatio: Double = 1.01,
-      scale: Double = 1.0
+      equationsS: Set[Equation],
+      tgS: TermGenParams,
+      maxRatioS: Double = 1.01,
+      scaleS: Double = 1.0
   ) =
-    ExpressionEval(
-      initMap(eqAtoms(equations), tg, initialState),
-      finalState.typs,
-      equations,
-      tg,
-      false,
-      maxRatio,
-      scale
-    )
+    new ExpressionEval {
+      val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
+      val finalTyps             = finalState.typs
+      val equations             = equationsS
+      val tg                    = tgS
+      val maxRatio              = maxRatioS
+      val scale                 = scaleS
+      val coeffsAsVars: Boolean = false
+    }
+
+  trait GenerateTyps extends ExpressionEval {
+    lazy val finalTyps =
+      FD {
+        finalDist.collect {
+          case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => Weighted(typ, w)
+        }
+      }
+  }
 }
 
 import spire.algebra._
@@ -201,26 +211,52 @@ import spire.math._
 import spire.implicits._
 import ExpressionEval._
 
-case class ExpressionEval(
-    init: Map[Expression, Double],
-    finalTyps: FD[Typ[Term]],
-    equations: Set[Equation],
-    tg: TermGenParams,
-    coeffsAsVars: Boolean = false,
-    maxRatio: Double = 1.01,
-    scale: Double = 1.0
-) {
+trait ExpressionEval { self =>
+  val init: Map[Expression, Double]
+  val finalTyps: FD[Typ[Term]]
+  val equations: Set[Equation]
+  val tg: TermGenParams
+  val coeffsAsVars: Boolean
+  val maxRatio: Double
+  val scale: Double
 
-  def avgInit(that: ExpressionEval) = 
-    ExpressionEval(
-      (0.5 *: init) + (0.5 *: that.init),
-      finalTyps,
-      Equation.merge(equations, that.equations),
-      tg,
-      coeffsAsVars,
-      maxRatio,
-      scale
-    )
+  def avgInit(that: ExpressionEval) =
+    new ExpressionEval {
+      val init           = (0.5 *: self.init) + (0.5 *: that.init)
+      lazy val finalTyps = self.finalTyps
+      val equations      = Equation.merge(self.equations, that.equations)
+      val tg             = self.tg
+      val coeffsAsVars   = self.coeffsAsVars
+      val maxRatio       = self.maxRatio
+      val scale          = self.scale
+    }
+
+  def modify(
+      initNew: Map[Expression, Double] = self.init,
+      finalTypsNew: => FD[Typ[Term]] = self.finalTyps,
+      equationsNew: Set[Equation] = self.equations,
+      tgNew: TermGenParams = self.tg,
+      coeffsAsVarsNew: Boolean = self.coeffsAsVars,
+      maxRatioNew: Double = self.maxRatio,
+      scaleNew: Double = self.scale
+  ): ExpressionEval = new ExpressionEval {
+    val init: Map[Expression, Double] = initNew
+    lazy val finalTyps: FD[Typ[Term]] = finalTypsNew
+    val equations: Set[Equation]      = equationsNew
+    val tg: TermGenParams             = tgNew
+    val coeffsAsVars: Boolean         = coeffsAsVarsNew
+    val maxRatio: Double              = maxRatioNew
+    val scale: Double                 = scaleNew
+  }
+
+  def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
+    val init         = self.init
+    val equations    = self.equations
+    val tg           = self.tg
+    val coeffsAsVars = self.coeffsAsVars
+    val maxRatio     = self.maxRatio
+    val scale        = self.scale
+  }
 
   /**
     * the atomic expressions in the equations
@@ -268,8 +304,7 @@ case class ExpressionEval(
     }
     .fold[Expression](Literal(0))(_ + _)
 
-  val initVarGroups
-      : Map[(RandomVar[_], Vector[_]), Set[Expression]] =
+  val initVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
       .collect {
         case InitialVal(variable) => variable
@@ -280,8 +315,7 @@ case class ExpressionEval(
         s.map { case (x, _) => InitialVal(x): Expression }
       }
 
-  val finalVarGroups
-      : Map[(RandomVar[_], Vector[_]), Set[Expression]] =
+  val finalVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
       .collect {
         case FinalVal(variable) => variable
@@ -319,18 +353,21 @@ case class ExpressionEval(
       .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
       .toVector
 
-  lazy val coefficients : Vector[Coeff[_]] =
-  equations
-    .flatMap(eq => Set(eq.lhs, eq.rhs))
-    .flatMap(exp => Expression.coefficients(exp))
-    .toVector
+  lazy val coefficients: Vector[Coeff[_]] =
+    equations
+      .flatMap(eq => Set(eq.lhs, eq.rhs))
+      .flatMap(exp => Expression.coefficients(exp))
+      .toVector
 
-  lazy val coeffVariance : Expression = 
-    Utils.partition[Coeff[_]](coefficients, 
-    {case (c1, c2) => c1.sameFamily(c2, tg.nodeCoeffSeq)}
-    ).map(v => Expression.variance(v)).fold[Expression](Literal(0))(Sum(_, _))
+  lazy val coeffVariance: Expression =
+    Utils
+      .partition[Coeff[_]](coefficients, {
+        case (c1, c2) => c1.sameFamily(c2, tg.nodeCoeffSeq)
+      })
+      .map(v => Expression.variance(v))
+      .fold[Expression](Literal(0))(Sum(_, _))
 
-  lazy val vars = if (coeffsAsVars) valueVars ++ coefficients  else  valueVars
+  lazy val vars = if (coeffsAsVars) valueVars ++ coefficients else valueVars
 
   lazy val variableIndex: Map[Expression, Int] =
     vars.zipWithIndex.toMap
@@ -528,21 +565,33 @@ case class ExpressionEval(
     */
   val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
 
-  lazy val finalTermMap : Map[Term, Expression] = finalTerms.map{t => t -> FinalVal(Elem(t, Terms))}.toMap
+  lazy val finalTermMap: Map[Term, Expression] = finalTerms.map { t =>
+    t -> FinalVal(Elem(t, Terms))
+  }.toMap
 
   lazy val finalTermEntropy: Expression = Expression.h(finalTermMap)
 
-  lazy val finalTypMap : Map[Term, Expression] = finalTyps.support.map{t => t -> FinalVal(Elem(t, Terms))}.toMap
+  lazy val finalTypMap: Map[Term, Expression] = finalTyps.support.map { t =>
+    t -> FinalVal(Elem(t, Terms))
+  }.toMap
 
   lazy val finalTypEntropy: Expression = Expression.h(finalTypMap)
 
-  lazy val initTermsSum = initTerms.map{
-    case t => InitialVal(Elem(t, Terms))
-  }.fold(Expression.Literal(0)){(t1, t2) => Sum(t1, t2)}
+  lazy val initTermsSum = initTerms
+    .map {
+      case t => InitialVal(Elem(t, Terms))
+    }
+    .fold(Expression.Literal(0)) { (t1, t2) =>
+      Sum(t1, t2)
+    }
 
-  lazy val finalTermsSum = finalTerms.map{
-    case t => FinalVal(Elem(t, Terms))
-  }.fold(Expression.Literal(0)){(t1, t2) => Sum(t1, t2)}
+  lazy val finalTermsSum = finalTerms
+    .map {
+      case t => FinalVal(Elem(t, Terms))
+    }
+    .fold(Expression.Literal(0)) { (t1, t2) =>
+      Sum(t1, t2)
+    }
 
   /**
     * Expressions for equations.
