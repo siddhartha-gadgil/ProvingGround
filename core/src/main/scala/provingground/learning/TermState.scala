@@ -110,11 +110,32 @@ import TermGeneratorNodes._
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
     val x =
       nextVar(typ, context.variables)
-//      typ.Var
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
     val newGoals: FD[Typ[Term]] = goals.map {
       case pd: PiDefn[u, v] if pd.domain == typ => pd.fibers(x.asInstanceOf[u])
       case ft: FuncTyp[u, v] if ft.dom == typ   => ft.codom
+      case tp                                   => tp
+    }
+
+    lazy val newTyps =
+      typOpt(x)
+        .map(tp => (FD.unif(tp) * varWeight) ++ (typs * (1 - varWeight)))
+        .getOrElse(typs)
+    TermState(
+      newTerms,
+      newTyps,
+      x +: vars,
+      inds,
+      newGoals.flatten,
+      context.addVariable(x)
+    ) -> x
+  }
+
+  def addTerm(x: Term, varWeight: Double = 0.3) = {
+    val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
+    val newGoals: FD[Typ[Term]] = goals.map {
+      case pd: PiDefn[u, v] if pd.domain == x.typ => pd.fibers(x.asInstanceOf[u])
+      case ft: FuncTyp[u, v] if ft.dom == x.typ   => ft.codom
       case tp                                   => tp
     }
 
