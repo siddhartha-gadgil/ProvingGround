@@ -66,11 +66,11 @@ object ExpressionEval {
       case InitialVal(elem @ Elem(el, rv)) =>
         val base = sd.value(initialState)(rv)(el)
         if (base > 0) Some(base)
-        else if (rv == Goals) Some(0.5)           // just a quick-fix
+        else if (rv == Goals) Some(0.5) // just a quick-fix
         else
-        //  if (isIsleVar(elem))
-          Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands        
-        // else throw new Exception(s"no initial value for $elem")
+          //  if (isIsleVar(elem))
+          Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
+      // else throw new Exception(s"no initial value for $elem")
       case IsleScale(_, _) => Some((1.0 - tg.varWeight))
       case _               => None
     }
@@ -205,6 +205,16 @@ object ExpressionEval {
         }
       }
   }
+
+  def values(eqs: Set[Equation]): Set[Expression] =
+    eqs
+      .flatMap(eq => Set(eq.lhs, eq.rhs))
+      .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
+
+  def export(ev: ExpressionEval, vars: Vector[Term]) : ExpressionEval = vars match {
+    case Vector() => ev
+    case xs :+ y => export(ev.relVariable(y), xs)
+  }
 }
 
 import spire.algebra._
@@ -274,7 +284,9 @@ trait ExpressionEval { self =>
 
   val keys: Vector[Expression] = finalDist.keys.toVector
 
-  def isleVar(el: Elem[_]) = valueVars.contains(InitialVal(el)) && (el.randomVar == Terms) && !init.keySet.contains(InitialVal(el))
+  def isleVar(el: Elem[_]) =
+    valueVars.contains(InitialVal(el)) && (el.randomVar == Terms) && !init.keySet
+      .contains(InitialVal(el))
 
   /**
     * Terms in the initial distributions, used to calculate total weights of functions etc
@@ -282,8 +294,6 @@ trait ExpressionEval { self =>
   val initTerms: Vector[Term] = keys.collect {
     case InitialVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }
-
-  
 
   /**
     * Terms in the final (i.e. evolved) distribution
@@ -293,21 +303,23 @@ trait ExpressionEval { self =>
   }.toSet
 
   def lambdaExportEquations(
-      variable: Term
+      variable: Term,
+      varWeight: Double
   ): Set[Equation] = {
-    val initState = TermState(generators(init), finalTyps)
+    // val initState = TermState(generators(init), finalTyps)
     import GeneratorNode._, TermGeneratorNodes._
     val isle =
       Island[Term, TermState, Term, Term](
         Terms,
         ConstRandVar(Terms),
-        ts => ts.addTerm(variable),
+        ts => ts.addTerm(variable, varWeight),
         LamApply,
         EnterIsle
       )
     import isle._
-    val (isleInit, boat) = initMap(initState) // boat is the same as variable
-    val coeff            = Coeff(Base.lambdaNode)
+    // val (isleInit, boat) = initMap(initState) // boat is the same as variable
+    val boat  = variable
+    val coeff = Coeff(Base.lambdaNode)
     val isleEqs: Set[Equation] =
       equations.map(_.mapVars { (x) =>
         InIsle(x, boat, isle)
@@ -342,20 +354,21 @@ trait ExpressionEval { self =>
   }
 
   def piExportEquations(
-      variable: Term
+      variable: Term,
+      varWeight: Double
   ): Set[Equation] = {
-    val initState = TermState(generators(init), finalTyps)
+    // val initState = TermState(generators(init), finalTyps)
     import GeneratorNode._, TermGeneratorNodes._
     val isle =
       Island[Typ[Term], TermState, Typ[Term], Term](
         Typs,
         ConstRandVar(Typs),
-        ts => ts.addTerm(variable),
+        ts => ts.addTerm(variable, varWeight),
         PiApply,
         EnterIsle
       )
     import isle._
-    val (isleInit, boat) = initMap(initState) // boat is the same as variable
+    val boat = variable
     val coeff            = Coeff(Base.piNode)
     val isleEqs: Set[Equation] =
       equations.map(_.mapVars { (x) =>
@@ -388,6 +401,24 @@ trait ExpressionEval { self =>
         )
       }
     isleEqs union (Equation.group(isleIn union bridgeEqs))
+  }
+
+  def relVariable(x: Term) : ExpressionEval = {
+    val varWeight = init(InitialVal(Elem(x, Terms)))
+    val eqs = piExportEquations(x, varWeight) union lambdaExportEquations(x, varWeight)
+    val newInit = init.map{
+      case (exp @ InitialVal(Elem(y, Terms)), w) => 
+        if (x == y) None else Some(exp, w / (1.0 - varWeight))
+      case (k, v) => Some(k -> v)
+    }.flatten.toMap
+    new ExpressionEval with GenerateTyps {
+      val init         = newInit
+      val equations    = eqs
+      val tg           = self.tg
+      val coeffsAsVars = self.coeffsAsVars
+      val maxRatio     = self.maxRatio
+      val scale        = self.scale
+    }
   }
 
   val funcTotal: Expression = initTerms
