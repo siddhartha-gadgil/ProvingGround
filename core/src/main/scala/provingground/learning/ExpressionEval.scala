@@ -320,7 +320,56 @@ trait ExpressionEval { self =>
         Expression.varVals(eq.rhs)
       }
       .collect {
-        case InitialVal(Elem(el, Terms)) => Elem(el, Terms)
+        case InitialVal(Elem(el, rv)) => Elem(el, rv)
+      }
+    val isleIn: Set[EquationNode] =
+      initVarElems.map { el =>
+        val rhs =
+          if (boat == el.element)
+            (IsleScale(boat, el) * -1) + Literal(1)
+          else IsleScale(boat, el) * InitialVal(el)
+        EquationNode(
+          InitialVal(InIsle(el, boat, isle)),
+          rhs
+        )
+      }
+    isleEqs union (Equation.group(isleIn union bridgeEqs))
+  }
+
+  def piExportEquations(
+      variable: Term
+  ): Set[Equation] = {
+    val initState = TermState(generators(init), finalTyps)
+    import GeneratorNode._, TermGeneratorNodes._
+    val isle =
+      Island[Typ[Term], TermState, Typ[Term], Term](
+        Typs,
+        ConstRandVar(Typs),
+        ts => ts.addTerm(variable),
+        PiApply,
+        EnterIsle
+      )
+    import isle._
+    val (isleInit, boat) = initMap(initState) // boat is the same as variable
+    val coeff            = Coeff(Base.piNode)
+    val isleEqs: Set[Equation] =
+      equations.map(_.mapVars { (x) =>
+        InIsle(x, boat, isle)
+      })
+    val bridgeEqs: Set[EquationNode] = finalTyps.support.map { x =>
+      EquationNode(
+        FinalVal(Elem(export(boat, x), Typs)),
+        coeff * FinalVal(
+          InIsle(Elem(x, Typs), boat, isle)
+        )
+      )
+    }
+    val initVarElems = equations
+      .flatMap { (eq) =>
+        Expression.varVals(eq.rhs)
+      }
+      .collect {
+        case InitialVal(Elem(el, rv)) => Elem(el, rv)
       }
     val isleIn: Set[EquationNode] =
       initVarElems.map { el =>
