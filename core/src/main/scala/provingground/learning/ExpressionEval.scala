@@ -65,10 +65,11 @@ object ExpressionEval {
       case InitialVal(elem @ Elem(el, rv)) =>
         val base = sd.value(initialState)(rv)(el)
         if (base > 0) Some(base)
-        else if (isIsleVar(elem))
-          Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
         else if (rv == Goals) Some(0.5)           // just a quick-fix
-        else throw new Exception(s"no initial value for $elem")
+        else
+        //  if (isIsleVar(elem))
+          Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands        
+        // else throw new Exception(s"no initial value for $elem")
       case IsleScale(_, _) => Some((1.0 - tg.varWeight))
       case _               => None
     }
@@ -237,18 +238,22 @@ case class ExpressionEval(
 
   val keys: Vector[Expression] = finalDist.keys.toVector
 
+  def isleVar(el: Elem[_]) = valueVars.contains(InitialVal(el)) && (el.randomVar == Terms) && !init.keySet.contains(InitialVal(el))
+
   /**
     * Terms in the initial distributions, used to calculate total weights of functions etc
     */
   val initTerms: Vector[Term] = keys.collect {
-    case InitialVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
+    case InitialVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }
+
+  
 
   /**
     * Terms in the final (i.e. evolved) distribution
     */
   val finalTerms: Set[Term] = keys.collect {
-    case FinalVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
+    case FinalVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }.toSet
 
   // should we use the equations instead?
