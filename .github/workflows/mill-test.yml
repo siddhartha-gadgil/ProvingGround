@@ -9,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Git Submodules Init
+      uses: chris-short/github-action-git-submodules@v0.1.0
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
