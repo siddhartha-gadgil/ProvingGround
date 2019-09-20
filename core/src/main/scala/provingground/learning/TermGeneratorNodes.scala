@@ -24,7 +24,7 @@ object TermGeneratorNodes {
     * @param randomVar the random variable
     * @tparam O scala type of the random variable
     */
-  case class CRV[O](randomVar: RandomVar[O]) extends (Term => RandomVar[O]) {
+  case class ConstRandVar[O](randomVar: RandomVar[O]) extends (Term => RandomVar[O]) {
     def apply(t: Term): RandomVar[O] = randomVar
 
     override def toString: String = randomVar.toString
@@ -578,7 +578,7 @@ class TermGeneratorNodes[InitState](
   def lambdaIsle(typ: Typ[Term]): Island[Term, InitState, Term, Term] =
     Island[Term, InitState, Term, Term](
       Terms,
-      CRV(Terms),
+      ConstRandVar(Terms),
       addVar(typ),
       LamApply,
       inIsle
@@ -606,7 +606,7 @@ class TermGeneratorNodes[InitState](
   def lambdaTypFamilyIsle(typ: Typ[Term]): GeneratorNode[ExstFunc] =
     Island[ExstFunc, InitState, Term, Term](
       TypFamilies,
-      CRV(TypsAndFamilies),
+      ConstRandVar(TypsAndFamilies),
       addVar(typ),
       LamFunc,
       inIsle
@@ -646,7 +646,7 @@ class TermGeneratorNodes[InitState](
         Some(
           Island[Term, InitState, Term, Term](
             termsWithTyp(ft),
-            CRV(termsWithTyp(ft.codom)),
+            ConstRandVar(termsWithTyp(ft.codom)),
             addVar(ft.domain),
             LamApply,
             inIsle
@@ -727,7 +727,7 @@ class TermGeneratorNodes[InitState](
   ): Island[ExstFunc, InitState, Term, Term] =
     Island[ExstFunc, InitState, Term, Term](
       funcsWithDomain(dom),
-      CRV(Terms),
+      ConstRandVar(Terms),
       addVar(dom),
       LamFunc,
       inIsle
@@ -801,7 +801,7 @@ class TermGeneratorNodes[InitState](
   def piIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
-      CRV(Typs),
+      ConstRandVar(Typs),
       addVar(typ),
       PiApply,
       inIsle
@@ -816,7 +816,7 @@ class TermGeneratorNodes[InitState](
   def sigmaIsle(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       Typs,
-      CRV(Typs),
+      ConstRandVar(Typs),
       addVar(typ),
       SigmaApply,
       inIsle
@@ -1129,7 +1129,7 @@ class TermGeneratorNodes[InitState](
   ): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IntroRuleTypes(inductiveTyp),      // output
-      CRV(IntroRuleTypes(inductiveTyp)), // output from island
+      ConstRandVar(IntroRuleTypes(inductiveTyp)), // output from island
       addVar(inductiveTyp),
       PiApply,
       inIsle
@@ -1149,7 +1149,7 @@ class TermGeneratorNodes[InitState](
   )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IntroRuleTypes(inductiveTyp),
-      CRV(IntroRuleTypes(inductiveTyp)),
+      ConstRandVar(IntroRuleTypes(inductiveTyp)),
       addVar(typ),
       PiApply,
       inIsle
@@ -1252,7 +1252,7 @@ class TermGeneratorNodes[InitState](
   )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IterFuncTypTo(targetTyp),
-      CRV(IntroRuleTypes(targetTyp)),
+      ConstRandVar(IntroRuleTypes(targetTyp)),
       addVar(typ),
       PiApply,
       inIsle
@@ -1322,7 +1322,7 @@ class TermGeneratorNodes[InitState](
   )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IndexedIntroRuleTyps(typF),
-      CRV(IndexedIntroRuleTyps(typF)),
+      ConstRandVar(IndexedIntroRuleTyps(typF)),
       addVar(typ),
       PiApply,
       inIsle
@@ -1365,7 +1365,7 @@ class TermGeneratorNodes[InitState](
   )(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
       IndexedIterFuncTypTo(targetTyp),
-      CRV(IndexedIntroRuleTyps(targetTyp)),
+      ConstRandVar(IndexedIntroRuleTyps(targetTyp)),
       addVar(typ),
       PiApply,
       inIsle

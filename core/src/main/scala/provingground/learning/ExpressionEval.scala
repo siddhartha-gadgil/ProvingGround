@@ -287,8 +287,56 @@ trait ExpressionEval { self =>
     case FinalVal(el @ Elem(t: Term, Terms)) if !isIsleVar(el) => t
   }.toSet
 
-  // should we use the equations instead?
-  // val finalTyps: FD[Typ[Term]] = sd.value(finalState)(Typs)
+  def lambdaExportEquations(
+      variable: Term,
+      initState: TermState
+  ): Set[Equation] = {
+    import GeneratorNode._, TermGeneratorNodes._
+    val isle =
+      Island[Term, TermState, Term, Term](
+        Terms,
+        ConstRandVar(Terms),
+        AddVar(variable.typ, 0.3),
+        LamApply,
+        EnterIsle
+      )
+    import isle._
+    val (isleInit, boat) = initMap(initState)
+    val coeff            = Coeff(Base.lambdaNode)
+    val isleEqs: Set[Equation] =
+      equations.map(_.mapVars { 
+        case Elem(`variable`, Terms) => InIsle(Elem(boat, Terms), boat, isle )
+        case (x) =>
+          InIsle(x, boat, isle)
+      })
+    val bridgeEqs: Set[EquationNode] = finalTerms.map { x =>
+      EquationNode(
+        FinalVal(Elem(export(boat, x), Terms)),
+        coeff * FinalVal(
+          InIsle(Elem(x, Terms), boat, isle)
+        )
+      )
+    }
+    val initVarElems = equations
+      .flatMap { (eq) =>
+        Expression.varVals(eq.rhs)
+      }
+      .collect {
+        case InitialVal(Elem(el, Terms)) => Elem(el, Terms)
+      }
+    val isleIn: Set[EquationNode] =
+      initVarElems.map { el =>
+        val rhs =
+          if (boat == el.element)
+            (IsleScale(boat, el) * -1) + Literal(1)
+          else IsleScale(boat, el) * InitialVal(el)
+        EquationNode(
+          InitialVal(InIsle(el, boat, isle)),
+          rhs
+        )
+      }
+    isleEqs union (Equation.group(isleIn union bridgeEqs))
+  }
 
   val funcTotal: Expression = initTerms
     .filter(isFunc)
