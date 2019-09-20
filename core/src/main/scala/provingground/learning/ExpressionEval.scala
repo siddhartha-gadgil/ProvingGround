@@ -19,7 +19,7 @@ object ExpressionEval {
     FD(pmf)
   }
 
-  def generators(p: Map[Expression, Double]) =
+  def generators(p: Map[Expression, Double]): FD[Term] =
     FD(
       p.collect { case (InitialVal(Elem(x: Term, Terms)), p) => Weighted(x, p) }
     )
@@ -288,26 +288,24 @@ trait ExpressionEval { self =>
   }.toSet
 
   def lambdaExportEquations(
-      variable: Term,
-      initState: TermState
+      variable: Term
   ): Set[Equation] = {
+    val initState = TermState(generators(init), finalTyps)
     import GeneratorNode._, TermGeneratorNodes._
     val isle =
       Island[Term, TermState, Term, Term](
         Terms,
         ConstRandVar(Terms),
-        AddVar(variable.typ, 0.3),
+        ts => ts.addTerm(variable),
         LamApply,
         EnterIsle
       )
     import isle._
-    val (isleInit, boat) = initMap(initState)
+    val (isleInit, boat) = initMap(initState) // boat is the same as variable
     val coeff            = Coeff(Base.lambdaNode)
     val isleEqs: Set[Equation] =
-      equations.map(_.mapVars { 
-        case Elem(`variable`, Terms) => InIsle(Elem(boat, Terms), boat, isle )
-        case (x) =>
-          InIsle(x, boat, isle)
+      equations.map(_.mapVars { (x) =>
+        InIsle(x, boat, isle)
       })
     val bridgeEqs: Set[EquationNode] = finalTerms.map { x =>
       EquationNode(
