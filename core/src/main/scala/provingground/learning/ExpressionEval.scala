@@ -156,7 +156,7 @@ object ExpressionEval {
 
   def mapRatio[A](m1: Map[A, Double], m2: Map[A, Double]): Double = {
     require(m1.keySet == m2.keySet, "comparing maps with different supports")
-    m1.map { case (k, v) => math.max(v / m2(k), (m2(k) / v)) }.max
+    if (m1.isEmpty) 1 else  m1.map { case (k, v) => math.max(v / m2(k), (m2(k) / v)) }.max
   }
 
   /**
@@ -272,7 +272,7 @@ trait ExpressionEval { self =>
   /**
     * the atomic expressions in the equations
     */
-  val atoms: Set[Expression] = equations
+  lazy val atoms: Set[Expression] = equations
     .map(_.lhs)
     .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
@@ -280,9 +280,9 @@ trait ExpressionEval { self =>
   /**
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
-  val finalDist: Map[Expression, Double] = stableMap(init, equations, maxRatio)
+  lazy val finalDist: Map[Expression, Double] = stableMap(init, equations, maxRatio)
 
-  val keys: Vector[Expression] = finalDist.keys.toVector
+  lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
   def isleVar(el: Elem[_]) =
     valueVars.contains(InitialVal(el)) && (el.randomVar == Terms) && !init.keySet
@@ -291,14 +291,14 @@ trait ExpressionEval { self =>
   /**
     * Terms in the initial distributions, used to calculate total weights of functions etc
     */
-  val initTerms: Vector[Term] = keys.collect {
+  lazy val initTerms: Vector[Term] = keys.collect {
     case InitialVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }
 
   /**
     * Terms in the final (i.e. evolved) distribution
     */
-  val finalTerms: Set[Term] = keys.collect {
+  lazy val finalTerms: Set[Term] = keys.collect {
     case FinalVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }.toSet
 
@@ -332,7 +332,7 @@ trait ExpressionEval { self =>
         )
       )
     }
-    val initVarElems = equations
+    lazy val initVarElems = equations
       .flatMap { (eq) =>
         Expression.varVals(eq.rhs)
       }
@@ -421,21 +421,21 @@ trait ExpressionEval { self =>
     }
   }
 
-  val funcTotal: Expression = initTerms
+  lazy val funcTotal: Expression = initTerms
     .filter(isFunc)
     .map { t =>
       InitialVal(Elem(t, Terms))
     }
     .fold[Expression](Literal(0))(_ + _)
 
-  val typFamilyTotal: Expression = initTerms
+  lazy val typFamilyTotal: Expression = initTerms
     .filter(isTypFamily)
     .map { t =>
       InitialVal(Elem(t, Terms))
     }
     .fold[Expression](Literal(0))(_ + _)
 
-  val initVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
+  lazy val initVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
       .collect {
         case InitialVal(variable) => variable
@@ -446,7 +446,7 @@ trait ExpressionEval { self =>
         s.map { case (x, _) => InitialVal(x): Expression }
       }
 
-  val finalVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
+  lazy val finalVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
       .collect {
         case FinalVal(variable) => variable
@@ -478,7 +478,7 @@ trait ExpressionEval { self =>
   /**
     * Vector of all variables. This is frozen so that their indices can be used.
     */
-  val valueVars: Vector[Expression] =
+  lazy val valueVars: Vector[Expression] =
     equations
       .flatMap(eq => Set(eq.lhs, eq.rhs))
       .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
@@ -503,9 +503,9 @@ trait ExpressionEval { self =>
   lazy val variableIndex: Map[Expression, Int] =
     vars.zipWithIndex.toMap
 
-  implicit val dim: JetDim = JetDim(vars.size)
+  implicit lazy val dim: JetDim = JetDim(vars.size)
 
-  implicit val jetField: Field[Jet[Double]] = implicitly[Field[Jet[Double]]]
+  implicit lazy val jetField: Field[Jet[Double]] = implicitly[Field[Jet[Double]]]
 
   case class WithP(p: Map[Expression, Double]) {
     lazy val spireVarProbs: Map[Expression, Jet[Double]] =
@@ -591,7 +591,7 @@ trait ExpressionEval { self =>
         jet(exp).infinitesimal.toVector
       }
 
-    val eqnGradientsTask: Task[Vector[Vector[Double]]] =
+    lazy val eqnGradientsTask: Task[Vector[Vector[Double]]] =
       Task.gather(eqnExpressions.map { exp =>
         jetTask(exp).map(_.infinitesimal.toVector)
       })
@@ -665,13 +665,13 @@ trait ExpressionEval { self =>
   /**
     * Terms of the generating distribution
     */
-  val genTerms: Map[Term, Expression] =
+  lazy val genTerms: Map[Term, Expression] =
     initTerms.map(t => t -> InitialVal(Elem(t, Terms))).toMap
 
-  val thmSet: Set[Typ[Term]] =
+  lazy val thmSet: Set[Typ[Term]] =
     finalTyps.support.intersect(finalTerms.map(_.typ)).filter(!isUniv(_))
 
-  val thmsByStatement: Map[Typ[Term], Expression] = finalTyps
+  lazy val thmsByStatement: Map[Typ[Term], Expression] = finalTyps
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
@@ -683,18 +683,18 @@ trait ExpressionEval { self =>
       .map(t => FinalVal(Elem(t, Terms)))
       .reduce[Expression](_ + _)
 
-  val thmsByProof: Map[Typ[Term], Expression] =
+  lazy val thmsByProof: Map[Typ[Term], Expression] =
     thmSet.map(typ => typ -> proofExpression(typ)).toMap
 
   /**
     * Expression for entropy of the generating distribution
     */
-  val hExp: Expression = Expression.h(genTerms)
+  lazy val hExp: Expression = Expression.h(genTerms)
 
   /**
     * Expression for Kullback-Liebler divergence of proofs from statements of theorems.
     */
-  val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
+  lazy val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
 
   lazy val finalTermMap: Map[Term, Expression] = finalTerms.map { t =>
     t -> FinalVal(Elem(t, Terms))
@@ -727,7 +727,7 @@ trait ExpressionEval { self =>
   /**
     * Expressions for equations.
     */
-  val eqnExpressions: Vector[Expression] =
+  lazy val eqnExpressions: Vector[Expression] =
     equations.toVector.map { eq =>
       eq.lhs - eq.rhs
     } ++ Vector(initTermsSum, finalTermsSum)
