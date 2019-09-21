@@ -8,6 +8,7 @@ A system under development for (semi-)automated theorem proving, with foundation
 [![Build Status](https://img.shields.io/travis/siddhartha-gadgil/ProvingGround.svg)](https://travis-ci.org/siddhartha-gadgil/ProvingGround)
 [![codecov.io](http://codecov.io/github/siddhartha-gadgil/ProvingGround/coverage.svg)](https://codecov.io/gh/siddhartha-gadgil/ProvingGround)
 [![Ohloh](http://www.ohloh.net/p/ProvingGround/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/ProvingGround) [![Join the chat at https://gitter.im/siddhartha-gadgil/ProvingGround](https://badges.gitter.im/siddhartha-gadgil/ProvingGround.svg)](https://gitter.im/siddhartha-gadgil/ProvingGround?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![](https://github.com/siddhartha-gadgil/ProvingGround/workflows/.github/workflows/mill-test.yml/badge.svg)
 
 ## Documentation
 
