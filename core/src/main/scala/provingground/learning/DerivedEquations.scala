@@ -235,13 +235,13 @@ class DerivedEquations(
         }
         .collect {
           case InitialVal(Elem(el, rv)) => Elem(el, rv)
-        }
+        } + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         initVarElems.map { el =>
           val rhs =
             if (boat == el.element)
               (IsleScale(boat, el) * -1) + Literal(1)
-            else IsleScale(boat, el) * InitialVal(el)
+            else IsleScale(boat, el) * FinalVal(el)
           EquationNode(
             InitialVal(InIsle(el, boat, isle)),
             rhs
@@ -267,7 +267,7 @@ class DerivedEquations(
         }
         .collect {
           case InitialVal(Elem(el, rv)) => Elem(el, rv)
-        }
+        } + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         initVarElems.map { el =>
           val rhs =
@@ -280,6 +280,39 @@ class DerivedEquations(
           )
         }
       isleIn.union(isleEqs) + bridgeEq
+    case pd: FuncTyp[u, v] =>
+      val coeff = Coeff(tg.piIsle(pd.domain))
+      val boat  = pd.dom.Var
+      val isle  = tg.piIsle(pd.domain)
+      val eqs   = formalEquations(pd.codom)
+      val isleEqs =
+        eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+      val bridgeEq = EquationNode(
+        FinalVal(Elem(pd, Terms)),
+        coeff * FinalVal(
+          InIsle(Elem(pd.codom, isle.islandOutput(boat)), boat, isle)
+        )
+      )
+      val initVarElems = eqs
+        .flatMap { (eq) =>
+          Expression.varVals(eq.rhs)
+        }
+        .collect {
+          case InitialVal(Elem(el, rv)) => Elem(el, rv)
+        } + Elem(boat, Terms)
+      val isleIn: Set[EquationNode] =
+        initVarElems.map { el =>
+          val rhs =
+            if (boat == el.element)
+              (IsleScale(boat, el) * -1) + Literal(1)
+            else IsleScale(boat, el) * InitialVal(el)
+          EquationNode(
+            InitialVal(InIsle(el, boat, isle)),
+            rhs
+          )
+        }
+      isleIn.union(isleEqs) + bridgeEq
+
     case pd: SigmaTyp[u, v] =>
       val coeff = Coeff(tg.sigmaIsle(pd.fib.dom))
       val x     = pd.fib.variable
@@ -369,12 +402,12 @@ class DerivedEquations(
 
   def initCheck(exp: Expression) =
     Expression.atoms(exp).exists {
-        case InitialVal(Elem(_, rv)) =>
-          Set[RandomVar[_]](Terms, Typs, InducDefns, Goals).contains(rv)
-        case _ => true      
+      case InitialVal(Elem(_, rv)) =>
+        Set[RandomVar[_]](Terms, Typs, InducDefns, Goals).contains(rv)
+      case _ => true
     }
 
-  def initPurge(s: Set[EquationNode]) = 
+  def initPurge(s: Set[EquationNode]) =
     s.filterNot(eq => initCheck(eq.rhs))
 
 }
