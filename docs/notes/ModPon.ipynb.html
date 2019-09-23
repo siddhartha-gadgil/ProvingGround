@@ -12116,7 +12116,7 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a : 𝒰 ) ↦ @a</span>, Terms),
         <span class="ansi-green-fg">@a</span>,
-        <span class="ansi-yellow-fg">Island</span>(<span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil), <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(<span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil), <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       )
     ),
     <span class="ansi-yellow-fg">Product</span>(
@@ -12139,12 +12139,12 @@ div#notebook {
                 <span class="ansi-yellow-fg">InIsle</span>(
                   <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms),
                   <span class="ansi-green-fg">@a</span>,
-                  <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+                  <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
                 ),
                 <span class="ansi-green-fg">@a</span>,
                 <span class="ansi-yellow-fg">Island</span>(
                   <span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil),
-                  <span class="ansi-yellow-fg">CRV</span>(Terms),
+                  <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
                   <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
                   Lambda,
                   InIsle
@@ -12158,7 +12158,7 @@ div#notebook {
   ),
   <span class="ansi-yellow-fg">EquationTerm</span>(
     <span class="ansi-yellow-fg">FinalVal</span>(
-      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
 ...</pre>
 </div>
 
@@ -12236,10 +12236,10 @@ div#notebook {
         <span class="ansi-yellow-fg">InIsle</span>(
           <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Terms),
           <span class="ansi-green-fg">@b</span>,
-          <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+          <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
         ),
         <span class="ansi-green-fg">@a</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       )
     ),
     <span class="ansi-yellow-fg">Product</span>(
@@ -12253,10 +12253,10 @@ div#notebook {
               <span class="ansi-yellow-fg">InIsle</span>(
                 <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Terms),
                 <span class="ansi-green-fg">@b</span>,
-                <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+                <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
               ),
               <span class="ansi-green-fg">@a</span>,
-              <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+              <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(𝒰  → 𝒰 )</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
             )
           )
         )
@@ -12269,10 +12269,10 @@ div#notebook {
         <span class="ansi-yellow-fg">InIsle</span>(
           <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms),
           <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-          <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+          <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
         ),
         <span class="ansi-green-fg">@a</span>,
-        <span class="ansi-yellow-fg">Island</span>(<span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil), <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(<span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil), <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       )
     ),
     <span class="ansi-yellow-fg">Product</span>(
@@ -12446,7 +12446,7 @@ div#notebook {
           <span class="ansi-yellow-fg">InIsle</span>(
             <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@b : 𝒰 ) ↦ (@a : @a) ↦ (@a : (@a → @b)) ↦ @a(@a)</span>, Terms),
             <span class="ansi-green-fg">@a</span>,
-            <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+            <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
           )
         )
       )
@@ -12511,7 +12511,7 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@b : 𝒰 ) ↦ (@a : @a) ↦ (@a : (@a → @b)) ↦ @a(@a)</span>, Terms),
         <span class="ansi-green-fg">@a</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       )
     )
   )
@@ -12591,7 +12591,7 @@ div#notebook {
             <span class="ansi-green-fg">@a</span>,
             <span class="ansi-yellow-fg">Island</span>(
               <span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil),
-              <span class="ansi-yellow-fg">CRV</span>(Terms),
+              <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
               <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
               Lambda,
               InIsle
@@ -12600,7 +12600,7 @@ div#notebook {
           <span class="ansi-green-fg">@a</span>,
           <span class="ansi-yellow-fg">Island</span>(
             <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span> :: HNil),
-            <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil)),
+            <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil)),
             <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>),
             Lambda,
             InIsle

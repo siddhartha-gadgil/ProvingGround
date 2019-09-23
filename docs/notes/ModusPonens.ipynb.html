@@ -12099,7 +12099,7 @@ div#notebook {
         <span class="ansi-yellow-fg">InIsle</span>(
           <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-yellow-fg">FuncTyp</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>)), Typs),
           <span class="ansi-yellow-fg">SymbTyp</span>(<span class="ansi-yellow-fg">Name</span>(<span class="ansi-green-fg">&#34;@a&#34;</span>), <span class="ansi-green-fg">0</span>),
-          <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3</span>), Sigma, InIsle)
+          <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3</span>), Sigma, InIsle)
         )
       )
     )
@@ -12110,10 +12110,10 @@ div#notebook {
         <span class="ansi-yellow-fg">InIsle</span>(
           <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), Typs),
           <span class="ansi-yellow-fg">SymbTyp</span>(<span class="ansi-yellow-fg">Name</span>(<span class="ansi-green-fg">&#34;@b&#34;</span>), <span class="ansi-green-fg">0</span>),
-          <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3</span>), Sigma, InIsle)
+          <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3</span>), Sigma, InIsle)
         ),
         <span class="ansi-yellow-fg">SymbTyp</span>(<span class="ansi-yellow-fg">Name</span>(<span class="ansi-green-fg">&#34;@a&#34;</span>), <span class="ansi-green-fg">0</span>),
-        <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-yellow-fg">Universe</span>(<span class="ansi-green-fg">0</span>), <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
       )
     ),
     <span class="ansi-yellow-fg">Product</span>(
@@ -12597,44 +12597,44 @@ div#notebook {
   <span class="ansi-yellow-fg">Equation</span>(
     <span class="ansi-yellow-fg">InitialVal</span>(
       <span class="ansi-yellow-fg">InIsle</span>(
-        <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Sigma, InIsle)),
+        <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Sigma, InIsle)),
         <span class="ansi-green-fg">@a</span>,
-        <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
       )
     ),
     <span class="ansi-yellow-fg">Product</span>(
       <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs)),
-      <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)))
+      <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)))
     )
   ),
   <span class="ansi-yellow-fg">Equation</span>(
     <span class="ansi-yellow-fg">FinalVal</span>(
       <span class="ansi-yellow-fg">InIsle</span>(
-        <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)),
+        <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)),
         <span class="ansi-green-fg">@a</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       )
     ),
     <span class="ansi-yellow-fg">Product</span>(
       <span class="ansi-yellow-fg">Coeff</span>(<span class="ansi-yellow-fg">Init</span>(Typs), Typs),
       <span class="ansi-yellow-fg">InitialVal</span>(
         <span class="ansi-yellow-fg">InIsle</span>(
-          <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)),
+          <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)),
           <span class="ansi-green-fg">@a</span>,
-          <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+          <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
         )
       )
     )
   ),
   <span class="ansi-yellow-fg">Equation</span>(
-    <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle))),
+    <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle))),
     <span class="ansi-yellow-fg">Product</span>(<span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs)), <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs)))
   ),
   <span class="ansi-yellow-fg">Equation</span>(
     <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-yellow-fg">Wrap</span>(<span class="ansi-green-fg">(@a : 𝒰 ) ↦ (_ : @a) ↦ 𝒰 </span>), <span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil))),
     <span class="ansi-yellow-fg">Product</span>(
       <span class="ansi-yellow-fg">Coeff</span>(
-        <span class="ansi-yellow-fg">Island</span>(<span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil), <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle),
+        <span class="ansi-yellow-fg">Island</span>(<span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil), <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle),
         <span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">𝒰 </span> :: HNil)
       ),
       <span class="ansi-yellow-fg">FinalVal</span>(
@@ -12676,9 +12676,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">atoms</span>: <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">Expression</span>] = <span class="ansi-yellow-fg">Set</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))),
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))),
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ),
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)),
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)),
@@ -12686,14 +12686,14 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ),
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ),
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)),
@@ -12701,7 +12701,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ),
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)),
@@ -12714,7 +12714,7 @@ div#notebook {
             <span class="ansi-green-fg">@a</span>,
             <span class="ansi-yellow-fg">Island</span>(
               <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil),
-              <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
+              <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
               <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(@a → @b)</span>, <span class="ansi-green-fg">0.3</span>),
               Lambda,
               InIsle
@@ -12814,7 +12814,7 @@ div#notebook {
   <span class="ansi-yellow-fg">Coeff</span>(
     <span class="ansi-yellow-fg">Island</span>(
       <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil),
-      <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
+      <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
       <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(@a → @b)</span>, <span class="ansi-green-fg">0.3</span>),
       Lambda,
       InIsle
@@ -12831,7 +12831,7 @@ div#notebook {
   <span class="ansi-yellow-fg">Coeff</span>(
     <span class="ansi-yellow-fg">Island</span>(
       <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">(𝒰  → 𝒰 )</span> :: HNil),
-      <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">𝒰 </span> :: HNil)),
+      <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">𝒰 </span> :: HNil)),
       <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
       Lambda,
       InIsle
@@ -12906,7 +12906,7 @@ div#notebook {
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">m2</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -12914,7 +12914,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -12939,7 +12939,7 @@ div#notebook {
   <span class="ansi-yellow-fg">Coeff</span>(
     <span class="ansi-yellow-fg">Island</span>(
       <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil),
-      <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
+      <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
       <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(@a → @b)</span>, <span class="ansi-green-fg">0.3</span>),
       Lambda,
       InIsle
@@ -12951,7 +12951,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(B : 𝒰 ){ (@a → ((@a → B) → B)) }</span>, Goals),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
 ...</pre>
 </div>
@@ -13020,9 +13020,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">m3</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13030,14 +13030,14 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -13060,9 +13060,9 @@ div#notebook {
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
-      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)),
+      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.21</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13139,17 +13139,17 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ),
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ),
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)),
@@ -13162,7 +13162,7 @@ div#notebook {
             <span class="ansi-green-fg">@a</span>,
             <span class="ansi-yellow-fg">Island</span>(
               <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil),
-              <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
+              <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">@b</span> :: HNil)),
               <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(@a → @b)</span>, <span class="ansi-green-fg">0.3</span>),
               Lambda,
               InIsle
@@ -13171,7 +13171,7 @@ div#notebook {
           <span class="ansi-green-fg">@a</span>,
           <span class="ansi-yellow-fg">Island</span>(
             <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span> :: HNil),
-            <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil)),
+            <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil)),
             <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>),
             Lambda,
             InIsle
@@ -13223,9 +13223,9 @@ div#notebook {
     ),
     <span class="ansi-yellow-fg">FinalVal</span>(
       <span class="ansi-yellow-fg">InIsle</span>(
-        <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)),
+        <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)),
         <span class="ansi-green-fg">@a</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       )
     )
   ),
@@ -13239,7 +13239,7 @@ div#notebook {
             <span class="ansi-green-fg">@a</span>,
             <span class="ansi-yellow-fg">Island</span>(
               <span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span> :: HNil),
-              <span class="ansi-yellow-fg">CRV</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil)),
+              <span class="ansi-yellow-fg">ConstRandVar</span>(<span class="ansi-yellow-fg">AtCoord</span>(TermsWithTyp, <span class="ansi-green-fg">((@a → @b) → @b)</span> :: HNil)),
               <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>),
               Lambda,
               InIsle
@@ -13333,12 +13333,12 @@ div#notebook {
   <span class="ansi-yellow-fg">Product</span>(
     <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs)),
     <span class="ansi-yellow-fg">InitialVal</span>(
-      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
     )
   ),
   <span class="ansi-yellow-fg">Product</span>(
     <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs)),
-    <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)))
+    <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)))
   ),
   <span class="ansi-yellow-fg">Product</span>(
     <span class="ansi-yellow-fg">Coeff</span>(<span class="ansi-yellow-fg">Init</span>(Typs), Typs),
@@ -13346,7 +13346,7 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
         <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-        <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
       )
     )
   ),
@@ -13372,7 +13372,7 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a_1 , @a_2)</span>, Terms),
         <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∏(@a : 𝒰 ){ @a }×𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∏(@a : 𝒰 ){ @a }×𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       )
     )
   ),
@@ -13480,9 +13480,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">ms</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13491,24 +13491,24 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.147</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -13516,7 +13516,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.013150807492591156</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.0385060355554574</span>,
@@ -13627,9 +13627,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">m4</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13637,14 +13637,14 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -13668,9 +13668,9 @@ div#notebook {
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
-      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)),
+      <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.21</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
@@ -13708,9 +13708,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">ms</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13719,24 +13719,24 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.147</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -13744,7 +13744,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.013150807492591156</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.0385060355554574</span>,
@@ -13789,9 +13789,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">mss</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13800,24 +13800,24 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.147</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -13825,7 +13825,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.013151570681494687</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.03850605967906028</span>,
@@ -13903,9 +13903,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">m100</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13914,24 +13914,24 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.147</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -13939,7 +13939,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.013152400835073068</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.03850609129352404</span>,
@@ -13984,9 +13984,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">m200</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -13995,24 +13995,24 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.147</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -14020,7 +14020,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.013152400835073068</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.03850609129352404</span>,
@@ -14098,9 +14098,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">m201</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -14109,24 +14109,24 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.147</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -14134,7 +14134,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.013152400835073068</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.03850609129352404</span>,
@@ -14179,9 +14179,9 @@ div#notebook {
 
 <div class="output_text output_subarea output_execute_result">
 <pre><span class="ansi-cyan-fg">res45</span>: <span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
+  <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
-    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
+    <span class="ansi-yellow-fg">InIsle</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs), <span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle))
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b</span>, Typs)) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">@a</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.7</span>,
@@ -14190,24 +14190,24 @@ div#notebook {
       <span class="ansi-yellow-fg">InIsle</span>(
         <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → ((@a → @b) → @b))</span>, TargetTyps),
         <span class="ansi-green-fg">@b</span>,
-        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
       ),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.147</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.7</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Typs),
       <span class="ansi-green-fg">(@a_1 , @a_2)</span>,
-      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">CRV</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">∑(@a : { @a }</span>, <span class="ansi-green-fg">0.3</span>), Pi, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.42</span>,
   <span class="ansi-yellow-fg">InitialVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms)) -&gt; <span class="ansi-green-fg">0.4285714285714286</span>,
@@ -14215,7 +14215,7 @@ div#notebook {
     <span class="ansi-yellow-fg">InIsle</span>(
       <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(@b : 𝒰 ){ @b }</span>, Typs),
       <span class="ansi-green-fg">@a</span>,
-      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">CRV</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
+      <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, InIsle)
     )
   ) -&gt; <span class="ansi-green-fg">0.013152400788112117</span>,
   <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">((__1 , __2) : 𝒰 ×(𝒰  → 𝒰 )) ↦ 𝒰 </span>, Terms)) -&gt; <span class="ansi-green-fg">0.03850609128852615</span>,
