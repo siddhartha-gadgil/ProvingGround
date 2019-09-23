@@ -203,7 +203,7 @@ object ExpressionEval {
         finalDist.collect {
           case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => Weighted(typ, w)
         }
-      }
+      }.safeNormalized
   }
 
   def values(eqs: Set[Equation]): Set[Expression] =
@@ -298,9 +298,16 @@ trait ExpressionEval { self =>
   /**
     * Terms in the final (i.e. evolved) distribution
     */
-  lazy val finalTerms: Set[Term] = keys.collect {
+  lazy val finalTermSet: Set[Term] = keys.collect {
     case FinalVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }.toSet
+
+  lazy val finalTerms =
+      FD {
+        finalDist.collect {
+          case (FinalVal(Elem(t: Term, Terms)), w) => Weighted(t, w)
+        }
+      }.safeNormalized
 
   def lambdaExportEquations(
       variable: Term,
@@ -324,7 +331,7 @@ trait ExpressionEval { self =>
       equations.map(_.mapVars { (x) =>
         InIsle(x, boat, isle)
       })
-    val bridgeEqs: Set[EquationNode] = finalTerms.map { x =>
+    val bridgeEqs: Set[EquationNode] = finalTermSet.map { x =>
       EquationNode(
         FinalVal(Elem(export(boat, x), Terms)),
         coeff * FinalVal(
@@ -669,7 +676,7 @@ trait ExpressionEval { self =>
     initTerms.map(t => t -> InitialVal(Elem(t, Terms))).toMap
 
   lazy val thmSet: Set[Typ[Term]] =
-    finalTyps.support.intersect(finalTerms.map(_.typ)).filter(!isUniv(_))
+    finalTyps.support.intersect(finalTermSet.map(_.typ)).filter(!isUniv(_))
 
   lazy val thmsByStatement: Map[Typ[Term], Expression] = finalTyps
     .filter(typ => thmSet.contains(typ))
@@ -678,7 +685,7 @@ trait ExpressionEval { self =>
     .mapValues(Literal)
 
   def proofExpression(typ: Typ[Term]): Expression =
-    finalTerms
+    finalTermSet
       .filter(_.typ == typ)
       .map(t => FinalVal(Elem(t, Terms)))
       .reduce[Expression](_ + _)
@@ -696,7 +703,7 @@ trait ExpressionEval { self =>
     */
   lazy val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
 
-  lazy val finalTermMap: Map[Term, Expression] = finalTerms.map { t =>
+  lazy val finalTermMap: Map[Term, Expression] = finalTermSet.map { t =>
     t -> FinalVal(Elem(t, Terms))
   }.toMap
 
@@ -716,7 +723,7 @@ trait ExpressionEval { self =>
       Sum(t1, t2)
     }
 
-  lazy val finalTermsSum = finalTerms
+  lazy val finalTermSetSum = finalTermSet
     .map {
       case t => FinalVal(Elem(t, Terms))
     }
@@ -730,7 +737,7 @@ trait ExpressionEval { self =>
   lazy val eqnExpressions: Vector[Expression] =
     equations.toVector.map { eq =>
       eq.lhs - eq.rhs
-    } ++ Vector(initTermsSum, finalTermsSum)
+    } ++ Vector(initTermsSum, finalTermSetSum)
 
   /**
     * Shift downwards by the gradient, mapped by sigmoids.

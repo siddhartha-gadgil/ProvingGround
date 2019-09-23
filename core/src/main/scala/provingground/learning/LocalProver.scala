@@ -32,7 +32,9 @@ case class LocalProver(
     steps: Int = 10000,
     maxDepth: Int = 10,
     hW: Double = 1,
-    klW: Double = 1
+    klW: Double = 1,
+    relativeEval: Boolean = false,
+    stateFromEquation: Boolean = false
 ) extends LocalProverStep {
   // Convenience for generation
   def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff / scale)
@@ -129,7 +131,8 @@ case class LocalProver(
     this.copy(initState = ts)
   }
 
-  lazy val noIsles: LocalProver = this.copy(tg = tg.copy(lmW = 0, piW = 0, sigmaW = 0))
+  lazy val noIsles: LocalProver =
+    this.copy(tg = tg.copy(lmW = 0, piW = 0, sigmaW = 0))
 
   def params(params: TermGenParams) = this.copy(tg = params)
 
@@ -172,19 +175,32 @@ case class LocalProver(
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
-  lazy val nextState: Task[TermState] =
-    {for {
-      terms <- tripleT.map(_._1)
-      typs  <- tripleTypT.map(_._1)
-    } yield
-      TermState(
-        terms,
-        typs,
-        initState.vars,
-        initState.inds,
-        initState.goals,
-        initState.context
-      )
+  lazy val nextState: Task[TermState] = {
+    if (stateFromEquation)
+      for {
+        ev <- expressionEval
+      } yield
+        TermState(
+          ev.finalTerms,
+          ev.finalTyps,
+          initState.vars,
+          initState.inds,
+          initState.goals,
+          initState.context
+        )
+    else
+      for {
+        terms <- tripleT.map(_._1)
+        typs  <- tripleTypT.map(_._1)
+      } yield
+        TermState(
+          terms,
+          typs,
+          initState.vars,
+          initState.inds,
+          initState.goals,
+          initState.context
+        )
   }.memoize
 
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
@@ -229,11 +245,10 @@ case class LocalProver(
       expEv <- expressionEval
     } yield expEv.avgInit(tExpEval)
 
-  def tangentProver(
-      xs: Term*) : Task[LocalTangentProver] =
+  def tangentProver(xs: Term*): Task[LocalTangentProver] =
     for {
       baseState <- nextState
-      tangState: TermState = baseState.tangent(xs : _*)
+      tangState: TermState = baseState.tangent(xs: _*)
       eqnds <- equationNodes
     } yield
       LocalTangentProver(
@@ -241,17 +256,21 @@ case class LocalProver(
         eqnds,
         tangState,
         tg,
-        cutoff, 
+        cutoff,
         limit,
         maxRatio,
         scale,
         steps,
         maxDepth,
         hW,
-        klW
+        klW,
+        relativeEval
       )
 
-    def distTangentProver(fd: FiniteDistribution[Term], tangentCutoff: Double = cutoff) : Task[LocalTangentProver] =
+  def distTangentProver(
+      fd: FiniteDistribution[Term],
+      tangentCutoff: Double = cutoff
+  ): Task[LocalTangentProver] =
     for {
       baseState <- nextState
       tangState: TermState = baseState.distTangent(fd)
@@ -262,7 +281,7 @@ case class LocalProver(
         eqnds,
         tangState,
         tg,
-        tangentCutoff, 
+        tangentCutoff,
         limit,
         maxRatio,
         scale,
@@ -272,40 +291,41 @@ case class LocalProver(
         klW
       )
 
-    def splitTangentProvers(terms: Vector[(Term, Double)]) :  Task[Vector[LocalTangentProver]] = 
+  def splitTangentProvers(
+      terms: Vector[(Term, Double)]
+  ): Task[Vector[LocalTangentProver]] =
     for {
       baseState <- nextState
-      eqnds <- equationNodes
+      eqnds     <- equationNodes
     } yield
-     terms.map {
-       case (t, w) =>
-       LocalTangentProver(
-        baseState,
-        eqnds,
-        baseState.tangent(t),
-        tg,
-        cutoff / w, 
-        limit,
-        maxRatio,
-        scale,
-        steps,
-        maxDepth,
-        hW,
-        klW
-      )
-     }
-
-     def splitLemmaProvers(scale: Double = 1) :  Task[Vector[LocalTangentProver]] = 
-      lemmas.flatMap{
-        v =>
-          val pfs = v.map{case (tp, w) => ("proof" :: tp, w)}
-          splitTangentProvers(pfs)
+      terms.map {
+        case (t, w) =>
+          LocalTangentProver(
+            baseState,
+            eqnds,
+            baseState.tangent(t),
+            tg,
+            cutoff / w,
+            limit,
+            maxRatio,
+            scale,
+            steps,
+            maxDepth,
+            hW,
+            klW
+          )
       }
-      
 
-    def proofTangent(tangentCutoff: Double = cutoff) : Task[LocalTangentProver] = 
-      lemmaProofs.flatMap(fd => distTangentProver(fd.safeNormalized, tangentCutoff))
+  def splitLemmaProvers(scale: Double = 1): Task[Vector[LocalTangentProver]] =
+    lemmas.flatMap { v =>
+      val pfs = v.map { case (tp, w) => ("proof" :: tp, w) }
+      splitTangentProvers(pfs)
+    }
 
+  def proofTangent(tangentCutoff: Double = cutoff): Task[LocalTangentProver] =
+    lemmaProofs.flatMap(
+      fd => distTangentProver(fd.safeNormalized, tangentCutoff)
+    )
 
   // Generating provers using results
   lazy val withLemmas: Task[LocalProver] =
@@ -351,6 +371,7 @@ trait LocalProverStep {
   val limit: FiniteDuration
   val hW: Double
   val klW: Double
+  val relativeEval: Boolean
 
   lazy val evolvedState: Task[EvolvedState] = nextState
     .map(
@@ -373,11 +394,17 @@ trait LocalProverStep {
     Equation.group(eqs)
   }.memoize
 
-  lazy val expressionEval: Task[ExpressionEval] =
-    (for {
+  lazy val expressionEval: Task[ExpressionEval] = {
+    val base = for {
       fs  <- nextState
       eqs <- equations
-    } yield ExpressionEval.fromStates(initState, fs, eqs, tg)).memoize
+    } yield ExpressionEval.fromStates(initState, fs, eqs, tg)
+    if (relativeEval)
+      if (initState.vars.isEmpty)
+        base.map(_.generateTyps)
+      else base.map(ev => ExpressionEval.export(ev, initState.vars))
+    else base
+  }.memoize
 
   lazy val successes = nextState.map(_.successes)
 
@@ -489,7 +516,9 @@ case class LocalTangentProver(
     steps: Int = 10000,
     maxDepth: Int = 10,
     hW: Double = 1,
-    klW: Double = 1
+    klW: Double = 1,
+    relativeEval: Boolean = false,
+    stateFromEquation : Boolean = false
 ) extends LocalProverStep {
 
   def apple(w: Double = 0.1) = this.copy(tg = TermGenParams.apple(w))
@@ -519,7 +548,20 @@ case class LocalTangentProver(
       .memoize
 
   lazy val nextState: Task[TermState] =
-    for {
+    { if (stateFromEquation)
+      for {
+        ev <- expressionEval
+      } yield
+        TermState(
+          ev.finalTerms,
+          ev.finalTyps,
+          initState.vars,
+          initState.inds,
+          initState.goals,
+          initState.context
+        )
+    else
+      for {
       terms <- tripleT.map(_._1)
       typs  <- tripleTypT.map(_._1)
     } yield
@@ -531,6 +573,7 @@ case class LocalTangentProver(
         initState.goals,
         initState.context
       )
+    }.memoize
 
   lazy val equationNodes: Task[Set[EquationNode]] =
     for {
