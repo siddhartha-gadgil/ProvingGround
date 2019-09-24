@@ -453,7 +453,7 @@ class DerivedEquations(
     termStateElems(ts).map{
       case Elem(t, rv) =>
       EquationNode(
-        finalProb(t, Terms),
+        finalProb(t, rv),
         Coeff(Init(rv)) * InitialVal(Elem(t, rv))
       )
     }
