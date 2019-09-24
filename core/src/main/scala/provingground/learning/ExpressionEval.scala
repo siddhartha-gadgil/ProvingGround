@@ -197,6 +197,22 @@ object ExpressionEval {
       val coeffsAsVars: Boolean = false
     }
 
+  def fromInitEqs(
+    initialState: TermState,
+    equationsS: Set[Equation],
+    tgS: TermGenParams,
+    maxRatioS: Double = 1.01,
+    scaleS: Double = 1.0
+) : ExpressionEval =
+  new ExpressionEval with GenerateTyps {
+    val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
+    val equations             = equationsS
+    val tg                    = tgS
+    val maxRatio              = maxRatioS
+    val scale                 = scaleS
+    val coeffsAsVars: Boolean = false
+  }
+
   trait GenerateTyps extends ExpressionEval {
     lazy val finalTyps =
       FD {
