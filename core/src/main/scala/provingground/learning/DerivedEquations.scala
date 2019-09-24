@@ -225,7 +225,7 @@ class DerivedEquations(
         eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
       val bridgeEq = EquationNode(
         FinalVal(Elem(lt, Terms)),
-        coeff * FinalVal(
+        coeff * finalProb(lt.typ, Typs) *  FinalVal(
           InIsle(Elem(lt.value, isle.islandOutput(boat)), boat, isle)
         )
       )
@@ -234,8 +234,9 @@ class DerivedEquations(
           Expression.varVals(eq.rhs)
         }
         .collect {
-          case InitialVal(Elem(el, rv)) => Elem(el, rv)
-        } + Elem(boat, Terms)
+          case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(lt.variable) => Elem(el, Terms)
+          case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(lt.variable) => Elem(el, Typs)
+        } + Elem(lt.value, Terms) + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         initVarElems.map { el =>
           val rhs =
@@ -247,7 +248,8 @@ class DerivedEquations(
             rhs
           )
         }
-      isleIn.union(isleEqs) + bridgeEq
+        val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+        isleIn.union(isleEqs).union(initInIsle) + bridgeEq
     case pd: PiDefn[u, v] =>
       val coeff = Coeff(tg.piIsle(pd.domain))
       val boat  = pd.variable
@@ -257,17 +259,22 @@ class DerivedEquations(
         eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
       val bridgeEq = EquationNode(
         FinalVal(Elem(pd, Terms)),
-        coeff * FinalVal(
+        coeff * finalProb(pd.domain, Typs) * FinalVal(
           InIsle(Elem(pd.value, isle.islandOutput(boat)), boat, isle)
         )
       )
+      pprint.log(eqs
+      .flatMap { (eq) =>
+        Expression.varVals(eq.rhs)
+      })
       val initVarElems = eqs
         .flatMap { (eq) =>
           Expression.varVals(eq.rhs)
         }
         .collect {
-          case InitialVal(Elem(el, rv)) => Elem(el, rv)
-        } + Elem(boat, Terms)
+          case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(pd.variable) => Elem(el, Terms)
+          case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(pd.variable) => Elem(el, Typs)
+        } + Elem(pd.value, Typs) + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         initVarElems.map { el =>
           val rhs =
@@ -279,7 +286,8 @@ class DerivedEquations(
             rhs
           )
         }
-      isleIn.union(isleEqs) + bridgeEq
+        val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+        isleIn.union(isleEqs).union(initInIsle) + bridgeEq
     case pd: FuncTyp[u, v] =>
       val coeff = Coeff(tg.piIsle(pd.domain))
       val boat  = pd.dom.Var
@@ -289,7 +297,7 @@ class DerivedEquations(
         eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
       val bridgeEq = EquationNode(
         FinalVal(Elem(pd, Terms)),
-        coeff * FinalVal(
+        coeff * finalProb(pd.domain, Typs) * FinalVal(
           InIsle(Elem(pd.codom, isle.islandOutput(boat)), boat, isle)
         )
       )
@@ -298,8 +306,9 @@ class DerivedEquations(
           Expression.varVals(eq.rhs)
         }
         .collect {
-          case InitialVal(Elem(el, rv)) => Elem(el, rv)
-        } + Elem(boat, Terms)
+          case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(boat) => Elem(el, Terms)
+          case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(boat) => Elem(el, Typs)
+        } + Elem(pd.codom, Typs) + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         initVarElems.map { el =>
           val rhs =
@@ -311,20 +320,43 @@ class DerivedEquations(
             rhs
           )
         }
-      isleIn.union(isleEqs) + bridgeEq
+      val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+      isleIn.union(isleEqs).union(initInIsle) + bridgeEq
 
     case pd: SigmaTyp[u, v] =>
       val coeff = Coeff(tg.sigmaIsle(pd.fib.dom))
-      val x     = pd.fib.variable
+      val boat    = pd.fib.variable
       val isle  = tg.sigmaIsle(pd.fib.dom)
-      Set(
-        EquationNode(
-          FinalVal(Elem(pd, Typs)),
-          coeff * FinalVal(
-            InIsle(Elem(pd.fib.value, isle.islandOutput(x)), x, isle)
-          )
+      val eqs   = formalEquations(pd.fib.value)
+      val isleEqs =
+        eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+      val bridgeEq = EquationNode(
+        FinalVal(Elem(pd, Terms)),
+        coeff * finalProb(pd.fib.dom, Typs) * FinalVal(
+          InIsle(Elem(pd.fib.value, isle.islandOutput(boat)), boat, isle)
         )
       )
+      val initVarElems = eqs
+        .flatMap { (eq) =>
+          Expression.varVals(eq.rhs)
+        }
+        .collect {
+          case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(boat) => Elem(el, Terms)
+          case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(boat) => Elem(el, Typs)
+        } + Elem(pd.fib.value, Typs) + Elem(boat, Terms)
+      val isleIn: Set[EquationNode] =
+        initVarElems.map { el =>
+          val rhs =
+            if (boat == el.element)
+              (IsleScale(boat, el) * -1) + Literal(1)
+            else IsleScale(boat, el) * InitialVal(el)
+          EquationNode(
+            InitialVal(InIsle(el, boat, isle)),
+            rhs
+          )
+        }
+        val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+        isleIn.union(isleEqs).union(initInIsle) + bridgeEq
     case pd: ProdTyp[u, v] =>
       val coeff = Coeff(tg.sigmaIsle(pd.first))
       val x     = pd.first
