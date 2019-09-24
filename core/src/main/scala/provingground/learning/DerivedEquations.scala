@@ -231,12 +231,13 @@ class DerivedEquations(
       )
       val initVarElems = eqs
         .flatMap { (eq) =>
-          Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
+          Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs) 
         }
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(lt.variable) => Elem(el, Terms) : Elem[_]
           case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(lt.variable) => Elem(el, Typs) : Elem[_]
-        } union (Set(Elem(lt.value, Terms)).filter(_.element.indepOf(boat)).map(t => t : Elem[_]) ) 
+        } union (Set(Elem(lt.value, Terms)).filter(_.element.indepOf(boat)).map(t => t : Elem[_]) 
+        ) union typOpt(boat).map(typ => Elem(typ, Typs)).toSet + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         (initVarElems  + Elem(boat, Terms)).map { el =>
           val rhs =
@@ -267,10 +268,10 @@ class DerivedEquations(
           InIsle(Elem(pd.value, isle.islandOutput(boat)), boat, isle)
         )
       )
-      pprint.log(eqs
-      .flatMap { (eq) =>
-        Expression.varVals(eq.rhs)
-      })
+      // pprint.log(eqs
+      // .flatMap { (eq) =>
+      //   Expression.varVals(eq.rhs)
+      // })
       val initVarElems = eqs
         .flatMap { (eq) =>
           Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
@@ -278,7 +279,8 @@ class DerivedEquations(
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(pd.variable) => Elem(el, Terms) : Elem[_]
           case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(pd.variable) => Elem(el, Typs) : Elem[_]
-        } union (Set(Elem(pd.value, Typs)).filter(_.element.indepOf(boat)).map(t => t : Elem[_])) 
+        } union (Set(Elem(pd.value, Typs)).filter(_.element.indepOf(boat)).map(t => t : Elem[_])
+        )  union typOpt(boat).map(typ => Elem(typ, Typs)).toSet + Elem(boat, Terms) 
       val isleIn: Set[EquationNode] =
         (initVarElems  + Elem(boat, Terms)).map { el =>
           val rhs =
@@ -312,7 +314,8 @@ class DerivedEquations(
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(boat) => Elem(el, Terms) : Elem[_]
           case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(boat) => Elem(el, Typs) : Elem[_]
-        } union (Set(Elem(pd.codom, Typs)).filter(_.element.indepOf(boat)).map(t => t : Elem[_])) 
+        } union (Set(Elem(pd.codom, Typs)).filter(_.element.indepOf(boat)).map(t => t : Elem[_])
+        )  union typOpt(boat).map(typ => Elem(typ, Typs)).toSet + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         (initVarElems  + Elem(boat, Terms)).map { el =>
           val rhs =
@@ -347,7 +350,8 @@ class DerivedEquations(
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(boat) => Elem(el, Terms) : Elem[_]
           case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(boat) => Elem(el, Typs) : Elem[_]
-        } union (Set(Elem(pd.fib.value, Typs)).filter(_.element.indepOf(boat)).map(t => t : Elem[_]))
+        } union (Set(Elem(pd.fib.value, Typs)).filter(_.element.indepOf(boat)).map(t => t : Elem[_])
+        )  union typOpt(boat).map(typ => Elem(typ, Typs)).toSet + Elem(boat, Terms)
       val isleIn: Set[EquationNode] =
         (initVarElems  + Elem(boat, Terms)).map { el =>
           val rhs =
