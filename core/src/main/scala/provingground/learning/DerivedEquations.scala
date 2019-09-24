@@ -217,7 +217,7 @@ class DerivedEquations(
     case idt: Refl[u] =>
       funcFoldEqs(IdentityTyp.reflTerm, Vector(idt.dom, idt.value))
     case lt: LambdaLike[u, v] =>
-      val coeff = Coeff(tg.lambdaIsle(lt.dom))
+      val coeff = Coeff(tg.lambdaNode)
       val boat  = lt.variable
       val isle  = tg.lambdaIsle(lt.dom)
       val eqs   = formalEquations(lt.value)
@@ -225,13 +225,13 @@ class DerivedEquations(
         eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
       val bridgeEq = EquationNode(
         FinalVal(Elem(lt, Terms)),
-        coeff * finalProb(lt.typ, Typs) *  FinalVal(
+        coeff * finalProb(lt.dom, Typs) *  FinalVal(
           InIsle(Elem(lt.value, isle.islandOutput(boat)), boat, isle)
         )
       )
       val initVarElems = eqs
         .flatMap { (eq) =>
-          Expression.varVals(eq.rhs)
+          Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(lt.variable) => Elem(el, Terms) : Elem[_]
@@ -248,10 +248,14 @@ class DerivedEquations(
             rhs
           )
         }
-        val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+        // pprint.log(initVarElems)
+        // pprint.log(eqs.flatMap { (eq) => Expression.varVals(eq.rhs)}, height = 500 )
+        // pprint.log(isle)
+        val initInIsle = initEquations(initVarElems. map (FinalVal(_))).map(_.mapVars((x) => InIsle(x, boat, isle)))
+        // pprint.log(initInIsle)
         (isleIn.union(isleEqs).union(initInIsle) + bridgeEq) union formalEquations(lt.dom)
     case pd: PiDefn[u, v] =>
-      val coeff = Coeff(tg.piIsle(pd.domain))
+      val coeff = Coeff(tg.piNode )
       val boat  = pd.variable
       val isle  = tg.piIsle(pd.domain)
       val eqs   = formalEquations(pd.value)
@@ -269,7 +273,7 @@ class DerivedEquations(
       })
       val initVarElems = eqs
         .flatMap { (eq) =>
-          Expression.varVals(eq.rhs)
+          Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(pd.variable) => Elem(el, Terms) : Elem[_]
@@ -286,10 +290,10 @@ class DerivedEquations(
             rhs
           )
         }
-        val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+        val initInIsle = initEquations(initVarElems. map (FinalVal(_))).map(_.mapVars((x) => InIsle(x, boat, isle)))
         (isleIn.union(isleEqs).union(initInIsle) + bridgeEq) union(formalEquations(pd.domain))
     case pd: FuncTyp[u, v] =>
-      val coeff = Coeff(tg.piIsle(pd.domain))
+      val coeff = Coeff(tg.piNode)
       val boat  = pd.dom.Var
       val isle  = tg.piIsle(pd.domain)
       val eqs   = formalEquations(pd.codom)
@@ -303,7 +307,7 @@ class DerivedEquations(
       )
       val initVarElems = eqs
         .flatMap { (eq) =>
-          Expression.varVals(eq.rhs)
+          Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(boat) => Elem(el, Terms) : Elem[_]
@@ -320,11 +324,11 @@ class DerivedEquations(
             rhs
           )
         }
-      val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+      val initInIsle = initEquations(initVarElems. map (FinalVal(_))).map(_.mapVars((x) => InIsle(x, boat, isle)))
       (isleIn.union(isleEqs).union(initInIsle) + bridgeEq) union formalEquations(pd.domain)
 
     case pd: SigmaTyp[u, v] =>
-      val coeff = Coeff(tg.sigmaIsle(pd.fib.dom))
+      val coeff = Coeff(tg.sigmaNode)
       val boat    = pd.fib.variable
       val isle  = tg.sigmaIsle(pd.fib.dom)
       val eqs   = formalEquations(pd.fib.value)
@@ -338,7 +342,7 @@ class DerivedEquations(
       )
       val initVarElems = eqs
         .flatMap { (eq) =>
-          Expression.varVals(eq.rhs)
+          Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
         .collect {
           case FinalVal(Elem(el : Term, Terms)) if !el.dependsOn(boat) => Elem(el, Terms) : Elem[_]
@@ -355,7 +359,7 @@ class DerivedEquations(
             rhs
           )
         }
-        val initInIsle = initEquations(initVarElems. map (FinalVal(_)))
+        val initInIsle = initEquations(initVarElems. map (FinalVal(_))).map(_.mapVars((x) => InIsle(x, boat, isle)))
         (isleIn.union(isleEqs).union(initInIsle) + bridgeEq) union(formalEquations(pd.fib.dom))
     case pd: ProdTyp[u, v] =>
       val coeff = Coeff(tg.sigmaIsle(pd.first))
@@ -427,7 +431,7 @@ class DerivedEquations(
       case FinalVal(Elem(t, rv))
           if Set[RandomVar[_]](Terms, Typs, InducDefns, Goals).contains(rv) =>
         EquationNode(
-          finalProb(t, Terms),
+          finalProb(t, rv),
           Coeff(Init(rv)) * InitialVal(Elem(t, rv))
         )
     }
