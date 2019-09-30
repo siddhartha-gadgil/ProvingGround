@@ -192,7 +192,8 @@ class DerivedEquations(
 
     }
 
-  def formalEquations(t: Term): Set[EquationNode] = t match {
+  def formalEquations(t: Term): Set[EquationNode] = {
+    val base : Set[EquationNode] = t match {
     case MiscAppln(fn: FuncLike[u, v], a) =>
       val f   = ExstFunc(fn)
       val lhs = finalProb(t, Terms)
@@ -495,30 +496,33 @@ class DerivedEquations(
           )
         )
       }.toSet
-    case t : Term => initEquations(Set(FinalVal(Elem(t, Terms))))
-  }
+    case t : Term => Set()
+  } 
+  base union initEquations(Set(FinalVal(Elem(t, Terms))))
+}
 
   def initEquations(s: Set[Expression]): Set[EquationNode] =
     s.collect {
-      case FinalVal(Elem(t, rv))
-          if Set[RandomVar[_]](
-            Terms,
-            Typs,
-            InducDefns,
-            Goals,
-            // Funcs,
-            // TypFamilies
-          ).contains(rv) =>
+      case FinalVal(Elem(t, rv)) 
+          // if Set[RandomVar[_]](
+          //   Terms,
+          //   Typs,
+          //   InducDefns,
+          //   Goals,
+          //   Funcs,
+          //   TypFamilies
+          // ).contains(rv) 
+          =>
         // if (rv == Funcs) pprint.log(finalProb(t, rv))
         EquationNode(
           finalProb(t, rv),
           Coeff(Init(rv)) * InitialVal(Elem(t, rv))
         )
-        case FinalVal(Elem(fn: ExstFunc, Funcs)) =>
-          EquationNode(
-            finalProb(fn, Funcs),
-            Coeff(Init(Funcs)) * InitialVal(Elem(fn.func, Terms))
-          )
+        // case FinalVal(Elem(fn: ExstFunc, Funcs)) =>
+        //   EquationNode(
+        //     finalProb(fn, Funcs),
+        //     Coeff(Init(Funcs)) * InitialVal(Elem(fn.func, Terms))
+        //   )
     }
 
   def initCheck(exp: Expression) =
