@@ -247,7 +247,7 @@ class DerivedEquations(
           InIsle(Elem(lt.value, isle.islandOutput(boat)), boat, isle)
         )
       )
-      val initVarElems = eqs
+      val initVarElems = (eqs union formalEquations(lt.dom))
         .flatMap { (eq) =>
           Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
@@ -259,8 +259,8 @@ class DerivedEquations(
             Elem(el, Typs): Elem[_]
           case FinalVal(Elem(el: ExstFunc, Funcs))
               if !el.func.dependsOn(lt.variable) =>
-            pprint.log(el)
-            pprint.log(isle)
+            // pprint.log(el)
+            // pprint.log(isle)
             Elem(el, Funcs): Elem[_]
         } union (Set(Elem(lt.value, Terms))
         .filter(_.element.indepOf(boat))
@@ -306,7 +306,7 @@ class DerivedEquations(
       // .flatMap { (eq) =>
       //   Expression.varVals(eq.rhs)
       // })
-      val initVarElems = eqs
+      val initVarElems = (eqs union formalEquations(pd.domain))
         .flatMap { (eq) =>
           Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
@@ -353,7 +353,7 @@ class DerivedEquations(
           InIsle(Elem(pd.codom, isle.islandOutput(boat)), boat, isle)
         )
       )
-      val initVarElems = eqs
+      val initVarElems = (eqs union formalEquations(pd.domain))
         .flatMap { (eq) =>
           Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
@@ -400,7 +400,7 @@ class DerivedEquations(
           InIsle(Elem(pd.fib.value, isle.islandOutput(boat)), boat, isle)
         )
       )
-      val initVarElems = eqs
+      val initVarElems = (eqs union (formalEquations(pd.fib.dom)))
         .flatMap { (eq) =>
           Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
         }
@@ -495,7 +495,7 @@ class DerivedEquations(
           )
         )
       }.toSet
-    case _ => Set()
+    case t : Term => initEquations(Set(FinalVal(Elem(t, Terms))))
   }
 
   def initEquations(s: Set[Expression]): Set[EquationNode] =
