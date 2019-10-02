@@ -219,7 +219,7 @@ object ExpressionEval {
       val coeffsAsVars: Boolean = false
     }
 
-  trait GenerateTyps extends ExpressionEval {self =>
+  trait GenerateTyps extends ExpressionEval { self =>
     lazy val finalTyps =
       FD {
         finalDist.collect {
@@ -228,29 +228,50 @@ object ExpressionEval {
       }.safeNormalized
 
     override def modify(
-      initNew: Map[Expression, Double] = self.init,
-      finalTypsNew: => FD[Typ[Term]] = self.finalTyps,
-      equationsNew: Set[Equation] = self.equations,
-      tgNew: TermGenParams = self.tg,
-      coeffsAsVarsNew: Boolean = self.coeffsAsVars,
-      maxRatioNew: Double = self.maxRatio,
-      scaleNew: Double = self.scale
+        initNew: Map[Expression, Double] = self.init,
+        finalTypsNew: => FD[Typ[Term]] = self.finalTyps,
+        equationsNew: Set[Equation] = self.equations,
+        tgNew: TermGenParams = self.tg,
+        coeffsAsVarsNew: Boolean = self.coeffsAsVars,
+        maxRatioNew: Double = self.maxRatio,
+        scaleNew: Double = self.scale
     ): ExpressionEval = new ExpressionEval with GenerateTyps {
-      val init           = initNew
-      val equations      = equationsNew
-      val tg             = self.tg
-      val coeffsAsVars   = self.coeffsAsVars
-      val maxRatio       = self.maxRatio
-      val scale          = self.scale
+      val init         = initNew
+      val equations    = equationsNew
+      val tg           = tgNew
+      val coeffsAsVars = coeffsAsVarsNew
+      val maxRatio     = maxRatioNew
+      val scale        = scaleNew
     }
 
-    override lazy val thmsByStatement: Map[HoTT.Typ[HoTT.Term],Expression] = 
-      if (thmSet.isEmpty) Map() else {
-        val base = thmSet.map{typ => typ -> FinalVal(Elem(typ, Typs))}.toMap
+    override lazy val thmsByStatement: Map[HoTT.Typ[HoTT.Term], Expression] =
+      if (thmSet.isEmpty) Map()
+      else {
+        val base = thmSet.map { typ =>
+          typ -> FinalVal(Elem(typ, Typs))
+        }.toMap
         val total = base.map(_._2).reduce[Expression](_ + _)
-        base.map{case (typ, exp) => (typ, exp/total)}
+        base.map { case (typ, exp) => (typ, exp / total) }
       }
 
+    def setProofWeights(pm: Map[Typ[Term], Double]) : ExpressionEval =
+      new FixedProofs {
+        val proofWeights: Map[HoTT.Typ[HoTT.Term], Double] = pm
+        val init                                       = self.init
+        val equations                                  = self.equations
+        val tg                                         = self.tg
+        val coeffsAsVars                               = self.coeffsAsVars
+        val maxRatio                                   = self.maxRatio
+        val scale                                      = self.scale
+      }
+
+  }
+
+  trait FixedProofs extends GenerateTyps {
+    val proofWeights: Map[Typ[Term], Double]
+
+    override def proofExpression(typ: HoTT.Typ[HoTT.Term]): Expression =
+      Literal(proofWeights(typ))
   }
 
   def values(eqs: Set[Equation]): Set[Expression] =
@@ -264,7 +285,6 @@ object ExpressionEval {
       case xs :+ y  => export(ev.relVariable(y), xs)
     }
 }
-
 
 trait ExpressionEval { self =>
   val init: Map[Expression, Double]
@@ -313,14 +333,14 @@ trait ExpressionEval { self =>
     val scale        = self.scale
   }
 
-  def fixTypes : ExpressionEval = new ExpressionEval {
-    val init         = self.init
+  def fixTypes: ExpressionEval = new ExpressionEval {
+    val init                               = self.init
     val finalTyps: FD[HoTT.Typ[HoTT.Term]] = self.finalTyps
-    val equations    = self.equations
-    val tg           = self.tg
-    val coeffsAsVars = self.coeffsAsVars
-    val maxRatio     = self.maxRatio
-    val scale        = self.scale
+    val equations                          = self.equations
+    val tg                                 = self.tg
+    val coeffsAsVars                       = self.coeffsAsVars
+    val maxRatio                           = self.maxRatio
+    val scale                              = self.scale
   }
 
   /**
