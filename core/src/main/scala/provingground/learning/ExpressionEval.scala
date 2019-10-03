@@ -11,6 +11,7 @@ import GeneratorVariables._, TermRandomVars._, Expression._,
 TermGeneratorNodes.{_}
 
 import annotation.tailrec
+import spire.util.Opt
 
 object ExpressionEval {
   val sd: StateDistribution[TermState, FD] =
@@ -191,7 +192,8 @@ object ExpressionEval {
       equationsS: Set[Equation],
       tgS: TermGenParams,
       maxRatioS: Double = 1.01,
-      scaleS: Double = 1.0
+      scaleS: Double = 1.0,
+      smoothS : Option[Double] = None
   ) =
     new ExpressionEval {
       val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
@@ -201,6 +203,7 @@ object ExpressionEval {
       val maxRatio              = maxRatioS
       val scale                 = scaleS
       val coeffsAsVars: Boolean = false
+      val smoothing: Option[Double] = smoothS
     }
 
   def fromInitEqs(
@@ -208,7 +211,8 @@ object ExpressionEval {
       equationsS: Set[Equation],
       tgS: TermGenParams,
       maxRatioS: Double = 1.01,
-      scaleS: Double = 1.0
+      scaleS: Double = 1.0,
+      smoothS : Option[Double] = None
   ): ExpressionEval =
     new ExpressionEval with GenerateTyps {
       val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
@@ -217,6 +221,7 @@ object ExpressionEval {
       val maxRatio              = maxRatioS
       val scale                 = scaleS
       val coeffsAsVars: Boolean = false
+      val smoothing: Option[Double] = smoothS
     }
 
   trait GenerateTyps extends ExpressionEval { self =>
@@ -234,7 +239,8 @@ object ExpressionEval {
         tgNew: TermGenParams = self.tg,
         coeffsAsVarsNew: Boolean = self.coeffsAsVars,
         maxRatioNew: Double = self.maxRatio,
-        scaleNew: Double = self.scale
+        scaleNew: Double = self.scale,
+        smoothNew: Option[Double] = self.smoothing
     ): ExpressionEval = new ExpressionEval with GenerateTyps {
       val init         = initNew
       val equations    = equationsNew
@@ -242,6 +248,7 @@ object ExpressionEval {
       val coeffsAsVars = coeffsAsVarsNew
       val maxRatio     = maxRatioNew
       val scale        = scaleNew
+      val smoothing = smoothNew
     }
 
     override lazy val thmsByStatement: Map[HoTT.Typ[HoTT.Term], Expression] =
@@ -263,6 +270,7 @@ object ExpressionEval {
         val coeffsAsVars                               = self.coeffsAsVars
         val maxRatio                                   = self.maxRatio
         val scale                                      = self.scale
+        val smoothing: Option[Double] = self.smoothing
       }
 
   }
@@ -294,6 +302,7 @@ trait ExpressionEval { self =>
   val coeffsAsVars: Boolean
   val maxRatio: Double
   val scale: Double
+  val smoothing: Option[Double]
 
   def avgInit(that: ExpressionEval) =
     new ExpressionEval {
@@ -304,6 +313,7 @@ trait ExpressionEval { self =>
       val coeffsAsVars   = self.coeffsAsVars
       val maxRatio       = self.maxRatio
       val scale          = self.scale
+      val smoothing: Option[Double] =  self.smoothing
     }
 
   def modify(
@@ -313,7 +323,8 @@ trait ExpressionEval { self =>
       tgNew: TermGenParams = self.tg,
       coeffsAsVarsNew: Boolean = self.coeffsAsVars,
       maxRatioNew: Double = self.maxRatio,
-      scaleNew: Double = self.scale
+      scaleNew: Double = self.scale,
+      smoothNew : Option[Double] = self.smoothing
   ): ExpressionEval = new ExpressionEval {
     val init: Map[Expression, Double] = initNew
     lazy val finalTyps: FD[Typ[Term]] = finalTypsNew
@@ -322,6 +333,7 @@ trait ExpressionEval { self =>
     val coeffsAsVars: Boolean         = coeffsAsVarsNew
     val maxRatio: Double              = maxRatioNew
     val scale: Double                 = scaleNew
+    val smoothing: Option[Double] = smoothNew
   }
 
   def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
@@ -331,6 +343,7 @@ trait ExpressionEval { self =>
     val coeffsAsVars = self.coeffsAsVars
     val maxRatio     = self.maxRatio
     val scale        = self.scale
+    val smoothing: Option[Double] = self.smoothing
   }
 
   def fixTypes: ExpressionEval = new ExpressionEval {
@@ -341,6 +354,7 @@ trait ExpressionEval { self =>
     val coeffsAsVars                       = self.coeffsAsVars
     val maxRatio                           = self.maxRatio
     val scale                              = self.scale
+    val smoothing: Option[Double] = self.smoothing
   }
 
   /**
@@ -506,6 +520,7 @@ trait ExpressionEval { self =>
       val coeffsAsVars = self.coeffsAsVars
       val maxRatio     = self.maxRatio
       val scale        = self.scale
+      val smoothing: Option[Double] = self.smoothing
     }
   }
 
@@ -780,10 +795,16 @@ trait ExpressionEval { self =>
     */
   lazy val hExp: Expression = Expression.h(genTerms)
 
+  lazy val unknownsExp : Option[Expression] = Expression.unknownsCost(thmsByStatement, smoothing)
+
   /**
     * Expression for Kullback-Liebler divergence of proofs from statements of theorems.
     */
-  lazy val klExp: Expression = Expression.kl(thmsByStatement, thmsByProof)
+  lazy val klExp: Expression =
+   {
+     val base = Expression.kl(thmsByStatement, thmsByProof, smoothing)
+     unknownsExp.map(exp => base + exp).getOrElse(base)
+   }
 
   lazy val finalTermMap: Map[Term, Expression] = finalTermSet.map { t =>
     t -> FinalVal(Elem(t, Terms))

@@ -5,6 +5,7 @@ import HList._
 import provingground.learning.GeneratorNode.{Map => GMap, _}
 import scala.language.higherKinds
 import scala.util._
+import spire.util.Opt
 
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
@@ -280,13 +281,27 @@ object Expression {
 
   def kl[A](
       pDist: Map[A, Expression],
-      qDist: Map[A, Expression]
+      qDist: Map[A, Expression],
+      smoothing: Option[Double] = None
   ): Expression =
     pDist
       .map {
-        case (a, p) => p * Log(p / qDist(a))
+        case (a, p) => 
+          val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
+          p * Log(p / q)
       }
       .reduce[Expression](_ + _)
+
+  def unknownsCost[A](pDist: Map[A, Expression], smoothing: Option[Double]) : Option[Expression] = 
+      smoothing.map{
+        q => 
+        pDist
+      .map {
+        case (a, p) => 
+          p * Log(p / q)
+      }
+      .reduce[Expression](_ + _)
+      }
 
   sealed trait VarVal[+Y] extends Expression {
     val variable: Variable[Y]

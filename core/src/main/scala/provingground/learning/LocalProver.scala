@@ -33,6 +33,7 @@ case class LocalProver(
     maxDepth: Int = 10,
     hW: Double = 1,
     klW: Double = 1,
+    val smoothing: Option[Double] = None,
     relativeEval: Boolean = false,
     stateFromEquation: Boolean = false
 ) extends LocalProverStep {
@@ -240,7 +241,8 @@ case class LocalProver(
         Equation.group(teqnds),
         tg,
         maxRatio,
-        scale
+        scale,
+        smoothing
       )
       expEv <- expressionEval
     } yield expEv.avgInit(tExpEval)
@@ -264,6 +266,7 @@ case class LocalProver(
         maxDepth,
         hW,
         klW,
+        smoothing,
         relativeEval
       )
 
@@ -288,7 +291,8 @@ case class LocalProver(
         steps,
         maxDepth,
         hW,
-        klW
+        klW,
+        smoothing
       )
 
   def splitTangentProvers(
@@ -312,7 +316,8 @@ case class LocalProver(
             steps,
             maxDepth,
             hW,
-            klW
+            klW,
+            smoothing
           )
       }
 
@@ -366,11 +371,13 @@ trait LocalProverStep {
   val tg: TermGenParams
   val cutoff: Double
   val scale: Double
+  val maxRatio: Double
   val steps: Int
   val maxDepth: Int
   val limit: FiniteDuration
   val hW: Double
   val klW: Double
+  val smoothing: Option[Double]
   val relativeEval: Boolean
 
   lazy val evolvedState: Task[EvolvedState] = nextState
@@ -398,7 +405,7 @@ trait LocalProverStep {
     val base = for {
       fs  <- nextState
       eqs <- equations
-    } yield ExpressionEval.fromStates(initState, fs, eqs, tg)
+    } yield ExpressionEval.fromStates(initState, fs, eqs, tg, maxRatio, scale, smoothS = smoothing)
     if (relativeEval)
       if (initState.vars.isEmpty)
         base.map(_.generateTyps)
@@ -517,6 +524,7 @@ case class LocalTangentProver(
     maxDepth: Int = 10,
     hW: Double = 1,
     klW: Double = 1,
+    val smoothing: Option[Double] = None,
     relativeEval: Boolean = false,
     stateFromEquation : Boolean = false
 ) extends LocalProverStep {
