@@ -2,6 +2,11 @@ package provingground.learning
 import provingground.{FiniteDistribution => FD, _}, HoTT._
 import monix.eval._, monix.tail._
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+import ExpressionEval._
+
 import GeneratorVariables._, TermRandomVars._, Expression._,
 TermGeneratorNodes.{_}
 
@@ -156,7 +161,8 @@ object ExpressionEval {
 
   def mapRatio[A](m1: Map[A, Double], m2: Map[A, Double]): Double = {
     require(m1.keySet == m2.keySet, "comparing maps with different supports")
-    if (m1.isEmpty) 1 else  m1.map { case (k, v) => math.max(v / m2(k), (m2(k) / v)) }.max
+    if (m1.isEmpty) 1
+    else m1.map { case (k, v) => math.max(v / m2(k), (m2(k) / v)) }.max
   }
 
   /**
@@ -198,28 +204,74 @@ object ExpressionEval {
     }
 
   def fromInitEqs(
-    initialState: TermState,
-    equationsS: Set[Equation],
-    tgS: TermGenParams,
-    maxRatioS: Double = 1.01,
-    scaleS: Double = 1.0
-) : ExpressionEval =
-  new ExpressionEval with GenerateTyps {
-    val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
-    val equations             = equationsS
-    val tg                    = tgS
-    val maxRatio              = maxRatioS
-    val scale                 = scaleS
-    val coeffsAsVars: Boolean = false
-  }
+      initialState: TermState,
+      equationsS: Set[Equation],
+      tgS: TermGenParams,
+      maxRatioS: Double = 1.01,
+      scaleS: Double = 1.0
+  ): ExpressionEval =
+    new ExpressionEval with GenerateTyps {
+      val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
+      val equations             = equationsS
+      val tg                    = tgS
+      val maxRatio              = maxRatioS
+      val scale                 = scaleS
+      val coeffsAsVars: Boolean = false
+    }
 
-  trait GenerateTyps extends ExpressionEval {
+  trait GenerateTyps extends ExpressionEval { self =>
     lazy val finalTyps =
       FD {
         finalDist.collect {
           case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => Weighted(typ, w)
         }
       }.safeNormalized
+
+    override def modify(
+        initNew: Map[Expression, Double] = self.init,
+        finalTypsNew: => FD[Typ[Term]] = self.finalTyps,
+        equationsNew: Set[Equation] = self.equations,
+        tgNew: TermGenParams = self.tg,
+        coeffsAsVarsNew: Boolean = self.coeffsAsVars,
+        maxRatioNew: Double = self.maxRatio,
+        scaleNew: Double = self.scale
+    ): ExpressionEval = new ExpressionEval with GenerateTyps {
+      val init         = initNew
+      val equations    = equationsNew
+      val tg           = tgNew
+      val coeffsAsVars = coeffsAsVarsNew
+      val maxRatio     = maxRatioNew
+      val scale        = scaleNew
+    }
+
+    override lazy val thmsByStatement: Map[HoTT.Typ[HoTT.Term], Expression] =
+      if (thmSet.isEmpty) Map()
+      else {
+        val base = thmSet.map { typ =>
+          typ -> FinalVal(Elem(typ, Typs))
+        }.toMap
+        val total = base.map(_._2).reduce[Expression](_ + _)
+        base.map { case (typ, exp) => (typ, exp / total) }
+      }
+
+    def setProofWeights(pm: Map[Typ[Term], Double]) : ExpressionEval =
+      new FixedProofs {
+        val proofWeights: Map[HoTT.Typ[HoTT.Term], Double] = pm
+        val init                                       = self.init
+        val equations                                  = self.equations
+        val tg                                         = self.tg
+        val coeffsAsVars                               = self.coeffsAsVars
+        val maxRatio                                   = self.maxRatio
+        val scale                                      = self.scale
+      }
+
+  }
+
+  trait FixedProofs extends GenerateTyps {
+    val proofWeights: Map[Typ[Term], Double]
+
+    override def proofExpression(typ: HoTT.Typ[HoTT.Term]): Expression =
+      Literal(proofWeights(typ))
   }
 
   def values(eqs: Set[Equation]): Set[Expression] =
@@ -227,16 +279,12 @@ object ExpressionEval {
       .flatMap(eq => Set(eq.lhs, eq.rhs))
       .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
 
-  def export(ev: ExpressionEval, vars: Vector[Term]) : ExpressionEval = vars match {
-    case Vector() => ev
-    case xs :+ y => export(ev.relVariable(y), xs)
-  }
+  def export(ev: ExpressionEval, vars: Vector[Term]): ExpressionEval =
+    vars match {
+      case Vector() => ev
+      case xs :+ y  => export(ev.relVariable(y), xs)
+    }
 }
-
-import spire.algebra._
-import spire.math._
-import spire.implicits._
-import ExpressionEval._
 
 trait ExpressionEval { self =>
   val init: Map[Expression, Double]
@@ -285,6 +333,16 @@ trait ExpressionEval { self =>
     val scale        = self.scale
   }
 
+  def fixTypes: ExpressionEval = new ExpressionEval {
+    val init                               = self.init
+    val finalTyps: FD[HoTT.Typ[HoTT.Term]] = self.finalTyps
+    val equations                          = self.equations
+    val tg                                 = self.tg
+    val coeffsAsVars                       = self.coeffsAsVars
+    val maxRatio                           = self.maxRatio
+    val scale                              = self.scale
+  }
+
   /**
     * the atomic expressions in the equations
     */
@@ -296,7 +354,8 @@ trait ExpressionEval { self =>
   /**
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
-  lazy val finalDist: Map[Expression, Double] = stableMap(init, equations, maxRatio)
+  lazy val finalDist: Map[Expression, Double] =
+    stableMap(init, equations, maxRatio)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
@@ -319,11 +378,11 @@ trait ExpressionEval { self =>
   }.toSet
 
   lazy val finalTerms =
-      FD {
-        finalDist.collect {
-          case (FinalVal(Elem(t: Term, Terms)), w) => Weighted(t, w)
-        }
-      }.safeNormalized
+    FD {
+      finalDist.collect {
+        case (FinalVal(Elem(t: Term, Terms)), w) => Weighted(t, w)
+      }
+    }.safeNormalized
 
   def lambdaExportEquations(
       variable: Term,
@@ -391,8 +450,8 @@ trait ExpressionEval { self =>
         EnterIsle
       )
     import isle._
-    val boat = variable
-    val coeff            = Coeff(Base.piNode)
+    val boat  = variable
+    val coeff = Coeff(Base.piNode)
     val isleEqs: Set[Equation] =
       equations.map(_.mapVars { (x) =>
         InIsle(x, boat, isle)
@@ -426,14 +485,20 @@ trait ExpressionEval { self =>
     isleEqs union (Equation.group(isleIn union bridgeEqs))
   }
 
-  def relVariable(x: Term) : ExpressionEval = {
+  def relVariable(x: Term): ExpressionEval = {
     val varWeight = init(InitialVal(Elem(x, Terms)))
-    val eqs = piExportEquations(x, varWeight) union lambdaExportEquations(x, varWeight)
-    val newInit = init.map{
-      case (exp @ InitialVal(Elem(y, Terms)), w) => 
-        if (x == y) None else Some(exp, w / (1.0 - varWeight))
-      case (k, v) => Some(k -> v)
-    }.flatten.toMap
+    val eqs = piExportEquations(x, varWeight) union lambdaExportEquations(
+      x,
+      varWeight
+    )
+    val newInit = init
+      .map {
+        case (exp @ InitialVal(Elem(y, Terms)), w) =>
+          if (x == y) None else Some(exp, w / (1.0 - varWeight))
+        case (k, v) => Some(k -> v)
+      }
+      .flatten
+      .toMap
     new ExpressionEval with GenerateTyps {
       val init         = newInit
       val equations    = eqs
@@ -528,7 +593,8 @@ trait ExpressionEval { self =>
 
   implicit lazy val dim: JetDim = JetDim(vars.size)
 
-  implicit lazy val jetField: Field[Jet[Double]] = implicitly[Field[Jet[Double]]]
+  implicit lazy val jetField: Field[Jet[Double]] =
+    implicitly[Field[Jet[Double]]]
 
   case class WithP(p: Map[Expression, Double]) {
     lazy val spireVarProbs: Map[Expression, Jet[Double]] =
