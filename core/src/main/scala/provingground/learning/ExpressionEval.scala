@@ -193,16 +193,16 @@ object ExpressionEval {
       tgS: TermGenParams,
       maxRatioS: Double = 1.01,
       scaleS: Double = 1.0,
-      smoothS : Option[Double] = None
+      smoothS: Option[Double] = None
   ) =
     new ExpressionEval {
-      val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
-      val finalTyps             = finalState.typs
-      val equations             = equationsS
-      val tg                    = tgS
-      val maxRatio              = maxRatioS
-      val scale                 = scaleS
-      val coeffsAsVars: Boolean = false
+      val init                      = initMap(eqAtoms(equationsS), tgS, initialState)
+      val finalTyps                 = finalState.typs
+      val equations                 = equationsS
+      val tg                        = tgS
+      val maxRatio                  = maxRatioS
+      val scale                     = scaleS
+      val coeffsAsVars: Boolean     = false
       val smoothing: Option[Double] = smoothS
     }
 
@@ -212,15 +212,15 @@ object ExpressionEval {
       tgS: TermGenParams,
       maxRatioS: Double = 1.01,
       scaleS: Double = 1.0,
-      smoothS : Option[Double] = None
+      smoothS: Option[Double] = None
   ): ExpressionEval =
     new ExpressionEval with GenerateTyps {
-      val init                  = initMap(eqAtoms(equationsS), tgS, initialState)
-      val equations             = equationsS
-      val tg                    = tgS
-      val maxRatio              = maxRatioS
-      val scale                 = scaleS
-      val coeffsAsVars: Boolean = false
+      val init                      = initMap(eqAtoms(equationsS), tgS, initialState)
+      val equations                 = equationsS
+      val tg                        = tgS
+      val maxRatio                  = maxRatioS
+      val scale                     = scaleS
+      val coeffsAsVars: Boolean     = false
       val smoothing: Option[Double] = smoothS
     }
 
@@ -231,6 +231,8 @@ object ExpressionEval {
           case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => Weighted(typ, w)
         }
       }.safeNormalized
+
+    override def generateTyps: ExpressionEval = self
 
     override def modify(
         initNew: Map[Expression, Double] = self.init,
@@ -248,7 +250,7 @@ object ExpressionEval {
       val coeffsAsVars = coeffsAsVarsNew
       val maxRatio     = maxRatioNew
       val scale        = scaleNew
-      val smoothing = smoothNew
+      val smoothing    = smoothNew
     }
 
     override lazy val thmsByStatement: Map[HoTT.Typ[HoTT.Term], Expression] =
@@ -261,16 +263,16 @@ object ExpressionEval {
         base.map { case (typ, exp) => (typ, exp / total) }
       }
 
-    def setProofWeights(pm: Map[Typ[Term], Double]) : ExpressionEval =
+    def setProofWeights(pm: Map[Typ[Term], Double]): ExpressionEval =
       new FixedProofs {
         val proofWeights: Map[HoTT.Typ[HoTT.Term], Double] = pm
-        val init                                       = self.init
-        val equations                                  = self.equations
-        val tg                                         = self.tg
-        val coeffsAsVars                               = self.coeffsAsVars
-        val maxRatio                                   = self.maxRatio
-        val scale                                      = self.scale
-        val smoothing: Option[Double] = self.smoothing
+        val init                                           = self.init
+        val equations                                      = self.equations
+        val tg                                             = self.tg
+        val coeffsAsVars                                   = self.coeffsAsVars
+        val maxRatio                                       = self.maxRatio
+        val scale                                          = self.scale
+        val smoothing: Option[Double]                      = self.smoothing
       }
 
   }
@@ -280,6 +282,22 @@ object ExpressionEval {
 
     override def proofExpression(typ: HoTT.Typ[HoTT.Term]): Expression =
       Literal(proofWeights(typ))
+
+    def adverseIterant(
+        hW: Double = 1,
+        klW: Double = 1,
+        p: Map[Expression, Double] = finalDist
+    ): Iterant[Task, Map[Expression, Double]] =
+      Iterant.fromLazyStateAction[Task, Map[Expression, Double], Map[
+        Expression,
+        Double
+      ]] { q =>
+        for {
+          epg <- WithP(q).entropyProjectionTask(hW, klW)
+          s = stableGradShift(q, -epg)
+        } yield (s, s)
+      }(Task.now(p))
+
   }
 
   def values(eqs: Set[Equation]): Set[Expression] =
@@ -306,14 +324,14 @@ trait ExpressionEval { self =>
 
   def avgInit(that: ExpressionEval) =
     new ExpressionEval {
-      val init           = (0.5 *: self.init) + (0.5 *: that.init)
-      lazy val finalTyps = self.finalTyps
-      val equations      = Equation.merge(self.equations, that.equations)
-      val tg             = self.tg
-      val coeffsAsVars   = self.coeffsAsVars
-      val maxRatio       = self.maxRatio
-      val scale          = self.scale
-      val smoothing: Option[Double] =  self.smoothing
+      val init                      = (0.5 *: self.init) + (0.5 *: that.init)
+      lazy val finalTyps            = self.finalTyps
+      val equations                 = Equation.merge(self.equations, that.equations)
+      val tg                        = self.tg
+      val coeffsAsVars              = self.coeffsAsVars
+      val maxRatio                  = self.maxRatio
+      val scale                     = self.scale
+      val smoothing: Option[Double] = self.smoothing
     }
 
   def modify(
@@ -324,7 +342,7 @@ trait ExpressionEval { self =>
       coeffsAsVarsNew: Boolean = self.coeffsAsVars,
       maxRatioNew: Double = self.maxRatio,
       scaleNew: Double = self.scale,
-      smoothNew : Option[Double] = self.smoothing
+      smoothNew: Option[Double] = self.smoothing
   ): ExpressionEval = new ExpressionEval {
     val init: Map[Expression, Double] = initNew
     lazy val finalTyps: FD[Typ[Term]] = finalTypsNew
@@ -333,16 +351,16 @@ trait ExpressionEval { self =>
     val coeffsAsVars: Boolean         = coeffsAsVarsNew
     val maxRatio: Double              = maxRatioNew
     val scale: Double                 = scaleNew
-    val smoothing: Option[Double] = smoothNew
+    val smoothing: Option[Double]     = smoothNew
   }
 
   def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
-    val init         = self.init
-    val equations    = self.equations
-    val tg           = self.tg
-    val coeffsAsVars = self.coeffsAsVars
-    val maxRatio     = self.maxRatio
-    val scale        = self.scale
+    val init                      = self.init
+    val equations                 = self.equations
+    val tg                        = self.tg
+    val coeffsAsVars              = self.coeffsAsVars
+    val maxRatio                  = self.maxRatio
+    val scale                     = self.scale
     val smoothing: Option[Double] = self.smoothing
   }
 
@@ -354,7 +372,7 @@ trait ExpressionEval { self =>
     val coeffsAsVars                       = self.coeffsAsVars
     val maxRatio                           = self.maxRatio
     val scale                              = self.scale
-    val smoothing: Option[Double] = self.smoothing
+    val smoothing: Option[Double]          = self.smoothing
   }
 
   /**
@@ -514,12 +532,12 @@ trait ExpressionEval { self =>
       .flatten
       .toMap
     new ExpressionEval with GenerateTyps {
-      val init         = newInit
-      val equations    = eqs
-      val tg           = self.tg
-      val coeffsAsVars = self.coeffsAsVars
-      val maxRatio     = self.maxRatio
-      val scale        = self.scale
+      val init                      = newInit
+      val equations                 = eqs
+      val tg                        = self.tg
+      val coeffsAsVars              = self.coeffsAsVars
+      val maxRatio                  = self.maxRatio
+      val scale                     = self.scale
       val smoothing: Option[Double] = self.smoothing
     }
   }
@@ -795,16 +813,16 @@ trait ExpressionEval { self =>
     */
   lazy val hExp: Expression = Expression.h(genTerms)
 
-  lazy val unknownsExp : Option[Expression] = Expression.unknownsCost(thmsByStatement, smoothing)
+  lazy val unknownsExp: Option[Expression] =
+    Expression.unknownsCost(thmsByStatement, smoothing)
 
   /**
     * Expression for Kullback-Liebler divergence of proofs from statements of theorems.
     */
-  lazy val klExp: Expression =
-   {
-     val base = Expression.kl(thmsByStatement, thmsByProof, smoothing)
-     unknownsExp.map(exp => base + exp).getOrElse(base)
-   }
+  lazy val klExp: Expression = {
+    val base = Expression.kl(thmsByStatement, thmsByProof, smoothing)
+    unknownsExp.map(exp => base + exp).getOrElse(base)
+  }
 
   lazy val finalTermMap: Map[Term, Expression] = finalTermSet.map { t =>
     t -> FinalVal(Elem(t, Terms))
