@@ -527,6 +527,23 @@ object EquationNode {
       .groupBy(_._1)
       .mapValues(s => s.toVector.map(_._2).flatten)
 
+  def forwardMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Set[GeneratorVariables.Variable[_]]] =
+    {
+      val bm = backMap(eqs)
+      val keys = bm.values.toSet.flatten.flatten
+      keys.map{v : Variable[_] => v -> bm.keySet.filter(w => bm(w).flatten.contains(v : Variable[_]))}.toMap
+    }
+      
+  def forwardCoeffMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Set[(Expression.Coeff[_], GeneratorVariables.Variable[_])]] =
+  {
+    val bcm = backCoeffMap(eqs)
+    val keys = bcm.values.toSet.flatten.flatMap(_._2.toSet)
+    keys.map{v : Variable[_] => 
+      v -> bcm.keySet.flatMap(w => bcm(w).collect{case (c : Coeff[_], ts) if ts.contains(v) => (c , w ) : (Coeff[_], Variable[_]) }.toSet  ) 
+    }.toMap
+  }
+
+
 }
 
 case class EquationNode(lhs: Expression, rhs: Expression) {
