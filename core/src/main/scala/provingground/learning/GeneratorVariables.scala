@@ -534,12 +534,12 @@ object EquationNode {
       keys.map{v : Variable[_] => v -> bm.keySet.filter(w => bm(w).flatten.contains(v : Variable[_]))}.toMap
     }
       
-  def forwardCoeffMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Set[(Expression.Coeff[_], GeneratorVariables.Variable[_])]] =
+  def forwardCoeffMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Vector[(Expression.Coeff[_], GeneratorVariables.Variable[_])]] =
   {
     val bcm = backCoeffMap(eqs)
     val keys = bcm.values.toSet.flatten.flatMap(_._2.toSet)
     keys.map{v : Variable[_] => 
-      v -> bcm.keySet.flatMap(w => bcm(w).collect{case (c : Coeff[_], ts) if ts.contains(v) => (c , w ) : (Coeff[_], Variable[_]) }.toSet  ) 
+      v -> bcm.keys.toVector.flatMap(w => bcm(w).collect{case (c : Coeff[_], ts) if ts.contains(v) => (c , w ) : (Coeff[_], Variable[_]) }.toVector  ) 
     }.toMap
   }
 

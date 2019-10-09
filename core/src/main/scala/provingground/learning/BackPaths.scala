@@ -59,3 +59,42 @@ case class WeightedBackPaths[A, C](
     inits.map(randomPathFromInit(_, length))
   }
 }
+
+
+case class WeightedBiPaths[A, C](
+    gens: Map[A, Vector[(C, Vector[A])]], // assumed to be backward generators
+    forwardGens: Map[A, Vector[(C, A)]],
+    coeffWeights: C => Double,
+    backWeight: Double
+) extends BackPaths[A](
+      gens.mapValues(v => v.map { case (c, v) => v.toSet }.toSet)
+    ) {
+  def randomNext(init: A): Option[A] =
+      if (rnd.nextDouble() < backWeight)
+    gens.get(init).map { v =>
+      val total: Double = v.map(cv => coeffWeights(cv._1)).sum
+      val wb            = v.map { case (c, x) => Weighted(x, coeffWeights(c) / total) }
+      val branch        = Weighted.pick(wb, rnd.nextDouble())
+      branch(rnd.nextInt(branch.size))
+    } else 
+    forwardGens.get(init).map {v =>
+      val total: Double = v.map(cv => coeffWeights(cv._1)).sum
+      val wb            = v.map { case (c, x) => Weighted(x, coeffWeights(c) / total) }
+      Weighted.pick(wb, rnd.nextDouble())
+    }
+
+  def randomPathFromInit(init: A, length: Int): Vector[A] =
+    if (length < 1) Vector()
+    else
+      randomNext(init)
+        .map { x =>
+          init +: randomPathFromInit(x, length - 1)
+        }
+        .getOrElse(randomPathFromInit(init, length)) // assumed that there is no isolated term.
+
+  def unifRandomPaths(number: Int, length: Int) = {
+    val inits: Vector[A] = (1 to number).toVector
+      .map(_ => initialValues(rnd.nextInt(initialValues.size)))
+    inits.map(randomPathFromInit(_, length))
+  }
+}

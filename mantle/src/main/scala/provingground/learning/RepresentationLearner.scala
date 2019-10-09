@@ -88,7 +88,7 @@ object RepresentationLearner {
 
   import Expression.Coeff
 
-  def equationNodesSampled(
+  def equationNodesBackSampled(
       eqs: Set[EquationNode],
       numPaths: Int,
       length: Int,
@@ -99,6 +99,23 @@ object RepresentationLearner {
   ): RepresentationLearner[GeneratorVariables.Variable[_]] = {
     val m     = EquationNode.backCoeffMap(eqs)
     val bp    = WeightedBackPaths(m, coeffWeights)
+    val paths = bp.unifRandomPaths(numPaths, length)
+    new RepresentationLearner(paths, vectorLength, minWordFrequency, batchSize)
+  }
+
+  def equationNodesSampled(
+      eqs: Set[EquationNode],
+      numPaths: Int,
+      length: Int,
+      coeffWeights: Coeff[_] => Double = (_) => 1,
+      backWeight: Double = 0.8,
+      vectorLength: Int = 150,
+      minWordFrequency: Int = 5,
+      batchSize: Int = 250
+  ): RepresentationLearner[GeneratorVariables.Variable[_]] = {
+    val bm     = EquationNode.backCoeffMap(eqs)
+    val fm = EquationNode.forwardCoeffMap(eqs)
+    val bp    = WeightedBiPaths(bm, fm, coeffWeights, backWeight)
     val paths = bp.unifRandomPaths(numPaths, length)
     new RepresentationLearner(paths, vectorLength, minWordFrequency, batchSize)
   }
