@@ -95,7 +95,20 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
     cp.over(ass.path, pwd/ "bin" / s"$name.fat.jar")
     val hashName = s"$name-${glog.abbreviate(10).name}.fat.jar"
     cp.over(ass.path, pwd/ "notes" / "bin" / hashName)
-    pprint.log("import $cp.bin." + s"`$hashName`")
+    println("Include in a Jupyter (almond) notebook:")
+    println(
+s"""
+import ${"$"}cp.bin.`$hashName`
+import provingground._ , interface._, HoTT._, learning._ 
+repl.pprinter() = {
+  val p = repl.pprinter()
+  p.copy(
+    additionalHandlers = p.additionalHandlers.orElse {
+      translation.FansiShow.fansiHandler
+    }
+  )
+}
+""")
     ass
   }
 
