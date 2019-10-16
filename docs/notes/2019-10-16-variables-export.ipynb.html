@@ -12301,6 +12301,330 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lp1</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">tg</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">(</span><span class="n">sigmaW</span> <span class="k">=</span> <span class="mi">0</span><span class="o">),</span> <span class="n">relativeEval</span> <span class="k">=</span> <span class="kc">true</span><span class="o">).</span><span class="n">sharpen</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lp1</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.5</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">B</span>, <span class="ansi-green-fg">0.5</span>))),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.5</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">B</span>, <span class="ansi-green-fg">0.5</span>))),
+    <span class="ansi-yellow-fg">Vector</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">B</span>),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    Empty
+  ),
+  <span class="ansi-yellow-fg">TermGenParams</span>(
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.3</span>,
+    <span class="ansi-green-fg">0.7</span>,
+    <span class="ansi-green-fg">0.5</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>
+  ),
+  <span class="ansi-green-fg">1.0E-5</span>,
+  12 minutes,
+  <span class="ansi-green-fg">1.01</span>,
+  <span class="ansi-green-fg">1.0</span>,
+  <span class="ansi-green-fg">10000</span>,
+  <span class="ansi-green-fg">10</span>,
+  <span class="ansi-green-fg">1.0</span>,
+  <span class="ansi-green-fg">1.0</span>,
+  <span class="ansi-green-fg">None</span>,
+  true,
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">nsT1</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">nextState</span>
+<span class="k">val</span> <span class="n">nsF1</span> <span class="k">=</span> <span class="n">nsT1</span><span class="o">.</span><span class="n">runToFuture</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">nsT1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">TermState</span></span>] = <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true)
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">nsF1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">TermState</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">TermState</span></span>(
+    <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+      <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.131393181144309E-4</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.131393181144308E-4</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@a : B) ↦ (@b : B) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.7989417351696225E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@a : B) ↦ (@b : A) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.9984881930994606E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ (@a : B) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.712125990142086E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : A) ↦ (@b : B) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.998488193099462E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ (@a : A) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.712125990142089E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : A) ↦ (@b : A) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.7989417351696228E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.4138568318741664</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ (@c : B) ↦ @b</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.998488193099462E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ (@c : B) ↦ @c</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.712125990142089E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ (@c : B) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.798941735169623E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → B)) ↦ (@a : A) ↦ B</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.651177994842281E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → B)) ↦ (@a : A) ↦ B</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.651177994842281E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@a : (A → B)) ↦ B</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.0429158396894534E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@a : (B → B)) ↦ B</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.0429158396894534E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → A)) ↦ (@a : B) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.651177994842281E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → A)) ↦ (@a : B) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.651177994842281E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : (A → A)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.042915839689454E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : (B → A)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.042915839689454E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → A)) ↦ (@a : A) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.843866852721956E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → A)) ↦ (@a : A) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.843866852721956E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@a : (B → A)) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.950509191456472E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@a : (A → A)) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.950509191456472E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : A) ↦ (@a : B) ↦ (@b : B) ↦ B</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.265432024364559E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : A) ↦ (@b : B) ↦ B</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.265432024364558E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ (@a : A) ↦ B</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.2654320243645597E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → B)) ↦ (@a : B) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.651177994842281E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → B)) ↦ (@a : B) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.651177994842281E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : (A → B)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.042915839689454E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : (B → B)) ↦ A</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.042915839689454E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (A → A)) ↦ (@a : B) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.843866852721956E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (B → A)) ↦ (@a : B) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.843866852721956E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : (B → A)) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.9505091914564746E-5</span></span>),
+        <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : B) ↦ (@a : (A → A)) ↦ @a</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.9505091914564746E-5</span></span>),
+...</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">evT1</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">expressionEval</span>
+<span class="n">evT1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTyps</span><span class="o">(</span><span class="nc">MP</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">evT1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">ExpressionEval</span></span>] = <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true)
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res23_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0013723028024069874</span></span>)</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">evT1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTyps</span><span class="o">.</span><span class="n">entropyVec</span><span class="o">).</span><span class="n">runToFuture</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res25</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Weighted</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]]]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∏(B : 𝒰 ){ B })</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.00868434330881</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∏(B : 𝒰 ){ (B → B) })</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.53148909133723</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (A → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.708679182796788</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∏(B : 𝒰 ){ ((B → B) → B) })</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.662679983584427</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((A → B) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.664364526122651</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∏(B : 𝒰 ){ (((B → B) → B) → B) })</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.670615518176365</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (((A → B) → B) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.670623121152982</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (((B → A) → B) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.670682100050445</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (((A → A) → B) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.670682100050445</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∏(B : 𝒰 ){ ((B → (B → B)) → B) })</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.676689516357864</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((B → (A → B)) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.676739040228539</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((A → (B → B)) → B) } }</span></span>,
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.6767542234622805</span></span>
+    ),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((A → (A → B)) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.676798320488374</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (((B → B) → A) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((A → A) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((B → A) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (((B → A) → A) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (((A → A) → A) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ (((A → B) → A) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((B → (B → A)) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((B → (A → A)) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+    <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(A : 𝒰 ){ ∏(B : 𝒰 ){ ((A → (A → A)) → B) } }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.677256930084318</span></span>),
+...</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">evT1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTyps</span><span class="o">.</span><span class="n">entropy</span><span class="o">(</span><span class="nc">MP</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res24</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">9.509185433376482</span></span>)</span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">evT1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTerms</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="nc">MP</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res26</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>()))</span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusions-round-two">Conclusions round two<a class="anchor-link" href="#Conclusions-round-two">&#182;</a></h2><ul>
+<li>The generation of the modus ponens statement is a litte more robust if sigma-islands (hence products) are excluded.</li>
+<li>We still do not get a proof of Modus Ponens if it is not targetted.</li>
+</ul>
+
+</div>
+</div>
+</div>
     </div>
   </div>
 </body>
