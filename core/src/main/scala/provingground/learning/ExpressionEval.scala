@@ -518,16 +518,17 @@ trait ExpressionEval { self =>
   }
 
   def relVariable(x: Term): ExpressionEval = {
-    val varWeight = init(InitialVal(Elem(x, Terms)))
+    val varWeight : Double = math.max(init.getOrElse(InitialVal(Elem(x, Terms)), 0.0), init.getOrElse(InitialVal(Elem(x, Typs)), 0.0))
     val eqs = piExportEquations(x, varWeight) union lambdaExportEquations(
       x,
       varWeight
     )
     val newInit = init
       .map {
-        case (exp @ InitialVal(Elem(y, Terms)), w) =>
-          if (x == y) None else Some(exp, w / (1.0 - varWeight))
-        case (k, v) => Some(k -> v)
+        case (exp @ InitialVal(Elem(y : Term, Terms)), w) =>
+          if (y.dependsOn(x)) None else Some(exp, w / (1.0 - varWeight))
+        case (InitialVal(Elem(y : Term, _)) , v) if y.dependsOn(x) => None
+        case (k , v) => Some(k -> v)
       }
       .flatten
       .toMap
