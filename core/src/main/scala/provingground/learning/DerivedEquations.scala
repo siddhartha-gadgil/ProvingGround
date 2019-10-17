@@ -192,7 +192,7 @@ class DerivedEquations(
 
     }
 
-  def formalEquations(t: Term, ctx: Context): Set[EquationNode] = {
+  def formalEquations(t: Term, ctx: Context = Context.Empty): Set[EquationNode] = {
     val base: Set[EquationNode] = t match {
       case MiscAppln(fn: FuncLike[u, v], a) =>
         val f   = ExstFunc(fn)
@@ -572,3 +572,5 @@ class DerivedEquations(
     }
 
 }
+
+object DE extends DerivedEquations()
