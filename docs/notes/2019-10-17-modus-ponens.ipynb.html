@@ -12543,6 +12543,373 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tsU</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">(),</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="nc">Type</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="s">&quot;a&quot;</span> <span class="o">::</span> <span class="n">A</span>
+<span class="k">val</span> <span class="n">f</span> <span class="k">=</span> <span class="s">&quot;f&quot;</span> <span class="o">::</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">mp</span> <span class="k">=</span> <span class="n">a</span> <span class="o">:-&gt;</span> <span class="o">(</span><span class="n">f</span> <span class="o">:-&gt;</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">mpU</span> <span class="k">=</span> <span class="n">A</span> <span class="o">:~&gt;</span> <span class="o">(</span><span class="n">B</span> <span class="o">:~&gt;</span> <span class="n">mp</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">eqNodesU</span> <span class="k">=</span> <span class="nc">DE</span><span class="o">.</span><span class="n">formalEquations</span><span class="o">(</span><span class="n">mpU</span><span class="o">)</span> <span class="n">union</span> <span class="nc">DE</span><span class="o">.</span><span class="n">termStateInit</span><span class="o">(</span><span class="n">tsU</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">tsU</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">1.0</span>))),
+  <span class="ansi-yellow-fg">Vector</span>(),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  Empty
+)
+<span class="ansi-cyan-fg">a</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">a</span>
+<span class="ansi-cyan-fg">f</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">f</span>
+<span class="ansi-cyan-fg">mp</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(a : A) ↦ (f : (A → B)) ↦ f(a)</span>
+<span class="ansi-cyan-fg">mpU</span>: <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">FuncLike</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]]]] = <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (a : A) ↦ (f : (A → B)) ↦ f(a)</span>
+<span class="ansi-cyan-fg">eqNodesU</span>: <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>] = <span class="ansi-yellow-fg">Set</span>(
+  <span class="ansi-yellow-fg">EquationNode</span>(
+    <span class="ansi-yellow-fg">InitialVal</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Terms),
+        <span class="ansi-green-fg">A</span>,
+        <span class="ansi-yellow-fg">Island</span>(Terms, <span class="ansi-yellow-fg">ConstRandVar</span>(Terms), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>), Lambda, EnterIsle)
+      )
+    ),
+    <span class="ansi-yellow-fg">Product</span>(<span class="ansi-yellow-fg">IsleScale</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Terms)), <span class="ansi-yellow-fg">FinalVal</span>(<span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">𝒰 </span>, Terms)))
+  ),
+  <span class="ansi-yellow-fg">EquationNode</span>(
+    <span class="ansi-yellow-fg">FinalVal</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">InIsle</span>(
+              <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">A</span>, Terms),
+              <span class="ansi-green-fg">f</span>,
+              <span class="ansi-yellow-fg">Island</span>(
+                Terms,
+                <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
+                <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(A → B)</span>, <span class="ansi-green-fg">0.3</span>),
+                Lambda,
+                EnterIsle
+              )
+            ),
+            <span class="ansi-green-fg">a</span>,
+            <span class="ansi-yellow-fg">Island</span>(
+              Terms,
+              <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
+              <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.3</span>),
+              Lambda,
+              EnterIsle
+            )
+          ),
+          <span class="ansi-green-fg">B</span>,
+          <span class="ansi-yellow-fg">Island</span>(
+            Terms,
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">evU</span> <span class="k">=</span> <span class="nc">ExpressionEval</span><span class="o">.</span><span class="n">fromInitEqs</span><span class="o">(</span><span class="n">tsU</span><span class="o">,</span> <span class="nc">Equation</span><span class="o">.</span><span class="n">group</span><span class="o">(</span><span class="n">eqNodesU</span><span class="o">),</span> <span class="nc">TermGenParams</span><span class="o">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">evU</span>: <span class="ansi-green-fg">ExpressionEval</span> = provingground.learning.ExpressionEval$$anon$2@f2bbab4</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">evU</span><span class="o">.</span><span class="n">finalTerms</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res22</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.5</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (a : A) ↦ (f : (A → B)) ↦ f(a)</span>, <span class="ansi-green-fg">0.5</span>)
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">evU</span><span class="o">.</span><span class="n">finalTerms</span><span class="o">(</span><span class="n">mpU</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res24</span>: <span class="ansi-green-fg">Double</span> = <span class="ansi-green-fg">0.5</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusions-round-two">Conclusions round two<a class="anchor-link" href="#Conclusions-round-two">&#182;</a></h2><ul>
+<li>The above is self-contained (pasted from REPL) showing that we do get modus ponens if we work with equations. We should try this with equations for proofs as well.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">eqNodesUT</span> <span class="k">=</span> <span class="n">mpEqsT</span><span class="o">.</span><span class="n">map</span> <span class="o">(</span><span class="k">_</span> <span class="n">union</span> <span class="nc">DE</span><span class="o">.</span><span class="n">termStateInit</span><span class="o">(</span><span class="n">tsU</span><span class="o">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">eqNodesUT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>]] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+  scala.Function1$$Lambda$296/951031848@17165bea,
+  <span class="ansi-green-fg">2</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">evUT</span> <span class="k">=</span> <span class="n">eqNodesUT</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">nodes</span> <span class="k">=&gt;</span> <span class="nc">ExpressionEval</span><span class="o">.</span><span class="n">fromInitEqs</span><span class="o">(</span><span class="n">tsU</span><span class="o">,</span> <span class="nc">Equation</span><span class="o">.</span><span class="n">group</span><span class="o">(</span><span class="n">nodes</span><span class="o">)</span> <span class="o">,</span> <span class="nc">TermGenParams</span><span class="o">())}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[27]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">evUT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">ExpressionEval</span>] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+  scala.Function1$$Lambda$296/951031848@7b5764d9,
+  <span class="ansi-green-fg">3</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">evUT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTerms</span><span class="o">(</span><span class="n">mpU</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res27</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.5</span></span>)</span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">evUT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTerms</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="nc">MP</span><span class="o">)).</span><span class="n">runToFuture</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res29</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : 𝒰 ) ↦ (@b : 𝒰 ) ↦ (@a : @a) ↦ (@a : (@a → @b)) ↦ @a(@a)</span></span>,
+        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.5</span></span>
+      )
+    )
+  )
+)</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Final-conclusions">Final conclusions<a class="anchor-link" href="#Final-conclusions">&#182;</a></h2><ul>
+<li>When the equations are added correctly we do get proofs of modus ponens.</li>
+<li>We should have more convenience methods</li>
+</ul>
+
+</div>
+</div>
+</div>
     </div>
   </div>
 </body>
