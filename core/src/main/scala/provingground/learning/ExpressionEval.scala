@@ -416,6 +416,14 @@ trait ExpressionEval { self =>
       }
     }.safeNormalized
 
+  def finalTermState(
+      vars: Vector[Term] = Vector(),
+      inds: FD[induction.ExstInducDefn] = FD.empty[induction.ExstInducDefn],
+      goals: FD[Typ[Term]] = FD.empty,
+      context: Context = Context.Empty
+  ) : TermState =
+    TermState(finalTerms, finalTyps, vars, inds, goals, context)
+
   def lambdaExportEquations(
       variable: Term,
       varWeight: Double
@@ -517,18 +525,23 @@ trait ExpressionEval { self =>
     isleEqs union (Equation.group(isleIn union bridgeEqs))
   }
 
+
+
   def relVariable(x: Term): ExpressionEval = {
-    val varWeight : Double = math.max(init.getOrElse(InitialVal(Elem(x, Terms)), 0.0), init.getOrElse(InitialVal(Elem(x, Typs)), 0.0))
+    val varWeight: Double = math.max(
+      init.getOrElse(InitialVal(Elem(x, Terms)), 0.0),
+      init.getOrElse(InitialVal(Elem(x, Typs)), 0.0)
+    )
     val eqs = piExportEquations(x, varWeight) union lambdaExportEquations(
       x,
       varWeight
     )
     val newInit = init
       .map {
-        case (exp @ InitialVal(Elem(y : Term, Terms)), w) =>
+        case (exp @ InitialVal(Elem(y: Term, Terms)), w) =>
           if (y.dependsOn(x)) None else Some(exp, w / (1.0 - varWeight))
-        case (InitialVal(Elem(y : Term, _)) , v) if y.dependsOn(x) => None
-        case (k , v) => Some(k -> v)
+        case (InitialVal(Elem(y: Term, _)), v) if y.dependsOn(x) => None
+        case (k, v)                                              => Some(k -> v)
       }
       .flatten
       .toMap
