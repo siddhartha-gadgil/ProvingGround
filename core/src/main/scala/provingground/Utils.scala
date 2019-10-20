@@ -3,17 +3,27 @@ import HoTT._
 import scala.util.Try
 
 object Utils {
-  def addToPartition[A](element: A, relation: (A, A) => Boolean, groups: Vector[Vector[A]]) : Vector[Vector[A]] = 
+  def addToPartition[A](
+      element: A,
+      relation: (A, A) => Boolean,
+      groups: Vector[Vector[A]]
+  ): Vector[Vector[A]] =
     groups match {
-      case Vector() => if (relation(element, element)) Vector(Vector(element)) else Vector() // allow for non-reflexive relations by discarding elements
+      case Vector() =>
+        if (relation(element, element)) Vector(Vector(element)) else Vector() // allow for non-reflexive relations by discarding elements
       case head +: tail =>
-        if (relation(element, head.head)) (head :+ element) +: tail else 
-        head +: addToPartition(element, relation, tail)
+        if (relation(element, head.head)) (head :+ element) +: tail
+        else
+          head +: addToPartition(element, relation, tail)
     }
 
-  def partition[A](elements : Vector[A], relation: (A, A) => Boolean): Vector[Vector[A]] = elements match {
+  def partition[A](
+      elements: Vector[A],
+      relation: (A, A) => Boolean
+  ): Vector[Vector[A]] = elements match {
     case Vector() => Vector()
-    case head +: tail => addToPartition(head, relation, partition(tail, relation))
+    case head +: tail =>
+      addToPartition(head, relation, partition(tail, relation))
   }
 
   import monix.eval._
@@ -21,22 +31,30 @@ object Utils {
   def refinedTask[A](
       init: A,
       task: Task[A],
-      refine: Task[A] => Task[A]
+      refine: Task[A] => Task[A],
+      done: A => Boolean = (a: A) => false
   ): Task[A] =
     task.materialize.flatMap { t =>
-      t.fold((_) => Task.now(init), (a) => refinedTask(a, refine(task), refine))
+      t.fold((_) => Task.now(init), 
+       (a) => 
+         if (done(a)) Task.now(a) else refinedTask(a, refine(task), refine, done))
     }
 
   def bestTask[A](
       taskSeq: Seq[Task[A]],
-      done : A => Boolean = (a : A) => false,
+      done: A => Boolean = (a: A) => false,
       accum: Option[A] = None
   ): Task[Option[A]] =
     taskSeq.headOption
       .map(
         _.materialize.flatMap(
           t =>
-            t.fold((_) => Task.now(accum), a => if (done(a)) Task.now(Some(a)) else bestTask(taskSeq.tail, done, Some(a)))
+            t.fold(
+              (_) => Task.now(accum),
+              a =>
+                if (done(a)) Task.now(Some(a))
+                else bestTask(taskSeq.tail, done, Some(a))
+            )
         )
       )
       .getOrElse(Task.now(accum))
