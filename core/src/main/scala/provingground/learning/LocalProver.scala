@@ -14,6 +14,7 @@ import EntropyAtomWeight._
 
 import scalahott.NatRing
 import monix.tail.Iterant
+import provingground.learning.TypSolver.LookupSolver
 
 /**
   * Collect local/generative/tactical proving;
@@ -101,6 +102,13 @@ case class LocalProver(
     val ts = initState.copy(goals = typd.safeNormalized)
     this.copy(initState = ts)
   }
+
+  def addSolver(s : TypSolver) = {
+    val newSolver = tg.solver || s
+    this.copy(tg = tg.copy(solver = newSolver))
+  }
+
+  def addLookup(ts: Set[Term]) = addSolver(LookupSolver(ts))
 
   def addInd(
       typ: Typ[Term],

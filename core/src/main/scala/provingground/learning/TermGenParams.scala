@@ -88,7 +88,8 @@ case class TermGenParamsNodes(tg: TermGenParams)
       { case (fn, arg) => Unify.appln(fn.func, arg) },
       AddVar(_, tg.varWeight),
       GetVar,
-      EnterIsle
+      EnterIsle,
+      tg.solver
     )
 
 case class TermGenParams(
@@ -109,11 +110,12 @@ case class TermGenParams(
     typVsFamily: Double = 0.5,
     negTargetW: Double = 0,
     solverW: Double = 0,
-    contraW: Double = 0
+    contraW: Double = 0,
+    solver : TypSolver = TypSolver.coreSolver
 ) { tg =>
 
   val Gen: TermGeneratorNodes[TermState] =
-    if (varWeight == 0.3) TermGeneratorNodes.Base else TermGenParamsNodes(this)
+    if (varWeight == 0.3 && solver == TypSolver.coreSolver) TermGeneratorNodes.Base else TermGenParamsNodes(this)
 
   val toJson: ujson.Value =
     ujson.Obj(
