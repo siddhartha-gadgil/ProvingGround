@@ -12,7 +12,7 @@ A system under development for (semi-)automated theorem proving, with foundation
 
 ## Documentation
 
-* The main documentation is on the [website](http://siddhartha-gadgil.github.io/ProvingGround/) , including [scaladocs](http://siddhartha-gadgil.github.io/ProvingGround/scaladoc/provingground/index.html).
+* The main documentation is on the [website](http://siddhartha-gadgil.github.io/ProvingGround/) , including [scaladocs](http://siddhartha-gadgil.github.io/ProvingGround/scaladoc/provingground/index.html). The same site also hosts [working notes](https://siddhartha-gadgil.github.io/ProvingGround/notes/).
 * The [notes](https://github.com/siddhartha-gadgil/ProvingGround/tree/master/notes) folder contains Jupyter notebooks illustrating some of the code.
 * Some documentation is in the [project wiki](https://github.com/siddhartha-gadgil/ProvingGround/wiki).
 
@@ -101,14 +101,11 @@ Similarly, one can experiment with a small part of the HoTT implementation by ru
 A useful way to experiment is to use a _notebook_ instead of a repl session to ensure persistence. To do this:
 
 * Install [Jupyter](https://jupyter.org/) and the [almond kernel](https://almond.sh/)
-* Publish the project locally using (for the core)
+* Generate a binary in the `notes/bin` folder. The first time you do this, you need to run `mkdir notes/bin` in the shell first.
 
 ```bash
-./mill core.jvm.publishLocal
+./mill core.jvm.bin
 ```
 
-Run _jupyter-lab_ and begin the code in a notebook with
+This generates the binary and gives the command to use in _jupyter-lab_ or the classic jupyter notebook. Note that you must launch jupyter-lab in the notes folder.
 
-```scala
-import $ivy.`io.github.siddhartha-gadgil::provingground-core-jvm:0.1.1-SNAPSHOT`
-```

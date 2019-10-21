@@ -79,6 +79,8 @@ object StrategicProvers {
         | * current goal : $currentGoal
         | * successes : ${successes.size}
         | * failures : ${failures.size}
+        | * terms : ${termSet.size}
+        | * equation-nodes: ${equationNodes.size}
         | * last success : ${successes.headOption}
         | * last failure : ${failures.headOption}
         |""".stripMargin
