@@ -140,8 +140,8 @@ The object contains helpers and other static objects.
                         <a href="TermGeneratorNodes$$Base$.html" title="The default term generators; essentially the only one used, except the choice of variable weight, 0.3 here, may vary.">Base</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="TermGeneratorNodes$$CRV.html" title="Constant random variable, for fibers for islands"></a>
-                        <a href="TermGeneratorNodes$$CRV.html" title="Constant random variable, for fibers for islands">CRV</a>
+                        <a class="class" href="" title="Constant random variable, for fibers for islands"></a>
+                        <a href="" title="Constant random variable, for fibers for islands">ConstRandVar</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="object" href="TermGeneratorNodes$$EnterIsle$.html" title="Wrapper for entering an isle to allow equality and  toString to work."></a>
@@ -154,10 +154,6 @@ The object contains helpers and other static objects.
                         <span class="separator"></span>
                         <a class="object" href="TermGeneratorNodes$$GetVar$.html" title="Wrapper for getting variables to allow equality and  toString to work."></a>
                         <a href="TermGeneratorNodes$$GetVar$.html" title="Wrapper for getting variables to allow equality and  toString to work.">GetVar</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="" title="Wrapper for identity to allow equality and  toString to work."></a>
-                        <a href="" title="Wrapper for identity to allow equality and  toString to work.">Idty</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="class" href="TermGeneratorNodes$$Incl1.html" title="Wrapper for first inclusion to allow equality and  toString to work."></a>
@@ -227,8 +223,8 @@ The object contains helpers and other static objects.
       <div id="definition">
         <div class="big-circle class">c</div>
         <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.learning">learning</a>.<a href="TermGeneratorNodes$.html" class="extype" name="provingground.learning.TermGeneratorNodes">TermGeneratorNodes</a></p>
-        <h1>Idty<span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html" title="Permalink">
+        <h1>ConstRandVar<span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -241,22 +237,22 @@ The object contains helpers and other static objects.
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Idty</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">()</span><span class="result"> extends (<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>) ⇒ <span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ConstRandVar</span><span class="tparams">[<span name="O">O</span>]</span><span class="params">(<span name="randomVar">randomVar: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>)</span><span class="result"> extends (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Wrapper for identity to allow equality and  <code>toString</code> to work.
-</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Constant random variable, for fibers for islands
+</p></div><dl class="paramcmts block"><dt class="tparam">O</dt><dd class="cmt"><p>scala type of the random variable</p></dd><dt class="param">randomVar</dt><dd class="cmt"><p>the random variable</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, (<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>) ⇒ <span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>], <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
                 <span class="toggle diagram-link">
                   Type Hierarchy
                 </span>
-                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 289.00 118.00" height="118pt" width="289pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 285,-114 285,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.learning.TermGeneratorNodes.Idty (this class)" xlink:href="#inheritance-diagram"><path d="M159.1667,-49C159.1667,-49 103.8333,-49 103.8333,-49 99.6667,-49 95.5,-44.8333 95.5,-40.6667 95.5,-40.6667 95.5,-32.3333 95.5,-32.3333 95.5,-28.1667 99.6667,-24 103.8333,-24 103.8333,-24 159.1667,-24 159.1667,-24 163.3333,-24 167.5,-28.1667 167.5,-32.3333 167.5,-32.3333 167.5,-40.6667 167.5,-40.6667 167.5,-44.8333 163.3333,-49 159.1667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="105.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="126.5" text-anchor="start">Idty[A]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="scala.Function1"><path d="M66.6667,-110C66.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 66.6667,-85 66.6667,-85 70.8333,-85 75,-89.1667 75,-93.3333 75,-93.3333 75,-101.6667 75,-101.6667 75,-105.8333 70.8333,-110 66.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31.5" text-anchor="start">(A) ⇒ A</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="Idty[A] is a subtype of (A) ⇒ A"><path d="M62.9022,-81.0156C78.3645,-70.9816 97.812,-58.3614 112.0481,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="61.5151,-78.995 56.9769,-84.8608 64.1825,-83.1054 61.5151,-78.995" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Product"><path d="M161.6667,-110C161.6667,-110 101.3333,-110 101.3333,-110 97.1667,-110 93,-105.8333 93,-101.6667 93,-101.6667 93,-93.3333 93,-93.3333 93,-89.1667 97.1667,-85 101.3333,-85 101.3333,-85 161.6667,-85 161.6667,-85 165.8333,-85 170,-89.1667 170,-93.3333 170,-93.3333 170,-101.6667 170,-101.6667 170,-105.8333 165.8333,-110 161.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="103.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="124.5" text-anchor="start">Product</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="Idty[A] is a subtype of Product"><path d="M131.5,-77.7386C131.5,-68.3393 131.5,-57.3803 131.5,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="129.0501,-77.8607 131.5,-84.8608 133.9501,-77.8608 129.0501,-77.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Serializable"><path d="M272.6667,-110C272.6667,-110 196.3333,-110 196.3333,-110 192.1667,-110 188,-105.8333 188,-101.6667 188,-101.6667 188,-93.3333 188,-93.3333 188,-89.1667 192.1667,-85 196.3333,-85 196.3333,-85 272.6667,-85 272.6667,-85 276.8333,-85 281,-89.1667 281,-93.3333 281,-93.3333 281,-101.6667 281,-101.6667 281,-105.8333 276.8333,-110 272.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="198.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="219.5" text-anchor="start">Serializable</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="Idty[A] is a subtype of Serializable"><path d="M207.1144,-81.2814C190.1006,-71.2052 168.5515,-58.4431 152.8143,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="205.8869,-83.4017 213.1583,-84.8608 208.3838,-79.1856 205.8869,-83.4017" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 361.00 118.00" height="118pt" width="361pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-114 357,-114 357,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="provingground.learning.TermGeneratorNodes.ConstRandVar (this class)" xlink:href="#inheritance-diagram"><path d="M253.6667,-49C253.6667,-49 153.3333,-49 153.3333,-49 149.1667,-49 145,-44.8333 145,-40.6667 145,-40.6667 145,-32.3333 145,-32.3333 145,-28.1667 149.1667,-24 153.3333,-24 153.3333,-24 253.6667,-24 253.6667,-24 257.8333,-24 262,-28.1667 262,-32.3333 262,-32.3333 262,-40.6667 262,-40.6667 262,-44.8333 257.8333,-49 253.6667,-49" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-43.5" x="155.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-34.1" x="176.5" text-anchor="start">ConstRandVar[O]</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="scala.Function1"><path d="M138.6667,-110C138.6667,-110 8.3333,-110 8.3333,-110 4.1667,-110 0,-105.8333 0,-101.6667 0,-101.6667 0,-93.3333 0,-93.3333 0,-89.1667 4.1667,-85 8.3333,-85 8.3333,-85 138.6667,-85 138.6667,-85 142.8333,-85 147,-89.1667 147,-93.3333 147,-93.3333 147,-101.6667 147,-101.6667 147,-105.8333 142.8333,-110 138.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="10.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="31.5" text-anchor="start">(Term) ⇒ RandomVar[O]</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="ConstRandVar[O] is a subtype of (Term) ⇒ RandomVar[O]"><path d="M106.9395,-81.8092C128.5815,-71.654 156.3875,-58.6066 176.5984,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="105.7324,-79.6692 100.4361,-84.8608 107.8139,-84.1051 105.7324,-79.6692" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Product"><path d="M233.6667,-110C233.6667,-110 173.3333,-110 173.3333,-110 169.1667,-110 165,-105.8333 165,-101.6667 165,-101.6667 165,-93.3333 165,-93.3333 165,-89.1667 169.1667,-85 173.3333,-85 173.3333,-85 233.6667,-85 233.6667,-85 237.8333,-85 242,-89.1667 242,-93.3333 242,-93.3333 242,-101.6667 242,-101.6667 242,-105.8333 237.8333,-110 233.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="175.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="196.5" text-anchor="start">Product</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="ConstRandVar[O] is a subtype of Product"><path d="M203.5,-77.7386C203.5,-68.3393 203.5,-57.3803 203.5,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="201.0501,-77.8607 203.5,-84.8608 205.9501,-77.8608 201.0501,-77.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Serializable"><path d="M344.6667,-110C344.6667,-110 268.3333,-110 268.3333,-110 264.1667,-110 260,-105.8333 260,-101.6667 260,-101.6667 260,-93.3333 260,-93.3333 260,-89.1667 264.1667,-85 268.3333,-85 268.3333,-85 344.6667,-85 344.6667,-85 348.8333,-85 353,-89.1667 353,-93.3333 353,-93.3333 353,-101.6667 353,-101.6667 353,-105.8333 348.8333,-110 344.6667,-110" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-104.5" x="270.5" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-95.1" x="291.5" text-anchor="start">Serializable</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="ConstRandVar[O] is a subtype of Serializable"><path d="M279.1144,-81.2814C262.1006,-71.2052 240.5515,-58.4431 224.8143,-49.123" stroke="#d4d4d4" fill="none"></path><polygon points="277.8869,-83.4017 285.1583,-84.8608 280.3838,-79.1856 277.8869,-83.4017" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
                 <div id="diagram-controls" class="hiddenContent">
                   <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
                   <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
@@ -287,7 +283,7 @@ The object contains helpers and other static objects.
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="provingground.learning.TermGeneratorNodes.Idty"><span>Idty</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="provingground.learning.TermGeneratorNodes.ConstRandVar"><span>ConstRandVar</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.Function1"><span>Function1</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
                   <span class="filtertype">Implicitly<br />
@@ -312,10 +308,10 @@ The object contains helpers and other static objects.
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="provingground.learning.TermGeneratorNodes.Idty#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;():provingground.learning.TermGeneratorNodes.Idty[A]"></a><a id="&lt;init&gt;:Idty[A]"></a>
+              <ol><li name="provingground.learning.TermGeneratorNodes.ConstRandVar#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(randomVar:provingground.learning.RandomVar[O]):provingground.learning.TermGeneratorNodes.ConstRandVar[O]"></a><a id="&lt;init&gt;:ConstRandVar[O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#&lt;init&gt;():provingground.learning.TermGeneratorNodes.Idty[A]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#&lt;init&gt;(randomVar:provingground.learning.RandomVar[O]):provingground.learning.TermGeneratorNodes.ConstRandVar[O]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -324,10 +320,10 @@ The object contains helpers and other static objects.
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Idty</span><span class="params">()</span>
+        <span class="name">ConstRandVar</span><span class="params">(<span name="randomVar">randomVar: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">randomVar</dt><dd class="cmt"><p>the random variable</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -341,7 +337,7 @@ The object contains helpers and other static objects.
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -357,7 +353,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html###():Int" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -373,7 +369,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.Predef.any2stringadd#+" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="+(other:String):String"></a><a id="+(String):String"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#+(other:String):String" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#+(other:String):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -386,14 +382,14 @@ The object contains helpers and other static objects.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method any2stringadd in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method any2stringadd in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
     </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(Idty[A],B)"></a>
+      <a id="-&gt;[B](y:B):(A,B)"></a><a id="-&gt;[B](B):(ConstRandVar[O],B)"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#-&gt;[B](y:B):(A,B)" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#-&gt;[B](y:B):(A,B)" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -402,12 +398,12 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method ArrowAssoc in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
@@ -416,7 +412,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -430,9 +426,9 @@ The object contains helpers and other static objects.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Function1#andThen" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="andThen[A](g:R=&gt;A):T1=&gt;A"></a><a id="andThen[A]((A)⇒A):(A)⇒A"></a>
+      <a id="andThen[A](g:R=&gt;A):T1=&gt;A"></a><a id="andThen[A]((RandomVar[O])⇒A):(Term)⇒A"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#andThen[A](g:R=&gt;A):T1=&gt;A" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#andThen[A](g:R=&gt;A):T1=&gt;A" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -441,17 +437,17 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">andThen</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>)</span><span class="result">: (<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>
+        <span class="name">andThen</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>)</span><span class="result">: (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <span class="extype" name="scala.Function1.andThen.A">A</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1</dd><dt>Annotations</dt><dd>
                 <span class="name">@unspecialized</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="provingground.learning.TermGeneratorNodes.Idty#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="apply(a:A):A"></a><a id="apply(A):A"></a>
+    </li><li name="provingground.learning.TermGeneratorNodes.ConstRandVar#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(t:provingground.HoTT.Term):provingground.learning.RandomVar[O]"></a><a id="apply(Term):RandomVar[O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#apply(a:A):A" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#apply(t:provingground.HoTT.Term):provingground.learning.RandomVar[O]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -460,14 +456,14 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="a">a: <span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span></span>)</span><span class="result">: <span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span></span>
+        <span class="name">apply</span><span class="params">(<span name="t">t: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a> → Function1</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a> → Function1</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -483,7 +479,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#clone():Object" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -505,9 +501,9 @@ The object contains helpers and other static objects.
               
         </dd></dl></div>
     </li><li name="scala.Function1#compose" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="compose[A](g:A=&gt;T1):A=&gt;R"></a><a id="compose[A]((A)⇒A):(A)⇒A"></a>
+      <a id="compose[A](g:A=&gt;T1):A=&gt;R"></a><a id="compose[A]((A)⇒Term):(A)⇒RandomVar[O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#compose[A](g:A=&gt;T1):A=&gt;R" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#compose[A](g:A=&gt;T1):A=&gt;R" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -516,7 +512,7 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">compose</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span></span>)</span><span class="result">: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span></span>
+        <span class="name">compose</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="g">g: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: (<span class="extype" name="scala.Function1.compose.A">A</span>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Function1</dd><dt>Annotations</dt><dd>
@@ -524,9 +520,9 @@ The object contains helpers and other static objects.
               
         </dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((Idty[A])⇒Boolean,⇒Any):Idty[A]"></a>
+      <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((ConstRandVar[O])⇒Boolean,⇒Any):ConstRandVar[O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -535,18 +531,18 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]</span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((Idty[A])⇒Boolean):Idty[A]"></a>
+      <a id="ensuring(cond:A=&gt;Boolean):A"></a><a id="ensuring((ConstRandVar[O])⇒Boolean):ConstRandVar[O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#ensuring(cond:A=&gt;Boolean):A" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -555,18 +551,18 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]</span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):Idty[A]"></a>
+      <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a><a id="ensuring(Boolean,⇒Any):ConstRandVar[O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -575,18 +571,18 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]</span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):Idty[A]"></a>
+      <a id="ensuring(cond:Boolean):A"></a><a id="ensuring(Boolean):ConstRandVar[O]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#ensuring(cond:Boolean):A" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#ensuring(cond:Boolean):A" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -595,18 +591,18 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]</span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -622,7 +618,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#finalize():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -644,7 +640,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="formatted(fmtstr:String):String"></a><a id="formatted(String):String"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#formatted(fmtstr:String):String" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#formatted(fmtstr:String):String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -657,8 +653,8 @@ The object contains helpers and other static objects.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method StringFormat in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method StringFormat in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
@@ -667,7 +663,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#getClass():Class[_]" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -686,7 +682,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -702,7 +698,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -718,7 +714,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#notify():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -737,7 +733,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#notifyAll():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -753,10 +749,26 @@ The object contains helpers and other static objects.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.TermGeneratorNodes.ConstRandVar#randomVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="randomVar:provingground.learning.RandomVar[O]"></a><a id="randomVar:RandomVar[O]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#randomVar:provingground.learning.RandomVar[O]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randomVar</span><span class="result">: <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -769,10 +781,10 @@ The object contains helpers and other static objects.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="provingground.learning.TermGeneratorNodes.Idty#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="provingground.learning.TermGeneratorNodes.ConstRandVar#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#toString():String" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -781,14 +793,14 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a> → Function1 → AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a> → Function1 → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#wait():Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -810,7 +822,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -832,7 +844,7 @@ The object contains helpers and other static objects.
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -854,9 +866,9 @@ The object contains helpers and other static objects.
               
         </dd></dl></div>
     </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(Idty[A],B)"></a>
+      <a id="→[B](y:B):(A,B)"></a><a id="→[B](B):(ConstRandVar[O],B)"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/TermGeneratorNodes$$Idty.html#→[B](y:B):(A,B)" title="Permalink">
+      <a href="../../provingground/learning/TermGeneratorNodes$$ConstRandVar.html#→[B](y:B):(A,B)" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -865,12 +877,12 @@ The object contains helpers and other static objects.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>], <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to
-            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]] performed by method ArrowAssoc in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]] performed by method ArrowAssoc in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li>
@@ -892,7 +904,7 @@ The object contains helpers and other static objects.
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="scala.Function1">
-              <h3>Inherited from (<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>) ⇒ <span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span></h3>
+              <h3>Inherited from (<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>) ⇒ <a href="RandomVar.html" class="extype" name="provingground.learning.RandomVar">RandomVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
@@ -900,19 +912,19 @@ The object contains helpers and other static objects.
             </div>
         <div class="conversion" name="scala.Predef.any2stringadd">
               <h3>Inherited by implicit conversion any2stringadd from
-                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]]
+                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]]
               </h3>
             </div><div class="conversion" name="scala.Predef.StringFormat">
               <h3>Inherited by implicit conversion StringFormat from
-                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]]
+                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]]
               </h3>
             </div><div class="conversion" name="scala.Predef.Ensuring">
               <h3>Inherited by implicit conversion Ensuring from
-                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]]
+                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]]
               </h3>
             </div><div class="conversion" name="scala.Predef.ArrowAssoc">
               <h3>Inherited by implicit conversion ArrowAssoc from
-                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.Idty">Idty</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.Idty.A">A</span>]]
+                <a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>] to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar">ConstRandVar</a>[<span class="extype" name="provingground.learning.TermGeneratorNodes.ConstRandVar.O">O</span>]]
               </h3>
             </div>
         </div>

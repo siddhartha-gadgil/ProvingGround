@@ -443,6 +443,22 @@ concrete languages including our implementation of HoTT are in this package.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.Utils#addToPartition" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addToPartition[A](element:A,relation:(A,A)=&gt;Boolean,groups:Vector[Vector[A]]):Vector[Vector[A]]"></a><a id="addToPartition[A](A,(A,A)⇒Boolean,Vector[Vector[A]]):Vector[Vector[A]]"></a>
+      <span class="permalink">
+      <a href="../provingground/Utils$.html#addToPartition[A](element:A,relation:(A,A)=&gt;Boolean,groups:Vector[Vector[A]]):Vector[Vector[A]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addToPartition</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="element">element: <span class="extype" name="provingground.Utils.addToPartition.A">A</span></span>, <span name="relation">relation: (<span class="extype" name="provingground.Utils.addToPartition.A">A</span>, <span class="extype" name="provingground.Utils.addToPartition.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="groups">groups: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="provingground.Utils.addToPartition.A">A</span>]]</span>)</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="provingground.Utils.addToPartition.A">A</span>]]</span>
+      </span>
+      
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -460,9 +476,9 @@ concrete languages including our implementation of HoTT are in this package.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="provingground.Utils#bestTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="bestTask[A](taskSeq:Seq[monix.eval.Task[A]],accum:Option[A]):monix.eval.Task[Option[A]]"></a><a id="bestTask[A](Seq[Task[A]],Option[A]):Task[Option[A]]"></a>
+      <a id="bestTask[A](taskSeq:Seq[monix.eval.Task[A]],done:A=&gt;Boolean,accum:Option[A]):monix.eval.Task[Option[A]]"></a><a id="bestTask[A](Seq[Task[A]],(A)⇒Boolean,Option[A]):Task[Option[A]]"></a>
       <span class="permalink">
-      <a href="../provingground/Utils$.html#bestTask[A](taskSeq:Seq[monix.eval.Task[A]],accum:Option[A]):monix.eval.Task[Option[A]]" title="Permalink">
+      <a href="../provingground/Utils$.html#bestTask[A](taskSeq:Seq[monix.eval.Task[A]],done:A=&gt;Boolean,accum:Option[A]):monix.eval.Task[Option[A]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -471,7 +487,7 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">bestTask</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="taskSeq">taskSeq: <a href="../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.bestTask.A">A</span>]]</span>, <span name="accum">accum: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Utils.bestTask.A">A</span>] = <span class="symbol"><span class="name"><a href="../scala/index.html">None</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Utils.bestTask.A">A</span>]]</span>
+        <span class="name">bestTask</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="taskSeq">taskSeq: <a href="../scala/index.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.bestTask.A">A</span>]]</span>, <span name="done">done: (<span class="extype" name="provingground.Utils.bestTask.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">(a: A) =&gt; false</span></span>, <span name="accum">accum: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Utils.bestTask.A">A</span>] = <span class="symbol"><span class="name"><a href="../scala/index.html">None</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="provingground.Utils.bestTask.A">A</span>]]</span>
       </span>
       
       
@@ -677,6 +693,22 @@ concrete languages including our implementation of HoTT are in this package.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="provingground.Utils#partition" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="partition[A](elements:Vector[A],relation:(A,A)=&gt;Boolean):Vector[Vector[A]]"></a><a id="partition[A](Vector[A],(A,A)⇒Boolean):Vector[Vector[A]]"></a>
+      <span class="permalink">
+      <a href="../provingground/Utils$.html#partition[A](elements:Vector[A],relation:(A,A)=&gt;Boolean):Vector[Vector[A]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">partition</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="elements">elements: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="provingground.Utils.partition.A">A</span>]</span>, <span name="relation">relation: (<span class="extype" name="provingground.Utils.partition.A">A</span>, <span class="extype" name="provingground.Utils.partition.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="provingground.Utils.partition.A">A</span>]]</span>
+      </span>
+      
+      
     </li><li name="provingground.Utils#proofsEqual" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="proofsEqual(x:provingground.HoTT.Term,y:provingground.HoTT.Term):Boolean"></a><a id="proofsEqual(Term,Term):Boolean"></a>
       <span class="permalink">
@@ -694,9 +726,9 @@ concrete languages including our implementation of HoTT are in this package.
       
       
     </li><li name="provingground.Utils#refinedTask" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="refinedTask[A](init:A,task:monix.eval.Task[A],refine:monix.eval.Task[A]=&gt;monix.eval.Task[A]):monix.eval.Task[A]"></a><a id="refinedTask[A](A,Task[A],(Task[A])⇒Task[A]):Task[A]"></a>
+      <a id="refinedTask[A](init:A,task:monix.eval.Task[A],refine:monix.eval.Task[A]=&gt;monix.eval.Task[A],done:A=&gt;Boolean):monix.eval.Task[A]"></a><a id="refinedTask[A](A,Task[A],(Task[A])⇒Task[A],(A)⇒Boolean):Task[A]"></a>
       <span class="permalink">
-      <a href="../provingground/Utils$.html#refinedTask[A](init:A,task:monix.eval.Task[A],refine:monix.eval.Task[A]=&gt;monix.eval.Task[A]):monix.eval.Task[A]" title="Permalink">
+      <a href="../provingground/Utils$.html#refinedTask[A](init:A,task:monix.eval.Task[A],refine:monix.eval.Task[A]=&gt;monix.eval.Task[A],done:A=&gt;Boolean):monix.eval.Task[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -705,7 +737,7 @@ concrete languages including our implementation of HoTT are in this package.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">refinedTask</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="init">init: <span class="extype" name="provingground.Utils.refinedTask.A">A</span></span>, <span name="task">task: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]</span>, <span name="refine">refine: (<span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]) ⇒ <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]</span>
+        <span class="name">refinedTask</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="init">init: <span class="extype" name="provingground.Utils.refinedTask.A">A</span></span>, <span name="task">task: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]</span>, <span name="refine">refine: (<span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]) ⇒ <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]</span>, <span name="done">done: (<span class="extype" name="provingground.Utils.refinedTask.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">(a: A) =&gt; false</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="provingground.Utils.refinedTask.A">A</span>]</span>
       </span>
       
       
