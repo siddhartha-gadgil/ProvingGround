@@ -45,7 +45,7 @@ object StrategicProvers {
     val base = lp.addGoals(typ -> 0.5, negate(typ) -> 0.5)
     currentGoal = Option(typ)
     val tasks = (1 until (maxSteps)).toVector.map { n =>
-      val prover = lp.sharpen(math.pow(scale, n))
+      val prover = base.sharpen(math.pow(scale, n))
       val pair = for {
         sc  <- prover.successes
         eqs <- prover.equationNodes
