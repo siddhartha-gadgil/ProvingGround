@@ -90,7 +90,7 @@ lazy val jvmSettings = Seq(
     // Last stable release
     // "org.scalanlp" %% "breeze" % "0.13.2",
     "com.atlassian.commonmark" % "commonmark" % "0.11.0",
-    "org.scalameta" %% "mdoc" % "1.2.8",
+    "org.scalameta" %% "mdoc" % "1.3.6",
     "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64",
     "org.deeplearning4j" % "deeplearning4j-core"  % "1.0.0-beta4",
       "org.deeplearning4j" % "deeplearning4j-graph" % "1.0.0-beta4",
