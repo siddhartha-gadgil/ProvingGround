@@ -69,6 +69,10 @@ object StrategicProvers {
 
   val failures: ArrayBuffer[Typ[Term]] = ArrayBuffer()
 
+  var termSet : Set[Term] = Set()
+
+  var equationNodes : Set[EquationNode] = Set()
+
   def md =
     s"""## Goal chomping status
         |
@@ -127,6 +131,8 @@ object StrategicProvers {
       case typ +: ys =>
         seekGoal(lp, typ, accumTerms, scale, maxSteps).flatMap {
           case (ss, eqs, terms) =>
+            equationNodes = equationNodes union(eqs)
+            termSet = termSet union(terms)
             if (ss.isEmpty) {
               failures.append(typ)
               update(())
