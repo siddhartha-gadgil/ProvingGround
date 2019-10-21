@@ -17,6 +17,9 @@ import Utils.bestTask
 
 import monix.tail.Iterant
 
+import collection.mutable.ArrayBuffer
+import _root_.shapeless.Succ
+
 object StrategicProvers {
   type Successes = Vector[(HoTT.Typ[HoTT.Term], Double, FiniteDistribution[HoTT.Term])]
 
@@ -31,6 +34,8 @@ object StrategicProvers {
     terms.flatMap(t => DE.formalEquations(t))
   }
 
+  var currentGoal: Option[Typ[Term]] = None
+
   def seekGoal(
       lp: LocalProver,
       typ: Typ[Term],
@@ -38,6 +43,7 @@ object StrategicProvers {
       maxSteps: Int = 100
   ): Task[SeekResult] = {
     val base = lp.addGoals(typ -> 0.5, negate(typ) -> 0.5)
+    currentGoal = Option(typ)
     val tasks = (1 until (maxSteps)).toVector.map { n =>
       val prover = lp.sharpen(math.pow(scale, n))
       val pair = for {
@@ -50,14 +56,15 @@ object StrategicProvers {
     bestTask[SeekResult](tasks, p => p._1.nonEmpty)
   }.map(_.getOrElse((Vector(), Set())))
 
+  val successes : ArrayBuffer[Successes] = ArrayBuffer()
+
   def goalChomper(
       lp: LocalProver,
       typs: Vector[Typ[Term]],
-      accumSucc: Vector[Successes],
-      accumEqs: Set[EquationNode],
+      accumSucc: Vector[Successes] = Vector(),
+      accumEqs: Set[EquationNode] = Set(),
       scale: Double = 2,
-      maxSteps: Int = 100,
-      logSuccesses : Successes => Unit = (_) => (),
+      maxSteps: Int = 100
   ): Task[(Vector[Successes], Set[EquationNode], Vector[Typ[Term]])] =
     typs match {
       case Vector() => Task.now((accumSucc, accumEqs, Vector()))
@@ -66,8 +73,8 @@ object StrategicProvers {
           if (ss.isEmpty) Task.now((accumSucc :+ ss, accumEqs union eqs, typ +: ys))
           else
             {   
-                logSuccesses(ss)
-                 goalChomper(lp, ys, accumSucc :+ ss, accumEqs union eqs, scale, maxSteps, logSuccesses)
+                 successes.append(ss)
+                 goalChomper(lp, ys, accumSucc :+ ss, accumEqs union eqs, scale, maxSteps)
             }
         }
     }
