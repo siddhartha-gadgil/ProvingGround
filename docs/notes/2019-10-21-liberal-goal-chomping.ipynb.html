@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>2019-09-18-monoid-unifiedapp</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>2019-10-21-liberal-goal-chomping</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11775,7 +11775,17 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We attempt to replicate the Monoid proof but with our new workflow and with the local provers, using only unified applications.</p>
+<h2 id="Liberal-goal-chomping">Liberal goal chomping<a class="anchor-link" href="#Liberal-goal-chomping">&#182;</a></h2><ul>
+<li>We run a variant of the most basic <em>strategic</em> prover - a <em>goal chomper</em> that keeps trying a succession of goals.</li>
+<li>Termination is when all goals are finished; with failures recorded.</li>
+<li>Proving is only by generation, with the generation including backward reasoning rules.</li>
+<li>So far the goal chomper is untested; we test this.</li>
+<li>We also test updating displays etc.</li>
+</ul>
+<h3 id="The-goals-and-proving.">The goals and proving.<a class="anchor-link" href="#The-goals-and-proving.">&#182;</a></h3><ul>
+<li>To generate the goals, we start with just <code>Type</code>.</li>
+<li>To prove them, we include also <code>Zero</code>, <code>One</code> and <code>Star</code></li>
+</ul>
 
 </div>
 </div>
@@ -11785,40 +11795,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-3d48753.fat.jar`</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[1]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$                                           </span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-8f190786f9.fat.jar`</span>
+<span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
 <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
   <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
   <span class="n">p</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span>
@@ -11839,14 +11817,93 @@ div#notebook {
 
 <div class="output_area">
 
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$                                              
+</span>
+<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._, learning._ 
+</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">terms</span> <span class="k">=</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">[</span><span class="kt">Term</span><span class="o">](</span><span class="nc">Unit</span><span class="o">,</span> <span class="nc">Zero</span><span class="o">,</span> <span class="nc">Star</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">typs</span> <span class="k">=</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">[</span><span class="kt">Typ</span><span class="o">[</span><span class="kt">Term</span><span class="o">]](</span><span class="nc">Type</span><span class="o">,</span> <span class="nc">Unit</span><span class="o">,</span> <span class="nc">Zero</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">terms</span><span class="o">,</span> <span class="n">typs</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">ts0</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">(),</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="nc">Type</span><span class="o">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
 <div class="prompt output_prompt">Out[2]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._, learning._ 
-</span></pre>
+<pre><span class="ansi-cyan-fg">terms</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Star</span>, <span class="ansi-green-fg">0.3333333333333333</span>)
+  )
+)
+<span class="ansi-cyan-fg">typs</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.3333333333333333</span>)
+  )
+)
+<span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Star</span>, <span class="ansi-green-fg">0.3333333333333333</span>)
+    )
+  ),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.3333333333333333</span>)
+    )
+  ),
+  <span class="ansi-yellow-fg">Vector</span>(),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  Empty
+)
+<span class="ansi-cyan-fg">ts0</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">1.0</span>))),
+  <span class="ansi-yellow-fg">Vector</span>(),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  Empty
+)</pre>
 </div>
 
 </div>
@@ -11860,9 +11917,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span>
-<span class="k">import</span> <span class="nn">learning._</span>
-<span class="k">import</span> <span class="nn">library._</span><span class="o">,</span> <span class="nc">MonoidSimple</span><span class="o">.</span><span class="k">_</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<span class="k">val</span> <span class="n">lp</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">).</span><span class="n">sharpen</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">lp0</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts0</span><span class="o">).</span><span class="n">sharpen</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
 </pre></div>
 
 </div>
@@ -11881,11 +11938,88 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
 </span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">learning._
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">library._, MonoidSimple._</span></pre>
+<span class="ansi-cyan-fg">lp</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Star</span>, <span class="ansi-green-fg">0.3333333333333333</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Unit</span>, <span class="ansi-green-fg">0.3333333333333333</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">Zero</span>, <span class="ansi-green-fg">0.3333333333333333</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">Vector</span>(),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    Empty
+  ),
+  <span class="ansi-yellow-fg">TermGenParams</span>(
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.3</span>,
+    <span class="ansi-green-fg">0.7</span>,
+    <span class="ansi-green-fg">0.5</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+...
+<span class="ansi-cyan-fg">lp0</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">1.0</span>))),
+    <span class="ansi-yellow-fg">Vector</span>(),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    Empty
+  ),
+  <span class="ansi-yellow-fg">TermGenParams</span>(
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.3</span>,
+    <span class="ansi-green-fg">0.7</span>,
+    <span class="ansi-green-fg">0.5</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>
+  ),
+  <span class="ansi-green-fg">1.0E-5</span>,
+  12 minutes,
+  <span class="ansi-green-fg">1.01</span>,
+  <span class="ansi-green-fg">1.0</span>,
+  <span class="ansi-green-fg">10000</span>,
+  <span class="ansi-green-fg">10</span>,
+  <span class="ansi-green-fg">1.0</span>,
+  <span class="ansi-green-fg">1.0</span>,
+  <span class="ansi-green-fg">None</span>,
+  false,
+...</pre>
 </div>
 
 </div>
@@ -11899,8 +12033,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tg</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">.</span><span class="n">zero</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">unAppW</span> <span class="k">=</span> <span class="mf">0.2</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">dist1</span><span class="o">,</span> <span class="n">dist1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">unknownsT</span> <span class="k">=</span> <span class="n">lp0</span><span class="o">.</span><span class="n">unknownStatements</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">entropyVec</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">elem</span><span class="o">)).</span><span class="n">memoize</span>
+<span class="k">val</span> <span class="n">unF</span> <span class="k">=</span> <span class="n">unknownsT</span><span class="o">.</span><span class="n">runToFuture</span>
 </pre></div>
 
 </div>
@@ -11913,71 +12047,59 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[4]:</div>
+<div class="prompt"></div>
 
 
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tg</span>: <span class="ansi-green-fg">TermGenParams</span> = <span class="ansi-yellow-fg">TermGenParams</span>(
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.2</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.3</span>,
-  <span class="ansi-green-fg">0.7</span>,
-  <span class="ansi-green-fg">0.5</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">unknownsT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]]] = <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(
+  &lt;function2&gt;,
+  false,
+  true,
+  true
 )
-<span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(
-    <span class="ansi-yellow-fg">Vector</span>(
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-    )
-  ),
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(
-    <span class="ansi-yellow-fg">Vector</span>(
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-...</pre>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">unF</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@a : 𝒰 ){ @a }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { @a }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → 𝒰 ) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰 ×𝒰  → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∏(@b : 𝒰 ){ @b })</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(∏(@a : 𝒰 ){ @a } → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → 𝒰 ×𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@a : 𝒰 ){ (𝒰  → @a) }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(∑(@a : { @a } → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { (@a → 𝒰 ) }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@a : 𝒰 ){ @a×𝒰  }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → ∑(@b : { @b })</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { (𝒰  → @a) }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@a : 𝒰 ){ 𝒰 ×@a }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { @a×𝒰  }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰 ×𝒰  → 𝒰 ) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → 𝒰 )×𝒰  → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { (@a → @a) }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(@a : 𝒰 ){ @a×@a }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → (𝒰  → 𝒰 )) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((∏(@a : 𝒰 ){ @a } → 𝒰 ) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { 𝒰 ×@a }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → 𝒰 ) → 𝒰 ×𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰 ×𝒰 ×𝒰  → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰 ×(𝒰  → 𝒰 ) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(∏(@a : 𝒰 ){ @a }×𝒰  → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((∑(@a : { @a } → 𝒰 ) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → ∏(@b : 𝒰 ){ @b }) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → 𝒰 ) → ∏(@a : 𝒰 ){ @a })</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → 𝒰 ×𝒰 ) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { @a×@a }</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((((𝒰  → 𝒰 ) → 𝒰 ) → 𝒰 ) → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(∑(@a : { (@a → 𝒰 ) } → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰 ×∏(@b : 𝒰 ){ @b } → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → (𝒰  → 𝒰 )×𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(∏(@a : 𝒰 ){ (𝒰  → @a) } → 𝒰 )</span></span>,
+    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(𝒰  → (𝒰  → ∏(@c : 𝒰 ){ @c }))</span></span>,
+...</span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -11991,7 +12113,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lp</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">tg</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">StrategicProvers._</span>
 </pre></div>
 
 </div>
@@ -12010,45 +12132,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lp</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
-  <span class="ansi-yellow-fg">TermState</span>(
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-      )
-    ),
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-...</pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">StrategicProvers._</span></pre>
 </div>
 
 </div>
@@ -12062,78 +12146,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global </span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lemT</span> <span class="k">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lemmas</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lemT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)]] = <span class="ansi-yellow-fg">Async</span>(
-  &lt;function2&gt;,
-  false,
-  true,
-  true
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lemF</span> <span class="k">=</span> <span class="n">lemT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">almond.display._</span>
+<span class="k">val</span> <span class="n">chompView</span> <span class="k">=</span> <span class="nc">Markdown</span><span class="o">(</span><span class="s">&quot;## Results from Goal chomping\n&quot;</span><span class="o">)</span>
 </pre></div>
 
 </div>
@@ -12150,22 +12164,29 @@ div#notebook {
 
 
 
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="Goal-chomping-status">Goal chomping status<a class="anchor-link" href="#Goal-chomping-status">&#182;</a></h2><ul>
+<li>current goal : Some((𝒰 _0) → (((𝒰 _0) , ((<code>@c : 𝒰 _0 ) ~&gt; (</code>@c)))))</li>
+<li>successes : 72</li>
+<li>failures : 2</li>
+<li>last success : Some(Vector((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (Zero))),0.5,[((Zero) , (rec(Zero)(Zero))) : 0.01127994556862484, ((Zero) , ((<code>@a :  Zero) ↦ (</code>@a))) : 0.00974783102948558])))</li>
+<li>last failure : Some((𝒰 _0) → ((((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)) , (𝒰 _0))))</li>
+</ul>
 
-<div class="output_text output_subarea ">
-<pre><span class="ansi-cyan-fg">lemF</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)]] = <span class="ansi-yellow-fg">Success</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    (<span class="ansi-green-fg">eqM(e_r)(e_r)</span>, <span class="ansi-green-fg">1.0578745194563616E-4</span>),
-    (<span class="ansi-green-fg">eqM(e_l)(e_l)</span>, <span class="ansi-green-fg">1.0578745194563616E-4</span>),
-    (<span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_r))</span>, <span class="ansi-green-fg">3.9209752320968364E-5</span>),
-    (<span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_l))</span>, <span class="ansi-green-fg">3.9209752320968364E-5</span>),
-    (<span class="ansi-green-fg">eqM(e_r)(mul(e_l)(e_r))</span>, <span class="ansi-green-fg">3.9209752320968364E-5</span>),
-    (<span class="ansi-green-fg">eqM(e_r)(mul(e_r)(e_r))</span>, <span class="ansi-green-fg">3.9209752320968364E-5</span>),
-    (<span class="ansi-green-fg">eqM(mul(e_l)(e_r))(e_l)</span>, <span class="ansi-green-fg">1.1673930754169824E-5</span>),
-    (<span class="ansi-green-fg">eqM(mul(e_l)(e_l))(e_l)</span>, <span class="ansi-green-fg">1.1673930754169824E-5</span>),
-    (<span class="ansi-green-fg">eqM(mul(e_l)(e_r))(e_r)</span>, <span class="ansi-green-fg">1.1673930754169824E-5</span>),
-    (<span class="ansi-green-fg">eqM(mul(e_r)(e_r))(e_r)</span>, <span class="ansi-green-fg">1.1673930754169824E-5</span>)
-  )
-)</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">almond.display._
+</span></pre>
 </div>
 
 </div>
@@ -12176,42 +12197,26 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lem</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">tangS</span> <span class="k">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">tangent</span><span class="o">(</span><span class="s">&quot;proof&quot;</span> <span class="o">::</span> <span class="n">lem</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span> <span class="k">=</span> <span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">chompView</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">md</span><span class="o">).</span><span class="n">update</span><span class="o">()</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lem</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_r))</span>
-<span class="ansi-cyan-fg">tangS</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">proof</span>, <span class="ansi-green-fg">1.0</span>))),
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
-  <span class="ansi-yellow-fg">Vector</span>(),
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
-  Empty
-)</pre>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span><span class="o">(())</span>
+</pre></div>
 
 </div>
-
 </div>
 </div>
 
@@ -12221,9 +12226,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">goal</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">lpTangT</span>  <span class="k">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">distTangentProver</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="s">&quot;proof&quot;</span> <span class="o">::</span> <span class="n">lem</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">targGoalT</span> <span class="k">=</span> <span class="n">lpTangT</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">lpt</span> <span class="k">=&gt;</span> <span class="n">lpt</span><span class="o">.</span><span class="n">theoremsByStatement</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="n">goal</span><span class="o">))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">chT</span> <span class="k">=</span> <span class="n">unknownsT</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">typs</span> <span class="k">=&gt;</span> <span class="n">liberalChomper</span><span class="o">(</span><span class="n">lp</span><span class="o">,</span> <span class="n">typs</span><span class="o">)).</span><span class="n">memoize</span>
 </pre></div>
 
 </div>
@@ -12242,30 +12245,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">goal</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(e_l)(e_r)</span>
-<span class="ansi-cyan-fg">lpTangT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">LocalTangentProver</span>] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">Map</span>(
-    <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-    provingground.learning.LocalProver$$Lambda$3055/1967470927@749bd4b2,
-    <span class="ansi-green-fg">0</span>
-  ),
-  provingground.learning.LocalProver$$Lambda$3056/91428110@151a7801
-)
-<span class="ansi-cyan-fg">targGoalT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FlatMap</span>(
-    <span class="ansi-yellow-fg">FlatMap</span>(
-      <span class="ansi-yellow-fg">Map</span>(
-        <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-        provingground.learning.LocalProver$$Lambda$3055/1967470927@749bd4b2,
-        <span class="ansi-green-fg">0</span>
-      ),
-      provingground.learning.LocalProver$$Lambda$3056/91428110@151a7801
-    ),
-    ammonite.$sess.cmd9$Helper$$Lambda$3057/2060264848@6f468bdc
-  ),
-  ammonite.$sess.cmd9$Helper$$Lambda$3058/1264621820@3985c81c,
-  <span class="ansi-green-fg">0</span>
-)</pre>
+<pre><span class="ansi-cyan-fg">chT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[(<span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Successes</span>], <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]], <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>], <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]])] = <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true)</pre>
 </div>
 
 </div>
@@ -12279,7 +12259,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">targGoalF</span> <span class="k">=</span> <span class="n">targGoalT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">chF</span> <span class="k">=</span> <span class="n">chT</span><span class="o">.</span><span class="n">runToFuture</span>
 </pre></div>
 
 </div>
@@ -12296,9 +12276,10 @@ div#notebook {
 
 
 
-
-<div class="output_text output_subarea ">
-<pre><span class="ansi-cyan-fg">targGoalF</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Success</span>(<span class="ansi-green-fg">0.0358205554070143</span>)</pre>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">chF</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Successes</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">EquationNode</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]])] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+</div>
 </div>
 
 </div>
@@ -12311,9 +12292,9 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h2><ul>
-<li>When we draw attention to what we want in an extreme way, at least then we get the result.</li>
-<li>A warning is that lemmas were misidentified here.</li>
+<h2 id="Interim-conclusions">Interim conclusions<a class="anchor-link" href="#Interim-conclusions">&#182;</a></h2><ul>
+<li>This is working smoothly, at least for purposes of testing.</li>
+<li>One should have some concurrency, otherwise we wait for failures to timeout.</li>
 </ul>
 
 </div>
@@ -12321,62 +12302,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tg1</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">.</span><span class="n">zero</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">appW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">,</span> <span class="n">unAppW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tg1</span>: <span class="ansi-green-fg">TermGenParams</span> = <span class="ansi-yellow-fg">TermGenParams</span>(
-  <span class="ansi-green-fg">0.1</span>,
-  <span class="ansi-green-fg">0.1</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.3</span>,
-  <span class="ansi-green-fg">0.7</span>,
-  <span class="ansi-green-fg">0.5</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lp1</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">tg1</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">succHandle</span> <span class="k">=</span> <span class="nc">Markdown</span><span class="o">(</span><span class="n">successes</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;## Successes\n\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n&quot;</span><span class="o">))</span>
 </pre></div>
 
 </div>
@@ -12389,51 +12318,86 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[19]:</div>
+<div class="prompt"></div>
 
 
 
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="Successes">Successes<a class="anchor-link" href="#Successes">&#182;</a></h2><ul>
+<li>Vector(((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (<code>@a)))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ∑((</code>@a :  𝒰 _0) ↦ ((<code>@a) → (</code>@a)))) ↦ (Zero) : 0.005501508459674841, (((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (<code>@a)))) ↦ (Unit) : 0.005501508459674841, rec(∑((</code>@a :  𝒰 _0) ↦ ((<code>@a) → (</code>@a))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (<code>@a) → (</code>@a)) ↦ (<code>@a))) : 0.0037091919867114844, rec(∑((</code>@a :  𝒰 _0) ↦ ((<code>@a) → (</code>@a))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (<code>@a) → (</code>@a)) ↦ (Zero))) : 0.0028849271007755986, rec(∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (<code>@a))))(𝒰 _0)((</code>@a :  𝒰 _0) ↦ ((<code>@a :  (</code>@a) → (`@a)) ↦ (Unit))) : 0.0028849271007755986]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ ((((</code>@a) → (𝒰 _0)) → (<code>`@a)) → (Zero))),0.5,[((Zero) , ((</code>@a :  ((Zero) → (𝒰 _0)) → (Zero)) ↦ ((<code>@a) (rec(Zero)(𝒰 _0))))) : 0.010056544435595253, ((Zero) , ((</code>@a :  ((Zero) → (𝒰 _0)) → (Zero)) ↦ ((<code>@a) ((@a :  Zero) ↦ (Zero))))) : 0.004719592080296367, ((Zero) , ((</code>@a :  ((Zero) → (𝒰 _0)) → (Zero)) ↦ ((`@a) ((@a :  Zero) ↦ (Unit))))) : 0.004719592080296367]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (PlusTyp((</code>@a) → (Zero),((𝒰 _0) → (𝒰 _0)) → (Zero)))),0.5,[((Zero) , (FirstIncl(PlusTyp((Zero) → (Zero),((𝒰 _0) → (𝒰 _0)) → (Zero)),rec(Zero)(Zero)))) : 0.009747864298093989, ((Zero) , (FirstIncl(PlusTyp((Zero) → (Zero),((𝒰 _0) → (𝒰 _0)) → (Zero)),(<code>@a :  Zero) ↦ (</code>@a)))) : 0.009747864298093989]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → ((𝒰 _0) → (𝒰 _0)))),0.5,[((Zero) , (rec(Zero)((𝒰 _0) → (𝒰 _0)))) : 0.006401907155647273, ((Zero) , ((@a :  Zero) ↦ ((<code>@a :  𝒰 _0) ↦ (</code>@a)))) : 0.002331888715587279, ((Unit) , ((@a :  Unit) ↦ ((<code>@a :  𝒰 _0) ↦ (</code>@a)))) : 0.0023318887155872785, ((Unit) , (rec(Unit)((𝒰 _0) → (𝒰 _0))((<code>@a :  𝒰 _0) ↦ (</code>@a)))) : 0.0019060655588278624, ((Unit) , (rec(Unit)((𝒰 _0) → (𝒰 _0))((@a :  𝒰 _0) ↦ (Zero)))) : 0.0014824954346438928, ((Unit) , (rec(Unit)((𝒰 _0) → (𝒰 _0))((@a :  𝒰 _0) ↦ (Unit)))) : 0.0014824954346438928, ((Zero) , ((@a :  Zero) ↦ ((@a :  𝒰 _0) ↦ (Unit)))) : 0.0012695838562641853, ((Unit) , ((@a :  Unit) ↦ ((@a :  𝒰 _0) ↦ (Zero)))) : 0.0012695838562641851, ((Unit) , ((@a :  Unit) ↦ ((@a :  𝒰 _0) ↦ (Unit)))) : 0.0012695838562641851, ((Zero) , ((@a :  Zero) ↦ ((@a :  𝒰 _0) ↦ (Zero)))) : 0.0012695838562641853]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (((𝒰 _0) → ((𝒰 _0) → (</code>@a))) → (Zero))),0.5,[((Zero) , ((<code>@a :  (𝒰 _0) → ((𝒰 _0) → (Zero))) ↦ (((</code>@a) (Zero)) (Unit)))) : 0.004719864668656048, ((Zero) , ((<code>@a :  (𝒰 _0) → ((𝒰 _0) → (Zero))) ↦ (((</code>@a) (Zero)) (Zero)))) : 0.004719864668656048, ((Zero) , ((<code>@a :  (𝒰 _0) → ((𝒰 _0) → (Zero))) ↦ (((</code>@a) (Unit)) (Zero)))) : 0.004719864668656048, ((Zero) , ((<code>@a :  (𝒰 _0) → ((𝒰 _0) → (Zero))) ↦ (((</code>@a) (Unit)) (Unit)))) : 0.004719864668656048]))</li>
+<li>Vector(((((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  ((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0)) ↦ (Zero) : 0.008341652510855242, (@a :  ((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0)) ↦ (Unit) : 0.008341652510855242, (<code>@a :  ((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((@a :  𝒰 _0) ↦ ((<code>@b :  𝒰 _0) ↦ (</code>@b)))) : 0.001549647419462387, (<code>@a :  ((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (</code>@a)))) : 0.001084753193623671, (<code>@a :  ((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (Unit)))) : 5.905878498617762E-4, (<code>@a :  ((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (Zero)))) : 5.905878498617762E-4]))</li>
+<li>Vector(((𝒰 _0) → (((𝒰 _0) , ((𝒰 _0) → (𝒰 _0)))),0.5,[(<code>@a :  𝒰 _0) ↦ (((</code>@a) , ((<code>@b :  𝒰 _0) ↦ (</code>@b)))) : 0.0027435421363300695, (@a :  𝒰 _0) ↦ (((Unit) , ((<code>@b :  𝒰 _0) ↦ (</code>@b)))) : 0.0021338661060344983, (@a :  𝒰 _0) ↦ (((Zero) , ((<code>@b :  𝒰 _0) ↦ (</code>@b)))) : 0.0021338661060344983, (<code>@a :  𝒰 _0) ↦ (((</code>@a) , ((@b :  𝒰 _0) ↦ (<code>@a)))) : 0.0019204794954310487, (</code>@a :  𝒰 _0) ↦ (((<code>@a) , ((@b :  𝒰 _0) ↦ (Zero)))) : 0.001493706274224149, (</code>@a :  𝒰 _0) ↦ (((<code>@a) , ((@b :  𝒰 _0) ↦ (Unit)))) : 0.001493706274224149, (</code>@a :  𝒰 _0) ↦ (((Unit) , ((@b :  𝒰 _0) ↦ (<code>@a)))) : 0.001493706274224149, (</code>@a :  𝒰 _0) ↦ (((Zero) , ((@b :  𝒰 _0) ↦ (`@a)))) : 0.001493706274224149, (@a :  𝒰 _0) ↦ (((Unit) , ((@b :  𝒰 _0) ↦ (Unit)))) : 0.0011617715466187826, (@a :  𝒰 _0) ↦ (((Zero) , ((@b :  𝒰 _0) ↦ (Unit)))) : 0.0011617715466187826, (@a :  𝒰 _0) ↦ (((Unit) , ((@b :  𝒰 _0) ↦ (Zero)))) : 0.0011617715466187826, (@a :  𝒰 _0) ↦ (((Zero) , ((@b :  𝒰 _0) ↦ (Zero)))) : 0.0011617715466187826]))</li>
+<li>Vector(((𝒰 _0) → ((𝒰 _0) → (∑((<code>@c :  𝒰 _0) ↦ (</code>@c)))),0.5,[(@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((Unit) , (Star)))) : 0.01900374784450017]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (PlusTyp(((𝒰 _0) → (</code>@a)) → (Zero),(𝒰 _0) → (Zero)))),0.5,[((Zero) , (FirstIncl(PlusTyp(((𝒰 _0) → (Zero)) → (Zero),(𝒰 _0) → (Zero)),(<code>@a :  (𝒰 _0) → (Zero)) ↦ ((</code>@a) (Unit))))) : 0.009439729337312096, ((Zero) , (FirstIncl(PlusTyp(((𝒰 _0) → (Zero)) → (Zero),(𝒰 _0) → (Zero)),(<code>@a :  (𝒰 _0) → (Zero)) ↦ ((</code>@a) (Zero))))) : 0.009439729337312096]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (((𝒰 _0) → (</code>@a)) → (𝒰 _0))),0.5,[((Unit) , ((@a :  (𝒰 _0) → (Unit)) ↦ (Zero))) : 0.004871072854380339, ((Zero) , ((@a :  (𝒰 _0) → (Zero)) ↦ (Zero))) : 0.004871072854380339, ((Zero) , ((@a :  (𝒰 _0) → (Zero)) ↦ (Unit))) : 0.004871072854380339, ((Unit) , ((@a :  (𝒰 _0) → (Unit)) ↦ (Unit))) : 0.004871072854380339]))</li>
+<li>Vector((((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  (((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (𝒰 _0)) → (𝒰 _0)) ↦ (Zero) : 0.007409759231129202, (@a :  (((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (𝒰 _0)) → (𝒰 _0)) ↦ (Unit) : 0.007409759231129202, (<code>@a :  (((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a)) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (Zero))) : 0.002836915864001713, (<code>@a :  (((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a)) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (Unit))) : 0.002836915864001713]))</li>
+<li>Vector(((((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b))))) → (𝒰 _0),0.5,[(((@a_1) , (((@a_2_1) , (@a_2_2)))) :  ((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b))))) ↦ (Zero) : 0.005501508459674841, (((@a_1) , (((@a_2_1) , (@a_2_2)))) :  ((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b))))) ↦ (Unit) : 0.005501508459674841, rec(((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((((@a_1) , (@a_2)) :  ∑((</code>@b :  𝒰 _0) ↦ (<code>@b))) ↦ (</code>@a))) : 0.0018545959933557422, rec(((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))))(𝒰 _0)((@a :  𝒰 _0) ↦ (rec(∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))(𝒰 _0)((<code>@b :  𝒰 _0) ↦ ((</code>@a :  <code>@b) ↦ (</code>@b))))) : 0.0016994305915211975, rec(((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((((@a_1) , (@a_2)) :  ∑((<code>@b :  𝒰 _0) ↦ (</code>@b))) ↦ (Zero))) : 0.001442463550387799, rec(((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((((@a_1) , (@a_2)) :  ∑((<code>@b :  𝒰 _0) ↦ (</code>@b))) ↦ (Unit))) : 0.001442463550387799, rec(((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ (rec(∑((</code>@b :  𝒰 _0) ↦ (<code>@b)))(𝒰 _0)((</code>@b :  𝒰 _0) ↦ ((<code>@a :</code>@b) ↦ (<code>@a))))) : 0.0011896014140648386, rec(((𝒰 _0) , (∑((</code>@b :  𝒰 _0) ↦ (<code>@b)))))(𝒰 _0)((@a :  𝒰 _0) ↦ (rec(∑((</code>@b :  𝒰 _0) ↦ (<code>@b)))(𝒰 _0)((</code>@b :  𝒰 _0) ↦ ((<code>@a :</code>@b) ↦ (Zero))))) : 9.252455442726524E-4, rec(((𝒰 _0) , (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))))(𝒰 _0)((@a :  𝒰 _0) ↦ (rec(∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))(𝒰 _0)((<code>@b :  𝒰 _0) ↦ ((</code>@a :  `@b) ↦ (Unit))))) : 9.252455442726524E-4]))</li>
+<li>Vector(((∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0))))) → (𝒰 _0),0.5,[(((@a_1) , (((@a_2_1) , (@a_2_2)))) :  ∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0))))) ↦ (Unit) : 0.005501508459674839, (((@a_1) , (((@a_2_1) , (@a_2_2)))) :  ∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0))))) ↦ (Zero) : 0.005501508459674839, rec(∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ (rec(((</code>@a) , (𝒰 _0)))(𝒰 _0)((<code>@a :</code>@a) ↦ ((<code>@b :  𝒰 _0) ↦ (</code>@b))))) : 0.002104376312145144, rec(∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((((</code>@a_1) , (@a_2)) :  ((<code>@a) , (𝒰 _0))) ↦ (</code>@a))) : 0.0018545959933557417, rec(∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((((</code>@a_1) , (@a_2)) :  ((<code>@a) , (𝒰 _0))) ↦ (Zero))) : 0.0014424635503877987, rec(∑((</code>@a :  𝒰 _0) ↦ (((<code>@a) , (𝒰 _0)))))(𝒰 _0)((</code>@a :  𝒰 _0) ↦ ((((<code>@a_1) , (@a_2)) :  ((</code>@a) , (𝒰 _0))) ↦ (Unit))) : 0.0014424635503877987, rec(∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ (rec(((</code>@a) , (𝒰 _0)))(𝒰 _0)((<code>@a :</code>@a) ↦ ((@b :  𝒰 _0) ↦ (<code>@a))))) : 0.0010311443929511203, rec(∑((</code>@a :  𝒰 _0) ↦ (((<code>@a) , (𝒰 _0)))))(𝒰 _0)((</code>@a :  𝒰 _0) ↦ (rec(((<code>@a) , (𝒰 _0)))(𝒰 _0)((</code>@a :  <code>@a) ↦ ((@b :  𝒰 _0) ↦ (Unit))))) : 8.02001194517538E-4, rec(∑((</code>@a :  𝒰 _0) ↦ (((<code>@a) , (𝒰 _0)))))(𝒰 _0)((</code>@a :  𝒰 _0) ↦ (rec(((<code>@a) , (𝒰 _0)))(𝒰 _0)((</code>@a :  `@a) ↦ ((@b :  𝒰 _0) ↦ (Zero))))) : 8.02001194517538E-4]))</li>
+<li>Vector((((<code>@a : 𝒰 _0 ) ~&gt; (((𝒰 _0) , (</code>@a)))) → (𝒰 _0),0.5,[(@a :  (<code>@a : 𝒰 _0 ) ~&gt; (((𝒰 _0) , (</code>@a)))) ↦ (Unit) : 0.010702019943741583, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; (((𝒰 _0) , (</code>@a)))) ↦ (Zero) : 0.010702019943741583]))</li>
+<li>Vector(((𝒰 _0) → ((𝒰 _0) → (((𝒰 _0) , (𝒰 _0)))),0.5,[(@a :  𝒰 _0) ↦ ((<code>@b :  𝒰 _0) ↦ (((</code>@b) , (<code>@b)))) : 0.0025268980880811887, (</code>@a :  𝒰 _0) ↦ ((<code>@b :  𝒰 _0) ↦ (((</code>@b) , (<code>@a)))) : 0.0017688286616568323, (</code>@a :  𝒰 _0) ↦ ((<code>@b :  𝒰 _0) ↦ (((</code>@a) , (<code>@b)))) : 0.0017688286616568323, (@a :  𝒰 _0) ↦ ((</code>@b :  𝒰 _0) ↦ (((<code>@b) , (Unit)))) : 0.0013757556257330912, (@a :  𝒰 _0) ↦ ((</code>@b :  𝒰 _0) ↦ (((Zero) , (<code>@b)))) : 0.0013757556257330912, (@a :  𝒰 _0) ↦ ((</code>@b :  𝒰 _0) ↦ (((Unit) , (<code>@b)))) : 0.0013757556257330912, (@a :  𝒰 _0) ↦ ((</code>@b :  𝒰 _0) ↦ (((<code>@b) , (Zero)))) : 0.0013757556257330912, (</code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((<code>@a) , (</code>@a)))) : 0.0012381800631597823, (<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((</code>@a) , (Unit)))) : 9.63028938013164E-4, (<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((Zero) , (</code>@a)))) : 9.63028938013164E-4, (<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((Unit) , (</code>@a)))) : 9.63028938013164E-4, (<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((</code>@a) , (Zero)))) : 9.63028938013164E-4, (@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((Zero) , (Unit)))) : 7.239478494155423E-4, (@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((Unit) , (Zero)))) : 7.239478494155423E-4, (@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((Unit) , (Unit)))) : 7.239478494155423E-4, (@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (((Zero) , (Zero)))) : 7.239478494155423E-4]))</li>
+<li>Vector(((((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0),0.5,[(@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (Zero) : 0.00655854953347216, (@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (Unit) : 0.00655854953347216, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((<code>@a :  𝒰 _0) ↦ (</code>@a))) (Unit)) : 0.001510305928270312, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((<code>@a :  𝒰 _0) ↦ (</code>@a))) (Zero)) : 0.001510305928270312, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((@a :  𝒰 _0) ↦ (Zero))) (Unit)) : 7.927365868737157E-4, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((@a :  𝒰 _0) ↦ (Unit))) (Unit)) : 7.927365868737157E-4, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((@a :  𝒰 _0) ↦ (Unit))) (Zero)) : 7.927365868737157E-4, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((@a :  𝒰 _0) ↦ (Zero))) (Zero)) : 7.927365868737157E-4, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((<code>@a) ((</code>@a :  𝒰 _0) ↦ (<code>@a)))) (Unit)) : 4.2036197790263784E-4, (</code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((<code>@a) ((</code>@a) ((<code>@a :  𝒰 _0) ↦ (</code>@a)))) (Zero)) : 4.2036197790263784E-4, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((<code>@a) ((@a :  𝒰 _0) ↦ (Unit)))) (Zero)) : 8.744365487525488E-5, (</code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((<code>@a) ((</code>@a) ((@a :  𝒰 _0) ↦ (Zero)))) (Zero)) : 8.744365487525488E-5, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) ((<code>@a) ((@a :  𝒰 _0) ↦ (Unit)))) (Unit)) : 8.744365487525488E-5, (</code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((𝒰 _0) → (𝒰 _0))) ↦ (((<code>@a) ((</code>@a) ((@a :  𝒰 _0) ↦ (Zero)))) (Unit)) : 8.744365487525488E-5]))</li>
+<li>Vector(((((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ (Zero) : 0.007409759231129201, (@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ (Unit) : 0.007409759231129201, (<code>@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ (Zero))) : 0.0018830029169258366, (<code>@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ (Unit))) : 0.0018830029169258366, (<code>@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@a :  𝒰 _0) ↦ ((<code>@b :  𝒰 _0) ↦ (</code>@b))))) : 7.748390364334738E-4, (<code>@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (</code>@a))))) : 5.423873255034316E-4, (<code>@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (Unit))))) : 2.952997661074237E-4, (<code>@a :  ((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (Zero))))) : 2.952997661074237E-4]))</li>
+<li>Vector(((((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ (Zero) : 0.008341767994169642, (@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ (Unit) : 0.008341767994169642, (<code>@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((((<code>@a :  𝒰 _0) ↦ (</code>@a)) , (Zero)))) : 9.133154847583329E-4, (<code>@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((((<code>@a :  𝒰 _0) ↦ (</code>@a)) , (Unit)))) : 9.133154847583329E-4, (<code>@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((((@a :  𝒰 _0) ↦ (Unit)) , (Zero)))) : 4.97249541701759E-4, (<code>@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((((@a :  𝒰 _0) ↦ (Zero)) , (Unit)))) : 4.97249541701759E-4, (<code>@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((((@a :  𝒰 _0) ↦ (Zero)) , (Zero)))) : 4.97249541701759E-4, (<code>@a :  ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) ((((@a :  𝒰 _0) ↦ (Unit)) , (Unit)))) : 4.97249541701759E-4]))</li>
+<li>Vector(((((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0))) ↦ (Unit) : 0.005501508459674842, (((@a_1) , (@a_2)) :  ((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0))) ↦ (Zero) : 0.005501508459674842, rec(((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((@a :  ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) ↦ ((<code>@a :  𝒰 _0) ↦ (</code>@a))) : 0.002878068037954276, rec(((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((@a :  ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ (Zero))) : 0.001566948153997328, rec(((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((@a :  ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ (Unit))) : 0.001566948153997328, rec(((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ ((</code>@a) ((<code>@b :  𝒰 _0) ↦ (</code>@b))))) : 0.0014081108565353684, rec(((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a :  𝒰 _0) ↦ ((<code>@a) ((@b :  𝒰 _0) ↦ (</code>@a))))) : 9.85677599574758E-4, rec(((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ ((</code>@a) ((@b :  𝒰 _0) ↦ (Zero))))) : 5.366466931018124E-4, rec(((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  ((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ ((</code>@a) ((@b :  𝒰 _0) ↦ (Unit))))) : 5.366466931018124E-4]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ ((((𝒰 _0) → (𝒰 _0)) → (</code>@a)) → (Zero))),0.5,[((Zero) , ((<code>@a :  ((𝒰 _0) → (𝒰 _0)) → (Zero)) ↦ ((</code>@a) ((<code>@a :  𝒰 _0) ↦ (</code>@a))))) : 0.009038038727213711, ((Zero) , ((<code>@a :  ((𝒰 _0) → (𝒰 _0)) → (Zero)) ↦ ((</code>@a) ((@a :  𝒰 _0) ↦ (Unit))))) : 0.004920709973705244, ((Zero) , ((<code>@a :  ((𝒰 _0) → (𝒰 _0)) → (Zero)) ↦ ((</code>@a) ((@a :  𝒰 _0) ↦ (Zero))))) : 0.004920709973705244]))</li>
+<li>Vector((((<code>@a : 𝒰 _0 ) ~&gt; ((</code>@a) → (<code>@a))) → (𝒰 _0),0.5,[(@a :  (</code>@a : 𝒰 _0 ) ~&gt; ((<code>@a) → (</code>@a))) ↦ (Unit) : 0.01025805056579662, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; ((</code>@a) → (`@a))) ↦ (Zero) : 0.01025805056579662]))</li>
+<li>Vector(((𝒰 _0) → (((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0))),0.5,[(<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (<code>@a))) , (</code>@a))) : 0.0011715806589734643, (<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (Unit))) , (<code>@a))) : 9.112294014238057E-4, (</code>@a :  𝒰 _0) ↦ (((((Zero) , (<code>@a))) , (</code>@a))) : 9.112294014238057E-4, (<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (<code>@a))) , (Unit))) : 9.112294014238055E-4, (</code>@a :  𝒰 _0) ↦ (((((<code>@a) , (</code>@a))) , (Zero))) : 9.112294014238055E-4, (<code>@a :  𝒰 _0) ↦ (((((Unit) , (</code>@a))) , (<code>@a))) : 9.112294014238057E-4, (</code>@a :  𝒰 _0) ↦ (((((<code>@a) , (Zero))) , (</code>@a))) : 9.112294014238057E-4, (<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (Zero))) , (Unit))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Unit) , (Unit))) , (</code>@a))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (Zero))) , (Zero))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Zero) , (Unit))) , (</code>@a))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (Unit))) , (Zero))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Zero) , (</code>@a))) , (Zero))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (Unit))) , (Unit))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Zero) , (Zero))) , (</code>@a))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Zero) , (</code>@a))) , (Unit))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Unit) , (</code>@a))) , (Zero))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Unit) , (Zero))) , (</code>@a))) : 7.087339788851821E-4, (<code>@a :  𝒰 _0) ↦ (((((Unit) , (</code>@a))) , (Unit))) : 7.087339788851821E-4, (@a :  𝒰 _0) ↦ (((((Unit) , (Zero))) , (Zero))) : 5.512375391329192E-4, (@a :  𝒰 _0) ↦ (((((Zero) , (Unit))) , (Zero))) : 5.512375391329192E-4, (@a :  𝒰 _0) ↦ (((((Zero) , (Zero))) , (Unit))) : 5.512375391329192E-4, (@a :  𝒰 _0) ↦ (((((Unit) , (Zero))) , (Unit))) : 5.512375391329192E-4, (@a :  𝒰 _0) ↦ (((((Zero) , (Unit))) , (Unit))) : 5.512375391329192E-4, (@a :  𝒰 _0) ↦ (((((Unit) , (Unit))) , (Unit))) : 5.512375391329192E-4, (@a :  𝒰 _0) ↦ (((((Zero) , (Zero))) , (Zero))) : 5.512375391329192E-4, (@a :  𝒰 _0) ↦ (((((Unit) , (Unit))) , (Zero))) : 5.512375391329192E-4]))</li>
+<li>Vector((((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)),0.5,[(@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@b :  (𝒰 _0) → (𝒰 _0)) ↦ (Unit)) : 0.0033801244115728435, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@b :  (𝒰 _0) → (𝒰 _0)) ↦ (Zero)) : 0.0033801244115728435, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b) (Unit))) : 0.0015363319118981138, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b) (Zero))) : 0.0015363319118981138, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b) ((<code>@b) (Zero)))) : 0.001187526649047129, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@b) ((</code>@b) (Unit)))) : 0.001187526649047129, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Unit))) : 0.0010754323383286796, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Zero))) : 0.0010754323383286796, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a) ((</code>@b) (Zero)))) : 8.312686543329902E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@b) ((</code>@a) (Zero)))) : 8.312686543329902E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a) ((</code>@b) (Unit)))) : 8.312686543329902E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@b) ((</code>@a) (Unit)))) : 8.312686543329902E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) ((<code>@a) (Zero)))) : 5.818880580330931E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@b :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a) ((</code>@a) (Unit)))) : 5.818880580330931E-4]))</li>
+<li>Vector((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (((𝒰 _0) , (𝒰 _0))),0.5,[(@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (((Zero) , (Zero))) : 0.004974577582061285, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (((Unit) , (Unit))) : 0.004974577582061285, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (((Zero) , (Unit))) : 0.004974577582061285, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (((Unit) , (Zero))) : 0.004974577582061285]))</li>
+<li>Vector((((𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@b)))) → (Zero),0.5,[(<code>@a :  (𝒰 _0) → ((</code>@b : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (<code>@b)))) ↦ ((((</code>@a) (Zero)) (Zero)) (Unit)) : 0.004724557876211586, (<code>@a :  (𝒰 _0) → ((</code>@b : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (<code>@b)))) ↦ ((((</code>@a) (Unit)) (Zero)) (Zero)) : 0.004724557876211586, (<code>@a :  (𝒰 _0) → ((</code>@b : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (<code>@b)))) ↦ ((((</code>@a) (Zero)) (Zero)) (Zero)) : 0.004724557876211586, (<code>@a :  (𝒰 _0) → ((</code>@b : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (<code>@b)))) ↦ ((((</code>@a) (Unit)) (Zero)) (Unit)) : 0.004724557876211586]))</li>
+<li>Vector(((∑((<code>@a :  𝒰 _0) ↦ ((𝒰 _0) → (</code>@a)))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ ((𝒰 _0) → (</code>@a)))) ↦ (Zero) : 0.005501508459674841, (((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ ((𝒰 _0) → (</code>@a)))) ↦ (Unit) : 0.005501508459674841, rec(∑((<code>@a :  𝒰 _0) ↦ ((𝒰 _0) → (</code>@a))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (𝒰 _0) → (<code>@a)) ↦ (</code>@a))) : 0.0037091919867114844, rec(∑((<code>@a :  𝒰 _0) ↦ ((𝒰 _0) → (</code>@a))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (𝒰 _0) → (<code>@a)) ↦ (Zero))) : 0.0028849271007755986, rec(∑((</code>@a :  𝒰 _0) ↦ ((𝒰 _0) → (<code>@a))))(𝒰 _0)((</code>@a :  𝒰 _0) ↦ ((<code>@a :  (𝒰 _0) → (</code>@a)) ↦ (Unit))) : 0.0028849271007755986]))</li>
+<li>Vector(((<code>@a : 𝒰 _0 ) ~&gt; ((((</code>@a) → (𝒰 _0)) , (𝒰 _0))),0.5,[(<code>@a :  𝒰 _0) ↦ ((((</code>@a :  <code>@a) ↦ (</code>@a)) , (<code>@a))) : 0.0029940394618210736, (</code>@a :  𝒰 _0) ↦ ((((<code>@a :</code>@a) ↦ (<code>@a)) , (Unit))) : 0.0023286973591941677, (</code>@a :  𝒰 _0) ↦ ((((<code>@a :</code>@a) ↦ (<code>@a)) , (Zero))) : 0.0023286973591941677, (</code>@a :  𝒰 _0) ↦ ((((<code>@a :</code>@a) ↦ (Zero)) , (<code>@a))) : 0.0023286973591941677, (</code>@a :  𝒰 _0) ↦ ((((<code>@a :</code>@a) ↦ (Unit)) , (<code>@a))) : 0.0023286973591941677, (</code>@a :  𝒰 _0) ↦ ((((<code>@a :</code>@a) ↦ (Unit)) , (Unit))) : 0.0018112090571510194, (<code>@a :  𝒰 _0) ↦ ((((</code>@a :  <code>@a) ↦ (Unit)) , (Zero))) : 0.0018112090571510194, (</code>@a :  𝒰 _0) ↦ ((((<code>@a :</code>@a) ↦ (Zero)) , (Unit))) : 0.0018112090571510194, (<code>@a :  𝒰 _0) ↦ ((((</code>@a :  `@a) ↦ (Zero)) , (Zero))) : 0.0018112090571510194]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) → (𝒰 _0)) → (𝒰 _0))),0.5,[((Unit) , ((<code>@a :  (Unit) → (𝒰 _0)) ↦ ((</code>@a) (Star)))) : 0.0062041508313689705, ((Zero) , ((@a :  (Zero) → (𝒰 _0)) ↦ (Unit))) : 0.0048710728543803405, ((Zero) , ((@a :  (Zero) → (𝒰 _0)) ↦ (Zero))) : 0.0048710728543803405, ((Unit) , ((@a :  (Unit) → (𝒰 _0)) ↦ (Unit))) : 0.0017689974386958546, ((Unit) , ((@a :  (Unit) → (𝒰 _0)) ↦ (Zero))) : 0.0017689974386958546]))</li>
+<li>Vector((∑((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (∑((</code>@a :  𝒰 _0) ↦ (((<code>@a) (</code>@a)) → (Zero))))),0.5,[(((<code>@a :  𝒰 _0) ↦ (</code>@a)) , (((Zero) , ((<code>@a :  Zero) ↦ (</code>@a))))) : 0.005479956961177879, (((<code>@a :  𝒰 _0) ↦ (</code>@a)) , (((Zero) , (rec(Zero)(Zero))))) : 0.005479956961177879, (((@a :  𝒰 _0) ↦ (Zero)) , (((Unit) , ((<code>@a :  Zero) ↦ (</code>@a))))) : 0.0021310943737913968, (((@a :  𝒰 _0) ↦ (Zero)) , (((Zero) , (rec(Zero)(Zero))))) : 0.0021310943737913968, (((@a :  𝒰 _0) ↦ (Zero)) , (((Unit) , (rec(Zero)(Zero))))) : 0.0021310943737913968, (((@a :  𝒰 _0) ↦ (Zero)) , (((Zero) , ((<code>@a :  Zero) ↦ (</code>@a))))) : 0.0021310943737913968]))</li>
+<li>Vector((((((𝒰 _0) , (𝒰 _0))) → ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a))) → (Zero),0.5,[(<code>@a :  (((𝒰 _0) , (𝒰 _0))) → ((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a))) ↦ (((</code>@a) (((Zero) , (Unit)))) (Zero)) : 0.00471986466865605, (<code>@a :  (((𝒰 _0) , (𝒰 _0))) → ((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a))) ↦ (((</code>@a) (((Unit) , (Unit)))) (Zero)) : 0.00471986466865605, (<code>@a :  (((𝒰 _0) , (𝒰 _0))) → ((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a))) ↦ (((</code>@a) (((Unit) , (Zero)))) (Zero)) : 0.00471986466865605, (<code>@a :  (((𝒰 _0) , (𝒰 _0))) → ((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a))) ↦ (((</code>@a) (((Zero) , (Zero)))) (Zero)) : 0.00471986466865605]))</li>
+<li>Vector((((𝒰 _0) → (𝒰 _0)) → (∑((<code>@a :  𝒰 _0) ↦ (</code>@a))),0.5,[(@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Unit) , (Star))) : 0.019098583060361957]))</li>
+<li>Vector((((<code>@a : 𝒰 _0 ) ~&gt; (((</code>@a) , (𝒰 _0)))) → (𝒰 _0),0.5,[(@a :  (<code>@a : 𝒰 _0 ) ~&gt; (((</code>@a) , (𝒰 _0)))) ↦ (Unit) : 0.01070201994374158, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; (((</code>@a) , (𝒰 _0)))) ↦ (Zero) : 0.01070201994374158]))</li>
+<li>Vector((((𝒰 _0) → (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))) → (𝒰 _0),0.5,[(@a :  (𝒰 _0) → (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))) ↦ (Zero) : 0.010249582562331496, (@a :  (𝒰 _0) → (∑((<code>@b :  𝒰 _0) ↦ (</code>@b)))) ↦ (Unit) : 0.010249582562331496]))</li>
+<li>Vector(((((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) , (𝒰 _0))) → (𝒰 _0),0.5,[(((((@a_1_1) , (@a_1_2))) , (@a_2)) :  ((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) , (𝒰 _0))) ↦ (Unit) : 0.005501508459674839, (((((@a_1_1) , (@a_1_2))) , (@a_2)) :  ((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) , (𝒰 _0))) ↦ (Zero) : 0.005501508459674839, rec(((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) , (𝒰 _0)))(𝒰 _0)((((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) ↦ ((<code>@a :  𝒰 _0) ↦ (</code>@a))) : 0.0022689206301692594, rec(((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) , (𝒰 _0)))(𝒰 _0)(rec(∑((<code>@a :  𝒰 _0) ↦ (</code>@a)))((𝒰 _0) → (𝒰 _0))((<code>@a :  𝒰 _0) ↦ ((</code>@a :  <code>@a) ↦ ((</code>@b :  𝒰 _0) ↦ (<code>@b))))) : 0.002104376312145144, rec(((∑((</code>@a :  𝒰 _0) ↦ (<code>@a))) , (𝒰 _0)))(𝒰 _0)((((@a_1) , (@a_2)) :  ∑((</code>@a :  𝒰 _0) ↦ (<code>@a))) ↦ ((@a :  𝒰 _0) ↦ (Unit))) : 0.0012353012319810412, rec(((∑((</code>@a :  𝒰 _0) ↦ (<code>@a))) , (𝒰 _0)))(𝒰 _0)((((@a_1) , (@a_2)) :  ∑((</code>@a :  𝒰 _0) ↦ (<code>@a))) ↦ ((@a :  𝒰 _0) ↦ (Zero))) : 0.0012353012319810412, rec(((∑((</code>@a :  𝒰 _0) ↦ (<code>@a))) , (𝒰 _0)))(𝒰 _0)(rec(∑((</code>@a :  𝒰 _0) ↦ (<code>@a)))((𝒰 _0) → (𝒰 _0))((</code>@a :  𝒰 _0) ↦ ((<code>@a :</code>@a) ↦ ((@b :  𝒰 _0) ↦ (<code>@a))))) : 0.0010311443929511203, rec(((∑((</code>@a :  𝒰 _0) ↦ (<code>@a))) , (𝒰 _0)))(𝒰 _0)(rec(∑((</code>@a :  𝒰 _0) ↦ (<code>@a)))((𝒰 _0) → (𝒰 _0))((</code>@a :  𝒰 _0) ↦ ((<code>@a :</code>@a) ↦ ((@b :  𝒰 _0) ↦ (Unit))))) : 8.02001194517538E-4, rec(((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) , (𝒰 _0)))(𝒰 _0)(rec(∑((<code>@a :  𝒰 _0) ↦ (</code>@a)))((𝒰 _0) → (𝒰 _0))((<code>@a :  𝒰 _0) ↦ ((</code>@a :  `@a) ↦ ((@b :  𝒰 _0) ↦ (Zero))))) : 8.02001194517538E-4]))</li>
+<li>Vector(((((𝒰 _0) , (((𝒰 _0) , (𝒰 _0))))) → (𝒰 _0),0.5,[(((@a_1) , (((@a_2_1) , (@a_2_2)))) :  ((𝒰 _0) , (((𝒰 _0) , (𝒰 _0))))) ↦ (Unit) : 0.005501508459674839, (((@a_1) , (((@a_2_1) , (@a_2_2)))) :  ((𝒰 _0) , (((𝒰 _0) , (𝒰 _0))))) ↦ (Zero) : 0.005501508459674839, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ (</code>@a))) : 0.0018545959933557417, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((@a :  𝒰 _0) ↦ (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@b :  𝒰 _0) ↦ ((<code>@c :  𝒰 _0) ↦ (</code>@c))))) : 0.001605408650627854, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ (Unit))) : 0.0014424635503877987, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ (Zero))) : 0.0014424635503877987, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((@a :  𝒰 _0) ↦ (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((<code>@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (</code>@b))))) : 0.0011237860554394975, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (</code>@a))))) : 7.866502388076483E-4, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((@a :  𝒰 _0) ↦ (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (Unit))))) : 6.118390746281704E-4, rec(((𝒰 _0) , (((𝒰 _0) , (𝒰 _0)))))(𝒰 _0)((@a :  𝒰 _0) ↦ (rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (Zero))))) : 6.118390746281704E-4]))</li>
+<li>Vector((((𝒰 _0) → ((𝒰 _0) → ((<code>@c : 𝒰 _0 ) ~&gt; (</code>@c)))) → (Zero),0.5,[(<code>@a :  (𝒰 _0) → ((𝒰 _0) → ((</code>@c : 𝒰 _0 ) ~&gt; (<code>@c)))) ↦ ((((</code>@a) (Zero)) (Unit)) (Zero)) : 0.004724557876211586, (<code>@a :  (𝒰 _0) → ((𝒰 _0) → ((</code>@c : 𝒰 _0 ) ~&gt; (<code>@c)))) ↦ ((((</code>@a) (Unit)) (Zero)) (Zero)) : 0.004724557876211586, (<code>@a :  (𝒰 _0) → ((𝒰 _0) → ((</code>@c : 𝒰 _0 ) ~&gt; (<code>@c)))) ↦ ((((</code>@a) (Unit)) (Unit)) (Zero)) : 0.004724557876211586, (<code>@a :  (𝒰 _0) → ((𝒰 _0) → ((</code>@c : 𝒰 _0 ) ~&gt; (<code>@c)))) ↦ ((((</code>@a) (Zero)) (Zero)) (Zero)) : 0.004724557876211586]))</li>
+<li>Vector((((<code>@a : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@a))) → (𝒰 _0),0.5,[(@a :  (<code>@a : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@a))) ↦ (Unit) : 0.010702019943741578, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@a))) ↦ (Zero) : 0.010702019943741578]))</li>
+<li>Vector(((𝒰 _0) → ((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))),0.5,[(<code>@a :  𝒰 _0) ↦ ((((</code>@b :  𝒰 _0) ↦ (<code>@b)) , (</code>@a))) : 0.002743542136330069, (@a :  𝒰 _0) ↦ ((((<code>@b :  𝒰 _0) ↦ (</code>@b)) , (Zero))) : 0.002133866106034498, (@a :  𝒰 _0) ↦ ((((<code>@b :  𝒰 _0) ↦ (</code>@b)) , (Unit))) : 0.002133866106034498, (<code>@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (</code>@a)) , (<code>@a))) : 0.0019204794954310483, (</code>@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (Zero)) , (<code>@a))) : 0.0014937062742241486, (</code>@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (Unit)) , (<code>@a))) : 0.0014937062742241486, (</code>@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (<code>@a)) , (Zero))) : 0.0014937062742241486, (</code>@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (`@a)) , (Unit))) : 0.0014937062742241486, (@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (Unit)) , (Zero))) : 0.0011617715466187824, (@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (Zero)) , (Unit))) : 0.0011617715466187824, (@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (Zero)) , (Zero))) : 0.0011617715466187824, (@a :  𝒰 _0) ↦ ((((@b :  𝒰 _0) ↦ (Unit)) , (Unit))) : 0.0011617715466187824]))</li>
+<li>Vector(((((𝒰 _0) , ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ((𝒰 _0) , ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)))) ↦ (Zero) : 0.0057353118851704325, (((@a_1) , (@a_2)) :  ((𝒰 _0) , ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)))) ↦ (Unit) : 0.0057353118851704325, rec(((𝒰 _0) , ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((@a :  (</code>@b : 𝒰 _0 ) ~&gt; (<code>@b)) ↦ (</code>@a))) : 0.003879700160637417, rec(((𝒰 _0) , ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@a :  (<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)) ↦ (Zero))) : 0.003017544569384657, rec(((𝒰 _0) , ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@a :  (<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)) ↦ (Unit))) : 0.003017544569384657]))</li>
+<li>Vector(((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (𝒰 _0)))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (𝒰 _0)))) ↦ (Unit) : 0.005501508459674841, (((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (𝒰 _0)))) ↦ (Zero) : 0.005501508459674841, rec(∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (𝒰 _0))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (<code>@a) → (𝒰 _0)) ↦ (</code>@a))) : 0.0037091919867114852, rec(∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (𝒰 _0))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (<code>@a) → (𝒰 _0)) ↦ (Unit))) : 0.0028849271007755986, rec(∑((</code>@a :  𝒰 _0) ↦ ((<code>@a) → (𝒰 _0))))(𝒰 _0)((</code>@a :  𝒰 _0) ↦ ((<code>@a :  (</code>@a) → (𝒰 _0)) ↦ (Zero))) : 0.0028849271007755986]))</li>
+<li>Vector((((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  (((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0)) ↦ (Zero) : 0.007409759231129201, (@a :  (((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0)) ↦ (Unit) : 0.007409759231129201, (<code>@a :  (((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((@a :  (𝒰 _0) → (𝒰 _0)) ↦ (Zero))) : 0.0017915318124117115, (<code>@a :  (((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((@a :  (𝒰 _0) → (𝒰 _0)) ↦ (Unit))) : 0.0017915318124117115, (<code>@a :  (((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Unit)))) : 0.001045384051590001, (<code>@a :  (((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → (𝒰 _0)) ↦ ((</code>@a) ((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Zero)))) : 0.001045384051590001]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (`@a)))),0.5,[((Unit) , (((Star) , (Star)))) : 0.019495728596187985]))</li>
+<li>Vector((((𝒰 _0) → (((𝒰 _0) , (𝒰 _0)))) → (𝒰 _0),0.5,[(@a :  (𝒰 _0) → (((𝒰 _0) , (𝒰 _0)))) ↦ (Unit) : 0.0102495825623315, (@a :  (𝒰 _0) → (((𝒰 _0) , (𝒰 _0)))) ↦ (Zero) : 0.0102495825623315]))</li>
+<li>Vector(((((𝒰 _0) → (𝒰 _0)) → ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a))) → (Zero),0.5,[(<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a))) ↦ (((</code>@a) ((<code>@a :  𝒰 _0) ↦ (</code>@a))) (Zero)) : 0.00922256535122766, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a))) ↦ (((</code>@a) ((@a :  𝒰 _0) ↦ (Zero))) (Zero)) : 0.004828446661698272, (<code>@a :  ((𝒰 _0) → (𝒰 _0)) → ((</code>@a : 𝒰 _0 ) ~&gt; (<code>@a))) ↦ (((</code>@a) ((@a :  𝒰 _0) ↦ (Unit))) (Zero)) : 0.004828446661698272]))</li>
+<li>Vector((((𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))) → (𝒰 _0),0.5,[(@a :  (𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))) ↦ (Unit) : 0.010709034460247338, (@a :  (𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))) ↦ (Zero) : 0.010709034460247338]))</li>
+<li>Vector((((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  (∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) → (𝒰 _0)) ↦ (Zero) : 0.008341762946589594, (@a :  (∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) → (𝒰 _0)) ↦ (Unit) : 0.008341762946589594, (<code>@a :  (∑((</code>@a :  𝒰 _0) ↦ (<code>@a))) → (𝒰 _0)) ↦ ((</code>@a) (((Unit) , (Star)))) : 0.003815629025780042]))</li>
+<li>Vector((((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) , (𝒰 _0))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  (((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) , (𝒰 _0))) ↦ (Zero) : 0.005735311885170428, (((@a_1) , (@a_2)) :  (((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) , (𝒰 _0))) ↦ (Unit) : 0.005735311885170428, rec((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) , (𝒰 _0)))(𝒰 _0)((@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ ((<code>@a :  𝒰 _0) ↦ (</code>@a))) : 0.0047464416858862, rec((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) , (𝒰 _0)))(𝒰 _0)((@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ ((@a :  𝒰 _0) ↦ (Zero))) : 0.0025841738067602644, rec((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) , (𝒰 _0)))(𝒰 _0)((@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ ((@a :  𝒰 _0) ↦ (Unit))) : 0.0025841738067602644]))</li>
+<li>Vector(((((𝒰 _0) , ((𝒰 _0) → (𝒰 _0)))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ((𝒰 _0) , ((𝒰 _0) → (𝒰 _0)))) ↦ (Unit) : 0.005501508459674842, (((@a_1) , (@a_2)) :  ((𝒰 _0) , ((𝒰 _0) → (𝒰 _0)))) ↦ (Zero) : 0.005501508459674842, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a) (</code>@a)))) : 0.0014288799294873927, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((@a :  (𝒰 _0) → (𝒰 _0)) ↦ (</code>@a))) : 0.0013272454769297068, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Unit)))) : 0.001111351056267972, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Zero)))) : 0.001111351056267972, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@a :  (𝒰 _0) → (𝒰 _0)) ↦ (Zero))) : 0.0010323020376119937, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@a :  (𝒰 _0) → (𝒰 _0)) ↦ (Unit))) : 0.0010323020376119937, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a) ((</code>@a) (<code>@a))))) : 9.530665802943861E-4, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a) ((</code>@a) (Zero))))) : 7.412740068956337E-4, rec(((𝒰 _0) , ((𝒰 _0) → (𝒰 _0))))(𝒰 _0)((@a :  𝒰 _0) ↦ ((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) ((`@a) (Unit))))) : 7.412740068956337E-4]))</li>
+<li>Vector(((((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0))) → (𝒰 _0),0.5,[(((((@a_1_1) , (@a_1_2))) , (@a_2)) :  ((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0))) ↦ (Unit) : 0.005501508459674841, (((((@a_1_1) , (@a_1_2))) , (@a_2)) :  ((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0))) ↦ (Zero) : 0.005501508459674841, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ ((<code>@a :  𝒰 _0) ↦ (</code>@a))) : 0.0022689206301692594, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)(rec(((𝒰 _0) , (𝒰 _0)))((𝒰 _0) → (𝒰 _0))((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ ((<code>@c :  𝒰 _0) ↦ (</code>@c))))) : 0.001605408650627854, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ ((@a :  𝒰 _0) ↦ (Zero))) : 0.0012353012319810416, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)((((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ ((@a :  𝒰 _0) ↦ (Unit))) : 0.0012353012319810416, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)(rec(((𝒰 _0) , (𝒰 _0)))((𝒰 _0) → (𝒰 _0))((@a :  𝒰 _0) ↦ ((<code>@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (</code>@b))))) : 0.0011237860554394977, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)(rec(((𝒰 _0) , (𝒰 _0)))((𝒰 _0) → (𝒰 _0))((<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (</code>@a))))) : 7.866502388076484E-4, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)(rec(((𝒰 _0) , (𝒰 _0)))((𝒰 _0) → (𝒰 _0))((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (Unit))))) : 6.118390746281703E-4, rec(((((𝒰 _0) , (𝒰 _0))) , (𝒰 _0)))(𝒰 _0)(rec(((𝒰 _0) , (𝒰 _0)))((𝒰 _0) → (𝒰 _0))((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ ((@c :  𝒰 _0) ↦ (Zero))))) : 6.118390746281703E-4]))</li>
+<li>Vector((((𝒰 _0) → (𝒰 _0)) → (((𝒰 _0) , (𝒰 _0))),0.5,[(@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Zero) , (Zero))) : 6.31278929404103E-4, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Unit) , (Unit))) : 6.31278929404103E-4, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Unit) , (Zero))) : 6.31278929404103E-4, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Zero) , (Unit))) : 6.31278929404103E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Unit))) , (Zero))) : 5.697369016704036E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((<code>@a) ((</code>@a) (Zero))) , (Unit))) : 5.697369016704036E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Zero))) , (Zero))) : 5.697369016704036E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Zero) , ((<code>@a) ((</code>@a) (Zero))))) : 5.697369016704036E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Unit))) , (Unit))) : 5.697369016704036E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Zero) , ((<code>@a) ((</code>@a) (Unit))))) : 5.697369016704036E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Unit) , ((</code>@a) ((<code>@a) (Unit))))) : 5.697369016704036E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Unit) , ((<code>@a) ((</code>@a) (Zero))))) : 5.697369016704036E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Unit))) , ((</code>@a) ((<code>@a) (Zero))))) : 5.437610938994129E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((<code>@a) ((</code>@a) (Zero))) , ((<code>@a) ((</code>@a) (Unit))))) : 5.437610938994129E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Zero))) , ((</code>@a) ((<code>@a) (Zero))))) : 5.437610938994129E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((<code>@a) ((</code>@a) (Unit))) , ((<code>@a) ((</code>@a) (Unit))))) : 5.437610938994129E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Zero)) , (Zero))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Zero) , ((</code>@a) (Unit)))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Unit) , ((</code>@a) (Unit)))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Unit)) , (Unit))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Unit)) , (Zero))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Zero)) , (Unit))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Unit) , ((</code>@a) (Zero)))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (((Zero) , ((</code>@a) (Zero)))) : 5.224989600777182E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Unit)) , ((<code>@a) ((</code>@a) (Zero))))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Zero)) , ((<code>@a) ((</code>@a) (Zero))))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Zero))) , ((</code>@a) (Zero)))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Zero))) , ((</code>@a) (Unit)))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Zero)) , ((<code>@a) ((</code>@a) (Unit))))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Unit)) , ((<code>@a) ((</code>@a) (Unit))))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Unit))) , ((</code>@a) (Zero)))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) ((<code>@a) (Unit))) , ((</code>@a) (Unit)))) : 4.668615267918098E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Zero)) , ((<code>@a) (Unit)))) : 4.6144661261618246E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((<code>@a) (Unit)) , ((</code>@a) (Unit)))) : 4.6144661261618246E-4, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((</code>@a) (Unit)) , ((<code>@a) (Zero)))) : 4.6144661261618246E-4, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((((<code>@a) (Zero)) , ((</code>@a) (Zero)))) : 4.6144661261618246E-4]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (((𝒰 _0) , (</code>@a)))),0.5,[((Unit) , (((Zero) , (Star)))) : 0.009747864298093989, ((Unit) , (((Unit) , (Star)))) : 0.009747864298093989]))</li>
+<li>Vector(((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (𝒰 _0)) ↦ (Zero) : 0.010256797174673255, (@a :  ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (𝒰 _0)) ↦ (Unit) : 0.010256797174673255]))</li>
+<li>Vector((((𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) → (𝒰 _0),0.5,[(@a :  (𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) ↦ (Zero) : 0.004822227589740257, (@a :  (𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) ↦ (Unit) : 0.004822227589740257, (<code>@a :  (𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) (Zero)) (Zero)) : 0.0027136687936852094, (<code>@a :  (𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) (Unit)) (Zero)) : 0.0027136687936852094, (<code>@a :  (𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) (Zero)) (Unit)) : 0.0027136687936852094, (<code>@a :  (𝒰 _0) → ((𝒰 _0) → (𝒰 _0))) ↦ (((</code>@a) (Unit)) (Unit)) : 0.0027136687936852094]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (PlusTyp((</code>@a) → (Zero),(<code>`@a) → (Zero)))),0.5,[((Zero) , (ScndIncl(PlusTyp((Zero) → (Zero),(Zero) → (Zero)),rec(Zero)(Zero)))) : 0.004871072854380337, ((Zero) , (FirstIncl(PlusTyp((Zero) → (Zero),(Zero) → (Zero)),rec(Zero)(Zero)))) : 0.004871072854380337, ((Zero) , (FirstIncl(PlusTyp((Zero) → (Zero),(Zero) → (Zero)),(</code>@a :  Zero) ↦ (<code>@a)))) : 0.004871072854380337, ((Zero) , (ScndIncl(PlusTyp((Zero) → (Zero),(Zero) → (Zero)),(</code>@a :  Zero) ↦ (`@a)))) : 0.004871072854380337]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (<code>@a))),0.5,[((Zero) , (rec(Zero)(Zero))) : 0.006401907155647275, ((Unit) , (rec(Unit)(Unit)(Star))) : 0.004871056428115649, ((Zero) , ((</code>@a :  Zero) ↦ (<code>@a))) : 0.004871056428115649, ((Unit) , ((</code>@a :  Unit) ↦ (`@a))) : 0.0027399692408150537, ((Unit) , ((@a :  Unit) ↦ (Star))) : 0.0021310871873005967]))</li>
+<li>Vector((((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  (((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) ↦ (Unit) : 0.005485514651659905, (((@a_1) , (@a_2)) :  (((𝒰 _0) → (𝒰 _0)) , (𝒰 _0))) ↦ (Zero) : 0.005485514651659905, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ (</code>@a)) : 0.003352272045939376, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a :  𝒰 _0) ↦ ((<code>@a) (</code>@a)))) : 0.001164631759864518, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a :  𝒰 _0) ↦ (</code>@a))) : 0.0010563012474797307, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a :  𝒰 _0) ↦ ((<code>@a) ((</code>@a) (<code>@a))))) : 7.274103876120619E-4, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ ((<code>@a) (Unit)))) : 6.340772914817931E-4, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ ((<code>@a) (Zero)))) : 6.340772914817931E-4, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ (Zero))) : 5.750973458500755E-4, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ (Unit))) : 5.750973458500755E-4, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ ((<code>@a) ((</code>@a) (Zero))))) : 3.96034544366567E-4, rec((((𝒰 _0) → (𝒰 _0)) , (𝒰 _0)))(𝒰 _0)((<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((@a :  𝒰 _0) ↦ ((</code>@a) ((`@a) (Unit))))) : 3.96034544366567E-4]))</li>
+<li>Vector((((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  (((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) ↦ (Zero) : 0.007409756578024077, (@a :  (((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) ↦ (Unit) : 0.007409756578024077, (<code>@a :  (((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) (((Unit) , (Unit)))) : 0.0014184578964282486, (<code>@a :  (((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) (((Zero) , (Unit)))) : 0.0014184578964282486, (<code>@a :  (((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) (((Zero) , (Zero)))) : 0.0014184578964282486, (<code>@a :  (((𝒰 _0) , (𝒰 _0))) → (𝒰 _0)) ↦ ((</code>@a) (((Unit) , (Zero)))) : 0.0014184578964282486]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (((</code>@a) , (𝒰 _0)))),0.5,[((Unit) , (((Star) , (Unit)))) : 0.009747864298093985, ((Unit) , (((Star) , (Zero)))) : 0.009747864298093985]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (PlusTyp((𝒰 _0) → (Zero),(</code>@a) → (Zero)))),0.5,[((Zero) , (ScndIncl(PlusTyp((𝒰 _0) → (Zero),(Zero) → (Zero)),rec(Zero)(Zero)))) : 0.009747864298093989, ((Zero) , (ScndIncl(PlusTyp((𝒰 _0) → (Zero),(Zero) → (Zero)),(<code>@a :  Zero) ↦ (</code>@a)))) : 0.009747864298093989]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ ((𝒰 _0) → (</code>@a))),0.5,[((Unit) , ((@a :  𝒰 _0) ↦ (Star))) : 0.019495728596187985]))</li>
+<li>Vector(((𝒰 _0) → (∑((<code>@b :  𝒰 _0) ↦ (</code>@b))),0.5,[(@a :  𝒰 _0) ↦ (((Unit) , (Star))) : 0.019561390892799724]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (PlusTyp((</code>@a) → (Zero),(𝒰 _0) → (Zero)))),0.5,[((Zero) , (FirstIncl(PlusTyp((Zero) → (Zero),(𝒰 _0) → (Zero)),rec(Zero)(Zero)))) : 0.009747864298093992, ((Zero) , (FirstIncl(PlusTyp((Zero) → (Zero),(𝒰 _0) → (Zero)),(<code>@a :  Zero) ↦ (</code>@a)))) : 0.009747864298093992]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (𝒰 _0))),0.5,[((Zero) , (rec(Zero)(𝒰 _0))) : 0.0064019071556472755, ((Unit) , ((@a :  Unit) ↦ (Zero))) : 0.0024355282140578255, ((Unit) , ((@a :  Unit) ↦ (Unit))) : 0.0024355282140578255, ((Zero) , ((@a :  Zero) ↦ (Zero))) : 0.0024355282140578255, ((Unit) , (rec(Unit)(𝒰 _0)(Unit))) : 0.0024355282140578255, ((Zero) , ((@a :  Zero) ↦ (Unit))) : 0.0024355282140578255, ((Unit) , (rec(Unit)(𝒰 _0)(Zero))) : 0.0024355282140578255]))</li>
+<li>Vector(((∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) ↦ (Unit) : 0.0055906971963988255, (((@a_1) , (@a_2)) :  ∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) ↦ (Zero) : 0.0055906971963988255, rec(∑((<code>@a :  𝒰 _0) ↦ (</code>@a)))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  <code>@a) ↦ (</code>@a))) : 0.0037090991135179463, rec(∑((<code>@a :  𝒰 _0) ↦ (</code>@a)))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((</code>@a :  <code>@a) ↦ (Zero))) : 0.0028848548660695135, rec(∑((</code>@a :  𝒰 _0) ↦ (<code>@a)))(𝒰 _0)((</code>@a :  𝒰 _0) ↦ ((<code>@a :</code>@a) ↦ (Unit))) : 0.0028848548660695135]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (((𝒰 _0) → (</code>@a)) → (Zero))),0.5,[((Zero) , ((<code>@a :  (𝒰 _0) → (Zero)) ↦ ((</code>@a) (Unit)))) : 0.009747864298093996, ((Zero) , ((<code>@a :  (𝒰 _0) → (Zero)) ↦ ((</code>@a) (Zero)))) : 0.009747864298093996]))</li>
+<li>Vector(((𝒰 _0) → (((𝒰 _0) , (𝒰 _0))),0.5,[(<code>@a :  𝒰 _0) ↦ (((</code>@a) , (<code>@a))) : 0.0030188052444319775, (</code>@a :  𝒰 _0) ↦ (((Zero) , (<code>@a))) : 0.002308684508460403, (</code>@a :  𝒰 _0) ↦ (((<code>@a) , (Unit))) : 0.002308684508460403, (</code>@a :  𝒰 _0) ↦ (((Unit) , (<code>@a))) : 0.002308684508460403, (</code>@a :  𝒰 _0) ↦ (((`@a) , (Zero))) : 0.002308684508460403, (@a :  𝒰 _0) ↦ (((Zero) , (Zero))) : 0.0018493335098097492, (@a :  𝒰 _0) ↦ (((Unit) , (Unit))) : 0.0018493335098097492, (@a :  𝒰 _0) ↦ (((Unit) , (Zero))) : 0.0017956435065803135, (@a :  𝒰 _0) ↦ (((Zero) , (Unit))) : 0.0017956435065803135]))</li>
+<li>Vector((((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) → (𝒰 _0),0.5,[(@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (Zero) : 0.010832862757059717, (@a :  (<code>@a : 𝒰 _0 ) ~&gt; (</code>@a)) ↦ (Unit) : 0.010832862757059717]))</li>
+<li>Vector((((𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))) → (Zero),0.5,[(<code>@a :  (𝒰 _0) → ((</code>@b : 𝒰 _0 ) ~&gt; (<code>@b))) ↦ (((</code>@a) (Unit)) (Zero)) : 0.0094397293373121, (<code>@a :  (𝒰 _0) → ((</code>@b : 𝒰 _0 ) ~&gt; (<code>@b))) ↦ (((</code>@a) (Zero)) (Zero)) : 0.0094397293373121]))</li>
+<li>Vector(((((𝒰 _0) , (𝒰 _0))) → (𝒰 _0),0.5,[(((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ (Zero) : 0.00557087786310835, (((@a_1) , (@a_2)) :  ((𝒰 _0) , (𝒰 _0))) ↦ (Unit) : 0.00557087786310835, rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@a :  𝒰 _0) ↦ ((<code>@b :  𝒰 _0) ↦ (</code>@b))) : 0.003398794991509158, rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((<code>@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (</code>@a))) : 0.0023791564940564107, rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (Zero))) : 0.0018504550509327645, rec(((𝒰 _0) , (𝒰 _0)))(𝒰 _0)((@a :  𝒰 _0) ↦ ((@b :  𝒰 _0) ↦ (Unit))) : 0.0018504550509327645]))</li>
+<li>Vector((((𝒰 _0) → (𝒰 _0)) → (𝒰 _0),0.5,[(@a :  (𝒰 _0) → (𝒰 _0)) ↦ (Zero) : 0.004434521334908531, (@a :  (𝒰 _0) → (𝒰 _0)) ↦ (Unit) : 0.004434521334908531, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Zero)) : 0.0030950013985154468, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) (Unit)) : 0.0030950013985154468, (<code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((</code>@a) ((<code>@a) (Zero))) : 0.003035898473921898, (</code>@a :  (𝒰 _0) → (𝒰 _0)) ↦ ((<code>@a) ((</code>@a) (Unit))) : 0.003035898473921898]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ (</code>@a)),0.5,[((Unit) , (Star)) : 0.01970769689870014]))</li>
+<li>Vector((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (Zero))),0.5,[((Zero) , (rec(Zero)(Zero))) : 0.01127994556862484, ((Zero) , ((<code>@a :  Zero) ↦ (</code>@a))) : 0.00974783102948558]))</li>
+</ul>
 
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lp1</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
-  <span class="ansi-yellow-fg">TermState</span>(
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-      )
-    ),
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-...</pre>
 </div>
 
 </div>
@@ -12447,7 +12411,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lemT1</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">lemmas</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">failHandle</span> <span class="k">=</span> <span class="nc">Markdown</span><span class="o">(</span><span class="n">failures</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;## Failures\n\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n&quot;</span><span class="o">))</span>
 </pre></div>
 
 </div>
@@ -12460,18 +12424,16 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[20]:</div>
+<div class="prompt"></div>
 
 
 
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="Failures">Failures<a class="anchor-link" href="#Failures">&#182;</a></h2><ul>
+<li>(𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (((</code>@b) , (𝒰 _0))))</li>
+<li>(𝒰 _0) → ((((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)) , (𝒰 _0)))</li>
+</ul>
 
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lemT1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)]] = <span class="ansi-yellow-fg">Async</span>(
-  &lt;function2&gt;,
-  false,
-  true,
-  true
-)</pre>
 </div>
 
 </div>
@@ -12485,39 +12447,14 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lemF1</span> <span class="k">=</span> <span class="n">lemT1</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span> <span class="k">=</span> <span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="n">chompView</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">md</span><span class="o">).</span><span class="n">update</span><span class="o">()</span>  
+    <span class="n">succHandle</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">successes</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;## Successes\n\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n&quot;</span><span class="o">)).</span><span class="n">update</span><span class="o">()</span> 
+    <span class="n">failHandle</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">failures</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;## Failures\n\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n&quot;</span><span class="o">)).</span><span class="n">update</span><span class="o">()</span>
+<span class="o">}</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-<div class="output_text output_subarea ">
-<pre><span class="ansi-cyan-fg">lemF1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)]] = <span class="ansi-yellow-fg">Success</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    (<span class="ansi-green-fg">eqM(e_r)(e_r)</span>, <span class="ansi-green-fg">0.0027509184472828325</span>),
-    (<span class="ansi-green-fg">eqM(e_l)(e_l)</span>, <span class="ansi-green-fg">0.0027509184472828325</span>),
-    (<span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_r))</span>, <span class="ansi-green-fg">0.0012526844961492322</span>),
-    (<span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_l))</span>, <span class="ansi-green-fg">0.0012526844961492322</span>),
-    (<span class="ansi-green-fg">eqM(e_r)(mul(e_l)(e_r))</span>, <span class="ansi-green-fg">0.0012526844961492322</span>),
-    (<span class="ansi-green-fg">eqM(e_r)(mul(e_r)(e_r))</span>, <span class="ansi-green-fg">0.0012526844961492322</span>)
-  )
-)</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -12527,102 +12464,13 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lpTangT1</span>  <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">distTangentProver</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="s">&quot;proof&quot;</span> <span class="o">::</span> <span class="n">lem</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">targGoalT1</span> <span class="k">=</span> <span class="n">lpTangT1</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">lpt</span> <span class="k">=&gt;</span> <span class="n">lpt</span><span class="o">.</span><span class="n">theoremsByStatement</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="n">goal</span><span class="o">))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span><span class="o">(())</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[22]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lpTangT1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">LocalTangentProver</span>] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">Map</span>(
-    <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-    provingground.learning.LocalProver$$Lambda$3055/1967470927@383b4579,
-    <span class="ansi-green-fg">0</span>
-  ),
-  provingground.learning.LocalProver$$Lambda$3056/91428110@54a814f7
-)
-<span class="ansi-cyan-fg">targGoalT1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FlatMap</span>(
-    <span class="ansi-yellow-fg">FlatMap</span>(
-      <span class="ansi-yellow-fg">Map</span>(
-        <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-        provingground.learning.LocalProver$$Lambda$3055/1967470927@383b4579,
-        <span class="ansi-green-fg">0</span>
-      ),
-      provingground.learning.LocalProver$$Lambda$3056/91428110@54a814f7
-    ),
-    ammonite.$sess.cmd21$Helper$$Lambda$3234/916371667@3e84a7d0
-  ),
-  ammonite.$sess.cmd21$Helper$$Lambda$3235/315745996@3dbbc5b4,
-  <span class="ansi-green-fg">0</span>
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">targGoalF1</span> <span class="k">=</span> <span class="n">targGoalT1</span><span class="o">.</span><span class="n">runToFuture</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-<div class="output_text output_subarea ">
-<pre><span class="ansi-cyan-fg">targGoalF1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Success</span>(<span class="ansi-green-fg">0.03607619269409383</span>)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusions:-round-two">Conclusions: round two<a class="anchor-link" href="#Conclusions:-round-two">&#182;</a></h2><ul>
-<li>Having both applications and unified ones is a reasonable thing to try.</li>
-<li>The theorem was proved in this case.</li>
-<li>However lemmas were again not identified properly</li>
-</ul>
-
-</div>
-</div>
 </div>
     </div>
   </div>
