@@ -26,7 +26,8 @@ object StrategicProvers {
 
   type SeekResult = (
       Successes,
-      Set[EquationNode]
+      Set[EquationNode],
+      Set[Term]
   )
 
   def formal(sc: Successes): Set[EquationNode] = {
@@ -42,23 +43,27 @@ object StrategicProvers {
   def seekGoal(
       lp: LocalProver,
       typ: Typ[Term],
+      terms: Set[Term],
       scale: Double = 2,
       maxSteps: Int = 100
   ): Task[SeekResult] = {
-    val base = lp.addGoals(typ -> 0.5, negate(typ) -> 0.5)
+    val base =  
+      if (lp.tg.solverW == 0) lp.addGoals(typ -> 0.5, negate(typ) -> 0.5)
+      else lp.addGoals(typ -> 0.5, negate(typ) -> 0.5).addLookup(terms)
     currentGoal = Option(typ)
     update(())
     val tasks = (1 until (maxSteps)).toVector.map { n =>
       val prover = base.sharpen(math.pow(scale, n))
-      val pair = for {
+      val triple = for {
         sc  <- prover.successes
         eqs <- prover.equationNodes
-      } yield (sc, eqs union formal(sc))
-      pair
+        termSet <- prover.expressionEval.map(_.finalTermSet)
+      } yield (sc, eqs union formal(sc), termSet)
+      triple
     }
 
     bestTask[SeekResult](tasks, p => p._1.nonEmpty)
-  }.map(_.getOrElse((Vector(), Set())))
+  }.map(_.getOrElse((Vector(), Set(), Set())))
 
   val successes: ArrayBuffer[Successes] = ArrayBuffer()
 
@@ -86,8 +91,8 @@ object StrategicProvers {
     typs match {
       case Vector() => Task.now((accumSucc, accumEqs, Vector()))
       case typ +: ys =>
-        seekGoal(lp, typ, scale, maxSteps).flatMap {
-          case (ss, eqs) =>
+        seekGoal(lp, typ, Set(), scale, maxSteps).flatMap {
+          case (ss, eqs, _) =>
             if (ss.isEmpty)
               Task.now((accumSucc :+ ss, accumEqs union eqs, typ +: ys))
             else {
@@ -111,16 +116,17 @@ object StrategicProvers {
       accumSucc: Vector[Successes] = Vector(),
       accumFail: Vector[Typ[Term]] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
+      accumTerms: Set[Term],
       scale: Double = 2,
       maxSteps: Int = 100
   ): Task[
-    (Vector[Successes], Vector[Typ[Term]], Set[EquationNode], Vector[Typ[Term]])
+    (Vector[Successes], Vector[Typ[Term]], Set[EquationNode], Set[Term], Vector[Typ[Term]])
   ] =
     typs match {
-      case Vector() => Task.now((accumSucc, accumFail, accumEqs, Vector()))
+      case Vector() => Task.now((accumSucc, accumFail, accumEqs, accumTerms, Vector()))
       case typ +: ys =>
-        seekGoal(lp, typ, scale, maxSteps).flatMap {
-          case (ss, eqs) =>
+        seekGoal(lp, typ, accumTerms, scale, maxSteps).flatMap {
+          case (ss, eqs, terms) =>
             if (ss.isEmpty) {
               failures.append(typ)
               update(())
@@ -130,6 +136,7 @@ object StrategicProvers {
                 accumSucc,
                 accumFail :+ typ,
                 accumEqs union eqs,
+                accumTerms union terms,
                 scale,
                 maxSteps
               )
@@ -142,6 +149,7 @@ object StrategicProvers {
                 accumSucc :+ ss,
                 accumFail,
                 accumEqs union eqs,
+                accumTerms union terms,
                 scale,
                 maxSteps
               )
