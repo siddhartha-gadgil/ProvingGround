@@ -122,7 +122,7 @@ object StrategicProvers {
       accumSucc: Vector[Successes] = Vector(),
       accumFail: Vector[Typ[Term]] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
-      accumTerms: Set[Term],
+      accumTerms: Set[Term] = Set(),
       scale: Double = 2,
       maxSteps: Int = 100
   ): Task[
