@@ -57,9 +57,9 @@ object StrategicProvers {
       val triple = for {
         sc  <- prover.successes
         eqs <- prover.equationNodes
-        termSet <- prover.expressionEval.map(_.finalTermSet)
+        // termSet <- prover.expressionEval.map(_.finalTermSet)
         finalTerms <- prover.nextState.map(_.terms.support)
-      } yield (sc, eqs union formal(sc), termSet union finalTerms)
+      } yield (sc, eqs union formal(sc), finalTerms)
       triple
     }
 
