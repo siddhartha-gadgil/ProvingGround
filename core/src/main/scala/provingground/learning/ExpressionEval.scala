@@ -120,10 +120,13 @@ object ExpressionEval {
   def stabRecExp(
       init: Map[Expression, Double],
       exp: Expression,
-      prev: Option[Double]
+      prev: Option[Double],
+      exponent: Double = 0.5
   ): Double = {
     val y = recExp(init, exp)
-    math.sqrt(prev.getOrElse(y) * y)
+    prev
+      .map(z => math.pow(z, 1 - exponent) * math.pow(y, exponent))
+      .getOrElse(y)
   }
 
   /**
@@ -131,10 +134,11 @@ object ExpressionEval {
     */
   def nextMap(
       init: Map[Expression, Double],
-      equations: Set[Equation]
+      equations: Set[Equation],
+      exponent: Double = 0.5
   ): Map[Expression, Double] = {
     init ++ equations
-      .map(eq => eq.lhs -> stabRecExp(init, eq.rhs, init.get(eq.lhs)))
+      .map(eq => eq.lhs -> stabRecExp(init, eq.rhs, init.get(eq.lhs), exponent))
       .filter(_._2 != 0)
   }
 
@@ -144,11 +148,13 @@ object ExpressionEval {
   @tailrec
   def stableSupportMap(
       init: Map[Expression, Double],
-      equations: Set[Equation]
+      equations: Set[Equation],
+      exponent: Double = 0.5,
+      decay: Double = 1
   ): Map[Expression, Double] = {
-    val newMap = nextMap(init, equations)
+    val newMap = nextMap(init, equations, exponent)
     if (newMap.keySet == init.keySet) newMap
-    else stableSupportMap(newMap, equations)
+    else stableSupportMap(newMap, equations, exponent * decay)
   }
 
   @tailrec
@@ -173,12 +179,14 @@ object ExpressionEval {
   def stableMap(
       init: Map[Expression, Double],
       equations: Set[Equation],
-      maxRatio: Double = 1.01
+      maxRatio: Double = 1.01,
+      exponent: Double = 0.5,
+      decay: Double = 1
   ): Map[Expression, Double] = {
-    val newMap = nextMap(init, equations)
+    val newMap = nextMap(init, equations, exponent)
     if ((newMap.keySet == init.keySet) && mapRatio(newMap, init) < maxRatio)
       newMap
-    else stableMap(newMap, equations, maxRatio)
+    else stableMap(newMap, equations, maxRatio, exponent * decay, decay)
   }
 
   def eqAtoms(equations: Set[Equation]) =
@@ -193,7 +201,9 @@ object ExpressionEval {
       tgS: TermGenParams,
       maxRatioS: Double = 1.01,
       scaleS: Double = 1.0,
-      smoothS: Option[Double] = None
+      smoothS: Option[Double] = None,
+      exponentS: Double = 0.5,
+      decayS: Double = 1
   ) =
     new ExpressionEval {
       val init                      = initMap(eqAtoms(equationsS), tgS, initialState)
@@ -204,6 +214,8 @@ object ExpressionEval {
       val scale                     = scaleS
       val coeffsAsVars: Boolean     = false
       val smoothing: Option[Double] = smoothS
+      val exponent: Double          = exponentS
+      val decay                     = decayS
     }
 
   def fromInitEqs(
@@ -212,7 +224,9 @@ object ExpressionEval {
       tgS: TermGenParams,
       maxRatioS: Double = 1.01,
       scaleS: Double = 1.0,
-      smoothS: Option[Double] = None
+      smoothS: Option[Double] = None,
+      exponentS: Double = 0.5,
+      decayS: Double = 1
   ): ExpressionEval =
     new ExpressionEval with GenerateTyps {
       val init                      = initMap(eqAtoms(equationsS), tgS, initialState)
@@ -222,6 +236,8 @@ object ExpressionEval {
       val scale                     = scaleS
       val coeffsAsVars: Boolean     = false
       val smoothing: Option[Double] = smoothS
+      val exponent: Double          = exponentS
+      val decay                     = decayS
     }
 
   trait GenerateTyps extends ExpressionEval { self =>
@@ -242,15 +258,19 @@ object ExpressionEval {
         coeffsAsVarsNew: Boolean = self.coeffsAsVars,
         maxRatioNew: Double = self.maxRatio,
         scaleNew: Double = self.scale,
-        smoothNew: Option[Double] = self.smoothing
+        smoothNew: Option[Double] = self.smoothing,
+        exponentNew: Double = self.exponent,
+        decayNew: Double = self.decay
     ): ExpressionEval = new ExpressionEval with GenerateTyps {
-      val init         = initNew
-      val equations    = equationsNew
-      val tg           = tgNew
-      val coeffsAsVars = coeffsAsVarsNew
-      val maxRatio     = maxRatioNew
-      val scale        = scaleNew
-      val smoothing    = smoothNew
+      val init             = initNew
+      val equations        = equationsNew
+      val tg               = tgNew
+      val coeffsAsVars     = coeffsAsVarsNew
+      val maxRatio         = maxRatioNew
+      val scale            = scaleNew
+      val smoothing        = smoothNew
+      val exponent: Double = exponentNew
+      val decay            = decayNew
     }
 
     override lazy val thmsByStatement: Map[HoTT.Typ[HoTT.Term], Expression] =
@@ -273,6 +293,8 @@ object ExpressionEval {
         val maxRatio                                       = self.maxRatio
         val scale                                          = self.scale
         val smoothing: Option[Double]                      = self.smoothing
+        val exponent: Double                               = self.exponent
+        val decay: Double                                  = self.decay
       }
 
   }
@@ -321,6 +343,8 @@ trait ExpressionEval { self =>
   val maxRatio: Double
   val scale: Double
   val smoothing: Option[Double]
+  val exponent: Double
+  val decay: Double
 
   def avgInit(that: ExpressionEval) =
     new ExpressionEval {
@@ -332,6 +356,8 @@ trait ExpressionEval { self =>
       val maxRatio                  = self.maxRatio
       val scale                     = self.scale
       val smoothing: Option[Double] = self.smoothing
+      val exponent: Double          = self.exponent
+      val decay: Double             = self.decay
     }
 
   def modify(
@@ -342,7 +368,9 @@ trait ExpressionEval { self =>
       coeffsAsVarsNew: Boolean = self.coeffsAsVars,
       maxRatioNew: Double = self.maxRatio,
       scaleNew: Double = self.scale,
-      smoothNew: Option[Double] = self.smoothing
+      smoothNew: Option[Double] = self.smoothing,
+      exponentNew: Double = self.exponent,
+      decayNew: Double = self.decay
   ): ExpressionEval = new ExpressionEval {
     val init: Map[Expression, Double] = initNew
     lazy val finalTyps: FD[Typ[Term]] = finalTypsNew
@@ -352,6 +380,8 @@ trait ExpressionEval { self =>
     val maxRatio: Double              = maxRatioNew
     val scale: Double                 = scaleNew
     val smoothing: Option[Double]     = smoothNew
+    val exponent: Double              = exponentNew
+    val decay                         = decayNew
   }
 
   def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
@@ -362,6 +392,8 @@ trait ExpressionEval { self =>
     val maxRatio                  = self.maxRatio
     val scale                     = self.scale
     val smoothing: Option[Double] = self.smoothing
+    val exponent: Double          = self.exponent
+    val decay                     = self.decay
   }
 
   def fixTypes: ExpressionEval = new ExpressionEval {
@@ -373,6 +405,8 @@ trait ExpressionEval { self =>
     val maxRatio                           = self.maxRatio
     val scale                              = self.scale
     val smoothing: Option[Double]          = self.smoothing
+    val exponent: Double                   = self.exponent
+    val decay                              = self.decay
   }
 
   /**
@@ -421,7 +455,7 @@ trait ExpressionEval { self =>
       inds: FD[induction.ExstInducDefn] = FD.empty[induction.ExstInducDefn],
       goals: FD[Typ[Term]] = FD.empty,
       context: Context = Context.Empty
-  ) : TermState =
+  ): TermState =
     TermState(finalTerms, finalTyps, vars, inds, goals, context)
 
   def lambdaExportEquations(
@@ -525,8 +559,6 @@ trait ExpressionEval { self =>
     isleEqs union (Equation.group(isleIn union bridgeEqs))
   }
 
-
-
   def relVariable(x: Term): ExpressionEval = {
     val varWeight: Double = math.max(
       init.getOrElse(InitialVal(Elem(x, Terms)), 0.0),
@@ -553,6 +585,8 @@ trait ExpressionEval { self =>
       val maxRatio                  = self.maxRatio
       val scale                     = self.scale
       val smoothing: Option[Double] = self.smoothing
+      val exponent: Double          = self.exponent
+      val decay                     = self.decay
     }
   }
 

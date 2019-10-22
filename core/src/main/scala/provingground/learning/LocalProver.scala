@@ -36,7 +36,9 @@ case class LocalProver(
     klW: Double = 1,
     val smoothing: Option[Double] = None,
     relativeEval: Boolean = false,
-    stateFromEquation: Boolean = false
+    stateFromEquation: Boolean = false,
+    exponent: Double = 0.5,
+    decay: Double = 1
 ) extends LocalProverStep {
   // Convenience for generation
   def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff / scale)
@@ -103,7 +105,7 @@ case class LocalProver(
     this.copy(initState = ts)
   }
 
-  def addSolver(s : TypSolver) = {
+  def addSolver(s: TypSolver) = {
     val newSolver = tg.solver || s
     this.copy(tg = tg.copy(solver = newSolver))
   }
@@ -250,7 +252,9 @@ case class LocalProver(
         tg,
         maxRatio,
         scale,
-        smoothing
+        smoothing,
+        exponent,
+        decay
       )
       expEv <- expressionEval
     } yield expEv.avgInit(tExpEval)
@@ -387,6 +391,8 @@ trait LocalProverStep {
   val klW: Double
   val smoothing: Option[Double]
   val relativeEval: Boolean
+  val exponent: Double
+  val decay: Double
 
   lazy val evolvedState: Task[EvolvedState] = nextState
     .map(
@@ -413,7 +419,18 @@ trait LocalProverStep {
     val base = for {
       fs  <- nextState
       eqs <- equations
-    } yield ExpressionEval.fromStates(initState, fs, eqs, tg, maxRatio, scale, smoothS = smoothing)
+    } yield
+      ExpressionEval.fromStates(
+        initState,
+        fs,
+        eqs,
+        tg,
+        maxRatio,
+        scale,
+        smoothing,
+        exponent,
+        decay
+      )
     if (relativeEval)
       if (initState.vars.isEmpty)
         base.map(_.generateTyps)
@@ -534,7 +551,9 @@ case class LocalTangentProver(
     klW: Double = 1,
     val smoothing: Option[Double] = None,
     relativeEval: Boolean = false,
-    stateFromEquation : Boolean = false
+    stateFromEquation: Boolean = false,
+    exponent: Double = 0.5,
+    decay: Double = 1
 ) extends LocalProverStep {
 
   def apple(w: Double = 0.1) = this.copy(tg = TermGenParams.apple(w))
@@ -563,8 +582,8 @@ case class LocalTangentProver(
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
-  lazy val nextState: Task[TermState] =
-    { if (stateFromEquation)
+  lazy val nextState: Task[TermState] = {
+    if (stateFromEquation)
       for {
         ev <- expressionEval
       } yield
@@ -578,18 +597,18 @@ case class LocalTangentProver(
         )
     else
       for {
-      terms <- tripleT.map(_._1)
-      typs  <- tripleTypT.map(_._1)
-    } yield
-      TermState(
-        (terms ++ initState.terms).safeNormalized,
-        (typs ++ initState.typs).safeNormalized,
-        initState.vars,
-        initState.inds,
-        initState.goals,
-        initState.context
-      )
-    }.memoize
+        terms <- tripleT.map(_._1)
+        typs  <- tripleTypT.map(_._1)
+      } yield
+        TermState(
+          (terms ++ initState.terms).safeNormalized,
+          (typs ++ initState.typs).safeNormalized,
+          initState.vars,
+          initState.inds,
+          initState.goals,
+          initState.context
+        )
+  }.memoize
 
   lazy val equationNodes: Task[Set[EquationNode]] =
     for {
