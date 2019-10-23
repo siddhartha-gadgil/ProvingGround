@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>2019-10-22-newmemo-liberal-chomper</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>2019-10-23-chomper-memo-newlookup</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11777,11 +11777,15 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="New-Memoized-Liberal-goal-chomping">New Memoized Liberal goal chomping<a class="anchor-link" href="#New-Memoized-Liberal-goal-chomping">&#182;</a></h2><ul>
 <li>We run a variant of the most basic strategic prover - a goal chomper that keeps trying a succession of goals.</li>
-<li>The change from the last time is that terms are remembered and looked up but with a map.</li>
+<li>The change from the first version are: <ul>
+<li>terms are remembered,</li>
+<li>terms are looked up but with a map,</li>
+<li>we do not evaluate equations to build the lookup table</li>
+<li>negation is improved</li>
+</ul>
+</li>
 <li>Termination is when all goals are finished; with failures recorded.</li>
 <li>Proving is only by generation, with the generation including backward reasoning rules.</li>
-<li>So far the goal chomper is untested; we test this.</li>
-<li>We also test updating displays etc.</li>
 </ul>
 
 </div>
@@ -11792,7 +11796,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-bcec456d48.fat.jar`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-eb6940f0d5.fat.jar`</span>
 <span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
 <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
   <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
@@ -12155,13 +12159,17 @@ div#notebook {
 
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="Goal-chomping-status">Goal chomping status<a class="anchor-link" href="#Goal-chomping-status">&#182;</a></h2><ul>
-<li>current goal : Some(((<code>@a : 𝒰 _0 ) ~&gt; (((</code>@a) → (𝒰 _0)) → (𝒰 _0))) → (𝒰 _0))</li>
-<li>successes : 146</li>
-<li>failures : 29</li>
-<li>terms : 35368</li>
-<li>equation-nodes: 3011386</li>
-<li>last success : Some(Vector((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (Zero))),0.5,[((Zero) , (rec(Zero)(Zero))) : 0.01127994556862484, ((Zero) , ((<code>@a :  Zero) ↦ (</code>@a))) : 0.00974783102948558])))</li>
-<li>last failure : Some((𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)))</li>
+<li>current goal : Some((<code>@a : 𝒰 _0 ) ~&gt; ((((</code>@a) , (<code>@a))) → (</code>@a)))</li>
+<li>negated current goal: Some(∑((<code>@a :  𝒰 _0) ↦ (((((</code>@a) , (<code>@a))) , ((</code>@a) → (Zero))))))</li>
+<li>successes : 212</li>
+<li>failures : 1</li>
+<li>terms : 5005</li>
+<li>equation-nodes: 2981176</li>
+<li><p>last success : Some(Vector((∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (Zero))),0.5,[((Zero) , (rec(Zero)(Zero))) : 0.01127994556862484, ((Zero) , ((<code>@a :  Zero) ↦ (</code>@a))) : 0.00974783102948558])))</p>
+<p>### Failures</p>
+</li>
+<li><p>(((<code>@a : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@a))) → (𝒰 _0)) → (𝒰 _0)</p>
+</li>
 </ul>
 
 </div>
@@ -12193,7 +12201,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span> <span class="k">=</span> <span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">chompView</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">md</span><span class="o">).</span><span class="n">update</span><span class="o">()</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span> <span class="k">=</span> <span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="n">chompView</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">md</span><span class="o">).</span><span class="n">update</span><span class="o">()</span>  
+<span class="o">}</span>
 <span class="n">update</span><span class="o">(())</span>
 </pre></div>
 
@@ -12228,8 +12238,95 @@ div#notebook {
 <div class="output_html rendered_html output_subarea ">
 <div class="jp-RenderedText">
 <pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">chT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Successes</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">EquationNode</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]])] = <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">chF</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Successes</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">EquationNode</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]])] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: white"><span class="ansi-white-fg">[running]</span></span></span></span></code></pre>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">chF</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Successes</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">EquationNode</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]])] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  (
+    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+      <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+        (
+          <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { (@a → Zero) }</span></span>,
+          <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.5</span></span>,
+          <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Zero , rec_{ Zero ; Zero })</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.01127994556862484</span></span>),
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Zero , (@a : Zero) ↦ @a)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.00974783102948558</span></span>)
+            )
+          )
+        )
+      ),
+      <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+        (
+          <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∑(@a : { @a }</span></span>,
+          <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.5</span></span>,
+          <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(Unit , Star)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.021169694309528184</span></span>))
+          )
+        )
+      ),
+      <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+        (
+          <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">((𝒰  → 𝒰 ) → 𝒰 )</span></span>,
+          <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.5</span></span>,
+          <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → 𝒰 )) ↦ @a(@a(Zero))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.002578418972552347</span></span>),
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → 𝒰 )) ↦ Zero</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0033744467284184186</span></span>),
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → 𝒰 )) ↦ Unit</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.005170232425794764</span></span>),
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → 𝒰 )) ↦ @a(Zero)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0045022382768380755</span></span>),
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → 𝒰 )) ↦ @a(@a(Unit))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.002578418972552347</span></span>),
+              <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(@a : (𝒰  → 𝒰 )) ↦ @a(Unit)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0029259128097459935</span></span>)
+            )
+          )
+        )
+...</span></span></span></code></pre>
 </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Interim-conclusions">Interim conclusions<a class="anchor-link" href="#Interim-conclusions">&#182;</a></h2><ul>
+<li>We went past te first failure with the naive goal chomper without any problem.</li>
+<li>We should check <code>negate</code>, in particular include proofs that it really is negation.</li>
+<li>We should also add memo to the goal chomper that halts.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">failures</span><span class="o">.</span><span class="n">headOption</span>
+<span class="n">failures</span><span class="o">.</span><span class="n">headOption</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">negate</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res9_0</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-yellow-fg">Some</span>(<span class="ansi-green-fg">((∏(@a : 𝒰 ){ (𝒰  → @a) } → 𝒰 ) → 𝒰 )</span>)
+<span class="ansi-cyan-fg">res9_1</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-yellow-fg">Some</span>(<span class="ansi-green-fg">(∏(@a : 𝒰 ){ (𝒰  → @a) } → 𝒰 )×(𝒰  → Zero)</span>)</pre>
 </div>
 
 </div>
@@ -12240,10 +12337,45 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">failHandle</span> <span class="k">=</span> <span class="nc">Markdown</span><span class="o">(</span><span class="n">failures</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;## Failures\n\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n&quot;</span><span class="o">))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">failures</span><span class="o">.</span><span class="n">headOption</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res10</span>: <span class="ansi-green-fg">Option</span>[<span class="ansi-green-fg">String</span>] = <span class="ansi-yellow-fg">Some</span>(
+  <span class="ansi-green-fg">(((`@a : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (`@a))) → (𝒰 _0)) → (𝒰 _0)</span>
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">unF</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
 </pre></div>
 
 </div>
@@ -12260,72 +12392,62 @@ div#notebook {
 
 
 
-<div class="output_markdown rendered_html output_subarea ">
-<h2 id="Failures">Failures<a class="anchor-link" href="#Failures">&#182;</a></h2><ul>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → ((𝒰 _0) → (`@a))))</li>
-<li>(((𝒰 _0) → (𝒰 _0)) → (𝒰 _0)) → ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a))</li>
-<li>(((<code>@a : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@a))) → (𝒰 _0)) → (𝒰 _0)</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (((𝒰 _0) , (𝒰 _0)))))</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((</code>@a : (𝒰 _0) → (𝒰 _0) ) ~&gt; ((<code>@a) (</code>@a))))</li>
-<li>(𝒰 _0) → (∑((<code>@b :  𝒰 _0) ↦ ((</code>@b) → (`@b))))</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((((𝒰 _0) , (</code>@a))) → (𝒰 _0)))</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → ((`@a) → (𝒰 _0))))</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((𝒰 _0) → ((</code>@a) → (𝒰 _0))))</li>
-<li>(𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (((</code>@b) , (`@b))))</li>
-<li>(<code>@a : 𝒰 _0 ) ~&gt; ((</code>@a : (𝒰 _0) → (𝒰 _0) ) ~&gt; ((<code>@a) (</code>@a)))</li>
-<li>(𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (((𝒰 _0) , (</code>@b))))</li>
-<li>(∑((<code>@a :  𝒰 _0) ↦ (</code>@a))) → ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a))</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((((</code>@a) , (𝒰 _0))) → (𝒰 _0)))</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((((</code>@a) → (𝒰 _0)) , (𝒰 _0))))</li>
-<li>(<code>@a : (𝒰 _0) → (𝒰 _0) ) ~&gt; (∑((</code>@a :  𝒰 _0) ↦ ((<code>@a) (</code>@a))))</li>
-<li>(𝒰 _0) → (∑((<code>@b :  𝒰 _0) ↦ ((</code>@b) → (𝒰 _0))))</li>
-<li>(𝒰 _0) → (((𝒰 _0) , ((<code>@c : 𝒰 _0 ) ~&gt; (</code>@c))))</li>
-<li>(∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → (`@a)))) → (𝒰 _0)</li>
-<li>∑((<code>@a :  𝒰 _0) ↦ ((</code>@a) → ((𝒰 _0) → (𝒰 _0))))</li>
-<li>(𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (((</code>@b) , (𝒰 _0))))</li>
-<li>(𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@b)))</li>
-<li>(𝒰 _0) → ((((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b)) , (𝒰 _0)))</li>
-<li>(<code>@a : (𝒰 _0) → (𝒰 _0) ) ~&gt; ((</code>@a : 𝒰 _0 ) ~&gt; ((<code>@a) (</code>@a)))</li>
-<li>(((𝒰 _0) , (𝒰 _0))) → ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a))</li>
-<li>(𝒰 _0) → ((𝒰 _0) → ((<code>@c : 𝒰 _0 ) ~&gt; (</code>@c)))</li>
-<li>((<code>@a : 𝒰 _0 ) ~&gt; ((𝒰 _0) → (</code>@a))) → (𝒰 _0)</li>
-<li>((𝒰 _0) → (𝒰 _0)) → ((<code>@a : 𝒰 _0 ) ~&gt; (</code>@a))</li>
-<li>(𝒰 _0) → ((<code>@b : 𝒰 _0 ) ~&gt; (</code>@b))</li>
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res11</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">213</span></span>)</span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusions-(for-chomping)">Conclusions (for chomping)<a class="anchor-link" href="#Conclusions-(for-chomping)">&#182;</a></h2><ul>
+<li>Of the 213 goals all but one was successfully chomped.</li>
+<li>This was done in around an hour with a 12 minute timeout per goal and no parallelism.</li>
+<li>The one missed case is puzzling since a constant function works for this.</li>
+<li>The obvious improvement for runtime is to add terms generated while generating the problems to the lookup solver.</li>
+<li>This kernel will be kept alive for further examination of equations etc.</li>
 </ul>
 
 </div>
-
 </div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span> <span class="k">=</span> <span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
-    <span class="n">chompView</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">md</span><span class="o">).</span><span class="n">update</span><span class="o">()</span>  
-    <span class="n">failHandle</span><span class="o">.</span><span class="n">withContent</span><span class="o">(</span><span class="n">failures</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;## Failures\n\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n * &quot;</span><span class="o">,</span> <span class="s">&quot;\n&quot;</span><span class="o">)).</span><span class="n">update</span><span class="o">()</span>
-<span class="o">}</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">termSet</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">).</span><span class="n">size</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res12</span>: <span class="ansi-green-fg">Int</span> = <span class="ansi-green-fg">1451</span></pre>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">update</span><span class="o">(())</span>
-</pre></div>
 
 </div>
+
 </div>
 </div>
 
