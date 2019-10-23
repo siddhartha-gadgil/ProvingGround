@@ -759,7 +759,7 @@ object HoTT {
     */
   def negate: Typ[Term] => Typ[Term] = {
     case ft: FuncTyp[u, v] if (ft.codom).indepOf(ft.dom) => 
-      if (ft.codom == Zero) ft.dom else (ft.dom ->: Zero) || ft.codom
+      if (ft.codom == Zero) ft.dom else ft.dom &&  negate(ft.codom)
     case pd: ProdTyp[u, v]         => PlusTyp(negate(pd.first), negate(pd.second))
     case pt: PlusTyp[u, v]         => ProdTyp(negate(pt.first), negate(pt.second))
     case pt: PiDefn[u, v]          => SigmaTyp(lmbda(pt.variable)(negate(pt.value)))

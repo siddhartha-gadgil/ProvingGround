@@ -78,12 +78,14 @@ object StrategicProvers {
     s"""## Goal chomping status
         |
         | * current goal : $currentGoal
+        | * negated current goal: ${negate(currentGoal)}
         | * successes : ${successes.size}
         | * failures : ${failures.size}
         | * terms : ${termSet.size}
         | * equation-nodes: ${equationNodes.size}
         | * last success : ${successes.headOption}
-        | * last failure : ${failures.headOption}
+        | 
+        | ${failures.reverse.mkString("### Failures\n\n * ", "\n * ", "\n")}
         |""".stripMargin
 
   // chomps goals till failure or if none are left
