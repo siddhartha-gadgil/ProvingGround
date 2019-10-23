@@ -78,7 +78,7 @@ object StrategicProvers {
     s"""## Goal chomping status
         |
         | * current goal : $currentGoal
-        | * negated current goal: ${negate(currentGoal)}
+        | * negated current goal: ${currentGoal.map(negate)}
         | * successes : ${successes.size}
         | * failures : ${failures.size}
         | * terms : ${termSet.size}
