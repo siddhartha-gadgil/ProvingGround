@@ -94,16 +94,17 @@ object StrategicProvers {
       typs: Vector[Typ[Term]],
       accumSucc: Vector[Successes] = Vector(),
       accumEqs: Set[EquationNode] = Set(),
+      accumTerms: Set[Term] = Set(),
       scale: Double = 2,
       maxSteps: Int = 100
-  ): Task[(Vector[Successes], Set[EquationNode], Vector[Typ[Term]])] =
+  ): Task[(Vector[Successes], Set[EquationNode], Set[Term], Vector[Typ[Term]])] =
     typs match {
-      case Vector() => Task.now((accumSucc, accumEqs, Vector()))
+      case Vector() => Task.now((accumSucc, accumEqs, accumTerms, Vector()))
       case typ +: ys =>
         seekGoal(lp, typ, Set(), scale, maxSteps).flatMap {
-          case (ss, eqs, _) =>
+          case (ss, eqs, terms) =>
             if (ss.isEmpty)
-              Task.now((accumSucc :+ ss, accumEqs union eqs, typ +: ys))
+              Task.now((accumSucc :+ ss, accumEqs union eqs, accumTerms union terms, typ +: ys))
             else {
               successes.append(ss)
               update(())
@@ -112,6 +113,7 @@ object StrategicProvers {
                 ys,
                 accumSucc :+ ss,
                 accumEqs union eqs,
+                accumTerms union terms,
                 scale,
                 maxSteps
               )
