@@ -228,122 +228,6 @@ case class LocalProver(
       typs  <- tripleTypT.map(_._2)
     } yield terms ++ typs
 
-  def tangentExpressionEval(
-      x: Term,
-      weight: Double = 1.0
-  ): Task[ExpressionEval] =
-    for {
-      baseState <- nextState
-      tangState: TermState = baseState.tangent(x)
-      eqnds <- equationNodes
-      mfdt = MonixTangentFiniteDistributionEq(
-        tg.nodeCoeffSeq,
-        baseState,
-        eqnds,
-        limit
-      )
-      teqnds <- mfdt
-        .varDist(tangState, EqDistMemo.empty[TermState])(Terms, cutoff * weight)
-        .map(_._2)
-      tExpEval = ExpressionEval.fromStates(
-        tangState,
-        baseState,
-        Equation.group(teqnds),
-        tg,
-        maxRatio,
-        scale,
-        smoothing,
-        exponent,
-        decay
-      )
-      expEv <- expressionEval
-    } yield expEv.avgInit(tExpEval)
-
-  def tangentProver(xs: Term*): Task[LocalTangentProver] =
-    for {
-      baseState <- nextState
-      tangState: TermState = baseState.tangent(xs: _*)
-      eqnds <- equationNodes
-    } yield
-      LocalTangentProver(
-        baseState,
-        eqnds,
-        tangState,
-        tg,
-        cutoff,
-        limit,
-        maxRatio,
-        scale,
-        steps,
-        maxDepth,
-        hW,
-        klW,
-        smoothing,
-        relativeEval
-      )
-
-  def distTangentProver(
-      fd: FiniteDistribution[Term],
-      tangentCutoff: Double = cutoff
-  ): Task[LocalTangentProver] =
-    for {
-      baseState <- nextState
-      tangState: TermState = baseState.distTangent(fd)
-      eqnds <- equationNodes
-    } yield
-      LocalTangentProver(
-        baseState,
-        eqnds,
-        tangState,
-        tg,
-        tangentCutoff,
-        limit,
-        maxRatio,
-        scale,
-        steps,
-        maxDepth,
-        hW,
-        klW,
-        smoothing
-      )
-
-  def splitTangentProvers(
-      terms: Vector[(Term, Double)]
-  ): Task[Vector[LocalTangentProver]] =
-    for {
-      baseState <- nextState
-      eqnds     <- equationNodes
-    } yield
-      terms.map {
-        case (t, w) =>
-          LocalTangentProver(
-            baseState,
-            eqnds,
-            baseState.tangent(t),
-            tg,
-            cutoff / w,
-            limit,
-            maxRatio,
-            scale,
-            steps,
-            maxDepth,
-            hW,
-            klW,
-            smoothing
-          )
-      }
-
-  def splitLemmaProvers(scale: Double = 1): Task[Vector[LocalTangentProver]] =
-    lemmas.flatMap { v =>
-      val pfs = v.map { case (tp, w) => ("proof" :: tp, w) }
-      splitTangentProvers(pfs)
-    }
-
-  def proofTangent(tangentCutoff: Double = cutoff): Task[LocalTangentProver] =
-    lemmaProofs.flatMap(
-      fd => distTangentProver(fd.safeNormalized, tangentCutoff)
-    )
-
   // Generating provers using results
   lazy val withLemmas: Task[LocalProver] =
     for {
@@ -533,6 +417,122 @@ trait LocalProverStep {
       .take(steps)
       .lastOptionL
       .map(os => os.getOrElse(initState.terms))
+
+  def tangentProver(xs: Term*): Task[LocalTangentProver] =
+    for {
+      baseState <- nextState
+      tangState: TermState = baseState.tangent(xs: _*)
+      eqnds <- equationNodes
+    } yield
+      LocalTangentProver(
+        baseState,
+        eqnds,
+        tangState,
+        tg,
+        cutoff,
+        limit,
+        maxRatio,
+        scale,
+        steps,
+        maxDepth,
+        hW,
+        klW,
+        smoothing,
+        relativeEval
+      )
+
+  def distTangentProver(
+      fd: FiniteDistribution[Term],
+      tangentCutoff: Double = cutoff
+  ): Task[LocalTangentProver] =
+    for {
+      baseState <- nextState
+      tangState: TermState = baseState.distTangent(fd)
+      eqnds <- equationNodes
+    } yield
+      LocalTangentProver(
+        baseState,
+        eqnds,
+        tangState,
+        tg,
+        tangentCutoff,
+        limit,
+        maxRatio,
+        scale,
+        steps,
+        maxDepth,
+        hW,
+        klW,
+        smoothing
+      )
+
+  def tangentExpressionEval(
+      x: Term,
+      weight: Double = 1.0
+  ): Task[ExpressionEval] =
+    for {
+      baseState <- nextState
+      tangState: TermState = baseState.tangent(x)
+      eqnds <- equationNodes
+      mfdt = MonixTangentFiniteDistributionEq(
+        tg.nodeCoeffSeq,
+        baseState,
+        eqnds,
+        limit
+      )
+      teqnds <- mfdt
+        .varDist(tangState, EqDistMemo.empty[TermState])(Terms, cutoff * weight)
+        .map(_._2)
+      tExpEval = ExpressionEval.fromStates(
+        tangState,
+        baseState,
+        Equation.group(teqnds),
+        tg,
+        maxRatio,
+        scale,
+        smoothing,
+        exponent,
+        decay
+      )
+      expEv <- expressionEval
+    } yield expEv.avgInit(tExpEval)
+
+  def splitTangentProvers(
+      terms: Vector[(Term, Double)]
+  ): Task[Vector[LocalTangentProver]] =
+    for {
+      baseState <- nextState
+      eqnds     <- equationNodes
+    } yield
+      terms.map {
+        case (t, w) =>
+          LocalTangentProver(
+            baseState,
+            eqnds,
+            baseState.tangent(t),
+            tg,
+            cutoff / w,
+            limit,
+            maxRatio,
+            scale,
+            steps,
+            maxDepth,
+            hW,
+            klW,
+            smoothing
+          )
+      }
+
+  def splitLemmaProvers(scale: Double = 1): Task[Vector[LocalTangentProver]] =
+    lemmas.flatMap { v =>
+      val pfs = v.map { case (tp, w) => ("proof" :: tp, w) }
+      splitTangentProvers(pfs)
+    }
+
+  def proofTangent(tangentCutoff: Double = cutoff): Task[LocalTangentProver] =
+    lemmaProofs.flatMap(
+      fd => distTangentProver(fd.safeNormalized, tangentCutoff)
+    )
 }
 
 case class LocalTangentProver(
