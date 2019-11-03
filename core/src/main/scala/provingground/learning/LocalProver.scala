@@ -41,7 +41,12 @@ case class LocalProver(
     decay: Double = 1
 ) extends LocalProverStep {
   // Convenience for generation
-  def sharpen(scale: Double = 2.0) = this.copy(cutoff = cutoff / scale)
+
+  def withCutoff(ctf : Double) : LocalProver = this.copy(cutoff = ctf)
+
+  def withLimit(l: FiniteDuration) : LocalProver = this.copy(limit = l)
+
+  def withParams(p: TermGenParams) : LocalProver = this.copy(tg = p)
 
   def addTerms(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
@@ -105,12 +110,6 @@ case class LocalProver(
     this.copy(initState = ts)
   }
 
-  def addSolver(s: TypSolver) = {
-    val newSolver = tg.solver || s
-    this.copy(tg = tg.copy(solver = newSolver))
-  }
-
-  def addLookup(ts: Set[Term]) = addSolver(LookupSolver(ts))
 
   def addInd(
       typ: Typ[Term],
@@ -277,6 +276,21 @@ trait LocalProverStep {
   val relativeEval: Boolean
   val exponent: Double
   val decay: Double
+
+  def withCutoff(cutoff : Double) : LocalProverStep
+
+  def withLimit(l: FiniteDuration) : LocalProverStep
+
+  def withParams(p: TermGenParams) : LocalProverStep
+
+  def sharpen(scale: Double = 2.0) = withCutoff(cutoff / scale)
+
+  def addSolver(s: TypSolver) = {
+    val newSolver = tg.solver || s
+    withParams(tg.copy(solver = newSolver))
+  }
+
+  def addLookup(ts: Set[Term]) = addSolver(LookupSolver(ts))
 
   lazy val evolvedState: Task[EvolvedState] = nextState
     .map(
@@ -555,6 +569,12 @@ case class LocalTangentProver(
     exponent: Double = 0.5,
     decay: Double = 1
 ) extends LocalProverStep {
+
+  def withCutoff(ctf : Double) : LocalTangentProver = this.copy(cutoff = ctf)
+
+  def withLimit(l: FiniteDuration) : LocalTangentProver = this.copy(limit = l)
+
+  def withParams(p: TermGenParams) : LocalTangentProver = this.copy(tg = p)
 
   def apple(w: Double = 0.1) = this.copy(tg = TermGenParams.apple(w))
 
