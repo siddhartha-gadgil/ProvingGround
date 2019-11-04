@@ -19,6 +19,8 @@ import monix.tail.Iterant
 
 import collection.mutable.ArrayBuffer
 import _root_.shapeless.Succ
+import scala.util.Success
+import shapeless.FinSucc
 
 object StrategicProvers {
   type Successes =
@@ -295,26 +297,85 @@ object GlobalProver {
   }
 
   case class Xor[R](
-    first: GlobalProver[R],
-    second: GlobalProver[R],
-    isSuccess: R => Boolean
-) extends GlobalProver[R] {
-  def scaleLimit(scale: Double): GlobalProver[R] =
-    Xor(
-      first.scaleLimit(scale),
-      second.scaleLimit(scale),
-      isSuccess
-    )
+      first: GlobalProver[R],
+      second: GlobalProver[R],
+      isSuccess: R => Boolean
+  ) extends GlobalProver[Either[R, R]] {
+    def scaleLimit(scale: Double): Xor[R] =
+      Xor(
+        first.scaleLimit(scale),
+        second.scaleLimit(scale),
+        isSuccess
+      )
 
-  def sharpen(scale: Double): GlobalProver[R] =
-    Xor(
-      first.sharpen(scale),
-      second.sharpen(scale),
-      isSuccess
-    )
+    def sharpen(scale: Double): Xor[R] =
+      Xor(
+        first.sharpen(scale),
+        second.sharpen(scale),
+        isSuccess
+      )
 
-  val result: Task[R] = first.result.flatMap { r =>
-    if (isSuccess(r)) Task.now(r) else second.result
+    val result: Task[Either[R, R]] = first.result.flatMap { r =>
+      if (isSuccess(r)) Task.now(Right(r)) else second.result.map(Left(_))
+    }.memoize
+
+    val success: Task[Boolean] = result.map(_.isRight)
   }
-}
+
+  def sequenceResult[R](provers: Vector[Xor[R]]): Task[Option[R]] =
+    Task.now(provers).flatMap {
+      case Vector() => Task.now(None)
+      case head +: tail =>
+        head.result.materialize flatMap {
+          case Success(Right(res)) => Task.now(Some(res))
+          case _    => sequenceResult(tail)
+        }
+    }
+
+  case class AllOf[R](provers: Vector[GlobalProver[R]], combine: Vector[R] => R)
+      extends GlobalProver[R] {
+    def sharpen(scale: Double): GlobalProver[R] =
+      AllOf(provers.map(_.sharpen(scale)), combine)
+
+    def scaleLimit(scale: Double): GlobalProver[R] =
+      AllOf(provers.map(_.scaleLimit(scale)), combine)
+
+    lazy val result = Task.gather(provers.map(_.result)).map(combine)
+  }
+
+  case class AnyOf[R](provers: Vector[Xor[R]])
+      extends GlobalProver[Either[R, R]] {
+    def scaleLimit(scale: Double): GlobalProver[Either[R, R]] =
+      AnyOf(provers.map(_.scaleLimit(scale)))
+
+    def sharpen(scale: Double): GlobalProver[Either[R, R]] =
+      AnyOf(provers.map(_.sharpen(scale)))
+
+    def quickResult: Task[Either[R, R]] =
+      Task.raceMany(provers.map(_.result)).memoize
+
+    val optResult: Task[Option[R]] = sequenceResult(provers)
+
+    // Note: this is just the default implementation
+    lazy val result = {
+      for {
+        opt     <- optResult
+        default <- quickResult
+      } yield opt.map(Right(_)).getOrElse(default)
+    }.memoize
+  }
+
+  case class SomeOf[R](provers: Vector[GlobalProver[R]], isSuccess: R => Boolean) extends GlobalProver[Vector[R]] {
+    def sharpen(scale: Double): GlobalProver[Vector[R]] =
+      SomeOf(provers.map(_.sharpen(scale)), isSuccess)
+
+    def scaleLimit(scale: Double): GlobalProver[Vector[R]] =
+      SomeOf(provers.map(_.scaleLimit(scale)), isSuccess)
+
+    // Note: this is just the default implementation
+    lazy val result : Task[Vector[R]] =  
+      Task.gather(
+        provers.map(p => p.result.materialize.map(_.toOption))
+        ).map(v => v.flatten)
+  }
 }
