@@ -285,6 +285,8 @@ trait LocalProverStep {
 
   def sharpen(scale: Double = 2.0) = withCutoff(cutoff / scale)
 
+  def scaleLimit(scale: Double) = withLimit(Duration.fromNanos((limit.toNanos.toDouble * scale).toLong))
+
   def addSolver(s: TypSolver) = {
     val newSolver = tg.solver || s
     withParams(tg.copy(solver = newSolver))

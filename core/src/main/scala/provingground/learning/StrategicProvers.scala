@@ -36,31 +36,39 @@ object StrategicProvers {
     terms.flatMap(t => DE.formalEquations(t))
   }
 
-  val skolemize : Typ[Term] => Typ[Term] = {
+  val skolemize: Typ[Term] => Typ[Term] = {
     case pd: ProdTyp[u, v] => skolemize(pd.first) && skolemize(pd.second)
-    case st : SigmaTyp[u, v] =>
+    case st: SigmaTyp[u, v] =>
       SigmaTyp(st.fib.variable :-> skolemize(st.fib.value))
-    case pd: PiDefn[u, v] => skolemize(pd.value) match {
-      case pt : PlusTyp[x, y] =>
-        PlusTyp(skolemize(PiDefn(pd.variable, pt.first)), skolemize(PiDefn(pd.variable, pt.second)))
-      case st: SigmaTyp[x, y] =>
-        val a = pd.variable
-        val b = st.fib.variable
-        val Q = st.fib.value
-        val beta = (pd.domain ->: st.fib.dom).Var
-        SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
-      case tp => PiDefn(pd.variable, tp)
-    }
-    case ft : FuncTyp[u, v] =>
-      ft.codom match {
-        case pt: ProdTyp[x, y] => ProdTyp(skolemize(ft.dom ->: pt.first), skolemize(ft.dom ->: pt.second))
+    case pd: PiDefn[u, v] =>
+      skolemize(pd.value) match {
+        case pt: PlusTyp[x, y] =>
+          PlusTyp(
+            skolemize(PiDefn(pd.variable, pt.first)),
+            skolemize(PiDefn(pd.variable, pt.second))
+          )
         case st: SigmaTyp[x, y] =>
-        val a = ft.dom.Var
-        val b = st.fib.variable
-        val Q = st.fib.value
-        val beta = (ft.domain ->: st.fib.dom).Var
-        SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
-        case typ : Typ[x] => ft.dom ->: typ
+          val a    = pd.variable
+          val b    = st.fib.variable
+          val Q    = st.fib.value
+          val beta = (pd.domain ->: st.fib.dom).Var
+          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
+        case tp => PiDefn(pd.variable, tp)
+      }
+    case ft: FuncTyp[u, v] =>
+      ft.codom match {
+        case pt: ProdTyp[x, y] =>
+          ProdTyp(
+            skolemize(ft.dom ->: pt.first),
+            skolemize(ft.dom ->: pt.second)
+          )
+        case st: SigmaTyp[x, y] =>
+          val a    = ft.dom.Var
+          val b    = st.fib.variable
+          val Q    = st.fib.value
+          val beta = (ft.domain ->: st.fib.dom).Var
+          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
+        case typ: Typ[x] => ft.dom ->: typ
       }
     case typ => typ
   }
@@ -76,7 +84,7 @@ object StrategicProvers {
       scale: Double = 2,
       maxSteps: Int = 100
   ): Task[SeekResult] = {
-    val base =  
+    val base =
       if (lp.tg.solverW == 0) lp.addGoals(typ -> 0.5, negate(typ) -> 0.5)
       else lp.addGoals(typ -> 0.5, negate(typ) -> 0.5).addLookup(terms)
     currentGoal = Option(typ)
@@ -99,9 +107,9 @@ object StrategicProvers {
 
   val failures: ArrayBuffer[Typ[Term]] = ArrayBuffer()
 
-  var termSet : Set[Term] = Set()
+  var termSet: Set[Term] = Set()
 
-  var equationNodes : Set[EquationNode] = Set()
+  var equationNodes: Set[EquationNode] = Set()
 
   def md =
     s"""## Goal chomping status
@@ -126,14 +134,23 @@ object StrategicProvers {
       accumTerms: Set[Term] = Set(),
       scale: Double = 2,
       maxSteps: Int = 100
-  ): Task[(Vector[Successes], Set[EquationNode], Set[Term], Vector[Typ[Term]])] =
+  ): Task[
+    (Vector[Successes], Set[EquationNode], Set[Term], Vector[Typ[Term]])
+  ] =
     typs match {
       case Vector() => Task.now((accumSucc, accumEqs, accumTerms, Vector()))
       case typ +: ys =>
         seekGoal(lp, typ, Set(), scale, maxSteps).flatMap {
           case (ss, eqs, terms) =>
             if (ss.isEmpty)
-              Task.now((accumSucc :+ ss, accumEqs union eqs, accumTerms union terms, typ +: ys))
+              Task.now(
+                (
+                  accumSucc :+ ss,
+                  accumEqs union eqs,
+                  accumTerms union terms,
+                  typ +: ys
+                )
+              )
             else {
               successes.append(ss)
               update(())
@@ -160,15 +177,22 @@ object StrategicProvers {
       scale: Double = 2,
       maxSteps: Int = 100
   ): Task[
-    (Vector[Successes], Vector[Typ[Term]], Set[EquationNode], Set[Term], Vector[Typ[Term]])
+    (
+        Vector[Successes],
+        Vector[Typ[Term]],
+        Set[EquationNode],
+        Set[Term],
+        Vector[Typ[Term]]
+    )
   ] =
     typs match {
-      case Vector() => Task.now((accumSucc, accumFail, accumEqs, accumTerms, Vector()))
+      case Vector() =>
+        Task.now((accumSucc, accumFail, accumEqs, accumTerms, Vector()))
       case typ +: ys =>
         seekGoal(lp, typ, accumTerms, scale, maxSteps).flatMap {
           case (ss, eqs, terms) =>
-            equationNodes = equationNodes union(eqs)
-            termSet = termSet union(terms)
+            equationNodes = equationNodes union (eqs)
+            termSet = termSet union (terms)
             if (ss.isEmpty) {
               failures.append(typ)
               update(())
@@ -198,4 +222,99 @@ object StrategicProvers {
             }
         }
     }
+}
+
+sealed trait GlobalProver[R] {
+  val result: Task[R]
+
+  def sharpen(scale: Double): GlobalProver[R]
+
+  def scaleLimit(scale: Double): GlobalProver[R]
+}
+
+object GlobalProver {
+  case class Elementary[R](
+      lp: LocalProverStep,
+      getResult: LocalProverStep => Task[R]
+  ) extends GlobalProver[R] {
+    val result = getResult(lp)
+
+    def sharpen(scale: Double): GlobalProver[R] =
+      Elementary(lp.sharpen(scale), getResult)
+
+    def scaleLimit(scale: Double): GlobalProver[R] =
+      Elementary(lp.scaleLimit(scale), getResult)
+  }
+
+  case class BothOf[R](
+      first: GlobalProver[R],
+      second: GlobalProver[R],
+      combine: (R, R) => R
+  ) extends GlobalProver[R] {
+    val result: Task[R] =
+      for {
+        r1 <- first.result
+        r2 <- second.result
+      } yield combine(r1, r2)
+
+    def scaleLimit(scale: Double): GlobalProver[R] =
+      BothOf(first.scaleLimit(scale), second.scaleLimit(scale), combine)
+
+    def sharpen(scale: Double): GlobalProver[R] =
+      BothOf(first.sharpen(scale), second.sharpen(scale), combine)
+  }
+
+  case class OneOf[R](
+      first: GlobalProver[R],
+      second: GlobalProver[R],
+      firstNegated: GlobalProver[R],
+      secondNegated: GlobalProver[R],
+      isSuccess: R => Boolean
+  ) extends GlobalProver[R] {
+    def scaleLimit(scale: Double): GlobalProver[R] =
+      OneOf(
+        first.scaleLimit(scale),
+        second.scaleLimit(scale),
+        firstNegated.scaleLimit(scale),
+        secondNegated.scaleLimit(scale),
+        isSuccess
+      )
+
+    def sharpen(scale: Double): GlobalProver[R] =
+      OneOf(
+        first.sharpen(scale),
+        second.sharpen(scale),
+        firstNegated.sharpen(scale),
+        secondNegated.sharpen(scale),
+        isSuccess
+      )
+
+    val result: Task[R] = first.result.flatMap { r =>
+      if (isSuccess(r)) Task.now(r) else second.result
+    }
+  }
+
+  case class Xor[R](
+    first: GlobalProver[R],
+    second: GlobalProver[R],
+    isSuccess: R => Boolean
+) extends GlobalProver[R] {
+  def scaleLimit(scale: Double): GlobalProver[R] =
+    Xor(
+      first.scaleLimit(scale),
+      second.scaleLimit(scale),
+      isSuccess
+    )
+
+  def sharpen(scale: Double): GlobalProver[R] =
+    Xor(
+      first.sharpen(scale),
+      second.sharpen(scale),
+      isSuccess
+    )
+
+  val result: Task[R] = first.result.flatMap { r =>
+    if (isSuccess(r)) Task.now(r) else second.result
+  }
+}
 }
