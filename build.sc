@@ -3,7 +3,8 @@ import scalalib._, publish._
 import scalajslib._
 import mill.scalalib.scalafmt._
 import define.{Sources, Task}
-import ammonite.ops._
+// import ammonite.ops._
+import os._
 import $ivy.`org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r`
 
 
@@ -30,12 +31,12 @@ trait MetalsModule extends ScalaModule{
   }
 
   def metalsConfig() = T.command{
-    def outFile = pwd / ".metals" / "buildinfo" / RelPath(artifactName().toString) / "main.properties"
+    def outFile = os.pwd / ".metals" / "buildinfo" / RelPath(artifactName().toString) / "main.properties"
     def info = metalsBuildInfo()
     def output = info.map{
       case (k, v) => s"$k=$v"
     }.mkString("\n")
-    write.over(outFile, output)
+    os.write.over(outFile, output, createFolders = true)
     output
   }
 }
@@ -92,13 +93,13 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   def bin() : define.Command[PathRef] = T.command {
     def ass: PathRef = assembly()
     def name: String = artifactName()
-    cp.over(ass.path, pwd/ "bin" / s"$name.fat.jar")
+    os.copy.over(ass.path, os.pwd/ "bin" / s"$name.fat.jar", createFolders = true)
     val hashName = s"$name-${glog.abbreviate(10).name}.fat.jar"
-    cp.over(ass.path, pwd/ "notes" / "bin" / hashName)
+    os.copy.over(ass.path, os.pwd/ "notes" / "bin" / hashName, createFolders = true)
     println("Include in a Jupyter (almond) notebook:")
     println(
 s"""
-import ${"$"}cp.bin.`$hashName`
+import ${"$"}os.copybin.`$hashName`
 import provingground._ , interface._, HoTT._, learning._ 
 repl.pprinter() = {
   val p = repl.pprinter()
@@ -115,7 +116,7 @@ repl.pprinter() = {
   def slimbin() : define.Command[PathRef] = T.command {
     def ass: PathRef = jar()
     def name: String = artifactName()
-    cp.over(ass.path, pwd/ "bin" / s"$name.slim.jar")
+    os.copy.over(ass.path, os.pwd/ "bin" / s"$name.slim.jar")
     ass
   }
 }
@@ -191,7 +192,7 @@ object core extends Module{
 }
 
 object trepplein extends SbtModule with PublishModule{
-  // def millsourcePath = pwd / 'trepplein
+  // def millsourcePath = os.pwd / 'trepplein
   def scalaVersion = scalaV
   override def ivyDeps =
     Agg(
@@ -239,7 +240,7 @@ def glog = {
 }
 
 def gitlog() = {
-  write.over(pwd / "mantle" /"src" /"main" / "resources" / "gitlog.txt", glog.name)
+  os.write.over(os.pwd / "mantle" /"src" /"main" / "resources" / "gitlog.txt", glog.name)
 }
 
 object mantle extends CommonModule with SbtModule with PGPublish{
@@ -259,9 +260,9 @@ object mantle extends CommonModule with SbtModule with PGPublish{
 
       def jsout = client.fastOpt().path / up
 
-      cp.over(jsout / "out.js", jsout / "provingground-js-fastopt.js")
+      os.copy.over(jsout / "out.js", jsout / "provingground-js-fastopt.js")
 
-      (base ++ Seq(jsout, pwd / "docs")).map(PathRef(_))
+      (base ++ Seq(jsout, os.pwd / "docs")).map(PathRef(_))
     }
 
   override def mainClass = Some("provingground.interface.MantleCask")
@@ -328,7 +329,7 @@ object jvmRoot extends CommonModule{
 
   def docs() = T.command{
     def jar = docJar()
-    cp.over(jar.path / up / "javadoc", pwd / "docs" / "scaladoc")
+    os.copy.over(jar.path / up / "javadoc", os.pwd / "docs" / "scaladoc")
     jar
   }
 }
@@ -370,7 +371,7 @@ object client extends CommonJSModule with SbtModule{
 
   def pack(): define.Command[PathRef] = T.command {
     def js = fastOpt()
-    cp.over(js.path, pwd/ "docs" / "js" / "provingground.js")
+    os.copy.over(js.path, os.pwd/ "docs" / "js" / "provingground.js")
     js
   }
 
@@ -382,9 +383,9 @@ trait ServerModule extends JvmModule{
 
        def jsout = client.fastOpt().path / up
 
-       cp.over(jsout / "out.js", jsout / "provingground-js-fastopt.js")
+       os.copy.over(jsout / "out.js", jsout / "provingground-js-fastopt.js")
 
-       (base ++ Seq(jsout, pwd / "docs")).map(PathRef(_))
+       (base ++ Seq(jsout, os.pwd / "docs")).map(PathRef(_))
      }
 }
 

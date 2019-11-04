@@ -101,7 +101,7 @@ Similarly, one can experiment with a small part of the HoTT implementation by ru
 A useful way to experiment is to use a _notebook_ instead of a repl session to ensure persistence. To do this:
 
 * Install [Jupyter](https://jupyter.org/) and the [almond kernel](https://almond.sh/)
-* Generate a binary in the `notes/bin` folder. The first time you do this, you need to run `mkdir notes/bin` in the shell first.
+* Generate a binary in the `notes/bin` folder. The first time you do this, you may need to run `mkdir notes/bin` in the shell first (should not be needed anymore).
 
 ```bash
 ./mill core.jvm.bin
