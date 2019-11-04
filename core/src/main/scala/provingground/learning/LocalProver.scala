@@ -48,6 +48,8 @@ case class LocalProver(
 
   def withParams(p: TermGenParams) : LocalProver = this.copy(tg = p)
 
+  def withInit(ts: TermState): LocalProver = this.copy(initState = ts)
+
   def addTerms(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
     val td = initState.terms * (1 - total) ++ FiniteDistribution(terms.map {
@@ -282,6 +284,23 @@ trait LocalProverStep {
   def withLimit(l: FiniteDuration) : LocalProverStep
 
   def withParams(p: TermGenParams) : LocalProverStep
+
+  def withInit(ts: TermState) : LocalProverStep
+
+  def addVar(term: Term, weight: Double): LocalProverStep = {
+    val td = initState.terms * (1 - weight) + (term, weight)
+    val allVars = term +: initState.vars 
+    val ctx = initState.context.addVariable(term)
+    val ts =
+      initState.copy(terms = td.safeNormalized, vars = allVars, context = ctx)
+    withInit(ts)
+  }
+
+  def addGoal(goal: Typ[Term], weight : Double) =  {
+    val typd = initState.goals * (1 - weight) + (goal, weight)
+    val ts = initState.copy(goals = typd.safeNormalized)
+    withInit(ts)
+  }
 
   def sharpen(scale: Double = 2.0) = withCutoff(cutoff / scale)
 
@@ -577,6 +596,8 @@ case class LocalTangentProver(
   def withLimit(l: FiniteDuration) : LocalTangentProver = this.copy(limit = l)
 
   def withParams(p: TermGenParams) : LocalTangentProver = this.copy(tg = p)
+
+  def withInit(ts: TermState): LocalProverStep = this.copy(initState = ts)
 
   def apple(w: Double = 0.1) = this.copy(tg = TermGenParams.apple(w))
 
