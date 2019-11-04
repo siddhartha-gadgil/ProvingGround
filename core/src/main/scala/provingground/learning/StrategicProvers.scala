@@ -376,6 +376,6 @@ object GlobalProver {
     lazy val result : Task[Vector[R]] =  
       Task.gather(
         provers.map(p => p.result.materialize.map(_.toOption))
-        ).map(v => v.flatten)
+        ).map(v => v.flatten.filter(isSuccess))
   }
 }
