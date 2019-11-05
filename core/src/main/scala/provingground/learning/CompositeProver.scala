@@ -15,16 +15,16 @@ class CompositeProver[D: Semigroup] {
     def addData(d: D): Result
   }
 
-  case class Proved(data: D) extends Result {
-    val flip = Contradicted(data)
+  case class Proved(prover: Prover, data: D) extends Result {
+    val flip = Contradicted(prover, data)
 
-    def addData(d: D): Result = Proved(d |+| data)
+    def addData(d: D): Result = Proved(prover, d |+| data)
   }
 
-  case class Contradicted(data: D) extends Result {
-    val flip = Proved(data)
+  case class Contradicted(prover: Prover, data: D) extends Result {
+    val flip = Proved(prover, data)
 
-    def addData(d: D): Result = Contradicted(d |+| data)
+    def addData(d: D): Result = Contradicted(prover, d |+| data)
   }
 
   case class Unknown(data: D) extends Result {
@@ -50,9 +50,9 @@ class CompositeProver[D: Semigroup] {
       getData: LocalProverStep => Task[D],
       isSuccess: D => Boolean
   ) extends Prover {
-    val result =
+    lazy val result =
       getData(lp).map { d =>
-        if (isSuccess(d)) Proved(d) else Unknown(d)
+        if (isSuccess(d)) Proved(this, d) else Unknown(d)
       }
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
@@ -64,9 +64,9 @@ class CompositeProver[D: Semigroup] {
       second: Prover
   ) extends Prover {
     val result = first.result.flatMap {
-      case Proved(data)       => second.result.map(_.addData(data))
-      case Contradicted(data) => Task(Contradicted(data))
-      case Unknown(data)      => second.result.map(_.addData(data))
+      case Proved(_, data)         => second.result.map(_.addData(data))
+      case Contradicted(res, data) => Task(Contradicted(res, data))
+      case Unknown(data)           => second.result.map(_.addData(data))
     }
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
@@ -78,9 +78,9 @@ class CompositeProver[D: Semigroup] {
       second: Prover
   ) extends Prover {
     val result = first.result.flatMap {
-      case Proved(data)       => Task(Proved(data))
-      case Contradicted(data) => second.result.map(_.addData(data))
-      case Unknown(data)      => second.result.map(_.addData(data))
+      case Proved(res, data)     => Task(Proved(res, data))
+      case Contradicted(_, data) => second.result.map(_.addData(data))
+      case Unknown(data)         => second.result.map(_.addData(data))
     }
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
@@ -93,13 +93,13 @@ class CompositeProver[D: Semigroup] {
 
     val result: Task[Result] =
       hyp.result.flatMap {
-        case Proved(data)       => Task(Proved(data))
-        case Contradicted(data) => Task(Contradicted(data))
+        case Proved(_, data)       => Task(Proved(hyp, data))
+        case Contradicted(_, data) => Task(Contradicted(hyp, data))
         case Unknown(data) =>
           contra.result.map {
-            case Proved(data)       => Contradicted(data)
-            case Contradicted(data) => Proved(data)
-            case Unknown(data)      => Unknown(data)
+            case Proved(_, data)       => Contradicted(hyp, data)
+            case Contradicted(_, data) => Proved(hyp, data)
+            case Unknown(data)         => Unknown(data)
           }
       }
   }
@@ -110,15 +110,11 @@ class CompositeProver[D: Semigroup] {
         Task(Unknown(accum.get)) // error if an empty vector is the argument initially
       case head +: tail =>
         head.result.flatMap {
-          case Proved(data)       => Task(Proved(data))
-          case Contradicted(data) => Task(Contradicted(data))
+          case Proved(res, data)       => Task(Proved(res, data))
+          case Contradicted(res, data) => Task(Contradicted(res, data))
           case Unknown(data) =>
             val d = accum.map(ad => data |+| ad).getOrElse(data)
-            sequenceResult(tail, accum).map {
-              case Proved(data)       => Contradicted(data)
-              case Contradicted(data) => Proved(data)
-              case Unknown(data)      => Unknown(data)
-            }
+            sequenceResult(tail, accum)
         }
     }
 
@@ -135,6 +131,73 @@ class CompositeProver[D: Semigroup] {
 
     val result: Task[Result] = sequenceResult(provers, None)
   }
+
+  def isProved(result: Result, prover: Prover): Boolean =
+    result match {
+      case Proved(p, data) if prover == p => true
+      case _ =>
+        prover match {
+          case AnyOf(provers) => provers.exists(p => isProved(result, p))
+          case BothOf(first, second) =>
+            isProved(result, first) && isProved(result, second)
+          case Elementary(lp, getData, isSuccess) => false
+          case SomeOf(provers)                    => provers.exists(p => isProved(result, p))
+          case Xor(hyp, contra) =>
+            isProved(result, hyp) || isContradicted(result, contra)
+          case OneOf(first, second) =>
+            isProved(result, first) || isProved(result, second)
+        }
+    }
+
+  def isContradicted(result: Result, prover: Prover): Boolean =
+    result match {
+      case Contradicted(p, data) if prover == p => true
+      case _ =>
+        prover match {
+          case AnyOf(provers) => false
+          case BothOf(first, second) =>
+            isContradicted(result, first) || isContradicted(result, second)
+          case Elementary(lp, getData, isSuccess) => false
+          case SomeOf(provers)                    => false
+          case Xor(hyp, contra) =>
+            isProved(result, contra) || isContradicted(result, hyp)
+          case OneOf(first, second) =>
+            isContradicted(result, first) && isContradicted(result, second)
+        }
+    }
+
+  /**
+    * Purge components of the result that have been contradicted.
+    * */
+  def purge(result: Result, prover: Prover): Option[Prover] =
+    if (isContradicted(result, prover)) None
+    else
+      prover match {
+        case AnyOf(provers) =>
+          val ps = provers.filterNot(p => isContradicted(result, p))
+          if (ps.nonEmpty) Some(AnyOf(ps)) else None
+        case BothOf(first, second) =>
+          val c1 = isContradicted(result, first)
+          val c2 = isContradicted(result, second)
+          if (c1 || c2) None else Some(BothOf(first, second))
+        case el @ Elementary(lp, getData, isSuccess) => Some(el)
+        case SomeOf(provers) =>
+          val ps = provers.filterNot(p => isContradicted(result, p))
+          if (ps.nonEmpty) Some(SomeOf(ps)) else None
+        case x @ Xor(hyp, contra) =>
+          val c1 = isContradicted(result, hyp)
+          val c2 = isProved(result, contra)
+          if (c1 || c2) None else Some(x)
+        case OneOf(first, second) =>
+          val c1 = isContradicted(result, first)
+          val c2 = isContradicted(result, second)
+          (c1, c2) match {
+            case (true, true)   => None
+            case (true, false)  => Some(second)
+            case (false, true)  => Some(first)
+            case (false, false) => Some(BothOf(first, second))
+          }
+      }
 
 }
 
@@ -225,7 +288,7 @@ object TermProver extends CompositeProver[TermResult] {
           Task.gather(wxs.map {
             case Weighted(x, p) =>
               xorProver(
-                lp.scaleLimit(p),
+                lp.scaleLimit(p).sharpen(p),
                 st.fibers(x.asInstanceOf[u]),
                 instances,
                 varWeight
@@ -234,7 +297,9 @@ object TermProver extends CompositeProver[TermResult] {
         }
         proversT.map(AnyOf(_))
 
-      case tp => Task(Elementary(lp.addGoal(tp, 0.5), termData, termSuccess(tp)))
+      case tp =>
+        Task(Elementary(lp.addGoal(tp, 0.5), termData, termSuccess(tp)))
 
     }
+
 }
