@@ -21,6 +21,7 @@ import monix.tail.Iterant
 import collection.mutable.ArrayBuffer
 import scala.util.Success
 
+@deprecated("use composite prover", "now")
 sealed trait GlobalProver[R] {
   val result: Task[R]
 
@@ -33,6 +34,7 @@ sealed trait GlobalProver[R] {
   def lpModify(fn: LocalProverStep => LocalProverStep): GlobalProver[R]
 }
 
+@deprecated("use composite prover", "now")
 object GlobalProver {
   case class Elementary[R](
       lp: LocalProverStep,
