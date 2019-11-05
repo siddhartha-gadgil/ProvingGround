@@ -27,10 +27,10 @@ class CompositeProver[D: Semigroup] {
     def addData(d: D): Result = Contradicted(prover, d |+| data)
   }
 
-  case class Unknown(data: D) extends Result {
+  case class Unknown(data: D, partials: Set[Result]) extends Result {
     val flip = this
 
-    def addData(d: D): Result = Unknown(d |+| data)
+    def addData(d: D): Result = Unknown(d |+| data, partials)
   }
 
   sealed trait Prover {
@@ -52,7 +52,7 @@ class CompositeProver[D: Semigroup] {
   ) extends Prover {
     lazy val result =
       getData(lp).map { d =>
-        if (isSuccess(d)) Proved(this, d) else Unknown(d)
+        if (isSuccess(d)) Proved(this, d) else Unknown(d, Set())
       }
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
@@ -63,11 +63,20 @@ class CompositeProver[D: Semigroup] {
       first: Prover,
       second: Prover
   ) extends Prover {
-    val result = first.result.flatMap {
-      case Proved(_, data)         => second.result.map(_.addData(data))
-      case Contradicted(res, data) => Task(Contradicted(res, data))
-      case Unknown(data)           => second.result.map(_.addData(data))
+    val result = Task.parMap2(first.result, second.result){
+        case (Proved(_, d1), Proved(_, d2)) => Proved(this, d1 |+| d2)
+        case (Contradicted(_, d1), r) => Contradicted(this, d1 |+| r.data)
+        case (r, Contradicted(_, d1)) => Contradicted(this, d1 |+| r.data)
+        case (Unknown(d1, p1), Unknown(d2, p2)) => Unknown(d1 |+| d2, p1 union p2)
+        case (Unknown(d1, p1), r ) => Unknown(d1 |+| r.data, p1 + r)
+        case (r, Unknown(d1, p1)) => Unknown(d1 |+| r.data, p1 + r)
     }
+
+    // val result = first.result.flatMap {
+    //   case Proved(_, data)         => second.result.map(_.addData(data))
+    //   case Contradicted(res, data) => Task(Contradicted(res, data))
+    //   case Unknown(data)           => second.result.map(_.addData(data))
+    // }
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       BothOf(first.lpModify(fn), second.lpModify(fn))
@@ -77,11 +86,21 @@ class CompositeProver[D: Semigroup] {
       first: Prover,
       second: Prover
   ) extends Prover {
-    val result = first.result.flatMap {
-      case Proved(res, data)     => Task(Proved(res, data))
-      case Contradicted(_, data) => second.result.map(_.addData(data))
-      case Unknown(data)         => second.result.map(_.addData(data))
+    // val result = first.result.flatMap {
+    //   case Proved(res, data)     => Task(Proved(res, data))
+    //   case Contradicted(_, data) => second.result.map(_.addData(data))
+    //   case Unknown(data)         => second.result.map(_.addData(data))
+    // }
+
+    val result = Task.parMap2(first.result, second.result){
+        case (Contradicted(_, d1), Contradicted(_, d2)) => Contradicted(this, d1 |+| d2)
+        case (Proved(_, d1), r) => Proved(this, d1 |+| r.data)
+        case (r, Proved(_, d1)) => Proved(this, d1 |+| r.data)
+        case (Unknown(d1, p1), Unknown(d2, p2)) => Unknown(d1 |+| d2, p1 union p2)
+        case (Unknown(d1, p1), r ) => Unknown(d1 |+| r.data, p1 + r)
+        case (r, Unknown(d1, p1)) => Unknown(d1 |+| r.data, p1 + r)
     }
+
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       OneOf(first.lpModify(fn), second.lpModify(fn))
@@ -92,29 +111,36 @@ class CompositeProver[D: Semigroup] {
       Xor(hyp.lpModify(fn), contra.lpModify(fn))
 
     val result: Task[Result] =
-      hyp.result.flatMap {
-        case Proved(_, data)       => Task(Proved(hyp, data))
-        case Contradicted(_, data) => Task(Contradicted(hyp, data))
-        case Unknown(data) =>
-          contra.result.map {
-            case Proved(_, data)       => Contradicted(hyp, data)
-            case Contradicted(_, data) => Proved(hyp, data)
-            case Unknown(data)         => Unknown(data)
-          }
-      }
+        Task.parMap2(hyp.result, contra.result){
+            case (Proved(_, d1), r) => Proved(this, d1 |+| r.data)
+            case (Contradicted(_, d1), r) => Contradicted(this, d1 |+| r.data)
+            case (r, Contradicted(_, d1)) => Proved(this, d1 |+| r.data)
+            case (r, Proved(_, d1)) => Contradicted(this, d1 |+| r.data)
+            case (Unknown(d1, p1), Unknown(d2, p2)) => Unknown(d1 |+| d2, p1 union p2)
+        }
+    //   hyp.result.flatMap {
+    //     case Proved(_, data)       => Task(Proved(hyp, data))
+    //     case Contradicted(_, data) => Task(Contradicted(hyp, data))
+    //     case Unknown(data) =>
+    //       contra.result.map {
+    //         case Proved(_, data)       => Contradicted(hyp, data)
+    //         case Contradicted(_, data) => Proved(hyp, data)
+    //         case Unknown(data)         => Unknown(data)
+    //       }
+    //   }
   }
 
-  def sequenceResult(provers: Vector[Prover], accum: Option[D]): Task[Result] =
+  def sequenceResult(provers: Vector[Prover], accum: Option[D], partials: Set[Result]): Task[Result] =
     provers match {
       case Vector() =>
-        Task(Unknown(accum.get)) // error if an empty vector is the argument initially
+        Task(Unknown(accum.get, partials)) // error if an empty vector is the argument initially
       case head +: tail =>
         head.result.flatMap {
           case Proved(res, data)       => Task(Proved(res, data))
           case Contradicted(res, data) => Task(Contradicted(res, data))
-          case Unknown(data) =>
+          case Unknown(data, ps) =>
             val d = accum.map(ad => data |+| ad).getOrElse(data)
-            sequenceResult(tail, accum)
+            sequenceResult(tail, accum, partials union ps)
         }
     }
 
@@ -122,14 +148,14 @@ class CompositeProver[D: Semigroup] {
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       AnyOf(provers.map(_.lpModify(fn)))
 
-    val result: Task[Result] = sequenceResult(provers, None)
+    val result: Task[Result] = sequenceResult(provers, None, Set())
   }
 
   case class SomeOf(provers: Vector[Prover]) extends Prover {
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       SomeOf(provers.map(_.lpModify(fn)))
 
-    val result: Task[Result] = sequenceResult(provers, None)
+    val result: Task[Result] = sequenceResult(provers, None, Set())
   }
 
   def isProved(result: Result, prover: Prover): Boolean =
