@@ -37,6 +37,16 @@ import TermGeneratorNodes._
       context.subs(x, y)
     )
 
+  def ++(that: TermState) = 
+    TermState(
+      (terms ++ that.terms).safeNormalized,
+      (typs ++ that.typs).safeNormalized,
+      vars ++ that.vars,
+      (inds ++ that.inds).safeNormalized,
+      (goals ++ that.goals).safeNormalized,
+      context
+    )
+
   // pprint.log(context.variables)
 
   lazy val thmsByPf: FD[Typ[Term]] =

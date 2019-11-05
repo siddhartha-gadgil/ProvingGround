@@ -37,43 +37,7 @@ object StrategicProvers {
     terms.flatMap(t => DE.formalEquations(t))
   }
 
-  val skolemize: Typ[Term] => Typ[Term] = {
-    case pd: ProdTyp[u, v] => skolemize(pd.first) && skolemize(pd.second)
-    case st: SigmaTyp[u, v] =>
-      SigmaTyp(st.fib.variable :-> skolemize(st.fib.value))
-    case pd: PiDefn[u, v] =>
-      skolemize(pd.value) match {
-        case pt: PlusTyp[x, y] =>
-          PlusTyp(
-            skolemize(PiDefn(pd.variable, pt.first)),
-            skolemize(PiDefn(pd.variable, pt.second))
-          )
-        case st: SigmaTyp[x, y] =>
-          val a    = pd.variable
-          val b    = st.fib.variable
-          val Q    = st.fib.value
-          val beta = (pd.domain ->: st.fib.dom).Var
-          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
-        case tp => PiDefn(pd.variable, tp)
-      }
-    case ft: FuncTyp[u, v] =>
-      ft.codom match {
-        case pt: ProdTyp[x, y] =>
-          ProdTyp(
-            skolemize(ft.dom ->: pt.first),
-            skolemize(ft.dom ->: pt.second)
-          )
-        case st: SigmaTyp[x, y] =>
-          val a    = ft.dom.Var
-          val b    = st.fib.variable
-          val Q    = st.fib.value
-          val beta = (ft.domain ->: st.fib.dom).Var
-          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
-        case typ: Typ[x] => ft.dom ->: typ
-      }
-    case typ => typ
-  }
-
+ 
   var currentGoal: Option[Typ[Term]] = None
 
   var update: Unit => Unit = (_) => ()

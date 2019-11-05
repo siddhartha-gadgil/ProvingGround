@@ -151,7 +151,7 @@ object GlobalProver {
   type Result = (TermState, Set[EquationNode])
 
   def chomper(lp: LocalProver, typ: Typ[Term], goalWeight: Double) : Task[GlobalProver[Either[Result, Result]]] =
-    StrategicProvers.skolemize(typ) match {
+    skolemize(typ) match {
         case tp => 
             val lpFirst = lp.addGoal(tp, goalWeight)
             val lpSecond = lp.addGoal(tp, goalWeight)

@@ -125,3 +125,63 @@ class CompositeProver[D: Semigroup] {
   }
 
 }
+
+object TermData{
+  type TermResult = (TermState, Set[EquationNode])
+
+  implicit val sg: Semigroup[TermResult] = new Semigroup[TermResult]{
+    def combine(x: TermResult, y: TermResult): TermResult = (x._1 ++ y._1, x._2 union y._2)
+  }
+
+  def termData(lp: LocalProverStep) = Task.parZip2(lp.nextState, lp.equationNodes)
+
+  def termSuccess(typ: Typ[Term]) : TermResult => Boolean = {case (ts, _) => ts.terms.support.exists(_.typ == typ)}
+
+}
+
+
+import TermData._
+
+object TermProver extends CompositeProver[TermResult]{
+  def xorProver(lp: LocalProverStep, typ: Typ[Term], instances: Typ[Term] => Task[Vector[Weighted[Term]]], varWeight: Double) : Task[Xor] = 
+  for{
+    p1 <- typProver(lp, typ, instances, varWeight)
+    p2 <-  typProver(lp, negate(typ), instances, varWeight)
+  } yield Xor(p1, p2)
+    
+
+  def typProver(lp: LocalProverStep, typ: Typ[Term], instances: Typ[Term] => Task[Vector[Weighted[Term]]], varWeight: Double) : Task[Prover] = 
+    skolemize(typ) match{
+      case pt: ProdTyp[u, v] => 
+        for{
+          p1 <- typProver(lp, pt.first, instances, varWeight)
+          p2 <-  typProver(lp, pt.second, instances, varWeight)
+        } yield BothOf(p1, p2)
+      case pt: PlusTyp[u, v] => 
+        for{
+          p1 <- xorProver(lp, pt.first, instances, varWeight)
+          p2 <-  xorProver(lp, pt.second, instances, varWeight)
+        } yield OneOf(p1, p2)
+      case pd : PiDefn[u, v] => 
+        for{
+          p1 <- xorProver(lp, negate(pd.domain), instances, varWeight)
+          p2 <-  typProver(lp.addVar(pd.variable, varWeight), pd.value, instances, varWeight)
+        } yield OneOf(p1, p2)  
+      case ft : FuncTyp[u, v] => 
+        val x = ft.dom.Var
+        for{
+          p1 <- xorProver(lp, negate(ft.dom), instances, varWeight)
+          p2 <-  typProver(lp.addVar(x, varWeight), ft.codom, instances, varWeight)
+        } yield OneOf(p1, p2) 
+      case st: SigmaTyp[u, v] => 
+        val l = funcToLambdaFixed(st.fib)
+          val proversT = instances(st.fibers.dom).flatMap{
+          wxs =>
+             Task.gather(wxs.map{case Weighted(x, p) => xorProver(lp.scaleLimit(p), st.fibers(x.asInstanceOf[u]), instances, varWeight)})
+        }
+        proversT.map(AnyOf(_))
+
+      case tp => Task(Elementary(lp.addGoal(tp, 1), termData, termSuccess(tp)))
+      
+  }
+}
