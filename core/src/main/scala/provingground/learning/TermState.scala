@@ -250,6 +250,8 @@ import TermGeneratorNodes._
 }
 
 object TermState {
+  val zero : TermState = TermState(FD.empty, FD.empty)
+
   import TermRandomVars._
   def fromJson(js: ujson.Value): TermState = {
     import interface._, TermJson._

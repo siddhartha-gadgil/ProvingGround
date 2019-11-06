@@ -6,7 +6,9 @@ import monix.eval.Task
 
 import cats._, cats.implicits._
 
-class CompositeProver[D: Semigroup] {
+class CompositeProver[D: Monoid] {
+  val empty = implicitly[Monoid[D]].empty
+
   sealed trait Result {
     val data: D
 
@@ -112,19 +114,19 @@ class CompositeProver[D: Semigroup] {
 
   def sequenceResult(
       provers: Vector[Prover],
-      accum: Option[D],
+      accum: D,
       partials: Set[Result]
   ): Task[Result] =
     provers match {
       case Vector() =>
-        Task(Unknown(accum.get, partials)) // error if an empty vector is the argument initially
+        Task(Unknown(accum, partials)) // error if an empty vector is the argument initially
       case head +: tail =>
         head.result.flatMap {
           case Proved(res, data)       => Task(Proved(res, data))
           case Contradicted(res, data) => Task(Contradicted(res, data))
           case Unknown(data, ps) =>
-            val d = accum.map(ad => data |+| ad).getOrElse(data)
-            sequenceResult(tail, accum, partials union ps)
+            val d = accum |+| data
+            sequenceResult(tail, d, partials union ps)
         }
     }
 
@@ -132,7 +134,7 @@ class CompositeProver[D: Semigroup] {
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       AnyOf(provers.map(_.lpModify(fn)))
 
-    val result: Task[Result] = sequenceResult(provers, None, Set())
+    val result: Task[Result] = sequenceResult(provers, empty, Set())
   }
 
   // Don's use this, use the `proveSome` method instead
@@ -140,23 +142,23 @@ class CompositeProver[D: Semigroup] {
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       SomeOf(provers.map(_.lpModify(fn)))
 
-    val result: Task[Result] = sequenceResult(provers, None, Set())
+    val result: Task[Result] = sequenceResult(provers, empty, Set())
   }
 
   def proveSome(
       provers: Vector[Prover],
       results: Vector[Result],
-      dataOpt: Option[D],
+      data: D,
       useData: D => LocalProverStep => LocalProverStep
-  ): Task[(Vector[Result], Option[D])] =
+  ): Task[(Vector[Result], D)] =
     provers match {
-      case Vector()     => Task.now((results, dataOpt))
+      case Vector()     => Task.now((results, data))
       case head +: tail =>
-        val prover = dataOpt.map(d => head.lpModify(useData(d))).getOrElse(head) 
+        val prover = head.lpModify(useData(data)) 
         prover.result flatMap {
           res =>
-            val newData = dataOpt.map(d => res.data |+| d).getOrElse(res.data) 
-            proveSome(tail, results :+ res, Some(newData), useData)
+            val newData = res.data |+| data 
+            proveSome(tail, results :+ res, newData, useData)
         }
     }
 
@@ -256,9 +258,11 @@ class CompositeProver[D: Semigroup] {
 object TermData {
   type TermResult = (TermState, Set[EquationNode])
 
-  implicit val sg: Semigroup[TermResult] = new Semigroup[TermResult] {
+  implicit val sg: Monoid[TermResult] = new Monoid[TermResult] {
     def combine(x: TermResult, y: TermResult): TermResult =
       (x._1 ++ y._1, x._2 union y._2)
+
+    val empty = (TermState.zero, Set())
   }
 
   def termData(lp: LocalProverStep) =
