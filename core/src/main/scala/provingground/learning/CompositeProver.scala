@@ -5,6 +5,8 @@ import HoTT._
 import monix.eval.Task
 
 import cats._, cats.implicits._
+import scala.util.Failure
+import scala.util.Success
 
 class CompositeProver[D: Monoid] {
   val empty = implicitly[Monoid[D]].empty
@@ -363,6 +365,23 @@ object TermProver extends CompositeProver[TermResult] {
       case tp =>
         Task(Elementary(lp.addGoal(tp, 0.5), termData, termSuccess(tp)))
 
+    }
+
+  def bestResult(baseProver: Prover, accum : Option[Result], sharpness: Double, scale: Double, steps: Int) : Task[Option[Result]] = 
+    if (steps < 1) Task.now(accum) 
+    else {
+      val prover : Prover = accum.flatMap(result => upgradeProver(baseProver, result)).getOrElse(baseProver).sharpen(sharpness)
+      prover.result.materialize.flatMap{
+        case Failure(exception) => Task.now(accum)
+        case Success(value) => 
+          val result = accum.map(r => value.addData(r.data)).getOrElse(value)
+          result match {
+            case _ : Proved => Task.now(Some(result))
+            case _ : Contradicted => Task.now(Some(result))
+            case _ =>  bestResult(baseProver, Some(result), sharpness * scale, scale, steps - 1)
+          }
+         
+      }
     }
 
 }
