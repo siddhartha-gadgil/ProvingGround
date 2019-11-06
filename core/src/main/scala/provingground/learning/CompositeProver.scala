@@ -8,6 +8,7 @@ import cats._, cats.implicits._
 import scala.util.Failure
 import scala.util.Success
 
+
 class CompositeProver[D: Monoid] {
   val empty = implicitly[Monoid[D]].empty
 
@@ -132,7 +133,7 @@ class CompositeProver[D: Monoid] {
         }
     }
 
-  case class AnyOf(provers: Vector[Xor]) extends Prover {
+  case class AnyOf(provers: Vector[Prover]) extends Prover {
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       AnyOf(provers.map(_.lpModify(fn)))
 
@@ -154,13 +155,12 @@ class CompositeProver[D: Monoid] {
       useData: D => LocalProverStep => LocalProverStep
   ): Task[(Vector[Result], D)] =
     provers match {
-      case Vector()     => Task.now((results, data))
+      case Vector() => Task.now((results, data))
       case head +: tail =>
-        val prover = head.lpModify(useData(data)) 
-        prover.result flatMap {
-          res =>
-            val newData = res.data |+| data 
-            proveSome(tail, results :+ res, newData, useData)
+        val prover = head.lpModify(useData(data))
+        prover.result flatMap { res =>
+          val newData = res.data |+| data
+          proveSome(tail, results :+ res, newData, useData)
         }
     }
 
@@ -180,44 +180,45 @@ class CompositeProver[D: Monoid] {
     case res => Set(res)
   }
 
-  def provedProvers(results: Set[Result]) : Set[Prover] = 
-    results collect{
-      case Proved(prover, data) => prover 
+  def provedProvers(results: Set[Result]): Set[Prover] =
+    results collect {
+      case Proved(prover, data) => prover
     }
 
-  def contradictedProvers(results: Set[Result]) : Set[Prover] = 
-    results collect{
-      case Contradicted(prover, data) => prover 
+  def contradictedProvers(results: Set[Result]): Set[Prover] =
+    results collect {
+      case Contradicted(prover, data) => prover
     }
 
   def isProved(results: Set[Result], prover: Prover): Boolean =
-    provedProvers(results).contains(prover) ||
-        {prover match {
-          case AnyOf(provers) => provers.exists(p => isProved(results, p))
-          case BothOf(first, second) =>
-            isProved(results, first) && isProved(results, second)
-          case Elementary(lp, getData, isSuccess) => false
-          case SomeOf(provers)                    => provers.exists(p => isProved(results, p))
-          case Xor(hyp, contra) =>
-            isProved(results, hyp) || isContradicted(results, contra)
-          case OneOf(first, second) =>
-            isProved(results, first) || isProved(results, second)
-        }
+    provedProvers(results).contains(prover) || {
+      prover match {
+        case AnyOf(provers) => provers.exists(p => isProved(results, p))
+        case BothOf(first, second) =>
+          isProved(results, first) && isProved(results, second)
+        case Elementary(lp, getData, isSuccess) => false
+        case SomeOf(provers)                    => provers.exists(p => isProved(results, p))
+        case Xor(hyp, contra) =>
+          isProved(results, hyp) || isContradicted(results, contra)
+        case OneOf(first, second) =>
+          isProved(results, first) || isProved(results, second)
       }
+    }
 
   def isContradicted(results: Set[Result], prover: Prover): Boolean =
-    contradictedProvers(results).contains(prover) ||
-        {prover match {
-          case AnyOf(provers) => false
-          case BothOf(first, second) =>
-            isContradicted(results, first) || isContradicted(results, second)
-          case Elementary(lp, getData, isSuccess) => false
-          case SomeOf(provers)                    => false
-          case Xor(hyp, contra) =>
-            isProved(results, contra) || isContradicted(results, hyp)
-          case OneOf(first, second) =>
-            isContradicted(results, first) && isContradicted(results, second)
-        }}
+    contradictedProvers(results).contains(prover) || {
+      prover match {
+        case AnyOf(provers) => false
+        case BothOf(first, second) =>
+          isContradicted(results, first) || isContradicted(results, second)
+        case Elementary(lp, getData, isSuccess) => false
+        case SomeOf(provers)                    => false
+        case Xor(hyp, contra) =>
+          isProved(results, contra) || isContradicted(results, hyp)
+        case OneOf(first, second) =>
+          isContradicted(results, first) && isContradicted(results, second)
+      }
+    }
 
   /**
     * Purge components of the result that have been contradicted.
@@ -252,9 +253,6 @@ class CompositeProver[D: Monoid] {
           }
       }
 
-
-    
-
 }
 
 object TermData {
@@ -279,9 +277,11 @@ object TermData {
 import TermData._
 
 object TermProver extends CompositeProver[TermResult] {
-  val useData :TermResult => LocalProverStep => LocalProverStep = {case (ts, _) => lp => lp.addLookup(ts.terms.support)}
+  val useData: TermResult => LocalProverStep => LocalProverStep = {
+    case (ts, _) => lp => lp.addLookup(ts.terms.support)
+  }
 
-  def upgradeProver(prover: Prover, result: Result) : Option[Prover] = {
+  def upgradeProver(prover: Prover, result: Result): Option[Prover] = {
     val results = consequences(result)
     purge(results, prover).map(p => p.lpModify(useData(result.data)))
   }
@@ -348,7 +348,6 @@ object TermProver extends CompositeProver[TermResult] {
           )
         } yield OneOf(p1, p2)
       case st: SigmaTyp[u, v] =>
-        val l = funcToLambdaFixed(st.fib)
         val proversT = instances(st.fibers.dom).flatMap { wxs =>
           Task.gather(wxs.map {
             case Weighted(x, p) =>
@@ -367,20 +366,68 @@ object TermProver extends CompositeProver[TermResult] {
 
     }
 
-  def bestResult(baseProver: Prover, accum : Option[Result], sharpness: Double, scale: Double, steps: Int) : Task[Option[Result]] = 
-    if (steps < 1) Task.now(accum) 
+  def backwardProver(
+      ft: Typ[Term],
+      lp: LocalProverStep,
+      typ: Typ[Term],
+      instances: Typ[Term] => Task[Vector[Weighted[Term]]],
+      varWeight : Double
+  ) : Task[Option[Prover]] = ft match {
+    case ftp:  FuncTyp[u, v] =>
+      if (ftp.codom == typ) typProver(lp, ftp.dom, instances, varWeight).map(Option(_))
+      else 
+        for {
+          arg <- typProver(lp, ftp.dom, instances, varWeight)
+          tailOpt <- backwardProver(ftp.codom, lp, typ, instances, varWeight) 
+        } yield tailOpt.map(tail => BothOf(arg, tail))
+    case pd : PiDefn[u, v] =>
+        if (pd.value == typ) typProver(lp, pd.domain, instances, varWeight).map(Option(_))
+        else 
+        {
+          val proversT = instances(pd.domain).flatMap { wxs =>
+          Task.gather(wxs.map {
+            case Weighted(x, p) =>
+            val target = pd.value.replace(pd.variable, x)
+             backwardProver(target, lp, typ, instances, varWeight)
+            }
+              )       
+      }
+      proversT.map(ps => if (ps.flatten.nonEmpty) Some(AnyOf(ps.flatten)) else None )
+    }
+        
+    case _ => Task.now(None)
+  }
+
+  def bestResult(
+      baseProver: Prover,
+      accum: Option[Result],
+      sharpness: Double,
+      scale: Double,
+      steps: Int
+  ): Task[Option[Result]] =
+    if (steps < 1) Task.now(accum)
     else {
-      val prover : Prover = accum.flatMap(result => upgradeProver(baseProver, result)).getOrElse(baseProver).sharpen(sharpness)
-      prover.result.materialize.flatMap{
+      val prover: Prover = accum
+        .flatMap(result => upgradeProver(baseProver, result))
+        .getOrElse(baseProver)
+        .sharpen(sharpness)
+      prover.result.materialize.flatMap {
         case Failure(exception) => Task.now(accum)
-        case Success(value) => 
+        case Success(value) =>
           val result = accum.map(r => value.addData(r.data)).getOrElse(value)
           result match {
-            case _ : Proved => Task.now(Some(result))
-            case _ : Contradicted => Task.now(Some(result))
-            case _ =>  bestResult(baseProver, Some(result), sharpness * scale, scale, steps - 1)
+            case _: Proved       => Task.now(Some(result))
+            case _: Contradicted => Task.now(Some(result))
+            case _ =>
+              bestResult(
+                baseProver,
+                Some(result),
+                sharpness * scale,
+                scale,
+                steps - 1
+              )
           }
-         
+
       }
     }
 

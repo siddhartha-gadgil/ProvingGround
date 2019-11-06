@@ -400,7 +400,7 @@ object TermGeneratorNodes {
     domainForStruct(ind.ind, ind.typFamily, ind)
 
   /**
-    * Node family for generating domains targeting a specifed type
+    * Helper for generating domains targeting a specifed type
     *  for a given inductive structure, with an inductive definition also given.
     * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
     */
