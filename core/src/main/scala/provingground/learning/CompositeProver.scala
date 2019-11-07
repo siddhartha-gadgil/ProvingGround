@@ -386,7 +386,9 @@ object TermProver extends CompositeProver[TermResult] {
       case pd: PiDefn[u, v] =>
         def viaZero(t: Term): Option[Term] =
           if (t.typ == pd.domain ->: Zero)
-            Some(pd.variable :-> vacuous(pd.value)(fold(t)(pd.variable))) // should improve to negate
+            Some(pd.variable :-> vacuous(pd.value)(
+              fold(negateContra(pd.domain))(pd.variable, t))
+              ) 
           else None
         for {
           p1 <- xorProver(lp, negate(pd.domain), instances, varWeight)
@@ -400,8 +402,10 @@ object TermProver extends CompositeProver[TermResult] {
       case ft: FuncTyp[u, v] =>
         val x = ft.dom.Var
         def viaZero(t: Term): Option[Term] =
-          if (t.typ == ft.dom ->: Zero)
-            Some(x :-> vacuous(ft.codom)(fold(t)(x))) // should improve to negate
+          if (t.typ == negate(ft.dom))
+            Some(x :-> vacuous(ft.codom)(
+              fold(negateContra(ft.dom))(x, t))
+              ) 
           else None
         for {
           p1 <- xorProver(lp, negate(ft.dom), instances, varWeight)

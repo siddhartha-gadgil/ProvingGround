@@ -758,11 +758,11 @@ object HoTT {
     * Negation with some simplification
     */
   def negate: Typ[Term] => Typ[Term] = {
-    case ft: FuncTyp[u, v] if (ft.codom).indepOf(ft.dom) => 
-      if (ft.codom == Zero) ft.dom else ft.dom &&  negate(ft.codom)
-    case pd: ProdTyp[u, v]         => PlusTyp(negate(pd.first), negate(pd.second))
-    case pt: PlusTyp[u, v]         => ProdTyp(negate(pt.first), negate(pt.second))
-    case pt: PiDefn[u, v]          => SigmaTyp(lmbda(pt.variable)(negate(pt.value)))
+    case ft: FuncTyp[u, v] if (ft.codom).indepOf(ft.dom) =>
+      if (ft.codom == Zero) ft.dom else ft.dom && negate(ft.codom)
+    case pd: ProdTyp[u, v] => PlusTyp(negate(pd.first), negate(pd.second))
+    case pt: PlusTyp[u, v] => ProdTyp(negate(pt.first), negate(pt.second))
+    case pt: PiDefn[u, v]  => SigmaTyp(lmbda(pt.variable)(negate(pt.value)))
     case st: SigmaTyp[u, v] =>
       val x = st.fibers.dom.Var
       val y = st.fibers(x)
@@ -770,6 +770,75 @@ object HoTT {
     case Unit => Zero
     case Zero => Unit
     case tp   => tp ->: Zero
+  }
+
+  /**
+    * Proof of A -> negate(A) -> Zero
+    * */
+  def negateContra(typ: Typ[Term]): Term = {
+    val proof = typ match {
+      case ft: FuncTyp[u, v] if (ft.codom).indepOf(ft.dom) =>
+        val f = ft.Var
+        val x = ft.dom.Var
+        if (ft.codom == Zero) {
+          f :-> x :-> f(x)
+        } else {
+          val nb = negate(ft.codom).Var
+          val p  = pair(x, nb)
+          f :-> p :-> fold(negateContra(ft.codom))(f(x), nb)
+        }
+      case pt: PlusTyp[u, v] =>
+        val b   = pt.first.Var
+        val c   = pt.second.Var
+        val nb  = negate(pt.first).Var
+        val nc  = negate(pt.second).Var
+        val np  = pair(nb, nc)
+        val Neg = ProdTyp(negate(pt.first), negate(pt.second))
+        fold(pt.rec(Neg ->: Zero))(
+          b :-> np :-> fold(negateContra(pt.first))(b, nb),
+          c :-> np :-> fold(negateContra(pt.second))(c, nc)
+        )
+      case pd: ProdTyp[u, v] =>
+        val Neg = PlusTyp(negate(pd.first), negate(pd.second))
+        val b   = pd.first.Var
+        val c   = pd.second.Var
+        val p   = pair(b, c)
+        val nb  = negate(pd.first).Var
+        val nc  = negate(pd.second).Var
+        p :-> (
+          Neg.rec(Zero)(nb :-> fold(negateContra(pd.first))(b, nb))(
+            nc :-> fold(negateContra(pd.second))(c, nc)
+          )
+        )
+      case pt: PiDefn[u, v]  => 
+        val Neg = SigmaTyp(lmbda(pt.variable)(negate(pt.value)))
+        val f = pt.Var
+        val np = Neg.Var
+        val a = np.first
+        val z = np.second
+        f :-> np :-> fold(negateContra(pt.value.replace(pt.variable, a)))(f(a), z)
+      case st: SigmaTyp[u, v] =>
+        val x = st.fibers.dom.Var
+        val Px = st.fibers(x)
+        val Neg = PiDefn(x, negate(Px))
+        val y = Px.Var
+        val p = pair(x, y)
+        val f = Neg.Var
+        p :-> f :-> fold(negateContra(Px))(y, f(x))
+      case Unit =>
+        val x = Unit.Var
+        val y = Zero.Var
+        x :-> y :-> y
+      case Zero =>
+        val x = Unit.Var
+        val y = Zero.Var
+        y :-> x :-> y
+      case tp =>
+        val x = tp.Var
+        val y = (tp ->: Zero).Var
+        x :-> y :-> (y(x))
+    }
+    proof !: (typ ->: (negate(typ) ->: Zero))
   }
 
   val skolemize: Typ[Term] => Typ[Term] = {
@@ -808,7 +877,6 @@ object HoTT {
       }
     case typ => typ
   }
-
 
   /**
     * Unit type.
@@ -1326,9 +1394,8 @@ object HoTT {
       */
     val defnData: Vector[Term]
 
-    def baseFunction : ExstFunc = 
-    {
-      val vars : Vector[Term] = defnData.map(t => t.typ.Var)
+    def baseFunction: ExstFunc = {
+      val vars: Vector[Term] = defnData.map(t => t.typ.Var)
       ExstFunc.opt(polyLambda(vars.toList, this)).get
     }
 
@@ -1441,21 +1508,23 @@ object HoTT {
     case _ => throw new ApplnFailException(func, arg)
   }
 
-  case class MereWitness(value: Term) extends AnySym{
-    def subs(x: Term, y: Term): AnySym = MereWitness(Try(value.replace(x, y)).getOrElse(value))
+  case class MereWitness(value: Term) extends AnySym {
+    def subs(x: Term, y: Term): AnySym =
+      MereWitness(Try(value.replace(x, y)).getOrElse(value))
 
     override def toString = s"<$value>"
 
     override def equals(that: Any) = that match {
-      case _ : MereWitness => true 
-      case _ => false
+      case _: MereWitness => true
+      case _              => false
     }
 
     override val hashCode = 2147
   }
 
   def applyFuncOpt(func: Term, arg: Term): Option[Term] = func match {
-    case fn: Func[u, v] if isWitness(arg) => Some(fn.codom.symbObj(MereWitness(arg)))
+    case fn: Func[u, v] if isWitness(arg) =>
+      Some(fn.codom.symbObj(MereWitness(arg)))
     case fn: FuncLike[u, v] if fn.canApply(arg.asInstanceOf[u]) =>
       Some(fn.applyUnchecked(arg.asInstanceOf[u]))
     case _ => None
@@ -1657,9 +1726,8 @@ object HoTT {
       */
     val defnData: Vector[Term]
 
-    def baseFunction : ExstFunc = 
-    {
-      val vars : Vector[Term] = defnData.map(t => t.typ.Var)
+    def baseFunction: ExstFunc = {
+      val vars: Vector[Term] = defnData.map(t => t.typ.Var)
       ExstFunc.opt(polyLambda(vars.toList, this)).get
     }
 
@@ -1881,7 +1949,8 @@ object HoTT {
     case (gt1: GenFuncTyp[x1, y1], gt2: GenFuncTyp[x2, y2])
         if gt1.domain == gt2.domain =>
       val x = gt1.domain.Var
-      Try(resizedEqual(gt1.fib(x), gt2.fib(x.asInstanceOf[x2]))).getOrElse(false)
+      Try(resizedEqual(gt1.fib(x), gt2.fib(x.asInstanceOf[x2])))
+        .getOrElse(false)
     case _ => false
   }
 
@@ -2119,7 +2188,6 @@ object HoTT {
     case inn: InnerSym[_] => outerSym(inn.outer)
     case _                => sym
   }
-
 
   /**
     * constructor for an (in general) dependent lambda;
@@ -2585,7 +2653,7 @@ object HoTT {
 
     type Obj = AbsPair[W, U]
 
-    lazy val fib : LambdaFixed[W, Typ[U]] = funcToLambdaFixed(fibers)
+    lazy val fib: LambdaFixed[W, Typ[U]] = funcToLambdaFixed(fibers)
 
     def variable(name: AnySym): AbsPair[W, U] = {
       val a = fibers.dom.symbObj(LeftProjSym(name))
@@ -2599,7 +2667,7 @@ object HoTT {
     lazy val paircons: FuncLike[W, Func[U, AbsPair[W, U]]] = {
       val a = fibers.dom.Var
       val b = (fibers(a)).Var
-      lambda(a)(lmbda(b)(DepPair(a, b, fibers) : AbsPair[W, U]))
+      lambda(a)(lmbda(b)(DepPair(a, b, fibers): AbsPair[W, U]))
     }
 
     /**
@@ -2908,9 +2976,6 @@ object HoTT {
       IdentityTyp(lhs.typ.asInstanceOf[Typ[U]], lhs, rhs)
     }
 
-    
-    
-
     /**
       * recursive definition on identity type families
       */
@@ -3158,7 +3223,9 @@ object HoTT {
     lazy val B: Typ[Term]        = Type.Var
     lazy val f: Func[Term, Term] = (A ->: B).Var
 
-    lazy val idFunc:  FuncLike[Typ[Term],Func[Term,Func[Term,IdentityTyp[Term]]]] = A :~> (x :->  (y :-> IdentityTyp(A, x, x)))
+    lazy val idFunc: FuncLike[Typ[Term], Func[Term, Func[Term, IdentityTyp[
+      Term
+    ]]]] = A :~> (x :-> (y :-> IdentityTyp(A, x, x)))
 
     lazy val symmTerm: FuncLike[Typ[Term], FuncLike[
       Term,
@@ -3613,13 +3680,13 @@ object HoTT {
   }
 
   def funcToLambdaFixed[U <: Term with Subs[U], V <: Term with Subs[V]](
-    fn: Func[U, V]
-): LambdaFixed[U, V] = fn match {
-  case l: LambdaFixed[U, V] => l
-  case f: Func[U, V] =>
-    val x = f.dom.Var
-    LambdaFixed(x, f(x))
-}
+      fn: Func[U, V]
+  ): LambdaFixed[U, V] = fn match {
+    case l: LambdaFixed[U, V] => l
+    case f: Func[U, V] =>
+      val x = f.dom.Var
+      LambdaFixed(x, f(x))
+  }
 
   def asLambdas[U <: Term with Subs[U]](term: U): Option[U] = term match {
     case LambdaFixed(x: Term, y: Term) =>
