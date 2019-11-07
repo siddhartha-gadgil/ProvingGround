@@ -66,6 +66,8 @@ import TermGeneratorNodes._
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 
+  lazy val successTerms : Set[Term] = successes.map(_._3.support).toSet.flatten
+
   def isProd(typ: Typ[Term]) = typ match {
     case _ : ProdTyp[u, v] => true
     case _ => false

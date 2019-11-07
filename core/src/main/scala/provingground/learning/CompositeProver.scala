@@ -8,7 +8,6 @@ import cats._, cats.implicits._
 import scala.util.Failure
 import scala.util.Success
 
-
 class CompositeProver[D: Monoid] {
   val empty = implicitly[Monoid[D]].empty
 
@@ -48,6 +47,8 @@ class CompositeProver[D: Monoid] {
     def addVar(term: Term, weight: Double) = lpModify(_.addVar(term, weight))
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover
+
+    val successTerms: Task[Set[Term]]
   }
 
   case class Elementary(
@@ -62,11 +63,14 @@ class CompositeProver[D: Monoid] {
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       Elementary(fn(lp), getData, isSuccess)
+
+    val successTerms: Task[Set[HoTT.Term]] = lp.nextState.map(_.successTerms)
   }
 
   case class BothOf(
       first: Prover,
-      second: Prover
+      second: Prover,
+      zipProofs: (Term, Term) => Option[Term]
   ) extends Prover {
     val result = Task.parMap2(first.result, second.result) {
       case (Proved(_, d1), Proved(_, d2))     => Proved(this, d1 |+| d2)
@@ -78,7 +82,18 @@ class CompositeProver[D: Monoid] {
     }
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
-      BothOf(first.lpModify(fn), second.lpModify(fn))
+      BothOf(first.lpModify(fn), second.lpModify(fn), zipProofs)
+
+    val successTerms: Task[Set[HoTT.Term]] =
+      for {
+        s1 <- first.successTerms
+        s2 <- second.successTerms
+      } yield
+        for {
+          x <- s1
+          y <- s2
+          z <- zipProofs(x, y)
+        } yield z
   }
 
   case class OneOf(
@@ -98,6 +113,11 @@ class CompositeProver[D: Monoid] {
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       OneOf(first.lpModify(fn), second.lpModify(fn))
+
+    val successTerms: Task[Set[HoTT.Term]] = for {
+      s1 <- first.successTerms
+      s2 <- second.successTerms
+    } yield s1 union s2
   }
 
   case class Xor(hyp: Prover, contra: Prover) extends Prover {
@@ -113,6 +133,20 @@ class CompositeProver[D: Monoid] {
         case (Unknown(d1, p1), Unknown(d2, p2)) =>
           Unknown(d1 |+| d2, p1 union p2)
       }
+
+    val successTerms: Task[Set[HoTT.Term]] = hyp.successTerms
+
+  }
+
+  case class MapProof(prover: Prover, proofMap: Term => Option[Term])
+      extends Prover {
+    def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
+      MapProof(prover.lpModify(fn), proofMap)
+
+    val result: Task[Result] = prover.result
+
+    val successTerms: Task[Set[HoTT.Term]] =
+      prover.successTerms.map(s => s.map(proofMap).flatten)
   }
 
   def sequenceResult(
@@ -138,6 +172,11 @@ class CompositeProver[D: Monoid] {
       AnyOf(provers.map(_.lpModify(fn)))
 
     val result: Task[Result] = sequenceResult(provers, empty, Set())
+
+    val successTerms: Task[Set[HoTT.Term]] =
+      Task
+        .gather(provers.toSet.map((p: Prover) => p.successTerms))
+        .map(_.flatten)
   }
 
   // Don's use this, use the `proveSome` method instead
@@ -146,6 +185,11 @@ class CompositeProver[D: Monoid] {
       SomeOf(provers.map(_.lpModify(fn)))
 
     val result: Task[Result] = sequenceResult(provers, empty, Set())
+
+    val successTerms: Task[Set[HoTT.Term]] =
+      Task
+        .gather(provers.toSet.map((p: Prover) => p.successTerms))
+        .map(_.flatten)
   }
 
   def proveSome(
@@ -165,7 +209,7 @@ class CompositeProver[D: Monoid] {
     }
 
   def consequences(result: Result): Set[Result] = result match {
-    case res @ Proved(BothOf(first, second), d) =>
+    case res @ Proved(BothOf(first, second, zp), d) =>
       consequences(Proved(first, d))
         .union(consequences(Proved(second, d))) + res
     case res @ Contradicted(OneOf(first, second), d) =>
@@ -194,7 +238,7 @@ class CompositeProver[D: Monoid] {
     provedProvers(results).contains(prover) || {
       prover match {
         case AnyOf(provers) => provers.exists(p => isProved(results, p))
-        case BothOf(first, second) =>
+        case BothOf(first, second, _) =>
           isProved(results, first) && isProved(results, second)
         case Elementary(lp, getData, isSuccess) => false
         case SomeOf(provers)                    => provers.exists(p => isProved(results, p))
@@ -202,6 +246,7 @@ class CompositeProver[D: Monoid] {
           isProved(results, hyp) || isContradicted(results, contra)
         case OneOf(first, second) =>
           isProved(results, first) || isProved(results, second)
+        case MapProof(prover, proofMap) => isProved(results, prover)
       }
     }
 
@@ -209,7 +254,7 @@ class CompositeProver[D: Monoid] {
     contradictedProvers(results).contains(prover) || {
       prover match {
         case AnyOf(provers) => false
-        case BothOf(first, second) =>
+        case BothOf(first, second, _) =>
           isContradicted(results, first) || isContradicted(results, second)
         case Elementary(lp, getData, isSuccess) => false
         case SomeOf(provers)                    => false
@@ -217,6 +262,7 @@ class CompositeProver[D: Monoid] {
           isProved(results, contra) || isContradicted(results, hyp)
         case OneOf(first, second) =>
           isContradicted(results, first) && isContradicted(results, second)
+        case MapProof(prover, proofMap) => isContradicted(results, prover)
       }
     }
 
@@ -230,10 +276,10 @@ class CompositeProver[D: Monoid] {
         case AnyOf(provers) =>
           val ps = provers.filterNot(p => isContradicted(results, p))
           if (ps.nonEmpty) Some(AnyOf(ps)) else None
-        case BothOf(first, second) =>
+        case BothOf(first, second, zp) =>
           val c1 = isContradicted(results, first)
           val c2 = isContradicted(results, second)
-          if (c1 || c2) None else Some(BothOf(first, second))
+          if (c1 || c2) None else Some(BothOf(first, second, zp))
         case el @ Elementary(lp, getData, isSuccess) => Some(el)
         case SomeOf(provers) =>
           val ps = provers.filterNot(p => isContradicted(results, p))
@@ -246,11 +292,15 @@ class CompositeProver[D: Monoid] {
           val c1 = isContradicted(results, first)
           val c2 = isContradicted(results, second)
           (c1, c2) match {
-            case (true, true)   => None
-            case (true, false)  => Some(second)
-            case (false, true)  => Some(first)
-            case (false, false) => Some(BothOf(first, second))
+            case (true, true)  => None
+            case (true, false) => Some(second)
+            case (false, true) => Some(first)
+            case (false, false) =>
+              Some(BothOf(first, second, { case (t1: Term, t2: Term) => None }))
           }
+        case MapProof(prover, proofMap) =>
+          if (isContradicted(results, prover)) None
+          else Some(MapProof(prover, proofMap))
       }
 
 }
@@ -317,16 +367,27 @@ object TermProver extends CompositeProver[TermResult] {
   ): Task[Prover] =
     skolemize(typ) match {
       case pt: ProdTyp[u, v] =>
+        def zp(x: Term, y: Term) =
+          if (x.typ == pt.first && y.typ == pt.second) Some(PairTerm(x, y))
+          else None
         for {
           p1 <- typProver(lp, pt.first, instances, varWeight)
           p2 <- typProver(lp, pt.second, instances, varWeight)
-        } yield BothOf(p1, p2)
+        } yield BothOf(p1, p2, zp)
       case pt: PlusTyp[u, v] =>
+        def map1(t: Term): Option[Term] =
+          if (t.typ == pt.first) Some(pt.i(t.asInstanceOf[u])) else None
+        def map2(t: Term): Option[Term] =
+          if (t.typ == pt.second) Some(pt.j(t.asInstanceOf[v])) else None
         for {
           p1 <- xorProver(lp, pt.first, instances, varWeight)
           p2 <- xorProver(lp, pt.second, instances, varWeight)
-        } yield OneOf(p1, p2)
+        } yield OneOf(MapProof(p1, map1), MapProof(p2, map2))
       case pd: PiDefn[u, v] =>
+        def viaZero(t: Term): Option[Term] =
+          if (t.typ == pd.domain ->: Zero)
+            Some(pd.variable :-> vacuous(pd.value)(fold(t)(pd.variable))) // should improve to negate
+          else None
         for {
           p1 <- xorProver(lp, negate(pd.domain), instances, varWeight)
           p2 <- typProver(
@@ -335,9 +396,13 @@ object TermProver extends CompositeProver[TermResult] {
             instances,
             varWeight
           )
-        } yield OneOf(p1, p2)
+        } yield OneOf(MapProof(p1, viaZero), p2)
       case ft: FuncTyp[u, v] =>
         val x = ft.dom.Var
+        def viaZero(t: Term): Option[Term] =
+          if (t.typ == ft.dom ->: Zero)
+            Some(x :-> vacuous(ft.codom)(fold(t)(x))) // should improve to negate
+          else None
         for {
           p1 <- xorProver(lp, negate(ft.dom), instances, varWeight)
           p2 <- typProver(
@@ -346,17 +411,22 @@ object TermProver extends CompositeProver[TermResult] {
             instances,
             varWeight
           )
-        } yield OneOf(p1, p2)
+        } yield OneOf(MapProof(p1, viaZero), p2)
       case st: SigmaTyp[u, v] =>
         val proversT = instances(st.fibers.dom).flatMap { wxs =>
           Task.gather(wxs.map {
             case Weighted(x, p) =>
+              val target = st.fibers(x.asInstanceOf[u])
+              def map(t: Term): Option[Term] =
+                if (t.typ == target)
+                  Some(st.paircons(x.asInstanceOf[u])(t.asInstanceOf[v]))
+                else None
               xorProver(
                 lp.scaleLimit(p).sharpen(p),
-                st.fibers(x.asInstanceOf[u]),
+                target,
                 instances,
                 varWeight
-              )
+              ).map(p => MapProof(p, map))
           })
         }
         proversT.map(AnyOf(_))
@@ -367,34 +437,42 @@ object TermProver extends CompositeProver[TermResult] {
     }
 
   def backwardProver(
-      ft: Typ[Term],
+      func: Term,
       lp: LocalProverStep,
       typ: Typ[Term],
       instances: Typ[Term] => Task[Vector[Weighted[Term]]],
-      varWeight : Double
-  ) : Task[Option[Prover]] = ft match {
-    case ftp:  FuncTyp[u, v] =>
-      if (ftp.codom == typ) typProver(lp, ftp.dom, instances, varWeight).map(Option(_))
-      else 
-        for {
-          arg <- typProver(lp, ftp.dom, instances, varWeight)
-          tailOpt <- backwardProver(ftp.codom, lp, typ, instances, varWeight) 
-        } yield tailOpt.map(tail => BothOf(arg, tail))
-    case pd : PiDefn[u, v] =>
-        if (pd.value == typ) typProver(lp, pd.domain, instances, varWeight).map(Option(_))
-        else 
+      varWeight: Double
+  ): Task[Option[Prover]] = func.typ match {
+    case ftp: FuncTyp[u, v] =>
+      if (ftp.codom == typ)
         {
-          val proversT = instances(pd.domain).flatMap { wxs =>
+          def map(t: Term) : Option[Term] = if (t.typ == ftp.domain) Some(fold(func)(t)) else None
+          typProver(lp, ftp.dom, instances, varWeight).map(MapProof(_, map)).map(Option(_))}
+      else
+          {
+            val x = ftp.dom.Var
+            def zip(a: Term, b: Term) : Option[Term] = if (a.typ == ftp.dom && b.typ == ftp.codom) Some(b.replace(x, a)) else None
+        for {
+          arg     <- typProver(lp, ftp.dom, instances, varWeight)
+          tailOpt <- backwardProver(fold(func)(x), lp, typ, instances, varWeight)
+        } yield tailOpt.map(tail => BothOf(arg, tail, zip))
+      }
+    case pd: PiDefn[u, v] =>
+      if (pd.value == typ)
+        typProver(lp, pd.domain, instances, varWeight).map(Option(_))
+      else {
+        val proversT = instances(pd.domain).flatMap { wxs =>
           Task.gather(wxs.map {
             case Weighted(x, p) =>
-            val target = pd.value.replace(pd.variable, x)
-             backwardProver(target, lp, typ, instances, varWeight)
-            }
-              )       
+              val target = pd.value.replace(pd.variable, x)
+              backwardProver(target, lp, typ, instances, varWeight)
+          })
+        }
+        proversT.map(
+          ps => if (ps.flatten.nonEmpty) Some(AnyOf(ps.flatten)) else None
+        )
       }
-      proversT.map(ps => if (ps.flatten.nonEmpty) Some(AnyOf(ps.flatten)) else None )
-    }
-        
+
     case _ => Task.now(None)
   }
 
