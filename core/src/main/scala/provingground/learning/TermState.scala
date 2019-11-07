@@ -214,7 +214,7 @@ import TermGeneratorNodes._
       Context.AppendVariable(context, x)
     )
 
-  def contextExport(ctx: Context) =
+  def contextExport(ctx: Context = context) =
     TermState(
       terms.map(ctx.exportStrict(_)),
       typs.map(ctx.exportTypStrict(_)),

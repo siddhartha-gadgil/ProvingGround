@@ -266,7 +266,7 @@ object TermData {
   }
 
   def termData(lp: LocalProverStep) =
-    Task.parZip2(lp.nextState, lp.equationNodes)
+    Task.parZip2(lp.nextState.map(_.contextExport()), lp.equationNodes)
 
   def termSuccess(typ: Typ[Term]): TermResult => Boolean = {
     case (ts, _) => ts.terms.support.exists(_.typ == typ)
