@@ -857,7 +857,7 @@ object HoTT {
           val b    = st.fib.variable
           val Q    = st.fib.value
           val beta = (pd.domain ->: st.fib.dom).Var
-          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
+          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta(a)))))
         case tp => PiDefn(pd.variable, tp)
       }
     case ft: FuncTyp[u, v] =>
@@ -872,7 +872,7 @@ object HoTT {
           val b    = st.fib.variable
           val Q    = st.fib.value
           val beta = (ft.domain ->: st.fib.dom).Var
-          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta))))
+          SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta(a)))))
         case typ: Typ[x] => ft.dom ->: typ
       }
     case typ => typ
