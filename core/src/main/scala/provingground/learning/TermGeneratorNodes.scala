@@ -10,6 +10,7 @@ import GeneratorNode._
 import TermRandomVars._
 
 import TermGeneratorNodes._
+import ExstInducStrucs._
 
 /**
   * Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications,
@@ -399,35 +400,6 @@ object TermGeneratorNodes {
   def domainForDefn(ind: ExstInducDefn): Option[GeneratorNode[Term]] =
     domainForStruct(ind.ind, ind.typFamily, ind)
 
-  /**
-    * Helper for generating domains targeting a specifed type
-    *  for a given inductive structure, with an inductive definition also given.
-    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
-    */
-  def goalDomainFmly(
-      ind: ExstInducStrucs,
-      fmly: Term,
-      target: Typ[Term]
-  ): Option[(Term, Term)] =
-    (ind, fmly, target) match {
-      case (_: ExstInducStrucs.OrElse, _, _) => None
-      case (
-          ExstInducStrucs.LambdaInduc(variable, structure),
-          fn: FuncLike[u, v],
-          _
-          ) if variable.typ == fn.dom =>
-        val x = fn.dom.Var
-        goalDomainFmly(
-          structure.subs(variable, x),
-          fn(x.asInstanceOf[u]),
-          target
-        )
-      case (ExstInducStrucs.LambdaInduc(_, _), _, _) => None
-      case (_, dom, targ) =>
-        for {
-          tp <- getTypFamily(dom, targ)
-        } yield dom -> tp
-    }
 
   /**
     * Node family for generating domains for a given inductive structure, with an inductive definition also given.

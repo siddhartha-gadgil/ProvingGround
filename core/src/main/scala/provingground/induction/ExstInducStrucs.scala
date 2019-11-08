@@ -5,6 +5,7 @@ import shapeless._
 import scala.language.existentials
 
 import scala.util.Try
+
 /**
   * term level inductive structures for runtime contexts
   */
@@ -20,13 +21,23 @@ trait ExstInducStrucs {
   def ||(that: ExstInducStrucs) = ExstInducStrucs.OrElse(this, that)
 }
 
-case class ExstInducDefn(typFamily: Term,
-                         intros: Vector[Term],
-                         ind: ExstInducStrucs) {
+case class ExstInducDefn(
+    typFamily: Term,
+    intros: Vector[Term],
+    ind: ExstInducStrucs
+) {
   def subs(x: Term, y: Term) =
-    ExstInducDefn(typFamily.replace(x, y),
-                  intros.map(_.replace(x, y)),
-                  ind.subs(x, y))
+    ExstInducDefn(
+      typFamily.replace(x, y),
+      intros.map(_.replace(x, y)),
+      ind.subs(x, y)
+    )
+
+  def getRecFunc(target: Typ[Term]) : Option[Term] = 
+    ExstInducStrucs.goalDomainFmly(ind, typFamily, target).flatMap{
+      case (dom, cod: Typ[Term]) => ind.recOpt(dom, cod) orElse(ind.inducOpt(dom, cod))
+      case (dom, cod) => ind.inducOpt(dom, cod)
+    }
 
   def introsTypGroups: Map[Typ[Term], Int] =
     intros.map((x) => x.typ).groupBy(identity).mapValues(_.size)
@@ -39,6 +50,37 @@ case class ExstInducDefn(typFamily: Term,
 }
 
 object ExstInducStrucs {
+
+  /**
+    * Helper for generating domains targeting a specifed type
+    *  for a given inductive structure, with an inductive definition also given.
+    * Examples of domains are `Nat`, `Vec(A)` and `Fin`.
+    */
+  def goalDomainFmly(
+      ind: ExstInducStrucs,
+      fmly: Term,
+      target: Typ[Term]
+  ): Option[(Term, Term)] =
+    (ind, fmly, target) match {
+      case (_: ExstInducStrucs.OrElse, _, _) => None
+      case (
+          ExstInducStrucs.LambdaInduc(variable, structure),
+          fn: FuncLike[u, v],
+          _
+          ) if variable.typ == fn.dom =>
+        val x = fn.dom.Var
+        goalDomainFmly(
+          structure.subs(variable, x),
+          fn(x.asInstanceOf[u]),
+          target
+        )
+      case (ExstInducStrucs.LambdaInduc(_, _), _, _) => None
+      case (_, dom, targ) =>
+        for {
+          tp <- getTypFamily(dom, targ)
+        } yield dom -> tp
+    }
+
   import translation.TermPatterns.fm
 
   case class OrElse(first: ExstInducStrucs, second: ExstInducStrucs)
@@ -101,14 +143,12 @@ object ExstInducStrucs {
       intros
     )
 
-  case class IndConsSeqExst[SS <: HList,
-                            H <: Term with Subs[H],
-                            F <: Term with Subs[F],
-                            Index <: HList: TermList,
-                            Intros <: HList](
+  case class IndConsSeqExst[SS <: HList, H <: Term with Subs[H], F <: Term with Subs[
+    F
+  ], Index <: HList: TermList, Intros <: HList](
       cs: IndexedConstructorSeqDom[SS, H, F, Index, Intros],
-      intros: Vector[Term])
-      extends ExstInducStrucs {
+      intros: Vector[Term]
+  ) extends ExstInducStrucs {
     val fmly: Term = cs.W
 
     def subs(x: Term, y: Term): ExstInducStrucs =
@@ -152,10 +192,10 @@ object ExstInducStrucs {
     def inducOpt(dom: Term, cod: Term): Option[Term] =
       dom match {
         case pt: ProdTyp[u, v] =>
-          val x    = pt.first.Var
-          val y    = pt.second.Var
-          for{
-            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+          val x = pt.first.Var
+          val y = pt.second.Var
+          for {
+            tp <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
             fmly = x :-> (y :-> tp)
           } yield pt.induc(fmly)
         case Unit =>
@@ -163,10 +203,10 @@ object ExstInducStrucs {
         case pt: PlusTyp[u, v] =>
           Some(pt.induc(fm(pt, cod)))
         case pt: SigmaTyp[u, v] =>
-          val x    = pt.fibers.dom.Var
-          val y    = pt.fibers(x).Var
-          for{
-            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+          val x = pt.fibers.dom.Var
+          val y = pt.fibers(x).Var
+          for {
+            tp <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
             fmly = x :-> (y :-> tp)
           } yield pt.induc(fmly)
         case _ =>
@@ -201,10 +241,10 @@ object ExstInducStrucs {
     def inducOpt(dom: Term, cod: Term): Option[Term] =
       dom match {
         case pt: ProdTyp[u, v] =>
-          val x    = pt.first.Var
-          val y    = pt.second.Var
-          for{
-            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+          val x = pt.first.Var
+          val y = pt.second.Var
+          for {
+            tp <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
             fmly = x :-> (y :-> tp)
           } yield pt.induc(fmly)
         case Zero =>
@@ -214,10 +254,10 @@ object ExstInducStrucs {
         case pt: PlusTyp[u, v] =>
           Some(pt.induc(fm(pt, cod)))
         case pt: SigmaTyp[u, v] =>
-          val x    = pt.fibers.dom.Var
-          val y    = pt.fibers(x).Var
-          for{
-            tp  <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
+          val x = pt.fibers.dom.Var
+          val y = pt.fibers(x).Var
+          for {
+            tp <- Try(fold(fold(cod)(x))(y).asInstanceOf[Typ[Term]]).toOption
             fmly = x :-> (y :-> tp)
           } yield pt.induc(fmly)
         case idt: IdentityTyp[u] =>
@@ -226,7 +266,9 @@ object ExstInducStrucs {
               idt.dom,
               cod
                 .asInstanceOf[
-                  FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]])
+                  FuncLike[u, FuncLike[u, FuncLike[Equality[u], Typ[Term]]]]
+                ]
+            )
           )
         case _ =>
           None
