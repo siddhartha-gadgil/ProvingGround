@@ -843,7 +843,7 @@ object HoTT {
 
   val skolemize: Typ[Term] => Typ[Term] = {
     case pd: ProdTyp[u, v] => skolemize(pd.first) && skolemize(pd.second)
-    case st: SigmaTyp[u, v] =>
+    case st: SigmaTyp[u, v] => // should also skolemize first component 
       SigmaTyp(st.fib.variable :-> skolemize(st.fib.value))
     case pd: PiDefn[u, v] =>
       skolemize(pd.value) match {
@@ -876,6 +876,21 @@ object HoTT {
         case typ: Typ[x] => ft.dom ->: typ
       }
     case typ => typ
+  }
+
+  def fromSkolemized(typ: Typ[Term])(y : Term) : Term = {
+    require(y.typ == skolemize(typ), s"$y does not have skoemized type ${skolemize(typ)} of $typ")
+    typ match {
+      case pd: ProdTyp[u, v] => y match {
+        case PairTerm(first: Term, second: Term) => PairTerm(fromSkolemized(pd.first)(first), fromSkolemized(pd.second)(second))
+        case _ => throw new Exception(s"$y does not have skoemized type ${skolemize(typ)} of $typ")
+      }
+      case st : SigmaTyp[u, v] => y match {
+        case DepPair(a: Term, b: Term, f) => pair(a, fromSkolemized(st.fibers(a.asInstanceOf[u]))(b) )
+        case _ => throw new Exception(s"$y does not have skoemized type ${skolemize(typ)} of $typ")
+      }
+      case _ => y
+    }
   }
 
   /**
