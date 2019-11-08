@@ -315,8 +315,12 @@ object TermData {
     val empty = (TermState.zero, Set())
   }
 
-  def termData(lp: LocalProverStep) =
-    Task.parZip2(lp.nextState.map(_.contextExport()), lp.equationNodes)
+  def termData(lp: LocalProverStep) : Task[TermResult] =
+    for {
+      ns <- lp.nextState
+      ev <- lp.expressionEval
+      ev1 = ExpressionEval.export(ev, ns.vars)
+    } yield (ns.contextExport(), ev.equations.flatMap(Equation.split(_)))
 
   def termSuccess(typ: Typ[Term]): TermResult => Boolean = {
     case (ts, _) => ts.terms.support.exists(_.typ == typ)
