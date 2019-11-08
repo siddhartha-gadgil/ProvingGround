@@ -171,25 +171,37 @@ class CompositeProver[D: Monoid] {
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       AnyOf(provers.map(_.lpModify(fn)))
 
-    val result: Task[Result] = sequenceResult(provers, empty, Set())
+    val result: Task[Result] = sequenceResult(provers, empty, Set()).memoize
 
     val successTerms: Task[Set[HoTT.Term]] =
       Task
         .gather(provers.toSet.map((p: Prover) => p.successTerms))
-        .map(_.flatten)
+        .map(_.flatten).memoize
   }
 
-  // Don's use this, use the `proveSome` method instead
+  def combineResults(x: Result, y: Result) = (x, y) match {
+    case (Proved(r1, d1), Proved(r2, d2)) => Proved(BothOf(r1, r2, {case (x: Term, y: Term) => None} ), d1 |+| d2)
+    case (Proved(r1, d1), r2) => Proved(r1, d1 |+| r2.data)
+    case (r2, Proved(r1, d1)) => Proved(r1, d1 |+| r2.data)
+    case (Unknown(d1, p1), Unknown(d2, p2)) => Unknown(d1 |+| d2, p1 union(p2))
+    case (Unknown(d1, p1), r2 ) => Unknown(d1 |+| r2.data, p1)
+    case (r1, Unknown(d2, p2)) => Unknown(r1.data |+| d2, p2)
+    case (r1, r2) => Unknown(r1.data |+| r2.data, Set())
+  }
+
+  def mergeResults(res: Iterable[Result]) = res.fold(Unknown(empty, Set()))(combineResults(_, _))
+
   case class SomeOf(provers: Vector[Prover]) extends Prover {
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
       SomeOf(provers.map(_.lpModify(fn)))
 
-    val result: Task[Result] = sequenceResult(provers, empty, Set())
+    val result: Task[Result] = 
+      Task.gather(provers.map(_.result)).map(mergeResults(_)).memoize
 
     val successTerms: Task[Set[HoTT.Term]] =
       Task
         .gather(provers.toSet.map((p: Prover) => p.successTerms))
-        .map(_.flatten)
+        .map(_.flatten).memoize
   }
 
   def proveSome(
