@@ -58,11 +58,14 @@ class CompositeProver[D: Monoid] {
   case class Elementary(
       lp: LocalProverStep,
       getData: LocalProverStep => Task[D],
-      isSuccess: D => Boolean
+      isSuccess: D => Task[Boolean]
   ) extends Prover {
     lazy val result =
-      getData(lp).map { d =>
-        if (isSuccess(d)) Proved(this, d) else Unknown(d, Set())
+      getData(lp).flatMap { d =>
+        isSuccess(d).map{
+            case true => Proved(this, d) 
+            case false => Unknown(d, Set())
+        }
       }
 
     def lpModify(fn: LocalProverStep => LocalProverStep): Prover =
@@ -354,8 +357,8 @@ object TermData {
       ev1 = ExpressionEval.export(ev, ns.vars)
     } yield (ns.contextExport(), ev.equations.flatMap(Equation.split(_)))
 
-  def termSuccess(typ: Typ[Term]): TermResult => Boolean = {
-    case (ts, _) => ts.terms.support.exists(_.typ == typ)
+  def termSuccess(typ: Typ[Term]): TermResult => Task[Boolean] = {
+    case (ts, _) => Task(ts.terms.support.exists(_.typ == typ))
   }
 
 }
