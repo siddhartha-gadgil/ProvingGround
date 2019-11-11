@@ -583,8 +583,14 @@ object HoTT {
     case fx: ApplnSym[w, u] =>
       val fn = fx.func.replace(x, y)
       Try {
+        // pprint.log(fx.arg)
+        // pprint.log(x)
+        // pprint.log(y)
         val z = fx.arg.replace(x, y).asInstanceOf[w]
-        fn(z)
+        // pprint.log(z)
+        val result = fn(z)
+        // pprint.log(result)
+        result
       }.toOption
     case _ => None
   }
@@ -766,7 +772,7 @@ object HoTT {
     case st: SigmaTyp[u, v] =>
       val x = st.fibers.dom.Var
       val y = st.fibers(x)
-      PiDefn(x, negate(y))
+      x ~>: negate(y)
     case Unit => Zero
     case Zero => Unit
     case tp   => tp ->: Zero
@@ -781,11 +787,11 @@ object HoTT {
         val f = ft.Var
         val x = ft.dom.Var
         if (ft.codom == Zero) {
-          f :~> x :~> f(x)
+          f :~> (x :~> f(x))
         } else {
           val nb = negate(ft.codom).Var
           val p  = pair(x, nb)
-          f :~> p :~> fold(negateContra(ft.codom))(f(x), nb)
+          f :~> (p :~> fold(negateContra(ft.codom))(f(x), nb))
         }
       case pt: PlusTyp[u, v] =>
         val b   = pt.first.Var
@@ -795,8 +801,8 @@ object HoTT {
         val np  = pair(nb, nc)
         val Neg = ProdTyp(negate(pt.first), negate(pt.second))
         fold(pt.rec(Neg ->: Zero))(
-          b :~> np :~> fold(negateContra(pt.first))(b, nb),
-          c :~> np :~> fold(negateContra(pt.second))(c, nc)
+          b :~> (np :~> fold(negateContra(pt.first))(b, nb)),
+          c :~> (np :~> fold(negateContra(pt.second))(c, nc))
         )
       case pd: ProdTyp[u, v] =>
         val Neg = PlusTyp(negate(pd.first), negate(pd.second))
@@ -816,18 +822,32 @@ object HoTT {
         val np  = Neg.Var
         val a   = np.first
         val z   = np.second
-        f :~> np :~> fold(negateContra(pt.value.replace(pt.variable, a)))(
+        f :~> (np :~> fold(negateContra(pt.value.replace(pt.variable, a)))(
           f(a),
           z
-        )
+        ))
       case st: SigmaTyp[u, v] =>
         val x   = st.fibers.dom.Var
         val Px  = st.fibers(x)
-        val Neg = PiDefn(x, negate(Px))
+        val Neg = x ~>: negate(Px)
+        pprint.log(Neg)
         val y   = Px.Var
         val p   = mkPair(x, y)
+        pprint.log(p)
+        val z = negateContra(Px)
+        pprint.log(z)
+        pprint.log(y)
         val f   = Neg.Var
-        p :~> f :~> fold(negateContra(Px))(y, f(x))
+        pprint.log(f)
+        println(f)
+        println(f.typ)
+        pprint.log(x)
+        println(x)
+        val fx = f(x)
+        pprint.log(fx)
+        val targ = fold(z)(y, fx)
+        pprint.log(targ)
+        p :~> (f :~>  targ )
       case Unit =>
         val x = Unit.Var
         val y = Zero.Var
@@ -835,13 +855,13 @@ object HoTT {
       case Zero =>
         val x = Unit.Var
         val y = Zero.Var
-        y :~> x :~> y
+        y :~> (x :~> y)
       case tp =>
         val x = tp.Var
         val y = (tp ->: Zero).Var
-        x :~> y :~> (y(x))
+        x :~> (y :~> (y(x)))
     }
-  }.ensuring(proof => proof.typ == typ ->: (negate(typ) ->: Zero))
+  }//.ensuring(proof => proof.typ == typ ->: (negate(typ) ->: Zero))
 
   val skolemize: Typ[Term] => Typ[Term] = {
     case pd: ProdTyp[u, v] => skolemize(pd.first) && skolemize(pd.second)
@@ -919,7 +939,10 @@ object HoTT {
             val l2 = fromSkolemized(PiDefn(pd.variable, pt.second))(
               fold(yTyp.proj2)(y)
             )
-            pd.variable :~> pair(fold(l1)(pd.variable), fold(l2)(pd.variable))
+            pd.variable :~>
+              fromSkolemized(pd.value)(
+                pair(fold(l1)(pd.variable), fold(l2)(pd.variable))
+              )
           case st: SigmaTyp[x, y] =>
             val a    = pd.variable
             val b    = st.fib.variable
@@ -931,34 +954,42 @@ object HoTT {
             val l1    = fold(yTyp.proj1)(y)
             val l2Typ = pd.variable ~>: Q.replace(b, fold(l1)(pd.variable))
             val l2    = fromSkolemized(l2Typ)(fold(yTyp.proj2)(y))
-            pd.variable :~> mkPair(fold(l1)(pd.variable), fold(l2)(pd.variable))
+            pd.variable :~>
+              fromSkolemized(pd.value)(
+                mkPair(fold(l1)(pd.variable), fold(l2)(pd.variable))
+              )
           case tp =>
             val yy = fold(y)(pd.variable) // y must be a function
             pd.variable :~> fromSkolemized(pd.value)(yy)
         }
       case ft: FuncTyp[u, v] =>
-        ft.codom match {
+        skolemize(ft.codom) match {
           case pt: ProdTyp[x, y] =>
             val yTyp = ProdTyp(
               skolemize(ft.dom ->: pt.first),
               skolemize(ft.dom ->: pt.second)
             )
-          val l1 = fromSkolemized(ft.dom ->: pt.first)(fold(yTyp.proj1)(y))
-          val l2 = fromSkolemized(ft.dom ->: pt.second)(fold(yTyp.proj2)(y))
-          val x = ft.dom.Var
-          x :-> pair(fold(l1)(x), fold(l2)(x))
+            val l1 = fromSkolemized(ft.dom ->: pt.first)(fold(yTyp.proj1)(y))
+            val l2 = fromSkolemized(ft.dom ->: pt.second)(fold(yTyp.proj2)(y))
+            val x  = ft.dom.Var
+            x :-> fromSkolemized(ft.codom)(pair(fold(l1)(x), fold(l2)(x)))
           case st: SigmaTyp[x, y] =>
             val a    = ft.dom.Var
             val b    = st.fib.variable
             val Q    = st.fib.value
             val beta = (ft.domain ->: st.fib.dom).Var
-            val yTyp = SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta(a)))))
+            val yTyp = SigmaTyp(
+              beta :-> skolemize(PiDefn(a, Q.replace(b, beta(a))))
+            )
             val l1    = fold(yTyp.proj1)(y)
-            val x = ft.dom.Var
+            val x     = ft.dom.Var
             val l2Typ = x ~>: Q.replace(b, fold(l1)(x))
             val l2    = fromSkolemized(l2Typ)(fold(yTyp.proj2)(y))
-            x :-> mkPair(fold(l1)(x), fold(l2)(x))
-          case typ: Typ[x] => ft.dom ->: typ
+            x :-> fromSkolemized(ft.codom)(mkPair(fold(l1)(x), fold(l2)(x)))
+          case typ: Typ[x] => 
+            val x = ft.dom.Var 
+            val yy = fold(x)(y)
+            x :-> fromSkolemized(ft.codom)(yy)
         }
       case _ => y
     }
@@ -2587,9 +2618,9 @@ object HoTT {
   ) extends FuncLike[W, U]
       with Symbolic {
 
-    val dom: Typ[W] = variable.typ.asInstanceOf[Typ[W]]
+    lazy val dom: Typ[W] = variable.typ.asInstanceOf[Typ[W]]
 
-    val depcodom: W => Typ[U] = (arg: W) => value.replace(variable, arg)
+    lazy val depcodom: W => Typ[U] = (arg: W) => value.replace(variable, arg)
 
     lazy val typ = PiDefn(variable, value)
 
