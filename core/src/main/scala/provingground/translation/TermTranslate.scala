@@ -36,7 +36,9 @@ object FansiTranslate {
         ) ++ LightRed("{ ") ++ value ++ LightRed(" }"))
     } || sigmaTriple >>> {
       case ((variable, typ), value) =>
-        (Cyan(Str(syms.Sigma)) ++ LightYellow("(") ++ variable ++ Yellow(" : ") ++ LightRed(
+        (Cyan(Str(syms.Sigma)) ++ LightYellow("(") ++ variable ++ Yellow(" : ") ++ typ ++ LightYellow(
+          ")"
+        ) ++ LightRed(
           "{ "
         ) ++ value ++ LightRed(" }"))
     } || universe >>> { (_) =>
