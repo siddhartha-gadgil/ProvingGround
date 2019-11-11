@@ -99,7 +99,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
     println("Include in a Jupyter (almond) notebook:")
     println(
 s"""
-import ${"$"}os.copybin.`$hashName`
+import ${"$"}cp.bin.`$hashName`
 import provingground._ , interface._, HoTT._, learning._ 
 repl.pprinter() = {
   val p = repl.pprinter()
