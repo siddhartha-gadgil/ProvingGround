@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>Putnum</title>
+<title>2019-11-12-Achal-Putnum</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13116,15 +13116,19 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="A-proof-by-identifying-Lemmas">A proof by identifying Lemmas<a class="anchor-link" href="#A-proof-by-identifying-Lemmas">&#182;</a></h2>
+<p>This is the first pass at annotating Achal Kumar's solution to the Putnam problem. Here we will not explore alternative runs, but mostly add notes with a little cleaning up. Some general observations:</p>
+<ul>
+<li>Tangent provers were not used.</li>
+<li>Most of the choices were instantiations and possibly dropping generation with operations.</li>
+</ul>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Credits:</strong> This is work of Achal Kumar.</p>
-
+<h2 id="A-proof-by-identifying-Lemmas">A proof by identifying Lemmas<a class="anchor-link" href="#A-proof-by-identifying-Lemmas">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -13155,7 +13159,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-c30de0f4e0.fat.jar`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-686ded3e77.fat.jar`</span>
 <span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
 <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
   <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
@@ -13200,9 +13204,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span>
-<span class="k">import</span> <span class="nn">learning._</span>
-<span class="k">import</span> <span class="nn">library._</span><span class="o">,</span> <span class="nc">MonoidSimple</span><span class="o">.</span><span class="k">_</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">library._</span><span class="o">,</span> <span class="nc">MonoidSimple</span><span class="o">.</span><span class="k">_</span>
 </pre></div>
 
     </div>
@@ -13221,11 +13223,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">learning._
-</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">library._, MonoidSimple._</span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">library._, MonoidSimple._</span></pre>
 </div>
 
 </div>
@@ -13233,14 +13231,6 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Here we add the different distributions with each distrtibution  focusing attention on differtent thing then these are used in succession to generate lemmas</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13249,26 +13239,20 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">M</span> <span class="k">=</span> <span class="s">&quot;M&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
 
-  <span class="k">val</span> <span class="n">eqM</span> <span class="k">=</span> <span class="s">&quot;eqM&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="nc">Type</span>
+<span class="k">val</span> <span class="n">eqM</span> <span class="k">=</span> <span class="s">&quot;eqM&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="nc">Type</span>
 
-  <span class="c1">// val sym = IdentityTyp.symm(M)</span>
-  <span class="c1">//</span>
-  <span class="c1">// val trans = IdentityTyp.trans(M)</span>
+<span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="s">&quot;a&quot;</span> <span class="o">::</span> <span class="n">M</span>
+<span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="s">&quot;b&quot;</span> <span class="o">::</span> <span class="n">M</span>
+<span class="k">val</span> <span class="n">c</span> <span class="k">=</span> <span class="s">&quot;c&quot;</span> <span class="o">::</span> <span class="n">M</span>
 
-  <span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="s">&quot;a&quot;</span> <span class="o">::</span> <span class="n">M</span>
-  <span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="s">&quot;b&quot;</span> <span class="o">::</span> <span class="n">M</span>
-  <span class="k">val</span> <span class="n">c</span> <span class="k">=</span> <span class="s">&quot;c&quot;</span> <span class="o">::</span> <span class="n">M</span>
+<span class="k">val</span> <span class="n">m</span> <span class="k">=</span> <span class="s">&quot;m&quot;</span> <span class="o">::</span> <span class="n">M</span>
 
+<span class="k">val</span> <span class="n">n</span> <span class="k">=</span> <span class="s">&quot;n&quot;</span> <span class="o">::</span> <span class="n">M</span>
 
+<span class="k">val</span> <span class="n">op</span> <span class="k">=</span> <span class="s">&quot;mul&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span>
+<span class="k">val</span> <span class="n">pl</span> <span class="k">=</span> <span class="s">&quot;plus&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span>
 
-  <span class="k">val</span> <span class="n">m</span> <span class="k">=</span> <span class="s">&quot;m&quot;</span> <span class="o">::</span> <span class="n">M</span>
-
-  <span class="k">val</span> <span class="n">n</span> <span class="k">=</span> <span class="s">&quot;n&quot;</span> <span class="o">::</span> <span class="n">M</span>
-
-  <span class="k">val</span> <span class="n">op</span> <span class="k">=</span> <span class="s">&quot;mul&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span>
-  <span class="k">val</span> <span class="n">pl</span> <span class="k">=</span> <span class="s">&quot;plus&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span>
-
-  <span class="k">import</span> <span class="nn">FineDeducer.unif</span>
+<span class="k">import</span> <span class="nn">FineDeducer.unif</span>
 </pre></div>
 
     </div>
@@ -13296,9 +13280,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <span class="ansi-cyan-fg">n</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">n</span>
 <span class="ansi-cyan-fg">op</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">mul</span>
 <span class="ansi-cyan-fg">pl</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">plus</span>
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">FineDeducer.unif
-
- </span></pre>
+<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">FineDeducer.unif</span></pre>
 </div>
 
 </div>
@@ -13306,6 +13288,14 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have imported from the Monoid library, which has many things in common with the current problem.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13366,20 +13356,26 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above is the basic generating model. This has no instantiations. It is not clear whether various instantiations are used, so we will define them if needed.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tputn</span><span class="k">:</span> <span class="kt">FiniteDistribution</span><span class="o">[</span><span class="kt">Term</span><span class="o">]</span> <span class="k">=</span> <span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span> <span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">private</span> <span class="k">val</span> <span class="n">t3putn</span><span class="k">:</span> <span class="kt">FiniteDistribution</span><span class="o">[</span><span class="kt">Term</span><span class="o">]</span> <span class="k">=</span> <span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span> <span class="n">op</span><span class="o">,</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">),</span> <span class="n">eqM</span><span class="o">)(</span>
     <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">),</span>
     <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">),</span>
     <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)))(</span><span class="n">b</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">)))(</span><span class="n">n</span><span class="o">)</span>
   <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">op</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">t3putn1</span> <span class="k">=</span> <span class="n">t3putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -13398,303 +13394,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tputn</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(
-      <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-      <span class="ansi-green-fg">0.03571428571428571</span>
-    ),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(m)(n))(n))(m)}</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(m)(mul(m)(n)))(n)}</span>, <span class="ansi-green-fg">0.03571428571428571</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.25</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.25</span>)
-  )
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">t2putn</span><span class="k">:</span> <span class="kt">FiniteDistribution</span><span class="o">[</span><span class="kt">Term</span><span class="o">]</span> <span class="k">=</span> <span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span> <span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)))(</span><span class="n">b</span><span class="o">),</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">op</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">t2putn</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.25</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.25</span>)
-  )
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">t3putn</span><span class="k">:</span> <span class="kt">FiniteDistribution</span><span class="o">[</span><span class="kt">Term</span><span class="o">]</span> <span class="k">=</span> <span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span> <span class="n">op</span><span class="o">,</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">),</span> <span class="n">eqM</span><span class="o">)(</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)))(</span><span class="n">b</span><span class="o">),</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">op</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">t3putn</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul(m)(n)</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.25</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.25</span>)
-  )
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">t0putn</span><span class="k">:</span> <span class="kt">FiniteDistribution</span><span class="o">[</span><span class="kt">Term</span><span class="o">]</span> <span class="k">=</span> <span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">),</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">))</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">op</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">t0putn</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.045454545454545456</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(
-      <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-      <span class="ansi-green-fg">0.045454545454545456</span>
-    ),
-    <span class="ansi-yellow-fg">Weighted</span>(
-      <span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(a)(b))(mul(a)(c)))}</span>,
-      <span class="ansi-green-fg">0.045454545454545456</span>
-    ),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.25</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.25</span>)
-  )
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">t0putn1</span> <span class="k">=</span> <span class="n">t0putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-
-  <span class="k">val</span> <span class="n">putn1</span> <span class="k">=</span> <span class="n">putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-  <span class="k">val</span> <span class="n">tputn1</span> <span class="k">=</span> <span class="n">tputn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-  <span class="k">val</span> <span class="n">t2putn1</span> <span class="k">=</span> <span class="n">t2putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-  <span class="k">val</span> <span class="n">t3putn1</span> <span class="k">=</span> <span class="n">t3putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">t0putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(
-      <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-      <span class="ansi-green-fg">0.05263157894736841</span>
-    ),
-    <span class="ansi-yellow-fg">Weighted</span>(
-      <span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(a)(b))(mul(a)(c)))}</span>,
-      <span class="ansi-green-fg">0.05263157894736841</span>
-    ),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.28947368421052627</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.28947368421052627</span>)
-  )
-)
-<span class="ansi-cyan-fg">putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(
-      <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-      <span class="ansi-green-fg">0.047619047619047616</span>
-    ),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.14285714285714285</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.42857142857142855</span>)
-  )
-)
-<span class="ansi-cyan-fg">tputn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(m)(n))(n))(m)}</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(m)(mul(m)(n)))(n)}</span>, <span class="ansi-green-fg">0.04</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.28</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.28</span>)
-  )
-)
-<span class="ansi-cyan-fg">t2putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.28947368421052627</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.28947368421052627</span>)
-  )
-)
-<span class="ansi-cyan-fg">t3putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+<pre><span class="ansi-cyan-fg">t3putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
   <span class="ansi-yellow-fg">Vector</span>(
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.05263157894736841</span>),
@@ -13719,20 +13419,19 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Here we use the distribution which focuses attention on terms  $m$ , $n$ and $m*n$ to generate lemmas where  $m$ , $n$ are the terms we would use to prove the result</p>
+<p>We make the first local prover with the above.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
 <span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">t3putn1</span><span class="o">,</span><span class="n">t3putn1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">))</span>
 <span class="k">val</span> <span class="n">lp</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.000005</span><span class="o">).</span><span class="n">noIsles</span>
-<span class="k">val</span> <span class="n">lem</span> <span class="k">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -13745,7 +13444,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -13832,8 +13531,48 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
         <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.28947368421052627</span>)
       )
     ),
-...
-<span class="ansi-cyan-fg">lem</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We run this, synchronously for now, and get lemmas.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lem</span> <span class="k">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lem</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
   (<span class="ansi-green-fg">eqM(n)(mul(m)(mul(m)(n)))</span>, <span class="ansi-green-fg">3.150279366819256E-4</span>),
   (<span class="ansi-green-fg">eqM(m)(mul(mul(m)(n))(n))</span>, <span class="ansi-green-fg">2.7034870284010703E-4</span>),
   (<span class="ansi-green-fg">eqM(mul(mul(m)(n))(n))(m)</span>, <span class="ansi-green-fg">3.062988293669645E-5</span>),
@@ -13858,22 +13597,24 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>At this stage we make a choice, picking the second and eighth lemma for use. Only the second is used immediately, so we would clearly not get stuck here.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground.</span><span class="o">{</span><span class="nc">FiniteDistribution</span> <span class="k">=&gt;</span> <span class="nc">FD</span><span class="o">}</span>
 <span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="s">&quot;lemma1&quot;</span> <span class="o">::</span> <span class="n">lem</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="n">_1</span>
 <span class="k">val</span> <span class="n">y</span> <span class="k">=</span> <span class="s">&quot;lemma2&quot;</span> <span class="o">::</span> <span class="n">lem</span><span class="o">(</span><span class="mi">7</span><span class="o">).</span><span class="n">_1</span>
-<span class="k">val</span> <span class="n">tputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
-    <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">))</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">x</span> <span class="o">,</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">tputin1</span> <span class="k">=</span> <span class="n">tputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-
-<span class="k">val</span> <span class="n">ts1</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">tputin1</span><span class="o">,</span><span class="n">tputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span> <span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">n</span><span class="o">)))))</span>
-<span class="k">val</span> <span class="n">lp1</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts1</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.000002</span><span class="o">).</span><span class="n">noIsles</span>
-<span class="k">val</span> <span class="n">lem2</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+<span class="n">x</span><span class="o">.</span><span class="n">typ</span>
+<span class="n">y</span><span class="o">.</span><span class="n">typ</span>
 </pre></div>
 
     </div>
@@ -13886,7 +13627,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
@@ -13896,22 +13637,59 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </span>
 <span class="ansi-cyan-fg">x</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma1</span>
 <span class="ansi-cyan-fg">y</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma2</span>
-<span class="ansi-cyan-fg">tputin</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(a)(b))(mul(a)(c)))}</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.16666666666666666</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">lemma1</span>, <span class="ansi-green-fg">0.16666666666666666</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul(m)(n)</span>, <span class="ansi-green-fg">0.16666666666666666</span>)
-  )
-)
-<span class="ansi-cyan-fg">tputin1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+<span class="ansi-cyan-fg">res7_3</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">U</span>] = <span class="ansi-green-fg">eqM(m)(mul(mul(m)(n))(n))</span>
+<span class="ansi-cyan-fg">res7_4</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">U</span>] = <span class="ansi-green-fg">eqM(n)(mul(mul(m)(n))(mul(mul(m)(n))(n)))</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The lemmas we have picked are:</p>
+<ul>
+<li>$l_1 : m = (m * n) * n$</li>
+<li>$l_2 : n = (m * n) * ((m * n) * n)$</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">private</span> <span class="k">val</span> <span class="n">tputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+    <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">))</span>
+  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">x</span> <span class="o">,</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">tputin1</span> <span class="k">=</span> <span class="n">tputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+
+<span class="k">val</span> <span class="n">ts1</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">tputin1</span><span class="o">,</span><span class="n">tputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span> <span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">n</span><span class="o">)))))</span>
+<span class="k">val</span> <span class="n">lp1</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts1</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.000002</span><span class="o">).</span><span class="n">noIsles</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">tputin1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
   <span class="ansi-yellow-fg">Vector</span>(
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.07692307692307693</span>),
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.07692307692307693</span>),
@@ -14003,8 +13781,48 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
       <span class="ansi-yellow-fg">Vector</span>(
         <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM(mul(mul(m)(n))(m))(mul(mul(m)(n))(mul(mul(m)(n))(n)))</span>, <span class="ansi-green-fg">1.0</span>)
       )
-...
-<span class="ansi-cyan-fg">lem2</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have set up our second local prover. This uses the lemma <code>x</code> and also <em>transport of equality under left multiplication</em>, but nothing else.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lem2</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lem2</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
   (
     <span class="ansi-green-fg">eqM(mul(mul(m)(n))(m))(mul(mul(m)(n))(mul(mul(m)(n))(n)))</span>,
     <span class="ansi-green-fg">0.9079462369542685</span>
@@ -14026,6 +13844,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">z</span> <span class="k">=</span> <span class="s">&quot;lemma3&quot;</span> <span class="o">::</span> <span class="n">lem2</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<span class="n">z</span><span class="o">.</span><span class="n">typ</span>
 </pre></div>
 
     </div>
@@ -14044,7 +13863,8 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">z</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma3</span></pre>
+<pre><span class="ansi-cyan-fg">z</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma3</span>
+<span class="ansi-cyan-fg">res11_1</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">U</span>] = <span class="ansi-green-fg">eqM(mul(mul(m)(n))(m))(mul(mul(m)(n))(mul(mul(m)(n))(n)))</span></pre>
 </div>
 
 </div>
@@ -14052,13 +13872,24 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this case <code>z</code> is the overwhelmingly dominant lemma, so natural to pick. It has type:</p>
+<ul>
+<li>$z : (m * n) * m = (m * n) * ((m * n) * n)$</li>
+</ul>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tt2putn</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">private</span> <span class="k">val</span> <span class="n">tt2putn</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
  <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">),</span>
  <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)))(</span><span class="n">b</span><span class="o">)</span>
   <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
@@ -14066,8 +13897,6 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <span class="k">val</span> <span class="n">ts2</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">tt2putn1</span><span class="o">,</span><span class="n">tt2putn1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))))</span>
 <span class="k">val</span> <span class="n">lp2</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts2</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
-
-<span class="k">val</span> <span class="n">lem3</span> <span class="k">=</span> <span class="n">lp2</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -14086,22 +13915,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tt2putn</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.25</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul(m)(n)</span>, <span class="ansi-green-fg">0.25</span>)
-  )
-)
-<span class="ansi-cyan-fg">tt2putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+<pre><span class="ansi-cyan-fg">tt2putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
   <span class="ansi-yellow-fg">Vector</span>(
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.06666666666666667</span>),
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.06666666666666667</span>),
@@ -14190,11 +14004,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
     ),
     Empty
   ),
-...
-<span class="ansi-cyan-fg">lem3</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
-  (<span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(m)(n))</span>, <span class="ansi-green-fg">0.9036614962977492</span>),
-  (<span class="ansi-green-fg">eqM(mul(mul(m)(n))(n))(m)</span>, <span class="ansi-green-fg">1.0248486491665673E-5</span>)
-)</pre>
+...</pre>
 </div>
 
 </div>
@@ -14202,13 +14012,21 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We set up the next local prover. This has no lemmas proved along the way, but is focussed on using the given axioms <em>without</em> any properties of equality.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">w</span> <span class="k">=</span> <span class="s">&quot;lemma4&quot;</span> <span class="o">::</span> <span class="n">lem3</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lem3</span> <span class="k">=</span> <span class="n">lp2</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -14227,7 +14045,10 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">w</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma4</span></pre>
+<pre><span class="ansi-cyan-fg">lem3</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
+  (<span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(m)(n))</span>, <span class="ansi-green-fg">0.9036614962977492</span>),
+  (<span class="ansi-green-fg">eqM(mul(mul(m)(n))(n))(m)</span>, <span class="ansi-green-fg">1.0248486491665673E-5</span>)
+)</pre>
 </div>
 
 </div>
@@ -14235,10 +14056,65 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We note that this ran quickly, and all it gave was an instantiation of one of the properties (as we would expect). We pick up another lemma.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">w</span> <span class="k">=</span> <span class="s">&quot;lemma4&quot;</span> <span class="o">::</span> <span class="n">lem3</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<span class="n">w</span><span class="o">.</span><span class="n">typ</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">w</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma4</span>
+<span class="ansi-cyan-fg">res14_1</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">U</span>] = <span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(m)(n))</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The lemma we have obtained is</p>
+<ul>
+<li>$l_4 : ((m * n) * m) * m  = m * n$</li>
+<li>this is $(a * b) * b = a$ when $a = m * n$ and $b = m$.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">stputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
@@ -14262,7 +14138,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[15]:</div>
+    <div class="prompt output_prompt">Out[16]:</div>
 
 
 
@@ -14396,52 +14272,21 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lI</span> <span class="k">=</span> <span class="s">&quot;lemma5&quot;</span> <span class="o">::</span> <span class="n">lemI</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[16]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lI</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma5</span></pre>
-</div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We had yet another focussed generator with $m$ and $n$ instatiated.</p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">s2tputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
-<span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">c</span><span class="o">)(</span><span class="n">a</span><span class="o">))</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">lI</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">s2tputin1</span> <span class="k">=</span> <span class="n">s2tputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-
-<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">s2tputin1</span><span class="o">,</span><span class="n">s2tputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))))</span>
-<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
-<span class="k">val</span> <span class="n">lemI1</span> <span class="k">=</span> <span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lI</span> <span class="k">=</span> <span class="s">&quot;lemma5&quot;</span> <span class="o">::</span> <span class="n">lemI</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<span class="n">lI</span><span class="o">.</span><span class="n">typ</span>
 </pre></div>
 
     </div>
@@ -14460,21 +14305,58 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">s2tputin</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(b)(a))(mul(c)(a)))}</span>, <span class="ansi-green-fg">0.0625</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.25</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">lemma5</span>, <span class="ansi-green-fg">0.25</span>)
-  )
-)
-<span class="ansi-cyan-fg">s2tputin1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+<pre><span class="ansi-cyan-fg">lI</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma5</span>
+<span class="ansi-cyan-fg">res16_1</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">U</span>] = <span class="ansi-green-fg">eqM(mul(mul(m)(n))(m))(n)</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We obtain a useful lemma. Note that this is not instantiation.</p>
+<ul>
+<li>$l_5 : (m * n) * m = n$</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">private</span> <span class="k">val</span> <span class="n">s2tputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+<span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">c</span><span class="o">)(</span><span class="n">a</span><span class="o">))</span>
+  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">lI</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">s2tputin1</span> <span class="k">=</span> <span class="n">s2tputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+
+<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">s2tputin1</span><span class="o">,</span><span class="n">s2tputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))))</span>
+<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">s2tputin1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
   <span class="ansi-yellow-fg">Vector</span>(
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.07692307692307693</span>),
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.07692307692307693</span>),
@@ -14562,10 +14444,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
     Empty
   ),
   <span class="ansi-yellow-fg">TermGenParams</span>(
-...
-<span class="ansi-cyan-fg">lemI1</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
-  (<span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(n)(m))</span>, <span class="ansi-green-fg">0.9002505096459986</span>)
-)</pre>
+...</pre>
 </div>
 
 </div>
@@ -14574,52 +14453,20 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lI1</span> <span class="k">=</span> <span class="s">&quot;lemma6&quot;</span> <span class="o">::</span> <span class="n">lemI1</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lI1</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma6</span></pre>
-</div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We setup yet another local prover. This is just the second lemma we are using (after $x$), all others were just focusing.</p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">finalstputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
- <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
- <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">),</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">w</span><span class="o">,</span> <span class="n">lI1</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">finalstputin1</span> <span class="k">=</span> <span class="n">finalstputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">finalstputin1</span><span class="o">,</span><span class="n">finalstputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))))</span>
-<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
-<span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lemI1</span> <span class="k">=</span> <span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -14638,26 +14485,94 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">finalstputin</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
-  <span class="ansi-yellow-fg">Vector</span>(
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">a</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">b</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">c</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.05555555555555555</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(
-      <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-      <span class="ansi-green-fg">0.05555555555555555</span>
-    ),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.16666666666666666</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">lemma4</span>, <span class="ansi-green-fg">0.16666666666666666</span>),
-    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">lemma6</span>, <span class="ansi-green-fg">0.16666666666666666</span>)
-  )
-)
-<span class="ansi-cyan-fg">finalstputin1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+<pre><span class="ansi-cyan-fg">lemI1</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
+  (<span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(n)(m))</span>, <span class="ansi-green-fg">0.9002505096459986</span>)
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lI1</span> <span class="k">=</span> <span class="s">&quot;lemma6&quot;</span> <span class="o">::</span> <span class="n">lemI1</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<span class="n">lI1</span><span class="o">.</span><span class="n">typ</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lI1</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma6</span>
+<span class="ansi-cyan-fg">res19_1</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">U</span>] = <span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(n)(m))</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that the above ran almost instantly. The lemma we obtained is:</p>
+<ul>
+<li>$l_6 : ((m * n) * m) * m = n * m $</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">private</span> <span class="k">val</span> <span class="n">finalstputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+ <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
+ <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">),</span>
+  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">w</span><span class="o">,</span> <span class="n">lI1</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">finalstputin1</span> <span class="k">=</span> <span class="n">finalstputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">finalstputin1</span><span class="o">,</span><span class="n">finalstputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))))</span>
+<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">finalstputin1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
   <span class="ansi-yellow-fg">Vector</span>(
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.06666666666666668</span>),
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.06666666666666668</span>),
@@ -14750,8 +14665,48 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
       )
     ),
     <span class="ansi-yellow-fg">Vector</span>(),
-...
-<span class="ansi-cyan-fg">res18_4</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We set up our final step. This uses various lemmas from earlier.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res21</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
   (<span class="ansi-green-fg">eqM(mul(m)(n))(mul(n)(m))</span>, <span class="ansi-green-fg">0.9118516347852311</span>)
 )</pre>
 </div>
@@ -14765,23 +14720,10 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$ m*n  = n*m $ is generated as a lemma in the last LocalProver.</p>
+<p>This is the conclusion.</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
     </div>
   </div>
