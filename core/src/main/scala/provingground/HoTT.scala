@@ -583,13 +583,9 @@ object HoTT {
     case fx: ApplnSym[w, u] =>
       val fn = fx.func.replace(x, y)
       Try {
-        // pprint.log(fx.arg)
-        // pprint.log(x)
-        // pprint.log(y)
         val z = fx.arg.replace(x, y).asInstanceOf[w]
-        // pprint.log(z)
-        val result = fn(z)
-        // pprint.log(result)
+        val result = 
+          if (fn == fx.func && z == fx.arg) symbobj(fx) else fn(z)
         result
       }.toOption
     case _ => None
