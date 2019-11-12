@@ -13602,6 +13602,11 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">t0putn1</span> <span class="k">=</span> <span class="n">t0putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+
+  <span class="k">val</span> <span class="n">putn1</span> <span class="k">=</span> <span class="n">putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+  <span class="k">val</span> <span class="n">tputn1</span> <span class="k">=</span> <span class="n">tputn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+  <span class="k">val</span> <span class="n">t2putn1</span> <span class="k">=</span> <span class="n">t2putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+  <span class="k">val</span> <span class="n">t3putn1</span> <span class="k">=</span> <span class="n">t3putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -13639,43 +13644,8 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.28947368421052627</span>),
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.28947368421052627</span>)
   )
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">putn1</span> <span class="k">=</span> <span class="n">putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-  <span class="k">val</span> <span class="n">tputn1</span> <span class="k">=</span> <span class="n">tputn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-  <span class="k">val</span> <span class="n">t2putn1</span> <span class="k">=</span> <span class="n">t2putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-  <span class="k">val</span> <span class="n">t3putn1</span> <span class="k">=</span> <span class="n">t3putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+)
+<span class="ansi-cyan-fg">putn1</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
   <span class="ansi-yellow-fg">Vector</span>(
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
     <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
@@ -13756,7 +13726,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
@@ -13775,7 +13745,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -13890,7 +13860,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground.</span><span class="o">{</span><span class="nc">FiniteDistribution</span> <span class="k">=&gt;</span> <span class="nc">FD</span><span class="o">}</span>
@@ -13904,7 +13874,6 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <span class="k">val</span> <span class="n">ts3</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">tputin1</span><span class="o">,</span><span class="n">tputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span> <span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">n</span><span class="o">)))))</span>
 <span class="k">val</span> <span class="n">lp3</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts3</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.000002</span><span class="o">).</span><span class="n">noIsles</span>
 <span class="k">val</span> <span class="n">lem2</span> <span class="k">=</span> <span class="n">lp3</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
-<span class="k">val</span> <span class="n">z</span> <span class="k">=</span> <span class="s">&quot;lemma3&quot;</span> <span class="o">::</span> <span class="n">lem2</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
 </pre></div>
 
     </div>
@@ -13917,7 +13886,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[5]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -14042,8 +14011,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
   ),
   (<span class="ansi-green-fg">eqM(mul(n)(m))(mul(n)(mul(mul(m)(n))(n)))</span>, <span class="ansi-green-fg">1.0252535689104723E-5</span>),
   (<span class="ansi-green-fg">eqM(mul(m)(m))(mul(m)(mul(mul(m)(n))(n)))</span>, <span class="ansi-green-fg">1.0252535689104723E-5</span>)
-)
-<span class="ansi-cyan-fg">z</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma3</span></pre>
+)</pre>
 </div>
 
 </div>
@@ -14054,20 +14022,10 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tt2putn</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
- <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">),</span>
- <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)))(</span><span class="n">b</span><span class="o">)</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">tt2putn1</span> <span class="k">=</span> <span class="n">tt2putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-
-<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">tt2putn1</span><span class="o">,</span><span class="n">tt2putn1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))))</span>
-<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
-
-<span class="k">val</span> <span class="n">lem3</span> <span class="k">=</span> <span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
-<span class="k">val</span> <span class="n">w</span> <span class="k">=</span> <span class="s">&quot;lemma4&quot;</span> <span class="o">::</span> <span class="n">lem3</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">z</span> <span class="k">=</span> <span class="s">&quot;lemma3&quot;</span> <span class="o">::</span> <span class="n">lem2</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
 </pre></div>
 
     </div>
@@ -14080,7 +14038,49 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[6]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">z</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma3</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tt2putn</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+ <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">),</span>
+ <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)))(</span><span class="n">b</span><span class="o">)</span>
+  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">tt2putn1</span> <span class="k">=</span> <span class="n">tt2putn</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+
+<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">tt2putn1</span><span class="o">,</span><span class="n">tt2putn1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))))</span>
+<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
+
+<span class="k">val</span> <span class="n">lem3</span> <span class="k">=</span> <span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -14194,8 +14194,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 <span class="ansi-cyan-fg">lem3</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
   (<span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(m)(n))</span>, <span class="ansi-green-fg">0.9036614962977492</span>),
   (<span class="ansi-green-fg">eqM(mul(mul(m)(n))(n))(m)</span>, <span class="ansi-green-fg">1.0248486491665673E-5</span>)
-)
-<span class="ansi-cyan-fg">w</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma4</span></pre>
+)</pre>
 </div>
 
 </div>
@@ -14206,19 +14205,10 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">stputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
- <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
- <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">),</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span><span class="n">z</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">stputin1</span> <span class="k">=</span> <span class="n">stputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-<span class="k">val</span> <span class="n">ts4</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">stputin1</span><span class="o">,</span><span class="n">stputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">n</span><span class="o">))</span> <span class="o">)</span>
-<span class="k">val</span> <span class="n">lp4</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts4</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
-
-<span class="k">val</span> <span class="n">lemI</span> <span class="k">=</span> <span class="n">lp4</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
-<span class="k">val</span> <span class="n">lI</span> <span class="k">=</span> <span class="s">&quot;lemma5&quot;</span> <span class="o">::</span> <span class="n">lemI</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">w</span> <span class="k">=</span> <span class="s">&quot;lemma4&quot;</span> <span class="o">::</span> <span class="n">lem3</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
 </pre></div>
 
     </div>
@@ -14231,7 +14221,48 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">w</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma4</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">stputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+ <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
+ <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">),</span>
+  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span><span class="n">z</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">stputin1</span> <span class="k">=</span> <span class="n">stputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+<span class="k">val</span> <span class="n">ts4</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">stputin1</span><span class="o">,</span><span class="n">stputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">n</span><span class="o">))</span> <span class="o">)</span>
+<span class="k">val</span> <span class="n">lp4</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts4</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
+
+<span class="k">val</span> <span class="n">lemI</span> <span class="k">=</span> <span class="n">lp4</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
 
 
 
@@ -14356,8 +14387,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
   (<span class="ansi-green-fg">eqM(mul(mul(m)(n))(m))(n)</span>, <span class="ansi-green-fg">0.9085367798328954</span>),
   (<span class="ansi-green-fg">eqM(m)(m)</span>, <span class="ansi-green-fg">0.0057629510380071665</span>),
   (<span class="ansi-green-fg">eqM(n)(n)</span>, <span class="ansi-green-fg">0.0057629510380071665</span>)
-)
-<span class="ansi-cyan-fg">lI</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma5</span></pre>
+)</pre>
 </div>
 
 </div>
@@ -14368,18 +14398,10 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">s2tputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
-<span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">c</span><span class="o">)(</span><span class="n">a</span><span class="o">))</span>
-  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">lI</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">s2tputin1</span> <span class="k">=</span> <span class="n">s2tputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
-
-<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">s2tputin1</span><span class="o">,</span><span class="n">s2tputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))))</span>
-<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
-<span class="k">val</span> <span class="n">lemI1</span> <span class="k">=</span> <span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
-<span class="k">val</span> <span class="n">lI1</span> <span class="k">=</span> <span class="s">&quot;lemma6&quot;</span> <span class="o">::</span> <span class="n">lemI1</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lI</span> <span class="k">=</span> <span class="s">&quot;lemma5&quot;</span> <span class="o">::</span> <span class="n">lemI</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
 </pre></div>
 
     </div>
@@ -14392,7 +14414,47 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lI</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma5</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">s2tputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+<span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">c</span><span class="o">)(</span><span class="n">a</span><span class="o">))</span>
+  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">,</span> <span class="n">lI</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">s2tputin1</span> <span class="k">=</span> <span class="n">s2tputin</span><span class="o">.</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
+
+<span class="k">val</span> <span class="n">ts5</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">s2tputin1</span><span class="o">,</span><span class="n">s2tputin1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FD</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">op</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">op</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))))</span>
+<span class="k">val</span> <span class="n">lp5</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts5</span><span class="o">,</span> <span class="n">cutoff</span> <span class="k">=</span> <span class="mf">0.00001</span><span class="o">).</span><span class="n">noIsles</span>
+<span class="k">val</span> <span class="n">lemI1</span> <span class="k">=</span> <span class="n">lp5</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[17]:</div>
 
 
 
@@ -14503,8 +14565,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 ...
 <span class="ansi-cyan-fg">lemI1</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
   (<span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(n)(m))</span>, <span class="ansi-green-fg">0.9002505096459986</span>)
-)
-<span class="ansi-cyan-fg">lI1</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma6</span></pre>
+)</pre>
 </div>
 
 </div>
@@ -14515,7 +14576,40 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lI1</span> <span class="k">=</span> <span class="s">&quot;lemma6&quot;</span> <span class="o">::</span> <span class="n">lemI1</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">_1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lI1</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">lemma6</span></pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">finalstputin</span> <span class="k">=</span>  <span class="nc">FineDeducer</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">op</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
@@ -14538,7 +14632,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[19]:</div>
 
 
 
@@ -14657,7 +14751,7 @@ Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
     ),
     <span class="ansi-yellow-fg">Vector</span>(),
 ...
-<span class="ansi-cyan-fg">res8_4</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
+<span class="ansi-cyan-fg">res18_4</span>: <span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)] = <span class="ansi-yellow-fg">Vector</span>(
   (<span class="ansi-green-fg">eqM(mul(m)(n))(mul(n)(m))</span>, <span class="ansi-green-fg">0.9118516347852311</span>)
 )</pre>
 </div>
