@@ -109,3 +109,11 @@ A useful way to experiment is to use a _notebook_ instead of a repl session to e
 
 This generates the binary and gives the command to use in _jupyter-lab_ or the classic jupyter notebook. Note that you must launch jupyter-lab in the notes folder.
 
+To replicate the behaviour of a notebook (generated this way) with the same source, note that the first code line shows the git has, for example from _import $cp.bin.`provingground-core-jvm-686ded3e77.fat.jar`_ we see that the git hash is _686ded3e77_. To use the jar for this version, run the following
+
+```bash
+git checkout 686ded3e77
+./mill core.jvm.bin
+```
+
+You can then run the notebook.
