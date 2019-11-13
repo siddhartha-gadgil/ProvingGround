@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>2019-10-18-chained-equations-monoid</title>
+<title>2019-11-13-CzechSlovakOlympAppOnly</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13077,7 +13077,20 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Chained-equations-for-the-monoid-case">Chained equations for the monoid case<a class="anchor-link" href="#Chained-equations-for-the-monoid-case">&#182;</a></h2><p>We check whether the equations in the monoid case from the base and the tangent together generate the expected proof. We first replicate that case and check a few additional things.</p>
+<h1 id="Exploring-the-Czech-Slovak-Olympiad-problem.">Exploring the Czech-Slovak Olympiad problem.<a class="anchor-link" href="#Exploring-the-Czech-Slovak-Olympiad-problem.">&#182;</a></h1><p>Our goal is to explore the solution of Achal Kumar. Specifically, we will start with all axioms and the constants $m$ and $n$ and then look for lemmas. The difference from the other notebook is we only use (unified) applications. Recall the problem:</p>
+<p>Let ⋆ be a binary operation on a nonempty set $M$. That is, every pair $(a,b) \in  M$ is assigned an element $a$ ⋆$ b$ in $M$. Suppose that ⋆ has the additional property that $(a $ ⋆ $b) $ ⋆$ b= a$ and $a$ ⋆ $(a$ ⋆$ b)= b$ for all $a,b \in  M$.
+Show that $a$ ⋆ $b = b$ ⋆ $a$ for all $a,b \in  M$.</p>
+<p>We should derive the following lemmas.</p>
+<ol>
+<li>$ m = (m*n)*n $ </li>
+<li>$ n = (m*n)*((m*n)*n) $ </li>
+<li>$ (m*n)*m = (m*n)*((m*n)*n) $</li>
+<li>$ ((m*n)*m))*m = m*n $ </li>
+<li>$ (m*n)*m = n $</li>
+<li>$ ((m*n)*m)*m = n*m $</li>
+</ol>
+<p>Finally, we should get the desired result.</p>
+<p>$ m*n  = n*m $</p>
 
 </div>
 </div>
@@ -13087,7 +13100,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-65045ead6d.fat.jar`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-6b59061b0d.fat.jar`</span>
 <span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
 <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
   <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
@@ -13132,9 +13145,21 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tg1</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">.</span><span class="n">zero</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">appW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">,</span> <span class="n">unAppW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">)</span>
-<span class="k">import</span> <span class="nn">library._</span><span class="o">,</span> <span class="nc">MonoidSimple</span><span class="o">.</span><span class="k">_</span>
-<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">dist1</span><span class="o">,</span> <span class="n">dist1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">M</span> <span class="k">=</span> <span class="s">&quot;M&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
+
+<span class="k">val</span> <span class="n">eqM</span> <span class="k">=</span> <span class="s">&quot;eqM&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="nc">Type</span>
+
+<span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="s">&quot;a&quot;</span> <span class="o">::</span> <span class="n">M</span>
+<span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="s">&quot;b&quot;</span> <span class="o">::</span> <span class="n">M</span>
+<span class="k">val</span> <span class="n">c</span> <span class="k">=</span> <span class="s">&quot;c&quot;</span> <span class="o">::</span> <span class="n">M</span>
+
+<span class="k">val</span> <span class="n">m</span> <span class="k">=</span> <span class="s">&quot;m&quot;</span> <span class="o">::</span> <span class="n">M</span>
+
+<span class="k">val</span> <span class="n">n</span> <span class="k">=</span> <span class="s">&quot;n&quot;</span> <span class="o">::</span> <span class="n">M</span>
+
+<span class="k">val</span> <span class="n">mul</span> <span class="k">=</span> <span class="s">&quot;mul&quot;</span> <span class="o">::</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span> <span class="o">-&gt;:</span> <span class="n">M</span>
+
+<span class="k">import</span> <span class="nn">FineDeducer.unif</span>
 </pre></div>
 
     </div>
@@ -13153,67 +13178,15 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tg1</span>: <span class="ansi-green-fg">TermGenParams</span> = <span class="ansi-yellow-fg">TermGenParams</span>(
-  <span class="ansi-green-fg">0.1</span>,
-  <span class="ansi-green-fg">0.1</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.3</span>,
-  <span class="ansi-green-fg">0.7</span>,
-  <span class="ansi-green-fg">0.5</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>
-)
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">library._, MonoidSimple._
-</span>
-<span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(
-    <span class="ansi-yellow-fg">Vector</span>(
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-    )
-  ),
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(
-    <span class="ansi-yellow-fg">Vector</span>(
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-...</pre>
+<pre><span class="ansi-cyan-fg">M</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">M</span>
+<span class="ansi-cyan-fg">eqM</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>]]] = <span class="ansi-green-fg">eqM</span>
+<span class="ansi-cyan-fg">a</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">a</span>
+<span class="ansi-cyan-fg">b</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">b</span>
+<span class="ansi-cyan-fg">c</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">c</span>
+<span class="ansi-cyan-fg">m</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">m</span>
+<span class="ansi-cyan-fg">n</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">n</span>
+<span class="ansi-cyan-fg">mul</span>: <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">mul</span>
+<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">FineDeducer.unif</span></pre>
 </div>
 
 </div>
@@ -13227,7 +13200,14 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="nc">Thm</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">mul</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))</span>
+
+<span class="k">val</span> <span class="nc">Lemma1</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">n</span><span class="o">))</span>
+<span class="k">val</span> <span class="nc">Lemma2</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">n</span><span class="o">)))</span>
+<span class="k">val</span> <span class="nc">Lemma3</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">n</span><span class="o">)))</span>
+<span class="k">val</span> <span class="nc">Lemma4</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))</span>
+<span class="k">val</span> <span class="nc">Lemma5</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">n</span><span class="o">)</span>
+<span class="k">val</span> <span class="nc">Lemma6</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">n</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">m</span><span class="o">))(</span><span class="n">mul</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="n">m</span><span class="o">))</span>
 </pre></div>
 
     </div>
@@ -13246,7 +13226,13 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global </span></pre>
+<pre><span class="ansi-cyan-fg">Thm</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(mul(m)(n))(mul(n)(m))</span>
+<span class="ansi-cyan-fg">Lemma1</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(m)(mul(mul(m)(n))(n))</span>
+<span class="ansi-cyan-fg">Lemma2</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(n)(mul(mul(m)(n))(mul(mul(m)(n))(n)))</span>
+<span class="ansi-cyan-fg">Lemma3</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(mul(mul(m)(n))(m))(mul(mul(m)(n))(mul(mul(m)(n))(n)))</span>
+<span class="ansi-cyan-fg">Lemma4</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(m)(n))</span>
+<span class="ansi-cyan-fg">Lemma5</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(mul(mul(m)(n))(m))(n)</span>
+<span class="ansi-cyan-fg">Lemma6</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(n)(m))</span></pre>
 </div>
 
 </div>
@@ -13254,13 +13240,28 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that the above are defined just by using copy-paste (this is why we changed <code>op</code> to <code>mul</code>). We set up a local prover with all the axioms we use.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lp1</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">tg1</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">fullTerms</span> <span class="k">:</span> <span class="kt">FiniteDistribution</span><span class="o">[</span><span class="kt">Term</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">unif</span><span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">c</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span><span class="n">n</span><span class="o">,</span> <span class="n">mul</span><span class="o">,</span> <span class="n">eqM</span><span class="o">)(</span>
+    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
+    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">),</span>
+    <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">c</span><span class="o">),</span>
+    <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">),</span>
+    <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">mul</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">)))(</span><span class="n">b</span><span class="o">),</span>
+    <span class="n">eqM</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">b</span><span class="o">)(</span><span class="n">a</span><span class="o">))(</span><span class="n">mul</span><span class="o">(</span><span class="n">c</span><span class="o">)(</span><span class="n">a</span><span class="o">))</span>
+  <span class="o">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="k">:</span> <span class="kt">Term</span><span class="o">)</span> <span class="o">*</span> <span class="mf">0.125</span><span class="o">)</span> <span class="o">++</span> <span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">mul</span> <span class="k">:</span> <span class="kt">Term</span> <span class="o">)</span> <span class="o">*</span> <span class="mf">0.375</span><span class="o">)).</span><span class="n">filter</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">!</span><span class="nc">Set</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="n">t</span><span class="o">)).</span><span class="n">normalized</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -13279,45 +13280,28 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lp1</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
-  <span class="ansi-yellow-fg">TermState</span>(
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-      )
+<pre><span class="ansi-cyan-fg">fullTerms</span>: <span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">FiniteDistribution</span>(
+  <span class="ansi-yellow-fg">Vector</span>(
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(
+      <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
+      <span class="ansi-green-fg">0.04347826086956522</span>
     ),
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-...</pre>
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(
+      <span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(b)(a))(mul(c)(a)))}</span>,
+      <span class="ansi-green-fg">0.04347826086956522</span>
+    ),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.14130434782608697</span>),
+    <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.4239130434782609</span>)
+  )
+)</pre>
 </div>
 
 </div>
@@ -13331,8 +13315,11 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lemT1</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">lemmas</span>
-<span class="n">lemT1</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">fullTerms</span><span class="o">,</span><span class="n">fullTerms</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">lp0</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">tg</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">.</span><span class="n">zero</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">appW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">,</span> <span class="n">unAppW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">)).</span><span class="n">addGoals</span><span class="o">(</span>
+    <span class="nc">Lemma1</span> <span class="o">-&gt;</span> <span class="mf">0.1</span><span class="o">,</span> <span class="nc">Lemma2</span> <span class="o">-&gt;</span> <span class="mf">0.1</span><span class="o">,</span> <span class="nc">Lemma3</span> <span class="o">-&gt;</span> <span class="mf">0.1</span><span class="o">,</span> <span class="nc">Lemma4</span> <span class="o">-&gt;</span> <span class="mf">0.1</span><span class="o">,</span> <span class="nc">Lemma5</span> <span class="o">-&gt;</span> <span class="mf">0.1</span><span class="o">,</span> <span class="nc">Lemma6</span> <span class="o">-&gt;</span> <span class="mf">0.1</span><span class="o">,</span> <span class="nc">Thm</span> <span class="o">-&gt;</span> <span class="mf">0.4</span><span class="o">)</span>
+<span class="k">def</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">lp0</span><span class="o">.</span><span class="n">sharpen</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">n</span><span class="o">))</span>
 </pre></div>
 
     </div>
@@ -13345,29 +13332,93 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">lemT1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>)]] = <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(
-  &lt;function2&gt;,
-  false,
-  true,
-  true
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res4_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(e_r)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0027509184472828325</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(e_l)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0027509184472828325</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_r))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_l))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_l)(e_r))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_r)(e_r))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>)
-  )
-)</span></span></span></code></pre>
-</div>
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
+</span>
+<span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
+        <span class="ansi-green-fg">0.04347826086956522</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(b)(a))(mul(c)(a)))}</span>,
+        <span class="ansi-green-fg">0.04347826086956522</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.14130434782608697</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.4239130434782609</span>)
+    )
+  ),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
+        <span class="ansi-green-fg">0.04347826086956522</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
+        <span class="ansi-green-fg">0.04347826086956522</span>
+      ),
+...
+<span class="ansi-cyan-fg">lp0</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">m</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">n</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
+          <span class="ansi-green-fg">0.04347826086956522</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(b)(a))(mul(c)(a)))}</span>,
+          <span class="ansi-green-fg">0.04347826086956522</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.14130434782608697</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.4239130434782609</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.04347826086956522</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
+          <span class="ansi-green-fg">0.04347826086956522</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
+          <span class="ansi-green-fg">0.04347826086956522</span>
+...
+defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">lp</span></pre>
 </div>
 
 </div>
@@ -13381,9 +13432,11 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lem</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">termsT</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">expressionEval</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTerms</span><span class="o">)</span>
-<span class="n">termsT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">nslp</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">lpc</span> <span class="k">=</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="o">)</span>
+     <span class="n">lpc</span><span class="o">.</span><span class="n">nextState</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">ns</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="n">ns</span><span class="o">,</span> <span class="n">lpc</span><span class="o">)}</span>
+<span class="o">}</span>
+<span class="k">val</span> <span class="n">bT</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">bestTask</span><span class="o">((</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">30</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">nslp</span><span class="o">)).</span><span class="n">memoize</span>
 </pre></div>
 
     </div>
@@ -13396,56 +13449,19 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">lem</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_r))</span></span>
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">termsT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd5$Helper$$Lambda$2963/1340067789@13139dd5,
-  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0</span></span>
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res5_2</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}(mul(e_r)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.0211226571848244E-4</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(e_r)(mul(e_l)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.43204259042601E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">($auni : M) ↦ axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_r)(e_r))(e_r)($auni)(axiom_{eqM(mul(a)(e_r))(a)}(e_r))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.5311163260347958E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">mul</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.26757575953354795</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_r)(mul(e_r)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.4320425904260095E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_l)(e_l))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.21690603886337E-4</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">e_r</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.03822510850479257</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_r)(e_l))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.216906038863368E-4</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_r)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.0211226571848244E-4</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_l))(e_l)(axiom_{eqM(mul(e_l)(a))(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.5311163260347958E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(a)(a)}</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.03822510850479257</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">($ecdz : eqM(e_r)($ecdb)) ↦ axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_r)(mul(e_l)(e_l))(e_l)($ecdz)(axiom_{eqM(mul(e_l)(a))(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.1832291823450562E-6</span></span>
-      ),
-...</span></span></span></code></pre>
-</div>
+
+<div class="output_text output_subarea output_execute_result">
+<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">nslp</span>
+<span class="ansi-cyan-fg">bT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>, <span class="ansi-green-fg">LocalProverStep</span>)]] = <span class="ansi-yellow-fg">Async</span>(
+  &lt;function2&gt;,
+  false,
+  true,
+  true
+)</pre>
 </div>
 
 </div>
@@ -13453,14 +13469,22 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have set up a task that refines up to timeout. We will run this asynchronously, and then use the final state.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">pfsT</span> <span class="k">=</span> <span class="n">termsT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="n">lem</span><span class="o">))</span>
-<span class="n">pfsT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<span class="k">val</span> <span class="n">bF</span> <span class="k">=</span> <span class="n">bT</span><span class="o">.</span><span class="n">runToFuture</span>
 </pre></div>
 
     </div>
@@ -13479,21 +13503,45 @@ div#notebook {
 
 <div class="output_html rendered_html output_subarea ">
 <div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">pfsT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-  scala.Function1$$Lambda$312/951031848@51772539,
-  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1</span></span>
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res6_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.5311163260347958E-5</span></span>
-      )
-    )
-  )
-)</span></span></code></pre>
+<pre><code><span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">import </span></span><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
+</span></span>
+<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">bF</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Option</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">TermState</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">LocalProverStep</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Some</span></span>(
+    (
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5</span></span>,
+      <span style="color: yellow"><span class="ansi-yellow-fg">TermState</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(b)(a))(mul(c)(a)))}(n)(mul(n)(n))(mul(n)(m))</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.264409788608568E-7</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(mul(a)(b)))(b)}(m)(mul(n)(m))</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.345444650272187E-5</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(m)(mul(m)(n))</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">3.345444650272187E-5</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(mul(n)(mul(n)(n)))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.030611799188926E-4</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(m)(m))(mul(n)(mul(m)(m)))</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.7853468008615246E-6</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(b)(a))(mul(c)(a)))}(m)(mul(m)(m))(mul(n)(mul(m)(n)))</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.3432676761307517E-7</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(m)(mul(n)(m)))</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.1836733645150416E-4</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(b)(c) \to eqM(mul(b)(a))(mul(c)(a)))}(m)(mul(m)(n))(mul(m)(n))</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.264409788608568E-7</span></span>
+            ),
+...</span></span></span></code></pre>
 </div>
 </div>
 
@@ -13508,8 +13556,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">pfT</span> <span class="k">=</span> <span class="n">pfsT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">supp</span><span class="o">.</span><span class="n">head</span><span class="o">)</span>
-<span class="n">pfT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">ax</span> <span class="k">=</span> <span class="n">fullTerms</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">find</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="n">a</span> <span class="o">~&gt;:</span> <span class="o">(</span><span class="n">b</span><span class="o">~&gt;:</span> <span class="n">eqM</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">mul</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">b</span><span class="o">))(</span><span class="n">b</span><span class="o">))(</span><span class="n">a</span><span class="o">))).</span><span class="n">get</span>
 </pre></div>
 
     </div>
@@ -13522,21 +13569,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">pfT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>] = <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-  scala.Function1$$Lambda$312/951031848@3bc356a5,
-  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2</span></span>
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res7_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l))</span></span>
-)</span></span></code></pre>
-</div>
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">ax</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}</span></pre>
 </div>
 
 </div>
@@ -13550,7 +13589,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lpTangT1</span>  <span class="k">=</span> <span class="n">pfT</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">pf</span> <span class="k">=&gt;</span> <span class="n">lp1</span><span class="o">.</span><span class="n">distTangentProver</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">pf</span><span class="o">)))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">l</span> <span class="k">=</span> <span class="n">fold</span><span class="o">(</span><span class="n">ax</span><span class="o">)(</span><span class="n">m</span><span class="o">,</span> <span class="n">n</span><span class="o">)</span>
 </pre></div>
 
     </div>
@@ -13569,14 +13608,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">lpTangT1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">LocalTangentProver</span>] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">Map</span>(
-    <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-    scala.Function1$$Lambda$312/951031848@3bc356a5,
-    <span class="ansi-green-fg">2</span>
-  ),
-  ammonite.$sess.cmd8$Helper$$Lambda$3047/1835419271@7352ce49
-)</pre>
+<pre><span class="ansi-cyan-fg">l</span>: <span class="ansi-green-fg">Term</span> = <span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}(m)(n)</span></pre>
 </div>
 
 </div>
@@ -13584,13 +13616,22 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We should look for the above instantiation at least.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">goal</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">nsT</span> <span class="k">=</span> <span class="n">bT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">_2</span><span class="o">).</span><span class="n">memoize</span>
+<span class="k">val</span> <span class="n">lpT</span> <span class="k">=</span> <span class="n">bT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">_3</span><span class="o">).</span><span class="n">memoize</span>
 </pre></div>
 
     </div>
@@ -13609,7 +13650,8 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">goal</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">eqM(e_l)(e_r)</span></pre>
+<pre><span class="ansi-cyan-fg">nsT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">TermState</span>] = <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true)
+<span class="ansi-cyan-fg">lpT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">LocalProverStep</span>] = <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true)</pre>
 </div>
 
 </div>
@@ -13623,7 +13665,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">targGoalT1</span> <span class="k">=</span> <span class="n">lpTangT1</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">lpt</span> <span class="k">=&gt;</span> <span class="n">lpt</span><span class="o">.</span><span class="n">theoremsByStatement</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="n">goal</span><span class="o">))</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lwT</span> <span class="k">=</span> <span class="n">nsT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">terms</span><span class="o">(</span><span class="n">l</span><span class="o">))</span>
 </pre></div>
 
     </div>
@@ -13642,19 +13684,9 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">targGoalT1</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">FlatMap</span>(
-    <span class="ansi-yellow-fg">FlatMap</span>(
-      <span class="ansi-yellow-fg">Map</span>(
-        <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-        scala.Function1$$Lambda$312/951031848@3bc356a5,
-        <span class="ansi-green-fg">2</span>
-      ),
-      ammonite.$sess.cmd8$Helper$$Lambda$3047/1835419271@7352ce49
-    ),
-    ammonite.$sess.cmd10$Helper$$Lambda$3054/1604136391@549e05e5
-  ),
-  ammonite.$sess.cmd10$Helper$$Lambda$3055/786027227@6a255aa9,
+<pre><span class="ansi-cyan-fg">lwT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Map</span>(
+  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+  ammonite.$sess.cmd10$Helper$$Lambda$2868/632564107@65c137e8,
   <span class="ansi-green-fg">0</span>
 )</pre>
 </div>
@@ -13667,10 +13699,23 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">bF</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">targGoalT1</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">nsT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">successes</span><span class="o">).</span><span class="n">runToFuture</span>
 </pre></div>
 
     </div>
@@ -13689,7 +13734,34 @@ div#notebook {
 
 <div class="output_html rendered_html output_subarea ">
 <div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res11</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.03607619269409383</span></span>)</span></span></span></code></pre>
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res11</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>])]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+    (
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(m)(mul(mul(m)(n))(n))</span></span>,
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.1</span></span>,
+      <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+            <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(mul(m)(n))(n))(m)(axiom_{eqM(mul(mul(a)(b))(b))(a)}(m)(n))</span></span>,
+            <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.308845115550632E-5</span></span>
+          )
+        )
+      )
+    ),
+    (
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(m)(n))</span></span>,
+      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.1</span></span>,
+      <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+            <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(mul(a)(b))(b))(a)}(mul(m)(n))(m)</span></span>,
+            <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.6391832870776E-5</span></span>
+          )
+        )
+      )
+    )
+  )
+)</span></span></span></code></pre>
 </div>
 </div>
 
@@ -13702,7 +13774,12 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Interim-Conclusion">Interim Conclusion<a class="anchor-link" href="#Interim-Conclusion">&#182;</a></h2><p>We replicated the tangent result using an actual proof, so nothing formal</p>
+<h2 id="First-result">First result<a class="anchor-link" href="#First-result">&#182;</a></h2><p>We see that two of the lemmas have been proved:</p>
+<ul>
+<li>$m = (m * n) * n$ (Lemma 1)</li>
+<li>$((m * n) * m) * m = m * n$ (Lemma 4)</li>
+</ul>
+<p>Both these are simple instantiations, but they get us started. The basic statement missing in Lemma 2. We should look at all the generated lemmas.</p>
 
 </div>
 </div>
@@ -13712,11 +13789,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">eqsT</span> <span class="k">=</span> <span class="k">for</span><span class="o">{</span>
-    <span class="n">eq1</span> <span class="k">&lt;-</span> <span class="n">lp1</span><span class="o">.</span><span class="n">equations</span>
-    <span class="n">lp2</span> <span class="k">&lt;-</span> <span class="n">lpTangT1</span>
-    <span class="n">eq2</span> <span class="k">&lt;-</span> <span class="n">lp2</span><span class="o">.</span><span class="n">equations</span>
-<span class="o">}</span> <span class="k">yield</span> <span class="nc">Equation</span><span class="o">.</span><span class="n">merge</span><span class="o">(</span><span class="n">eq1</span><span class="o">,</span> <span class="n">eq2</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lemmaT</span> <span class="k">=</span> <span class="n">lpT</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">lemmas</span><span class="o">).</span><span class="n">memoize</span>
 </pre></div>
 
     </div>
@@ -13735,146 +13808,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">eqsT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">Equation</span>]] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd12$Helper$$Lambda$3166/539388556@3a3fa598
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">eqsT</span><span class="o">.</span><span class="n">runToFuture</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res13</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Set</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Equation</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Set</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Equation</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(
-        <span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(
-          <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">($feduk : eqM(mul(e_r)(e_l))($fedtg)) ↦ axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_r)(e_l))(e_l)(mul(e_l)(e_r))($feduk)(axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l)))</span></span>,
-          Terms
-        )
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-        <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-          <span style="color: yellow"><span class="ansi-yellow-fg">Coeff</span></span>(
-            <span style="color: yellow"><span class="ansi-yellow-fg">BaseThenCondition</span></span>(
-              <span style="color: yellow"><span class="ansi-yellow-fg">ZipMapOpt</span></span>(UnifApplnOpt, Funcs, Terms, Terms),
-              Funcs,
-              <span style="color: yellow"><span class="ansi-yellow-fg">Restrict</span></span>(FuncOpt)
-            )
-          ),
-          <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(
-            <span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(
-              <span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(
-                <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_r)(e_l))</span></span>
-              ),
-              Funcs
-            )
-          )
-        ),
-        <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(
-          <span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(
-            <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l))</span></span>,
-            Terms
-          )
-        )
-      )
-    ),
-    <span style="color: yellow"><span class="ansi-yellow-fg">Equation</span></span>(
-...</span></span></span></code></pre>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">evT</span> <span class="k">=</span> <span class="n">eqsT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">eqs</span> <span class="k">=&gt;</span> <span class="nc">ExpressionEval</span><span class="o">.</span><span class="n">fromInitEqs</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">eqs</span><span class="o">,</span> <span class="n">tg1</span><span class="o">)).</span><span class="n">memoize</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">evT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">ExpressionEval</span>] = <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">terms2T</span> <span class="k">=</span> <span class="n">evT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTerms</span><span class="o">).</span><span class="n">memoize</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[18]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">terms2T</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-yellow-fg">Async</span>(
+<pre><span class="ansi-cyan-fg">lemmaT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Vector</span>[(<span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Double</span>)]] = <span class="ansi-yellow-fg">Async</span>(
   &lt;function2&gt;,
   false,
   true,
@@ -13890,47 +13824,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">eqPfsT</span> <span class="k">=</span> <span class="n">terms2T</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">ts</span> <span class="k">=&gt;</span> <span class="n">ts</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="n">goal</span><span class="o">))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[19]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">eqPfsT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">FiniteDistribution</span>[<span class="ansi-green-fg">Term</span>]] = <span class="ansi-yellow-fg">Map</span>(
-  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd18$Helper$$Lambda$3220/927326813@6904ba30,
-  <span class="ansi-green-fg">0</span>
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">eqPfsT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">lemmaT</span><span class="o">.</span><span class="n">runToFuture</span>
 </pre></div>
 
     </div>
@@ -13949,14 +13846,20 @@ div#notebook {
 
 <div class="output_html rendered_html output_subarea ">
 <div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res19</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_l)(mul(e_l)(e_r))(e_r)(axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l)))(axiom_{eqM(mul(e_l)(a))(a)}(e_r))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.526548906054404E-6</span></span>
-      )
-    )
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res13</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(m)(mul(mul(m)(n))(n))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.04053003268998755</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(mul(mul(mul(m)(n))(m))(m))(mul(m)(n))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.040415961992659885</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(n)(mul(m)(mul(m)(n)))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.780195600751239E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(n)(mul(n)(mul(n)(n)))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.780195600751239E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(m)(mul(n)(mul(n)(m)))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.780195600751239E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(m)(mul(m)(mul(m)(m)))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">8.780195600751239E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(m)(m)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.679306298787548E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(n)(n)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.679306298787548E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(mul(n)(n))(mul(n)(n))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.1746987585175379E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(mul(m)(m))(mul(m)(m))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.1746987585175379E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(mul(m)(n))(mul(m)(n))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.1746987585175379E-5</span></span>),
+    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(mul(n)(m))(mul(n)(m))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.1746987585175379E-5</span></span>)
   )
 )</span></span></span></code></pre>
 </div>
@@ -13971,11 +13874,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><ul>
-<li>This was fully successful, with the grouped equations giving a proof from the initial state.</li>
-<li>Further, the proof weight is very low, so it should be identified as very non-trivial.</li>
-<li>Thus, this part of the accumulation of equations approach works (the other part of using formal equations for goals was previously tested).</li>
-</ul>
+<p><strong>Final remarks:</strong> Even less was generated when there were fewer generators, which is expected as we went to 5 steps both times.</p>
 
 </div>
 </div>
