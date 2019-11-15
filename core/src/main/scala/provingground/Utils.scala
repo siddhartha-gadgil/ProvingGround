@@ -59,6 +59,21 @@ object Utils {
       )
       .getOrElse(Task.now(accum))
 
+  def largestAcceptableRec[A](fn: Double => A, bound : A => Boolean, min: Double, max: Double, maxValue: A, steps: Int) : (Double, A) =
+    if (steps < 1) (max, maxValue)
+    else {
+      val mid = (min + max)/2
+      val midValue = fn(mid)
+      if (bound(midValue)) largestAcceptableRec(fn, bound, min, mid, midValue, steps - 1)
+      else largestAcceptableRec(fn, bound, mid, max, maxValue, steps - 1)
+    }
+  
+  def largestAcceptable[A](fn: Double => A, bound : A => Boolean, min: Double, max: Double, steps: Int) : Option[(Double, A)] =
+    {
+      val maxValue = fn(max)
+      if (bound(maxValue)) Option(largestAcceptableRec(fn, bound, min, max, maxValue, steps)) else None
+    }
+
   def proofsEqual(x: Term, y: Term) =
     isProp(x.typ) && isProp(y.typ) && (x.typ == y.typ)
 

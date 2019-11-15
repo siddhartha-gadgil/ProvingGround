@@ -19,7 +19,7 @@ import TermGeneratorNodes._
   * @param vars variables, over which we may take closures
   * @param inds inductive type definitions
   */
-  case class TermState(
+case class TermState(
     terms: FD[Term],
     typs: FD[Typ[Term]],
     vars: Vector[Term] = Vector(),
@@ -37,7 +37,7 @@ import TermGeneratorNodes._
       context.subs(x, y)
     )
 
-  def ++(that: TermState) = 
+  def ++(that: TermState) =
     TermState(
       (terms ++ that.terms).safeNormalized,
       (typs ++ that.typs).safeNormalized,
@@ -46,6 +46,8 @@ import TermGeneratorNodes._
       (goals ++ that.goals).safeNormalized,
       context
     )
+
+  def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
   // pprint.log(context.variables)
 
@@ -66,16 +68,18 @@ import TermGeneratorNodes._
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 
-  lazy val successTerms : Set[Term] = successes.map(_._3.support).toSet.flatten
+  lazy val successTerms: Set[Term] = successes.map(_._3.support).toSet.flatten
 
   def isProd(typ: Typ[Term]) = typ match {
-    case _ : ProdTyp[u, v] => true
-    case _ => false
+    case _: ProdTyp[u, v] => true
+    case _                => false
   }
 
   lazy val unknownStatements: FD[Typ[Term]] =
     typs
-      .filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0 && !isProd(typ))
+      .filter(
+        typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0 && !isProd(typ)
+      )
       .safeNormalized
 
   lazy val remainingGoals: FD[Typ[Term]] =
@@ -146,8 +150,9 @@ import TermGeneratorNodes._
   def addTerm(x: Term, varWeight: Double = 0.3) = {
     val newTerms = (FD.unif(x) * varWeight) ++ (terms * (1 - varWeight))
     val newGoals: FD[Typ[Term]] = goals.map {
-      case pd: PiDefn[u, v] if pd.domain == x.typ => pd.fibers(x.asInstanceOf[u])
-      case ft: FuncTyp[u, v] if ft.dom == x.typ   => ft.codom
+      case pd: PiDefn[u, v] if pd.domain == x.typ =>
+        pd.fibers(x.asInstanceOf[u])
+      case ft: FuncTyp[u, v] if ft.dom == x.typ => ft.codom
       case tp                                   => tp
     }
 
@@ -172,11 +177,10 @@ import TermGeneratorNodes._
     )
 
   def distTangent(fd: FD[Term]): TermState =
-  this.copy(
-    terms = fd,
-    typs = FD.empty
-  )
-
+    this.copy(
+      terms = fd,
+      typs = FD.empty
+    )
 
   import interface._, TermJson._
 
@@ -252,7 +256,7 @@ import TermGeneratorNodes._
 }
 
 object TermState {
-  val zero : TermState = TermState(FD.empty, FD.empty)
+  val zero: TermState = TermState(FD.empty, FD.empty)
 
   import TermRandomVars._
   def fromJson(js: ujson.Value): TermState = {
@@ -310,6 +314,10 @@ object TermState {
               .condMap(FuncOpt)
               .conditioned(_.dom == typ)
               .map(x => x: T)
+          case _ =>
+            throw new IllegalArgumentException(
+              s"cannot find valueAt of TermState for $randomVarFmly at $fullArg"
+            )
         }
     }
 
@@ -332,4 +340,127 @@ object TermState {
     termPairs union typPairs union goalPairs
   }
 
+}
+
+object LemmaWeigths {
+  import math._
+  def hDiff(x: Double, h0: Double) =
+    (-x * h0) - (x * log(x)) - ((1 - x) * log(1 - x))
+
+  def klDiff(x: Double, p0: Double, q0: Double) =
+    (1 - p0) * log(1 - x) + p0 * log((q0 + x) / q0)
+
+  def entDiff(
+      x: Double,
+      h0: Double,
+      p0: Double,
+      q0: Double,
+      initWeight: Double,
+      hW: Double,
+      klW: Double
+  ) =
+    (hDiff(x, h0) * hW) - (klDiff(x * initWeight, p0, q0) * klW)
+
+  def geomStep(a: Double, b: Double, j: Int, n: Int) =
+    math.pow(a, (n.toDouble - j) / n) * math.pow(b, j.toDouble / n)
+
+  def geomRangeVec(a: Double, b: Double, n: Int): Vector[Double] =
+    (0 to n).toVector.map { j =>
+      geomStep(a, b, j, n)
+    }
+
+  def leastEntropy(
+      h0: Double,
+      p0: Double,
+      q0: Double,
+      initWeight: Double = 0.5,
+      hW: Double = 1,
+      klW: Double = 1,
+      n: Int = 100
+  ): Option[(Double, Double)] = {
+    def f(x: Double) = entDiff(x, h0, p0, q0, initWeight, hW, klW)
+    val a            = q0 / initWeight
+    val b            = p0
+    if (f(a) > 0) None
+    else
+      Some(
+        geomRangeVec(a, b, n)
+          .map { y =>
+            y -> f(y)
+          }
+          .minBy(_._2)
+      )
+  }
+
+  def lemmas(
+      ts: TermState,
+      h0: Double,
+      initWeight: Double,
+      hW: Double,
+      klW: Double,
+      n: Int
+  ) =
+    for {
+      Weighted(t, p0) <- ts.thmsBySt.pmf
+      (q, w) <- LemmaWeigths.leastEntropy(
+        h0,
+        p0,
+        ts.thmsByPf(t),
+        initWeight,
+        hW,
+        klW,
+        n
+      )
+    } yield (t, q)
+
+  def lemmaDistribution(
+      ts: TermState,
+      h0: Double,
+      initWeight: Double,
+      hW: Double,
+      klW: Double,
+      n: Int
+  ): FD[Typ[Term]] =
+    FD(
+      lemmas(ts, h0, initWeight, hW, klW, n).map { case (t, p) => Weighted(t, p) }
+    )
+
+  def boundedLemmaDistributionOpt(
+      ts: TermState,
+      h0: Double,
+      initWeight: Double,
+      hW: Double,
+      klW: Double,
+      maxEntropy: Double,
+      hScale: Double = 32,
+      steps: Int = 10,
+      n: Int = 100
+  ): Option[(Double, FD[HoTT.Typ[HoTT.Term]])] = {
+    def bound(fd: FD[Typ[Term]]) = FD.entropy(fd) < maxEntropy
+    def fn(x: Double)            = lemmaDistribution(ts, h0, initWeight, hW * x, klW, n)
+    Utils.largestAcceptable(fn, bound, 1, hScale, steps)
+  }
+
+  def boundedLemmaDistribution(
+      ts: TermState,
+      h0: Double,
+      initWeight: Double,
+      hW: Double,
+      klW: Double,
+      maxEntropy: Double,
+      hScale: Double = 32,
+      steps: Int = 10,
+      n: Int = 100
+  ) : FD[Typ[Term]] =
+    boundedLemmaDistributionOpt(
+      ts,
+      h0,
+      initWeight,
+      hW,
+      klW,
+      maxEntropy,
+      hScale,
+      steps,
+      n
+    ).map(_._2).getOrElse(FD.empty[Typ[Term]])
 }
