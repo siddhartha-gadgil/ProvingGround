@@ -27,6 +27,7 @@ case class LocalProver(
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
     tg: TermGenParams = TermGenParams(),
     cutoff: Double = math.pow(10, -4),
+    genMaxDepth: Option[Int],
     limit: FiniteDuration = 12.minutes,
     maxRatio: Double = 1.01,
     scale: Double = 1.0,
@@ -175,7 +176,7 @@ case class LocalProver(
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(initState, EqDistMemo.empty[TermState])(Terms, cutoff)
+      .varDist(initState, genMaxDepth, EqDistMemo.empty[TermState])(Terms, cutoff)
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
@@ -183,7 +184,7 @@ case class LocalProver(
     (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(initState, EqDistMemo.empty[TermState])(Typs, cutoff)
+      .varDist(initState, genMaxDepth, EqDistMemo.empty[TermState])(Typs, cutoff)
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
@@ -216,11 +217,11 @@ case class LocalProver(
   }.memoize
 
   def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
-    mfd.varDist(initState)(rv, cutoff).map(_._1)
+    mfd.varDist(initState, genMaxDepth)(rv, cutoff).map(_._1)
 
   def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
     mfd
-      .nodeDist(initState)(node, cutoff, Expression.Coeff(node))
+      .nodeDist(initState, genMaxDepth)(node, cutoff, Expression.Coeff(node))
       .map(_._1)
 
   lazy val equationNodes: Task[Set[EquationNode]] =
@@ -267,6 +268,7 @@ trait LocalProverStep {
   val nextState: Task[TermState]
   val tg: TermGenParams
   val cutoff: Double
+  val genMaxDepth: Option[Int]
   val scale: Double
   val maxRatio: Double
   val steps: Int
@@ -465,6 +467,7 @@ trait LocalProverStep {
         tangState,
         tg,
         cutoff,
+        genMaxDepth,
         limit,
         maxRatio,
         scale,
@@ -491,6 +494,7 @@ trait LocalProverStep {
         tangState,
         tg,
         tangentCutoff,
+        genMaxDepth,
         limit,
         maxRatio,
         scale,
@@ -516,7 +520,7 @@ trait LocalProverStep {
         limit
       )
       teqnds <- mfdt
-        .varDist(tangState, EqDistMemo.empty[TermState])(Terms, cutoff * weight)
+        .varDist(tangState, genMaxDepth, EqDistMemo.empty[TermState])(Terms, cutoff * weight)
         .map(_._2)
       tExpEval = ExpressionEval.fromStates(
         tangState,
@@ -547,6 +551,7 @@ trait LocalProverStep {
             baseState.tangent(t),
             tg,
             cutoff / w,
+            genMaxDepth,
             limit,
             maxRatio,
             scale,
@@ -577,6 +582,7 @@ case class LocalTangentProver(
     tangentState: TermState,
     tg: TermGenParams = TermGenParams(),
     cutoff: Double = math.pow(10, -4),
+    genMaxDepth: Option[Int] = None,
     limit: FiniteDuration = 3.minutes,
     maxRatio: Double = 1.01,
     scale: Double = 1.0,
@@ -613,7 +619,7 @@ case class LocalTangentProver(
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(tangentState, EqDistMemo.empty[TermState])(Terms, cutoff)
+      .varDist(tangentState, genMaxDepth, EqDistMemo.empty[TermState])(Terms, cutoff)
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
@@ -621,7 +627,7 @@ case class LocalTangentProver(
     (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(tangentState, EqDistMemo.empty[TermState])(Typs, cutoff)
+      .varDist(tangentState, genMaxDepth, EqDistMemo.empty[TermState])(Typs, cutoff)
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
