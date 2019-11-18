@@ -314,6 +314,8 @@ object TermState {
               .condMap(FuncOpt)
               .conditioned(_.dom == typ)
               .map(x => x: T)
+          case (FuncForCod, cod :: HNil) =>
+            state.terms.condMap(Unify.targetCodomain(_, cod)).map(x => x: T)
           case _ =>
             throw new IllegalArgumentException(
               s"cannot find valueAt of TermState for $randomVarFmly at $fullArg"
@@ -422,7 +424,9 @@ object LemmaWeigths {
       n: Int
   ): FD[Typ[Term]] =
     FD(
-      lemmas(ts, h0, initWeight, hW, klW, n).map { case (t, p) => Weighted(t, p) }
+      lemmas(ts, h0, initWeight, hW, klW, n).map {
+        case (t, p) => Weighted(t, p)
+      }
     )
 
   def boundedLemmaDistributionOpt(
@@ -451,7 +455,7 @@ object LemmaWeigths {
       hScale: Double = 32,
       steps: Int = 10,
       n: Int = 100
-  ) : FD[Typ[Term]] =
+  ): FD[Typ[Term]] =
     boundedLemmaDistributionOpt(
       ts,
       h0,
