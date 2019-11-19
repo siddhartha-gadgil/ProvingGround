@@ -27,7 +27,7 @@ case class LocalProver(
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
     tg: TermGenParams = TermGenParams(),
     cutoff: Double = math.pow(10, -4),
-    genMaxDepth: Option[Int],
+    genMaxDepth: Option[Int] = None ,
     limit: FiniteDuration = 12.minutes,
     maxRatio: Double = 1.01,
     scale: Double = 1.0,
