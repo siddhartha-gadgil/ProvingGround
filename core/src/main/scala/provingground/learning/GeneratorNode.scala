@@ -8,6 +8,7 @@ import provingground.learning.GeneratorNode. {Map =>_, _}
 import provingground.learning.GeneratorNodeFamily.BasePi
 
 import scala.language.{higherKinds, implicitConversions, reflectiveCalls}
+import provingground.learning.NodeCoeffs.Target
 
 /**
   * A `sort`, i.e. type refining a scala type.
@@ -849,6 +850,12 @@ object NodeCoeffs {
         // case value: RecursiveGeneratorNodeFamily[RDom, State, Y] => RecCons(value, headCoeff, tail)
       }
 
+  }
+
+  def purge[State, RDom <: HList, Y](nc: NodeCoeffs[State, Double, RDom, Y]) : NodeCoeffs[State, Double, RDom, Y] = nc match {
+    case Target(output) => nc
+    case BaseCons(headGen, headCoeff, tail) => if (headCoeff > 0) BaseCons(headGen, headCoeff, purge(tail))  else purge(tail)
+    case RecCons(headGen, headCoeff, tail) => if (headCoeff > 0) RecCons(headGen, headCoeff, purge(tail))  else purge(tail)
   }
 
   case class BaseCons[State, V, RDom <: HList, Y](
