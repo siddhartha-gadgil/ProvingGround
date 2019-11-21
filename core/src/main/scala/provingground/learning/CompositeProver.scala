@@ -406,8 +406,9 @@ object TermProver extends CompositeProver[TermResult] {
       instances: Typ[Term] => Task[Vector[Weighted[Term]]],
       varWeight: Double,
       parallel : Boolean
-  ): Task[Prover] =
-    skolemize(typ) match {
+  ): Task[Prover] = {
+    val sk = skolemize(typ)
+    val proverT = sk match {
       case pt: ProdTyp[u, v] =>
         def zp(x: Term, y: Term) =
           if (x.typ == pt.first && y.typ == pt.second) Some(PairTerm(x, y))
@@ -484,6 +485,9 @@ object TermProver extends CompositeProver[TermResult] {
         Task(Elementary(lp.addGoal(tp, 0.5), termData, termSuccess(tp)))
 
     }
+    def m(t: Term) = if (t.typ == sk) Some(fromSkolemized(typ)(t)) else Some(t)
+    if (typ == sk) proverT else proverT.map(prover => MapProof(prover, m))
+  }
 
   def backwardProver(
       func: Term,
