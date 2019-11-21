@@ -45,6 +45,9 @@ case class LocalProver(
 
   def withCutoff(ctf : Double) : LocalProver = this.copy(cutoff = ctf)
 
+  override def sharpen(scale: Double = 2.0) : LocalProver = withCutoff(cutoff / scale)
+
+
   def withLimit(l: FiniteDuration) : LocalProver = this.copy(limit = l)
 
   def withParams(p: TermGenParams) : LocalProver = this.copy(tg = p)

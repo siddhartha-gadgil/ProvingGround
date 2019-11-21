@@ -879,7 +879,7 @@ object HoTT {
         case tp => PiDefn(pd.variable, tp)
       }
     case ft: FuncTyp[u, v] =>
-      ft.codom match {
+      skolemize(ft.codom) match {
         case pt: ProdTyp[x, y] =>
           ProdTyp(
             skolemize(ft.dom ->: pt.first),
@@ -891,7 +891,7 @@ object HoTT {
           val Q    = st.fib.value
           val beta = (ft.domain ->: st.fib.dom).Var
           SigmaTyp(beta :-> skolemize(PiDefn(a, Q.replace(b, beta(a)))))
-        case typ: Typ[x] => ft.dom ->: typ
+        case typ: Typ[x] => ft.dom ->: skolemize(typ)
       }
     case typ => typ
   }
@@ -899,7 +899,7 @@ object HoTT {
   def fromSkolemized(typ: Typ[Term])(y: Term): Term = {
     require(
       y.typ == skolemize(typ),
-      s"$y does not have skoemized type ${skolemize(typ)} of $typ"
+      s"$y does not have skolemized type ${skolemize(typ)} of $typ"
     )
     typ match {
       case pd: ProdTyp[u, v] =>
@@ -965,9 +965,9 @@ object HoTT {
               skolemize(ft.dom ->: pt.first),
               skolemize(ft.dom ->: pt.second)
             )
-            val l1 = fromSkolemized(ft.dom ->: pt.first)(fold(yTyp.proj1)(y))
-            val l2 = fromSkolemized(ft.dom ->: pt.second)(fold(yTyp.proj2)(y))
             val x  = ft.dom.Var
+            val l1 = fromSkolemized(ft.dom ->: pt.first)(fold(yTyp.proj1)(y))
+            val l2 = fromSkolemized(ft.dom ->: pt.second)(fold(yTyp.proj2)(y))            
             x :-> fromSkolemized(ft.codom)(pair(fold(l1)(x), fold(l2)(x)))
           case st: SigmaTyp[x, y] =>
             val a    = ft.dom.Var
@@ -984,7 +984,7 @@ object HoTT {
             x :-> fromSkolemized(ft.codom)(mkPair(fold(l1)(x), fold(l2)(x)))
           case typ: Typ[x] => 
             val x = ft.dom.Var 
-            val yy = fold(x)(y)
+            val yy = fold(y)(x)
             x :-> fromSkolemized(ft.codom)(yy)
         }
       case _ => y
