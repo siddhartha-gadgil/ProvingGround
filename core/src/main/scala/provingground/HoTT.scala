@@ -4,7 +4,6 @@ import scala.util.Try
 //import scala.language.existentials
 import Math._
 import HoTT._
-import scala.meta.tokens.Token.Interpolation.Id
 //
 
 /**
