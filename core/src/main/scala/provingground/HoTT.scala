@@ -3277,7 +3277,7 @@ object HoTT {
     ): FuncLike[U, FuncLike[U, Func[Equality[U], Equality[U]]]] = {
       val x         = dom.Var
       val y         = dom.Var
-      "_" :: (x ~>: (y ~>: (IdentityTyp(dom, x, y) ->: IdentityTyp(dom, y, x))))
+      "equality-symmetry" :: (x ~>: (y ~>: (IdentityTyp(dom, x, y) ->: IdentityTyp(dom, y, x))))
     }
 
 
@@ -3316,7 +3316,7 @@ object HoTT {
       val x = dom.Var
       val y = dom.Var
       val z = dom.Var
-      "_" :: (x ~>: (y ~>: (z ~>: (IdentityTyp(dom, x, y) ->: IdentityTyp(dom, y, z) ->: IdentityTyp(dom, x, z)))))
+      "equality-transitivity" :: (x ~>: (y ~>: (z ~>: (IdentityTyp(dom, x, y) ->: IdentityTyp(dom, y, z) ->: IdentityTyp(dom, x, z)))))
     }
 
     /**
@@ -3342,7 +3342,7 @@ object HoTT {
       val x         = f.dom.Var
       val y         = f.dom.Var
       val typ = x ~>: (y ~>: (IdentityTyp(f.dom, x, y) ->: IdentityTyp(f.codom, f(x), f(y))))
-      "_" :: typ
+      "equality-induced" :: typ
     }
 
     /**
@@ -3366,7 +3366,7 @@ object HoTT {
       val x         = f.dom.Var
       val y         = f.dom.Var
       val typ         = x ~>: (y ~>: (IdentityTyp(f.dom, x, y) ->: f(x) ->: f(y)))
-      "_" :: typ
+      "equality-transport" :: typ
     }
 
     def apf[U <: Term with Subs[U], V <: Term with Subs[V]](
