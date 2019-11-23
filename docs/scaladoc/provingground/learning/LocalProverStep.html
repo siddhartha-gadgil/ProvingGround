@@ -131,6 +131,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Collections$.html" title=""></a>
                         <a href="Collections$.html" title="">Collections</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="CompositeProver.html" title=""></a>
+                        <a href="CompositeProver.html" title="">CompositeProver</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Conditioning$.html" title=""></a>
                         <a class="trait" href="Conditioning.html" title="typeclass for being able to condition"></a>
                         <a href="Conditioning.html" title="typeclass for being able to condition">Conditioning</a>
@@ -299,6 +303,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form"></a>
                         <a href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form">GeometricDistribution</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="GlobalProver$.html" title=""></a>
+                        <a class="trait" href="GlobalProver.html" title=""></a>
+                        <a href="GlobalProver.html" title="">GlobalProver</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="GramSchmidt$.html" title=""></a>
                         <a href="GramSchmidt$.html" title="">GramSchmidt</a>
@@ -322,6 +330,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="IterateDyn$.html" title=""></a>
                         <a href="IterateDyn$.html" title="">IterateDyn</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LemmaWeigths$.html" title=""></a>
+                        <a href="LemmaWeigths$.html" title="">LemmaWeigths</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="LocalProver.html" title="Collect local/generative/tactical proving; this includes configuration and learning but excludes strategy and attention."></a>
@@ -508,6 +520,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermBucket.html" title="">TermBucket</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="TermData$.html" title=""></a>
+                        <a href="TermData$.html" title="">TermData</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="trait" href="TermEvolution.html" title=""></a>
                         <a href="TermEvolution.html" title="">TermEvolution</a>
                       </li><li class="current-entities indented2">
@@ -550,6 +566,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="TermPopulation.html" title=""></a>
                         <a href="TermPopulation.html" title="">TermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermProver$.html" title=""></a>
+                        <a href="TermProver$.html" title="">TermProver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="TermRandomVars$.html" title=""></a>
@@ -596,7 +616,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TruncatedFiniteDistribution</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="TypSolver$.html" title=""></a>
-                        <a class="class" href="TypSolver.html" title=""></a>
+                        <a class="trait" href="TypSolver.html" title=""></a>
                         <a href="TypSolver.html" title="">TypSolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
@@ -740,6 +760,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.LocalProverStep#decay" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="decay:Double"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#decay:Double" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">decay</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.LocalProverStep#equationNodes" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="equationNodes:monix.eval.Task[Set[provingground.learning.EquationNode]]"></a><a id="equationNodes:Task[Set[EquationNode]]"></a>
       <span class="permalink">
@@ -753,6 +789,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">equationNodes</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<span class="extype" name="scala.Predef.Set">Set</span>[<a href="EquationNode.html" class="extype" name="provingground.learning.EquationNode">EquationNode</a>]]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#exponent" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="exponent:Double"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#exponent:Double" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exponent</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#genMaxDepth" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="genMaxDepth:Option[Int]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#genMaxDepth:Option[Int]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">genMaxDepth</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>
       </span>
       
       
@@ -948,6 +1016,70 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.LocalProverStep#withCutoff" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="withCutoff(cutoff:Double):provingground.learning.LocalProverStep"></a><a id="withCutoff(Double):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#withCutoff(cutoff:Double):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withCutoff</span><span class="params">(<span name="cutoff">cutoff: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#withInit" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="withInit(ts:provingground.learning.TermState):provingground.learning.LocalProverStep"></a><a id="withInit(TermState):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#withInit(ts:provingground.learning.TermState):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withInit</span><span class="params">(<span name="ts">ts: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#withLimit" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="withLimit(l:scala.concurrent.duration.FiniteDuration):provingground.learning.LocalProverStep"></a><a id="withLimit(FiniteDuration):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#withLimit(l:scala.concurrent.duration.FiniteDuration):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withLimit</span><span class="params">(<span name="l">l: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#withParams" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="withParams(p:provingground.learning.TermGenParams):provingground.learning.LocalProverStep"></a><a id="withParams(TermGenParams):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#withParams(p:provingground.learning.TermGenParams):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withParams</span><span class="params">(<span name="p">p: <a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
     </li></ol>
             </div>
 
@@ -1045,6 +1177,70 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="provingground.learning.LocalProverStep#addGoal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addGoal(goal:provingground.HoTT.Typ[provingground.HoTT.Term],weight:Double):provingground.learning.LocalProverStep"></a><a id="addGoal(Typ[Term],Double):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#addGoal(goal:provingground.HoTT.Typ[provingground.HoTT.Term],weight:Double):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addGoal</span><span class="params">(<span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#addLookup" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addLookup(ts:Set[provingground.HoTT.Term]):provingground.learning.LocalProverStep"></a><a id="addLookup(Set[Term]):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#addLookup(ts:Set[provingground.HoTT.Term]):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addLookup</span><span class="params">(<span name="ts">ts: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#addSolver" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addSolver(s:provingground.learning.TypSolver):provingground.learning.LocalProverStep"></a><a id="addSolver(TypSolver):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#addSolver(s:provingground.learning.TypSolver):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addSolver</span><span class="params">(<span name="s">s: <a href="TypSolver.html" class="extype" name="provingground.learning.TypSolver">TypSolver</a></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#addVar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addVar(term:provingground.HoTT.Term,weight:Double):provingground.learning.LocalProverStep"></a><a id="addVar(Term,Double):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#addVar(term:provingground.HoTT.Term,weight:Double):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addVar</span><span class="params">(<span name="term">term: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -1085,6 +1281,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="provingground.learning.LocalProverStep#distTangentProver" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="distTangentProver(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tangentCutoff:Double):monix.eval.Task[provingground.learning.LocalTangentProver]"></a><a id="distTangentProver(FiniteDistribution[Term],Double):Task[LocalTangentProver]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#distTangentProver(fd:provingground.FiniteDistribution[provingground.HoTT.Term],tangentCutoff:Double):monix.eval.Task[provingground.learning.LocalTangentProver]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">distTangentProver</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="tangentCutoff">tangentCutoff: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="#cutoff:Double">cutoff</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="LocalTangentProver.html" class="extype" name="provingground.learning.LocalTangentProver">LocalTangentProver</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a><a id="ensuring((LocalProverStep)⇒Boolean,⇒Any):LocalProverStep"></a>
       <span class="permalink">
@@ -1478,6 +1690,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.LocalProverStep#proofTangent" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="proofTangent(tangentCutoff:Double):monix.eval.Task[provingground.learning.LocalTangentProver]"></a><a id="proofTangent(Double):Task[LocalTangentProver]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#proofTangent(tangentCutoff:Double):monix.eval.Task[provingground.learning.LocalTangentProver]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">proofTangent</span><span class="params">(<span name="tangentCutoff">tangentCutoff: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="#cutoff:Double">cutoff</a></span></span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="LocalTangentProver.html" class="extype" name="provingground.learning.LocalTangentProver">LocalTangentProver</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.LocalProverStep#proofTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="proofTerms:monix.eval.Task[scala.collection.immutable.Vector[(provingground.HoTT.Term,Double)]]"></a><a id="proofTerms:Task[Vector[(Term,Double)]]"></a>
       <span class="permalink">
@@ -1494,6 +1722,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       
+    </li><li name="provingground.learning.LocalProverStep#scaleLimit" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="scaleLimit(scale:Double):provingground.learning.LocalProverStep"></a><a id="scaleLimit(Double):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#scaleLimit(scale:Double):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scaleLimit</span><span class="params">(<span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
     </li><li name="provingground.learning.LocalProverStep#seek" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="seek:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Term]]"></a><a id="seek:Task[FiniteDistribution[Term]]"></a>
       <span class="permalink">
@@ -1507,6 +1751,54 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">seek</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#sharpen" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sharpen(scale:Double):provingground.learning.LocalProverStep"></a><a id="sharpen(Double):LocalProverStep"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#sharpen(scale:Double):provingground.learning.LocalProverStep" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sharpen</span><span class="params">(<span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">2.0</span></span>)</span><span class="result">: <a href="" class="extype" name="provingground.learning.LocalProverStep">LocalProverStep</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#splitLemmaProvers" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="splitLemmaProvers(scale:Double):monix.eval.Task[Vector[provingground.learning.LocalTangentProver]]"></a><a id="splitLemmaProvers(Double):Task[Vector[LocalTangentProver]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#splitLemmaProvers(scale:Double):monix.eval.Task[Vector[provingground.learning.LocalTangentProver]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">splitLemmaProvers</span><span class="params">(<span name="scale">scale: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="LocalTangentProver.html" class="extype" name="provingground.learning.LocalTangentProver">LocalTangentProver</a>]]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#splitTangentProvers" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="splitTangentProvers(terms:Vector[(provingground.HoTT.Term,Double)]):monix.eval.Task[Vector[provingground.learning.LocalTangentProver]]"></a><a id="splitTangentProvers(Vector[(Term,Double)]):Task[Vector[LocalTangentProver]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#splitTangentProvers(terms:Vector[(provingground.HoTT.Term,Double)]):monix.eval.Task[Vector[provingground.learning.LocalTangentProver]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">splitTangentProvers</span><span class="params">(<span name="terms">terms: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>, <span class="extype" name="scala.Double">Double</span>)]</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="LocalTangentProver.html" class="extype" name="provingground.learning.LocalTangentProver">LocalTangentProver</a>]]</span>
       </span>
       
       
@@ -1558,6 +1850,38 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="provingground.learning.LocalProverStep#tangentExpressionEval" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tangentExpressionEval(x:provingground.HoTT.Term,weight:Double):monix.eval.Task[provingground.learning.ExpressionEval]"></a><a id="tangentExpressionEval(Term,Double):Task[ExpressionEval]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#tangentExpressionEval(x:provingground.HoTT.Term,weight:Double):monix.eval.Task[provingground.learning.ExpressionEval]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tangentExpressionEval</span><span class="params">(<span name="x">x: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">1.0</span></span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.LocalProverStep#tangentProver" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tangentProver(xs:provingground.HoTT.Term*):monix.eval.Task[provingground.learning.LocalTangentProver]"></a><a id="tangentProver(Term*):Task[LocalTangentProver]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/LocalProverStep.html#tangentProver(xs:provingground.HoTT.Term*):monix.eval.Task[provingground.learning.LocalTangentProver]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tangentProver</span><span class="params">(<span name="xs">xs: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>*</span>)</span><span class="result">: <span class="extype" name="monix.eval.Task">Task</span>[<a href="LocalTangentProver.html" class="extype" name="provingground.learning.LocalTangentProver">LocalTangentProver</a>]</span>
+      </span>
+      
+      
     </li><li name="provingground.learning.LocalProverStep#theoremsByProof" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="theoremsByProof:monix.eval.Task[provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]]"></a><a id="theoremsByProof:Task[FiniteDistribution[Typ[Term]]]"></a>
       <span class="permalink">

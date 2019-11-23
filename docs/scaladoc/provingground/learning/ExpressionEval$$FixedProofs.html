@@ -262,6 +262,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></dd></dl></div>
+    </li><li name="provingground.learning.ExpressionEval#decay" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="decay:Double"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval$$FixedProofs.html#decay:Double" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">decay</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></dd></dl></div>
     </li><li name="provingground.learning.ExpressionEval#equations" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="equations:Set[provingground.learning.Equation]"></a><a id="equations:Set[Equation]"></a>
       <span class="permalink">
@@ -275,6 +291,22 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       </span>
       <span class="symbol">
         <span class="name">equations</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="Equation.html" class="extype" name="provingground.learning.Equation">Equation</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></dd></dl></div>
+    </li><li name="provingground.learning.ExpressionEval#exponent" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="exponent:Double"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/ExpressionEval$$FixedProofs.html#exponent:Double" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exponent</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></dd></dl></div>
@@ -1345,9 +1377,9 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></dd></dl></div>
     </li><li name="provingground.learning.ExpressionEval.GenerateTyps#modify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="modify(initNew:Map[provingground.learning.Expression,Double],finalTypsNew:=&gt;provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],equationsNew:Set[provingground.learning.Equation],tgNew:provingground.learning.TermGenParams,coeffsAsVarsNew:Boolean,maxRatioNew:Double,scaleNew:Double,smoothNew:Option[Double]):provingground.learning.ExpressionEval"></a><a id="modify(Map[Expression,Double],⇒FiniteDistribution[Typ[Term]],Set[Equation],TermGenParams,Boolean,Double,Double,Option[Double]):ExpressionEval"></a>
+      <a id="modify(initNew:Map[provingground.learning.Expression,Double],finalTypsNew:=&gt;provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],equationsNew:Set[provingground.learning.Equation],tgNew:provingground.learning.TermGenParams,coeffsAsVarsNew:Boolean,maxRatioNew:Double,scaleNew:Double,smoothNew:Option[Double],exponentNew:Double,decayNew:Double):provingground.learning.ExpressionEval"></a><a id="modify(Map[Expression,Double],⇒FiniteDistribution[Typ[Term]],Set[Equation],TermGenParams,Boolean,Double,Double,Option[Double],Double,Double):ExpressionEval"></a>
       <span class="permalink">
-      <a href="../../provingground/learning/ExpressionEval$$FixedProofs.html#modify(initNew:Map[provingground.learning.Expression,Double],finalTypsNew:=&gt;provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],equationsNew:Set[provingground.learning.Equation],tgNew:provingground.learning.TermGenParams,coeffsAsVarsNew:Boolean,maxRatioNew:Double,scaleNew:Double,smoothNew:Option[Double]):provingground.learning.ExpressionEval" title="Permalink">
+      <a href="../../provingground/learning/ExpressionEval$$FixedProofs.html#modify(initNew:Map[provingground.learning.Expression,Double],finalTypsNew:=&gt;provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]],equationsNew:Set[provingground.learning.Equation],tgNew:provingground.learning.TermGenParams,coeffsAsVarsNew:Boolean,maxRatioNew:Double,scaleNew:Double,smoothNew:Option[Double],exponentNew:Double,decayNew:Double):provingground.learning.ExpressionEval" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1356,7 +1388,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">modify</span><span class="params">(<span name="initNew">initNew: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Expression.html" class="extype" name="provingground.learning.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="ExpressionEval.html#init:Map[provingground.learning.Expression,Double]">self.init</a></span></span></span>, <span name="finalTypsNew">finalTypsNew: ⇒ <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] = <span class="symbol"><span class="name"><a href="ExpressionEval$$GenerateTyps.html#finalTyps:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]">self.finalTyps</a></span></span></span>, <span name="equationsNew">equationsNew: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="Equation.html" class="extype" name="provingground.learning.Equation">Equation</a>] = <span class="symbol"><span class="name"><a href="ExpressionEval.html#equations:Set[provingground.learning.Equation]">self.equations</a></span></span></span>, <span name="tgNew">tgNew: <a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#tg:provingground.learning.TermGenParams">self.tg</a></span></span></span>, <span name="coeffsAsVarsNew">coeffsAsVarsNew: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#coeffsAsVars:Boolean">self.coeffsAsVars</a></span></span></span>, <span name="maxRatioNew">maxRatioNew: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#maxRatio:Double">self.maxRatio</a></span></span></span>, <span name="scaleNew">scaleNew: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#scale:Double">self.scale</a></span></span></span>, <span name="smoothNew">smoothNew: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="ExpressionEval.html#smoothing:Option[Double]">self.smoothing</a></span></span></span>)</span><span class="result">: <a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></span>
+        <span class="name">modify</span><span class="params">(<span name="initNew">initNew: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Expression.html" class="extype" name="provingground.learning.Expression">Expression</a>, <span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="ExpressionEval.html#init:Map[provingground.learning.Expression,Double]">self.init</a></span></span></span>, <span name="finalTypsNew">finalTypsNew: ⇒ <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] = <span class="symbol"><span class="name"><a href="ExpressionEval$$GenerateTyps.html#finalTyps:provingground.FiniteDistribution[provingground.HoTT.Typ[provingground.HoTT.Term]]">self.finalTyps</a></span></span></span>, <span name="equationsNew">equationsNew: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="Equation.html" class="extype" name="provingground.learning.Equation">Equation</a>] = <span class="symbol"><span class="name"><a href="ExpressionEval.html#equations:Set[provingground.learning.Equation]">self.equations</a></span></span></span>, <span name="tgNew">tgNew: <a href="TermGenParams.html" class="extype" name="provingground.learning.TermGenParams">TermGenParams</a> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#tg:provingground.learning.TermGenParams">self.tg</a></span></span></span>, <span name="coeffsAsVarsNew">coeffsAsVarsNew: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#coeffsAsVars:Boolean">self.coeffsAsVars</a></span></span></span>, <span name="maxRatioNew">maxRatioNew: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#maxRatio:Double">self.maxRatio</a></span></span></span>, <span name="scaleNew">scaleNew: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#scale:Double">self.scale</a></span></span></span>, <span name="smoothNew">smoothNew: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>] = <span class="symbol"><span class="name"><a href="ExpressionEval.html#smoothing:Option[Double]">self.smoothing</a></span></span></span>, <span name="exponentNew">exponentNew: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#exponent:Double">self.exponent</a></span></span></span>, <span name="decayNew">decayNew: <span class="extype" name="scala.Double">Double</span> = <span class="symbol"><span class="name"><a href="ExpressionEval.html#decay:Double">self.decay</a></span></span></span>)</span><span class="result">: <a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ExpressionEval$$GenerateTyps.html" class="extype" name="provingground.learning.ExpressionEval.GenerateTyps">GenerateTyps</a> → <a href="ExpressionEval.html" class="extype" name="provingground.learning.ExpressionEval">ExpressionEval</a></dd></dl></div>

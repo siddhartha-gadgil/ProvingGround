@@ -1979,6 +1979,22 @@ applying terms as long as the result is a function and the list is non-empty.</p
       
       <p class="shortcomment cmt">folds in as many terms of the list as possible,
 applying terms as long as the result is a function and the list is non-empty.</p>
+    </li><li name="provingground.HoTT#fromSkolemized" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="fromSkolemized(typ:provingground.HoTT.Typ[provingground.HoTT.Term])(y:provingground.HoTT.Term):provingground.HoTT.Term"></a><a id="fromSkolemized(Typ[Term])(Term):Term"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$.html#fromSkolemized(typ:provingground.HoTT.Typ[provingground.HoTT.Term])(y:provingground.HoTT.Term):provingground.HoTT.Term" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fromSkolemized</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="params">(<span name="y">y: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      
+      
     </li><li name="provingground.HoTT#funcToLambda" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="funcToLambda[U&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[U],V&lt;:provingground.HoTT.Termwithprovingground.HoTT.Subs[V]](fn:provingground.HoTT.FuncLike[U,V]):provingground.HoTT.LambdaLike[U,V]"></a><a id="funcToLambda[U&lt;:TermwithSubs[U],V&lt;:TermwithSubs[V]](FuncLike[U,V]):LambdaLike[U,V]"></a>
       <span class="permalink">
@@ -2539,6 +2555,23 @@ e.g. </p><pre><span class="kw">val</span> f = x :-&gt; y</pre></div></div>
       
       <p class="shortcomment cmt">Negation with some simplification
 </p>
+    </li><li name="provingground.HoTT#negateContra" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="negateContra(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Term"></a><a id="negateContra(Typ[Term]):Term"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$.html#negateContra(typ:provingground.HoTT.Typ[provingground.HoTT.Term]):provingground.HoTT.Term" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">negateContra</span><span class="params">(<span name="typ">typ: <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result">: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">Proof of A -&gt; negate(A) -&gt; Zero
+</p>
     </li><li name="provingground.HoTT#nextChar" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="nextChar(s:Traversable[Char]):Char"></a><a id="nextChar(Traversable[Char]):Char"></a>
       <span class="permalink">
@@ -2892,6 +2925,22 @@ e.g. </p><pre><span class="kw">val</span> P = x ~<span class="kw">&gt;:</span> A
       </span>
       <span class="symbol">
         <span class="name">skipVars</span><span class="params">(<span name="t">t: <a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
+      </span>
+      
+      
+    </li><li name="provingground.HoTT#skolemize" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="skolemize:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;provingground.HoTT.Typ[provingground.HoTT.Term]"></a><a id="skolemize:(Typ[Term])⇒Typ[Term]"></a>
+      <span class="permalink">
+      <a href="../provingground/HoTT$.html#skolemize:provingground.HoTT.Typ[provingground.HoTT.Term]=&gt;provingground.HoTT.Typ[provingground.HoTT.Term]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">skolemize</span><span class="result">: (<a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]) ⇒ <a href="HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>
       </span>
       
       

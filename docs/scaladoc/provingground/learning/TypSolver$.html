@@ -131,6 +131,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="Collections$.html" title=""></a>
                         <a href="Collections$.html" title="">Collections</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="CompositeProver.html" title=""></a>
+                        <a href="CompositeProver.html" title="">CompositeProver</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="Conditioning$.html" title=""></a>
                         <a class="trait" href="Conditioning.html" title="typeclass for being able to condition"></a>
                         <a href="Conditioning.html" title="typeclass for being able to condition">Conditioning</a>
@@ -299,6 +303,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a class="object" href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form"></a>
                         <a href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form">GeometricDistribution</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="GlobalProver$.html" title=""></a>
+                        <a class="trait" href="GlobalProver.html" title=""></a>
+                        <a href="GlobalProver.html" title="">GlobalProver</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="GramSchmidt$.html" title=""></a>
                         <a href="GramSchmidt$.html" title="">GramSchmidt</a>
@@ -322,6 +330,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="object" href="IterateDyn$.html" title=""></a>
                         <a href="IterateDyn$.html" title="">IterateDyn</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LemmaWeigths$.html" title=""></a>
+                        <a href="LemmaWeigths$.html" title="">LemmaWeigths</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="LocalProver.html" title="Collect local/generative/tactical proving; this includes configuration and learning but excludes strategy and attention."></a>
@@ -508,6 +520,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TermBucket.html" title="">TermBucket</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="object" href="TermData$.html" title=""></a>
+                        <a href="TermData$.html" title="">TermData</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="trait" href="TermEvolution.html" title=""></a>
                         <a href="TermEvolution.html" title="">TermEvolution</a>
                       </li><li class="current-entities indented2">
@@ -550,6 +566,10 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <span class="separator"></span>
                         <a class="class" href="TermPopulation.html" title=""></a>
                         <a href="TermPopulation.html" title="">TermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermProver$.html" title=""></a>
+                        <a href="TermProver$.html" title="">TermProver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="TermRandomVars$.html" title=""></a>
@@ -596,7 +616,7 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
                         <a href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TruncatedFiniteDistribution</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="" title=""></a>
-                        <a class="class" href="TypSolver.html" title=""></a>
+                        <a class="trait" href="TypSolver.html" title=""></a>
                         <a href="TypSolver.html" title="">TypSolver</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
@@ -629,15 +649,15 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
           <div id="content">
             <body class="object value">
       <div id="definition">
-        <a href="TypSolver.html" title="See companion class"><div class="big-circle object-companion-class">o</div></a>
+        <a href="TypSolver.html" title="See companion trait"><div class="big-circle object-companion-trait">o</div></a>
         <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.learning">learning</a></p>
-        <h1><a href="TypSolver.html" title="See companion class">TypSolver</a><span class="permalink">
+        <h1><a href="TypSolver.html" title="See companion trait">TypSolver</a><span class="permalink">
       <a href="../../provingground/learning/TypSolver$.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
         <h3><span class="morelinks"><div>
-            Companion <a href="TypSolver.html" title="See companion class">class TypSolver</a>
+            Companion <a href="TypSolver.html" title="See companion trait">trait TypSolver</a>
           </div></span></h3>
       </div>
 
@@ -704,7 +724,23 @@ package, used for <code><code>nlp</code></code> as well as <code><code>serializa
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="provingground.learning.TypSolver.LookupSolver" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="provingground.learning.TypSolver.HashLookupSolver" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HashLookupSolverextendsTypSolverwithProductwithSerializable"></a><a id="HashLookupSolver:HashLookupSolver"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/TypSolver$.html#HashLookupSolverextendsTypSolverwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="TypSolver$$HashLookupSolver.html"><span class="name">HashLookupSolver</span></a><span class="params">(<span name="terms">terms: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="TypSolver.html" class="extype" name="provingground.learning.TypSolver">TypSolver</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.TypSolver.LookupSolver" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="LookupSolverextendsTypSolverwithProductwithSerializable"></a><a id="LookupSolver:LookupSolver"></a>
       <span class="permalink">
       <a href="../../provingground/learning/TypSolver$.html#LookupSolverextendsTypSolverwithProductwithSerializable" title="Permalink">
