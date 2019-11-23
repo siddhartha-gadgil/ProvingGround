@@ -405,13 +405,14 @@ object Site {
 
     // assemble()
 
-    mkHome()
-
     mkDocTuts()
 
     mkTuts()
 
     mkPosts()
+
+    mkHome()
+
   }
 
 }
