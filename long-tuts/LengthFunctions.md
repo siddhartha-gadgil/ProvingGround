@@ -11,11 +11,11 @@ Assume we are given the following:
 
 * A group $G$.
 * A (length) function $l: G \\to \\mathbb{Q}$ such that
-  - For $g, h \\in G$, $l(gh) \\leq l(g) + l(h)$,
-  - For $g, h\\in G$, $l(ghg^{-1}) = l(g$).
+  * For $g, h \\in G$, $l(gh) \\leq l(g) + l(h)$,
+  * For $g, h\\in G$, $l(ghg^{-1}) = l(g$).
 * Elements $x, y, z, w \\in G$ such that
-  - $x \\sim yw$ (here $\\sim$ means conjugate in $G$),
-  - $x \\sim zw^{-1}$.
+  * $x \\sim yw$ (here $\\sim$ means conjugate in $G$),
+  * $x \\sim zw^{-1}$.
 
 Then we have the following:
 
@@ -24,7 +24,6 @@ __Theorem:__ There exists a constant $A\\in\\mathbb{Q}$ so that for $n \\in \\ma
 $$l(x^{2n}) \leq n(l(y) + l(z)) +A.$$
 
 In the above paper, homogeneity is used to deduce a bound for $l(x)$, and on taking the limit we get $l(x) \\leq \\frac{l(y) + l(z)}{2}$.
-
 
 ## Preliminaries
 
@@ -91,7 +90,6 @@ The main internal repetition trick is captured the bound
 $$l((wy)^ns^{-1}t(zw^{-1})^n)\leq n(l(y) + l(z)) + l(s^{-1}) + l(t).$$
 
 We define $c(n) = (wy)^ns^{-1}t(zw^{-1})^n$ and $f(n) = n(l(y) + l(z)) + l(s^{-1}) + l(t)$, so the inequality is $l(c(n))\leq(f(n))$. We encode this  below as the _main lemma_.
-
 
 ```scala mdoc:to-string
 val wy = w |+| y
@@ -160,6 +158,7 @@ val lbnBoundedlcnlylz = triang(y)(c(n)) + triang(y |+| c(n))(z)
 ```scala mdoc:to-string
 assert(lbnBoundedlcnlylz.typ == (leq(l(b(n)))(l(c(n)) + l(y) + l(z))))
 ```
+
 Now, using the induction hypothesis, we get a bound on $l(b(n))$.
 
 ```scala mdoc:to-string
@@ -209,6 +208,7 @@ val c2 = "x ~ zw^{-1}" :: (x =:= (t |+| z |+| w.inverse |+| t.inverse))
 ```
 
 We deduce using a theorem (in our code) about powers of conjugates that $x^n = s(wy)^ns^{-1} = t(zw^{-1})^nt^{-1}$.
+
 ```scala mdoc:to-string
 val xnConjwyn = (pown *: c1) && ConjPower.pf(s)(wy)(n)
 val xnConjzwbarn= (pown *: c2) && ConjPower.pf(t)(zwbar)(n)
@@ -220,6 +220,7 @@ assert(xnConjzwbarn.typ == (pown(x) =:= (t |+| pown(zwbar)  |+| t.inverse  ) ) )
 ```
 
 We use the above equations to show that $x^nx^n = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.
+
 ```scala mdoc:to-string
 val t1 = s |+| pown(wy)  |+| s.inverse
 val t2 = t |+| pown(zwbar)  |+| t.inverse
@@ -234,6 +235,7 @@ assert(xnxnExpr.typ == ((pown(x) |+| pown(x)) =:= (t1 |+| t2 )   ))
 ```
 
 Using $x^nx^n = x^{2n}$, we get the formula $x^{2n} = s(wy)^ns^{-1}t(zw^{-1})^nt^{-1}$.
+
 ```scala mdoc:to-string
 val x2nExpr =PowerDistributive.pf(x)(n)(n).sym && xnxnExpr
 ```

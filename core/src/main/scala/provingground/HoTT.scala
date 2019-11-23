@@ -4,6 +4,7 @@ import scala.util.Try
 //import scala.language.existentials
 import Math._
 import HoTT._
+import scala.meta.tokens.Token.Interpolation.Id
 //
 
 /**
@@ -2976,14 +2977,28 @@ object HoTT {
 
     lazy val sym: Equality[U] = symm(typ.dom)(lhs)(rhs)(self)
 
+    lazy val symWit: Equality[U] = symmWit(typ.dom)(lhs)(rhs)(self)
+
+
     def &&(that: Equality[U]): Equality[U] =
       trans(typ.dom)(lhs)(rhs)(that.rhs)(this)(that)
+
+    def &&&(that: Equality[U]): Equality[U] =
+      transWit(typ.dom)(lhs)(rhs)(that.rhs)(this)(that)
+
 
     def *:[V <: Term with Subs[V]](f: Func[U, V]): Equality[V] =
       induced(f)(lhs)(rhs)(self)
 
+    def **:[V <: Term with Subs[V]](f: Func[U, V]): Equality[V] =
+      inducedWit(f)(lhs)(rhs)(self)
+
+
     def lift[V <: Term with Subs[V]](f: Func[U, Typ[V]]): Func[V, V] =
       transport(f)(lhs)(rhs)(self)
+
+    def liftWit[V <: Term with Subs[V]](f: Func[U, Typ[V]]): Func[V, V] =
+      transportWit(f)(lhs)(rhs)(self)
   }
 
   /**
@@ -3258,6 +3273,15 @@ object HoTT {
       inducFn(baseCase)
     }
 
+    def symmWit[U <: Term with Subs[U]](
+        dom: Typ[U]
+    ): FuncLike[U, FuncLike[U, Func[Equality[U], Equality[U]]]] = {
+      val x         = dom.Var
+      val y         = dom.Var
+      "_" :: (x ~>: (y ~>: (IdentityTyp(dom, x, y) ->: IdentityTyp(dom, y, x))))
+    }
+
+
     def preTrans[U <: Term with Subs[U]](dom: Typ[U]): FuncLike[U, FuncLike[
       U,
       FuncLike[U, Func[Equality[U], Func[Equality[U], Equality[U]]]]
@@ -3286,6 +3310,16 @@ object HoTT {
       x :~> (y :~> (z :~> (IdentityTyp.preTrans(dom)(z)(x)(y))))
     }
 
+    def transWit[U <: Term with Subs[U]](dom: Typ[U]): FuncLike[U, FuncLike[
+      U,
+      FuncLike[U, Func[Equality[U], Func[Equality[U], Equality[U]]]]
+    ]] = {
+      val x = dom.Var
+      val y = dom.Var
+      val z = dom.Var
+      "_" :: (x ~>: (y ~>: (z ~>: (IdentityTyp(dom, x, y) ->: IdentityTyp(dom, y, z) ->: IdentityTyp(dom, x, z)))))
+    }
+
     /**
       * equality induced by a (pure) function
       * term with type `x =y -> f(x) = f(y)` as function of `x` and `y`
@@ -3303,6 +3337,15 @@ object HoTT {
       inducFn(baseCase)
     }
 
+    def inducedWit[U <: Term with Subs[U], V <: Term with Subs[V]](
+        f: Func[U, V]
+    ): FuncLike[U, FuncLike[U, Func[Equality[U], Equality[V]]]] = {
+      val x         = f.dom.Var
+      val y         = f.dom.Var
+      val typ = x ~>: (y ~>: (IdentityTyp(f.dom, x, y) ->: IdentityTyp(f.codom, f(x), f(y))))
+      "_" :: typ
+    }
+
     /**
       * transport: term with type `x = y -> f(x) -> f(y)` as function of `x` and `y`
       */
@@ -3316,6 +3359,15 @@ object HoTT {
       val inducFn   = induc(f.dom, typFamily)
       val baseCase  = x :~> (id(f(x)))
       inducFn(baseCase)
+    }
+
+    def transportWit[U <: Term with Subs[U], V <: Term with Subs[V]](
+        f: Func[U, Typ[V]]
+    ): FuncLike[U, FuncLike[U, Func[Equality[U], Func[V, V]]]] = {
+      val x         = f.dom.Var
+      val y         = f.dom.Var
+      val typ         = x ~>: (y ~>: (IdentityTyp(f.dom, x, y) ->: f(x) ->: f(y)))
+      "_" :: typ
     }
 
     def apf[U <: Term with Subs[U], V <: Term with Subs[V]](
