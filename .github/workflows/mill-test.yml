@@ -19,4 +19,5 @@ jobs:
       run: |
         ./mill all __.compile
         ./mill all __.test
+        ./mill jvmRoot.docs
         ./mill mantle.runMain "provingground.interface.Site"

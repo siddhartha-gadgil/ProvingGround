@@ -415,6 +415,20 @@ object Site {
 
   }
 
-  def main(args: Array[String]) = mkSite()
+  def main(args: Array[String]) = {
+    mkLists()
 
+    // pack()
+
+    // assemble()
+
+    mkDocTuts()
+
+    mkTuts()
+
+    mkPosts()
+
+    mkHome()
+
+  }
 }
