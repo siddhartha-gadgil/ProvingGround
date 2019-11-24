@@ -19,3 +19,4 @@ jobs:
       run: |
         ./mill all __.compile
         ./mill all __.test
+        ./mill mantle.runMain "provingground.interface.Site"

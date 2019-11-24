@@ -415,4 +415,6 @@ object Site {
 
   }
 
+  def main(args: Array[String]) = mkSite()
+
 }
