@@ -296,22 +296,6 @@ case class GeneratorEquations[State](
             EquationNode(fve,
                          FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
         (eqTerms, isleEquations)
-      case isle: ComplexIsland[o, _, State, b, _] =>
-        val (isleInit, boat, _) = isle.initMap(initState)
-        val isleEq = GeneratorEquations(nodeCoeffSeq,
-                                        isleInit,
-                                        isle.finalMap(boat, finalState))
-        val isleEquations: Set[Equation] =
-          isleEq.equations.map(_.useBoat(boat, ???))
-        val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
-        val eqTerms =
-          for {
-            (x, FinalVal(p)) <- isleFinalProb
-            y = isle.export(boat, x)
-            fve <- finalElemValOpt(y, isle.output)
-          } yield
-            EquationNode(fve, FinalVal(GeneratorVariables.InIsle(p, boat, ???)))
-        (eqTerms, isleEquations)
 
     }
 

@@ -710,17 +710,6 @@ case class MonixTangentFiniteDistributionEq[State](
                     memo ++ rm
                   )
               } // exported result seen outside
-          case isle: ComplexIsland[o, Y, State, b, Double] =>
-            import isle._
-            val (isleInit, boat, isleCoeffs) = initMap(initState)
-            val isleOut =
-              updateAll(isleCoeffs.toSeq) // coefficients changed to those for the island
-                .varDist(isleInit, maxDepth.map(_ - 1), memo)(islandOutput(boat), epsilon)
-            isleOut
-              .map {
-                case (fd, eqs, rm) =>
-                  (fd.map(export(boat, _)).purge(epsilon), eqs, memo ++ rm)
-              } // exported result seen outside
         }
       }
       resultT.map {

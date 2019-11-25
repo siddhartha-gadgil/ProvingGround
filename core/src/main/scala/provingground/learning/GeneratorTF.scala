@@ -427,24 +427,6 @@ case class GeneratorTF[State](
                     FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
               (eqTerms, baseData ++ isleData)
             }
-          case isle: ComplexIsland[o, _, State, boat, _] =>
-            val (isleInit, boat, _) = isle.initMap(initState)
-            val isleEq =
-              GeneratorTF(nodeCoeffSeq,
-                          isleInit,
-                          isle.finalMap(boat, finalState))
-            val isleData: TFData =
-              isleEq.tfData.map((x) => InIsle(x, boat, ???))
-            val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
-            val eqTerms =
-              for {
-                (x, FinalVal(p)) <- isleFinalProb
-                y = isle.export(boat, x)
-                fve <- finalElemValOpt(y, isle.output)
-              } yield
-                EquationNode(fve,
-                             FinalVal(GeneratorVariables.InIsle(p, boat, ???)))
-            (eqTerms, baseData ++ isleData)
 
         }
 //        pprint.log(node)
@@ -656,27 +638,6 @@ case class GeneratorTF[State](
                     FinalVal(GeneratorVariables.InIsle(p, boat, isle)))
               (eqTerms, baseData ++ isleData)
             }
-          }
-        case isle: ComplexIsland[o, _, State, boat, _] =>
-          Task {
-            val (isleInit, boat, _) = isle.initMap(initState)
-            val isleEq =
-              GeneratorTF(nodeCoeffSeq,
-                          isleInit,
-                          isle.finalMap(boat, finalState))
-            val isleData: TFData =
-              isleEq.tfData.map((x) => InIsle(x, boat, ???))
-            val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
-            val eqTerms =
-              for {
-                (x, FinalVal(p)) <- isleFinalProb
-                y = isle.export(boat, x)
-                fve <- finalElemValOpt(y, isle.output)
-              } yield
-                EquationNode(fve,
-                             FinalVal(GeneratorVariables.InIsle(p, boat, ???)))
-            (eqTerms, baseData ++ isleData)
-
           }
       }
 

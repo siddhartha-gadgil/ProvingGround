@@ -489,15 +489,15 @@ object GeneratorNode {
     * @tparam InitState the initial state
     * @tparam Boat scala type of the `boat`
     */
-  case class ComplexIsland[O, +Y, InitState, Boat, V](
-      islandOutput: Boat => RandomVar[O],
-      output: RandomVar[Y],
-      initMap: InitState => (InitState,
-                             Boat,
-                             Set[GeneratorNodeFamily.Value[_ <: HList, _, V]]),
-      export: (Boat, O) => Y,
-      finalMap: (Boat, InitState) => InitState
-  ) extends RecursiveGeneratorNode[InitState, Y]
+  // case class ComplexIsland[O, +Y, InitState, Boat, V](
+  //     islandOutput: Boat => RandomVar[O],
+  //     output: RandomVar[Y],
+  //     initMap: InitState => (InitState,
+  //                            Boat,
+  //                            Set[GeneratorNodeFamily.Value[_ <: HList, _, V]]),
+  //     export: (Boat, O) => Y,
+  //     finalMap: (Boat, InitState) => InitState
+  // ) extends RecursiveGeneratorNode[InitState, Y]
 
 }
 
