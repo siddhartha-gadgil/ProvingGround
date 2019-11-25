@@ -8,6 +8,7 @@ import provingground.learning.GeneratorNode.{Map, MapOpt}
 import scala.language.higherKinds
 import GeneratorNode._
 import TermRandomVars._
+import scala.util._
 
 import TermGeneratorNodes._
 import provingground.learning.GeneratorVariables.Elem
@@ -246,57 +247,79 @@ object TermRandomVars {
 
   import shapeless._, GeneratorVariables._
   // Substituting terms in variables
-  def valueSubs[U](x: Term, y: Term)(value: U) : U = value match {
-    case t : Term => t.replace(x, y).asInstanceOf[U]
+  def valueSubs[U](x: Term, y: Term)(value: U): U = value match {
+    case t: Term      => t.replace(x, y).asInstanceOf[U]
     case fn: ExstFunc => ExstFunc(fn.func.replace(x, y)).asInstanceOf[U]
-    case l : HList => l match {
-      case head :: tail => (valueSubs(x, y)(head) :: valueSubs(x, y)(tail)).asInstanceOf[U]
-      case HNil => HNil.asInstanceOf[U]
-    }
+    case l: HList =>
+      l match {
+        case head :: tail =>
+          (valueSubs(x, y)(head) :: valueSubs(x, y)(tail)).asInstanceOf[U]
+        case HNil => HNil.asInstanceOf[U]
+      }
     case u => u
   }
 
-  def randomVarSubs[U](x: Term, y: Term)(rv: RandomVar[U]) : RandomVar[U] = rv match {
-    case RandomVar.AtCoord(family, fullArg) => RandomVar.AtCoord(family, valueSubs(x, y)(fullArg))
-    case rv => rv
+  def randomVarSubs[U](x: Term, y: Term)(rv: RandomVar[U]): RandomVar[U] =
+    rv match {
+      case RandomVar.AtCoord(family, fullArg) =>
+        RandomVar.AtCoord(family, valueSubs(x, y)(fullArg))
+      case rv => rv
+    }
+
+  def sortSubs[U, V](x: Term, y: Term)(sort: Sort[U, V]): Sort[U, V] =
+    sort match {
+      case All() => sort
+      case filter: Filter[U] =>
+        Filter[U]((z: U) => filter.pred(valueSubs(y, x)(z)))
+          .asInstanceOf[Sort[U, V]]
+      case Restrict(optMap) =>
+        Restrict(
+          (z: U) => optMap(valueSubs(y, x)(z)).map(w => valueSubs(x, y)(w))
+        )
+    }
+
+  def isleSub[c, d](x: Term, y: Term)(
+      isle: Island[c, TermState, d, Term],
+      boat: Term,
+      varWeight: Double
+  ): Island[c, TermState, d, Term] = {
+    val newInit = 
+            AddVar(boat.typ.replace(x, y), varWeight)
+       Island[c, TermState, d, Term](
+      randomVarSubs(x, y)(isle.output),
+      (z: Term) => valueSubs(x, y)(isle.islandOutput(z)),
+      newInit,
+      isle.export,
+      isle.finalMap
+    )
+
   }
 
-  def sortSubs[U, V](x: Term, y: Term)(sort: Sort[U, V]) : Sort[U, V] = sort match {
-    case All() => sort
-    case filter : Filter[U] => Filter[U]((z: U) => filter.pred(valueSubs(y, x)(z))).asInstanceOf[Sort[U, V]]
-    case Restrict(optMap) => Restrict((z: U) => optMap(valueSubs(y, x)(z)).map(w => valueSubs(x, y)(w)))
-  }
-
-  def variableSubs(x: Term, y: Term)(v : Variable[_], vars: Vector[Term], varWeight: Double) : Variable[_] = (v : Variable[Any]) match {
-    case Elem(element, randomVar) => Elem(valueSubs(x, y)(element), randomVarSubs(x, y)(randomVar))
-    case ev: Event[a, b] => 
-      val newBase = randomVarSubs(x, y)(ev.base)
-      val newSort: Sort[a,b] = sortSubs(x, y)(ev.sort)
+  def variableSubs(
+      x: Term,
+      y: Term
+  )(v: Variable[_], varWeight: Double): Variable[_] = (v: Variable[Any]) match {
+    case Elem(element, randomVar) =>
+      Elem(valueSubs(x, y)(element), randomVarSubs(x, y)(randomVar))
+    case ev: Event[a, b] =>
+      val newBase             = randomVarSubs(x, y)(ev.base)
+      val newSort: Sort[a, b] = sortSubs(x, y)(ev.sort)
       Event(newBase, newSort)
-    case inIsleFull: InIsle[c, _, d, _] => 
-      val inIsleTry = scala.util.Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
-      inIsleTry.fold(fa => inIsleFull,
+    case inIsleFull: InIsle[c, _, d, _] =>
+      val inIsleTry =
+        Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+      inIsleTry.fold(
+        fa => inIsleFull,
         inIsle => {
           import inIsle._
-          val newBoat = nextVar(boat.typ, vars)
-          val newIsleVar = variableSubs(x, y)(isleVar, vars :+ newBoat, varWeight)
-          val newInit = isle.output match {
-            case RandomVar.AtCoord(family, fullArg) => fullArg match {
-              case (typ: Typ[Term]) :: HNil => AddVar(typ.replace(x, y), varWeight)
-              case _ => isle.initMap.asInstanceOf[(TermState => (TermState, Term) )]
-            }
-            case _ => isle.initMap
-          }
-          val newIsle = Island[c, TermState, d, Term](
-            randomVarSubs(x, y)(isle.output), 
-            (z: Term) => valueSubs(x, y)(isle.islandOutput(z)), 
-            newInit, 
-            isle.export, 
-            isle.finalMap)
-          InIsle(newIsleVar, newBoat, isle)
-        })
+          val newBoat    = boat.replace(x, y)
+          val newIsleVar = variableSubs(x, y)(isleVar, varWeight)
+          val newIsle = isleSub(x, y)(isle, boat, varWeight)
+          InIsle(newIsleVar, newBoat, newIsle)
+        }
+      )
 
-    case PairEvent(base1, base2, sort) => 
+    case PairEvent(base1, base2, sort) =>
       PairEvent(
         randomVarSubs(x, y)(base1),
         randomVarSubs(x, y)(base2),
@@ -304,5 +327,30 @@ object TermRandomVars {
       )
   }
 
-}
+  def isleNormalizeVars(
+      v: GeneratorVariables.Variable[_],
+      vars: Vector[Term],
+      varWeight: Double
+  ): GeneratorVariables.Variable[_] =
+    v match {
+      case Elem(element, randomVar) => v
+      case Event(base, sort)        => v
+      case inIsleFull : InIsle[c, _, d, _] =>
+       val inIsleTry =
+        Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+       inIsleTry.fold(
+      fa => inIsleFull,
+       inIsle => {
+         import inIsle._
+          val newBoat = nextVar(boat.typ, vars)
+           val newIsleVar = variableSubs(boat, newBoat)(
+            isleNormalizeVars(isleVar, vars :+ newBoat, varWeight),
+            varWeight
+          )
+        val newIsle = isleSub(boat, newBoat)(isle, boat, varWeight)
+        InIsle(newIsleVar, newBoat, newIsle)
+      })
+      case PairEvent(base1, base2, sort) => v
+    }
 
+}

@@ -355,11 +355,14 @@ object TermData {
       ns <- lp.nextState
       ev <- lp.expressionEval
       ev1 = ExpressionEval.export(ev, ns.vars)
-    } yield (ns.contextExport(), ev.equations.flatMap(Equation.split(_)))
+    } yield (ns.contextExport(), ev1.equations.flatMap(Equation.split(_)))
 
   def termSuccess(typ: Typ[Term]): TermResult => Task[Boolean] = {
     case (ts, _) => Task(ts.terms.support.exists(_.typ == typ))
   }
+
+  def isleNormalize(eq: EquationNode, varWeight: Double = 0.3): EquationNode =
+    eq.mapVars(v => TermRandomVars.isleNormalizeVars(v, Vector(), varWeight))
 
 }
 
