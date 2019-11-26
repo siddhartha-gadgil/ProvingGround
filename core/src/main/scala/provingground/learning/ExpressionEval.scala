@@ -459,8 +459,7 @@ trait ExpressionEval { self =>
     TermState(finalTerms, finalTyps, vars, inds, goals, context)
 
   def lambdaExportEquations(
-      variable: Term,
-      varWeight: Double
+      variable: Term
   ): Set[Equation] = {
     // val initState = TermState(generators(init), finalTyps)
     import GeneratorNode._, TermGeneratorNodes._
@@ -468,7 +467,7 @@ trait ExpressionEval { self =>
       Island[Term, TermState, Term, Term](
         Terms,
         ConstRandVar(Terms),
-        ts => ts.addTerm(variable, varWeight),
+        ts => (varWeight: Double) => ts.addTerm(variable, varWeight),
         LamApply,
         EnterIsle
       )
@@ -510,8 +509,7 @@ trait ExpressionEval { self =>
   }
 
   def piExportEquations(
-      variable: Term,
-      varWeight: Double
+      variable: Term
   ): Set[Equation] = {
     // val initState = TermState(generators(init), finalTyps)
     import GeneratorNode._, TermGeneratorNodes._
@@ -519,7 +517,7 @@ trait ExpressionEval { self =>
       Island[Typ[Term], TermState, Typ[Term], Term](
         Typs,
         ConstRandVar(Typs),
-        ts => ts.addTerm(variable, varWeight),
+        ts => (varWeight: Double) => ts.addTerm(variable, varWeight),
         PiApply,
         EnterIsle
       )
@@ -564,9 +562,8 @@ trait ExpressionEval { self =>
       init.getOrElse(InitialVal(Elem(x, Terms)), 0.0),
       init.getOrElse(InitialVal(Elem(x, Typs)), 0.0)
     )
-    val eqs = piExportEquations(x, varWeight) union lambdaExportEquations(
-      x,
-      varWeight
+    val eqs = piExportEquations(x) union lambdaExportEquations(
+      x
     )
     val newInit = init
       .map {

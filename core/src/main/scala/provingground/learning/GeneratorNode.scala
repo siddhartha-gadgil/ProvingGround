@@ -470,7 +470,7 @@ object GeneratorNode {
   case class Island[+Y, InitState, O, Boat](
       output: RandomVar[Y],
       islandOutput: Boat => RandomVar[O],
-      initMap: InitState => (InitState, Boat),
+      initMap: InitState => Double => (InitState, Boat),
       export: (Boat, O) => Y,
       finalMap: (Boat, InitState) => InitState
   ) extends RecursiveGeneratorNode[InitState, Y]

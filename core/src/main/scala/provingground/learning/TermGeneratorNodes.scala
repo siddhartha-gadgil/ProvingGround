@@ -80,9 +80,9 @@ object TermGeneratorNodes {
   /**
     * Wrapper for adding variable to allow equality and  `toString` to work.
     */
-  case class AddVar(typ: Typ[Term], wt: Double)
-      extends (TermState => (TermState, Term)) {
-    def apply(ts: TermState): (TermState, Term) = ts.addVar(typ, wt)
+  case class AddVar(typ: Typ[Term])
+      extends (TermState => Double => (TermState, Term)) {
+    def apply(ts: TermState) = (wt: Double) =>  ts.addVar(typ, wt)
 
     override def toString = "AddVar"
   }
@@ -113,7 +113,7 @@ object TermGeneratorNodes {
       extends TermGeneratorNodes[TermState](
         { case (fn, arg) => applyFunc(fn.func, arg) },
         { case (fn, arg) => Unify.appln(fn.func, arg) },
-        AddVar(_, 0.3),
+        (typ: Typ[Term]) => AddVar(typ),
         GetVar,
         EnterIsle
       )
@@ -426,7 +426,7 @@ object TermGeneratorNodes {
 class TermGeneratorNodes[InitState](
     appln: (ExstFunc, Term) => Term,
     unifApplnOpt: (ExstFunc, Term) => Option[Term],
-    addVar: Typ[Term] => InitState => (InitState, Term),
+    addVar: Typ[Term] => InitState => Double => (InitState, Term),
     getVar: Typ[Term] => Term,
     inIsle: (Term, InitState) => InitState,
     solver: TypSolver = TypSolver.coreSolver

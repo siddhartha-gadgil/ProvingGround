@@ -362,7 +362,7 @@ object TermData {
   }
 
   def isleNormalize(eq: EquationNode, varWeight: Double = 0.3): EquationNode =
-    eq.mapVars(v => TermRandomVars.isleNormalizeVars(v, Vector(), varWeight))
+    eq.mapVars(v => TermRandomVars.isleNormalizeVars(v, Vector()))
 
 }
 

@@ -33,6 +33,7 @@ object MonixTangentFiniteDistributionEq {
   */
 case class MonixTangentFiniteDistributionEq[State](
     nodeCoeffSeq: NodeCoeffSeq[State, Double],
+    varWeight: Double,
     baseState: State,
     baseEquations: Set[EquationNode],
     limit: FiniteDuration = 3.minutes
@@ -50,6 +51,7 @@ case class MonixTangentFiniteDistributionEq[State](
   ) =
     MonixTangentFiniteDistributionEq(
       nodeCoeffSeq.updateAll(dataSeq),
+      varWeight,
       baseState,
       baseEquations
     )
@@ -670,7 +672,7 @@ case class MonixTangentFiniteDistributionEq[State](
             }
           case isle: Island[Y, State, o, b] =>
             import isle._
-            val (isleInit, boat) = initMap(initState)                                   // initial condition for island, boat to row back
+            val (isleInit, boat) = initMap(initState)(varWeight)                                   // initial condition for island, boat to row back
             val isleOut          = varDist(isleInit, maxDepth.map(_ - 1), memo)(islandOutput(boat), epsilon) //result for the island
             isleOut
               .map {

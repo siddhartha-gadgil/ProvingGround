@@ -140,7 +140,7 @@ object SpireGradient {
           .total
     }
 
-  def varValue[X](initState: TermState, finalState: TermState)(
+  def varValue[X](initState: TermState, finalState: TermState, varWeight: Double)(
       vv: VarVal[X]
   ): Double =
     vv match {
@@ -151,10 +151,11 @@ object SpireGradient {
           case ev @ PairEvent(base1, base2, sort) =>
             pairEventProb(finalState)(ev)
           case el: InIsle[X, TermState, o, Term] =>
-            val (st, newBoat: Term) = el.isle.initMap(initState)
+            val (st, newBoat: Term) = el.isle.initMap(initState)(varWeight)
             varValue(
               st.subs(newBoat, el.boat),
-              el.isle.finalMap(el.boat, finalState)
+              el.isle.finalMap(el.boat, finalState),
+              varWeight
             )(FinalVal(el.isleVar))
 //          case NodeCoeff(nodeFamily) => 0
         }
@@ -165,10 +166,11 @@ object SpireGradient {
           case ev @ PairEvent(base1, base2, sort) =>
             pairEventProb(initState)(ev)
           case el: InIsle[X, TermState, o, Term] =>
-            val (st, newBoat: Term) = el.isle.initMap(initState)
+            val (st, newBoat: Term) = el.isle.initMap(initState)(varWeight)
             varValue(
               st.subs(newBoat, el.boat),
-              el.isle.finalMap(el.boat, finalState)
+              el.isle.finalMap(el.boat, finalState),
+              varWeight
             )(InitialVal(el.isleVar))
 //          case NodeCoeff(nodeFamily)       => 0
         }
@@ -204,11 +206,12 @@ abstract class TermGenEqCost(
 
 case class TermGenCost(
     ge: EvolvedEquations[TermState],
+    varWeight: Double,
     hW: Double = 1,
     klW: Double = 1,
     eqW: Double = 1,
-    epsilon: Double = math.pow(10, -5)
+    epsilon: Double = math.pow(10, -5),
 ) extends TermGenEqCost(ge, hW, klW, eqW, epsilon) {
   lazy val p: Map[Expression, Double] =
-    vars.map((vv) => vv -> varValue(ge.initState, ge.finalState)(vv)).toMap
+    vars.map((vv) => vv -> varValue(ge.initState, ge.finalState, varWeight)(vv)).toMap
 }

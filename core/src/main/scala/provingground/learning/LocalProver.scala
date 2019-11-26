@@ -171,9 +171,9 @@ case class LocalProver(
     tg.nextStateTask(initState, cutoff, limit).memoize
 
   lazy val mfd: MonixFiniteDistributionEq[TermState] =
-    MonixFiniteDistributionEq(tg.nodeCoeffSeq, limit)
+    MonixFiniteDistributionEq(tg.nodeCoeffSeq, tg.varWeight, limit)
 
-  lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq)
+  lazy val mf = MonixFiniteDistribution(tg.nodeCoeffSeq, tg.varWeight)
 
   lazy val tripleT: Task[
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
@@ -518,6 +518,7 @@ trait LocalProverStep {
       eqnds <- equationNodes
       mfdt = MonixTangentFiniteDistributionEq(
         tg.nodeCoeffSeq,
+        tg.varWeight,
         baseState,
         eqnds,
         limit
@@ -613,6 +614,7 @@ case class LocalTangentProver(
   val mfd: MonixTangentFiniteDistributionEq[TermState] =
     MonixTangentFiniteDistributionEq(
       tg.nodeCoeffSeq,
+      tg.varWeight,
       initState,
       initEquations,
       limit

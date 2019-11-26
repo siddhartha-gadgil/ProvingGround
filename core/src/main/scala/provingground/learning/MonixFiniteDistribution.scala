@@ -188,7 +188,7 @@ abstract class GenMonixFiniteDistribution[State](
   * @tparam State scala type of the initial state
   */
 case class MonixFiniteDistribution[State](
-    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Double], varWeight: Double)(
     implicit sd: StateDistribution[State, FD])
     extends GenMonixFiniteDistribution[State](nodeCoeffSeq) {
 
@@ -199,7 +199,7 @@ case class MonixFiniteDistribution[State](
     */
   def updateAll(
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
-    MonixFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
+    MonixFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq), varWeight)
 
   /**
     * recursively determines the finite distribution given a generator node;
@@ -334,7 +334,7 @@ case class MonixFiniteDistribution[State](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
+          val (isleInit, boat) = initMap(initState)(varWeight)                             // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map((fd) => fd.map(export(boat, _)).purge(epsilon)) // exported result seen outside

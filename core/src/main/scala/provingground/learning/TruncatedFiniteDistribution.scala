@@ -11,7 +11,8 @@ object TruncatedFiniteDistribution {
 
   object Geom
       extends TruncatedFiniteDistribution[VarValueSet[FD]](
-        nodeCoeffSeq
+        nodeCoeffSeq,
+        0.3
       )
 
   def geomFD(epsilon: Double): FD[Int] =
@@ -168,7 +169,7 @@ abstract class GenTruncatedFiniteDistribution[State](
   * @tparam State scala type of the initial state
   */
 case class TruncatedFiniteDistribution[State](
-    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Double], varWeight: Double)(
     implicit sd: StateDistribution[State, FD])
     extends GenTruncatedFiniteDistribution[State](nodeCoeffSeq) {
 
@@ -179,7 +180,7 @@ case class TruncatedFiniteDistribution[State](
     */
   def updateAll(
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
-    TruncatedFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
+    TruncatedFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq), varWeight)
 
   import StateDistribution._
 
@@ -269,7 +270,7 @@ case class TruncatedFiniteDistribution[State](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(initState)                             // initial condition for island, boat to row back
+          val (isleInit, boat) = initMap(initState)(varWeight)                             // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map(export(boat, _))

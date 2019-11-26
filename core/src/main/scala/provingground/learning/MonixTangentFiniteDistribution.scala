@@ -25,6 +25,7 @@ object MonixTangentFiniteDistribution {
   */
 case class MonixTangentFiniteDistribution[State](
     nodeCoeffSeq: NodeCoeffSeq[State, Double],
+    varWeight: Double,
     baseState: State)(implicit sd: StateDistribution[State, FD])
     extends GenMonixFiniteDistribution[State](nodeCoeffSeq) {
 
@@ -37,7 +38,7 @@ case class MonixTangentFiniteDistribution[State](
     */
   def updateAll(
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
-    MonixFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq))
+    MonixFiniteDistribution(nodeCoeffSeq.updateAll(dataSeq), varWeight)
 
   import StateDistribution._
 
@@ -282,7 +283,7 @@ case class MonixTangentFiniteDistribution[State](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(tangentState)                          // initial condition for island, boat to row back
+          val (isleInit, boat) = initMap(tangentState)(varWeight)                          // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map((fd) => fd.map(export(boat, _)).purge(epsilon)) // exported result seen outside

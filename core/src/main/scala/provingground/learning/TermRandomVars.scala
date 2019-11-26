@@ -85,11 +85,11 @@ object TermRandomVars {
 
   case class ContextTyps(ctx: Context) extends RandomVar[Typ[Term]]
 
-  def contextTermNode(ctx: Context, varWeight: Double): GeneratorNode[Term] =
+  def contextTermNode(ctx: Context): GeneratorNode[Term] =
     Island[Term, TermState, Term, Unit](
       ContextTerms(ctx),
       (_) => Terms,
-      ts => (ts.contextInit(ctx, varWeight), ()),
+      ts => (varWeight: Double) => (ts.contextInit(ctx, varWeight), ()),
       { case (_, term) => ctx.export(term) },
       { case (_, ts)   => ts.contextImport(ctx) }
     )
@@ -280,11 +280,10 @@ object TermRandomVars {
 
   def isleSub[c, d](x: Term, y: Term)(
       isle: Island[c, TermState, d, Term],
-      boat: Term,
-      varWeight: Double
+      boat: Term
   ): Island[c, TermState, d, Term] = {
     val newInit = 
-            AddVar(boat.typ.replace(x, y), varWeight)
+            AddVar(boat.typ.replace(x, y))
        Island[c, TermState, d, Term](
       randomVarSubs(x, y)(isle.output),
       (z: Term) => valueSubs(x, y)(isle.islandOutput(z)),
@@ -298,7 +297,7 @@ object TermRandomVars {
   def variableSubs(
       x: Term,
       y: Term
-  )(v: Variable[_], varWeight: Double): Variable[_] = (v: Variable[Any]) match {
+  )(v: Variable[_]): Variable[_] = (v: Variable[Any]) match {
     case Elem(element, randomVar) =>
       Elem(valueSubs(x, y)(element), randomVarSubs(x, y)(randomVar))
     case ev: Event[a, b] =>
@@ -313,8 +312,8 @@ object TermRandomVars {
         inIsle => {
           import inIsle._
           val newBoat    = boat.replace(x, y)
-          val newIsleVar = variableSubs(x, y)(isleVar, varWeight)
-          val newIsle = isleSub(x, y)(isle, boat, varWeight)
+          val newIsleVar = variableSubs(x, y)(isleVar)
+          val newIsle = isleSub(x, y)(isle, boat)
           InIsle(newIsleVar, newBoat, newIsle)
         }
       )
@@ -329,8 +328,7 @@ object TermRandomVars {
 
   def isleNormalizeVars(
       v: GeneratorVariables.Variable[_],
-      vars: Vector[Term],
-      varWeight: Double
+      vars: Vector[Term]
   ): GeneratorVariables.Variable[_] =
     v match {
       case Elem(element, randomVar) => v
@@ -344,10 +342,9 @@ object TermRandomVars {
          import inIsle._
           val newBoat = nextVar(boat.typ, vars)
            val newIsleVar = variableSubs(boat, newBoat)(
-            isleNormalizeVars(isleVar, vars :+ newBoat, varWeight),
-            varWeight
+            isleNormalizeVars(isleVar, vars :+ newBoat)
           )
-        val newIsle = isleSub(boat, newBoat)(isle, boat, varWeight)
+        val newIsle = isleSub(boat, newBoat)(isle, boat)
         InIsle(newIsleVar, newBoat, newIsle)
       })
       case PairEvent(base1, base2, sort) => v

@@ -11,6 +11,7 @@ import scala.util.Try
 
 case class GeneratorEquations[State](
     nodeCoeffSeq: NodeCoeffSeq[State, Double],
+    varWeight: Double,
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) extends EvolvedEquations[State] {
   pprint.log(initState)
@@ -280,8 +281,9 @@ case class GeneratorEquations[State](
         }
         (eqT, Set())
       case isle: Island[y, State, o, b] =>
-        val (isleInit, boat) = isle.initMap(initState)
+        val (isleInit, boat) = isle.initMap(initState)(varWeight)
         val isleEq = GeneratorEquations(nodeCoeffSeq,
+                                        varWeight,
                                         isleInit,
                                         isle.finalMap(boat, finalState))
         val isleEquations: Set[Equation] =

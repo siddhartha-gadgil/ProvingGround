@@ -86,7 +86,7 @@ case class TermGenParamsNodes(tg: TermGenParams)
     extends TermGeneratorNodes[TermState](
       { case (fn, arg) => applyFunc(fn.func, arg) },
       { case (fn, arg) => Unify.appln(fn.func, arg) },
-      AddVar(_, tg.varWeight),
+      AddVar(_),
       GetVar,
       EnterIsle,
       tg.solver
@@ -262,12 +262,12 @@ case class TermGenParams(
       NodeCoeffSeq.Empty[TermState, Double]()
 
   lazy val monixFD: MonixFiniteDistribution[TermState] =
-    MonixFiniteDistribution(nodeCoeffSeq)
+    MonixFiniteDistribution(nodeCoeffSeq, varWeight)
 
-  lazy val monixEqFD : MonixFiniteDistributionEq[TermState] = MonixFiniteDistributionEq(nodeCoeffSeq)
+  lazy val monixEqFD : MonixFiniteDistributionEq[TermState] = MonixFiniteDistributionEq(nodeCoeffSeq, varWeight)
 
   def monixTangFD(baseState: TermState) =
-    MonixTangentFiniteDistribution(nodeCoeffSeq, baseState)
+    MonixTangentFiniteDistribution(nodeCoeffSeq, varWeight, baseState)
 
   def nextStateTask(
       initState: TermState,

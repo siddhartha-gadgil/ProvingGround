@@ -20,7 +20,7 @@ object TangentFiniteDistribution {
   */
 case class TangentFiniteDistribution[State](
     baseState: State,
-    nodeCoeffSeq: NodeCoeffSeq[State, Double])(
+    nodeCoeffSeq: NodeCoeffSeq[State, Double], varWeight: Double)(
     implicit sd: StateDistribution[State, FD])
     extends GenTruncatedFiniteDistribution[State](nodeCoeffSeq) {
 
@@ -31,7 +31,7 @@ case class TangentFiniteDistribution[State](
     */
   def updateAll(
       dataSeq: Seq[GeneratorNodeFamily.Value[_ <: HList, _, Double]]) =
-    TangentFiniteDistribution(baseState, nodeCoeffSeq.updateAll(dataSeq))
+    TangentFiniteDistribution(baseState, nodeCoeffSeq.updateAll(dataSeq), varWeight)
 
   import StateDistribution._
   import TangentFiniteDistribution._
@@ -162,7 +162,7 @@ case class TangentFiniteDistribution[State](
           }
         case isle: Island[Y, State, o, b] =>
           import isle._
-          val (isleInit, boat) = initMap(tangentState)                          // initial condition for island, boat to row back
+          val (isleInit, boat) = initMap(tangentState)(varWeight)                          // initial condition for island, boat to row back
           val isleOut          = varDist(isleInit)(islandOutput(boat), epsilon) //result for the island
           isleOut
             .map(export(boat, _))

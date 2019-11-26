@@ -58,14 +58,15 @@ object TFData {
 }
 
 object GeneratorTF {
-  def fromEvolved(ev: EvolvedState): GeneratorTF[TermState] =
-    GeneratorTF(ev.params.nodeCoeffSeq, ev.init, ev.result)
+  def fromEvolved(ev: EvolvedState, varWeight : Double = 0.3): GeneratorTF[TermState] =
+    GeneratorTF(ev.params.nodeCoeffSeq, varWeight, ev.init, ev.result)
 
   val gset: collection.mutable.Set[GeneratorTF[_]] = collection.mutable.Set()
 }
 
 case class GeneratorTF[State](
     nodeCoeffSeq: NodeCoeffSeq[State, Double],
+    varWeight: Double,
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) {
   // pprint.log(initState)
@@ -404,12 +405,12 @@ case class GeneratorTF[State](
             }
             (eqT, baseData)
           case isle: Island[_, State, o, b] =>
-            val (isleInit, boat) = isle.initMap(initState)
+            val (isleInit, boat) = isle.initMap(initState)(varWeight)
             val fs               = isle.finalMap(boat, finalState)
             if (sd.isEmpty(fs)) (Set.empty[EquationNode], TFData.empty)
             else {
               val isleEqNew =
-                GeneratorTF(nodeCoeffSeq, isleInit, fs)
+                GeneratorTF(nodeCoeffSeq, varWeight, isleInit, fs)
               val isleEq =
                 GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
               GeneratorTF.gset += isleEq
@@ -615,12 +616,12 @@ case class GeneratorTF[State](
           }
         case isle: Island[_, State, o, b] =>
           Task {
-            val (isleInit, boat) = isle.initMap(initState)
+            val (isleInit, boat) = isle.initMap(initState)(varWeight)
             val fs               = isle.finalMap(boat, finalState)
             if (sd.isEmpty(fs)) (Set.empty[EquationNode], TFData.empty)
             else {
               val isleEqNew =
-                GeneratorTF(nodeCoeffSeq, isleInit, fs)
+                GeneratorTF(nodeCoeffSeq, varWeight, isleInit, fs)
               val isleEq =
                 GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
               GeneratorTF.gset += isleEq
