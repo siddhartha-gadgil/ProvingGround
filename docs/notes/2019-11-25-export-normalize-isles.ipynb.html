@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>2019-10-18-proof-propagation</title>
+<title>2019-11-25-export-normalize-isles</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13116,7 +13116,11 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Proof-propagation">Proof propagation<a class="anchor-link" href="#Proof-propagation">&#182;</a></h2><p>We have used the proofs of lemmas, but not the terms in the proofs. We test these in the monoid case.</p>
+<h2 id="Testing-export-and-normalization-of-isles">Testing export and normalization of isles<a class="anchor-link" href="#Testing-export-and-normalization-of-isles">&#182;</a></h2><p>When we have variables such as $A$ and $B$, we test whether we correctly:</p>
+<ul>
+<li>export equations, so that variables end up in islands</li>
+<li>normalize isle names.</li>
+</ul>
 
 </div>
 </div>
@@ -13126,7 +13130,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-2932e539da.fat.jar`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-7f2148cb82.fat.jar`</span>
 <span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
 <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
   <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
@@ -13171,10 +13175,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">tg1</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">.</span><span class="n">zero</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">appW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">,</span> <span class="n">unAppW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">)</span>
-<span class="k">import</span> <span class="nn">library._</span><span class="o">,</span> <span class="nc">MonoidSimple</span><span class="o">.</span><span class="k">_</span>
-<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">dist1</span><span class="o">,</span> <span class="n">dist1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">lp1</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">tg1</span><span class="o">)</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">A</span> <span class="k">=</span> <span class="s">&quot;A&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
+<span class="k">val</span> <span class="n">B</span> <span class="k">=</span> <span class="s">&quot;B&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
+<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">empty</span><span class="o">,</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">),</span> <span class="n">vars</span> <span class="k">=</span> <span class="nc">Vector</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">),</span> <span class="n">context</span> <span class="k">=</span> <span class="nc">Context</span><span class="o">.</span><span class="nc">Empty</span><span class="o">.</span><span class="n">addVariable</span><span class="o">(</span><span class="n">A</span><span class="o">).</span><span class="n">addVariable</span><span class="o">(</span><span class="n">B</span><span class="o">))</span>
 </pre></div>
 
     </div>
@@ -13193,105 +13196,86 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">tg1</span>: <span class="ansi-green-fg">TermGenParams</span> = <span class="ansi-yellow-fg">TermGenParams</span>(
-  <span class="ansi-green-fg">0.1</span>,
-  <span class="ansi-green-fg">0.1</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.3</span>,
-  <span class="ansi-green-fg">0.7</span>,
-  <span class="ansi-green-fg">0.5</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>,
-  <span class="ansi-green-fg">0.0</span>
-)
-<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">library._, MonoidSimple._
-</span>
+<pre><span class="ansi-cyan-fg">A</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">A</span>
+<span class="ansi-cyan-fg">B</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">B</span>
 <span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(
-    <span class="ansi-yellow-fg">Vector</span>(
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.5</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">B</span>, <span class="ansi-green-fg">0.5</span>))),
+  <span class="ansi-yellow-fg">Vector</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">B</span>),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+  <span class="ansi-yellow-fg">AppendVariable</span>(<span class="ansi-yellow-fg">AppendVariable</span>(Empty, <span class="ansi-green-fg">A</span>), <span class="ansi-green-fg">B</span>)
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lp</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">lp</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>(<span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.5</span>), <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">B</span>, <span class="ansi-green-fg">0.5</span>))),
+    <span class="ansi-yellow-fg">Vector</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">B</span>),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(<span class="ansi-yellow-fg">Vector</span>()),
+    <span class="ansi-yellow-fg">AppendVariable</span>(<span class="ansi-yellow-fg">AppendVariable</span>(Empty, <span class="ansi-green-fg">A</span>), <span class="ansi-green-fg">B</span>)
+  ),
+  <span class="ansi-yellow-fg">TermGenParams</span>(
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.1</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.05</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.3</span>,
+    <span class="ansi-green-fg">0.7</span>,
+    <span class="ansi-green-fg">0.5</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-green-fg">0.0</span>,
+    <span class="ansi-yellow-fg">OrElse</span>(
+      <span class="ansi-yellow-fg">OrElse</span>(<span class="ansi-yellow-fg">OrElse</span>(<span class="ansi-yellow-fg">OrElse</span>(&lt;function1&gt;, &lt;function1&gt;), &lt;function1&gt;), &lt;function1&gt;),
+      &lt;function1&gt;
     )
   ),
-  <span class="ansi-yellow-fg">FiniteDistribution</span>(
-    <span class="ansi-yellow-fg">Vector</span>(
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(
-        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
-        <span class="ansi-green-fg">0.047619047619047616</span>
-      ),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-...
-<span class="ansi-cyan-fg">lp1</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
-  <span class="ansi-yellow-fg">TermState</span>(
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
-      )
-    ),
-    <span class="ansi-yellow-fg">FiniteDistribution</span>(
-      <span class="ansi-yellow-fg">Vector</span>(
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(
-          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
-          <span class="ansi-green-fg">0.047619047619047616</span>
-        ),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
-        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
+  <span class="ansi-green-fg">1.0E-4</span>,
+  <span class="ansi-green-fg">None</span>,
+  12 minutes,
+  <span class="ansi-green-fg">1.01</span>,
+  <span class="ansi-green-fg">1.0</span>,
 ...</pre>
 </div>
 
@@ -13306,9 +13290,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span> 
-<span class="k">val</span> <span class="n">lemT1</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">lemmas</span><span class="o">.</span><span class="n">memoize</span>
-<span class="n">lemT1</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">ts</span><span class="o">.</span><span class="n">vars</span>
+<span class="k">import</span> <span class="nn">TermData._</span>
+<span class="k">val</span> <span class="n">datT</span> <span class="k">=</span> <span class="n">termData</span><span class="o">(</span><span class="n">lp</span><span class="o">)</span>
 </pre></div>
 
     </div>
@@ -13321,31 +13305,19 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[4]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">import </span></span><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global 
-</span></span>
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">lemT1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>)]] = <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(
-  &lt;function2&gt;,
-  false,
-  true,
-  true
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res3_2</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>], <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(e_r)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0027509184472828325</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(e_l)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0027509184472828325</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_r))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_l))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_l)(e_r))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_r)(e_r))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>)
-  )
-)</span></span></span></code></pre>
-</div>
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res3_0</span>: <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">Vector</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">B</span>)
+<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">TermData._
+</span>
+<span class="ansi-cyan-fg">datT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[(<span class="ansi-green-fg">TermState</span>, <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>])] = <span class="ansi-yellow-fg">FlatMap</span>(
+  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
+  provingground.learning.TermData$$$Lambda$2568/1850628006@2c290d4f
+)</pre>
 </div>
 
 </div>
@@ -13359,8 +13331,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">pfsT</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">lemmaProofs</span>
-<span class="n">pfsT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
+<span class="k">val</span> <span class="n">td</span> <span class="k">=</span> <span class="n">datT</span><span class="o">.</span><span class="n">runSyncUnsafe</span><span class="o">()</span>
 </pre></div>
 
     </div>
@@ -13373,49 +13345,165 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">pfsT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: yellow"><span class="ansi-yellow-fg">FlatMap</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-  provingground.learning.LocalProverStep$$Lambda$2953/810352088@4a685dd8
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res4_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(a)(a)}(e_r)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0025589063334613047</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(e_r)(e_r)(axiom_{eqM(a)(a)}(e_r))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.920121138215279E-4</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(a)(a)}(e_l)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0025589063334613047</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(e_l)(e_l)(axiom_{eqM(a)(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.920121138215279E-4</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_l))(e_l)(axiom_{eqM(mul(e_l)(a))(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_r)(axiom_{eqM(mul(e_l)(a))(a)}(e_r))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_r)(e_r))(e_r)(axiom_{eqM(mul(a)(e_r))(a)}(e_r))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-      )
-    )
-  )
-)</span></span></span></code></pre>
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
+</span>
+<span class="ansi-cyan-fg">td</span>: (<span class="ansi-green-fg">TermState</span>, <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>]) = (
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : B) ↦ (@a : B) ↦ @a</span>,
+          <span class="ansi-green-fg">0.02560842551463784</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ ((```@a_1 , @a_2) : B×A) ↦ (```@a_1 , @a_2)</span>,
+          <span class="ansi-green-fg">0.00485109621675388</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ ((``@a_1 , @a_2) : A×A) ↦ (``@a_1 , @a_2)</span>,
+          <span class="ansi-green-fg">0.00485109621675388</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((B → A) → A)) ↦ @a</span>,
+          <span class="ansi-green-fg">7.546149670506037E-4</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : (A → A)) ↦ @a</span>,
+          <span class="ansi-green-fg">0.009055379604607243</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : (B → A)) ↦ @a</span>,
+          <span class="ansi-green-fg">0.009055379604607243</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((A → B) → A)) ↦ @a</span>,
+          <span class="ansi-green-fg">7.546149670506037E-4</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((B → B) → A)) ↦ @a</span>,
+          <span class="ansi-green-fg">7.546149670506037E-4</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((A → A) → A)) ↦ @a</span>,
+          <span class="ansi-green-fg">7.546149670506037E-4</span>
+...</pre>
 </div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="o">(</span><span class="n">ns</span><span class="o">,</span> <span class="n">eqs</span><span class="o">)</span> <span class="k">=</span> <span class="n">td</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">ns</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : B) ↦ (@a : B) ↦ @a</span>,
+        <span class="ansi-green-fg">0.02560842551463784</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ ((```@a_1 , @a_2) : B×A) ↦ (```@a_1 , @a_2)</span>,
+        <span class="ansi-green-fg">0.00485109621675388</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ ((``@a_1 , @a_2) : A×A) ↦ (``@a_1 , @a_2)</span>,
+        <span class="ansi-green-fg">0.00485109621675388</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((B → A) → A)) ↦ @a</span>,
+        <span class="ansi-green-fg">7.546149670506037E-4</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : (A → A)) ↦ @a</span>,
+        <span class="ansi-green-fg">0.009055379604607243</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : (B → A)) ↦ @a</span>,
+        <span class="ansi-green-fg">0.009055379604607243</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((A → B) → A)) ↦ @a</span>,
+        <span class="ansi-green-fg">7.546149670506037E-4</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((B → B) → A)) ↦ @a</span>,
+        <span class="ansi-green-fg">7.546149670506037E-4</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">(A : 𝒰 ) ↦ (B : 𝒰 ) ↦ (@a : ((A → A) → A)) ↦ @a</span>,
+        <span class="ansi-green-fg">7.546149670506037E-4</span>
+      ),
+...
+<span class="ansi-cyan-fg">eqs</span>: <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>] = <span class="ansi-yellow-fg">Set</span>(
+  <span class="ansi-yellow-fg">EquationNode</span>(
+    <span class="ansi-yellow-fg">FinalVal</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a : B) ↦ (@a : A) ↦ @a</span>, Terms),
+          <span class="ansi-green-fg">B</span>,
+          <span class="ansi-yellow-fg">Island</span>(
+            Terms,
+            <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
+            provingground.learning.ExpressionEval$$Lambda$2849/1630657925@311dc655,
+            Lambda,
+            EnterIsle
+          )
+        ),
+        <span class="ansi-green-fg">A</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Typs,
+          <span class="ansi-yellow-fg">ConstRandVar</span>(Typs),
+          provingground.learning.ExpressionEval$$Lambda$2843/36094366@65c43056,
+          Pi,
+          EnterIsle
+        )
+      )
+    ),
+    <span class="ansi-yellow-fg">Product</span>(
+      <span class="ansi-yellow-fg">Product</span>(
+        <span class="ansi-yellow-fg">Coeff</span>(
+          <span class="ansi-yellow-fg">BaseThenCondition</span>(
+            <span class="ansi-yellow-fg">FlatMap</span>(Typs, LambdaIsle, Terms),
+            Funcs,
+            <span class="ansi-yellow-fg">Restrict</span>(FuncOpt)
+          )
+        ),
+        <span class="ansi-yellow-fg">FinalVal</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">InIsle</span>(
+              <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">B</span>, Typs),
+...</pre>
 </div>
 
 </div>
@@ -13429,8 +13517,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">pfTermsT</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">proofTerms</span>
-<span class="n">pfTermsT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">ns</span><span class="o">.</span><span class="n">vars</span>
 </pre></div>
 
     </div>
@@ -13443,54 +13530,153 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">pfTermsT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>)]] = <span style="color: yellow"><span class="ansi-yellow-fg">FlatMap</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">FlatMap</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-      provingground.learning.LocalProverStep$$Lambda$2953/810352088@4a685dd8
-    ),
-    provingground.learning.LocalProverStep$$Lambda$2975/1488281714@19136358,
-    <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0</span></span>
-  ),
-  provingground.learning.LocalProverStep$$Lambda$2976/661199252@209663db
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res6_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Vector</span></span>[(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-    (
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_l))(e_l)(axiom_{eqM(mul(e_l)(a))(a)}(e_l))</span></span>,
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-    ),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(a)(a)}(e_r)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0025589063334613047</span></span>),
-    (
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_r)(axiom_{eqM(mul(e_l)(a))(a)}(e_r))</span></span>,
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-    ),
-    (
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(e_r)(e_r)(axiom_{eqM(a)(a)}(e_r))</span></span>,
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.920121138215279E-4</span></span>
-    ),
-    (
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l))</span></span>,
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-    ),
-    (
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(e_l)(e_l)(axiom_{eqM(a)(a)}(e_l))</span></span>,
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.920121138215279E-4</span></span>
-    ),
-    (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(a)(a)}(e_l)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0025589063334613047</span></span>),
-    (
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_r)(e_r))(e_r)(axiom_{eqM(mul(a)(e_r))(a)}(e_r))</span></span>,
-      <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.0012526844961492322</span></span>
-    )
-  )
-)</span></span></span></code></pre>
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res6</span>: <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-yellow-fg">Vector</span>()</pre>
 </div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">lhs</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res7</span>: <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">Expression</span>] = <span class="ansi-yellow-fg">Set</span>(
+  <span class="ansi-yellow-fg">InitialVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">A</span>, Typs),
+            <span class="ansi-green-fg">@a</span>,
+            <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">B</span>, <span class="ansi-green-fg">0.3</span>), Pi, EnterIsle)
+          ),
+          <span class="ansi-green-fg">@a</span>,
+          <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.3</span>), Pi, EnterIsle)
+        ),
+        <span class="ansi-green-fg">B</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
+          provingground.learning.ExpressionEval$$Lambda$2849/1630657925@311dc655,
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">A</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        <span class="ansi-yellow-fg">ConstRandVar</span>(Typs),
+        provingground.learning.ExpressionEval$$Lambda$2843/36094366@65c43056,
+        Pi,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">A</span>, Typs),
+...</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">rhs</span><span class="o">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res8</span>: <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">Expression</span>] = <span class="ansi-yellow-fg">Set</span>(
+  <span class="ansi-yellow-fg">Product</span>(
+    <span class="ansi-yellow-fg">Product</span>(
+      <span class="ansi-yellow-fg">Coeff</span>(
+        <span class="ansi-yellow-fg">FlatMap</span>(
+          Typs,
+          provingground.learning.TermGeneratorNodes$$Lambda$2477/1176821309@30bad48c,
+          Typs
+        )
+      ),
+      <span class="ansi-yellow-fg">FinalVal</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">B</span>, Typs),
+            <span class="ansi-green-fg">B</span>,
+            <span class="ansi-yellow-fg">Island</span>(
+              Typs,
+              <span class="ansi-yellow-fg">ConstRandVar</span>(Typs),
+              provingground.learning.ExpressionEval$$Lambda$2843/36094366@55b6dcee,
+              Pi,
+              EnterIsle
+            )
+          ),
+          <span class="ansi-green-fg">A</span>,
+          <span class="ansi-yellow-fg">Island</span>(
+            Terms,
+            <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
+            provingground.learning.ExpressionEval$$Lambda$2849/1630657925@46cccb02,
+            Lambda,
+            EnterIsle
+          )
+        )
+      )
+    ),
+    <span class="ansi-yellow-fg">FinalVal</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+...</pre>
 </div>
 
 </div>
@@ -13502,99 +13688,17 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="First-conclusions">First conclusions<a class="anchor-link" href="#First-conclusions">&#182;</a></h2><p>There seems to be <em>no</em> propagation at all of proofs. We should check individual back maps.</p>
+<h2 id="First-conclusion">First conclusion<a class="anchor-link" href="#First-conclusion">&#182;</a></h2><p>After correction, variables seem to be in isles</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">lem</span> <span class="k">=</span> <span class="n">eqM</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">op</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">termsT</span> <span class="k">=</span> <span class="n">lp1</span><span class="o">.</span><span class="n">expressionEval</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">finalTerms</span><span class="o">)</span>
-<span class="n">termsT</span><span class="o">.</span><span class="n">runToFuture</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">lem</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Typ</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_l)(mul(e_l)(e_r))</span></span>
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">termsT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd7$Helper$$Lambda$3064/1171313393@13fe3d75,
-  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0</span></span>
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res7_2</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}(mul(e_r)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.0211226571848244E-4</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(e_r)(mul(e_l)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.43204259042601E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">($aufv : M) ↦ axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(mul(e_r)(e_r))(e_r)($aufv)(axiom_{eqM(mul(a)(e_r))(a)}(e_r))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.5311163260347958E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">mul</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.26757575953354795</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_r)(mul(e_r)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.4320425904260095E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_l)(e_l))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.21690603886337E-4</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">e_r</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.03822510850479257</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(mul(e_r)(e_l))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">6.216906038863368E-4</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_r)(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.0211226571848244E-4</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_l))(e_l)(axiom_{eqM(mul(e_l)(a))(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.5311163260347958E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(a)(a)}</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.03822510850479257</span></span>),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}(e_r)(mul(e_r)(e_r))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.4320425904260095E-5</span></span>
-      ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM(e_r)(e_l)</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.00997538738813242</span></span>),
-...</span></span></span></code></pre>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">pfsT</span> <span class="k">=</span> <span class="n">termsT</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span> <span class="o">==</span> <span class="n">lem</span><span class="o">))</span>
-<span class="n">pfsT</span><span class="o">.</span><span class="n">runToFuture</span>
-
-<span class="k">import</span> <span class="nn">Expression._</span><span class="o">,</span> <span class="nc">TermRandomVars</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">GeneratorVariables</span><span class="o">.</span><span class="k">_</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">eqs</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">rhs</span><span class="o">).</span><span class="n">flatMap</span><span class="o">(</span><span class="nc">Expression</span><span class="o">.</span><span class="n">varVals</span><span class="o">(</span><span class="k">_</span><span class="o">))</span>
 </pre></div>
 
     </div>
@@ -13607,35 +13711,120 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">pfsT</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-  scala.Function1$$Lambda$276/1122130699@7268ee77,
-  <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1</span></span>
-)
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res9_1</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">FiniteDistribution</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Term</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l))</span></span>,
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">2.5311163260347958E-5</span></span>
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">res9</span>: <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">Expression</span>.<span class="ansi-green-fg">VarVal</span>[<span class="ansi-green-fg">_</span>]] = <span class="ansi-yellow-fg">Set</span>(
+  <span class="ansi-yellow-fg">InitialVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">A</span>, Typs),
+            <span class="ansi-green-fg">@a</span>,
+            <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">B</span>, <span class="ansi-green-fg">0.3</span>), Pi, EnterIsle)
+          ),
+          <span class="ansi-green-fg">@a</span>,
+          <span class="ansi-yellow-fg">Island</span>(Typs, <span class="ansi-yellow-fg">ConstRandVar</span>(Typs), <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.3</span>), Pi, EnterIsle)
+        ),
+        <span class="ansi-green-fg">B</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          <span class="ansi-yellow-fg">ConstRandVar</span>(Terms),
+          provingground.learning.ExpressionEval$$Lambda$2849/1630657925@311dc655,
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">A</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        <span class="ansi-yellow-fg">ConstRandVar</span>(Typs),
+        provingground.learning.ExpressionEval$$Lambda$2843/36094366@65c43056,
+        Pi,
+        EnterIsle
       )
     )
-  )
-)</span></span>
-<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">import </span></span><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">Expression._, TermRandomVars._, GeneratorVariables._
-
-</span></span>
-<span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res9_3</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eval</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Task</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Map</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Expression</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>]] = <span style="color: yellow"><span class="ansi-yellow-fg">FlatMap</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Async</span></span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd9$Helper$$Lambda$3145/1974190932@2e4d5bd8
-)</code></pre>
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">A</span>, Typs),
+...</pre>
 </div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">normEqs</span> <span class="k">=</span> <span class="n">eqs</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">eq</span> <span class="k">=&gt;</span> <span class="nc">TermData</span><span class="o">.</span><span class="n">isleNormalize</span><span class="o">(</span><span class="n">eq</span><span class="o">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre><span class="ansi-cyan-fg">normEqs</span>: <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>] = <span class="ansi-yellow-fg">Set</span>(
+  <span class="ansi-yellow-fg">EquationNode</span>(
+    <span class="ansi-yellow-fg">FinalVal</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">∏(B : 𝒰 ){ (@a → @a)×B }</span>, Typs),
+        <span class="ansi-green-fg">@a</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Typs,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@4276b616,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Pi,
+          EnterIsle
+        )
+      )
+    ),
+    <span class="ansi-yellow-fg">Product</span>(
+      <span class="ansi-yellow-fg">Coeff</span>(
+        <span class="ansi-yellow-fg">FlatMap</span>(
+          Typs,
+          provingground.learning.TermGeneratorNodes$$Lambda$2476/1640843147@27417ca4,
+          Typs
+        )
+      ),
+      <span class="ansi-yellow-fg">FinalVal</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → @a)×@b</span>, Typs),
+            <span class="ansi-green-fg">@b</span>,
+            <span class="ansi-yellow-fg">Island</span>(
+              Typs,
+              provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@58383e99,
+              <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+              Pi,
+              EnterIsle
+            )
+          ),
+...</pre>
 </div>
 
 </div>
@@ -13649,46 +13838,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">backT</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
-    <span class="n">ev</span> <span class="k">&lt;-</span> <span class="n">lp1</span><span class="o">.</span><span class="n">expressionEval</span>
-    <span class="n">pfs</span> <span class="k">&lt;-</span> <span class="n">pfsT</span>
-<span class="o">}</span> <span class="k">yield</span> <span class="n">ev</span><span class="o">.</span><span class="nc">Final</span><span class="o">.</span><span class="n">backMap</span><span class="o">(</span><span class="nc">FinalVal</span><span class="o">(</span><span class="nc">Elem</span><span class="o">(</span> <span class="n">pfs</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">head</span><span class="o">,</span> <span class="nc">Terms</span> <span class="o">)))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[12]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">backT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>]] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd11$Helper$$Lambda$3165/1621996626@ac0c879
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">backT</span><span class="o">.</span><span class="n">runToFuture</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="n">show</span><span class="o">(</span><span class="n">normEqs</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">rhs</span><span class="o">).</span><span class="n">flatMap</span><span class="o">(</span><span class="nc">Expression</span><span class="o">.</span><span class="n">varVals</span><span class="o">(</span><span class="k">_</span><span class="o">)))</span>
 </pre></div>
 
     </div>
@@ -13704,252 +13854,345 @@ div#notebook {
     <div class="prompt"></div>
 
 
-
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res12</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Map</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Expression</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}(e_l)</span></span>, Terms)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.01263157894736842</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span></span>), Funcs)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.990977443609026E-4</span></span>
-  )
-)</span></span></span></code></pre>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">lp1</span><span class="o">.</span><span class="n">cutoff</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">res13</span>: <span class="ansi-green-fg">Double</span> = <span class="ansi-green-fg">1.0E-4</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">rhsT</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
-    <span class="n">ev</span> <span class="k">&lt;-</span> <span class="n">lp1</span><span class="o">.</span><span class="n">expressionEval</span>
-    <span class="n">pfs</span> <span class="k">&lt;-</span> <span class="n">pfsT</span>
-<span class="o">}</span> <span class="k">yield</span> <span class="n">ev</span><span class="o">.</span><span class="n">rhs</span><span class="o">(</span><span class="nc">FinalVal</span><span class="o">(</span><span class="nc">Elem</span><span class="o">(</span> <span class="n">pfs</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">head</span><span class="o">,</span> <span class="nc">Terms</span> <span class="o">)))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">rhsT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Expression</span>] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd14$Helper$$Lambda$3189/1250269153@75b509ff
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">rhsT</span><span class="o">.</span><span class="n">runToFuture</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res15</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Expression</span></span>] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Sum</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">Sum</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-        <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-          <span style="color: yellow"><span class="ansi-yellow-fg">Coeff</span></span>(
-            <span style="color: yellow"><span class="ansi-yellow-fg">BaseThenCondition</span></span>(
-              <span style="color: yellow"><span class="ansi-yellow-fg">ZipMapOpt</span></span>(UnifApplnOpt, Funcs, Terms, Terms),
-              <span style="color: yellow"><span class="ansi-yellow-fg">AtCoord</span></span>(TermsWithTyp, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">M</span></span> :: HNil),
-              <span style="color: yellow"><span class="ansi-yellow-fg">Filter</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">WithTyp</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">M</span></span>))
-            )
-          ),
-          <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span></span>), Funcs))
-        ),
-        <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}(e_l)</span></span>, Terms))
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-yellow-fg">Set</span>(
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a : @b) ↦ (@a : @a) ↦ @a</span>, Terms),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@ab64c0c,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
       ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-        <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-          <span style="color: yellow"><span class="ansi-yellow-fg">Coeff</span></span>(
-            <span style="color: yellow"><span class="ansi-yellow-fg">BaseThenCondition</span></span>(
-              <span style="color: yellow"><span class="ansi-yellow-fg">ZipMapOpt</span></span>(UnifApplnOpt, Funcs, Terms, Terms),
-              Funcs,
-              <span style="color: yellow"><span class="ansi-yellow-fg">Restrict</span></span>(FuncOpt)
-            )
-          ),
-          <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span></span>), Funcs))
-        ),
-        <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}(e_l)</span></span>, Terms))
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Terms,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@551dcf28,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Lambda,
+        EnterIsle
       )
-    ),
-    <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Product</span></span>(
-        <span style="color: yellow"><span class="ansi-yellow-fg">Coeff</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">ZipMapOpt</span></span>(UnifApplnOpt, Funcs, Terms, Terms)),
-        <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span></span>), Funcs))
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(
+          <span class="ansi-yellow-fg">Wrap</span>(<span class="ansi-green-fg">(@a : (@b → @b)) ↦ @a</span>),
+          <span class="ansi-yellow-fg">AtCoord</span>(FuncsWithDomain, <span class="ansi-green-fg">(@b → @b)</span> :: HNil)
+        ),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@61dcddb,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
       ),
-      <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}(e_l)</span></span>, Terms))
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Terms,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@6b3558bd,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Lambda,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">InIsle</span>(
+            <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs),
+            <span class="ansi-green-fg">@b</span>,
+            <span class="ansi-yellow-fg">Island</span>(
+              Typs,
+              provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@60925028,
+              <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-green-fg">0.3</span>),
+              Pi,
+              EnterIsle
+            )
+          ),
+          <span class="ansi-green-fg">@a</span>,
+          <span class="ansi-yellow-fg">Island</span>(
+            Typs,
+            provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@1753f1fe,
+            <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-green-fg">0.3</span>),
+            Pi,
+            EnterIsle
+          )
+        ),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Typs,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@2f562610,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Pi,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Terms,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@383bde9a,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Lambda,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a : @b) ↦ @a</span>, Terms),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@147b4021,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Terms,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@412838e9,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Lambda,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@a → @a)×@b</span>, Typs),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Typs,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@58383e99,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Pi,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@6fc30148,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Pi,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">(@b×@b → @b)</span>, Typs),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@d54615a,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@5e755b40,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Pi,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Terms),
+          <span class="ansi-green-fg">@a</span>,
+          <span class="ansi-yellow-fg">Island</span>(
+            Terms,
+            provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@3932df9e,
+            <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">((@b → @a) → @b)</span>, <span class="ansi-green-fg">0.3</span>),
+            Lambda,
+            EnterIsle
+          )
+        ),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@14b44755,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@12d88a3a,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Pi,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs),
+          <span class="ansi-green-fg">@a</span>,
+          <span class="ansi-yellow-fg">Island</span>(
+            Typs,
+            provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@2630b406,
+            <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">(@b → @a)</span>, <span class="ansi-green-fg">0.3</span>),
+            Pi,
+            EnterIsle
+          )
+        ),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Typs,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@20793225,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Pi,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Terms,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@7fb05632,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Lambda,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Event</span>(
+          Terms,
+          <span class="ansi-yellow-fg">Restrict</span>(
+            provingground.learning.TermRandomVars$$$Lambda$3039/1079830253@478afd5a
+          )
+        ),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@378769bf,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Terms,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@f69956f,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Lambda,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">InitialVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@a</span>, Typs),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@1269d9a3,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@6d0dbae4,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Pi,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-green-fg">@b×@b</span>, Typs),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Terms,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@1893c0b4,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Lambda,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@51cb90b5,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Pi,
+        EnterIsle
+      )
+    )
+  ),
+  <span class="ansi-yellow-fg">FinalVal</span>(
+    <span class="ansi-yellow-fg">InIsle</span>(
+      <span class="ansi-yellow-fg">InIsle</span>(
+        <span class="ansi-yellow-fg">InIsle</span>(
+          <span class="ansi-yellow-fg">Elem</span>(<span class="ansi-yellow-fg">Wrap</span>(<span class="ansi-green-fg">(@a : @a) ↦ @a</span>), Funcs),
+          <span class="ansi-green-fg">@a</span>,
+          <span class="ansi-yellow-fg">Island</span>(
+            Terms,
+            provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@2cad4880,
+            <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">@b</span>, <span class="ansi-green-fg">0.3</span>),
+            Lambda,
+            EnterIsle
+          )
+        ),
+        <span class="ansi-green-fg">@b</span>,
+        <span class="ansi-yellow-fg">Island</span>(
+          Typs,
+          provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@46ca42b3,
+          <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+          Pi,
+          EnterIsle
+        )
+      ),
+      <span class="ansi-green-fg">@a</span>,
+      <span class="ansi-yellow-fg">Island</span>(
+        Typs,
+        provingground.learning.TermRandomVars$$$Lambda$3035/1581375871@620dd14a,
+        <span class="ansi-yellow-fg">AddVar</span>(<span class="ansi-green-fg">𝒰 </span>, <span class="ansi-green-fg">0.3</span>),
+        Pi,
+        EnterIsle
+      )
     )
   )
-)</span></span></span></code></pre>
+)
+</pre>
 </div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">fullBackT</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
-    <span class="n">ev</span> <span class="k">&lt;-</span> <span class="n">lp1</span><span class="o">.</span><span class="n">expressionEval</span>
-    <span class="n">pfs</span> <span class="k">&lt;-</span> <span class="n">pfsT</span>
-<span class="o">}</span> <span class="k">yield</span> <span class="n">ev</span><span class="o">.</span><span class="nc">Final</span><span class="o">.</span><span class="n">fullBackMap</span><span class="o">(</span><span class="nc">Map</span><span class="o">(</span><span class="nc">FinalVal</span><span class="o">(</span><span class="nc">Elem</span><span class="o">(</span> <span class="n">pfs</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">head</span><span class="o">,</span> <span class="nc">Terms</span> <span class="o">))</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="o">),</span> <span class="n">lp1</span><span class="o">.</span><span class="n">cutoff</span><span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">fullBackT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Map</span>[<span class="ansi-green-fg">Expression</span>, <span class="ansi-green-fg">Double</span>]] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-  ammonite.$sess.cmd16$Helper$$Lambda$3201/2056589288@4ea89daf
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">fullBackT</span><span class="o">.</span><span class="n">runToFuture</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div class="jp-RenderedText">
-<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res17</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">monix</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">execution</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">CancelableFuture</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Map</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Expression</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Double</span></span>]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
-  <span style="color: yellow"><span class="ansi-yellow-fg">Map</span></span>(
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}(e_l)</span></span>, Terms)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.01263157894736842</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(
-      <span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(
-        <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}(mul(e_l)(e_r))(e_l)(axiom_{eqM(mul(a)(e_r))(a)}(e_l))</span></span>,
-        Terms
-      )
-    ) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.0</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span></span>), Funcs)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.990977443609024E-4</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">InitialVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span></span>), Funcs)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.79278195488722E-4</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">InitialVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span></span>), Funcs)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">4.792781954887222E-4</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Wrap</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span></span>), Funcs)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">5.990977443609026E-4</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">e_l</span></span>, <span style="color: yellow"><span class="ansi-yellow-fg">AtCoord</span></span>(TermsWithTyp, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">M</span></span> :: HNil))) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.5955678670360112E-4</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">FinalVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">e_l</span></span>, Terms)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.5955678670360112E-4</span></span>,
-    <span style="color: yellow"><span class="ansi-yellow-fg">InitialVal</span></span>(<span style="color: yellow"><span class="ansi-yellow-fg">Elem</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">e_l</span></span>, Terms)) -&gt; <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">1.276454293628809E-4</span></span>
-  )
-)</span></span></span></code></pre>
-</div>
-</div>
-
 </div>
 
 </div>
@@ -13959,14 +14202,23 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h2><ul>
-<li>this is working fine.</li>
-<li>the cutoff leads to all backward propagated terms disappearing.</li>
-<li>we may need to propagate more strongly, or reduce cutoffs</li>
-</ul>
+<h2 id="Preliminary-conclusion">Preliminary conclusion<a class="anchor-link" href="#Preliminary-conclusion">&#182;</a></h2><p>The methods seem to work after a few rounds of debugging, in the sense that there are no visible errors.</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
