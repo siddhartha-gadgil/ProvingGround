@@ -354,8 +354,8 @@ object TermData {
     for {
       ns <- lp.nextState
       ev <- lp.expressionEval
-      ev1 = ExpressionEval.export(ev, ns.vars)
-    } yield (ns.contextExport(), ev1.equations.flatMap(Equation.split(_)))
+      ev1 = ExpressionEval.export(ev, lp.initState.vars)
+    } yield (ns.export(lp.initState.vars), ev1.equations.flatMap(Equation.split(_)))
 
   def termSuccess(typ: Typ[Term]): TermResult => Task[Boolean] = {
     case (ts, _) => Task(ts.terms.support.exists(_.typ == typ))

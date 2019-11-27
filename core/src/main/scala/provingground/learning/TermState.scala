@@ -47,6 +47,16 @@ case class TermState(
       context
     )
 
+  def export(variables: Vector[Term]) = 
+    TermState(
+      terms.map( t => lambdaClosure(variables)(t)),
+      typs.map(t => piClosure(variables)(t)),
+      variables ++ vars.map( t => lambdaClosure(variables)(t)),
+      inds,
+      goals.map( t => piClosure(variables)(t)),
+      context
+    )
+
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
   // pprint.log(context.variables)
