@@ -294,9 +294,14 @@ object TermRandomVars {
   ): Island[c, TermState, d, Term] = {
     val newInit =
       AddVar(boat.typ.replace(x, y))
+    val newIsleOutput = isle.islandOutput match {
+      case ConstRandVar(randomVar) => ConstRandVar(randomVarSubs(x, y)(randomVar))
+      case _ => 
+        (z: Term) => randomVarSubs(x, y)(isle.islandOutput(z))
+    }
     Island[c, TermState, d, Term](
       randomVarSubs(x, y)(isle.output),
-      (z: Term) => valueSubs(x, y)(isle.islandOutput(z)),
+      newIsleOutput,
       newInit,
       isle.export,
       isle.finalMap
