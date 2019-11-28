@@ -479,7 +479,7 @@ trait ExpressionEval { self =>
       Island[Term, TermState, Term, Term](
         Terms,
         ConstRandVar(Terms),
-        ts => (varWeight: Double) => ts.addTerm(variable, varWeight),
+        AddVar(variable.typ),
         LamApply,
         EnterIsle
       )
@@ -529,7 +529,7 @@ trait ExpressionEval { self =>
       Island[Typ[Term], TermState, Typ[Term], Term](
         Typs,
         ConstRandVar(Typs),
-        ts => (varWeight: Double) => ts.addTerm(variable, varWeight),
+        AddVar(variable.typ),
         PiApply,
         EnterIsle
       )
