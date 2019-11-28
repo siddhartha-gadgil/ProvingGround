@@ -432,21 +432,23 @@ trait ExpressionEval { self =>
   /**
     * Terms in the initial distributions, used to calculate total weights of functions etc
     */
-  lazy val initTerms: Vector[Term] = keys.collect {
+  lazy val initTerms: Vector[Term] = (equations.map(_.rhs).flatMap(Expression.atoms(_)) union init.keySet).collect {
     case InitialVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
-  }
+  }.toVector
 
   /**
     * Terms in the final (i.e. evolved) distribution
+    * * May have extra terms that evaluate to zero
     */
-  lazy val finalTermSet: Set[Term] = keys.collect {
+  lazy val finalTermSet: Set[Term] = equations.map(_.lhs).collect {
     case FinalVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }.toSet
 
   /**
     * Typs in the final (i.e. evolved) distribution
+    * May have extra types that evaluate to zero
     */
-    lazy val finalTypSet: Set[Typ[Term]] = keys.collect {
+    lazy val finalTypSet: Set[Typ[Term]] = equations.map(_.lhs).collect {
       case FinalVal(el @ Elem(t: Typ[Term], Typs)) if !isleVar(el) => t
     }.toSet
   
