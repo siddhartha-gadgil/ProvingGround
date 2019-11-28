@@ -566,7 +566,7 @@ trait ExpressionEval { self =>
     )
     val eqs = piExportEquations(x) union lambdaExportEquations(
       x
-    )
+    ) union indepEquations(x)
     val newInit = init
       .map {
         case (exp @ InitialVal(Elem(y: Term, Terms)), w) =>
