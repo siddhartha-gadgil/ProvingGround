@@ -443,6 +443,14 @@ trait ExpressionEval { self =>
     case FinalVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
   }.toSet
 
+  /**
+    * Typs in the final (i.e. evolved) distribution
+    */
+    lazy val finalTypSet: Set[Typ[Term]] = keys.collect {
+      case FinalVal(el @ Elem(t: Typ[Term], Typs)) if !isleVar(el) => t
+    }.toSet
+  
+
   lazy val finalTerms =
     FD {
       finalDist.collect {
@@ -530,7 +538,7 @@ trait ExpressionEval { self =>
       equations.map(_.mapVars { (x) =>
         InIsle(x, boat, isle)
       })
-    val bridgeEqs: Set[EquationNode] = finalTyps.support.map { x =>
+    val bridgeEqs: Set[EquationNode] = finalTypSet.map { x =>
       EquationNode(
         FinalVal(Elem(export(boat, x), Typs)),
         coeff * FinalVal(
@@ -877,7 +885,7 @@ trait ExpressionEval { self =>
 
   lazy val finalTermEntropy: Expression = Expression.h(finalTermMap)
 
-  lazy val finalTypMap: Map[Term, Expression] = finalTyps.support.map { t =>
+  lazy val finalTypMap: Map[Term, Expression] = finalTypSet.map { t =>
     t -> FinalVal(Elem(t, Terms))
   }.toMap
 
