@@ -12,6 +12,8 @@ object Context {
 
     val variables: Vector[Term] = Vector()
 
+    val exportVariables: Vector[Term] = Vector()
+
     val terms = Vector()
 
     val definitions: Vector[Context.Defn[Term]] = Vector()
@@ -55,6 +57,8 @@ object Context {
 
     val variables: Vector[Term] = init.variables
 
+    val exportVariables: Vector[Term] = init.exportVariables
+
     val terms: Vector[Term] = init.terms
 
     val definitions: Vector[Defn[Term]] =
@@ -90,6 +94,8 @@ object Context {
 
     val variables: Vector[Term] = init.variables
 
+    val exportVariables: Vector[Term] = init.exportVariables
+
     val terms: Vector[Term] = init.terms
 
     val definitions: Vector[Defn[Term]] = init.definitions
@@ -118,6 +124,8 @@ object Context {
     val constants: Vector[Term] = init.constants ++ defn.constants
 
     val variables: Vector[Term] = init.variables
+
+    val exportVariables: Vector[Term] = init.exportVariables
 
     val terms: Vector[Term] = init.terms
 
@@ -158,6 +166,8 @@ object Context {
 
     val variables: Vector[Term] = init.variables
 
+    val exportVariables: Vector[Term] = init.exportVariables
+
     val terms: Vector[Term] = init.terms :+ init.export(term)
 
     val definitions: Vector[Defn[Term]] = init.definitions
@@ -186,7 +196,10 @@ object Context {
 
     val constants: Vector[Term] = init.constants
 
-    val variables: Vector[Term] = init.variables :+ init.export(variable)
+    val variables: Vector[Term] = init.variables :+ variable
+
+    val exportVariables: Vector[Term] = init.exportVariables :+ init.export(variable)
+
 
     val terms: Vector[Term] = init.terms
 
@@ -232,6 +245,8 @@ sealed trait Context {
   val constants: Vector[Term]
 
   val variables: Vector[Term]
+
+  val exportVariables: Vector[Term]
 
   val terms: Vector[Term]
 
