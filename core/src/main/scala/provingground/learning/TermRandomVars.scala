@@ -280,6 +280,7 @@ object TermRandomVars {
       case Restrict(optMap) =>
           val newOptMap = optMap match {
             case TypOpt => TypOpt.asInstanceOf[U => Option[V]] 
+            case FuncOpt => FuncOpt.asInstanceOf[U => Option[V]] 
             case FuncWithDom(typ) => FuncWithDom(typ.replace(x, y)).asInstanceOf[U => Option[V]] 
             case _ => (z: U) => optMap(valueSubs(y, x)(z)).map(w => valueSubs(x, y)(w)) 
           }
