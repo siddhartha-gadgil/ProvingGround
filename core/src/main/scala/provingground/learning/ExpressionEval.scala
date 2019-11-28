@@ -458,6 +458,8 @@ trait ExpressionEval { self =>
   ): TermState =
     TermState(finalTerms, finalTyps, vars, inds, goals, context)
 
+  def indepEquations(variable: Term) = equations.filterNot(eq => TermRandomVars.equationDepends(variable)(eq)) 
+
   def lambdaExportEquations(
       variable: Term
   ): Set[Equation] = {
@@ -505,7 +507,7 @@ trait ExpressionEval { self =>
           rhs
         )
       }
-    isleEqs union (Equation.group(isleIn union bridgeEqs)) union equations.filterNot(eq => TermRandomVars.equationDepends(variable)(eq))    
+    isleEqs union (Equation.group(isleIn union bridgeEqs))    
   }
 
   def piExportEquations(
@@ -554,7 +556,7 @@ trait ExpressionEval { self =>
           rhs
         )
       }      
-    isleEqs union (Equation.group(isleIn union bridgeEqs)) union equations.filterNot(eq => TermRandomVars.equationDepends(variable)(eq))    
+    isleEqs union (Equation.group(isleIn union bridgeEqs))   
   }
 
   def relVariable(x: Term): ExpressionEval = {
