@@ -505,7 +505,7 @@ trait ExpressionEval { self =>
           rhs
         )
       }
-    isleEqs union (Equation.group(isleIn union bridgeEqs))
+    isleEqs union (Equation.group(isleIn union bridgeEqs)) union equations.filterNot(eq => TermRandomVars.equationDepends(variable)(eq))    
   }
 
   def piExportEquations(
@@ -553,8 +553,8 @@ trait ExpressionEval { self =>
           InitialVal(InIsle(el, boat, isle)),
           rhs
         )
-      }
-    isleEqs union (Equation.group(isleIn union bridgeEqs))
+      }      
+    isleEqs union (Equation.group(isleIn union bridgeEqs)) union equations.filterNot(eq => TermRandomVars.equationDepends(variable)(eq))    
   }
 
   def relVariable(x: Term): ExpressionEval = {

@@ -366,4 +366,11 @@ object TermRandomVars {
       case PairEvent(base1, base2, sort) => v
     }
 
+  def equationDepends(t: Term)(eq : Equation) : Boolean = {
+    import Expression.varVals
+    val genvars = varVals(eq.lhs).map(_.variable) union varVals(eq.lhs).map(_.variable)
+    val tt = t.newobj
+    genvars.exists(v => variableSubs(t, tt)(v) != v)
+  }
+
 }
