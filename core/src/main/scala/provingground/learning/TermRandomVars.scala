@@ -18,6 +18,15 @@ import provingground.learning.GeneratorVariables.PairEvent
 import provingground.learning.Sort.All
 import provingground.learning.Sort.Filter
 import provingground.learning.Sort.Restrict
+import provingground.learning.Expression.FinalVal
+import provingground.learning.Expression.InitialVal
+import provingground.learning.Expression.Quotient
+import provingground.learning.Expression.Exp
+import provingground.learning.Expression.Literal
+import provingground.learning.Expression.Log
+import provingground.learning.Expression.IsleScale
+import provingground.learning.Expression.Coeff
+import provingground.learning.Expression.Sum
 
 object TermRandomVars {
 
@@ -272,18 +281,21 @@ object TermRandomVars {
       case filter: Filter[U] =>
         val newPred =
           filter.pred match {
-            case WithTyp(typ) => WithTyp(typ.replace(x, y)).asInstanceOf[U => Boolean] 
+            case WithTyp(typ) =>
+              WithTyp(typ.replace(x, y)).asInstanceOf[U => Boolean]
             case _ => (z: U) => filter.pred(valueSubs(y, x)(z))
           }
         Filter[U](newPred)
           .asInstanceOf[Sort[U, V]]
       case Restrict(optMap) =>
-          val newOptMap = optMap match {
-            case TypOpt => TypOpt.asInstanceOf[U => Option[V]] 
-            case FuncOpt => FuncOpt.asInstanceOf[U => Option[V]] 
-            case FuncWithDom(typ) => FuncWithDom(typ.replace(x, y)).asInstanceOf[U => Option[V]] 
-            case _ => (z: U) => optMap(valueSubs(y, x)(z)).map(w => valueSubs(x, y)(w)) 
-          }
+        val newOptMap = optMap match {
+          case TypOpt  => TypOpt.asInstanceOf[U => Option[V]]
+          case FuncOpt => FuncOpt.asInstanceOf[U => Option[V]]
+          case FuncWithDom(typ) =>
+            FuncWithDom(typ.replace(x, y)).asInstanceOf[U => Option[V]]
+          case _ =>
+            (z: U) => optMap(valueSubs(y, x)(z)).map(w => valueSubs(x, y)(w))
+        }
         Restrict(
           newOptMap
         )
@@ -296,8 +308,9 @@ object TermRandomVars {
     val newInit =
       AddVar(boat.typ.replace(x, y))
     val newIsleOutput = isle.islandOutput match {
-      case ConstRandVar(randomVar) => ConstRandVar(randomVarSubs(x, y)(randomVar))
-      case _ => 
+      case ConstRandVar(randomVar) =>
+        ConstRandVar(randomVarSubs(x, y)(randomVar))
+      case _ =>
         (z: Term) => randomVarSubs(x, y)(isle.islandOutput(z))
     }
     Island[c, TermState, d, Term](
@@ -367,18 +380,92 @@ object TermRandomVars {
       case PairEvent(base1, base2, sort) => v
     }
 
-  def varDepends(t: Term)(v: Variable[_]) : Boolean = 
-    v match {
-      case Elem(element: Term, randomVar) => element.dependsOn(t)
-      case Elem(element, randomVar) => false
-      case Event(base, sort) => false
-      case InIsle(isleVar, boat, isle) => varDepends(t)(isleVar)
-      case PairEvent(base1, base2, sort) => false
+  import Expression._
+
+  def expressionSubs(x: Term, y: Term)(exp: Expression): Expression =
+    exp match {
+      case FinalVal(variable)   => FinalVal(variableSubs(x, y)(variable))
+      case InitialVal(variable) => InitialVal(variableSubs(x, y)(variable))
+      case Product(a, b) =>
+        Product(
+          expressionSubs(x, y)(a),
+          expressionSubs(x, y)(b)
+        )
+      case Quotient(a, b) =>
+        Quotient(
+          expressionSubs(x, y)(a),
+          expressionSubs(x, y)(b)
+        )
+      case Exp(exp) =>
+        Exp(expressionSubs(x, y)(exp))
+      case Literal(value) => Literal(value)
+      case Log(exp) =>
+        Log(expressionSubs(x, y)(exp))
+      case sc: IsleScale[u, v] =>
+        IsleScale(
+          valueSubs(x, y)(sc.boat),
+          Elem(
+            valueSubs(x, y)(sc.elem.element),
+            randomVarSubs(x, y)(sc.elem.randomVar)
+          )
+        )
+      case cf @ Coeff(node) => cf
+      case Sum(a, b) =>
+        Sum(
+          expressionSubs(x, y)(a),
+          expressionSubs(x, y)(b)
+        )
     }
 
-  def equationDepends(t: Term)(eq : Equation) : Boolean = {
+  def expressionMapVars(
+      fn: Variable[_] => Variable[_]
+  )(exp: Expression): Expression = exp match {
+    case FinalVal(variable)   => FinalVal(fn(variable))
+    case InitialVal(variable) => InitialVal(fn(variable))
+    case Sum(x, y) =>
+      Sum(
+        expressionMapVars(fn)(x),
+        expressionMapVars(fn)(y)
+      )
+    case IsleScale(boat :Term, elem) => 
+      val newBoat = "%boat" :: boat.typ
+      IsleScale(
+        newBoat,
+        Elem(
+            valueSubs(boat, newBoat)(elem.element),
+            randomVarSubs(boat, newBoat)(elem.randomVar)
+          )
+      )
+    case IsleScale(boat, elem) => IsleScale(boat, elem)
+    case Log(exp)              => Log(expressionMapVars(fn)(exp))
+    case Literal(value)        => Literal(value)
+    case Exp(exp)              => Exp(expressionMapVars(fn)(exp))
+    case Coeff(node)           => Coeff(node)
+    case Quotient(x, y) =>
+      Quotient(
+        expressionMapVars(fn)(x),
+        expressionMapVars(fn)(y)
+      )
+    case provingground.learning.Expression.Product(x, y) =>
+      Product(
+        expressionMapVars(fn)(x),
+        expressionMapVars(fn)(y)
+      )
+  }
+
+  def varDepends(t: Term)(v: Variable[_]): Boolean =
+    v match {
+      case Elem(element: Term, randomVar) => element.dependsOn(t)
+      case Elem(element, randomVar)       => false
+      case Event(base, sort)              => false
+      case InIsle(isleVar, boat, isle)    => varDepends(t)(isleVar)
+      case PairEvent(base1, base2, sort)  => false
+    }
+
+  def equationDepends(t: Term)(eq: Equation): Boolean = {
     import Expression.varVals
-    val genvars = varVals(eq.lhs).map(_.variable) union varVals(eq.lhs).map(_.variable)
+    val genvars = varVals(eq.lhs).map(_.variable) union varVals(eq.lhs)
+      .map(_.variable)
     genvars.exists(v => varDepends(t)(v))
   }
 
