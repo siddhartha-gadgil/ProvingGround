@@ -379,8 +379,7 @@ object TermData {
   import TermRandomVars.expressionMapVars
 
   def isleNormalize(eq: EquationNode, varWeight: Double = 0.3): EquationNode = {
-    val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
-    EquationNode(expressionMapVars(fn)(eq.lhs), expressionMapVars(fn)(eq.rhs))
+    TermRandomVars.isleNormalize(eq, varWeight)
   }
 
 }

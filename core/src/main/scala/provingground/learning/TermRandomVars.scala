@@ -382,41 +382,6 @@ object TermRandomVars {
 
   import Expression._
 
-  def expressionSubs(x: Term, y: Term)(exp: Expression): Expression =
-    exp match {
-      case FinalVal(variable)   => FinalVal(variableSubs(x, y)(variable))
-      case InitialVal(variable) => InitialVal(variableSubs(x, y)(variable))
-      case Product(a, b) =>
-        Product(
-          expressionSubs(x, y)(a),
-          expressionSubs(x, y)(b)
-        )
-      case Quotient(a, b) =>
-        Quotient(
-          expressionSubs(x, y)(a),
-          expressionSubs(x, y)(b)
-        )
-      case Exp(exp) =>
-        Exp(expressionSubs(x, y)(exp))
-      case Literal(value) => Literal(value)
-      case Log(exp) =>
-        Log(expressionSubs(x, y)(exp))
-      case sc: IsleScale[u, v] =>
-        IsleScale(
-          valueSubs(x, y)(sc.boat),
-          Elem(
-            valueSubs(x, y)(sc.elem.element),
-            randomVarSubs(x, y)(sc.elem.randomVar)
-          )
-        )
-      case cf @ Coeff(node) => cf
-      case Sum(a, b) =>
-        Sum(
-          expressionSubs(x, y)(a),
-          expressionSubs(x, y)(b)
-        )
-    }
-
   def expressionMapVars(
       fn: Variable[_] => Variable[_]
   )(exp: Expression): Expression = exp match {
@@ -452,6 +417,88 @@ object TermRandomVars {
         expressionMapVars(fn)(y)
       )
   }
+
+  def expressionSubs(x: Term, y: Term)(exp: Expression): Expression =
+  exp match {
+    case FinalVal(variable)   => FinalVal(variableSubs(x, y)(variable))
+    case InitialVal(variable) => InitialVal(variableSubs(x, y)(variable))
+    case Product(a, b) =>
+      Product(
+        expressionSubs(x, y)(a),
+        expressionSubs(x, y)(b)
+      )
+    case Quotient(a, b) =>
+      Quotient(
+        expressionSubs(x, y)(a),
+        expressionSubs(x, y)(b)
+      )
+    case Exp(exp) =>
+      Exp(expressionSubs(x, y)(exp))
+    case Literal(value) => Literal(value)
+    case Log(exp) =>
+      Log(expressionSubs(x, y)(exp))
+    case sc: IsleScale[u, v] =>
+      IsleScale(
+        valueSubs(x, y)(sc.boat),
+        Elem(
+          valueSubs(x, y)(sc.elem.element),
+          randomVarSubs(x, y)(sc.elem.randomVar)
+        )
+      )
+    case cf @ Coeff(node) => cf
+    case Sum(a, b) =>
+      Sum(
+        expressionSubs(x, y)(a),
+        expressionSubs(x, y)(b)
+      )
+  }
+
+  def isleNormalizeVarExp(
+    v: GeneratorVariables.Variable[_],
+    rhs: Expression,
+    vars: Vector[Term]
+): (GeneratorVariables.Variable[_], Expression) =
+  v match {
+    case Elem(element, randomVar) => v -> rhs
+    case Event(base, sort)        => v -> rhs
+    case inIsleFull: InIsle[c, _, d, _] =>
+      val inIsleTry =
+        Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+      inIsleTry.fold(
+        fa => inIsleFull -> rhs,
+        inIsle => {
+          import inIsle._
+          val newBoat = nextVar(boat.typ, vars)
+          val (recIsleVar, recRhs) = 
+            isleNormalizeVarExp(
+              isleVar, 
+              rhs, 
+              vars :+ newBoat)
+          val newIsleVar = variableSubs(boat, newBoat)(recIsleVar)
+          val newRhs = expressionSubs(boat, newBoat)(recRhs)
+          val newIsle = isleSub(boat, newBoat)(isle, boat)
+          InIsle(newIsleVar, newBoat, newIsle) -> newRhs
+        }
+      )
+    case PairEvent(base1, base2, sort) => v -> rhs
+  }
+
+  def isleNormalize(eq: EquationNode, varWeight: Double = 0.3): EquationNode = {
+    val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
+    eq.lhs match {
+      case InitialVal(variable) => 
+        val (newVar, newRhs) = isleNormalizeVarExp(variable, eq.rhs, Vector())
+        EquationNode(InitialVal(newVar), newRhs)
+      case FinalVal(variable) => 
+        val (newVar, newRhs) = isleNormalizeVarExp(variable, eq.rhs, Vector())
+        EquationNode(FinalVal(newVar), newRhs)
+      case _ => EquationNode(expressionMapVars(fn)(eq.lhs), expressionMapVars(fn)(eq.rhs))
+    }
+    
+  }
+
+
+
 
   def varDepends(t: Term)(v: Variable[_]): Boolean =
     v match {
