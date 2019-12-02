@@ -460,10 +460,10 @@ object TermRandomVars {
   ): (GeneratorVariables.Variable[_], Expression) =
     v match {
       case Elem(element, randomVar) =>
-        val fn = v => TermRandomVars.isleNormalizeVars(v,vars)
+        val fn = v => TermRandomVars.isleNormalizeVars(v,Vector())
         v -> expressionMapVars(fn)(rhs)
       case Event(base, sort) =>
-        val fn = v => TermRandomVars.isleNormalizeVars(v, vars)
+        val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
         v -> expressionMapVars(fn)(rhs)
       case inIsleFull: InIsle[c, _, d, _] =>
         val inIsleTry =
@@ -483,7 +483,7 @@ object TermRandomVars {
           }
         )
       case PairEvent(base1, base2, sort) =>
-      val fn = v => TermRandomVars.isleNormalizeVars(v, vars)
+      val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
       v -> expressionMapVars(fn)(rhs)
     }
 
