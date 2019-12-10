@@ -475,7 +475,7 @@ object GeneratorNode {
       finalMap: (Boat, InitState) => InitState
   ) extends RecursiveGeneratorNode[InitState, Y]
 
-  /**
+  /*
     * An `island`, i.e., a full map from initial state to all required distributions,
     * which is used in recursive definitions where we recurse on not just the final state
     * but also the dynamics. One enters the island using a `boat` which is returned, and must exit by the same boat.
