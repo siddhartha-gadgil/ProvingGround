@@ -36,6 +36,12 @@ object TermRandomVars {
     override def toString = "TypOpt"
   }
 
+  case object TypAsTermOpt extends (Typ[Term] => Option[Term]) {
+    def apply(t: Typ[Term]): Option[Term] = Some(t)
+
+    override def toString = "TypAsTermOpt"
+  }
+
   case object FuncOpt extends (Term => Option[ExstFunc]) {
     def apply(t: Term): Option[ExstFunc] = ExstFunc.opt(t)
 

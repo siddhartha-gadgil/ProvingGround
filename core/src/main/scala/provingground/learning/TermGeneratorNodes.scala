@@ -202,6 +202,9 @@ object TermGeneratorNodes {
   val funcSort: Sort[Term, ExstFunc] =
     Sort.Restrict[Term, ExstFunc](FuncOpt)
 
+  val typAsTermSort: Sort[Typ[Term], Term] =
+    Sort.Restrict[Typ[Term], Term](TypAsTermOpt)
+  
   /**
     * family of distributions of terms with specified type
     */
@@ -219,6 +222,7 @@ object TermGeneratorNodes {
     */
   def termsWithTyp(typ: Typ[Term]): RandomVar[Term] =
     RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
 
   /**
     * Wrapper for terms with type family to allow equality and  `toString` to work.
@@ -778,6 +782,7 @@ class TermGeneratorNodes[InitState](
       PiApply,
       inIsle
     )
+
 
   /**
     * island to generate Sigma-Types by taking variables with specified domain, similar to [[lambdaIsle]]

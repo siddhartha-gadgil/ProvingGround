@@ -569,6 +569,55 @@ trait ExpressionEval { self =>
     isleEqs union (Equation.group(isleIn union bridgeEqs))   
   }
 
+  def piTermExportEquations(
+      variable: Term
+  ): Set[Equation] = {
+    // val initState = TermState(generators(init), finalTyps)
+    import GeneratorNode._, TermGeneratorNodes._
+    val isle =
+      Island[Typ[Term], TermState, Typ[Term], Term](
+        Typs,
+        ConstRandVar(Typs),
+        AddVar(variable.typ),
+        PiApply,
+        EnterIsle
+      )
+    import isle._
+    val boat  = variable
+    val coeff = Coeff(Base.piNode | (typAsTermSort, Terms))
+    val isleEqs: Set[Equation] =
+      equations.map(_.mapVars { (x) =>
+        InIsle(x, boat, isle)
+      })
+    val bridgeEqs: Set[EquationNode] = finalTypSet.map { x =>
+      EquationNode(
+        FinalVal(Elem(export(boat, x), Terms)),
+        coeff * FinalVal(
+          InIsle(Elem(x, Typs), boat, isle)
+        )
+      )
+    }
+    val initVarElems = equations
+      .flatMap { (eq) =>
+        Expression.varVals(eq.rhs)
+      }
+      .collect {
+        case InitialVal(Elem(el, rv)) => Elem(el, rv)
+      }
+    val isleIn: Set[EquationNode] =
+      initVarElems.map { el =>
+        val rhs =
+          if (boat == el.element)
+            (IsleScale(boat, el) * -1) + Literal(1)
+          else IsleScale(boat, el) * InitialVal(el)
+        EquationNode(
+          InitialVal(InIsle(el, boat, isle)),
+          rhs
+        )
+      }      
+    isleEqs union (Equation.group(isleIn union bridgeEqs))   
+  }
+
   def relVariable(x: Term): ExpressionEval = {
     val varWeight: Double = math.max(
       init.getOrElse(InitialVal(Elem(x, Terms)), 0.0),
@@ -576,7 +625,7 @@ trait ExpressionEval { self =>
     )
     val eqs = piExportEquations(x) union lambdaExportEquations(
       x
-    ) union indepEquations(x)
+    ) union indepEquations(x) union piTermExportEquations(x)
     val newInit = init
       .map {
         case (exp @ InitialVal(Elem(y: Term, Terms)), w) =>

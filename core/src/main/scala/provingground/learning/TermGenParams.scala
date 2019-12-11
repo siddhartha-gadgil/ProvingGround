@@ -27,6 +27,7 @@ object TermGenParams {
       argAppW = m("application-by-argument").num,
       lmW = m("lambda").num,
       piW = m("pi-type").num,
+      piTermW = m("pi-term").num,
       termsByTypW = m("terms-by-type").num,
       typFromFamilyW = m("type-from-family").num,
       sigmaW = m("sigma-type").num,
@@ -45,13 +46,17 @@ object TermGenParams {
 
   lazy val rnd = new scala.util.Random
 
-  def randomScale(tg: TermGenParams, scale: Double = 1.0, logShift: Double = 0) : TermGenParams = {
-    def shift(v: ujson.Value) :ujson.Value = {
+  def randomScale(
+      tg: TermGenParams,
+      scale: Double = 1.0,
+      logShift: Double = 0
+  ): TermGenParams = {
+    def shift(v: ujson.Value): ujson.Value = {
       val sc = rnd.nextGaussian() * scale - logShift
       ujson.Num(v.num * math.exp(sc))
     }
     val jsonMap = tg.toJson.obj.mapValues(shift(_))
-    val jsObj = ujson.Obj(collection.mutable.LinkedHashMap(jsonMap.toSeq:_ *))
+    val jsObj   = ujson.Obj(collection.mutable.LinkedHashMap(jsonMap.toSeq: _*))
     fromJson(jsObj)
   }
 
@@ -98,6 +103,7 @@ case class TermGenParams(
     argAppW: Double = 0.1,
     lmW: Double = 0.1,
     piW: Double = 0.1,
+    piTermW: Double = 0,
     termsByTypW: Double = 0.05,
     typFromFamilyW: Double = 0.05,
     sigmaW: Double = 0.05,
@@ -111,11 +117,13 @@ case class TermGenParams(
     negTargetW: Double = 0,
     solverW: Double = 0,
     contraW: Double = 0,
-    solver : TypSolver = TypSolver.coreSolver
+    solver: TypSolver = TypSolver.coreSolver
 ) { tg =>
 
   val Gen: TermGeneratorNodes[TermState] =
-    if (varWeight == 0.3 && solver == TypSolver.coreSolver) TermGeneratorNodes.Base else TermGenParamsNodes(this)
+    if (varWeight == 0.3 && solver == TypSolver.coreSolver)
+      TermGeneratorNodes.Base
+    else TermGenParamsNodes(this)
 
   val toJson: ujson.Value =
     ujson.Obj(
@@ -124,6 +132,7 @@ case class TermGenParams(
       "application-by-argument" -> argAppW,
       "lambda"                  -> lmW,
       "pi-type"                 -> piW,
+      "pi-term"                 -> piTermW,
       "terms-by-type"           -> termsByTypW,
       "type-from-family"        -> typFromFamilyW,
       "sigma-type"              -> sigmaW,
@@ -151,27 +160,31 @@ case class TermGenParams(
   import NodeCoeffs.purge
 
   val termNodes: NodeCoeffs[TermState, Double, HNil, Term] =
-    purge( (Init(Terms)           -> termInit) ::
-      (applnNode           -> appW) ::
-      (unifApplnNode       -> unAppW) ::
-      (applnByArgNode      -> argAppW) ::
-      (lambdaNode          -> lmW) ::
-      (termsByTyps         -> termsByTypW) ::
-      (recFuncFoldedNode   -> recDefW) ::
-      (inducFuncFoldedNode -> inducDefW) ::
-      Terms.target[TermState, Double, Term]
+    purge(
+      (Init(Terms)                         -> termInit) ::
+        (applnNode                         -> appW) ::
+        (unifApplnNode                     -> unAppW) ::
+        (applnByArgNode                    -> argAppW) ::
+        (lambdaNode                        -> lmW) ::
+        ((piNode | (typAsTermSort, Terms)) -> piTermW) ::
+        (termsByTyps                       -> termsByTypW) ::
+        (recFuncFoldedNode                 -> recDefW) ::
+        (inducFuncFoldedNode               -> inducDefW) ::
+        Terms.target[TermState, Double, Term]
     )
 
   val typNodes: NodeCoeffs[TermState, Double, HNil, Typ[Term]] =
-    purge((Init(Typs)                                -> typInit) ::
-      (typApplnNode                            -> appW) ::
-      (typUnifApplnNode                        -> unAppW) ::
-      (piNode                                  -> piW) ::
-      (sigmaNode                               -> sigmaW) ::
-      (typFoldNode                             -> typFromFamilyW) ::
-      ((recFuncFoldedNode | (typSort, Typs))   -> recDefW) ::
-      ((inducFuncFoldedNode | (typSort, Typs)) -> inducDefW) ::
-      Typs.target[TermState, Double, Typ[Term]])
+    purge(
+      (Init(Typs)                                -> typInit) ::
+        (typApplnNode                            -> appW) ::
+        (typUnifApplnNode                        -> unAppW) ::
+        (piNode                                  -> piW) ::
+        (sigmaNode                               -> sigmaW) ::
+        (typFoldNode                             -> typFromFamilyW) ::
+        ((recFuncFoldedNode | (typSort, Typs))   -> recDefW) ::
+        ((inducFuncFoldedNode | (typSort, Typs)) -> inducDefW) ::
+        Typs.target[TermState, Double, Typ[Term]]
+    )
 
   val inducNodes: NodeCoeffs[TermState, Double, HNil, ExstInducDefn] =
     (Init(InducDefns) -> 1.0) ::
@@ -193,48 +206,52 @@ case class TermGenParams(
     .Map(identity[Typ[Term]], Typs, IsleDomains) -> 1.0) :: IsleDomains
     .target[TermState, Double, Typ[Term]]
 
-  val funcForCodNodes
-      : NodeCoeffs[TermState, Double, Typ[Term] :: HNil, Term] =
+  val funcForCodNodes: NodeCoeffs[TermState, Double, Typ[Term] :: HNil, Term] =
     (codomainNodeFamily -> 1.0) ::
       FuncForCod.target[TermState, Double, Term]
 
   val funcNodes: NodeCoeffs[TermState, Double, HNil, ExstFunc] =
-    purge((Init(Funcs)                                 -> termInit) ::
-      ((applnNode | (funcSort, Funcs))           -> appW) ::
-      ((unifApplnNode | (funcSort, Funcs))       -> unAppW) ::
-      ((applnByArgNode | (funcSort, Funcs))      -> argAppW) ::
-      ((lambdaNode | (funcSort, Funcs))          -> lmW) ::
-      ((termsByTyps | (funcSort, Funcs))         -> termsByTypW) ::
-      ((recFuncFoldedNode | (funcSort, Funcs))   -> recDefW) ::
-      ((inducFuncFoldedNode | (funcSort, Funcs)) -> inducDefW) ::
-      Funcs.target[TermState, Double, ExstFunc])
+    purge(
+      (Init(Funcs)                                 -> termInit) ::
+        ((applnNode | (funcSort, Funcs))           -> appW) ::
+        ((unifApplnNode | (funcSort, Funcs))       -> unAppW) ::
+        ((applnByArgNode | (funcSort, Funcs))      -> argAppW) ::
+        ((lambdaNode | (funcSort, Funcs))          -> lmW) ::
+        ((termsByTyps | (funcSort, Funcs))         -> termsByTypW) ::
+        ((recFuncFoldedNode | (funcSort, Funcs))   -> recDefW) ::
+        ((inducFuncFoldedNode | (funcSort, Funcs)) -> inducDefW) ::
+        Funcs.target[TermState, Double, ExstFunc]
+    )
 
   val typFamilyNodes: NodeCoeffs[TermState, Double, HNil, ExstFunc] =
-    purge((Init(TypFamilies)                                      -> termInit) ::
-      (typFamilyApplnNode                                   -> appW) ::
-      (typFamilyUnifApplnNode                               -> unAppW) ::
-      ((applnByArgNode | (typFamilySort, TypFamilies))      -> argAppW) ::
-      (lambdaTypFamilyNode                                  -> lmW) ::
-      ((termsByTyps | (typFamilySort, TypFamilies))         -> termsByTypW) ::
-      ((recFuncFoldedNode | (typFamilySort, TypFamilies))   -> recDefW) ::
-      ((inducFuncFoldedNode | (typFamilySort, TypFamilies)) -> inducDefW) ::
-      TypFamilies.target[TermState, Double, ExstFunc])
+    purge(
+      (Init(TypFamilies)                                      -> termInit) ::
+        (typFamilyApplnNode                                   -> appW) ::
+        (typFamilyUnifApplnNode                               -> unAppW) ::
+        ((applnByArgNode | (typFamilySort, TypFamilies))      -> argAppW) ::
+        (lambdaTypFamilyNode                                  -> lmW) ::
+        ((termsByTyps | (typFamilySort, TypFamilies))         -> termsByTypW) ::
+        ((recFuncFoldedNode | (typFamilySort, TypFamilies))   -> recDefW) ::
+        ((inducFuncFoldedNode | (typFamilySort, TypFamilies)) -> inducDefW) ::
+        TypFamilies.target[TermState, Double, ExstFunc]
+    )
 
-  val termsByTypNodes
-      : NodeCoeffs[TermState, Double, Typ[Term] :: HNil, Term] =
-    purge((TermsWithTyp.init            -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
-      (wtN(applnNode)             -> appW) ::
-      (wtN(unifApplnNode)         -> unAppW) ::
-      (wtN(applnByArgNode)        -> argAppW) ::
-      (backwardTypNodeFamily      -> (termInit * goalWeight + lmW)) ::
-      (curryBackwardTypNodeFamily -> (termInit * goalWeight + lmW)) :: // Warning: excess total weight
-      (incl1TypNodeFamily         -> (termInit * goalWeight + lmW) / 2) ::
-      (incl2TypNodeFamily         -> (termInit * goalWeight + lmW) / 2) ::
-      (typAsCodNodeFamily         -> typAsCodW) ::
-      (targetInducNodeFamily      -> targetInducW) ::
-      (solveFamily                -> solverW) ::
-      (typViaZeroFamily           -> contraW) ::
-      TermsWithTyp.target[TermState, Double, Term])
+  val termsByTypNodes: NodeCoeffs[TermState, Double, Typ[Term] :: HNil, Term] =
+    purge(
+      (TermsWithTyp.init            -> (termInit * (1 - goalWeight - typAsCodW - targetInducW - solverW))) ::
+        (wtN(applnNode)             -> appW) ::
+        (wtN(unifApplnNode)         -> unAppW) ::
+        (wtN(applnByArgNode)        -> argAppW) ::
+        (backwardTypNodeFamily      -> (termInit * goalWeight + lmW)) ::
+        (curryBackwardTypNodeFamily -> (termInit * goalWeight + lmW)) :: // Warning: excess total weight
+        (incl1TypNodeFamily         -> (termInit * goalWeight + lmW) / 2) ::
+        (incl2TypNodeFamily         -> (termInit * goalWeight + lmW) / 2) ::
+        (typAsCodNodeFamily         -> typAsCodW) ::
+        (targetInducNodeFamily      -> targetInducW) ::
+        (solveFamily                -> solverW) ::
+        (typViaZeroFamily           -> contraW) ::
+        TermsWithTyp.target[TermState, Double, Term]
+    )
 
   val typOrFmlyNodes: NodeCoeffs[TermState, Double, HNil, Term] =
     (TypsAndFamilies.fromTyp        -> typVsFamily) ::
@@ -249,12 +266,14 @@ case class TermGenParams(
 
   val funcWithDomNodes
       : NodeCoeffs[TermState, Double, Typ[Term] :: HNil, ExstFunc] =
-    purge((FuncsWithDomain.init         -> termInit) ::
-      (fdtN(applnNode)            -> appW) ::
-      (fdtN(unifApplnNode)        -> unAppW) ::
-      (fdtN(applnByArgNode)       -> argAppW) ::
-      (lambdaForFuncWithDomFamily -> lmW) ::
-      FuncsWithDomain.target[TermState, Double, ExstFunc])
+    purge(
+      (FuncsWithDomain.init         -> termInit) ::
+        (fdtN(applnNode)            -> appW) ::
+        (fdtN(unifApplnNode)        -> unAppW) ::
+        (fdtN(applnByArgNode)       -> argAppW) ::
+        (lambdaForFuncWithDomFamily -> lmW) ::
+        FuncsWithDomain.target[TermState, Double, ExstFunc]
+    )
 
   val nodeCoeffSeq: NodeCoeffSeq[TermState, Double] =
     funcWithDomNodes +: targTypNodes +: goalNodes +: isleDomainsNode +: inducDomainNodes +: inducNodes +: funcForCodNodes +:
@@ -264,7 +283,8 @@ case class TermGenParams(
   lazy val monixFD: MonixFiniteDistribution[TermState] =
     MonixFiniteDistribution(nodeCoeffSeq, varWeight)
 
-  lazy val monixEqFD : MonixFiniteDistributionEq[TermState] = MonixFiniteDistributionEq(nodeCoeffSeq, varWeight)
+  lazy val monixEqFD: MonixFiniteDistributionEq[TermState] =
+    MonixFiniteDistributionEq(nodeCoeffSeq, varWeight)
 
   def monixTangFD(baseState: TermState) =
     MonixTangentFiniteDistribution(nodeCoeffSeq, varWeight, baseState)
@@ -286,7 +306,6 @@ case class TermGenParams(
         initState.goals,
         initState.context
       )
-    
 
   def evolvedStateTask(
       initState: TermState,
