@@ -184,13 +184,16 @@ object ExpressionEval {
       decay: Double = 1,
       maxTime: Option[Long]
   ): Map[Expression, Double] = 
-   if (maxTime.map(limit => limit < System.currentTimeMillis()).getOrElse(false)) init
+   if (maxTime.map(limit => limit < 0).getOrElse(false)) init
    else {
+     val startTime = System.currentTimeMillis()
     val newMap = nextMap(init, equations, exponent)
-    if ((newMap.keySet == init.keySet) && mapRatio(newMap, init) < maxRatio)
+      if ((newMap.keySet == init.keySet) && mapRatio(newMap, init) < maxRatio)
       newMap
-    else
-      stableMap(newMap, equations, maxRatio, exponent * decay, decay, maxTime)
+    else{
+      val usedTime = System.currentTimeMillis() - startTime
+      stableMap(newMap, equations, maxRatio, exponent * decay, decay, maxTime.map(t => t - usedTime))
+    }
   }
 
   def eqAtoms(equations: Set[Equation]) =
@@ -438,7 +441,7 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    stableMap(init, equations, maxRatio, exponent, decay, maxTime.map(t => t + System.currentTimeMillis()))
+    stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
@@ -1020,7 +1023,7 @@ trait ExpressionEval { self =>
       eps: Double = scale
   ): Map[Expression, Double] = {
     val newMap = normalizedMap(
-      stableMap(gradShift(p, t, eps), equations, maxRatio, exponent, decay, maxTime.map(t => t + System.currentTimeMillis()))
+      stableMap(gradShift(p, t, eps), equations, maxRatio, exponent, decay, maxTime)
     )
     // if (p.keySet == newMap.keySet) pprint.log(mapRatio(p, newMap))
     // else {
