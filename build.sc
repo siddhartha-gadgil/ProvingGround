@@ -66,7 +66,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   override def ivyDeps = Agg(commonLibs: _*)
   def version = "0.1.1-SNAPSHOT"
 
-  def organization = "io.github.siddhartha-gadgil"
+  def organization = "in.ac.iisc"
   def name = "ProvingGround"
 
   override def artifactName = T{"provingground-"+super.artifactName()}
@@ -158,11 +158,15 @@ trait JvmModule extends CommonModule {
 }
 
 trait PGPublish extends PublishModule{
+  override def sonatypeUri = "https://maven.pkg.github.com/siddhartha-gadgil/ProvingGround"
+
+  override def sonatypeSnapshotUri = "https://maven.pkg.github.com/siddhartha-gadgil/ProvingGround"
+
   def publishVersion = "0.1.1-SNAPSHOT"
 
     def pomSettings = PomSettings(
       description = "Automated theorem proving through learning in HoTT",
-      organization = "io.github.siddhartha-gadgil",
+      organization = "in.ac.iisc",
       url = "https://github.com/siddhartha-gadgil/ProvingGround",
       licenses = Seq(License.MIT),
       versionControl = VersionControl.github("siddhartha-gadgil", "ProvingGround"),
