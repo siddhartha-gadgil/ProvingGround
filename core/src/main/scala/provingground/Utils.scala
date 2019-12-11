@@ -3,6 +3,14 @@ import HoTT._
 import scala.util.Try
 
 object Utils {
+  def delayedRun(task: => Unit, delay: Long): Unit = {
+    import java.util._
+    val tt = new TimerTask{
+      def run(): Unit = task
+    }
+    new Timer("delayed run").schedule(tt, delay)
+  }
+
   def addToPartition[A](
       element: A,
       relation: (A, A) => Boolean,

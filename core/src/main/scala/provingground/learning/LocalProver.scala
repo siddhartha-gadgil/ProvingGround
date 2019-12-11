@@ -290,7 +290,11 @@ trait LocalProverStep {
 
   def reset() = {isHalted = false}
 
-  def halted() = isHalted
+  def halted() = {
+    val result =  isHalted
+    if (result) println("Halted")
+    result
+  }
 
   def withCutoff(cutoff : Double) : LocalProverStep
 
