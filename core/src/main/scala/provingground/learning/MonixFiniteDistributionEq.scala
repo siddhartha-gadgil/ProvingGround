@@ -130,12 +130,13 @@ abstract class GenMonixFiniteDistributionEq[State](
   def varDist[Y](
       initState: State,
       maxDepth: Option[Int],
+      halted: => Boolean,
       memo: EqDistMemo[State] = EqDistMemo.empty[State]
   )(
       randomVar: RandomVar[Y],
       epsilon: Double
   ): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
-    if (epsilon > 1) Task.now((FD.empty[Y], Set(), memo))
+    if (epsilon > 1 || halted) Task.now((FD.empty[Y], Set(), memo))
     else if (maxDepth.map(_ < 1).getOrElse(false))
       Task.now((sd.value(initState)(randomVar), Set(), memo))
     else {
@@ -146,7 +147,7 @@ abstract class GenMonixFiniteDistributionEq[State](
       val resultT = lookup getOrElse {
         randomVar match {
           case RandomVar.AtCoord(randomVarFmly, fullArg) =>
-            varFamilyDistFunc(initState, maxDepth, memo)(randomVarFmly, epsilon)(fullArg)
+            varFamilyDistFunc(initState, maxDepth, halted, memo)(randomVarFmly, epsilon)(fullArg)
               .map {
                 case (fd, eqs, memo) => (fd.flatten.safeNormalized, eqs, memo)
               }
@@ -154,7 +155,7 @@ abstract class GenMonixFiniteDistributionEq[State](
           case _ =>
             find(randomVar)
               .map { nc =>
-                nodeCoeffDist(initState, maxDepth, memo)(nc, epsilon, randomVar).map {
+                nodeCoeffDist(initState, maxDepth, halted, memo)(nc, epsilon, randomVar).map {
                   case (fd, eqs, memo) => (fd.flatten.safeNormalized, eqs, memo)
                 }
               }
@@ -168,7 +169,7 @@ abstract class GenMonixFiniteDistributionEq[State](
       }
     }
 
-  def nodeCoeffDist[Y](initState: State, maxDepth: Option[Int], memo: EqDistMemo[State])(
+  def nodeCoeffDist[Y](initState: State, maxDepth: Option[Int], halted: => Boolean, memo: EqDistMemo[State])(
       nodeCoeffs: NodeCoeffs[State, Double, HNil, Y],
       epsilon: Double,
       rv: RandomVar[Y]
@@ -183,7 +184,7 @@ abstract class GenMonixFiniteDistributionEq[State](
             bc.headGen match {
               case gen: GeneratorNode[Y] =>
                 val coeff = Coeff(gen)
-                (nodeDist(initState, maxDepth, memo)(gen, epsilon / p, coeff) map {
+                (nodeDist(initState, maxDepth, halted, memo)(gen, epsilon / p, coeff) map {
                   case (fd, eqs, m) => (fd * p, eqs, m)
                 }) -> Coeff(gen)
               case _ =>
@@ -197,7 +198,7 @@ abstract class GenMonixFiniteDistributionEq[State](
             eqc = eqa.map {
               case EquationNode(lhs, rhs) => EquationNode(lhs, rhs)
             }
-            pb <- nodeCoeffDist(initState, maxDepth, memo)(bc.tail, epsilon, rv)
+            pb <- nodeCoeffDist(initState, maxDepth, halted, memo)(bc.tail, epsilon, rv)
             (b, eqb, mb) = pb
           } yield (a ++ b, eqc union eqb, memo ++ ma ++ mb)
       }
@@ -221,6 +222,7 @@ abstract class GenMonixFiniteDistributionEq[State](
   def nodeCoeffFamilyDist[Dom <: HList, Y](
       initState: State,
       maxDepth: Option[Int],
+      halted: => Boolean,
       memo: EqDistMemo[State]
   )(
       nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
@@ -233,10 +235,10 @@ abstract class GenMonixFiniteDistributionEq[State](
         case bc: Cons[State, Double, Dom, Y] =>
           val p = bc.headCoeff
           for {
-            pa <- nodeFamilyDistFunc(initState, maxDepth, memo)(bc.headGen, epsilon / p)(
+            pa <- nodeFamilyDistFunc(initState, maxDepth, halted, memo)(bc.headGen, epsilon / p)(
               arg
             )
-            pb <- nodeCoeffFamilyDist(initState, maxDepth, memo)(bc.tail, epsilon)(
+            pb <- nodeCoeffFamilyDist(initState, maxDepth, halted, memo)(bc.tail, epsilon)(
               arg
             )
           } yield ((pa._1 * p) ++ pb._1, pa._2 union pb._2, pa._3 ++ pb._3)
@@ -245,6 +247,7 @@ abstract class GenMonixFiniteDistributionEq[State](
   def varFamilyDistFunc[RDom <: HList, Y](
       initState: State,
       maxDepth: Option[Int],
+      halted: => Boolean,
       memo: EqDistMemo[State]
   )(
       randomVarFmly: RandomVarFamily[RDom, Y],
@@ -254,13 +257,14 @@ abstract class GenMonixFiniteDistributionEq[State](
     else
       find(randomVarFmly)
         .map { nc =>
-          nodeCoeffFamilyDist(initState, maxDepth, memo)(nc, epsilon)(arg)
+          nodeCoeffFamilyDist(initState, maxDepth, halted, memo)(nc, epsilon)(arg)
         }
         .getOrElse(Task.now((FD.empty[Y], Set.empty[EquationNode], memo)))
 
   def nodeFamilyDistFunc[Dom <: HList, Y](
       initState: State,
       maxDepth: Option[Int],
+      halted: => Boolean,
       memo: EqDistMemo[State]
   )(
       generatorNodeFamily: GeneratorNodeFamily[Dom, Y],
@@ -273,27 +277,27 @@ abstract class GenMonixFiniteDistributionEq[State](
           s"looking for coordinate $arg in $node which is not a family"
         )
         val coeff = Coeff(node)
-        nodeDist(initState, maxDepth, memo)(node, epsilon, coeff).map {
+        nodeDist(initState, maxDepth, halted, memo)(node, epsilon, coeff).map {
           case (fd, eq, m) => (fd, eq, m)
         }
       case f: GeneratorNodeFamily.Pi[Dom, Y] =>
         val coeff =
           Coeff(f.nodes(arg))
-        nodeDist(initState, maxDepth, memo)(f.nodes(arg), epsilon, coeff).map {
+        nodeDist(initState, maxDepth, halted, memo)(f.nodes(arg), epsilon, coeff).map {
           case (fd, eq, m) => (fd, eq, m)
         } // actually a task
       case f: GeneratorNodeFamily.PiOpt[Dom, Y] =>
         f.nodesOpt(arg)
           .map { (node) =>
             val coeff = Coeff(node)
-            nodeDist(initState, maxDepth, memo)(node, epsilon, coeff).map {
+            nodeDist(initState, maxDepth, halted, memo)(node, epsilon, coeff).map {
               case (fd, eq, m) => (fd, eq, m)
             }
           }
           .getOrElse(Task.pure((FD.empty[Y], Set.empty[EquationNode], memo)))
     }
 
-  def nodeDist[Y](initState: State, maxDepth: Option[Int], memo: EqDistMemo[State])(
+  def nodeDist[Y](initState: State, maxDepth: Option[Int], halted: => Boolean, memo: EqDistMemo[State])(
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
@@ -339,6 +343,7 @@ case class MonixFiniteDistributionEq[State](
   def nodeDist[Y](
       initState: State,
       maxDepth: Option[Int],
+      halted: => Boolean,
       memo: EqDistMemo[State] = EqDistMemo.empty[State]
   )(
       generatorNode: GeneratorNode[Y],
@@ -365,7 +370,7 @@ case class MonixFiniteDistributionEq[State](
             }
             Task(initDist, eqs, memo)
           case Map(f, input, output) =>
-            varDist(initState, maxDepth, memo)(input, epsilon).map {
+            varDist(initState, maxDepth, halted, memo)(input, epsilon).map {
               case (fd, eqs, rm) =>
                 val meqs = fd.support.map { (x) =>
                   EquationNode(
@@ -376,7 +381,7 @@ case class MonixFiniteDistributionEq[State](
                 (fd.map(f).purge(epsilon), eqs.union(meqs), rm)
             }
           case MapOpt(f, input, output) =>
-            varDist(initState, maxDepth, memo)(input, epsilon).map {
+            varDist(initState, maxDepth, halted, memo)(input, epsilon).map {
               case (fd, eqs, rm) =>
                 val meqs =
                   for {
@@ -390,10 +395,10 @@ case class MonixFiniteDistributionEq[State](
                 (fd.condMap(f).purge(epsilon), eqs.union(meqs), memo ++ rm)
             }
           case ZipMap(f, input1, input2, output) =>
-            val d1 = varDist(initState, maxDepth.map(_ - 1),  memo)(input1, epsilon).map {
+            val d1 = varDist(initState, maxDepth.map(_ - 1), halted, memo)(input1, epsilon).map {
               case (fd, eqs, rm1) => (fd.flatten, eqs, rm1)
             }
-            val d2 = varDist(initState, maxDepth.map(_ - 1), memo)(input2, epsilon).map {
+            val d2 = varDist(initState, maxDepth.map(_ - 1), halted, memo)(input2, epsilon).map {
               case (fd, eqs, rm2) => (fd.flatten, eqs, rm2)
             }
             Task.parZip2(d1, d2).map {
@@ -417,10 +422,10 @@ case class MonixFiniteDistributionEq[State](
                 )
             }
           case ZipMapOpt(f, input1, input2, output) =>
-            val d1 = varDist(initState, maxDepth.map(_ - 1), memo)(input1, epsilon).map {
+            val d1 = varDist(initState, maxDepth.map(_ - 1), halted, memo)(input1, epsilon).map {
               case (fd, eqs, rm) => (fd.flatten, eqs, rm)
             }
-            val d2 = varDist(initState, maxDepth.map(_ - 1), memo)(input2, epsilon).map {
+            val d2 = varDist(initState, maxDepth.map(_ - 1), halted, memo)(input2, epsilon).map {
               case (fd, eqs, rm) => (fd.flatten, eqs, rm)
             }
             Task.parZip2(d1, d2).map {
@@ -444,7 +449,7 @@ case class MonixFiniteDistributionEq[State](
                 )
             }
           case ZipFlatMap(baseInput, fiberVar, f, output) =>
-            val baseDistT = varDist(initState, maxDepth.map(_ - 1), memo)(baseInput, epsilon).map {
+            val baseDistT = varDist(initState, maxDepth.map(_ - 1), halted, memo)(baseInput, epsilon).map {
               case (fd, eqs, rm) => (fd.flatten, eqs, rm)
             }
             baseDistT.flatMap {
@@ -454,7 +459,7 @@ case class MonixFiniteDistributionEq[State](
                     .map {
                       case Weighted(x1, p1) =>
                         val fiberDistEqsT =
-                          varDist(initState, maxDepth.map(_ - 1), memo)(fiberVar(x1), epsilon / p1)
+                          varDist(initState, maxDepth.map(_ - 1), halted, memo)(fiberVar(x1), epsilon / p1)
                             .map { case (fd, eqs, mf) => (fd.flatten, eqs, mf) }
                         val tve =
                           fiberDistEqsT
@@ -492,7 +497,7 @@ case class MonixFiniteDistributionEq[State](
                 }
             }
           case FlatMap(baseInput, fiberNode, output) =>
-            val baseDistT = varDist(initState, maxDepth.map(_ - 1), memo)(baseInput, epsilon).map {
+            val baseDistT = varDist(initState, maxDepth.map(_ - 1), halted, memo)(baseInput, epsilon).map {
               case (fd, eqs, rm) => (fd.flatten, eqs, rm)
             }
             baseDistT.flatMap {
@@ -503,7 +508,7 @@ case class MonixFiniteDistributionEq[State](
                       case Weighted(x1, p1) =>
                         val node = fiberNode(x1)
                         val fiberDistEqT =
-                          nodeDist(initState, maxDepth, memo)(node, epsilon / p1, coeff)
+                          nodeDist(initState, maxDepth, halted, memo)(node, epsilon / p1, coeff)
                             .map { case (fd, eqs, mf) => (fd.flatten, eqs, mf) }
                         fiberDistEqT
                           .map {
@@ -540,7 +545,7 @@ case class MonixFiniteDistributionEq[State](
                 }
             }
           case FlatMapOpt(baseInput, fiberNodeOpt, output) =>
-            val baseDistT = varDist(initState, maxDepth.map(_ - 1), memo)(baseInput, epsilon).map {
+            val baseDistT = varDist(initState, maxDepth.map(_ - 1), halted, memo)(baseInput, epsilon).map {
               case (fd, eqs, mb) => (fd.flatten, eqs, mb)
             }
             baseDistT.flatMap {
@@ -554,7 +559,7 @@ case class MonixFiniteDistributionEq[State](
                     .map {
                       case (Weighted(x1, p1), node) =>
                         val fiberDistEqT =
-                          nodeDist(initState, maxDepth, memo)(node, epsilon / p1, coeff)
+                          nodeDist(initState, maxDepth, halted, memo)(node, epsilon / p1, coeff)
                             .map { case (fd, eqs, mf) => (fd.flatten, eqs, mf) }
                         fiberDistEqT
                           .map {
@@ -589,7 +594,7 @@ case class MonixFiniteDistributionEq[State](
                 }
             }
           case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
-            val d1T = varDist(initState, maxDepth.map(_ - 1), memo)(baseInput, epsilon).map {
+            val d1T = varDist(initState, maxDepth.map(_ - 1), halted, memo)(baseInput, epsilon).map {
               case (fd, eqs, mb) => (fd.flatten, eqs, mb)
             }
             d1T.flatMap {
@@ -600,7 +605,7 @@ case class MonixFiniteDistributionEq[State](
                   byBase.map {
                     case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`
                       val d2T =
-                        varDist(initState, maxDepth.map(_ - 1), memo)(
+                        varDist(initState, maxDepth.map(_ - 1), halted, memo)(
                           fiberVar(z),
                           epsilon / baseWeights(z)
                         ).map { case (fd, eqs, mf) => (fd.flatten, eqs, mf) } // distribution of the fiber at `z`
@@ -638,7 +643,7 @@ case class MonixFiniteDistributionEq[State](
             }
           case tc: ThenCondition[o, Y] =>
             import tc._
-            val base  = nodeDist(initState, maxDepth, memo)(gen, epsilon, coeff)
+            val base  = nodeDist(initState, maxDepth, halted, memo)(gen, epsilon, coeff)
             val event = Event(tc.gen.output, tc.condition)
             val finEv = FinalVal(event)
             import Sort._
@@ -720,7 +725,7 @@ case class MonixFiniteDistributionEq[State](
           case isle: Island[Y, State, o, b] =>
             import isle._
             val (isleInit, boat) = initMap(initState)(varWeight)                                   // initial condition for island, boat to row back
-            val isleOut          = varDist(isleInit, maxDepth.map(_ - 1), memo)(islandOutput(boat), epsilon) //result for the island
+            val isleOut          = varDist(isleInit, maxDepth.map(_ - 1),halted, memo)(islandOutput(boat), epsilon) //result for the island
             isleOut
               .map {
                 case (fd, eqs, rm) =>
