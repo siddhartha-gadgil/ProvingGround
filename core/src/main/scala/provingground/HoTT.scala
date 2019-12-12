@@ -2015,12 +2015,12 @@ object HoTT {
     override def canApply(arg: W): Boolean =
       (dom == arg.typ) || {
         val result = (isUniv(dom) && isUniv(arg.typ))
-        if (result){
-          pprint.log(dom)
-          pprint.log(arg.typ)
-          pprint.log(this)
-          pprint.log(arg)
-        }      
+        // if (result){
+          // pprint.log(dom)
+          // pprint.log(arg.typ)
+          // pprint.log(this)
+          // pprint.log(arg)
+        // }      
         result   
       }
 
@@ -2162,12 +2162,12 @@ object HoTT {
       (dom == arg.typ) ||
       {
         val result = resizedEqual(dom, arg.typ)
-        if (result){
-          pprint.log(dom)
-          pprint.log(arg.typ)
-          pprint.log(this)
-          pprint.log(arg)
-        }      
+        // if (result){
+        //   pprint.log(dom)
+        //   pprint.log(arg.typ)
+        //   pprint.log(this)
+        //   pprint.log(arg)
+        // }      
         result   
       }
 
@@ -2676,12 +2676,12 @@ object HoTT {
     override def canApply(arg: W): Boolean =
       (dom == arg.typ) ||{
         val result = (isUniv(dom) && isUniv(arg.typ))
-        if (result){
-          pprint.log(dom)
-          pprint.log(arg.typ)
-          pprint.log(this)
-          pprint.log(arg)
-        }      
+        // if (result){
+        //   pprint.log(dom)
+        //   pprint.log(arg.typ)
+        //   pprint.log(this)
+        //   pprint.log(arg)
+        // }      
         result   
       }
 

@@ -132,6 +132,9 @@ object Unify {
     Try(polyLambda(lambdaVars.toList, fn(x))).toOption
   }
 
+  case class UnifyApplnException(func: Term, arg: Term, freeVars: Vector[Term], error: Throwable) extends 
+    Exception(s"Unified application error for $func on $arg, variables: $freeVars")
+
   def unifApply(func: Term, arg: Term, freeVars: Vector[Term]): Option[Term] =
     func match {
       case fn: FuncLike[u, v] =>
@@ -148,14 +151,17 @@ object Unify {
         pprint.log(func)
         pprint.log(arg)
         pprint.log(freeVars)
-        throw fa
+        throw UnifyApplnException(func, arg, freeVars, fa)
       },
       identity
     ) orElse
       (func match {
         case fn: FuncLike[u, v] =>
           val l = funcToLambda(fn)
-          appln(l.value, arg, l.variable +: freeVars)
+          Try(appln(l.value, arg, l.variable +: freeVars)).fold(
+            fa => throw UnifyApplnException(func, arg, freeVars, fa),
+            identity
+          )
         case _ => None
       })
 
