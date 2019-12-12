@@ -143,7 +143,15 @@ object Unify {
   def appln(func: Term,
             arg: Term,
             freeVars: Vector[Term] = Vector()): Option[Term] =
-    unifApply(func, arg, freeVars) orElse
+    Try(unifApply(func, arg, freeVars)).fold(
+      fa => {
+        pprint.log(func)
+        pprint.log(arg)
+        pprint.log(freeVars)
+        throw fa
+      },
+      identity
+    ) orElse
       (func match {
         case fn: FuncLike[u, v] =>
           val l = funcToLambda(fn)
