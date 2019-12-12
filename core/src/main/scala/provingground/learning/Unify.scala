@@ -120,7 +120,13 @@ object Unify {
                 unifMap: Map[Term, Term],
                 freeVars: Vector[Term]): Option[Term] = {
     val fn         = multisub(func, unifMap)
-    val x          = multisub(arg, unifMap)
+    val x          = Try(multisub(arg, unifMap)).fold(
+      fa => {
+        pprint.log(func)
+        pprint.log(arg)
+        pprint.log(unifMap)
+        throw fa
+    }, identity)
     val lambdaVars = freeVars filter ((x) => !(unifMap.keySet contains x))
     import Fold._
     Try(polyLambda(lambdaVars.toList, fn(x))).toOption

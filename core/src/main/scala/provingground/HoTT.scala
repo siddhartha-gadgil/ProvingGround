@@ -237,11 +237,16 @@ object HoTT {
         s"Avoiding variable fails func: $func, arg: $arg, var: $variable"
       )
 
+  case class AvoidVarInvarianceException(variable: Term, term: Term, result: Term) extends 
+    Exception(
+      s"avoiding variable $variable changed value of $term giving result $result"
+    )
+
   /**
     * returns x after modifying to avoid clashes of variables
     */
   def avoidVar[U <: Term with Subs[U]](t: Term, x: U): U = {
-    x match {
+    val result =  x match {
       case ll: LambdaFixed[u, v] =>
         if (t == ll.variable) {
           val newvar = ll.variable.newobj
@@ -287,6 +292,9 @@ object HoTT {
           .asInstanceOf[U] //.ensuring (_ == fn, s"avoiding var $t failed for inductive function $fn")
       case _ => x
     }
+    // assert(result == x, s"avoiding var $t changed value of $x giving result $result")
+    if (result != x) throw AvoidVarInvarianceException(t, x, result)
+    result
   } ensuring (_ == x, s"avoiding var $t failed for $x")
 
   /**
@@ -609,6 +617,16 @@ object HoTT {
   case class SymbTyp(name: AnySym, level: Int) extends Typ[Term] with Symbolic {
     lazy val typ = Universe(level)
 
+    name match {
+      case ApplnSym(func : Func[u, v], arg: Term) => 
+        if (func.codom != Universe(level)) {
+          pprint.log(level)
+          throw new ApplnFailException(func, arg)
+        }
+      case _ => ()
+    }
+
+
     def newobj: SymbTyp = SymbTyp(InnerSym[Typ[Term]](this), level)
 
     type Obj = Term
@@ -627,7 +645,7 @@ object HoTT {
     def subs(x: Term, y: Term): Typ[Term] = (x, y) match {
       case (u: Typ[_], v: Typ[_]) if (u == this) => v
       case _ =>
-        def symbobj(name: AnySym) = SymbTyp(name, 0)
+        def symbobj(name: AnySym) = SymbTyp(name, level) 
 
         symSubs(symbobj)(x, y)(name)
     }
@@ -1115,7 +1133,15 @@ object HoTT {
 
     lazy val typ = Universe(level + 1)
 
-    def variable(name: AnySym) = SymbTyp(name, level)
+    def checkLevel(name: AnySym) : Boolean = name match {
+      case ApplnSym(func : Func[u, v], arg) => func.codom == this
+      case _ => true
+    }
+
+    def variable(name: AnySym) = { 
+      if (!checkLevel(name)) throw new Exception(s"forming formal application $name at level $level")
+      SymbTyp(name, level)
+    }
 
     override def hashCode = 37
 
@@ -1795,6 +1821,7 @@ object HoTT {
       func: FuncLike[W, U],
       arg: W
   ) extends AnySym {
+    if (!func.canApply(arg)) throw new ApplnFailException(func, arg)
     override def toString = s"""(${func.toString}) (${arg.toString})"""
 
     def subs(x: Term, y: Term) =
@@ -1986,7 +2013,16 @@ object HoTT {
     lazy val typ: FuncTyp[W, U] = FuncTyp[W, U](dom, codom)
 
     override def canApply(arg: W): Boolean =
-      (dom == arg.typ) || (isUniv(dom) && isUniv(arg.typ))
+      (dom == arg.typ) || {
+        val result = (isUniv(dom) && isUniv(arg.typ))
+        if (result){
+          pprint.log(dom)
+          pprint.log(arg.typ)
+          pprint.log(this)
+          pprint.log(arg)
+        }      
+        result   
+      }
 
     def act(arg: W): U =
       if (dom == arg.typ) {
@@ -2123,7 +2159,17 @@ object HoTT {
         )
 
     override def canApply(arg: X): Boolean =
-      resizedEqual(dom, arg.typ)
+      (dom == arg.typ) ||
+      {
+        val result = resizedEqual(dom, arg.typ)
+        if (result){
+          pprint.log(dom)
+          pprint.log(arg.typ)
+          pprint.log(this)
+          pprint.log(arg)
+        }      
+        result   
+      }
 
     def act(arg: X): Y =
       if (usesVar(arg)) {
@@ -2621,10 +2667,23 @@ object HoTT {
 
     lazy val typ = PiDefn(variable, value)
 
-    def act(arg: W): U = depcodom(arg).symbObj(ApplnSym(this, arg))
+    def act(arg: W): U = 
+        // if (dom == arg.typ)
+          depcodom(arg).symbObj(ApplnSym(this, arg))
+        // else 
+        //   depcodom(arg).replace(dom, arg.typ).symbObj(ApplnSym(this, arg))
 
     override def canApply(arg: W): Boolean =
-      (dom == arg.typ) || (isUniv(dom) && isUniv(arg.typ))
+      (dom == arg.typ) ||{
+        val result = (isUniv(dom) && isUniv(arg.typ))
+        if (result){
+          pprint.log(dom)
+          pprint.log(arg.typ)
+          pprint.log(this)
+          pprint.log(arg)
+        }      
+        result   
+      }
 
     def newobj: PiSymbolicFunc[W, U] = {
       // val newvar = variable.newobj

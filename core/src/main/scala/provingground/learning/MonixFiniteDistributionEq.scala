@@ -174,7 +174,7 @@ abstract class GenMonixFiniteDistributionEq[State](
       epsilon: Double,
       rv: RandomVar[Y]
   ): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
-    if (epsilon > 1) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
+    if (epsilon > 1 || halted) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
     else
       nodeCoeffs match {
         case Target(_) => Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
@@ -228,7 +228,7 @@ abstract class GenMonixFiniteDistributionEq[State](
       nodeCoeffs: NodeCoeffs[State, Double, Dom, Y],
       epsilon: Double
   )(arg: Dom): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
-    if (epsilon > 1) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
+    if (epsilon > 1 || halted) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
     else
       nodeCoeffs match {
         case Target(_) => Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
@@ -253,7 +253,7 @@ abstract class GenMonixFiniteDistributionEq[State](
       randomVarFmly: RandomVarFamily[RDom, Y],
       epsilon: Double
   )(arg: RDom): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
-    if (epsilon > 1) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
+    if (epsilon > 1 || halted) Task.now((FD.empty[Y], Set.empty[EquationNode], memo))
     else
       find(randomVarFmly)
         .map { nc =>
@@ -350,7 +350,7 @@ case class MonixFiniteDistributionEq[State](
       epsilon: Double,
       coeff: Expression
   ): Task[(FD[Y], Set[EquationNode], EqDistMemo[State])] =
-    if (epsilon > 1)
+    if (epsilon > 1 || halted)
       Task.now((FD.empty[Y], Set.empty[EquationNode], EqDistMemo.empty[State]))
     else {
       val lookup =

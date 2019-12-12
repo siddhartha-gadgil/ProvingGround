@@ -392,7 +392,7 @@ object LemmaWeigths {
   ): Option[(Double, Double)] = {
     def f(x: Double) = entDiff(x, h0, p0, q0, initWeight, hW, klW)
     val a            = q0 / initWeight
-    val b            = p0
+    val b            = p0 /initWeight
     if (f(a) > 0) None
     else
       Some(
