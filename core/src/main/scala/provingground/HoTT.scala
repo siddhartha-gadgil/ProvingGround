@@ -620,7 +620,12 @@ object HoTT {
     name match {
       case ApplnSym(func : Func[u, v], arg: Term) => 
         if (func.codom != Universe(level)) {
-          pprint.log(level)
+          // pprint.log(level)
+          // pprint.log(func)
+          // pprint.log(arg)
+          // pprint.log(func.codom)
+          // pprint.log(applyFunc(func, arg))
+          // pprint.log(applyFunc(func, arg).typ)
           throw new ApplnFailException(func, arg)
         }
       case _ => ()
@@ -645,7 +650,15 @@ object HoTT {
     def subs(x: Term, y: Term): Typ[Term] = (x, y) match {
       case (u: Typ[_], v: Typ[_]) if (u == this) => v
       case _ =>
-        def symbobj(name: AnySym) = SymbTyp(name, level) 
+        def symbobj(name: AnySym) = 
+          name match {
+            case ApplnSym(func : Func[u, v], arg: Term) => 
+              func.codom match {
+                case Universe(level1) => SymbTyp(name, level1)
+                case _ => SymbTyp(name, level) 
+              }
+            case _ => SymbTyp(name, level) 
+          } 
 
         symSubs(symbobj)(x, y)(name)
     }

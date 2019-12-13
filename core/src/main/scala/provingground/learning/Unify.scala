@@ -55,7 +55,10 @@ object Unify {
         unify(head._1, head._2, freeVars) flatMap
           ((subMap) => {
             val dualFreeVars = 
-              (x: Term) => freeVars(multisub(x, subMap.map{case (a, b) => (b, a)}))
+              (x: Term) => {
+                val y = multisub(x, subMap.map{case (a, b) => (b, a)}) 
+                freeVars(y) && !(subMap.keySet contains y)
+            }
             val newVars =                
               (x: Term) => dualFreeVars(x) && !(subMap.keySet contains x)
             val newTail =
