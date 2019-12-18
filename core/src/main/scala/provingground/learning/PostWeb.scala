@@ -25,11 +25,42 @@ object LocalQueryable {
     new LocalQueryable[U, W, ID] {
       def getAt(web: W, id: ID): Task[U] = q.get(web)
     }
+
+  case class AnswerFromPost[P, U, W, ID](func: P => U)(
+      implicit pw: Postable[P, W, ID]
+  ) {
+    def fromPost[Q](data: PostData[Q, W, ID]) =
+      if (pw == data.pw) Some(func(data.content.asInstanceOf[P])) else None
+  }
+
+  def lookupAnswer[P, W, ID](
+      implicit pw: Postable[P, W, ID]
+  ): AnswerFromPost[P, P, W, ID] = AnswerFromPost(identity(_))
+
+  case class RecentAnswer[Q, W, ID](
+      answers: Seq[AnswerFromPost[_, Q, W, ID]],
+      default: Q
+  )(implicit h: PostHistory[W, ID])
+      extends LocalQueryable[Q, W, ID] {
+    def getAt(web: W, id: ID) =
+      Task {
+        val stream = for {
+          pd  <- h.history(web, id)
+          ans <- answers
+          res <- ans.fromPost(pd)
+        } yield res
+        stream.headOption.getOrElse(default)
+      }
+  }
 }
 
 case class PostData[P, W, ID](content: P, id: ID)(
     implicit val pw: Postable[P, W, ID]
 )
+
+trait PostHistory[W, ID] {
+  def history(web: W, id: ID): Stream[PostData[_, W, ID]]
+}
 
 sealed trait PostResponse[W, ID]
 
@@ -77,12 +108,15 @@ object PostResponse {
     Task.sequence(groups).map(_.flatten)
   }
 
-  def iterant[W, ID](web: W, initialPosts: Set[PostData[_, W, ID]],
-    responses: Set[PostResponse[W, ID]]
-    ) : Iterant[Task,Set[PostData[_, W, ID]]] ={
-        def step(posts: Set[PostData[_, W, ID]]) = postChainTask(web, posts, responses).map(ps => ps -> ps)
-        Iterant.fromLazyStateAction(step)(Task.now(initialPosts))
-    }
+  def iterant[W, ID](
+      web: W,
+      initialPosts: Set[PostData[_, W, ID]],
+      responses: Set[PostResponse[W, ID]]
+  ): Iterant[Task, Set[PostData[_, W, ID]]] = {
+    def step(posts: Set[PostData[_, W, ID]]) =
+      postChainTask(web, posts, responses).map(ps => ps -> ps)
+    Iterant.fromLazyStateAction(step)(Task.now(initialPosts))
+  }
 
 }
 
