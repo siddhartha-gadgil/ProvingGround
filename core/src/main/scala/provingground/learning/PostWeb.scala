@@ -130,14 +130,14 @@ sealed abstract class TypedPostResponse[P, W, ID](
 }
 
 object TypedPostResponse {
-  case class Callback[P, W, V, ID](cb: V => P => Task[Unit])(
+  case class Callback[P, W, V, ID](update: W => V => P => Task[Unit])(
       implicit pw: Postable[P, W, ID],
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
     def runStep(web: W, content: P, id: ID): Future[Unit] = {
       val auxTask = lv.getAt(web, id)
       val task = auxTask.flatMap { aux =>
-        cb(aux)(content)
+        update(web)(aux)(content)
       }
       task.runToFuture
     }
@@ -149,7 +149,7 @@ object TypedPostResponse {
     ): Task[Option[PostData[_, W, ID]]] = {
       val auxTask = lv.getAt(web, id)
       val task = auxTask.flatMap { aux =>
-        cb(aux)(content).map(_ => None)
+        update(web)(aux)(content).map(_ => None)
       }
       task
     }

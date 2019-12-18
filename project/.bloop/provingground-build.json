@@ -28,19 +28,25 @@
             "/home/gadgil/.ivy2/cache/org.spire-math/jawn-parser_2.12/jars/jawn-parser_2.12-0.11.1.jar",
             "/home/gadgil/.ivy2/cache/io.circe/circe-derivation_2.12/jars/circe-derivation_2.12-0.9.0-M3.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.7.6.jar",
-            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scala-js/sbt-scalajs/jars/sbt-scalajs-0.6.25.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-tools_2.12/jars/scalajs-tools_2.12-0.6.25.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-ir_2.12/jars/scalajs-ir_2.12-0.6.25.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-js/closure-compiler-java-6/jars/closure-compiler-java-6-v20160517.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-js/closure-compiler-externs-java-6/jars/closure-compiler-externs-java-6-v20160517.jar",
+            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scala-js/sbt-scalajs/jars/sbt-scalajs-0.6.31.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-tools_2.12/jars/scalajs-tools_2.12-0.6.31.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-ir_2.12/jars/scalajs-ir_2.12-0.6.31.jar",
+            "/home/gadgil/.ivy2/cache/com.google.javascript/closure-compiler/jars/closure-compiler-v20190513.jar",
+            "/home/gadgil/.ivy2/cache/com.google.javascript/closure-compiler-externs/jars/closure-compiler-externs-v20190513.jar",
             "/home/gadgil/.ivy2/cache/args4j/args4j/bundles/args4j-2.0.26.jar",
-            "/home/gadgil/.ivy2/cache/com.google.code.gson/gson/jars/gson-2.2.4.jar",
-            "/home/gadgil/.ivy2/cache/com.google.code.findbugs/jsr305/jars/jsr305-1.3.9.jar",
+            "/home/gadgil/.ivy2/cache/com.google.errorprone/error_prone_annotations/jars/error_prone_annotations-2.3.1.jar",
+            "/home/gadgil/.ivy2/cache/com.google.guava/guava/bundles/guava-25.1-jre.jar",
+            "/home/gadgil/.ivy2/cache/com.google.code.findbugs/jsr305/jars/jsr305-3.0.1.jar",
+            "/home/gadgil/.ivy2/cache/org.checkerframework/checker-qual/jars/checker-qual-2.0.0.jar",
+            "/home/gadgil/.ivy2/cache/com.google.j2objc/j2objc-annotations/jars/j2objc-annotations-1.1.jar",
+            "/home/gadgil/.ivy2/cache/org.codehaus.mojo/animal-sniffer-annotations/jars/animal-sniffer-annotations-1.14.jar",
+            "/home/gadgil/.ivy2/cache/com.google.code.gson/gson/jars/gson-2.7.jar",
+            "/home/gadgil/.ivy2/cache/com.google.jsinterop/jsinterop-annotations/jars/jsinterop-annotations-1.0.0.jar",
             "/home/gadgil/.ivy2/cache/com.googlecode.json-simple/json-simple/bundles/json-simple-1.1.1.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-js-envs_2.12/jars/scalajs-js-envs_2.12-0.6.25.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-js-envs_2.12/jars/scalajs-js-envs_2.12-0.6.31.jar",
             "/home/gadgil/.ivy2/cache/org.mozilla/rhino/jars/rhino-1.7.6.jar",
             "/home/gadgil/.ivy2/cache/org.webjars/envjs/jars/envjs-1.2.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-sbt-test-adapter_2.12/jars/scalajs-sbt-test-adapter_2.12-0.6.25.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-sbt-test-adapter_2.12/jars/scalajs-sbt-test-adapter_2.12-0.6.31.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.portable-scala/sbt-platform-deps/jars/sbt-platform-deps-1.0.0.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/io.get-coursier/sbt-coursier/jars/sbt-coursier-1.1.0-M9.jar",
@@ -70,7 +76,6 @@
             "/home/gadgil/.ivy2/cache/org.apache.ant/ant/jars/ant-1.10.1.jar",
             "/home/gadgil/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.10.1.jar",
             "/home/gadgil/.ivy2/cache/com.spotify/docker-client/jars/docker-client-8.9.0.jar",
-            "/home/gadgil/.ivy2/cache/com.google.guava/guava/bundles/guava-20.0.jar",
             "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/bundles/jackson-jaxrs-json-provider-2.8.8.jar",
             "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/bundles/jackson-jaxrs-base-2.8.8.jar",
             "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.core/jackson-core/bundles/jackson-core-2.8.8.jar",
@@ -475,55 +480,55 @@
                 {
                     "organization" : "org.scala-js",
                     "name" : "sbt-scalajs",
-                    "version" : "0.6.25",
+                    "version" : "0.6.31",
                     "artifacts" : [
                         {
                             "name" : "sbt-scalajs",
-                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scala-js/sbt-scalajs/jars/sbt-scalajs-0.6.25.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scala-js/sbt-scalajs/jars/sbt-scalajs-0.6.31.jar"
                         }
                     ]
                 },
                 {
                     "organization" : "org.scala-js",
                     "name" : "scalajs-tools_2.12",
-                    "version" : "0.6.25",
+                    "version" : "0.6.31",
                     "artifacts" : [
                         {
                             "name" : "scalajs-tools_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-tools_2.12/jars/scalajs-tools_2.12-0.6.25.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-tools_2.12/jars/scalajs-tools_2.12-0.6.31.jar"
                         }
                     ]
                 },
                 {
                     "organization" : "org.scala-js",
                     "name" : "scalajs-ir_2.12",
-                    "version" : "0.6.25",
+                    "version" : "0.6.31",
                     "artifacts" : [
                         {
                             "name" : "scalajs-ir_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-ir_2.12/jars/scalajs-ir_2.12-0.6.25.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-ir_2.12/jars/scalajs-ir_2.12-0.6.31.jar"
                         }
                     ]
                 },
                 {
-                    "organization" : "org.scala-js",
-                    "name" : "closure-compiler-java-6",
-                    "version" : "v20160517",
+                    "organization" : "com.google.javascript",
+                    "name" : "closure-compiler",
+                    "version" : "v20190513",
                     "artifacts" : [
                         {
-                            "name" : "closure-compiler-java-6",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/closure-compiler-java-6/jars/closure-compiler-java-6-v20160517.jar"
+                            "name" : "closure-compiler",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.javascript/closure-compiler/jars/closure-compiler-v20190513.jar"
                         }
                     ]
                 },
                 {
-                    "organization" : "org.scala-js",
-                    "name" : "closure-compiler-externs-java-6",
-                    "version" : "v20160517",
+                    "organization" : "com.google.javascript",
+                    "name" : "closure-compiler-externs",
+                    "version" : "v20190513",
                     "artifacts" : [
                         {
-                            "name" : "closure-compiler-externs-java-6",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/closure-compiler-externs-java-6/jars/closure-compiler-externs-java-6-v20160517.jar"
+                            "name" : "closure-compiler-externs",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.javascript/closure-compiler-externs/jars/closure-compiler-externs-v20190513.jar"
                         }
                     ]
                 },
@@ -539,24 +544,90 @@
                     ]
                 },
                 {
+                    "organization" : "com.google.errorprone",
+                    "name" : "error_prone_annotations",
+                    "version" : "2.3.1",
+                    "artifacts" : [
+                        {
+                            "name" : "error_prone_annotations",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.errorprone/error_prone_annotations/jars/error_prone_annotations-2.3.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.google.guava",
+                    "name" : "guava",
+                    "version" : "25.1-jre",
+                    "artifacts" : [
+                        {
+                            "name" : "guava",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.guava/guava/bundles/guava-25.1-jre.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.checkerframework",
+                    "name" : "checker-qual",
+                    "version" : "2.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "checker-qual",
+                            "path" : "/home/gadgil/.ivy2/cache/org.checkerframework/checker-qual/jars/checker-qual-2.0.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.google.j2objc",
+                    "name" : "j2objc-annotations",
+                    "version" : "1.1",
+                    "artifacts" : [
+                        {
+                            "name" : "j2objc-annotations",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.j2objc/j2objc-annotations/jars/j2objc-annotations-1.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.codehaus.mojo",
+                    "name" : "animal-sniffer-annotations",
+                    "version" : "1.14",
+                    "artifacts" : [
+                        {
+                            "name" : "animal-sniffer-annotations",
+                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.mojo/animal-sniffer-annotations/jars/animal-sniffer-annotations-1.14.jar"
+                        }
+                    ]
+                },
+                {
                     "organization" : "com.google.code.gson",
                     "name" : "gson",
-                    "version" : "2.2.4",
+                    "version" : "2.7",
                     "artifacts" : [
                         {
                             "name" : "gson",
-                            "path" : "/home/gadgil/.ivy2/cache/com.google.code.gson/gson/jars/gson-2.2.4.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.code.gson/gson/jars/gson-2.7.jar"
                         }
                     ]
                 },
                 {
                     "organization" : "com.google.code.findbugs",
                     "name" : "jsr305",
-                    "version" : "1.3.9",
+                    "version" : "3.0.1",
                     "artifacts" : [
                         {
                             "name" : "jsr305",
-                            "path" : "/home/gadgil/.ivy2/cache/com.google.code.findbugs/jsr305/jars/jsr305-1.3.9.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.code.findbugs/jsr305/jars/jsr305-3.0.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.google.jsinterop",
+                    "name" : "jsinterop-annotations",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "jsinterop-annotations",
+                            "path" : "/home/gadgil/.ivy2/cache/com.google.jsinterop/jsinterop-annotations/jars/jsinterop-annotations-1.0.0.jar"
                         }
                     ]
                 },
@@ -574,11 +645,11 @@
                 {
                     "organization" : "org.scala-js",
                     "name" : "scalajs-js-envs_2.12",
-                    "version" : "0.6.25",
+                    "version" : "0.6.31",
                     "artifacts" : [
                         {
                             "name" : "scalajs-js-envs_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-js-envs_2.12/jars/scalajs-js-envs_2.12-0.6.25.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-js-envs_2.12/jars/scalajs-js-envs_2.12-0.6.31.jar"
                         }
                     ]
                 },
@@ -607,11 +678,11 @@
                 {
                     "organization" : "org.scala-js",
                     "name" : "scalajs-sbt-test-adapter_2.12",
-                    "version" : "0.6.25",
+                    "version" : "0.6.31",
                     "artifacts" : [
                         {
                             "name" : "scalajs-sbt-test-adapter_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-sbt-test-adapter_2.12/jars/scalajs-sbt-test-adapter_2.12-0.6.25.jar"
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-sbt-test-adapter_2.12/jars/scalajs-sbt-test-adapter_2.12-0.6.31.jar"
                         }
                     ]
                 },
@@ -931,17 +1002,6 @@
                         {
                             "name" : "docker-client",
                             "path" : "/home/gadgil/.ivy2/cache/com.spotify/docker-client/jars/docker-client-8.9.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.google.guava",
-                    "name" : "guava",
-                    "version" : "20.0",
-                    "artifacts" : [
-                        {
-                            "name" : "guava",
-                            "path" : "/home/gadgil/.ivy2/cache/com.google.guava/guava/bundles/guava-20.0.jar"
                         }
                     ]
                 },

@@ -41,9 +41,9 @@ trait MetalsModule extends ScalaModule{
   }
 }
 
-val scalaV = "2.12.8"
+val scalaV = "2.12.10"
 
-val ammV = "1.6.0"
+val ammV = "1.8.2"
 
 
 val commonLibs = List(
@@ -122,7 +122,7 @@ repl.pprinter() = {
 }
 
 trait CommonJSModule extends CommonModule with ScalaJSModule{
-  def scalaJSVersion = "0.6.25"
+  def scalaJSVersion = "0.6.31"
 }
 
 val jvmLibs = List(
@@ -185,7 +185,7 @@ object core extends Module{
   }
 
   object js extends CommonJSModule with SbtModule{
-    override def scalaJSVersion = "0.6.25"
+    override def scalaJSVersion = "0.6.31"
     override def millSourcePath = super.millSourcePath / up
     // def ivyDeps = Agg(commonLibs: _*)
   }
@@ -364,7 +364,7 @@ object client extends CommonJSModule with SbtModule{
     )
 
   override def ivyDeps = Agg(
-    ivy"org.scala-js::scalajs-dom::0.9.2",
+    ivy"org.scala-js::scalajs-dom::0.9.7",
     ivy"com.lihaoyi::scalatags::0.6.7",
     ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )

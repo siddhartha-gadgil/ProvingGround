@@ -15,16 +15,16 @@
 
 // addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")
 
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.25")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.31")
 
 // addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "5.1.0")
 
-resolvers += Resolver.sonatypeRepo("snapshots")
-addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-M9")
+// resolvers += Resolver.sonatypeRepo("snapshots")
+// addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-M9")
 
 // addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.4.0")
 //
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
+// addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.2")
 
 
 // addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")

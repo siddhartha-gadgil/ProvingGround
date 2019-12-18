@@ -1,8 +1,8 @@
 import sbt.Project.projectToRef
 
-val scalaV = "2.12.8"
+val scalaV = "2.12.10"
 
-val ammV = "1.6.0"
+val ammV = "1.8.2"
 
 
 scalaVersion in ThisBuild := scalaV
@@ -13,7 +13,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 // addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
 
 libraryDependencies += compilerPlugin(
-  "org.scalameta" % "semanticdb-scalac" % "4.1.0" cross CrossVersion.full)
+  "org.scalameta" % "semanticdb-scalac" % "4.3.0" cross CrossVersion.full)
 scalacOptions += "-Yrangepos"
 // scalacOptions += "-P:splain:all:true"
 
