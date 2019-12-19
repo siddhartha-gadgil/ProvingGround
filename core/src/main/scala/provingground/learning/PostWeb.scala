@@ -8,7 +8,9 @@ import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
 
 trait Postable[P, W, ID] {
-  def post(content: P, web: W, pred: Option[ID]): Task[ID]
+  def post(content: P, web: W, pred: Set[ID]): Task[ID]
+
+  val contextChange: Boolean
 }
 
 trait Queryable[U, W] {
@@ -72,9 +74,9 @@ object LocalQueryable {
 
 case class PostData[P, W, ID](content: P, id: ID)(
     implicit val pw: Postable[P, W, ID]
-) {
-  def postTo(web: W): Task[ID] = pw.post(content, web, Some(id))
-}
+){
+  val contextChange = pw.contextChange
+} 
 
 trait PostHistory[W, ID] {
   def history(web: W, id: ID): Stream[PostData[_, W, ID]]
@@ -140,18 +142,17 @@ object PostResponse {
 
 class SimpleSession[W, ID](
     web: W,
-    id: ID,
     responses: ArrayBuffer[PostResponse[W, ID]]
 ) {
-  def post[P](content: P)(implicit pw: Postable[P, W, ID]): Task[ID] = {
-    val postIdTask = pw.post(content, web, Some(id))
+  def post[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Task[ID] = {
+    val postIdTask = pw.post(content, web, preds)
     postIdTask.foreach { postID =>
       val reactions = responses.map(
         response =>
           PostResponse.postResponseTask(web, content, postID, response).map {
             v =>
               v.map {
-                case pd: PostData[q, W, ID] => post(pd.content)(pd.pw)
+                case pd: PostData[q, W, ID] => post(pd.content, Set(postID))(pd.pw)
               }
           }
       )
@@ -212,7 +213,7 @@ object TypedPostResponse {
         for {
           aux     <- auxTask
           newPost <- response(aux)(content)
-          idNew   <- qw.post(newPost, web, Some(id))
+          idNew   <- qw.post(newPost, web, Set(id))
         } yield ()
       task.runToFuture
     }
@@ -227,7 +228,7 @@ object TypedPostResponse {
         for {
           aux     <- auxTask
           newPost <- response(aux)(content)
-          idNew   <- qw.post(newPost, web, Some(id))
+          idNew   <- qw.post(newPost, web, Set(id))
         } yield Some(PostData(newPost, idNew))
       task
     }
@@ -253,9 +254,9 @@ object GlobalPost {
 }
 
 trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
-  val buffer: ArrayBuffer[(P, ID, Option[ID])] = ArrayBuffer()
+  val buffer: ArrayBuffer[(P, ID, Set[ID])] = ArrayBuffer()
 
-  def post(content: P, prev: Option[ID]): Task[ID] = {
+  def post(content: P, prev: Set[ID]): Task[ID] = {
     val idT = postGlobal(content)
     idT.map { id =>
       buffer += ((content, id, prev))
@@ -269,12 +270,19 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 }
 
 object PostBuffer {
+  def apply[P, ID](globalPost: => (P => Task[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
+    def postGlobal(content: P): Task[ID] = globalPost(content)
+  }
+
   def get[P, ID](pb: PostBuffer[P, ID], id: ID): Option[P] =
     pb.buffer.find(_._2 == id).map(_._1)
 
-  def previous[P, ID](pb: PostBuffer[P, ID], id: ID) : Option[ID] =
-    pb.buffer.find(_._2 == id).flatMap(_._3)
+  def previous[P, ID](pb: PostBuffer[P, ID], id: ID) : Set[ID] = {
+    val withId =  pb.buffer.filter(_._2 == id).toSet
+    withId.flatMap(_._3)
+  }
 }
+
 
 class IndexedPostBuffer[P]
     extends GlobalPost.IndexGlobalPost[P]
@@ -282,23 +290,26 @@ class IndexedPostBuffer[P]
 
 
 object Postable {
-  def apply[P, W, ID](postFunc: (P, W, Option[ID]) => Task[ID]) : Postable[P, W, ID] = 
+  def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Task[ID], ctx: Boolean) : Postable[P, W, ID] = 
     new Postable[P, W, ID] {
-        def post(content: P, web: W, pred: Option[ID]): Task[ID] = 
+        def post(content: P, web: W, pred: Set[ID]): Task[ID] = 
             postFunc(content, web, pred)
+        val contextChange: Boolean = ctx
     }
 
   implicit def bufferPostable[P, ID, W <: PostBuffer[P, ID]]
       : Postable[P, W, ID] =
     new Postable[P, W, ID] {
-      def post(content: P, web: W, pred: Option[ID]): Task[ID] =
+      def post(content: P, web: W, pred: Set[ID]): Task[ID] =
         web.post(content, pred)
+      val contextChange: Boolean = false
     }
 
   implicit def indexedBufferPostable[P, W <: IndexedPostBuffer[P]]
       : Postable[P, W, Int] =
     new Postable[P, W, Int] {
-      def post(content: P, web: W, pred: Option[Int]): Task[Int] =
+      def post(content: P, web: W, pred: Set[Int]): Task[Int] =
         web.post(content, pred)
+      val contextChange: Boolean = false
     }
 }
