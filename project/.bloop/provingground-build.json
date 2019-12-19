@@ -28,6 +28,26 @@
             "/home/gadgil/.ivy2/cache/org.spire-math/jawn-parser_2.12/jars/jawn-parser_2.12-0.11.1.jar",
             "/home/gadgil/.ivy2/cache/io.circe/circe-derivation_2.12/jars/circe-derivation_2.12-0.9.0-M3.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.7.6.jar",
+            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-assembly/jars/sbt-assembly-0.14.5.jar",
+            "/home/gadgil/.ivy2/cache/org.scalactic/scalactic_2.12/bundles/scalactic_2.12-3.0.1.jar",
+            "/home/gadgil/.ivy2/cache/org.pantsbuild/jarjar/jars/jarjar-1.6.4.jar",
+            "/home/gadgil/.ivy2/cache/org.apache.ant/ant/jars/ant-1.9.9.jar",
+            "/home/gadgil/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.9.9.jar",
+            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm/jars/asm-5.2.jar",
+            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-commons/jars/asm-commons-5.2.jar",
+            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-tree/jars/asm-tree-5.2.jar",
+            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-plugin-api/jars/maven-plugin-api-3.3.9.jar",
+            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-model/jars/maven-model-3.3.9.jar",
+            "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-utils/jars/plexus-utils-3.0.22.jar",
+            "/home/gadgil/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.4.jar",
+            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-artifact/jars/maven-artifact-3.3.9.jar",
+            "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.plexus/eclipse-plugins/org.eclipse.sisu.plexus-0.3.2.jar",
+            "/home/gadgil/.ivy2/cache/javax.enterprise/cdi-api/jars/cdi-api-1.0.jar",
+            "/home/gadgil/.ivy2/cache/javax.annotation/jsr250-api/jars/jsr250-api-1.0.jar",
+            "/home/gadgil/.ivy2/cache/javax.inject/javax.inject/jars/javax.inject-1.jar",
+            "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.inject/eclipse-plugins/org.eclipse.sisu.inject-0.3.2.jar",
+            "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-component-annotations/jars/plexus-component-annotations-1.5.5.jar",
+            "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-classworlds/bundles/plexus-classworlds-2.5.2.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scala-js/sbt-scalajs/jars/sbt-scalajs-0.6.31.jar",
             "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-tools_2.12/jars/scalajs-tools_2.12-0.6.31.jar",
             "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-ir_2.12/jars/scalajs-ir_2.12-0.6.31.jar",
@@ -49,117 +69,15 @@
             "/home/gadgil/.ivy2/cache/org.scala-js/scalajs-sbt-test-adapter_2.12/jars/scalajs-sbt-test-adapter_2.12-0.6.31.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.portable-scala/sbt-platform-deps/jars/sbt-platform-deps-1.0.0.jar",
-            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/io.get-coursier/sbt-coursier/jars/sbt-coursier-1.1.0-M9.jar",
-            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/io.get-coursier/sbt-coursier-shared/jars/sbt-coursier-shared-1.1.0-M9.jar",
-            "/home/gadgil/.ivy2/cache/io.get-coursier/lm-coursier_2.12/jars/lm-coursier_2.12-1.1.0-M9.jar",
-            "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-core_2.12/jars/coursier-core_2.12-1.1.0-M9.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.1.0.jar",
-            "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-cache_2.12/jars/coursier-cache_2.12-1.1.0-M9.jar",
-            "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-extra_2.12/jars/coursier-extra_2.12-1.1.0-M9.jar",
-            "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
-            "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-okhttp_2.12/jars/gigahorse-okhttp_2.12-0.3.0.jar",
-            "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-core_2.12/jars/gigahorse-core_2.12-0.3.0.jar",
-            "/home/gadgil/.ivy2/cache/com.typesafe/ssl-config-core_2.12/bundles/ssl-config-core_2.12-0.2.2.jar",
-            "/home/gadgil/.ivy2/cache/com.typesafe/config/bundles/config-1.2.0.jar",
-            "/home/gadgil/.ivy2/cache/org.reactivestreams/reactive-streams/jars/reactive-streams-1.0.0.jar",
-            "/home/gadgil/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.25.jar",
-            "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp/jars/okhttp-3.7.0.jar",
-            "/home/gadgil/.ivy2/cache/com.squareup.okio/okio/jars/okio-1.12.0.jar",
-            "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp-urlconnection/jars/okhttp-urlconnection-3.7.0.jar",
-            "/home/gadgil/.ivy2/cache/com.eed3si9n/shaded-scalajson_2.12/jars/shaded-scalajson_2.12-1.0.0-M4.jar",
-            "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-scalaz-interop_2.12/jars/coursier-scalaz-interop_2.12-1.1.0-M9.jar",
-            "/home/gadgil/.ivy2/cache/org.scalaz/scalaz-concurrent_2.12/bundles/scalaz-concurrent_2.12-7.2.24.jar",
-            "/home/gadgil/.ivy2/cache/org.scalaz/scalaz-core_2.12/bundles/scalaz-core_2.12-7.2.24.jar",
-            "/home/gadgil/.ivy2/cache/org.scalaz/scalaz-effect_2.12/bundles/scalaz-effect_2.12-7.2.24.jar",
-            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.typesafe.sbt/sbt-native-packager/jars/sbt-native-packager-1.3.2.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.commons/commons-compress/jars/commons-compress-1.14.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.ant/ant/jars/ant-1.10.1.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.10.1.jar",
-            "/home/gadgil/.ivy2/cache/com.spotify/docker-client/jars/docker-client-8.9.0.jar",
-            "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/bundles/jackson-jaxrs-json-provider-2.8.8.jar",
-            "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/bundles/jackson-jaxrs-base-2.8.8.jar",
-            "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.core/jackson-core/bundles/jackson-core-2.8.8.jar",
-            "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.core/jackson-databind/bundles/jackson-databind-2.8.8.jar",
-            "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.core/jackson-annotations/bundles/jackson-annotations-2.8.0.jar",
-            "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.module/jackson-module-jaxb-annotations/bundles/jackson-module-jaxb-annotations-2.8.8.jar",
-            "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.datatype/jackson-datatype-guava/bundles/jackson-datatype-guava-2.8.8.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.jersey.core/jersey-client/jars/jersey-client-2.22.2.jar",
-            "/home/gadgil/.ivy2/cache/javax.ws.rs/javax.ws.rs-api/jars/javax.ws.rs-api-2.0.1.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.jersey.core/jersey-common/jars/jersey-common-2.22.2.jar",
-            "/home/gadgil/.ivy2/cache/javax.annotation/javax.annotation-api/jars/javax.annotation-api-1.2.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.jersey.bundles.repackaged/jersey-guava/bundles/jersey-guava-2.22.2.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.hk2/hk2-api/jars/hk2-api-2.4.0-b34.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.hk2/hk2-utils/jars/hk2-utils-2.4.0-b34.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.hk2.external/aopalliance-repackaged/jars/aopalliance-repackaged-2.4.0-b34.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.hk2.external/javax.inject/jars/javax.inject-2.4.0-b34.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.hk2/hk2-locator/jars/hk2-locator-2.4.0-b34.jar",
-            "/home/gadgil/.ivy2/cache/org.javassist/javassist/bundles/javassist-3.18.1-GA.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.hk2/osgi-resource-locator/jars/osgi-resource-locator-1.0.1.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.jersey.connectors/jersey-apache-connector/jars/jersey-apache-connector-2.22.2.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.5.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.4.5.jar",
-            "/home/gadgil/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.2.jar",
-            "/home/gadgil/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.9.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.jersey.media/jersey-media-json-jackson/jars/jersey-media-json-jackson-2.22.2.jar",
-            "/home/gadgil/.ivy2/cache/org.glassfish.jersey.ext/jersey-entity-filtering/jars/jersey-entity-filtering-2.22.2.jar",
-            "/home/gadgil/.ivy2/cache/commons-io/commons-io/jars/commons-io-2.5.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-unixsocket/jars/jnr-unixsocket-0.8.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-ffi/jars/jnr-ffi-2.0.3.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jffi/jars/jffi-1.2.9.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jffi/jars/jffi-1.2.9-native.jar",
-            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-analysis/jars/asm-analysis-5.0.3.jar",
-            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-util/jars/asm-util-5.0.3.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-x86asm/jars/jnr-x86asm-1.0.2.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-constants/jars/jnr-constants-0.8.7.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-enxio/jars/jnr-enxio-0.9.jar",
-            "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-posix/jars/jnr-posix-3.0.12.jar",
-            "/home/gadgil/.ivy2/cache/commons-lang/commons-lang/jars/commons-lang-2.6.jar",
-            "/home/gadgil/.ivy2/cache/org.bouncycastle/bcpkix-jdk15on/jars/bcpkix-jdk15on-1.52.jar",
-            "/home/gadgil/.ivy2/cache/org.bouncycastle/bcprov-jdk15on/jars/bcprov-jdk15on-1.52.jar",
-            "/home/gadgil/.ivy2/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.2.1.jar",
-            "/home/gadgil/.ivy2/cache/ch.qos.logback/logback-core/jars/logback-core-1.2.1.jar",
-            "/home/gadgil/.ivy2/cache/javax.inject/javax.inject/jars/javax.inject-1.jar",
-            "/home/gadgil/.ivy2/cache/org.vafer/jdeb/jars/jdeb-1.3.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-core/jars/maven-core-3.2.2.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-settings/jars/maven-settings-3.2.2.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-settings-builder/jars/maven-settings-builder-3.2.2.jar",
-            "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-interpolation/jars/plexus-interpolation-1.19.jar",
-            "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-component-annotations/jars/plexus-component-annotations-1.5.5.jar",
-            "/home/gadgil/.ivy2/cache/org.sonatype.plexus/plexus-sec-dispatcher/jars/plexus-sec-dispatcher-1.3.jar",
-            "/home/gadgil/.ivy2/cache/org.sonatype.plexus/plexus-cipher/jars/plexus-cipher-1.4.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-repository-metadata/jars/maven-repository-metadata-3.2.2.jar",
-            "/home/gadgil/.ivy2/cache/javax.enterprise/cdi-api/jars/cdi-api-1.0.jar",
-            "/home/gadgil/.ivy2/cache/javax.annotation/jsr250-api/jars/jsr250-api-1.0.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-model-builder/jars/maven-model-builder-3.2.2.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-aether-provider/jars/maven-aether-provider-3.2.2.jar",
-            "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-api/jars/aether-api-0.9.0.M2.jar",
-            "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-spi/jars/aether-spi-0.9.0.M2.jar",
-            "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-util/jars/aether-util-0.9.0.M2.jar",
-            "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-impl/jars/aether-impl-0.9.0.M2.jar",
-            "/home/gadgil/.ivy2/cache/org.bouncycastle/bcpg-jdk15on/jars/bcpg-jdk15on-1.51.jar",
-            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.6.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.portable-scala/sbt-scalajs-crossproject/jars/sbt-scalajs-crossproject-0.6.0.jar",
             "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.portable-scala/sbt-crossproject/jars/sbt-crossproject-0.6.0.jar",
-            "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-assembly/jars/sbt-assembly-0.14.5.jar",
-            "/home/gadgil/.ivy2/cache/org.scalactic/scalactic_2.12/bundles/scalactic_2.12-3.0.1.jar",
-            "/home/gadgil/.ivy2/cache/org.pantsbuild/jarjar/jars/jarjar-1.6.4.jar",
-            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm/jars/asm-5.2.jar",
-            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-commons/jars/asm-commons-5.2.jar",
-            "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-tree/jars/asm-tree-5.2.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-plugin-api/jars/maven-plugin-api-3.3.9.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-model/jars/maven-model-3.3.9.jar",
-            "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-utils/jars/plexus-utils-3.0.22.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.4.jar",
-            "/home/gadgil/.ivy2/cache/org.apache.maven/maven-artifact/jars/maven-artifact-3.3.9.jar",
-            "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.plexus/eclipse-plugins/org.eclipse.sisu.plexus-0.3.2.jar",
-            "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.inject/eclipse-plugins/org.eclipse.sisu.inject-0.3.2.jar",
-            "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-classworlds/bundles/plexus-classworlds-2.5.2.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/sbt/jars/sbt-1.2.8.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/main_2.12/jars/main_2.12-1.2.8.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/logic_2.12/jars/logic_2.12-1.2.8.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/collections_2.12/jars/collections_2.12-1.2.8.jar",
             "/home/gadgil/.ivy2/cache/com.eed3si9n/sjson-new-scalajson_2.12/jars/sjson-new-scalajson_2.12-0.8.2.jar",
             "/home/gadgil/.ivy2/cache/com.eed3si9n/sjson-new-core_2.12/jars/sjson-new-core_2.12-0.8.2.jar",
+            "/home/gadgil/.ivy2/cache/com.eed3si9n/shaded-scalajson_2.12/jars/shaded-scalajson_2.12-1.0.0-M4.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/util-position_2.12/jars/util-position_2.12-1.2.4.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/util-relation_2.12/jars/util-relation_2.12-1.2.4.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/actions_2.12/jars/actions_2.12-1.2.8.jar",
@@ -177,6 +95,8 @@
             "/home/gadgil/.ivy2/cache/org.apache.logging.log4j/log4j-core/jars/log4j-core-2.11.1.jar",
             "/home/gadgil/.ivy2/cache/com.lmax/disruptor/jars/disruptor-3.4.2.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc-classpath_2.12/jars/zinc-classpath_2.12-1.2.5.jar",
+            "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.0.6.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/compiler-interface/jars/compiler-interface-1.2.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/launcher-interface/jars/launcher-interface-1.0.4.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/task-system_2.12/jars/task-system_2.12-1.2.8.jar",
@@ -191,8 +111,18 @@
             "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc-classfile_2.12/jars/zinc-classfile_2.12-1.2.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/librarymanagement-core_2.12/jars/librarymanagement-core_2.12-1.2.4.jar",
             "/home/gadgil/.ivy2/cache/com.jcraft/jsch/jars/jsch-0.1.54.jar",
+            "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-okhttp_2.12/jars/gigahorse-okhttp_2.12-0.3.0.jar",
+            "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-core_2.12/jars/gigahorse-core_2.12-0.3.0.jar",
+            "/home/gadgil/.ivy2/cache/com.typesafe/ssl-config-core_2.12/bundles/ssl-config-core_2.12-0.2.2.jar",
+            "/home/gadgil/.ivy2/cache/com.typesafe/config/bundles/config-1.2.0.jar",
+            "/home/gadgil/.ivy2/cache/org.reactivestreams/reactive-streams/jars/reactive-streams-1.0.0.jar",
+            "/home/gadgil/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.25.jar",
+            "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp/jars/okhttp-3.7.0.jar",
+            "/home/gadgil/.ivy2/cache/com.squareup.okio/okio/jars/okio-1.12.0.jar",
+            "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp-urlconnection/jars/okhttp-urlconnection-3.7.0.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc-ivy-integration_2.12/jars/zinc-ivy-integration_2.12-1.2.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc-compile-core_2.12/jars/zinc-compile-core_2.12-1.2.5.jar",
+            "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc_2.12/jars/zinc_2.12-1.2.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc-core_2.12/jars/zinc-core_2.12-1.2.5.jar",
             "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc-persist_2.12/jars/zinc-persist_2.12-1.2.5.jar",
@@ -234,11 +164,11 @@
                 "-deprecation"
             ],
             "jars" : [
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar",
                 "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar",
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar",
-                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-xml_2.12.jar"
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/jline.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-library.jar",
+                "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-reflect.jar"
             ],
             "setup" : {
                 "order" : "mixed",
@@ -259,8 +189,8 @@
                 "import _root_.scala.xml.{TopScope=>$scope}",
                 "import _root_.sbt._",
                 "import _root_.sbt.Keys._",
-                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._, _root_.org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._, _root_.coursier.sbtcoursier.CoursierPlugin.autoImport._, _root_.coursier.sbtcoursiershared.SbtCoursierShared.autoImport._, _root_.com.typesafe.sbt.SbtNativePackager.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.JavaAppPackaging.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.jar.ClasspathJarPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.jar.LauncherJarPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.scripts.BashStartScriptPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.scripts.BatStartScriptPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemdPlugin.autoImport._, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemloaderPlugin.autoImport._, _root_.com.typesafe.sbt.packager.debian.DebianPlugin.autoImport._, _root_.com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerPlugin.autoImport._, _root_.com.typesafe.sbt.packager.linux.LinuxPlugin.autoImport._, _root_.com.typesafe.sbt.packager.rpm.RpmPlugin.autoImport._, _root_.com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._, _root_.com.typesafe.sbt.packager.windows.WindowsPlugin.autoImport._, _root_.scalajscrossproject.ScalaJSCrossPlugin.autoImport._, _root_.sbtcrossproject.CrossPlugin.autoImport._, _root_.sbtassembly.AssemblyPlugin.autoImport._",
-                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.scala.meta.metals.MetalsPlugin, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin, _root_.org.scalajs.sbtplugin.ScalaJSJUnitPlugin, _root_.org.scalajs.sbtplugin.ScalaJSPlugin, _root_.org.scalajs.sbtplugin.internal.ScalaJSGlobalPlugin, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin, _root_.coursier.sbtcoursier.CoursierPlugin, _root_.coursier.sbtcoursiershared.SbtCoursierShared, _root_.com.typesafe.sbt.SbtNativePackager, _root_.com.typesafe.sbt.packager.archetypes.JavaAppPackaging, _root_.com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging, _root_.com.typesafe.sbt.packager.archetypes.jar.ClasspathJarPlugin, _root_.com.typesafe.sbt.packager.archetypes.jar.LauncherJarPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.AshScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.BashStartScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.scripts.BatStartScriptPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemVPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemdPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.SystemloaderPlugin, _root_.com.typesafe.sbt.packager.archetypes.systemloader.UpstartPlugin, _root_.com.typesafe.sbt.packager.debian.DebianDeployPlugin, _root_.com.typesafe.sbt.packager.debian.DebianPlugin, _root_.com.typesafe.sbt.packager.debian.JDebPackaging, _root_.com.typesafe.sbt.packager.docker.DockerPlugin, _root_.com.typesafe.sbt.packager.docker.DockerSpotifyClientPlugin, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerDeployPlugin, _root_.com.typesafe.sbt.packager.jdkpackager.JDKPackagerPlugin, _root_.com.typesafe.sbt.packager.linux.LinuxPlugin, _root_.com.typesafe.sbt.packager.rpm.RpmDeployPlugin, _root_.com.typesafe.sbt.packager.rpm.RpmPlugin, _root_.com.typesafe.sbt.packager.universal.UniversalDeployPlugin, _root_.com.typesafe.sbt.packager.universal.UniversalPlugin, _root_.com.typesafe.sbt.packager.windows.WindowsDeployPlugin, _root_.com.typesafe.sbt.packager.windows.WindowsPlugin, _root_.scalajscrossproject.ScalaJSCrossPlugin, _root_.sbtcrossproject.CrossPlugin, _root_.sbtassembly.AssemblyPlugin"
+                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.sbtassembly.AssemblyPlugin.autoImport._, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._, _root_.org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._, _root_.scalajscrossproject.ScalaJSCrossPlugin.autoImport._, _root_.sbtcrossproject.CrossPlugin.autoImport._",
+                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.scala.meta.metals.MetalsPlugin, _root_.sbtassembly.AssemblyPlugin, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin, _root_.org.scalajs.sbtplugin.ScalaJSJUnitPlugin, _root_.org.scalajs.sbtplugin.ScalaJSPlugin, _root_.org.scalajs.sbtplugin.internal.ScalaJSGlobalPlugin, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin, _root_.scalajscrossproject.ScalaJSCrossPlugin, _root_.sbtcrossproject.CrossPlugin"
             ]
         },
         "test" : {
@@ -303,7 +233,7 @@
         "platform" : {
             "name" : "jvm",
             "config" : {
-                "home" : "/usr/lib/jvm/java-8-oracle/jre",
+                "home" : "/usr/lib/jvm/java-8-openjdk-amd64/jre",
                 "options" : [
                 ]
             },
@@ -474,6 +404,226 @@
                         {
                             "name" : "sbt-metals",
                             "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.scalameta/sbt-metals/jars/sbt-metals-0.7.6.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.eed3si9n",
+                    "name" : "sbt-assembly",
+                    "version" : "0.14.5",
+                    "artifacts" : [
+                        {
+                            "name" : "sbt-assembly",
+                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-assembly/jars/sbt-assembly-0.14.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scalactic",
+                    "name" : "scalactic_2.12",
+                    "version" : "3.0.1",
+                    "artifacts" : [
+                        {
+                            "name" : "scalactic_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scalactic/scalactic_2.12/bundles/scalactic_2.12-3.0.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.pantsbuild",
+                    "name" : "jarjar",
+                    "version" : "1.6.4",
+                    "artifacts" : [
+                        {
+                            "name" : "jarjar",
+                            "path" : "/home/gadgil/.ivy2/cache/org.pantsbuild/jarjar/jars/jarjar-1.6.4.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.apache.ant",
+                    "name" : "ant",
+                    "version" : "1.9.9",
+                    "artifacts" : [
+                        {
+                            "name" : "ant",
+                            "path" : "/home/gadgil/.ivy2/cache/org.apache.ant/ant/jars/ant-1.9.9.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.apache.ant",
+                    "name" : "ant-launcher",
+                    "version" : "1.9.9",
+                    "artifacts" : [
+                        {
+                            "name" : "ant-launcher",
+                            "path" : "/home/gadgil/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.9.9.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.ow2.asm",
+                    "name" : "asm",
+                    "version" : "5.2",
+                    "artifacts" : [
+                        {
+                            "name" : "asm",
+                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm/jars/asm-5.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.ow2.asm",
+                    "name" : "asm-commons",
+                    "version" : "5.2",
+                    "artifacts" : [
+                        {
+                            "name" : "asm-commons",
+                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-commons/jars/asm-commons-5.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.ow2.asm",
+                    "name" : "asm-tree",
+                    "version" : "5.2",
+                    "artifacts" : [
+                        {
+                            "name" : "asm-tree",
+                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-tree/jars/asm-tree-5.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.apache.maven",
+                    "name" : "maven-plugin-api",
+                    "version" : "3.3.9",
+                    "artifacts" : [
+                        {
+                            "name" : "maven-plugin-api",
+                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-plugin-api/jars/maven-plugin-api-3.3.9.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.apache.maven",
+                    "name" : "maven-model",
+                    "version" : "3.3.9",
+                    "artifacts" : [
+                        {
+                            "name" : "maven-model",
+                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-model/jars/maven-model-3.3.9.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.codehaus.plexus",
+                    "name" : "plexus-utils",
+                    "version" : "3.0.22",
+                    "artifacts" : [
+                        {
+                            "name" : "plexus-utils",
+                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-utils/jars/plexus-utils-3.0.22.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.apache.commons",
+                    "name" : "commons-lang3",
+                    "version" : "3.4",
+                    "artifacts" : [
+                        {
+                            "name" : "commons-lang3",
+                            "path" : "/home/gadgil/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.4.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.apache.maven",
+                    "name" : "maven-artifact",
+                    "version" : "3.3.9",
+                    "artifacts" : [
+                        {
+                            "name" : "maven-artifact",
+                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-artifact/jars/maven-artifact-3.3.9.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.eclipse.sisu",
+                    "name" : "org.eclipse.sisu.plexus",
+                    "version" : "0.3.2",
+                    "artifacts" : [
+                        {
+                            "name" : "org.eclipse.sisu.plexus",
+                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.plexus/eclipse-plugins/org.eclipse.sisu.plexus-0.3.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "javax.enterprise",
+                    "name" : "cdi-api",
+                    "version" : "1.0",
+                    "artifacts" : [
+                        {
+                            "name" : "cdi-api",
+                            "path" : "/home/gadgil/.ivy2/cache/javax.enterprise/cdi-api/jars/cdi-api-1.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "javax.annotation",
+                    "name" : "jsr250-api",
+                    "version" : "1.0",
+                    "artifacts" : [
+                        {
+                            "name" : "jsr250-api",
+                            "path" : "/home/gadgil/.ivy2/cache/javax.annotation/jsr250-api/jars/jsr250-api-1.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "javax.inject",
+                    "name" : "javax.inject",
+                    "version" : "1",
+                    "artifacts" : [
+                        {
+                            "name" : "javax.inject",
+                            "path" : "/home/gadgil/.ivy2/cache/javax.inject/javax.inject/jars/javax.inject-1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.eclipse.sisu",
+                    "name" : "org.eclipse.sisu.inject",
+                    "version" : "0.3.2",
+                    "artifacts" : [
+                        {
+                            "name" : "org.eclipse.sisu.inject",
+                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.inject/eclipse-plugins/org.eclipse.sisu.inject-0.3.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.codehaus.plexus",
+                    "name" : "plexus-component-annotations",
+                    "version" : "1.5.5",
+                    "artifacts" : [
+                        {
+                            "name" : "plexus-component-annotations",
+                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-component-annotations/jars/plexus-component-annotations-1.5.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.codehaus.plexus",
+                    "name" : "plexus-classworlds",
+                    "version" : "2.5.2",
+                    "artifacts" : [
+                        {
+                            "name" : "plexus-classworlds",
+                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-classworlds/bundles/plexus-classworlds-2.5.2.jar"
                         }
                     ]
                 },
@@ -709,979 +859,6 @@
                     ]
                 },
                 {
-                    "organization" : "io.get-coursier",
-                    "name" : "sbt-coursier",
-                    "version" : "1.1.0-M9",
-                    "artifacts" : [
-                        {
-                            "name" : "sbt-coursier",
-                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/io.get-coursier/sbt-coursier/jars/sbt-coursier-1.1.0-M9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "io.get-coursier",
-                    "name" : "sbt-coursier-shared",
-                    "version" : "1.1.0-M9",
-                    "artifacts" : [
-                        {
-                            "name" : "sbt-coursier-shared",
-                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/io.get-coursier/sbt-coursier-shared/jars/sbt-coursier-shared-1.1.0-M9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "io.get-coursier",
-                    "name" : "lm-coursier_2.12",
-                    "version" : "1.1.0-M9",
-                    "artifacts" : [
-                        {
-                            "name" : "lm-coursier_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/io.get-coursier/lm-coursier_2.12/jars/lm-coursier_2.12-1.1.0-M9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "io.get-coursier",
-                    "name" : "coursier-core_2.12",
-                    "version" : "1.1.0-M9",
-                    "artifacts" : [
-                        {
-                            "name" : "coursier-core_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-core_2.12/jars/coursier-core_2.12-1.1.0-M9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.scala-lang.modules",
-                    "name" : "scala-xml_2.12",
-                    "version" : "1.1.0",
-                    "artifacts" : [
-                        {
-                            "name" : "scala-xml_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.1.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "io.get-coursier",
-                    "name" : "coursier-cache_2.12",
-                    "version" : "1.1.0-M9",
-                    "artifacts" : [
-                        {
-                            "name" : "coursier-cache_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-cache_2.12/jars/coursier-cache_2.12-1.1.0-M9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "io.get-coursier",
-                    "name" : "coursier-extra_2.12",
-                    "version" : "1.1.0-M9",
-                    "artifacts" : [
-                        {
-                            "name" : "coursier-extra_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-extra_2.12/jars/coursier-extra_2.12-1.1.0-M9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.scala-lang",
-                    "name" : "scala-compiler",
-                    "version" : "2.12.7",
-                    "artifacts" : [
-                        {
-                            "name" : "scala-compiler",
-                            "path" : "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.eed3si9n",
-                    "name" : "gigahorse-okhttp_2.12",
-                    "version" : "0.3.0",
-                    "artifacts" : [
-                        {
-                            "name" : "gigahorse-okhttp_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-okhttp_2.12/jars/gigahorse-okhttp_2.12-0.3.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.eed3si9n",
-                    "name" : "gigahorse-core_2.12",
-                    "version" : "0.3.0",
-                    "artifacts" : [
-                        {
-                            "name" : "gigahorse-core_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-core_2.12/jars/gigahorse-core_2.12-0.3.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.typesafe",
-                    "name" : "ssl-config-core_2.12",
-                    "version" : "0.2.2",
-                    "artifacts" : [
-                        {
-                            "name" : "ssl-config-core_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/com.typesafe/ssl-config-core_2.12/bundles/ssl-config-core_2.12-0.2.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.typesafe",
-                    "name" : "config",
-                    "version" : "1.2.0",
-                    "artifacts" : [
-                        {
-                            "name" : "config",
-                            "path" : "/home/gadgil/.ivy2/cache/com.typesafe/config/bundles/config-1.2.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.reactivestreams",
-                    "name" : "reactive-streams",
-                    "version" : "1.0.0",
-                    "artifacts" : [
-                        {
-                            "name" : "reactive-streams",
-                            "path" : "/home/gadgil/.ivy2/cache/org.reactivestreams/reactive-streams/jars/reactive-streams-1.0.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.slf4j",
-                    "name" : "slf4j-api",
-                    "version" : "1.7.25",
-                    "artifacts" : [
-                        {
-                            "name" : "slf4j-api",
-                            "path" : "/home/gadgil/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.25.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.squareup.okhttp3",
-                    "name" : "okhttp",
-                    "version" : "3.7.0",
-                    "artifacts" : [
-                        {
-                            "name" : "okhttp",
-                            "path" : "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp/jars/okhttp-3.7.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.squareup.okio",
-                    "name" : "okio",
-                    "version" : "1.12.0",
-                    "artifacts" : [
-                        {
-                            "name" : "okio",
-                            "path" : "/home/gadgil/.ivy2/cache/com.squareup.okio/okio/jars/okio-1.12.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.squareup.okhttp3",
-                    "name" : "okhttp-urlconnection",
-                    "version" : "3.7.0",
-                    "artifacts" : [
-                        {
-                            "name" : "okhttp-urlconnection",
-                            "path" : "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp-urlconnection/jars/okhttp-urlconnection-3.7.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.eed3si9n",
-                    "name" : "shaded-scalajson_2.12",
-                    "version" : "1.0.0-M4",
-                    "artifacts" : [
-                        {
-                            "name" : "shaded-scalajson_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/com.eed3si9n/shaded-scalajson_2.12/jars/shaded-scalajson_2.12-1.0.0-M4.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "io.get-coursier",
-                    "name" : "coursier-scalaz-interop_2.12",
-                    "version" : "1.1.0-M9",
-                    "artifacts" : [
-                        {
-                            "name" : "coursier-scalaz-interop_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/io.get-coursier/coursier-scalaz-interop_2.12/jars/coursier-scalaz-interop_2.12-1.1.0-M9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.scalaz",
-                    "name" : "scalaz-concurrent_2.12",
-                    "version" : "7.2.24",
-                    "artifacts" : [
-                        {
-                            "name" : "scalaz-concurrent_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scalaz/scalaz-concurrent_2.12/bundles/scalaz-concurrent_2.12-7.2.24.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.scalaz",
-                    "name" : "scalaz-core_2.12",
-                    "version" : "7.2.24",
-                    "artifacts" : [
-                        {
-                            "name" : "scalaz-core_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scalaz/scalaz-core_2.12/bundles/scalaz-core_2.12-7.2.24.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.scalaz",
-                    "name" : "scalaz-effect_2.12",
-                    "version" : "7.2.24",
-                    "artifacts" : [
-                        {
-                            "name" : "scalaz-effect_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scalaz/scalaz-effect_2.12/bundles/scalaz-effect_2.12-7.2.24.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.typesafe.sbt",
-                    "name" : "sbt-native-packager",
-                    "version" : "1.3.2",
-                    "artifacts" : [
-                        {
-                            "name" : "sbt-native-packager",
-                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.typesafe.sbt/sbt-native-packager/jars/sbt-native-packager-1.3.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.commons",
-                    "name" : "commons-compress",
-                    "version" : "1.14",
-                    "artifacts" : [
-                        {
-                            "name" : "commons-compress",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.commons/commons-compress/jars/commons-compress-1.14.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.ant",
-                    "name" : "ant",
-                    "version" : "1.10.1",
-                    "artifacts" : [
-                        {
-                            "name" : "ant",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.ant/ant/jars/ant-1.10.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.ant",
-                    "name" : "ant-launcher",
-                    "version" : "1.10.1",
-                    "artifacts" : [
-                        {
-                            "name" : "ant-launcher",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.10.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.spotify",
-                    "name" : "docker-client",
-                    "version" : "8.9.0",
-                    "artifacts" : [
-                        {
-                            "name" : "docker-client",
-                            "path" : "/home/gadgil/.ivy2/cache/com.spotify/docker-client/jars/docker-client-8.9.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.fasterxml.jackson.jaxrs",
-                    "name" : "jackson-jaxrs-json-provider",
-                    "version" : "2.8.8",
-                    "artifacts" : [
-                        {
-                            "name" : "jackson-jaxrs-json-provider",
-                            "path" : "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/bundles/jackson-jaxrs-json-provider-2.8.8.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.fasterxml.jackson.jaxrs",
-                    "name" : "jackson-jaxrs-base",
-                    "version" : "2.8.8",
-                    "artifacts" : [
-                        {
-                            "name" : "jackson-jaxrs-base",
-                            "path" : "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/bundles/jackson-jaxrs-base-2.8.8.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.fasterxml.jackson.core",
-                    "name" : "jackson-core",
-                    "version" : "2.8.8",
-                    "artifacts" : [
-                        {
-                            "name" : "jackson-core",
-                            "path" : "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.core/jackson-core/bundles/jackson-core-2.8.8.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.fasterxml.jackson.core",
-                    "name" : "jackson-databind",
-                    "version" : "2.8.8",
-                    "artifacts" : [
-                        {
-                            "name" : "jackson-databind",
-                            "path" : "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.core/jackson-databind/bundles/jackson-databind-2.8.8.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.fasterxml.jackson.core",
-                    "name" : "jackson-annotations",
-                    "version" : "2.8.0",
-                    "artifacts" : [
-                        {
-                            "name" : "jackson-annotations",
-                            "path" : "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.core/jackson-annotations/bundles/jackson-annotations-2.8.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.fasterxml.jackson.module",
-                    "name" : "jackson-module-jaxb-annotations",
-                    "version" : "2.8.8",
-                    "artifacts" : [
-                        {
-                            "name" : "jackson-module-jaxb-annotations",
-                            "path" : "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.module/jackson-module-jaxb-annotations/bundles/jackson-module-jaxb-annotations-2.8.8.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.fasterxml.jackson.datatype",
-                    "name" : "jackson-datatype-guava",
-                    "version" : "2.8.8",
-                    "artifacts" : [
-                        {
-                            "name" : "jackson-datatype-guava",
-                            "path" : "/home/gadgil/.ivy2/cache/com.fasterxml.jackson.datatype/jackson-datatype-guava/bundles/jackson-datatype-guava-2.8.8.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.jersey.core",
-                    "name" : "jersey-client",
-                    "version" : "2.22.2",
-                    "artifacts" : [
-                        {
-                            "name" : "jersey-client",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.jersey.core/jersey-client/jars/jersey-client-2.22.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "javax.ws.rs",
-                    "name" : "javax.ws.rs-api",
-                    "version" : "2.0.1",
-                    "artifacts" : [
-                        {
-                            "name" : "javax.ws.rs-api",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.ws.rs/javax.ws.rs-api/jars/javax.ws.rs-api-2.0.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.jersey.core",
-                    "name" : "jersey-common",
-                    "version" : "2.22.2",
-                    "artifacts" : [
-                        {
-                            "name" : "jersey-common",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.jersey.core/jersey-common/jars/jersey-common-2.22.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "javax.annotation",
-                    "name" : "javax.annotation-api",
-                    "version" : "1.2",
-                    "artifacts" : [
-                        {
-                            "name" : "javax.annotation-api",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.annotation/javax.annotation-api/jars/javax.annotation-api-1.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.jersey.bundles.repackaged",
-                    "name" : "jersey-guava",
-                    "version" : "2.22.2",
-                    "artifacts" : [
-                        {
-                            "name" : "jersey-guava",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.jersey.bundles.repackaged/jersey-guava/bundles/jersey-guava-2.22.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.hk2",
-                    "name" : "hk2-api",
-                    "version" : "2.4.0-b34",
-                    "artifacts" : [
-                        {
-                            "name" : "hk2-api",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.hk2/hk2-api/jars/hk2-api-2.4.0-b34.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.hk2",
-                    "name" : "hk2-utils",
-                    "version" : "2.4.0-b34",
-                    "artifacts" : [
-                        {
-                            "name" : "hk2-utils",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.hk2/hk2-utils/jars/hk2-utils-2.4.0-b34.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.hk2.external",
-                    "name" : "aopalliance-repackaged",
-                    "version" : "2.4.0-b34",
-                    "artifacts" : [
-                        {
-                            "name" : "aopalliance-repackaged",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.hk2.external/aopalliance-repackaged/jars/aopalliance-repackaged-2.4.0-b34.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.hk2.external",
-                    "name" : "javax.inject",
-                    "version" : "2.4.0-b34",
-                    "artifacts" : [
-                        {
-                            "name" : "javax.inject",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.hk2.external/javax.inject/jars/javax.inject-2.4.0-b34.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.hk2",
-                    "name" : "hk2-locator",
-                    "version" : "2.4.0-b34",
-                    "artifacts" : [
-                        {
-                            "name" : "hk2-locator",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.hk2/hk2-locator/jars/hk2-locator-2.4.0-b34.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.javassist",
-                    "name" : "javassist",
-                    "version" : "3.18.1-GA",
-                    "artifacts" : [
-                        {
-                            "name" : "javassist",
-                            "path" : "/home/gadgil/.ivy2/cache/org.javassist/javassist/bundles/javassist-3.18.1-GA.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.hk2",
-                    "name" : "osgi-resource-locator",
-                    "version" : "1.0.1",
-                    "artifacts" : [
-                        {
-                            "name" : "osgi-resource-locator",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.hk2/osgi-resource-locator/jars/osgi-resource-locator-1.0.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "javax.inject",
-                    "name" : "javax.inject",
-                    "version" : "1",
-                    "artifacts" : [
-                        {
-                            "name" : "javax.inject",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.inject/javax.inject/jars/javax.inject-1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.jersey.connectors",
-                    "name" : "jersey-apache-connector",
-                    "version" : "2.22.2",
-                    "artifacts" : [
-                        {
-                            "name" : "jersey-apache-connector",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.jersey.connectors/jersey-apache-connector/jars/jersey-apache-connector-2.22.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.httpcomponents",
-                    "name" : "httpclient",
-                    "version" : "4.5",
-                    "artifacts" : [
-                        {
-                            "name" : "httpclient",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.5.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "commons-logging",
-                    "name" : "commons-logging",
-                    "version" : "1.2",
-                    "artifacts" : [
-                        {
-                            "name" : "commons-logging",
-                            "path" : "/home/gadgil/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "commons-codec",
-                    "name" : "commons-codec",
-                    "version" : "1.9",
-                    "artifacts" : [
-                        {
-                            "name" : "commons-codec",
-                            "path" : "/home/gadgil/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.jersey.media",
-                    "name" : "jersey-media-json-jackson",
-                    "version" : "2.22.2",
-                    "artifacts" : [
-                        {
-                            "name" : "jersey-media-json-jackson",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.jersey.media/jersey-media-json-jackson/jars/jersey-media-json-jackson-2.22.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.glassfish.jersey.ext",
-                    "name" : "jersey-entity-filtering",
-                    "version" : "2.22.2",
-                    "artifacts" : [
-                        {
-                            "name" : "jersey-entity-filtering",
-                            "path" : "/home/gadgil/.ivy2/cache/org.glassfish.jersey.ext/jersey-entity-filtering/jars/jersey-entity-filtering-2.22.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "commons-io",
-                    "name" : "commons-io",
-                    "version" : "2.5",
-                    "artifacts" : [
-                        {
-                            "name" : "commons-io",
-                            "path" : "/home/gadgil/.ivy2/cache/commons-io/commons-io/jars/commons-io-2.5.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.httpcomponents",
-                    "name" : "httpcore",
-                    "version" : "4.4.5",
-                    "artifacts" : [
-                        {
-                            "name" : "httpcore",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.4.5.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.jnr",
-                    "name" : "jnr-unixsocket",
-                    "version" : "0.8",
-                    "artifacts" : [
-                        {
-                            "name" : "jnr-unixsocket",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-unixsocket/jars/jnr-unixsocket-0.8.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.jnr",
-                    "name" : "jnr-ffi",
-                    "version" : "2.0.3",
-                    "artifacts" : [
-                        {
-                            "name" : "jnr-ffi",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-ffi/jars/jnr-ffi-2.0.3.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.jnr",
-                    "name" : "jffi",
-                    "version" : "1.2.9",
-                    "artifacts" : [
-                        {
-                            "name" : "jffi",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jffi/jars/jffi-1.2.9.jar"
-                        },
-                        {
-                            "name" : "jffi",
-                            "classifier" : "native",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jffi/jars/jffi-1.2.9-native.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.ow2.asm",
-                    "name" : "asm-analysis",
-                    "version" : "5.0.3",
-                    "artifacts" : [
-                        {
-                            "name" : "asm-analysis",
-                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-analysis/jars/asm-analysis-5.0.3.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.ow2.asm",
-                    "name" : "asm-util",
-                    "version" : "5.0.3",
-                    "artifacts" : [
-                        {
-                            "name" : "asm-util",
-                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-util/jars/asm-util-5.0.3.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.jnr",
-                    "name" : "jnr-x86asm",
-                    "version" : "1.0.2",
-                    "artifacts" : [
-                        {
-                            "name" : "jnr-x86asm",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-x86asm/jars/jnr-x86asm-1.0.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.jnr",
-                    "name" : "jnr-constants",
-                    "version" : "0.8.7",
-                    "artifacts" : [
-                        {
-                            "name" : "jnr-constants",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-constants/jars/jnr-constants-0.8.7.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.jnr",
-                    "name" : "jnr-enxio",
-                    "version" : "0.9",
-                    "artifacts" : [
-                        {
-                            "name" : "jnr-enxio",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-enxio/jars/jnr-enxio-0.9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.github.jnr",
-                    "name" : "jnr-posix",
-                    "version" : "3.0.12",
-                    "artifacts" : [
-                        {
-                            "name" : "jnr-posix",
-                            "path" : "/home/gadgil/.ivy2/cache/com.github.jnr/jnr-posix/jars/jnr-posix-3.0.12.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "commons-lang",
-                    "name" : "commons-lang",
-                    "version" : "2.6",
-                    "artifacts" : [
-                        {
-                            "name" : "commons-lang",
-                            "path" : "/home/gadgil/.ivy2/cache/commons-lang/commons-lang/jars/commons-lang-2.6.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.bouncycastle",
-                    "name" : "bcpkix-jdk15on",
-                    "version" : "1.52",
-                    "artifacts" : [
-                        {
-                            "name" : "bcpkix-jdk15on",
-                            "path" : "/home/gadgil/.ivy2/cache/org.bouncycastle/bcpkix-jdk15on/jars/bcpkix-jdk15on-1.52.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.bouncycastle",
-                    "name" : "bcprov-jdk15on",
-                    "version" : "1.52",
-                    "artifacts" : [
-                        {
-                            "name" : "bcprov-jdk15on",
-                            "path" : "/home/gadgil/.ivy2/cache/org.bouncycastle/bcprov-jdk15on/jars/bcprov-jdk15on-1.52.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "ch.qos.logback",
-                    "name" : "logback-classic",
-                    "version" : "1.2.1",
-                    "artifacts" : [
-                        {
-                            "name" : "logback-classic",
-                            "path" : "/home/gadgil/.ivy2/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.2.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "ch.qos.logback",
-                    "name" : "logback-core",
-                    "version" : "1.2.1",
-                    "artifacts" : [
-                        {
-                            "name" : "logback-core",
-                            "path" : "/home/gadgil/.ivy2/cache/ch.qos.logback/logback-core/jars/logback-core-1.2.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.vafer",
-                    "name" : "jdeb",
-                    "version" : "1.3",
-                    "artifacts" : [
-                        {
-                            "name" : "jdeb",
-                            "path" : "/home/gadgil/.ivy2/cache/org.vafer/jdeb/jars/jdeb-1.3.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-core",
-                    "version" : "3.2.2",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-core",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-core/jars/maven-core-3.2.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-settings",
-                    "version" : "3.2.2",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-settings",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-settings/jars/maven-settings-3.2.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-settings-builder",
-                    "version" : "3.2.2",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-settings-builder",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-settings-builder/jars/maven-settings-builder-3.2.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.codehaus.plexus",
-                    "name" : "plexus-interpolation",
-                    "version" : "1.19",
-                    "artifacts" : [
-                        {
-                            "name" : "plexus-interpolation",
-                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-interpolation/jars/plexus-interpolation-1.19.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.codehaus.plexus",
-                    "name" : "plexus-component-annotations",
-                    "version" : "1.5.5",
-                    "artifacts" : [
-                        {
-                            "name" : "plexus-component-annotations",
-                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-component-annotations/jars/plexus-component-annotations-1.5.5.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.sonatype.plexus",
-                    "name" : "plexus-sec-dispatcher",
-                    "version" : "1.3",
-                    "artifacts" : [
-                        {
-                            "name" : "plexus-sec-dispatcher",
-                            "path" : "/home/gadgil/.ivy2/cache/org.sonatype.plexus/plexus-sec-dispatcher/jars/plexus-sec-dispatcher-1.3.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.sonatype.plexus",
-                    "name" : "plexus-cipher",
-                    "version" : "1.4",
-                    "artifacts" : [
-                        {
-                            "name" : "plexus-cipher",
-                            "path" : "/home/gadgil/.ivy2/cache/org.sonatype.plexus/plexus-cipher/jars/plexus-cipher-1.4.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-repository-metadata",
-                    "version" : "3.2.2",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-repository-metadata",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-repository-metadata/jars/maven-repository-metadata-3.2.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "javax.enterprise",
-                    "name" : "cdi-api",
-                    "version" : "1.0",
-                    "artifacts" : [
-                        {
-                            "name" : "cdi-api",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.enterprise/cdi-api/jars/cdi-api-1.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "javax.annotation",
-                    "name" : "jsr250-api",
-                    "version" : "1.0",
-                    "artifacts" : [
-                        {
-                            "name" : "jsr250-api",
-                            "path" : "/home/gadgil/.ivy2/cache/javax.annotation/jsr250-api/jars/jsr250-api-1.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-model-builder",
-                    "version" : "3.2.2",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-model-builder",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-model-builder/jars/maven-model-builder-3.2.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-aether-provider",
-                    "version" : "3.2.2",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-aether-provider",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-aether-provider/jars/maven-aether-provider-3.2.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.eclipse.aether",
-                    "name" : "aether-api",
-                    "version" : "0.9.0.M2",
-                    "artifacts" : [
-                        {
-                            "name" : "aether-api",
-                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-api/jars/aether-api-0.9.0.M2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.eclipse.aether",
-                    "name" : "aether-spi",
-                    "version" : "0.9.0.M2",
-                    "artifacts" : [
-                        {
-                            "name" : "aether-spi",
-                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-spi/jars/aether-spi-0.9.0.M2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.eclipse.aether",
-                    "name" : "aether-util",
-                    "version" : "0.9.0.M2",
-                    "artifacts" : [
-                        {
-                            "name" : "aether-util",
-                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-util/jars/aether-util-0.9.0.M2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.eclipse.aether",
-                    "name" : "aether-impl",
-                    "version" : "0.9.0.M2",
-                    "artifacts" : [
-                        {
-                            "name" : "aether-impl",
-                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.aether/aether-impl/jars/aether-impl-0.9.0.M2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.bouncycastle",
-                    "name" : "bcpg-jdk15on",
-                    "version" : "1.51",
-                    "artifacts" : [
-                        {
-                            "name" : "bcpg-jdk15on",
-                            "path" : "/home/gadgil/.ivy2/cache/org.bouncycastle/bcpg-jdk15on/jars/bcpg-jdk15on-1.51.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.scala-lang.modules",
-                    "name" : "scala-parser-combinators_2.12",
-                    "version" : "1.0.6",
-                    "artifacts" : [
-                        {
-                            "name" : "scala-parser-combinators_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.6.jar"
-                        }
-                    ]
-                },
-                {
                     "organization" : "org.portable-scala",
                     "name" : "sbt-scalajs-crossproject",
                     "version" : "0.6.0",
@@ -1700,160 +877,6 @@
                         {
                             "name" : "sbt-crossproject",
                             "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/org.portable-scala/sbt-crossproject/jars/sbt-crossproject-0.6.0.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "com.eed3si9n",
-                    "name" : "sbt-assembly",
-                    "version" : "0.14.5",
-                    "artifacts" : [
-                        {
-                            "name" : "sbt-assembly",
-                            "path" : "/home/gadgil/.ivy2/cache/scala_2.12/sbt_1.0/com.eed3si9n/sbt-assembly/jars/sbt-assembly-0.14.5.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.scalactic",
-                    "name" : "scalactic_2.12",
-                    "version" : "3.0.1",
-                    "artifacts" : [
-                        {
-                            "name" : "scalactic_2.12",
-                            "path" : "/home/gadgil/.ivy2/cache/org.scalactic/scalactic_2.12/bundles/scalactic_2.12-3.0.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.pantsbuild",
-                    "name" : "jarjar",
-                    "version" : "1.6.4",
-                    "artifacts" : [
-                        {
-                            "name" : "jarjar",
-                            "path" : "/home/gadgil/.ivy2/cache/org.pantsbuild/jarjar/jars/jarjar-1.6.4.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.ow2.asm",
-                    "name" : "asm",
-                    "version" : "5.2",
-                    "artifacts" : [
-                        {
-                            "name" : "asm",
-                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm/jars/asm-5.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.ow2.asm",
-                    "name" : "asm-commons",
-                    "version" : "5.2",
-                    "artifacts" : [
-                        {
-                            "name" : "asm-commons",
-                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-commons/jars/asm-commons-5.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.ow2.asm",
-                    "name" : "asm-tree",
-                    "version" : "5.2",
-                    "artifacts" : [
-                        {
-                            "name" : "asm-tree",
-                            "path" : "/home/gadgil/.ivy2/cache/org.ow2.asm/asm-tree/jars/asm-tree-5.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-plugin-api",
-                    "version" : "3.3.9",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-plugin-api",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-plugin-api/jars/maven-plugin-api-3.3.9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-model",
-                    "version" : "3.3.9",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-model",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-model/jars/maven-model-3.3.9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.codehaus.plexus",
-                    "name" : "plexus-utils",
-                    "version" : "3.0.22",
-                    "artifacts" : [
-                        {
-                            "name" : "plexus-utils",
-                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-utils/jars/plexus-utils-3.0.22.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.commons",
-                    "name" : "commons-lang3",
-                    "version" : "3.4",
-                    "artifacts" : [
-                        {
-                            "name" : "commons-lang3",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.4.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.apache.maven",
-                    "name" : "maven-artifact",
-                    "version" : "3.3.9",
-                    "artifacts" : [
-                        {
-                            "name" : "maven-artifact",
-                            "path" : "/home/gadgil/.ivy2/cache/org.apache.maven/maven-artifact/jars/maven-artifact-3.3.9.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.eclipse.sisu",
-                    "name" : "org.eclipse.sisu.plexus",
-                    "version" : "0.3.2",
-                    "artifacts" : [
-                        {
-                            "name" : "org.eclipse.sisu.plexus",
-                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.plexus/eclipse-plugins/org.eclipse.sisu.plexus-0.3.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.eclipse.sisu",
-                    "name" : "org.eclipse.sisu.inject",
-                    "version" : "0.3.2",
-                    "artifacts" : [
-                        {
-                            "name" : "org.eclipse.sisu.inject",
-                            "path" : "/home/gadgil/.ivy2/cache/org.eclipse.sisu/org.eclipse.sisu.inject/eclipse-plugins/org.eclipse.sisu.inject-0.3.2.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization" : "org.codehaus.plexus",
-                    "name" : "plexus-classworlds",
-                    "version" : "2.5.2",
-                    "artifacts" : [
-                        {
-                            "name" : "plexus-classworlds",
-                            "path" : "/home/gadgil/.ivy2/cache/org.codehaus.plexus/plexus-classworlds/bundles/plexus-classworlds-2.5.2.jar"
                         }
                     ]
                 },
@@ -1920,6 +943,17 @@
                         {
                             "name" : "sjson-new-core_2.12",
                             "path" : "/home/gadgil/.ivy2/cache/com.eed3si9n/sjson-new-core_2.12/jars/sjson-new-core_2.12-0.8.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.eed3si9n",
+                    "name" : "shaded-scalajson_2.12",
+                    "version" : "1.0.0-M4",
+                    "artifacts" : [
+                        {
+                            "name" : "shaded-scalajson_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.eed3si9n/shaded-scalajson_2.12/jars/shaded-scalajson_2.12-1.0.0-M4.jar"
                         }
                     ]
                 },
@@ -2116,6 +1150,28 @@
                     ]
                 },
                 {
+                    "organization" : "org.scala-lang",
+                    "name" : "scala-compiler",
+                    "version" : "2.12.7",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-compiler",
+                            "path" : "/home/gadgil/.sbt/boot/scala-2.12.7/lib/scala-compiler.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang.modules",
+                    "name" : "scala-xml_2.12",
+                    "version" : "1.0.6",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-xml_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-xml_2.12/bundles/scala-xml_2.12-1.0.6.jar"
+                        }
+                    ]
+                },
+                {
                     "organization" : "org.scala-sbt",
                     "name" : "compiler-interface",
                     "version" : "1.2.5",
@@ -2270,6 +1326,105 @@
                     ]
                 },
                 {
+                    "organization" : "com.eed3si9n",
+                    "name" : "gigahorse-okhttp_2.12",
+                    "version" : "0.3.0",
+                    "artifacts" : [
+                        {
+                            "name" : "gigahorse-okhttp_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-okhttp_2.12/jars/gigahorse-okhttp_2.12-0.3.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.eed3si9n",
+                    "name" : "gigahorse-core_2.12",
+                    "version" : "0.3.0",
+                    "artifacts" : [
+                        {
+                            "name" : "gigahorse-core_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.eed3si9n/gigahorse-core_2.12/jars/gigahorse-core_2.12-0.3.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.typesafe",
+                    "name" : "ssl-config-core_2.12",
+                    "version" : "0.2.2",
+                    "artifacts" : [
+                        {
+                            "name" : "ssl-config-core_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/com.typesafe/ssl-config-core_2.12/bundles/ssl-config-core_2.12-0.2.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.typesafe",
+                    "name" : "config",
+                    "version" : "1.2.0",
+                    "artifacts" : [
+                        {
+                            "name" : "config",
+                            "path" : "/home/gadgil/.ivy2/cache/com.typesafe/config/bundles/config-1.2.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.reactivestreams",
+                    "name" : "reactive-streams",
+                    "version" : "1.0.0",
+                    "artifacts" : [
+                        {
+                            "name" : "reactive-streams",
+                            "path" : "/home/gadgil/.ivy2/cache/org.reactivestreams/reactive-streams/jars/reactive-streams-1.0.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.slf4j",
+                    "name" : "slf4j-api",
+                    "version" : "1.7.25",
+                    "artifacts" : [
+                        {
+                            "name" : "slf4j-api",
+                            "path" : "/home/gadgil/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.25.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.squareup.okhttp3",
+                    "name" : "okhttp",
+                    "version" : "3.7.0",
+                    "artifacts" : [
+                        {
+                            "name" : "okhttp",
+                            "path" : "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp/jars/okhttp-3.7.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.squareup.okio",
+                    "name" : "okio",
+                    "version" : "1.12.0",
+                    "artifacts" : [
+                        {
+                            "name" : "okio",
+                            "path" : "/home/gadgil/.ivy2/cache/com.squareup.okio/okio/jars/okio-1.12.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.squareup.okhttp3",
+                    "name" : "okhttp-urlconnection",
+                    "version" : "3.7.0",
+                    "artifacts" : [
+                        {
+                            "name" : "okhttp-urlconnection",
+                            "path" : "/home/gadgil/.ivy2/cache/com.squareup.okhttp3/okhttp-urlconnection/jars/okhttp-urlconnection-3.7.0.jar"
+                        }
+                    ]
+                },
+                {
                     "organization" : "org.scala-sbt",
                     "name" : "zinc-ivy-integration_2.12",
                     "version" : "1.2.5",
@@ -2288,6 +1443,17 @@
                         {
                             "name" : "zinc-compile-core_2.12",
                             "path" : "/home/gadgil/.ivy2/cache/org.scala-sbt/zinc-compile-core_2.12/jars/zinc-compile-core_2.12-1.2.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "org.scala-lang.modules",
+                    "name" : "scala-parser-combinators_2.12",
+                    "version" : "1.0.5",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-parser-combinators_2.12",
+                            "path" : "/home/gadgil/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.5.jar"
                         }
                     ]
                 },
