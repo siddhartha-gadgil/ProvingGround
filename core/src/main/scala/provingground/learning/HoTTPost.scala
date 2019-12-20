@@ -5,6 +5,7 @@ import TypedPostResponse._
 import monix.eval._
 import HoTTPost._
 import monix.execution.Scheduler.Implicits.{global => monixglobal}
+import scala.concurrent._
 
 class HoTTPost { web =>
   val global = new CounterGlobalID()
@@ -23,17 +24,6 @@ class HoTTPost { web =>
 
   val eqnNodeBuff = PostBuffer[Set[EquationNode], ID](global.postGlobal)
 
-  def postLocalProverTask(
-      lp: LocalProver,
-      pred: Set[ID] = Set()
-  ): Task[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
-    Postable.postTask(lp, web, pred)
-
-  def postLP(
-      lp: LocalProver,
-      pred: Set[ID] = Set()
-  ): PostData[LocalProver, HoTTPost, HoTTPost.ID] =
-    postLocalProverTask(lp, pred).runSyncUnsafe()
 }
 
 object HoTTPost {
@@ -84,4 +74,17 @@ class HoTTSession
     extends SimpleSession(
       new HoTTPost(),
       Vector(lpToExpEv, expEvToEqns, eqnUpdate)
-    )
+    ) {
+        // just an illustration, should just use rhs
+  def postLocalProverTask(
+      lp: LocalProver,
+      pred: Set[ID] = Set()
+  ): Task[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
+    postTask(lp, pred)
+
+  def postLP(
+      lp: LocalProver,
+      pred: Set[ID] = Set()
+  ): Future[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
+    postLocalProverTask(lp, pred).runToFuture
+}

@@ -148,7 +148,7 @@ class SimpleSession[W, ID](
     val web: W,
     var responses: Vector[PostResponse[W, ID]]
 ) {
-  def post[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Task[ID] = {
+  def postTask[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Task[PostData[P, W, ID]] = {
     val postIdTask = pw.post(content, web, preds)
     postIdTask.foreach { postID =>
       val reactions = responses.map(
@@ -156,14 +156,17 @@ class SimpleSession[W, ID](
           PostResponse.postResponseTask(web, content, postID, response).map {
             v =>
               v.map {
-                case pd: PostData[q, W, ID] => post(pd.content, Set(postID))(pd.pw)
+                case pd: PostData[q, W, ID] => postTask(pd.content, Set(postID))(pd.pw)
               }
           }
       )
       reactions.foreach(_.runToFuture)
     }
-    postIdTask
+    postIdTask.map{id => PostData(content, id)}
   }
+
+  def postFuture[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = 
+    postTask(content, preds).runToFuture
 
   def query[Q](implicit q: Queryable[Q, W]) = q.get(web)
 
