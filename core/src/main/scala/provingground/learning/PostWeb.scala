@@ -7,16 +7,23 @@ import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
 
+/**
+ * Typeclass for being able to post with content type P in W
+ */
 trait Postable[P, W, ID] {
   def post(content: P, web: W, pred: Set[ID]): Task[ID]
 
   val contextChange: Boolean
 }
-
+/**
+ *  Typeclass for being able to query W for type Q
+ */
 trait Queryable[U, W] {
   def get(web: W): Task[U]
 }
-
+/**
+ * Typeclass for being able to query W for a vector of elements of type Q at an index
+ */ 
 trait LocalQueryable[U, W, ID] {
   def getAt(web: W, id: ID): Task[Vector[U]]
 }
@@ -39,7 +46,10 @@ object LocalQueryable {
   def lookupAnswer[P, W, ID](
       implicit pw: Postable[P, W, ID]
   ): AnswerFromPost[P, P, W, ID] = AnswerFromPost(identity(_))
-
+  
+  /**
+   * Look up an answer in the history of a post, assuming an implicit history provider
+   */ 
   case class RecentAnswer[Q, W, ID](
       answers: Seq[AnswerFromPost[_, Q, W, ID]]
   )(implicit h: PostHistory[W, ID])
@@ -75,7 +85,11 @@ object LocalQueryable {
     def getAt(web: W, id: ID): Task[Vector[Unit]] = Task.now(Vector(()))
 }
 }
-
+/**
+ * Data for a post, including the implicit saying it is postable
+ * @param content the content of the post
+ * @param id the index of the post, returned after posting
+ */ 
 case class PostData[P, W, ID](content: P, id: ID)(
     implicit val pw: Postable[P, W, ID]
 ){
@@ -86,9 +100,20 @@ trait PostHistory[W, ID] {
   def history(web: W, id: ID): Stream[PostData[_, W, ID]]
 }
 
-sealed trait PostResponse[W, ID]
+/**
+ * Response to a post, generating one or more posts or just a callback;
+ * this exists mainly for nicer type collections.
+ */ 
+sealed trait PostResponse[W, ID]{
+  type PostType
+
+  def postTask(web: W, content: PostType, id: ID): Task[Vector[PostData[_, W, ID]]]
+}
 
 object PostResponse {
+  /**
+   * Casting to a typed post response if the Postables match
+   */ 
   def typedResponseOpt[Q, W, ID](post: Q, response: PostResponse[W, ID])(
       implicit qp: Postable[Q, W, ID]
   ): Option[TypedPostResponse[Q, W, ID]] = response match {
@@ -97,6 +122,11 @@ object PostResponse {
       else None
   }
 
+  /**
+   * Given a post response and a post, 
+   * if types match (as evidenced by implicits) then the task is carried out and the 
+   * new post wrapped as PostData are returned (the wrapping allows implicits to be passed on).
+   */ 
   def postResponseTask[Q, W, ID](
       web: W,
       post: Q,
@@ -112,6 +142,7 @@ object PostResponse {
     flip.map(_.flatten)
   }
 
+  // this method and the iterant were for type checking during development only
   def postChainTask[W, ID](
       web: W,
       posts: Vector[PostData[_, W, ID]],
@@ -144,13 +175,16 @@ object PostResponse {
 
 }
 
+/**
+ * A simple session to post stuff, call responses and if these responses generate posts, recursively call itself for them.
+ */ 
 class SimpleSession[W, ID](
     val web: W,
     var responses: Vector[PostResponse[W, ID]]
 ) {
   def postTask[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Task[PostData[P, W, ID]] = {
     val postIdTask = pw.post(content, web, preds)
-    postIdTask.foreach { postID =>
+    postIdTask.foreach { postID => // posting done, the id is now the predecessor for further posts
       val reactions = responses.map(
         response =>
           PostResponse.postResponseTask(web, content, postID, response).map {
@@ -159,8 +193,8 @@ class SimpleSession[W, ID](
                 case pd: PostData[q, W, ID] => postTask(pd.content, Set(postID))(pd.pw)
               }
           }
-      )
-      reactions.foreach(_.runToFuture)
+      ) // the value is the two-step tasks, unused but discarded while running for side-effects
+      reactions.foreach(_.runToFuture) // the generated tasks are run, with the result discarded
     }
     postIdTask.map{id => PostData(content, id)}
   }
@@ -177,11 +211,18 @@ class SimpleSession[W, ID](
 sealed abstract class TypedPostResponse[P, W, ID](
     implicit val pw: Postable[P, W, ID]
 ) extends PostResponse[W, ID] {
+  type PostType = P
 
+  // the posts in response to a given one, may be none
   def postTask(web: W, content: P, id: ID): Task[Vector[PostData[_, W, ID]]]
 }
 
 object TypedPostResponse {
+/**
+ * Callback executed on a post of type P;
+ * the returned task gives an empty vector, but running it executes the callback,
+ * in fact, a callback is executed for each value of the auxiliary queryable
+ */ 
   case class Callback[P, W, V, ID](update: W => V => P => Task[Unit])(
       implicit pw: Postable[P, W, ID],
       lv: LocalQueryable[V, W, ID]
@@ -200,6 +241,10 @@ object TypedPostResponse {
     }
   }
 
+  /**
+   * Response to a post returning a vector of posts, 
+   * one for each value of the auxiliary queryable (in simple cases a singleton is returned)
+   */ 
   case class Poster[P, Q, W, V, ID](response: V => P => Task[Q])(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
@@ -227,6 +272,36 @@ object TypedPostResponse {
       task
     }
   }
+}
+
+case class VectorPoster[P, Q, W, V, ID](responses: V => P => Task[Vector[Q]])(
+      implicit pw: Postable[P, W, ID],
+      qw: Postable[Q, W, ID],
+      lv: LocalQueryable[V, W, ID]
+  ) extends TypedPostResponse[P, W, ID] {
+
+    def postTask(
+        web: W,
+        content: P,
+        id: ID
+    ): Task[Vector[PostData[_, W, ID]]] = {
+      val auxTask = lv.getAt(web, id)
+      val taskNest =
+        auxTask.map{
+          (auxs => 
+            auxs.map{
+              aux => 
+                val newPostsTask = responses(aux)(content)
+                newPostsTask.flatMap{newPosts =>
+                  Task.sequence(newPosts.map{newPost =>
+                    val idNewTask = qw.post(newPost, web, Set(id))
+                    idNewTask.map(idNew => PostData(newPost, idNew))}
+                  )}
+            })
+        }
+      val task = taskNest.flatMap(st => Task.sequence(st).map(_.flatten))
+      task
+    }
 }
 
 trait GlobalPost[P, ID] {
