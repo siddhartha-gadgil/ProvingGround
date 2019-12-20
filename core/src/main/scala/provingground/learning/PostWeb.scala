@@ -70,6 +70,10 @@ object LocalQueryable {
   implicit def hNilQueryable[W, ID] : LocalQueryable[HNil, W, ID] = new LocalQueryable[HNil, W, ID] {
       def getAt(web: W, id: ID): Task[Vector[HNil]] = Task.now(Vector(HNil))
   }
+
+  implicit def unitQueryable[W, ID] : LocalQueryable[Unit, W, ID] = new LocalQueryable[Unit, W, ID] {
+    def getAt(web: W, id: ID): Task[Vector[Unit]] = Task.now(Vector(()))
+}
 }
 
 case class PostData[P, W, ID](content: P, id: ID)(
@@ -141,8 +145,8 @@ object PostResponse {
 }
 
 class SimpleSession[W, ID](
-    web: W,
-    responses: ArrayBuffer[PostResponse[W, ID]]
+    val web: W,
+    var responses: Vector[PostResponse[W, ID]]
 ) {
   def post[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Task[ID] = {
     val postIdTask = pw.post(content, web, preds)
@@ -283,6 +287,9 @@ object Postable {
             postFunc(content, web, pred)
         val contextChange: Boolean = ctx
     }
+
+  def postTask[P, W, ID](content: P, web: W, pred: Set[ID])(implicit pw: Postable[P, W, ID]) : Task[PostData[P, W, ID]] = 
+    pw.post(content, web, pred).map{id => PostData(content, id)} 
 
   implicit def bufferPostable[P, ID, W <: PostBuffer[P, ID]]
       : Postable[P, W, ID] =
