@@ -182,6 +182,9 @@ class SimpleSession[W, ID](
     val web: W,
     var responses: Vector[PostResponse[W, ID]]
 ) {
+  /**
+   * recursively posting and running (as side-effects) offspring tasks
+   */ 
   def postTask[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Task[PostData[P, W, ID]] = {
     val postIdTask = pw.post(content, web, preds)
     postIdTask.foreach { postID => // posting done, the id is now the predecessor for further posts
@@ -193,8 +196,10 @@ class SimpleSession[W, ID](
                 case pd: PostData[q, W, ID] => postTask(pd.content, Set(postID))(pd.pw)
               }
           }
-      ) // the value is the two-step tasks, unused but discarded while running for side-effects
-      reactions.foreach(_.runToFuture) // the generated tasks are run, with the result discarded
+      ) // the value consists of two-step tasks, which are run and the rseult discarded
+      reactions.foreach(t => 
+        t.foreach(w =>
+          w.foreach(s => s.foreach(_ => ())))) // the generated tasks are run, with the result discarded
     }
     postIdTask.map{id => PostData(content, id)}
   }
