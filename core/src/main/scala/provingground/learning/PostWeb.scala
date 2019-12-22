@@ -138,7 +138,7 @@ object PostResponse {
     val chainOpt = typedResponseOpt(post, response)(qp)
       .map(tr => tr.postTask(web, post, id))
       .toVector
-    val flip = Task.sequence(chainOpt)
+    val flip = Task.gather(chainOpt)
     flip.map(_.flatten)
   }
 
@@ -240,7 +240,7 @@ object TypedPostResponse {
     ): Task[Vector[PostData[_, W, ID]]] = {
       val auxTask = lv.getAt(web, id)
       val task = auxTask.flatMap { auxs =>
-        Task.sequence(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
+        Task.gather(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
       }
       task
     }
@@ -273,7 +273,7 @@ object TypedPostResponse {
                   idNewTask.map(idNew => PostData(newPost, idNew))}
             })
         }
-      val task = taskNest.flatMap(st => Task.sequence(st))
+      val task = taskNest.flatMap(st => Task.gather(st))
       task
     }
   }
@@ -298,13 +298,13 @@ case class VectorPoster[P, Q, W, V, ID](responses: V => P => Task[Vector[Q]])(
               aux => 
                 val newPostsTask = responses(aux)(content)
                 newPostsTask.flatMap{newPosts =>
-                  Task.sequence(newPosts.map{newPost =>
+                  Task.gather(newPosts.map{newPost =>
                     val idNewTask = qw.post(newPost, web, Set(id))
                     idNewTask.map(idNew => PostData(newPost, idNew))}
                   )}
             })
         }
-      val task = taskNest.flatMap(st => Task.sequence(st).map(_.flatten))
+      val task = taskNest.flatMap(st => Task.gather(st).map(_.flatten))
       task
     }
 }
@@ -338,8 +338,15 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
     }
   }
 
+  def find[W](index: ID)(implicit pw:  Postable[P, W, ID]) :  Option[(PostData[P,W,ID], Set[ID])] = buffer.find(_._2 == index).map{
+    case (p, _, preds) => (PostData[P, W, ID](p, index), preds)
+  }
+
   def bufferData[W](implicit pw: Postable[P, W, ID]) : Vector[PostData[_, W, ID]] =
     buffer.map{case (p, id, _) => PostData(p, id)}.toVector
+
+  def bufferFullData[W](implicit pw: Postable[P, W, ID]) : Vector[(PostData[P,W,ID], ID, Set[ID])] =
+    buffer.map{case (p, id, preds) => (PostData(p, id), id, preds)}.toVector
 
 }
 
