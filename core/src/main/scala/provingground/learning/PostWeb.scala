@@ -29,6 +29,11 @@ trait LocalQueryable[U, W, ID] {
 }
 
 object LocalQueryable {
+  def query[Q, W](web: W)(implicit q: Queryable[Q, W]) = q.get(web)
+
+  def queryAt[Q, W, ID](web: W, id: ID)(implicit q: LocalQueryable[Q, W, ID]) =
+    q.getAt(web, id)
+
   implicit def localize[U, W, ID](
       implicit q: Queryable[U, W]
   ): LocalQueryable[U, W, ID] =
@@ -65,6 +70,17 @@ object LocalQueryable {
       }
   }
 
+  case class LatestAnswer[Q, W, ID](
+    answers: Seq[AnswerFromPost[_, Q, W, ID]]
+  )(implicit h: PostHistory[W, ID])
+    extends LocalQueryable[Q, W, ID] {
+      def getAt(web: W, id: ID): Task[Vector[Q]] = Task{
+        def answer: PostData[_, W, ID] => Option[Q] = 
+          (pd) => answers.flatMap(ans => ans.fromPost(pd)).headOption
+        h.latestAnswers(web, id, answer).toVector
+      }
+    }
+
   implicit def hconsQueryable[U, V <: HList, W, ID](
       implicit qu: LocalQueryable[U, W, ID],
       qv: LocalQueryable[V, W, ID]
@@ -76,6 +92,7 @@ object LocalQueryable {
         } yield head.flatMap(x => tail.map(y => x :: y))
           
   }
+
 
   implicit def hNilQueryable[W, ID] : LocalQueryable[HNil, W, ID] = new LocalQueryable[HNil, W, ID] {
       def getAt(web: W, id: ID): Task[Vector[HNil]] = Task.now(Vector(HNil))
@@ -97,7 +114,26 @@ case class PostData[P, W, ID](content: P, id: ID)(
 } 
 
 trait PostHistory[W, ID] {
-  def history(web: W, id: ID): Stream[PostData[_, W, ID]]
+  // the post itself and all its predecessors
+  def findPost(web: W, index: ID) :  Option[(PostData[_, W, ID], Set[ID])]
+
+  def history(web: W, id: ID): Stream[PostData[_, W, ID]] = {
+    val next : ((Set[PostData[_, W, ID]], Set[ID])) =>  (Set[PostData[_, W, ID]], Set[ID])   = {case (d, indices) =>
+      val pairs = indices.map(findPost(web, _)).flatten
+      (pairs.map(_._1), pairs.flatMap(_._2))
+    }
+    def stream : Stream[(Set[PostData[_, W, ID]], Set[ID])] = 
+      ((Set.empty[PostData[_, W, (ID)]], Set(id))) #:: stream.map(next)
+    stream.flatMap(_._1)
+  }
+
+  def latestAnswers[Q](web: W, id: ID, answer: PostData[_, W, ID] => Option[Q]) : Set[Q] = 
+    findPost(web, id).map{
+      case (pd, preds) => 
+        answer(pd).map(Set(_)).getOrElse(
+          preds.flatMap(pid => latestAnswers(web, pid, answer))
+          )
+    }.getOrElse(Set())
 }
 
 /**

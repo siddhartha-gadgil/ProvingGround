@@ -3,7 +3,7 @@ package provingground.learning
 import provingground._, HoTT._
 import TypedPostResponse._
 import monix.eval._
-import HoTTPost._
+import HoTTPost._ , LocalQueryable._
 import monix.execution.Scheduler.Implicits.{global => monixglobal}
 import scala.concurrent._
 
@@ -75,15 +75,7 @@ object HoTTPost {
       .fold[Option[(PostData[_, HoTTPost, ID], Set[ID])]](None)(_ orElse _)
 
   implicit def postHistory: PostHistory[HoTTPost, ID] = new PostHistory[HoTTPost, ID] {
-    def history(web: HoTTPost, id: ID): Stream[PostData[_, HoTTPost, ID]] = {
-      val next : ((Set[PostData[_, HoTTPost, ID]], Set[ID])) =>  (Set[PostData[_, HoTTPost, ID]], Set[ID])   = {case (d, indices) =>
-        val pairs = indices.map(findInWeb(web, _)).flatten
-        (pairs.map(_._1), pairs.flatMap(_._2))
-      }
-      def stream : Stream[(Set[PostData[_, HoTTPost, (Int, Int)]], Set[ID])] = 
-        ((Set.empty[PostData[_, HoTTPost, (Int, Int)]], Set(id))) #:: stream.map(next)
-      stream.flatMap(_._1)
-    }
+    def findPost(web: HoTTPost, index: ID) :  Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
   }
 
   def allPosts(web: HoTTPost): Vector[PostData[_, HoTTPost, ID]] = webBuffers(web).flatMap(_.data)
@@ -93,9 +85,9 @@ object HoTTPost {
   case class HoTTPostData(number: Int, posts: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])]){
     def successors(id: ID) = posts.filter(_._3.contains(id))
 
-    val allIndices = posts.map(_._2)
+    val allIndices : Vector[ID ]= posts.map(_._2)
 
-    lazy val leafIndices = allIndices.filter(id => successors(id).isEmpty)
+    lazy val leafIndices : Vector[ID] = allIndices.filter(id => successors(id).isEmpty)
   }
 
   implicit def hottPostDataQuery : Queryable[HoTTPostData, HoTTPost] = new Queryable[HoTTPostData, HoTTPost]{
@@ -106,6 +98,24 @@ object HoTTPost {
       )
     }
   }
+
+  case class Apex[P](base: P)
+
+  implicit def postToLeaves[P](implicit bp:  Postable[P, HoTTPost, ID]) : Postable[Apex[P], HoTTPost, ID] =
+    new Postable[Apex[P], HoTTPost, ID] {
+
+      def post(content: Apex[P], web: HoTTPost, pred: Set[ID]): Task[ID] = 
+       {
+         val dataTask = query[HoTTPostData, HoTTPost](web)
+         for {
+           data <- dataTask
+           leaves = data.leafIndices.toSet
+           postData <- Postable.postTask(content.base, web, pred union leaves)
+         } yield postData.id
+       }
+
+      val contextChange: Boolean = bp.contextChange
+    }
 
   lazy val lpToExpEv: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Task[ExpressionEval] = (_) =>
