@@ -3,7 +3,7 @@ package provingground.learning
 import provingground._, HoTT._
 import TypedPostResponse._
 import monix.eval._
-import HoTTPost._ , LocalQueryable._
+import HoTTPost._, LocalQueryable._
 import monix.execution.Scheduler.Implicits.{global => monixglobal}
 import scala.concurrent._
 
@@ -57,11 +57,12 @@ object HoTTPost {
       implicit pw: Postable[P, HoTTPost, ID]
   ) {
     def getPost(id: ID): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
-      buffer.find(id) 
+      buffer.find(id)
 
-    def data : Vector[PostData[_, HoTTPost, ID]] = buffer.bufferData
+    def data: Vector[PostData[_, HoTTPost, ID]] = buffer.bufferData
 
-    def fullData : Vector[(PostData[_,HoTTPost,ID], ID, Set[ID])] = buffer.bufferFullData
+    def fullData: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
+      buffer.bufferFullData
   }
 
   def webBuffers(web: HoTTPost): Vector[WebBuffer[_]] =
@@ -69,50 +70,78 @@ object HoTTPost {
       web.eqnNodeBuff
     )
 
-  def findInWeb(web: HoTTPost, index: ID) : Option[(PostData[_, HoTTPost, ID], Set[ID])] =
+  def findInWeb(
+      web: HoTTPost,
+      index: ID
+  ): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
     webBuffers(web)
       .map(_.getPost(index))
       .fold[Option[(PostData[_, HoTTPost, ID], Set[ID])]](None)(_ orElse _)
 
-  implicit def postHistory: PostHistory[HoTTPost, ID] = new PostHistory[HoTTPost, ID] {
-    def findPost(web: HoTTPost, index: ID) :  Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
-  }
+  implicit def postHistory: PostHistory[HoTTPost, ID] =
+    new PostHistory[HoTTPost, ID] {
+      def findPost(
+          web: HoTTPost,
+          index: ID
+      ): Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
+    }
 
-  def allPosts(web: HoTTPost): Vector[PostData[_, HoTTPost, ID]] = webBuffers(web).flatMap(_.data)
+  def allPosts(web: HoTTPost): Vector[PostData[_, HoTTPost, ID]] =
+    webBuffers(web).flatMap(_.data)
 
-  def allPostFullData(web: HoTTPost) : Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])]= webBuffers(web).flatMap(_.fullData)
+  def allPostFullData(
+      web: HoTTPost
+  ): Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
+    webBuffers(web).flatMap(_.fullData)
 
-  case class HoTTPostData(number: Int, posts: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])]){
+  case class HoTTPostData(
+      number: Int,
+      posts: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])]
+  ) {
     def successors(id: ID) = posts.filter(_._3.contains(id))
 
-    val allIndices : Vector[ID ]= posts.map(_._2)
+    val allIndices: Vector[ID] = posts.map(_._2)
 
-    lazy val leafIndices : Vector[ID] = allIndices.filter(id => successors(id).isEmpty)
+    lazy val leafIndices: Vector[ID] =
+      allIndices.filter(id => successors(id).isEmpty)
   }
 
-  implicit def hottPostDataQuery : Queryable[HoTTPostData, HoTTPost] = new Queryable[HoTTPostData, HoTTPost]{
-    def get(web: HoTTPost): Future[HoTTPostData] = Future{
-      HoTTPostData(
-        web.global.counter,
-        allPostFullData(web)
-      )
+  implicit def hottPostDataQuery: Queryable[HoTTPostData, HoTTPost] =
+    new Queryable[HoTTPostData, HoTTPost] {
+      def get(web: HoTTPost): Future[HoTTPostData] = Future {
+        HoTTPostData(
+          web.global.counter,
+          allPostFullData(web)
+        )
+      }
     }
-  }
+
+  implicit def equationNodeQuery: Queryable[Set[EquationNode], HoTTPost] =
+    new Queryable[Set[EquationNode], HoTTPost] {
+      def get(web: HoTTPost): Future[Set[EquationNode]] =
+        Future(web.equationNodes)
+    }
+
+  implicit def equationQuery: Queryable[Set[Equation], HoTTPost] =
+    new Queryable[Set[Equation], HoTTPost] {
+      def get(web: HoTTPost): Future[Set[Equation]] = Future(web.equations)
+    }
 
   case class Apex[P](base: P)
 
-  implicit def postToLeaves[P](implicit bp:  Postable[P, HoTTPost, ID]) : Postable[Apex[P], HoTTPost, ID] =
+  implicit def postToLeaves[P](
+      implicit bp: Postable[P, HoTTPost, ID]
+  ): Postable[Apex[P], HoTTPost, ID] =
     new Postable[Apex[P], HoTTPost, ID] {
 
-      def post(content: Apex[P], web: HoTTPost, pred: Set[ID]): Future[ID] = 
-       {
-         val dataFuture = query[HoTTPostData, HoTTPost](web)
-         for {
-           data <- dataFuture
-           leaves = data.leafIndices.toSet
-           postData <- Postable.postFuture(content.base, web, pred union leaves)
-         } yield postData.id
-       }
+      def post(content: Apex[P], web: HoTTPost, pred: Set[ID]): Future[ID] = {
+        val dataFuture = query[HoTTPostData, HoTTPost](web)
+        for {
+          data <- dataFuture
+          leaves = data.leafIndices.toSet
+          postData <- Postable.postFuture(content.base, web, pred union leaves)
+        } yield postData.id
+      }
 
       val contextChange: Boolean = bp.contextChange
     }

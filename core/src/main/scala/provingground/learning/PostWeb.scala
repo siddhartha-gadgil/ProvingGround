@@ -28,7 +28,30 @@ trait LocalQueryable[U, W, ID] {
   def getAt(web: W, id: ID): Future[Vector[U]]
 }
 
-object LocalQueryable {
+case class AnswerFromPost[P, U, W, ID](func: P => U)(
+  implicit pw: Postable[P, W, ID]
+) {
+def fromPost[Q](data: PostData[Q, W, ID]) : Option[U] =
+  if (pw == data.pw) Some(func(data.content.asInstanceOf[P])) else None
+}
+
+case class LatestAnswer[Q, W, ID](
+  answers: Seq[AnswerFromPost[_, Q, W, ID]]
+)(implicit h: PostHistory[W, ID])
+  extends LocalQueryable[Q, W, ID] {
+    def getAt(web: W, id: ID): Future[Vector[Q]] = Future{
+      def answer: PostData[_, W, ID] => Option[Q] = 
+        (pd) => answers.flatMap(ans => ans.fromPost(pd)).headOption
+      h.latestAnswers(web, id, answer).toVector
+    }
+  }
+
+
+trait FallBackLookups{
+  implicit   def lookupLatest[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Q, W, ID] = 
+  LatestAnswer(Seq(AnswerFromPost[Q, Q, W, ID](identity)))
+}
+object LocalQueryable extends FallBackLookups{
   def query[Q, W](web: W)(implicit q: Queryable[Q, W]) = q.get(web)
 
   def queryAt[Q, W, ID](web: W, id: ID)(implicit q: LocalQueryable[Q, W, ID]) =
@@ -41,17 +64,10 @@ object LocalQueryable {
       def getAt(web: W, id: ID): Future[Vector[U]] = q.get(web).map(Vector(_))
     }
 
-  case class AnswerFromPost[P, U, W, ID](func: P => U)(
-      implicit pw: Postable[P, W, ID]
-  ) {
-    def fromPost[Q](data: PostData[Q, W, ID]) =
-      if (pw == data.pw) Some(func(data.content.asInstanceOf[P])) else None
-  }
-
   def lookupAnswer[P, W, ID](
-      implicit pw: Postable[P, W, ID]
+    implicit pw: Postable[P, W, ID]
   ): AnswerFromPost[P, P, W, ID] = AnswerFromPost(identity(_))
-  
+
   /**
    * Look up an answer in the history of a post, assuming an implicit history provider
    */ 
@@ -70,16 +86,8 @@ object LocalQueryable {
       }
   }
 
-  case class LatestAnswer[Q, W, ID](
-    answers: Seq[AnswerFromPost[_, Q, W, ID]]
-  )(implicit h: PostHistory[W, ID])
-    extends LocalQueryable[Q, W, ID] {
-      def getAt(web: W, id: ID): Future[Vector[Q]] = Future{
-        def answer: PostData[_, W, ID] => Option[Q] = 
-          (pd) => answers.flatMap(ans => ans.fromPost(pd)).headOption
-        h.latestAnswers(web, id, answer).toVector
-      }
-    }
+
+  
 
   implicit def hconsQueryable[U, V <: HList, W, ID](
       implicit qu: LocalQueryable[U, W, ID],
@@ -130,6 +138,7 @@ trait PostHistory[W, ID] {
   def latestAnswers[Q](web: W, id: ID, answer: PostData[_, W, ID] => Option[Q]) : Set[Q] = 
     findPost(web, id).map{
       case (pd, preds) => 
+        // pprint.log(id)
         answer(pd).map(Set(_)).getOrElse(
           preds.flatMap(pid => latestAnswers(web, pid, answer))
           )
@@ -204,7 +213,7 @@ class SimpleSession[W, ID](
         PostResponse.postResponseFuture(web, content, postID, response).map {
           v =>
             v.map {
-              case pd: PostData[q, W, ID] => tailPostFuture(pd.content, postID)(pd.pw)
+              case pd: PostData[q, W, ID] => tailPostFuture(pd.content, pd.id)(pd.pw)
             }
         }
     ) 
