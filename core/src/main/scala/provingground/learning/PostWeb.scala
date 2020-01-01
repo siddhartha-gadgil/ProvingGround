@@ -11,7 +11,7 @@ import scala.collection.mutable.ArrayBuffer
  * Typeclass for being able to post with content type P in W
  */
 trait Postable[P, W, ID] {
-  def post(content: P, web: W, pred: Set[ID]): Task[ID]
+  def post(content: P, web: W, pred: Set[ID]): Future[ID]
 
   val contextChange: Boolean
 }
@@ -19,13 +19,13 @@ trait Postable[P, W, ID] {
  *  Typeclass for being able to query W for type Q
  */
 trait Queryable[U, W] {
-  def get(web: W): Task[U]
+  def get(web: W): Future[U]
 }
 /**
  * Typeclass for being able to query W for a vector of elements of type Q at an index
  */ 
 trait LocalQueryable[U, W, ID] {
-  def getAt(web: W, id: ID): Task[Vector[U]]
+  def getAt(web: W, id: ID): Future[Vector[U]]
 }
 
 object LocalQueryable {
@@ -38,7 +38,7 @@ object LocalQueryable {
       implicit q: Queryable[U, W]
   ): LocalQueryable[U, W, ID] =
     new LocalQueryable[U, W, ID] {
-      def getAt(web: W, id: ID): Task[Vector[U]] = q.get(web).map(Vector(_))
+      def getAt(web: W, id: ID): Future[Vector[U]] = q.get(web).map(Vector(_))
     }
 
   case class AnswerFromPost[P, U, W, ID](func: P => U)(
@@ -60,7 +60,7 @@ object LocalQueryable {
   )(implicit h: PostHistory[W, ID])
       extends LocalQueryable[Q, W, ID] {
     def getAt(web: W, id: ID) =
-      Task {
+      Future {
         val stream = for {
           pd  <- h.history(web, id)
           ans <- answers
@@ -74,7 +74,7 @@ object LocalQueryable {
     answers: Seq[AnswerFromPost[_, Q, W, ID]]
   )(implicit h: PostHistory[W, ID])
     extends LocalQueryable[Q, W, ID] {
-      def getAt(web: W, id: ID): Task[Vector[Q]] = Task{
+      def getAt(web: W, id: ID): Future[Vector[Q]] = Future{
         def answer: PostData[_, W, ID] => Option[Q] = 
           (pd) => answers.flatMap(ans => ans.fromPost(pd)).headOption
         h.latestAnswers(web, id, answer).toVector
@@ -85,7 +85,7 @@ object LocalQueryable {
       implicit qu: LocalQueryable[U, W, ID],
       qv: LocalQueryable[V, W, ID]
   ) : LocalQueryable[U :: V, W, ID] = new LocalQueryable[U:: V, W, ID] {
-      def getAt(web: W, id: ID): Task[Vector[U :: V]] = 
+      def getAt(web: W, id: ID): Future[Vector[U :: V]] = 
         for {
             head <- qu.getAt(web, id)
             tail <- qv.getAt(web, id)
@@ -95,11 +95,11 @@ object LocalQueryable {
 
 
   implicit def hNilQueryable[W, ID] : LocalQueryable[HNil, W, ID] = new LocalQueryable[HNil, W, ID] {
-      def getAt(web: W, id: ID): Task[Vector[HNil]] = Task.now(Vector(HNil))
+      def getAt(web: W, id: ID): Future[Vector[HNil]] = Future(Vector(HNil))
   }
 
   implicit def unitQueryable[W, ID] : LocalQueryable[Unit, W, ID] = new LocalQueryable[Unit, W, ID] {
-    def getAt(web: W, id: ID): Task[Vector[Unit]] = Task.now(Vector(()))
+    def getAt(web: W, id: ID): Future[Vector[Unit]] = Future(Vector(()))
 }
 }
 /**
@@ -143,7 +143,7 @@ trait PostHistory[W, ID] {
 sealed trait PostResponse[W, ID]{
   type PostType
 
-  def postTask(web: W, content: PostType, id: ID): Task[Vector[PostData[_, W, ID]]]
+  def postFuture(web: W, content: PostType, id: ID): Future[Vector[PostData[_, W, ID]]]
 }
 
 object PostResponse {
@@ -163,50 +163,19 @@ object PostResponse {
    * if types match (as evidenced by implicits) then the task is carried out and the 
    * new post wrapped as PostData are returned (the wrapping allows implicits to be passed on).
    */ 
-  def postResponseTask[Q, W, ID](
+  def postResponseFuture[Q, W, ID](
       web: W,
       post: Q,
       id: ID,
       response: PostResponse[W, ID]
   )(
       implicit qp: Postable[Q, W, ID]
-  ): Task[Vector[PostData[_, W, ID]]] = {
+  ): Future[Vector[PostData[_, W, ID]]] = {
     val chainOpt = typedResponseOpt(post, response)(qp)
-      .map(tr => tr.postTask(web, post, id))
+      .map(tr => tr.postFuture(web, post, id))
       .toVector
-    val flip = Task.gather(chainOpt)
+    val flip = Future.sequence(chainOpt)
     flip.map(_.flatten)
-  }
-
-  // this method and the iterant were for type checking during development only
-  def postChainTask[W, ID](
-      web: W,
-      posts: Vector[PostData[_, W, ID]],
-      responses: Vector[PostResponse[W, ID]]
-  ): Task[Vector[PostData[_, W, ID]]] = {
-    val groups =
-      for {
-        response <- responses
-        data     <- posts
-      } yield {
-        data match {
-          case pd: PostData[a, b, c] =>
-            postResponseTask(web, pd.content, pd.id, response)(pd.pw)
-        }
-
-      }
-
-    Task.sequence(groups).map(_.flatten)
-  }
-
-  def iterant[W, ID](
-      web: W,
-      initialPosts: Vector[PostData[_, W, ID]],
-      responses: Vector[PostResponse[W, ID]]
-  ): Iterant[Task, Vector[PostData[_, W, ID]]] = {
-    def step(posts: Vector[PostData[_, W, ID]]) =
-      postChainTask(web, posts, responses).map(ps => ps -> ps)
-    Iterant.fromLazyStateAction(step)(Task.now(initialPosts))
   }
 
 }
@@ -221,27 +190,25 @@ class SimpleSession[W, ID](
   /**
    * recursively posting and running (as side-effects) offspring tasks
    */ 
-  def postTask[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Task[PostData[P, W, ID]] = {
-    val postIdTask = pw.post(content, web, preds)
-    postIdTask.foreach { postID => // posting done, the id is now the predecessor for further posts
-      val reactions = responses.map(
-        response =>
-          PostResponse.postResponseTask(web, content, postID, response).map {
-            v =>
-              v.map {
-                case pd: PostData[q, W, ID] => postTask(pd.content, Set(postID))(pd.pw)
-              }
-          }
-      ) // the value consists of two-step tasks, which are run and the rseult discarded
-      reactions.foreach(t => 
-        t.foreach(w =>
-          w.foreach(s => s.foreach(_ => ())))) // the generated tasks are run, with the result discarded
+  def postFuture[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = {
+    val postIdFuture = pw.post(content, web, preds)
+    postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
+      tailPostFuture(content, postID)
     }
-    postIdTask.map{id => PostData(content, id)}
+    postIdFuture.map{id => PostData(content, id)}
   }
 
-  def postFuture[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = 
-    postTask(content, preds).runToFuture
+  def tailPostFuture[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = {
+    responses.foreach(
+      response =>
+        PostResponse.postResponseFuture(web, content, postID, response).map {
+          v =>
+            v.map {
+              case pd: PostData[q, W, ID] => tailPostFuture(pd.content, postID)(pd.pw)
+            }
+        }
+    ) 
+  }
 
   def query[Q](implicit q: Queryable[Q, W]) = q.get(web)
 
@@ -255,7 +222,7 @@ sealed abstract class TypedPostResponse[P, W, ID](
   type PostType = P
 
   // the posts in response to a given one, may be none
-  def postTask(web: W, content: P, id: ID): Task[Vector[PostData[_, W, ID]]]
+  def postFuture(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]]
 }
 
 object TypedPostResponse {
@@ -264,19 +231,19 @@ object TypedPostResponse {
  * the returned task gives an empty vector, but running it executes the callback,
  * in fact, a callback is executed for each value of the auxiliary queryable
  */ 
-  case class Callback[P, W, V, ID](update: W => V => P => Task[Unit])(
+  case class Callback[P, W, V, ID](update: W => V => P => Future[Unit])(
       implicit pw: Postable[P, W, ID],
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
-    def postTask(
+    def postFuture(
         web: W,
         content: P,
         id: ID
-    ): Task[Vector[PostData[_, W, ID]]] = {
-      val auxTask = lv.getAt(web, id)
-      val task = auxTask.flatMap { auxs =>
-        Task.gather(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
+    ): Future[Vector[PostData[_, W, ID]]] = {
+      val auxFuture = lv.getAt(web, id)
+      val task = auxFuture.flatMap { auxs =>
+        Future.sequence(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
       }
       task
     }
@@ -286,74 +253,74 @@ object TypedPostResponse {
    * Response to a post returning a vector of posts, 
    * one for each value of the auxiliary queryable (in simple cases a singleton is returned)
    */ 
-  case class Poster[P, Q, W, V, ID](response: V => P => Task[Q])(
+  case class Poster[P, Q, W, V, ID](response: V => P => Future[Q])(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
-    def postTask(
+    def postFuture(
         web: W,
         content: P,
         id: ID
-    ): Task[Vector[PostData[_, W, ID]]] = {
-      val auxTask = lv.getAt(web, id)
+    ): Future[Vector[PostData[_, W, ID]]] = {
+      val auxFuture = lv.getAt(web, id)
       val taskNest =
-        auxTask.map{
+        auxFuture.map{
           (auxs => 
             auxs.map{
               aux => 
-                val newPostTask = response(aux)(content)
-                newPostTask.flatMap{newPost => 
-                  val idNewTask = qw.post(newPost, web, Set(id))
-                  idNewTask.map(idNew => PostData(newPost, idNew))}
+                val newPostFuture = response(aux)(content)
+                newPostFuture.flatMap{newPost => 
+                  val idNewFuture = qw.post(newPost, web, Set(id))
+                  idNewFuture.map(idNew => PostData(newPost, idNew))}
             })
         }
-      val task = taskNest.flatMap(st => Task.gather(st))
+      val task = taskNest.flatMap(st => Future.sequence(st))
       task
     }
   }
 }
 
-case class VectorPoster[P, Q, W, V, ID](responses: V => P => Task[Vector[Q]])(
+case class VectorPoster[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]])(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
-    def postTask(
+    def postFuture(
         web: W,
         content: P,
         id: ID
-    ): Task[Vector[PostData[_, W, ID]]] = {
-      val auxTask = lv.getAt(web, id)
+    ): Future[Vector[PostData[_, W, ID]]] = {
+      val auxFuture = lv.getAt(web, id)
       val taskNest =
-        auxTask.map{
+        auxFuture.map{
           (auxs => 
             auxs.map{
               aux => 
-                val newPostsTask = responses(aux)(content)
-                newPostsTask.flatMap{newPosts =>
-                  Task.gather(newPosts.map{newPost =>
-                    val idNewTask = qw.post(newPost, web, Set(id))
-                    idNewTask.map(idNew => PostData(newPost, idNew))}
+                val newPostsFuture = responses(aux)(content)
+                newPostsFuture.flatMap{newPosts =>
+                  Future.sequence(newPosts.map{newPost =>
+                    val idNewFuture = qw.post(newPost, web, Set(id))
+                    idNewFuture.map(idNew => PostData(newPost, idNew))}
                   )}
             })
         }
-      val task = taskNest.flatMap(st => Task.gather(st).map(_.flatten))
+      val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten))
       task
     }
 }
 
 trait GlobalPost[P, ID] {
-  def postGlobal(content: P): Task[ID]
+  def postGlobal(content: P): Future[ID]
 }
 
 object GlobalPost {
   class IndexGlobalPost[P] extends GlobalPost[P, Int] {
     val globalBuffer: ArrayBuffer[P] = ArrayBuffer()
-    def postGlobal(content: P): Task[Int] = {
-      Task {
+    def postGlobal(content: P): Future[Int] = {
+      Future {
         globalBuffer += content
         val index = globalBuffer.size - 1
         assert(globalBuffer(index) == content)
@@ -366,7 +333,7 @@ object GlobalPost {
 trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   val buffer: ArrayBuffer[(P, ID, Set[ID])] = ArrayBuffer()
 
-  def post(content: P, prev: Set[ID]): Task[ID] = {
+  def post(content: P, prev: Set[ID]): Future[ID] = {
     val idT = postGlobal(content)
     idT.map { id =>
       buffer += ((content, id, prev))
@@ -387,8 +354,8 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 }
 
 object PostBuffer {
-  def apply[P, ID](globalPost: => (P => Task[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
-    def postGlobal(content: P): Task[ID] = globalPost(content)
+  def apply[P, ID](globalPost: => (P => Future[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
+    def postGlobal(content: P): Future[ID] = globalPost(content)
   }
 
   def get[P, ID](pb: PostBuffer[P, ID], id: ID): Option[P] =
@@ -407,20 +374,20 @@ class IndexedPostBuffer[P]
 
 
 object Postable {
-  def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Task[ID], ctx: Boolean) : Postable[P, W, ID] = 
+  def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID], ctx: Boolean) : Postable[P, W, ID] = 
     new Postable[P, W, ID] {
-        def post(content: P, web: W, pred: Set[ID]): Task[ID] = 
+        def post(content: P, web: W, pred: Set[ID]): Future[ID] = 
             postFunc(content, web, pred)
         val contextChange: Boolean = ctx
     }
 
-  def postTask[P, W, ID](content: P, web: W, pred: Set[ID])(implicit pw: Postable[P, W, ID]) : Task[PostData[P, W, ID]] = 
+  def postFuture[P, W, ID](content: P, web: W, pred: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[PostData[P, W, ID]] = 
     pw.post(content, web, pred).map{id => PostData(content, id)} 
 
   implicit def bufferPostable[P, ID, W <: PostBuffer[P, ID]]
       : Postable[P, W, ID] =
     new Postable[P, W, ID] {
-      def post(content: P, web: W, pred: Set[ID]): Task[ID] =
+      def post(content: P, web: W, pred: Set[ID]): Future[ID] =
         web.post(content, pred)
       val contextChange: Boolean = false
     }
@@ -428,7 +395,7 @@ object Postable {
   implicit def indexedBufferPostable[P, W <: IndexedPostBuffer[P]]
       : Postable[P, W, Int] =
     new Postable[P, W, Int] {
-      def post(content: P, web: W, pred: Set[Int]): Task[Int] =
+      def post(content: P, web: W, pred: Set[Int]): Future[Int] =
         web.post(content, pred)
       val contextChange: Boolean = false
     }
@@ -437,10 +404,10 @@ object Postable {
 class CounterGlobalID(log : Any => Unit = (_) => ()){
   var counter: Int = 0
 
-  def postGlobal[P](content: P) : Task[(Int, Int)] = {
+  def postGlobal[P](content: P) : Future[(Int, Int)] = {
     val index = counter
     counter +=1
     log(content)
-    Task((counter, content.hashCode()))
+    Future((counter, content.hashCode()))
   }
 }

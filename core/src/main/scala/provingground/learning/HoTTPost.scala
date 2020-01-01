@@ -33,13 +33,13 @@ object HoTTPost {
   type ID = (Int, Int)
 
   implicit val postLP: Postable[LocalProver, HoTTPost, ID] = {
-    def postFunc(lp: LocalProver, web: HoTTPost, ids: Set[ID]): Task[ID] =
+    def postFunc(lp: LocalProver, web: HoTTPost, ids: Set[ID]): Future[ID] =
       web.lpBuff.post(lp, ids)
     Postable(postFunc, true)
   }
 
   implicit val postExpEv: Postable[ExpressionEval, HoTTPost, ID] = {
-    def postFunc(ev: ExpressionEval, web: HoTTPost, ids: Set[ID]): Task[ID] =
+    def postFunc(ev: ExpressionEval, web: HoTTPost, ids: Set[ID]): Future[ID] =
       web.expEvalBuff.post(ev, ids)
     Postable(postFunc, false)
   }
@@ -49,7 +49,7 @@ object HoTTPost {
         eqns: Set[EquationNode],
         web: HoTTPost,
         ids: Set[ID]
-    ): Task[ID] = web.eqnNodeBuff.post(eqns, ids)
+    ): Future[ID] = web.eqnNodeBuff.post(eqns, ids)
     Postable(postFunc, false)
   }
 
@@ -91,7 +91,7 @@ object HoTTPost {
   }
 
   implicit def hottPostDataQuery : Queryable[HoTTPostData, HoTTPost] = new Queryable[HoTTPostData, HoTTPost]{
-    def get(web: HoTTPost): Task[HoTTPostData] = Task{
+    def get(web: HoTTPost): Future[HoTTPostData] = Future{
       HoTTPostData(
         web.global.counter,
         allPostFullData(web)
@@ -104,13 +104,13 @@ object HoTTPost {
   implicit def postToLeaves[P](implicit bp:  Postable[P, HoTTPost, ID]) : Postable[Apex[P], HoTTPost, ID] =
     new Postable[Apex[P], HoTTPost, ID] {
 
-      def post(content: Apex[P], web: HoTTPost, pred: Set[ID]): Task[ID] = 
+      def post(content: Apex[P], web: HoTTPost, pred: Set[ID]): Future[ID] = 
        {
-         val dataTask = query[HoTTPostData, HoTTPost](web)
+         val dataFuture = query[HoTTPostData, HoTTPost](web)
          for {
-           data <- dataTask
+           data <- dataFuture
            leaves = data.leafIndices.toSet
-           postData <- Postable.postTask(content.base, web, pred union leaves)
+           postData <- Postable.postFuture(content.base, web, pred union leaves)
          } yield postData.id
        }
 
@@ -118,20 +118,20 @@ object HoTTPost {
     }
 
   lazy val lpToExpEv: PostResponse[HoTTPost, ID] = {
-    val response: Unit => LocalProver => Task[ExpressionEval] = (_) =>
-      lp => lp.expressionEval
+    val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
+      lp => lp.expressionEval.runToFuture
     Poster(response)
   }
 
   lazy val expEvToEqns: PostResponse[HoTTPost, ID] = {
-    val response: Unit => ExpressionEval => Task[Set[EquationNode]] = (_) =>
-      (expEv) => Task(expEv.equations.flatMap(Equation.split))
+    val response: Unit => ExpressionEval => Future[Set[EquationNode]] = (_) =>
+      (expEv) => Future(expEv.equations.flatMap(Equation.split))
     Poster(response)
   }
 
   lazy val eqnUpdate: PostResponse[HoTTPost, ID] = {
-    val update: HoTTPost => Unit => Set[EquationNode] => Task[Unit] = web =>
-      (_) => eqns => Task(web.addEqns(eqns))
+    val update: HoTTPost => Unit => Set[EquationNode] => Future[Unit] = web =>
+      (_) => eqns => Future(web.addEqns(eqns))
     Callback(update)
   }
 
@@ -143,15 +143,15 @@ class HoTTSession
       Vector(lpToExpEv, expEvToEqns, eqnUpdate)
     ) {
   // just an illustration, should just use rhs
-  def postLocalProverTask(
+  def postLocalProverFuture(
       lp: LocalProver,
       pred: Set[ID] = Set()
-  ): Task[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
-    postTask(lp, pred)
+  ): Future[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
+    postFuture(lp, pred)
 
   def postLP(
       lp: LocalProver,
       pred: Set[ID] = Set()
   ): Future[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
-    postLocalProverTask(lp, pred).runToFuture
+    postLocalProverFuture(lp, pred)
 }
