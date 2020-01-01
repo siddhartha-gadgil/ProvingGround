@@ -108,7 +108,7 @@ object HoTTPost {
 
   implicit def hottPostDataQuery: Queryable[HoTTPostData, HoTTPost] =
     new Queryable[HoTTPostData, HoTTPost] {
-      def get(web: HoTTPost): Future[HoTTPostData] = Future {
+      def get(web: HoTTPost, predicate: HoTTPostData => Boolean): Future[HoTTPostData] = Future {
         HoTTPostData(
           web.global.counter,
           allPostFullData(web)
@@ -118,13 +118,13 @@ object HoTTPost {
 
   implicit def equationNodeQuery: Queryable[Set[EquationNode], HoTTPost] =
     new Queryable[Set[EquationNode], HoTTPost] {
-      def get(web: HoTTPost): Future[Set[EquationNode]] =
+      def get(web: HoTTPost, predicate: Set[EquationNode] => Boolean): Future[Set[EquationNode]] =
         Future(web.equationNodes)
     }
 
   implicit def equationQuery: Queryable[Set[Equation], HoTTPost] =
     new Queryable[Set[Equation], HoTTPost] {
-      def get(web: HoTTPost): Future[Set[Equation]] = Future(web.equations)
+      def get(web: HoTTPost, predicate: Set[Equation] => Boolean): Future[Set[Equation]] = Future(web.equations)
     }
 
   case class Apex[P](base: P)
@@ -135,7 +135,7 @@ object HoTTPost {
     new Postable[Apex[P], HoTTPost, ID] {
 
       def post(content: Apex[P], web: HoTTPost, pred: Set[ID]): Future[ID] = {
-        val dataFuture = query[HoTTPostData, HoTTPost](web)
+        val dataFuture = query[HoTTPostData, HoTTPost](web, (_) => true)
         for {
           data <- dataFuture
           leaves = data.leafIndices.toSet
