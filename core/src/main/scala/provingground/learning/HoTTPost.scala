@@ -18,40 +18,74 @@ class HoTTPost { web =>
     equationNodes ++= eqs
   }
 
+  val tgBuff = PostBuffer[TermGenParams, ID](global.postGlobal)
+
+  val initStateBuff = PostBuffer[InitState, ID](global.postGlobal)
+
+  val finalStateBuff = PostBuffer[FinalState, ID](global.postGlobal)
+
   val lpBuff = PostBuffer[LocalProver, ID](global.postGlobal)
+
+  val lptBuff = PostBuffer[LocalTangentProver, ID](global.postGlobal)
 
   val expEvalBuff = PostBuffer[ExpressionEval, ID](global.postGlobal)
 
   val eqnNodeBuff = PostBuffer[Set[EquationNode], ID](global.postGlobal)
 
+  val tunedLpBuff = PostBuffer[TunedLocalProver, ID](global.postGlobal)
+
   val buffers: Vector[PostBuffer[_, ID]] =
-    Vector(lpBuff, eqnNodeBuff, expEvalBuff)
+    Vector(
+      tgBuff,
+      lpBuff,
+      eqnNodeBuff,
+      expEvalBuff,
+      lptBuff,
+      initStateBuff,
+      finalStateBuff,
+      tunedLpBuff
+    )
 
 }
 
 object HoTTPost {
   type ID = (Int, Int)
 
-  implicit val postLP: Postable[LocalProver, HoTTPost, ID] = {
-    def postFunc(lp: LocalProver, web: HoTTPost, ids: Set[ID]): Future[ID] =
-      web.lpBuff.post(lp, ids)
-    Postable(postFunc, true)
-  }
+  case class InitState(ts: TermState, weight: Double)
 
-  implicit val postExpEv: Postable[ExpressionEval, HoTTPost, ID] = {
-    def postFunc(ev: ExpressionEval, web: HoTTPost, ids: Set[ID]): Future[ID] =
-      web.expEvalBuff.post(ev, ids)
-    Postable(postFunc, false)
-  }
+  case class FinalState(ts: TermState, weight: Double) // should also record source, whether by evolution or from equations etc
 
-  implicit val postEqnNodes: Postable[Set[EquationNode], HoTTPost, ID] = {
-    def postFunc(
-        eqns: Set[EquationNode],
-        web: HoTTPost,
-        ids: Set[ID]
-    ): Future[ID] = web.eqnNodeBuff.post(eqns, ids)
-    Postable(postFunc, false)
-  }
+  case class TunedLocalProver(lp: LocalProver)
+
+  import PostBuffer.bufferPost
+
+  implicit val postLP: Postable[LocalProver, HoTTPost, ID] =
+    bufferPost(_.lpBuff, true)
+
+  implicit val postLPT: Postable[LocalTangentProver, HoTTPost, ID] =
+    bufferPost(_.lptBuff, true)
+
+  implicit val postExpEv: Postable[ExpressionEval, HoTTPost, ID] = bufferPost(
+    _.expEvalBuff
+  )
+
+  implicit val postEqnNodes: Postable[Set[EquationNode], HoTTPost, ID] =
+    bufferPost(_.eqnNodeBuff)
+
+  implicit val postTg: Postable[TermGenParams, HoTTPost, ID] = bufferPost(
+    _.tgBuff
+  )
+
+  implicit val postInit: Postable[InitState, HoTTPost, ID] = bufferPost(
+    _.initStateBuff
+  )
+
+  implicit val postFinal: Postable[FinalState, HoTTPost, ID] = bufferPost(
+    _.finalStateBuff
+  )
+
+  implicit val postTunedLP: Postable[TunedLocalProver, HoTTPost, ID] =
+    bufferPost(_.tunedLpBuff)
 
   case class WebBuffer[P](buffer: PostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]
@@ -108,7 +142,10 @@ object HoTTPost {
 
   implicit def hottPostDataQuery: Queryable[HoTTPostData, HoTTPost] =
     new Queryable[HoTTPostData, HoTTPost] {
-      def get(web: HoTTPost, predicate: HoTTPostData => Boolean): Future[HoTTPostData] = Future {
+      def get(
+          web: HoTTPost,
+          predicate: HoTTPostData => Boolean
+      ): Future[HoTTPostData] = Future {
         HoTTPostData(
           web.global.counter,
           allPostFullData(web)
@@ -117,15 +154,10 @@ object HoTTPost {
     }
 
   implicit def equationNodeQuery: Queryable[Set[EquationNode], HoTTPost] =
-    new Queryable[Set[EquationNode], HoTTPost] {
-      def get(web: HoTTPost, predicate: Set[EquationNode] => Boolean): Future[Set[EquationNode]] =
-        Future(web.equationNodes)
-    }
+    Queryable.simple(_.equationNodes)
 
   implicit def equationQuery: Queryable[Set[Equation], HoTTPost] =
-    new Queryable[Set[Equation], HoTTPost] {
-      def get(web: HoTTPost, predicate: Set[Equation] => Boolean): Future[Set[Equation]] = Future(web.equations)
-    }
+    Queryable.simple(_.equations)
 
   case class Apex[P](base: P)
 
@@ -152,16 +184,32 @@ object HoTTPost {
     Poster(response)
   }
 
-  lazy val expEvToEqns: PostResponse[HoTTPost, ID] = {
-    val response: Unit => ExpressionEval => Future[Set[EquationNode]] = (_) =>
-      (expEv) => Future(expEv.equations.flatMap(Equation.split))
+  lazy val expEvToEqns: PostResponse[HoTTPost, ID] =
+    Poster.simple(
+      (ev: ExpressionEval) => ev.equations.flatMap(Equation.split)
+    )
+
+  lazy val eqnUpdate: PostResponse[HoTTPost, ID] =
+    Callback.simple(
+      (web: HoTTPost) => (eqs: Set[EquationNode]) => web.addEqns(eqs)
+    )
+
+  lazy val lpFromInit: PostResponse[HoTTPost, ID] = {
+    val response: TermGenParams => InitState => Future[LocalProver] =
+      (tg) => (init) => Future(LocalProver(init.ts, tg).sharpen(init.weight))
     Poster(response)
   }
 
-  lazy val eqnUpdate: PostResponse[HoTTPost, ID] = {
-    val update: HoTTPost => Unit => Set[EquationNode] => Future[Unit] = web =>
-      (_) => eqns => Future(web.addEqns(eqns))
-    Callback(update)
+  lazy val lpFromTG: PostResponse[HoTTPost, ID] = {
+    val response: InitState => TermGenParams => Future[LocalProver] =
+      (init) => (tg) => Future(LocalProver(init.ts, tg).sharpen(init.weight))
+    Poster(response)
+  }
+
+  lazy val tuneLP : PostResponse[HoTTPost, ID] = {
+    val response: Unit => LocalProver => Future[TunedLocalProver] = 
+      (_) => (lp) => lp.tunedInit.runToFuture.map(TunedLocalProver(_))
+      Poster(response)
   }
 
 }

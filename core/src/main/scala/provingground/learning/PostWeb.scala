@@ -21,6 +21,13 @@ trait Postable[P, W, ID] {
 trait Queryable[U, W] {
   def get(web: W, predicate: U => Boolean): Future[U]
 }
+
+object Queryable{
+  def simple[U, W](func: W => U) = new Queryable[U, W] {
+    def get(web: W, predicate: U => Boolean): Future[U] = 
+      Future(func(web))
+  }
+}
 /**
  * Typeclass for being able to query W for a vector of elements of type Q at an index
  */ 
@@ -51,6 +58,7 @@ trait FallBackLookups{
   implicit   def lookupLatest[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Q, W, ID] = 
   LatestAnswer(Seq(AnswerFromPost[Q, Q, W, ID](identity)))
 }
+
 object LocalQueryable extends FallBackLookups{
   def query[Q, W](web: W, predicate: Q => Boolean)(implicit q: Queryable[Q, W]) = q.get(web, predicate)
 
@@ -157,6 +165,7 @@ sealed trait PostResponse[W, ID]{
 }
 
 object PostResponse {
+
   /**
    * Casting to a typed post response if the Postables match
    */ 
@@ -259,6 +268,14 @@ object TypedPostResponse {
     }
   }
 
+  object Callback{
+    def simple[P, W, ID](func: W => P => Unit)(
+      implicit pw: Postable[P, W, ID]) = 
+      Callback[P, W, Unit, ID]{
+        (web: W) => (_: Unit) => (p: P) => Future(func(web)(p))
+    }
+  }
+
   /**
    * Response to a post returning a vector of posts, 
    * one for each value of the auxiliary queryable (in simple cases a singleton is returned)
@@ -274,7 +291,7 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
-      val auxFuture = lv.getAt(web, id, predicate)
+      val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
           (auxs => 
@@ -290,7 +307,16 @@ object TypedPostResponse {
       task
     }
   }
+
+  object Poster{
+    def simple[P, Q, W, ID](func: P => Q)(implicit pw: Postable[P, W, ID],
+    qw: Postable[Q, W, ID]) = Poster[P, Q, W, Unit, ID](
+      (_ : Unit) => (p: P) => Future(func(p))
+    )
+  }
 }
+
+
 
 case class VectorPoster[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean)(
       implicit pw: Postable[P, W, ID],
@@ -303,14 +329,14 @@ case class VectorPoster[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], 
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
-      val auxFuture = lv.getAt(web, id, predicate)
+      val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
           (auxs => 
             auxs.map{
               aux => 
                 val newPostsFuture = responses(aux)(content)
-                newPostsFuture.flatMap{newPosts =>
+                newPostsFuture.flatMap{newPosts => // extra nesting for multiple posts
                   Future.sequence(newPosts.map{newPost =>
                     val idNewFuture = qw.post(newPost, web, Set(id))
                     idNewFuture.map(idNew => PostData(newPost, idNew))}
@@ -374,6 +400,12 @@ object PostBuffer {
   def previous[P, ID](pb: PostBuffer[P, ID], id: ID) : Set[ID] = {
     val withId =  pb.buffer.filter(_._2 == id).toSet
     withId.flatMap(_._3)
+  }
+
+  def bufferPost[P, W, ID](buffer: W => PostBuffer[P, ID], ctx: Boolean = false) : Postable[P, W, ID] = {
+    def postFunc(p: P, web: W, ids: Set[ID]): Future[ID] =
+      buffer(web).post(p, ids)
+    Postable(postFunc, ctx)
   }
 }
 
