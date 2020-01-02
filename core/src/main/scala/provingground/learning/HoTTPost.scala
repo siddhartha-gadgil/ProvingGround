@@ -104,11 +104,22 @@ object HoTTPost {
 
     lazy val leafIndices: Vector[ID] =
       allIndices.filter(id => successors(id).isEmpty)
+
+    def filterMap[P, U](
+        func: P => U
+    )(implicit pw: Postable[P, HoTTPost, ID]): Vector[U] =
+      posts.map {
+        case (pd: PostData[q, HoTTPost, ID], _, _) =>
+          AnswerFromPost[P, U, HoTTPost, ID](func).fromPost(pd)
+      }.flatten
   }
 
   implicit def hottPostDataQuery: Queryable[HoTTPostData, HoTTPost] =
     new Queryable[HoTTPostData, HoTTPost] {
-      def get(web: HoTTPost, predicate: HoTTPostData => Boolean): Future[HoTTPostData] = Future {
+      def get(
+          web: HoTTPost,
+          predicate: HoTTPostData => Boolean
+      ): Future[HoTTPostData] = Future {
         HoTTPostData(
           web.global.counter,
           allPostFullData(web)
@@ -118,13 +129,19 @@ object HoTTPost {
 
   implicit def equationNodeQuery: Queryable[Set[EquationNode], HoTTPost] =
     new Queryable[Set[EquationNode], HoTTPost] {
-      def get(web: HoTTPost, predicate: Set[EquationNode] => Boolean): Future[Set[EquationNode]] =
+      def get(
+          web: HoTTPost,
+          predicate: Set[EquationNode] => Boolean
+      ): Future[Set[EquationNode]] =
         Future(web.equationNodes)
     }
 
   implicit def equationQuery: Queryable[Set[Equation], HoTTPost] =
     new Queryable[Set[Equation], HoTTPost] {
-      def get(web: HoTTPost, predicate: Set[Equation] => Boolean): Future[Set[Equation]] = Future(web.equations)
+      def get(
+          web: HoTTPost,
+          predicate: Set[Equation] => Boolean
+      ): Future[Set[Equation]] = Future(web.equations)
     }
 
   case class Apex[P](base: P)
