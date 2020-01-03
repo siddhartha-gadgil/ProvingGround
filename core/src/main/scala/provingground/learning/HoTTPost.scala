@@ -10,6 +10,8 @@ import scala.concurrent._
 class HoTTPost { web =>
   val global = new CounterGlobalID()
 
+  import global.postGlobal
+
   var equationNodes: Set[EquationNode] = Set()
 
   def equations = Equation.group(equationNodes)
@@ -18,21 +20,27 @@ class HoTTPost { web =>
     equationNodes ++= eqs
   }
 
-  val tgBuff = PostBuffer[TermGenParams, ID](global.postGlobal)
+  val tgBuff = PostBuffer[TermGenParams, ID](postGlobal)
 
-  val initStateBuff = PostBuffer[InitState, ID](global.postGlobal)
+  val initStateBuff = PostBuffer[InitState, ID](postGlobal)
 
-  val finalStateBuff = PostBuffer[FinalState, ID](global.postGlobal)
+  val finalStateBuff = PostBuffer[FinalState, ID](postGlobal)
 
-  val lpBuff = PostBuffer[LocalProver, ID](global.postGlobal)
+  val lpBuff = PostBuffer[LocalProver, ID](postGlobal)
 
-  val lptBuff = PostBuffer[LocalTangentProver, ID](global.postGlobal)
+  val lptBuff = PostBuffer[LocalTangentProver, ID](postGlobal)
 
-  val expEvalBuff = PostBuffer[ExpressionEval, ID](global.postGlobal)
+  val expEvalBuff = PostBuffer[ExpressionEval, ID](postGlobal)
 
-  val eqnNodeBuff = PostBuffer[Set[EquationNode], ID](global.postGlobal)
+  val eqnNodeBuff = PostBuffer[Set[EquationNode], ID](postGlobal)
 
-  val tunedLpBuff = PostBuffer[TunedLocalProver, ID](global.postGlobal)
+  val tunedLpBuff = PostBuffer[TunedLocalProver, ID](postGlobal)
+
+  val genEqnBuff = PostBuffer[GeneratedEquationNodes, ID](postGlobal)
+
+  val isleNormEqnBuff = PostBuffer[IsleNormalizedEquationNodes, ID](postGlobal)
+
+  val lemmaBuffer = PostBuffer[Lemmas, ID](postGlobal)
 
   val buffers: Vector[PostBuffer[_, ID]] =
     Vector(
@@ -43,7 +51,10 @@ class HoTTPost { web =>
       lptBuff,
       initStateBuff,
       finalStateBuff,
-      tunedLpBuff
+      tunedLpBuff,
+      genEqnBuff,
+      isleNormEqnBuff,
+      lemmaBuffer
     )
 
 }
@@ -56,6 +67,12 @@ object HoTTPost {
   case class FinalState(ts: TermState, weight: Double) // should also record source, whether by evolution or from equations etc
 
   case class TunedLocalProver(lp: LocalProver)
+
+  case class GeneratedEquationNodes(eqn: Set[EquationNode])
+
+  case class IsleNormalizedEquationNodes(eqn: Set[EquationNode])
+
+  case class Lemmas(lemmas: Vector[(Typ[Term], Double)])
 
   import PostBuffer.bufferPost
 
@@ -86,6 +103,16 @@ object HoTTPost {
 
   implicit val postTunedLP: Postable[TunedLocalProver, HoTTPost, ID] =
     bufferPost(_.tunedLpBuff)
+
+  implicit val postGenEqns: Postable[GeneratedEquationNodes, HoTTPost, ID] =
+    bufferPost(_.genEqnBuff)
+
+  implicit val postIslNrmEqns
+      : Postable[IsleNormalizedEquationNodes, HoTTPost, ID] =
+    bufferPost(_.isleNormEqnBuff)
+
+  implicit val postLemmas: Postable[Lemmas, HoTTPost, ID] =
+    bufferPost(_.lemmaBuffer)
 
   case class WebBuffer[P](buffer: PostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]
@@ -138,6 +165,14 @@ object HoTTPost {
 
     lazy val leafIndices: Vector[ID] =
       allIndices.filter(id => successors(id).isEmpty)
+
+    def filterMap[P, U](
+        func: P => U
+    )(implicit pw: Postable[P, HoTTPost, ID]): Vector[U] =
+      posts.map {
+        case (pd: PostData[q, HoTTPost, ID], _, _) =>
+          AnswerFromPost[P, U, HoTTPost, ID](func).fromPost(pd)
+      }.flatten
   }
 
   implicit def hottPostDataQuery: Queryable[HoTTPostData, HoTTPost] =
@@ -184,6 +219,12 @@ object HoTTPost {
     Poster(response)
   }
 
+  lazy val lptToExpEv: PostResponse[HoTTPost, ID] = {
+    val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
+      lp => lp.expressionEval.runToFuture
+    Poster(response)
+  }
+
   lazy val expEvToEqns: PostResponse[HoTTPost, ID] =
     Poster.simple(
       (ev: ExpressionEval) => ev.equations.flatMap(Equation.split)
@@ -206,10 +247,44 @@ object HoTTPost {
     Poster(response)
   }
 
-  lazy val tuneLP : PostResponse[HoTTPost, ID] = {
-    val response: Unit => LocalProver => Future[TunedLocalProver] = 
+  lazy val tuneLP: PostResponse[HoTTPost, ID] = {
+    val response: Unit => LocalProver => Future[TunedLocalProver] =
       (_) => (lp) => lp.tunedInit.runToFuture.map(TunedLocalProver(_))
-      Poster(response)
+    Poster(response)
+  }
+
+  lazy val isleNormalizeEqns: PostResponse[HoTTPost, ID] =
+    Poster.simple(
+      (ge: GeneratedEquationNodes) =>
+        IsleNormalizedEquationNodes(
+          ge.eqn.map(eq => TermData.isleNormalize(eq))
+        )
+    )
+
+  lazy val lpLemmas: PostResponse[HoTTPost, ID] = {
+    val response: Unit => LocalProver => Future[Lemmas] =
+      (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
+    Poster(response)
+  }
+
+  lazy val lptLemmas: PostResponse[HoTTPost, ID] = {
+    val response: Unit => LocalTangentProver => Future[Lemmas] =
+      (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
+    Poster(response)
+  }
+
+  lazy val lemmaToTangentProver: PostResponse[HoTTPost, ID] = {
+    val response: LocalProver => Lemmas => Future[Vector[LocalTangentProver]] =
+      (lp) =>
+        (lm) =>
+          Future.sequence(lm.lemmas.map {
+            case (tp, w) =>
+              lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture
+          })
+    new VectorPoster[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](
+      response,
+      (_) => true
+    )
   }
 
 }

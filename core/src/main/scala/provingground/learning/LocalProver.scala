@@ -615,6 +615,8 @@ case class LocalTangentProver(
 
   def withCutoff(ctf : Double) : LocalTangentProver = this.copy(cutoff = ctf)
 
+  override def sharpen(scale: Double = 2.0) : LocalTangentProver = withCutoff(cutoff / scale)
+
   def withLimit(l: FiniteDuration) : LocalTangentProver = this.copy(limit = l)
 
   def withParams(p: TermGenParams) : LocalTangentProver = this.copy(tg = p)
