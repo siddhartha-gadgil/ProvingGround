@@ -41,20 +41,20 @@ trait MetalsModule extends ScalaModule{
   }
 }
 
-val scalaV = "2.12.10"
+val scalaV = "2.13.1"
 
 val ammV = "1.8.2"
 
 
 val commonLibs = List(
-  ivy"org.scala-lang.modules::scala-parser-combinators::1.0.5",
-  ivy"org.scala-lang.modules::scala-xml:1.1.0",
-  ivy"org.typelevel::spire::0.16.0",
-  ivy"com.lihaoyi::fansi::0.2.4",
-  ivy"com.lihaoyi::upickle::0.7.1",
-  ivy"com.lihaoyi::fastparse::2.1.0",
+  ivy"org.scala-lang.modules::scala-parser-combinators::1.1.2",
+  ivy"org.scala-lang.modules::scala-xml:1.2.0",
+  ivy"org.typelevel::spire::0.17.0-M1",
+  ivy"com.lihaoyi::fansi::0.2.7",
+  ivy"com.lihaoyi::upickle::0.9.5",
+  ivy"com.lihaoyi::fastparse::2.2.1",
   ivy"com.chuusai::shapeless::2.3.3",
-  ivy"org.typelevel::cats-core::1.4.0",
+  ivy"org.typelevel::cats-core::2.1.0",
   ivy"io.monix::monix::3.0.0",
   ivy"com.lihaoyi::pprint::0.5.6",
   // ivy"com.lihaoyi::sourcecode::0.1.4"//,
@@ -72,7 +72,7 @@ trait CommonModule extends ScalaModule with ScalafmtModule with MetalsModule {
   override def artifactName = T{"provingground-"+super.artifactName()}
 
   override def scalacOptions =
-    Seq("-Ypartial-unification",
+    Seq(
       "-Yrangepos",
       // "-Xplugin-require:semanticdb",
       "-unchecked",
@@ -140,7 +140,7 @@ val jvmLibs = List(
   ivy"com.typesafe.akka::akka-http-spray-json:10.1.1",
   ivy"org.slf4j:slf4j-api:1.7.16",
   ivy"org.slf4j:slf4j-simple:1.7.16",
-  ivy"com.github.scopt::scopt:3.5.0",
+  ivy"com.github.scopt::scopt:3.7.1",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
   ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
@@ -196,7 +196,7 @@ object trepplein extends SbtModule with PublishModule{
   def scalaVersion = scalaV
   override def ivyDeps =
     Agg(
-      ivy"com.github.scopt::scopt:3.7.0"
+      ivy"com.github.scopt::scopt:3.7.1"
     )
 
     def name = "trepplein"
@@ -365,8 +365,8 @@ object client extends CommonJSModule with SbtModule{
 
   override def ivyDeps = Agg(
     ivy"org.scala-js::scalajs-dom::0.9.7",
-    ivy"com.lihaoyi::scalatags::0.6.7",
-    ivy"com.scalawarrior::scalajs-ace::0.0.4"
+    ivy"com.lihaoyi::scalatags::0.8.3",
+    // ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )
 
   def pack(): define.Command[PathRef] = T.command {

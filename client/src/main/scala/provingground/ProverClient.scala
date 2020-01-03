@@ -16,7 +16,7 @@ import HoTT.{id => _, _}
 import translation._
 import learning._
 import FineProverTasks._
-import com.scalawarrior.scalajs.ace.ace
+// import com.scalawarrior.scalajs.ace.ace
 import monix.execution.CancelableFuture
 import org.scalajs.dom.html.{Button, Div, Input, Span, Table, TableRow}
 import provingground.library.MonoidSimple

@@ -260,7 +260,7 @@ class SymbolicCRing[A: Ring] { self =>
       val pairs = vec
         .groupBy(_._1)
         .mapValues((seq) => (seq.map(_._2).sum))
-        .filter(_._2 != 0)
+        .filter(_._2 != 0).toMap
 
       if (pairs.isEmpty) Literal(one)
       else if (pairs.size > 1 || pairs.head._2 != 1) PiTerm(pairs)
@@ -609,7 +609,7 @@ class SymbolicCRing[A: Ring] { self =>
 object SymbolicCRing {
 
   def parse(typ: Typ[Term])(str: String): Option[Term] = typ match {
-    case FuncTyp(a: SymbolicCRing[u], FuncTyp(b, c)) if a == b && b == c =>
+    case FuncTyp(a: SymbolicCRing[u], ft: FuncTyp[v, w]) if a == ft.dom && ft.dom == ft.codom =>
       str match {
         case x if x == a.sum.toString()  => Some(a.sum)
         case x if x == a.prod.toString() => Some(a.prod)

@@ -700,7 +700,7 @@ trait ExpressionEval { self =>
       .groupBy(_._2)
       .mapValues { s =>
         s.map { case (x, _) => InitialVal(x): Expression }
-      }
+      }.toMap
 
   lazy val finalVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
@@ -711,7 +711,7 @@ trait ExpressionEval { self =>
       .groupBy(_._2)
       .mapValues { s =>
         s.map { case (x, _) => FinalVal(x): Expression }
-      }
+      }.toMap
 
   def expressionGroup(exp: Expression): Option[Set[Expression]] = exp match {
     case InitialVal(variable) =>
@@ -932,7 +932,7 @@ trait ExpressionEval { self =>
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
-    .mapValues(Literal)
+    .mapValues(Literal).toMap
 
   def proofExpression(typ: Typ[Term]): Expression =
     finalTermSet

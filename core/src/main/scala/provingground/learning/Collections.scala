@@ -256,7 +256,7 @@ object Collections {
   def update[B](init: B, tangent: B, epsilon: Double)(implicit s: Shift[B]) =
     s(init, tangent, epsilon)
 
-  case class MultiSet[A](wts: Map[A, Int]) extends Set[A] {
+/*  case class MultiSet[A](wts: Map[A, Int]) extends Set[A] {
     def weight(elem: A) = wts.getOrElse(elem, 0)
 
     lazy val support = wts.keySet
@@ -289,7 +289,7 @@ object Collections {
 
   object MultiSet {
     def empty[A] = MultiSet[A](Map.empty)
-  }
+  }*/
 
   @tailrec
   def transversal[A](arg: List[A],

@@ -81,7 +81,7 @@ object MapVS {
   ): Map[A, Double] = {
     // val vs     = MapVS[A]()
     val groups = base.map { case (x, p) => p *: step(x) }
-    groups.map(_.toVector).flatten.groupBy(_._1).mapValues(v => v.map(_._2).sum)
+    groups.map(_.toVector).flatten.groupBy(_._1).mapValues(v => v.map(_._2).sum).toMap
   }
 }
 

@@ -11,7 +11,7 @@ import scala.scalajs.js
 import org.scalajs.dom
 
 import js.Dynamic.{global => g}
-import com.scalawarrior.scalajs.ace._
+// import com.scalawarrior.scalajs.ace._
 import dom.ext._
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue

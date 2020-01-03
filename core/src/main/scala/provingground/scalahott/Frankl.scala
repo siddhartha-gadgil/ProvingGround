@@ -70,7 +70,7 @@ object Frankl {
         } yield w
       weightedElems
         .groupBy(_._1)
-        .mapValues((v) => v.map(_._2).foldLeft(Rational(0))(_ + _))
+        .mapValues((v) => v.map(_._2).foldLeft(Rational(0))(_ + _)).toMap
 
     }
 

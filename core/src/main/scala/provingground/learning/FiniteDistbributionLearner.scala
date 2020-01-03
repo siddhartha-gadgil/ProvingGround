@@ -64,7 +64,7 @@ object FiniteDistributionLearner {
   case class Sample[X](N: Double)
       extends FormalExtension[FiniteDistribution[X]] {
     val func = (d: FiniteDistribution[X]) =>
-      d.flatten filter ((x: X) => random.nextDouble < d(x) * N) normalized ()
+      d.flatten.filter ((x: X) => random.nextDouble < d(x) * N).normalized ()
   }
 
   def sample[X](N: Double)

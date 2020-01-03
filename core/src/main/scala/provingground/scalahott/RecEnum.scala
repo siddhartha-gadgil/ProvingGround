@@ -39,7 +39,7 @@ object RecEnum {
           for (l <- maps)
             yield (for (m <- l) yield lambda("x" :: dom)(m("x" :: dom)))
         })
-    case SigmaTyp(fiber) =>
+    case SigmaTyp(fiber : TypFamily[u, v]) =>
       val dom        = fiber.dom.asInstanceOf[Typ[Term]]
       val domlistopt = recEnumList(dom)
       domlistopt flatMap

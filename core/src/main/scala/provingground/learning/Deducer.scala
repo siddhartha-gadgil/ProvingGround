@@ -349,7 +349,7 @@ case class BasicDeducer(applnWeight: Double = 0.2,
         })
 
   def lambdaDistOpt(base: FD[Term])(x: Term) = {
-    val pmf =
+    val pmf : Vector[Weighted[Term]] =
       base.pmf collect {
         case Weighted(LambdaFixed(variable: Term, value: Term), p)
             if variable.typ == x.typ =>
@@ -933,7 +933,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
 
   def fromFD(fd: FD[Term]) = {
     val termsByType =
-      (fd.pmf groupBy (_.elem.typ: Typ[Term])) mapValues (FD(_))
+      (fd.pmf.groupBy (_.elem.typ: Typ[Term])).mapValues (FD(_)).toMap
     val types = (fd mapOpt {
       case tp: Typ[u] => Some(tp: Typ[Term])
       case _          => None
@@ -952,7 +952,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
     ++(fromFD(that))
 
   def *(scale: Double) =
-    TermPopulation(termsByType mapValues ((fd) => fd * scale),
+    TermPopulation(termsByType.mapValues ((fd) => fd * scale).toMap,
                    types * scale,
                    thmsByProofs * scale,
                    vars,
@@ -961,7 +961,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                    applnInvMap)
 
   def normalized =
-    TermPopulation(termsByType mapValues ((fd) => fd.normalized()),
+    TermPopulation(termsByType.mapValues ((fd) => fd.normalized()).toMap,
                    types.normalized(),
                    thmsByProofs.normalized(),
                    vars,

@@ -274,9 +274,9 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def split(groups: Int): Map[Int, FiniteDistribution[T]] = {
     val rand = new scala.util.Random
 
-    pmf groupBy ((_) => rand.nextInt(groups - 1)) mapValues { x =>
+    pmf.groupBy ((_) => rand.nextInt(groups - 1)).mapValues { x =>
       FiniteDistribution(x)
-    }
+    }.toMap
   }
 
   def expectation(implicit ls: VectorSpace[T, Double]): T = {

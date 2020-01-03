@@ -339,7 +339,7 @@ object ApplnInverse {
     lazy val outers =
       termsByBaseContext.map {
         case (ctx, supp) => ctx -> OuterFromSupport(supp)
-      }
+      }.toMap
 
     def inBase(term: Term, context: Vector[Term]) =
       projectSomeContext(baseContexts.toVector)(term, context)

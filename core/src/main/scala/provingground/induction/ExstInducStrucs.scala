@@ -40,7 +40,7 @@ case class ExstInducDefn(
     }
 
   def introsTypGroups: Map[Typ[Term], Int] =
-    intros.map((x) => x.typ).groupBy(identity).mapValues(_.size)
+    intros.map((x) => x.typ).groupBy(identity).mapValues(_.size).toMap
 
   def sameAs(that: ExstInducDefn) =
     (typFamily.typ == that.typFamily.typ) &&

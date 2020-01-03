@@ -44,10 +44,10 @@ object Norm {
     }
     case (PiDefn(x: Term, y: Typ[v]), _) => supnorm(x :-> y)
     case (PiTyp(section), _)             => supnorm(section)
-    case (SigmaTyp(fn), _) => {
+    case (SigmaTyp(fn : TypFamily[u, v]), _) => {
       val domopt = recEnumList(fn.dom.asInstanceOf[Typ[Term]])
       domopt flatMap
-        ((dom) => foldopt[Double](min)(dom map ((t) => supnorm(fn(t)))))
+        ((dom) => foldopt[Double](min)(dom.map ((t) => supnorm(fn(t)))))
     }
 
     case _ => None

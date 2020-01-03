@@ -121,7 +121,7 @@ object ScalaPolyRep {
       case typ @ ProdTyp(first: Typ[U], second: Typ[X]) =>
         for (a <- firstrep(first)(elem._1); b <- secondrep(second)(elem._2))
           yield PairTerm(a, b)
-      case typ @ SigmaTyp(fibers) =>
+      case typ @ SigmaTyp(fibers : TypFamily[u, v]) =>
         for (a <- firstrep(fibers.dom.asInstanceOf[Typ[Term]])(elem._1);
              b <- secondrep(fibers(a).asInstanceOf[Typ[Term]])(elem._2))
           yield DepPair(a, b, fibers.asInstanceOf[Func[U, Typ[X]]])

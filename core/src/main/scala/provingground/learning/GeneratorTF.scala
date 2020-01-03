@@ -151,7 +151,7 @@ case class GeneratorTF[State](
       case e @ Elem(element, RandomVar.AtCoord(family, fullArg))
           if family == rvF =>
         fullArg -> FinalVal(e)
-    }).groupBy(_._1).mapValues(s => s.map(_._2))
+    }).groupBy(_._1).mapValues(s => s.map(_._2)).toMap
 
   def finalElemIndices[Dom <: HList, Y](
       rvF: RandomVarFamily[Dom, Y]): Set[Dom] =
@@ -357,7 +357,7 @@ case class GeneratorTF[State](
             val byBase = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
             val baseWeights = byBase.mapValues(v =>
               v.map(_._2)
-                .reduce[Expression](_ + _)) // weights of terms in the quotient
+                .reduce[Expression](_ + _)).toMap // weights of terms in the quotient
             val eqT =
               for {
                 (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
@@ -564,7 +564,7 @@ case class GeneratorTF[State](
             val byBase = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
             val baseWeights = byBase.mapValues(v =>
               v.map(_._2)
-                .reduce[Expression](_ + _)) // weights of terms in the quotient
+                .reduce[Expression](_ + _)).toMap // weights of terms in the quotient
             val eqT =
               for {
                 (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
@@ -727,7 +727,7 @@ case class GeneratorTF[State](
       case p @ GeneratorVariables.Elem(_, randomVar) => randomVar -> p
     }
     .groupBy(_._1)
-    .mapValues(v => v.map { case (_, x) => FinalVal(x) })
+    .mapValues(v => v.map { case (_, x) => FinalVal(x) : Expression }).toMap
 
   lazy val finalProbTotals: Set[Expression] =
     finalProbVars.mapValues(_.reduce(_ + _)).values.toSet

@@ -69,8 +69,8 @@ object TypSolver {
   import provingground.library.NatDecEq
   case object NatNEQSolver extends TypSolver {
     val solve = {
-      case FuncTyp(IdentityTyp(NatTyp, x: Nat, y: Nat), Zero) =>
-        NatDecEq.showNatGT(x, y)
+      case FuncTyp(idt: IdentityTyp[u], cod) if idt.dom == NatTyp && cod == Zero  =>
+        NatDecEq.showNatGT(idt.lhs.asInstanceOf[Nat], idt.rhs.asInstanceOf[Nat])
       case _ => None
     }
   }
