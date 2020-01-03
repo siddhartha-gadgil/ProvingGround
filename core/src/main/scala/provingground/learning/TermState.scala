@@ -47,13 +47,13 @@ case class TermState(
       context
     )
 
-  def export(variables: Vector[Term]) = 
+  def export(variables: Vector[Term]) =
     TermState(
-      terms.map( t => lambdaClosure(variables)(t)),
+      terms.map(t => lambdaClosure(variables)(t)),
       typs.map(t => piClosure(variables)(t)),
-      variables ++ vars.map( t => lambdaClosure(variables)(t)),
+      variables ++ vars.map(t => lambdaClosure(variables)(t)),
       inds,
-      goals.map( t => piClosure(variables)(t)),
+      goals.map(t => piClosure(variables)(t)),
       context
     )
 
@@ -91,6 +91,9 @@ case class TermState(
         typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0 && !isProd(typ)
       )
       .safeNormalized
+
+  lazy val orderedUnknowns: Vector[HoTT.Typ[HoTT.Term]] =
+    unknownStatements.entropyVec.map(_.elem)
 
   lazy val remainingGoals: FD[Typ[Term]] =
     goals
@@ -392,7 +395,7 @@ object LemmaWeigths {
   ): Option[(Double, Double)] = {
     def f(x: Double) = entDiff(x, h0, p0, q0, initWeight, hW, klW)
     val a            = q0 / initWeight
-    val b            = p0 /initWeight
+    val b            = p0 / initWeight
     if (f(a) > 0) None
     else
       Some(

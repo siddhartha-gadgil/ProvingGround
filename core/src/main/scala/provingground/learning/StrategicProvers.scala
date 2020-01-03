@@ -144,15 +144,14 @@ object StrategicProvers {
   ): Task[
     (
         Vector[Successes],
-        Vector[Typ[Term]],
+        Vector[Typ[Term]], // failures
         Set[EquationNode],
-        Set[Term],
-        Vector[Typ[Term]]
+        Set[Term]
     )
   ] =
     typs match {
       case Vector() =>
-        Task.now((accumSucc, accumFail, accumEqs, accumTerms, Vector()))
+        Task.now((accumSucc, accumFail, accumEqs, accumTerms)) 
       case typ +: ys =>
         seekGoal(lp, typ, accumTerms, scale, maxSteps).flatMap {
           case (ss, eqs, terms) =>

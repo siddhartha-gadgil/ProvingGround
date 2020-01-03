@@ -27,7 +27,7 @@ case class LocalProver(
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
     tg: TermGenParams = TermGenParams(),
     cutoff: Double = math.pow(10, -4),
-    genMaxDepth: Option[Int] = None ,
+    genMaxDepth: Option[Int] = None,
     limit: FiniteDuration = 12.minutes,
     maxRatio: Double = 1.01,
     scale: Double = 1.0,
@@ -43,14 +43,14 @@ case class LocalProver(
 ) extends LocalProverStep {
   // Convenience for generation
 
-  def withCutoff(ctf : Double) : LocalProver = this.copy(cutoff = ctf)
+  def withCutoff(ctf: Double): LocalProver = this.copy(cutoff = ctf)
 
-  override def sharpen(scale: Double = 2.0) : LocalProver = withCutoff(cutoff / scale)
+  override def sharpen(scale: Double = 2.0): LocalProver =
+    withCutoff(cutoff / scale)
 
+  def withLimit(l: FiniteDuration): LocalProver = this.copy(limit = l)
 
-  def withLimit(l: FiniteDuration) : LocalProver = this.copy(limit = l)
-
-  def withParams(p: TermGenParams) : LocalProver = this.copy(tg = p)
+  def withParams(p: TermGenParams): LocalProver = this.copy(tg = p)
 
   def withInit(ts: TermState): LocalProver = this.copy(initState = ts)
 
@@ -116,7 +116,6 @@ case class LocalProver(
     this.copy(initState = ts)
   }
 
-
   def addInd(
       typ: Typ[Term],
       intros: Term*
@@ -179,7 +178,10 @@ case class LocalProver(
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(initState, genMaxDepth, halted, EqDistMemo.empty[TermState])(Terms, cutoff)
+      .varDist(initState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+        Terms,
+        cutoff
+      )
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
@@ -187,7 +189,10 @@ case class LocalProver(
     (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(initState, genMaxDepth, halted, EqDistMemo.empty[TermState])(Typs, cutoff)
+      .varDist(initState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+        Typs,
+        cutoff
+      )
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
@@ -224,7 +229,11 @@ case class LocalProver(
 
   def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
     mfd
-      .nodeDist(initState, genMaxDepth, halted())(node, cutoff, Expression.Coeff(node))
+      .nodeDist(initState, genMaxDepth, halted())(
+        node,
+        cutoff,
+        Expression.Coeff(node)
+      )
       .map(_._1)
 
   lazy val equationNodes: Task[Set[EquationNode]] =
@@ -284,44 +293,45 @@ trait LocalProverStep {
   val exponent: Double
   val decay: Double
 
-  var isHalted: Boolean = false 
+  var isHalted: Boolean = false
 
-  def halt() = {isHalted = true}
+  def halt() = { isHalted = true }
 
-  def reset() = {isHalted = false}
+  def reset() = { isHalted = false }
 
   def halted() = {
-    val result =  isHalted
+    val result = isHalted
     if (result) println("Halted")
     result
   }
 
-  def withCutoff(cutoff : Double) : LocalProverStep
+  def withCutoff(cutoff: Double): LocalProverStep
 
-  def withLimit(l: FiniteDuration) : LocalProverStep
+  def withLimit(l: FiniteDuration): LocalProverStep
 
-  def withParams(p: TermGenParams) : LocalProverStep
+  def withParams(p: TermGenParams): LocalProverStep
 
-  def withInit(ts: TermState) : LocalProverStep
+  def withInit(ts: TermState): LocalProverStep
 
   def addVar(term: Term, weight: Double): LocalProverStep = {
-    val td = initState.terms * (1 - weight) + (term, weight)
-    val allVars = term +: initState.vars 
-    val ctx = initState.context.addVariable(term)
+    val td      = initState.terms * (1 - weight) + (term, weight)
+    val allVars = term +: initState.vars
+    val ctx     = initState.context.addVariable(term)
     val ts =
       initState.copy(terms = td.safeNormalized, vars = allVars, context = ctx)
     withInit(ts)
   }
 
-  def addGoal(goal: Typ[Term], weight : Double) =  {
+  def addGoal(goal: Typ[Term], weight: Double) = {
     val typd = initState.goals * (1 - weight) + (goal, weight)
-    val ts = initState.copy(goals = typd.safeNormalized)
+    val ts   = initState.copy(goals = typd.safeNormalized)
     withInit(ts)
   }
 
   def sharpen(scale: Double = 2.0) = withCutoff(cutoff / scale)
 
-  def scaleLimit(scale: Double) = withLimit(Duration.fromNanos((limit.toNanos.toDouble * scale).toLong))
+  def scaleLimit(scale: Double) =
+    withLimit(Duration.fromNanos((limit.toNanos.toDouble * scale).toLong))
 
   def addSolver(s: TypSolver) = {
     val newSolver = tg.solver || s
@@ -344,6 +354,9 @@ trait LocalProverStep {
 
   lazy val unknownStatements: Task[FiniteDistribution[Typ[Term]]] =
     nextState.map(_.unknownStatements)
+
+  lazy val orderedUnknowns: Task[Vector[HoTT.Typ[HoTT.Term]]] =
+    unknownStatements.map(fd => fd.entropyVec.map(_.elem))
 
   val equationNodes: Task[Set[EquationNode]]
 
@@ -536,7 +549,10 @@ trait LocalProverStep {
         limit
       )
       teqnds <- mfdt
-        .varDist(tangState, genMaxDepth, halted, EqDistMemo.empty[TermState])(Terms, cutoff * weight)
+        .varDist(tangState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+          Terms,
+          cutoff * weight
+        )
         .map(_._2)
       tExpEval = ExpressionEval.fromStates(
         tangState,
@@ -613,13 +629,14 @@ case class LocalTangentProver(
     decay: Double = 1
 ) extends LocalProverStep {
 
-  def withCutoff(ctf : Double) : LocalTangentProver = this.copy(cutoff = ctf)
+  def withCutoff(ctf: Double): LocalTangentProver = this.copy(cutoff = ctf)
 
-  override def sharpen(scale: Double = 2.0) : LocalTangentProver = withCutoff(cutoff / scale)
+  override def sharpen(scale: Double = 2.0): LocalTangentProver =
+    withCutoff(cutoff / scale)
 
-  def withLimit(l: FiniteDuration) : LocalTangentProver = this.copy(limit = l)
+  def withLimit(l: FiniteDuration): LocalTangentProver = this.copy(limit = l)
 
-  def withParams(p: TermGenParams) : LocalTangentProver = this.copy(tg = p)
+  def withParams(p: TermGenParams): LocalTangentProver = this.copy(tg = p)
 
   def withInit(ts: TermState): LocalProverStep = this.copy(initState = ts)
 
@@ -638,7 +655,10 @@ case class LocalTangentProver(
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(tangentState, genMaxDepth, halted, EqDistMemo.empty[TermState])(Terms, cutoff)
+      .varDist(tangentState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+        Terms,
+        cutoff
+      )
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
@@ -646,7 +666,10 @@ case class LocalTangentProver(
     (FiniteDistribution[Typ[Term]], Set[EquationNode], EqDistMemo[TermState])
   ] =
     mfd
-      .varDist(tangentState, genMaxDepth, halted, EqDistMemo.empty[TermState])(Typs, cutoff)
+      .varDist(tangentState, genMaxDepth, halted, EqDistMemo.empty[TermState])(
+        Typs,
+        cutoff
+      )
       .map { case (fd, eq, memo) => (fd, eq, memo) }
       .memoize
 
