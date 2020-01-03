@@ -105,7 +105,7 @@ object StrategicProvers {
     typs match {
       case Vector() => Task.now((accumSucc, accumEqs, accumTerms, Vector()))
       case typ +: ys =>
-        seekGoal(lp, typ, Set(), scale, maxSteps).flatMap {
+        seekGoal(lp, typ, accumTerms, scale, maxSteps).flatMap {
           case (ss, eqs, terms) =>
             if (ss.isEmpty)
               Task.now(
