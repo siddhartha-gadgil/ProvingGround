@@ -279,7 +279,7 @@ object HoTTPost {
         (lm) =>
           Future.sequence(lm.lemmas.map {
             case (tp, w) =>
-              lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture
+              lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture : Future[LocalTangentProver]
           })
     new VectorPoster[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](
       response,

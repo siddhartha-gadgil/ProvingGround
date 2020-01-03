@@ -366,7 +366,7 @@ object client extends CommonJSModule with SbtModule{
   override def ivyDeps = Agg(
     ivy"org.scala-js::scalajs-dom::0.9.7",
     ivy"com.lihaoyi::scalatags::0.8.3",
-    ivy"fr.iscpif.scaladget::ace::1.2.7"
+    // ivy"com.scalawarrior::scalajs-ace::0.0.4"
   )
 
   def pack(): define.Command[PathRef] = T.command {
