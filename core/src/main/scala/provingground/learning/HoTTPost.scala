@@ -8,6 +8,7 @@ import monix.execution.Scheduler.Implicits.{global => monixglobal}
 import scala.concurrent._
 import TermData._
 import shapeless._
+import scala.collection.SeqView
 
 class HoTTPost { web =>
   val global = new CounterGlobalID()
@@ -83,7 +84,11 @@ object HoTTPost {
 
   case class Lemmas(lemmas: Vector[(Typ[Term], Double)])
 
-  case class ChompResult(successes: Vector[StrategicProvers.Successes], failures: Vector[Typ[Term]], eqns: Set[EquationNode])
+  case class ChompResult(
+      successes: Vector[StrategicProvers.Successes],
+      failures: Vector[Typ[Term]],
+      eqns: Set[EquationNode]
+  )
 
   import PostBuffer.bufferPost
 
@@ -162,10 +167,11 @@ object HoTTPost {
           web: HoTTPost,
           index: ID
       ): Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
-    }
 
-  def allPosts(web: HoTTPost): Vector[PostData[_, HoTTPost, ID]] =
-    webBuffers(web).flatMap(_.data)
+      def allPosts(web: HoTTPost): SeqView[PostData[_, HoTTPost, ID], Seq[_]] =
+        webBuffers(web).view.flatMap(_.data)
+
+    }
 
   def allPostFullData(
       web: HoTTPost
@@ -214,6 +220,14 @@ object HoTTPost {
   implicit def termSetQuery: Queryable[Set[Term], HoTTPost] =
     Queryable.simple(_.terms)
 
+  implicit def lpStepQuery: LocalQueryable[LocalProverStep, HoTTPost, ID] =
+    LatestAnswer(
+      Seq(
+        AnswerFromPost((lp: LocalProver) => lp: LocalProverStep),
+        AnswerFromPost((lp: LocalTangentProver) => lp: LocalProverStep)
+      )
+    )
+
   case class Apex[P](base: P)
 
   implicit def postToLeaves[P](
@@ -245,7 +259,6 @@ object HoTTPost {
     Poster(response)
   }
 
-
   lazy val lpToTermResult: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
@@ -258,7 +271,7 @@ object HoTTPost {
     Poster(response)
   }
 
-  lazy val termResultToEquations: PostResponse[HoTTPost, ID] = 
+  lazy val termResultToEquations: PostResponse[HoTTPost, ID] =
     Poster.simple(
       (pair: TermResult) => GeneratedEquationNodes(pair._2)
     )
@@ -274,9 +287,10 @@ object HoTTPost {
     )
 
   lazy val normEqnUpdate: PostResponse[HoTTPost, ID] =
-  Callback.simple(
-    (web: HoTTPost) => (eqs:  IsleNormalizedEquationNodes) => web.addEqns(eqs.eqn)
-  )
+    Callback.simple(
+      (web: HoTTPost) =>
+        (eqs: IsleNormalizedEquationNodes) => web.addEqns(eqs.eqn)
+    )
 
   lazy val lpFromInit: PostResponse[HoTTPost, ID] = {
     val response: TermGenParams => InitState => Future[LocalProver] =
@@ -330,27 +344,36 @@ object HoTTPost {
     )
   }
 
-  lazy val lpToChomp : PostResponse[HoTTPost, ID] = {
-    val response: Set[Term] => LocalProver => Future[ChompResult] = 
+  lazy val lpToChomp: PostResponse[HoTTPost, ID] = {
+    val response: Set[Term] => LocalProver => Future[ChompResult] =
       terms =>
-      lp =>
-        lp.orderedUnknowns.flatMap(
-          typs =>
-            StrategicProvers.liberalChomper(lp, typs, accumTerms = terms)
-        ).map{
-          case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
-        }.runToFuture
+        lp =>
+          lp.orderedUnknowns
+            .flatMap(
+              typs =>
+                StrategicProvers.liberalChomper(lp, typs, accumTerms = terms)
+            )
+            .map {
+              case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
+            }
+            .runToFuture
     Poster(response)
   }
 
-  lazy val termResultToChomp : PostResponse[HoTTPost, ID] = {
-    val response : (Set[Term] :: LocalProver :: HNil) => TermResult => Future[ChompResult] = 
-      {case (terms :: lp :: HNil) => 
-        {case (ts, _) =>
-        StrategicProvers.liberalChomper(lp, ts.orderedUnknowns, accumTerms = terms).map{
-          case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
-        }.runToFuture}
+  lazy val termResultToChomp: PostResponse[HoTTPost, ID] = {
+    val response: (Set[Term] :: LocalProver :: HNil) => TermResult => Future[
+      ChompResult
+    ] = {
+      case (terms :: lp :: HNil) => {
+        case (ts, _) =>
+          StrategicProvers
+            .liberalChomper(lp, ts.orderedUnknowns, accumTerms = terms)
+            .map {
+              case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
+            }
+            .runToFuture
       }
+    }
     Poster(response)
   }
 

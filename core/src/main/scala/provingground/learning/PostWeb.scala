@@ -6,6 +6,7 @@ import monix.execution.Scheduler.Implicits.global
 import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.SeqView
 
 /**
  * Typeclass for being able to post with content type P in W
@@ -27,6 +28,14 @@ object Queryable{
     def get(web: W, predicate: U => Boolean): Future[U] = 
       Future(func(web))
   }
+
+  implicit def allView[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : Queryable[SeqView[P, Seq[_]], W] = 
+    new Queryable[SeqView[P, Seq[_]], W] {
+      def get(web: W, predicate: SeqView[P, Seq[_]] => Boolean): Future[SeqView[P, Seq[_]]] = 
+       Future{ ph.allPosts(web).filter(_.pw == pw).map{_.asInstanceOf[P]}}
+    }
+    
+
 }
 /**
  * Typeclass for being able to query W for a vector of elements of type Q at an index
@@ -57,6 +66,13 @@ case class LatestAnswer[Q, W, ID](
 trait FallBackLookups{
   implicit   def lookupLatest[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Q, W, ID] = 
   LatestAnswer(Seq(AnswerFromPost[Q, Q, W, ID](identity)))
+
+  implicit def somePostQuery[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[SomePost[P], W, ID] = new LocalQueryable[SomePost[P], W, ID] {
+   def getAt(web: W, id: ID, predicate: SomePost[P] => Boolean): Future[Vector[SomePost[P]]] =
+     Future{ph.allPosts(web).filter(_.pw == pw).map{post => SomePost(post.content.asInstanceOf[P])}.filter(predicate).toVector
+  } 
+}
+     
 }
 
 object LocalQueryable extends FallBackLookups{
@@ -134,6 +150,10 @@ trait PostHistory[W, ID] {
   // the post itself and all its predecessors
   def findPost(web: W, index: ID) :  Option[(PostData[_, W, ID], Set[ID])]
 
+  def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]]
+
+
+
   def history(web: W, id: ID): Stream[PostData[_, W, ID]] = {
     val next : ((Set[PostData[_, W, ID]], Set[ID])) =>  (Set[PostData[_, W, ID]], Set[ID])   = {case (d, indices) =>
       val pairs = indices.map(findPost(web, _)).flatten
@@ -153,6 +173,8 @@ trait PostHistory[W, ID] {
           )
     }.getOrElse(Set())
 }
+
+case class SomePost[P](content: P)
 
 /**
  * Response to a post, generating one or more posts or just a callback;
