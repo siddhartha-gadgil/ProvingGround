@@ -7,6 +7,7 @@ import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.SeqView
+import scala.util.Try
 
 /**
  * Typeclass for being able to post with content type P in W
@@ -302,7 +303,7 @@ object TypedPostResponse {
    * Response to a post returning a vector of posts, 
    * one for each value of the auxiliary queryable (in simple cases a singleton is returned)
    */ 
-  case class Poster[P, Q, W, V, ID](response: V => P => Future[Q], predicate: V => Boolean = (_ : V) => true)(
+  case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: V => Boolean = (_ : V) => true)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]
@@ -330,9 +331,9 @@ object TypedPostResponse {
     }
   }
 
-  object Poster{
+  object MicroBot{
     def simple[P, Q, W, ID](func: P => Q)(implicit pw: Postable[P, W, ID],
-    qw: Postable[Q, W, ID]) = Poster[P, Q, W, Unit, ID](
+    qw: Postable[Q, W, ID]) = MicroBot[P, Q, W, Unit, ID](
       (_ : Unit) => (p: P) => Future(func(p))
     )
   }
@@ -340,7 +341,7 @@ object TypedPostResponse {
 
 
 
-case class VectorPoster[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean)(
+case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]
@@ -462,6 +463,22 @@ object Postable {
       def post(content: P, web: W, pred: Set[Int]): Future[Int] =
         web.post(content, pred)
       val contextChange: Boolean = false
+    }
+  
+  implicit def optionPostable[P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Option[P], W, ID] = 
+    new Postable[Option[P], W, ID]{
+      val contextChange: Boolean = false
+
+      def post(content: Option[P], web: W, pred: Set[ID]): Future[ID] = 
+        content.fold(uw.post((), web, pred))(c => pw.post(c, web, pred))
+    }
+
+  implicit def tryPostable[P, W, ID](implicit pw: Postable[P, W, ID], ew: Postable[Throwable, W, ID]) : Postable[Try[P], W, ID] = 
+    new Postable[Try[P], W, ID]{
+      val contextChange: Boolean = false
+
+      def post(content: Try[P], web: W, pred: Set[ID]): Future[ID] =
+        content.fold(err => ew.post(err, web, pred), c => pw.post(c, web, pred))
     }
 }
 

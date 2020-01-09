@@ -51,21 +51,24 @@ class HoTTPost { web =>
 
   val termResultBuffer = PostBuffer[TermResult, ID](postGlobal)
 
-  val buffers: Vector[PostBuffer[_, ID]] =
-    Vector(
-      tgBuff,
-      lpBuff,
-      eqnNodeBuff,
-      expEvalBuff,
-      lptBuff,
-      initStateBuff,
-      finalStateBuff,
-      tunedLpBuff,
-      genEqnBuff,
-      isleNormEqnBuff,
-      lemmaBuffer,
-      chompBuffer
-    )
+  val errorBuffer = PostBuffer[Throwable, ID](postGlobal)
+
+  // val buffers: Vector[PostBuffer[_, ID]] =
+  //   Vector(
+  //     tgBuff,
+  //     lpBuff,
+  //     eqnNodeBuff,
+  //     expEvalBuff,
+  //     lptBuff,
+  //     initStateBuff,
+  //     finalStateBuff,
+  //     tunedLpBuff,
+  //     genEqnBuff,
+  //     isleNormEqnBuff,
+  //     lemmaBuffer,
+  //     chompBuffer,
+  //     errorBuffer
+  //   )
 
 }
 
@@ -91,6 +94,17 @@ object HoTTPost {
   )
 
   import PostBuffer.bufferPost
+
+  implicit val postUnit: Postable[Unit, HoTTPost, ID] =
+    new Postable[Unit, HoTTPost, ID] {
+      val contextChange: Boolean = false
+
+      def post(content: Unit, web: HoTTPost, pred: Set[ID]): Future[ID] = 
+        web.global.postGlobal(content)
+    }
+
+    implicit val postError: Postable[Throwable, HoTTPost, ID] =
+    bufferPost(_.errorBuffer, true)
 
   implicit val postLP: Postable[LocalProver, HoTTPost, ID] =
     bufferPost(_.lpBuff, true)
@@ -250,34 +264,34 @@ object HoTTPost {
   lazy val lpToExpEv: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
       lp => lp.expressionEval.runToFuture
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lptToExpEv: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
       lp => lp.expressionEval.runToFuture
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lpToTermResult: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lptToTermResult: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalTangentProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val termResultToEquations: PostResponse[HoTTPost, ID] =
-    Poster.simple(
+    MicroBot.simple(
       (pair: TermResult) => GeneratedEquationNodes(pair._2)
     )
 
   lazy val expEvToEqns: PostResponse[HoTTPost, ID] =
-    Poster.simple(
+    MicroBot.simple(
       (ev: ExpressionEval) => ev.equations.flatMap(Equation.split)
     )
 
@@ -295,23 +309,23 @@ object HoTTPost {
   lazy val lpFromInit: PostResponse[HoTTPost, ID] = {
     val response: TermGenParams => InitState => Future[LocalProver] =
       (tg) => (init) => Future(LocalProver(init.ts, tg).sharpen(init.weight))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lpFromTG: PostResponse[HoTTPost, ID] = {
     val response: InitState => TermGenParams => Future[LocalProver] =
       (init) => (tg) => Future(LocalProver(init.ts, tg).sharpen(init.weight))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val tuneLP: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[TunedLocalProver] =
       (_) => (lp) => lp.tunedInit.runToFuture.map(TunedLocalProver(_))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val isleNormalizeEqns: PostResponse[HoTTPost, ID] =
-    Poster.simple(
+    MicroBot.simple(
       (ge: GeneratedEquationNodes) =>
         IsleNormalizedEquationNodes(
           ge.eqn.map(eq => TermData.isleNormalize(eq))
@@ -321,13 +335,13 @@ object HoTTPost {
   lazy val lpLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[Lemmas] =
       (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lptLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalTangentProver => Future[Lemmas] =
       (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lemmaToTangentProver: PostResponse[HoTTPost, ID] = {
@@ -338,7 +352,7 @@ object HoTTPost {
             case (tp, w) =>
               lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture
           })
-    new VectorPoster[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](
+    new MiniBot[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](
       response,
       (_) => true
     )
@@ -357,7 +371,7 @@ object HoTTPost {
               case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
             }
             .runToFuture
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val termResultToChomp: PostResponse[HoTTPost, ID] = {
@@ -374,7 +388,7 @@ object HoTTPost {
             .runToFuture
       }
     }
-    Poster(response)
+    MicroBot(response)
   }
 
 }
