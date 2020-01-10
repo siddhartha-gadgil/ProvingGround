@@ -65,6 +65,7 @@ lazy val jvmSettings = Seq(
     "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.lihaoyi" %% "os-lib" % "0.2.5",
     "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
+    "org.mongodb.scala" %% "mongo-scala-driver" % "2.8.0",
     "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
