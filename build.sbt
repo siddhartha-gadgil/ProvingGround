@@ -26,7 +26,7 @@ lazy val baseSettings = Seq(
 )
 
 lazy val commonSettings = baseSettings ++ Seq(
-  resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+  resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/",
   libraryDependencies ++= Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.0.5",

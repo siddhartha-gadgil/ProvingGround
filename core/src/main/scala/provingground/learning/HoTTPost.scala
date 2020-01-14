@@ -53,6 +53,8 @@ class HoTTPost { web =>
 
   val errorBuffer = PostBuffer[Throwable, ID](postGlobal)
 
+  val representationBuffer = PostBuffer[Map[GeneratorVariables.Variable[_], Vector[Double]], ID](postGlobal)
+
   // val buffers: Vector[PostBuffer[_, ID]] =
   //   Vector(
   //     tgBuff,
@@ -155,6 +157,9 @@ object HoTTPost {
 
   implicit val postResult: Postable[TermResult, HoTTPost, ID] =
     bufferPost(_.termResultBuffer)
+
+  implicit val repPost: Postable[Map[GeneratorVariables.Variable[_], Vector[Double]], HoTTPost, ID] =
+    bufferPost(_.representationBuffer)
 
   case class WebBuffer[P](buffer: PostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]

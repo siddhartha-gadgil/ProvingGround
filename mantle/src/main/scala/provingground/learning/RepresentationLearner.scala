@@ -122,14 +122,19 @@ object RepresentationLearner {
 
   import TypedPostResponse._
 
-  //   def eqnsToRepLearner(numPaths: Int,
-  //     length: Int,
-  //     coeffWeights: Coeff[_] => Double = (_) => 1,
-  //     backWeight: Double = 0.8,
-  //     vectorLength: Int = 150,
-  //     minWordFrequency: Int = 5,
-  //     batchSize: Int = 250
-  // ) : PostResponse[HoTTPost, HoTTPost.ID] = MicroBot.simple(
-  //   (eqs: Set[EquationNode]) => equationNodesBackSampled(eqs, numPaths, length)
-  // )
+    def eqnsToRep(numPaths: Int,
+      length: Int,
+      coeffWeights: Coeff[_] => Double = (_) => 1,
+      backWeight: Double = 0.8,
+      vectorLength: Int = 150,
+      minWordFrequency: Int = 5,
+      batchSize: Int = 250
+  ) : PostResponse[HoTTPost, HoTTPost.ID] = 
+    MicroBot.simple[
+      Set[EquationNode], 
+      Map[GeneratorVariables.Variable[_], Vector[Double]],  
+      HoTTPost, 
+      HoTTPost.ID](
+    (eqs: Set[EquationNode]) => ???
+  )
 }
