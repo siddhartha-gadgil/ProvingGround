@@ -188,7 +188,6 @@ sealed trait PostResponse[W, ID]{
 }
 
 object PostResponse {
-
   /**
    * Casting to a typed post response if the Postables match
    */ 
@@ -227,7 +226,8 @@ object PostResponse {
  */ 
 class SimpleSession[W, ID](
     val web: W,
-    var responses: Vector[PostResponse[W, ID]]
+    var responses: Vector[PostResponse[W, ID]],
+    logs: Vector[PostData[_, W, ID] => Future[Unit]]
 ) {
   /**
    * recursively posting and running (as side-effects) offspring tasks
@@ -237,7 +237,10 @@ class SimpleSession[W, ID](
     postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
       tailPostFuture(content, postID)
     }
-    postIdFuture.map{id => PostData(content, id)}
+    postIdFuture.map{id => 
+      val data = PostData(content, id)
+      logs.foreach{fn => fn(data).foreach(_ => ())}
+      data}
   }
 
   def tailPostFuture[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = {
@@ -246,7 +249,9 @@ class SimpleSession[W, ID](
         PostResponse.postResponseFuture(web, content, postID, response).map {
           v =>
             v.map {
-              case pd: PostData[q, W, ID] => tailPostFuture(pd.content, pd.id)(pd.pw)
+              case pd: PostData[q, W, ID] => 
+               logs.foreach{fn => fn(pd).foreach(_ => ())}
+                tailPostFuture(pd.content, pd.id)(pd.pw)
             }
         }
     ) 
@@ -440,7 +445,9 @@ class IndexedPostBuffer[P]
 
 object Postable {
   def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID], ctx: Boolean) : Postable[P, W, ID] = 
-    new Postable[P, W, ID] {
+    Impl(postFunc, ctx)
+
+  case class Impl[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID], ctx: Boolean) extends Postable[P, W, ID] {
         def post(content: P, web: W, pred: Set[ID]): Future[ID] = 
             postFunc(content, web, pred)
         val contextChange: Boolean = ctx
@@ -451,34 +458,33 @@ object Postable {
 
   implicit def bufferPostable[P, ID, W <: PostBuffer[P, ID]]
       : Postable[P, W, ID] =
-    new Postable[P, W, ID] {
+     {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] =
         web.post(content, pred)
-      val contextChange: Boolean = false
+      Impl(post, false)
     }
 
   implicit def indexedBufferPostable[P, W <: IndexedPostBuffer[P]]
       : Postable[P, W, Int] =
-    new Postable[P, W, Int] {
+    {
       def post(content: P, web: W, pred: Set[Int]): Future[Int] =
         web.post(content, pred)
-      val contextChange: Boolean = false
+      Impl(post, false)
     }
   
   implicit def optionPostable[P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Option[P], W, ID] = 
-    new Postable[Option[P], W, ID]{
-      val contextChange: Boolean = false
-
+    {
       def post(content: Option[P], web: W, pred: Set[ID]): Future[ID] = 
         content.fold(uw.post((), web, pred))(c => pw.post(c, web, pred))
+        Impl(post, false)
     }
 
   implicit def tryPostable[P, W, ID](implicit pw: Postable[P, W, ID], ew: Postable[Throwable, W, ID]) : Postable[Try[P], W, ID] = 
-    new Postable[Try[P], W, ID]{
-      val contextChange: Boolean = false
-
+    {
       def post(content: Try[P], web: W, pred: Set[ID]): Future[ID] =
         content.fold(err => ew.post(err, web, pred), c => pw.post(c, web, pred))
+
+      Impl(post, false)
     }
 }
 

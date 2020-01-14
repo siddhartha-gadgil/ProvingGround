@@ -75,6 +75,12 @@ class HoTTPost { web =>
 object HoTTPost {
   type ID = (Int, Int)
 
+  def fansiLog(post: PostData[_, HoTTPost, ID]) : Future[Unit] = 
+    Future{
+      translation.FansiShow.fansiPrint.log(post.pw)
+      translation.FansiShow.fansiPrint.log(post.content, height = 20)
+  }
+
   case class InitState(ts: TermState, weight: Double)
 
   case class FinalState(ts: TermState, weight: Double) // should also record source, whether by evolution or from equations etc
@@ -396,7 +402,8 @@ object HoTTPost {
 class HoTTSession
     extends SimpleSession(
       new HoTTPost(),
-      Vector(lpToExpEv, expEvToEqns, eqnUpdate)
+      Vector(lpToExpEv, expEvToEqns, eqnUpdate),
+      Vector(fansiLog(_))
     ) {
   // just an illustration, should just use rhs
   def postLocalProverFuture(
