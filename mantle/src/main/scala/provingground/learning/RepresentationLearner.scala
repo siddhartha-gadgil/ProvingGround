@@ -135,6 +135,7 @@ object RepresentationLearner {
       Map[GeneratorVariables.Variable[_], Vector[Double]],  
       HoTTPost, 
       HoTTPost.ID](
-    (eqs: Set[EquationNode]) => ???
+    (eqs: Set[EquationNode]) => 
+      equationNodesSampled(eqs, numPaths, length, coeffWeights, backWeight, vectorLength, minWordFrequency, batchSize).vectorMap
   )
 }
