@@ -9,7 +9,6 @@ import scalatags.JsDom.all._
 import scala.scalajs.js
 import org.scalajs.dom
 
-import com.scalawarrior.scalajs.ace._
 
 import HoTT.{id => _, _}
 

@@ -16,7 +16,8 @@ import HoTT.{id => _, _}
 import translation._
 import learning._
 import FineProverTasks._
-import com.scalawarrior.scalajs.ace.ace
+// import com.scalawarrior.scalajs.ace.ace
+import js.Dynamic.{global => g}
 import monix.execution.CancelableFuture
 import org.scalajs.dom.html.{Button, Div, Input, Span, Table, TableRow}
 import provingground.library.MonoidSimple
@@ -367,12 +368,12 @@ object InteractiveProver {
         ).render
       )
 
-      val editor = ace.edit("editor")
+      val editor = g.ace.edit("editor")
       editor.setTheme("ace/theme/chrome")
       editor.getSession().setMode("ace/mode/scala")
 
       def compile(): Unit = {
-        val text = editor.getValue
+        val text = editor.getValue().asInstanceOf[String]
 
         // log("from editor")
         // log(text)

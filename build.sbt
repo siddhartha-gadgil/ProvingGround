@@ -163,7 +163,7 @@ lazy val client = project
       "com.lihaoyi"  %%% "scalatags"   % "0.6.7",
       "com.lihaoyi"  %%% "upickle"     % "0.6.6",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
-      "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
+      // "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
     )
   )
