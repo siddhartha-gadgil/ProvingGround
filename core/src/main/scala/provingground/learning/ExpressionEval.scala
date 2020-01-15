@@ -502,7 +502,7 @@ trait ExpressionEval { self =>
     }
     .toSet
 
-  lazy val finalTerms =
+  lazy val finalTerms : FD[HoTT.Term] =
     FD {
       finalDist.collect {
         case (FinalVal(Elem(t: Term, Terms)), w) => Weighted(t, w)

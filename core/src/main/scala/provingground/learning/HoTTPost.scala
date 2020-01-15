@@ -402,6 +402,19 @@ object HoTTPost {
     MicroBot(response)
   }
 
+  lazy val recomputeFromInit: PostResponse[HoTTPost, ID] = { // when equations are posted, ask for initial state and recompute final state
+    val response : (Set[EquationNode] :: InitState :: TermGenParams ::  HNil) => Set[EquationNode] => Future[FinalState] = 
+    {
+      case (alleqs :: init :: tg :: HNil) =>
+        eqs =>
+          Future{
+            val expEv = ExpressionEval.fromInitEqs(init.ts, Equation.group(eqs union alleqs), tg)
+            FinalState(expEv.finalTermState(), 1)
+          }
+    }
+    MicroBot(response)
+  }
+
 }
 
 class HoTTSession
