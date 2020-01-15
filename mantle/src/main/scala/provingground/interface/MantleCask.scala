@@ -2,7 +2,7 @@ package provingground.interface
 
 import provingground._
 
-import scala.concurrent.ExecutionContext.Implicits.global
+// import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 // import MantleService._
 import io.undertow.websockets.WebSocketConnectionCallback
@@ -13,6 +13,7 @@ import monix.execution.CancelableFuture
 import scala.util.Try
 
 object MantleRoutes extends cask.Routes {
+  implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
   val indexHTML =
   """
     |
