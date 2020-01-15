@@ -55,23 +55,6 @@ class HoTTPost { web =>
 
   val representationBuffer = PostBuffer[Map[GeneratorVariables.Variable[_], Vector[Double]], ID](postGlobal)
 
-  // val buffers: Vector[PostBuffer[_, ID]] =
-  //   Vector(
-  //     tgBuff,
-  //     lpBuff,
-  //     eqnNodeBuff,
-  //     expEvalBuff,
-  //     lptBuff,
-  //     initStateBuff,
-  //     finalStateBuff,
-  //     tunedLpBuff,
-  //     genEqnBuff,
-  //     isleNormEqnBuff,
-  //     lemmaBuffer,
-  //     chompBuffer,
-  //     errorBuffer
-  //   )
-
 }
 
 object HoTTPost {
@@ -105,20 +88,18 @@ object HoTTPost {
 
   implicit val postUnit: Postable[Unit, HoTTPost, ID] =
     new Postable[Unit, HoTTPost, ID] {
-      val contextChange: Boolean = false
-
       def post(content: Unit, web: HoTTPost, pred: Set[ID]): Future[ID] = 
         web.global.postGlobal(content)
     }
 
     implicit val postError: Postable[Throwable, HoTTPost, ID] =
-    bufferPost(_.errorBuffer, true)
+    bufferPost(_.errorBuffer)
 
   implicit val postLP: Postable[LocalProver, HoTTPost, ID] =
-    bufferPost(_.lpBuff, true)
+    bufferPost(_.lpBuff)
 
   implicit val postLPT: Postable[LocalTangentProver, HoTTPost, ID] =
-    bufferPost(_.lptBuff, true)
+    bufferPost(_.lptBuff)
 
   implicit val postExpEv: Postable[ExpressionEval, HoTTPost, ID] = bufferPost(
     _.expEvalBuff
@@ -268,8 +249,6 @@ object HoTTPost {
           postData <- Postable.postFuture(content.base, web, pred union leaves)
         } yield postData.id
       }
-
-      val contextChange: Boolean = bp.contextChange
     }
 
   lazy val lpToExpEv: PostResponse[HoTTPost, ID] = {
