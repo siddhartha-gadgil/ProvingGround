@@ -130,7 +130,7 @@ val jvmLibs = List(
   ivy"com.lihaoyi::cask:0.1.9",
   ivy"org.scalameta::scalameta:4.3.0",
   ivy"com.github.nscala-time::nscala-time:2.22.0",
-  ivy"org.reactivemongo::reactivemongo:0.12.1",
+  ivy"org.reactivemongo::reactivemongo:0.20.1",
   ivy"com.typesafe.akka::akka-actor:2.6.1",
   ivy"com.typesafe.akka::akka-slf4j:2.6.1",
   ivy"org.scalactic::scalactic:3.1.0",

@@ -10,6 +10,7 @@ import akka.stream.ActorMaterializer
 
 import com.typesafe.config._
 // import com.mongodb.casbah.Imports
+import scala.concurrent._
 
 object Hub {
   // gets an instance of the driver
@@ -51,7 +52,7 @@ object Hub {
     lazy val connection = driver.connection(List("localhost"))
 
     // Gets a reference to the database "plugin"
-    implicit lazy val db: DefaultDB = connection("provingground")
+    implicit lazy val db: Future[DefaultDB] = connection.database("provingground")
   }
 
   // object Casbah {

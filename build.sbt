@@ -66,7 +66,7 @@ lazy val jvmSettings = Seq(
     "com.lihaoyi" %% "os-lib" % "0.2.5",
     "com.github.nscala-time" %% "nscala-time"   % "2.22.0",
     "org.mongodb.scala" %% "mongo-scala-driver" % "2.8.0",
-    "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
+    "org.reactivemongo"      %% "reactivemongo" % "0.20.1",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
