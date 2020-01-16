@@ -7,7 +7,7 @@ import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.SeqView
-import scala.util.Try
+import scala.util.{Try, Right}
 
 /* Code for mixed autonomous and interactive running.
  * We can interact by posting various objects.
@@ -169,6 +169,17 @@ object LocalQueryable extends FallBackLookups{
   def lookupAnswer[P, W, ID](
     implicit pw: Postable[P, W, ID]
   ): AnswerFromPost[P, P, W, ID] = AnswerFromPost(identity(_))
+
+  /**
+    * query for `Some[A]` using query for `A` by looking up history. Meant to be starting point for several options.
+    *
+    * @param qw query for `A`
+    * @param ph post history
+    * @return queryable for `Some[A]`
+    */
+  def answerAsSome[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Some[Q], W, ID] = 
+    LatestAnswer(Vector(AnswerFromPost[Q, Some[Q], W, ID](Some(_))))
+
 
   /**
    * Look up an answer in the history of a post, assuming an implicit history provider
@@ -533,24 +544,16 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
     }
 }
 
+/**
+  * Allows posting any content, typically just returns an ID to be used by something else.
+  */
 trait GlobalPost[P, ID] {
   def postGlobal(content: P): Future[ID]
 }
 
-object GlobalPost {
-  class IndexGlobalPost[P] extends GlobalPost[P, Int] {
-    val globalBuffer: ArrayBuffer[P] = ArrayBuffer()
-    def postGlobal(content: P): Future[Int] = {
-      Future {
-        globalBuffer += content
-        val index = globalBuffer.size - 1
-        assert(globalBuffer(index) == content)
-        index
-      }
-    }
-  }
-}
-
+/**
+  * A buffer for storing posts, extending `GlobalPost` which supplies an ID
+  */
 trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   val buffer: ArrayBuffer[(P, ID, Set[ID])] = ArrayBuffer()
 
@@ -575,18 +578,43 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 }
 
 object PostBuffer {
-  def apply[P, ID](globalPost: => (P => Future[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
+/**
+  * creating a post buffer
+  *
+  * @param globalPost the supplier of the ID
+  * @return buffer storing posts
+  */  def apply[P, ID](globalPost: => (P => Future[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
     def postGlobal(content: P): Future[ID] = globalPost(content)
   }
 
+  /**
+    * content from buffer
+    *
+    * @param pb the buffer
+    * @param id ID
+    * @return content optionally
+    */
   def get[P, ID](pb: PostBuffer[P, ID], id: ID): Option[P] =
     pb.buffer.find(_._2 == id).map(_._1)
 
+    /**
+      * immediate predecessor posts in buffer
+      *
+      * @param pb the buffer
+      * @param id ID
+      * @return set of IDs of immediate predecessors
+      */
   def previous[P, ID](pb: PostBuffer[P, ID], id: ID) : Set[ID] = {
     val withId =  pb.buffer.filter(_._2 == id).toSet
     withId.flatMap(_._3)
   }
 
+  /**
+    * postability using a buffer, the main way posting is done
+    *
+    * @param buffer the buffer to which to post as a function of the web
+    * @return postability
+    */
   def bufferPost[P, W, ID](buffer: W => PostBuffer[P, ID]) : Postable[P, W, ID] = {
     def postFunc(p: P, web: W, ids: Set[ID]): Future[ID] =
       buffer(web).post(p, ids)
@@ -594,24 +622,43 @@ object PostBuffer {
   }
 }
 
-
-class IndexedPostBuffer[P]
-    extends GlobalPost.IndexGlobalPost[P]
-    with PostBuffer[P, Int]
-
-
 object Postable {
+  /**
+    * Making a postable
+    *
+    * @param postFunc the posting function
+    * @return a Postable
+    */
   def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID]) : Postable[P, W, ID] = 
     Impl(postFunc)
 
+    /**
+      * A concrete implementation of postable
+      *
+      * @param postFunc the posting function
+      */
   case class Impl[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID]) extends Postable[P, W, ID] {
         def post(content: P, web: W, pred: Set[ID]): Future[ID] = 
             postFunc(content, web, pred)
     }
 
+    /**
+      * post and return post data
+      *
+      * @param content content to be posted
+      * @param web web where we post
+      * @param pred predecessors of the post
+      * @param pw postability of the type
+      * @return PostData as a future
+      */
   def postFuture[P, W, ID](content: P, web: W, pred: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[PostData[P, W, ID]] = 
     pw.post(content, web, pred).map{id => PostData(content, id)} 
 
+    /**
+      * post in a buffer
+      *
+      * @return postability
+      */
   implicit def bufferPostable[P, ID, W <: PostBuffer[P, ID]]
       : Postable[P, W, ID] =
      {
@@ -619,15 +666,14 @@ object Postable {
         web.post(content, pred)
       Impl(post)
     }
-
-  implicit def indexedBufferPostable[P, W <: IndexedPostBuffer[P]]
-      : Postable[P, W, Int] =
-    {
-      def post(content: P, web: W, pred: Set[Int]): Future[Int] =
-        web.post(content, pred)
-      Impl(post)
-    }
   
+    /**
+      * post an Option[P], posting a Unit in case of `None`
+      *
+      * @param pw postability of `P`
+      * @param uw postability of a Unit
+      * @return postability of `Option[P]`
+      */
   implicit def optionPostable[P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Option[P], W, ID] = 
     {
       def post(content: Option[P], web: W, pred: Set[ID]): Future[ID] = 
@@ -635,6 +681,13 @@ object Postable {
         Impl(post)
     }
 
+  /**
+    * post a `Try[P]` by posting `P` or an error 
+    *
+    * @param pw postability of `P`
+    * @param ew postability of a `Throwable`
+    * @return postability of `Try[P]`
+    */
   implicit def tryPostable[P, W, ID](implicit pw: Postable[P, W, ID], ew: Postable[Throwable, W, ID]) : Postable[Try[P], W, ID] = 
     {
       def post(content: Try[P], web: W, pred: Set[ID]): Future[ID] =
@@ -642,11 +695,42 @@ object Postable {
 
       Impl(post)
     }
+
+  /**
+    * Post a `Right[P]`, to be used to split the stream with a change or not.
+    *
+    * @param pw postability of `P`
+    * @param uw postability of `Unit`
+    * @return Postability of `Right[P]`
+    */
+  implicit def rightPost[X, P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Right[X, P], W, ID] = 
+    {
+      def post(content: Right[X, P], web: W, pred: Set[ID]): Future[ID] = 
+        {
+          uw.post((), web, pred).foreach(_ => ())
+          pw.post(content.value, web, pred)
+        }
+        
+        Impl(post)
+    }
+
+
 }
 
+/**
+  * allows posting globally and keeps count without stroing anything
+  *
+  * @param log logging on post
+  */
 class CounterGlobalID(log : Any => Unit = (_) => ()){
   var counter: Int = 0
 
+  /**
+    * post arbitrary content
+    *
+    * @param content content of some type
+    * @return ID, consisting of an index and a hashCode
+    */
   def postGlobal[P](content: P) : Future[(Int, Int)] = {
     val index = counter
     counter +=1
