@@ -49,7 +49,7 @@ val ammV = "2.0.4"
 val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators::1.1.2",
   ivy"org.scala-lang.modules::scala-xml:1.2.0",
-  ivy"org.typelevel::spire::0.16.2",
+  ivy"org.typelevel::spire::0.17.0-M1",
   ivy"com.lihaoyi::fansi::0.2.8",
   ivy"com.lihaoyi::upickle::0.9.8",
   ivy"com.lihaoyi::fastparse::2.2.3",

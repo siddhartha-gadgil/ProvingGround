@@ -228,7 +228,7 @@ object HoTTPost {
 
   implicit def lpStepQuery: LocalQueryable[LocalProverStep, HoTTPost, ID] =
     LatestAnswer(
-      Seq(
+      Vector(
         AnswerFromPost((lp: LocalProver) => lp: LocalProverStep),
         AnswerFromPost((lp: LocalTangentProver) => lp: LocalProverStep)
       )
