@@ -718,6 +718,34 @@ object Postable {
 }
 
 /**
+  * Wrapper for post content that should be posted, with the previous elements of the same type also posted, in general with transformations (e.g. rescale)
+  *
+  * @param content the content to be posted
+  * @param transformation transformations of other posts, typically rescaling
+  * @param pw postability of P
+  * @param pq queryability of P
+  */
+case class SplitPost[P, W, ID](content: P, transformation: P => P = identity[P](_))(implicit val pw: Postable[P, W, ID], val pq : LocalQueryable[P, W, ID])
+
+object SplitPost{
+  implicit def splitPostable[P, W, ID]: Postable[SplitPost[P, W, ID], W, ID] = {
+    def post(content: SplitPost[P, W, ID], web: W, pred: Set[ID]): Future[ID] = {
+      content.pw.post(content.content, web, pred).map{
+        postID =>
+          val othersFutVec = content.pq.getAt(web, postID, (_) => true)
+          othersFutVec.foreach{
+            v => v.foreach{
+              x => content.pw.post(content.transformation(x), web, pred)
+            }
+          }
+          postID
+      }
+    }
+    Postable.Impl(post)
+  }
+}
+
+/**
   * allows posting globally and keeps count without stroing anything
   *
   * @param log logging on post
