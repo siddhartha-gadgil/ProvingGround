@@ -214,7 +214,7 @@ object trepplein extends SbtModule with PublishModule{
 }
 
 val mantleLibs = List(
-  ivy"com.lihaoyi::cask:0.1.9",
+  ivy"com.lihaoyi::cask:0.2.7",
   ivy"org.scalameta::scalameta:4.1.0",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",
