@@ -85,14 +85,21 @@ def fromPost[Q](data: PostData[Q, W, ID]) : Option[U] =
   * @param h the history
   */
 case class LatestAnswer[Q, W, ID](
-  answers: Seq[AnswerFromPost[_, Q, W, ID]]
+  answers: Vector[AnswerFromPost[_, Q, W, ID]]
 )(implicit h: PostHistory[W, ID])
   extends LocalQueryable[Q, W, ID] {
     def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] = Future{
       def answer: PostData[_, W, ID] => Option[Q] = 
         (pd) => answers.flatMap(ans => ans.fromPost(pd)).filter(predicate).headOption
       h.latestAnswers(web, id, answer).toVector
+
+
     }
+
+    def ||[P](ans: P => Q)(implicit pw: Postable[P, W, ID]) = 
+      LatestAnswer(
+        answers :+ AnswerFromPost[P, Q, W, ID](ans)
+      )
   }
 
 
@@ -106,7 +113,7 @@ trait FallBackLookups{
     * @return implementation of query lookup
     */
   implicit   def lookupLatest[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Q, W, ID] = 
-  LatestAnswer(Seq(AnswerFromPost[Q, Q, W, ID](identity)))
+  LatestAnswer(Vector(AnswerFromPost[Q, Q, W, ID](identity)))
 
   /**
     * Lookup for the wrapped type `SomePost`, which returns all posts independent of relative position in history.
