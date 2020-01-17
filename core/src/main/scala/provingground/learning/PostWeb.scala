@@ -725,14 +725,20 @@ object Postable {
   * @param pw postability of P
   * @param pq queryability of P
   */
-case class SplitPost[P, W, ID](content: P, transformation: P => P = identity[P](_))(implicit val pw: Postable[P, W, ID], val pq : LocalQueryable[P, W, ID])
+case class SplitPost[P,  Q, W, ID](content: P, transformation: Q => P)(implicit val pw: Postable[P, W, ID], val qq : LocalQueryable[Q, W, ID])
 
 object SplitPost{
-  implicit def splitPostable[P, W, ID]: Postable[SplitPost[P, W, ID], W, ID] = {
-    def post(content: SplitPost[P, W, ID], web: W, pred: Set[ID]): Future[ID] = {
+  def simple[P, W, ID](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[P, W, ID]) : SplitPost[P,P,W,ID] = 
+    SplitPost[P, P, W, ID](content, identity[P](_))
+
+  def some[P, W, ID](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[Some[P], W, ID]) : SplitPost[P,Some[P],W,ID] =
+    SplitPost[P, Some[P], W, ID](content, _.value)
+
+  implicit def splitPostable[P, Q, W, ID]: Postable[SplitPost[P, Q, W, ID], W, ID] = {
+    def post(content: SplitPost[P, Q, W, ID], web: W, pred: Set[ID]): Future[ID] = {
       content.pw.post(content.content, web, pred).map{
         postID =>
-          val othersFutVec = content.pq.getAt(web, postID, (_) => true)
+          val othersFutVec = content.qq.getAt(web, postID, (_) => true)
           othersFutVec.foreach{
             v => v.foreach{
               x => content.pw.post(content.transformation(x), web, pred)
