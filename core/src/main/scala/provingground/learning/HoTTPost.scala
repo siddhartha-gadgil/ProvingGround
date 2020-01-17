@@ -142,6 +142,17 @@ object HoTTPost {
   implicit val repPost: Postable[Map[GeneratorVariables.Variable[_], Vector[Double]], HoTTPost, ID] =
     bufferPost(_.representationBuffer)
 
+  implicit val someTGQuery = 
+    LocalQueryable.answerAsSome[TermGenParams, HoTTPost, ID] ||
+    ((lp: LocalProver) => Some(lp.tg)) ||
+    ((lp: LocalTangentProver) => Some(lp.tg))
+
+  implicit val someInitQuery = 
+    LocalQueryable.answerAsSome[InitState, HoTTPost, ID] ||
+    ((lp: LocalProver) => Some(InitState(lp.initState, 1))) ||
+    ((lp: LocalTangentProver) => Some(InitState(lp.initState, 1))) 
+
+
   case class WebBuffer[P](buffer: PostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]
   ) {

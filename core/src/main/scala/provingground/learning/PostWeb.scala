@@ -177,7 +177,7 @@ object LocalQueryable extends FallBackLookups{
     * @param ph post history
     * @return queryable for `Some[A]`
     */
-  def answerAsSome[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Some[Q], W, ID] = 
+  def answerAsSome[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LatestAnswer[Some[Q],W,ID] = 
     LatestAnswer(Vector(AnswerFromPost[Q, Some[Q], W, ID](Some(_))))
 
 
