@@ -68,7 +68,7 @@ object ProvingGroundJS {
   def dummyUpdate() = {
     val jsDiv = dom.document.getElementById("dummy-space")
     jsDiv.appendChild(div("updating without query").render)
-    Ajax.get("../../data/dummy").onSuccess {
+    Ajax.get("../../data/dummy").foreach {
       case xhr =>
         jsDiv.appendChild(div(xhr.responseText).render)
     }
@@ -160,12 +160,12 @@ object ProvingGroundJS {
            svgAttrs.height := 400,
            fill := "blue",
            fillOpacity := "0.1").render)
-    Ajax.get("../terms-data").onSuccess {
+    Ajax.get("../terms-data").foreach {
       case xhr =>
         fdDiv.appendChild(
           fdView(read[Vector[(String, String, Double)]](xhr.responseText)))
     }
-    Ajax.get("../terms-time-series").onSuccess {
+    Ajax.get("../terms-time-series").foreach {
       case xhr =>
         val tsList = read[List[(String, Vector[Double])]](xhr.responseText)
         svgLines(tsList).foreach((elem) => svg.appendChild(elem))

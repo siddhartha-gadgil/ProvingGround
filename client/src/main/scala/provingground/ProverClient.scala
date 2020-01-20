@@ -672,7 +672,7 @@ object ProverClient {
               h3("Lemmas:"),
               ul(`class` := "list-group")(
                 // li(`class` := "list-group-item list-group-item-warning")("Lemmas:"),
-                lemmaLISeq: _*
+                lemmaLISeq.toSeq : _*
               )
             ).render
           )

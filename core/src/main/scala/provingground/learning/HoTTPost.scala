@@ -8,7 +8,7 @@ import monix.execution.Scheduler.Implicits.{global => monixglobal}
 import scala.concurrent._
 import TermData._
 import shapeless._
-import scala.collection.SeqView
+import scala.collection.View
 
 class HoTTPost { web =>
   val global = new CounterGlobalID()
@@ -185,8 +185,8 @@ object HoTTPost {
           index: ID
       ): Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
 
-      def allPosts(web: HoTTPost): SeqView[PostData[_, HoTTPost, ID], Seq[_]] =
-        webBuffers(web).view.flatMap(_.data)
+      def allPosts(web: HoTTPost): View[PostData[_, HoTTPost, ID]] =
+        webBuffers(web).view.flatMap(_.data).view
 
     }
 

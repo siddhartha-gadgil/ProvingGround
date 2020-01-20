@@ -40,7 +40,7 @@ object WikiRead {
 
   def saveAll(pgsfut: Future[Seq[MathPage]])(
       implicit save: MathPage => Unit) = {
-    pgsfut.onSuccess {
+    pgsfut.foreach {
       case pgs => (pgs filter (!_.isList)).foreach(save)
     }
   }

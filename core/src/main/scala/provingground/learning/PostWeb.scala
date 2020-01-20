@@ -6,8 +6,8 @@ import monix.execution.Scheduler.Implicits.global
 import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.SeqView
 import scala.util.{Try, Right}
+import scala.collection.View
 
 /* Code for mixed autonomous and interactive running.
  * We can interact by posting various objects.
@@ -49,9 +49,9 @@ object Queryable{
     * @param ph post history of `P` from `W`
     * @return implementation of querying typeclass
     */
-  implicit def allView[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : Queryable[SeqView[P, Seq[_]], W] = 
-    new Queryable[SeqView[P, Seq[_]], W] {
-      def get(web: W, predicate: SeqView[P, Seq[_]] => Boolean): Future[SeqView[P, Seq[_]]] = 
+  implicit def allView[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : Queryable[View[P], W] = 
+    new Queryable[View[P], W] {
+      def get(web: W, predicate: View[P] => Boolean): Future[View[P]] = 
        Future{ ph.allPosts(web).filter(_.pw == pw).map{_.asInstanceOf[P]}}
     }
     
@@ -78,7 +78,7 @@ def fromPost[Q](data: PostData[Q, W, ID]) : Option[U] =
   if (pw == data.pw) Some(func(data.content.asInstanceOf[P])) else None
 }
 
-/**
+/**                                                       
   * Queries answered by taking the latest out of possibly many choices of posts to be looked up and transformed.
   *
   * @param answers various ways in which the query can be answered
@@ -253,7 +253,7 @@ trait PostHistory[W, ID] {
   def findPost(web: W, index: ID) :  Option[(PostData[_, W, ID], Set[ID])]
 
   // all posts as a view
-  def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]]
+  def allPosts(web: W): View[PostData[_, W, ID]]
 
   def history(web: W, id: ID): Stream[PostData[_, W, ID]] = {
     val next : ((Set[PostData[_, W, ID]], Set[ID])) =>  (Set[PostData[_, W, ID]], Set[ID])   = {case (d, indices) =>

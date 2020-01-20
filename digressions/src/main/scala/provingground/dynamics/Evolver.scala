@@ -336,7 +336,7 @@ object Evolver {
       case s: Traversable[A] => pushAll(s)
     }
 
-    def bind(f: Future[Traversable[A]]) = f.onSuccess(pushTrav)
+    def bind(f: Future[Traversable[A]]) = f.foreach(pushTrav)
   }
 
   case class SimpleOutbox[A](push: A => Unit) extends Outbox[A]
