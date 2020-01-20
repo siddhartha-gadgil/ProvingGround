@@ -64,14 +64,14 @@ object ScratchPad {
         ).render
       )
 
-      val editor = ace.edit("editor")
+      val editor = g.ace.edit("editor")
       editor.setTheme("ace/theme/chrome")
       editor.getSession().setMode("ace/mode/scala")
 
       val parser = HoTTParser()
 
       def compile(): Unit = {
-        val text = editor.getValue
+        val text = editor.getValue().asInstanceOf[String]
 
         val view =
           parser.parseBlock(text // parse(text, parser.block(_)

@@ -166,9 +166,9 @@ object TermPatterns {
       val fmly: Term = rf.depcodom match {
         case t: Term => t
         case s =>
-          pprint.log(s)
+          // pprint.log(s)
           val x = rf.dom.Var
-          pprint.log(rf.depcodom(x))
+          // pprint.log(rf.depcodom(x))
           x :-> rf.depcodom(x)
       }
       (rf.dom, (fmly, rf.defnData))

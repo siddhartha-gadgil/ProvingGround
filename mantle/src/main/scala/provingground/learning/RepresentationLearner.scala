@@ -64,9 +64,9 @@ class RepresentationLearner[A](
     base
   }
 
-  lazy val vectorMap: Map[A, Array[Double]] =
+  lazy val vectorMap: Map[A, Vector[Double]] =
     elems.map { a =>
-      a -> vectors.getWordVector(indexMap(a).toString)
+      a -> vectors.getWordVector(indexMap(a).toString).toVector
     }.toMap
 
 }
@@ -119,4 +119,23 @@ object RepresentationLearner {
     val paths = bp.unifRandomPaths(numPaths, length)
     new RepresentationLearner(paths, vectorLength, minWordFrequency, batchSize)
   }
+
+  import TypedPostResponse._
+
+    def eqnsToRep(numPaths: Int,
+      length: Int,
+      coeffWeights: Coeff[_] => Double = (_) => 1,
+      backWeight: Double = 0.8,
+      vectorLength: Int = 150,
+      minWordFrequency: Int = 5,
+      batchSize: Int = 250
+  ) : PostResponse[HoTTPost, HoTTPost.ID] = 
+    MicroBot.simple[
+      Set[EquationNode], 
+      Map[GeneratorVariables.Variable[_], Vector[Double]],  
+      HoTTPost, 
+      HoTTPost.ID](
+    (eqs: Set[EquationNode]) => 
+      equationNodesSampled(eqs, numPaths, length, coeffWeights, backWeight, vectorLength, minWordFrequency, batchSize).vectorMap
+  )
 }

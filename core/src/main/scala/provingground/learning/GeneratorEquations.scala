@@ -14,8 +14,8 @@ case class GeneratorEquations[State](
     varWeight: Double,
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) extends EvolvedEquations[State] {
-  pprint.log(initState)
-  pprint.log(finalState)
+  // pprint.log(initState)
+  // pprint.log(finalState)
 
   lazy val initVars: Set[Variable[_]] =
     GeneratorVariables(nodeCoeffSeq, initState).allVars

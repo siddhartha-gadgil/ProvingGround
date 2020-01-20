@@ -11,7 +11,9 @@ import edu.stanford.nlp.trees.Tree
 // import org.scalafmt.Scalafmt.format
 import scala.util.Try
 import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
+// import scala.concurrent.ExecutionContext.Implicits.global
+import cask.main.Routes
+import cask.util.Logger
 
 object NLPParser{
   def parseResult(txt: String): Obj = {
@@ -56,7 +58,7 @@ object NLPParser{
 import NLPParser._
 
 object ParserRoutes extends cask.Routes {
-
+  def log: Logger = new Logger.Console()
 
   @cask.get("/nlp.html")
   def nlp(): String = {
@@ -91,7 +93,8 @@ object ParserRoutes extends cask.Routes {
 
 }
 
-object ParserCask extends cask.Main(ParserRoutes, MantleRoutes, LeanRoutes) {
+object ParserCask extends cask.Main {
+  def allRoutes: Seq[Routes] = Seq(ParserRoutes, MantleRoutes, LeanRoutes)
   override def port: Int = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
   override def host: String = Try(sys.env("IP")).getOrElse("localhost")
 }

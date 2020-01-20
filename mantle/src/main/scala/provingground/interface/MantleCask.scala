@@ -2,7 +2,7 @@ package provingground.interface
 
 import provingground._
 
-import scala.concurrent.ExecutionContext.Implicits.global
+// import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 // import MantleService._
 import io.undertow.websockets.WebSocketConnectionCallback
@@ -11,8 +11,14 @@ import io.undertow.websockets.spi.WebSocketHttpExchange
 import monix.execution.CancelableFuture
 
 import scala.util.Try
+import cask.main.Routes
+import cask.util.Logger
 
 object MantleRoutes extends cask.Routes {
+  implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
+
+  def log: Logger = new Logger.Console
+  
   val indexHTML =
   """
     |
@@ -237,7 +243,8 @@ val proverHTML =
 
 }
 
-object MantleCask extends cask.Main(MantleRoutes, LeanRoutes) {
+object MantleCask extends cask.Main {
+  override def allRoutes: Seq[Routes] = Seq(MantleRoutes, LeanRoutes)
   override def port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
   override def host = Try(sys.env("IP")).getOrElse("localhost")
 }

@@ -6,6 +6,9 @@ import monix.eval._
 import HoTTPost._, LocalQueryable._
 import monix.execution.Scheduler.Implicits.{global => monixglobal}
 import scala.concurrent._
+import TermData._
+import shapeless._
+import scala.collection.SeqView
 
 class HoTTPost { web =>
   val global = new CounterGlobalID()
@@ -15,6 +18,8 @@ class HoTTPost { web =>
   var equationNodes: Set[EquationNode] = Set()
 
   def equations = Equation.group(equationNodes)
+
+  def terms = ExpressionEval.terms(equationNodes)
 
   def addEqns(eqs: Set[EquationNode]): Unit = {
     equationNodes ++= eqs
@@ -42,25 +47,24 @@ class HoTTPost { web =>
 
   val lemmaBuffer = PostBuffer[Lemmas, ID](postGlobal)
 
-  val buffers: Vector[PostBuffer[_, ID]] =
-    Vector(
-      tgBuff,
-      lpBuff,
-      eqnNodeBuff,
-      expEvalBuff,
-      lptBuff,
-      initStateBuff,
-      finalStateBuff,
-      tunedLpBuff,
-      genEqnBuff,
-      isleNormEqnBuff,
-      lemmaBuffer
-    )
+  val chompBuffer = PostBuffer[ChompResult, ID](postGlobal)
+
+  val termResultBuffer = PostBuffer[TermResult, ID](postGlobal)
+
+  val errorBuffer = PostBuffer[Throwable, ID](postGlobal)
+
+  val representationBuffer = PostBuffer[Map[GeneratorVariables.Variable[_], Vector[Double]], ID](postGlobal)
 
 }
 
 object HoTTPost {
   type ID = (Int, Int)
+
+  def fansiLog(post: PostData[_, HoTTPost, ID]) : Future[Unit] = 
+    Future{
+      translation.FansiShow.fansiPrint.log(post.pw)
+      translation.FansiShow.fansiPrint.log(post.content, height = 20)
+  }
 
   case class InitState(ts: TermState, weight: Double)
 
@@ -74,13 +78,28 @@ object HoTTPost {
 
   case class Lemmas(lemmas: Vector[(Typ[Term], Double)])
 
+  case class ChompResult(
+      successes: Vector[StrategicProvers.Successes],
+      failures: Vector[Typ[Term]],
+      eqns: Set[EquationNode]
+  )
+
   import PostBuffer.bufferPost
 
+  implicit val postUnit: Postable[Unit, HoTTPost, ID] =
+    new Postable[Unit, HoTTPost, ID] {
+      def post(content: Unit, web: HoTTPost, pred: Set[ID]): Future[ID] = 
+        web.global.postGlobal(content)
+    }
+
+    implicit val postError: Postable[Throwable, HoTTPost, ID] =
+    bufferPost(_.errorBuffer)
+
   implicit val postLP: Postable[LocalProver, HoTTPost, ID] =
-    bufferPost(_.lpBuff, true)
+    bufferPost(_.lpBuff)
 
   implicit val postLPT: Postable[LocalTangentProver, HoTTPost, ID] =
-    bufferPost(_.lptBuff, true)
+    bufferPost(_.lptBuff)
 
   implicit val postExpEv: Postable[ExpressionEval, HoTTPost, ID] = bufferPost(
     _.expEvalBuff
@@ -114,6 +133,26 @@ object HoTTPost {
   implicit val postLemmas: Postable[Lemmas, HoTTPost, ID] =
     bufferPost(_.lemmaBuffer)
 
+  implicit val postChomp: Postable[ChompResult, HoTTPost, ID] =
+    bufferPost(_.chompBuffer)
+
+  implicit val postResult: Postable[TermResult, HoTTPost, ID] =
+    bufferPost(_.termResultBuffer)
+
+  implicit val repPost: Postable[Map[GeneratorVariables.Variable[_], Vector[Double]], HoTTPost, ID] =
+    bufferPost(_.representationBuffer)
+
+  implicit val someTGQuery = 
+    LocalQueryable.answerAsSome[TermGenParams, HoTTPost, ID] ||
+    ((lp: LocalProver) => Some(lp.tg)) ||
+    ((lp: LocalTangentProver) => Some(lp.tg))
+
+  implicit val someInitQuery = 
+    LocalQueryable.answerAsSome[InitState, HoTTPost, ID] ||
+    ((lp: LocalProver) => Some(InitState(lp.initState, 1))) ||
+    ((lp: LocalTangentProver) => Some(InitState(lp.initState, 1))) 
+
+
   case class WebBuffer[P](buffer: PostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]
   ) {
@@ -145,10 +184,11 @@ object HoTTPost {
           web: HoTTPost,
           index: ID
       ): Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
-    }
 
-  def allPosts(web: HoTTPost): Vector[PostData[_, HoTTPost, ID]] =
-    webBuffers(web).flatMap(_.data)
+      def allPosts(web: HoTTPost): SeqView[PostData[_, HoTTPost, ID], Seq[_]] =
+        webBuffers(web).view.flatMap(_.data)
+
+    }
 
   def allPostFullData(
       web: HoTTPost
@@ -194,6 +234,17 @@ object HoTTPost {
   implicit def equationQuery: Queryable[Set[Equation], HoTTPost] =
     Queryable.simple(_.equations)
 
+  implicit def termSetQuery: Queryable[Set[Term], HoTTPost] =
+    Queryable.simple(_.terms)
+
+  implicit def lpStepQuery: LocalQueryable[LocalProverStep, HoTTPost, ID] =
+    LatestAnswer(
+      Vector(
+        AnswerFromPost((lp: LocalProver) => lp: LocalProverStep),
+        AnswerFromPost((lp: LocalTangentProver) => lp: LocalProverStep)
+      )
+    )
+
   case class Apex[P](base: P)
 
   implicit def postToLeaves[P](
@@ -209,24 +260,39 @@ object HoTTPost {
           postData <- Postable.postFuture(content.base, web, pred union leaves)
         } yield postData.id
       }
-
-      val contextChange: Boolean = bp.contextChange
     }
 
   lazy val lpToExpEv: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
       lp => lp.expressionEval.runToFuture
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lptToExpEv: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
       lp => lp.expressionEval.runToFuture
-    Poster(response)
+    MicroBot(response)
   }
 
+  lazy val lpToTermResult: PostResponse[HoTTPost, ID] = {
+    val response: Unit => LocalProver => Future[TermResult] = (_) =>
+      lp => termData(lp).runToFuture
+    MicroBot(response)
+  }
+
+  lazy val lptToTermResult: PostResponse[HoTTPost, ID] = {
+    val response: Unit => LocalTangentProver => Future[TermResult] = (_) =>
+      lp => termData(lp).runToFuture
+    MicroBot(response)
+  }
+
+  lazy val termResultToEquations: PostResponse[HoTTPost, ID] =
+    MicroBot.simple(
+      (pair: TermResult) => GeneratedEquationNodes(pair._2)
+    )
+
   lazy val expEvToEqns: PostResponse[HoTTPost, ID] =
-    Poster.simple(
+    MicroBot.simple(
       (ev: ExpressionEval) => ev.equations.flatMap(Equation.split)
     )
 
@@ -235,26 +301,32 @@ object HoTTPost {
       (web: HoTTPost) => (eqs: Set[EquationNode]) => web.addEqns(eqs)
     )
 
+  lazy val normEqnUpdate: PostResponse[HoTTPost, ID] =
+    Callback.simple(
+      (web: HoTTPost) =>
+        (eqs: IsleNormalizedEquationNodes) => web.addEqns(eqs.eqn)
+    )
+
   lazy val lpFromInit: PostResponse[HoTTPost, ID] = {
     val response: TermGenParams => InitState => Future[LocalProver] =
       (tg) => (init) => Future(LocalProver(init.ts, tg).sharpen(init.weight))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lpFromTG: PostResponse[HoTTPost, ID] = {
     val response: InitState => TermGenParams => Future[LocalProver] =
       (init) => (tg) => Future(LocalProver(init.ts, tg).sharpen(init.weight))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val tuneLP: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[TunedLocalProver] =
       (_) => (lp) => lp.tunedInit.runToFuture.map(TunedLocalProver(_))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val isleNormalizeEqns: PostResponse[HoTTPost, ID] =
-    Poster.simple(
+    MicroBot.simple(
       (ge: GeneratedEquationNodes) =>
         IsleNormalizedEquationNodes(
           ge.eqn.map(eq => TermData.isleNormalize(eq))
@@ -264,13 +336,13 @@ object HoTTPost {
   lazy val lpLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[Lemmas] =
       (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lptLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalTangentProver => Future[Lemmas] =
       (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
-    Poster(response)
+    MicroBot(response)
   }
 
   lazy val lemmaToTangentProver: PostResponse[HoTTPost, ID] = {
@@ -281,10 +353,56 @@ object HoTTPost {
             case (tp, w) =>
               lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture : Future[LocalTangentProver]
           })
-    new VectorPoster[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](
+    new MiniBot[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](
       response,
       (_) => true
     )
+  }
+
+  lazy val lpToChomp: PostResponse[HoTTPost, ID] = {
+    val response: Set[Term] => LocalProver => Future[ChompResult] =
+      terms =>
+        lp =>
+          lp.orderedUnknowns
+            .flatMap(
+              typs =>
+                StrategicProvers.liberalChomper(lp, typs, accumTerms = terms)
+            )
+            .map {
+              case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
+            }
+            .runToFuture
+    MicroBot(response)
+  }
+
+  lazy val termResultToChomp: PostResponse[HoTTPost, ID] = {
+    val response: (Set[Term] :: LocalProver :: HNil) => TermResult => Future[
+      ChompResult
+    ] = {
+      case (terms :: lp :: HNil) => {
+        case (ts, _) =>
+          StrategicProvers
+            .liberalChomper(lp, ts.orderedUnknowns, accumTerms = terms)
+            .map {
+              case (s, fl, eqs, _) => ChompResult(s, fl, eqs)
+            }
+            .runToFuture
+      }
+    }
+    MicroBot(response)
+  }
+
+  lazy val recomputeFromInit: PostResponse[HoTTPost, ID] = { // when equations are posted, ask for initial state and recompute final state
+    val response : (Set[EquationNode] :: InitState :: TermGenParams ::  HNil) => Set[EquationNode] => Future[FinalState] = 
+    {
+      case (alleqs :: init :: tg :: HNil) =>
+        eqs =>
+          Future{
+            val expEv = ExpressionEval.fromInitEqs(init.ts, Equation.group(eqs union alleqs), tg)
+            FinalState(expEv.finalTermState(), 1)
+          }
+    }
+    MicroBot(response)
   }
 
 }
@@ -292,7 +410,8 @@ object HoTTPost {
 class HoTTSession
     extends SimpleSession(
       new HoTTPost(),
-      Vector(lpToExpEv, expEvToEqns, eqnUpdate)
+      Vector(lpToExpEv, expEvToEqns, eqnUpdate),
+      Vector(fansiLog(_))
     ) {
   // just an illustration, should just use rhs
   def postLocalProverFuture(

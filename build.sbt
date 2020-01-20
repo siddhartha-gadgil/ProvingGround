@@ -2,7 +2,7 @@ import sbt.Project.projectToRef
 
 val scalaV = "2.12.10"
 
-val ammV = "1.8.2"
+val ammV = "2.0.4"
 
 
 scalaVersion in ThisBuild := scalaV
@@ -26,21 +26,21 @@ lazy val baseSettings = Seq(
 )
 
 lazy val commonSettings = baseSettings ++ Seq(
-  resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+  resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/",
   libraryDependencies ++= Seq(
     // "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-    "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.0.5",
-     "org.scala-lang.modules" %% "scala-xml" % "1.1.0",
-    "org.typelevel" %%% "spire"         % "0.16.0",
-    "com.lihaoyi"   %%% "fansi"         % "0.2.4",
-    "com.lihaoyi"   %%% "upickle"       % "0.7.1",
-    "com.lihaoyi" %%% "fastparse" % "2.1.0",
+    "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.1.2",
+     "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
+    "org.typelevel" %%% "spire"         % "0.17.0-M1",
+    "com.lihaoyi"   %%% "fansi"         % "0.2.8",
+    "com.lihaoyi"   %%% "upickle"       % "0.9.8",
+    "com.lihaoyi" %%% "fastparse" % "2.2.3",
     "com.chuusai"   %%% "shapeless"     % "2.3.2",
-    "org.typelevel" %%% "cats-core"     % "1.1.0",
-    "io.monix"      %%% "monix"         % "3.0.0",
-    "org.scalameta" %%% "scalameta"     % "4.1.0",
+    "org.typelevel" %%% "cats-core"     % "2.1.0",
+    "io.monix"      %%% "monix"         % "3.1.0",
+    "org.scalameta" %%% "scalameta"     % "4.3.0",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
-    "com.lihaoyi" %%% "pprint"      % "0.5.3",
+    "com.lihaoyi" %%% "pprint"      % "0.5.8",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.lihaoyi"   %%% "sourcecode"    % "0.1.4"
   ),
@@ -54,7 +54,7 @@ lazy val commonSettings = baseSettings ++ Seq(
   testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
 )
 
-val akkaV = "2.5.11"
+val akkaV = "2.6.1"
 
 assemblyMergeStrategy in assembly := {
   case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
@@ -64,39 +64,40 @@ lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.lihaoyi" %% "os-lib" % "0.2.5",
-    "com.github.nscala-time" %% "nscala-time"   % "2.16.0",
-    "org.reactivemongo"      %% "reactivemongo" % "0.12.1",
+    "com.github.nscala-time" %% "nscala-time"   % "2.22.0",
+    "org.mongodb.scala" %% "mongo-scala-driver" % "2.8.0",
+    "org.reactivemongo"      %% "reactivemongo" % "0.20.1",
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
     "org.scalactic" %% "scalactic" % "3.0.1",
-    "org.scalatest" %% "scalatest" % "3.0.4" % "test",
-    "com.lihaoyi" %% "cask" % "0.1.9",
+    "org.scalatest" %% "scalatest" % "3.1.0" % "test",
+    "com.lihaoyi" %% "cask" % "0.2.7",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
-    "org.apache.logging.log4j" % "log4j-core" % "2.11.1",
+    "org.apache.logging.log4j" % "log4j-core" % "2.13.0",
     // "org.mongodb"  %% "casbah" % "3.1.1",
 //    "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0",
     "com.typesafe.akka" %% "akka-stream" % akkaV,
-    "com.typesafe.akka" %% "akka-http"   % "10.1.1",
+    "com.typesafe.akka" %% "akka-http"   % "10.1.11",
     // "com.typesafe.akka" %% "akka-http" % akkaV,
-    "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.1",
+    "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.11",
 //    "com.lihaoyi" %% "upickle" % "0.3.4",
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
     // "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
-    "org.slf4j"   % "slf4j-api"    % "1.7.16",
-    "org.slf4j"   % "slf4j-simple" % "1.7.16",
+    "org.slf4j"   % "slf4j-api"    % "1.7.30",
+    "org.slf4j"   % "slf4j-simple" % "1.7.30",
     // Last stable release
     // "org.scalanlp" %% "breeze" % "0.13.2",
-    "com.atlassian.commonmark" % "commonmark" % "0.11.0",
-    "org.scalameta" %% "mdoc" % "1.3.6",
+    "com.atlassian.commonmark" % "commonmark" % "0.13.1",
+    "org.scalameta" %% "mdoc" % "2.1.1",
     "org.platanios" %% "tensorflow" % "0.4.0" classifier "linux-cpu-x86_64",
     "org.deeplearning4j" % "deeplearning4j-core"  % "1.0.0-beta4",
       "org.deeplearning4j" % "deeplearning4j-graph" % "1.0.0-beta4",
       "org.nd4j"           % "nd4j-native-platform" % "1.0.0-beta4",
       "org.deeplearning4j" % "deeplearning4j-nlp"   % "1.0.0-beta4",
-    "org.eclipse.jgit" % "org.eclipse.jgit" % "3.5.0.201409260305-r"
+    "org.eclipse.jgit" % "org.eclipse.jgit" % "5.6.0.201912101111-r"
   )
   // ,
   // resources in Compile += (fastOptJS in (client, Compile)).value.data
@@ -139,7 +140,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
-  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.16.0"),
+  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.17.0-M1"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.NormalForm._"""
 )
@@ -155,14 +156,14 @@ lazy val client = project
     unmanagedSourceDirectories in Compile := Seq(
       (scalaSource in Compile).value),
     Compile / fastOptJS / artifactPath := baseDirectory.value / "target" / "out.js",
-    resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
+    // resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.2",
       "com.lihaoyi"  %%% "scalatags"   % "0.6.7",
       "com.lihaoyi"  %%% "upickle"     % "0.6.6",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
-      "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
+      // "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
     )
   )

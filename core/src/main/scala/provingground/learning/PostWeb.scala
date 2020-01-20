@@ -6,27 +6,56 @@ import monix.execution.Scheduler.Implicits.global
 import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.SeqView
+import scala.util.{Try, Right}
+
+/* Code for mixed autonomous and interactive running.
+ * We can interact by posting various objects.
+ * There are also bots that post in reaction to other posts, in general using the results of queries.
+ * The behaviour of a post is largely determined by its (scala) type.
+ * The type `W` (for web) will handle posting and querying based on posts (this is implemented using typeclasses with `W`)
+ */
 
 /**
  * Typeclass for being able to post with content type P in W
  */
 trait Postable[P, W, ID] {
   def post(content: P, web: W, pred: Set[ID]): Future[ID]
-
-  val contextChange: Boolean
 }
+
 /**
- *  Typeclass for being able to query W for type Q
- */
+  * Typeclass for being able to query W for type Q
+  */
 trait Queryable[U, W] {
   def get(web: W, predicate: U => Boolean): Future[U]
 }
 
 object Queryable{
+  /**
+    * a simple query, with result blocking and no predicate
+    *
+    * @param func the query function
+    * @return typeclass implementation based on `func`
+    */
   def simple[U, W](func: W => U) = new Queryable[U, W] {
     def get(web: W, predicate: U => Boolean): Future[U] = 
       Future(func(web))
   }
+
+  /**
+    * querying for objects of a type, as a view
+    *
+    * @param pw postability of `P`, needed for history
+    * @param ph post history of `P` from `W`
+    * @return implementation of querying typeclass
+    */
+  implicit def allView[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : Queryable[SeqView[P, Seq[_]], W] = 
+    new Queryable[SeqView[P, Seq[_]], W] {
+      def get(web: W, predicate: SeqView[P, Seq[_]] => Boolean): Future[SeqView[P, Seq[_]]] = 
+       Future{ ph.allPosts(web).filter(_.pw == pw).map{_.asInstanceOf[P]}}
+    }
+    
+
 }
 /**
  * Typeclass for being able to query W for a vector of elements of type Q at an index
@@ -35,6 +64,13 @@ trait LocalQueryable[U, W, ID] {
   def getAt(web: W, id: ID, predicate: U => Boolean): Future[Vector[U]]
 }
 
+/** 
+  * Looking up an answer to a query for `U` from posts of type `P`
+  * meant for querying for the latest post etc.
+  *
+  * @param func transformation of the content of the post
+  * @param pw postability
+  */
 case class AnswerFromPost[P, U, W, ID](func: P => U)(
   implicit pw: Postable[P, W, ID]
 ) {
@@ -42,29 +78,87 @@ def fromPost[Q](data: PostData[Q, W, ID]) : Option[U] =
   if (pw == data.pw) Some(func(data.content.asInstanceOf[P])) else None
 }
 
+/**
+  * Queries answered by taking the latest out of possibly many choices of posts to be looked up and transformed.
+  *
+  * @param answers various ways in which the query can be answered
+  * @param h the history
+  */
 case class LatestAnswer[Q, W, ID](
-  answers: Seq[AnswerFromPost[_, Q, W, ID]]
+  answers: Vector[AnswerFromPost[_, Q, W, ID]]
 )(implicit h: PostHistory[W, ID])
   extends LocalQueryable[Q, W, ID] {
     def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] = Future{
       def answer: PostData[_, W, ID] => Option[Q] = 
         (pd) => answers.flatMap(ans => ans.fromPost(pd)).filter(predicate).headOption
       h.latestAnswers(web, id, answer).toVector
+
+
     }
+
+    def ||[P](ans: P => Q)(implicit pw: Postable[P, W, ID]) = 
+      LatestAnswer(
+        answers :+ AnswerFromPost[P, Q, W, ID](ans)
+      )
   }
 
 
 trait FallBackLookups{
+  /**
+    * default implementation of lookup for stuff that can be posted given a post-history implementation,
+    * where we look fot the latest post.
+    *
+    * @param qw postability of `Q`
+    * @param ph post history
+    * @return implementation of query lookup
+    */
   implicit   def lookupLatest[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Q, W, ID] = 
-  LatestAnswer(Seq(AnswerFromPost[Q, Q, W, ID](identity)))
+  LatestAnswer(Vector(AnswerFromPost[Q, Q, W, ID](identity)))
+
+  /**
+    * Lookup for the wrapped type `SomePost`, which returns all posts independent of relative position in history.
+    *
+    * @param pw postability of `P`
+    * @param ph post history
+    * @return implementation of query lookup
+    */
+  implicit def somePostQuery[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[SomePost[P], W, ID] = new LocalQueryable[SomePost[P], W, ID] {
+   def getAt(web: W, id: ID, predicate: SomePost[P] => Boolean): Future[Vector[SomePost[P]]] =
+     Future{ph.allPosts(web).filter(_.pw == pw).map{post => SomePost(post.content.asInstanceOf[P])}.filter(predicate).toVector
+  } 
+}
+     
 }
 
 object LocalQueryable extends FallBackLookups{
-  def query[Q, W](web: W, predicate: Q => Boolean)(implicit q: Queryable[Q, W]) = q.get(web, predicate)
+  /**
+    * Query for an object
+    *
+    * @param web the web which we query
+    * @param predicate property the object must satisfy
+    * @param q queryability
+    * @return future result of type`Q`
+    */
+  def query[Q, W](web: W, predicate: Q => Boolean)(implicit q: Queryable[Q, W]):  Future[Q] = q.get(web, predicate)
 
+  /**
+    * Query for an object at a position, for example the latest before that position
+    *
+    * @param web the web which we query
+    * @param id the position where we query
+    * @param predicate property the object must satisfy
+    * @param q queryability
+    * @return future result of type`Q`
+    */
   def queryAt[Q, W, ID](web: W, id: ID, predicate: Q => Boolean)(implicit q: LocalQueryable[Q, W, ID]) =
     q.getAt(web, id, predicate)
 
+  /**
+    * use a global query for local querying, ignoring position
+    * 
+    * @param q global queryability
+    * @return local query implementation
+    */
   implicit def localize[U, W, ID](
       implicit q: Queryable[U, W]
   ): LocalQueryable[U, W, ID] =
@@ -75,6 +169,17 @@ object LocalQueryable extends FallBackLookups{
   def lookupAnswer[P, W, ID](
     implicit pw: Postable[P, W, ID]
   ): AnswerFromPost[P, P, W, ID] = AnswerFromPost(identity(_))
+
+  /**
+    * query for `Some[A]` using query for `A` by looking up history. Meant to be starting point for several options.
+    *
+    * @param qw query for `A`
+    * @param ph post history
+    * @return queryable for `Some[A]`
+    */
+  def answerAsSome[Q, W, ID](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : LatestAnswer[Some[Q],W,ID] = 
+    LatestAnswer(Vector(AnswerFromPost[Q, Some[Q], W, ID](Some(_))))
+
 
   /**
    * Look up an answer in the history of a post, assuming an implicit history provider
@@ -96,7 +201,13 @@ object LocalQueryable extends FallBackLookups{
 
 
   
-
+  /**
+    * query a conjunction of two queryable types
+    * 
+    * @param qu queryability of the first
+    * @param qv queryability of the second
+    * @return implemented queryability putting these together
+    */
   implicit def hconsQueryable[U, V <: HList, W, ID](
       implicit qu: LocalQueryable[U, W, ID],
       qv: LocalQueryable[V, W, ID]
@@ -110,11 +221,20 @@ object LocalQueryable extends FallBackLookups{
           
   }
 
-
+  /**
+  * Querying for HNil
+  *
+  * @return trivial query response
+  */
   implicit def hNilQueryable[W, ID] : LocalQueryable[HNil, W, ID] = new LocalQueryable[HNil, W, ID] {
       def getAt(web: W, id: ID, predicate: HNil => Boolean): Future[Vector[HNil]] = Future(Vector(HNil))
   }
 
+  /**
+  * Querying for Unit
+  *
+  * @return trivial query response
+  */
   implicit def unitQueryable[W, ID] : LocalQueryable[Unit, W, ID] = new LocalQueryable[Unit, W, ID] {
     def getAt(web: W, id: ID, predicate: Unit => Boolean): Future[Vector[Unit]] = Future(Vector(()))
 }
@@ -126,13 +246,14 @@ object LocalQueryable extends FallBackLookups{
  */ 
 case class PostData[P, W, ID](content: P, id: ID)(
     implicit val pw: Postable[P, W, ID]
-){
-  val contextChange = pw.contextChange
-} 
+)
 
 trait PostHistory[W, ID] {
   // the post itself and all its predecessors
   def findPost(web: W, index: ID) :  Option[(PostData[_, W, ID], Set[ID])]
+
+  // all posts as a view
+  def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]]
 
   def history(web: W, id: ID): Stream[PostData[_, W, ID]] = {
     val next : ((Set[PostData[_, W, ID]], Set[ID])) =>  (Set[PostData[_, W, ID]], Set[ID])   = {case (d, indices) =>
@@ -144,15 +265,29 @@ trait PostHistory[W, ID] {
     stream.flatMap(_._1)
   }
 
+  /**
+    * latest answers in the query using history
+    *
+    * @param web the web with all posts
+    * @param id where we query
+    * @param answer transformation of posts
+    * @return
+    */
   def latestAnswers[Q](web: W, id: ID, answer: PostData[_, W, ID] => Option[Q]) : Set[Q] = 
     findPost(web, id).map{
       case (pd, preds) => 
-        // pprint.log(id)
         answer(pd).map(Set(_)).getOrElse(
           preds.flatMap(pid => latestAnswers(web, pid, answer))
           )
     }.getOrElse(Set())
 }
+
+/**
+  * Wrapper to query for all posts, even after the query position
+  *
+  * @param content the wrapped content
+  */
+case class SomePost[P](content: P)
 
 /**
  * Response to a post, generating one or more posts or just a callback;
@@ -165,7 +300,6 @@ sealed trait PostResponse[W, ID]{
 }
 
 object PostResponse {
-
   /**
    * Casting to a typed post response if the Postables match
    */ 
@@ -179,8 +313,8 @@ object PostResponse {
 
   /**
    * Given a post response and a post, 
-   * if types match (as evidenced by implicits) then the task is carried out and the 
-   * new post wrapped as PostData are returned (the wrapping allows implicits to be passed on).
+   * if types match (as evidenced by implicits) then the the response is run and the 
+   * new posts wrapped as PostData are returned (the wrapping allows implicits to be passed on).
    */ 
   def postResponseFuture[Q, W, ID](
       web: W,
@@ -200,41 +334,84 @@ object PostResponse {
 }
 
 /**
- * A simple session to post stuff, call responses and if these responses generate posts, recursively call itself for them.
- */ 
+  * A simple session to post stuff, call responses and if these responses generate posts, recursively call itself for them.
+  *
+  * @param web the web where the posts are stored
+  * @param responses the bots responding to posts
+  * @param logs side-effect responses
+  */ 
 class SimpleSession[W, ID](
     val web: W,
-    var responses: Vector[PostResponse[W, ID]]
+    var responses: Vector[PostResponse[W, ID]],
+    logs: Vector[PostData[_, W, ID] => Future[Unit]]
 ) {
   /**
-   * recursively posting and running (as side-effects) offspring tasks
-   */ 
+    * recursively posting and running (as side-effects) offspring tasks, this posts the head but 
+    * bots will be called with a different method that does not post the head, to avoid duplication
+    *
+    * @param content the post content
+    * @param preds the predecessor posts
+    * @param pw postability
+    * @return the data of the post as a future
+    */ 
   def postFuture[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = {
     val postIdFuture = pw.post(content, web, preds)
     postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
       tailPostFuture(content, postID)
     }
-    postIdFuture.map{id => PostData(content, id)}
+    postIdFuture.map{id => 
+      val data = PostData(content, id)
+      logs.foreach{fn => fn(data).foreach(_ => ())}
+      data}
   }
 
+  /**
+    * the recursive step for posting, the given content is not posted, only the responses are.
+    *
+    * @param content the head content, not post
+    * @param postID the ID of the head, to be used as predecessor for the other posts
+    * @param pw postability
+    */
   def tailPostFuture[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = {
     responses.foreach(
       response =>
         PostResponse.postResponseFuture(web, content, postID, response).map {
           v =>
             v.map {
-              case pd: PostData[q, W, ID] => tailPostFuture(pd.content, pd.id)(pd.pw)
+              case pd: PostData[q, W, ID] => 
+               logs.foreach{fn => fn(pd).foreach(_ => ())}
+                tailPostFuture(pd.content, pd.id)(pd.pw)
             }
         }
     ) 
   }
 
-  def query[Q](predicate: Q => Boolean = (_: Q) => true)(implicit q: Queryable[Q, W]) = q.get(web, predicate)
+  /**
+    * a query from the web
+    *
+    * @param predicate condition to be satisfied
+    * @param q queribility
+    * @return response to query as a future
+    */
+  def query[Q](predicate: Q => Boolean = (_: Q) => true)(implicit q: Queryable[Q, W]) : Future[Q] = q.get(web, predicate)
 
-  def queryAt[Q](id: ID, predicate: Q => Boolean= (_: Q) => true)(implicit q: LocalQueryable[Q, W, ID]) =
+  /**
+    * a query from the web at a position
+    *
+    * @param id the postion
+    * @param predicate condition to be satisfied
+    * @param q queribility
+    * @return response to query as a future
+    */
+  def queryAt[Q](id: ID, predicate: Q => Boolean= (_: Q) => true)(implicit q: LocalQueryable[Q, W, ID]) : Future[Vector[Q]] =
     q.getAt(web, id, predicate)
 }
 
+/**
+  * Post response with type `P` of post as a type parameter
+  *
+  * @param pw postability of `P`
+  */
 sealed abstract class TypedPostResponse[P, W, ID](
     implicit val pw: Postable[P, W, ID]
 ) extends PostResponse[W, ID] {
@@ -245,11 +422,16 @@ sealed abstract class TypedPostResponse[P, W, ID](
 }
 
 object TypedPostResponse {
-/**
- * Callback executed on a post of type P;
- * the returned task gives an empty vector, but running it executes the callback,
- * in fact, a callback is executed for each value of the auxiliary queryable
- */ 
+  /**
+    * Callback executed on a post of type P;
+    * the returned task gives an empty vector, but running it executes the callback,
+    * in fact, a callback is executed for each value of the auxiliary queryable
+    *
+    * @param update the callback, may also update the web as a side-effect
+    * @param predicate condition on post to trigger callbask
+    * @param pw postability 
+    * @param lv queryability of parameters on which the callback depends
+    */ 
   case class Callback[P, W, V, ID](update: W => V => P => Future[Unit], predicate: V => Boolean = (_ : V) => true)(
       implicit pw: Postable[P, W, ID],
       lv: LocalQueryable[V, W, ID]
@@ -277,10 +459,16 @@ object TypedPostResponse {
   }
 
   /**
-   * Response to a post returning a vector of posts, 
-   * one for each value of the auxiliary queryable (in simple cases a singleton is returned)
-   */ 
-  case class Poster[P, Q, W, V, ID](response: V => P => Future[Q], predicate: V => Boolean = (_ : V) => true)(
+    * Bot responding to a post returning a vector of posts, 
+    * one for each value of the auxiliary queryable (in simple cases a singleton is returned)
+    *
+    * @param response the action of the bot
+    * @param predicate the condition the post must satisfy to trigger the bot
+    * @param pw postability of the post type
+    * @param qw postability of the response post type
+    * @param lv queryability of the other arguments
+    */ 
+  case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: V => Boolean = (_ : V) => true)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]
@@ -308,17 +496,25 @@ object TypedPostResponse {
     }
   }
 
-  object Poster{
+  object MicroBot{
     def simple[P, Q, W, ID](func: P => Q)(implicit pw: Postable[P, W, ID],
-    qw: Postable[Q, W, ID]) = Poster[P, Q, W, Unit, ID](
+    qw: Postable[Q, W, ID]) = MicroBot[P, Q, W, Unit, ID](
       (_ : Unit) => (p: P) => Future(func(p))
     )
   }
 }
 
-
-
-case class VectorPoster[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean)(
+/**
+  * Bot responding to a post returning a vector of posts for  
+  * each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made 
+  *
+  * @param responses the responses of the bot
+  * @param predicate the condition the post must satisfy to trigger the bot
+  * @param pw postability of the post type
+  * @param qw postability of the response post type
+  * @param lv queryability of the other arguments
+  */
+case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]
@@ -348,24 +544,16 @@ case class VectorPoster[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], 
     }
 }
 
+/**
+  * Allows posting any content, typically just returns an ID to be used by something else.
+  */
 trait GlobalPost[P, ID] {
   def postGlobal(content: P): Future[ID]
 }
 
-object GlobalPost {
-  class IndexGlobalPost[P] extends GlobalPost[P, Int] {
-    val globalBuffer: ArrayBuffer[P] = ArrayBuffer()
-    def postGlobal(content: P): Future[Int] = {
-      Future {
-        globalBuffer += content
-        val index = globalBuffer.size - 1
-        assert(globalBuffer(index) == content)
-        index
-      }
-    }
-  }
-}
-
+/**
+  * A buffer for storing posts, extending `GlobalPost` which supplies an ID
+  */
 trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   val buffer: ArrayBuffer[(P, ID, Set[ID])] = ArrayBuffer()
 
@@ -390,62 +578,193 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 }
 
 object PostBuffer {
-  def apply[P, ID](globalPost: => (P => Future[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
+/**
+  * creating a post buffer
+  *
+  * @param globalPost the supplier of the ID
+  * @return buffer storing posts
+  */  def apply[P, ID](globalPost: => (P => Future[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
     def postGlobal(content: P): Future[ID] = globalPost(content)
   }
 
+  /**
+    * content from buffer
+    *
+    * @param pb the buffer
+    * @param id ID
+    * @return content optionally
+    */
   def get[P, ID](pb: PostBuffer[P, ID], id: ID): Option[P] =
     pb.buffer.find(_._2 == id).map(_._1)
 
+    /**
+      * immediate predecessor posts in buffer
+      *
+      * @param pb the buffer
+      * @param id ID
+      * @return set of IDs of immediate predecessors
+      */
   def previous[P, ID](pb: PostBuffer[P, ID], id: ID) : Set[ID] = {
     val withId =  pb.buffer.filter(_._2 == id).toSet
     withId.flatMap(_._3)
   }
 
-  def bufferPost[P, W, ID](buffer: W => PostBuffer[P, ID], ctx: Boolean = false) : Postable[P, W, ID] = {
+  /**
+    * postability using a buffer, the main way posting is done
+    *
+    * @param buffer the buffer to which to post as a function of the web
+    * @return postability
+    */
+  def bufferPost[P, W, ID](buffer: W => PostBuffer[P, ID]) : Postable[P, W, ID] = {
     def postFunc(p: P, web: W, ids: Set[ID]): Future[ID] =
       buffer(web).post(p, ids)
-    Postable(postFunc, ctx)
+    Postable(postFunc)
   }
 }
 
-
-class IndexedPostBuffer[P]
-    extends GlobalPost.IndexGlobalPost[P]
-    with PostBuffer[P, Int]
-
-
 object Postable {
-  def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID], ctx: Boolean) : Postable[P, W, ID] = 
-    new Postable[P, W, ID] {
+  /**
+    * Making a postable
+    *
+    * @param postFunc the posting function
+    * @return a Postable
+    */
+  def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID]) : Postable[P, W, ID] = 
+    Impl(postFunc)
+
+    /**
+      * A concrete implementation of postable
+      *
+      * @param postFunc the posting function
+      */
+  case class Impl[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID]) extends Postable[P, W, ID] {
         def post(content: P, web: W, pred: Set[ID]): Future[ID] = 
             postFunc(content, web, pred)
-        val contextChange: Boolean = ctx
     }
 
+    /**
+      * post and return post data
+      *
+      * @param content content to be posted
+      * @param web web where we post
+      * @param pred predecessors of the post
+      * @param pw postability of the type
+      * @return PostData as a future
+      */
   def postFuture[P, W, ID](content: P, web: W, pred: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[PostData[P, W, ID]] = 
     pw.post(content, web, pred).map{id => PostData(content, id)} 
 
+    /**
+      * post in a buffer
+      *
+      * @return postability
+      */
   implicit def bufferPostable[P, ID, W <: PostBuffer[P, ID]]
       : Postable[P, W, ID] =
-    new Postable[P, W, ID] {
+     {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] =
         web.post(content, pred)
-      val contextChange: Boolean = false
+      Impl(post)
+    }
+  
+    /**
+      * post an Option[P], posting a Unit in case of `None`
+      *
+      * @param pw postability of `P`
+      * @param uw postability of a Unit
+      * @return postability of `Option[P]`
+      */
+  implicit def optionPostable[P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Option[P], W, ID] = 
+    {
+      def post(content: Option[P], web: W, pred: Set[ID]): Future[ID] = 
+        content.fold(uw.post((), web, pred))(c => pw.post(c, web, pred))
+        Impl(post)
     }
 
-  implicit def indexedBufferPostable[P, W <: IndexedPostBuffer[P]]
-      : Postable[P, W, Int] =
-    new Postable[P, W, Int] {
-      def post(content: P, web: W, pred: Set[Int]): Future[Int] =
-        web.post(content, pred)
-      val contextChange: Boolean = false
+  /**
+    * post a `Try[P]` by posting `P` or an error 
+    *
+    * @param pw postability of `P`
+    * @param ew postability of a `Throwable`
+    * @return postability of `Try[P]`
+    */
+  implicit def tryPostable[P, W, ID](implicit pw: Postable[P, W, ID], ew: Postable[Throwable, W, ID]) : Postable[Try[P], W, ID] = 
+    {
+      def post(content: Try[P], web: W, pred: Set[ID]): Future[ID] =
+        content.fold(err => ew.post(err, web, pred), c => pw.post(c, web, pred))
+
+      Impl(post)
     }
+
+  /**
+    * Post a `Right[P]`, to be used to split the stream with a change or not.
+    *
+    * @param pw postability of `P`
+    * @param uw postability of `Unit`
+    * @return Postability of `Right[P]`
+    */
+  implicit def rightPost[X, P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Right[X, P], W, ID] = 
+    {
+      def post(content: Right[X, P], web: W, pred: Set[ID]): Future[ID] = 
+        {
+          uw.post((), web, pred).foreach(_ => ())
+          pw.post(content.value, web, pred)
+        }
+        
+        Impl(post)
+    }
+
+
 }
 
+/**
+  * Wrapper for post content that should be posted, with the previous elements of the same type also posted, in general with transformations (e.g. rescale)
+  *
+  * @param content the content to be posted
+  * @param transformation transformations of other posts, typically rescaling
+  * @param pw postability of P
+  * @param pq queryability of P
+  */
+case class SplitPost[P,  Q, W, ID](content: P, transformation: Q => P)(implicit val pw: Postable[P, W, ID], val qq : LocalQueryable[Q, W, ID])
+
+object SplitPost{
+  def simple[P, W, ID](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[P, W, ID]) : SplitPost[P,P,W,ID] = 
+    SplitPost[P, P, W, ID](content, identity[P](_))
+
+  def some[P, W, ID](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[Some[P], W, ID]) : SplitPost[P,Some[P],W,ID] =
+    SplitPost[P, Some[P], W, ID](content, _.value)
+
+  implicit def splitPostable[P, Q, W, ID]: Postable[SplitPost[P, Q, W, ID], W, ID] = {
+    def post(content: SplitPost[P, Q, W, ID], web: W, pred: Set[ID]): Future[ID] = {
+      content.pw.post(content.content, web, pred).map{
+        postID =>
+          val othersFutVec = content.qq.getAt(web, postID, (_) => true)
+          othersFutVec.foreach{
+            v => v.foreach{
+              x => content.pw.post(content.transformation(x), web, pred)
+            }
+          }
+          postID
+      }
+    }
+    Postable.Impl(post)
+  }
+}
+
+/**
+  * allows posting globally and keeps count without stroing anything
+  *
+  * @param log logging on post
+  */
 class CounterGlobalID(log : Any => Unit = (_) => ()){
   var counter: Int = 0
 
+  /**
+    * post arbitrary content
+    *
+    * @param content content of some type
+    * @return ID, consisting of an index and a hashCode
+    */
   def postGlobal[P](content: P) : Future[(Int, Int)] = {
     val index = counter
     counter +=1

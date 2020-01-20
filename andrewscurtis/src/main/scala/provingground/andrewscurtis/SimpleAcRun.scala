@@ -72,7 +72,7 @@ object SimpleAcRun {
       val futureList = coll(database)
         .find(BSONDocument())
         .cursor[BSONDocument]()
-        .collect[List]()
+        .collect[List](3, Cursor.FailOnError[List[BSONDocument]]())
       val ps =
         futureList map
           ((doclist) =>

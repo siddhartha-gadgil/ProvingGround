@@ -10,6 +10,7 @@ import reactivemongo.bson._
 import reactivemongo.api.commands.WriteResult
 
 import reactivemongo.api.indexes._
+import reactivemongo.api.bson.collection.BSONSerializationPack
 
 import upickle.default.{write => uwrite, read => uread, _}
 
@@ -40,8 +41,29 @@ object ACMongo extends ACWriter {
 
   val elemsInd = elemsDBFut.map(_.indexesManager)
 
-  val index = new Index(
-    Seq("name" -> IndexType.Ascending, "loops" -> IndexType.Descending))
+  val index = Index(BSONSerializationPack)(
+    key = Seq("name" -> IndexType.Ascending, "loops" -> IndexType.Descending),
+    name = Some("name_idx"),
+    unique = false,
+    background = false,
+    dropDups = false,
+    sparse = false,
+    expireAfterSeconds = None,
+    storageEngine = None,
+    weights = None,
+    defaultLanguage = None,
+    languageOverride = None,
+    textIndexVersion = None,
+    sphereIndexVersion = None,
+    bits = None,
+    min = None,
+    max = None,
+    bucketSize = None,
+    collation = None,
+    wildcardProjection = None,
+    version = None,
+    partialFilter = None,
+    options = BSONDocument.empty)
 
   elemsInd.foreach(_.ensure(index)) // index elements by actor name and loops (descending).
 
@@ -54,7 +76,30 @@ object ACMongo extends ACWriter {
 
   thmsInd.foreach(_.ensure(index)) // index theoreme by actor name and loops (descending)
 
-  val thmsPresIndex = new Index(Seq("presentation" -> IndexType.Hashed))
+  val thmsPresIndex = 
+  Index(BSONSerializationPack)(
+    key = Seq("presentation" -> IndexType.Hashed),
+    name = Some("name_idx"),
+    unique = false,
+    background = false,
+    dropDups = false,
+    sparse = false,
+    expireAfterSeconds = None,
+    storageEngine = None,
+    weights = None,
+    defaultLanguage = None,
+    languageOverride = None,
+    textIndexVersion = None,
+    sphereIndexVersion = None,
+    bits = None,
+    min = None,
+    max = None,
+    bucketSize = None,
+    collation = None,
+    wildcardProjection = None,
+    version = None,
+    partialFilter = None,
+    options = BSONDocument.empty)
 
   thmsInd.foreach(_.ensure(thmsPresIndex)) // also index by hhashed presentation
 

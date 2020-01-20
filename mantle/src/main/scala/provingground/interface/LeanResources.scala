@@ -91,6 +91,9 @@ object LeanResources {
 
 object LeanRoutes extends cask.Routes {
   import LeanResources._
+
+  def log: cask.util.Logger = new cask.util.Logger.Console
+
   @cask.get("/files")
   def files(): String = {
 //    pprint.log(index.mkString(","))

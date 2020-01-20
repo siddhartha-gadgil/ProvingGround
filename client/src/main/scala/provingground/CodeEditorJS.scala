@@ -59,7 +59,7 @@ object CodeEditorJS {
           viewDiv)
       ).render)
 
-    val editor = ace.edit("editor")
+    val editor = g.ace.edit("editor")
     editor.setTheme("ace/theme/chrome")
     editor.getSession().setMode("ace/mode/scala")
 
@@ -69,7 +69,7 @@ object CodeEditorJS {
     editor.insert(initCommands)
 
     def compile(): Unit = {
-      val codetext = editor.getValue()
+      val codetext = editor.getValue().asInstanceOf[String]
       runButton.value = "Running..."
       Ajax.post("./kernel", codetext).foreach { (xhr) =>
         {

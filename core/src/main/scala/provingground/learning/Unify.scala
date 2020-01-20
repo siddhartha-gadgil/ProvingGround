@@ -194,7 +194,7 @@ object Unify {
                 unify(fn.dom, pd.domain, (t) => freeVars.contains(t)).flatMap{unifMap => 
                   val variable = multisub(pd.variable, unifMap)
                   val value = multisub(pd.value, unifMap)
-                  pprint.log(unifMap.keySet -- freeVars.toSet)
+                  // pprint.log(unifMap.keySet -- freeVars.toSet)
                   val exVars = extraVars(freeVars, unifMap)
                   val target = value.replace(variable, l.variable)
                   targetCodomain(value, target, exVars).map{t => lambda(variable)(t)} 
