@@ -15,7 +15,7 @@ object LeanBug{
   val mods: ArrayBuffer[Modification] = ArrayBuffer.empty[Modification]
 
   def parser =
-    new LeanParser(mods,
+    new LeanParser(mods.toVector,
       library.LeanMemo.defTaskMap,
       library.LeanMemo.indTaskMap)
 

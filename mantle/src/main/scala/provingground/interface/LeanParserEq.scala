@@ -147,7 +147,7 @@ class LeanParserEq(
     } yield ()
 
   def indModFromModEq(name: Name): Option[Task[TermIndMod]] =
-    findMod(name, mods).map { (mod) =>
+    findMod(name, mods.toVector).map { (mod) =>
       // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withModEq(mod)
@@ -247,7 +247,7 @@ class LeanParserEq(
   }
 
   def defFromModEq(name: Name): Option[Task[(Term, Set[EquationNode])]] =
-    findMod(name, mods).map { (mod) =>
+    findMod(name, mods.toVector).map { (mod) =>
       // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withModEq(mod)

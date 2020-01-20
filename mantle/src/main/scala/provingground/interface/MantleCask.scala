@@ -15,7 +15,7 @@ import cask.main.Routes
 import cask.util.Logger
 
 object MantleRoutes extends cask.Routes {
-  implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
+  // implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
   def log: Logger = new Logger.Console
   

@@ -1,5 +1,6 @@
 package provingground.experiments
 
+/*
 import org.platanios.tensorflow.api._
 
 class TensorGeom(p: Double = 0.5, N: Int = 10) {
@@ -29,3 +30,4 @@ class TensorGeom(p: Double = 0.5, N: Int = 10) {
     session.run(fetches = probOut, targets = trainOp)
   }
 }
+*/

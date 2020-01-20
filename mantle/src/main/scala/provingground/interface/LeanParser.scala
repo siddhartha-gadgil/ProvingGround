@@ -813,7 +813,7 @@ class LeanParser(
     mods.find((mod) => modNames(mod).contains(name))
 
   def defFromMod(name: Name): Option[Task[Term]] =
-    findMod(name, mods).map { (mod) =>
+    findMod(name, mods.toVector).map { (mod) =>
       // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withMod(mod)
@@ -821,7 +821,7 @@ class LeanParser(
     }
 
   def indModFromMod(name: Name): Option[Task[TermIndMod]] =
-    findMod(name, mods).map { (mod) =>
+    findMod(name, mods.toVector).map { (mod) =>
       // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withMod(mod)
@@ -839,7 +839,7 @@ class LeanParser(
   import translation.CodeGen
 
   def codeGen: CodeGen =
-    CodeGen.objNames(defNames.map(_.toString), allIndNames.map(_.toString))
+    CodeGen.objNames(defNames.map(_.toString).toVector, allIndNames.map(_.toString).toVector)
 
   def defnCode: ArrayBuffer[(Name, meta.Term)] =
     defNames.flatMap { (name) =>

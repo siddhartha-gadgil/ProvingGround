@@ -127,7 +127,7 @@ trait CommonJSModule extends CommonModule with ScalaJSModule{
 
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:$ammV",
-  ivy"com.lihaoyi::cask:0.1.9",
+  ivy"com.lihaoyi::cask:0.5.2",
   ivy"org.scalameta::scalameta:4.1.0",
   ivy"com.github.nscala-time::nscala-time:2.16.0",
   ivy"org.reactivemongo::reactivemongo:0.12.1",
@@ -143,7 +143,7 @@ val jvmLibs = List(
   ivy"com.github.scopt::scopt:3.7.1",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
-  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
+  // ivy"org.platanios::tensorflow:0.4.1;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:1.3.6",
   ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r"
 )
@@ -214,18 +214,19 @@ object trepplein extends SbtModule with PublishModule{
 }
 
 val mantleLibs = List(
-  ivy"com.lihaoyi::cask:0.1.9",
-  ivy"org.scalameta::scalameta:4.1.0",
+  ivy"com.lihaoyi::cask:0.5.2",
+  ivy"org.scalameta::scalameta:4.3.0",
   ivy"com.atlassian.commonmark:commonmark:0.11.0",
   ivy"org.apache.logging.log4j:log4j-core:2.11.1",
-  ivy"org.platanios::tensorflow:0.4.0;classifier=linux-cpu-x86_64",
-  ivy"org.scalameta::mdoc:1.2.8",
-  ivy"com.lihaoyi::os-lib:0.2.5",
+  // ivy"org.platanios::tensorflow:0.4.1;classifier=linux-cpu-x86_64",
+  ivy"org.scalameta::mdoc:2.1.1",
+  ivy"com.lihaoyi::os-lib:0.6.3",
   ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r",
   ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta4",
   ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta4",
   ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta4",
-    ivy"org.nd4j:nd4j-native-platform:1.0.0-beta4"
+    ivy"org.nd4j:nd4j-native-platform:1.0.0-beta4",
+  ivy"org.mongodb.scala::mongo-scala-driver:2.8.0"
 )
 
 def glog = {
@@ -402,7 +403,7 @@ object server extends SbtModule with ServerModule with PGPublish {
 object experiments extends CommonModule{
   override def ivyDeps =
     super.ivyDeps() ++ Agg(
-      ivy"org.platanios::tensorflow:0.2.2;classifier=linux-cpu-x86_64"
+      // ivy"org.platanios::tensorflow:0.4.1;classifier=linux-cpu-x86_64"
     )
 }
 

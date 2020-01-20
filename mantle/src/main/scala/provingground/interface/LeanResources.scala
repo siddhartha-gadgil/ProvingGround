@@ -175,7 +175,7 @@ object LeanRoutes extends cask.Routes {
     logUpdate && sendLogger
 
   def parser =
-    new LeanParser(mods,
+    new LeanParser(mods.toVector,
                    library.LeanMemo.defTaskMap,
                    library.LeanMemo.indTaskMap,
                    messenger)
