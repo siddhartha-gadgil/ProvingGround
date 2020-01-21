@@ -50,13 +50,13 @@ val commonLibs = List(
   ivy"org.scala-lang.modules::scala-parser-combinators::1.1.2",
   ivy"org.scala-lang.modules::scala-xml:1.2.0",
   ivy"org.typelevel::spire::0.17.0-M1",
-  ivy"com.lihaoyi::fansi::0.2.7",
-  ivy"com.lihaoyi::upickle::0.9.5",
-  ivy"com.lihaoyi::fastparse::2.2.1",
+  ivy"com.lihaoyi::fansi::0.2.8",
+  ivy"com.lihaoyi::upickle::0.9.8",
+  ivy"com.lihaoyi::fastparse::2.2.3",
   ivy"com.chuusai::shapeless::2.3.3",
   ivy"org.typelevel::cats-core::2.1.0",
-  ivy"io.monix::monix::3.0.0",
-  ivy"com.lihaoyi::pprint::0.5.6",
+  ivy"io.monix::monix::3.1.0",
+  ivy"com.lihaoyi::pprint::0.5.8",
   // ivy"com.lihaoyi::sourcecode::0.1.4"//,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
@@ -136,15 +136,15 @@ val jvmLibs = List(
   ivy"org.scalactic::scalactic:3.1.0",
   ivy"com.typesafe:config:1.3.0",
   ivy"com.typesafe.akka::akka-stream:2.6.1",
-  ivy"com.typesafe.akka::akka-http:10.1.10",
-  ivy"com.typesafe.akka::akka-http-spray-json:10.1.10",
-  ivy"org.slf4j:slf4j-api:1.7.16",
-  ivy"org.slf4j:slf4j-simple:1.7.16",
+  ivy"com.typesafe.akka::akka-http:10.1.11",
+  ivy"com.typesafe.akka::akka-http-spray-json:10.1.11",
+  ivy"org.slf4j:slf4j-api:1.7.30",
+  ivy"org.slf4j:slf4j-simple:1.7.30",
   ivy"com.github.scopt::scopt:3.7.1",
-  ivy"com.atlassian.commonmark:commonmark:0.11.0",
-  ivy"org.apache.logging.log4j:log4j-core:2.11.1",
+  ivy"com.atlassian.commonmark:commonmark:0.13.1",
+  ivy"org.apache.logging.log4j:log4j-core:2.13.0",
   // ivy"org.platanios::tensorflow:0.4.1;classifier=linux-cpu-x86_64",
-  ivy"org.scalameta::mdoc:1.3.6",
+  ivy"org.scalameta::mdoc:2.1.1",
   ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r"
 )
 
@@ -222,10 +222,10 @@ val mantleLibs = List(
   ivy"org.scalameta::mdoc:2.1.1",
   ivy"com.lihaoyi::os-lib:0.6.3",
   ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r",
-  ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta4",
-  ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta4",
-  ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta4",
-    ivy"org.nd4j:nd4j-native-platform:1.0.0-beta4",
+  ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta6",
+  ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta6",
+  ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta6",
+    ivy"org.nd4j:nd4j-native-platform:1.0.0-beta6",
   ivy"org.mongodb.scala::mongo-scala-driver:2.8.0"
 )
 
