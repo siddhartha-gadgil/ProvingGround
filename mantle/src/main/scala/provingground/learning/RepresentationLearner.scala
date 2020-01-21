@@ -28,7 +28,7 @@ class RepresentationLearner[A](
   val elemMap
       : Map[Int, A] = elems.zipWithIndex.map { case (a, n) => (n, a) }.toMap
 
-  val elemCount: Map[A, Int] = elems.groupBy(identity(_)).mapValues(_.size)
+  val elemCount: Map[A, Int] = elems.groupBy(identity(_)).mapValues(_.size).toMap
 
   val indexMap: Map[A, Int] = elems.zipWithIndex.toMap
 

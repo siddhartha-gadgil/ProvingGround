@@ -76,7 +76,7 @@ object Sampler {
     }
 
   def grouped[A](vec: Vector[A]) =
-    vec.groupBy(identity) mapValues (_.size)
+    vec.groupBy(identity).mapValues (_.size).toMap
 
   import ProbabilityDistribution._
 
@@ -156,7 +156,7 @@ object Sampler {
           val firstSamp = sample(base, n) filterKeys (p)
           val tot       = firstSamp.values.sum
           if (tot == 0) Map()
-          else if (tot == n) firstSamp
+          else if (tot == n) firstSamp.toMap
           else {
             val xs = firstSamp.keys.toVector
             val ps = xs map ((a) => firstSamp(a).toDouble / tot)

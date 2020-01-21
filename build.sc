@@ -128,16 +128,16 @@ trait CommonJSModule extends CommonModule with ScalaJSModule{
 val jvmLibs = List(
   ivy"com.lihaoyi:::ammonite:$ammV",
   ivy"com.lihaoyi::cask:0.5.2",
-  ivy"org.scalameta::scalameta:4.1.0",
-  ivy"com.github.nscala-time::nscala-time:2.16.0",
-  ivy"org.reactivemongo::reactivemongo:0.12.1",
-  ivy"com.typesafe.akka::akka-actor:2.5.11",
-  ivy"com.typesafe.akka::akka-slf4j:2.5.11",
-  ivy"org.scalactic::scalactic:3.0.1",
+  ivy"org.scalameta::scalameta:4.2.3",
+  ivy"com.github.nscala-time::nscala-time:2.22.0",
+  ivy"org.reactivemongo::reactivemongo:0.20.2",
+  ivy"com.typesafe.akka::akka-actor:2.6.1",
+  ivy"com.typesafe.akka::akka-slf4j:2.6.1",
+  ivy"org.scalactic::scalactic:3.1.0",
   ivy"com.typesafe:config:1.3.0",
-  ivy"com.typesafe.akka::akka-stream:2.5.11",
-  ivy"com.typesafe.akka::akka-http:10.1.1",
-  ivy"com.typesafe.akka::akka-http-spray-json:10.1.1",
+  ivy"com.typesafe.akka::akka-stream:2.6.1",
+  ivy"com.typesafe.akka::akka-http:10.1.10",
+  ivy"com.typesafe.akka::akka-http-spray-json:10.1.10",
   ivy"org.slf4j:slf4j-api:1.7.16",
   ivy"org.slf4j:slf4j-simple:1.7.16",
   ivy"com.github.scopt::scopt:3.7.1",
@@ -269,7 +269,7 @@ object mantle extends CommonModule with SbtModule with PGPublish{
   override def mainClass = Some("provingground.interface.MantleCask")
 
   object test extends Tests{
-    override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
+    override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.1.0")
     def testFrameworks = Seq("org.scalatest.tools.Framework")
   }
 
@@ -345,7 +345,7 @@ object andrewscurtis extends JvmModule with SbtModule{
   override def moduleDeps = Seq(core.jvm, mantle, crust)
 
   object test extends Tests{
-    override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
+    override def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.1.0")
     def testFrameworks = Seq("org.scalatest.tools.Framework")
   }
 }

@@ -216,9 +216,9 @@ object Site {
     Tut(name, rawContent, titleOpt(l))
   }
 
-  def allTuts: Seq[Tut] = os.list(pwd / "out").filter(_.ext == "md").map(getTut)
+  def allTuts: Vector[Tut] = os.list(pwd / "out").filter(_.ext == "md").map(getTut).toVector
 
-  def tutList(relDocsPath: String): Seq[Elem] =
+  def tutList(relDocsPath: String): Vector[Elem] =
     Try {
       allTuts.map(
         (tut) => <li><a href={s"${tut.url(relDocsPath)}"}>{tut.title}</a></li>
@@ -226,7 +226,7 @@ object Site {
     }.orElse(
         Try {
           val jsArr = ujson.read(read(resource / "tut-list.json"))
-          jsArr.arr.map { (js) =>
+          jsArr.arr.toVector.map { (js) =>
             // pprint.log(js)
             val name        = js.obj("name").str
             val title       = js.obj("title").str
@@ -315,7 +315,7 @@ object Site {
     }.orElse(
         Try {
           val jsArr = ujson.read(read(resource / "posts-list.json"))
-          jsArr.arr.map {
+          jsArr.arr.toVector.map {
             (js) =>
               // pprint.log(js)
               val name        = js.obj("name").str

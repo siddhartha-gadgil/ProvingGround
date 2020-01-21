@@ -200,9 +200,8 @@ object SimpleAcRun {
     def pickProof(thm: Presentation) = proofsOf(thm).next
 
     def mkFDV(groups: Int, rank: Int) =
-      thms filter ((thm: Presentation) => thm.rank == rank) normalized () split
-        (groups) mapValues {
+      thms.filter ((thm: Presentation) => thm.rank == rank).normalized().split(groups).mapValues {
         _ map (pickProof(_))
-      }
+      }.toMap
   }
 }

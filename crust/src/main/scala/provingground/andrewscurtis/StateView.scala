@@ -42,8 +42,8 @@ class StateView(name: String,
   def totalProofWeight(thm: Presentation) =
     proofWeightMap.getOrElse(thm, 0.0)
 
-  lazy val hardnessMap = for ((thm, p) <- thmWeights)
-    yield (thm, math.log(p) / math.log(proofWeightMap(thm)))
+  lazy val hardnessMap = (for ((thm, p) <- thmWeights)
+    yield (thm, math.log(p) / math.log(proofWeightMap(thm)))).toMap
 
   def hardness(thm: Presentation) =
     hardnessMap.getOrElse(thm, 0.0)
