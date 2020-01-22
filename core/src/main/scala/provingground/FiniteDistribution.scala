@@ -68,13 +68,13 @@ object FiniteDistribution {
   def linearCombination[T](
       terms: Seq[(Double, FiniteDistribution[T])]): FiniteDistribution[T] = {
     val scaled = for ((a, d) <- terms) yield d * a
-    (scaled :\ empty[T])(_ ++ _)
+    scaled.foldRight(empty[T])(_ ++ _)
   }
 
   def invFlatMap[S, T](f: S => FiniteDistribution[T],
                        support: Traversable[S]): FiniteDistribution[T] = {
     val dists = support map ((s: S) => f(s))
-    (dists :\ FiniteDistribution.empty[T])(_ ++ _)
+    dists.foldRight(FiniteDistribution.empty[T])(_ ++ _)
   }
 
 }
@@ -281,7 +281,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
 
   def expectation(implicit ls: VectorSpace[T, Double]): T = {
     val wtdelems = for (Weighted(a, p) <- pmf) yield p *: a
-    (wtdelems :\ ls.zero)(_ + _)
+    wtdelems.foldRight(ls.zero)(_ + _)
   }
 
   def integral(f: T => Double): Double =

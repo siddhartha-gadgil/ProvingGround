@@ -176,14 +176,14 @@ object TermPack {
           for {
             codom <- typOpt(cod)
             fn    <- exst.recOpt(dom, codom)
-          } yield (fn /: data)(fold(_)(_))
+          } yield data.foldLeft(fn)(fold(_)(_))
         //buildRecDef(inds)(x, (y, v))
       } ||
       msgToOpt[Term, IIV]("Ind") {
         case (dom: Term, (cod: Term, data: Vector[Term])) =>
           for {
             fn <- exst.inducOpt(dom, cod)
-          } yield (fn /: data)(fold(_)(_))
+          } yield data.foldLeft(fn)(fold(_)(_))
       } ||
       msgToOpt[Term, IVIIV]("IRec") {
         case (_,
@@ -193,7 +193,7 @@ object TermPack {
             codom <- typOpt(cod)
             fn    <- exst.recOpt(dom, codom)
           } yield
-            (fn /: (data ++ index))(fold(_)(_)) 
+            (data ++ index).foldLeft(fn)(fold(_)(_)) 
       } ||
       msgToOpt[Term, IVIIV]("IInd") {
         case (_,
@@ -201,7 +201,7 @@ object TermPack {
                (dom: Term, (cod: Term, data: Vector[Term])))) =>
           for {
             fn <- exst.inducOpt(dom, cod)
-          } yield (fn /: (data ++ index))(fold(_)(_))
+          } yield (data ++ index).foldLeft(fn)(fold(_)(_))
         
       }
 

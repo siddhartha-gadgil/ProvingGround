@@ -15,10 +15,9 @@ object Norm {
   }
 
   def foldopt[U](op: (U, U) => U)(l: List[Option[U]]) = {
-    ((None: Option[U]) /: l)(optop(op))
+    l.foldLeft[Option[U]](None)(optop(op))
   }
 
-  //	def maxopt(l: List[Option[Double]]) = ((Some(0.0) : Option[Double]) /: l)(pairmaxopt)
 
   def maxopt(l: List[Option[Double]]) = foldopt[Double](max)(l)
 

@@ -30,7 +30,7 @@ case class TruncDistVal[A](getFD: Double => Option[FiniteDistribution[A]])
 
         val empty: TruncDistVal[B] = TruncDistVal.Empty[B]
 
-        val trunc = (dists :\ empty)(TruncDistVal.sum[B](_, _))
+        val trunc = dists.foldRight(empty)(TruncDistVal.sum[B](_, _))
         trunc.getFD(cutoff)
       }
     TruncDistVal(flatGetFD)
@@ -227,7 +227,7 @@ object TruncatedDistribution extends Functor[TruncatedDistribution] {
           val empty: TruncatedDistribution[B] =
             TruncatedDistribution.Empty[B]
 
-          val trunc = (dists :\ empty)(sum[B](_, _))
+          val trunc = dists.foldRight(empty)(sum[B](_, _))
           trunc.getFD(cutoff)
         })
   }

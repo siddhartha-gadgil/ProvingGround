@@ -38,7 +38,7 @@ object ListType {
       (init: V) =>
         (op: U => V => V) => {
           def cop(u: U, v: V) = op(u)(v)
-          (l :\ init)(cop)
+          l.foldRight(init)(cop)
     }
     rep(fld)
   }

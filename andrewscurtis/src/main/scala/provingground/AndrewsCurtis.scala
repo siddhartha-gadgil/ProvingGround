@@ -327,7 +327,7 @@ object AndrewsCurtis {
                        0)
     val bcklist =
       chains map ((chn) => Chain.backprop(chn, feedback(chn.head), d, empty))
-    ((bcklist :\ empty)(_ ++ _)).flatten
+    (bcklist.foldRight(empty)(_ ++ _)).flatten
   }
 
   /*

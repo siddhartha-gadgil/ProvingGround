@@ -177,14 +177,14 @@ object TermJson {
           for {
             codom <- typOpt(cod)
             fn    <- exst.recOpt(dom, codom)
-          } yield (fn /: data)(fold(_)(_))
+          } yield data.foldLeft(fn)(fold(_)(_))
         //buildRecDef(inds)(x, (y, v))
       } ||
       jsToOpt[Term, IIV]("inductive-function") {
         case (dom: Term, (cod: Term, data: Vector[Term])) =>
           for {
             fn <- exst.inducOpt(dom, cod)
-          } yield (fn /: data)(fold(_)(_))
+          } yield data.foldLeft(fn)(fold(_)(_))
       } ||
       jsToOpt[Term, IVIIV]("indexed-recursive-function") {
         case (_,
@@ -194,7 +194,7 @@ object TermJson {
             codom <- typOpt(cod)
             fn    <- exst.recOpt(dom, codom)
           } yield
-            (fn /: (data ++ index))(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
+            (data ++ index).foldLeft(fn)(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
       } ||
       jsToOpt[Term, IVIIV]("indexed-inductive-function") {
         case (_,
@@ -202,7 +202,7 @@ object TermJson {
                (dom: Term, (cod: Term, data: Vector[Term])))) =>
           for {
             fn <- exst.inducOpt(dom, cod)
-          } yield (fn /: (data ++ index))(fold(_)(_))
+          } yield (data ++ index).foldLeft(fn)(fold(_)(_))
         //buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
@@ -605,14 +605,14 @@ object ConciseTermJson {
             for {
               codom <- typOpt(cod)
               fn    <- exst.recOpt(dom, codom)
-            } yield (fn /: data)(fold(_)(_))
+            } yield data.foldLeft(fn)(fold(_)(_))
           //buildRecDef(inds)(x, (y, v))
         } ||
         jsToOpt[Term, IIV]("inductive-function") {
           case (dom: Term, (cod: Term, data: Vector[Term])) =>
             for {
               fn <- exst.inducOpt(dom, cod)
-            } yield (fn /: data)(fold(_)(_))
+            } yield data.foldLeft(fn)(fold(_)(_))
         } ||
         jsToOpt[Term, IVIIV]("indexed-recursive-function") {
           case (_,
@@ -622,7 +622,7 @@ object ConciseTermJson {
               codom <- typOpt(cod)
               fn    <- exst.recOpt(dom, codom)
             } yield
-              (fn /: (data ++ index))(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
+              (data ++ index).foldLeft(fn)(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
         } ||
         jsToOpt[Term, IVIIV]("indexed-inductive-function") {
           case (_,
@@ -630,7 +630,7 @@ object ConciseTermJson {
                  (dom: Term, (cod: Term, data: Vector[Term])))) =>
             for {
               fn <- exst.inducOpt(dom, cod)
-            } yield (fn /: (data ++ index))(fold(_)(_))
+            } yield (data ++ index).foldLeft(fn)(fold(_)(_))
           //buildIndIndDef(indexedInds)(w, (x, (y, v)))
         }
   
