@@ -1,13 +1,13 @@
 package provingground
 
 import HoTT._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 
 import translation._, interface._
 
 import TermJson._
 
-class JsonSpec extends FlatSpec {
+class JsonSpec extends flatspec.AnyFlatSpec {
   def roundTripBase(t: Term): Option[Term] = termToJson(t).flatMap(jsonToTermBase)
 
   def checkBase(t: Term): Boolean = roundTripBase(t).contains(t)

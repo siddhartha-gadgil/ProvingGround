@@ -1,7 +1,7 @@
 package provingground
 
 import HoTT._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 
 //import ConstructorPattern._
 
@@ -17,7 +17,7 @@ import scala.util.Try
 
 import ConstructorSeq.recFn
 
-class RecursionSpec extends FlatSpec {
+class RecursionSpec extends flatspec.AnyFlatSpec {
 
   "Boolean type" should "have constructors of type Bool" in {
     assert(tt.typ == SmallBool)

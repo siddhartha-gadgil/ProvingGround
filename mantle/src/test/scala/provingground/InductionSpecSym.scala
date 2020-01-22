@@ -2,7 +2,7 @@ package provingground
 
 import HoTT._
 import scalahott._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import induction.implicits._
 import provingground.library.{DoubleEvenSym, LocalConstImpliesConstSym, SuccNOrNEvenSym}
 // import Fold._
@@ -10,7 +10,7 @@ import provingground.library.{DoubleEvenSym, LocalConstImpliesConstSym, SuccNOrN
 import shapeless._
 import NatRing._
 
-class InductionSpecSym extends FlatSpec {
+class InductionSpecSym extends flatspec.AnyFlatSpec {
 
   val n = NatTyp.sym
   val m = NatTyp.sym

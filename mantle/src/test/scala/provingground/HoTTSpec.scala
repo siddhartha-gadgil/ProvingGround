@@ -1,7 +1,7 @@
 package provingground
 
 import HoTT._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 
 object HoTTSpec {
   val A = "A" :: Type
@@ -42,7 +42,7 @@ object HoTTSpec {
   )
 }
 
-class HoTTSpec extends FlatSpec {
+class HoTTSpec extends flatspec.AnyFlatSpec {
   import HoTTSpec._
 
   "A symbolic object" should "have the correct type" in {

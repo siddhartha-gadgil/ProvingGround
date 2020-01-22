@@ -1,12 +1,12 @@
 package provingground
 
 // import Collections._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import FiniteDistribution._
 import LinearStructure._
 import Weighted._
 
-trait FiniteDistributionBehaviours { this: FlatSpec =>
+trait FiniteDistributionBehaviours { this: AnyFlatSpec =>
 
   def intFiniteDistribution(
       finDist: Traversable[Weighted[Int]] => FiniteDistribution[Int]) = {

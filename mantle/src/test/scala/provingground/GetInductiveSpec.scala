@@ -1,7 +1,7 @@
 package provingground
 
 import HoTT._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import induction._, implicits._
 // import library._
 

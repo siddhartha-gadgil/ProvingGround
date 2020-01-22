@@ -1,6 +1,6 @@
 package provingground
 
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import provingground.HoTT._
 import induction.TLImplicits._
 import shapeless._
@@ -11,7 +11,7 @@ import shapeless._
 //Examples come from https://stepik.org/course/ThCS-Introduction-to-programming-with-dependent-types-in-Scala-2294/
 //ThCS. Introduction to programming with dependent types in Scala by Dmytro Mitin
 
-class ProductTypeSpec extends FlatSpec {
+class ProductTypeSpec extends flatspec.AnyFlatSpec {
 
   val A    = "A" :: Type
   val B    = "B" :: Type
@@ -68,7 +68,7 @@ class ProductTypeSpec extends FlatSpec {
 
 }
 
-class CoProductTypeSpec extends FlatSpec {
+class CoProductTypeSpec extends flatspec.AnyFlatSpec {
 
   val A = "A" :: Type
   val B = "B" :: Type
@@ -140,7 +140,7 @@ class CoProductTypeSpec extends FlatSpec {
 
 }
 
-class FunctionTypeSpec extends FlatSpec {
+class FunctionTypeSpec extends flatspec.AnyFlatSpec {
 
   val A = "A" :: Type
   val a = "a" :: A
@@ -197,7 +197,7 @@ class FunctionTypeSpec extends FlatSpec {
 
 }
 
-class SigmaTypeSpec extends FlatSpec {
+class SigmaTypeSpec extends flatspec.AnyFlatSpec {
   val A    = "A" :: Type
   val B    = "B(_ : A)" :: A ->: Type
   val a    = "a" :: A
@@ -267,7 +267,7 @@ class SigmaTypeSpec extends FlatSpec {
 
 }
 
-class PiTypeSpec extends FlatSpec {
+class PiTypeSpec extends flatspec.AnyFlatSpec {
   val A = "A" :: Type
   val B = "B(_ : A)" :: A ->: Type
   val a = "a" :: A
@@ -312,7 +312,7 @@ class PiTypeSpec extends FlatSpec {
 
 }
 
-class EmptyAndUnitTypeSpec extends FlatSpec {
+class EmptyAndUnitTypeSpec extends flatspec.AnyFlatSpec {
   Zero
   val A = "A" :: Type
   val a = "a" :: A
@@ -326,7 +326,7 @@ class EmptyAndUnitTypeSpec extends FlatSpec {
   assert(recUA(a)(Star) === a)
 }
 
-class BooleanTypeSpec extends FlatSpec {
+class BooleanTypeSpec extends flatspec.AnyFlatSpec {
   val Bool               = "Boolean" :: Type
   val b                  = "b" :: Bool
   val BoolInd            = ("true" ::: Bool) |: ("false" ::: Bool) =: Bool
@@ -347,7 +347,7 @@ class BooleanTypeSpec extends FlatSpec {
   }
 }
 
-class NaturalNumbersTypeSpec extends FlatSpec {
+class NaturalNumbersTypeSpec extends flatspec.AnyFlatSpec {
   val Nat                  = "Nat" :: Type
   val NatInd               = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
   val zero :: succ :: HNil = NatInd.intros
@@ -375,7 +375,7 @@ class NaturalNumbersTypeSpec extends FlatSpec {
   }
 }
 
-class ListTypeSpec extends FlatSpec {
+class ListTypeSpec extends flatspec.AnyFlatSpec {
   "custom size list function" should "be defined properly" in {
     val Nat                  = "Nat" :: Type
     val NatInd               = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
@@ -399,7 +399,7 @@ class ListTypeSpec extends FlatSpec {
   }
 }
 
-class VectorOfFixLengthTypeSpec extends FlatSpec {
+class VectorOfFixLengthTypeSpec extends flatspec.AnyFlatSpec {
   "custom vector of fixed length" should "be defined properly" in {
     val Nat                  = "Nat" :: Type
     val NatInd               = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
@@ -427,7 +427,7 @@ class VectorOfFixLengthTypeSpec extends FlatSpec {
   }
 }
 
-class IdentityTypeSpec extends FlatSpec {
+class IdentityTypeSpec extends flatspec.AnyFlatSpec {
 
   val A = "A" :: Type
   val a = "a" :: A
@@ -477,7 +477,7 @@ class IdentityTypeSpec extends FlatSpec {
   }
 }
 
-class EliminatorsSpec extends FlatSpec {
+class EliminatorsSpec extends flatspec.AnyFlatSpec {
   val A  = "A" :: Type
   val a  = "a" :: A
   val a1 = "a1" :: A

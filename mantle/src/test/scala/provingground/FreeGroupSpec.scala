@@ -12,7 +12,7 @@ import cats.implicits._
 
 // import andrewscurtis.FreeGroups._
 
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 
 object FreeGroupSpec {
   val g = "g" :: FreeGroup
@@ -24,7 +24,7 @@ object FreeGroupSpec {
   val l = word("aab!aba")
 }
 
-class FreeGroupSpec extends FlatSpec {
+class FreeGroupSpec extends flatspec.AnyFlatSpec {
   import FreeGroupSpec._
 
   "Free group operations" should "operate on literals" in {
