@@ -60,7 +60,7 @@ object AndrewsCurtisController extends Controller {
 
   def evolvePost(rank: Int, steps: Int) = {
     val resultFut = Future(evolve(rank, steps))
-    resultFut onSuccess {
+    resultFut map {
       case result => {
         println(result)
         val pickled = pickleTriple(result, rank)
