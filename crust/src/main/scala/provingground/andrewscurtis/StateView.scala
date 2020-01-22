@@ -28,7 +28,7 @@ class StateView(name: String,
 
   def proofWeight(mvs: Moves) = {
     val ps = mvs.moves map (fdM(_))
-    (1.0 /: ps)(_ * _)
+    ps.foldLeft(1.0)(_ * _)
   }
 
   lazy val thmWeights =

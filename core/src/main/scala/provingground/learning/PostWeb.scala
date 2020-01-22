@@ -7,7 +7,7 @@ import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.SeqView
-import scala.util.{Try, Right}
+import scala.util._
 
 /* Code for mixed autonomous and interactive running.
  * We can interact by posting various objects.
@@ -40,6 +40,14 @@ object Queryable{
   def simple[U, W](func: W => U) = new Queryable[U, W] {
     def get(web: W, predicate: U => Boolean): Future[U] = 
       Future(func(web))
+
+  implicit def gatherQuery[P, W, ID](implicit ph: PostHistory[W, ID], pw: Postable[P, W, ID]) : Queryable[GatherPost[P] , W] = 
+    new Queryable[GatherPost[P], W] {
+     def get(web: W, predicate: GatherPost[P] => Boolean): Future[GatherPost[P]] = 
+      Future(
+        GatherPost(ph.allPosts(web).flatMap(_.getOpt[P]).toSet)
+      )
+    }
   }
 
   /**
@@ -246,7 +254,9 @@ object LocalQueryable extends FallBackLookups{
  */ 
 case class PostData[P, W, ID](content: P, id: ID)(
     implicit val pw: Postable[P, W, ID]
-)
+){
+  def getOpt[Q](implicit qw: Postable[Q, W, ID]) : Option[Q] = if (pw == qw) Some(content.asInstanceOf[Q]) else None 
+}
 
 trait PostHistory[W, ID] {
   // the post itself and all its predecessors
@@ -283,11 +293,13 @@ trait PostHistory[W, ID] {
 }
 
 /**
-  * Wrapper to query for all posts, even after the query position
+  * Wrapper to query for all posts, even after the query position or in a different thread
   *
   * @param content the wrapped content
   */
 case class SomePost[P](content: P)
+
+case class GatherPost[P](contents: Set[P])
 
 /**
  * Response to a post, generating one or more posts or just a callback;
@@ -694,6 +706,15 @@ object Postable {
         content.fold(err => ew.post(err, web, pred), c => pw.post(c, web, pred))
 
       Impl(post)
+    }
+
+  implicit def eitherPostable[P, Q, W, ID](implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) : Postable[Either[P, Q], W, ID] =
+    {
+     def post(content: Either[P, Q], web: W, pred: Set[ID]): Future[ID] =
+      content.fold(
+        fa => pw.post(fa, web, pred), 
+        fb => qw.post(fb, web, pred))
+    Impl(post)
     }
 
   /**

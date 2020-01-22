@@ -309,7 +309,7 @@ object AdjDiffbleFunction {
     val func = (a: A) => {
       val terms = for (f <- fns(a)) yield f.func(a)
 
-      (terms :\ zeroB)(sumB)
+      terms.foldRight(zeroB)(sumB)
     }
 
     private val zeroB = vzero[B]
@@ -321,7 +321,7 @@ object AdjDiffbleFunction {
     val adjDer = (a: A) =>
       (b: B) => {
         val terms = for (f <- fns(a)) yield f.adjDer(a)(b)
-        (terms :\ zeroA)(sumA)
+        terms.foldRight(zeroA)(sumA)
     }
   }
 

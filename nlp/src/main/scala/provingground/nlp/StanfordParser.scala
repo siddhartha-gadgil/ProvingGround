@@ -105,7 +105,7 @@ object StanfordParser {
       case (w, n) => (s"TeXInline$n", w)
     }).toMap
 
-    lazy val deTeXed: String = (texMap :\ raw) { case ((l, w), s) => s.replace(w, l) }
+    lazy val deTeXed: String = texMap.foldRight(raw) { case ((l, w), s) => s.replace(w, l) }
 
     lazy val deTeXWords: mutable.Buffer[Word] = words(deTeXed)
 

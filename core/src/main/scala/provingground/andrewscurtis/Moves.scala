@@ -268,7 +268,7 @@ case class Moves(moves: List[AtomicMove]) extends AnyVal {
       def act(mv: AtomicMove, op: Option[Presentation]) = {
         op flatMap ((p) => mv(p))
       }
-      (moves :\ (Some(pres): Option[Presentation]))(act)
+      (moves.foldRight (Some(pres): Option[Presentation]))(act)
     }
 
   def apply(pres: Presentation) = this.reduce(pres)
