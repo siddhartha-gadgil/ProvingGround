@@ -44,7 +44,7 @@ case class ACData(paths: Map[String,
 
   def last = ACStateData(states, dir)
 
-  def take(n: Int) = ACData(paths.mapValues (_ take (n)).toMap, dir)
+  def take(n: Int) = ACData(paths.view.mapValues (_ take (n)).toMap, dir)
 
   def resetFiles() = {
     for ((name, data) <- paths) yield {

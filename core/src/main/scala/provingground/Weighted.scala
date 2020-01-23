@@ -15,7 +15,7 @@ case class Weighted[T](elem: T, weight: Double) {
 }
 
 object Weighted {
-  @tailrec final def pick[T](dist: Traversable[Weighted[T]], t: Double): T =
+  @tailrec final def pick[T](dist: Iterable[Weighted[T]], t: Double): T =
     if (t - dist.head.weight < 0) dist.head.elem
     else pick(dist.tail, t - dist.head.weight)
 

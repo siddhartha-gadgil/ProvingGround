@@ -55,9 +55,9 @@ class DeducerSource(ded: Deducer,
         fdsInvMap.fold((FD.empty[Term], Vector()))((fdI1, fdI2) =>
           (fdI1._1 ++ fdI2._1, fdI1._2 ++ fdI2._2)))
 
-  def initSource = Source.fromFuture(firstBatchFut)
+  def initSource = Source.future(firstBatchFut)
 
-  def initSourceConc(threads: Int) = Source.fromFuture(firstBatchConc(threads))
+  def initSourceConc(threads: Int) = Source.future(firstBatchConc(threads))
 
   def deducBatches(fdInit: FD[Term], invMap: InvMap) =
     Source.unfold(fdInit -> (invMap)) {
@@ -203,7 +203,7 @@ object DeducerSource {
     case (_, result) => result
   }
 
-  def withTimeSeries(terms: => Traversable[Term]) = {
+  def withTimeSeries(terms: => Iterable[Term]) = {
     Flow[FD[Term]].scan(FD.empty[Term] -> (Map(): Map[Term, Vector[Double]])) {
       case ((_, m), fd) =>
         (fd, (terms map ((t) => (t, m.getOrElse(t, Vector()) :+ fd(t)))).toMap)
@@ -226,7 +226,7 @@ object DeducerSource {
 
   def saveDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
     //  println("saving")
-    val file = pwd / 'data / s"${name}.deduc"
+    val file = pwd / "data" / s"${name}.deduc"
     //  println(s"saving to: $file")
     Sink.foreach { (fd: FD[Term]) =>
       //    println("Dummy save: see dist")
@@ -238,7 +238,7 @@ object DeducerSource {
   }
 
   def saveLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
-    val file = pwd / 'data / s"${name}.learn"
+    val file = pwd / "data" / s"${name}.learn"
     Sink.foreach { (fd: FD[Term]) =>
       //   val distFut = Future(writeDist(fd, names))
       //    distFut.foreach((p) => write.append(file, p + "\n"))
@@ -247,16 +247,16 @@ object DeducerSource {
   }
 
   def loadDeduc(name: String, names: Vector[(Term, String)] = Vector()) = {
-    val file = pwd / 'data / s"${name}.deduc"
-    val it   = read.lines(file).toIterator.map((t) => readDist(t, names))
+    val file = pwd / "data" / s"${name}.deduc"
+    val it   = read.lines(file).iterator.map((t) => readDist(t, names))
     Source.fromIterator { () =>
       it
     }
   }
 
   def loadLearn(name: String, names: Vector[(Term, String)] = Vector()) = {
-    val file = pwd / 'data / s"${name}.learn"
-    val it   = read.lines(file).toIterator map ((t) => readDist(t, names))
+    val file = pwd / "data" / s"${name}.learn"
+    val it   = read.lines(file).iterator map ((t) => readDist(t, names))
     Source.fromIterator { () =>
       it
     }

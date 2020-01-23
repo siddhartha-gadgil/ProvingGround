@@ -3,7 +3,7 @@ package provingground.examples
 import edu.stanford.nlp._
 import trees.Tree
 import simple._
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import provingground._, translation._
 import TreePatterns._

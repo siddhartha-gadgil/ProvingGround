@@ -510,7 +510,7 @@ object EquationNode {
           (v: Variable[_]) -> varFactors(rhs).toSet
       }
       .groupBy(_._1)
-      .mapValues(s => s.map(_._2)).toMap
+      .view.mapValues(s => s.map(_._2)).toMap
 
   def backCoeffMap(
       eqs: Set[EquationNode]
@@ -525,7 +525,7 @@ object EquationNode {
           )
       }
       .groupBy(_._1)
-      .mapValues(s => s.toVector.map(_._2).flatten).toMap
+      .view.mapValues(s => s.toVector.map(_._2).flatten).toMap
 
   def forwardMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Set[GeneratorVariables.Variable[_]]] =
     {

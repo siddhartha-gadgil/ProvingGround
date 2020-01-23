@@ -8,7 +8,7 @@ import org.deeplearning4j.models.embeddings.loader.VectorsConfiguration
 import org.deeplearning4j.models.sequencevectors.SequenceVectors
 import org.deeplearning4j.models.sequencevectors.iterators.AbstractSequenceIterator
 import org.deeplearning4j.models.sequencevectors.sequence._
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import org.deeplearning4j.models.sequencevectors.iterators._
 import org.deeplearning4j.models.word2vec.wordstore.inmemory.AbstractCache
 
@@ -28,7 +28,7 @@ class RepresentationLearner[A](
   val elemMap
       : Map[Int, A] = elems.zipWithIndex.map { case (a, n) => (n, a) }.toMap
 
-  val elemCount: Map[A, Int] = elems.groupBy(identity(_)).mapValues(_.size).toMap
+  val elemCount: Map[A, Int] = elems.groupBy(identity(_)).view.mapValues(_.size).toMap
 
   val indexMap: Map[A, Int] = elems.zipWithIndex.toMap
 

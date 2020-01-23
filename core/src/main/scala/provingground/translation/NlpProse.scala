@@ -129,7 +129,7 @@ object NlpProse {
     /**
       * Mainly for convenient visualization
       */
-    lazy val labelMap = tree.groupBy(_.gov).mapValues((l) => l.map(_.deptype)).toMap
+    lazy val labelMap = tree.groupBy(_.gov).view.mapValues((l) => l.map(_.deptype)).toMap
 
     def depView(depRel: DepRel, parents: List[Token]): Elem = {
       val word = s"${depRel.dep.word}(${depRel.dep.idx})"

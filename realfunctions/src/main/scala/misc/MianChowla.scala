@@ -11,12 +11,12 @@ object MianChowla {
     if (set contains (accum)) firstGap(set, accum + 1) else accum
   }
 
-  def xyz(as: Traversable[SafeLong]): Set[SafeLong] = {
+  def xyz(as: Iterable[SafeLong]): Set[SafeLong] = {
     val set = as.toSet
     for (x <- set; y <- set; z <- set) yield (x + y - z)
   }
 
-  def nextNum(as: Traversable[SafeLong], n: SafeLong) = firstGap(xyz(as), n)
+  def nextNum(as: Iterable[SafeLong], n: SafeLong) = firstGap(xyz(as), n)
 
   val seq: Stream[SafeLong] =
     Stream.from(1) map
@@ -27,14 +27,14 @@ object MianChowla {
   def view(n: Int) = seq.take(n).toList
 
   def run(n: Int) = {
-    val iter = seq.zipWithIndex.take(n).toIterator
+    val iter = seq.zipWithIndex.take(n).iterator
     for ((x, y) <- iter)
       println((x, y + 1, log(x.toDouble) / log(y.toDouble + 1)))
   }
 
   def run(n: Int, file: String) = {
     val wd   = pwd / "data"
-    val iter = seq.zipWithIndex.take(n).toIterator
+    val iter = seq.zipWithIndex.take(n).iterator
     for ((x, y) <- iter)
       write.append(wd / file,
                    s"$x, ${y + 1}, ${log(x.toDouble) / log(y.toDouble + 1)}\n")

@@ -25,7 +25,7 @@ object FiniteDistribution {
       FiniteDistribution(_)
     )
 
-  def apply[T](pmf: Traversable[Weighted[T]]): FiniteDistribution[T] =
+  def apply[T](pmf: Iterable[Weighted[T]]): FiniteDistribution[T] =
     FiniteDistribution(pmf.toVector)
 
   def apply[T](pairs: (T, Double)*): FiniteDistribution[T] = FiniteDistribution(
@@ -39,7 +39,7 @@ object FiniteDistribution {
     FiniteDistribution(
       fd.pmf.filter(wo => wo.elem.isDefined).map((wo) => wo.map(_.get)))
 
-  def uniform[A](s: Traversable[A]): FiniteDistribution[A] = {
+  def uniform[A](s: Iterable[A]): FiniteDistribution[A] = {
     val prob = 1.0 / s.size
     val pmf  = s map (Weighted(_, prob))
     FiniteDistribution(pmf)
@@ -57,7 +57,7 @@ object FiniteDistribution {
 
   }
 
-  def rawUnif[A](s: Traversable[A]): FiniteDistribution[A] =
+  def rawUnif[A](s: Iterable[A]): FiniteDistribution[A] =
     FiniteDistribution(s map (Weighted(_, 1.0)))
 
   def unif[A](as: A*): FiniteDistribution[A] = uniform(as.toSet)
@@ -72,7 +72,7 @@ object FiniteDistribution {
   }
 
   def invFlatMap[S, T](f: S => FiniteDistribution[T],
-                       support: Traversable[S]): FiniteDistribution[T] = {
+                       support: Iterable[S]): FiniteDistribution[T] = {
     val dists = support map ((s: S) => f(s))
     dists.foldRight(FiniteDistribution.empty[T])(_ ++ _)
   }
@@ -190,7 +190,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
     FiniteDistribution(newpmf)
   }
 
-  def invmap[S](f: S => T, support: Traversable[S]): FiniteDistribution[S] = {
+  def invmap[S](f: S => T, support: Iterable[S]): FiniteDistribution[S] = {
     val mem   = memo
     def memFn = (x: T) => mem.getOrElse(x, 0.0)
     val pmf   = support.toVector map ((s: S) => Weighted(s, memFn(f(s))))
@@ -198,7 +198,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   }
 
   def invmapOpt[S](f: S => Option[T],
-                   support: Traversable[S]): FiniteDistribution[S] = {
+                   support: Iterable[S]): FiniteDistribution[S] = {
     val mem                = memo
     def memFn: T => Double = (x: T) => mem.getOrElse(x, 0.0)
     val pmf =
@@ -274,7 +274,7 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def split(groups: Int): Map[Int, FiniteDistribution[T]] = {
     val rand = new scala.util.Random
 
-    pmf.groupBy ((_) => rand.nextInt(groups - 1)).mapValues { x =>
+    pmf.groupBy ((_) => rand.nextInt(groups - 1)).view.mapValues { x =>
       FiniteDistribution(x)
     }.toMap
   }

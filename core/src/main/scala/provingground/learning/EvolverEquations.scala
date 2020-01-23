@@ -334,7 +334,7 @@ object ApplnInverse {
       }
 
     lazy val termsByBaseContext =
-      contextTermSet.groupBy(_._2).mapValues((s) => s.map(_._1))
+      contextTermSet.groupBy(_._2).view.mapValues((s) => s.map(_._1))
 
     lazy val outers =
       termsByBaseContext.map {

@@ -441,7 +441,7 @@ object CustomData {
       func: RealMultiFunc,
       domain: Cube,
       faceBound: FaceBound,
-      partialDerivativeBounds: Traversable[PartialDerBound])
+      partialDerivativeBounds: Iterable[PartialDerBound])
       extends ConstantTerm
       with MultiFunc {
     import faceBound.face

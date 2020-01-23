@@ -226,7 +226,7 @@ object QDI {
 
     def put(x: String) = (mem = mem :+ x)
 
-    def get = if (closed) Some(mem.toIterator) else None
+    def get = if (closed) Some(mem.iterator) else None
 
     def close = { closed = true }
   }

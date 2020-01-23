@@ -298,10 +298,10 @@ object FineProverTasks {
                                                                 spawn).map(
       (v) =>
         v.groupBy(_._1)
-          .mapValues((v) => v.toVector.map(_._2).maxBy((dp) => (-dp._1, dp._2)))
+          .view.mapValues((v) => v.toVector.map(_._2).maxBy((dp) => (-dp._1, dp._2)))
           .toVector
           .groupBy(_._1.typ: Typ[Term])
-          .mapValues(_.sortBy((tv) => (tv._2._1, -tv._2._2))).toMap)
+          .view.mapValues(_.sortBy((tv) => (tv._2._1, -tv._2._2))).toMap)
   }
 
   /**

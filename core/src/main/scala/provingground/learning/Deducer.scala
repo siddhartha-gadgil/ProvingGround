@@ -933,7 +933,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
 
   def fromFD(fd: FD[Term]) = {
     val termsByType =
-      (fd.pmf.groupBy (_.elem.typ: Typ[Term])).mapValues (FD(_)).toMap
+      (fd.pmf.groupBy (_.elem.typ: Typ[Term])).view.mapValues (FD(_)).toMap
     val types = (fd mapOpt {
       case tp: Typ[u] => Some(tp: Typ[Term])
       case _          => None
@@ -952,7 +952,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
     ++(fromFD(that))
 
   def *(scale: Double) =
-    TermPopulation(termsByType.mapValues ((fd) => fd * scale).toMap,
+    TermPopulation(termsByType.view.mapValues ((fd) => fd * scale).toMap,
                    types * scale,
                    thmsByProofs * scale,
                    vars,
@@ -961,7 +961,7 @@ case class TermPopulation(termsByType: Map[Typ[Term], FD[Term]],
                    applnInvMap)
 
   def normalized =
-    TermPopulation(termsByType.mapValues ((fd) => fd.normalized()).toMap,
+    TermPopulation(termsByType.view.mapValues ((fd) => fd.normalized()).toMap,
                    types.normalized(),
                    thmsByProofs.normalized(),
                    vars,

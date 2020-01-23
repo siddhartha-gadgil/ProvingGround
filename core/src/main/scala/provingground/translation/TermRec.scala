@@ -4,7 +4,7 @@ import provingground._, HoTT._
 trait FoldedTerm[U <: Term with Subs[U]] extends Term {
   val op: Func[U, Func[U, U]]
 
-  val elems: Traversable[U]
+  val elems: Iterable[U]
 }
 
 trait TermRec[U] {

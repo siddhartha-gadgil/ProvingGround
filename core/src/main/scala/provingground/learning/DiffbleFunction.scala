@@ -304,7 +304,7 @@ object AdjDiffbleFunction {
     * Big sum, with terms (via support) in general depending on the argument.
     */
   case class BigSum[A: LinearStructure, B: LinearStructure](
-      fns: A => Traversable[AdjDiffbleFunction[A, B]])
+      fns: A => Iterable[AdjDiffbleFunction[A, B]])
       extends AdjDiffbleFunction[A, B] {
     val func = (a: A) => {
       val terms = for (f <- fns(a)) yield f.func(a)

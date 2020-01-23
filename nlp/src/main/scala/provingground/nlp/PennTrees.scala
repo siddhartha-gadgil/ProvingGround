@@ -4,7 +4,7 @@ import provingground._
 import edu.stanford.nlp._
 import simple._
 import edu.stanford.nlp.trees.{Tree, SimpleTreeFactory}
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import ujson._
 import upickle.default.{ReadWriter => RW, macroRW}

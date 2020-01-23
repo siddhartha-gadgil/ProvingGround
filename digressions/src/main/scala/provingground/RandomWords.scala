@@ -52,7 +52,7 @@ object RandomWords {
   }
 
   trait AggregateWord[E] extends Word[E] {
-    def terms: Traversable[Word[E]]
+    def terms: Iterable[Word[E]]
   }
 
   case class AssocWord[E, N](op: BinOpSym[E, N], elems: List[Word[E]])

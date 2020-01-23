@@ -16,11 +16,11 @@ object LinearStructure {
 
   def vdiff[T](implicit ls: LinearStructure[T]) = ls.diff _
 
-  def vBigSum[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
+  def vBigSum[T](xs: Iterable[T])(implicit ls: LinearStructure[T]) = {
     xs.foldRight(ls.zero)(ls.sum)
   }
 
-  def vAverage[T](xs: Traversable[T])(implicit ls: LinearStructure[T]) = {
+  def vAverage[T](xs: Iterable[T])(implicit ls: LinearStructure[T]) = {
     ls.mult(1.0 / xs.size, vBigSum(xs))
   }
 

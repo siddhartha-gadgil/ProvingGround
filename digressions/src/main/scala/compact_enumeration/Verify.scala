@@ -57,7 +57,7 @@ object Verify {
       func: RealMultiFunc,
       domain: Cube,
       faceBoundPf: FaceBound,
-      partialDerivativeBounds: Traversable[PartialDerBound]): Option[Term] =
+      partialDerivativeBounds: Iterable[PartialDerBound]): Option[Term] =
     Try(
       MVTfaceBoundFuncPositive(func,
                                domain,

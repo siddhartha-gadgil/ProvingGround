@@ -181,7 +181,7 @@ object Collections {
   //       }
 
   trait LabelledArray[L, T] extends Any {
-    def support: Traversable[L]
+    def support: Iterable[L]
 
     def foreach[U](f: T => U): Unit = support.map(get(_).get).foreach(f)
 
@@ -212,7 +212,7 @@ object Collections {
   }
 
   case class ArrayMap[L, T](coords: Map[L, T],
-                            supp: Option[Traversable[L]] = None)
+                            supp: Option[Iterable[L]] = None)
       extends LabelledArray[L, T] {
     lazy val support = supp getOrElse (coords.keys)
 

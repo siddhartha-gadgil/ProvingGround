@@ -600,7 +600,7 @@ case class MonixFiniteDistributionEq[State](
             d1T.flatMap {
               case (d1, d1E, mb) =>
                 val byBase      = d1.pmf.groupBy { case Weighted(x, _) => quot(x) } // pmfs grouped by terms in quotient
-                val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
+                val baseWeights = byBase.view.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
                 val pmfEqT =
                   byBase.map {
                     case (z, pmf1) => // `z` is in the base, `pmf1` is all terms above `z`

@@ -99,7 +99,7 @@ object ProbabilityDistribution {
   val rand = new Random
 
   @annotation.tailrec
-  def chooseOpt[A](value: Double, pmf: Traversable[Weighted[A]]): Option[A] =
+  def chooseOpt[A](value: Double, pmf: Iterable[Weighted[A]]): Option[A] =
     if (pmf.isEmpty) None
     else if (value < pmf.head.weight) Some(pmf.head.elem)
     else chooseOpt(pmf.head.weight - value, pmf.tail)

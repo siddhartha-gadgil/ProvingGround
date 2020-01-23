@@ -330,13 +330,13 @@ object Evolver {
   trait Outbox[A] {
     def push: A => Unit
 
-    def pushAll(s: Traversable[A]) = s foreach (push(_))
+    def pushAll(s: Iterable[A]) = s foreach (push(_))
 
-    def pushTrav: PartialFunction[Traversable[A], Unit] = {
-      case s: Traversable[A] => pushAll(s)
+    def pushTrav: PartialFunction[Iterable[A], Unit] = {
+      case s: Iterable[A] => pushAll(s)
     }
 
-    def bind(f: Future[Traversable[A]]) = f.foreach(pushTrav)
+    def bind(f: Future[Iterable[A]]) = f.foreach(pushTrav)
   }
 
   case class SimpleOutbox[A](push: A => Unit) extends Outbox[A]

@@ -126,7 +126,7 @@ case class TangentFiniteDistribution[State](
         case FiberProductMap(quot, fiberVar, f, baseInput, _) =>
           val d1          = value(baseState)(baseInput)
           val byBase      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
-          val baseWeights = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
+          val baseWeights = byBase.view.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
           val pmf1: immutable.Iterable[Weighted[Y]] =
             for {
               (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
@@ -139,7 +139,7 @@ case class TangentFiniteDistribution[State](
             } yield wtd
           val d1T          = varDist(tangentState)(baseInput, epsilon).flatten
           val byBaseT      = d1.pmf.groupBy { case Weighted(x, p) => quot(x) } // pmfs grouped by terms in quotient
-          val baseWeightsT = byBase.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
+          val baseWeightsT = byBase.view.mapValues(v => v.map(_.weight).sum) // weights of terms in the quotient
           val pmf2: immutable.Iterable[Weighted[Y]] =
             for {
               (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`

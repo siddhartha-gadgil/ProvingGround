@@ -259,7 +259,7 @@ class SymbolicCRing[A: Ring] { self =>
     def reduce(vec: Vector[(LocalTerm, Int)]): LocalTerm = {
       val pairs = vec
         .groupBy(_._1)
-        .mapValues((seq) => (seq.map(_._2).sum))
+        .view.mapValues((seq) => (seq.map(_._2).sum))
         .filter(_._2 != 0).toMap
 
       if (pairs.isEmpty) Literal(one)

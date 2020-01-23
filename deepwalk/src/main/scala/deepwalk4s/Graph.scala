@@ -3,7 +3,7 @@ package deepwalk4s
 import org.deeplearning4j.graph
 import org.deeplearning4j.graph.models.embeddings.GraphVectorsImpl
 import org.deeplearning4j.graph.models.deepwalk._
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import org.deeplearning4j.graph.iterator.parallel.WeightedRandomWalkGraphIteratorProvider
 
 object Graph {

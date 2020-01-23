@@ -35,7 +35,7 @@ case class ProofEntropies(gens: Map[Term, Double],
 object ProofEntropies {
   def normalize[X](m: Map[X, Double]): Map[X, Double] = {
     val tot = m.values.sum
-    m.mapValues(_ / tot).toMap
+    m.view.mapValues(_ / tot).toMap
   }
 
   def addElem[X](x: X, p: Double, m: Map[X, Double]): Map[X, Double] =

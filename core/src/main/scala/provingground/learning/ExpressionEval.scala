@@ -720,7 +720,7 @@ trait ExpressionEval { self =>
       }
       .flatMap(x => elemContext(x).map(y => x -> y))
       .groupBy(_._2)
-      .mapValues { s =>
+      .view.mapValues { s =>
         s.map { case (x, _) => InitialVal(x): Expression }
       }.toMap
 
@@ -731,7 +731,7 @@ trait ExpressionEval { self =>
       }
       .flatMap(x => elemContext(x).map(y => x -> y))
       .groupBy(_._2)
-      .mapValues { s =>
+      .view.mapValues { s =>
         s.map { case (x, _) => FinalVal(x): Expression }
       }.toMap
 
@@ -954,7 +954,7 @@ trait ExpressionEval { self =>
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
-    .mapValues(Literal).toMap
+    .view.mapValues(Literal).toMap
 
   def proofExpression(typ: Typ[Term]): Expression =
     finalTermSet

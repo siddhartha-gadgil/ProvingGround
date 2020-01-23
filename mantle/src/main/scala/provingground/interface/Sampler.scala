@@ -58,7 +58,7 @@ object Sampler {
     if (size == 0) Map()
     else {
       // // val mult = Multinomial(DenseVector(ps.toArray))
-      // val samp : Map[Int, Int] = mult.sample(size).groupBy(identity).mapValues(_.size)
+      // val samp : Map[Int, Int] = mult.sample(size).groupBy(identity).view.mapValues(_.size)
       // samp map { case (j, m) => (xs(j), m) }
       getBucketSizes(xs, ps, (1 to size).toVector.map((_) => rand.nextDouble()))
     }
@@ -76,7 +76,7 @@ object Sampler {
     }
 
   def grouped[A](vec: Vector[A]) =
-    vec.groupBy(identity).mapValues (_.size).toMap
+    vec.groupBy(identity).view.mapValues (_.size).toMap
 
   import ProbabilityDistribution._
 

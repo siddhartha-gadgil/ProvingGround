@@ -4,7 +4,7 @@ import provingground._
 
 import edu.mit.jwi._, item._
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 object WordNet{
   val url = getClass().getClassLoader().getResource("dict")

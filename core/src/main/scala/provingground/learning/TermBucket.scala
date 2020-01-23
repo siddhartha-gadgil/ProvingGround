@@ -62,7 +62,7 @@ class TermBucket {
   /**
     * finite distribution of terms with a given type (total not 1, but weight of type)
     */
-  def getTermDistMap = fdMap(terms, tot).mapValues (_.flatten).toMap
+  def getTermDistMap = fdMap(terms, tot).view.mapValues (_.flatten).toMap
 
   /**
     * theorems weighted by the total weight of their prooofs

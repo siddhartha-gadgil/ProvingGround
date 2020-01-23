@@ -55,7 +55,7 @@ object TermGenParams {
       val sc = rnd.nextGaussian() * scale - logShift
       ujson.Num(v.num * math.exp(sc))
     }
-    val jsonMap = tg.toJson.obj.mapValues(shift(_))
+    val jsonMap = tg.toJson.obj.view.mapValues(shift(_))
     val jsObj   = ujson.Obj(collection.mutable.LinkedHashMap(jsonMap.toSeq: _*))
     fromJson(jsObj)
   }

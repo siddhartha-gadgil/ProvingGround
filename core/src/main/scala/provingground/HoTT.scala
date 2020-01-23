@@ -3779,13 +3779,13 @@ object HoTT {
   /**
     * Symbol factory
     */
-  def nextChar(s: Traversable[Char]): Char =
+  def nextChar(s: Iterable[Char]): Char =
     if (s.isEmpty) 'a' else (s.max + 1).toChar
 
   /**
     * Helper for symbol factory
     */
-  def usedChars(s: Traversable[Term]): Traversable[Char] = {
+  def usedChars(s: Iterable[Term]): Iterable[Char] = {
     def charOpt(obj: Term): Option[Char] = obj match {
       case sym: Symbolic => Try(sym.name.asInstanceOf[Char]).toOption
       case _             => None
@@ -3797,7 +3797,7 @@ object HoTT {
   /**
     * get variable from symbol factory
     */
-  def nextVar(s: Traversable[Term])(typ: Typ[Term]): Term = {
+  def nextVar(s: Iterable[Term])(typ: Typ[Term]): Term = {
     typ.symbObj(Name(nextChar(usedChars(s)).toString))
   }
 

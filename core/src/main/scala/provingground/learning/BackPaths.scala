@@ -34,7 +34,7 @@ case class WeightedBackPaths[A, C](
     gens: Map[A, Vector[(C, Vector[A])]],
     coeffWeights: C => Double
 ) extends BackPaths[A](
-      gens.mapValues(v => v.map { case (c, v) => v.toSet }.toSet).toMap
+      gens.view.mapValues(v => v.map { case (c, v) => v.toSet }.toSet).toMap
     ) {
   def randomNext(init: A): Option[A] =
     gens.get(init).map { v =>
@@ -67,7 +67,7 @@ case class WeightedBiPaths[A, C](
     coeffWeights: C => Double,
     backWeight: Double
 ) extends BackPaths[A](
-      gens.mapValues(v => v.map { case (c, v) => v.toSet }.toSet).toMap
+      gens.view.mapValues(v => v.map { case (c, v) => v.toSet }.toSet).toMap
     ) {
   def randomNext(init: A): Option[A] =
       if (rnd.nextDouble() < backWeight)

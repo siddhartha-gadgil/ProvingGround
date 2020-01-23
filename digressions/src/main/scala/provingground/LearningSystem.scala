@@ -38,7 +38,7 @@ object LearningSystem {
   object LearningSystem {
     def aggregate[L, I, P, O](
         edge: LearningSystem[I, P, O],
-        base: Traversable[L])(implicit zero: O, ls: LinearStructure[O]) = {
+        base: Iterable[L])(implicit zero: O, ls: LinearStructure[O]) = {
       def fwd(inps: ArrayMap[L, I], params: ArrayMap[L, P]) = {
         val terms = for (k <- inps.coords.keys; in <- inps.get(k);
                          p <- params.get(k)) yield edge(in, p)
@@ -104,8 +104,8 @@ object LearningSystem {
     }
 
     def ANN[D, C](f: AdjDiffbleFunction[Double, Double],
-                  dom: Traversable[D],
-                  codom: Traversable[C],
+                  dom: Iterable[D],
+                  codom: Iterable[C],
                   inc: (D, C) => Boolean) = {
       val ed = edge(f)
 

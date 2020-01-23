@@ -86,7 +86,7 @@ object FansiTranslate {
 
   /*import pprint._
   implicit val termprint: PPrinter[Term] = new PPrinter[Term] {
-    def render0(t: Term, c: Config) = List(apply(t)).toIterator
+    def render0(t: Term, c: Config) = List(apply(t)).iterator
   }*/
 }
 

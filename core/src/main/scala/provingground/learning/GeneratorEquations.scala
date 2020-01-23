@@ -67,7 +67,7 @@ case class GeneratorEquations[State](
       case e @ Elem(element, RandomVar.AtCoord(family, fullArg))
           if family == rvF =>
         fullArg -> FinalVal(e)
-    }).groupBy(_._1).mapValues(s => s.map(_._2)).toMap
+    }).groupBy(_._1).view.mapValues(s => s.map(_._2)).toMap
 
   def finalElemIndices[Dom <: HList, Y](
       rvF: RandomVarFamily[Dom, Y]): Set[Dom] =
@@ -230,7 +230,7 @@ case class GeneratorEquations[State](
       case FiberProductMap(quot, fiberVar, f, baseInput, output) =>
         val d1     = finalProbs(baseInput)
         val byBase = d1.groupBy { case (x, _) => quot(x) } // final probs grouped by terms in quotient
-        val baseWeights = byBase.mapValues(
+        val baseWeights = byBase.view.mapValues(
           v =>
             v.map(_._2)
               .reduce[Expression](_ + _)).toMap // weights of terms in the quotient
@@ -306,10 +306,10 @@ case class GeneratorEquations[State](
       case p @ GeneratorVariables.Elem(_, randomVar) => randomVar -> p
     }
     .groupBy(_._1)
-    .mapValues(v => v.map { case (_, x) => FinalVal(x) : Expression }).toMap
+    .view.mapValues(v => v.map { case (_, x) => FinalVal(x) : Expression }).toMap
 
   lazy val finalProbTotals: Set[Expression] =
-    finalProbVars.mapValues(_.reduce(_ + _)).values.toSet
+    finalProbVars.view.mapValues(_.reduce(_ + _)).values.toSet
 
   lazy val totalProbEquations: Set[Equation] =
     finalProbTotals.map(t => Equation(t, Literal(1)))

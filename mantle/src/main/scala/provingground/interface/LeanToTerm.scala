@@ -627,12 +627,12 @@ object LeanToTerm {
     }
 
   def iterMods(mods: Vector[Modification], init: LeanToTerm = empty) =
-    mods.toIterator.scanLeft(init) {
+    mods.iterator.scanLeft(init) {
       case (l: LeanToTerm, m: Modification) => l.add(m)
     }
 
   def iterModsOpt(mods: Vector[Modification], init: LeanToTerm = empty) =
-    mods.toIterator.scanLeft(init) {
+    mods.iterator.scanLeft(init) {
       case (l: LeanToTerm, m: Modification) => l.addOpt(m)
     }
 

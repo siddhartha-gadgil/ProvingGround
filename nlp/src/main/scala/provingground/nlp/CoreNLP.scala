@@ -8,7 +8,7 @@ import NlpProse._
 
 import java.io._
 // import java.util.*;
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import edu.stanford.nlp.io._
 import edu.stanford.nlp.ling._
@@ -101,7 +101,7 @@ object CoreNLPTest {
   // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
   val sentencesJava =
     (document.get(classOf[CoreAnnotations.SentencesAnnotation]))
-  import scala.collection.JavaConverters._
+  import scala.jdk.CollectionConverters._
   val sentences: List[CoreMap] = sentencesJava.asScala.toList
 
   val depTrees = for (sentence <- sentences) yield {
