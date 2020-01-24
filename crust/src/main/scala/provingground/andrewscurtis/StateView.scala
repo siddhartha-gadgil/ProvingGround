@@ -32,12 +32,10 @@ class StateView(name: String,
   }
 
   lazy val thmWeights =
-    proofElems mapValues
-      ((elemVec) => (elemVec map ((elem) => elem.weight)).sum)
+    proofElems.view.mapValues((elemVec) => (elemVec map ((elem) => elem.weight)).sum)
 
   lazy val proofWeightMap =
-    proofElems mapValues
-      ((elemVec) => (elemVec map ((elem) => proofWeight(elem.moves))).sum)
+    proofElems.view.mapValues((elemVec) => (elemVec map ((elem) => proofWeight(elem.moves))).sum)
 
   def totalProofWeight(thm: Presentation) =
     proofWeightMap.getOrElse(thm, 0.0)

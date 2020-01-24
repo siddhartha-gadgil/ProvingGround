@@ -37,7 +37,7 @@ import com.github.nscala_time.time.Imports._
 import ACFlow._
 
 case class ACData(paths: Map[String,
-                             Stream[(FiniteDistribution[AtomicMove],
+                             LazyList[(FiniteDistribution[AtomicMove],
                                      FiniteDistribution[Moves])]],
                   dir: String)
     extends ACresults(paths) {
@@ -155,13 +155,13 @@ object ACFlowSaver {
   val snapSink = Sink.foreach(snapSave)
 
   def snapSource(date: String, batch: String) =
-    Src(read.lines(snapd / date / batch.toString).toStream)
+    Src(read.lines(snapd / date / batch.toString).to(LazyList))
 
   def snapStream(date: String) =
-    (ls(wd / date).toStream map (_.last))
+    (ls(wd / date).to(LazyList) map (_.last))
       .sortBy(_.toInt)
       .flatMap((filename: String) =>
-        (read.lines(snapd / date / filename)).toStream)
+        (read.lines(snapd / date / filename)).to(LazyList))
       .map((s) => uread[Snap](s))
 
   def snapSource(date: String) = Src(snapStream(date))
@@ -432,7 +432,7 @@ object ACData {
 
   def load(name: String, dir: String = "acDev") = {
     val file  = wd / dir / (name + ".acrun")
-    val lines = (read.lines(file)).toStream
+    val lines = (read.lines(file)).to(LazyList)
     lines map (unpickle)
   }
 

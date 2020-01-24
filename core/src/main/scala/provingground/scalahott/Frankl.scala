@@ -112,8 +112,8 @@ object Frankl {
         sys2 <- coll2
       } yield sys1.buildWith(sys2, n)
 
-    lazy val allSystems: Stream[Set[SetSystem]] =
-      Stream.from(0).map { (n) =>
+    lazy val allSystems: LazyList[Set[SetSystem]] =
+      LazyList.from(0).map { (n) =>
         if (n == 0) Set[SetSystem](trivial)
         else
           buildWithAll(allSystems.take(n).toSet.flatten + empty,

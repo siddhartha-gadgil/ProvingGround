@@ -18,8 +18,8 @@ object MianChowla {
 
   def nextNum(as: Iterable[SafeLong], n: SafeLong) = firstGap(xyz(as), n)
 
-  val seq: Stream[SafeLong] =
-    Stream.from(1) map
+  val seq: LazyList[SafeLong] =
+    LazyList.from(1) map
       ((n: Int) =>
         if (n == 1) SafeLong(1)
         else nextNum(seq take (n - 1), n: SafeLong))

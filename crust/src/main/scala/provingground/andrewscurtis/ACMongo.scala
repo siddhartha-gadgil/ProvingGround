@@ -413,7 +413,7 @@ object ACMongo extends ACWriter {
       .sort(BSONDocument("loops" -> 1))
       . // should check if should use 1 or "increasing"
       cursor[ACThm]())
-    cursor.flatMap(_.collect[Stream](-1, Cursor.FailOnError[Stream[ACThm]]()))
+    cursor.flatMap(_.collect[LazyList](-1, Cursor.FailOnError[LazyList[ACThm]]()))
   }
 
   def allThmWeights(name: String) = {

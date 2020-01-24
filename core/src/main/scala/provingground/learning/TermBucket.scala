@@ -88,7 +88,7 @@ class TermBucket {
 object TermBucket {
   def fdMap[A](m: mMap[A, Vector[Term]], tot: Long) = {
     //    val tot = m.values.flatten.size
-    (m mapValues
+    (m.view.mapValues
       ((l) => FiniteDistribution((l map (Weighted(_, 1.0 / tot))).toVector))).toMap
   }
 
@@ -177,7 +177,7 @@ object WeightedTermBucket {
 
   def fdMap[A](m: mMap[A, Vector[Weighted[Term]]], tot: Double) = {
     //  val tot = (m.values.flatten map (_.weight)).sum
-    (m mapValues
+    (m.view.mapValues
       ((l) =>
         FiniteDistribution((l map
           ((wt) => Weighted(wt.elem, wt.weight / tot))).toVector))).toMap

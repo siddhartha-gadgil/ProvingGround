@@ -160,7 +160,7 @@ object EntropyAtomWeight {
       sc: Double = 1,
       prune: Boolean = false
   ): Option[(Term, Double)] =
-    proofWeightIter(ev, pf, weight, cutoff, hW, klW, sc, prune).toStream
+    proofWeightIter(ev, pf, weight, cutoff, hW, klW, sc, prune).to(LazyList)
       .drop(steps)
       .headOption
       .map(pf -> _)
@@ -199,7 +199,7 @@ object EntropyAtomWeight {
   ): Vector[(Typ[Term], Double)] = {
     for {
       (tp, it) <- evolvedLemmaIters(ev, hW, klW, sc)
-      p   = it.drop(steps).toStream.head
+      p   = it.drop(steps).to(LazyList).head
       // tpW = ev.result.goalThmsBySt(ev.params.goalWeight)(tp)
       // if p > tpW * ev.params.termInit
     } yield tp -> p

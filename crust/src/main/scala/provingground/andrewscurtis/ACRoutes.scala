@@ -28,7 +28,7 @@ object ACRoutes {
   val thmEvolve = path("theorem-evolution" / Segment / Segment) {
     case (name, ppress) => {
       val pres = uread[Presentation](ppress)
-      val thms = thmWeights(pres, name) map ((x: Stream[ACThm]) => uwrite(x))
+      val thms = thmWeights(pres, name) map ((x: LazyList[ACThm]) => uwrite(x))
       complete(thms)
     }
   }

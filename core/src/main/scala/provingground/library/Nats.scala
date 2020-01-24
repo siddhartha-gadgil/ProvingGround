@@ -13,7 +13,7 @@ object Nats {
   val NatInd               = ("0" ::: Nat) |: ("succ" ::: Nat -->>: Nat) =: Nat
   val zero :: succ :: HNil = NatInd.intros
 
-  val N = Stream.iterate(zero)(succ)
+  val N = LazyList.iterate(zero)(succ)
 
   val n = "n" :: Nat
   val m = "m" :: Nat

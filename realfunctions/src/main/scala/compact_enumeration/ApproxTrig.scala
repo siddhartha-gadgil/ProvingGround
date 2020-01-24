@@ -6,7 +6,7 @@ import spire.implicits._
 import spire.syntax.literals._
 import annotation.tailrec
 import scala.util._
-import Stream._
+import LazyList._
 import compact_enumeration._
 
 /**
@@ -100,7 +100,7 @@ class ApproxTrig(N: SafeLong) {
     * stream of bounds on the exponential.
     * At n, this is an interval containing e^(n/ N)
     */
-  lazy val expStream: Stream[Interval[Rational]] =
+  lazy val expStream: LazyList[Interval[Rational]] =
     Nat map
       ((n: SafeLong) =>
         if (n == 0) Interval.point(Rational(1))
@@ -139,7 +139,7 @@ class ApproxTrig(N: SafeLong) {
   /**
     * bound on log(1 + k/N) at index k.
     */
-  def logStream: Stream[Interval[Rational]] =
+  def logStream: LazyList[Interval[Rational]] =
     Nat map
       ((n: SafeLong) =>
         if (n == 0) Interval.point(r"0")
@@ -220,7 +220,7 @@ class ApproxTrig(N: SafeLong) {
     * on the interval ((n - 1)/ N, n/N) if n>0 , (0, 0) otherwise,
     * pair giving bounds for sin on image at right end-point and on the whole interval
     */
-  lazy val sinStream: Stream[(Interval[Rational], Interval[Rational])] =
+  lazy val sinStream: LazyList[(Interval[Rational], Interval[Rational])] =
     Nat map
       ((n: SafeLong) =>
         if (n == 0)
@@ -236,7 +236,7 @@ class ApproxTrig(N: SafeLong) {
     * on the interval ((n - 1)/ N, n/N) if n>0 , (0, 0) otherwise,
     * pair giving bounds for cos on image at right end-point and on the whole interval
     */
-  lazy val cosStream: Stream[(Interval[Rational], Interval[Rational])] =
+  lazy val cosStream: LazyList[(Interval[Rational], Interval[Rational])] =
     Nat map
       ((n: SafeLong) =>
         if (n == 0)
@@ -281,12 +281,12 @@ object ApproxTrig {
   /**
     * stream of natural numbers
     */
-  val Nat: Stream[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
+  val Nat: LazyList[SafeLong] = 0 #:: (Nat map ((n) => n + 1))
 
   /**
     * lookup in a stream with a SafeLong index.
     */
-  @tailrec def get[A](xs: Stream[A], n: SafeLong): A = {
+  @tailrec def get[A](xs: LazyList[A], n: SafeLong): A = {
     if (n == 0) xs.head else get(xs.tail, n - 1)
   }
 

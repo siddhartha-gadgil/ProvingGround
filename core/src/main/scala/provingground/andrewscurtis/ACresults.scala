@@ -14,7 +14,7 @@ import SimpleAcEvolution._
 
 class ACresults(
     paths: Map[String,
-               Stream[(FiniteDistribution[AtomicMove],
+               LazyList[(FiniteDistribution[AtomicMove],
                        FiniteDistribution[Moves])]])
     extends ACStates {
 
@@ -61,6 +61,6 @@ object ACresults {
 
 case class ACPortableResults(
     paths: Map[String,
-               Stream[(FiniteDistribution[AtomicMove],
+               LazyList[(FiniteDistribution[AtomicMove],
                        FiniteDistribution[Moves])]])
     extends ACresults(paths)

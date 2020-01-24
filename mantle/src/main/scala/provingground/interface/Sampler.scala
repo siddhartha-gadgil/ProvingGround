@@ -27,7 +27,7 @@ object Sampler {
   }
 
   def collapse[A](ps: Vector[(A, Int)]) =
-    (ps.groupBy(_._1) mapValues ((x) => total(x))).toMap
+    (ps.groupBy(_._1).view.mapValues ((x) => total(x))).toMap
 
   def combineAll[A](xs: Vector[Map[A, Int]]) = {
     collapse((xs map (_.toVector)).flatten)
