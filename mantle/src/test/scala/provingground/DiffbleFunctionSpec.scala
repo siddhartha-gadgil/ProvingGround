@@ -2,12 +2,12 @@ package provingground
 
 import provingground._, learning._
 import Collections._; import FiniteDistribution._; import provingground._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import FiniteDistribution._
 import AdjDiffbleFunction._
 import LinearStructure._
 
-class AdjDiffbleFunctionSpec extends FlatSpec {
+class AdjDiffbleFunctionSpec extends AnyFlatSpec {
   val double =
     AdjDiffbleFunction((x: Double) => 2 * x)((x: Double) =>
       (y: Double) => 2 * y)

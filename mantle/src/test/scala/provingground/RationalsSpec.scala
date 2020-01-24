@@ -8,11 +8,11 @@ import spire.implicits._
 
 import spire.math._
 
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 
 import QField.{LocalTyp => Q, Literal => rat, _}
 
-class RationalsSpec extends FlatSpec {
+class RationalsSpec extends flatspec.AnyFlatSpec {
   val x = "x" :: Q
 
   val y = "y" :: Q

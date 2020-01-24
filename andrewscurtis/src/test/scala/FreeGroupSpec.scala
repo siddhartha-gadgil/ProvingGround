@@ -2,7 +2,7 @@ import provingground.andrewscurtis._
 import provingground.andrewscurtis.FreeGroups._
 import org.scalatest._
 
-class WordSpec extends FlatSpec {
+class WordSpec extends flatspec.AnyFlatSpec {
   "A Word" should "reduce to the simplest form" in {
     val a      = Word(Vector(1, 2, -2, 3, -1, 1, -3, 1))
     val result = Word(Vector(1, 1))
@@ -75,7 +75,7 @@ class WordSpec extends FlatSpec {
   }
 }
 
-class WordObjectSpec extends FlatSpec {
+class WordObjectSpec extends flatspec.AnyFlatSpec {
   "Object Word" should "convert a list of Chars to an appropriate list of Ints" in {
     val a = Vector(1, 2, -3, 4, -2, -1)
     assert(a === Word.listFromChars(Word(a).toString.toVector))
@@ -92,7 +92,7 @@ class WordObjectSpec extends FlatSpec {
   }
 }
 
-class PresentationSpec extends FlatSpec {
+class PresentationSpec extends flatspec.AnyFlatSpec {
   "A Presentation" should "have a size" in {
     val a            = Word(Vector(1, 2, -1))
     val b            = Word(Vector(2, 1, -2))
@@ -207,7 +207,7 @@ class PresentationSpec extends FlatSpec {
   }
 }
 
-class PresentationObject extends FlatSpec {
+class PresentationObject extends flatspec.AnyFlatSpec {
   "Object Presentation" should "interpret a string as a presentation" in {
     val a  = Word(Vector(1, 2))
     val b  = Word(Vector(2, 3))

@@ -3,10 +3,10 @@
 // import HoTT._
 // import translation._
 //
-// import org.scalatest.FlatSpec
+// import org.scalatest._, flatspec._
 //
 // @deprecated("Use expression spec", "April 2016")
-// class TermExprSpec extends FlatSpec {
+// class TermExprSpec extends flatspec.AnyFlatSpec {
 //   import HoTTSpec.{g, f, b, B, a, mp, A, Bs}
 //
 //   val terms: List[Term] = List(g, f, b, B, a, mp, A)

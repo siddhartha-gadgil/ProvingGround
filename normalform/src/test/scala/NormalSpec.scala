@@ -2,7 +2,7 @@ import provingground.normalform._
 import provingground.normalform.NormalForm._
 import org.scalatest._
 
-class MainStuctureSpec extends FlatSpec {
+class MainStuctureSpec extends flatspec.AnyFlatSpec {
   "A variable" should "add with a variable" in {
     val x       = Variable("x")
     val y       = Variable("y")
@@ -162,7 +162,7 @@ class MainStuctureSpec extends FlatSpec {
   }
 }
 
-class AuxiliaryFunctionSpec extends FlatSpec {
+class AuxiliaryFunctionSpec extends flatspec.AnyFlatSpec {
   "listToMap" should "take a list and create a map by counting occurences" in {
     val a = List()
     val b = List(1, 2, 3, 4)

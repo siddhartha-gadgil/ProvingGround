@@ -1,12 +1,12 @@
 package provingground
 
 // import Collections._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import FiniteDistribution._
 import LinearStructure._
 
 class FiniteDistributionVecSpec
-    extends FlatSpec
+    extends AnyFlatSpec
     with FiniteDistributionBehaviours {
   def finDist =
     (pmf: Iterable[Weighted[Int]]) => FiniteDistribution(pmf.toVector)

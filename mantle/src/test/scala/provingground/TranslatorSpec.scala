@@ -6,9 +6,9 @@ import cats._, cats.implicits._
 
 import Functors._
 
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 
-class TranslatorSpec extends FlatSpec {
+class TranslatorSpec extends flatspec.AnyFlatSpec {
   class A
 
   case class B(x: A, y: A) extends A

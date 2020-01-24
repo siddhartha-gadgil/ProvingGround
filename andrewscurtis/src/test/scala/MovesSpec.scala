@@ -8,7 +8,7 @@ import org.scalatest._
 import provingground._
 import FiniteDistribution._
 
-class AtomicMoveSpec extends FlatSpec {
+class AtomicMoveSpec extends flatspec.AnyFlatSpec {
   val id: AtomicMove = Id
 
   "AtomicMove" should "act on Moves" in {
@@ -124,7 +124,7 @@ class AtomicMoveSpec extends FlatSpec {
   }
 }
 
-class AtomicMoveObjectSpec extends FlatSpec {
+class AtomicMoveObjectSpec extends flatspec.AnyFlatSpec {
   val id: AtomicMove = Id
   "AtomicMove companion object" should "read a string and convert it to an AtomicMove" in {
     val inp1    = "id"
@@ -168,7 +168,7 @@ class AtomicMoveObjectSpec extends FlatSpec {
   }
 }
 
-class MovesSpec extends FlatSpec {
+class MovesSpec extends flatspec.AnyFlatSpec {
   "Moves" should "reduce to functions of type Presentation => Option[Presentation]" in {
     val moves   = Moves(List(Inv(0), Inv(1), Inv(2)))
     val pres1   = Presentation(2, "a", "b")
@@ -221,7 +221,7 @@ class MovesSpec extends FlatSpec {
   }
 }
 
-class MovesObjectSpec extends FlatSpec {
+class MovesObjectSpec extends flatspec.AnyFlatSpec {
   "fromString" should "parse a list of strings into Moves" in {
     val seqMoves = Seq("id", "4!", "2->3", "4<-3", "6^b!")
     val result =

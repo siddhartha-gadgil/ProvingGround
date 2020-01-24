@@ -3,7 +3,7 @@ package provingground
 import provingground._, learning._
 import FiniteDistributionLearner._
 import Collections._; import FiniteDistribution._; import provingground._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import FiniteDistribution._
 import LinearStructure._
 import Weighted._
@@ -13,7 +13,7 @@ import scala.util._
 /**
   * @author gadgil
   */
-class FiniteDistributionLearnerSpec extends FlatSpec {
+class FiniteDistributionLearnerSpec extends AnyFlatSpec {
   val double = MoveFn((x: Double) => Some(2 * x))
 
   val square = MoveFn((x: Double) => Some(x * x))

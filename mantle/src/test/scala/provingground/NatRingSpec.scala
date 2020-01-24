@@ -4,7 +4,7 @@ import provingground._
 import HoTT._
 import spire.algebra._
 import spire.implicits._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import NatRing._
 import spire.math.SafeLong
 
@@ -27,7 +27,7 @@ object NatRingSpec {
   lazy val xPyPzl: RepTerm[SafeLong] = (x + y) + z
 }
 
-class NatRingSpec extends FlatSpec {
+class NatRingSpec extends flatspec.AnyFlatSpec {
   import NatRingSpec._
 
   "Addition" should "be commutative and associative" in {

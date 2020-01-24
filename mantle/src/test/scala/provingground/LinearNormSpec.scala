@@ -3,12 +3,12 @@ package provingground
 import scalahott._, andrewscurtis.FreeGroups._
 import LinNormBound._
 
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 
 import NatRing.{Literal => nat, leq => leqNat, _}, QField.{Literal => rat, _},
 FreeGroup.{Literal => elem, _}
 
-class LinearNormSpec extends FlatSpec {
+class LinearNormSpec extends flatspec.AnyFlatSpec {
   "Homogeneous length functions" should "satisy expected bounds" in {
     val pf = (1 *: ((1 *: (Gen(2))) ++ ((-2) *: (Gen(1) ++ Gen(1))))) ++ Gen(-2)
 

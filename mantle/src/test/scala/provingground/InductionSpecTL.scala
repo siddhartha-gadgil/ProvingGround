@@ -1,7 +1,7 @@
 package provingground
 
 import HoTT._
-import org.scalatest.FlatSpec
+import org.scalatest._, flatspec._
 import induction.implicits._
 // import Fold._
 
@@ -9,7 +9,7 @@ import shapeless._
 
 /* Cloned and modified from Tomoaki's tests
  */
-class InductionSpecTL extends FlatSpec {
+class InductionSpecTL extends flatspec.AnyFlatSpec {
 
   // inductive types
 
