@@ -9,6 +9,7 @@ import scala.concurrent._
 import TermData._
 import shapeless._
 import scala.collection.SeqView
+import scala.reflect.runtime.universe._
 
 class HoTTPost { web =>
   val global = new CounterGlobalID()
@@ -53,6 +54,8 @@ class HoTTPost { web =>
 
   val errorBuffer = PostBuffer[Throwable, ID](postGlobal)
 
+  val hnilBuffer = PostBuffer[HNil, ID](postGlobal)
+
   val representationBuffer = PostBuffer[Map[GeneratorVariables.Variable[_], Vector[Double]], ID](postGlobal)
 
 }
@@ -62,8 +65,9 @@ object HoTTPost {
 
   def fansiLog(post: PostData[_, HoTTPost, ID]) : Future[Unit] = 
     Future{
-      translation.FansiShow.fansiPrint.log(post.pw)
+      translation.FansiShow.fansiPrint.log(post.pw.tag)
       translation.FansiShow.fansiPrint.log(post.content, height = 20)
+      pprint.log(post.id)
   }
 
   case class InitState(ts: TermState, weight: Double)
@@ -88,12 +92,16 @@ object HoTTPost {
 
   implicit val postUnit: Postable[Unit, HoTTPost, ID] =
     new Postable[Unit, HoTTPost, ID] {
+      val tag : TypeTag[Unit] = implicitly
       def post(content: Unit, web: HoTTPost, pred: Set[ID]): Future[ID] = 
         web.global.postGlobal(content)
     }
 
     implicit val postError: Postable[Throwable, HoTTPost, ID] =
     bufferPost(_.errorBuffer)
+
+    implicit val postHNil : Postable[HNil, HoTTPost, ID] =
+      bufferPost(_.hnilBuffer)
 
   implicit val postLP: Postable[LocalProver, HoTTPost, ID] =
     bufferPost(_.lpBuff)
@@ -247,10 +255,11 @@ object HoTTPost {
 
   case class Apex[P](base: P)
 
-  implicit def postToLeaves[P](
+  implicit def postToLeaves[P : TypeTag](
       implicit bp: Postable[P, HoTTPost, ID]
   ): Postable[Apex[P], HoTTPost, ID] =
     new Postable[Apex[P], HoTTPost, ID] {
+      val tag : TypeTag[Apex[P]] = implicitly
 
       def post(content: Apex[P], web: HoTTPost, pred: Set[ID]): Future[ID] = {
         val dataFuture = query[HoTTPostData, HoTTPost](web, (_) => true)

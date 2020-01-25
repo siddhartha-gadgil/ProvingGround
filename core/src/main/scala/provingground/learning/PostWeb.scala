@@ -8,6 +8,7 @@ import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.SeqView
 import scala.util._
+import scala.reflect.runtime.universe._
 
 /* Code for mixed autonomous and interactive running.
  * We can interact by posting various objects.
@@ -21,6 +22,7 @@ import scala.util._
  */
 trait Postable[P, W, ID] {
   def post(content: P, web: W, pred: Set[ID]): Future[ID]
+  val tag: TypeTag[P]
 }
 
 /**
@@ -60,7 +62,7 @@ object Queryable{
   implicit def allView[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : Queryable[SeqView[P, Seq[_]], W] = 
     new Queryable[SeqView[P, Seq[_]], W] {
       def get(web: W, predicate: SeqView[P, Seq[_]] => Boolean): Future[SeqView[P, Seq[_]]] = 
-       Future{ ph.allPosts(web).filter(_.pw == pw).map{_.asInstanceOf[P]}}
+       Future{ ph.allPosts(web).filter(_.pw.tag == pw.tag).map{_.asInstanceOf[P]}}
     }
     
 
@@ -83,7 +85,7 @@ case class AnswerFromPost[P, U, W, ID](func: P => U)(
   implicit pw: Postable[P, W, ID]
 ) {
 def fromPost[Q](data: PostData[Q, W, ID]) : Option[U] =
-  if (pw == data.pw) Some(func(data.content.asInstanceOf[P])) else None
+  if (pw.tag == data.pw.tag) Some(func(data.content.asInstanceOf[P])) else None
 }
 
 /**
@@ -132,7 +134,7 @@ trait FallBackLookups{
     */
   implicit def somePostQuery[P, W, ID](implicit pw: Postable[P, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[SomePost[P], W, ID] = new LocalQueryable[SomePost[P], W, ID] {
    def getAt(web: W, id: ID, predicate: SomePost[P] => Boolean): Future[Vector[SomePost[P]]] =
-     Future{ph.allPosts(web).filter(_.pw == pw).map{post => SomePost(post.content.asInstanceOf[P])}.filter(predicate).toVector
+     Future{ph.allPosts(web).filter(_.pw.tag == pw.tag).map{post => SomePost(post.content.asInstanceOf[P])}.filter(predicate).toVector
   } 
 }
      
@@ -255,7 +257,7 @@ object LocalQueryable extends FallBackLookups{
 case class PostData[P, W, ID](content: P, id: ID)(
     implicit val pw: Postable[P, W, ID]
 ){
-  def getOpt[Q](implicit qw: Postable[Q, W, ID]) : Option[Q] = if (pw == qw) Some(content.asInstanceOf[Q]) else None 
+  def getOpt[Q](implicit qw: Postable[Q, W, ID]) : Option[Q] = if (pw.tag == qw.tag) Some(content.asInstanceOf[Q]) else None 
 }
 
 trait PostHistory[W, ID] {
@@ -508,6 +510,48 @@ object TypedPostResponse {
     }
   }
 
+  /**
+    * Probabaly not needed, need to just post pairs
+    *
+    * @param response
+    * @param predicate
+    * @param pw
+    * @param q1w
+    * @param q2w
+    * @param lv
+    */
+  case class PairBot[P, Q1, Q2<: HList, W, V, ID](response: V => P => Future[Q1 :: Q2], predicate: V => Boolean = (_ : V) => true)(
+      implicit pw: Postable[P, W, ID],
+      q1w: Postable[Q1, W, ID],
+      q2w: Postable[Q2, W, ID],
+      lv: LocalQueryable[V, W, ID]
+  ) extends TypedPostResponse[P, W, ID] {
+
+    def postFuture(
+        web: W,
+        content: P,
+        id: ID
+    ): Future[Vector[PostData[_, W, ID]]] = {
+      val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
+      val taskNest =
+        auxFuture.map{
+          (auxs => 
+            auxs.map{
+              aux => 
+                val newPostFuture = response(aux)(content)
+                newPostFuture.flatMap{case newPost :: np2  => 
+                  val idNewFuture = q1w.post(newPost, web, Set(id))
+                  idNewFuture.flatMap{idNew => 
+                    val id2Fut = q2w.post(np2, web, Set(idNew))
+                    id2Fut.map(id2 => PostData(np2, id2))}
+                  }
+            })
+        }
+      val task = taskNest.flatMap(st => Future.sequence(st))
+      task
+    }
+  }
+
   object MicroBot{
     def simple[P, Q, W, ID](func: P => Q)(implicit pw: Postable[P, W, ID],
     qw: Postable[Q, W, ID]) = MicroBot[P, Q, W, Unit, ID](
@@ -627,7 +671,7 @@ object PostBuffer {
     * @param buffer the buffer to which to post as a function of the web
     * @return postability
     */
-  def bufferPost[P, W, ID](buffer: W => PostBuffer[P, ID]) : Postable[P, W, ID] = {
+  def bufferPost[P : TypeTag, W, ID](buffer: W => PostBuffer[P, ID]) : Postable[P, W, ID] = {
     def postFunc(p: P, web: W, ids: Set[ID]): Future[ID] =
       buffer(web).post(p, ids)
     Postable(postFunc)
@@ -641,7 +685,7 @@ object Postable {
     * @param postFunc the posting function
     * @return a Postable
     */
-  def apply[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID]) : Postable[P, W, ID] = 
+  def apply[P : TypeTag, W, ID](postFunc: (P, W, Set[ID]) => Future[ID]) : Postable[P, W, ID] = 
     Impl(postFunc)
 
     /**
@@ -649,7 +693,7 @@ object Postable {
       *
       * @param postFunc the posting function
       */
-  case class Impl[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID]) extends Postable[P, W, ID] {
+  case class Impl[P, W, ID](postFunc: (P, W, Set[ID]) => Future[ID])(implicit val tag: TypeTag[P]) extends Postable[P, W, ID] {
         def post(content: P, web: W, pred: Set[ID]): Future[ID] = 
             postFunc(content, web, pred)
     }
@@ -671,7 +715,7 @@ object Postable {
       *
       * @return postability
       */
-  implicit def bufferPostable[P, ID, W <: PostBuffer[P, ID]]
+  implicit def bufferPostable[P: TypeTag, ID, W <: PostBuffer[P, ID]]
       : Postable[P, W, ID] =
      {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] =
@@ -686,7 +730,7 @@ object Postable {
       * @param uw postability of a Unit
       * @return postability of `Option[P]`
       */
-  implicit def optionPostable[P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Option[P], W, ID] = 
+  implicit def optionPostable[P : TypeTag, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Option[P], W, ID] = 
     {
       def post(content: Option[P], web: W, pred: Set[ID]): Future[ID] = 
         content.fold(uw.post((), web, pred))(c => pw.post(c, web, pred))
@@ -700,20 +744,30 @@ object Postable {
     * @param ew postability of a `Throwable`
     * @return postability of `Try[P]`
     */
-  implicit def tryPostable[P, W, ID](implicit pw: Postable[P, W, ID], ew: Postable[Throwable, W, ID]) : Postable[Try[P], W, ID] = 
+  implicit def tryPostable[P : TypeTag, W, ID](implicit pw: Postable[P, W, ID], ew: Postable[Throwable, W, ID]) : Postable[util.Try[P], W, ID] = 
     {
-      def post(content: Try[P], web: W, pred: Set[ID]): Future[ID] =
+      def post(content: util.Try[P], web: W, pred: Set[ID]): Future[ID] =
         content.fold(err => ew.post(err, web, pred), c => pw.post(c, web, pred))
 
       Impl(post)
     }
 
-  implicit def eitherPostable[P, Q, W, ID](implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) : Postable[Either[P, Q], W, ID] =
+  implicit def eitherPostable[P : TypeTag, Q: TypeTag, W, ID](implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) : Postable[Either[P, Q], W, ID] =
     {
      def post(content: Either[P, Q], web: W, pred: Set[ID]): Future[ID] =
       content.fold(
         fa => pw.post(fa, web, pred), 
         fb => qw.post(fb, web, pred))
+    Impl(post)
+    }
+
+  implicit def pairPost[P: TypeTag, Q <: HList : TypeTag, W, ID](implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) : Postable[P :: Q, W, ID] =
+    {
+     def post(content: P :: Q, web: W, pred: Set[ID]): Future[ID] = 
+      content match {
+        case p :: q => 
+          qw.post(q, web, pred).flatMap(id => pw.post(p, web, Set(id)))
+      }
     Impl(post)
     }
 
@@ -724,7 +778,7 @@ object Postable {
     * @param uw postability of `Unit`
     * @return Postability of `Right[P]`
     */
-  implicit def rightPost[X, P, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Right[X, P], W, ID] = 
+  implicit def rightPost[X : TypeTag, P : TypeTag, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Right[X, P], W, ID] = 
     {
       def post(content: Right[X, P], web: W, pred: Set[ID]): Future[ID] = 
         {
@@ -746,16 +800,16 @@ object Postable {
   * @param pw postability of P
   * @param pq queryability of P
   */
-case class SplitPost[P,  Q, W, ID](content: P, transformation: Q => P)(implicit val pw: Postable[P, W, ID], val qq : LocalQueryable[Q, W, ID])
+case class SplitPost[P : TypeTag,  Q: TypeTag, W: TypeTag, ID: TypeTag](content: P, transformation: Q => P)(implicit val pw: Postable[P, W, ID], val qq : LocalQueryable[Q, W, ID])
 
 object SplitPost{
-  def simple[P, W, ID](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[P, W, ID]) : SplitPost[P,P,W,ID] = 
+  def simple[P : TypeTag, W : TypeTag, ID: TypeTag](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[P, W, ID]) : SplitPost[P,P,W,ID] = 
     SplitPost[P, P, W, ID](content, identity[P](_))
 
-  def some[P, W, ID](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[Some[P], W, ID]) : SplitPost[P,Some[P],W,ID] =
+  def some[P : TypeTag, W : TypeTag, ID: TypeTag](content: P)(implicit pw: Postable[P, W, ID], qq : LocalQueryable[Some[P], W, ID]) : SplitPost[P,Some[P],W,ID] =
     SplitPost[P, Some[P], W, ID](content, _.value)
 
-  implicit def splitPostable[P, Q, W, ID]: Postable[SplitPost[P, Q, W, ID], W, ID] = {
+  implicit def splitPostable[P : TypeTag,  Q: TypeTag, W: TypeTag, ID: TypeTag]: Postable[SplitPost[P, Q, W, ID], W, ID] = {
     def post(content: SplitPost[P, Q, W, ID], web: W, pred: Set[ID]): Future[ID] = {
       content.pw.post(content.content, web, pred).map{
         postID =>
