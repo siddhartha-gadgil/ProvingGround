@@ -175,8 +175,12 @@ object HoTTPost {
 
   def webBuffers(web: HoTTPost): Vector[WebBuffer[_]] =
     Vector() :+ WebBuffer(web.lpBuff) :+ WebBuffer(web.expEvalBuff) :+ WebBuffer(
-      web.eqnNodeBuff
-    )
+      web.eqnNodeBuff) :+ WebBuffer(web.chompBuffer) :+ WebBuffer(web.errorBuffer) :+
+      WebBuffer(web.finalStateBuff) :+ WebBuffer(web.genEqnBuff) :+ WebBuffer(web.hnilBuffer) :+
+      WebBuffer(web.initStateBuff) :+ WebBuffer(web.isleNormEqnBuff) :+ WebBuffer(web.lemmaBuffer) :+
+      WebBuffer(web.lptBuff) :+ WebBuffer(web.representationBuffer) :+ WebBuffer(web.termResultBuffer) :+
+      WebBuffer(web.tgBuff) :+ WebBuffer(web.tunedLpBuff)
+     
 
   def findInWeb(
       web: HoTTPost,
