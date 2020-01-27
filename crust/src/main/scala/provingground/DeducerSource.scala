@@ -34,7 +34,9 @@ class DeducerSource(ded: Deducer,
                     names: Vector[(Term, String)] = Vector()) {
   import DeducerSource._
 
-  import Hub.{system, materializer}
+  import Hub.{system
+    //, materializer
+  }
 
   import ded._
 
