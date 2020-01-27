@@ -9,6 +9,7 @@ import spire.math._
 import spire.implicits._
 
 import scala.language.implicitConversions
+import shapeless.Nat
 
 object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
   type Nat = LocalTerm
@@ -37,9 +38,9 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
       case sg: SigmaTyp[u, v] if sg.fibers.dom == NatTyp =>
         val z = NatTyp.Var
         sg.fibers(z.asInstanceOf[u]) match {
-          case IdentityTyp(NatTyp, lhs: Nat, y: Nat) =>
-            findDifference(lhs, z).map { x =>
-              x -> y
+          case IdentityTyp(NatTyp, lhs: Term, y: Term) =>
+            findDifference(lhs !: NatTyp, z).map { x =>
+              x -> (y !: NatTyp)
             }
           case _ => None
         }
@@ -52,9 +53,9 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
       case sg: SigmaTyp[u, v] if sg.fibers.dom == NatTyp =>
         val z = NatTyp.Var
         sg.fibers(z.asInstanceOf[u]) match {
-          case IdentityTyp(NatTyp, lhs: Nat, y: Nat) =>
-            findFactor(z, lhs).map { x =>
-              x -> y
+          case IdentityTyp(NatTyp, lhs: Term, y: Term) =>
+            findFactor(z, lhs !: NatTyp).map { x =>
+              x -> (y !: NatTyp)
             }
           case _ => None
         }
