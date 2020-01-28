@@ -633,6 +633,29 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 
 }
 
+trait DeletablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
+  val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
+
+  def post(content: P, prev: Set[ID]): Future[ID] = {
+    val idT = postGlobal(content)
+    idT.map { id =>
+      buffer += ((Some(content), id, prev))
+      id
+    }
+  }
+
+  def find[W](index: ID)(implicit pw:  Postable[P, W, ID]) :  Option[(PostData[P,W,ID], Set[ID])] = buffer.find(_._2 == index).flatMap{
+    case (pOpt, _, preds) => pOpt.map(p => (PostData[P, W, ID](p, index), preds))
+  }
+
+  def bufferData[W](implicit pw: Postable[P, W, ID]) : Vector[PostData[_, W, ID]] =
+    buffer.flatMap{case (pOpt, id, _) =>   pOpt.map(p => PostData[P, W, ID](p, id))}.toVector
+
+  def bufferFullData[W](implicit pw: Postable[P, W, ID]) : Vector[(PostData[P,W,ID], ID, Set[ID])] =
+    buffer.flatMap{case (pOpt, id, preds) => pOpt.map(p => (PostData[P, W, ID](p, id), id, preds))}.toVector
+
+}
+
 object PostBuffer {
 /**
   * creating a post buffer
