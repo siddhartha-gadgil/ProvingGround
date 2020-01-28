@@ -160,20 +160,7 @@ object HoTTPost {
     ((lp: LocalProver) => Some(InitState(lp.initState, 1))) ||
     ((lp: LocalTangentProver) => Some(InitState(lp.initState, 1))) 
 
-
-  case class WebBuffer[P](buffer: PostBuffer[P, ID])(
-      implicit pw: Postable[P, HoTTPost, ID]
-  ) {
-    def getPost(id: ID): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
-      buffer.find(id)
-
-    def data: Vector[PostData[_, HoTTPost, ID]] = buffer.bufferData
-
-    def fullData: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
-      buffer.bufferFullData
-  }
-
-  def webBuffers(web: HoTTPost): Vector[WebBuffer[_]] =
+  def webBuffers(web: HoTTPost): Vector[WebBuffer[_, ID]] =
     Vector() :+ WebBuffer(web.lpBuff) :+ WebBuffer(web.expEvalBuff) :+ WebBuffer(
       web.eqnNodeBuff) :+ WebBuffer(web.chompBuffer) :+ WebBuffer(web.errorBuffer) :+
       WebBuffer(web.finalStateBuff) :+ WebBuffer(web.genEqnBuff) :+ WebBuffer(web.hnilBuffer) :+
@@ -181,14 +168,23 @@ object HoTTPost {
       WebBuffer(web.lptBuff) :+ WebBuffer(web.representationBuffer) :+ WebBuffer(web.termResultBuffer) :+
       WebBuffer(web.tgBuff) :+ WebBuffer(web.tunedLpBuff)
      
+  def mutWebBuffers(web: HoTTPost): Vector[MutWebBuffer[_, ID]] = Vector()
 
   def findInWeb(
       web: HoTTPost,
       index: ID
   ): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
-    webBuffers(web)
-      .map(_.getPost(index))
-      .fold[Option[(PostData[_, HoTTPost, ID], Set[ID])]](None)(_ orElse _)
+    (webBuffers(web)
+      .map(_.getPost(index)) ++ mutWebBuffers(web).map(_.getPost(index)))
+      .fold[Option[(PostData[_, HoTTPost, ID], Set[ID])]](None)(_ orElse _).map{
+        case (pd, ids) => (pd, ids.flatMap(skipDeleted(web, _)))
+      }
+
+  def skipDeleted(web: HoTTPost, id: ID) : Set[ID] = 
+      skipDeletedStep(web, id).map(ids => ids.flatMap(skipDeleted(web, _))).getOrElse(Set(id))
+
+  def skipDeletedStep(web: HoTTPost, id: ID) : Option[Set[ID]] = 
+    mutWebBuffers(web).map(_.buffer.skipDeletedStep(index = id)).fold(None)(_ orElse _)
 
   implicit def postHistory: PostHistory[HoTTPost, ID] =
     new PostHistory[HoTTPost, ID] {

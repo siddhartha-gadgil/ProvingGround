@@ -633,7 +633,19 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 
 }
 
-trait DeletablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
+
+case class WebBuffer[P, ID](buffer: PostBuffer[P, ID])(
+      implicit pw: Postable[P, HoTTPost, ID]
+  ) {
+    def getPost(id: ID): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
+      buffer.find(id)
+
+    def data: Vector[PostData[_, HoTTPost, ID]] = buffer.bufferData
+
+    def fullData: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
+      buffer.bufferFullData
+  }
+trait MutablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
 
   def post(content: P, prev: Set[ID]): Future[ID] = {
@@ -648,6 +660,8 @@ trait DeletablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
     case (pOpt, _, preds) => pOpt.map(p => (PostData[P, W, ID](p, index), preds))
   }
 
+  def skipDeletedStep(index: ID) : Option[Set[ID]] = buffer.find(pd => pd._1.isEmpty && pd._2 == index).map(_._3)
+
   def bufferData[W](implicit pw: Postable[P, W, ID]) : Vector[PostData[_, W, ID]] =
     buffer.flatMap{case (pOpt, id, _) =>   pOpt.map(p => PostData[P, W, ID](p, id))}.toVector
 
@@ -655,6 +669,18 @@ trait DeletablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
     buffer.flatMap{case (pOpt, id, preds) => pOpt.map(p => (PostData[P, W, ID](p, id), id, preds))}.toVector
 
 }
+
+case class MutWebBuffer[P, ID](buffer: MutablePostBuffer[P, ID])(
+      implicit pw: Postable[P, HoTTPost, ID]
+  ) {
+    def getPost(id: ID): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
+      buffer.find(id)
+
+    def data: Vector[PostData[_, HoTTPost, ID]] = buffer.bufferData
+
+    def fullData: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
+      buffer.bufferFullData
+  }
 
 object PostBuffer {
 /**
