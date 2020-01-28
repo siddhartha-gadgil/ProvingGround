@@ -201,13 +201,13 @@ object HoTTPost {
   def allPostFullData(
       web: HoTTPost
   ): Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
-    webBuffers(web).flatMap(_.fullData)
+    webBuffers(web).flatMap(_.fullData) ++ mutWebBuffers(web).flatMap(_.fullData)
 
   case class HoTTPostData(
       number: Int,
       posts: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])]
   ) {
-    def successors(id: ID) = posts.filter(_._3.contains(id))
+    def successors(id: ID) = posts.filter( _._3.contains(id))
 
     val allIndices: Vector[ID] = posts.map(_._2)
 
@@ -231,7 +231,9 @@ object HoTTPost {
       ): Future[HoTTPostData] = Future {
         HoTTPostData(
           web.global.counter,
-          allPostFullData(web)
+          allPostFullData(web).map{
+            case (pd, id, ids) => (pd, id, ids.flatMap(skipDeleted(web, _)))
+          }
         )
       }
     }
