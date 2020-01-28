@@ -79,7 +79,7 @@ object ScratchPad {
             (_, _, s) =>
               div(
                 h3(`class` := "text-danger")("Error"),
-                div(s.traced.trace)
+                div(s.trace().msg)
             ),
             (bl, _) =>
               div(`class` := "lead")(
