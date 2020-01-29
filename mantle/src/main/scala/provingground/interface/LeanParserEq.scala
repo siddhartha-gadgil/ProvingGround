@@ -327,7 +327,7 @@ class LeanParserEq(
           val isle    = tg.lambdaIsle(domTyp)
           val coeff   = Coeff(tg.lambdaIsle(domTyp))
           val eqs     = valueEq._2
-          val isleEqs = eqs.map(_.mapVars((t) => InIsle(t, x, isle)))
+          val isleEqs = eqs.map(_.mapVars(InIsle.variableMap(x, isle)))
           val initVarElems = eqs
             .flatMap { (eq) =>
               Expression.varVals(eq.rhs)
@@ -382,7 +382,7 @@ class LeanParserEq(
           val isle    = tg.piIsle(domTyp)
           val coeff   = Coeff(tg.lambdaIsle(domTyp))
           val eqs     = valueEq._2
-          val isleEqs = eqs.map(_.mapVars((t) => InIsle(t, x, isle)))
+          val isleEqs = eqs.map(_.mapVars(InIsle.variableMap(x, isle)))
           val initVarElems = eqs
             .flatMap { (eq) =>
               Expression.varVals(eq.rhs)
@@ -425,7 +425,11 @@ class LeanParserEq(
               v: GeneratorVariables.Variable[_]
           ): GeneratorVariables.Variable[_] =
             if (v == Elem(x, Terms)) Elem(valueTermEq._1, Terms) else v
-          val expEqs = bodyTermEq._2.map(eq => eq.mapVars(fn))
+          val m : Expression.VariableMap = new Expression.VariableMap {
+            def apply[Y](v: GeneratorVariables.Variable[Y]) : GeneratorVariables.Variable[Y] = 
+              if (v == Elem(x, Terms)) Elem(valueTermEq._1.asInstanceOf[Y], Terms.asInstanceOf[RandomVar[Y]]) else v
+          }
+          val expEqs = bodyTermEq._2.map(eq => eq.mapVars(m))
           bodyTermEq._1.replace(x, valueTermEq._1) -> (expEqs union valueTermEq._2 union domTermEq._2)
         }
       case e => Task.raiseError(UnParsedException(e))

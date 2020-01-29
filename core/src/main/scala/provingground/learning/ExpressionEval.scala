@@ -538,8 +538,8 @@ trait ExpressionEval { self =>
     val boat  = variable
     val coeff = Coeff(Base.lambdaNode)
     val isleEqs: Set[Equation] =
-      equations.map(_.mapVars { (x) =>
-        InIsle(x, boat, isle)
+      equations.map(_.mapVars { 
+        InIsle.variableMap(boat, isle)
       })
     val bridgeEqs: Set[EquationNode] = finalTermSet.map { x =>
       EquationNode(
@@ -587,8 +587,8 @@ trait ExpressionEval { self =>
     val boat  = variable
     val coeff = Coeff(Base.piNode)
     val isleEqs: Set[Equation] =
-      equations.map(_.mapVars { (x) =>
-        InIsle(x, boat, isle)
+      equations.map(_.mapVars { 
+        InIsle.variableMap(boat, isle)
       })
     val bridgeEqs: Set[EquationNode] = finalTypSet.map { x =>
       EquationNode(
@@ -636,8 +636,8 @@ trait ExpressionEval { self =>
     val boat  = variable
     val coeff = Coeff(Base.piNode | (typAsTermSort, Terms))
     val isleEqs: Set[Equation] =
-      equations.map(_.mapVars { (x) =>
-        InIsle(x, boat, isle)
+      equations.map(_.mapVars { 
+        InIsle.variableMap(boat, isle)
       })
     val bridgeEqs: Set[EquationNode] = finalTypSet.map { x =>
       EquationNode(

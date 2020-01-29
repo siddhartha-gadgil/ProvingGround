@@ -34,7 +34,7 @@ case class TFData(
               }): VarVal[_]
         )),
       inFinalEvent.map {
-        case (e, s) => (f(e) -> s.map(f))
+        case (e, s) => (f(e) -> s.map{ case x => f(x)})
       },
       inFinalPairEvent.map {
         case (e, s) => f(e) -> s.map { case (a, b) => (f(a), f(b)) }

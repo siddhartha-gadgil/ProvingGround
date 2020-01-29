@@ -183,7 +183,10 @@ object GeneratorVariables {
     def variableMap[YY, State, O, Boat](
       boat: Boat,
       isle: Island[YY, State, O, Boat]
-  ) : Expression.VariableMap = InIsle(_, boat, isle)
+  ) : Expression.VariableMap = 
+    new Expression.VariableMap {
+      def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = InIsle(arg, boat, isle)
+    }
   }
 
   case class NodeCoeff[RDom <: HList, Y](
@@ -204,7 +207,7 @@ sealed trait Expression {
       boat: Boat,
       island: Island[Y, State, O, Boat]
   ): Expression =
-    mapVars(InIsle(_, boat, island))
+    mapVars(InIsle.variableMap(boat, island ))
 
   def +(that: Expression): Sum = Sum(this, that)
 
@@ -224,7 +227,9 @@ sealed trait Expression {
 }
 
 object Expression {
-  type VariableMap = Variable[_] => Variable[_]
+  trait VariableMap{
+    def apply[Y](arg: Variable[Y]): Variable[Y]
+  }
 
   def varVals(expr: Expression): Set[VarVal[_]] = expr match {
     case value: VarVal[_] => Set(value)
@@ -499,7 +504,7 @@ case class Equation(lhs: Expression, rhs: Expression) {
       boat: Boat,
       island: Island[Y, State, O, Boat]
   ): Equation =
-    mapVars(InIsle(_, boat, island))
+    mapVars(InIsle.variableMap(boat, island ))
 
   def squareError(epsilon: Double): Expression =
     ((lhs - rhs) / (lhs + rhs + Literal(epsilon))).square
