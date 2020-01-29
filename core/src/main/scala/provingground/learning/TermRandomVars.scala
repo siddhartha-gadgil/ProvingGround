@@ -339,9 +339,9 @@ object TermRandomVars {
       val newBase             = randomVarSubs(x, y)(ev.base)
       val newSort: Sort[a, b] = sortSubs(x, y)(ev.sort)
       Event(newBase, newSort)
-    case inIsleFull: InIsle[c, _, d, _] =>
+    case inIsleFull: InIsle[c, cc, _, d, _] =>
       val inIsleTry =
-        Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+        Try(inIsleFull.asInstanceOf[InIsle[c, cc, TermState, d, Term]])
       inIsleTry.fold(
         fa => inIsleFull,
         inIsle => {
@@ -368,9 +368,9 @@ object TermRandomVars {
     v match {
       case Elem(element, randomVar) => v
       case Event(base, sort)        => v
-      case inIsleFull: InIsle[c, _, d, _] =>
+      case inIsleFull: InIsle[c, cc, _, d, _] =>
         val inIsleTry =
-          Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+          Try(inIsleFull.asInstanceOf[InIsle[c, cc, TermState, d, Term]])
         inIsleTry.fold(
           fa => inIsleFull,
           inIsle => {
@@ -471,9 +471,9 @@ object TermRandomVars {
       case Event(base, sort) =>
         val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
         v -> expressionMapVars(fn)(rhs)
-      case inIsleFull: InIsle[c, _, d, _] =>
+      case inIsleFull: InIsle[c, cc, _, d, _] =>
         val inIsleTry =
-          Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+          Try(inIsleFull.asInstanceOf[InIsle[c, cc, TermState, d, Term]])
         inIsleTry.fold(
           fa => inIsleFull -> rhs,
           inIsle => {

@@ -150,7 +150,7 @@ object SpireGradient {
           case ev @ Event(base, sort)        => eventProb(finalState)(ev)
           case ev @ PairEvent(base1, base2, sort) =>
             pairEventProb(finalState)(ev)
-          case el: InIsle[X, TermState, o, Term] =>
+          case el: InIsle[y, X,  TermState, o, Term] =>
             val (st, newBoat: Term) = el.isle.initMap(initState)(varWeight)
             varValue(
               st.subs(newBoat, el.boat),
@@ -165,7 +165,7 @@ object SpireGradient {
           case ev @ Event(base, sort)        => eventProb(initState)(ev)
           case ev @ PairEvent(base1, base2, sort) =>
             pairEventProb(initState)(ev)
-          case el: InIsle[X, TermState, o, Term] =>
+          case el: InIsle[y, X, TermState, o, Term] =>
             val (st, newBoat: Term) = el.isle.initMap(initState)(varWeight)
             varValue(
               st.subs(newBoat, el.boat),

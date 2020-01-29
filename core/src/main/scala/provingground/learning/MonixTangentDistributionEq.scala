@@ -677,7 +677,7 @@ case class MonixTangentFiniteDistributionEq[State](
             isleOut
               .map {
                 case (fd, eqs, rm) =>
-                  val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+                  val isleEqs = eqs.map(_.mapVars(InIsle.variableMap(boat, isle)))
                   val bridgeEqs = fd.support.map { x =>
                     EquationNode(
                       finalProb(export(boat, x), isle.output),

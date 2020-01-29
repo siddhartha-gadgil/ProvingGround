@@ -415,7 +415,7 @@ case class GeneratorTF[State](
                 GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
               GeneratorTF.gset += isleEq
               val isleData: TFData =
-                isleEq.tfData.map((x) => InIsle(x, boat, isle))
+                isleEq.tfData.map(InIsle.variableMap(boat, isle))
               val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
               val eqTerms =
                 for {
@@ -626,7 +626,7 @@ case class GeneratorTF[State](
                 GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
               GeneratorTF.gset += isleEq
               val isleData: TFData =
-                isleEq.tfData.map((x) => InIsle(x, boat, isle))
+                isleEq.tfData.map(InIsle.variableMap(boat, isle))
               val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
               val eqTerms =
                 for {

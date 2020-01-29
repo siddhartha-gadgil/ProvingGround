@@ -6,6 +6,7 @@ import provingground.learning.GeneratorNode.{Map => GMap, _}
 import scala.language.higherKinds
 import scala.util._
 import spire.util.Opt
+import provingground.learning.Expression.Exp
 
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
@@ -135,7 +136,7 @@ object GeneratorVariables {
       val fd1 = StateDistribution.value(state)(base1)
       val fd2 = StateDistribution.value(state)(base2)
       fd1.zip(fd2).filter(sort.pred).total
-    case isle: InIsle[y, State, o, boat] =>
+    case isle: InIsle[y, yy, State, o, boat] =>
       val x = variableValue(isle.isle.finalMap(isle.boat, state))
       x(isle.isleVar)
   }
@@ -172,11 +173,18 @@ object GeneratorVariables {
     override def toString = s"{($base1, $base2) \u2208 $sort}"
   }
 
-  case class InIsle[Y, State, O, Boat](
+  case class InIsle[Y, YY, State, O, Boat](
       isleVar: Variable[Y],
       boat: Boat,
-      isle: Island[Y, State, O, Boat]
+      isle: Island[YY, State, O, Boat]
   ) extends Variable[Y]
+
+  object InIsle{
+    def variableMap[YY, State, O, Boat](
+      boat: Boat,
+      isle: Island[YY, State, O, Boat]
+  ) : Expression.VariableMap = InIsle(_, boat, isle)
+  }
 
   case class NodeCoeff[RDom <: HList, Y](
       nodeFamily: GeneratorNodeFamily[RDom, Y]
