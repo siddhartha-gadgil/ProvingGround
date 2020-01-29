@@ -5,7 +5,7 @@ import mill.scalalib.scalafmt._
 import define.{Sources, Task}
 // import ammonite.ops._
 import os._
-import $ivy.`org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r`
+import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r`
 
 
 trait MetalsModule extends ScalaModule{
@@ -221,7 +221,7 @@ val mantleLibs = List(
   ivy"org.platanios::tensorflow:0.4.1;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:1.2.8",
   ivy"com.lihaoyi::os-lib:0.6.3",
-  ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r",
+  ivy"org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r",
   ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta6",
   ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta6",
   ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta6",
