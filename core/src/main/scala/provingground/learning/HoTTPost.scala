@@ -78,6 +78,8 @@ object HoTTPost {
       pprint.log(post.id)
   }
 
+  def testGet: PostHistory[HoTTPost, ID] = PostHistory.get((w: HoTTPost) => w.initStateBuff :: HNil)
+
   case class InitState(ts: TermState, weight: Double)
 
   case class FinalState(ts: TermState, weight: Double) // should also record source, whether by evolution or from equations etc
