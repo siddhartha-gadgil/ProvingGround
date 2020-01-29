@@ -58,6 +58,14 @@ class HoTTPost { web =>
 
   val representationBuffer = PostBuffer[Map[GeneratorVariables.Variable[_], Vector[Double]], ID](postGlobal)
 
+  lazy val webBuffers: Vector[WebBuffer[_, ID]] =
+    Vector() :+ WebBuffer(web.lpBuff) :+ WebBuffer(web.expEvalBuff) :+ WebBuffer(
+      web.eqnNodeBuff) :+ WebBuffer(web.chompBuffer) :+ WebBuffer(web.errorBuffer) :+
+      WebBuffer(web.finalStateBuff) :+ WebBuffer(web.genEqnBuff) :+ WebBuffer(web.hnilBuffer) :+
+      WebBuffer(web.initStateBuff) :+ WebBuffer(web.isleNormEqnBuff) :+ WebBuffer(web.lemmaBuffer) :+
+      WebBuffer(web.lptBuff) :+ WebBuffer(web.representationBuffer) :+ WebBuffer(web.termResultBuffer) :+
+      WebBuffer(web.tgBuff) :+ WebBuffer(web.tunedLpBuff)
+
 }
 
 object HoTTPost {
@@ -159,14 +167,6 @@ object HoTTPost {
     LocalQueryable.answerAsSome[InitState, HoTTPost, ID] ||
     ((lp: LocalProver) => Some(InitState(lp.initState, 1))) ||
     ((lp: LocalTangentProver) => Some(InitState(lp.initState, 1))) 
-
-  def webBuffers(web: HoTTPost): Vector[WebBuffer[_, ID]] =
-    Vector() :+ WebBuffer(web.lpBuff) :+ WebBuffer(web.expEvalBuff) :+ WebBuffer(
-      web.eqnNodeBuff) :+ WebBuffer(web.chompBuffer) :+ WebBuffer(web.errorBuffer) :+
-      WebBuffer(web.finalStateBuff) :+ WebBuffer(web.genEqnBuff) :+ WebBuffer(web.hnilBuffer) :+
-      WebBuffer(web.initStateBuff) :+ WebBuffer(web.isleNormEqnBuff) :+ WebBuffer(web.lemmaBuffer) :+
-      WebBuffer(web.lptBuff) :+ WebBuffer(web.representationBuffer) :+ WebBuffer(web.termResultBuffer) :+
-      WebBuffer(web.tgBuff) :+ WebBuffer(web.tunedLpBuff)
      
   def mutWebBuffers(web: HoTTPost): Vector[MutWebBuffer[_, ID]] = Vector()
 
@@ -174,7 +174,7 @@ object HoTTPost {
       web: HoTTPost,
       index: ID
   ): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
-    (webBuffers(web)
+    (web.webBuffers
       .map(_.getPost(index)) ++ mutWebBuffers(web).map(_.getPost(index)))
       .fold[Option[(PostData[_, HoTTPost, ID], Set[ID])]](None)(_ orElse _).map{
         case (pd, ids) => (pd, ids.flatMap(skipDeleted(web, _)))
@@ -194,14 +194,14 @@ object HoTTPost {
       ): Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
 
       def allPosts(web: HoTTPost): SeqView[PostData[_, HoTTPost, ID], Seq[_]] =
-        webBuffers(web).view.flatMap(_.data)
+        web.webBuffers.view.flatMap(_.data)
 
     }
 
   def allPostFullData(
       web: HoTTPost
   ): Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
-    webBuffers(web).flatMap(_.fullData) ++ mutWebBuffers(web).flatMap(_.fullData)
+    web.webBuffers.flatMap(_.fullData) ++ mutWebBuffers(web).flatMap(_.fullData)
 
   case class HoTTPostData(
       number: Int,
