@@ -190,7 +190,7 @@ import GeneratorVariables._, Expression._
 import Expression._
 
 sealed trait Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Expression
+  def mapVars(f: VariableMap): Expression
 
   def useBoat[Y, State, O, Boat](
       boat: Boat,
@@ -216,6 +216,8 @@ sealed trait Expression {
 }
 
 object Expression {
+  type VariableMap = Variable[_] => Variable[_]
+
   def varVals(expr: Expression): Set[VarVal[_]] = expr match {
     case value: VarVal[_] => Set(value)
     case Log(exp)         => varVals(exp)
@@ -308,27 +310,27 @@ object Expression {
   }
 
   case class FinalVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
-    def mapVars(f: Variable[_] => Variable[_]): Expression =
+    def mapVars(f: VariableMap): Expression =
       FinalVal(f(variable))
 
     override def toString: String = s"P\u2081($variable)"
   }
 
   case class InitialVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
-    def mapVars(f: Variable[_] => Variable[_]): Expression =
+    def mapVars(f: VariableMap): Expression =
       InitialVal(f(variable))
 
     override def toString: String = s"P\u2080($variable)"
   }
 
   case class Log(exp: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
+    def mapVars(f: VariableMap): Expression = Log(exp.mapVars(f))
 
     override def toString = s"log($exp)"
   }
 
   case class Exp(exp: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Expression = Exp(exp.mapVars(f))
+    def mapVars(f: VariableMap): Expression = Exp(exp.mapVars(f))
 
     override def toString = s"exp($exp)"
   }
@@ -338,27 +340,27 @@ object Expression {
   def inverseSigmoid(y: Expression) = Log(y / (Literal(1) - y))
 
   case class Sum(x: Expression, y: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Sum =
+    def mapVars(f: VariableMap): Sum =
       Sum(x.mapVars(f), y.mapVars(f))
 
     override def toString = s"($x) + ($y)"
   }
 
   case class Product(x: Expression, y: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Product =
+    def mapVars(f: VariableMap): Product =
       Product(x.mapVars(f), y.mapVars(f))
 
     override def toString = s"($x) * ($y)"
   }
 
   case class Literal(value: Double) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Literal = this
+    def mapVars(f: VariableMap): Literal = this
 
     override def toString: String = value.toString
   }
 
   case class Quotient(x: Expression, y: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Quotient =
+    def mapVars(f: VariableMap): Quotient =
       Quotient(x.mapVars(f), y.mapVars(f))
 
     override def toString = s"($x) / ($y)"
@@ -367,7 +369,7 @@ object Expression {
   case class Coeff[Y](node: GeneratorNode[Y])
       extends Expression {
     val rv = node.output
-    def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
+    def mapVars(f: VariableMap): Coeff[Y] = this
 
     def expand: RandomVarFamily[_ <: HList, Y] = rv match {
       case RandomVar.AtCoord(family, _) => family
@@ -443,7 +445,7 @@ object Expression {
   }
 
   case class IsleScale[Boat, Y](boat: Boat, elem: Elem[Y]) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Expression = this
+    def mapVars(f: VariableMap): Expression = this
   }
 
   import spire.algebra._, spire.implicits._
@@ -482,7 +484,7 @@ object Expression {
 }
 
 case class Equation(lhs: Expression, rhs: Expression) {
-  def mapVars(f: Variable[_] => Variable[_]) =
+  def mapVars(f: VariableMap) =
     Equation(lhs.mapVars(f), rhs.mapVars(f))
 
   def useBoat[Y, State, Boat, O](
@@ -558,7 +560,7 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
 
   override def toString: String = s"($lhs =) $rhs"
 
-  def mapVars(f: Variable[_] => Variable[_]) =
+  def mapVars(f: VariableMap) =
     EquationNode(lhs.mapVars(f), rhs.mapVars(f))
 }
 

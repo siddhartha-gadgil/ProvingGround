@@ -18,7 +18,7 @@ case class TFData(
     inFinalPairEvent: Map[Variable[_], Set[(Variable[_], Variable[_])]],
     equations: Set[Equation]) {
 
-  def map(f: Variable[_] => Variable[_]): TFData = {
+  def map(f: VariableMap): TFData = {
     TFData(
       vars.map {
         case (FinalVal(variable), p)   => FinalVal(f(variable))    -> p

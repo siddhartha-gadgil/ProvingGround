@@ -389,7 +389,7 @@ object TermRandomVars {
   import Expression._
 
   def expressionMapVars(
-      fn: Variable[_] => Variable[_]
+      fn: VariableMap
   )(exp: Expression): Expression = exp match {
     case FinalVal(variable)   => FinalVal(fn(variable))
     case InitialVal(variable) => InitialVal(fn(variable))
