@@ -17,10 +17,10 @@ import scala.reflect.runtime.universe._
 class MiniPost{
   import HoTTPost._
 
-  implicit val global : CounterGlobalID = new CounterGlobalID()
+  implicit val global : GlobalID[ID] = new CounterGlobalID()
 
   val polyBuffer = 
-    PostBuffer.build[Lemmas] :: PostBuffer.build[TermState] :: ErasablePostBuffer.build[FinalState] :: HNil
+    PostBuffer.build[Lemmas, ID] :: PostBuffer.build[TermState, ID] :: ErasablePostBuffer.build[FinalState, ID] :: HNil
 }
 
 object MiniPost{

@@ -714,8 +714,8 @@ object ErasablePostBuffer{
     Postable(postFunc)
   }
 
-  def build[P](implicit gp: CounterGlobalID) : ErasablePostBuffer[P, (Int, Int)] = new ErasablePostBuffer[P, (Int, Int)] {
-    def postGlobal(content: P): Future[(Int, Int)] = gp.postGlobal(content)
+  def build[P, ID](implicit gp: GlobalID[ID]) : ErasablePostBuffer[P, ID] = new ErasablePostBuffer[P, ID] {
+    def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
   }
 
 }  
@@ -770,8 +770,8 @@ object PostBuffer {
     def postGlobal(content: P): Future[ID] = globalPost(content)
   }
 
-  def build[P](implicit gp: CounterGlobalID) : PostBuffer[P, (Int, Int)] = new PostBuffer[P, (Int, Int)] {
-    def postGlobal(content: P): Future[(Int, Int)] = gp.postGlobal(content)
+  def build[P, ID](implicit gp: GlobalID[ID]) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
+    def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
   }
 
   /**
@@ -987,12 +987,16 @@ object SplitPost{
   }
 }
 
+trait GlobalID[ID]{
+  def postGlobal[P](content: P) : Future[ID]
+}
+
 /**
   * allows posting globally and keeps count without stroing anything
   *
   * @param log logging on post
   */
-class CounterGlobalID(log : Any => Unit = (_) => ()){
+class CounterGlobalID(log : Any => Unit = (_) => ()) extends GlobalID[(Int, Int)]{
   var counter: Int = 0
 
   /**
