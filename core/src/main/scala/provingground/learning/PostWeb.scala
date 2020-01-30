@@ -277,6 +277,8 @@ trait PostHistory[W, ID] {
     stream.flatMap(_._1)
   }
 
+  def redirects(web: W) : Map[ID, Set[ID]] 
+
   /**
     * latest answers in the query using history
     *
@@ -291,18 +293,21 @@ trait PostHistory[W, ID] {
         answer(pd).map(Set(_)).getOrElse(
           preds.flatMap(pid => latestAnswers(web, pid, answer))
           )
-    }.getOrElse(Set())
+    }.orElse(redirects(web).get(id).map(ids => ids.flatMap(rid => latestAnswers(web, rid, answer)))
+    ).getOrElse(Set())
 }
 
 object PostHistory{
   case class Empty[W, ID]() extends PostHistory[W, ID]{
     def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] = None
     def allPosts(web: W): SeqView[PostData[_, W, ID],Seq[_]] = Seq().view
+    def redirects(web: W): Map[ID,Set[ID]] = Map()
   }
 
   case class Or[W, ID](first: PostHistory[W, ID], second: PostHistory[W, ID]) extends PostHistory[W, ID]{
     def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] = first.findPost(web, index).orElse(second.findPost(web, index))
     def allPosts(web: W): SeqView[PostData[_, W, ID],Seq[_]] = first.allPosts(web) ++ second.allPosts(web)
+    def redirects(web: W): Map[ID,Set[ID]] = first.redirects(web) ++ second.redirects(web)
   }
 
   def get[W, B, ID](buffer: W => B)(implicit hg : HistoryGetter[W, B, ID]) : PostHistory[W, ID] = hg.getHistory(buffer)
@@ -335,6 +340,7 @@ object HistoryGetter{
         new PostHistory[W, ID] {
           def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] = buffer(web).find(index)
           def allPosts(web: W): SeqView[PostData[_, W, ID],Seq[_]] = buffer(web).bufferData.view
+          def redirects(web: W): Map[ID,Set[ID]] = Map()
         }
     }
 
@@ -344,6 +350,7 @@ object HistoryGetter{
         new PostHistory[W, ID] {
           def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] = buffer(web).find(index)
           def allPosts(web: W): SeqView[PostData[_, W, ID],Seq[_]] = buffer(web).bufferData.view
+          def redirects(web: W): Map[ID,Set[ID]] = buffer(web).redirects
         }
     }
 }
@@ -715,6 +722,8 @@ object ErasablePostBuffer{
 
 trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
+
+  def redirects :  Map[ID,Set[ID]] = buffer.collect{case (None, id, preds) => id -> preds}.toMap
 
   def post(content: P, prev: Set[ID]): Future[ID] = {
     val idT = postGlobal(content)

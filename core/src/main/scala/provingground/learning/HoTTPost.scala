@@ -222,6 +222,8 @@ object HoTTPost {
       def allPosts(web: HoTTPost): SeqView[PostData[_, HoTTPost, ID], Seq[_]] =
         web.webBuffers.view.flatMap(_.data)
 
+      def redirects(web: HoTTPost): Map[ID,Set[ID]] = Map()
+
     }
 
   def allPostFullData(
