@@ -11,6 +11,27 @@ import shapeless._
 import scala.collection.SeqView
 import scala.reflect.runtime.universe._
 
+/**
+ * Demonstarting efficient building of post webs, without depending on separate lists for implicits and history (history to be done).
+ */ 
+class MiniPost{
+  import HoTTPost._
+
+  implicit val global : CounterGlobalID = new CounterGlobalID()
+
+  val polyBuffer = 
+    PostBuffer.build[Lemmas] :: PostBuffer.build[TermState] :: ErasablePostBuffer.build[FinalState] :: HNil
+}
+
+object MiniPost{
+  val polyImpl = BuildPostable.get((w: MiniPost) => w.polyBuffer)
+  implicit val (b3 :: b2 :: b1 :: HNil) = polyImpl
+  val seek = (implicitly[Postable[Lemmas, MiniPost, (Int, Int)]], implicitly[Postable[TermState, MiniPost, (Int, Int)]]) // test for implicits
+
+  implicit val history : PostHistory[MiniPost, ID] = HistoryGetter.get((w: MiniPost) => w.polyBuffer)
+}
+
+
 class HoTTPost { web =>
   val global = new CounterGlobalID()
 
@@ -79,6 +100,9 @@ object HoTTPost {
   }
 
   def testGet: PostHistory[HoTTPost, ID] = PostHistory.get((w: HoTTPost) => w.initStateBuff :: HNil)
+
+  // a test - pick these for implicits
+  lazy val b2 :: b1 :: HNil = BuildPostable.get((web: HoTTPost) => (web.chompBuffer) :: (web.lemmaBuffer) :: (HNil: HNil))
 
   case class InitState(ts: TermState, weight: Double)
 
@@ -170,7 +194,7 @@ object HoTTPost {
     ((lp: LocalProver) => Some(InitState(lp.initState, 1))) ||
     ((lp: LocalTangentProver) => Some(InitState(lp.initState, 1))) 
      
-  def mutWebBuffers(web: HoTTPost): Vector[MutWebBuffer[_, ID]] = Vector()
+  def mutWebBuffers(web: HoTTPost): Vector[ErasableWebBuffer[_, ID]] = Vector()
 
   def findInWeb(
       web: HoTTPost,

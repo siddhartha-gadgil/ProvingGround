@@ -313,6 +313,8 @@ trait HistoryGetter[W, B, ID]{
 }
 
 object HistoryGetter{
+  def get[W, B, ID](buffer: W => B)(implicit hg: HistoryGetter[W, B, ID]) : PostHistory[W,ID] = hg.getHistory(buffer)
+
   implicit def nilGetter[W, ID] : HistoryGetter[W, HNil, ID] = 
     new HistoryGetter[W, HNil, ID] {
       def getHistory(buffer: W => HNil): PostHistory[W,ID] = PostHistory.Empty[W, ID]
@@ -330,6 +332,15 @@ object HistoryGetter{
   implicit def bufferGetter[P, W, ID](implicit pw: Postable[P, W, ID]) : HistoryGetter[W, PostBuffer[P, ID], ID] = 
     new HistoryGetter[W, PostBuffer[P, ID], ID] {
       def getHistory(buffer: W => PostBuffer[P,ID]): PostHistory[W,ID] = 
+        new PostHistory[W, ID] {
+          def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] = buffer(web).find(index)
+          def allPosts(web: W): SeqView[PostData[_, W, ID],Seq[_]] = buffer(web).bufferData.view
+        }
+    }
+
+  implicit def erasableBufferGetter[P, W, ID](implicit pw: Postable[P, W, ID]) : HistoryGetter[W, ErasablePostBuffer[P, ID], ID] = 
+    new HistoryGetter[W, ErasablePostBuffer[P, ID], ID] {
+      def getHistory(buffer: W => ErasablePostBuffer[P,ID]): PostHistory[W,ID] = 
         new PostHistory[W, ID] {
           def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] = buffer(web).find(index)
           def allPosts(web: W): SeqView[PostData[_, W, ID],Seq[_]] = buffer(web).bufferData.view
@@ -688,7 +699,21 @@ case class WebBuffer[P, ID](buffer: PostBuffer[P, ID])(
     def fullData: Vector[(PostData[_, HoTTPost, ID], ID, Set[ID])] =
       buffer.bufferFullData
   }
-trait MutablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
+
+object ErasablePostBuffer{
+  def bufferPost[P : TypeTag, W, ID](buffer: W => ErasablePostBuffer[P, ID]) : Postable[P, W, ID] = {
+    def postFunc(p: P, web: W, ids: Set[ID]): Future[ID] =
+      buffer(web).post(p, ids)
+    Postable(postFunc)
+  }
+
+  def build[P](implicit gp: CounterGlobalID) : ErasablePostBuffer[P, (Int, Int)] = new ErasablePostBuffer[P, (Int, Int)] {
+    def postGlobal(content: P): Future[(Int, Int)] = gp.postGlobal(content)
+  }
+
+}  
+
+trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
   val buffer: ArrayBuffer[(Option[P], ID, Set[ID])] = ArrayBuffer()
 
   def post(content: P, prev: Set[ID]): Future[ID] = {
@@ -713,7 +738,7 @@ trait MutablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 
 }
 
-case class MutWebBuffer[P, ID](buffer: MutablePostBuffer[P, ID])(
+case class ErasableWebBuffer[P, ID](buffer: ErasablePostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]
   ) {
     def getPost(id: ID): Option[(PostData[_, HoTTPost, ID], Set[ID])] =
@@ -731,8 +756,13 @@ object PostBuffer {
   *
   * @param globalPost the supplier of the ID
   * @return buffer storing posts
-  */  def apply[P, ID](globalPost: => (P => Future[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
+  */  
+  def apply[P, ID](globalPost: => (P => Future[ID])) : PostBuffer[P, ID] = new PostBuffer[P, ID] {
     def postGlobal(content: P): Future[ID] = globalPost(content)
+  }
+
+  def build[P](implicit gp: CounterGlobalID) : PostBuffer[P, (Int, Int)] = new PostBuffer[P, (Int, Int)] {
+    def postGlobal(content: P): Future[(Int, Int)] = gp.postGlobal(content)
   }
 
   /**
@@ -768,6 +798,36 @@ object PostBuffer {
       buffer(web).post(p, ids)
     Postable(postFunc)
   }
+}
+
+/**
+ * typeclass for building HLists of postables based on HLists of buffers, but formally just returns object of type `P` 
+ */ 
+trait BuildPostable[W, B, P]{
+  def postable(buffer: W => B) : P
+}
+
+object BuildPostable{
+  def get[W, B, P](buffer: W => B)(implicit bp: BuildPostable[W, B, P]) : P = bp.postable(buffer)
+
+  implicit def hnilTriv[W] : BuildPostable[W, HNil, HNil] = 
+    new BuildPostable[W, HNil, HNil] {
+      def postable(buffer: W => HNil): HNil = HNil
+    }
+  
+  implicit def bufferCons[W, P: TypeTag, ID, Bt <: HList, Pt <: HList](
+    implicit tailBuilder: BuildPostable[W, Bt, Pt]) : BuildPostable[W, PostBuffer[P, ID] :: Bt, Postable[P, W, ID] :: Pt] = 
+      new BuildPostable[W, PostBuffer[P, ID] :: Bt, Postable[P, W, ID] :: Pt]{
+        def postable(buffer: W => PostBuffer[P,ID] :: Bt): Postable[P,W,ID] :: Pt = 
+          PostBuffer.bufferPost((web: W) => buffer(web).head) :: tailBuilder.postable((web: W) => buffer(web).tail)
+      }
+
+  implicit def erasablebufferCons[W, P: TypeTag, ID, Bt <: HList, Pt <: HList](
+    implicit tailBuilder: BuildPostable[W, Bt, Pt]) : BuildPostable[W, ErasablePostBuffer[P, ID] :: Bt, Postable[P, W, ID] :: Pt] = 
+      new BuildPostable[W, ErasablePostBuffer[P, ID] :: Bt, Postable[P, W, ID] :: Pt]{
+        def postable(buffer: W => ErasablePostBuffer[P,ID] :: Bt): Postable[P,W,ID] :: Pt = 
+          ErasablePostBuffer.bufferPost((web: W) => buffer(web).head) :: tailBuilder.postable((web: W) => buffer(web).tail)
+      }
 }
 
 object Postable {
