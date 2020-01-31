@@ -9,6 +9,7 @@ import scala.collection.SeqView
 import scala.reflect.runtime.universe._
 import provingground.learning.QueryFromPosts.CaseCons
 import provingground.learning.QueryFromPosts.ModCons
+import provingground.FiniteDistribution
 
 /* Code for mixed autonomous and interactive running.
  * We can interact by posting various objects.
@@ -353,13 +354,13 @@ object QueryOptions {
 }
 
 sealed trait QueryFromPosts[Q, PList <: HList]{
-  def addCons[P](answer: P => Option[Q]) = CaseCons(answer, this)
+  def addCons[P](answer: P => Option[Q]): QueryFromPosts[Q, P :: PList] = CaseCons(answer, this)
 
-  def addMod[P](modifier: P => Q => Q) = ModCons(modifier, this)
+  def addMod[P](modifier: P => Q => Q) : QueryFromPosts[Q, P :: PList] = ModCons(modifier, this)
 }
 
 object QueryFromPosts {
-  case class Empty[Q]() extends QueryFromPosts[Q, HList]
+  case class Empty[Q]() extends QueryFromPosts[Q, HNil]
 
   case class CaseCons[Q, P, Pt <: HList](
       answer: P => Option[Q],
@@ -429,3 +430,25 @@ class QueryImplicit[Q, T, PList <: HList](
       }
     }
 }
+
+object TestCustomQuery{
+  import provingground._, HoTT._
+  case class TestWrap(fd: TermState)
+
+  import HoTTPost._
+
+  val qp = QueryFromPosts.Empty[TermState].addCons((lp: LocalProver) => Some(lp.initState))
+
+  val testWrap = (t: TermState) => TestWrap(t)
+
+  object TestWrapImpl extends QueryImplicit(qp, testWrap)
+
+  val resolved : LocalQueryable[TestWrap, HoTTPost, ID] = TestWrapImpl.query
+
+  import TestWrapImpl._
+
+  val testImp = implicitly[LocalQueryable[TestWrap, HoTTPost, ID]]
+}
+
+
+
