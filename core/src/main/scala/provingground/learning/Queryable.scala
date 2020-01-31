@@ -310,17 +310,17 @@ case class GatherPost[P](contents: Set[P])
 case class QueryOptions[Q, W, ID](
     answers: PostData[_, W, ID] => Option[Q],
     modifiers: PostData[_, W, ID] => Q => Q
-){
-  def addAnswer(fn: PostData[_, W, ID] => Option[Q]) = 
+) {
+  def addAnswer(fn: PostData[_, W, ID] => Option[Q]) =
     QueryOptions(
-      (pd : PostData[_, W, ID]) => fn(pd).orElse(answers(pd)),
+      (pd: PostData[_, W, ID]) => fn(pd).orElse(answers(pd)),
       modifiers
     )
 
-  def addMod(fn: PostData[_, W, ID] => Q => Q) = 
+  def addMod(fn: PostData[_, W, ID] => Q => Q) =
     QueryOptions(
       answers,
-      (pd : PostData[_, W, ID]) =>  (q: Q) => fn(pd)(modifiers(pd)(q))
+      (pd: PostData[_, W, ID]) => (q: Q) => fn(pd)(modifiers(pd)(q))
     )
 }
 
@@ -352,7 +352,11 @@ object QueryOptions {
     builder.build(qp)
 }
 
-sealed trait QueryFromPosts[Q, PList <: HList]
+sealed trait QueryFromPosts[Q, PList <: HList]{
+  def addCons[P](answer: P => Option[Q]) = CaseCons(answer, this)
+
+  def addMod[P](modifier: P => Q => Q) = ModCons(modifier, this)
+}
 
 object QueryFromPosts {
   case class Empty[Q]() extends QueryFromPosts[Q, HList]
@@ -372,24 +376,56 @@ trait BuildQuery[Q, W, ID, PList <: HList] {
   def build(qp: QueryFromPosts[Q, PList]): QueryOptions[Q, W, ID]
 }
 
-object BuildQuery{
-  implicit def empty[Q, W, ID] : BuildQuery[Q, W, ID, HNil] = 
-    new BuildQuery[Q, W, ID, HNil]{
-      def build(qp: QueryFromPosts[Q,HNil]): QueryOptions[Q,W,ID] = QueryOptions(_ => None, _ => identity)
-    } 
+object BuildQuery {
+  implicit def empty[Q, W, ID]: BuildQuery[Q, W, ID, HNil] =
+    new BuildQuery[Q, W, ID, HNil] {
+      def build(qp: QueryFromPosts[Q, HNil]): QueryOptions[Q, W, ID] =
+        QueryOptions(_ => None, _ => identity)
+    }
 
-  implicit def cons[Q, W, ID, P, PList<: HList](implicit pw: Postable[P, W, ID], tailQ: BuildQuery[Q, W, ID, PList], tag: TypeTag[P]) : BuildQuery[Q, W, ID, P :: PList] = 
-    new BuildQuery[Q, W, ID, P :: PList]{
-      def build(qp: QueryFromPosts[Q,P :: PList]): QueryOptions[Q,W,ID] = 
+  implicit def cons[Q, W, ID, P, PList <: HList](
+      implicit pw: Postable[P, W, ID],
+      tailQ: BuildQuery[Q, W, ID, PList],
+      tag: TypeTag[P]
+  ): BuildQuery[Q, W, ID, P :: PList] =
+    new BuildQuery[Q, W, ID, P :: PList] {
+      def build(qp: QueryFromPosts[Q, P :: PList]): QueryOptions[Q, W, ID] =
         qp match {
-          case CaseCons(answer, tail) => 
-            def headFunc(data: PostData[_, W, ID]) : Option[Q] = 
-              if (data.pw.tag == tag) answer(data.content.asInstanceOf[P]) else None
-              tailQ.build(tail).addAnswer(headFunc(_))
-          case ModCons(modifier, tail) => 
-            def headFunc(data: PostData[_, W, ID]) : Q => Q = 
-              if (data.pw.tag == tag) modifier(data.content.asInstanceOf[P]) else identity
+          case CaseCons(answer, tail) =>
+            def headFunc(data: PostData[_, W, ID]): Option[Q] =
+              if (data.pw.tag == tag) answer(data.content.asInstanceOf[P])
+              else None
+            tailQ.build(tail).addAnswer(headFunc(_))
+          case ModCons(modifier, tail) =>
+            def headFunc(data: PostData[_, W, ID]): Q => Q =
+              if (data.pw.tag == tag) modifier(data.content.asInstanceOf[P])
+              else identity
             tailQ.build(tail).addMod(headFunc(_))
         }
+    }
+}
+
+/**
+  * Have a wrapper type T for the query and make the companion object extend this class, giving query-from-posts as 
+  * input (whose type should be deducable)
+  *
+  * @param qp the query from posts
+  * @param incl inclusion into the wrapper type.
+  */
+class QueryImplicit[Q, T, PList <: HList](
+    qp: QueryFromPosts[Q, PList],
+    incl: Q => T
+) {
+  implicit def query[W, ID](
+      implicit ph: PostHistory[W, ID],
+      bp: BuildQuery[Q, W, ID, PList]
+  ): LocalQueryable[T, W, ID] = 
+    new LocalQueryable[T, W, ID] {
+      def getAt(web: W, id: ID, predicate: T => Boolean): Future[Vector[T]] = {
+        val queryOptions: QueryOptions[Q,W,ID] = QueryOptions.get(qp)
+        Future{
+          QueryOptions.latest(web, id, queryOptions).toVector.map(incl)
+        }
+      }
     }
 }
