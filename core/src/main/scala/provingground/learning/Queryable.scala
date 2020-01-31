@@ -353,10 +353,12 @@ object QueryOptions {
     builder.build(qp)
 }
 
-sealed trait QueryFromPosts[Q, PList <: HList]{
-  def addCons[P](answer: P => Option[Q]): QueryFromPosts[Q, P :: PList] = CaseCons(answer, this)
+sealed trait QueryFromPosts[Q, PList <: HList] {
+  def addCons[P](answer: P => Option[Q]): QueryFromPosts[Q, P :: PList] =
+    CaseCons(answer, this)
 
-  def addMod[P](modifier: P => Q => Q) : QueryFromPosts[Q, P :: PList] = ModCons(modifier, this)
+  def addMod[P](modifier: P => Q => Q): QueryFromPosts[Q, P :: PList] =
+    ModCons(modifier, this)
 }
 
 object QueryFromPosts {
@@ -407,48 +409,65 @@ object BuildQuery {
 }
 
 /**
-  * Have a wrapper type T for the query and make the companion object extend this class, giving query-from-posts as 
+  * Have a wrapper type T for the query and make the companion object extend this class, giving query-from-posts as
   * input (whose type should be deducable)
   *
   * @param qp the query from posts
   * @param incl inclusion into the wrapper type.
   */
-class QueryImplicit[Q, T, PList <: HList](
+class QueryImplicitWrap[Q, T, PList <: HList](
     qp: QueryFromPosts[Q, PList],
     incl: Q => T
 ) {
   implicit def query[W, ID](
       implicit ph: PostHistory[W, ID],
       bp: BuildQuery[Q, W, ID, PList]
-  ): LocalQueryable[T, W, ID] = 
+  ): LocalQueryable[T, W, ID] =
     new LocalQueryable[T, W, ID] {
       def getAt(web: W, id: ID, predicate: T => Boolean): Future[Vector[T]] = {
-        val queryOptions: QueryOptions[Q,W,ID] = QueryOptions.get(qp)
-        Future{
+        val queryOptions: QueryOptions[Q, W, ID] = QueryOptions.get(qp)
+        Future {
           QueryOptions.latest(web, id, queryOptions).toVector.map(incl)
         }
       }
     }
 }
 
-object TestCustomQuery{
+class QueryImplicit[Q, PList <: HList](
+    qp: QueryFromPosts[Q, PList]
+) extends QueryImplicitWrap[Q, Q, PList](qp, identity(_))
+
+object TestCustomQuery {
   import provingground._, HoTT._
   case class TestWrap(fd: TermState)
 
   import HoTTPost._
 
-  val qp = QueryFromPosts.Empty[TermState].addCons((lp: LocalProver) => Some(lp.initState))
+  val qp = QueryFromPosts
+    .Empty[TermState]
+    .addCons((lp: LocalProver) => Some(lp.initState))
 
   val testWrap = (t: TermState) => TestWrap(t)
 
-  object TestWrapImpl extends QueryImplicit(qp, testWrap)
+  object TestWrapImpl extends QueryImplicitWrap(qp, testWrap)
 
-  val resolved : LocalQueryable[TestWrap, HoTTPost, ID] = TestWrapImpl.query
+  val resolved: LocalQueryable[TestWrap, HoTTPost, ID] = TestWrapImpl.query
 
   import TestWrapImpl._
 
   val testImp = implicitly[LocalQueryable[TestWrap, HoTTPost, ID]]
+
+  val qp1 = QueryFromPosts
+    .Empty[FiniteDistribution[Term]]
+    .addCons((lp: LocalProver) => Some(lp.initState.terms))
+
+  object FDImpl extends QueryImplicit(qp1)
+
+  implicit val tres: LocalQueryable[FiniteDistribution[Term], HoTTPost, ID] =
+    FDImpl.query // not clear why this needs to be implicit, while an implicit was picked up earlier
+
+  import FDImpl._
+
+  val fdTest =
+    implicitly[LocalQueryable[FiniteDistribution[Term], HoTTPost, ID]]
 }
-
-
-
