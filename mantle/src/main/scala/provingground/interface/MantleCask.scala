@@ -249,6 +249,15 @@ object MantleCask extends cask.Main {
   override def host = Try(sys.env("IP")).getOrElse("localhost")
 }
 
+object ReplCask{
+  import MantleCask._
+  import io.undertow.Undertow
+  lazy val server = Undertow.builder
+      .addHttpListener(port, host)
+      .setHandler(defaultHandler)
+      .build
+}
+
 import monix.eval._
 
 
