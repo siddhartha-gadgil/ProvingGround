@@ -461,12 +461,12 @@ object TestCustomQuery {
     .Empty[FiniteDistribution[Term]]
     .addCons((lp: LocalProver) => Some(lp.initState.terms))
 
-  object FDImpl extends QueryImplicit(qp1)
+  // object FDImpl extends QueryImplicit(qp1)
 
   implicit val tres: LocalQueryable[FiniteDistribution[Term], HoTTPost, ID] =
-    FDImpl.query // not clear why this needs to be implicit, while an implicit was picked up earlier
+    new QueryImplicit(qp1).query // not clear why this needs to be implicit, while an implicit was picked up earlier
 
-  import FDImpl._
+  // import FDImpl._
 
   val fdTest =
     implicitly[LocalQueryable[FiniteDistribution[Term], HoTTPost, ID]]
