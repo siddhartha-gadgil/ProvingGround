@@ -129,6 +129,11 @@ object TeXTranslate {
           if (s == "_") "\\_"
           else if (underscoreEscape) s.replace("_", "\\_")
           else s
+      ) || symString >>> (
+        (s) =>
+          if (s == "_") "\\_"
+          else if (underscoreEscape) s.replace("_", "\\_")
+          else s
       ) ||
       prodTyp >>> { case (first, second) => s"""($first \\times $second)""" } ||
       absPair >>> {
@@ -149,7 +154,7 @@ object TeXTranslate {
       } ||
       recFunc >>> {
         case (dom, (codom, defnData)) =>
-          defnData.foldLeft(s"rec($dom)($codom)") {
+          defnData.foldLeft(s"rec_{$dom;$codom}") {
             case (head, d) => s"$head($d)"
           }
       } ||
@@ -163,10 +168,13 @@ object TeXTranslate {
       } ||
       inducFunc >>> {
         case (dom, (depcodom, defnData)) =>
-          val h = s"induc($dom)($depcodom)"
+          val h = s"induc_{$dom ;$depcodom}"
           defnData.foldLeft(h) {
             case (head, d) => s"$head($d)"
           }
+      } ||
+      stringRep >>> { (s) =>
+        s
       }
 
 }
