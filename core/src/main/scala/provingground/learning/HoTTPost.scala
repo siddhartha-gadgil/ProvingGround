@@ -12,33 +12,7 @@ import scala.collection.SeqView
 import scala.reflect.runtime.universe._
 import HoTTMessages._
 
-/**
-  * Demonstarting efficient building of post webs, without depending on separate lists for implicits and history (history to be done).
-  */
-class HoTTPostWeb {
-  import HoTTPostWeb._
-
-  implicit val global: GlobalID[ID] = new CounterGlobalID()
-
-  val polyBuffer =
-    PostBuffer.build[Lemmas, ID] :: PostBuffer
-      .build[TermState, ID] :: ErasablePostBuffer.build[FinalState, ID] :: HNil
-}
-
-object HoTTPostWeb {
-  type ID = (Int, Int)
-
-  val polyImpl                          = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer)
-  implicit val (b3 :: b2 :: b1 :: HNil) = polyImpl
-  val seek = (
-    implicitly[Postable[HoTTMessages.Lemmas, HoTTPostWeb, (Int, Int)]],
-    implicitly[Postable[TermState, HoTTPostWeb, (Int, Int)]]
-  ) // test for implicits
-
-  implicit val history: PostHistory[HoTTPostWeb, ID] =
-    HistoryGetter.get((w: HoTTPostWeb) => w.polyBuffer)
-}
-
+@deprecated("migrating to HoTTPostWeb", "soon")
 class HoTTPost { web =>
   import HoTTPost._
 
@@ -469,25 +443,3 @@ object HoTTPost {
 
 }
 
-import HoTTPost._
-class HoTTSession
-    extends SimpleSession(
-      new HoTTPost(),
-      Vector(lpToExpEv, expEvToEqns, eqnUpdate),
-      Vector(fansiLog(_))
-    ) {
-
-      
-  // just an illustration, should just use rhs
-  def postLocalProverFuture(
-      lp: LocalProver,
-      pred: Set[ID] = Set()
-  ): Future[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
-    postFuture(lp, pred)
-
-  def postLP(
-      lp: LocalProver,
-      pred: Set[ID] = Set()
-  ): Future[PostData[LocalProver, HoTTPost, HoTTPost.ID]] =
-    postLocalProverFuture(lp, pred)
-}
