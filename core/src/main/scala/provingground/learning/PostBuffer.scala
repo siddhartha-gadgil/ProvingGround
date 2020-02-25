@@ -40,7 +40,7 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 
 }
 
-
+@deprecated("using HoTTPostWeb", "soon")
 case class WebBuffer[P, ID](buffer: PostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]
   ) {
@@ -93,6 +93,7 @@ trait ErasablePostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
 
 }
 
+@deprecated("using HoTTPostWeb", "soon")
 case class ErasableWebBuffer[P, ID](buffer: ErasablePostBuffer[P, ID])(
       implicit pw: Postable[P, HoTTPost, ID]
   ) {

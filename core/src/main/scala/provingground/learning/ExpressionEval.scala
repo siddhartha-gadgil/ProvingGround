@@ -13,10 +13,21 @@ TermGeneratorNodes.{_}
 import annotation.tailrec
 import spire.util.Opt
 
+/**
+  * Working with expressions built from initial and final values of random variables, including in islands,
+  * given equations satisfied by these
+  */
 object ExpressionEval {
   val sd: StateDistribution[TermState, FD] =
     implicitly[StateDistribution[TermState, FD]]
 
+  /**
+    * extract the distribution
+    *
+    * @param rv random variable
+    * @param p map of expression values
+    * @return finite distribution
+    */
   def dist[Y](rv: RandomVar[Y], p: Map[Expression, Double]): FD[Y] = {
     val pmf = p.collect {
       case (FinalVal(Elem(x, randomVar)), prob) if rv == randomVar =>
@@ -25,6 +36,12 @@ object ExpressionEval {
     FD(pmf)
   }
 
+  /**
+    * initial values in the map of expression values
+    *
+    * @param p the map
+    * @return distribution of initial values.
+    */
   def generators(p: Map[Expression, Double]): FD[Term] =
     FD(
       p.collect { case (InitialVal(Elem(x: Term, Terms)), p) => Weighted(x, p) }
@@ -49,7 +66,13 @@ object ExpressionEval {
     case _ => false
   }
 
-  // It is assumed that boats have all the isle information. If the argument is an `Elem`, perhaps nested in isles, we get boats and the random-variable
+  /**
+    * returns an element if the variable is one, and the context.
+    * It is assumed that boats have all the isle information. If the argument is an `Elem`, perhaps nested in isles, we get boats and the random-variable
+    *
+    * @param elem candidate element
+    * @return optional element and context
+    */
   def elemContext(
       elem: GeneratorVariables.Variable[_]
   ): Option[(RandomVar[_], Vector[_])] = elem match {
@@ -116,6 +139,8 @@ object ExpressionEval {
   /**
     * Stabilized recursive expression, taking geometric mean with the previous value if defined.
     * This is to avoid oscillations.
+    *
+    * @param exponent weight (power) of the new value while taking means
     */
   def stabRecExp(
       init: Map[Expression, Double],
@@ -157,6 +182,14 @@ object ExpressionEval {
     else stableSupportMap(newMap, equations, exponent * decay)
   }
 
+  /**
+    * iteratively evolve a map for a fixed number of steps
+    *
+    * @param init initial map
+    * @param equations equations determining the iteration
+    * @param steps number of steps to iterate
+    * @return result of iteration
+    */
   @tailrec
   def iterateMap(
       init: Map[Expression, Double],
@@ -203,11 +236,32 @@ object ExpressionEval {
       }
     }
 
+  /**
+    * atoms from equations
+    *
+    * @param equations the equations
+    * @return set of expressions
+    */
   def eqAtoms(equations: Set[Equation]) =
     equations
       .map(_.lhs)
       .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
 
+  /**
+    * builds an [[ExpressionEval]] given states, equations and parameters, say as the result of a local prover
+    *
+    * @param initialState initial state
+    * @param finalState final state
+    * @param equationsS equations
+    * @param tgS term-generator parameters
+    * @param maxRatioS maximum ratio for stabilization
+    * @param scaleS scale for gradient flow
+    * @param smoothS smoothing for gradient flow
+    * @param exponentS exponent for iteration
+    * @param decayS decay during iteration
+    * @param maxTimeS max-time during iteration
+    * @return [[ExpressionEval]] built
+    */
   def fromStates(
       initialState: TermState,
       finalState: TermState,
@@ -234,6 +288,22 @@ object ExpressionEval {
       val maxTime: Option[Long]     = maxTimeS
     }
 
+  /**
+    * builds an [[ExpressionEval]] given initial states, equations and parameters,
+    * with the final state deduced using the equations
+    *
+    * @param initialState initial state
+    * @param finalState final state
+    * @param equationsS equations
+    * @param tgS term-generator parameters
+    * @param maxRatioS maximum ratio for stabilization
+    * @param scaleS scale for gradient flow
+    * @param smoothS smoothing for gradient flow
+    * @param exponentS exponent for iteration
+    * @param decayS decay during iteration
+    * @param maxTimeS max-time during iteration
+    * @return [[ExpressionEval]] built
+    */
   def fromInitEqs(
       initialState: TermState,
       equationsS: Set[Equation],
@@ -258,6 +328,9 @@ object ExpressionEval {
       val maxTime: Option[Long]     = maxTimeS
     }
 
+  /**
+    * [[ExpressionEval]] where the type distribution is generated from the equations
+    */
   trait GenerateTyps extends ExpressionEval { self =>
     lazy val finalTyps =
       FD {
@@ -320,6 +393,9 @@ object ExpressionEval {
 
   }
 
+  /**
+    * fixes the weights of proofs, to try to flow with types making worse matches
+    */
   trait FixedProofs extends GenerateTyps {
     val proofWeights: Map[Typ[Term], Double]
 
@@ -336,18 +412,30 @@ object ExpressionEval {
         Double
       ]] { q =>
         for {
-          epg <- WithP(q).entropyProjectionTask(hW, klW)
+          epg <- FixedExpressionProbs(q).entropyProjectionTask(hW, klW)
           s = stableGradShift(q, -epg)
         } yield (s, s)
       }(Task.now(p))
 
   }
 
+  /**
+    * extract variable values from equations
+    *
+    * @param eqs the equation
+    * @return set of variable values
+    */
   def values(eqs: Set[Equation]): Set[Expression] =
     eqs
       .flatMap(eq => Set(eq.lhs, eq.rhs))
       .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
 
+  /**
+    * extract terms from equations
+    *
+    * @param eqs the equation
+    * @return set of terms
+    */
   def terms(eqs: Set[EquationNode]): Set[Term] =
     eqs
       .flatMap(eq => Set(eq.lhs, eq.rhs))
@@ -355,14 +443,26 @@ object ExpressionEval {
       .map(_.variable)
       .collect { case Elem(t: Term, _) => t }
 
+  /**
+    * extract types from equations
+    *
+    * @param eqs the equation
+    * @return set of types
+    */
   def typs(eqs: Set[EquationNode]): Set[Typ[Term]] =
-  eqs
-    .flatMap(eq => Set(eq.lhs, eq.rhs))
-    .flatMap(exp => Expression.varVals(exp))
-    .map(_.variable)
-    .collect { case Elem(t: Typ[u], _) => t }
+    eqs
+      .flatMap(eq => Set(eq.lhs, eq.rhs))
+      .flatMap(exp => Expression.varVals(exp))
+      .map(_.variable)
+      .collect { case Elem(t: Typ[u], _) => t }
 
-
+  /**
+    * exporting an [[ExpressionEval]] with respect to variables
+    *
+    * @param ev the initial expression eval
+    * @param vars variables
+    * @return exported [[ExpressionEval]]
+    */
   def export(ev: ExpressionEval, vars: Vector[Term]): ExpressionEval =
     vars match {
       case Vector() => ev
@@ -383,6 +483,12 @@ trait ExpressionEval { self =>
   val decay: Double
   val maxTime: Option[Long]
 
+  /**
+    * new expression-eval with initial distribution averaged with the current one
+    *
+    * @param that the other initial distribution
+    * @return averaged expression eval
+    */
   def avgInit(that: ExpressionEval) =
     new ExpressionEval {
       val init                      = (0.5 *: self.init) + (0.5 *: that.init)
@@ -398,6 +504,9 @@ trait ExpressionEval { self =>
       val maxTime: Option[Long]     = self.maxTime
     }
 
+  /**
+    * modified copy
+    */
   def modify(
       initNew: Map[Expression, Double] = self.init,
       finalTypsNew: => FD[Typ[Term]] = self.finalTyps,
@@ -424,6 +533,11 @@ trait ExpressionEval { self =>
     val maxTime: Option[Long]         = maxTimeNew
   }
 
+  /**
+    * copy with types generated from equations
+    *
+    * @return
+    */
   def generateTyps: ExpressionEval = new ExpressionEval with GenerateTyps {
     val init                      = self.init
     val equations                 = self.equations
@@ -437,6 +551,9 @@ trait ExpressionEval { self =>
     val maxTime: Option[Long]     = self.maxTime
   }
 
+  /**
+    * undoing generation of types by freezing them
+    */
   def fixTypes: ExpressionEval = new ExpressionEval {
     val init                               = self.init
     val finalTyps: FD[HoTT.Typ[HoTT.Term]] = self.finalTyps
@@ -467,7 +584,13 @@ trait ExpressionEval { self =>
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
-  def isleVar(el: Elem[_]) =
+  /**
+    * identifying an isle variable by having an initial value, but one that is not part of the initial distribution
+    *
+    * @param el the element to decide
+    * @return whether the element is an isle-var
+    */
+  def isleVar(el: Elem[_]): Boolean =
     valueVars.contains(InitialVal(el)) && (el.randomVar == Terms) && !init.keySet
       .contains(InitialVal(el))
 
@@ -502,13 +625,20 @@ trait ExpressionEval { self =>
     }
     .toSet
 
-  lazy val finalTerms : FD[HoTT.Term] =
+  /**
+    * final distribution on terms
+    *
+    */
+  lazy val finalTerms: FD[HoTT.Term] =
     FD {
       finalDist.collect {
         case (FinalVal(Elem(t: Term, Terms)), w) => Weighted(t, w)
       }
     }.safeNormalized
 
+  /**
+    * final term state
+    */
   def finalTermState(
       vars: Vector[Term] = Vector(),
       inds: FD[induction.ExstInducDefn] = FD.empty[induction.ExstInducDefn],
@@ -517,6 +647,9 @@ trait ExpressionEval { self =>
   ): TermState =
     TermState(finalTerms, finalTyps, vars, inds, goals, context)
 
+  /**
+    * equations not depending on a variable, to be used with boats
+    */
   def indepEquations(variable: Term) =
     equations.filterNot(eq => TermRandomVars.equationDepends(variable)(eq))
 
@@ -538,7 +671,7 @@ trait ExpressionEval { self =>
     val boat  = variable
     val coeff = Coeff(Base.lambdaNode)
     val isleEqs: Set[Equation] =
-      equations.map(_.mapVars { 
+      equations.map(_.mapVars {
         InIsle.variableMap(boat, isle)
       })
     val bridgeEqs: Set[EquationNode] = finalTermSet.map { x =>
@@ -587,7 +720,7 @@ trait ExpressionEval { self =>
     val boat  = variable
     val coeff = Coeff(Base.piNode)
     val isleEqs: Set[Equation] =
-      equations.map(_.mapVars { 
+      equations.map(_.mapVars {
         InIsle.variableMap(boat, isle)
       })
     val bridgeEqs: Set[EquationNode] = finalTypSet.map { x =>
@@ -636,7 +769,7 @@ trait ExpressionEval { self =>
     val boat  = variable
     val coeff = Coeff(Base.piNode | (typAsTermSort, Terms))
     val isleEqs: Set[Equation] =
-      equations.map(_.mapVars { 
+      equations.map(_.mapVars {
         InIsle.variableMap(boat, isle)
       })
     val bridgeEqs: Set[EquationNode] = finalTypSet.map { x =>
@@ -786,7 +919,7 @@ trait ExpressionEval { self =>
   implicit lazy val jetField: Field[Jet[Double]] =
     implicitly[Field[Jet[Double]]]
 
-  case class WithP(p: Map[Expression, Double]) {
+  case class FixedExpressionProbs(p: Map[Expression, Double]) {
     lazy val spireVarProbs: Map[Expression, Jet[Double]] =
       vars.zipWithIndex.collect {
         case (v, n) if p.getOrElse(v, 0.0) > 0 && p(v) < 1 =>
@@ -875,6 +1008,12 @@ trait ExpressionEval { self =>
         jetTask(exp).map(_.infinitesimal.toVector)
       })
 
+    lazy val onEqnGradientsTask: Task[Vector[Vector[Double]]] =
+      for {
+        eqns <- eqnGradientsTask
+        ons  <- MonixGramSchmidt.onVec(eqns)
+      } yield ons
+
     /**
       * Composite entropy projected perpendicular to the equations.
       */
@@ -890,9 +1029,36 @@ trait ExpressionEval { self =>
       for {
         der <- jetTask(entropy(hW, klW))
         gradient = der.infinitesimal.toVector
-        eqg <- eqnGradientsTask
-        res <- MonixGramSchmidt.perpVec(eqg, gradient)
+        eqg <- onEqnGradientsTask
+        res <- MonixGramSchmidt.makePerpFromON(eqg, gradient)
       } yield res
+
+    def expressionProjectionTask(
+        exp: Expression
+    ): Task[Vector[Double]] =
+      for {
+        der <- jetTask(exp)
+        gradient = der.infinitesimal.toVector
+        eqg <- onEqnGradientsTask
+        res <- MonixGramSchmidt.makePerpFromON(eqg, gradient)
+      } yield res
+
+    def expressionGeneratorsTask(
+        exp: Expression
+    ): Task[Vector[(HoTT.Term, Double)]] = {
+      val vT = expressionProjectionTask(exp)
+      vT.map(
+        v =>
+          initTerms.map { t =>
+            t -> v(variableIndex(InitialVal(Elem(t, Terms))))
+          }
+      )
+    }
+
+    lazy val typGradGeneratorsTask: Map[Typ[Term],Task[Vector[(Term, Double)]]] = 
+      finalTypSet.map{
+        typ => typ -> expressionGeneratorsTask(FinalVal(Elem(typ, Typs))).memoize
+      }.toMap
 
     // Jets rewritten as maps of expression
     def jetCoordinates(
@@ -902,7 +1068,7 @@ trait ExpressionEval { self =>
         (x, j) <- vars.zipWithIndex
         v = jt.infinitesimal(j)
         if v != 0
-        scale = WithP(p).jet(x).infinitesimal(j)
+        scale = FixedExpressionProbs(p).jet(x).infinitesimal(j)
       } yield x -> v / scale).toMap
 
     def backMap(
@@ -939,7 +1105,7 @@ trait ExpressionEval { self =>
 
   }
 
-  lazy val Final = WithP(finalDist)
+  lazy val Final = FixedExpressionProbs(finalDist)
 
   /**
     * Terms of the generating distribution
@@ -1074,7 +1240,8 @@ trait ExpressionEval { self =>
       p: Map[Expression, Double] = finalDist
   ): Iterator[Map[Expression, Double]] =
     Iterator.iterate(p)(
-      q => stableGradShift(q, WithP(q).entropyProjection(hW, klW))
+      q =>
+        stableGradShift(q, FixedExpressionProbs(q).entropyProjection(hW, klW))
     )
 
   def iterant(
@@ -1087,7 +1254,7 @@ trait ExpressionEval { self =>
       Double
     ]] { q =>
       for {
-        epg <- WithP(q).entropyProjectionTask(hW, klW)
+        epg <- FixedExpressionProbs(q).entropyProjectionTask(hW, klW)
         s = stableGradShift(q, epg)
       } yield (s, s)
     }(Task.now(p))
@@ -1100,7 +1267,7 @@ trait ExpressionEval { self =>
   ): Iterant[Task, FD[Term]] =
     Iterant.fromLazyStateAction[Task, Map[Expression, Double], FD[Term]] { q =>
       for {
-        epg <- WithP(q).entropyProjectionTask(hW, klW)
+        epg <- FixedExpressionProbs(q).entropyProjectionTask(hW, klW)
         s = stableGradShift(q, epg)
       } yield (generators(s).purge(cutoff).safeNormalized, s)
     }(Task.now(p))
@@ -1120,7 +1287,8 @@ trait ExpressionEval { self =>
       p: Map[Expression, Double] = finalDist,
       maxRatio: Double = 1.01
   ): Map[Expression, Double] = {
-    val newMap = stableGradShift(p, WithP(p).entropyProjection(hW, klW))
+    val newMap =
+      stableGradShift(p, FixedExpressionProbs(p).entropyProjection(hW, klW))
     if ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio)) newMap
     else optimum(hW, klW, cutoff, newMap, maxRatio)
   }
@@ -1133,7 +1301,7 @@ trait ExpressionEval { self =>
       maxRatio: Double = 1.01
   ): Task[Map[Expression, Double]] =
     (for {
-      epg <- WithP(p).entropyProjectionTask(hW, klW)
+      epg <- FixedExpressionProbs(p).entropyProjectionTask(hW, klW)
       newMap = stableGradShift(p, epg).filter(t => t._2 > cutoff)
       stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
       // _ = pprint.log(stable)
@@ -1150,7 +1318,7 @@ trait ExpressionEval { self =>
   def rhs(exp: Expression): Expression = resolveOpt(exp).getOrElse(Literal(0))
 
   def unitJet(p: Map[Expression, Double], exp: Expression): Jet[Double] =
-    WithP(p).spireVarProbs(exp)
+    FixedExpressionProbs(p).spireVarProbs(exp)
 
   val mvs: VectorSpace[Map[Expression, Double], Double] =
     implicitly[VectorSpace[Map[Expression, Double], Double]]
