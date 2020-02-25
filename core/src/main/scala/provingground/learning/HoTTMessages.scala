@@ -9,6 +9,9 @@ import provingground.induction.ExstInducDefn
   *
   * Some messages are instructions for what to do next; some report results
   * and some provide data for use in the future.
+  * 
+  * 
+  * Some types like `LocalProver`, `ExpressionEval`, `TermGenParams` etc can be posted in their raw form.
   */
 object HoTTMessages {
 
@@ -142,6 +145,14 @@ object HoTTMessages {
 
   case class Skolemize(goal: Typ[Term]) extends ReasonBackward
 
+  /**
+    * backward reasoning for special types - products, co-products, Sigma-types and Pi-types;
+    * respond with seeking instantiations and adding variables for the last two cases.
+    *
+    * @param goal type to resolve
+    */
+  case class ResolveGoal(goal: Typ[Term]) extends ReasonBackward
+
   case class Consequence(
       premise: Typ[Term],
       conclusion: Typ[Term],
@@ -186,9 +197,10 @@ object HoTTMessages {
 
   case object GenerateTerms
 
-  case class SeekInstances[U <: Term with Subs[U], V <: Term with Subs[V]](
+  case class SeekInstances[U <: Term with Subs[U]](
       typ: Typ[U],
-      toShow: U => Typ[V]
+      goal: Typ[Term],
+      proof: U => Typ[Term]
   )
 
   case class Instance[U <: Term with Subs[U]](term: U, typ: Typ[U]) {
