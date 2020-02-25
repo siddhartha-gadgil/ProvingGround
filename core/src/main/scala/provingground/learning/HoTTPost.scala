@@ -3,19 +3,20 @@ package provingground.learning
 import provingground._, HoTT._
 import TypedPostResponse._
 import monix.eval._
-import HoTTPost._, LocalQueryable._
+import LocalQueryable._
 import monix.execution.Scheduler.Implicits.{global => monixglobal}
 import scala.concurrent._
 import TermData._
 import shapeless._
 import scala.collection.SeqView
 import scala.reflect.runtime.universe._
+import HoTTMessages._
 
 /**
   * Demonstarting efficient building of post webs, without depending on separate lists for implicits and history (history to be done).
   */
-class MiniPost {
-  import HoTTMessages._
+class HoTTPostWeb {
+  import HoTTPostWeb._
 
   implicit val global: GlobalID[ID] = new CounterGlobalID()
 
@@ -24,19 +25,23 @@ class MiniPost {
       .build[TermState, ID] :: ErasablePostBuffer.build[FinalState, ID] :: HNil
 }
 
-object MiniPost {
-  val polyImpl                          = BuildPostable.get((w: MiniPost) => w.polyBuffer)
+object HoTTPostWeb {
+  type ID = (Int, Int)
+
+  val polyImpl                          = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer)
   implicit val (b3 :: b2 :: b1 :: HNil) = polyImpl
   val seek = (
-    implicitly[Postable[HoTTMessages.Lemmas, MiniPost, (Int, Int)]],
-    implicitly[Postable[TermState, MiniPost, (Int, Int)]]
+    implicitly[Postable[HoTTMessages.Lemmas, HoTTPostWeb, (Int, Int)]],
+    implicitly[Postable[TermState, HoTTPostWeb, (Int, Int)]]
   ) // test for implicits
 
-  implicit val history: PostHistory[MiniPost, ID] =
-    HistoryGetter.get((w: MiniPost) => w.polyBuffer)
+  implicit val history: PostHistory[HoTTPostWeb, ID] =
+    HistoryGetter.get((w: HoTTPostWeb) => w.polyBuffer)
 }
 
 class HoTTPost { web =>
+  import HoTTPost._
+
   val global = new CounterGlobalID()
 
   import global.postGlobal
@@ -121,23 +126,11 @@ object HoTTPost {
     (web: HoTTPost) => (web.chompBuffer) :: (web.lemmaBuffer) :: (HNil: HNil)
   )
 
-  case class InitState(ts: TermState, weight: Double)
-
-  case class FinalState(ts: TermState, weight: Double) // should also record source, whether by evolution or from equations etc
-
   case class TunedLocalProver(lp: LocalProver)
 
-  case class GeneratedEquationNodes(eqn: Set[EquationNode])
 
   case class IsleNormalizedEquationNodes(eqn: Set[EquationNode])
 
-  case class Lemmas(lemmas: Vector[(Typ[Term], Double)])
-
-  case class ChompResult(
-      successes: Vector[StrategicProvers.Successes],
-      failures: Vector[Typ[Term]],
-      eqns: Set[EquationNode]
-  )
 
   import PostBuffer.bufferPost
 
@@ -468,7 +461,7 @@ object HoTTPost {
               Equation.group(eqs union alleqs),
               tg
             )
-            FinalState(expEv.finalTermState(), 1)
+            FinalState(expEv.finalTermState())
           }
     }
     MicroBot(response)
@@ -476,12 +469,15 @@ object HoTTPost {
 
 }
 
+import HoTTPost._
 class HoTTSession
     extends SimpleSession(
       new HoTTPost(),
       Vector(lpToExpEv, expEvToEqns, eqnUpdate),
       Vector(fansiLog(_))
     ) {
+
+      
   // just an illustration, should just use rhs
   def postLocalProverFuture(
       lp: LocalProver,

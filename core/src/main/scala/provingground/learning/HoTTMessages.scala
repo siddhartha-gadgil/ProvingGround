@@ -36,7 +36,8 @@ object HoTTMessages {
     * @param ts the term-state
     */
   case class InitState(
-      ts: TermState
+      ts: TermState,
+      weight: Double
   )
 
   /**
@@ -93,11 +94,10 @@ object HoTTMessages {
     * lemmas that have been identified based on non-triviality (and possibly goals) from a final state.
     *
     * @param lemmas the lemmas with weights
-    * @param proofMap proofs of lemmas
+    * 
     */
   case class Lemmas(
-      lemmas: Vector[(Typ[Term], Double)],
-      proofMap: Map[Typ[Term], Term]
+      lemmas: Vector[(Typ[Term], Double)]
   )
 
   /**
