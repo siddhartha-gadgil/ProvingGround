@@ -53,13 +53,13 @@ object HoTTPostWeb {
   implicit val history: PostHistory[HoTTPostWeb, ID] =
     HistoryGetter.get((w: HoTTPostWeb) => w.polyBuffer)
 
-  implicit def equationNodeQuery: Queryable[Set[EquationNode], HoTTPost] =
+  implicit def equationNodeQuery: Queryable[Set[EquationNode], HoTTPostWeb] =
     Queryable.simple(_.equationNodes)
 
-  implicit def equationQuery: Queryable[Set[Equation], HoTTPost] =
+  implicit def equationQuery: Queryable[Set[Equation], HoTTPostWeb] =
     Queryable.simple(_.equations)
 
-  implicit def termSetQuery: Queryable[Set[Term], HoTTPost] =
+  implicit def termSetQuery: Queryable[Set[Term], HoTTPostWeb] =
     Queryable.simple(_.terms)
 
   lazy val lpToExpEv: PostResponse[HoTTPostWeb, ID] = {
