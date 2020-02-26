@@ -136,4 +136,6 @@ case class PostData[P, W, ID](content: P, id: ID)(
     implicit val pw: Postable[P, W, ID]
 ){
   def getOpt[Q](implicit qw: Postable[Q, W, ID]) : Option[Q] = if (pw.tag == qw.tag) Some(content.asInstanceOf[Q]) else None 
+
+  def getTagOpt[Q](implicit tag: TypeTag[Q]): Option[Q] = if (pw.tag == tag) Some(content.asInstanceOf[Q]) else None 
 }

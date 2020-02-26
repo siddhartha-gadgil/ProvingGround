@@ -37,22 +37,35 @@ object Queryable {
     def get(web: W, predicate: U => Boolean): Future[U] =
       Future(func(web))
 
-    
   }
 
-  implicit def gatherQuery[P, W, ID](
-        implicit ph: PostHistory[W, ID],
-        pw: Postable[P, W, ID]
-    ): Queryable[GatherPost[P], W] =
-      new Queryable[GatherPost[P], W] {
-        def get(
-            web: W,
-            predicate: GatherPost[P] => Boolean
-        ): Future[GatherPost[P]] =
-          Future(
-            GatherPost(ph.allPosts(web).flatMap(_.getOpt[P]).toSet)
-          )
+  implicit def gatherMapQuery[P, W, ID](
+      implicit ph: PostHistory[W, ID],
+      mpw: PostMaps[P]
+  ): Queryable[GatherMapPost[P], W] =
+    new Queryable[GatherMapPost[P], W] {
+      def get(
+          web: W,
+          predicate: GatherMapPost[P] => Boolean
+      ): Future[GatherMapPost[P]] = Future{
+        val posts = ph.allPosts(web).toSet
+        mpw.gather(posts)
       }
+    }
+
+  implicit def gatherQuery[P, W, ID](
+      implicit ph: PostHistory[W, ID],
+      pw: Postable[P, W, ID]
+  ): Queryable[GatherPost[P], W] =
+    new Queryable[GatherPost[P], W] {
+      def get(
+          web: W,
+          predicate: GatherPost[P] => Boolean
+      ): Future[GatherPost[P]] =
+        Future(
+          GatherPost(ph.allPosts(web).flatMap(_.getOpt[P]).toSet)
+        )
+    }
 
   /**
     * querying for objects of a type, as a view
@@ -309,6 +322,30 @@ object LocalQueryable extends FallBackLookups {
 case class SomePost[P](content: P)
 
 case class GatherPost[P](contents: Set[P])
+
+case class GatherMapPost[P](contents: Set[P])
+
+sealed trait PostMaps[P] {
+  def getOpt[W, ID](pd: PostData[_, W, ID]): Option[P]
+
+  def gather[W, ID](pds: Set[PostData[_, W, ID]]): GatherMapPost[P] =
+    GatherMapPost(pds.flatMap(getOpt(_)))
+
+  def ||[Q: TypeTag](f: Q => P) = PostMaps.Cons(f, this)
+}
+object PostMaps {
+  def empty[P] = Empty[P]
+  case class Empty[P]() extends PostMaps[P] {
+    def getOpt[W, ID](pd: PostData[_, W, ID]): Option[P] = None
+  }
+
+  case class Cons[Q, P](transform: Q => P, tail: PostMaps[P])(
+      implicit val qt: TypeTag[Q]
+  ) extends PostMaps[P] {
+    def getOpt[W, ID](pd: PostData[_, W, ID]): Option[P] =
+      pd.getTagOpt[Q].map(transform).orElse(tail.getOpt(pd))
+  }
+}
 
 case class QueryOptions[Q, W, ID](
     answers: PostData[_, W, ID] => Option[Q],

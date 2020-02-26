@@ -150,6 +150,11 @@ object HoTTMessages {
     val statement: Typ[Term]
   }
 
+  object Decided {
+    implicit def decideMap: PostMaps[Decided] =
+      PostMaps.empty[Decided] || ((p: Proved) => p) || ((c: Contradicted) => c)
+  }
+
   case class Proved(statement: Typ[Term], proofOpt: Option[Term])
       extends Decided {
     proofOpt.foreach(proof => assert(proof.typ == statement))
@@ -157,6 +162,13 @@ object HoTTMessages {
 
   trait PropogateProof {
     def propagate(proofs: Set[Term]): Option[Decided]
+  }
+
+  object PropogateProof {
+    implicit def propsMap: PostMaps[PropogateProof] =
+      PostMaps.empty[PropogateProof] || ((x: Consequence) => x) || (
+          (x: Contradicts) => x
+      ) || ((x: FromAll) => x) || ((x: FromAny) => x)
   }
 
   case class Consequence(
@@ -264,18 +276,23 @@ object HoTTMessages {
   }
 
   @annotation.tailrec
-  def propagateProofs(props: Set[PropogateProof], decisions: Set[Decided]): Set[Decided] = {
-    val proofs = decisions.collect{
-      case Proved(statement, proofOpt) => proofOpt.getOrElse("proved" :: statement)
+  def propagateProofs(
+      props: Set[PropogateProof],
+      decisions: Set[Decided]
+  ): Set[Decided] = {
+    val proofs = decisions.collect {
+      case Proved(statement, proofOpt) =>
+        proofOpt.getOrElse("proved" :: statement)
     }
 
-    val offspring : Set[Decided] = 
-      for{
-        p <- props
+    val offspring: Set[Decided] =
+      for {
+        p  <- props
         pf <- p.propagate(proofs)
       } yield pf
 
-    if (offspring.nonEmpty) propagateProofs(props, decisions union offspring) else decisions
+    if (offspring.nonEmpty) propagateProofs(props, decisions union offspring)
+    else decisions
   }
 
   case class AddVariable(typ: Typ[Term])
