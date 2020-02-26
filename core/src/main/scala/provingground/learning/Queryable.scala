@@ -37,7 +37,10 @@ object Queryable {
     def get(web: W, predicate: U => Boolean): Future[U] =
       Future(func(web))
 
-    implicit def gatherQuery[P, W, ID](
+    
+  }
+
+  implicit def gatherQuery[P, W, ID](
         implicit ph: PostHistory[W, ID],
         pw: Postable[P, W, ID]
     ): Queryable[GatherPost[P], W] =
@@ -50,7 +53,6 @@ object Queryable {
             GatherPost(ph.allPosts(web).flatMap(_.getOpt[P]).toSet)
           )
       }
-  }
 
   /**
     * querying for objects of a type, as a view
@@ -451,11 +453,11 @@ object TestCustomQuery {
 
   object TestWrapImpl extends QueryImplicitWrap(qp, testWrap)
 
-  val resolved: LocalQueryable[TestWrap, HoTTPost, ID] = TestWrapImpl.query
+  val resolved: LocalQueryable[TestWrap, HoTTPostWeb, ID] = TestWrapImpl.query
 
   import TestWrapImpl._
 
-  val testImp = implicitly[LocalQueryable[TestWrap, HoTTPost, ID]]
+  val testImp = implicitly[LocalQueryable[TestWrap, HoTTPostWeb, ID]]
 
   val qp1 = QueryFromPosts
     .Empty[FiniteDistribution[Term]]
@@ -463,11 +465,11 @@ object TestCustomQuery {
 
   // object FDImpl extends QueryImplicit(qp1)
 
-  implicit val tres: LocalQueryable[FiniteDistribution[Term], HoTTPost, ID] =
+  implicit val tres: LocalQueryable[FiniteDistribution[Term], HoTTPostWeb, ID] =
     new QueryImplicit(qp1).query // not clear why this needs to be implicit, while an implicit was picked up earlier
 
   // import FDImpl._
 
   val fdTest =
-    implicitly[LocalQueryable[FiniteDistribution[Term], HoTTPost, ID]]
+    implicitly[LocalQueryable[FiniteDistribution[Term], HoTTPostWeb, ID]]
 }
