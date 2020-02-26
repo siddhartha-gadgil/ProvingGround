@@ -1,6 +1,8 @@
 package provingground.learning
 import provingground._, HoTT._
 import provingground.induction.ExstInducDefn
+import provingground.learning.HoTTMessages.Proved
+import provingground.learning.HoTTMessages.Contradicted
 
 /**
   * Messages to be posted for autonomous/interactive running.
@@ -146,13 +148,18 @@ object HoTTMessages {
     */
   case class ResolveGoal(goal: Typ[Term]) extends ReasonBackward
 
-  trait Decided {
+  sealed trait Decided {
     val statement: Typ[Term]
   }
 
   object Decided {
     implicit def decideMap: PostMaps[Decided] =
       PostMaps.empty[Decided] || ((p: Proved) => p) || ((c: Contradicted) => c)
+
+    def asEither(d: Decided) : Either[Contradicted,Proved] = d match {
+      case p @ Proved(statement, proofOpt) => Right(p)
+      case c @ Contradicted(statement, contraOpt) => Left(c)
+    }
   }
 
   case class Proved(statement: Typ[Term], proofOpt: Option[Term])
@@ -294,6 +301,11 @@ object HoTTMessages {
     if (offspring.nonEmpty) propagateProofs(props, decisions union offspring)
     else decisions
   }
+
+  def derivedProofs(
+      props: Set[PropogateProof],
+      decisions: Set[Decided]
+  ): Set[Decided] = propagateProofs(props, decisions) -- decisions
 
   case class AddVariable(typ: Typ[Term])
 
