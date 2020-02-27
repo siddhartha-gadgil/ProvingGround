@@ -156,8 +156,8 @@ object HoTTMessages {
     implicit def decideMap: PostMaps[Decided] =
       PostMaps.empty[Decided] || ((p: Proved) => p) || ((c: Contradicted) => c)
 
-    def asEither(d: Decided) : Either[Contradicted,Proved] = d match {
-      case p @ Proved(statement, proofOpt) => Right(p)
+    def asEither(d: Decided): Either[Contradicted, Proved] = d match {
+      case p @ Proved(statement, proofOpt)        => Right(p)
       case c @ Contradicted(statement, contraOpt) => Left(c)
     }
   }
@@ -229,7 +229,7 @@ object HoTTMessages {
 
   case class HaltIf(condition: Unit => Boolean)
 
-  case class Refine(scale: Double)
+  case class Weight(scale: Double)
 
   case class OptimizeGenerators(damping: Double)
 
@@ -254,9 +254,11 @@ object HoTTMessages {
 
   case class SeekInstances[U <: Term with Subs[U], V <: Term with Subs[V]](
       typ: Typ[U],
-      val variable: U,
-      goalFamily: Typ[Term]
-  )
+      goal: TypFamily[U, V],
+      forConsequences: Set[Typ[Term]] = Set()
+  ){
+    val sigma = SigmaTyp(goal)
+  }
 
   case class Instance[U <: Term with Subs[U]](term: U, typ: Typ[U]) {
     assert(term.typ == typ)

@@ -100,8 +100,10 @@ object Postable {
     {
      def post(content: P :: Q, web: W, pred: Set[ID]): Future[ID] = 
       content match {
+        case p :: HNil => 
+          pw.post(p, web, pred)
         case p :: q => 
-          qw.post(q, web, pred).flatMap(id => pw.post(p, web, Set(id)))
+          pw.post(p, web, pred).flatMap(id => qw.post(q, web, Set(id)))
       }
     Impl(post)
     }

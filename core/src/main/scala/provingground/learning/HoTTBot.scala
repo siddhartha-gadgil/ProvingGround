@@ -53,6 +53,27 @@ object HoTTBot {
         GeneratedEquationNodes(ev.equations.flatMap(Equation.split))
     )
 
+  lazy val instanceToGoal: HoTTBot = {
+    val response
+        : SeekInstances[_, _] => Instance[_] => Future[Option[SeekGoal]] = {
+      case seek: SeekInstances[a, b] => {
+        case instance: Instance[c] =>
+          Future(
+            if (instance.typ == seek.typ)
+              Some(
+                SeekGoal(
+                  (seek: SeekInstances[a, b])
+                    .goal(instance.term.asInstanceOf[a]),
+                  seek.forConsequences + seek.sigma
+                )
+              )
+            else None
+          )
+      }
+    }
+    MicroBot(response)
+  }
+
   lazy val eqnUpdate: HoTTBot =
     Callback.simple(
       (web: HoTTPostWeb) =>
@@ -84,7 +105,9 @@ object HoTTBot {
       case gprop :: gdec :: HNil =>
         proved =>
           Future {
-            derivedProofs(gprop.contents, gdec.contents).map(Decided.asEither(_)).toVector
+            derivedProofs(gprop.contents, gdec.contents)
+              .map(Decided.asEither(_))
+              .toVector
           }
     }
 
@@ -107,6 +130,18 @@ object HoTTBot {
       translation.FansiShow.fansiPrint.log(post.content, height = 20)
       pprint.log(post.id)
     }
+
+  case class QueryProver(lp: LocalProver)
+
+  object QueryProver {
+    implicit val qc =
+      QueryFromPosts
+        .empty[QueryProver]
+        .addCons((lp: LocalProver) => Some(QueryProver(lp)))
+        .addMod((w: Weight) => qp => QueryProver(qp.lp.sharpen(w.scale)))
+  }
+
+  val wrapTest = implicitly[LocalQueryable[QueryProver, HoTTPostWeb, ID]] // a test
 
 }
 
