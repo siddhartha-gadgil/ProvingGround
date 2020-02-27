@@ -95,5 +95,15 @@ object HistoryGetter{
           def redirects(web: W): Map[ID,Set[ID]] = buffer(web).redirects
         }
     }
+  
+  implicit def postDiscardGetter[P, W, ID](implicit pw: Postable[P, W, ID]) : HistoryGetter[W, PostDiscarder[P, ID], ID] =
+    new  HistoryGetter[W, PostDiscarder[P, ID], ID]{
+      def getHistory(buffer: W => PostDiscarder[P,ID]): PostHistory[W,ID] = 
+        new PostHistory[W, ID] {
+          def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] = None
+          def allPosts(web: W): SeqView[PostData[_, W, ID],Seq[_]] = Seq().view
+          def redirects(web: W): Map[ID,Set[ID]] = Map()
+        }
+    }
 }
 
