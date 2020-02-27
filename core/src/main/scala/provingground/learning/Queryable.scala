@@ -511,23 +511,12 @@ object TestCustomQuery {
 
   val testWrap = (t: TermState) => TestWrap(t)
 
-  // object TestWrapImpl extends QueryImplicitWrap(TestWrap.qp, testWrap)
-
-  // import TestWrapImpl._
-
-  val testImp = // LocalQueryable.queryOptLatest[TestWrap, HoTTPostWeb, ID](QueryOptions.queryOpt, implicitly)
+  val testImp =
     implicitly[LocalQueryable[TestWrap, HoTTPostWeb, ID]]
 
-  val qp1 = QueryFromPosts
-    .Empty[FiniteDistribution[Term]]
+  implicit val qp1: QueryFromPosts[FiniteDistribution[HoTT.Term],LocalProver :: HNil] = QueryFromPosts
+    .empty
     .addCons((lp: LocalProver) => Some(lp.initState.terms))
-
-  // object FDImpl extends QueryImplicit(qp1)
-
-  implicit val tres: LocalQueryable[FiniteDistribution[Term], HoTTPostWeb, ID] =
-    new QueryImplicit(qp1).query // not clear why this needs to be implicit, while an implicit was picked up earlier
-
-  // import FDImpl._
 
   val fdTest =
     implicitly[LocalQueryable[FiniteDistribution[Term], HoTTPostWeb, ID]]
