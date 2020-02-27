@@ -38,6 +38,8 @@ class HoTTPostWeb {
       ErasablePostBuffer.build[FinalState, ID] ::
       ErasablePostBuffer.build[TermResult, ID] ::
       ErasablePostBuffer.build[GeneratedEquationNodes, ID] ::
+      PostBuffer.build[Proved, ID] ::
+      PostBuffer.build[Contradicted, ID] ::
       PostBuffer.build[LocalTangentProver, ID] ::
       PostBuffer.build[ExpressionEval, ID] ::
       PostBuffer.build[ChompResult, ID] ::
@@ -48,7 +50,7 @@ object HoTTPostWeb {
   type ID = (Int, Int)
 
   val polyImpl = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer)
-  implicit val (b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
+  implicit val (b11:: b10:: b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
     polyImpl
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =

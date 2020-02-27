@@ -76,6 +76,31 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  lazy val deducedEquations: HoTTBot = {
+    val response
+        : GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: HNil => Proved => Future[
+          Vector[Either[Contradicted, Proved]]
+        ] = {
+      case gprop :: gdec :: HNil =>
+        proved =>
+          Future {
+            derivedProofs(gprop.contents, gdec.contents).map(Decided.asEither(_)).toVector
+          }
+    }
+
+    new MiniBot[
+      Proved,
+      Either[Contradicted, Proved],
+      HoTTPostWeb,
+      GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: HNil,
+      ID
+    ](
+      response,
+      (_) => true
+    )
+
+  }
+
   def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
     Future {
       translation.FansiShow.fansiPrint.log(post.pw.tag)

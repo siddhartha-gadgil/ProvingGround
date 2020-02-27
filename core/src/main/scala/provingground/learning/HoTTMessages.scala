@@ -167,13 +167,13 @@ object HoTTMessages {
     proofOpt.foreach(proof => assert(proof.typ == statement))
   }
 
-  trait PropogateProof {
+  trait PropagateProof {
     def propagate(proofs: Set[Term]): Option[Decided]
   }
 
-  object PropogateProof {
-    implicit def propsMap: PostMaps[PropogateProof] =
-      PostMaps.empty[PropogateProof] || ((x: Consequence) => x) || (
+  object PropagateProof {
+    implicit def propsMap: PostMaps[PropagateProof] =
+      PostMaps.empty[PropagateProof] || ((x: Consequence) => x) || (
           (x: Contradicts) => x
       ) || ((x: FromAll) => x) || ((x: FromAny) => x)
   }
@@ -182,7 +182,7 @@ object HoTTMessages {
       premise: Typ[Term],
       conclusion: Typ[Term],
       proofMapOpt: Option[Term => Term]
-  ) extends PropogateProof {
+  ) extends PropagateProof {
     def propagate(proofs: Set[Term]): Option[Proved] =
       proofs.find(_.typ == premise).map { proof =>
         Proved(conclusion, proofMapOpt.map(m => m(proof)))
@@ -196,7 +196,7 @@ object HoTTMessages {
       premise: Typ[Term],
       conclusion: Typ[Term],
       contraMapOpt: Option[Term => Term => Term]
-  ) extends PropogateProof {
+  ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       proofs.find(_.typ == premise).map { proof =>
         val contraOpt =
@@ -263,7 +263,7 @@ object HoTTMessages {
   }
 
   case class FromAll(typs: Vector[Typ[Term]], conclusion: Typ[Term])
-      extends PropogateProof {
+      extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) Some(Proved(conclusion, None))
       else None
@@ -273,7 +273,7 @@ object HoTTMessages {
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
       exhaustive: Boolean
-  ) extends PropogateProof {
+  ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty)
         Some(Proved(conclusion, None))
@@ -284,7 +284,7 @@ object HoTTMessages {
 
   @annotation.tailrec
   def propagateProofs(
-      props: Set[PropogateProof],
+      props: Set[PropagateProof],
       decisions: Set[Decided]
   ): Set[Decided] = {
     val proofs = decisions.collect {
@@ -303,7 +303,7 @@ object HoTTMessages {
   }
 
   def derivedProofs(
-      props: Set[PropogateProof],
+      props: Set[PropagateProof],
       decisions: Set[Decided]
   ): Set[Decided] = propagateProofs(props, decisions) -- decisions
 
