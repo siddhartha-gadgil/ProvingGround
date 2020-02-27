@@ -242,10 +242,13 @@ object LocalQueryable extends FallBackLookups {
   ): LatestAnswer[Some[Q], W, ID] =
     LatestAnswer(Vector(AnswerFromPost[Q, Some[Q], W, ID](Some(_))))
 
-  implicit def queryOptLatest[Q, W, ID](implicit qo: QueryOptions[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Q, W, ID] =
+  implicit def queryOptLatest[Q, W, ID](
+      implicit qo: QueryOptions[Q, W, ID],
+      ph: PostHistory[W, ID]
+  ): LocalQueryable[Q, W, ID] =
     new LocalQueryable[Q, W, ID] {
-      def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] = 
-        Future{
+      def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] =
+        Future {
           QueryOptions.latest(web, id, qo).toVector
         }
     }
@@ -415,6 +418,8 @@ sealed trait QueryFromPosts[Q, PList <: HList] {
 }
 
 object QueryFromPosts {
+  def empty[Q] : QueryFromPosts[Q, HNil] = Empty[Q]()
+
   case class Empty[Q]() extends QueryFromPosts[Q, HNil]
 
   case class CaseCons[Q, P, Pt <: HList](
@@ -467,6 +472,7 @@ object BuildQuery {
   * @param qp the query from posts
   * @param incl inclusion into the wrapper type.
   */
+  @deprecated("define query-from-posts and lift", "now")
 class QueryImplicitWrap[Q, T, PList <: HList](
     qp: QueryFromPosts[Q, PList],
     incl: Q => T
@@ -485,6 +491,7 @@ class QueryImplicitWrap[Q, T, PList <: HList](
     }
 }
 
+@deprecated("define query-from-posts and lift", "now")
 class QueryImplicit[Q, PList <: HList](
     qp: QueryFromPosts[Q, PList]
 ) extends QueryImplicitWrap[Q, Q, PList](qp, identity(_))
@@ -495,19 +502,21 @@ object TestCustomQuery {
 
   import HoTTPost._
 
-  val qp = QueryFromPosts
-    .Empty[TermState]
-    .addCons((lp: LocalProver) => Some(lp.initState))
+  object TestWrap {
+    implicit val qp: QueryFromPosts[TestWrap, LocalProver :: HNil] =
+      QueryFromPosts
+        .empty
+        .addCons((lp: LocalProver) => Some(TestWrap(lp.initState)))
+  }
 
   val testWrap = (t: TermState) => TestWrap(t)
 
-  object TestWrapImpl extends QueryImplicitWrap(qp, testWrap)
+  // object TestWrapImpl extends QueryImplicitWrap(TestWrap.qp, testWrap)
 
-  val resolved: LocalQueryable[TestWrap, HoTTPostWeb, ID] = TestWrapImpl.query
+  // import TestWrapImpl._
 
-  import TestWrapImpl._
-
-  val testImp = implicitly[LocalQueryable[TestWrap, HoTTPostWeb, ID]]
+  val testImp = // LocalQueryable.queryOptLatest[TestWrap, HoTTPostWeb, ID](QueryOptions.queryOpt, implicitly)
+    implicitly[LocalQueryable[TestWrap, HoTTPostWeb, ID]]
 
   val qp1 = QueryFromPosts
     .Empty[FiniteDistribution[Term]]
