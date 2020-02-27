@@ -47,7 +47,7 @@ object Queryable {
       def get(
           web: W,
           predicate: GatherMapPost[P] => Boolean
-      ): Future[GatherMapPost[P]] = Future{
+      ): Future[GatherMapPost[P]] = Future {
         val posts = ph.allPosts(web).toSet
         mpw.gather(posts)
       }
@@ -242,6 +242,14 @@ object LocalQueryable extends FallBackLookups {
   ): LatestAnswer[Some[Q], W, ID] =
     LatestAnswer(Vector(AnswerFromPost[Q, Some[Q], W, ID](Some(_))))
 
+  implicit def queryOptLatest[Q, W, ID](implicit qo: QueryOptions[Q, W, ID], ph: PostHistory[W, ID]) : LocalQueryable[Q, W, ID] =
+    new LocalQueryable[Q, W, ID] {
+      def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] = 
+        Future{
+          QueryOptions.latest(web, id, qo).toVector
+        }
+    }
+
   /**
     * Look up an answer in the history of a post, assuming an implicit history provider
     */
@@ -390,6 +398,12 @@ object QueryOptions {
       qp: QueryFromPosts[Q, PList]
   )(implicit builder: BuildQuery[Q, W, ID, PList]): QueryOptions[Q, W, ID] =
     builder.build(qp)
+
+  implicit def queryOpt[Q, W, ID, PList <: HList](
+      implicit qp: QueryFromPosts[Q, PList],
+      builder: BuildQuery[Q, W, ID, PList]
+  ): QueryOptions[Q, W, ID] =
+    builder.build(qp)
 }
 
 sealed trait QueryFromPosts[Q, PList <: HList] {
@@ -427,8 +441,7 @@ object BuildQuery {
 
   implicit def cons[Q, W, ID, P, PList <: HList](
       implicit pw: Postable[P, W, ID],
-      tailQ: BuildQuery[Q, W, ID, PList],
-      tag: TypeTag[P]
+      tailQ: BuildQuery[Q, W, ID, PList]
   ): BuildQuery[Q, W, ID, P :: PList] =
     new BuildQuery[Q, W, ID, P :: PList] {
       def build(qp: QueryFromPosts[Q, P :: PList]): QueryOptions[Q, W, ID] =
