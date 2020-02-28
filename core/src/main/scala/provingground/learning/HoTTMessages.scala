@@ -138,8 +138,6 @@ object HoTTMessages {
 
   case class SeekEventualCodomain(goal: Typ[Term]) extends ReasonBackward
 
-  case class Skolemize(goal: Typ[Term]) extends ReasonBackward
-
   /**
     * backward reasoning for special types - products, co-products, Sigma-types and Pi-types;
     * respond with seeking instantiations and adding variables for the last two cases.

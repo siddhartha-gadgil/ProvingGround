@@ -79,6 +79,26 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  lazy val skolemBot: HoTTBot = {
+    val response : Unit => SeekGoal => Future[Option[Consequence :: SeekGoal :: HNil]] = 
+      (_) =>
+        (goal) =>
+           Future{
+             val sk = skolemize(goal.goal) 
+             if (sk == goal.goal) None
+             else Some{
+               val transform = fromSkolemized(sk) _
+               val cons = Consequence(sk, goal.goal, Option(transform))
+               cons:: SeekGoal(
+                sk,
+                goal.forConsequences + goal.goal
+               ) :: HNil
+             }
+    }
+    
+    MicroBot(response)
+  }
+
   lazy val eqnUpdate: HoTTBot =
     Callback.simple(
       (web: HoTTPostWeb) =>
