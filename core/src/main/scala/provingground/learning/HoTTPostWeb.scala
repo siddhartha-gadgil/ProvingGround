@@ -12,6 +12,7 @@ import scala.collection.SeqView
 import scala.reflect.runtime.universe._
 import HoTTMessages._
 
+
 /**
   * Better building of post webs, without depending on separate lists for implicits and history (history to be done).
   */
@@ -33,6 +34,7 @@ class HoTTPostWeb {
   }
 
   val polyBuffer =
+    PostBuffer.build[Consequence, ID] ::
     PostBuffer.build[Lemmas, ID] ::
       PostBuffer.build[SeekGoal, ID] ::
       PostBuffer.build[Instance[_], ID] ::
@@ -56,7 +58,7 @@ object HoTTPostWeb {
   type ID = (Int, Int)
 
   val polyImpl = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer)
-  implicit val (b17 :: b16 :: b15 :: b14 :: b13 :: b12 :: b11 :: b10 :: b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
+  implicit val (b18 :: b17 :: b16 :: b15 :: b14 :: b13 :: b12 :: b11 :: b10 :: b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
     polyImpl
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =
