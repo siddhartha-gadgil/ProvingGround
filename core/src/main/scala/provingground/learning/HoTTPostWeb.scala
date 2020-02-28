@@ -50,8 +50,8 @@ class HoTTPostWeb {
       PostBuffer.build[ChompResult, ID] ::
       PostBuffer.build[LocalProver, ID] ::
       PostBuffer.build[Weight, ID] ::
-      PostDiscarder.build[Unit, ID] ::
-      PostDiscarder.build[HNil, ID] :: HNil
+      PostDiscarder.build[Unit, ID]((0, 0)) ::
+      PostDiscarder.build[HNil, ID]((0, 0)) :: HNil
 }
 
 object HoTTPostWeb {

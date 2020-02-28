@@ -75,19 +75,22 @@ object ErasablePostBuffer {
 
 }
 
-trait PostDiscarder[P, ID] extends GlobalPost[P, ID]
+trait PostDiscarder[P, ID] extends GlobalPost[P, ID]{
+  val zero: ID
+}
 
 object PostDiscarder {
   def discardPost[P: TypeTag, W, ID](
       buffer: W => PostDiscarder[P, ID]
   ): Postable[P, W, ID] = new Postable[P, W, ID] {
     def post(content: P, web: W, pred: Set[ID]): Future[ID] =
-      buffer(web).postGlobal(content)
+      Future(buffer(web).zero)
     val tag: reflect.runtime.universe.TypeTag[P] = implicitly
   }
 
-  def build[P, ID](implicit gp: GlobalID[ID]): PostDiscarder[P, ID] =
+  def build[P, ID](nop: ID)(implicit gp: GlobalID[ID]): PostDiscarder[P, ID] =
     new PostDiscarder[P, ID] {
+      val zero: ID = nop
       def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
     }
 }
