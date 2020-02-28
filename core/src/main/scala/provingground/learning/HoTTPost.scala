@@ -365,13 +365,13 @@ object HoTTPost {
 
   lazy val lpLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalProver => Future[Lemmas] =
-      (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
+      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
     MicroBot(response)
   }
 
   lazy val lptLemmas: PostResponse[HoTTPost, ID] = {
     val response: Unit => LocalTangentProver => Future[Lemmas] =
-      (_) => (lp) => lp.lemmas.runToFuture.map(Lemmas(_))
+      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
     MicroBot(response)
   }
 
@@ -380,7 +380,7 @@ object HoTTPost {
       (lp) =>
         (lm) =>
           Future.sequence(lm.lemmas.map {
-            case (tp, w) =>
+            case (tp, _, w) =>
               lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture
           })
     new MiniBot[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](

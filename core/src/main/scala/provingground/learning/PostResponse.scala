@@ -279,7 +279,7 @@ object TypedPostResponse {
   * @param qw postability of the response post type
   * @param lv queryability of the other arguments
   */
-case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean)(
+case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean = (_: V) => true)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]

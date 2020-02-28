@@ -12,6 +12,16 @@ import scala.collection.SeqView
 import scala.reflect.runtime.universe._
 import HoTTMessages._
 
+case class QueryProver(lp: LocalProver)
+
+  object QueryProver {
+    implicit val qc =
+      QueryFromPosts
+        .empty[QueryProver]
+        .addCons((lp: LocalProver) => Some(QueryProver(lp)))
+        .addMod((w: Weight) => qp => QueryProver(qp.lp.sharpen(w.scale)))
+  }
+
 object HoTTBot {
 
   type ID = HoTTPostWeb.ID
@@ -149,6 +159,51 @@ object HoTTBot {
 
   }
 
+  lazy val lpLemmas: HoTTBot = {
+    val response: Unit => LocalProver => Future[Lemmas] =
+      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
+    MicroBot(response)
+  }
+
+  lazy val lptLemmas: HoTTBot = {
+    val response: Unit => LocalTangentProver => Future[Lemmas] =
+      (_) => (lp) => lp.lemmas.runToFuture.map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
+    MicroBot(response)
+  }
+
+  lazy val splitLemmas : HoTTBot = {
+    val response: Unit => Lemmas => Future[Vector[WithWeight[UseLemma]]] = 
+      (_) => 
+        lemmas => 
+        Future(
+          lemmas.lemmas.map{case (tp, pfOpt, w) => withWeight(UseLemma(tp, pfOpt), w)}
+        )
+    MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
+  }
+
+  def lemmaTangents(tangentScale: Double = 1.0) : HoTTBot = {
+    val response : QueryProver => UseLemma => Future[LocalTangentProver] = 
+      qp =>
+        lem => 
+             qp.lp.sharpen(tangentScale).tangentProver(lem.proof).runToFuture
+
+    MicroBot(response)
+  }
+
+  def lemmaMixin(weight: Double = 0.3) : HoTTBot = {
+    val response : QueryProver => UseLemma => Future[LocalProver] = 
+      qp =>
+        lem => Future{
+          val ts = qp.lp.initState
+          qp.lp.copy(
+            initState = ts.copy(terms = (ts.terms + (lem.proof, weight)).safeNormalized)
+          )
+        }
+            //  qp.lp.sharpen(tangentScale).tangentProver(lem.proof).runToFuture
+
+    MicroBot(response)
+  }
+
   def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
     Future {
       translation.FansiShow.fansiPrint.log(post.pw.tag)
@@ -156,15 +211,7 @@ object HoTTBot {
       pprint.log(post.id)
     }
 
-  case class QueryProver(lp: LocalProver)
-
-  object QueryProver {
-    implicit val qc =
-      QueryFromPosts
-        .empty[QueryProver]
-        .addCons((lp: LocalProver) => Some(QueryProver(lp)))
-        .addMod((w: Weight) => qp => QueryProver(qp.lp.sharpen(w.scale)))
-  }
+  
 
   val wrapTest = implicitly[LocalQueryable[QueryProver, HoTTPostWeb, ID]] // a test
 

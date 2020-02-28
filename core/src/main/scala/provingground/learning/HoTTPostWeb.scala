@@ -35,6 +35,7 @@ class HoTTPostWeb {
 
   val polyBuffer =
     PostBuffer.build[Consequence, ID] ::
+    PostBuffer.build[UseLemma, ID] ::
     PostBuffer.build[Lemmas, ID] ::
       PostBuffer.build[SeekGoal, ID] ::
       PostBuffer.build[Instance[_], ID] ::
@@ -58,7 +59,7 @@ object HoTTPostWeb {
   type ID = (Int, Int)
 
   val polyImpl = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer)
-  implicit val (b18 :: b17 :: b16 :: b15 :: b14 :: b13 :: b12 :: b11 :: b10 :: b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
+  implicit val (b19 :: b18 :: b17 :: b16 :: b15 :: b14 :: b13 :: b12 :: b11 :: b10 :: b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
     polyImpl
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =
@@ -72,18 +73,6 @@ object HoTTPostWeb {
 
   implicit def termSetQuery: Queryable[Set[Term], HoTTPostWeb] =
     Queryable.simple(_.terms)
-
-  type WithWeight[A] = Weight :: A :: HNil
-
-  /**
-    * convenient posting with weight preceding posts, say for lemmas with weight
-    *
-    * @param value the stuff to post
-    * @param weight the weight
-    * @return return ID after posting stuff
-    */
-  def withWeight[A](value: A, weight: Double): WithWeight[A] =
-    Weight(weight) :: value :: HNil
 
   val tw = implicitly[Postable[WithWeight[Proved], HoTTPostWeb, ID]] // a test
 }

@@ -3,6 +3,7 @@ import provingground._, HoTT._
 import provingground.induction.ExstInducDefn
 import provingground.learning.HoTTMessages.Proved
 import provingground.learning.HoTTMessages.Contradicted
+import shapeless._, HList._
 
 /**
   * Messages to be posted for autonomous/interactive running.
@@ -92,7 +93,7 @@ object HoTTMessages {
     *
     */
   case class Lemmas(
-      lemmas: Vector[(Typ[Term], Double)]
+      lemmas: Vector[(Typ[Term], Option[Term], Double)]
   )
 
   /**
@@ -101,9 +102,10 @@ object HoTTMessages {
     *
     * @param lemma lemma statement
     * @param proof proof term
-    * @param weight weight
     */
-  case class UseLemma(lemma: Typ[Term], weight: Double)
+  case class UseLemma(lemma: Typ[Term], proofOpt: Option[Term]){
+    lazy val proof = proofOpt.getOrElse(s"lemma:$lemma" :: lemma)
+  }
 
   /**
     * proceed by tangent evolution, perhaps from a lemma
@@ -228,6 +230,19 @@ object HoTTMessages {
   case class HaltIf(condition: Unit => Boolean)
 
   case class Weight(scale: Double)
+
+  type WithWeight[A] = Weight :: A :: HNil
+
+  /**
+    * convenient posting with weight preceding posts, say for lemmas with weight
+    *
+    * @param value the stuff to post
+    * @param weight the weight
+    * @return return ID after posting stuff
+    */
+  def withWeight[A](value: A, weight: Double): WithWeight[A] =
+    Weight(weight) :: value :: HNil
+
 
   case class OptimizeGenerators(damping: Double)
 
