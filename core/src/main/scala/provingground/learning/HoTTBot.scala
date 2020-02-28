@@ -55,18 +55,23 @@ object HoTTBot {
 
   lazy val instanceToGoal: HoTTBot = {
     val response
-        : SeekInstances[_, _] => Instance[_] => Future[Option[SeekGoal]] = {
+        : SeekInstances[_, _] => Instance[_] => Future[Option[Consequence :: SeekGoal :: HNil]] = {
       case seek: SeekInstances[a, b] => {
         case instance: Instance[c] =>
           Future(
             if (instance.typ == seek.typ)
-              Some(
+              { val newGoal = (seek: SeekInstances[a, b])
+                    .goal(instance.term.asInstanceOf[a])
+                val deduction : Term => Term = (x) => mkPair(instance.term.asInstanceOf[Term], x : Term)
+                val cons = Consequence(newGoal, seek.sigma, Option(deduction))
+                Some(
+                  cons:: 
                 SeekGoal(
-                  (seek: SeekInstances[a, b])
-                    .goal(instance.term.asInstanceOf[a]),
+                  newGoal,
                   seek.forConsequences + seek.sigma
-                )
+                ) :: HNil
               )
+              }
             else None
           )
       }
