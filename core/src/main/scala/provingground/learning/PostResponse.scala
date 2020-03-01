@@ -26,7 +26,7 @@ object PostResponse {
   /**
    * Casting to a typed post response if the Postables match
    */ 
-  def typedResponseOpt[Q, W, ID](post: Q, response: PostResponse[W, ID])(
+  def typedResponseOpt[Q, W, ID](response: PostResponse[W, ID])(
       implicit qp: Postable[Q, W, ID]
   ): Option[TypedPostResponse[Q, W, ID]] = response match {
     case r: TypedPostResponse[p, W, ID] =>
@@ -47,7 +47,7 @@ object PostResponse {
   )(
       implicit qp: Postable[Q, W, ID]
   ): Future[Vector[PostData[_, W, ID]]] = {
-    val chainOpt = typedResponseOpt(post, response)(qp)
+    val chainOpt = typedResponseOpt(response)(qp)
       .map(tr => tr.postFuture(web, post, id))
       .toVector
     val flip = Future.sequence(chainOpt)
