@@ -54,6 +54,30 @@ object PostResponse {
     flip.map(_.flatten)
   }
 
+  case class ResponseToResponse[P, Q, R, W, ID](original: P, response: Q => R)(
+    implicit val pw: Postable[P, W, ID], val qw: Postable[Q, W, ID], val rw: Postable[R, W, ID])
+
+}
+
+
+// The shortcoming is that we need one object for each type `Q`
+class TypedResponseQueue[Q, W, ID](var responses: Set[PostResponse.ResponseToResponse[_, Q, _, W, ID]] = Set.empty[PostResponse.ResponseToResponse[_, Q, _, W, ID]] )(
+  implicit val qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) extends TypedPostResponse[Q, W, ID]{
+  def postFuture(web: W, content: Q, id: ID): Future[Vector[PostData[_, W, ID]]] = Future{
+    val predIds = ph.findPost(web, id).get._2 // get should work or we have race conditions
+    val predPosts = predIds.flatMap(pid => ph.findPost(web, pid).map(_._1)) 
+      responses.filter{
+        resp => predPosts.exists(p => p.pw.tag == resp.pw.tag &&  p.content == resp.original) 
+      }.map{
+        case resp: PostResponse.ResponseToResponse[p, q, r, W, ID] => 
+          responses -= resp
+           val x =  resp.response(content.asInstanceOf[q])
+           PostData[r, W, ID](x, id)(resp.rw)
+      }.toVector
+  }
+
+  def queue[P, R](original: P, response: Q => R)(implicit pw: Postable[P, W, ID], rw: Postable[R, W, ID]): Unit =
+    responses += PostResponse.ResponseToResponse(original, response)
 }
 
 /**
@@ -68,6 +92,26 @@ class SimpleSession[W, ID](
     var responses: Vector[PostResponse[W, ID]],
     logs: Vector[PostData[_, W, ID] => Future[Unit]]
 ) {
+  def addResponse(response: PostResponse[W, ID]): Unit = 
+    responses = responses :+ response
+
+  def getResponseQueue[Q](implicit qw: Postable[Q, W, ID], ph: PostHistory[W, ID]) : TypedResponseQueue[Q, W, ID] = {
+    val rs = responses.collect{case r: TypedResponseQueue[u, W, ID] if r.qw.tag == qw.tag => r.asInstanceOf[TypedResponseQueue[Q, W, ID]]}
+    rs.headOption.getOrElse{
+      val queue = new TypedResponseQueue[Q, W, ID]
+      addResponse(queue)
+      queue
+    }    
+  }
+
+  def queue[P, Q, R](original: P, response: Q => R)(
+    implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID], rw: Postable[R, W, ID], ph: PostHistory[W, ID]): Unit =
+      {
+        val a = getResponseQueue[Q]
+        a.queue(original, response)
+      }
+
+
   /**
     * recursively posting and running (as side-effects) offspring tasks, this posts the head but 
     * bots will be called with a different method that does not post the head, to avoid duplication
