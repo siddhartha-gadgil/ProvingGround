@@ -34,6 +34,7 @@ class HoTTPostWeb {
 
   val polyBuffer =
     PostBuffer.build[FunctionForGoal, ID] ::
+      PostBuffer.build[FromAll, ID] ::
       PostBuffer.build[Consequence, ID] ::
       PostBuffer.build[UseLemma, ID] ::
       PostBuffer.build[UseLemmaDistribution, ID] ::
@@ -60,7 +61,9 @@ object HoTTPostWeb {
   type ID = (Int, Int)
 
   val polyImpl = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer)
-  implicit val (b21 :: b20 :: b19 :: b18 :: b17 :: b16 :: b15 :: b14 :: b13 :: b12 :: b11 :: b10 :: b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
+  implicit val (b22 ::
+    b21 :: b20 :: b19 :: b18 :: b17 :: b16 :: b15 :: b14 :: b13 :: b12 :: b11 :: b10 ::
+    b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
     polyImpl
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =

@@ -291,7 +291,7 @@ object HoTTMessages {
     assert(term.typ == typ)
   }
 
-  case class FromAll(typs: Vector[Typ[Term]], conclusion: Typ[Term], proofOpt: Vector[Term] => Option[Term])
+  case class FromAll(typs: Vector[Typ[Term]], conclusion: Typ[Term], proofOpt: Vector[Term] => Option[Term], forConsequences: Set[Typ[Term]])
       extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) {
@@ -312,8 +312,8 @@ object HoTTMessages {
         case _ => None
       }
 
-    def get(fn: Term, cod: Typ[Term]) : Option[FromAll] = 
-      backward(fn, cod).map{case (typs, proofOpt) => FromAll(typs, cod, proofOpt)}
+    def get(fn: Term, cod: Typ[Term], forConsequences: Set[Typ[Term]] = Set()) : Option[FromAll] = 
+      backward(fn, cod).map{case (typs, proofOpt) => FromAll(typs, cod, proofOpt, forConsequences)}
   }
 
   case class FunctionForGoal(fn: Term, goal: Typ[Term], forConsequences: Set[Typ[Term]] = Set())

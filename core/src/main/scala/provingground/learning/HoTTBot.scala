@@ -219,6 +219,21 @@ object HoTTBot {
     MiniBot[Lemmas, UseLemmaDistribution, HoTTPostWeb, Unit, ID](response)
   }
 
+  lazy val backwardFunction: HoTTBot = {
+    val response: QueryProver => SeekGoal => Future[Vector[WithWeight[FunctionForGoal]]] = 
+      qp =>
+        goal =>
+          {
+            import TermGeneratorNodes._
+            qp.lp.nodeDist(codomainNode(goal.goal)).map{
+              fd : FiniteDistribution[Term] => 
+                fd.pmf.map{case Weighted(x, p) => withWeight(FunctionForGoal(x, goal.goal, goal.forConsequences), p)}
+            }.runToFuture
+          }
+
+    MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID](response)
+  }
+
   lazy val inductionBackward: HoTTBot = {
     val response: QueryProver => SeekGoal => Future[Vector[WithWeight[FunctionForGoal]]] = 
       qp =>
@@ -232,6 +247,23 @@ object HoTTBot {
           }
 
     MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID](response)
+  }
+
+  lazy val funcToFromAll: HoTTBot = {
+    MicroBot.simple{
+      (fng: FunctionForGoal) => FromAll.get(fng.fn, fng.goal, fng.forConsequences)
+    }
+  }
+
+  lazy val resolveFromAll: HoTTBot = {
+    val response: Unit => FromAll => Future[Vector[SeekGoal]] = 
+      (_) =>
+        (fromAll) =>
+          Future{
+            fromAll.typs.map(typ => SeekGoal(typ, fromAll.forConsequences))
+          }
+
+    MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response)
   }
 
   def lemmaTangents(tangentScale: Double = 1.0): HoTTBot = {
