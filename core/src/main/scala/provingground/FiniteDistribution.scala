@@ -118,6 +118,9 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def toMap: Map[T, Double] =
     Weighted.flatten(pmf).map { case Weighted(x, p) => x -> p }.toMap
 
+  def restrict(s: Set[T]) : FiniteDistribution[T] = 
+      FiniteDistribution(pmf.filter{case Weighted(x, _) => s.contains(x)})
+
   def sort: FiniteDistribution[T] =
     FiniteDistribution(pmf.sortBy((wt) => 1 - wt.weight))
 

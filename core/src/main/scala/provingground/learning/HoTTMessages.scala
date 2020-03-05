@@ -108,6 +108,20 @@ object HoTTMessages {
   }
 
   /**
+    * instruction to use a distribution of lemmas - could be as a tangent or mixing in to generators
+    * if mixing in just call `ConsiderTerms`
+    *
+    * @param lemmas statement of lemmas
+    * @param proofOptMap optional proofs
+    */
+  case class UseLemmaDistribution(lemmas: FiniteDistribution[Typ[Term]], proofOptMap: Option[Map[Typ[Term], Term]]){
+    def proof(lemma: Typ[Term]) = proofOptMap.flatMap(proofMap => proofMap.get(lemma)).getOrElse(s"lemma:$lemma" :: lemma)
+
+    lazy val proofs : FiniteDistribution[HoTT.Term] = 
+      lemmas.map(proof(_))
+  }
+
+  /**
     * proceed by tangent evolution, perhaps from a lemma
     *
     * @param term tangent direction
@@ -246,7 +260,7 @@ object HoTTMessages {
 
   case class OptimizeGenerators(damping: Double)
 
-  case class LocalOptimizeGenerators(
+  case class NarrowOptimizeGenerators(
       hW: Double,
       klW: Double,
       smoothing: Double,
@@ -277,21 +291,45 @@ object HoTTMessages {
     assert(term.typ == typ)
   }
 
-  case class FromAll(typs: Vector[Typ[Term]], conclusion: Typ[Term])
+  case class FromAll(typs: Vector[Typ[Term]], conclusion: Typ[Term], proofOpt: Vector[Term] => Option[Term])
       extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
-      if (typs.toSet.subsetOf(proofs.map(_.typ))) Some(Proved(conclusion, None))
+      if (typs.toSet.subsetOf(proofs.map(_.typ))) {
+        val terms = typs.flatMap(typ => proofs.find(_.typ == typ))
+        Some(Proved(conclusion, proofOpt(terms)))
+      }
       else None
   }
+
+  object FromAll{
+    def backward(fn: Term, cod: Typ[Term]) : Option[(Vector[Typ[Term]], Vector[Term] => Option[Term])] = 
+      if (fn.typ == cod) Some((Vector(), (_) => Some(fn)))
+      else fn match {
+        case func: FuncLike[u, v] => 
+          val head = func.dom
+          val x = head.Var
+          backward(func(x), cod).map{case (tail, pf) => (head +: tail, (v: Vector[Term]) => if (v.head.typ == head) pf(v.tail) else None)}
+        case _ => None
+      }
+
+    def get(fn: Term, cod: Typ[Term]) : Option[FromAll] = 
+      backward(fn, cod).map{case (typs, proofOpt) => FromAll(typs, cod, proofOpt)}
+  }
+
+  case class FunctionForGoal(fn: Term, goal: Typ[Term], forConsequences: Set[Typ[Term]] = Set())
 
   case class FromAny(
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
-      exhaustive: Boolean
+      exhaustive: Boolean,
+      proofsOpt: Map[Term, Option[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty)
-        Some(Proved(conclusion, None))
+      { 
+        val proofOpt = proofs.find(t => typs.contains(t.typ)).flatMap(proofsOpt)
+        Some(Proved(conclusion, proofOpt))
+      }
       else if (exhaustive && typs.toSet.subsetOf(proofs.map(_.typ)))
         Some(Contradicted(conclusion, None))
       else None
