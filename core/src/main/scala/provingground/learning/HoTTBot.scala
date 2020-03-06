@@ -75,7 +75,7 @@ object HoTTBot {
                 .goal(instance.term.asInstanceOf[a])
               val deduction: Term => Term =
                 (x) => mkPair(instance.term.asInstanceOf[Term], x: Term)
-              val cons = Consequence(newGoal, seek.sigma, Option(deduction), Context.Empty)
+              val cons = Consequence(newGoal, seek.sigma, Option(deduction), seek.context)
               Some(
                 cons ::
                   SeekGoal(
@@ -102,7 +102,7 @@ object HoTTBot {
             else
               Some {
                 val transform = fromSkolemized(sk) _
-                val cons      = Consequence(sk, goal.goal, Option(transform), Context.Empty)
+                val cons      = Consequence(sk, goal.goal, Option(transform), goal.context)
                 cons :: SeekGoal(
                   sk,
                   goal.context,
@@ -229,7 +229,7 @@ object HoTTBot {
             import TermGeneratorNodes._
             qp.lp.nodeDist(codomainNode(goal.goal)).map{
               fd : FiniteDistribution[Term] => 
-                fd.pmf.map{case Weighted(x, p) => withWeight(FunctionForGoal(x, goal.goal, goal.forConsequences), p)}
+                fd.pmf.map{case Weighted(x, p) => withWeight(FunctionForGoal(x, goal.goal, goal.context, goal.forConsequences), p)}
             }.runToFuture
           }
 
@@ -244,7 +244,7 @@ object HoTTBot {
             import TermGeneratorNodes._
             qp.lp.nodeDist(qp.lp.tg.Gen.targetInducBackNode(goal.goal)).map{
               fd : FiniteDistribution[Term] => 
-                fd.pmf.map{case Weighted(x, p) => withWeight(FunctionForGoal(x, goal.goal, goal.forConsequences), p)}
+                fd.pmf.map{case Weighted(x, p) => withWeight(FunctionForGoal(x, goal.goal, goal.context, goal.forConsequences), p)}
             }.runToFuture
           }
 
@@ -253,7 +253,7 @@ object HoTTBot {
 
   lazy val funcToFromAll: HoTTBot = {
     MicroBot.simple{
-      (fng: FunctionForGoal) => FromAll.get(fng.fn, fng.goal, fng.forConsequences)
+      (fng: FunctionForGoal) => FromAll.get(fng.fn, fng.goal,  fng.forConsequences, fng.context)
     }
   }
 

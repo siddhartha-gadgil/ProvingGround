@@ -31,7 +31,11 @@ object HoTTMessages {
     * @param goal the goal
     * @param forConsequences the consequences for which we seek this, if any; if empty these have no effect
     */
-  case class SeekGoal(goal: Typ[Term], context: Context, forConsequences: Set[Typ[Term]] = Set())
+  case class SeekGoal(
+      goal: Typ[Term],
+      context: Context,
+      forConsequences: Set[Typ[Term]] = Set()
+  )
 
   /**
     * an initial term state from which to evolve, perhaps just to generate types
@@ -314,8 +318,8 @@ object HoTTMessages {
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
       proofOpt: Vector[Term] => Option[Term],
-      forConsequences: Set[Typ[Term]],
-      context: Context
+      context: Context,
+      forConsequences: Set[Typ[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) {
@@ -350,17 +354,18 @@ object HoTTMessages {
         fn: Term,
         cod: Typ[Term],
         forConsequences: Set[Typ[Term]] = Set(),
-        context: Context = Context.Empty
+        context: Context
     ): Option[FromAll] =
       backward(fn, cod).map {
         case (typs, proofOpt) =>
-          FromAll(typs, cod, proofOpt, forConsequences, context)
+          FromAll(typs, cod, proofOpt, context, forConsequences)
       }
   }
 
   case class FunctionForGoal(
       fn: Term,
       goal: Typ[Term],
+      context: Context,
       forConsequences: Set[Typ[Term]] = Set()
   )
 
@@ -386,8 +391,10 @@ object HoTTMessages {
       decisions: Set[Decided]
   ): Set[Decided] = {
     val proofs = decisions.collect {
-      case Proved(statement, proofOpt, _) =>
-        proofOpt.getOrElse("proved" :: statement)
+      case Proved(statement, proofOpt, context) =>
+        proofOpt
+          .map(context.export(_))
+          .getOrElse("proved" :: context.exportTyp(statement))
     }
 
     val offspring: Set[Decided] =
