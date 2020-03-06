@@ -75,11 +75,12 @@ object HoTTBot {
                 .goal(instance.term.asInstanceOf[a])
               val deduction: Term => Term =
                 (x) => mkPair(instance.term.asInstanceOf[Term], x: Term)
-              val cons = Consequence(newGoal, seek.sigma, Option(deduction))
+              val cons = Consequence(newGoal, seek.sigma, Option(deduction), Context.Empty)
               Some(
                 cons ::
                   SeekGoal(
                     newGoal,
+                    seek.context,
                     seek.forConsequences + seek.sigma
                   ) :: HNil
               )
@@ -101,9 +102,10 @@ object HoTTBot {
             else
               Some {
                 val transform = fromSkolemized(sk) _
-                val cons      = Consequence(sk, goal.goal, Option(transform))
+                val cons      = Consequence(sk, goal.goal, Option(transform), Context.Empty)
                 cons :: SeekGoal(
                   sk,
+                  goal.context,
                   goal.forConsequences + goal.goal
                 ) :: HNil
               }
@@ -260,7 +262,7 @@ object HoTTBot {
       (_) =>
         (fromAll) =>
           Future{
-            fromAll.typs.map(typ => SeekGoal(typ, fromAll.forConsequences))
+            fromAll.typs.map(typ => SeekGoal(typ, fromAll.context, fromAll.forConsequences))
           }
 
     MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response)

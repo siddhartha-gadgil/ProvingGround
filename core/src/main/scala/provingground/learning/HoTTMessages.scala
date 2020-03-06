@@ -31,7 +31,7 @@ object HoTTMessages {
     * @param goal the goal
     * @param forConsequences the consequences for which we seek this, if any; if empty these have no effect
     */
-  case class SeekGoal(goal: Typ[Term], forConsequences: Set[Typ[Term]] = Set())
+  case class SeekGoal(goal: Typ[Term], context: Context, forConsequences: Set[Typ[Term]] = Set())
 
   /**
     * an initial term state from which to evolve, perhaps just to generate types
@@ -103,7 +103,7 @@ object HoTTMessages {
     * @param lemma lemma statement
     * @param proof proof term
     */
-  case class UseLemma(lemma: Typ[Term], proofOpt: Option[Term]){
+  case class UseLemma(lemma: Typ[Term], proofOpt: Option[Term]) {
     lazy val proof = proofOpt.getOrElse(s"lemma:$lemma" :: lemma)
   }
 
@@ -114,10 +114,16 @@ object HoTTMessages {
     * @param lemmas statement of lemmas
     * @param proofOptMap optional proofs
     */
-  case class UseLemmaDistribution(lemmas: FiniteDistribution[Typ[Term]], proofOptMap: Option[Map[Typ[Term], Term]]){
-    def proof(lemma: Typ[Term]) = proofOptMap.flatMap(proofMap => proofMap.get(lemma)).getOrElse(s"lemma:$lemma" :: lemma)
+  case class UseLemmaDistribution(
+      lemmas: FiniteDistribution[Typ[Term]],
+      proofOptMap: Option[Map[Typ[Term], Term]]
+  ) {
+    def proof(lemma: Typ[Term]) =
+      proofOptMap
+        .flatMap(proofMap => proofMap.get(lemma))
+        .getOrElse(s"lemma:$lemma" :: lemma)
 
-    lazy val proofs : FiniteDistribution[HoTT.Term] = 
+    lazy val proofs: FiniteDistribution[HoTT.Term] =
       lemmas.map(proof(_))
   }
 
@@ -164,6 +170,8 @@ object HoTTMessages {
 
   sealed trait Decided {
     val statement: Typ[Term]
+
+    val context: Context
   }
 
   object Decided {
@@ -171,18 +179,26 @@ object HoTTMessages {
       PostMaps.empty[Decided] || ((p: Proved) => p) || ((c: Contradicted) => c)
 
     def asEither(d: Decided): Either[Contradicted, Proved] = d match {
-      case p @ Proved(statement, proofOpt)        => Right(p)
-      case c @ Contradicted(statement, contraOpt) => Left(c)
+      case p @ Proved(statement, proofOpt, _)        => Right(p)
+      case c @ Contradicted(statement, contraOpt, _) => Left(c)
     }
   }
 
-  case class Proved(statement: Typ[Term], proofOpt: Option[Term])
-      extends Decided {
+  case class Proved(
+      statement: Typ[Term],
+      proofOpt: Option[Term],
+      context: Context
+  ) extends Decided {
     proofOpt.foreach(proof => assert(proof.typ == statement))
   }
 
   trait PropagateProof {
     def propagate(proofs: Set[Term]): Option[Decided]
+
+    val context: Context
+
+    def inContext(proofs: Set[Term]): Set[Term] =
+      proofs.flatMap(context.importOpt(_))
   }
 
   object PropagateProof {
@@ -195,11 +211,12 @@ object HoTTMessages {
   case class Consequence(
       premise: Typ[Term],
       conclusion: Typ[Term],
-      proofMapOpt: Option[Term => Term]
+      proofMapOpt: Option[Term => Term],
+      context: Context
   ) extends PropagateProof {
     def propagate(proofs: Set[Term]): Option[Proved] =
       proofs.find(_.typ == premise).map { proof =>
-        Proved(conclusion, proofMapOpt.map(m => m(proof)))
+        Proved(conclusion, proofMapOpt.map(m => m(proof)), context)
       }
     assert(
       proofMapOpt.forall(pfMap => pfMap("hyp" :: premise).typ == conclusion)
@@ -209,7 +226,8 @@ object HoTTMessages {
   case class Contradicts(
       premise: Typ[Term],
       conclusion: Typ[Term],
-      contraMapOpt: Option[Term => Term => Term]
+      contraMapOpt: Option[Term => Term => Term],
+      context: Context
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       proofs.find(_.typ == premise).map { proof =>
@@ -217,7 +235,7 @@ object HoTTMessages {
           contraMapOpt.map { contraMap =>
             contraMap(proof)
           }
-        Contradicted(conclusion, contraOpt)
+        Contradicted(conclusion, contraOpt, context)
       }
 
     contraMapOpt.foreach(
@@ -228,7 +246,8 @@ object HoTTMessages {
 
   case class Contradicted(
       statement: Typ[Term],
-      contraOpt: Option[Term => Term]
+      contraOpt: Option[Term => Term],
+      context: Context
   ) extends Decided {
     for {
       contra <- contraOpt
@@ -257,7 +276,6 @@ object HoTTMessages {
   def withWeight[A](value: A, weight: Double): WithWeight[A] =
     Weight(weight) :: value :: HNil
 
-
   case class OptimizeGenerators(damping: Double)
 
   case class NarrowOptimizeGenerators(
@@ -282,8 +300,9 @@ object HoTTMessages {
   case class SeekInstances[U <: Term with Subs[U], V <: Term with Subs[V]](
       typ: Typ[U],
       goal: TypFamily[U, V],
+      context: Context,
       forConsequences: Set[Typ[Term]] = Set()
-  ){
+  ) {
     val sigma = SigmaTyp(goal)
   }
 
@@ -291,47 +310,73 @@ object HoTTMessages {
     assert(term.typ == typ)
   }
 
-  case class FromAll(typs: Vector[Typ[Term]], conclusion: Typ[Term], proofOpt: Vector[Term] => Option[Term], forConsequences: Set[Typ[Term]])
-      extends PropagateProof {
+  case class FromAll(
+      typs: Vector[Typ[Term]],
+      conclusion: Typ[Term],
+      proofOpt: Vector[Term] => Option[Term],
+      forConsequences: Set[Typ[Term]],
+      context: Context
+  ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) {
         val terms = typs.flatMap(typ => proofs.find(_.typ == typ))
-        Some(Proved(conclusion, proofOpt(terms)))
-      }
-      else None
+        Some(Proved(conclusion, proofOpt(terms), context))
+      } else None
   }
 
-  object FromAll{
-    def backward(fn: Term, cod: Typ[Term]) : Option[(Vector[Typ[Term]], Vector[Term] => Option[Term])] = 
+  object FromAll {
+    def backward(
+        fn: Term,
+        cod: Typ[Term]
+    ): Option[(Vector[Typ[Term]], Vector[Term] => Option[Term])] =
       if (fn.typ == cod) Some((Vector(), (_) => Some(fn)))
-      else fn match {
-        case func: FuncLike[u, v] => 
-          val head = func.dom
-          val x = head.Var
-          backward(func(x), cod).map{case (tail, pf) => (head +: tail, (v: Vector[Term]) => if (v.head.typ == head) pf(v.tail) else None)}
-        case _ => None
-      }
+      else
+        fn match {
+          case func: FuncLike[u, v] =>
+            val head = func.dom
+            val x    = head.Var
+            backward(func(x), cod).map {
+              case (tail, pf) =>
+                (
+                  head +: tail,
+                  (v: Vector[Term]) =>
+                    if (v.head.typ == head) pf(v.tail) else None
+                )
+            }
+          case _ => None
+        }
 
-    def get(fn: Term, cod: Typ[Term], forConsequences: Set[Typ[Term]] = Set()) : Option[FromAll] = 
-      backward(fn, cod).map{case (typs, proofOpt) => FromAll(typs, cod, proofOpt, forConsequences)}
+    def get(
+        fn: Term,
+        cod: Typ[Term],
+        forConsequences: Set[Typ[Term]] = Set(),
+        context: Context = Context.Empty
+    ): Option[FromAll] =
+      backward(fn, cod).map {
+        case (typs, proofOpt) =>
+          FromAll(typs, cod, proofOpt, forConsequences, context)
+      }
   }
 
-  case class FunctionForGoal(fn: Term, goal: Typ[Term], forConsequences: Set[Typ[Term]] = Set())
+  case class FunctionForGoal(
+      fn: Term,
+      goal: Typ[Term],
+      forConsequences: Set[Typ[Term]] = Set()
+  )
 
   case class FromAny(
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
       exhaustive: Boolean,
-      proofsOpt: Map[Term, Option[Term]]
+      proofsOpt: Map[Term, Option[Term]],
+      context: Context
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
-      if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty)
-      { 
+      if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty) {
         val proofOpt = proofs.find(t => typs.contains(t.typ)).flatMap(proofsOpt)
-        Some(Proved(conclusion, proofOpt))
-      }
-      else if (exhaustive && typs.toSet.subsetOf(proofs.map(_.typ)))
-        Some(Contradicted(conclusion, None))
+        Some(Proved(conclusion, proofOpt, context))
+      } else if (exhaustive && typs.toSet.subsetOf(proofs.map(_.typ)))
+        Some(Contradicted(conclusion, None, context))
       else None
   }
 
@@ -341,14 +386,14 @@ object HoTTMessages {
       decisions: Set[Decided]
   ): Set[Decided] = {
     val proofs = decisions.collect {
-      case Proved(statement, proofOpt) =>
+      case Proved(statement, proofOpt, _) =>
         proofOpt.getOrElse("proved" :: statement)
     }
 
     val offspring: Set[Decided] =
       for {
         p  <- props
-        pf <- p.propagate(proofs)
+        pf <- p.propagate(p.inContext(proofs))
       } yield pf
 
     if (offspring.nonEmpty) propagateProofs(props, decisions union offspring)
