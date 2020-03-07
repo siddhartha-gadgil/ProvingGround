@@ -249,7 +249,7 @@ object LocalQueryable extends FallBackLookups {
     new LocalQueryable[Q, W, ID] {
       def getAt(web: W, id: ID, predicate: Q => Boolean): Future[Vector[Q]] =
         Future {
-          QueryOptions.latest(web, id, qo).toVector
+          QueryOptions.latest(web, id, qo, predicate).toVector
         }
     }
 
@@ -376,7 +376,12 @@ case class QueryOptions[Q, W, ID](
 }
 
 object QueryOptions {
-  def latest[Q, W, ID](web: W, id: ID, q: QueryOptions[Q, W, ID])(
+  def latest[Q, W, ID](
+      web: W,
+      id: ID,
+      q: QueryOptions[Q, W, ID],
+      predicate: Q => Boolean
+  )(
       implicit ph: PostHistory[W, ID]
   ): Set[Q] = {
     import ph._
@@ -384,15 +389,18 @@ object QueryOptions {
       .map {
         case (pd, preds) =>
           q.answers(pd)
+            .filter(predicate)
             .map(Set(_))
             .getOrElse(
-              preds.flatMap(pid => latest(web, pid, q).map(q.modifiers(pd)))
+              preds.flatMap(
+                pid => latest(web, pid, q, predicate).map(q.modifiers(pd))
+              )
             )
       }
       .orElse(
         redirects(web)
           .get(id)
-          .map(ids => ids.flatMap(rid => latest(web, rid, q)))
+          .map(ids => ids.flatMap(rid => latest(web, rid, q, predicate)))
       )
       .getOrElse(Set())
   }
@@ -418,7 +426,7 @@ sealed trait QueryFromPosts[Q, PList <: HList] {
 }
 
 object QueryFromPosts {
-  def empty[Q] : QueryFromPosts[Q, HNil] = Empty[Q]()
+  def empty[Q]: QueryFromPosts[Q, HNil] = Empty[Q]()
 
   case class Empty[Q]() extends QueryFromPosts[Q, HNil]
 
@@ -472,7 +480,7 @@ object BuildQuery {
   * @param qp the query from posts
   * @param incl inclusion into the wrapper type.
   */
-  @deprecated("define query-from-posts and lift", "now")
+@deprecated("define query-from-posts and lift", "now")
 class QueryImplicitWrap[Q, T, PList <: HList](
     qp: QueryFromPosts[Q, PList],
     incl: Q => T
@@ -485,7 +493,10 @@ class QueryImplicitWrap[Q, T, PList <: HList](
       def getAt(web: W, id: ID, predicate: T => Boolean): Future[Vector[T]] = {
         val queryOptions: QueryOptions[Q, W, ID] = QueryOptions.get(qp)
         Future {
-          QueryOptions.latest(web, id, queryOptions).toVector.map(incl)
+          QueryOptions
+            .latest(web, id, queryOptions, (x: Q) => predicate(incl(x)))
+            .toVector
+            .map(incl)
         }
       }
     }
@@ -504,8 +515,7 @@ object TestCustomQuery {
 
   object TestWrap {
     implicit val qp: QueryFromPosts[TestWrap, LocalProver :: HNil] =
-      QueryFromPosts
-        .empty
+      QueryFromPosts.empty
         .addCons((lp: LocalProver) => Some(TestWrap(lp.initState)))
   }
 
@@ -514,9 +524,10 @@ object TestCustomQuery {
   val testImp =
     implicitly[LocalQueryable[TestWrap, HoTTPostWeb, ID]]
 
-  implicit val qp1: QueryFromPosts[FiniteDistribution[HoTT.Term],LocalProver :: HNil] = QueryFromPosts
-    .empty
-    .addCons((lp: LocalProver) => Some(lp.initState.terms))
+  implicit val qp1
+      : QueryFromPosts[FiniteDistribution[HoTT.Term], LocalProver :: HNil] =
+    QueryFromPosts.empty
+      .addCons((lp: LocalProver) => Some(lp.initState.terms))
 
   val fdTest =
     implicitly[LocalQueryable[FiniteDistribution[Term], HoTTPostWeb, ID]]
