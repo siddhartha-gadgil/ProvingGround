@@ -54,6 +54,15 @@ case class LocalProver(
 
   def withInit(ts: TermState): LocalProver = this.copy(initState = ts)
 
+  override def addVar(term: Term, weight: Double): LocalProver = {
+    val td      = initState.terms * (1 - weight) + (term, weight)
+    val allVars = term +: initState.vars
+    val ctx     = initState.context.addVariable(term)
+    val ts =
+      initState.copy(terms = td.safeNormalized, vars = allVars, context = ctx)
+    withInit(ts)
+  }
+
   def addTerms(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
     val td = initState.terms * (1 - total) ++ FiniteDistribution(terms.map {

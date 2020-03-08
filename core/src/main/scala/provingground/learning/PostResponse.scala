@@ -235,7 +235,7 @@ object TypedPostResponse {
     * @param qw postability of the response post type
     * @param lv queryability of the other arguments
     */ 
-  case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: V => Boolean = (_ : V) => true)(
+  case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: P => V => Boolean = (_: P) => (_ : V) => true)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID]
@@ -246,7 +246,7 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
-      val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
+      val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
           (auxs => 
@@ -308,7 +308,7 @@ object TypedPostResponse {
   object MicroBot{
     def simple[P, Q, W, ID](func: P => Q)(implicit pw: Postable[P, W, ID],
     qw: Postable[Q, W, ID]) = MicroBot[P, Q, W, Unit, ID](
-      (_ : Unit) => (p: P) => Future(func(p))
+     (_ : Unit) => (p: P) => Future(func(p))
     )
   }
 }

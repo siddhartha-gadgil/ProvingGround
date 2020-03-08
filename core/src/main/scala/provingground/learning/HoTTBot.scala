@@ -292,6 +292,25 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  def goalToProver(varWeight: Double): HoTTBot = {
+    val subContext: SeekGoal => QueryProver => Boolean =
+      (goal) => (qp : QueryProver) => {
+      val lpVars = qp.lp.initState.context.variables
+      val goalVars = goal.context.variables
+      lpVars == goalVars.take(lpVars.size)
+    }
+
+    val response: QueryProver => SeekGoal => Future[LocalProver] = 
+      qp => goal => Future{
+        val lpVars = qp.lp.initState.context.variables
+        val goalVars = goal.context.variables
+        val newVars = goalVars.drop(lpVars.size)
+        val withVars = newVars.foldLeft(qp.lp){case (lp : LocalProver, x: Term) => lp.addVar(x, varWeight)}
+        withVars}    
+    
+    MicroBot(response, subContext)
+  }
+
   def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
     Future {
       translation.FansiShow.fansiPrint.log(post.pw.tag)
