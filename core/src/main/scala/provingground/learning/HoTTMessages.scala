@@ -270,6 +270,8 @@ object HoTTMessages {
 
   type WithWeight[A] = Weight :: A :: HNil
 
+  def withWeightFD[A](fd: FiniteDistribution[A]) : Vector[WithWeight[A]] = fd.pmf.map{case Weighted(x, p) => withWeight(x, p)}
+
   /**
     * convenient posting with weight preceding posts, say for lemmas with weight
     *
@@ -374,7 +376,8 @@ object HoTTMessages {
       conclusion: Typ[Term],
       exhaustive: Boolean,
       proofsOpt: Map[Term, Option[Term]],
-      context: Context
+      context: Context,
+      forConsequences: Set[Typ[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty) {

@@ -55,16 +55,26 @@ class HoTTPostWeb {
       PostBuffer.build[Weight, ID] ::
       PostDiscarder.build[Unit, ID]((0, 0)) ::
       PostDiscarder.build[HNil, ID]((0, 0)) :: HNil
+
+  val polyBuffer2 = 
+    PostBuffer.build[FromAny, ID] ::
+    PostBuffer.build[ConsiderInductiveTypes, ID] :: HNil
 }
 
 object HoTTPostWeb {
   type ID = (Int, Int)
 
   val polyImpl = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer)
+
   implicit val (b22 ::
     b21 :: b20 :: b19 :: b18 :: b17 :: b16 :: b15 :: b14 :: b13 :: b12 :: b11 :: b10 ::
     b9 :: b8 :: b7 :: b6 :: b5 :: b4 :: b3 :: b2 :: b1 :: HNil) =
     polyImpl
+
+  val polyImpl2 = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer2)
+
+  implicit val (b24 :: b23:: HNil) = polyImpl2
+
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =
     HistoryGetter.get((w: HoTTPostWeb) => w.polyBuffer)

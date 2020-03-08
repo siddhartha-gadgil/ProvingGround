@@ -75,7 +75,12 @@ object HoTTBot {
                 .goal(instance.term.asInstanceOf[a])
               val deduction: Term => Term =
                 (x) => mkPair(instance.term.asInstanceOf[Term], x: Term)
-              val cons = Consequence(newGoal, seek.sigma, Option(deduction), seek.context)
+              val cons = Consequence(
+                newGoal,
+                seek.sigma,
+                Option(deduction),
+                seek.context
+              )
               Some(
                 cons ::
                   SeekGoal(
@@ -102,7 +107,8 @@ object HoTTBot {
             else
               Some {
                 val transform = fromSkolemized(sk) _
-                val cons      = Consequence(sk, goal.goal, Option(transform), goal.context)
+                val cons =
+                  Consequence(sk, goal.goal, Option(transform), goal.context)
                 cons :: SeekGoal(
                   sk,
                   goal.context,
@@ -135,6 +141,28 @@ object HoTTBot {
       }
     }
     MicroBot(response)
+  }
+
+  val goalsAfterChomp: HoTTBot = {
+    val response: LocalProver :: TermResult :: HNil => ChompResult => Future[
+      Vector[WithWeight[SeekGoal]]
+    ] = {
+      case lp :: (ts, _) :: HNil =>
+        (cr) =>
+          Future {
+            val typDist = FiniteDistribution(cr.failures.map { typ =>
+              Weighted(typ, ts.typs(typ))
+            }).safeNormalized
+            typDist.pmf.map {
+              case Weighted(x, p) =>
+                withWeight(SeekGoal(x, lp.initState.context), p)
+            }
+          }
+    }
+
+    MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, LocalProver :: TermResult :: HNil, ID](
+      response
+    )
   }
 
   lazy val deducedEquations: HoTTBot = {
@@ -205,7 +233,9 @@ object HoTTBot {
                 val ss = s.subsets(j).toSet
                 val fdsUnscaled = ss.map { supp =>
                   FiniteDistribution {
-                    val weights = supp.flatMap(typ => lemmas.lemmas.find(_._1 == typ).map(_._3))
+                    val weights = supp.flatMap(
+                      typ => lemmas.lemmas.find(_._1 == typ).map(_._3)
+                    )
                     val prodWeight = weights.fold(1.0)(_ * _)
                     supp.map { typ =>
                       Weighted(typ, prodWeight)
@@ -213,7 +243,7 @@ object HoTTBot {
                   }
                 }
                 val totalWeight = fdsUnscaled.map(_.total).sum
-                val fds = fdsUnscaled.map(_ * (w/totalWeight))
+                val fds         = fdsUnscaled.map(_ * (w / totalWeight))
                 fds.map(fd => UseLemmaDistribution(fd, None))
             }).toVector
           }
@@ -222,50 +252,112 @@ object HoTTBot {
   }
 
   lazy val backwardFunction: HoTTBot = {
-    val response: QueryProver => SeekGoal => Future[Vector[WithWeight[FunctionForGoal]]] = 
+    val response: QueryProver => SeekGoal => Future[
+      Vector[WithWeight[FunctionForGoal]]
+    ] =
       qp =>
-        goal =>
-          {
-            import TermGeneratorNodes._
-            qp.lp.nodeDist(codomainNode(goal.goal)).map{
-              fd : FiniteDistribution[Term] => 
-                fd.pmf.map{case Weighted(x, p) => withWeight(FunctionForGoal(x, goal.goal, goal.context, goal.forConsequences), p)}
-            }.runToFuture
-          }
+        goal => {
+          import TermGeneratorNodes._
+          qp.lp
+            .nodeDist(codomainNode(goal.goal))
+            .map { fd: FiniteDistribution[Term] =>
+              fd.pmf.map {
+                case Weighted(x, p) =>
+                  withWeight(
+                    FunctionForGoal(
+                      x,
+                      goal.goal,
+                      goal.context,
+                      goal.forConsequences
+                    ),
+                    p
+                  )
+              }
+            }
+            .runToFuture
+        }
 
-    MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID](response)
+    MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID](
+      response
+    )
   }
 
   lazy val inductionBackward: HoTTBot = {
-    val response: QueryProver => SeekGoal => Future[Vector[WithWeight[FunctionForGoal]]] = 
+    val response: QueryProver => SeekGoal => Future[
+      Vector[WithWeight[FunctionForGoal]]
+    ] =
       qp =>
-        goal =>
-          {
-            import TermGeneratorNodes._
-            qp.lp.nodeDist(qp.lp.tg.Gen.targetInducBackNode(goal.goal)).map{
-              fd : FiniteDistribution[Term] => 
-                fd.pmf.map{case Weighted(x, p) => withWeight(FunctionForGoal(x, goal.goal, goal.context, goal.forConsequences), p)}
-            }.runToFuture
+        goal => {
+          import TermGeneratorNodes._
+          qp.lp
+            .nodeDist(qp.lp.tg.Gen.targetInducBackNode(goal.goal))
+            .map { fd: FiniteDistribution[Term] =>
+              fd.pmf.map {
+                case Weighted(x, p) =>
+                  withWeight(
+                    FunctionForGoal(
+                      x,
+                      goal.goal,
+                      goal.context,
+                      goal.forConsequences
+                    ),
+                    p
+                  )
+              }
+            }
+            .runToFuture
+        }
+
+    MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID](
+      response
+    )
+  }
+
+  lazy val addInductive : HoTTBot = {
+    val response : QueryProver => ConsiderInductiveTypes => Future[LocalProver] = 
+      (qp) =>
+        (consInds) =>
+          Future{
+            qp.lp.copy(
+              initState = qp.lp.initState.copy(
+                inds = (qp.lp.initState.inds ++ consInds.inducs).safeNormalized
+              )
+            )
           }
 
-    MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID](response)
+    MicroBot(response)
   }
 
   lazy val funcToFromAll: HoTTBot = {
-    MicroBot.simple{
-      (fng: FunctionForGoal) => FromAll.get(fng.fn, fng.goal,  fng.forConsequences, fng.context)
+    MicroBot.simple { (fng: FunctionForGoal) =>
+      FromAll.get(fng.fn, fng.goal, fng.forConsequences, fng.context)
     }
   }
 
   lazy val resolveFromAll: HoTTBot = {
-    val response: Unit => FromAll => Future[Vector[SeekGoal]] = 
+    val response: Unit => FromAll => Future[Vector[SeekGoal]] =
       (_) =>
         (fromAll) =>
-          Future{
-            fromAll.typs.map(typ => SeekGoal(typ, fromAll.context, fromAll.forConsequences))
+          Future {
+            fromAll.typs.map(
+              typ => SeekGoal(typ, fromAll.context, fromAll.forConsequences)
+            )
           }
 
     MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response)
+  }
+
+  val resolveFromAny: HoTTBot = {
+    val response: Unit => FromAny => Future[Vector[SeekGoal]] =
+      (_) =>
+        (fromAny) =>
+          Future {
+            fromAny.typs.map(
+              typ => SeekGoal(typ, fromAny.context, fromAny.forConsequences)
+            )
+          }
+
+    MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](response)
   }
 
   def lemmaTangents(tangentScale: Double = 1.0): HoTTBot = {
@@ -292,22 +384,29 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  def goalToProver(varWeight: Double): HoTTBot = {
+  // FIXME: should check that the goal is relevant still
+  def goalToProver(varWeight: Double, goalWeight: Double): HoTTBot = {
     val subContext: SeekGoal => QueryProver => Boolean =
-      (goal) => (qp : QueryProver) => {
-      val lpVars = qp.lp.initState.context.variables
-      val goalVars = goal.context.variables
-      lpVars == goalVars.take(lpVars.size)
-    }
+      (goal) =>
+        (qp: QueryProver) => {
+          val lpVars   = qp.lp.initState.context.variables
+          val goalVars = goal.context.variables
+          lpVars == goalVars.take(lpVars.size)
+        }
 
-    val response: QueryProver => SeekGoal => Future[LocalProver] = 
-      qp => goal => Future{
-        val lpVars = qp.lp.initState.context.variables
-        val goalVars = goal.context.variables
-        val newVars = goalVars.drop(lpVars.size)
-        val withVars = newVars.foldLeft(qp.lp){case (lp : LocalProver, x: Term) => lp.addVar(x, varWeight)}
-        withVars}    
-    
+    val response: QueryProver => SeekGoal => Future[LocalProver] =
+      qp =>
+        goal =>
+          Future {
+            val lpVars   = qp.lp.initState.context.variables
+            val goalVars = goal.context.variables
+            val newVars  = goalVars.drop(lpVars.size)
+            val withVars = newVars.foldLeft(qp.lp) {
+              case (lp: LocalProver, x: Term) => lp.addVar(x, varWeight)
+            }
+            withVars.addGoals(goal.goal -> goalWeight)
+          }
+
     MicroBot(response, subContext)
   }
 
