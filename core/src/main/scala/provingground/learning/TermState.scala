@@ -78,6 +78,11 @@ case class TermState(
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 
+  lazy val contradicted : Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] =
+    goals.filter(goal => terms.map(_.typ)(negate(goal)) > 0).pmf.map {
+      case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
+    }
+
   lazy val successTerms: Set[Term] = successes.map(_._3.support).toSet.flatten
 
   def isProd(typ: Typ[Term]) = typ match {

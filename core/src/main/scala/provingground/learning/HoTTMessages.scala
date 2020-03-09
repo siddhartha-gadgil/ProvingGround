@@ -35,7 +35,10 @@ object HoTTMessages {
       goal: Typ[Term],
       context: Context,
       forConsequences: Set[Typ[Term]] = Set()
-  )
+  ){
+    def relevantGiven(terms: Set[Term]) = 
+      terms.map(_.typ).intersect(forConsequences union forConsequences.map(negate) union Set(goal, negate(goal))).isEmpty
+  }
 
   /**
     * an initial term state from which to evolve, perhaps just to generate types

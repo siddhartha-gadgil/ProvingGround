@@ -57,6 +57,11 @@ object HoTTBot {
       (pair: TermResult) => GeneratedEquationNodes(pair._2)
     )
 
+  lazy val termResultToFinalState: HoTTBot =
+    MicroBot.simple(
+      (pair: TermResult) => FinalState(pair._1)
+    )
+
   lazy val expEvToEqns: HoTTBot =
     MicroBot.simple(
       (ev: ExpressionEval) =>
@@ -166,31 +171,28 @@ object HoTTBot {
   }
 
   lazy val deducedEquations: HoTTBot = {
-    val response
-        : GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: HNil => Proved => Future[
-          Vector[Either[Contradicted, Proved]]
-        ] = {
-      case gprop :: gdec :: HNil =>
+    val response: GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: Set[
+      Term
+    ] :: HNil => Proved => Future[
+      Set[Either[Contradicted, Proved]]
+    ] = {
+      case gprop :: gdec :: terms :: HNil =>
         proved =>
           Future {
-            derivedProofs(gprop.contents, gdec.contents)
-              .map(Decided.asEither(_))
-              .toVector
+            derivedProofs(gprop.contents, gdec.contents union terms.map { t =>
+              Proved(t.typ, Some(t), Context.Empty)
+            }).map(Decided.asEither(_))
           }
     }
 
-    new MiniBot[
-      Proved,
-      Either[Contradicted, Proved],
-      HoTTPostWeb,
-      GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: HNil,
-      ID
-    ](
-      response,
-      (_) => true
-    )
-
+    MicroBot(response)
   }
+
+  lazy val termsFromProofs: HoTTBot =
+    Callback.simple(
+      (web: HoTTPostWeb) =>
+        (pf: Proved) => pf.proofOpt.foreach(t => web.addTerms(Set(t)))
+    )
 
   lazy val lpLemmas: HoTTBot = {
     val response: Unit => LocalProver => Future[Lemmas] =
@@ -313,11 +315,11 @@ object HoTTBot {
     )
   }
 
-  lazy val addInductive : HoTTBot = {
-    val response : QueryProver => ConsiderInductiveTypes => Future[LocalProver] = 
+  lazy val addInductive: HoTTBot = {
+    val response: QueryProver => ConsiderInductiveTypes => Future[LocalProver] =
       (qp) =>
         (consInds) =>
-          Future{
+          Future {
             qp.lp.copy(
               initState = qp.lp.initState.copy(
                 inds = (qp.lp.initState.inds ++ consInds.inducs).safeNormalized
@@ -347,7 +349,7 @@ object HoTTBot {
     MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response)
   }
 
-  val resolveFromAny: HoTTBot = {
+  lazy val resolveFromAny: HoTTBot = {
     val response: Unit => FromAny => Future[Vector[SeekGoal]] =
       (_) =>
         (fromAny) =>
@@ -358,6 +360,29 @@ object HoTTBot {
           }
 
     MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](response)
+  }
+
+  lazy val productBackward: HoTTBot = {
+    MicroBot.simple(
+      (sk: SeekGoal) =>
+        sk.goal match {
+          case pd: ProdTyp[u, v] =>
+            Some(
+              FromAll(
+                Vector(pd.first, pd.second),
+                sk.goal,
+                {
+                  case Vector(x, y) => 
+                    Some(pd.paircons(x.asInstanceOf[u])(y.asInstanceOf[v]))
+                  case _ => None
+                },
+                sk.context,
+                sk.forConsequences
+              )
+            )
+          case _ => None
+        }
+    )
   }
 
   def lemmaTangents(tangentScale: Double = 1.0): HoTTBot = {
@@ -384,28 +409,33 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  // FIXME: should check that the goal is relevant still
   def goalToProver(varWeight: Double, goalWeight: Double): HoTTBot = {
-    val subContext: SeekGoal => QueryProver => Boolean =
-      (goal) =>
-        (qp: QueryProver) => {
+    val subContext: SeekGoal => QueryProver :: Set[Term] :: HNil => Boolean =
+      (goal) => {
+        case (qp: QueryProver) :: terms :: HNil => {
           val lpVars   = qp.lp.initState.context.variables
           val goalVars = goal.context.variables
           lpVars == goalVars.take(lpVars.size)
         }
+      }
 
-    val response: QueryProver => SeekGoal => Future[LocalProver] =
-      qp =>
+    val response: QueryProver :: Set[Term] :: HNil => SeekGoal => Future[
+      Option[LocalProver]
+    ] = {
+      case (qp: QueryProver) :: terms :: HNil =>
         goal =>
           Future {
-            val lpVars   = qp.lp.initState.context.variables
-            val goalVars = goal.context.variables
-            val newVars  = goalVars.drop(lpVars.size)
-            val withVars = newVars.foldLeft(qp.lp) {
-              case (lp: LocalProver, x: Term) => lp.addVar(x, varWeight)
-            }
-            withVars.addGoals(goal.goal -> goalWeight)
+            if (goal.relevantGiven(terms)) {
+              val lpVars   = qp.lp.initState.context.variables
+              val goalVars = goal.context.variables
+              val newVars  = goalVars.drop(lpVars.size)
+              val withVars = newVars.foldLeft(qp.lp) {
+                case (lp: LocalProver, x: Term) => lp.addVar(x, varWeight)
+              }
+              Some(withVars.addGoals(goal.goal -> goalWeight))
+            } else None
           }
+    }
 
     MicroBot(response, subContext)
   }

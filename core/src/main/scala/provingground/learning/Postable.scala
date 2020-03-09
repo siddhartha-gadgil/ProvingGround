@@ -72,6 +72,23 @@ object Postable {
         Impl(post)
     }
 
+  implicit def setPostable[P : TypeTag, W, ID](implicit pw: Postable[P, W, ID], uw: Postable[Unit, W, ID]) : Postable[Set[P], W, ID] = 
+    new Postable[Set[P], W, ID] {
+      def post(content: Set[P], web: W, pred: Set[ID]): Future[ID] = 
+        content.headOption.map{
+          x =>
+            val tail = content - x 
+            pw.post(x, web, pred).flatMap(
+              pid => 
+                 if (tail.isEmpty) Future(pid) else post(tail, web, Set(pid))
+            )
+          ???
+        }.getOrElse(uw.post((), web, pred))
+      
+      val tag: reflect.runtime.universe.TypeTag[Set[P]] = implicitly
+      
+    }
+
   /**
     * post a `Try[P]` by posting `P` or an error 
     *

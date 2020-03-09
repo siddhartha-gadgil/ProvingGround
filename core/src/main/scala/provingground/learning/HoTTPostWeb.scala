@@ -24,12 +24,18 @@ class HoTTPostWeb {
 
   var equationNodes: Set[EquationNode] = Set()
 
+  var extraTerms: Set[Term] = Set()
+
   def equations = Equation.group(equationNodes)
 
-  def terms = ExpressionEval.terms(equationNodes)
+  def terms = ExpressionEval.terms(equationNodes) union extraTerms
 
   def addEqns(eqs: Set[EquationNode]): Unit = {
     equationNodes ++= eqs
+  }
+
+  def addTerms(terms: Set[Term]) : Unit = {
+    extraTerms ++= terms
   }
 
   val polyBuffer =
