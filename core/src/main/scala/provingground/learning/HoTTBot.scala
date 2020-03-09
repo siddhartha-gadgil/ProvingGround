@@ -171,11 +171,12 @@ object HoTTBot {
   }
 
   lazy val deducedEquations: HoTTBot = {
-    val response: GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: Set[
-      Term
-    ] :: HNil => Proved => Future[
-      Set[Either[Contradicted, Proved]]
-    ] = {
+    val response
+        : GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: Set[
+          Term
+        ] :: HNil => Proved => Future[
+          Set[Either[Contradicted, Proved]]
+        ] = {
       case gprop :: gdec :: terms :: HNil =>
         proved =>
           Future {
@@ -200,6 +201,48 @@ object HoTTBot {
         (lp) =>
           lp.lemmas.runToFuture
             .map(v => Lemmas(v.map(xy => (xy._1, None, xy._2))))
+    MicroBot(response)
+  }
+
+  def lpOptimalInit(decay: Double): HoTTBot = {
+    val response: Unit => LocalProver => Future[OptimalInitial] =
+      (_) =>
+        (lp) =>
+          lp.optimalInit.map { lpOpt =>
+            OptimalInitial(
+              lpOpt,
+              lp.hW,
+              lp.klW,
+              lp.smoothing.getOrElse(0.0),
+              decay
+            )
+          }.runToFuture
+    MicroBot(response)
+  }
+
+  lazy val narrowOptimalInit: HoTTBot = {
+    val response
+        : QueryProver => NarrowOptimizeGenerators => Future[OptimalInitial] =
+      (qp) =>
+        (narrow) => {
+          val lp = qp.lp
+          for {
+            ev0 <- lp.expressionEval
+            ev = ev0.modify(smoothNew = Some(narrow.smoothing), decayNew = narrow.decay)
+            p  <- ev.optimumTask(narrow.hW,narrow.klW, lp.cutoff, ev.finalDist, lp.maxRatio)
+            td: FiniteDistribution[Term] = ExpressionEval.dist(TermRandomVars.Terms, p)
+            ts                           = lp.initState.copy(terms = td)
+          } yield lp.copy(initState = ts)
+        }.map { lpOpt =>
+            OptimalInitial(
+              lpOpt,
+              narrow.hW,
+              narrow.klW,
+              narrow.smoothing,
+              narrow.decay
+            )
+          }.runToFuture
+
     MicroBot(response)
   }
 
@@ -370,9 +413,8 @@ object HoTTBot {
             Some(
               FromAll(
                 Vector(pd.first, pd.second),
-                sk.goal,
-                {
-                  case Vector(x, y) => 
+                sk.goal, {
+                  case Vector(x, y) =>
                     Some(pd.paircons(x.asInstanceOf[u])(y.asInstanceOf[v]))
                   case _ => None
                 },

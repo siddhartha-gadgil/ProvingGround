@@ -285,21 +285,21 @@ object HoTTMessages {
   def withWeight[A](value: A, weight: Double): WithWeight[A] =
     Weight(weight) :: value :: HNil
 
-  case class OptimizeGenerators(damping: Double)
+  case class OptimizeGenerators(decay: Double)
 
   case class NarrowOptimizeGenerators(
       hW: Double,
       klW: Double,
       smoothing: Double,
-      damping: Double
+      decay: Double
   )
 
   case class OptimalInitial(
-      terms: FiniteDistribution[Term],
+      lp: LocalProver,
       hW: Double,
       klW: Double,
       smoothing: Double,
-      damping: Double
+      decay: Double
   )
 
   case object GenerateTypes
