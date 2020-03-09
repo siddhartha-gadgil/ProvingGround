@@ -313,7 +313,7 @@ object HoTTBot {
                       x,
                       goal.goal,
                       goal.context,
-                      goal.forConsequences
+                      goal.forConsequences + goal.goal
                     ),
                     p
                   )
@@ -323,6 +323,36 @@ object HoTTBot {
         }
 
     MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID](
+      response
+    )
+  }
+
+  lazy val instanceFromLp: HoTTBot = {
+    val response: QueryProver => SeekInstances => Future[
+      Vector[WithWeight[Instance]]
+    ] =
+      qp =>
+        seekInst => {
+          import TermGeneratorNodes._
+          qp.lp
+            .varDist(termsWithTyp(seekInst.typ))
+            .map { fd: FiniteDistribution[Term] =>
+              fd.pmf.map {
+                case Weighted(x, p) =>
+                  withWeight(
+                    Instance(
+                      x,
+                      seekInst.typ,
+                      seekInst.context
+                    ),
+                    p
+                  )
+              }
+            }
+            .runToFuture
+        }
+
+    MiniBot[SeekInstances, WithWeight[Instance], HoTTPostWeb, QueryProver, ID](
       response
     )
   }
@@ -385,7 +415,7 @@ object HoTTBot {
         (fromAll) =>
           Future {
             fromAll.typs.map(
-              typ => SeekGoal(typ, fromAll.context, fromAll.forConsequences)
+              typ => SeekGoal(typ, fromAll.context, fromAll.forConsequences + fromAll.conclusion)
             )
           }
 
@@ -398,7 +428,7 @@ object HoTTBot {
         (fromAny) =>
           Future {
             fromAny.typs.map(
-              typ => SeekGoal(typ, fromAny.context, fromAny.forConsequences)
+              typ => SeekGoal(typ, fromAny.context, fromAny.forConsequences + fromAny.conclusion)
             )
           }
 

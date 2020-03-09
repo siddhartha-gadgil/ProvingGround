@@ -338,7 +338,7 @@ object HoTTMessages {
       }
   }
 
-  case class Instance(term: Term, typ: Typ[Term]) {
+  case class Instance(term: Term, typ: Typ[Term], context: Context) {
     assert(term.typ == typ)
   }
 
