@@ -69,15 +69,15 @@ object HoTTBot {
     )
 
   lazy val instanceToGoal: HoTTBot = {
-    val response: SeekInstances[_, _] => Instance[_] => Future[
+    val response: SeekInstances => Instance => Future[
       Option[Consequence :: SeekGoal :: HNil]
     ] = {
-      case seek: SeekInstances[a, b] => {
-        case instance: Instance[c] =>
+      case seek: SeekInstances => {
+        case instance: Instance =>
           Future(
             if (instance.typ == seek.typ) {
-              val newGoal = (seek: SeekInstances[a, b])
-                .goal(instance.term.asInstanceOf[a])
+              val newGoal = (seek: SeekInstances)
+                .goalCast(instance.term)
               val deduction: Term => Term =
                 (x) => mkPair(instance.term.asInstanceOf[Term], x: Term)
               val cons = Consequence(
@@ -421,6 +421,47 @@ object HoTTBot {
                 sk.context,
                 sk.forConsequences
               )
+            )
+          case _ => None
+        }
+    )
+  }
+
+  lazy val coproductBackward: HoTTBot = {
+    MicroBot.simple(
+      (sk: SeekGoal) =>
+        sk.goal match {
+          case pt: PlusTyp[u, v] =>
+            Some(
+              FromAny(
+                Vector(pt.first, pt.second),
+                sk.goal, 
+                true,
+                Vector(
+                  (x: Term) => Some(pt.incl1(x.asInstanceOf[u])),
+                  (x: Term) => Some(pt.incl2(x.asInstanceOf[v]))
+                ),
+                sk.context,
+                sk.forConsequences
+              )
+            )
+          case _ => None
+        }
+    )
+  }
+
+  lazy val sigmaBackward: HoTTBot = {
+    MicroBot.simple[SeekGoal, Option[SeekInstances], HoTTPostWeb, ID](
+      (sk: SeekGoal) =>
+        sk.goal match {
+          case pt: SigmaTyp[u, v] =>
+            Some(
+              SeekInstances(
+                pt.fibers.dom,
+                pt.fibers,
+                sk.context,
+                sk.forConsequences
+              ) 
             )
           case _ => None
         }

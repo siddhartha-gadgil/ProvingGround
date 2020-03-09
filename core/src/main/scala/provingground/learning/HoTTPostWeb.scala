@@ -46,8 +46,8 @@ class HoTTPostWeb {
       PostBuffer.build[UseLemmaDistribution, ID] ::
       PostBuffer.build[Lemmas, ID] ::
       PostBuffer.build[SeekGoal, ID] ::
-      PostBuffer.build[Instance[_], ID] ::
-      PostBuffer.build[SeekInstances[_, _], ID] ::
+      PostBuffer.build[Instance, ID] ::
+      PostBuffer.build[SeekInstances, ID] ::
       PostBuffer.build[InitState, ID] ::
       ErasablePostBuffer.build[FinalState, ID] ::
       ErasablePostBuffer.build[TermResult, ID] ::

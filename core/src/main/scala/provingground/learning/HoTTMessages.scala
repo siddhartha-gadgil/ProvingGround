@@ -306,16 +306,39 @@ object HoTTMessages {
 
   case object GenerateTerms
 
-  case class SeekInstances[U <: Term with Subs[U], V <: Term with Subs[V]](
-      typ: Typ[U],
-      goal: TypFamily[U, V],
-      context: Context,
-      forConsequences: Set[Typ[Term]] = Set()
-  ) {
-    val sigma = SigmaTyp(goal)
+  trait SeekInstances{
+      type U <: Term with Subs[U]
+      type V <: Term with Subs[V]
+
+      val  typ: Typ[U]
+      val goal: TypFamily[U, V]
+
+      def goalCast(t: Term) = goal(t.asInstanceOf[U])
+      val context: Context
+      val forConsequences: Set[Typ[Term]] 
+
+      val sigma = SigmaTyp[U, V](goal)
   }
 
-  case class Instance[U <: Term with Subs[U]](term: U, typ: Typ[U]) {
+  object SeekInstances{
+    def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](tp: Typ[X], gl: TypFamily[X, Y], ctx: Context, fc: Set[Typ[Term]]) : SeekInstances = 
+      new SeekInstances{
+        type U = X 
+
+        type V = Y
+
+        val typ: HoTT.Typ[U] = tp
+        
+        val goal: HoTT.TypFamily[U,V] = gl
+        
+        val context: Context = ctx
+
+        val forConsequences: Set[HoTT.Typ[HoTT.Term]] = fc
+        
+      }
+  }
+
+  case class Instance(term: Term, typ: Typ[Term]) {
     assert(term.typ == typ)
   }
 
@@ -378,13 +401,15 @@ object HoTTMessages {
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
       exhaustive: Boolean,
-      proofsOpt: Map[Term, Option[Term]],
+      proofsOpt: Vector[Term => Option[Term]],
       context: Context,
       forConsequences: Set[Typ[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty) {
-        val proofOpt = proofs.find(t => typs.contains(t.typ)).flatMap(proofsOpt)
+        val proofOpt = proofs.find(t => typs.contains(t.typ)).flatMap(
+          x => typs.zip(proofsOpt).find(_._1 == x.typ).flatMap{case (_, pfMap) => pfMap(x)}
+        )
         Some(Proved(conclusion, proofOpt, context))
       } else if (exhaustive && typs.toSet.subsetOf(proofs.map(_.typ)))
         Some(Contradicted(conclusion, None, context))
