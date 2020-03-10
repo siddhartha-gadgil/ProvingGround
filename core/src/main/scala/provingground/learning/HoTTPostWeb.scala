@@ -87,7 +87,7 @@ object HoTTPostWeb {
 
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =
-    HistoryGetter.get((w: HoTTPostWeb) => w.polyBuffer)
+    HistoryGetter.get((w: HoTTPostWeb) => w.polyBuffer :: w.polyBuffer2)
 
   implicit def equationNodeQuery: Queryable[Set[EquationNode], HoTTPostWeb] =
     Queryable.simple(_.equationNodes)
