@@ -11,6 +11,10 @@ trait Postable[P, W, ID] {
   val tag: TypeTag[P]
 }
 
+trait BiPostable[P, W, ID] extends Postable[P, W, ID]{
+  def postAt(content: P, web: W, id: ID, pred: Set[ID]) : Future[Unit]
+}
+
 object Postable {
     implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
@@ -82,7 +86,6 @@ object Postable {
               pid => 
                  if (tail.isEmpty) Future(pid) else post(tail, web, Set(pid))
             )
-          ???
         }.getOrElse(uw.post((), web, pred))
       
       val tag: reflect.runtime.universe.TypeTag[Set[P]] = implicitly
