@@ -560,7 +560,11 @@ object HoTTBot {
       pprint.log(post.id)
     }
 
-  val wrapTest = implicitly[LocalQueryable[QueryProver, HoTTPostWeb, ID]] // a test
+  def tagLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
+    Future {
+      translation.FansiShow.fansiPrint.log(post.pw.tag)
+      pprint.log(post.id)
+    }
 
 }
 

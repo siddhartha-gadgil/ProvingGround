@@ -317,6 +317,17 @@ object TermPatterns {
     case _ => None
   }(namedTrav)
 
+  def numberedSymbolic(prefix: String) = Pattern[Term, Numbered] {
+    case sym: Symbolic with Term =>
+      outerSym(sym).name match {
+        case Name(name) if (name.startsWith(prefix)) && (sym == outerSym(sym)) =>
+            Some((nameCard(name.drop(prefix.length())) , sym.typ))
+          
+        case _ => None
+      }
+    case _ => None
+  }(numberedTrav)
+
   val hashSymbolic = Pattern[Term, Named] {
     case sym: Symbolic with Term =>
       outerSym(sym).name match {

@@ -153,10 +153,14 @@ object Functors extends CompositeFunctors {
     */
   type Named[A] = (S[A], Id[A])
 
+  type Numbered[A] = (N[A], Id[A])
+
   /**
     * Traverse type class for identity with name
     */
   implicit val namedTrav: Traverse[Named] = traversePair[S, Id]
+
+  implicit val numberedTrav: Traverse[Numbered] = traversePair[N, Id]
 
   /**
     * functor for pairs
