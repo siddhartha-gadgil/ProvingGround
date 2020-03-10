@@ -28,6 +28,11 @@ trait PostBuffer[P, ID] extends GlobalPost[P, ID] { self =>
     }
   }
 
+  def postAt(content:P, id: ID, prev: Set[ID]): Future[Unit] = 
+    Future{
+      buffer.append((content, id, prev))
+    }
+
   def find[W](index: ID)(
       implicit pw: Postable[P, W, ID]
   ): Option[(PostData[P, W, ID], Set[ID])] = buffer.find(_._2 == index).map {
@@ -62,10 +67,15 @@ case class WebBuffer[P, ID](buffer: PostBuffer[P, ID])(
 object ErasablePostBuffer {
   def bufferPost[P: TypeTag, W, ID](
       buffer: W => ErasablePostBuffer[P, ID]
-  ): Postable[P, W, ID] = {
-    def postFunc(p: P, web: W, ids: Set[ID]): Future[ID] =
-      buffer(web).post(p, ids)
-    Postable(postFunc)
+  ): BiPostable[P, W, ID] = {
+    new BiPostable[P, W, ID]{
+      def post(content: P, web: W, pred: Set[ID]): Future[ID] = buffer(web).post(content, pred)
+      
+      val tag: reflect.runtime.universe.TypeTag[P] = implicitly
+
+      def postAt(content: P, web: W, id: ID, pred: Set[ID]): Future[Unit] = Future(())
+      
+    }
   }
 
   def build[P, ID](implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
@@ -82,10 +92,12 @@ trait PostDiscarder[P, ID] extends GlobalPost[P, ID]{
 object PostDiscarder {
   def discardPost[P: TypeTag, W, ID](
       buffer: W => PostDiscarder[P, ID]
-  ): Postable[P, W, ID] = new Postable[P, W, ID] {
+  ): BiPostable[P, W, ID] = new BiPostable[P, W, ID] {
     def post(content: P, web: W, pred: Set[ID]): Future[ID] =
       Future(buffer(web).zero)
     val tag: reflect.runtime.universe.TypeTag[P] = implicitly
+
+    def postAt(content: P, web: W, id: ID, pred: Set[ID]) : Future[Unit] = Future(())
   }
 
   def build[P, ID](nop: ID)(implicit gp: GlobalID[ID]): PostDiscarder[P, ID] =
@@ -198,10 +210,15 @@ object PostBuffer {
     */
   def bufferPost[P: TypeTag, W, ID](
       buffer: W => PostBuffer[P, ID]
-  ): Postable[P, W, ID] = {
-    def postFunc(p: P, web: W, ids: Set[ID]): Future[ID] =
-      buffer(web).post(p, ids)
-    Postable(postFunc)
+  ): BiPostable[P, W, ID] = {
+    new BiPostable[P, W, ID]{
+      def post(content: P, web: W, pred: Set[ID]): Future[ID] = buffer(web).post(content, pred)
+      
+      val tag: reflect.runtime.universe.TypeTag[P] = implicitly
+
+      def postAt(content: P, web: W, id: ID, pred: Set[ID]): Future[Unit] = buffer(web).postAt(content, id, pred)
+      
+    }
   }
 }
 
@@ -223,37 +240,37 @@ object BuildPostable {
 
   implicit def bufferCons[W, P: TypeTag, ID, Bt <: HList, Pt <: HList](
       implicit tailBuilder: BuildPostable[W, Bt, Pt]
-  ): BuildPostable[W, PostBuffer[P, ID] :: Bt, Postable[P, W, ID] :: Pt] =
-    new BuildPostable[W, PostBuffer[P, ID] :: Bt, Postable[P, W, ID] :: Pt] {
+  ): BuildPostable[W, PostBuffer[P, ID] :: Bt, BiPostable[P, W, ID] :: Pt] =
+    new BuildPostable[W, PostBuffer[P, ID] :: Bt, BiPostable[P, W, ID] :: Pt] {
       def postable(
           buffer: W => PostBuffer[P, ID] :: Bt
-      ): Postable[P, W, ID] :: Pt =
+      ): BiPostable[P, W, ID] :: Pt =
         PostBuffer.bufferPost((web: W) => buffer(web).head) :: tailBuilder
           .postable((web: W) => buffer(web).tail)
     }
 
   implicit def erasablebufferCons[W, P: TypeTag, ID, Bt <: HList, Pt <: HList](
       implicit tailBuilder: BuildPostable[W, Bt, Pt]
-  ): BuildPostable[W, ErasablePostBuffer[P, ID] :: Bt, Postable[P, W, ID] :: Pt] =
+  ): BuildPostable[W, ErasablePostBuffer[P, ID] :: Bt,BiPostable[P, W, ID] :: Pt] =
     new BuildPostable[
       W,
       ErasablePostBuffer[P, ID] :: Bt,
-      Postable[P, W, ID] :: Pt
+     BiPostable[P, W, ID] :: Pt
     ] {
       def postable(
           buffer: W => ErasablePostBuffer[P, ID] :: Bt
-      ): Postable[P, W, ID] :: Pt =
+      ):BiPostable[P, W, ID] :: Pt =
         ErasablePostBuffer.bufferPost((web: W) => buffer(web).head) :: tailBuilder
           .postable((web: W) => buffer(web).tail)
     }
 
   implicit def discardCons[W, P: TypeTag, ID, Bt <: HList, Pt <: HList](
       implicit tailBuilder: BuildPostable[W, Bt, Pt]
-  ): BuildPostable[W, PostDiscarder[P, ID] :: Bt, Postable[P, W, ID] :: Pt] =
-    new BuildPostable[W, PostDiscarder[P, ID] :: Bt, Postable[P, W, ID] :: Pt] {
+  ): BuildPostable[W, PostDiscarder[P, ID] :: Bt,BiPostable[P, W, ID] :: Pt] =
+    new BuildPostable[W, PostDiscarder[P, ID] :: Bt,BiPostable[P, W, ID] :: Pt] {
       def postable(
           buffer: W => PostDiscarder[P, ID] :: Bt
-      ): Postable[P, W, ID] :: Pt =
+      ):BiPostable[P, W, ID] :: Pt =
         PostDiscarder.discardPost((web: W) => buffer(web).head) :: tailBuilder
           .postable((web: W) => buffer(web).tail)
     }
