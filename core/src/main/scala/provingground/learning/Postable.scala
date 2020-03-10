@@ -82,7 +82,6 @@ object Postable {
               pid => 
                  if (tail.isEmpty) Future(pid) else post(tail, web, Set(pid))
             )
-          ???
         }.getOrElse(uw.post((), web, pred))
       
       val tag: reflect.runtime.universe.TypeTag[Set[P]] = implicitly
