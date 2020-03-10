@@ -57,6 +57,24 @@ trait PostHistory[W, ID] {
           .map(ids => ids.flatMap(rid => latestAnswers(web, rid, answer)))
       )
       .getOrElse(Set())
+
+  def previousAnswers[Q](
+      web: W,
+      id: ID
+  )(implicit qw: Postable[Q, W, ID]): Set[Q] =
+    findPost(web, id)
+      .map {
+        case (pd, preds) =>
+          val head = pd.getOpt[Q].toSet
+          val tail = preds.flatMap(pid => previousAnswers(web, pid))
+          tail union head  
+      }
+      .orElse(
+        redirects(web)
+          .get(id)
+          .map(ids => ids.flatMap(rid => previousAnswers(web, rid)))
+      )
+      .getOrElse(Set())
 }
 
 object PostHistory {

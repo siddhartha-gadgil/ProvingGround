@@ -271,6 +271,15 @@ object LocalQueryable extends FallBackLookups {
       }
   }
 
+  implicit def previousQuery[P, W, ID](
+      implicit ph: PostHistory[W, ID],
+      pw: Postable[P, W, ID]
+  ): LocalQueryable[PreviousPost[P], W, ID] = 
+    new LocalQueryable[PreviousPost[P], W, ID]{
+      def getAt(web: W, id: ID, predicate: PreviousPost[P] => Boolean): Future[Vector[PreviousPost[P]]] = 
+        Future(Vector(PreviousPost(ph.previousAnswers[P](web, id))))
+    }
+
   /**
     * query a conjunction of two queryable types
     *
@@ -335,6 +344,8 @@ case class SomePost[P](content: P)
 case class GatherPost[P](contents: Set[P])
 
 case class GatherMapPost[P](contents: Set[P])
+
+case class PreviousPost[P](contents: Set[P])
 
 sealed trait PostMaps[P] {
   def getOpt[W, ID](pd: PostData[_, W, ID]): Option[P]
