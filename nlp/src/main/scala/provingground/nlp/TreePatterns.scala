@@ -73,7 +73,6 @@ object TreePatterns {
                            Vector(VB(s1), Node("VP", (VB(s2)) +: tail))) =>
           val w = PennTrees.mkLeaf(s1 + " " + s2, parent)
           val n = PennTrees.mkTree(Vector(w), "VB", parent)
-//          pprint.log(n +: tail)
           n +: tail
         case parent @ Node(
               "VP",
@@ -82,10 +81,8 @@ object TreePatterns {
             ) =>
           val w = PennTrees.mkLeaf(s0 + " " + s1 + " " + s2, parent)
           val n = PennTrees.mkTree(Vector(w), "VB", parent)
-          // pprint.log(n +: tail)
           n +: tail
         case Node("VP", xs) =>
-          // pprint.log(xs)
           xs
       })
 
@@ -262,15 +259,10 @@ object TreePatterns {
 
   val ifSplit: Tree => Option[(Tree, Tree)] = {
     case parent @ Node(tag, init :+ IfNode(condition)) =>
-      // pprint.log(parent)
       pprint.log(condition)
       pprint.log(ExistSP.unapply(condition))
       Some(condition -> PennTrees.mkTree(init, tag, parent))
     case parent @ Node(tag, init :+ last) =>
-      // pprint.log(parent)
-      // pprint.log(last)
-      // pprint.log(FormalExpr.translator(last))
-      // pprint.log(IfNode.unapply(last))
       for {
         (condition, stump) <- ifSplit(last)
       } yield condition -> PennTrees.mkTree(init :+ stump, tag, parent)
@@ -320,7 +312,6 @@ object TreePatterns {
             if (adjs.forall((adj) => adj.value.startsWith("JJ") || adj.value.startsWith("RB") || adj.value.startsWith("N")) && (np.value
               .startsWith("NN") || np.value == "CD") &&
               (npp.value.startsWith("N") || npp.value == "CD")) =>
-          // pprint.log(npp)
           (det, (adjs, (np, npp)))
         case Node("NP",
                   Vector(

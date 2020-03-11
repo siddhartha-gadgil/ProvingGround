@@ -1220,11 +1220,6 @@ trait ExpressionEval { self =>
         maxTime
       )
     )
-    // if (p.keySet == newMap.keySet) pprint.log(mapRatio(p, newMap))
-    // else {
-    //   pprint.log(p.keySet -- newMap.keySet)
-    //   pprint.log(newMap.keySet -- p.keySet)
-    // }
     newMap
   }
 
@@ -1304,7 +1299,6 @@ trait ExpressionEval { self =>
       epg <- FixedExpressionProbs(p).entropyProjectionTask(hW, klW)
       newMap = stableGradShift(p, epg).filter(t => t._2 > cutoff)
       stable = ((newMap.keySet == p.keySet) && (mapRatio(p, newMap) < maxRatio))
-      // _ = pprint.log(stable)
     } yield stable -> newMap).flatMap {
       case (true, m)  => Task.now(m)
       case (false, m) => optimumTask(hW, klW, cutoff, m)

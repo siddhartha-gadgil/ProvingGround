@@ -704,7 +704,6 @@ case class MonixTangentFiniteDistributionEq[State](
                         rhs
                       )
                     }
-                  // pprint.log(isleIn.size)
                   (
                     fd.map(export(boat, _))
                       .purge(epsilon),

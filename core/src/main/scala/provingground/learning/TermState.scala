@@ -59,8 +59,6 @@ case class TermState(
 
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
-  // pprint.log(context.variables)
-
   lazy val thmsByPf: FD[Typ[Term]] =
     terms
       .map(_.typ)

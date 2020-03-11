@@ -86,7 +86,6 @@ object FineProverTasks {
         }
         val tot   = scales.map { case (_, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
-        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
             termdistDerTask(base, FD.unif(v), tv, sc * ratio, maxtime, vars)
@@ -117,7 +116,6 @@ object FineProverTasks {
         }
         val tot   = scales.map { case (_, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
-        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
             for {
@@ -157,7 +155,6 @@ object FineProverTasks {
         }
         val tot   = scales.map { case (_, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
-        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
             for {
@@ -197,7 +194,6 @@ object FineProverTasks {
         }
         val tot   = scales.map { case (_, _, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
-        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, p, sc) =>
             for {
@@ -326,7 +322,6 @@ object FineProverTasks {
     ): Task[Vector[Task[(FD[Term], Vector[Term])]]] = {
       val (vec, ac) = vecAc
       if (fd.total == 0) Task.pure(Vector())
-      // pprint.log(s"spawning tasks from $vec")
       else
         dervecTraceTasks(
           fd.safeNormalized,
@@ -378,7 +373,6 @@ object FineProverTasks {
       Vector[Task[(FD[Term], Vector[Term], Set[Term], Set[Typ[Term]])]]] = {
       val (vec, ac, termSet, typSet) = vecAc
       if (fd.total == 0) Task.pure(Vector())
-      // pprint.log(s"spawning tasks from $vec")
       else
         dervecMemoTasks(
           fd.safeNormalized,

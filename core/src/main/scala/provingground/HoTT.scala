@@ -212,8 +212,6 @@ object HoTT {
                   .symbObj(xs.name)
                   .typ == y.typ) =>
               val typchange = replace(x.typ, y.typ)
-//             if (self != typchange) {  pprint.log(self, height = 300)
-//              pprint.log(typchange, height = 300)}
               typchange replace ((y.typ).symbObj(xs.name), y)
 
             case _ => subs(x, y)
@@ -620,12 +618,6 @@ object HoTT {
     name match {
       case ApplnSym(func : Func[u, v], arg: Term) => 
         if (func.codom != Universe(level)) {
-          // pprint.log(level)
-          // pprint.log(func)
-          // pprint.log(arg)
-          // pprint.log(func.codom)
-          // pprint.log(applyFunc(func, arg))
-          // pprint.log(applyFunc(func, arg).typ)
           throw new ApplnFailException(func, arg)
         }
       case _ => ()
@@ -858,23 +850,12 @@ object HoTT {
         val x   = st.fibers.dom.Var
         val Px  = st.fibers(x)
         val Neg = x ~>: negate(Px)
-        // pprint.log(Neg)
         val y   = Px.Var
         val p   = mkPair(x, y)
-        // pprint.log(p)
         val z = negateContra(Px)
-        // pprint.log(z)
-        // pprint.log(y)
         val f   = Neg.Var
-        // pprint.log(f)
-        // println(f)
-        // println(f.typ)
-        // pprint.log(x)
-        // println(x)
         val fx = f(x)
-        // pprint.log(fx)
         val targ = fold(z)(y, fx)
-        // pprint.log(targ)
         p :~> (f :~>  targ )
       case Unit =>
         val x = Unit.Var
@@ -1169,10 +1150,8 @@ object HoTT {
 
     override def equals(that: Any): Boolean = that match {
       case Universe(k) if (ignoreLevels || k == level) =>
-        // if (k != level) pprint.log(s"mismatched universe levels $level and $k")
         true
       case _: BaseUniv if (ignoreLevels || level == 0) =>
-        // if (level != 0) pprint.log(s"mismatched universe levels $level and Base")
         true
       case _ => false
     }
@@ -2028,12 +2007,6 @@ object HoTT {
     override def canApply(arg: W): Boolean =
       (dom == arg.typ) || {
         val result = (isUniv(dom) && isUniv(arg.typ))
-        // if (result){
-          // pprint.log(dom)
-          // pprint.log(arg.typ)
-          // pprint.log(this)
-          // pprint.log(arg)
-        // }      
         result   
       }
 
@@ -2151,9 +2124,6 @@ object HoTT {
     lazy val dom: Typ[X] = variable.typ.asInstanceOf[Typ[X]]
 
     override def usesVar(t: Term): Boolean = {
-      // pprint.log(t)
-      // pprint.log(variable)
-      // pprint.log(value)
       (t == variable) || value.usesVar(t)
     }
 
@@ -2175,12 +2145,6 @@ object HoTT {
       (dom == arg.typ) ||
       {
         val result = resizedEqual(dom, arg.typ)
-        // if (result){
-        //   pprint.log(dom)
-        //   pprint.log(arg.typ)
-        //   pprint.log(this)
-        //   pprint.log(arg)
-        // }      
         result   
       }
 
@@ -2681,25 +2645,15 @@ object HoTT {
     lazy val typ = PiDefn(variable, value)
 
     def act(arg: W): U = 
-        // if (dom == arg.typ)
           depcodom(arg).symbObj(ApplnSym(this, arg))
-        // else 
-        //   depcodom(arg).replace(dom, arg.typ).symbObj(ApplnSym(this, arg))
 
     override def canApply(arg: W): Boolean =
       (dom == arg.typ) ||{
         val result = (isUniv(dom) && isUniv(arg.typ))
-        // if (result){
-        //   pprint.log(dom)
-        //   pprint.log(arg.typ)
-        //   pprint.log(this)
-        //   pprint.log(arg)
-        // }      
         result   
       }
 
     def newobj: PiSymbolicFunc[W, U] = {
-      // val newvar = variable.newobj
       PiSymbolicFunc(
         InnerSym[FuncLike[W, U]](this),
         variable, // newvar,

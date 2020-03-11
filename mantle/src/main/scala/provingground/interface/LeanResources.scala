@@ -96,7 +96,6 @@ object LeanRoutes extends cask.Routes {
 
   @cask.get("/files")
   def files(): String = {
-//    pprint.log(index.mkString(","))
     sendLog("sending files")
     uwrite(index.toVector)
   }

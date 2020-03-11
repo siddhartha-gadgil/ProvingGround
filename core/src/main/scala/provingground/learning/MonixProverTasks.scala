@@ -84,7 +84,6 @@ object MonixProverTasks {
         }
         val tot   = scales.map { case (_, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
-        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, sc) =>
             pprint.log("Spawning from lemma")
@@ -127,7 +126,6 @@ object MonixProverTasks {
         }
         val tot   = scales.map { case (_, _, x) => 1 / x }.sum
         val ratio = max(tot * cutoff, 1.0)
-        // pprint.log(s"want: ${1/cutoff}, actual total: $tot from ${scales.size}")
         scales.map {
           case (v, p, sc) =>
             for {
@@ -163,7 +161,6 @@ object MonixProverTasks {
         vecAc: (FD[Term], Vector[Term])
     ): Task[Vector[Task[(FD[Term], Vector[Term])]]] = {
       val (vec, ac) = vecAc
-//      pprint.log(s"spawning tasks:\n from ${vec.entropyView}\n types: ${vec.map(_.typ).entropyView}\n spawns: ${vec.flatten.supp.length}")
       if (fd.total == 0) Task.pure(Vector())
       else
         dervecTraceTasks(

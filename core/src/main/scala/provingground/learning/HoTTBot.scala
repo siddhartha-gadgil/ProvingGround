@@ -228,20 +228,32 @@ object HoTTBot {
           val lp = qp.lp
           for {
             ev0 <- lp.expressionEval
-            ev = ev0.modify(smoothNew = Some(narrow.smoothing), decayNew = narrow.decay)
-            p  <- ev.optimumTask(narrow.hW,narrow.klW, lp.cutoff, ev.finalDist, lp.maxRatio)
-            td: FiniteDistribution[Term] = ExpressionEval.dist(TermRandomVars.Terms, p)
-            ts                           = lp.initState.copy(terms = td)
-          } yield lp.copy(initState = ts)
-        }.map { lpOpt =>
-            OptimalInitial(
-              lpOpt,
+            ev = ev0.modify(
+              smoothNew = Some(narrow.smoothing),
+              decayNew = narrow.decay
+            )
+            p <- ev.optimumTask(
               narrow.hW,
               narrow.klW,
-              narrow.smoothing,
-              narrow.decay
+              lp.cutoff,
+              ev.finalDist,
+              lp.maxRatio
             )
-          }.runToFuture
+            td: FiniteDistribution[Term] = ExpressionEval.dist(
+              TermRandomVars.Terms,
+              p
+            )
+            ts = lp.initState.copy(terms = td)
+          } yield lp.copy(initState = ts)
+        }.map { lpOpt =>
+          OptimalInitial(
+            lpOpt,
+            narrow.hW,
+            narrow.klW,
+            narrow.smoothing,
+            narrow.decay
+          )
+        }.runToFuture
 
     MicroBot(response)
   }
@@ -415,7 +427,12 @@ object HoTTBot {
         (fromAll) =>
           Future {
             fromAll.typs.map(
-              typ => SeekGoal(typ, fromAll.context, fromAll.forConsequences + fromAll.conclusion)
+              typ =>
+                SeekGoal(
+                  typ,
+                  fromAll.context,
+                  fromAll.forConsequences + fromAll.conclusion
+                )
             )
           }
 
@@ -428,7 +445,12 @@ object HoTTBot {
         (fromAny) =>
           Future {
             fromAny.typs.map(
-              typ => SeekGoal(typ, fromAny.context, fromAny.forConsequences + fromAny.conclusion)
+              typ =>
+                SeekGoal(
+                  typ,
+                  fromAny.context,
+                  fromAny.forConsequences + fromAny.conclusion
+                )
             )
           }
 
@@ -465,7 +487,7 @@ object HoTTBot {
             Some(
               FromAny(
                 Vector(pt.first, pt.second),
-                sk.goal, 
+                sk.goal,
                 true,
                 Vector(
                   (x: Term) => Some(pt.incl1(x.asInstanceOf[u])),
@@ -491,7 +513,7 @@ object HoTTBot {
                 pt.fibers,
                 sk.context,
                 sk.forConsequences
-              ) 
+              )
             )
           case _ => None
         }
@@ -566,6 +588,14 @@ object HoTTBot {
       pprint.log(post.id)
     }
 
+  import scribe._
+  val logger = Logger("HoTTBotLog")
+
+  def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Unit = {
+    logger.info(s"posted ${post.pw.tag.tpe}")
+    logger.info(post.id.toString)
+    logger.debug(post.content.toString)
+  }
 }
 
 import HoTTBot._

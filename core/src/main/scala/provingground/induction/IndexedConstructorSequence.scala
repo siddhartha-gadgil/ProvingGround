@@ -589,7 +589,6 @@ object IndexedConstructorSeqDom {
       def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(
           x: Term,
           y: Term) = {
-        // pprint.log(s"substitution for indexed inductive type definition ${a.W}")
         a.subs(x, y)
       }
     }

@@ -21,8 +21,6 @@ case class GeneratorVariables[State](
     state: State
 )(implicit sd: StateDistribution[State, FD]) {
 
-//  pprint.log(s"Generating variables from $state")
-
   def varSupport[Y](rv: RandomVar[Y]): Set[Y] =
     StateDistribution.value(state)(rv).support
 

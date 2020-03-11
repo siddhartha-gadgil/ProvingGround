@@ -227,7 +227,6 @@ object Site {
         Try {
           val jsArr = ujson.read(read(resource / "tut-list.json"))
           jsArr.arr.map { (js) =>
-            // pprint.log(js)
             val name        = js.obj("name").str
             val title       = js.obj("title").str
             val url: String = s"${relDocsPath}tuts/$name.html"
@@ -317,7 +316,6 @@ object Site {
           val jsArr = ujson.read(read(resource / "posts-list.json"))
           jsArr.arr.map {
             (js) =>
-              // pprint.log(js)
               val name        = js.obj("name").str
               val dateString  = js.obj("date").str
               val title       = js.obj("title").str

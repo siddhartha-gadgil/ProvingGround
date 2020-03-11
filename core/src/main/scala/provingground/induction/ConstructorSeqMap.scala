@@ -190,7 +190,6 @@ object ConstructorSeqMap {
             (fib) =>
               if (W.replace(x, y) == W && fib
                     .replace(x, y) == fib && subs(x, y) == this) {
-                // pprint.log(fib.replace(x, y) == fib)
                 None
               } else Some(subs(x, y).indDataCons(fib.replace(x, y)))
       )
@@ -498,7 +497,6 @@ object ConstructorSeqTL {
     : Subst[ConstructorSeqTL[SS, H, Intros]] {} =
     new Subst[ConstructorSeqTL[SS, H, Intros]] {
       def subst(a: ConstructorSeqTL[SS, H, Intros])(x: Term, y: Term) = {
-        // pprint.log(s"substitution for inductive type definition ${a.typ}")
         ConstructorSeqTL(a.seqDom.subs(x, y), a.typ.replace(x, y))
       }
     }

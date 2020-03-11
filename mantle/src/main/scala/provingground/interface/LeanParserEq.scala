@@ -148,7 +148,6 @@ class LeanParserEq(
 
   def indModFromModEq(name: Name): Option[Task[TermIndMod]] =
     findMod(name, mods).map { (mod) =>
-      // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withModEq(mod)
       } yield (termIndModMap(name))
@@ -248,7 +247,6 @@ class LeanParserEq(
 
   def defFromModEq(name: Name): Option[Task[(Term, Set[EquationNode])]] =
     findMod(name, mods).map { (mod) =>
-      // pprint.log(s"Using ${mod.name}")
       for {
         _ <- withModEq(mod)
       } yield (defnMapEq(name))
@@ -289,7 +287,6 @@ class LeanParserEq(
         recAppEq(name, args, exp, vars)
 
       case App(f, a) =>
-        // pprint.log(s"Applying $f to $a")
         for {
           // pair <- Task.parZip2(
           //   parseEq(f, vars)
@@ -306,7 +303,6 @@ class LeanParserEq(
             .getOrElse(
               throw new ApplnParseException(f, a, funcEqs._1, argEqs._1, vars)
             )
-          // _ = pprint.log(s"got result for $f($a)")
           eq = EquationNode(
             FinalVal(Elem(res, Terms)),
             Coeff(tg.applnNode) * FinalVal(
@@ -315,7 +311,6 @@ class LeanParserEq(
           )
         } yield res -> (funcEqs._2.union(argEqs._2) + eq)
       case Lam(domain, body) =>
-        // pprint.log(s"lambda $domain, $body")
         for {
           domTermEq <- parseEq(domain.ty, vars)
             .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -367,7 +362,6 @@ class LeanParserEq(
           }
         }
       case Pi(domain, body) =>
-        // pprint.log(s"pi $domain, $body")
         for {
           domTermEq <- parseEq(domain.ty, vars)
             .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -410,7 +404,6 @@ class LeanParserEq(
           else (x.typ ->: cod)                               -> allEqs
         }
       case Let(domain, value, body) =>
-        // pprint.log(s"let $domain, $value, $body")
         for {
           domTermEq <- parseEq(domain.ty, vars)
             .executeWithOptions(_.enableAutoCancelableRunLoops)

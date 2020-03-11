@@ -102,9 +102,6 @@ object LeanInterface {
         witLess(l.value).map(LambdaTerm(l.variable, _))
       case _ => Vector(t)
     }
-
-//    pprint.log(recFilled)
-//    pprint.log(topFilled)
     recFilled ++ topFilled
   }
 
