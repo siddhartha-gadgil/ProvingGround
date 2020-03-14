@@ -5,7 +5,6 @@ import scala.util.Try
 object Utils {
   import scribe._, writer._
   var logger = Logger()
-    .withHandler(writer = FileWriter().path(file.LogPath.daily()))
     .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
     .replace()
 
