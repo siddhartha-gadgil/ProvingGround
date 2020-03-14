@@ -40,35 +40,35 @@ class HoTTPostWeb {
   }
 
   val polyBuffer =
-    PostBuffer.build[FunctionForGoal, ID] ::
-      PostBuffer.build[FromAll, ID] ::
-      PostBuffer.build[Consequence, ID] ::
-      PostBuffer.build[UseLemma, ID] ::
-      PostBuffer.build[UseLemmaDistribution, ID] ::
-      PostBuffer.build[Lemmas, ID] ::
-      PostBuffer.build[SeekGoal, ID] ::
-      PostBuffer.build[Instance, ID] ::
-      PostBuffer.build[SeekInstances, ID] ::
-      PostBuffer.build[InitState, ID] ::
-      ErasablePostBuffer.build[FinalState, ID] ::
-      ErasablePostBuffer.build[TermResult, ID] ::
-      ErasablePostBuffer.build[GeneratedEquationNodes, ID] ::
-      PostBuffer.build[Proved, ID] ::
-      PostBuffer.build[Contradicted, ID] ::
-      PostBuffer.build[LocalTangentProver, ID] ::
-      PostBuffer.build[ExpressionEval, ID] ::
-      PostBuffer.build[ChompResult, ID] ::
-      PostBuffer.build[LocalProver, ID] ::
-      PostBuffer.build[Weight, ID] ::
+    PostBuffer.build[FunctionForGoal, ID]() ::
+      PostBuffer.build[FromAll, ID]() ::
+      PostBuffer.build[Consequence, ID]() ::
+      PostBuffer.build[UseLemma, ID]() ::
+      PostBuffer.build[UseLemmaDistribution, ID]() ::
+      PostBuffer.build[Lemmas, ID]() ::
+      PostBuffer.build[SeekGoal, ID]() ::
+      PostBuffer.build[Instance, ID]() ::
+      PostBuffer.build[SeekInstances, ID]() ::
+      PostBuffer.build[InitState, ID]() ::
+      ErasablePostBuffer.build[FinalState, ID]() ::
+      ErasablePostBuffer.build[TermResult, ID]() ::
+      ErasablePostBuffer.build[GeneratedEquationNodes, ID]() ::
+      PostBuffer.build[Proved, ID]() ::
+      PostBuffer.build[Contradicted, ID]() ::
+      PostBuffer.build[LocalTangentProver, ID]() ::
+      PostBuffer.build[ExpressionEval, ID]() ::
+      PostBuffer.build[ChompResult, ID]() ::
+      PostBuffer.build[LocalProver, ID]() ::
+      PostBuffer.build[Weight, ID]() ::
       PostDiscarder.build[Unit, ID]((0, 0)) ::
       PostDiscarder.build[HNil, ID]((0, 0)) :: HNil
 
   val polyBuffer2 = 
-    PostBuffer.build[ExstInducDefn, ID] ::
-    PostBuffer.build[OptimalInitial, ID] ::
-    PostBuffer.build[NarrowOptimizeGenerators, ID] ::
-    PostBuffer.build[FromAny, ID] ::
-    PostBuffer.build[ConsiderInductiveTypes, ID] :: HNil
+    PostBuffer.build[ExstInducDefn, ID]() ::
+    PostBuffer.build[OptimalInitial, ID]() ::
+    PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
+    PostBuffer.build[FromAny, ID]() ::
+    PostBuffer.build[ConsiderInductiveTypes, ID]() :: HNil
 }
 
 object HoTTPostWeb {

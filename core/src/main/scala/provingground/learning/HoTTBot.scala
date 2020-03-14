@@ -575,23 +575,23 @@ object HoTTBot {
     MicroBot(response, subContext)
   }
 
-  def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
-    Future {
-      translation.FansiShow.fansiPrint.log(post.pw.tag)
-      translation.FansiShow.fansiPrint.log(post.content, height = 20)
-      pprint.log(post.id)
-    }
+  // def fansiLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
+  //   Future {
+  //     translation.FansiShow.fansiPrint.log(post.pw.tag)
+  //     translation.FansiShow.fansiPrint.log(post.content, height = 20)
+  //     pprint.log(post.id)
+  //   }
 
-  def tagLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
-    Future {
-      translation.FansiShow.fansiPrint.log(post.pw.tag)
-      pprint.log(post.id)
-    }
+  // def tagLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] =
+  //   Future {
+  //     translation.FansiShow.fansiPrint.log(post.pw.tag)
+  //     pprint.log(post.id)
+  //   }
 
   import scribe._
-  val logger = Logger("HoTTBotLog")
+  val logger = Logger()
 
-  def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Unit = {
+  def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] = Future{
     logger.info(s"posted ${post.pw.tag.tpe}")
     logger.info(post.id.toString)
     logger.debug(post.content.toString)
@@ -603,7 +603,7 @@ class HoTTWebSession
     extends SimpleSession[HoTTPostWeb, (Int, Int)](
       new HoTTPostWeb(),
       Vector(lpToExpEv, expEvToEqns, eqnUpdate),
-      Vector(fansiLog(_))
+      Vector(scribeLog(_))
     ) {
 
   // just an illustration, should just use rhs

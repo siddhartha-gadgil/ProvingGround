@@ -1,0 +1,15 @@
+2020.03.14 13:17:02 [INFO] ammonite.$sess.cmd15:1:20 - some information
+2020.03.14 13:20:34 [ERROR] ammonite.$sess.cmd6:1:20 - only an error if you do not see this
+2020.03.14 13:20:56 [DEBUG] ammonite.$sess.cmd7:1:20 - lots of info
+2020.03.14 13:32:54 [INFO] ammonite.$sess.cmd15:1:20 - hello from a new chap
+2020.03.14 13:35:21 [INFO] ammonite.$sess.cmd23:1:20 - hello from a new chap
+2020.03.14 13:35:54 [ERROR] ammonite.$sess.cmd25:1:21 - actually not
+2020.03.14 13:36:43 [ERROR] ammonite.$sess.cmd26:1:21 - actually not
+	 but how about some highlighting
+2020.03.14 13:37:55 [ERROR] ammonite.$sess.cmd27:1:21 - actually not
+but how about some highlighting
+2020.03.14 13:40:43 [ERROR] ammonite.$sess.cmd28:1:21 - actually not
+java.lang.IllegalArgumentException: wanted some real error
+2020.03.14 13:41:18 [WARN] ammonite.$sess.cmd29:1:20 - a friendly warning
+2020.03.14 13:46:15 [INFO] ammonite.$sess.cmd38:1:20 - [33mList[39m([32m1[39m, [32m2[39m)
+2020.03.14 13:47:53 [INFO] ammonite.$sess.cmd40:1:20 - List(1, 2)

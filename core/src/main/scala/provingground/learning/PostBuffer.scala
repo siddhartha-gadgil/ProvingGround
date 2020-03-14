@@ -78,7 +78,7 @@ object ErasablePostBuffer {
     }
   }
 
-  def build[P, ID](implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
+  def build[P, ID]()(implicit gp: GlobalID[ID]): ErasablePostBuffer[P, ID] =
     new ErasablePostBuffer[P, ID] {
       def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
     }
@@ -175,7 +175,7 @@ object PostBuffer {
       def postGlobal(content: P): Future[ID] = globalPost(content)
     }
 
-  def build[P, ID](implicit gp: GlobalID[ID]): PostBuffer[P, ID] =
+  def build[P, ID]()(implicit gp: GlobalID[ID]): PostBuffer[P, ID] =
     new PostBuffer[P, ID] {
       def postGlobal(content: P): Future[ID] = gp.postGlobal(content)
     }

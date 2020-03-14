@@ -40,8 +40,6 @@ RUNNING_PID
 
 .worksheet/
 
-*.log
-
 *.class
 
 .jvm/
