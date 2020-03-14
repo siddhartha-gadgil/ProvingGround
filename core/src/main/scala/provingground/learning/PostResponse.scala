@@ -90,8 +90,13 @@ class TypedResponseQueue[Q, W, ID](var responses: Set[PostResponse.ResponseToRes
 class SimpleSession[W, ID](
     val web: W,
     var responses: Vector[PostResponse[W, ID]],
-    logs: Vector[PostData[_, W, ID] => Future[Unit]]
+    logs: Vector[PostData[_, W, ID] => Future[Unit]],
+    var running: Boolean = true
 ) {
+  def start() : Unit = running = true
+
+  def pause() : Unit = running = false
+
   def addResponse(response: PostResponse[W, ID]): Unit = 
     responses = responses :+ response
 
@@ -139,7 +144,7 @@ class SimpleSession[W, ID](
     * @param postID the ID of the head, to be used as predecessor for the other posts
     * @param pw postability
     */
-  def tailPostFuture[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = {
+  def tailPostFuture[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = if (running) {
     responses.foreach(
       response =>
         PostResponse.postResponseFuture(web, content, postID, response).map {

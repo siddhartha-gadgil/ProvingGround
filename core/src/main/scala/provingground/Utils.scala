@@ -3,6 +3,20 @@ import HoTT._
 import scala.util.Try
 
 object Utils {
+  import scribe._, writer._
+  var logger = Logger()
+    .withHandler(writer = FileWriter().path(file.LogPath.daily()))
+    .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
+    .replace()
+
+  def logAll =
+    logger = logger.setModifiers(List()).replace()
+
+  def logBrief =
+    logger = logger
+      .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
+      .replace()
+
   def delayedRun(task: => Unit, delay: Long): Unit = {
     import java.util._
     val tt = new TimerTask{

@@ -588,10 +588,9 @@ object HoTTBot {
   //     pprint.log(post.id)
   //   }
 
-  import scribe._
-  val logger = Logger()
+    import Utils.logger
 
-  def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] = Future{
+  def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] = Future {
     logger.info(s"posted ${post.pw.tag.tpe}")
     logger.info(post.id.toString)
     logger.debug(post.content.toString)

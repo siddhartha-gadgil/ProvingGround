@@ -6,6 +6,7 @@ import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
 import scala.util._
 import scala.reflect.runtime.universe._
+import provingground._, Utils.logger
 
 /**
   * Allows posting any content, typically just returns an ID to be used by something else.
@@ -69,7 +70,17 @@ object ErasablePostBuffer {
       buffer: W => ErasablePostBuffer[P, ID]
   ): BiPostable[P, W, ID] = {
     new BiPostable[P, W, ID]{
-      def post(content: P, web: W, pred: Set[ID]): Future[ID] = buffer(web).post(content, pred)
+      def post(content: P, web: W, pred: Set[ID]): Future[ID] = 
+        {
+        val idF = buffer(web).post(content, pred)
+        idF.map{          
+          id =>
+            logger.info(s"posted ${implicitly[TypeTag[P]]}")
+            logger.info(id.toString)
+            logger.debug(content.toString)
+          id
+        }        
+      }
       
       val tag: reflect.runtime.universe.TypeTag[P] = implicitly
 
@@ -212,7 +223,16 @@ object PostBuffer {
       buffer: W => PostBuffer[P, ID]
   ): BiPostable[P, W, ID] = {
     new BiPostable[P, W, ID]{
-      def post(content: P, web: W, pred: Set[ID]): Future[ID] = buffer(web).post(content, pred)
+      def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
+        val idF = buffer(web).post(content, pred)
+        idF.map{          
+          id =>
+            logger.info(s"posted ${implicitly[TypeTag[P]]}")
+            logger.info(id.toString)
+            logger.info(content.toString)
+          id
+        }        
+      }
       
       val tag: reflect.runtime.universe.TypeTag[P] = implicitly
 
