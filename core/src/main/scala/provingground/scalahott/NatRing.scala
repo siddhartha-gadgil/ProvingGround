@@ -77,6 +77,8 @@ object NatRing extends SymbolicCRing[SafeLong] with ExstInducStrucs {
 
     val defnData: Vector[Term] = Vector(init, g)
 
+    lazy val intros: Vector[HoTT.Term] = Vector(zero, succ)
+
     def fromData(data: Vector[Term]): RecFunc[Nat, U] =
       Rec(data(0).asInstanceOf[U], data(1).asInstanceOf[Func[Nat, Func[U, U]]])
 

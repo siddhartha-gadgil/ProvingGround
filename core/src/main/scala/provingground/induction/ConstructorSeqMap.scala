@@ -152,6 +152,7 @@ object ConstructorSeqMap {
       DataCons(
         data(X),
         defn,
+        cons,
         tail.recDefn(X),
         (x: Term) =>
           (y: Term) =>

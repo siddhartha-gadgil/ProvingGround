@@ -716,6 +716,8 @@ object HoTT {
         extends RecFunc[Term, U] {
       val defnData: Vector[Term] = Vector()
 
+      val intros: Vector[Term] = Vector()
+
       def fromData(data: Vector[Term]) = this
 
       def act(arg: provingground.HoTT.Term): U = codom.symbObj(vacuousSym)
@@ -1014,6 +1016,8 @@ object HoTT {
 
       val defnData: Vector[U] = Vector(data)
 
+      lazy val intros: Vector[Term] = Vector(Star)
+
       def fromData(data: Vector[Term]) = RecFn(codom, data.head.asInstanceOf[U])
 
       val typ: FuncTyp[Term, U] = dom ->: codom
@@ -1265,6 +1269,8 @@ object HoTT {
       lazy val dom: ProdTyp[U, V] = prod
 
       val defnData: Vector[Func[U, Func[V, W]]] = Vector(data)
+
+      lazy val intros: Vector[Term] = Vector(paircons)
 
       def fromData(data: Vector[Term]) =
         RecFn(codom, data.head.asInstanceOf[Func[U, Func[V, W]]])
@@ -1859,6 +1865,8 @@ object HoTT {
       */
     val defnData: Vector[Term]
 
+    val intros: Vector[Term]
+
     def baseFunction: ExstFunc = {
       val vars: Vector[Term] = defnData.map(t => t.typ.Var)
       ExstFunc.opt(polyLambda(vars.toList, this)).get
@@ -1890,12 +1898,20 @@ object HoTT {
     */
   trait IndRecFunc[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[
     F
-  ]] extends RecFunc[W, U] {
+  ]] extends Func[W, U] {
 
     /**
       * the dependent codomain on the family.
       */
     val domW: F
+
+    /**
+      * definition data for all introduction  rules.
+      */
+    val defnData: Vector[Term]
+
+
+    val codom: Typ[U]
 
     /**
       * indices of the introduction rules.
@@ -2838,6 +2854,8 @@ object HoTT {
 
       val defnData: Vector[FuncLike[W, Func[U, V]]] = Vector(data)
 
+      lazy val intros: Vector[Term] = Vector(paircons)
+
       def fromData(data: Vector[Term]) =
         RecFn(codom, data.head.asInstanceOf[FuncLike[W, Func[U, V]]])
 
@@ -3491,6 +3509,12 @@ object HoTT {
     ) extends RecFunc[Term, W] {
       val defnData: Vector[Term] = Vector(firstCase, secondCase)
 
+      lazy val intros: Vector[Term] = {
+        val tp = PlusTyp(first, second)
+        val i1 : Term = tp.incl1
+        val i2 : Term = tp.incl2
+        Vector(i1, i2)
+      }
       def fromData(data: Vector[Term]) =
         RecFn(
           first,

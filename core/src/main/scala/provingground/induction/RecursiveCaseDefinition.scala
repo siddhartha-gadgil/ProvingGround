@@ -54,6 +54,8 @@ object RecursiveDefinition {
       extends RecursiveDefinition[H, C] {
     val defnData = Vector()
 
+    val intros: Vector[HoTT.Term] = Vector()
+
     def fromData(data: Vector[Term]) = this
 
     val typ = dom ->: codom
@@ -82,6 +84,7 @@ object RecursiveDefinition {
                       D <: Term with Subs[D]](
       data: D,
       defn: D => Func[H, C] => H => Option[C],
+       cons: Term,
       tail: RecursiveDefinition[H, C],
       replacement: Term => Term => Typ[C] => Option[DataCons[H, C, D]] =
         (_: Term) => (_: Term) => (_: Typ[C]) => None)
@@ -94,9 +97,12 @@ object RecursiveDefinition {
 
     val defnData = data +: tail.defnData
 
+    lazy val intros: Vector[HoTT.Term] = ???
+
     def fromData(data: Vector[Term]) =
       DataCons(data.head.asInstanceOf[D],
                defn,
+               cons,
                tail.fromData(data.tail),
                replacement)
 
@@ -106,6 +112,7 @@ object RecursiveDefinition {
       case dc: DataCons[H, C, D] =>
         DataCons(data.replace(x, y),
                  dc.defn,
+                 cons,
                  tail.dataSubs(dc.tail, x, y),
                  dc.replacement)
       case fn => fn
@@ -113,20 +120,20 @@ object RecursiveDefinition {
 
     def newobj = {
       // println("Calling new object")
-      DataCons(data.newobj, defn, tail, replacement)
+      DataCons(data.newobj, defn, cons, tail, replacement)
     }
 
     def subs(x: Term, y: Term) = {
       val newData = data.replace(x, y)
       replacement(x)(y)(codom)
         .map(dataSubs(_, x, y))
-        .getOrElse(DataCons(newData, defn, tail.subs(x, y), replacement))
+        .getOrElse(DataCons(newData, defn, cons, tail.subs(x, y), replacement))
     }
 
     def caseFn(f: => Func[H, C])(arg: H): Option[C] =
       defn(data)(f)(arg) orElse (tail.caseFn(f)(arg))
 
-    def rebuilt = DataCons(rebuild(data), defn, tail.rebuilt, replacement)
+    def rebuilt = DataCons(rebuild(data), defn, cons, tail.rebuilt, replacement)
 
   }
 
