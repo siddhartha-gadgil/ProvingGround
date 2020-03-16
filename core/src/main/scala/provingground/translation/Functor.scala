@@ -218,6 +218,8 @@ object Functors extends CompositeFunctors {
     */
   type IVIIV[A] = (Id[A], VIIV[A])
 
+  type VIVIIV[A] = (Vector[A], IVIIV[A])
+
   /**
     * triple `(Id(A), (Id(A), Id(A)))`
     */

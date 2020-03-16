@@ -115,6 +115,10 @@ object TermJson {
       toJs(unit)("unit-type") ||
       toJs(zero)("zero-type") ||
       toJs(prop)("prop-universe") ||
+      // toJs(introIndInducFunc)("intro-indexed-induc-func") ||
+      // toJs(introIndRecFunc)("intro-indexed-rec-func") ||
+      // toJs(introInducFunc)("intro-induc-func") ||
+      toJs(introRecFunc)("intro-rec-func") ||
       toJs(indInducFunc)("indexed-inductive-function") ||
       toJs(indRecFunc)("indexed-recursive-function") ||
       toJs(recFunc)("recursive-function") ||
@@ -148,12 +152,23 @@ object TermJson {
   }
 
   import induction._
+  import TermLang.applyAll
 
   def jsonToTerm(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
       indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
         (_) => None): Translator.OrElse[ujson.Value, Term] =
     jsonToTermBase ||
+      jsToOpt[Term, VIIV]("intro-rec-func") {
+        case (w, (x, (y, v))) =>
+          scribe.info((w, (x, (y, v))).toString())
+          (buildRecDef()(x, (y, v))).orElse(applyAll(ExstInducStrucs.get(x, w).recOpt(x, toTyp(y)), v))
+      } ||
+      jsToOpt[Term, VIIV]("intro-induc-func") {
+        case (w, (x, (y, v))) =>
+          scribe.info((w, (x, (y, v))).toString())
+          (buildIndDef()(x, (y, v))).orElse(applyAll(ExstInducStrucs.get(x, w).inducOpt(x, y), v))
+      } ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (x, (y, v)) =>
           buildRecDef(inds)(x, (y, v))
