@@ -1575,7 +1575,7 @@ object HoTT {
   trait IndInducFuncLike[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[
     F
   ], IDFT <: Term with Subs[IDFT]]
-      extends InducFuncLike[W, U] {
+      extends FuncLike[W, U] {
 
     /**
       * the domain family, e.g. `Vec`
@@ -1586,6 +1586,14 @@ object HoTT {
       * the dependent codomain on the family.
       */
     val codXs: IDFT
+
+
+    /**
+      * the definition data for all the introduction rules
+      */
+    val defnData: Vector[Term]
+
+    val intros: Vector[Term]
 
     /**
       * indices of the introduction rules.

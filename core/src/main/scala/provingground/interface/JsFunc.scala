@@ -12,6 +12,7 @@ import provingground.induction.{ExstInducDefn, ExstInducStrucs}
 import provingground.scalahott.NatRing
 
 import scala.util.matching.Regex
+import scala.util._
 
 trait JsFunc[F[_]] {
   def encode(t: F[ujson.Value]): ujson.Value
@@ -54,7 +55,8 @@ object JsFunc {
 
   implicit def pairJS[X[_], Y[_]](
       implicit xJs: JsFunc[X],
-      yJs: JsFunc[Y]): JsFunc[({ type Z[A] = (X[A], Y[A]) })#Z] =
+      yJs: JsFunc[Y]
+  ): JsFunc[({ type Z[A] = (X[A], Y[A]) })#Z] =
     new JsFunc[({ type Z[A] = (X[A], Y[A]) })#Z] {
       def encode(t: (X[ujson.Value], Y[ujson.Value])) =
         ujson.Obj("first" -> xJs.encode(t._1), "second" -> yJs.encode(t._2))
@@ -66,14 +68,15 @@ object JsFunc {
   import Translator._
 
   def toJs[I, F[_]](pat: Pattern[I, F])(name: String, header: String = "intro")(
-      implicit jsF: JsFunc[F]): Translator[I, ujson.Value] =
+      implicit jsF: JsFunc[F]
+  ): Translator[I, ujson.Value] =
     pat >>> { (js) =>
       ujson.Obj(header -> ujson.Str(name), "tree" -> jsF.encode(js))
     }
 
   def jsToOpt[I, F[_]: Traverse](name: String, header: String = "intro")(
-      build: F[I] => Option[I])(
-      implicit jsF: JsFunc[F]): Translator[ujson.Value, I] = {
+      build: F[I] => Option[I]
+  )(implicit jsF: JsFunc[F]): Translator[ujson.Value, I] = {
     val pat = Pattern[ujson.Value, F] { (js) =>
       if (js(header) == ujson.Str(name)) Some(jsF.decode(js("tree"))) else None
     }
@@ -81,7 +84,8 @@ object JsFunc {
   }
 
   def jsToBuild[I, F[_]: Traverse](name: String, header: String = "intro")(
-      build: F[I] => I)(implicit jsF: JsFunc[F]): Translator[ujson.Value, I] = {
+      build: F[I] => I
+  )(implicit jsF: JsFunc[F]): Translator[ujson.Value, I] = {
     val pat = Pattern[ujson.Value, F] { (js) =>
       if (js(header) == ujson.Str(name)) Some(jsF.decode(js("tree"))) else None
     }
@@ -117,7 +121,7 @@ object TermJson {
       toJs(prop)("prop-universe") ||
       // toJs(introIndInducFunc)("intro-indexed-induc-func") ||
       // toJs(introIndRecFunc)("intro-indexed-rec-func") ||
-      // toJs(introInducFunc)("intro-induc-func") ||
+      toJs(introInducFunc)("intro-induc-func") ||
       toJs(introRecFunc)("intro-rec-func") ||
       toJs(indInducFunc)("indexed-inductive-function") ||
       toJs(indRecFunc)("indexed-recursive-function") ||
@@ -154,20 +158,56 @@ object TermJson {
   import induction._
   import TermLang.applyAll
 
+  val exstInduc = ExstInducStrucs.Base || NatRing
+
+  import library._, Nats._, Bools._, Vecs._
+
   def jsonToTerm(
       inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
       indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
-        (_) => None): Translator.OrElse[ujson.Value, Term] =
+        (_) => None
+  ): Translator.OrElse[ujson.Value, Term] =
     jsonToTermBase ||
       jsToOpt[Term, VIIV]("intro-rec-func") {
         case (w, (x, (y, v))) =>
           scribe.info((w, (x, (y, v))).toString())
-          (buildRecDef()(x, (y, v))).orElse(applyAll(ExstInducStrucs.get(x, w).recOpt(x, toTyp(y)), v))
+          scribe.info(
+            buildRecDef(Map(Nat -> NatInd, Bool -> BoolInd).lift)(x, (y, v))
+              .toString()
+          )
+          Try(buildRecDef()(x, (y, v))).fold(
+            fa => scribe.error(fa.toString),
+            fb => scribe.info(fb.toString())
+          )
+          (buildRecDef()(x, (y, v)))
+            .orElse(applyAll(exstInduc.recOpt(x, toTyp(y)), v))
+            .orElse(applyAll(ExstInducStrucs.get(x, w).recOpt(x, toTyp(y)), v))
       } ||
       jsToOpt[Term, VIIV]("intro-induc-func") {
         case (w, (x, (y, v))) =>
           scribe.info((w, (x, (y, v))).toString())
-          (buildIndDef()(x, (y, v))).orElse(applyAll(ExstInducStrucs.get(x, w).inducOpt(x, y), v))
+          scribe.info(
+            buildIndDef(Map(Nat -> NatInd, Bool -> BoolInd).lift)(x, (y, v))
+              .toString()
+          )
+          Try(buildIndDef(Map(Nat -> NatInd, Bool -> BoolInd).lift)(x, (y, v)))
+            .fold(
+              fa => scribe.error(fa.toString),
+              fb => scribe.info(fb.toString())
+            )
+          (buildIndDef()(x, (y, v)))
+            .orElse {
+              scribe.info(x.toString())
+              scribe.info(y.toString())
+              val func = exstInduc.inducOpt(x, y)
+              scribe.info(func.toString)
+              applyAll(func, v)
+            }
+            .orElse {
+              val func = ExstInducStrucs.get(x, w).inducOpt(x, y)
+              scribe.info(func.toString())
+              applyAll(func, v)
+            }
       } ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (x, (y, v)) =>
@@ -185,7 +225,9 @@ object TermJson {
           buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
-  def jsToTermExst(exst: ExstInducStrucs): Translator.OrElse[ujson.Value, Term] =
+  def jsToTermExst(
+      exst: ExstInducStrucs
+  ): Translator.OrElse[ujson.Value, Term] =
     jsonToTermBase ||
       jsToOpt[Term, IIV]("recursive-function") {
         case (dom: Term, (cod: Term, data: Vector[Term])) =>
@@ -202,9 +244,10 @@ object TermJson {
           } yield data.foldLeft(fn)(fold(_)(_))
       } ||
       jsToOpt[Term, IVIIV]("indexed-recursive-function") {
-        case (_,
-              (index: Vector[Term],
-               (dom: Term, (cod: Term, data: Vector[Term])))) =>
+        case (
+            _,
+            (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))
+            ) =>
           for {
             codom <- typOpt(cod)
             fn    <- exst.recOpt(dom, codom)
@@ -212,17 +255,19 @@ object TermJson {
             (data ++ index).foldLeft(fn)(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
       } ||
       jsToOpt[Term, IVIIV]("indexed-inductive-function") {
-        case (_,
-              (index: Vector[Term],
-               (dom: Term, (cod: Term, data: Vector[Term])))) =>
+        case (
+            _,
+            (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))
+            ) =>
           for {
             fn <- exst.inducOpt(dom, cod)
           } yield (data ++ index).foldLeft(fn)(fold(_)(_))
         //buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
 
-  def jsToFD(exst: ExstInducStrucs)(
-      js: ujson.Value): FiniteDistribution[Term] = {
+  def jsToFD(
+      exst: ExstInducStrucs
+  )(js: ujson.Value): FiniteDistribution[Term] = {
     val pmf =
       js.arr.toVector.map { wp =>
         Weighted(
@@ -310,7 +355,8 @@ object TermJson {
         case (base, op) =>
           NatRing.AdditiveMorphism(
             base.asInstanceOf[Func[NatRing.Nat, NatRing.Nat]],
-            op.asInstanceOf[(NatRing.Nat, NatRing.Nat) => NatRing.Nat])
+            op.asInstanceOf[(NatRing.Nat, NatRing.Nat) => NatRing.Nat]
+          )
 
       } ||
       jsToBuild[Term, II]("first-inclusion") {
@@ -352,7 +398,7 @@ object TermJson {
         case (name, tp: Typ[u]) => deHash(name) :: tp
         case (x, y)             => unmatched(x, y)
       }(travNamed, implicitly[JsFunc[Named]]) ||
-      jsToBuild[Term, II]("Witness"){
+      jsToBuild[Term, II]("Witness") {
         case (tp, value) => toTyp(tp).symbObj(MereWitness(value))
       }
 
@@ -408,7 +454,7 @@ object InducJson {
           (elem.intros.map((t) => termToJsonGet(t))): _*
         ),
         "structure" -> toJson(elem.ind),
-        "weight" -> ujson.Num(p)
+        "weight"    -> ujson.Num(p)
       )
     ujson.Arr(pmf: _*)
   }
@@ -438,8 +484,9 @@ object InducJson {
         getIndexed(typF, intros)
     }
 
-  def jsToFD(exst: ExstInducStrucs)(
-      js: ujson.Value): FiniteDistribution[ExstInducDefn] = {
+  def jsToFD(
+      exst: ExstInducStrucs
+  )(js: ujson.Value): FiniteDistribution[ExstInducDefn] = {
     val pmf =
       js.arr.toVector.map { wp =>
         val ind       = fromJson(exst)(wp.obj("structure"))
@@ -468,13 +515,13 @@ object ContextJson {
   import Context._, TermJson._
   def toJson(ctx: Context): ujson.Value = ctx match {
     case Empty => ujson.Obj("intro" -> "empty")
-    case ac : AppendConstant[u] =>
+    case ac: AppendConstant[u] =>
       ujson.Obj(
         "intro"    -> "append-constant",
         "init"     -> toJson(ac.init),
         "constant" -> termToJsonGet(ac.constant)
       )
-    case at:  AppendTerm[u] =>
+    case at: AppendTerm[u] =>
       val rl = at.role match {
         case Context.Assert   => ujson.Str("assert")
         case Context.Consider => ujson.Str("consider")
@@ -538,7 +585,6 @@ object ContextJson {
     }
 }
 
-
 object ConciseTermJson {
   import JsFunc._
 
@@ -579,87 +625,93 @@ object ConciseTermJson {
       toJs(foldedTerm)("folded-term") ||
       toJs(miscAppln)("Ap")
 
-    def termToJsonGet(t: Term) : ujson.Value =
-      termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
-  
-    def fdJson(fd: FiniteDistribution[Term]): ujson.Arr = {
-      val pmf = for {
-        Weighted(elem, p) <- fd.pmf
-        tjs               <- termToJson(elem)
-      } yield ujson.Obj("term" -> tjs, "weight" -> ujson.Num(p))
-      ujson.Arr(pmf: _*)
-    }
-  
-    import induction._
-  
-    def jsonToTerm(
-        inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
-        indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
-          (_) => None): Translator.OrElse[ujson.Value, Term] =
-      jsonToTermBase ||
-        jsToOpt[Term, IIV]("recursive-function") {
-          case (x, (y, v)) =>
-            buildRecDef(inds)(x, (y, v))
-        } ||
-        jsToOpt[Term, IIV]("inductive-function") {
-          case (x, (y, v)) => buildIndDef(inds)(x, (y, v))
-        } ||
-        jsToOpt[Term, IVIIV]("indexed-recursive-function") {
-          case (u, (w, (x, (y, v)))) =>
-            buildIndRecDef(indexedInds)(w, (x, (y, v)))
-        } ||
-        jsToOpt[Term, IVIIV]("indexed-inductive-function") {
-          case (u, (w, (x, (y, v)))) =>
-            buildIndIndDef(indexedInds)(w, (x, (y, v)))
-        }
-  
-    def jsToTermExst(exst: ExstInducStrucs): Translator.OrElse[ujson.Value, Term] =
-      jsonToTermBase ||
-        jsToOpt[Term, IIV]("recursive-function") {
-          case (dom: Term, (cod: Term, data: Vector[Term])) =>
-            for {
-              codom <- typOpt(cod)
-              fn    <- exst.recOpt(dom, codom)
-            } yield data.foldLeft(fn)(fold(_)(_))
-          //buildRecDef(inds)(x, (y, v))
-        } ||
-        jsToOpt[Term, IIV]("inductive-function") {
-          case (dom: Term, (cod: Term, data: Vector[Term])) =>
-            for {
-              fn <- exst.inducOpt(dom, cod)
-            } yield data.foldLeft(fn)(fold(_)(_))
-        } ||
-        jsToOpt[Term, IVIIV]("indexed-recursive-function") {
-          case (_,
-                (index: Vector[Term],
-                 (dom: Term, (cod: Term, data: Vector[Term])))) =>
-            for {
-              codom <- typOpt(cod)
-              fn    <- exst.recOpt(dom, codom)
-            } yield
-              (data ++ index).foldLeft(fn)(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
-        } ||
-        jsToOpt[Term, IVIIV]("indexed-inductive-function") {
-          case (_,
-                (index: Vector[Term],
-                 (dom: Term, (cod: Term, data: Vector[Term])))) =>
-            for {
-              fn <- exst.inducOpt(dom, cod)
-            } yield (data ++ index).foldLeft(fn)(fold(_)(_))
-          //buildIndIndDef(indexedInds)(w, (x, (y, v)))
-        }
-  
-    def jsToFD(exst: ExstInducStrucs)(
-        js: ujson.Value): FiniteDistribution[Term] = {
-      val pmf =
-        js.arr.toVector.map { wp =>
-          Weighted(
-            jsToTermExst(exst)(wp.obj("term")).get,
-            wp.obj("weight").num
-          )
-        }
-      FiniteDistribution(pmf)
-    }
+  def termToJsonGet(t: Term): ujson.Value =
+    termToJson(t).getOrElse(throw new Exception(s"cannot serialize term $t"))
+
+  def fdJson(fd: FiniteDistribution[Term]): ujson.Arr = {
+    val pmf = for {
+      Weighted(elem, p) <- fd.pmf
+      tjs               <- termToJson(elem)
+    } yield ujson.Obj("term" -> tjs, "weight" -> ujson.Num(p))
+    ujson.Arr(pmf: _*)
+  }
+
+  import induction._
+
+  def jsonToTerm(
+      inds: Typ[Term] => Option[ConstructorSeqTL[_, Term, _]] = (_) => None,
+      indexedInds: Term => Option[IndexedConstructorSeqDom[_, Term, _, _, _]] =
+        (_) => None
+  ): Translator.OrElse[ujson.Value, Term] =
+    jsonToTermBase ||
+      jsToOpt[Term, IIV]("recursive-function") {
+        case (x, (y, v)) =>
+          buildRecDef(inds)(x, (y, v))
+      } ||
+      jsToOpt[Term, IIV]("inductive-function") {
+        case (x, (y, v)) => buildIndDef(inds)(x, (y, v))
+      } ||
+      jsToOpt[Term, IVIIV]("indexed-recursive-function") {
+        case (u, (w, (x, (y, v)))) =>
+          buildIndRecDef(indexedInds)(w, (x, (y, v)))
+      } ||
+      jsToOpt[Term, IVIIV]("indexed-inductive-function") {
+        case (u, (w, (x, (y, v)))) =>
+          buildIndIndDef(indexedInds)(w, (x, (y, v)))
+      }
+
+  def jsToTermExst(
+      exst: ExstInducStrucs
+  ): Translator.OrElse[ujson.Value, Term] =
+    jsonToTermBase ||
+      jsToOpt[Term, IIV]("recursive-function") {
+        case (dom: Term, (cod: Term, data: Vector[Term])) =>
+          for {
+            codom <- typOpt(cod)
+            fn    <- exst.recOpt(dom, codom)
+          } yield data.foldLeft(fn)(fold(_)(_))
+        //buildRecDef(inds)(x, (y, v))
+      } ||
+      jsToOpt[Term, IIV]("inductive-function") {
+        case (dom: Term, (cod: Term, data: Vector[Term])) =>
+          for {
+            fn <- exst.inducOpt(dom, cod)
+          } yield data.foldLeft(fn)(fold(_)(_))
+      } ||
+      jsToOpt[Term, IVIIV]("indexed-recursive-function") {
+        case (
+            _,
+            (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))
+            ) =>
+          for {
+            codom <- typOpt(cod)
+            fn    <- exst.recOpt(dom, codom)
+          } yield
+            (data ++ index).foldLeft(fn)(fold(_)(_)) //buildIndRecDef(indexedInds)(w, (x, (y, v)))
+      } ||
+      jsToOpt[Term, IVIIV]("indexed-inductive-function") {
+        case (
+            _,
+            (index: Vector[Term], (dom: Term, (cod: Term, data: Vector[Term])))
+            ) =>
+          for {
+            fn <- exst.inducOpt(dom, cod)
+          } yield (data ++ index).foldLeft(fn)(fold(_)(_))
+        //buildIndIndDef(indexedInds)(w, (x, (y, v)))
+      }
+
+  def jsToFD(
+      exst: ExstInducStrucs
+  )(js: ujson.Value): FiniteDistribution[Term] = {
+    val pmf =
+      js.arr.toVector.map { wp =>
+        Weighted(
+          jsToTermExst(exst)(wp.obj("term")).get,
+          wp.obj("weight").num
+        )
+      }
+    FiniteDistribution(pmf)
+  }
 
   val jsonToTermBase: Translator.OrElse[ujson.Value, Term] =
     jsToBuild[Term, N]("U")((n) => Universe(n)) ||
@@ -738,7 +790,8 @@ object ConciseTermJson {
         case (base, op) =>
           NatRing.AdditiveMorphism(
             base.asInstanceOf[Func[NatRing.Nat, NatRing.Nat]],
-            op.asInstanceOf[(NatRing.Nat, NatRing.Nat) => NatRing.Nat])
+            op.asInstanceOf[(NatRing.Nat, NatRing.Nat) => NatRing.Nat]
+          )
 
       } ||
       jsToBuild[Term, II]("i1") {
@@ -780,7 +833,7 @@ object ConciseTermJson {
         case (name, tp: Typ[u]) => deHash(name) :: tp
         case (x, y)             => unmatched(x, y)
       }(travNamed, implicitly[JsFunc[Named]]) ||
-      jsToBuild[Term, II]("Witness"){
+      jsToBuild[Term, II]("Witness") {
         case (tp, value) => toTyp(tp).symbObj(MereWitness(value))
       }
 
@@ -792,13 +845,13 @@ object ConciseTermJson {
     import Context._
     def toJson(ctx: Context): ujson.Value = ctx match {
       case Empty => ujson.Obj("intro" -> "empty")
-      case ac : AppendConstant[u] =>
+      case ac: AppendConstant[u] =>
         ujson.Obj(
           "intro"    -> "append-constant",
           "init"     -> toJson(ac.init),
           "constant" -> termToJsonGet(ac.constant)
         )
-      case at:  AppendTerm[u] =>
+      case at: AppendTerm[u] =>
         val rl = at.role match {
           case Context.Assert   => ujson.Str("assert")
           case Context.Consider => ujson.Str("consider")
@@ -830,7 +883,7 @@ object ConciseTermJson {
           "init"  -> toJson(init)
         )
     }
-  
+
     def fromJson(js: ujson.Value): Context =
       js.obj("intro").str match {
         case "empty" => Empty
@@ -861,6 +914,5 @@ object ConciseTermJson {
           AppendIndDef(init, defn)
       }
   }
-  
 
 }
