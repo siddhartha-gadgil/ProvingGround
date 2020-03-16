@@ -184,6 +184,7 @@ object ConstructorSeqMap {
         fibre: Func[H, Typ[Cod]]): InductiveDefinition.DataCons[H, Cod, ID] =
       InductiveDefinition.DataCons(
         inducData(fibre),
+        cons,
         inducDefn,
         tail.inducDefn(fibre),
         (x) =>

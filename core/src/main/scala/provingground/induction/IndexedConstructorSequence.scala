@@ -204,6 +204,7 @@ object IndexedConstructorSeqMap {
                                                                    RD] =
       IndexedRecursiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, RD](
         data(X),
+        cons,
         defn,
         tail.recDefn(X),
         (x: Term) =>
@@ -234,6 +235,7 @@ object IndexedConstructorSeqMap {
                                                                       ID] =
       IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID](
         inducData(fibre),
+        cons,
         inducDefn,
         tail.inducDefn(fibre),
         (x) =>

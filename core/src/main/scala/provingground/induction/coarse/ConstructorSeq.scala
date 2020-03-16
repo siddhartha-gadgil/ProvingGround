@@ -66,6 +66,7 @@ object ConstructorSeq {
       RecursiveDefinition.DataCons[H, C, cons.pattern.RecDataType](
         data(X),
         defn,
+        cons.cons,
         tail.recDefn(X))
 
     type RecType = Func[cons.pattern.RecDataType, tail.RecType]
@@ -86,6 +87,7 @@ object ConstructorSeq {
     def inducDefn(fibre: Func[H, Typ[C]]) =
       InductiveDefinition.DataCons[H, C, cons.pattern.InducDataType](
         inducData(fibre),
+        cons.cons,
         inducDefn,
         tail.inducDefn(fibre))
 
