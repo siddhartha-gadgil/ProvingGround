@@ -119,8 +119,8 @@ object TermJson {
       toJs(unit)("unit-type") ||
       toJs(zero)("zero-type") ||
       toJs(prop)("prop-universe") ||
-      // toJs(introIndInducFunc)("intro-indexed-induc-func") ||
-      // toJs(introIndRecFunc)("intro-indexed-rec-func") ||
+      toJs(introIndInducFunc)("intro-indexed-induc-func") ||
+      toJs(introIndRecFunc)("intro-indexed-rec-func") ||
       toJs(introInducFunc)("intro-induc-func") ||
       toJs(introRecFunc)("intro-rec-func") ||
       toJs(indInducFunc)("indexed-inductive-function") ||
@@ -168,44 +168,31 @@ object TermJson {
         (_) => None
   ): Translator.OrElse[ujson.Value, Term] =
     jsonToTermBase ||
+      jsToOpt[Term, VIVIIV]("intro-indexed-rec-func") {
+        case (intros, (u, (w, (x, (y, v))))) =>
+          (buildIndRecDef()(w, (x, (y, v))))
+            .orElse(applyAll(ExstInducStrucs.getIndexed(x, w).recOpt(x, toTyp(y)), v))
+      } ||
+      jsToOpt[Term, VIVIIV]("intro-indexed-induc-func") {
+        case (intros, (u, (w, (x, (y, v))))) =>
+          (buildIndIndDef()(w, (x, (y, v))))
+            .orElse(applyAll(ExstInducStrucs.getIndexed(x, w).inducOpt(x, y), v))
+      } ||
       jsToOpt[Term, VIIV]("intro-rec-func") {
         case (w, (x, (y, v))) =>
-          scribe.info((w, (x, (y, v))).toString())
-          scribe.info(
-            buildRecDef(Map(Nat -> NatInd, Bool -> BoolInd).lift)(x, (y, v))
-              .toString()
-          )
-          Try(buildRecDef()(x, (y, v))).fold(
-            fa => scribe.error(fa.toString),
-            fb => scribe.info(fb.toString())
-          )
           (buildRecDef()(x, (y, v)))
             .orElse(applyAll(exstInduc.recOpt(x, toTyp(y)), v))
             .orElse(applyAll(ExstInducStrucs.get(x, w).recOpt(x, toTyp(y)), v))
       } ||
       jsToOpt[Term, VIIV]("intro-induc-func") {
         case (w, (x, (y, v))) =>
-          scribe.info((w, (x, (y, v))).toString())
-          scribe.info(
-            buildIndDef(Map(Nat -> NatInd, Bool -> BoolInd).lift)(x, (y, v))
-              .toString()
-          )
-          Try(buildIndDef(Map(Nat -> NatInd, Bool -> BoolInd).lift)(x, (y, v)))
-            .fold(
-              fa => scribe.error(fa.toString),
-              fb => scribe.info(fb.toString())
-            )
           (buildIndDef()(x, (y, v)))
             .orElse {
-              scribe.info(x.toString())
-              scribe.info(y.toString())
               val func = exstInduc.inducOpt(x, y)
-              scribe.info(func.toString)
               applyAll(func, v)
             }
             .orElse {
               val func = ExstInducStrucs.get(x, w).inducOpt(x, y)
-              scribe.info(func.toString())
               applyAll(func, v)
             }
       } ||

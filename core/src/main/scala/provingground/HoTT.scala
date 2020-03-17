@@ -1917,7 +1917,7 @@ object HoTT {
     */
   trait IndRecFunc[W <: Term with Subs[W], +U <: Term with Subs[U], F <: Term with Subs[
     F
-  ]] extends RecFunc[W, U] {
+  ]] extends Func[W, U] {
 
     /**
       * the dependent codomain on the family.
@@ -1928,6 +1928,8 @@ object HoTT {
       * definition data for all introduction  rules.
       */
     val defnData: Vector[Term]
+
+    val intros: Vector[Term]
 
     val codom: Typ[U]
 
