@@ -28,47 +28,54 @@ object HoTTBot {
 
   type HoTTBot = PostResponse[HoTTPostWeb, ID]
 
-  lazy val lpToExpEv: HoTTBot = {
+  type SimpleBot[P, Q] = MicroBot[P, Q, HoTTPostWeb, Unit, ID]
+
+  type MicroHoTTBoTT[P, Q, V] = MicroBot[P, Q, HoTTPostWeb, V, ID]
+
+  lazy val lpToExpEv: SimpleBot[LocalProver, ExpressionEval] = {
     val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
       lp => lp.expressionEval.runToFuture
     MicroBot(response)
   }
 
-  lazy val lptToExpEv: HoTTBot = {
+  lazy val lptToExpEv: SimpleBot[LocalTangentProver, ExpressionEval] = {
     val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
       lp => lp.expressionEval.runToFuture
     MicroBot(response)
   }
 
-  lazy val lpToTermResult: HoTTBot = {
+  lazy val lpToTermResult: SimpleBot[LocalProver, TermResult] = {
     val response: Unit => LocalProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
     MicroBot(response)
   }
 
-  lazy val lptToTermResult: HoTTBot = {
+  lazy val lptToTermResult: SimpleBot[LocalTangentProver, TermResult] = {
     val response: Unit => LocalTangentProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
     MicroBot(response)
   }
 
-  lazy val termResultToEquations: HoTTBot =
+  lazy val termResultToEquations
+      : SimpleBot[TermResult, GeneratedEquationNodes] =
     MicroBot.simple(
       (pair: TermResult) => GeneratedEquationNodes(pair._2)
     )
 
-  lazy val termResultToFinalState: HoTTBot =
+  lazy val termResultToFinalState: SimpleBot[TermResult, FinalState] =
     MicroBot.simple(
       (pair: TermResult) => FinalState(pair._1)
     )
 
-  lazy val expEvToEqns: HoTTBot =
+  lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
     MicroBot.simple(
       (ev: ExpressionEval) =>
         GeneratedEquationNodes(ev.equations.flatMap(Equation.split))
     )
 
-  lazy val instanceToGoal: HoTTBot = {
+  lazy val instanceToGoal: MicroBot[Instance, Option[
+    Consequence :: SeekGoal :: HNil
+  ], HoTTPostWeb, SeekInstances, ID] = {
     val response: SeekInstances => Instance => Future[
       Option[Consequence :: SeekGoal :: HNil]
     ] = {
@@ -101,7 +108,9 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val skolemBot: HoTTBot = {
+  lazy val skolemBot: MicroBot[SeekGoal, Option[
+    Consequence :: SeekGoal :: HNil
+  ], HoTTPostWeb, Unit, ID] = {
     val response
         : Unit => SeekGoal => Future[Option[Consequence :: SeekGoal :: HNil]] =
       (_) =>
@@ -131,7 +140,13 @@ object HoTTBot {
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
     )
 
-  lazy val termResultToChomp: HoTTBot = {
+  lazy val termResultToChomp: MicroBot[
+    TermData.TermResult,
+    ChompResult,
+    HoTTPostWeb,
+    Set[HoTT.Term] :: LocalProver :: HNil,
+    ID
+  ] = {
     val response: (Set[Term] :: LocalProver :: HNil) => TermResult => Future[
       ChompResult
     ] = {
@@ -148,7 +163,8 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  val goalsAfterChomp: HoTTBot = {
+  val goalsAfterChomp
+      : MiniBot[ChompResult, WithWeight[SeekGoal], HoTTPostWeb, LocalProver :: TermResult :: HNil, ID] = {
     val response: LocalProver :: TermResult :: HNil => ChompResult => Future[
       Vector[WithWeight[SeekGoal]]
     ] = {
@@ -170,7 +186,11 @@ object HoTTBot {
     )
   }
 
-  lazy val deducedEquations: HoTTBot = {
+  lazy val deducedEquations: MicroBot[Proved, Set[
+    Either[Contradicted, Proved]
+  ], HoTTPostWeb, GatherMapPost[PropagateProof] :: GatherMapPost[
+    Decided
+  ] :: Set[HoTT.Term] :: HNil, ID] = {
     val response
         : GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: Set[
           Term
@@ -195,7 +215,8 @@ object HoTTBot {
         (pf: Proved) => pf.proofOpt.foreach(t => web.addTerms(Set(t)))
     )
 
-  lazy val lpLemmas: HoTTBot = {
+  lazy val lpLemmas
+      : MicroBot[LocalProver, Lemmas, HoTTPostWeb, Unit, ID] = {
     val response: Unit => LocalProver => Future[Lemmas] =
       (_) =>
         (lp) =>
@@ -204,7 +225,13 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  def lpOptimalInit(decay: Double): HoTTBot = {
+  def lpOptimalInit(decay: Double): MicroBot[
+    LocalProver,
+    OptimalInitial,
+    HoTTPostWeb,
+    Unit,
+    ID
+  ] = {
     val response: Unit => LocalProver => Future[OptimalInitial] =
       (_) =>
         (lp) =>
@@ -220,7 +247,13 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val narrowOptimalInit: HoTTBot = {
+  lazy val narrowOptimalInit: MicroBot[
+    NarrowOptimizeGenerators,
+    OptimalInitial,
+    HoTTPostWeb,
+    QueryProver,
+    ID
+  ] = {
     val response
         : QueryProver => NarrowOptimizeGenerators => Future[OptimalInitial] =
       (qp) =>
@@ -258,7 +291,13 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val lptLemmas: HoTTBot = {
+  lazy val lptLemmas: MicroBot[
+    LocalTangentProver,
+    Lemmas,
+    HoTTPostWeb,
+    Unit,
+    ID
+  ] = {
     val response: Unit => LocalTangentProver => Future[Lemmas] =
       (_) =>
         (lp) =>
@@ -267,7 +306,8 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val splitLemmas: HoTTBot = {
+  lazy val splitLemmas
+      : MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID] = {
     val response: Unit => Lemmas => Future[Vector[WithWeight[UseLemma]]] =
       (_) =>
         lemmas =>
@@ -279,7 +319,9 @@ object HoTTBot {
     MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
   }
 
-  def lemmaDistributions(sizes: Map[Int, Double]) = {
+  def lemmaDistributions(
+      sizes: Map[Int, Double]
+  ): MiniBot[Lemmas, UseLemmaDistribution, HoTTPostWeb, Unit, ID] = {
     val response: Unit => Lemmas => Future[Vector[UseLemmaDistribution]] =
       (_) =>
         lemmas =>
@@ -308,7 +350,8 @@ object HoTTBot {
     MiniBot[Lemmas, UseLemmaDistribution, HoTTPostWeb, Unit, ID](response)
   }
 
-  lazy val backwardFunction: HoTTBot = {
+  lazy val backwardFunction
+      : MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID] = {
     val response: QueryProver => SeekGoal => Future[
       Vector[WithWeight[FunctionForGoal]]
     ] =
@@ -339,7 +382,8 @@ object HoTTBot {
     )
   }
 
-  lazy val instanceFromLp: HoTTBot = {
+  lazy val instanceFromLp
+      : MiniBot[SeekInstances, WithWeight[Instance], HoTTPostWeb, QueryProver, ID] = {
     val response: QueryProver => SeekInstances => Future[
       Vector[WithWeight[Instance]]
     ] =
@@ -369,7 +413,8 @@ object HoTTBot {
     )
   }
 
-  lazy val inductionBackward: HoTTBot = {
+  lazy val inductionBackward
+      : MiniBot[SeekGoal, WithWeight[FunctionForGoal], HoTTPostWeb, QueryProver, ID] = {
     val response: QueryProver => SeekGoal => Future[
       Vector[WithWeight[FunctionForGoal]]
     ] =
@@ -400,7 +445,13 @@ object HoTTBot {
     )
   }
 
-  lazy val addInductive: HoTTBot = {
+  lazy val addInductive: MicroBot[
+    ConsiderInductiveTypes,
+    LocalProver,
+    HoTTPostWeb,
+    QueryProver,
+    ID
+  ] = {
     val response: QueryProver => ConsiderInductiveTypes => Future[LocalProver] =
       (qp) =>
         (consInds) =>
@@ -415,13 +466,14 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val funcToFromAll: HoTTBot = {
+  lazy val funcToFromAll
+      : SimpleBot[FunctionForGoal, Option[FromAll]] = {
     MicroBot.simple { (fng: FunctionForGoal) =>
       FromAll.get(fng.fn, fng.goal, fng.forConsequences, fng.context)
     }
   }
 
-  lazy val resolveFromAll: HoTTBot = {
+  lazy val resolveFromAll: MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID] = {
     val response: Unit => FromAll => Future[Vector[SeekGoal]] =
       (_) =>
         (fromAll) =>
@@ -439,7 +491,7 @@ object HoTTBot {
     MiniBot[FromAll, SeekGoal, HoTTPostWeb, Unit, ID](response)
   }
 
-  lazy val resolveFromAny: HoTTBot = {
+  lazy val resolveFromAny: MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID] = {
     val response: Unit => FromAny => Future[Vector[SeekGoal]] =
       (_) =>
         (fromAny) =>
@@ -457,7 +509,7 @@ object HoTTBot {
     MiniBot[FromAny, SeekGoal, HoTTPostWeb, Unit, ID](response)
   }
 
-  lazy val productBackward: HoTTBot = {
+  lazy val productBackward: SimpleBot[SeekGoal, Option[FromAll]] = {
     MicroBot.simple(
       (sk: SeekGoal) =>
         sk.goal match {
@@ -479,7 +531,7 @@ object HoTTBot {
     )
   }
 
-  lazy val coproductBackward: HoTTBot = {
+  lazy val coproductBackward: SimpleBot[SeekGoal, Option[FromAny]] = {
     MicroBot.simple(
       (sk: SeekGoal) =>
         sk.goal match {
@@ -502,7 +554,7 @@ object HoTTBot {
     )
   }
 
-  lazy val sigmaBackward: HoTTBot = {
+  lazy val sigmaBackward: SimpleBot[SeekGoal, Option[SeekInstances]] = {
     MicroBot.simple[SeekGoal, Option[SeekInstances], HoTTPostWeb, ID](
       (sk: SeekGoal) =>
         sk.goal match {
@@ -520,7 +572,13 @@ object HoTTBot {
     )
   }
 
-  def lemmaTangents(tangentScale: Double = 1.0): HoTTBot = {
+  def lemmaTangents(tangentScale: Double = 1.0): MicroBot[
+    UseLemma,
+    LocalTangentProver,
+    HoTTPostWeb,
+    QueryProver,
+    ID
+  ] = {
     val response: QueryProver => UseLemma => Future[LocalTangentProver] =
       qp =>
         lem => qp.lp.sharpen(tangentScale).tangentProver(lem.proof).runToFuture
@@ -528,7 +586,13 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  def lemmaMixin(weight: Double = 0.3): HoTTBot = {
+  def lemmaMixin(weight: Double = 0.3): MicroBot[
+    UseLemma,
+    LocalProver,
+    HoTTPostWeb,
+    QueryProver,
+    ID
+  ] = {
     val response: QueryProver => UseLemma => Future[LocalProver] =
       qp =>
         lem =>
@@ -544,7 +608,12 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  def goalToProver(varWeight: Double, goalWeight: Double): HoTTBot = {
+  def goalToProver(
+      varWeight: Double,
+      goalWeight: Double
+  ): MicroBot[SeekGoal, Option[LocalProver], HoTTPostWeb, QueryProver :: Set[
+    HoTT.Term
+  ] :: HNil, ID] = {
     val subContext: SeekGoal => QueryProver :: Set[Term] :: HNil => Boolean =
       (goal) => {
         case (qp: QueryProver) :: terms :: HNil => {
@@ -588,7 +657,7 @@ object HoTTBot {
   //     pprint.log(post.id)
   //   }
 
-    import Utils.logger
+  import Utils.logger
 
   def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] = Future {
     logger.info(s"posted ${post.pw.tag.tpe}")
