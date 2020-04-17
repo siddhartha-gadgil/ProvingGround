@@ -250,7 +250,7 @@ object TypedPostResponse {
         web: W,
         content: P,
         id: ID
-    ): Future[Vector[PostData[_, W, ID]]] = {
+    ): Future[Vector[PostData[Q, W, ID]]] = {
       val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
@@ -338,7 +338,7 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
         web: W,
         content: P,
         id: ID
-    ): Future[Vector[PostData[_, W, ID]]] = {
+    ): Future[Vector[PostData[Q, W, ID]]] = {
       val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
       val taskNest =
         auxFuture.map{

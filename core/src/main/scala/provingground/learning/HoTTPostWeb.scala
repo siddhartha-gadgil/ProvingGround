@@ -64,6 +64,7 @@ class HoTTPostWeb {
       PostDiscarder.build[HNil, ID]((0, 0)) :: HNil
 
   val polyBuffer2 = 
+    ErasablePostBuffer.build[RepresentationMap, ID]() ::
     PostBuffer.build[ExstInducDefn, ID]() ::
     PostBuffer.build[OptimalInitial, ID]() ::
     PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
@@ -83,7 +84,7 @@ object HoTTPostWeb {
 
   val polyImpl2 = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer2)
 
-  implicit val (b27 :: b26 :: b25 :: b24 :: b23:: HNil) = polyImpl2
+  implicit val (b28 :: b27 :: b26 :: b25 :: b24 :: b23:: HNil) = polyImpl2
 
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =
