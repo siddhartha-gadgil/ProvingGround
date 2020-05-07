@@ -397,6 +397,23 @@ object HoTTMessages {
       forConsequences: Set[Typ[Term]] = Set()
   )
 
+  /**
+    * Other types that are likely to have common ingredients in proofs
+    *
+    * @param typ the original type
+    * @param related types related
+    */
+  case class RelatedStatements(typ: Typ[Term], related: FiniteDistribution[Typ[Term]])
+
+  /**
+    * Given a type, a lemma is the type of an ingredient of the generating set, ideally not easily inhabited. 
+    * These are candidate lemmas
+    *
+    * @param typ the goal
+    * @param lemmas candidate lemmas
+    */
+  case class IntermediateStatements(typ: Typ[Term], lemmas: FiniteDistribution[Typ[Term]])
+
   case class FromAny(
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],

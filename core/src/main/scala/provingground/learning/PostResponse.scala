@@ -20,6 +20,9 @@ sealed trait PostResponse[W, ID]{
   type PostType
 
   def postFuture(web: W, content: PostType, id: ID): Future[Vector[PostData[_, W, ID]]]
+
+  def respondFuture(web: W)(pds: Vector[PostData[PostType, W, ID]]) : Future[Vector[PostData[_, W, ID]]] =
+    Future.sequence(pds.map{pd => postFuture(web, pd.content, pd.id)}).map(_.flatten)
 }
 
 object PostResponse {
