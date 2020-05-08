@@ -19,10 +19,10 @@ import scala.reflect.runtime.universe._
 sealed trait PostResponse[W, ID]{
   type PostType
 
-  def postFuture(web: W, content: PostType, id: ID): Future[Vector[PostData[_, W, ID]]]
+  def post(web: W, content: PostType, id: ID): Future[Vector[PostData[_, W, ID]]]
 
-  def respondFuture(web: W)(pds: Vector[PostData[PostType, W, ID]]) : Future[Vector[PostData[_, W, ID]]] =
-    Future.sequence(pds.map{pd => postFuture(web, pd.content, pd.id)}).map(_.flatten)
+  def respond(web: W)(pds: Vector[PostData[PostType, W, ID]]) : Future[Vector[PostData[_, W, ID]]] =
+    Future.sequence(pds.map{pd => post(web, pd.content, pd.id)}).map(_.flatten)
 }
 
 object PostResponse {
@@ -42,7 +42,7 @@ object PostResponse {
    * if types match (as evidenced by implicits) then the the response is run and the 
    * new posts wrapped as PostData are returned (the wrapping allows implicits to be passed on).
    */ 
-  def postResponseFuture[Q, W, ID](
+  def postResponse[Q, W, ID](
       web: W,
       post: Q,
       id: ID,
@@ -51,7 +51,7 @@ object PostResponse {
       implicit qp: Postable[Q, W, ID]
   ): Future[Vector[PostData[_, W, ID]]] = {
     val chainOpt = typedResponseOpt(response)(qp)
-      .map(tr => tr.postFuture(web, post, id))
+      .map(tr => tr.post(web, post, id))
       .toVector
     val flip = Future.sequence(chainOpt)
     flip.map(_.flatten)
@@ -81,10 +81,10 @@ class SimpleSession[W, ID](
     * @param pw postability
     * @return the data of the post as a future
     */ 
-  def postFuture[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = {
+  def post[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = {
     val postIdFuture = pw.post(content, web, preds)
     postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
-      tailPostFuture(content, postID)
+      respond(content, postID)
     }
     postIdFuture.map{id => 
       val data = PostData(content, id)
@@ -99,15 +99,15 @@ class SimpleSession[W, ID](
     * @param postID the ID of the head, to be used as predecessor for the other posts
     * @param pw postability
     */
-  def tailPostFuture[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = if (running) {
+  def respond[P](content: P, postID: ID)(implicit pw: Postable[P, W, ID]) : Unit = if (running) {
     responses.foreach(
       response =>
-        PostResponse.postResponseFuture(web, content, postID, response).map {
+        PostResponse.postResponse(web, content, postID, response).map {
           v =>
             v.map {
               case pd: PostData[q, W, ID] => 
                logs.foreach{fn => fn(pd).foreach(_ => ())}
-                tailPostFuture(pd.content, pd.id)(pd.pw)
+                respond(pd.content, pd.id)(pd.pw)
             }
         }
     ) 
@@ -145,7 +145,7 @@ sealed abstract class TypedPostResponse[P, W, ID](
   type PostType = P
 
   // the posts in response to a given one, may be none
-  def postFuture(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]]
+  def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]]
 }
 
 object TypedPostResponse {
@@ -164,7 +164,7 @@ object TypedPostResponse {
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
-    def postFuture(
+    def post(
         web: W,
         content: P,
         id: ID
@@ -201,7 +201,7 @@ object TypedPostResponse {
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
-    def postFuture(
+    def post(
         web: W,
         content: P,
         id: ID
@@ -240,7 +240,7 @@ object TypedPostResponse {
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
-    def postFuture(
+    def post(
         web: W,
         content: P,
         id: ID
@@ -289,7 +289,7 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
       lv: LocalQueryable[V, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
-    def postFuture(
+    def post(
         web: W,
         content: P,
         id: ID

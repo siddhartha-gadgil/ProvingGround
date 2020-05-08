@@ -46,7 +46,7 @@ object Postable {
       * @param pw postability of the type
       * @return PostData as a future
       */
-  def postFuture[P, W, ID](content: P, web: W, pred: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[PostData[P, W, ID]] = 
+  def post[P, W, ID](content: P, web: W, pred: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[PostData[P, W, ID]] = 
     pw.post(content, web, pred).map{id => PostData(content, id)} 
 
     /**

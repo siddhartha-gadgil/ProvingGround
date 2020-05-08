@@ -287,7 +287,7 @@ object HoTTPost {
         for {
           data <- dataFuture
           leaves = data.leafIndices.toSet
-          postData <- Postable.postFuture(content.base, web, pred union leaves)
+          postData <- Postable.post(content.base, web, pred union leaves)
         } yield postData.id
       }
     }

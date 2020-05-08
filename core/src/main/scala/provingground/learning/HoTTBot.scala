@@ -679,7 +679,7 @@ class HoTTWebSession
       lp: LocalProver,
       pred: Set[ID] = Set()
   ): Future[PostData[LocalProver, HoTTPostWeb, HoTTPostWeb.ID]] =
-    postFuture(lp, pred)
+    post(lp, pred)
 
   def postLP(
       lp: LocalProver,
