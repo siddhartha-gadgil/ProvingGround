@@ -667,9 +667,9 @@ object HoTTBot {
 }
 
 import HoTTBot._
-class HoTTWebSession
+class HoTTWebSession(initialWeb : HoTTPostWeb = new HoTTPostWeb())
     extends SimpleSession[HoTTPostWeb, (Int, Int)](
-      new HoTTPostWeb(),
+      initialWeb,
       Vector(lpToExpEv, expEvToEqns, eqnUpdate),
       Vector(scribeLog(_))
     ) {

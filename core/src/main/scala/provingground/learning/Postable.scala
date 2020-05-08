@@ -2,6 +2,7 @@ package provingground.learning
 import scala.concurrent._
 import scala.reflect.runtime.universe._
 import shapeless._
+import provingground.learning.TypedPostResponse.MicroBot
 
 /**
  * Typeclass for being able to post with content type P in W

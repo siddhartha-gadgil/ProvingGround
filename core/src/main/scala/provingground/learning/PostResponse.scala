@@ -81,9 +81,9 @@ class SimpleSession[W, ID](
     * @param pw postability
     * @return the data of the post as a future
     */ 
-  def post[P](content: P, preds: Set[ID])(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = {
+  def post[P](content: P, preds: Set[ID], withResponse: Boolean = true)(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = {
     val postIdFuture = pw.post(content, web, preds)
-    postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
+    if (withResponse) postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
       respond(content, postID)
     }
     postIdFuture.map{id => 
@@ -313,3 +313,12 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
     }
 }
 
+import Postable.ec, TypedPostResponse.MicroBot
+
+case class WebState[W, ID](web: W, lastPosts: Vector[PostData[_, W, ID]]){
+  def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[WebState[W, ID]] = 
+    pw.post(content, web ,predecessors).map{id => WebState(web, Vector(PostData(content, id)))}
+
+  def act[P, Q, V](bot: MicroBot[P, Q, W, V, ID])(implicit pw: Postable[P, W, ID]) = 
+    lastPosts.flatMap(pd => pd.getOpt[P].map{content => PostData(content, pd.id)})
+}
