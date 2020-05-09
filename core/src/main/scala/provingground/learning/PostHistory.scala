@@ -6,8 +6,18 @@ trait PostHistory[W, ID] {
   // the post itself and all its predecessors
   def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])]
 
+  def predPosts(web: W, index: ID) = findPost(web, index).map(_._2).getOrElse(Set())
+
   // all posts as a view
   def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]]
+
+  def apexPosts(web: W) : Vector[PostData[_, W, ID]] = { // very inefficient since a lot of stuff is recomputed, should override if efficiency mattersI
+    val v = allPosts(web).toVector
+    val notApex = v.toSet.flatMap{(pd : PostData[_, W, ID]) => predPosts(web, pd.id)}
+    v.filterNot(p => notApex.contains(p.id))
+  }
+
+  def snapShot(web: W): WebState[W,ID] = WebState(web, apexPosts(web))
 
   def postTags(web: W): Vector[(TypeTag[_], ID, Option[Set[ID]])] =
     allPosts(web).map { pd: PostData[_, W, ID] =>

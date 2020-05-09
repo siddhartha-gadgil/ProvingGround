@@ -70,6 +70,8 @@ class HoTTPostWeb {
     PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
     PostBuffer.build[FromAny, ID]() ::
     PostBuffer.build[ConsiderInductiveTypes, ID]() :: HNil
+
+  def snapShot : WebState[HoTTPostWeb,HoTTPostWeb.ID] = HoTTPostWeb.history.snapShot(this)
 }
 
 object HoTTPostWeb {

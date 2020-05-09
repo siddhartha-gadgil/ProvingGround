@@ -315,12 +315,12 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
 
 import Postable.ec, TypedPostResponse.MicroBot
 
-case class WebState[W, ID](web: W, lastPosts: Vector[PostData[_, W, ID]] = Vector()){
+case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vector()){
   def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[WebState[W, ID]] = 
     pw.post(content, web ,predecessors).map{id => WebState(web, Vector(PostData(content, id)))}
 
   def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
-    Future.sequence(lastPosts.flatMap(pd => pd.getOpt[P].map{content => PostData(content, pd.id)}).map{
+    Future.sequence(apexPosts.flatMap(pd => pd.getOpt[P].map{content => PostData(content, pd.id)}).map{
       pd => bot.post(web, pd.content, pd.id)
     }).map{vv => WebState(web, vv.flatten)}
 }
