@@ -667,6 +667,7 @@ object HoTTBot {
 }
 
 import HoTTBot._
+// May want to avoid inheritance
 class HoTTWebSession(initialWeb : HoTTPostWeb = new HoTTPostWeb())
     extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
@@ -686,4 +687,12 @@ class HoTTWebSession(initialWeb : HoTTPostWeb = new HoTTPostWeb())
       pred: Set[ID] = Set()
   ): Future[PostData[LocalProver, HoTTPostWeb, HoTTPostWeb.ID]] =
     postLocalProverFuture(lp, pred)
+}
+
+object HoTTWebSession{
+  def launch(state: WebState[HoTTPostWeb, (Int, Int)]) = {
+    val session = new HoTTWebSession(state.web)
+    state.apexPosts.foreach{case pd : PostData[x, HoTTPostWeb, (Int, Int)] => session.respond(pd.content, pd.id)(pd.pw)}
+    session
+  }
 }
