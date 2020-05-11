@@ -85,12 +85,13 @@ object HoTTBot {
             if (instance.typ == seek.typ) {
               val newGoal = (seek: SeekInstances)
                 .goalCast(instance.term)
-              val deduction: Term => Term =
-                (x) => mkPair(instance.term.asInstanceOf[Term], x: Term)
+              val x = instance.typ.Var
+              val deduction =
+                x :-> mkPair(instance.term.asInstanceOf[Term], x: Term)
               val cons = Consequence(
                 newGoal,
                 seek.sigma,
-                Option(deduction),
+                Option(ExstFunc(deduction)),
                 seek.context
               )
               Some(
@@ -120,9 +121,10 @@ object HoTTBot {
             if (sk == goal.goal) None
             else
               Some {
-                val transform = fromSkolemized(sk) _
+                val y = sk.Var
+                val transform = y :-> fromSkolemized(sk)(y)
                 val cons =
-                  Consequence(sk, goal.goal, Option(transform), goal.context)
+                  Consequence(sk, goal.goal, Option(ExstFunc(transform)), goal.context)
                 cons :: SeekGoal(
                   sk,
                   goal.context,
@@ -215,8 +217,7 @@ object HoTTBot {
         (pf: Proved) => pf.proofOpt.foreach(t => web.addTerms(Set(t)))
     )
 
-  lazy val lpLemmas
-      : MicroBot[LocalProver, Lemmas, HoTTPostWeb, Unit, ID] = {
+  lazy val lpLemmas: MicroBot[LocalProver, Lemmas, HoTTPostWeb, Unit, ID] = {
     val response: Unit => LocalProver => Future[Lemmas] =
       (_) =>
         (lp) =>
@@ -466,8 +467,7 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val funcToFromAll
-      : SimpleBot[FunctionForGoal, Option[FromAll]] = {
+  lazy val funcToFromAll: SimpleBot[FunctionForGoal, Option[FromAll]] = {
     MicroBot.simple { (fng: FunctionForGoal) =>
       FromAll.get(fng.fn, fng.goal, fng.forConsequences, fng.context)
     }
@@ -668,7 +668,7 @@ object HoTTBot {
 
 import HoTTBot._
 // May want to avoid inheritance
-class HoTTWebSession(initialWeb : HoTTPostWeb = new HoTTPostWeb())
+class HoTTWebSession(initialWeb: HoTTPostWeb = new HoTTPostWeb())
     extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       Vector(lpToExpEv, expEvToEqns, eqnUpdate),
@@ -689,10 +689,13 @@ class HoTTWebSession(initialWeb : HoTTPostWeb = new HoTTPostWeb())
     postLocalProverFuture(lp, pred)
 }
 
-object HoTTWebSession{
+object HoTTWebSession {
   def launch(state: WebState[HoTTPostWeb, (Int, Int)]) = {
     val session = new HoTTWebSession(state.web)
-    state.apexPosts.foreach{case pd : PostData[x, HoTTPostWeb, (Int, Int)] => session.respond(pd.content, pd.id)(pd.pw)}
+    state.apexPosts.foreach {
+      case pd: PostData[x, HoTTPostWeb, (Int, Int)] =>
+        session.respond(pd.content, pd.id)(pd.pw)
+    }
     session
   }
 }

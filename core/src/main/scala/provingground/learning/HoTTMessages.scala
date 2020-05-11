@@ -218,47 +218,50 @@ object HoTTMessages {
   case class Consequence(
       premise: Typ[Term],
       conclusion: Typ[Term],
-      proofMapOpt: Option[Term => Term],
+      proofMapOpt: Option[ExstFunc],
       context: Context
   ) extends PropagateProof {
     def propagate(proofs: Set[Term]): Option[Proved] =
       proofs.find(_.typ == premise).map { proof =>
-        Proved(conclusion, proofMapOpt.map(m => m(proof)), context)
+        Proved(conclusion, proofMapOpt.flatMap(m => m(proof)), context)
       }
     assert(
-      proofMapOpt.forall(pfMap => pfMap("hyp" :: premise).typ == conclusion)
+      proofMapOpt.forall(pfMap => pfMap("hyp" :: premise).get.typ == conclusion)
     )
   }
 
   case class Contradicts(
       premise: Typ[Term],
       conclusion: Typ[Term],
-      contraMapOpt: Option[Term => Term => Term],
+      contraMapOpt: Option[ExstFunc],
       context: Context
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       proofs.find(_.typ == premise).map { proof =>
         val contraOpt =
-          contraMapOpt.map { contraMap =>
+          contraMapOpt.flatMap { contraMap =>
             contraMap(proof)
-          }
-        Contradicted(conclusion, contraOpt, context)
+          }.flatMap(ExstFunc.opt(_))
+        Contradicted(conclusion, 
+        contraOpt,
+        context)
       }
 
     contraMapOpt.foreach(
       contraMap =>
-        assert(contraMap("assume" :: premise)("also" :: conclusion).typ == Zero)
+        assert(
+          fold(contraMap("assume" :: premise).get)("also" :: conclusion).typ == Zero)
     )
   }
 
   case class Contradicted(
       statement: Typ[Term],
-      contraOpt: Option[Term => Term],
+      contraOpt: Option[ExstFunc],
       context: Context
   ) extends Decided {
     for {
       contra <- contraOpt
-    } assert(contra("assume" :: statement).typ == Zero)
+    } assert(contra("assume" :: statement).map(_.typ) == Some(Zero))
   }
 
   case class RepresentationMap(
