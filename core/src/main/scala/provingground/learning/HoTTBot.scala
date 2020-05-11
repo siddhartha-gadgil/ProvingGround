@@ -87,7 +87,7 @@ object HoTTBot {
                 .goalCast(instance.term)
               val x = instance.typ.Var
               val deduction =
-                x :-> mkPair(instance.term.asInstanceOf[Term], x: Term)
+                x :~> mkPair(instance.term.asInstanceOf[Term], x: Term)
               val cons = Consequence(
                 newGoal,
                 seek.sigma,
@@ -122,7 +122,7 @@ object HoTTBot {
             else
               Some {
                 val y = sk.Var
-                val transform = y :-> fromSkolemized(sk)(y)
+                val transform = y :~> fromSkolemized(sk)(y)
                 val cons =
                   Consequence(sk, goal.goal, Option(ExstFunc(transform)), goal.context)
                 cons :: SeekGoal(
@@ -518,9 +518,7 @@ object HoTTBot {
               FromAll(
                 Vector(pd.first, pd.second),
                 sk.goal, {
-                  case Vector(x, y) =>
-                    Some(pd.paircons(x.asInstanceOf[u])(y.asInstanceOf[v]))
-                  case _ => None
+                    Some(pd.paircons)
                 },
                 sk.context,
                 sk.forConsequences
@@ -542,8 +540,8 @@ object HoTTBot {
                 sk.goal,
                 true,
                 Vector(
-                  (x: Term) => Some(pt.incl1(x.asInstanceOf[u])),
-                  (x: Term) => Some(pt.incl2(x.asInstanceOf[v]))
+                  Some(ExstFunc(pt.incl1)),
+                 Some(ExstFunc(pt.incl2))
                 ),
                 sk.context,
                 sk.forConsequences

@@ -66,10 +66,11 @@ object HoTTMessages {
 
   /**
     * modifying parameters, for instance excluding islands, strengthening backward reasoning etc
+    * for serialization, inherit from this class
     *
     * @param modification the modifications
     */
-  case class ModifyParams(modification: TermGenParams => TermGenParams)
+  class ModifyParams(modification: TermGenParams => TermGenParams)
 
   /**
     * result of evolution, say of a local-prover; could be just from equations
@@ -348,14 +349,14 @@ object HoTTMessages {
   case class FromAll(
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
-      proofOpt: Vector[Term] => Option[Term],
+      proofOpt: Option[Term],
       context: Context,
       forConsequences: Set[Typ[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) {
         val terms = typs.flatMap(typ => proofs.find(_.typ == typ))
-        Some(Proved(conclusion, proofOpt(terms), context))
+        Some(Proved(conclusion, proofOpt.map(pf => foldterms(pf, terms.toList)), context))
       } else None
   }
 
@@ -363,19 +364,18 @@ object HoTTMessages {
     def backward(
         fn: Term,
         cod: Typ[Term]
-    ): Option[(Vector[Typ[Term]], Vector[Term] => Option[Term])] =
-      if (fn.typ == cod) Some((Vector(), (_) => Some(fn)))
+    ): Option[(Vector[Typ[Term]], Option[Term])] =
+      if (fn.typ == cod) Some((Vector(), Some(fn)))
       else
         fn match {
           case func: FuncLike[u, v] =>
             val head = func.dom
             val x    = head.Var
             backward(func(x), cod).map {
-              case (tail, pf) =>
+              case (tail, pfO) =>
                 (
                   head +: tail,
-                  (v: Vector[Term]) =>
-                    if (v.head.typ == head) pf(v.tail) else None
+                   pfO.map(pf => x :~> pf)
                 )
             }
           case _ => None
@@ -421,14 +421,14 @@ object HoTTMessages {
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
       exhaustive: Boolean,
-      proofsOpt: Vector[Term => Option[Term]],
+      proofsOpt: Vector[Option[ExstFunc]],
       context: Context,
       forConsequences: Set[Typ[Term]]
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty) {
         val proofOpt = proofs.find(t => typs.contains(t.typ)).flatMap(
-          x => typs.zip(proofsOpt).find(_._1 == x.typ).flatMap{case (_, pfMap) => pfMap(x)}
+          x => typs.zip(proofsOpt).find(_._1 == x.typ).flatMap{case (_, pfMap) => pfMap.flatMap(_(x))}
         )
         Some(Proved(conclusion, proofOpt, context))
       } else if (exhaustive && typs.toSet.subsetOf(proofs.map(_.typ)))
