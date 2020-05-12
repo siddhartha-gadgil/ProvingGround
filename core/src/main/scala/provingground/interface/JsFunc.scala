@@ -6,6 +6,7 @@ import Translator.unmatched
 
 import scala.language.higherKinds
 import ujson.Js
+import upickle.default._
 import cats._
 import cats.implicits._
 import provingground.induction.{ExstInducDefn, ExstInducStrucs}
@@ -211,6 +212,11 @@ object TermJson {
         case (u, (w, (x, (y, v)))) =>
           buildIndIndDef(indexedInds)(w, (x, (y, v)))
       }
+
+  implicit val termRW : ReadWriter[Term] = readwriter[ujson.Value].bimap(
+    term => termToJsonGet(term),
+    js => jsonToTerm()(js).get
+  )
 
   def jsToTermExst(
       exst: ExstInducStrucs

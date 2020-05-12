@@ -78,7 +78,7 @@ object HoTTMessages {
     * @param ts the evolved state
     */
   case class FinalState(ts: TermState)
-
+  
   /**
     * Result of generation and normalization
     *

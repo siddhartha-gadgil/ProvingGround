@@ -14,6 +14,8 @@ trait Postable[P, W, ID] {
 
 trait BiPostable[P, W, ID] extends Postable[P, W, ID]{
   def postAt(content: P, web: W, id: ID, pred: Set[ID]) : Future[Unit]
+
+  def allPosts(web: W): Vector[(P, ID, Set[ID])]
 }
 
 object Postable {
