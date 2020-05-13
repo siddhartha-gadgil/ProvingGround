@@ -358,7 +358,7 @@ object HoTTBot {
     ] =
       qp =>
         goal => {
-          import TermGeneratorNodes._
+          import TermGeneratorNodes._, TermRandomVars._
           qp.lp
             .nodeDist(codomainNode(goal.goal))
             .map { fd: FiniteDistribution[Term] =>
@@ -390,7 +390,7 @@ object HoTTBot {
     ] =
       qp =>
         seekInst => {
-          import TermGeneratorNodes._
+          import TermGeneratorNodes._, TermRandomVars._
           qp.lp
             .varDist(termsWithTyp(seekInst.typ))
             .map { fd: FiniteDistribution[Term] =>

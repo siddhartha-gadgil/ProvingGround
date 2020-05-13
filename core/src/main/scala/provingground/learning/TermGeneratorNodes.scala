@@ -25,12 +25,12 @@ object TermGeneratorNodes {
     * @param randomVar the random variable
     * @tparam O scala type of the random variable
     */
-  case class ConstRandVar[O](randomVar: RandomVar[O]) extends (Term => RandomVar[O]) {
+  case class ConstRandVar[O](randomVar: RandomVar[O])
+      extends (Term => RandomVar[O]) {
     def apply(t: Term): RandomVar[O] = randomVar
 
     override def toString: String = randomVar.toString
   }
-
 
   /**
     * Wrapper for lambda to allow equality and  `toString` to work.
@@ -82,7 +82,7 @@ object TermGeneratorNodes {
     */
   case class AddVar(typ: Typ[Term])
       extends (TermState => Double => (TermState, Term)) {
-    def apply(ts: TermState) = (wt: Double) =>  ts.addVar(typ, wt)
+    def apply(ts: TermState) = (wt: Double) => ts.addVar(typ, wt)
 
     override def toString = "AddVar"
   }
@@ -192,11 +192,6 @@ object TermGeneratorNodes {
   }
 
   /**
-    * distribution of functions : as existentials (wrapping terms), not as terms
-    */
-  case object Funcs extends RandomVar[ExstFunc]
-
-  /**
     * conditioning on being a function
     */
   val funcSort: Sort[Term, ExstFunc] =
@@ -204,64 +199,8 @@ object TermGeneratorNodes {
 
   val typAsTermSort: Sort[Typ[Term], Term] =
     Sort.Restrict[Typ[Term], Term](TypAsTermOpt)
-  
-  /**
-    * family of distributions of terms with specified type
-    */
-  case object TermsWithTyp
-      extends RandomVar.SimpleFamily[Typ[Term], Term](
-        Typs,
-        (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
-      )
-
-  /**
-    * distribution of terms with a specific type
-    *
-    * @param typ the type
-    * @return distribution at type
-    */
-  def termsWithTyp(typ: Typ[Term]): RandomVar[Term] =
-    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
 
 
-  /**
-    * Wrapper for terms with type family to allow equality and  `toString` to work.
-    */
-  case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]) {
-    def apply(typ: Typ[Term]) = RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
-
-    override def toString = "TermsWithTyp"
-  }
-
-  /**
-    * distribution of type families
-    */
-  case object TypFamilies extends RandomVar[ExstFunc]
-
-  val typFamilySort: Sort[Term, ExstFunc] =
-    Sort.Restrict[Term, ExstFunc](TypFamilyOpt)
-
-  /**
-    * distribution of types and type families
-    */
-  case object TypsAndFamilies extends RandomVar[Term] {
-    lazy val fromTyp: Map[Typ[Term], Term] =
-      Map[Typ[Term], Term](Idty(), Typs, TypsAndFamilies)
-
-    lazy val fromFamilies: Map[ExstFunc, Term] =
-      Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
-  }
-
-  /**
-    * distribution of types to target for generating terms; either a generated type or a goal.
-    */
-  case object TargetTyps extends RandomVar[Typ[Term]] {
-    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(Idty(), Goals, TargetTyps)
-
-    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(Idty(), Typs, TargetTyps)
-
-    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
-  }
 
   /**
     * Wrapper for fiber for sigma types to allow equality and  `toString` to work.
@@ -403,7 +342,6 @@ object TermGeneratorNodes {
     */
   def domainForDefn(ind: ExstInducDefn): Option[GeneratorNode[Term]] =
     domainForStruct(ind.ind, ind.typFamily, ind)
-
 
   /**
     * Node family for generating domains for a given inductive structure, with an inductive definition also given.
@@ -649,9 +587,9 @@ class TermGeneratorNodes[InitState](
       case _ => None
     }
 
-    /**
-     * node for targeting functions on products by currying, and also on sigma-types and co-products
-     */ 
+  /**
+    * node for targeting functions on products by currying, and also on sigma-types and co-products
+    */
   def curryForTyp(typ: Typ[Term]): Option[GeneratorNode[Term]] =
     typ match {
       case ft: FuncTyp[u, v] =>
@@ -739,7 +677,7 @@ class TermGeneratorNodes[InitState](
       case typ :: HNil => nodeForTyp(typ)
     }, TermsWithTyp)
 
-    /**
+  /**
     * nodes combining backward reasoning targeting types that are  (dependent) function types, with domain product, sigma-types or co-products
     * aggregated over all types
     */
@@ -760,7 +698,7 @@ class TermGeneratorNodes[InitState](
       FuncsWithDomain
     )
 
-    /**
+  /**
     * nodes for invoking (external) solvers for special types.
     */
   val solveFamily: GeneratorNodeFamily.BasePiOpt[Typ[Term] :: HNil, Term] =
@@ -782,7 +720,6 @@ class TermGeneratorNodes[InitState](
       PiApply,
       inIsle
     )
-
 
   /**
     * island to generate Sigma-Types by taking variables with specified domain, similar to [[lambdaIsle]]
@@ -981,7 +918,7 @@ class TermGeneratorNodes[InitState](
         }
     }
 
-    /**
+  /**
     * Node for recursive definitions targeting a specific type
     * given an inductive definition, generating a domain and
     * invoking the node getting codomain; but not the recursion data here
@@ -1012,7 +949,7 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-    /**
+  /**
     * Node for recursive definitions targeting a specific type
     * picking an inductive definition, generating a domain and
     * invoking the node getting codomain; but not the recursion data here
@@ -1024,7 +961,7 @@ class TermGeneratorNodes[InitState](
       termsWithTyp(typ)
     )
 
-    /**
+  /**
     * Node for recursive definitions targeting a specific type
     * picking an inductive definition, generating a domain and
     * invoking the node getting codomain; but not the recursion data here
@@ -1037,7 +974,7 @@ class TermGeneratorNodes[InitState](
       Terms
     )
 
-    /**
+  /**
     *  Family of nodes for recursive definitions targeting a specific type
     * picking an inductive definition, generating a domain and
     * invoking the node getting codomain; but not the recursion data here
@@ -1105,7 +1042,7 @@ class TermGeneratorNodes[InitState](
       inductiveTyp: Typ[Term]
   ): Island[Typ[Term], InitState, Typ[Term], Term] =
     Island[Typ[Term], InitState, Typ[Term], Term](
-      IntroRuleTypes(inductiveTyp),      // output
+      IntroRuleTypes(inductiveTyp),               // output
       ConstRandVar(IntroRuleTypes(inductiveTyp)), // output from island
       addVar(inductiveTyp),
       PiApply,

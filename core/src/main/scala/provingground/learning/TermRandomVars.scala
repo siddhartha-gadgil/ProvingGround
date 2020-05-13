@@ -90,6 +90,68 @@ object TermRandomVars {
     */
   case object Typs extends RandomVar[Typ[Term]]
 
+    /**
+    * distribution of functions : as existentials (wrapping terms), not as terms
+    */
+  case object Funcs extends RandomVar[ExstFunc]
+
+  /**
+    * family of distributions of terms with specified type
+    */
+  case object TermsWithTyp
+      extends RandomVar.SimpleFamily[Typ[Term], Term](
+        Typs,
+        (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
+      )
+
+  /**
+    * distribution of terms with a specific type
+    *
+    * @param typ the type
+    * @return distribution at type
+    */
+  def termsWithTyp(typ: Typ[Term]): RandomVar[Term] =
+    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
+  /**
+    * Wrapper for terms with type family to allow equality and  `toString` to work.
+    */
+  case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]) {
+    def apply(typ: Typ[Term]) = RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
+    override def toString = "TermsWithTyp"
+  }
+
+  /**
+    * distribution of type families
+    */
+  case object TypFamilies extends RandomVar[ExstFunc]
+
+  val typFamilySort: Sort[Term, ExstFunc] =
+    Sort.Restrict[Term, ExstFunc](TypFamilyOpt)
+
+  /**
+    * distribution of types and type families
+    */
+  case object TypsAndFamilies extends RandomVar[Term] {
+    lazy val fromTyp: Map[Typ[Term], Term] =
+      Map[Typ[Term], Term](Idty(), Typs, TypsAndFamilies)
+
+    lazy val fromFamilies: Map[ExstFunc, Term] =
+      Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
+  }
+
+  /**
+    * distribution of types to target for generating terms; either a generated type or a goal.
+    */
+  case object TargetTyps extends RandomVar[Typ[Term]] {
+    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(Idty(), Goals, TargetTyps)
+
+    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(Idty(), Typs, TargetTyps)
+
+    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
+  }
+
   case object IsleDomains extends RandomVar[Typ[Term]]
 
   val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](TypOpt)
