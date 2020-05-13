@@ -76,7 +76,7 @@ case class TermState(
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 
-  lazy val contradicted : Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] =
+  lazy val contradicted: Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] =
     goals.filter(goal => terms.map(_.typ)(negate(goal)) > 0).pmf.map {
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
@@ -291,6 +291,11 @@ object TermState {
     val inds = FD.empty[ExstInducDefn] //InducJson.jsToFD(context.inducStruct)(obj("inductive-structures"))
     TermState(terms, typs, vars, inds, goals, context)
   }
+
+  import upickle.default._
+
+  implicit val termStateRW: ReadWriter[TermState] =
+    readwriter[ujson.Value].bimap(_.json, fromJson(_))
 
   /**
     * finite distributions on terms etc

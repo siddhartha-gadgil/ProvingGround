@@ -1,5 +1,5 @@
 package provingground.learning
-import provingground._
+import provingground._, interface._
 import HoTT._
 import monix.eval.Task
 
@@ -15,6 +15,19 @@ import EntropyAtomWeight._
 import scalahott.NatRing
 import monix.tail.Iterant
 import provingground.learning.TypSolver.LookupSolver
+import upickle.default._, scala.concurrent.duration._
+
+object LocalProver{
+  implicit def finDurRW : ReadWriter[FiniteDuration] = 
+    readwriter[ujson.Value].bimap(
+      dur => ujson.Num(dur.toMillis),
+      js => FiniteDuration(ujson.read(js).num.toLong, MILLISECONDS)
+    )
+
+  import TermJson._ , TermGenParams._ 
+
+  implicit val lpRW: ReadWriter[LocalProver] = macroRW
+}
 
 /**
   * Collect local/generative/tactical proving;
@@ -616,6 +629,12 @@ trait LocalProverStep {
     )
 }
 
+
+object LocalTangentProver{
+  import TermJson._ , TermGenParams._ 
+
+  implicit val lpRW: ReadWriter[LocalProver] = macroRW
+}
 case class LocalTangentProver(
     initState: TermState =
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),

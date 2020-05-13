@@ -218,6 +218,21 @@ object TermJson {
     js => jsonToTerm()(js).get
   )
 
+  implicit val fdTermRW : ReadWriter[FiniteDistribution[Term]] = readwriter[Vector[(Term, Double)]].bimap(
+    fd => fd.pmf.map{case Weighted(elem, x) => (elem, x)},
+    v => FiniteDistribution(v.map{case (t, p) => Weighted(t, p)})
+  )
+
+  implicit val typRW : ReadWriter[Typ[Term]] = termRW.bimap(
+    t => t,
+    t => toTyp(t)
+  )
+
+  implicit val fdTypRW : ReadWriter[FiniteDistribution[Typ[Term]]] = fdTermRW.bimap(
+    fd => fd.map(t => t),
+    fd => fd.map(toTyp(_))
+  )
+
   def jsToTermExst(
       exst: ExstInducStrucs
   ): Translator.OrElse[ujson.Value, Term] =
@@ -477,6 +492,15 @@ object InducJson {
         getIndexed(typF, intros)
     }
 
+  implicit val rwInducStruct: ReadWriter[ExstInducStrucs] = readwriter[ujson.Value].bimap(
+    ind => toJson(ind),
+    js => fromJson(ExstInducStrucs.Base)(js)
+  )
+
+  import TermJson._
+
+  implicit val rwInducDefn: ReadWriter[ExstInducDefn] = macroRW
+
   def jsToFD(
       exst: ExstInducStrucs
   )(js: ujson.Value): FiniteDistribution[ExstInducDefn] = {
@@ -576,6 +600,9 @@ object ContextJson {
         val defn = InducJson.fromJson(init.inducStruct)(js.obj("defn"))
         AppendIndDef(init, defn)
     }
+
+  implicit val rwContext: ReadWriter[Context] =
+    readwriter[ujson.Value].bimap(toJson, fromJson(_))
 }
 
 object ConciseTermJson {

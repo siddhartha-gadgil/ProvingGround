@@ -44,6 +44,11 @@ object TermGenParams {
     )
   }
 
+  import upickle.default._
+
+  implicit val termGenParamsRW: ReadWriter[TermGenParams] =
+    readwriter[ujson.Value].bimap(_.toJson, fromJson(_))
+
   lazy val rnd = new scala.util.Random
 
   def randomScale(
@@ -81,9 +86,6 @@ object TermGenParams {
   )
 
   def apple(w: Double = 0.1) = zero.copy(appW = w, unAppW = w)
-
-  implicit def rw: RW[TermGenParams] =
-    readwriter[ujson.Value].bimap(_.toJson, fromJson)
 
 }
 

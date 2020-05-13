@@ -16,6 +16,8 @@ trait BiPostable[P, W, ID] extends Postable[P, W, ID]{
   def postAt(content: P, web: W, id: ID, pred: Set[ID]) : Future[Unit]
 
   def allPosts(web: W): Vector[(P, ID, Set[ID])]
+
+  def postAll(web: W, data: Seq[(P, ID, Set[ID])]) = data.foreach{case (p, id, pred) => postAt(p, web, id, pred)}
 }
 
 object Postable {

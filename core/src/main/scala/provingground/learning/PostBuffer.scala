@@ -7,6 +7,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util._
 import scala.reflect.runtime.universe._
 import provingground._, Utils.logger
+import ujson.Value
 
 /**
   * Allows posting any content, typically just returns an ID to be used by something else.
@@ -70,9 +71,13 @@ object ErasablePostBuffer {
       buffer: W => ErasablePostBuffer[P, ID]
   ): BiPostable[P, W, ID] = {
     new BiPostable[P, W, ID] {
-      def allPosts(web: W): Vector[(P, ID, Set[ID])] = buffer(web).buffer.toVector.flatMap{
-        case (opt, id, preds) => opt.map{content => (content, id, preds)}
-      }
+      def allPosts(web: W): Vector[(P, ID, Set[ID])] =
+        buffer(web).buffer.toVector.flatMap {
+          case (opt, id, preds) =>
+            opt.map { content =>
+              (content, id, preds)
+            }
+        }
 
       def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
         val idF = buffer(web).post(content, pred)
@@ -87,7 +92,9 @@ object ErasablePostBuffer {
       val tag: reflect.runtime.universe.TypeTag[P] = implicitly
 
       def postAt(content: P, web: W, id: ID, pred: Set[ID]): Future[Unit] =
-        Future(())
+        Future {
+          buffer(web).buffer.append((Some(content), id, pred))
+        }
 
     }
   }
@@ -245,7 +252,8 @@ object PostBuffer {
       def postAt(content: P, web: W, id: ID, pred: Set[ID]): Future[Unit] =
         buffer(web).postAt(content, id, pred)
 
-      def allPosts(web: W): Vector[(P, ID, Set[ID])] = buffer(web).buffer.toVector
+      def allPosts(web: W): Vector[(P, ID, Set[ID])] =
+        buffer(web).buffer.toVector
 
     }
   }
@@ -303,6 +311,33 @@ object BuildPostable {
         PostDiscarder.discardPost((web: W) => buffer(web).head) :: tailBuilder
           .postable((web: W) => buffer(web).tail)
     }
+}
+
+trait BuffersJson[W, B]{
+  def save(web: W, buffers: W => B) : Option[Future[ujson.Value]]
+
+  def load(web: W, buffers: W => B, js: ujson.Value) : Future[Unit]
+
+  def ||(that: BuffersJson[W, B]) = BuffersJson.Combine(this, that)
+}
+
+object BuffersJson{
+  case class Combine[W, B](first: BuffersJson[W, B], second: BuffersJson[W, B]) extends BuffersJson[W, B]{
+    def save(web: W, buffers: W => B): Option[Future[Value]] = first.save(web, buffers).orElse(second.save(web, buffers))
+    
+    def load(web: W, buffers: W => B, js: Value): Future[Unit] = 
+      {
+        first.load(web, buffers, js)
+        second.load(web, buffers, js)
+      }
+  }
+
+  implicit def hnilJson[W] : BuffersJson[W, HNil] = new BuffersJson[W, HNil] {
+    def save(web: W, buffers: W => HNil): Option[Future[Value]] = Some(Future(ujson.Obj("terminal" -> true)))
+    
+    def load(web: W, buffers: W => HNil, js: Value): Future[Unit] = Future(())
+    
+  }
 }
 
 /**
