@@ -313,31 +313,58 @@ object BuildPostable {
     }
 }
 
-trait BuffersJson[W, B]{
-  def save(web: W, buffers: W => B) : Option[Future[ujson.Value]]
+trait BuffersJson[W, B] {
+  def save(web: W, buffers: W => B): Future[ujson.Value]
 
-  def load(web: W, buffers: W => B, js: ujson.Value) : Future[Unit]
-
-  def ||(that: BuffersJson[W, B]) = BuffersJson.Combine(this, that)
+  def load(web: W, buffers: W => B, js: ujson.Value): Future[Unit]
 }
 
-object BuffersJson{
-  case class Combine[W, B](first: BuffersJson[W, B], second: BuffersJson[W, B]) extends BuffersJson[W, B]{
-    def save(web: W, buffers: W => B): Option[Future[Value]] = first.save(web, buffers).orElse(second.save(web, buffers))
-    
-    def load(web: W, buffers: W => B, js: Value): Future[Unit] = 
-      {
-        first.load(web, buffers, js)
-        second.load(web, buffers, js)
-      }
+object BuffersJson {
+
+  implicit def hnilJson[W]: BuffersJson[W, HNil] = new BuffersJson[W, HNil] {
+    def save(web: W, buffers: W => HNil): Future[Value] =
+      Future(ujson.Obj())
+
+    def load(web: W, buffers: W => HNil, js: Value): Future[Unit] = Future(())
+
   }
 
-  implicit def hnilJson[W] : BuffersJson[W, HNil] = new BuffersJson[W, HNil] {
-    def save(web: W, buffers: W => HNil): Option[Future[Value]] = Some(Future(ujson.Obj("terminal" -> true)))
-    
-    def load(web: W, buffers: W => HNil, js: Value): Future[Unit] = Future(())
-    
-  }
+  implicit def pairJson[W, B1, B2](
+      implicit bj1: BuffersJson[W, B1],
+      bj2: BuffersJson[W, B2]
+  ): BuffersJson[W, (B1, B2)] =
+    new BuffersJson[W, (B1, B2)] {
+      def save(web: W, buffers: W => (B1, B2)): Future[Value] =
+        for { first <- bj1.save(web, w => buffers(w)._1)
+            second <- (bj2.save(web, w => buffers(w)._2))
+        } yield first.obj ++ second.obj
+
+      def load(web: W, buffers: W => (B1, B2), js: Value): Future[Unit] = {
+        bj1.load(web, (w) => buffers(w)._1, js)
+        bj2.load(web, (w) => buffers(w)._2, js)
+      }
+    }
+
+  import upickle.default._
+
+  implicit def consJson[P, W, ID, B <: HList](implicit bt: BuffersJson[W, B], tag: TypeTag[P], rwP: ReadWriter[P], rwID: ReadWriter[ID]) : 
+    BuffersJson[W, BiPostable[P, W, ID] :: B] = 
+    new BuffersJson[W, BiPostable[P, W, ID] :: B]{
+      def save(web: W, buffers: W => BiPostable[P,W,ID] :: B): Future[Value] = 
+        bt.save(web, w => buffers(w).tail).map{
+          js => 
+          val posts = buffers(web).head.allPosts(web)
+          js(tag.toString()) = write(posts)
+          js
+        }
+      
+      def load(web: W, buffers: W => BiPostable[P,W,ID] :: B, js: Value): Future[Unit] =  
+        bt.load(web,w => buffers(w).tail, js).map{_ =>
+          val v = js.obj(tag.toString())
+          buffers(web).head.postAll(web, read[Vector[(P, ID, Set[ID])]](v))
+        }
+      
+    }
 }
 
 /**
