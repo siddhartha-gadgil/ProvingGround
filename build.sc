@@ -238,9 +238,8 @@ def glog = {
   val builder = new FileRepositoryBuilder()
   val repo = builder.findGitDir(new File(".")).readEnvironment(). build()
   val git = new api.Git(repo)
-  import scala.jdk.CollectionConverters._
-  val c = git.log().call().asScala
-  c.to(Vector).head
+  import scala.collection.JavaConversions._
+  git.log().call().head
 }
 
 def gitlog() = {
