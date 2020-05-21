@@ -11,6 +11,7 @@ import shapeless._
 import scala.collection.SeqView
 import scala.reflect.runtime.universe._
 import HoTTMessages._
+import Utils.logger
 
 case class QueryProver(lp: LocalProver)
 
@@ -67,6 +68,13 @@ object HoTTBot {
       (pair: TermResult) => FinalState(pair._1)
     )
 
+  lazy val reportSuccesses : HoTTBot = Callback.simple{
+    (web: HoTTPostWeb) =>
+      (fs: FinalState) =>
+       if (fs.ts.successes.size > 0)
+        logger.info(fs.ts.successes.toString())
+  }
+
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
     MicroBot.simple(
       (ev: ExpressionEval) =>
@@ -121,10 +129,15 @@ object HoTTBot {
             if (sk == goal.goal) None
             else
               Some {
-                val y = sk.Var
+                val y         = sk.Var
                 val transform = y :~> fromSkolemized(sk)(y)
                 val cons =
-                  Consequence(sk, goal.goal, Option(ExstFunc(transform)), goal.context)
+                  Consequence(
+                    sk,
+                    goal.goal,
+                    Option(ExstFunc(transform)),
+                    goal.context
+                  )
                 cons :: SeekGoal(
                   sk,
                   goal.context,
@@ -320,13 +333,14 @@ object HoTTBot {
     MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
   }
 
-  def scaleSplitLemmas(scale: Double = 1.0)
-      : MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID] = {
+  def scaleSplitLemmas(
+      scale: Double = 1.0
+  ): MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID] = {
     val response: Unit => Lemmas => Future[Vector[WithWeight[UseLemma]]] =
       (_) =>
         lemmas =>
-          Future{
-            val l = lemmas.lemmas
+          Future {
+            val l  = lemmas.lemmas
             val sc = scale / l.map(_._3).sum
             l.map {
               case (tp, pfOpt, w) => withWeight(UseLemma(tp, pfOpt), w * sc)
@@ -533,7 +547,7 @@ object HoTTBot {
               FromAll(
                 Vector(pd.first, pd.second),
                 sk.goal, {
-                    Some(pd.paircons)
+                  Some(pd.paircons)
                 },
                 sk.context,
                 sk.forConsequences
@@ -556,7 +570,7 @@ object HoTTBot {
                 true,
                 Vector(
                   Some(ExstFunc(pt.incl1)),
-                 Some(ExstFunc(pt.incl2))
+                  Some(ExstFunc(pt.incl2))
                 ),
                 sk.context,
                 sk.forConsequences
@@ -670,8 +684,6 @@ object HoTTBot {
   //     pprint.log(post.id)
   //   }
 
-  import Utils.logger
-
   def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] = Future {
     logger.info(s"posted ${post.pw.tag.tpe}")
     logger.info(post.id.toString)
@@ -692,13 +704,13 @@ class HoTTWebSession(initialWeb: HoTTPostWeb = new HoTTPostWeb())
   def postLocalProverFuture(
       lp: LocalProver,
       pred: Set[ID] = Set()
-  ): Future[PostData[LocalProver, HoTTPostWeb, HoTTPostWeb.ID]] =
+  ): Future[PostData[_, HoTTPostWeb, HoTTPostWeb.ID]] =
     post(lp, pred)
 
   def postLP(
       lp: LocalProver,
       pred: Set[ID] = Set()
-  ): Future[PostData[LocalProver, HoTTPostWeb, HoTTPostWeb.ID]] =
+  ): Future[PostData[_, HoTTPostWeb, HoTTPostWeb.ID]] =
     postLocalProverFuture(lp, pred)
 }
 

@@ -81,7 +81,7 @@ class SimpleSession[W, ID](
     * @param pw postability
     * @return the data of the post as a future
     */ 
-  def post[P](content: P, preds: Set[ID], withResponse: Boolean = true)(implicit pw: Postable[P, W, ID]): Future[PostData[P, W, ID]] = {
+  def post[P](content: P, preds: Set[ID], withResponse: Boolean = true)(implicit pw: Postable[P, W, ID]): Future[PostData[_, W, ID]] = {
     val postIdFuture = pw.post(content, web, preds)
     if (withResponse) postIdFuture.foreach { postID => // posting done, the id is now the predecessor for further posts
       respond(content, postID)
@@ -317,10 +317,10 @@ import Postable.ec, TypedPostResponse.MicroBot
 
 case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vector()){
   def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[WebState[W, ID]] = 
-    pw.post(content, web ,predecessors).map{id => WebState(web, PostData(content, id) +: apexPosts )}
+    pw.post(content, web ,predecessors).map{id => WebState(web, PostData.get(content, id) +: apexPosts )} 
 
   def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
     Future.sequence(apexPosts.flatMap(pd => pd.getOpt[P].map{content => PostData(content, pd.id)}).map{
       pd => bot.post(web, pd.content, pd.id)
-    }).map{vv => WebState(web, vv.flatten ++ apexPosts.filter(_.getOpt[P].isEmpty))}
+    }).map{vv => WebState(web, vv.flatten ++ apexPosts.filter(_.getOpt[P].isEmpty))} 
 }

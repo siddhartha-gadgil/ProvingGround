@@ -6,3 +6,45 @@
 2020.05.21 10:33:29 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - LocalProver(TermState([eqM : 0.2857142857142857, mul : 0.2857142857142857, e_l : 0.047619047619047616, e_r : 0.047619047619047616, mul : 0.047619047619047616, eqM : 0.047619047619047616, axiom_{eqM(a)(a)} : 0.047619047619047616, axiom_{(eqM(a)(b) \to eqM(b)(a))} : 0.047619047619047616, axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))} : 0.047619047619047616, axiom_{eqM(mul(e_l)(a))(a)} : 0.047619047619047616, axiom_{eqM(mul(a)(e_r))(a)} : 0.047619047619047616],[(M) → ((M) → (𝒰 _0)) : 0.2857142857142857, (M) → ((M) → (M)) : 0.2857142857142857, M : 0.047619047619047616, M : 0.047619047619047616, (M) → ((M) → (M)) : 0.047619047619047616, (M) → ((M) → (𝒰 _0)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (`a)) (`a)) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)) : 0.047619047619047616],Vector(),[],[],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
 2020.05.21 10:34:16 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - posted TypeTag[provingground.learning.TermData.TermResult]
 2020.05.21 10:34:16 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:86:22 - (2,2072205870)
+2020.05.21 14:33:05 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.LocalProver]
+2020.05.21 14:33:05 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (1,550598732)
+2020.05.21 14:33:05 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - LocalProver(TermState([eqM : 0.2857142857142857, mul : 0.2857142857142857, e_l : 0.047619047619047616, e_r : 0.047619047619047616, mul : 0.047619047619047616, eqM : 0.047619047619047616, axiom_{eqM(a)(a)} : 0.047619047619047616, axiom_{(eqM(a)(b) \to eqM(b)(a))} : 0.047619047619047616, axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))} : 0.047619047619047616, axiom_{eqM(mul(e_l)(a))(a)} : 0.047619047619047616, axiom_{eqM(mul(a)(e_r))(a)} : 0.047619047619047616],[(M) → ((M) → (𝒰 _0)) : 0.2857142857142857, (M) → ((M) → (M)) : 0.2857142857142857, M : 0.047619047619047616, M : 0.047619047619047616, (M) → ((M) → (M)) : 0.047619047619047616, (M) → ((M) → (𝒰 _0)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (`a)) (`a)) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)) : 0.047619047619047616],Vector(),[],[],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.21 14:34:29 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.Lemmas]
+2020.05.21 14:34:29 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (2,1419581202)
+2020.05.21 14:34:29 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - Lemmas(Vector((((eqM) (e_r)) (e_r),None,0.0027509184472828325), (((eqM) (e_l)) (e_l),None,0.0027509184472828325), (((eqM) (e_l)) (((mul) (e_l)) (e_r)),None,0.0012526844961492322), (((eqM) (e_l)) (((mul) (e_l)) (e_l)),None,0.0012526844961492322), (((eqM) (e_r)) (((mul) (e_l)) (e_r)),None,0.0012526844961492322), (((eqM) (e_r)) (((mul) (e_r)) (e_r)),None,0.0012526844961492322)))
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.Weight]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.Weight]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.Weight]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.Weight]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.Weight]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.Weight]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (4,-397054148)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (6,-1403795547)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (7,-1403795547)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (8,-1403795547)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (3,-397054148)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - Weight(0.1191605777412563)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - Weight(0.1191605777412563)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - Weight(0.26167884451748746)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (5,-1403795547)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - Weight(0.26167884451748746)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - Weight(0.1191605777412563)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.UseLemma]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.UseLemma]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - Weight(0.1191605777412563)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.UseLemma]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.UseLemma]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.UseLemma]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (11,-1419946672)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:243:22 - posted TypeTag[provingground.learning.HoTTMessages.UseLemma]
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (13,-897240716)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (14,774457819)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (12,1179944372)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (9,-1470620296)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_r)),None)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - UseLemma(((eqM) (e_r)) (e_r),None)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - UseLemma(((eqM) (e_r)) (((mul) (e_l)) (e_r)),None)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - (10,1349890185)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - UseLemma(((eqM) (e_l)) (e_l),None)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - UseLemma(((eqM) (e_r)) (((mul) (e_r)) (e_r)),None)
+2020.05.21 14:35:24 [INFO] provingground.learning.PostBuffer.$anon.post:245:22 - UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_l)),None)
