@@ -623,6 +623,14 @@ trait LocalProverStep {
       splitTangentProvers(pfs)
     }
 
+  def scaledSplitLemmaProvers(scale: Double = 1.0): Task[Vector[LocalTangentProver]] =
+    lemmas.flatMap { v =>
+      val sc = scale / v.map(_._2).sum
+      val pfs = v.map { case (tp, w) => ("proof" :: tp, w * sc) }
+      splitTangentProvers(pfs)
+    }
+
+
   def proofTangent(tangentCutoff: Double = cutoff): Task[LocalTangentProver] =
     lemmaProofs.flatMap(
       fd => distTangentProver(fd.safeNormalized, tangentCutoff)

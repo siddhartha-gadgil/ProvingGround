@@ -320,6 +320,21 @@ object HoTTBot {
     MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
   }
 
+  def scaleSplitLemmas(scale: Double = 1.0)
+      : MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID] = {
+    val response: Unit => Lemmas => Future[Vector[WithWeight[UseLemma]]] =
+      (_) =>
+        lemmas =>
+          Future{
+            val l = lemmas.lemmas
+            val sc = scale / l.map(_._3).sum
+            l.map {
+              case (tp, pfOpt, w) => withWeight(UseLemma(tp, pfOpt), w * sc)
+            }
+          }
+    MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
+  }
+
   def lemmaDistributions(
       sizes: Map[Int, Double]
   ): MiniBot[Lemmas, UseLemmaDistribution, HoTTPostWeb, Unit, ID] = {
