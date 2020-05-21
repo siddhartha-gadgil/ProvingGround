@@ -619,7 +619,7 @@ trait LocalProverStep {
 
   def splitLemmaProvers(scale: Double = 1): Task[Vector[LocalTangentProver]] =
     lemmas.flatMap { v =>
-      val pfs = v.map { case (tp, w) => ("proof" :: tp, w) }
+      val pfs = v.map { case (tp, w) => ("proof" :: tp, w * scale) }
       splitTangentProvers(pfs)
     }
 
