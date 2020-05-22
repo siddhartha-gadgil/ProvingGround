@@ -68,11 +68,11 @@ object HoTTBot {
       (pair: TermResult) => FinalState(pair._1)
     )
 
-  lazy val reportSuccesses : HoTTBot = Callback.simple{
+  lazy val reportSuccesses : TypedPostResponse[FinalState, HoTTPostWeb, ID ] = Callback.simple{
     (web: HoTTPostWeb) =>
       (fs: FinalState) =>
        if (fs.ts.successes.size > 0)
-        logger.info(fs.ts.successes.toString())
+        logger.info("Success: "+ fs.ts.successes.toString())
   }
 
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
