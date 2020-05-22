@@ -185,10 +185,10 @@ case class PostData[P, W, ID](content: P, id: ID)(
 ) {
 
   def getOpt[Q](implicit qw: Postable[Q, W, ID]): Option[Q] =
-    if (pw.tag == qw.tag) Some(content.asInstanceOf[Q]) else None
+    if (pw.tag.tpe =:= qw.tag.tpe) Some(content.asInstanceOf[Q]) else None
 
   def getTagOpt[Q](implicit tag: TypeTag[Q]): Option[Q] =
-    if (pw.tag == tag) Some(content.asInstanceOf[Q]) else None
+    if (pw.tag.tpe =:= tag.tpe) Some(content.asInstanceOf[Q]) else None
 }
 
 object PostData {

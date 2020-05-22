@@ -33,7 +33,7 @@ object PostResponse {
       implicit qp: Postable[Q, W, ID]
   ): Option[TypedPostResponse[Q, W, ID]] = response match {
     case r: TypedPostResponse[p, W, ID] =>
-      if (qp.tag == r.pw.tag) Some(r.asInstanceOf[TypedPostResponse[Q, W, ID]])
+      if (qp.tag.tpe =:= r.pw.tag.tpe) Some(r.asInstanceOf[TypedPostResponse[Q, W, ID]])
       else None
   }
 
