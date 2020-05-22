@@ -59,7 +59,7 @@ object Postable {
     * @return PostData as a future
     */
   def post[P, W, ID](content: P, web: W, pred: Set[ID])(
-      implicit pw: Postable[P, W, ID]
+      implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]
   ): Future[PostData[_, W, ID]] =
     pw.post(content, web, pred).map { id =>
       PostData.get(content, id)
@@ -192,8 +192,8 @@ case class PostData[P, W, ID](content: P, id: ID)(
 }
 
 object PostData {
-  def get[P, W, ID](content: P, id: ID)(implicit g: DataGetter[P, W, ID]) =
-    g.data(content, id)
+  def get[P, W, ID](content: P, id: ID)(implicit dg: DataGetter[P, W, ID]) =
+    dg.data(content, id)
 }
 
 trait DataGetter[P, W, ID] {

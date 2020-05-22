@@ -277,7 +277,7 @@ object HoTTPost {
   case class Apex[P](base: P)
 
   implicit def postToLeaves[P: TypeTag](
-      implicit bp: Postable[P, HoTTPost, ID]
+      implicit bp: Postable[P, HoTTPost, ID], dg: DataGetter[P, HoTTPost, ID]
   ): Postable[Apex[P], HoTTPost, ID] =
     new Postable[Apex[P], HoTTPost, ID] {
       val tag: TypeTag[Apex[P]] = implicitly
