@@ -84,7 +84,7 @@ object Queryable {
           predicate: SeqView[P, Seq[_]] => Boolean
       ): Future[SeqView[P, Seq[_]]] =
         Future {
-          ph.allPosts(web).filter(_.pw.tag == pw.tag).map { _.asInstanceOf[P] }
+          ph.allPosts(web).filter(_.pw.tag.tpe == pw.tag.tpe).map { _.asInstanceOf[P] }
         }
     }
 
@@ -108,7 +108,7 @@ case class AnswerFromPost[P, U, W, ID](func: P => U)(
     implicit pw: Postable[P, W, ID]
 ) {
   def fromPost[Q](data: PostData[Q, W, ID]): Option[U] =
-    if (pw.tag == data.pw.tag) Some(func(data.content.asInstanceOf[P]))
+    if (pw.tag.tpe == data.pw.tag.tpe) Some(func(data.content.asInstanceOf[P]))
     else None
 }
 
@@ -172,7 +172,7 @@ trait FallBackLookups {
       ): Future[Vector[SomePost[P]]] =
         Future {
           ph.allPosts(web)
-            .filter(_.pw.tag == pw.tag)
+            .filter(_.pw.tag.tpe == pw.tag.tpe)
             .map { post =>
               SomePost(post.content.asInstanceOf[P])
             }
@@ -399,6 +399,9 @@ object QueryOptions {
     findPost(web, id)
       .map {
         case (pd, preds) =>
+          pprint.log(id)
+          pprint.log(preds)
+          pprint.log(pd.pw.tag)
           q.answers(pd)
             .filter(predicate)
             .map(Set(_))
@@ -465,19 +468,32 @@ object BuildQuery {
 
   implicit def cons[Q, W, ID, P, PList <: HList](
       implicit pw: Postable[P, W, ID],
-      tailQ: BuildQuery[Q, W, ID, PList]
+      tailQ: BuildQuery[Q, W, ID, PList],
+      tag: TypeTag[P]
   ): BuildQuery[Q, W, ID, P :: PList] =
     new BuildQuery[Q, W, ID, P :: PList] {
       def build(qp: QueryFromPosts[Q, P :: PList]): QueryOptions[Q, W, ID] =
         qp match {
           case CaseCons(answer, tail) =>
             def headFunc(data: PostData[_, W, ID]): Option[Q] =
-              if (data.pw.tag == tag) answer(data.content.asInstanceOf[P])
-              else None
+              if (data.pw.tag.tpe == tag.tpe) {
+                pprint.log(tag)
+                answer(data.content.asInstanceOf[P])}
+              else {
+                pprint.log(tag)
+                pprint.log(data.pw.tag)
+                pprint.log(data.pw.tag == tag)
+                pprint.log(data.pw.tag.tpe == tag.tpe)
+                pprint.log(data.pw.tag.toString == tag.toString())
+                None
+              }
             tailQ.build(tail).addAnswer(headFunc(_))
           case ModCons(modifier, tail) =>
             def headFunc(data: PostData[_, W, ID]): Q => Q =
-              if (data.pw.tag == tag) modifier(data.content.asInstanceOf[P])
+              if (data.pw.tag.tpe == tag.tpe) {
+                pprint.log(tag)
+                modifier(data.content.asInstanceOf[P])
+              }
               else identity
             tailQ.build(tail).addMod(headFunc(_))
         }
