@@ -198,14 +198,15 @@ object TypedPostResponse {
   case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: P => V => Boolean = (_: P) => (_ : V) => true)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
-      lv: LocalQueryable[V, W, ID]
+      lv: LocalQueryable[V, W, ID],
+      dg: DataGetter[Q, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
     def post(
         web: W,
         content: P,
         id: ID
-    ): Future[Vector[PostData[Q, W, ID]]] = {
+    ): Future[Vector[PostData[_, W, ID]]] = {
       val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
@@ -215,7 +216,7 @@ object TypedPostResponse {
                 val newPostFuture = response(aux)(content)
                 newPostFuture.flatMap{newPost => 
                   val idNewFuture = qw.post(newPost, web, Set(id))
-                  idNewFuture.map(idNew => PostData(newPost, idNew))}
+                  idNewFuture.map(idNew => PostData.get(newPost, idNew)(dg))}
             })
         }
       val task = taskNest.flatMap(st => Future.sequence(st))
@@ -256,7 +257,7 @@ object TypedPostResponse {
                   val idNewFuture = q1w.post(newPost, web, Set(id))
                   idNewFuture.flatMap{idNew => 
                     val id2Fut = q2w.post(np2, web, Set(idNew))
-                    id2Fut.map(id2 => PostData(np2, id2))}
+                    id2Fut.map(id2 => PostData.get(np2, id2))}
                   }
             })
         }
@@ -286,14 +287,15 @@ object TypedPostResponse {
 case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean = (_: V) => true)(
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
-      lv: LocalQueryable[V, W, ID]
+      lv: LocalQueryable[V, W, ID],
+      dg: DataGetter[Q, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
     def post(
         web: W,
         content: P,
         id: ID
-    ): Future[Vector[PostData[Q, W, ID]]] = {
+    ): Future[Vector[PostData[_, W, ID]]] = {
       val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
@@ -304,7 +306,7 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
                 newPostsFuture.flatMap{newPosts => // extra nesting for multiple posts
                   Future.sequence(newPosts.map{newPost =>
                     val idNewFuture = qw.post(newPost, web, Set(id))
-                    idNewFuture.map(idNew => PostData(newPost, idNew))}
+                    idNewFuture.map(idNew => PostData.get(newPost, idNew))}
                   )}
             })
         }
@@ -316,11 +318,11 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
 import Postable.ec, TypedPostResponse.MicroBot
 
 case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vector()){
-  def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]) : Future[WebState[W, ID]] = 
+  def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[WebState[W, ID]] = 
     pw.post(content, web ,predecessors).map{id => WebState(web, PostData.get(content, id) +: apexPosts )} 
 
   def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
-    Future.sequence(apexPosts.flatMap(pd => pd.getOpt[P].map{content => PostData(content, pd.id)}).map{
-      pd => bot.post(web, pd.content, pd.id)
+    Future.sequence(apexPosts.flatMap(pd => pd.getOpt[P].map{content => (content, pd.id)}).map{
+      case (content, id) => bot.post(web, content, id)
     }).map{vv => WebState(web, vv.flatten ++ apexPosts.filter(_.getOpt[P].isEmpty))} 
 }
