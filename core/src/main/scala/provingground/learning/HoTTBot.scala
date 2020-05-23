@@ -72,7 +72,10 @@ object HoTTBot {
     (web: HoTTPostWeb) =>
       (fs: FinalState) =>
        if (fs.ts.successes.size > 0)
-        logger.info("Success: "+ fs.ts.successes.toString())
+        {
+          logger.info("Success: "+ fs.ts.successes.toString())
+          translation.FansiShow.fansiPrint.log(fs.ts.successes)
+      }
   }
 
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
