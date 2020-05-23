@@ -692,10 +692,11 @@ object HoTTBot {
 
 import HoTTBot._
 // May want to avoid inheritance
-class HoTTWebSession(initialWeb: HoTTPostWeb = new HoTTPostWeb())
+class HoTTWebSession(initialWeb: HoTTPostWeb = new HoTTPostWeb(),
+        bots: Vector[HoTTBot] = HoTTWebSession.initBots)
     extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
-      Vector(lpToExpEv, expEvToEqns, eqnUpdate),
+      bots,
       Vector(scribeLog(_))
     ) {
 
@@ -714,8 +715,10 @@ class HoTTWebSession(initialWeb: HoTTPostWeb = new HoTTPostWeb())
 }
 
 object HoTTWebSession {
-  def launch(state: WebState[HoTTPostWeb, (Int, Int)]) = {
-    val session = new HoTTWebSession(state.web)
+  val initBots = Vector(lpToExpEv, expEvToEqns, eqnUpdate)
+
+  def launch(state: WebState[HoTTPostWeb, (Int, Int)], bots: Vector[HoTTBot] = initBots) = {
+    val session = new HoTTWebSession(state.web, bots)
     state.apexPosts.foreach {
       case pd: PostData[x, HoTTPostWeb, (Int, Int)] =>
         session.respond(pd.content, pd.id)(pd.pw)
