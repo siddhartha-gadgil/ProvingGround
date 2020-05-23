@@ -82,9 +82,10 @@ object ErasablePostBuffer {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
         val idF = buffer(web).post(content, pred)
         idF.map { id =>
-          logger.info(s"posted ${implicitly[TypeTag[P]]}")
-          logger.info(id.toString)
-          logger.debug(content.toString)
+          logger.info(s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}")
+          logger.debug(
+            s"Full post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}"
+          )
           id
         }
       }
@@ -240,9 +241,9 @@ object PostBuffer {
       def post(content: P, web: W, pred: Set[ID]): Future[ID] = {
         val idF = buffer(web).post(content, pred)
         idF.map { id =>
-          logger.info(s"posted ${implicitly[TypeTag[P]]}")
-          logger.info(id.toString)
-          logger.info(content.toString)
+          logger.info(
+            s"Post; tag: ${implicitly[TypeTag[P]]}, id: ${id}, content:\n${content}"
+          )
           id
         }
       }
@@ -335,8 +336,9 @@ object BuffersJson {
   ): BuffersJson[W, (B1, B2)] =
     new BuffersJson[W, (B1, B2)] {
       def save(web: W, buffers: W => (B1, B2)): Future[Value] =
-        for { first <- bj1.save(web, w => buffers(w)._1)
-            second <- (bj2.save(web, w => buffers(w)._2))
+        for {
+          first  <- bj1.save(web, w => buffers(w)._1)
+          second <- (bj2.save(web, w => buffers(w)._2))
         } yield first.obj ++ second.obj
 
       def load(web: W, buffers: W => (B1, B2), js: Value): Future[Unit] = {
@@ -347,23 +349,30 @@ object BuffersJson {
 
   import upickle.default._
 
-  implicit def consJson[P, W, ID, B <: HList](implicit bt: BuffersJson[W, B], tag: TypeTag[P], rwP: ReadWriter[P], rwID: ReadWriter[ID]) : 
-    BuffersJson[W, BiPostable[P, W, ID] :: B] = 
-    new BuffersJson[W, BiPostable[P, W, ID] :: B]{
-      def save(web: W, buffers: W => BiPostable[P,W,ID] :: B): Future[Value] = 
-        bt.save(web, w => buffers(w).tail).map{
-          js => 
+  implicit def consJson[P, W, ID, B <: HList](
+      implicit bt: BuffersJson[W, B],
+      tag: TypeTag[P],
+      rwP: ReadWriter[P],
+      rwID: ReadWriter[ID]
+  ): BuffersJson[W, BiPostable[P, W, ID] :: B] =
+    new BuffersJson[W, BiPostable[P, W, ID] :: B] {
+      def save(web: W, buffers: W => BiPostable[P, W, ID] :: B): Future[Value] =
+        bt.save(web, w => buffers(w).tail).map { js =>
           val posts = buffers(web).head.allPosts(web)
           js(tag.toString()) = write(posts)
           js
         }
-      
-      def load(web: W, buffers: W => BiPostable[P,W,ID] :: B, js: Value): Future[Unit] =  
-        bt.load(web,w => buffers(w).tail, js).map{_ =>
+
+      def load(
+          web: W,
+          buffers: W => BiPostable[P, W, ID] :: B,
+          js: Value
+      ): Future[Unit] =
+        bt.load(web, w => buffers(w).tail, js).map { _ =>
           val v = js.obj(tag.toString())
           buffers(web).head.postAll(web, read[Vector[(P, ID, Set[ID])]](v))
         }
-      
+
     }
 }
 

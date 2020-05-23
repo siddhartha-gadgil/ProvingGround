@@ -685,9 +685,8 @@ object HoTTBot {
   //   }
 
   def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] = Future {
-    logger.info(s"posted ${post.pw.tag.tpe}")
-    logger.info(post.id.toString)
-    logger.debug(post.content.toString)
+    logger.info(s"Post; tag: ${post.pw.tag}, id: ${post.id}")
+    logger.debug(s"Full post; tag: ${post.pw.tag}, id: ${post.id}, content:\n${post.content}")
   }
 }
 

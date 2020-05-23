@@ -399,9 +399,9 @@ object QueryOptions {
     findPost(web, id)
       .map {
         case (pd, preds) =>
-          pprint.log(id)
-          pprint.log(preds)
-          pprint.log(pd.pw.tag)
+          // pprint.log(id)
+          // pprint.log(preds)
+          // pprint.log(pd.pw.tag)
           q.answers(pd)
             .filter(predicate)
             .map(Set(_))
@@ -477,7 +477,7 @@ object BuildQuery {
           case CaseCons(answer, tail) =>
             def headFunc(data: PostData[_, W, ID]): Option[Q] =
               if (data.pw.tag.tpe =:= tag.tpe) {
-                pprint.log(tag)
+                // pprint.log(tag)
                 answer(data.content.asInstanceOf[P])}
               else {
                 pprint.log(tag)
@@ -491,7 +491,7 @@ object BuildQuery {
           case ModCons(modifier, tail) =>
             def headFunc(data: PostData[_, W, ID]): Q => Q =
               if (data.pw.tag.tpe =:= tag.tpe) {
-                pprint.log(tag)
+                // pprint.log(tag)
                 // println(data.pw.tag.tpe =:= tag.tpe)
                 modifier(data.content.asInstanceOf[P])
               }
