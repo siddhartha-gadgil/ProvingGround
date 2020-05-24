@@ -322,7 +322,7 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
     pw.post(content, web ,predecessors).map{id => WebState(web, PostData.get(content, id) +: apexPosts )} 
 
   def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
-    Future.sequence(apexPosts.flatMap(pd => pd.getOpt[P].map{content => (content, pd.id)}).map{
-      case (content, id) => bot.post(web, content, id)
+    Future.sequence(apexPosts.flatMap(pd => pd.getOpt[P].map{content => (pd, content, pd.id)}).map{
+      case (pd, content, id) => bot.post(web, content, id).map{w => if (w.isEmpty) Vector(pd) else w}
     }).map{vv => WebState(web, vv.flatten ++ apexPosts.filter(_.getOpt[P].isEmpty))} 
 }
