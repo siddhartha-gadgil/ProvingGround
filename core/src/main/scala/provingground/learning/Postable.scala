@@ -202,16 +202,28 @@ trait DataGetter[P, W, ID] {
 
 object DataGetter extends SimpleDataGetter{
   implicit def pairData[P: TypeTag, Q <: HList: TypeTag, W, ID](
-      implicit pw: Postable[P, W, ID],
+      implicit pd: DataGetter[P, W, ID],
       qd: DataGetter[Q, W, ID]
   ): DataGetter[P :: Q, W, ID] = new DataGetter[P :: Q, W, ID] {
     def data(content: P :: Q, id: ID): PostData[_, W, ID] = 
       content match {
         case p :: HNil =>
-          PostData(p, id)
+          pd.data(p, id)
         case p :: q =>
           qd.data(q, id)
       }    
+  }
+
+  implicit def optionData[P: TypeTag, W, ID](
+      implicit pd: DataGetter[P, W, ID],
+      uw: Postable[Unit, W, ID]
+  ) : DataGetter[Option[P], W, ID] = new DataGetter[Option[P], W, ID] {
+    def data(content: Option[P], id: ID): PostData[_, W, ID] = 
+      content match {
+        case None => PostData((), id)
+        case Some(value) => 
+          pd.data(value, id) 
+      }
   }
 }
 

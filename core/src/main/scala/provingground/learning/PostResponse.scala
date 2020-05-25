@@ -199,7 +199,7 @@ object TypedPostResponse {
       implicit pw: Postable[P, W, ID],
       qw: Postable[Q, W, ID],
       lv: LocalQueryable[V, W, ID],
-      dg: DataGetter[Q, W, ID]
+      val dg: DataGetter[Q, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
     def post(
@@ -268,7 +268,7 @@ object TypedPostResponse {
 
   object MicroBot{
     def simple[P, Q, W, ID](func: P => Q)(implicit pw: Postable[P, W, ID],
-    qw: Postable[Q, W, ID]) = MicroBot[P, Q, W, Unit, ID](
+    qw: Postable[Q, W, ID], dg: DataGetter[Q, W, ID]) = MicroBot[P, Q, W, Unit, ID](
      (_ : Unit) => (p: P) => Future(func(p))
     )
   }
@@ -322,7 +322,18 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
     pw.post(content, web ,predecessors).map{id => WebState(web, PostData.get(content, id) +: apexPosts )} 
 
   def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
-    Future.sequence(apexPosts.flatMap(pd => pd.getOpt[P].map{content => (pd, content, pd.id)}).map{
+    Future.sequence(apexPosts.flatMap{pd =>
+      // pprint.log(pd) 
+      // pprint.log(pd.getOpt[P])
+      // pprint.log(pd.pw.tag)
+      // pprint.log(pw.tag)
+      pd.getOpt[P].map{content => (pd, content, pd.id)}
+    }.map{
       case (pd, content, id) => bot.post(web, content, id).map{w => if (w.isEmpty) Vector(pd) else w}
     }).map{vv => WebState(web, vv.flatten ++ apexPosts.filter(_.getOpt[P].isEmpty))} 
+
+  def postApex[P](content: P)(implicit pw: Postable[P, W, ID]) : Future[WebState[W,ID]] = 
+    Future.sequence(apexPosts.map(pd => post(content, Set(pd.id)))).map{
+      v => WebState(v.head.web, v.map(_.apexPosts).reduce(_ ++ _))
+    }
 }

@@ -68,15 +68,13 @@ object HoTTBot {
       (pair: TermResult) => FinalState(pair._1)
     )
 
-  lazy val reportSuccesses : TypedPostResponse[FinalState, HoTTPostWeb, ID ] = Callback.simple{
-    (web: HoTTPostWeb) =>
-      (fs: FinalState) =>
-       if (fs.ts.successes.size > 0)
-        {
-          logger.info("Success: "+ fs.ts.successes.toString())
-          // translation.FansiShow.fansiPrint.log(fs.ts.successes)
+  lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
+    Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
+      if (fs.ts.successes.size > 0) {
+        logger.info("Success: " + fs.ts.successes.toString())
+        // translation.FansiShow.fansiPrint.log(fs.ts.successes)
       }
-  }
+    }
 
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
     MicroBot.simple(
@@ -638,6 +636,18 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  val goalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] = MicroBot.simple(
+    (sk: SeekGoal) =>
+      sk.goal match {
+        case PiDefn(variable: Term, value: Typ[u]) =>
+          Some(SeekGoal(value, sk.context.addVariable(variable)))
+        case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
+          val x = dom.Var
+          Some(SeekGoal(codom, sk.context.addVariable(x)))
+        case _ => None
+      }
+  )
+
   def goalToProver(
       varWeight: Double,
       goalWeight: Double
@@ -649,6 +659,8 @@ object HoTTBot {
         case (qp: QueryProver) :: terms :: HNil => {
           val lpVars   = qp.lp.initState.context.variables
           val goalVars = goal.context.variables
+          pprint.log(lpVars)
+          pprint.log(goalVars)
           lpVars == goalVars.take(lpVars.size)
         }
       }
@@ -657,14 +669,19 @@ object HoTTBot {
       Option[LocalProver]
     ] = {
       case (qp: QueryProver) :: terms :: HNil =>
+        println(qp)
+        pprint.log(qp)
         goal =>
           Future {
             if (goal.relevantGiven(terms)) {
               val lpVars   = qp.lp.initState.context.variables
               val goalVars = goal.context.variables
               val newVars  = goalVars.drop(lpVars.size)
+              pprint.log(newVars)
               val withVars = newVars.foldLeft(qp.lp) {
-                case (lp: LocalProver, x: Term) => lp.addVar(x, varWeight)
+                case (lp: LocalProver, x: Term) =>
+                  pprint.log(x)
+                  lp.addVar(x, varWeight)
               }
               Some(withVars.addGoals(goal.goal -> goalWeight))
             } else None
@@ -689,15 +706,18 @@ object HoTTBot {
 
   def scribeLog(post: PostData[_, HoTTPostWeb, ID]): Future[Unit] = Future {
     logger.info(s"Post; tag: ${post.pw.tag}, id: ${post.id}")
-    logger.debug(s"Full post; tag: ${post.pw.tag}, id: ${post.id}, content:\n${post.content}")
+    logger.debug(
+      s"Full post; tag: ${post.pw.tag}, id: ${post.id}, content:\n${post.content}"
+    )
   }
 }
 
 import HoTTBot._
 // May want to avoid inheritance
-class HoTTWebSession(initialWeb: HoTTPostWeb = new HoTTPostWeb(),
-        bots: Vector[HoTTBot] = HoTTWebSession.initBots)
-    extends SimpleSession[HoTTPostWeb, (Int, Int)](
+class HoTTWebSession(
+    initialWeb: HoTTPostWeb = new HoTTPostWeb(),
+    bots: Vector[HoTTBot] = HoTTWebSession.initBots
+) extends SimpleSession[HoTTPostWeb, (Int, Int)](
       initialWeb,
       bots,
       Vector(scribeLog(_))
@@ -720,7 +740,10 @@ class HoTTWebSession(initialWeb: HoTTPostWeb = new HoTTPostWeb(),
 object HoTTWebSession {
   val initBots = Vector(lpToExpEv, expEvToEqns, eqnUpdate)
 
-  def launch(state: WebState[HoTTPostWeb, (Int, Int)], bots: Vector[HoTTBot] = initBots) = {
+  def launch(
+      state: WebState[HoTTPostWeb, (Int, Int)],
+      bots: Vector[HoTTBot] = initBots
+  ) = {
     val session = new HoTTWebSession(state.web, bots)
     state.apexPosts.foreach {
       case pd: PostData[x, HoTTPostWeb, (Int, Int)] =>
