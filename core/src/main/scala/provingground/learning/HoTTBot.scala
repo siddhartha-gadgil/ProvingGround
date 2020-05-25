@@ -74,7 +74,7 @@ object HoTTBot {
        if (fs.ts.successes.size > 0)
         {
           logger.info("Success: "+ fs.ts.successes.toString())
-          translation.FansiShow.fansiPrint.log(fs.ts.successes)
+          // translation.FansiShow.fansiPrint.log(fs.ts.successes)
       }
   }
 

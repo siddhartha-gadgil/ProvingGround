@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>2019-09-18-refine-till-success</title>
+<title>2020-05-25-BotMonoid</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13077,7 +13077,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Refining-till-success-or-error;-Modus-Ponens">Refining till success or error; Modus Ponens<a class="anchor-link" href="#Refining-till-success-or-error;-Modus-Ponens">&#182;</a></h2><p>Here we illustrate running a sequence of tasks till either some criterion for success is met or we have an error (usually a timeout) or all tasks run with no success. Here we seek the statement of Modus Ponens, but with two types in the distribution.</p>
+<h1 id="Monoid-in-an-automatic-mode">Monoid in an automatic mode<a class="anchor-link" href="#Monoid-in-an-automatic-mode">&#182;</a></h1><p>We return to the old problem of proving $e_l = e_r$, but in a general autonomous/interactive framework.</p>
 
 </div>
 </div>
@@ -13087,7 +13087,21 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-3d48753.fat.jar`</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">$cp.bin.</span><span class="n">`provingground-core-jvm-4f305a3391.fat.jar`</span>
+<span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
+<span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
+  <span class="n">p</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span>
+    <span class="n">additionalHandlers</span> <span class="k">=</span> <span class="n">p</span><span class="o">.</span><span class="n">additionalHandlers</span><span class="o">.</span><span class="n">orElse</span> <span class="o">{</span>
+      <span class="n">translation</span><span class="o">.</span><span class="nc">FansiShow</span><span class="o">.</span><span class="n">fansiHandler</span>
+    <span class="o">}</span>
+  <span class="o">)</span>
+<span class="o">}</span>
+
+<span class="nc">Utils</span><span class="o">.</span><span class="n">logger</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">import</span> <span class="nn">scribe._</span><span class="o">,</span> <span class="n">writer</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">Utils</span><span class="o">.</span><span class="k">_</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">withHandler</span><span class="o">(</span><span class="n">writer</span> <span class="k">=</span> <span class="nc">FileWriter</span><span class="o">().</span><span class="n">path</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="nc">LogPath</span><span class="o">.</span><span class="n">simple</span><span class="o">(</span><span class="s">&quot;monoid.log&quot;</span><span class="o">))).</span><span class="n">replace</span><span class="o">()</span>
+<span class="o">}</span>
 </pre></div>
 
     </div>
@@ -13106,7 +13120,10 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$                                           </span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">$cp.$                                              
+</span>
+<span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._, learning._ 
+</span></pre>
 </div>
 
 </div>
@@ -13120,15 +13137,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">provingground._</span> <span class="o">,</span> <span class="n">interface</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="nc">HoTT</span><span class="o">.</span><span class="k">_</span><span class="o">,</span> <span class="n">learning</span><span class="o">.</span><span class="k">_</span> 
-<span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">pprinter</span><span class="o">()</span>
-  <span class="n">p</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span>
-    <span class="n">additionalHandlers</span> <span class="k">=</span> <span class="n">p</span><span class="o">.</span><span class="n">additionalHandlers</span><span class="o">.</span><span class="n">orElse</span> <span class="o">{</span>
-      <span class="n">translation</span><span class="o">.</span><span class="nc">FansiShow</span><span class="o">.</span><span class="n">fansiHandler</span>
-    <span class="o">}</span>
-  <span class="o">)</span>
-<span class="o">}</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">library._</span><span class="o">,</span> <span class="nc">MonoidSimple</span><span class="o">.</span><span class="k">_</span>
+<span class="k">val</span> <span class="n">tg</span> <span class="k">=</span> <span class="nc">TermGenParams</span><span class="o">.</span><span class="n">zero</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">appW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">,</span> <span class="n">unAppW</span> <span class="k">=</span> <span class="mf">0.1</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">ts</span> <span class="k">=</span> <span class="nc">TermState</span><span class="o">(</span><span class="n">dist1</span><span class="o">,</span> <span class="n">dist1</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">typ</span><span class="o">),</span> <span class="n">goals</span> <span class="k">=</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">eqM</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span><span class="o">)))</span>
+<span class="k">val</span> <span class="n">lp</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="n">ts</span><span class="o">,</span> <span class="n">tg</span><span class="o">)</span>
 </pre></div>
 
     </div>
@@ -13147,8 +13159,111 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">provingground._ , interface._, HoTT._, learning._ 
-</span></pre>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">library._, MonoidSimple._
+</span>
+<span class="ansi-cyan-fg">tg</span>: <span class="ansi-green-fg">TermGenParams</span> = <span class="ansi-yellow-fg">TermGenParams</span>(
+  <span class="ansi-green-fg">0.1</span>,
+  <span class="ansi-green-fg">0.1</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.3</span>,
+  <span class="ansi-green-fg">0.7</span>,
+  <span class="ansi-green-fg">0.5</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-green-fg">0.0</span>,
+  <span class="ansi-yellow-fg">OrElse</span>(
+    <span class="ansi-yellow-fg">OrElse</span>(<span class="ansi-yellow-fg">OrElse</span>(<span class="ansi-yellow-fg">OrElse</span>(&lt;function1&gt;, &lt;function1&gt;), &lt;function1&gt;), &lt;function1&gt;),
+    &lt;function1&gt;
+  )
+)
+<span class="ansi-cyan-fg">ts</span>: <span class="ansi-green-fg">TermState</span> = <span class="ansi-yellow-fg">TermState</span>(
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
+        <span class="ansi-green-fg">0.047619047619047616</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
+    )
+  ),
+  <span class="ansi-yellow-fg">FiniteDistribution</span>(
+    <span class="ansi-yellow-fg">Vector</span>(
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
+        <span class="ansi-green-fg">0.047619047619047616</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(
+        <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
+        <span class="ansi-green-fg">0.047619047619047616</span>
+      ),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
+      <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
+...
+<span class="ansi-cyan-fg">lp</span>: <span class="ansi-green-fg">LocalProver</span> = <span class="ansi-yellow-fg">LocalProver</span>(
+  <span class="ansi-yellow-fg">TermState</span>(
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_l</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">e_r</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(a)(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span>,
+          <span class="ansi-green-fg">0.047619047619047616</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">eqM</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">mul</span>, <span class="ansi-green-fg">0.2857142857142857</span>)
+      )
+    ),
+    <span class="ansi-yellow-fg">FiniteDistribution</span>(
+      <span class="ansi-yellow-fg">Vector</span>(
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">M</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → M))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span>,
+          <span class="ansi-green-fg">0.047619047619047616</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(
+          <span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span>,
+          <span class="ansi-green-fg">0.047619047619047616</span>
+        ),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">∏(a : M){ eqM(mul(a)(e_r))(a) }</span>, <span class="ansi-green-fg">0.047619047619047616</span>),
+        <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(M → (M → 𝒰 ))</span>, <span class="ansi-green-fg">0.2857142857142857</span>),
+...</pre>
 </div>
 
 </div>
@@ -13156,15 +13271,24 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have set up the ingredients for the statement and proof. We next create a <em>session</em> with the set of <em>bots</em> we actually need. The crucial choice here is to limit the generation to applications and unified applications. The other restrictions should not matter much.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">A</span> <span class="k">=</span> <span class="s">&quot;A&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
-<span class="k">val</span> <span class="n">B</span> <span class="k">=</span> <span class="s">&quot;B&quot;</span> <span class="o">::</span> <span class="nc">Type</span>
-<span class="k">val</span> <span class="nc">MPAB</span> <span class="k">=</span> <span class="n">A</span> <span class="o">-&gt;:</span> <span class="o">(</span><span class="n">A</span> <span class="o">-&gt;:</span> <span class="n">B</span><span class="o">)</span> <span class="o">-&gt;:</span> <span class="n">B</span>
+<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">HoTTBot._</span>
+
+<span class="k">val</span> <span class="n">bs</span> <span class="k">=</span> <span class="nc">Vector</span><span class="o">(</span><span class="n">lpLemmas</span><span class="o">,</span> <span class="n">scaleSplitLemmas</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="n">lemmaTangents</span><span class="o">(),</span> <span class="n">lptToTermResult</span><span class="o">,</span> <span class="n">termResultToFinalState</span><span class="o">,</span> <span class="n">reportSuccesses</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">sess</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HoTTWebSession</span><span class="o">(</span><span class="n">bots</span> <span class="k">=</span> <span class="n">bs</span><span class="o">)</span>
 </pre></div>
 
     </div>
@@ -13183,341 +13307,36 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">A</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">A</span>
-<span class="ansi-cyan-fg">B</span>: <span class="ansi-green-fg">Typ</span>[<span class="ansi-green-fg">Term</span>] = <span class="ansi-green-fg">B</span>
-<span class="ansi-cyan-fg">MPAB</span>: <span class="ansi-green-fg">FuncTyp</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Func</span>[<span class="ansi-green-fg">Term</span>, <span class="ansi-green-fg">Term</span>], <span class="ansi-green-fg">Term</span>]] = <span class="ansi-green-fg">(A → ((A → B) → B))</span></pre>
-</div>
+<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">HoTTBot._
 
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="nc">LocalProver</span><span class="o">(</span><span class="nc">TermState</span><span class="o">(</span><span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">),</span> <span class="nc">FiniteDistribution</span><span class="o">.</span><span class="n">unif</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">B</span><span class="o">))).</span><span class="n">sharpen</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">n</span><span class="o">))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">lp</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">def</span> <span class="n">ns</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">lp</span><span class="o">(</span><span class="n">n</span><span class="o">).</span><span class="n">nextState</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">ns</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">ns</span><span class="o">}</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>defined <span class="ansi-green-fg">function</span> <span class="ansi-cyan-fg">ns</span></pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bT</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">bestTask</span><span class="o">[(</span><span class="kt">Int</span><span class="p">,</span> <span class="kt">TermState</span><span class="o">)]((</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">30</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">ns</span><span class="o">),</span> <span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">s</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">typs</span><span class="o">(</span><span class="nc">MPAB</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">}</span> <span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">bT</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">FlatMap</span>(
-    <span class="ansi-yellow-fg">Map</span>(
-      <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-      ammonite.$sess.cmd4$Helper$$Lambda$2778/1910977826@51c7a9a1,
-      <span class="ansi-green-fg">0</span>
-    ),
-    &lt;function1&gt;
-  ),
-  provingground.Utils$$$Lambda$2781/2106070045@69bca247
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">import</span> <span class="nn">monix.execution.Scheduler.Implicits.global</span>
-<span class="k">val</span> <span class="n">bF</span> <span class="k">=</span> <span class="n">bT</span><span class="o">.</span><span class="n">runToFuture</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_text output_subarea ">
-<pre><span class="ansi-green-fg">import </span><span class="ansi-cyan-fg">monix.execution.Scheduler.Implicits.global
 </span>
-<span class="ansi-cyan-fg">bF</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">Success</span>(
-  <span class="ansi-yellow-fg">Some</span>(
-    (
-      <span class="ansi-green-fg">1</span>,
-      <span class="ansi-yellow-fg">TermState</span>(
-        <span class="ansi-yellow-fg">FiniteDistribution</span>(
-          <span class="ansi-yellow-fg">Vector</span>(
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.4128465718655667</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : B×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @b</span>, <span class="ansi-green-fg">6.468975597469228E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @a</span>, <span class="ansi-green-fg">4.5282829182284584E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : A×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ B</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-...</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="n">bF</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">typs</span><span class="o">(</span><span class="nc">MPAB</span><span class="o">))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_text output_subarea ">
-<pre><span class="ansi-cyan-fg">res7</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Double</span>] = <span class="ansi-yellow-fg">Success</span>(<span class="ansi-green-fg">7.529314129678205E-5</span>)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bT2</span> <span class="k">=</span> <span class="nc">Utils</span><span class="o">.</span><span class="n">bestTask</span><span class="o">[(</span><span class="kt">Int</span><span class="p">,</span> <span class="kt">TermState</span><span class="o">)]((-</span><span class="mi">5</span> <span class="n">to</span> <span class="mi">25</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">ns</span><span class="o">),</span> <span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">s</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">typs</span><span class="o">(</span><span class="nc">MPAB</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">}</span> <span class="o">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre><span class="ansi-cyan-fg">bT2</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">eval</span>.<span class="ansi-green-fg">Task</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">FlatMap</span>(
-  <span class="ansi-yellow-fg">FlatMap</span>(
-    <span class="ansi-yellow-fg">Map</span>(
-      <span class="ansi-yellow-fg">Async</span>(&lt;function2&gt;, false, true, true),
-      ammonite.$sess.cmd4$Helper$$Lambda$2778/1910977826@2981bfc0,
-      <span class="ansi-green-fg">0</span>
-    ),
-    &lt;function1&gt;
+<span class="ansi-cyan-fg">bs</span>: <span class="ansi-green-fg">Vector</span>[<span class="ansi-green-fg">TypedPostResponse</span>[<span class="ansi-green-fg">_1</span>, <span class="ansi-green-fg">HoTTPostWeb</span>, (<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">Int</span>)] forSome { type <span class="ansi-green-fg">_1</span> &gt;: <span class="ansi-green-fg">HoTTMessages</span>.<span class="ansi-green-fg">FinalState</span> with (<span class="ansi-green-fg">TermState</span>, <span class="ansi-green-fg">Set</span>[<span class="ansi-green-fg">EquationNode</span>]) with <span class="ansi-green-fg">LocalTangentProver</span> with <span class="ansi-green-fg">HoTTMessages</span>.<span class="ansi-green-fg">UseLemma</span> with <span class="ansi-green-fg">HoTTMessages</span>.<span class="ansi-green-fg">Lemmas</span> with <span class="ansi-green-fg">LocalProver</span> &lt;: <span class="ansi-green-fg">Product</span> with <span class="ansi-green-fg">Serializable</span> with <span class="ansi-green-fg">Object</span> }] = <span class="ansi-yellow-fg">Vector</span>(
+  <span class="ansi-yellow-fg">MicroBot</span>(
+    provingground.learning.HoTTBot$$$Lambda$2698/766396019@2b4ed951,
+    provingground.learning.TypedPostResponse$MicroBot$$$Lambda$2699/406266102@505696dd
   ),
-  provingground.Utils$$$Lambda$2781/2106070045@658d4ed1
-)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-scala"><pre><span></span><span class="k">val</span> <span class="n">bF2</span> <span class="k">=</span> <span class="n">bT2</span><span class="o">.</span><span class="n">runToFuture</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_text output_subarea ">
-<pre><span class="ansi-cyan-fg">bF2</span>: <span class="ansi-green-fg">monix</span>.<span class="ansi-green-fg">execution</span>.<span class="ansi-green-fg">CancelableFuture</span>[<span class="ansi-green-fg">Option</span>[(<span class="ansi-green-fg">Int</span>, <span class="ansi-green-fg">TermState</span>)]] = <span class="ansi-yellow-fg">Success</span>(
-  <span class="ansi-yellow-fg">Some</span>(
-    (
-      <span class="ansi-green-fg">1</span>,
-      <span class="ansi-yellow-fg">TermState</span>(
-        <span class="ansi-yellow-fg">FiniteDistribution</span>(
-          <span class="ansi-yellow-fg">Vector</span>(
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ A</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">A</span>, <span class="ansi-green-fg">0.4128465718655667</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : B×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @b</span>, <span class="ansi-green-fg">6.468975597469228E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : B) ↦ (@b : B) ↦ @a</span>, <span class="ansi-green-fg">4.5282829182284584E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → B)) ↦ B</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → B)) ↦ B</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → B))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ B</span>, <span class="ansi-green-fg">7.82907152050035E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">((@a_1 , @a_2) : A×A) ↦ B</span>, <span class="ansi-green-fg">5.480350064350246E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → A) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → A)) ↦ A</span>, <span class="ansi-green-fg">9.394885824600418E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((A → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : ((B → B) → A)) ↦ A</span>, <span class="ansi-green-fg">9.133916773917078E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : A) ↦ (@b : A) ↦ B</span>, <span class="ansi-green-fg">5.282996737933199E-4</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (A → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (A → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-            <span class="ansi-yellow-fg">Weighted</span>(<span class="ansi-green-fg">(@a : (B → (B → A))) ↦ @a</span>, <span class="ansi-green-fg">6.710632731857444E-5</span>),
-...</pre>
+  <span class="ansi-yellow-fg">MiniBot</span>(
+    provingground.learning.HoTTBot$$$Lambda$2700/1055029027@239f8bf8,
+    provingground.learning.MiniBot$$$Lambda$2625/1366095780@7b7c9094
+  ),
+  <span class="ansi-yellow-fg">MicroBot</span>(
+    provingground.learning.HoTTBot$$$Lambda$2701/1974964895@63a131e3,
+    provingground.learning.TypedPostResponse$MicroBot$$$Lambda$2699/406266102@505696dd
+  ),
+  <span class="ansi-yellow-fg">MicroBot</span>(
+    provingground.learning.HoTTBot$$$Lambda$2710/657851055@6c4d230b,
+    provingground.learning.TypedPostResponse$MicroBot$$$Lambda$2699/406266102@505696dd
+  ),
+  <span class="ansi-yellow-fg">MicroBot</span>(
+    provingground.learning.TypedPostResponse$MicroBot$$$Lambda$2712/694702342@3352a531,
+    provingground.learning.TypedPostResponse$MicroBot$$$Lambda$2699/406266102@505696dd
+  ),
+  <span class="ansi-yellow-fg">Callback</span>(
+    provingground.learning.TypedPostResponse$Callback$$$Lambda$2714/404480909@2cb57bff,
+    provingground.learning.TypedPostResponse$Callback$$$Lambda$2715/561325536@467169a3
+  )
+)
+<span class="ansi-cyan-fg">sess</span>: <span class="ansi-green-fg">HoTTWebSession</span> = provingground.learning.HoTTWebSession@684ce5f1</pre>
 </div>
 
 </div>
@@ -13529,10 +13348,183 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, we post to our session to get stuff started.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-scala"><pre><span></span><span class="n">sess</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="n">lp</span><span class="o">,</span> <span class="nc">Set</span><span class="o">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="jp-RenderedText">
+<pre><code><span style="color: rgb(0, 187, 187)"><span class="ansi-cyan-fg">res3</span></span>: <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">concurrent</span></span>.<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Future</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">PostData</span></span>[<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">_</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">HoTTPostWeb</span></span>, (<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">Int</span></span>)]] = <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg"><style>@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }</style><span style="animation: fadein 2s;"><span style="color: yellow"><span class="ansi-yellow-fg">Success</span></span>(
+  <span style="color: yellow"><span class="ansi-yellow-fg">PostData</span></span>(
+    <span style="color: yellow"><span class="ansi-yellow-fg">LocalProver</span></span>(
+      <span style="color: yellow"><span class="ansi-yellow-fg">TermState</span></span>(
+        <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">e_l</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">e_r</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">mul</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(a)(a)}</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to eqM(b)(a))}</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(e_l)(a))(a)}</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">axiom_{eqM(mul(a)(e_r))(a)}</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">eqM</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.2857142857142857</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">mul</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.2857142857142857</span></span>)
+          )
+        ),
+        <span style="color: yellow"><span class="ansi-yellow-fg">FiniteDistribution</span></span>(
+          <span style="color: yellow"><span class="ansi-yellow-fg">Vector</span></span>(
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">M</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">M</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(M → (M → M))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">(M → (M → 𝒰 ))</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(a : M){ eqM(a)(a) }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(a : M){ ∏(b : M){ (eqM(a)(b) → eqM(b)(a)) } }</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(a : M){ ∏(b : M){ ∏(c : M){ (eqM(a)(b) → (eqM(b)(c) → eqM(a)(c))) } } }</span></span>,
+              <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>
+            ),
+            <span style="color: yellow"><span class="ansi-yellow-fg">Weighted</span></span>(<span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">∏(a : M){ eqM(mul(e_l)(a))(a) }</span></span>, <span style="color: rgb(0, 187, 0)"><span class="ansi-green-fg">0.047619047619047616</span></span>),
+...</span></span></span></code></pre>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Logs">Logs<a class="anchor-link" href="#Logs">&#182;</a></h3><p>We include by copy-paste the log files (included from the file). Note the success statement.</p>
+
+<pre><code>2020.05.25 10:23:24 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-1349507052), content:
+LocalProver(TermState([eqM : 0.2857142857142857, mul : 0.2857142857142857, e_l : 0.047619047619047616, e_r : 0.047619047619047616, mul : 0.047619047619047616, eqM : 0.047619047619047616, axiom_{eqM(a)(a)} : 0.047619047619047616, axiom_{(eqM(a)(b) \to eqM(b)(a))} : 0.047619047619047616, axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))} : 0.047619047619047616, axiom_{eqM(mul(e_l)(a))(a)} : 0.047619047619047616, axiom_{eqM(mul(a)(e_r))(a)} : 0.047619047619047616],[(M) → ((M) → (𝒰 _0)) : 0.2857142857142857, (M) → ((M) → (M)) : 0.2857142857142857, M : 0.047619047619047616, M : 0.047619047619047616, (M) → ((M) → (M)) : 0.047619047619047616, (M) → ((M) → (𝒰 _0)) : 0.047619047619047616, (`a : M ) ~&gt; (((eqM) (`a)) (`a)) : 0.047619047619047616, (`a : M ) ~&gt; ((`b : M ) ~&gt; ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))) : 0.047619047619047616, (`a : M ) ~&gt; ((`b : M ) ~&gt; ((`c : M ) ~&gt; ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))) : 0.047619047619047616, (`a : M ) ~&gt; (((eqM) (((mul) (e_l)) (`a))) (`a)) : 0.047619047619047616, (`a : M ) ~&gt; (((eqM) (((mul) (`a)) (e_r))) (`a)) : 0.047619047619047616],Vector(),[],[((eqM) (e_l)) (e_r) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,&lt;function1&gt;),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.25 10:23:24 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-1349507052)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (2,1419581202), content:
+Lemmas(Vector((((eqM) (e_r)) (e_r),None,0.0027509184472828325), (((eqM) (e_l)) (e_l),None,0.0027509184472828325), (((eqM) (e_l)) (((mul) (e_l)) (e_r)),None,0.0012526844961492322), (((eqM) (e_l)) (((mul) (e_l)) (e_l)),None,0.0012526844961492322), (((eqM) (e_r)) (((mul) (e_l)) (e_r)),None,0.0012526844961492322), (((eqM) (e_r)) (((mul) (e_r)) (e_r)),None,0.0012526844961492322)))
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (2,1419581202)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (3,-397054148), content:
+Weight(0.26167884451748746)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (8,-1403795547), content:
+Weight(0.1191605777412563)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (9,-897240716), content:
+UseLemma(((eqM) (e_r)) (e_r),None)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (7,-1403795547), content:
+Weight(0.1191605777412563)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (6,-1403795547), content:
+Weight(0.1191605777412563)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (4,-397054148), content:
+Weight(0.26167884451748746)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (5,-1403795547), content:
+Weight(0.1191605777412563)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (13,-1470620296), content:
+UseLemma(((eqM) (e_l)) (e_l),None)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (14,774457819), content:
+UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_r)),None)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (12,1349890185), content:
+UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_l)),None)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (11,-1419946672), content:
+UseLemma(((eqM) (e_r)) (((mul) (e_l)) (e_r)),None)
+2020.05.25 10:23:28 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (10,1179944372), content:
+UseLemma(((eqM) (e_r)) (((mul) (e_r)) (e_r)),None)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (9,-897240716)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (13,-1470620296)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (14,774457819)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (12,1349890185)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (11,-1419946672)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (10,1179944372)
+2020.05.25 10:23:29 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (15,-2097001952)
+2020.05.25 10:23:28 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (16,1481277112)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (15,-2097001952)
+2020.05.25 10:23:29 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (16,1481277112)
+2020.05.25 10:23:28 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (17,1299211175)
+2020.05.25 10:23:29 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (17,1299211175)
+2020.05.25 10:23:28 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (18,1615518517)
+2020.05.25 10:23:28 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (18,1615518517)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (19,1838221781)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (19,1838221781)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (20,61122141)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (20,61122141)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (21,-293827785)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (21,-293827785)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (22,-1739022371)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (22,-1739022371)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (23,388473380)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (23,388473380)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (24,1105488446)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (25,1560009545)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (24,1105488446)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.$anonfun:76:22 - Success: Vector((((eqM) (e_l)) (e_r),1.0,[(((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_r)) (lemma:((eqM) (e_l)) (((mul) (e_l)) (e_r)))) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r)) : 0.001024170092306373]))
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (25,1560009545)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (26,-1452315895)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (26,-1452315895)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (27,-1331912611)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (27,-1331912611)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (28,-625764359)
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (28,-625764359)
+2020.05.25 10:23:32 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (29,-174381781)
+2020.05.25 10:23:32 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (29,-174381781)
+2020.05.25 10:23:32 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (30,586935838)
+2020.05.25 10:23:32 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (30,586935838)
+2020.05.25 10:23:32 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (31,-997289120)
+2020.05.25 10:23:32 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (31,-997289120)
+2020.05.25 10:23:32 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (32,931037492)
+2020.05.25 10:23:32 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (32,931037492)</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To higlight, here is the success statement again:</p>
+
+<pre><code>2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.$anonfun:76:22 - Success: Vector((((eqM) (e_l)) (e_r),1.0,[(((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_r)) (lemma:((eqM) (e_l)) (((mul) (e_l)) (e_r)))) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r)) : 0.001024170092306373]))
+2020.05.25 10:23:30 [INFO] provingground.learning.HoTTBot.scribeLog:691:16 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (25,1560009545)
+2020.05.25 10:23:30 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (26,-1452315895)</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h2><ul>
-<li>Correctly ran until success, even when the success was not in the first step.</li>
-<li>Huge speedup over running to the end</li>
-<li>The desired form of Modus Ponens was found soon.</li>
+<li>The simple result is proved in an autonomous way.</li>
+<li>The main tuning is sticking to applications and unified applications and keeping parameters at reasonable values, including the scaling for tangents. </li>
 </ul>
 
 </div>
