@@ -8,17 +8,17 @@
           <meta name="keywords" content="" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
+      
       <link href="../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
-      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.min.js"></script>
       <script type="text/javascript" src="../../lib/jquery.panzoom.min.js"></script>
       <script type="text/javascript" src="../../lib/jquery.mousewheel.min.js"></script>
       <script type="text/javascript" src="../../lib/index.js"></script>
       <script type="text/javascript" src="../../index.js"></script>
       <script type="text/javascript" src="../../lib/scheduler.js"></script>
       <script type="text/javascript" src="../../lib/template.js"></script>
-      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
       <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
         /* this variable can be used by the JS to determine the path to the root document */
@@ -56,7 +56,7 @@
                 <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="_root_"></a><a id="root:_root_"></a>
       <span class="permalink">
-      <a href="index.html#_root_" title="Permalink">
+      <a href="../../index.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -72,7 +72,7 @@
     </li><li name="_root_.akka" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="akka"></a><a id="akka:akka"></a>
       <span class="permalink">
-      <a href="index.html#akka" title="Permalink">
+      <a href="../../akka/index.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -88,7 +88,7 @@
     </li><li name="akka.pattern" visbl="pub" class="indented2 current" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="pattern"></a><a id="pattern:pattern"></a>
       <span class="permalink">
-      <a href="../akka/index.html#pattern" title="Permalink">
+      <a href="../../akka/pattern/index.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -141,7 +141,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="akka.pattern.FutureTimeoutSupport">FutureTimeoutSupport</span>, <span class="extype" name="akka.pattern.GracefulStopSupport">GracefulStopSupport</span>, <span class="extype" name="akka.pattern.AskSupport">AskSupport</span>, <span class="extype" name="akka.pattern.PipeToSupport">PipeToSupport</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="akka.pattern.RetrySupport">RetrySupport</span>, <span class="extype" name="akka.pattern.FutureTimeoutSupport">FutureTimeoutSupport</span>, <span class="extype" name="akka.pattern.GracefulStopSupport">GracefulStopSupport</span>, <span class="extype" name="akka.pattern.AskSupport">AskSupport</span>, <span class="extype" name="akka.pattern.PipeToSupport">PipeToSupport</span>, <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -167,7 +167,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="akka.pattern"><span>pattern</span></li><li class="in" name="akka.pattern.FutureTimeoutSupport"><span>FutureTimeoutSupport</span></li><li class="in" name="akka.pattern.GracefulStopSupport"><span>GracefulStopSupport</span></li><li class="in" name="akka.pattern.AskSupport"><span>AskSupport</span></li><li class="in" name="akka.pattern.PipeToSupport"><span>PipeToSupport</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="akka.pattern"><span>pattern</span></li><li class="in" name="akka.pattern.RetrySupport"><span>RetrySupport</span></li><li class="in" name="akka.pattern.FutureTimeoutSupport"><span>FutureTimeoutSupport</span></li><li class="in" name="akka.pattern.GracefulStopSupport"><span>GracefulStopSupport</span></li><li class="in" name="akka.pattern.AskSupport"><span>AskSupport</span></li><li class="in" name="akka.pattern.PipeToSupport"><span>PipeToSupport</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -405,6 +405,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PipeToSupport</dd></dl></div>
+    </li><li name="akka.pattern.RetrySupport#retry" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="retry[T](attempt:()=&gt;scala.concurrent.Future[T],attempts:Int,delay:scala.concurrent.duration.FiniteDuration)(implicitec:scala.concurrent.ExecutionContext,implicitscheduler:akka.actor.Scheduler):scala.concurrent.Future[T]"></a><a id="retry[T](()⇒Future[T],Int,FiniteDuration)(ExecutionContext,Scheduler):Future[T]"></a>
+      <span class="permalink">
+      <a href="../../akka/pattern/index.html#retry[T](attempt:()=&gt;scala.concurrent.Future[T],attempts:Int,delay:scala.concurrent.duration.FiniteDuration)(implicitec:scala.concurrent.ExecutionContext,implicitscheduler:akka.actor.Scheduler):scala.concurrent.Future[T]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">retry</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attempt">attempt: () ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.pattern.RetrySupport.retry.T">T</span>]</span>, <span name="attempts">attempts: <span class="extype" name="scala.Int">Int</span></span>, <span name="delay">delay: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="scheduler">scheduler: <span class="extype" name="akka.actor.Scheduler">Scheduler</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="akka.pattern.RetrySupport.retry.T">T</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RetrySupport</dd></dl></div>
     </li>
               </ol>
             </div>
@@ -415,7 +431,9 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="akka.pattern.FutureTimeoutSupport">
+        <div class="parent" name="akka.pattern.RetrySupport">
+              <h3>Inherited from <span class="extype" name="akka.pattern.RetrySupport">RetrySupport</span></h3>
+            </div><div class="parent" name="akka.pattern.FutureTimeoutSupport">
               <h3>Inherited from <span class="extype" name="akka.pattern.FutureTimeoutSupport">FutureTimeoutSupport</span></h3>
             </div><div class="parent" name="akka.pattern.GracefulStopSupport">
               <h3>Inherited from <span class="extype" name="akka.pattern.GracefulStopSupport">GracefulStopSupport</span></h3>
