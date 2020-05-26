@@ -72,7 +72,7 @@ object HoTTBot {
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       if (fs.ts.successes.size > 0) {
         logger.info("Success: " + fs.ts.successes.toString())
-        // translation.FansiShow.fansiPrint.log(fs.ts.successes)
+        Utils.report("Success: " + fs.ts.successes.toString())
       }
     }
 
@@ -643,10 +643,13 @@ object HoTTBot {
           Some(SeekGoal(value, sk.context.addVariable(variable)))
         case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
           val x = dom.Var
-          Some(SeekGoal(codom, sk.context.addVariable(x)))
+          Some(SeekGoal(codom, sk.context.addVariable(x), sk.forConsequences))
         case _ => None
       }
   )
+
+  val fullGoalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] =
+    MicroBot.simple(_.inContext)
 
   def goalToProver(
       varWeight: Double,

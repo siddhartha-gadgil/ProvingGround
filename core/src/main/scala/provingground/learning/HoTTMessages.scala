@@ -35,9 +35,30 @@ object HoTTMessages {
       goal: Typ[Term],
       context: Context,
       forConsequences: Set[Typ[Term]] = Set()
-  ){
-    def relevantGiven(terms: Set[Term]) = 
-      terms.map(_.typ).intersect(forConsequences union forConsequences.map(negate) union Set(goal, negate(goal))).isEmpty
+  ) {
+    def relevantGiven(terms: Set[Term]) =
+      terms
+        .map(_.typ)
+        .intersect(
+          forConsequences union forConsequences
+            .map(negate) union Set(goal, negate(goal))
+        )
+        .isEmpty
+
+    def inContext: Option[SeekGoal] = 
+        Some(SeekGoal.inContext(this)).filter(nxt => nxt != this)
+      
+  }
+
+  object SeekGoal {
+    def inContext(sk: SeekGoal): SeekGoal = sk.goal match {
+      case PiDefn(variable: Term, value: Typ[u]) =>
+        inContext(SeekGoal(value, sk.context.addVariable(variable)))
+      case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
+        val x = dom.Var
+        inContext(SeekGoal(codom, sk.context.addVariable(x), sk.forConsequences))
+      case _ => sk
+    }
   }
 
   /**
@@ -78,7 +99,7 @@ object HoTTMessages {
     * @param ts the evolved state
     */
   case class FinalState(ts: TermState)
-  
+
   /**
     * Result of generation and normalization
     *
@@ -240,18 +261,19 @@ object HoTTMessages {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       proofs.find(_.typ == premise).map { proof =>
         val contraOpt =
-          contraMapOpt.flatMap { contraMap =>
-            contraMap(proof)
-          }.flatMap(ExstFunc.opt(_))
-        Contradicted(conclusion, 
-        contraOpt,
-        context)
+          contraMapOpt
+            .flatMap { contraMap =>
+              contraMap(proof)
+            }
+            .flatMap(ExstFunc.opt(_))
+        Contradicted(conclusion, contraOpt, context)
       }
 
     contraMapOpt.foreach(
       contraMap =>
         assert(
-          fold(contraMap("assume" :: premise).get)("also" :: conclusion).typ == Zero)
+          fold(contraMap("assume" :: premise).get)("also" :: conclusion).typ == Zero
+        )
     )
   }
 
@@ -277,7 +299,8 @@ object HoTTMessages {
 
   type WithWeight[A] = Weight :: A :: HNil
 
-  def withWeightFD[A](fd: FiniteDistribution[A]) : Vector[WithWeight[A]] = fd.pmf.map{case Weighted(x, p) => withWeight(x, p)}
+  def withWeightFD[A](fd: FiniteDistribution[A]): Vector[WithWeight[A]] =
+    fd.pmf.map { case Weighted(x, p) => withWeight(x, p) }
 
   /**
     * convenient posting with weight preceding posts, say for lemmas with weight
@@ -310,35 +333,40 @@ object HoTTMessages {
 
   case object GenerateTerms
 
-  trait SeekInstances{
-      type U <: Term with Subs[U]
-      type V <: Term with Subs[V]
+  trait SeekInstances {
+    type U <: Term with Subs[U]
+    type V <: Term with Subs[V]
 
-      val  typ: Typ[U]
-      val goal: TypFamily[U, V]
+    val typ: Typ[U]
+    val goal: TypFamily[U, V]
 
-      def goalCast(t: Term) = goal(t.asInstanceOf[U])
-      val context: Context
-      val forConsequences: Set[Typ[Term]] 
+    def goalCast(t: Term) = goal(t.asInstanceOf[U])
+    val context: Context
+    val forConsequences: Set[Typ[Term]]
 
-      val sigma = SigmaTyp[U, V](goal)
+    val sigma = SigmaTyp[U, V](goal)
   }
 
-  object SeekInstances{
-    def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](tp: Typ[X], gl: TypFamily[X, Y], ctx: Context, fc: Set[Typ[Term]]) : SeekInstances = 
-      new SeekInstances{
-        type U = X 
+  object SeekInstances {
+    def apply[X <: Term with Subs[X], Y <: Term with Subs[Y]](
+        tp: Typ[X],
+        gl: TypFamily[X, Y],
+        ctx: Context,
+        fc: Set[Typ[Term]]
+    ): SeekInstances =
+      new SeekInstances {
+        type U = X
 
         type V = Y
 
         val typ: HoTT.Typ[U] = tp
-        
-        val goal: HoTT.TypFamily[U,V] = gl
-        
+
+        val goal: HoTT.TypFamily[U, V] = gl
+
         val context: Context = ctx
 
         val forConsequences: Set[HoTT.Typ[HoTT.Term]] = fc
-        
+
       }
   }
 
@@ -356,7 +384,13 @@ object HoTTMessages {
     def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) {
         val terms = typs.flatMap(typ => proofs.find(_.typ == typ))
-        Some(Proved(conclusion, proofOpt.map(pf => foldterms(pf, terms.toList)), context))
+        Some(
+          Proved(
+            conclusion,
+            proofOpt.map(pf => foldterms(pf, terms.toList)),
+            context
+          )
+        )
       } else None
   }
 
@@ -375,7 +409,7 @@ object HoTTMessages {
               case (tail, pfO) =>
                 (
                   head +: tail,
-                   pfO.map(pf => x :~> pf)
+                  pfO.map(pf => x :~> pf)
                 )
             }
           case _ => None
@@ -406,16 +440,22 @@ object HoTTMessages {
     * @param typ the original type
     * @param related types related
     */
-  case class RelatedStatements(typ: Typ[Term], related: FiniteDistribution[Typ[Term]])
+  case class RelatedStatements(
+      typ: Typ[Term],
+      related: FiniteDistribution[Typ[Term]]
+  )
 
   /**
-    * Given a type, a lemma is the type of an ingredient of the generating set, ideally not easily inhabited. 
+    * Given a type, a lemma is the type of an ingredient of the generating set, ideally not easily inhabited.
     * These are candidate lemmas
     *
     * @param typ the goal
     * @param lemmas candidate lemmas
     */
-  case class IntermediateStatements(typ: Typ[Term], lemmas: FiniteDistribution[Typ[Term]])
+  case class IntermediateStatements(
+      typ: Typ[Term],
+      lemmas: FiniteDistribution[Typ[Term]]
+  )
 
   case class FromAny(
       typs: Vector[Typ[Term]],
@@ -427,9 +467,14 @@ object HoTTMessages {
   ) extends PropagateProof {
     def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty) {
-        val proofOpt = proofs.find(t => typs.contains(t.typ)).flatMap(
-          x => typs.zip(proofsOpt).find(_._1 == x.typ).flatMap{case (_, pfMap) => pfMap.flatMap(_(x))}
-        )
+        val proofOpt = proofs
+          .find(t => typs.contains(t.typ))
+          .flatMap(
+            x =>
+              typs.zip(proofsOpt).find(_._1 == x.typ).flatMap {
+                case (_, pfMap) => pfMap.flatMap(_(x))
+              }
+          )
         Some(Proved(conclusion, proofOpt, context))
       } else if (exhaustive && typs.toSet.subsetOf(proofs.map(_.typ)))
         Some(Contradicted(conclusion, None, context))

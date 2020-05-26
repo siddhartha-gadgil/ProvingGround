@@ -1,6 +1,7 @@
 package provingground
 import HoTT._
 import scala.util.Try
+import scala.collection.mutable
 
 object Utils {
   import scribe._, writer._
@@ -15,6 +16,14 @@ object Utils {
     logger = logger
       .setModifiers(List(modify.LevelFilter.>(Level.Debug)))
       .replace()
+
+  var reportText: String = ""
+
+  val reporters : mutable.ArrayBuffer[Any => Unit] = 
+    mutable.ArrayBuffer((s) => println(s),
+      (s) => reportText += s.toString())
+
+  def report(s: Any) = reporters.foreach(r => r(s))
 
   def delayedRun(task: => Unit, delay: Long): Unit = {
     import java.util._

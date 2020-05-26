@@ -225,6 +225,16 @@ object DataGetter extends SimpleDataGetter{
           pd.data(value, id) 
       }
   }
+
+  implicit def eitherData[P, Q, W, ID](
+    implicit pd: DataGetter[P, W, ID],
+    qd: DataGetter[Q, W, ID]
+  ) : DataGetter[Either[P, Q], W, ID] = new DataGetter[Either[P, Q], W, ID] {
+    def data(content: Either[P,Q], id: ID): PostData[_, W, ID] = content match {
+      case Left(value) => pd.data(value, id)
+      case Right(value) => qd.data(value, id)
+    }
+  }
 }
 
 trait SimpleDataGetter {
