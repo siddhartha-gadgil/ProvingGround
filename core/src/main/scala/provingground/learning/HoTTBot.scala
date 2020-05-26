@@ -51,6 +51,18 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  val lpToFinalState: SimpleBot[LocalProver, FinalState] = {
+    val response: Unit => LocalProver => Future[FinalState] = (_) =>
+      lp => lp.nextState.map(FinalState(_)).runToFuture
+    MicroBot(response)
+  }
+
+  val lptToFinalState: SimpleBot[LocalTangentProver, FinalState] = {
+    val response: Unit => LocalTangentProver => Future[FinalState] = (_) =>
+      lp => lp.nextState.map(FinalState(_)).runToFuture
+    MicroBot(response)
+  }
+
   lazy val lptToTermResult: SimpleBot[LocalTangentProver, TermResult] = {
     val response: Unit => LocalTangentProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
@@ -70,9 +82,9 @@ object HoTTBot {
 
   lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
-      if (fs.ts.successes.size > 0) {
-        logger.info("Success: " + fs.ts.successes.toString())
-        Utils.report("Success: " + fs.ts.successes.toString())
+      if (fs.successes.size > 0) {
+        logger.info("Success: " + fs.successes.toString())
+        Utils.report("Success: " + fs.successes.toString())
       }
     }
 
@@ -636,6 +648,22 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  val lemmaGoal: MicroBot[
+    UseLemma,
+    SeekGoal,
+    HoTTPostWeb,
+    SeekGoal,
+    ID
+  ] = {
+    val response: SeekGoal => UseLemma => Future[SeekGoal] =
+      sg =>
+        lem =>
+          Future(
+            SeekGoal(lem.lemma ->: sg.goal, sg.context, sg.forConsequences)
+          )
+    MicroBot(response)
+  }
+
   val goalInContext: SimpleBot[SeekGoal, Option[SeekGoal]] = MicroBot.simple(
     (sk: SeekGoal) =>
       sk.goal match {
@@ -662,8 +690,8 @@ object HoTTBot {
         case (qp: QueryProver) :: terms :: HNil => {
           val lpVars   = qp.lp.initState.context.variables
           val goalVars = goal.context.variables
-          pprint.log(lpVars)
-          pprint.log(goalVars)
+          // pprint.log(lpVars)
+          // pprint.log(goalVars)
           lpVars == goalVars.take(lpVars.size)
         }
       }
@@ -672,18 +700,18 @@ object HoTTBot {
       Option[LocalProver]
     ] = {
       case (qp: QueryProver) :: terms :: HNil =>
-        println(qp)
-        pprint.log(qp)
+        // println(qp)
+        // pprint.log(qp)
         goal =>
           Future {
             if (goal.relevantGiven(terms)) {
               val lpVars   = qp.lp.initState.context.variables
               val goalVars = goal.context.variables
               val newVars  = goalVars.drop(lpVars.size)
-              pprint.log(newVars)
+              // pprint.log(newVars)
               val withVars = newVars.foldLeft(qp.lp) {
                 case (lp: LocalProver, x: Term) =>
-                  pprint.log(x)
+                  // pprint.log(x)
                   lp.addVar(x, varWeight)
               }
               Some(withVars.addGoals(goal.goal -> goalWeight))

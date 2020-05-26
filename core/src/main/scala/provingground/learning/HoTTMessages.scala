@@ -98,7 +98,11 @@ object HoTTMessages {
     *
     * @param ts the evolved state
     */
-  case class FinalState(ts: TermState)
+  case class FinalState(ts: TermState){
+    lazy val successes = ts.successes.map{
+      case (t, w, pfs) => (ts.context.exportTypStrict(t), w, pfs.map(ts.context.exportStrict(_)))
+    }
+  }
 
   /**
     * Result of generation and normalization
