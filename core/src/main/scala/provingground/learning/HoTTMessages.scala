@@ -45,9 +45,9 @@ object HoTTMessages {
         )
         .isEmpty
 
-    def inContext: Option[SeekGoal] = 
-        Some(SeekGoal.inContext(this)).filter(nxt => nxt != this)
-      
+    def inContext: Option[SeekGoal] =
+      Some(SeekGoal.inContext(this)).filter(nxt => nxt != this)
+
   }
 
   object SeekGoal {
@@ -56,7 +56,9 @@ object HoTTMessages {
         inContext(SeekGoal(value, sk.context.addVariable(variable)))
       case FuncTyp(dom: Typ[v], codom: Typ[u]) =>
         val x = dom.Var
-        inContext(SeekGoal(codom, sk.context.addVariable(x), sk.forConsequences))
+        inContext(
+          SeekGoal(codom, sk.context.addVariable(x), sk.forConsequences)
+        )
       case _ => sk
     }
   }
@@ -98,9 +100,10 @@ object HoTTMessages {
     *
     * @param ts the evolved state
     */
-  case class FinalState(ts: TermState){
-    lazy val successes = ts.successes.map{
-      case (t, w, pfs) => (ts.context.exportTypStrict(t), w, pfs.map(ts.context.exportStrict(_)))
+  case class FinalState(ts: TermState) {
+    lazy val successes = ts.successes.map {
+      case (t, w, pfs) =>
+        (ts.context.exportTypStrict(t), w, pfs.map(ts.context.exportStrict(_)))
     }
   }
 
@@ -251,9 +254,14 @@ object HoTTMessages {
       proofs.find(_.typ == premise).map { proof =>
         Proved(conclusion, proofMapOpt.flatMap(m => m(proof)), context)
       }
-    assert(
-      proofMapOpt.forall(pfMap => pfMap("hyp" :: premise).get.typ == conclusion)
-    )
+
+    proofMapOpt.foreach{
+      pfMap =>
+        assert(
+          pfMap("hyp" :: premise).map(_.typ) == Some(conclusion),
+          s"Cannot conclude: ${pfMap.func.typ} on ${premise} gives $conclusion"
+        )
+    }
   }
 
   case class Contradicts(
@@ -348,7 +356,7 @@ object HoTTMessages {
     val context: Context
     val forConsequences: Set[Typ[Term]]
 
-    val sigma = SigmaTyp[U, V](goal)
+    def sigma = SigmaTyp[U, V](goal)
   }
 
   object SeekInstances {

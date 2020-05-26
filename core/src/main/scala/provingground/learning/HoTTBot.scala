@@ -107,8 +107,16 @@ object HoTTBot {
               val newGoal = (seek: SeekInstances)
                 .goalCast(instance.term)
               val x = instance.typ.Var
+              val y = newGoal.Var
+              // val z = (seek: SeekInstances)
+              //   .goalCast(y)
               val deduction =
-                x :~> mkPair(instance.term.asInstanceOf[Term], x: Term)
+                y :~> fold(seek.sigma.paircons)(instance.term, y: Term)
+                //  mkPair(instance.term.asInstanceOf[Term], y: Term)
+              translation.FansiShow.fansiPrint.log(newGoal)
+              translation.FansiShow.fansiPrint.log(seek.sigma)
+              translation.FansiShow.fansiPrint.log(deduction)
+              translation.FansiShow.fansiPrint.log(deduction.typ)
               val cons = Consequence(
                 newGoal,
                 seek.sigma,
