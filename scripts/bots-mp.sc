@@ -3,7 +3,7 @@ import monix.execution.Scheduler.Implicits.global
 val A = Type.sym
 val B = Type.sym
 val MP = A ~>: (B ~>: (A ->: (A ->: B) ->: B))
-val ts = TermState(FiniteDistribution.unif(Type), FiniteDistribution.unif(Type), goals = FiniteDistribution.unif(MP))
+val ts = TermState(FiniteDistribution.unif(Type), FiniteDistribution.unif(Type))
 val tg = TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1)
 val lp = LocalProver(ts, tg)
 import HoTTMessages._
@@ -16,3 +16,7 @@ val ws3 = ws2.flatMap(w => w.act(HoTTBot.fullGoalInContext ))
 val ws4 = ws3.flatMap(w => w.act(HoTTBot.goalToProver(0.3, 0.7)))
 val ws5 = ws4.flatMap(w => w.act(HoTTBot.lpToFinalState ))
 val ws6 = ws5.flatMap(w => w.act(HoTTBot.reportSuccesses ))
+
+// Variant where we setup and launch a session
+import HoTTBot._
+val sessF = ws2.map(w => HoTTWebSession.launch(w, Vector(fullGoalInContext , goalToProver(0.3, 0.7), lpToFinalState, reportSuccesses)))
