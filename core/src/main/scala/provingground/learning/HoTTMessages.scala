@@ -229,7 +229,7 @@ object HoTTMessages {
   }
 
   trait PropagateProof {
-    def propagate(proofs: Set[Term]): Option[Decided]
+    def propagate(proofs: Set[Term]): Set[Decided]
 
     val context: Context
 
@@ -250,17 +250,16 @@ object HoTTMessages {
       proofMapOpt: Option[ExstFunc],
       context: Context
   ) extends PropagateProof {
-    def propagate(proofs: Set[Term]): Option[Proved] =
-      proofs.find(_.typ == premise).map { proof =>
+    def propagate(proofs: Set[Term]): Set[Decided] =
+      proofs.filter(_.typ == premise).map { proof =>
         Proved(conclusion, proofMapOpt.flatMap(m => m(proof)), context)
       }
 
-    proofMapOpt.foreach{
-      pfMap =>
-        assert(
-          pfMap("hyp" :: premise).map(_.typ) == Some(conclusion),
-          s"Cannot conclude: ${pfMap.func.typ} on ${premise} gives $conclusion"
-        )
+    proofMapOpt.foreach { pfMap =>
+      assert(
+        pfMap("hyp" :: premise).map(_.typ) == Some(conclusion),
+        s"Cannot conclude: ${pfMap.func.typ} on ${premise} gives $conclusion"
+      )
     }
   }
 
@@ -270,8 +269,8 @@ object HoTTMessages {
       contraMapOpt: Option[ExstFunc],
       context: Context
   ) extends PropagateProof {
-    def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
-      proofs.find(_.typ == premise).map { proof =>
+    def propagate(proofs: Set[HoTT.Term]): Set[Decided] =
+      proofs.filter(_.typ == premise).map { proof =>
         val contraOpt =
           contraMapOpt
             .flatMap { contraMap =>
@@ -386,6 +385,14 @@ object HoTTMessages {
     assert(term.typ == typ)
   }
 
+  def product[A](vv: Vector[Set[A]]): Set[Vector[A]] = vv match {
+    case Vector() => Set(Vector())
+    case x +: ys =>
+      for {
+        a <- x
+        w <- product(ys)
+      } yield a +: w
+  }
   case class FromAll(
       typs: Vector[Typ[Term]],
       conclusion: Typ[Term],
@@ -393,17 +400,19 @@ object HoTTMessages {
       context: Context,
       forConsequences: Set[Typ[Term]]
   ) extends PropagateProof {
-    def propagate(proofs: Set[HoTT.Term]): Option[Proved] =
+    def propagate(proofs: Set[HoTT.Term]): Set[Decided] =
       if (typs.toSet.subsetOf(proofs.map(_.typ))) {
-        val terms = typs.flatMap(typ => proofs.find(_.typ == typ))
-        Some(
+        val termsVec   = typs.map(typ => proofs.filter(_.typ == typ))
+        val prodProofs = product(termsVec)
+        for {
+          terms <- prodProofs
+        } yield
           Proved(
             conclusion,
             proofOpt.map(pf => foldterms(pf, terms.toList)),
             context
           )
-        )
-      } else None
+      } else Set()
   }
 
   object FromAll {
@@ -477,20 +486,20 @@ object HoTTMessages {
       context: Context,
       forConsequences: Set[Typ[Term]]
   ) extends PropagateProof {
-    def propagate(proofs: Set[HoTT.Term]): Option[Decided] =
+    def propagate(proofs: Set[HoTT.Term]): Set[Decided] =
       if (typs.toSet.intersect(proofs.map(_.typ)).nonEmpty) {
-        val proofOpt = proofs
-          .find(t => typs.contains(t.typ))
+        val proofSet = proofs
+          .filter(t => typs.contains(t.typ))
           .flatMap(
             x =>
               typs.zip(proofsOpt).find(_._1 == x.typ).flatMap {
                 case (_, pfMap) => pfMap.flatMap(_(x))
               }
           )
-        Some(Proved(conclusion, proofOpt, context))
+        proofSet.map(pf => Proved(conclusion, Some(pf), context))
       } else if (exhaustive && typs.toSet.subsetOf(proofs.map(_.typ)))
-        Some(Contradicted(conclusion, None, context))
-      else None
+        Set(Contradicted(conclusion, None, context))
+      else Set()
   }
 
   @annotation.tailrec
