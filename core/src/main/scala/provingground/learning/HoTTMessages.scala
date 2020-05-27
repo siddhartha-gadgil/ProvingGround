@@ -511,8 +511,14 @@ object HoTTMessages {
         pf <- p.propagate(p.inContext(proofs))
       } yield pf
 
-    if (offspring.nonEmpty) propagateProofs(props, decisions union offspring)
-    else decisions
+    // if (offspring.nonEmpty) propagateProofs(props, decisions union offspring)
+    // else decisions
+
+    // pprint.log(decisions.size)
+    // pprint.log((offspring -- decisions).size)
+
+    if (offspring.subsetOf(decisions)) decisions
+    else propagateProofs(props, decisions union offspring)
   }
 
   def derivedProofs(

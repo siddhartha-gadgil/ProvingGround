@@ -80,6 +80,33 @@ object HoTTBot {
       (pair: TermResult) => FinalState(pair._1)
     )
 
+  lazy val postProofsSimple: SimpleBot[FinalState, Option[Set[Proved]]] =
+    MicroBot.simple(
+      (fs: FinalState) =>
+        if (fs.successes.isEmpty) None
+        else
+          Some(fs.successes.flatMap {
+            case (tp, _, pfs) =>
+              pfs.supp.map(pf => Proved(tp, Some(pf), Context.Empty))
+          }.toSet)
+    )
+
+  lazy val postProofs: MiniBot[FinalState, Proved, HoTTPostWeb, Unit, ID] = {
+    val response: Unit => FinalState => Future[Vector[Proved]] =
+      (_) =>
+        (fs) =>
+          Future {
+            (fs.successes.flatMap {
+              case (tp, _, pfs) =>
+                pfs.supp.map(pf => Proved(tp, Some(pf), Context.Empty))
+            } ++ fs.ts.successes.flatMap {
+              case (tp, _, pfs) =>
+                pfs.supp.map(pf => Proved(tp, Some(pf), fs.ts.context))
+            }).distinct
+          }
+    MiniBot(response)
+  }
+
   lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       if (fs.successes.size > 0) {
@@ -112,11 +139,11 @@ object HoTTBot {
               //   .goalCast(y)
               val deduction =
                 y :~> fold(seek.sigma.paircons)(instance.term, y: Term)
-                //  mkPair(instance.term.asInstanceOf[Term], y: Term)
-              translation.FansiShow.fansiPrint.log(newGoal)
-              translation.FansiShow.fansiPrint.log(seek.sigma)
-              translation.FansiShow.fansiPrint.log(deduction)
-              translation.FansiShow.fansiPrint.log(deduction.typ)
+              //  mkPair(instance.term.asInstanceOf[Term], y: Term)
+              // translation.FansiShow.fansiPrint.log(newGoal)
+              // translation.FansiShow.fansiPrint.log(seek.sigma)
+              // translation.FansiShow.fansiPrint.log(deduction)
+              // translation.FansiShow.fansiPrint.log(deduction.typ)
               val cons = Consequence(
                 newGoal,
                 seek.sigma,
@@ -222,27 +249,27 @@ object HoTTBot {
     )
   }
 
-  lazy val deducedEquations: MicroBot[Proved, Set[
+  lazy val deducedEquations: MiniBot[Proved, 
     Either[Contradicted, Proved]
-  ], HoTTPostWeb, GatherMapPost[PropagateProof] :: GatherMapPost[
+  , HoTTPostWeb, GatherMapPost[PropagateProof] :: GatherMapPost[
     Decided
   ] :: Set[HoTT.Term] :: HNil, ID] = {
     val response
         : GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: Set[
           Term
         ] :: HNil => Proved => Future[
-          Set[Either[Contradicted, Proved]]
+          Vector[Either[Contradicted, Proved]]
         ] = {
       case gprop :: gdec :: terms :: HNil =>
         proved =>
           Future {
             derivedProofs(gprop.contents, gdec.contents union terms.map { t =>
               Proved(t.typ, Some(t), Context.Empty)
-            }).map(Decided.asEither(_))
+            }).map(Decided.asEither(_)).toVector
           }
     }
 
-    MicroBot(response)
+    MiniBot(response)
   }
 
   lazy val termsFromProofs: HoTTBot =

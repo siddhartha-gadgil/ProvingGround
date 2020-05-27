@@ -336,4 +336,9 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
     Future.sequence(apexPosts.map(pd => post(content, Set(pd.id)))).map{
       v => WebState(v.head.web, v.map(_.apexPosts).reduce(_ ++ _))
     }
+
+  def queryApex[Q](predicate: Q => Boolean = (_: Q) => true)(implicit lp: LocalQueryable[Q, W, ID]) =
+    Future.sequence(apexPosts.map{
+      pd => lp.getAt(web, pd.id, predicate)
+    }).map(_.flatten)
 }

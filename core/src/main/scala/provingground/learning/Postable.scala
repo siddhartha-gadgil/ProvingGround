@@ -226,6 +226,16 @@ object DataGetter extends SimpleDataGetter{
       }
   }
 
+  implicit def setData[P: TypeTag, W, ID](
+      implicit pd: DataGetter[P, W, ID],
+      uw: Postable[Unit, W, ID]
+  ) : DataGetter[Set[P], W, ID] = new DataGetter[Set[P], W, ID]{
+    def data(content: Set[P], id: ID): PostData[_, W, ID] = 
+      content.lastOption.map{
+        x => pd.data(x, id)
+      }.getOrElse(PostData((), id))
+  } 
+
   implicit def eitherData[P, Q, W, ID](
     implicit pd: DataGetter[P, W, ID],
     qd: DataGetter[Q, W, ID]

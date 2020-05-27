@@ -1,0 +1,34 @@
+2020.05.27 10:47:46 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-520832846), content:
+LocalProver(TermState([Unit : 0.25, Zero : 0.25, Star : 0.25, 𝒰 _0 : 0.25],[Unit : 0.3333333333333333, Zero : 0.3333333333333333, 𝒰 _0 : 0.3333333333333333],Vector(),[],[],Empty),TermGenParams(0.1,0.1,0.1,0.1,0.1,0.0,0.05,0.05,0.05,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.27 10:47:47 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (2,-1120268393), content:
+SeekGoal(∑((`A :  𝒰 _0) ↦ ((`A) → (Zero))),Empty,Set())
+2020.05.27 10:47:47 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekInstances], id: (3,192964683), content:
+provingground.learning.HoTTMessages$SeekInstances$$anon$1@b80684b
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (4,-1822576046), content:
+Weight(0.49999999999999994)
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (5,-1822576046), content:
+Weight(0.49999999999999994)
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Instance], id: (6,-589143408), content:
+Instance(Zero,𝒰 _0,Empty)
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Instance], id: (7,-1890567806), content:
+Instance(Unit,𝒰 _0,Empty)
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Consequence], id: (8,516769584), content:
+Consequence((Zero) → (Zero),∑((`A :  𝒰 _0) ↦ ((`A) → (Zero))),Some(Wrap((`$afc :  (Zero) → (Zero)) ↦ (((Zero) , (`$afc))))),Empty)
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Consequence], id: (8,-903285890), content:
+Consequence((Unit) → (Zero),∑((`A :  𝒰 _0) ↦ ((`A) → (Zero))),Some(Wrap((`$afb :  (Unit) → (Zero)) ↦ (((Unit) , (`$afb))))),Empty)
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (9,762905811), content:
+SeekGoal((Zero) → (Zero),Empty,Set(∑((`A :  𝒰 _0) ↦ ((`A) → (Zero)))))
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (10,762905811), content:
+SeekGoal((Unit) → (Zero),Empty,Set(∑((`A :  𝒰 _0) ↦ ((`A) → (Zero)))))
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (11,-205764895), content:
+LocalProver(TermState([Unit : 0.25, Zero : 0.25, Star : 0.25, 𝒰 _0 : 0.25],[Unit : 0.3333333333333333, Zero : 0.3333333333333333, 𝒰 _0 : 0.3333333333333333],Vector(),[],[(Zero) → (Zero) : 1.0],Empty),TermGenParams(0.1,0.1,0.1,0.1,0.1,0.0,0.05,0.05,0.05,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),2.0000000000000004E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.27 10:47:48 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (12,877207255)
+2020.05.27 10:47:48 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (13,716969899)
+2020.05.27 10:47:49 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (14,1730932590), content:
+Proved((Zero) → (Zero),Some(rec(Zero)(Zero)),Empty)
+2020.05.27 10:47:48 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (15,183366453), content:
+Proved((Zero) → (Zero),Some((`@a :  Zero) ↦ (`@a)),Empty)
+2020.05.27 10:47:51 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (16,1786040065), content:
+Proved(∑((`A :  𝒰 _0) ↦ ((`A) → (Zero))),Some(((Zero) , (rec(Zero)(Zero)))),Empty)
+2020.05.27 10:47:51 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Proved], id: (16,1786040065), content:
+Proved(∑((`A :  𝒰 _0) ↦ ((`A) → (Zero))),Some(((Zero) , (rec(Zero)(Zero)))),Empty)
