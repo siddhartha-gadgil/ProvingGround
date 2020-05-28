@@ -17,14 +17,14 @@ import monix.tail.Iterant
 import provingground.learning.TypSolver.LookupSolver
 import upickle.default._, scala.concurrent.duration._
 
-object LocalProver{
-  implicit def finDurRW : ReadWriter[FiniteDuration] = 
+object LocalProver {
+  implicit def finDurRW: ReadWriter[FiniteDuration] =
     readwriter[ujson.Value].bimap(
       dur => ujson.Num(dur.toMillis),
       js => FiniteDuration(ujson.read(js).num.toLong, MILLISECONDS)
     )
 
-  import TermJson._ , TermGenParams._ 
+  import TermJson._, TermGenParams._
 
   implicit val lpRW: ReadWriter[LocalProver] = macroRW
 }
@@ -314,6 +314,7 @@ trait LocalProverStep {
   val relativeEval: Boolean
   val exponent: Double
   val decay: Double
+  val stateFromEquation: Boolean
 
   var isHalted: Boolean = false
 
@@ -386,28 +387,41 @@ trait LocalProverStep {
     Equation.group(eqs)
   }.memoize
 
-  lazy val expressionEval: Task[ExpressionEval] = {
-    val base = for {
-      fs  <- nextState
-      eqs <- equations
-    } yield
-      ExpressionEval.fromStates(
-        initState,
-        fs,
-        eqs,
-        tg,
-        maxRatio,
-        scale,
-        smoothing,
-        exponent,
-        decay
-      )
-    if (relativeEval)
-      if (initState.vars.isEmpty)
-        base.map(_.generateTyps)
-      else base.map(ev => ExpressionEval.export(ev, initState.vars))
-    else base
-  }.memoize
+  lazy val expressionEval: Task[ExpressionEval] =
+    if (stateFromEquation)
+      equations.map { eqs =>
+        ExpressionEval.fromInitEqs(
+          initState,
+          eqs,
+          tg,
+          maxRatio,
+          scale,
+          smoothing,
+          exponent,
+          decay
+        )
+      } else { 
+      val base = for {
+        fs  <- nextState
+        eqs <- equations
+      } yield
+        ExpressionEval.fromStates(
+          initState,
+          fs,
+          eqs,
+          tg,
+          maxRatio,
+          scale,
+          smoothing,
+          exponent,
+          decay
+        )
+      if (relativeEval)
+        if (initState.vars.isEmpty)
+          base.map(_.generateTyps)
+        else base.map(ev => ExpressionEval.export(ev, initState.vars))
+      else base
+    }.memoize
 
   lazy val successes = nextState.map(_.successes)
 
@@ -623,13 +637,14 @@ trait LocalProverStep {
       splitTangentProvers(pfs)
     }
 
-  def scaledSplitLemmaProvers(scale: Double = 1.0): Task[Vector[LocalTangentProver]] =
+  def scaledSplitLemmaProvers(
+      scale: Double = 1.0
+  ): Task[Vector[LocalTangentProver]] =
     lemmas.flatMap { v =>
-      val sc = scale / v.map(_._2).sum
+      val sc  = scale / v.map(_._2).sum
       val pfs = v.map { case (tp, w) => ("proof" :: tp, w * sc) }
       splitTangentProvers(pfs)
     }
-
 
   def proofTangent(tangentCutoff: Double = cutoff): Task[LocalTangentProver] =
     lemmaProofs.flatMap(
@@ -637,9 +652,8 @@ trait LocalProverStep {
     )
 }
 
-
-object LocalTangentProver{
-  import TermJson._ , TermGenParams._ 
+object LocalTangentProver {
+  import TermJson._, TermGenParams._
 
   implicit val lpRW: ReadWriter[LocalProver] = macroRW
 }
