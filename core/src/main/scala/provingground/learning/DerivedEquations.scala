@@ -192,12 +192,59 @@ class DerivedEquations(
 
     }
 
-  def formalEquations(t: Term, ctx: Context = Context.Empty): Set[EquationNode] = {
+  def typFuncFoldEquations(
+      fn: Term,
+      args: Vector[Term],
+      accum: Set[EquationNode] = Set()
+  ): Set[EquationNode] =
+    args match {
+      case Vector() => accum
+      case a +: Vector() =>
+        val tailFunc = fold(fn)(a)
+        val f        = ExstFunc.opt(fn).get
+        val lhs      = finalProb(tailFunc, Typs)
+        val headEq = 
+          EquationNode(
+            lhs,
+            Coeff(typApplnNode) * finalProb(f, Funcs) * finalProb(
+              a,
+              termsWithTyp(f.dom)
+            )
+          )
+        accum + headEq
+      case a +: ys =>
+        val tailFunc = fold(fn)(a)
+        val f        = ExstFunc.opt(fn).get
+        val lhs      = finalProb(tailFunc, Terms)
+        val headEqs = Set(
+          EquationNode(
+            lhs,
+            Coeff(applnNode) * finalProb(f, Funcs) * finalProb(
+              a,
+              termsWithTyp(f.dom)
+            )
+          ),
+          EquationNode(
+            lhs,
+            Coeff(applnByArgNode) * finalProb(a, Terms) * finalProb(
+              f,
+              funcsWithDomain(a.typ)
+            )
+          )
+        )
+        funcFoldEqs(tailFunc, ys, headEqs union (accum))
+
+    }
+
+  def formalEquations(
+      t: Term,
+      ctx: Context = Context.Empty
+  ): Set[EquationNode] = {
     val base: Set[EquationNode] = t match {
       case MiscAppln(fn: FuncLike[u, v], a) =>
         val f   = ExstFunc(fn)
         val lhs = finalProb(t, Terms)
-        val funcSet : Set[EquationNode] = Set(
+        val funcSet: Set[EquationNode] = Set(
           EquationNode(
             lhs,
             Coeff(applnNode) * finalProb(f, Funcs) * finalProb(
@@ -231,19 +278,19 @@ class DerivedEquations(
             finalProb(f, Funcs)
           )
         )
-        val typFamilySet : Set[EquationNode] = TypFamilyOpt(fn).toSet.flatMap{
-          f : ExstFunc =>
-          Set(
-            EquationNode(
-              lhs,
-              Coeff(applnNode) * finalProb(f, TypFamilies) * finalProb(
-                a,
-                termsWithTyp(f.dom)
+        val typFamilySet: Set[EquationNode] = TypFamilyOpt(fn).toSet.flatMap {
+          f: ExstFunc =>
+            Set(
+              EquationNode(
+                lhs,
+                Coeff(applnNode) * finalProb(f, TypFamilies) * finalProb(
+                  a,
+                  termsWithTyp(f.dom)
+                )
               )
             )
-          )
         }
-        funcSet union(typFamilySet)
+        funcSet union (typFamilySet)
       case idt: IdentityTyp[u] =>
         funcFoldEqs(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
       case idt: Refl[u] =>
@@ -450,7 +497,10 @@ class DerivedEquations(
           .map(_.mapVars(InIsle.variableMap(boat, isle)))
         (isleIn
           .union(isleEqs)
-          .union(initInIsle) + bridgeEq) union (formalEquations(pd.fib.dom, ctx))
+          .union(initInIsle) + bridgeEq) union (formalEquations(
+          pd.fib.dom,
+          ctx
+        ))
       case pd: ProdTyp[u, v] =>
         val coeff = Coeff(tg.sigmaIsle(pd.first))
         val x     = pd.first
@@ -518,6 +568,241 @@ class DerivedEquations(
       case t: Term => Set()
     }
     base union initEquations(Set(FinalVal(Elem(t, Terms))))
+  }
+
+  def formalTypEquations(
+      t: Typ[Term],
+      ctx: Context = Context.Empty
+  ): Set[EquationNode] = {
+    val base: Set[EquationNode] = t match {
+      case MiscAppln(fn: FuncLike[u, v], a) =>
+        val f   = ExstFunc(fn)
+        val lhs = finalProb(t, Typs)
+        val funcSet: Set[EquationNode] = Set(
+          EquationNode(
+            lhs,
+            Coeff(typApplnNode) * finalProb(f, Funcs) * finalProb(
+              a,
+              termsWithTyp(f.dom)
+            )
+          ),
+          EquationNode(
+            finalProb(a, termsWithTyp(f.dom)),
+            finalProb(a, Terms) /
+              FinalVal(Event(Terms, Sort.Filter[Term](WithTyp(f.dom))))
+          ),
+          EquationNode(
+            FinalVal(Event(Terms, Sort.Filter[Term](WithTyp(f.dom)))),
+            finalProb(a, Terms)
+          ),
+          EquationNode(
+            FinalVal(Event(Funcs, Sort.Filter[ExstFunc](_.dom == a.typ))),
+            finalProb(f, Funcs)
+          )
+        )
+        val typFamilySet: Set[EquationNode] = TypFamilyOpt(fn).toSet.flatMap {
+          f: ExstFunc =>
+            Set(
+              EquationNode(
+                lhs,
+                Coeff(applnNode) * finalProb(f, TypFamilies) * finalProb(
+                  a,
+                  termsWithTyp(f.dom)
+                )
+              )
+            )
+        }
+        funcSet union (typFamilySet)
+      case idt: IdentityTyp[u] => 
+        typFuncFoldEquations(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
+      case idt: Refl[u] => 
+        typFuncFoldEquations(IdentityTyp.reflTerm, Vector(idt.dom, idt.value))
+      case pd: PiDefn[u, v] =>
+        val coeff = Coeff(tg.piNode)
+        val boat  = pd.variable
+        val isle  = tg.piIsle(pd.domain)
+        val eqs   = formalEquations(pd.value, ctx.addVariable(boat))
+        val isleEqs =
+          eqs.map(_.mapVars(InIsle.variableMap(boat, isle)))
+        val bridgeEq = EquationNode(
+          FinalVal(Elem(pd, Typs)),
+          coeff * finalProb(pd.domain, Typs) * FinalVal(
+            InIsle(Elem(pd.value, isle.islandOutput(boat)), boat, isle)
+          )
+        )
+        val initVarElems = (eqs union formalEquations(pd.domain, ctx))
+          .flatMap { (eq) =>
+            Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
+          }
+          .collect {
+            case FinalVal(Elem(el: Term, Terms))
+                if !el.dependsOn(pd.variable) =>
+              Elem(el, Terms): Elem[_]
+            case FinalVal(Elem(el: Typ[Term], Typs))
+                if !el.dependsOn(pd.variable) =>
+              Elem(el, Typs): Elem[_]
+            case FinalVal(Elem(el: ExstFunc, Funcs))
+                if !el.func.dependsOn(pd.variable) =>
+              Elem(el, Funcs): Elem[_]
+            case FinalVal(Elem(el: ExstFunc, TypFamilies))
+                if !el.func.dependsOn(boat) =>
+              Elem(el, TypFamilies): Elem[_]
+          } union (Set(Elem(pd.value, Typs))
+          .filter(_.element.indepOf(boat))
+          .map(t => t: Elem[_])) union typOpt(boat)
+          .map(typ => Elem(typ, Typs))
+          .toSet + Elem(boat, Terms)
+        val isleIn: Set[EquationNode] =
+          (initVarElems + Elem(boat, Terms)).map { el =>
+            val rhs =
+              if (boat == el.element)
+                (IsleScale(boat, el) * -1) + Literal(1)
+              else IsleScale(boat, el) * InitialVal(el)
+            EquationNode(
+              InitialVal(InIsle(el, boat, isle)),
+              rhs
+            )
+          }
+        val initInIsle = initEquations(initVarElems.map(FinalVal(_)))
+          .map(_.mapVars(InIsle.variableMap(boat, isle)))
+        (isleIn
+          .union(isleEqs)
+          .union(initInIsle) + bridgeEq) union (formalEquations(pd.domain, ctx))
+      case pd: FuncTyp[u, v] =>
+        val coeff = Coeff(tg.piNode)
+        val boat  = nextVar(pd.dom, ctx.variables)
+        val isle  = tg.piIsle(pd.domain)
+        val eqs   = formalEquations(pd.codom, ctx.addVariable(boat))
+        val isleEqs =
+          eqs.map(_.mapVars(InIsle.variableMap(boat, isle)))
+        val bridgeEq = EquationNode(
+          FinalVal(Elem(pd, Typs)),
+          coeff * finalProb(pd.domain, Typs) * FinalVal(
+            InIsle(Elem(pd.codom, isle.islandOutput(boat)), boat, isle)
+          )
+        )
+        val initVarElems = (eqs union formalEquations(pd.domain, ctx))
+          .flatMap { (eq) =>
+            Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
+          }
+          .collect {
+            case FinalVal(Elem(el: Term, Terms)) if !el.dependsOn(boat) =>
+              Elem(el, Terms): Elem[_]
+            case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(boat) =>
+              Elem(el, Typs): Elem[_]
+            case FinalVal(Elem(el: ExstFunc, Funcs))
+                if !el.func.dependsOn(boat) =>
+              Elem(el, Funcs): Elem[_]
+            case FinalVal(Elem(el: ExstFunc, TypFamilies))
+                if !el.func.dependsOn(boat) =>
+              Elem(el, TypFamilies): Elem[_]
+          } union (Set(Elem(pd.codom, Typs))
+          .filter(_.element.indepOf(boat))
+          .map(t => t: Elem[_])) union typOpt(boat)
+          .map(typ => Elem(typ, Typs))
+          .toSet + Elem(boat, Terms)
+        val isleIn: Set[EquationNode] =
+          (initVarElems + Elem(boat, Terms)).map { el =>
+            val rhs =
+              if (boat == el.element)
+                (IsleScale(boat, el) * -1) + Literal(1)
+              else IsleScale(boat, el) * InitialVal(el)
+            EquationNode(
+              InitialVal(InIsle(el, boat, isle)),
+              rhs
+            )
+          }
+        val initInIsle = initEquations(initVarElems.map(FinalVal(_)))
+          .map(_.mapVars(InIsle.variableMap(boat, isle)))
+        (isleIn
+          .union(isleEqs)
+          .union(initInIsle) + bridgeEq) union formalEquations(pd.domain, ctx)
+
+      case pd: SigmaTyp[u, v] =>
+        val coeff = Coeff(tg.sigmaNode)
+        val boat  = pd.fib.variable
+        val isle  = tg.sigmaIsle(pd.fib.dom)
+        val eqs   = formalEquations(pd.fib.value, ctx.addVariable(boat))
+        val isleEqs =
+          eqs.map(_.mapVars(InIsle.variableMap(boat, isle)))
+        val bridgeEq = EquationNode(
+          FinalVal(Elem(pd, Typs)),
+          coeff * finalProb(pd.fib.dom, Typs) * FinalVal(
+            InIsle(Elem(pd.fib.value, isle.islandOutput(boat)), boat, isle)
+          )
+        )
+        val initVarElems = (eqs union (formalEquations(pd.fib.dom, ctx)))
+          .flatMap { (eq) =>
+            Expression.varVals(eq.rhs) union Expression.varVals(eq.lhs)
+          }
+          .collect {
+            case FinalVal(Elem(el: Term, Terms)) if !el.dependsOn(boat) =>
+              Elem(el, Terms): Elem[_]
+            case FinalVal(Elem(el: Typ[Term], Typs)) if !el.dependsOn(boat) =>
+              Elem(el, Typs): Elem[_]
+            case FinalVal(Elem(el: ExstFunc, Funcs))
+                if !el.func.dependsOn(boat) =>
+              Elem(el, Funcs): Elem[_]
+            case FinalVal(Elem(el: ExstFunc, TypFamilies))
+                if !el.func.dependsOn(boat) =>
+              Elem(el, TypFamilies): Elem[_]
+          } union (Set(Elem(pd.fib.value, Typs))
+          .filter(_.element.indepOf(boat))
+          .map(t => t: Elem[_])) union typOpt(boat)
+          .map(typ => Elem(typ, Typs))
+          .toSet + Elem(boat, Terms)
+        val isleIn: Set[EquationNode] =
+          (initVarElems + Elem(boat, Terms)).map { el =>
+            val rhs =
+              if (boat == el.element)
+                (IsleScale(boat, el) * -1) + Literal(1)
+              else IsleScale(boat, el) * InitialVal(el)
+            EquationNode(
+              InitialVal(InIsle(el, boat, isle)),
+              rhs
+            )
+          }
+        val initInIsle = initEquations(initVarElems.map(FinalVal(_)))
+          .map(_.mapVars(InIsle.variableMap(boat, isle)))
+        (isleIn
+          .union(isleEqs)
+          .union(initInIsle) + bridgeEq) union (formalEquations(
+          pd.fib.dom,
+          ctx
+        ))
+      case pd: ProdTyp[u, v] =>
+        val coeff = Coeff(tg.sigmaIsle(pd.first))
+        val x     = pd.first
+        val isle  = tg.sigmaIsle(pd.first)
+        Set(
+          EquationNode(
+            FinalVal(Elem(pd, Typs)),
+            coeff * FinalVal(
+              InIsle(Elem(pd.second, isle.islandOutput(x)), x, isle)
+            )
+          )
+        )
+      case rf: RecFunc[u, v] =>
+        val direct = EquationNode(
+          FinalVal(Elem(rf, Typs)),
+          Coeff(tg.targetInducNode(rf.typ)) *
+            finalProb(rf.typ, TargetTyps)
+        )
+        val offspring =
+          (rf.defnData :+ rf.typ).toSet.flatMap(formalEquations(_, ctx))
+        offspring + direct
+      case rf: InducFuncLike[u, v] =>
+        val direct = EquationNode(
+          FinalVal(Elem(rf, Typs)),
+          Coeff(tg.targetInducNode(rf.typ)) *
+            finalProb(rf.typ, TargetTyps)
+        )
+        val offspring =
+          (rf.defnData :+ rf.typ).toSet.flatMap(formalEquations(_, ctx))
+        offspring + direct
+      case t: Term => Set()
+    }
+    base union initEquations(Set(FinalVal(Elem(t, Typs))))
   }
 
   def initEquations(s: Set[Expression]): Set[EquationNode] =

@@ -16,11 +16,21 @@ import Utils.logger
 case class QueryProver(lp: LocalProver)
 
 object QueryProver {
-  implicit val qc =
+  implicit val qc : QueryFromPosts[QueryProver,HoTTMessages.Weight :: LocalProver :: HNil] =
     QueryFromPosts
       .empty[QueryProver]
       .addCons((lp: LocalProver) => Some(QueryProver(lp)))
       .addMod((w: Weight) => qp => QueryProver(qp.lp.sharpen(w.scale)))
+}
+
+case class QueryInitState(init: TermState)
+
+object QueryInitState{
+  implicit val qc  =
+    QueryFromPosts
+      .empty[QueryInitState]
+      .addCons((lp: LocalProver) => Some(QueryInitState(lp.initState)))
+      .addCons((s: InitState) => Some(QueryInitState(s.ts)))
 }
 
 object HoTTBot {
@@ -36,6 +46,12 @@ object HoTTBot {
   lazy val lpToExpEv: SimpleBot[LocalProver, ExpressionEval] = {
     val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
       lp => lp.expressionEval.runToFuture
+    MicroBot(response)
+  }
+
+  lazy val lpToBigExpEv: MicroHoTTBoTT[LocalProver, ExpressionEval, Set[Equation]] = {
+    val response: Set[Equation] => LocalProver => Future[ExpressionEval] = 
+      (adEqs) => lp => lp.bigExpressionEval(adEqs).runToFuture
     MicroBot(response)
   }
 
@@ -107,6 +123,15 @@ object HoTTBot {
     MiniBot(response)
   }
 
+  lazy val updateTerms: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
+    Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
+        val allTerms = fs.ts.terms.support union (fs.ts.typs.support.map(t => t : Term))
+        web.addTerms(allTerms)
+        web.updateDerived()
+      }
+    
+  
+
   lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       if (fs.successes.size > 0) {
@@ -119,6 +144,12 @@ object HoTTBot {
     MicroBot.simple(
       (ev: ExpressionEval) =>
         GeneratedEquationNodes(ev.equations.flatMap(Equation.split))
+    )
+
+  lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
+    MicroBot.simple(
+      (ev: ExpressionEval) =>
+       FinalState(ev.finalTermState())
     )
 
   lazy val instanceToGoal: MicroBot[Instance, Option[
@@ -197,11 +228,22 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val eqnUpdate: HoTTBot =
+  lazy val eqnSimpleUpdate: HoTTBot =
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
     )
+
+  lazy val eqnUpdate: HoTTBot =
+    Callback.simple(
+      (web: HoTTPostWeb) =>
+        (eqs: GeneratedEquationNodes) => {
+          val neqs = eqs.eqn.map(eq => TermData.isleNormalize(eq))
+          web.addEqns(neqs)
+        }
+    )
+
+  
 
   lazy val termResultToChomp: MicroBot[
     TermData.TermResult,

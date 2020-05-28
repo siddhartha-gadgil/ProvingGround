@@ -35,6 +35,14 @@ class HoTTPostWeb {
     equationNodes ++= eqs
   }
 
+  def typs = terms.collect{case t : Typ[u] => t: Typ[Term]} union terms.map(_.typ)
+
+  def derivedEquations = {
+    terms.flatMap(DE.formalEquations(_)) union (typs.flatMap(DE.formalTypEquations(_)))
+  }
+
+  def updateDerived() = addEqns(derivedEquations)
+
   def addTerms(terms: Set[Term]) : Unit = {
     extraTerms ++= terms
   }

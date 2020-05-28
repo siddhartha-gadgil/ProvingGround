@@ -293,7 +293,6 @@ object ExpressionEval {
     * with the final state deduced using the equations
     *
     * @param initialState initial state
-    * @param finalState final state
     * @param equationsS equations
     * @param tgS term-generator parameters
     * @param maxRatioS maximum ratio for stabilization

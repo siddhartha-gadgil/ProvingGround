@@ -387,6 +387,20 @@ trait LocalProverStep {
     Equation.group(eqs)
   }.memoize
 
+  def bigExpressionEval(additional: Set[Equation]) : Task[ExpressionEval] = 
+    equations.map { eqs =>
+        ExpressionEval.fromInitEqs(
+          initState,
+          Equation.merge(eqs, additional) ,
+          tg,
+          maxRatio,
+          scale,
+          smoothing,
+          exponent,
+          decay
+        )
+      }
+
   lazy val expressionEval: Task[ExpressionEval] =
     if (stateFromEquation)
       equations.map { eqs =>
