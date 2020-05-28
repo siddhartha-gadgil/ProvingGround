@@ -200,8 +200,6 @@ object TermGeneratorNodes {
   val typAsTermSort: Sort[Typ[Term], Term] =
     Sort.Restrict[Typ[Term], Term](TypAsTermOpt)
 
-
-
   /**
     * Wrapper for fiber for sigma types to allow equality and  `toString` to work.
     */
@@ -509,6 +507,22 @@ class TermGeneratorNodes[InitState](
     override def toString = "LambdaIsle"
   }
 
+  case object PiIsle
+      extends (Typ[Term] => Island[Typ[Term], InitState, Typ[Term], Term]) {
+    def apply(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+      piIsle(typ)
+
+    override def toString = "PiIsle"
+  }
+
+  case object SigmaIsle
+      extends (Typ[Term] => Island[Typ[Term], InitState, Typ[Term], Term]) {
+    def apply(typ: Typ[Term]): Island[Typ[Term], InitState, Typ[Term], Term] =
+      sigmaIsle(typ)
+
+    override def toString = "SigmaIsle"
+  }
+
   /**
     * An island to generate lambda terms that are type families, i.e., terms are generated withing the island and exported as lambdas;
     * the initial state of the island has a new variable mixed in.
@@ -742,7 +756,7 @@ class TermGeneratorNodes[InitState](
   val piNode: FlatMap[Typ[Term], Typ[Term]] =
     FlatMap(
       Typs,
-      piIsle,
+      PiIsle,
       Typs
     )
 
@@ -775,7 +789,7 @@ class TermGeneratorNodes[InitState](
   val typFoldNode: FlatMap[ExstFunc, Typ[Term]] =
     FlatMap(
       TypFamilies,
-      (fn) => foldTypFamily(fn.term),
+      (fn) => foldTypFamily(fn.term), // FIXME avoid anonymous lambdas
       Typs
     )
 
