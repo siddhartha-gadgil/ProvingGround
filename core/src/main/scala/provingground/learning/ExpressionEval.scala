@@ -97,9 +97,9 @@ object ExpressionEval {
         if (base > 0) Some(base)
         else if (rv == Goals) Some(0.5) // just a quick-fix
         else
-          //  if (isIsleVar(elem))
+           if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
-      // else throw new Exception(s"no initial value for $elem")
+           else Some(0)       // else throw new Exception(s"no initial value for $elem")
       case IsleScale(_, _) => Some((1.0 - tg.varWeight))
       case _               => None
     }
@@ -164,7 +164,7 @@ object ExpressionEval {
   ): Map[Expression, Double] = {
     init ++ equations
       .map(eq => eq.lhs -> stabRecExp(init, eq.rhs, init.get(eq.lhs), exponent))
-      .filter(_._2 != 0)
+      .filter(_._2 != 0).toMap
   }
 
   /**

@@ -203,7 +203,7 @@ class DerivedEquations(
         val tailFunc = fold(fn)(a)
         val f        = ExstFunc.opt(fn).get
         val lhs      = finalProb(tailFunc, Typs)
-        val headEq = 
+        val headEq =
           EquationNode(
             lhs,
             Coeff(typApplnNode) * finalProb(f, Funcs) * finalProb(
@@ -262,6 +262,11 @@ class DerivedEquations(
             finalProb(a, Terms)
           ),
           EquationNode(
+            finalProb(f, Funcs),
+            finalProb(fn, Terms) /
+              FinalVal(Event(Terms, Sort.Restrict(FuncOpt)))
+          ),
+          EquationNode(
             lhs,
             Coeff(applnByArgNode) * finalProb(a, Terms) * finalProb(
               f,
@@ -270,12 +275,12 @@ class DerivedEquations(
           ),
           EquationNode(
             finalProb(f, funcsWithDomain(a.typ)),
-            finalProb(f, Funcs) /
-              FinalVal(Event(Funcs, Sort.Filter[ExstFunc](_.dom == a.typ)))
+            finalProb(fn, Terms) /
+              FinalVal(Event(Terms, Sort.Restrict(FuncWithDom(a.typ))))
           ),
           EquationNode(
-            FinalVal(Event(Funcs, Sort.Filter[ExstFunc](_.dom == a.typ))),
-            finalProb(f, Funcs)
+            FinalVal(Event(Terms, Sort.Restrict(FuncWithDom(a.typ)))),
+            finalProb(fn, Terms)
           )
         )
         val typFamilySet: Set[EquationNode] = TypFamilyOpt(fn).toSet.flatMap {
@@ -287,10 +292,17 @@ class DerivedEquations(
                   a,
                   termsWithTyp(f.dom)
                 )
+              ),
+              EquationNode(
+                finalProb(f, TypFamilies),
+                finalProb(fn, Terms) /
+                  FinalVal(Event(Terms, Sort.Restrict(TypFamilyOpt)))
               )
             )
         }
-        funcSet union (typFamilySet) union(formalEquations(fn)) union(formalEquations(a))
+        funcSet union (typFamilySet) union (formalEquations(fn)) union (formalEquations(
+          a
+        ))
       case idt: IdentityTyp[u] =>
         funcFoldEqs(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
       case idt: Refl[u] =>
@@ -596,8 +608,9 @@ class DerivedEquations(
             finalProb(a, Terms)
           ),
           EquationNode(
-            FinalVal(Event(Terms, Sort.Restrict(FuncWithDom(a.typ)))),
-            finalProb(f, Funcs)
+            finalProb(f, Funcs),
+            finalProb(fn, Terms) /
+              FinalVal(Event(Terms, Sort.Restrict(FuncOpt)))
           )
         )
         val typFamilySet: Set[EquationNode] = TypFamilyOpt(fn).toSet.flatMap {
@@ -609,13 +622,23 @@ class DerivedEquations(
                   a,
                   termsWithTyp(f.dom)
                 )
+              ),
+              EquationNode(
+                finalProb(f, TypFamilies),
+                finalProb(fn, Terms) /
+                  FinalVal(Event(Terms, Sort.Restrict(TypFamilyOpt)))
               )
             )
         }
-        funcSet union (typFamilySet) union(formalEquations(fn)) union(formalEquations(a))
-      case idt: IdentityTyp[u] => 
-        typFuncFoldEquations(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
-      case idt: Refl[u] => 
+        funcSet union (typFamilySet) union (formalEquations(fn)) union (formalEquations(
+          a
+        ))
+      case idt: IdentityTyp[u] =>
+        typFuncFoldEquations(
+          IdentityTyp.idFunc,
+          Vector(idt.dom, idt.lhs, idt.rhs)
+        )
+      case idt: Refl[u] =>
         typFuncFoldEquations(IdentityTyp.reflTerm, Vector(idt.dom, idt.value))
       case pd: PiDefn[u, v] =>
         val coeff = Coeff(tg.piNode)
