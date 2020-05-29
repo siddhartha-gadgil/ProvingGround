@@ -290,7 +290,7 @@ class DerivedEquations(
               )
             )
         }
-        funcSet union (typFamilySet)
+        funcSet union (typFamilySet) union(formalEquations(fn)) union(formalEquations(a))
       case idt: IdentityTyp[u] =>
         funcFoldEqs(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
       case idt: Refl[u] =>
@@ -596,7 +596,7 @@ class DerivedEquations(
             finalProb(a, Terms)
           ),
           EquationNode(
-            FinalVal(Event(Funcs, Sort.Filter[ExstFunc](_.dom == a.typ))),
+            FinalVal(Event(Terms, Sort.Restrict(FuncWithDom(a.typ)))),
             finalProb(f, Funcs)
           )
         )
@@ -612,7 +612,7 @@ class DerivedEquations(
               )
             )
         }
-        funcSet union (typFamilySet)
+        funcSet union (typFamilySet) union(formalEquations(fn)) union(formalEquations(a))
       case idt: IdentityTyp[u] => 
         typFuncFoldEquations(IdentityTyp.idFunc, Vector(idt.dom, idt.lhs, idt.rhs))
       case idt: Refl[u] => 
