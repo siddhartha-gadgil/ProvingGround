@@ -59,6 +59,11 @@ case class TermState(
 
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
+  lazy val allTyps = terms.support.map(_.typ) union typs.support
+
+  lazy val extraTyps = terms.support.map(_.typ) -- typs.support
+
+
   lazy val thmsByPf: FD[Typ[Term]] =
     terms
       .map(_.typ)
