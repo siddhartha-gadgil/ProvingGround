@@ -377,6 +377,14 @@ object Expression {
     override def toString = s"($x) / ($y)"
   }
 
+  object Coeff{
+    def get[Y](node: GeneratorNode[Y]) : Coeff[_] = 
+      node match {
+        case tc : ThenCondition[_, _] => get(tc.gen)
+        case g => Coeff(g)
+      }
+  }
+
   case class Coeff[Y](node: GeneratorNode[Y])
       extends Expression {
     val rv = node.output
