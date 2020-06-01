@@ -30,6 +30,7 @@ object QueryInitState{
     QueryFromPosts
       .empty[QueryInitState]
       .addCons((lp: LocalProver) => Some(QueryInitState(lp.initState)))
+      .addCons((lp: LocalTangentProver) => Some(QueryInitState(lp.initState)))
       .addCons((s: InitState) => Some(QueryInitState(s.ts)))
 }
 
@@ -54,6 +55,20 @@ object HoTTBot {
       (adEqs) => lp => lp.bigExpressionEval(adEqs).runToFuture
     MicroBot(response)
   }
+
+  lazy val lpToEnhancedExpEv: SimpleBot[LocalProver, ExpressionEval] = {
+    val response: Unit => LocalProver => Future[ExpressionEval] = (_) =>
+      lp => lp.enhancedExpressionEval.runToFuture
+    MicroBot(response)
+  }
+
+  lazy val lptToEnhancedExpEv: SimpleBot[LocalTangentProver, ExpressionEval] = {
+    val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
+      lp => lp.enhancedExpressionEval.runToFuture
+    MicroBot(response)
+  }
+
+
 
   lazy val lptToExpEv: SimpleBot[LocalTangentProver, ExpressionEval] = {
     val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
@@ -83,6 +98,18 @@ object HoTTBot {
     MicroBot.simple(
       (fs) => Lemmas(fs.ts.lemmas)
     )
+
+  val finalStateToNewLemmas: MicroHoTTBoTT[FinalState, Lemmas, QueryInitState] = {
+    val response : QueryInitState => FinalState => Future[Lemmas] = 
+      (qinit) => (fs) => 
+        Future{
+          val proved = qinit.init.terms.map(_.typ).support
+          Lemmas(fs.ts.lemmas.filterNot{
+            case (tp, _, _) => proved.contains(tp)
+          })
+        }
+    MicroBot(response) 
+  }
 
   lazy val lptToTermResult: SimpleBot[LocalTangentProver, TermResult] = {
     val response: Unit => LocalTangentProver => Future[TermResult] = (_) =>
