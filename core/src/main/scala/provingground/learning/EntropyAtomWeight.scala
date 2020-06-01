@@ -122,7 +122,7 @@ object EntropyAtomWeight {
         lem =>
           lem -> EntropyAtomWeight[Term, Typ[Term]](
             ev.init.terms,
-            ev.result.goalThmsBySt(ev.params.goalWeight),
+            ev.goalNewThmsBySt(ev.params.goalWeight),
             ev.result.thmsByPf,
             lem,
             ev.params.termInit,

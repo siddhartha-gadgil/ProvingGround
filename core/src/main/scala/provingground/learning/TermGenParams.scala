@@ -349,6 +349,9 @@ trait EvolvedStateLike {
     init.goals.support.intersect(result.terms.support.map(_.typ))
 
   val foundGoal: Boolean = goalsAttained.nonEmpty
+
+  def goalNewThmsBySt(goalW: Double) =
+    (result.typs ++ result.goals).filter(typ => result.terms.map(_.typ)(typ) > 0 && init.terms.map(_.typ)(typ) == 0).flatten.safeNormalized
 }
 
 case class EvolvedState(

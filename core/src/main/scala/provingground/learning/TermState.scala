@@ -70,6 +70,7 @@ case class TermState(
       .flatten
       .filter((t) => typs(t) + goals(t) > 0)
       .safeNormalized
+
   lazy val thmsBySt: FD[Typ[Term]] =
     typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
 
