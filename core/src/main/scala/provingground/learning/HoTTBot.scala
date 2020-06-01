@@ -26,12 +26,22 @@ object QueryProver {
 case class QueryInitState(init: TermState)
 
 object QueryInitState{
-  implicit val qc  =
+  implicit val qc : QueryFromPosts[QueryInitState,HoTTMessages.InitState :: LocalProver :: HNil]  =
     QueryFromPosts
       .empty[QueryInitState]
       .addCons((lp: LocalProver) => Some(QueryInitState(lp.initState)))
-      .addCons((lp: LocalTangentProver) => Some(QueryInitState(lp.initState)))
       .addCons((s: InitState) => Some(QueryInitState(s.ts)))
+}
+
+case class QueryBaseState(init: TermState)
+
+object QueryBaseState{
+  implicit val qc : QueryFromPosts[QueryBaseState,HoTTMessages.InitState :: LocalTangentProver :: LocalProver :: HNil] =
+    QueryFromPosts
+      .empty[QueryBaseState]
+      .addCons((lp: LocalProver) => Some(QueryBaseState(lp.initState)))
+      .addCons((lp: LocalTangentProver) => Some(QueryBaseState(lp.initState)))
+      .addCons((s: InitState) => Some(QueryBaseState(s.ts)))
 }
 
 object HoTTBot {
@@ -99,8 +109,8 @@ object HoTTBot {
       (fs) => Lemmas(fs.ts.lemmas)
     )
 
-  val finalStateToNewLemmas: MicroHoTTBoTT[FinalState, Lemmas, QueryInitState] = {
-    val response : QueryInitState => FinalState => Future[Lemmas] = 
+  val finalStateToNewLemmas: MicroHoTTBoTT[FinalState, Lemmas, QueryBaseState] = {
+    val response : QueryBaseState => FinalState => Future[Lemmas] = 
       (qinit) => (fs) => 
         Future{
           val proved = qinit.init.terms.map(_.typ).support
