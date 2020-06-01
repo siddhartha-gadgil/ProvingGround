@@ -23,6 +23,7 @@ case class EntropyAtomWeight(
     initWeight: Double,
     hW: Double,
     klW: Double,
+    crossKL: Boolean = true
 ) {
   implicit val jetDim: JetDim = JetDim(1)
 
@@ -41,7 +42,9 @@ case class EntropyAtomWeight(
   def kl1(x: Double): Jet[Double] = {
     val q = q1(x)
     val p = pInit(x)
-    kl0 - ((1 - p0) * log(1 - p)) - (p0 * log(1 - q + (q / q0)))
+    if (crossKL)
+      kl0 - ((1 - p0) * log(1 - p)) - (p0 * log(1 - q + (q / q0)))
+    else kl0 - (p0 * log(p0/q0)) + p0 * log(p0/(q + q0))
   }
 
   def tot(x: Double): Jet[Double] = (kl1(x) *klW ) + (h1(x) * hW)
