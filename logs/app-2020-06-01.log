@@ -91,3 +91,216 @@ UseLemma(((eqM) (e_r)) (e_r),None)
 2020.06.01 09:46:23 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (29,-121368965)
 2020.06.01 09:46:23 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (31,487419008)
 2020.06.01 09:46:23 [INFO] provingground.learning.HoTTBot.$anonfun:138:20 - Success: Vector((((eqM) (e_l)) (e_r),1.0,[(((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_r)) (lemma:((eqM) (e_l)) (((mul) (e_l)) (e_r)))) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r)) : 0.001024170092306373]))
+2020.06.01 11:01:37 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-1349507052), content:
+LocalProver(TermState([eqM : 0.2857142857142857, mul : 0.2857142857142857, e_l : 0.047619047619047616, e_r : 0.047619047619047616, mul : 0.047619047619047616, eqM : 0.047619047619047616, axiom_{eqM(a)(a)} : 0.047619047619047616, axiom_{(eqM(a)(b) \to eqM(b)(a))} : 0.047619047619047616, axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))} : 0.047619047619047616, axiom_{eqM(mul(e_l)(a))(a)} : 0.047619047619047616, axiom_{eqM(mul(a)(e_r))(a)} : 0.047619047619047616],[(M) → ((M) → (𝒰 _0)) : 0.2857142857142857, (M) → ((M) → (M)) : 0.2857142857142857, M : 0.047619047619047616, M : 0.047619047619047616, (M) → ((M) → (M)) : 0.047619047619047616, (M) → ((M) → (𝒰 _0)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (`a)) (`a)) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)) : 0.047619047619047616],Vector(),[],[((eqM) (e_l)) (e_r) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.06.01 11:02:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (2,667765695)
+2020.06.01 11:06:54 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (3,-1351967608), content:
+Lemmas(Vector((((eqM) (e_r)) (e_r),Some((axiom_{eqM(a)(a)}) (e_r)),-1.8292352066361208), (((eqM) (e_l)) (e_l),Some((axiom_{eqM(a)(a)}) (e_l)),-1.8292352066361208), ((`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)),Some(axiom_{eqM(mul(e_l)(a))(a)}),-0.2978332335946312), (M,Some(((mul) (e_r)) (e_l)),-0.3428959959795115), (((eqM) (e_l)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))),-4.863568024895852), ((M) → ((M) → (M)),Some(mul),-0.8115408293572932), ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))),Some(axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}),-0.2978332335946312), ((`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))),Some(axiom_{(eqM(a)(b) \to eqM(b)(a))}),-0.2978332335946312), ((`a : M ) ~> (((eqM) (`a)) (`a)),Some(axiom_{eqM(a)(a)}),-0.2978332335946312), ((`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)),Some(axiom_{eqM(mul(a)(e_r))(a)}),-0.2978332335946312), ((M) → ((M) → (𝒰 _0)),Some(eqM),-0.8115408293572932), (((eqM) (e_l)) (((mul) (e_l)) (e_l)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_l))) (e_l)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_l))),-4.863568024895852), (((eqM) (e_r)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_r)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r))),-4.863568024895852), (((eqM) (e_r)) (((mul) (e_r)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_r)) (e_r))) (e_r)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_r))),-4.863568024895852)))
+2020.06.01 11:09:39 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-1349507052), content:
+LocalProver(TermState([eqM : 0.2857142857142857, mul : 0.2857142857142857, e_l : 0.047619047619047616, e_r : 0.047619047619047616, mul : 0.047619047619047616, eqM : 0.047619047619047616, axiom_{eqM(a)(a)} : 0.047619047619047616, axiom_{(eqM(a)(b) \to eqM(b)(a))} : 0.047619047619047616, axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))} : 0.047619047619047616, axiom_{eqM(mul(e_l)(a))(a)} : 0.047619047619047616, axiom_{eqM(mul(a)(e_r))(a)} : 0.047619047619047616],[(M) → ((M) → (𝒰 _0)) : 0.2857142857142857, (M) → ((M) → (M)) : 0.2857142857142857, M : 0.047619047619047616, M : 0.047619047619047616, (M) → ((M) → (M)) : 0.047619047619047616, (M) → ((M) → (𝒰 _0)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (`a)) (`a)) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)) : 0.047619047619047616],Vector(),[],[((eqM) (e_l)) (e_r) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.06.01 11:09:49 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (2,667765695)
+2020.06.01 11:09:53 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (3,-748469061), content:
+Lemmas(Vector((((eqM) (e_r)) (e_r),Some((axiom_{eqM(a)(a)}) (e_r)),1.8292352066361208), (((eqM) (e_l)) (e_l),Some((axiom_{eqM(a)(a)}) (e_l)),1.8292352066361208), ((`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)),Some(axiom_{eqM(mul(e_l)(a))(a)}),0.2978332335946312), (M,Some(((mul) (e_r)) (e_l)),0.3428959959795115), (((eqM) (e_l)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))),4.863568024895852), ((M) → ((M) → (M)),Some(mul),0.8115408293572932), ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))),Some(axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}),0.2978332335946312), ((`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))),Some(axiom_{(eqM(a)(b) \to eqM(b)(a))}),0.2978332335946312), ((`a : M ) ~> (((eqM) (`a)) (`a)),Some(axiom_{eqM(a)(a)}),0.2978332335946312), ((`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)),Some(axiom_{eqM(mul(a)(e_r))(a)}),0.2978332335946312), ((M) → ((M) → (𝒰 _0)),Some(eqM),0.8115408293572932), (((eqM) (e_l)) (((mul) (e_l)) (e_l)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_l))) (e_l)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_l))),4.863568024895852), (((eqM) (e_r)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_r)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r))),4.863568024895852), (((eqM) (e_r)) (((mul) (e_r)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_r)) (e_r))) (e_r)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_r))),4.863568024895852)))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (4,1327286440), content:
+Weight(0.0688513637680812)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (8,133316770), content:
+Weight(0.18306191028802177)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (7,1839604625), content:
+Weight(0.0129064085734603)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (6,-2041754055), content:
+Weight(0.011210272049245027)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (5,1327286440), content:
+Weight(0.0688513637680812)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (20,952585248), content:
+UseLemma(M,Some(((mul) (e_r)) (e_l)))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (20,-1286648915), content:
+UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (16,-657900134), content:
+Weight(0.030545931246032665)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (16,133316770), content:
+Weight(0.18306191028802177)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (15,-2041754055), content:
+Weight(0.011210272049245027)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (13,-2041754055), content:
+Weight(0.011210272049245027)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (24,-160232825), content:
+UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_l)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_l))) (e_l)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_l))))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (12,-133074270), content:
+UseLemma(((eqM) (e_r)) (e_r),Some((axiom_{eqM(a)(a)}) (e_r)))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (12,-2041754055), content:
+Weight(0.011210272049245027)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (10,-2041754055), content:
+Weight(0.011210272049245027)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (9,-657900134), content:
+Weight(0.030545931246032665)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (28,-2055311551), content:
+UseLemma((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))),Some(axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (27,-2052520979), content:
+UseLemma((`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))),Some(axiom_{(eqM(a)(b) \to eqM(b)(a))}))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (26,-1901695954), content:
+UseLemma((`a : M ) ~> (((eqM) (`a)) (`a)),Some(axiom_{eqM(a)(a)}))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (26,1832486483), content:
+UseLemma((`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)),Some(axiom_{eqM(mul(a)(e_r))(a)}))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (24,-170132721), content:
+UseLemma((M) → ((M) → (𝒰 _0)),Some(eqM))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (22,-634385589), content:
+UseLemma(((eqM) (e_l)) (e_l),Some((axiom_{eqM(a)(a)}) (e_l)))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (22,-1779593661), content:
+UseLemma((`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)),Some(axiom_{eqM(mul(e_l)(a))(a)}))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (19,133316770), content:
+Weight(0.18306191028802177)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (19,133316770), content:
+Weight(0.18306191028802177)
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (29,-1470934351), content:
+UseLemma((M) → ((M) → (M)),Some(mul))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (31,-1583287630), content:
+UseLemma(((eqM) (e_r)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_r)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r))))
+2020.06.01 11:10:35 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (30,-2049422006), content:
+UseLemma(((eqM) (e_r)) (((mul) (e_r)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_r)) (e_r))) (e_r)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_r))))
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (32,1557482242)
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (33,-1680452310)
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (34,-1403044096)
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (35,1503565950)
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (36,-2102352811)
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (37,-1868334166)
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (38,-2049397340)
+2020.06.01 11:10:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (39,818650596)
+2020.06.01 11:10:36 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (40,498548498)
+2020.06.01 11:10:36 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (41,917532481)
+2020.06.01 11:10:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (42,808884239)
+2020.06.01 11:10:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (43,633915803)
+2020.06.01 11:10:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (44,-976928807)
+2020.06.01 11:10:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (45,1229703444)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (46,-1443981304)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (48,477758527)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (48,1967517295)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (49,1373449068)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (50,1566861503)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (51,716335463)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (52,1877106105)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (53,712638463)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (54,-1398076839)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (55,952670617)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (56,-302673113)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (57,2049152949)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (58,1746991531)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (59,2012856990)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (60,-669779743)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (67,-2047979757)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (68,523822611)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (66,-1655716563)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (64,1210115581)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (64,-729345871)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (62,-158523216)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (65,-2089203511)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (60,1049426268)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (60,-386884029)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (62,-1744532124)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (69,-1319677335)
+2020.06.01 11:10:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (69,-107280071)
+2020.06.01 11:10:39 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (70,330916353)
+2020.06.01 11:10:39 [INFO] provingground.learning.HoTTBot.$anonfun:143:20 - Success: Vector((((eqM) (e_l)) (e_r),1.0,[(((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_r)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)))) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r)) : 0.001024170092306373]))
+2020.06.01 11:13:09 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-1349507052), content:
+LocalProver(TermState([eqM : 0.2857142857142857, mul : 0.2857142857142857, e_l : 0.047619047619047616, e_r : 0.047619047619047616, mul : 0.047619047619047616, eqM : 0.047619047619047616, axiom_{eqM(a)(a)} : 0.047619047619047616, axiom_{(eqM(a)(b) \to eqM(b)(a))} : 0.047619047619047616, axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))} : 0.047619047619047616, axiom_{eqM(mul(e_l)(a))(a)} : 0.047619047619047616, axiom_{eqM(mul(a)(e_r))(a)} : 0.047619047619047616],[(M) → ((M) → (𝒰 _0)) : 0.2857142857142857, (M) → ((M) → (M)) : 0.2857142857142857, M : 0.047619047619047616, M : 0.047619047619047616, (M) → ((M) → (M)) : 0.047619047619047616, (M) → ((M) → (𝒰 _0)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (`a)) (`a)) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))) : 0.047619047619047616, (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)) : 0.047619047619047616, (`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)) : 0.047619047619047616],Vector(),[],[((eqM) (e_l)) (e_r) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.06.01 11:13:12 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (2,667765695)
+2020.06.01 11:13:12 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (3,-1808193057), content:
+Lemmas(Vector((((eqM) (e_r)) (((mul) (e_r)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_r)) (e_r))) (e_r)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_r))),4.863568024895852), (((eqM) (e_r)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_r)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r))),4.863568024895852), (((eqM) (e_l)) (((mul) (e_l)) (e_l)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_l))) (e_l)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_l))),4.863568024895852), (((eqM) (e_l)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))),4.863568024895852), (((eqM) (e_l)) (e_l),Some((axiom_{eqM(a)(a)}) (e_l)),1.8292352066361208), (((eqM) (e_r)) (e_r),Some((axiom_{eqM(a)(a)}) (e_r)),1.8292352066361208), ((M) → ((M) → (𝒰 _0)),Some(eqM),0.8115408293572932), ((M) → ((M) → (M)),Some(mul),0.8115408293572932), (M,Some(((mul) (e_r)) (e_l)),0.3428959959795115), ((`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)),Some(axiom_{eqM(mul(a)(e_r))(a)}),0.2978332335946312), ((`a : M ) ~> (((eqM) (`a)) (`a)),Some(axiom_{eqM(a)(a)}),0.2978332335946312), ((`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))),Some(axiom_{(eqM(a)(b) \to eqM(b)(a))}),0.2978332335946312), ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))),Some(axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}),0.2978332335946312), ((`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)),Some(axiom_{eqM(mul(e_l)(a))(a)}),0.2978332335946312)))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (4,-506854354), content:
+Weight(0.18306191028802174)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (11,1163261544), content:
+Weight(0.03054593124603266)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (10,1163261544), content:
+Weight(0.03054593124603266)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (18,-1140141108), content:
+Weight(0.011210272049245023)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (18,-2049422006), content:
+UseLemma(((eqM) (e_r)) (((mul) (e_r)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_r)) (e_r))) (e_r)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_r))))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (9,-1420763722), content:
+Weight(0.06885136376808118)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (8,-1420763722), content:
+Weight(0.06885136376808118)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (7,-506854354), content:
+Weight(0.18306191028802174)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (6,-506854354), content:
+Weight(0.18306191028802174)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (5,-506854354), content:
+Weight(0.18306191028802174)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (20,-170132721), content:
+UseLemma((M) → ((M) → (𝒰 _0)),Some(eqM))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (24,-1286648915), content:
+UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l))))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (22,-133074270), content:
+UseLemma(((eqM) (e_r)) (e_r),Some((axiom_{eqM(a)(a)}) (e_r)))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (21,-2055311551), content:
+UseLemma((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))),Some(axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (19,-1470934351), content:
+UseLemma((M) → ((M) → (M)),Some(mul))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (18,-1140141108), content:
+Weight(0.011210272049245023)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (15,-1140141108), content:
+Weight(0.011210272049245023)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (14,-1140141108), content:
+Weight(0.011210272049245023)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (12,-1127662021), content:
+Weight(0.012906408573460298)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Weight], id: (13,-1140141108), content:
+Weight(0.011210272049245023)
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (30,952585248), content:
+UseLemma(M,Some(((mul) (e_r)) (e_l)))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (29,-1901695954), content:
+UseLemma((`a : M ) ~> (((eqM) (`a)) (`a)),Some(axiom_{eqM(a)(a)}))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (28,-2052520979), content:
+UseLemma((`a : M ) ~> ((`b : M ) ~> ((((eqM) (`a)) (`b)) → (((eqM) (`b)) (`a)))),Some(axiom_{(eqM(a)(b) \to eqM(b)(a))}))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (27,-1779593661), content:
+UseLemma((`a : M ) ~> (((eqM) (((mul) (e_l)) (`a))) (`a)),Some(axiom_{eqM(mul(e_l)(a))(a)}))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (24,-634385589), content:
+UseLemma(((eqM) (e_l)) (e_l),Some((axiom_{eqM(a)(a)}) (e_l)))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (26,-1583287630), content:
+UseLemma(((eqM) (e_r)) (((mul) (e_l)) (e_r)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_r)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r))))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (26,-160232825), content:
+UseLemma(((eqM) (e_l)) (((mul) (e_l)) (e_l)),Some((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_l))) (e_l)) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_l))))
+2020.06.01 11:13:33 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UseLemma], id: (31,1832486483), content:
+UseLemma((`a : M ) ~> (((eqM) (((mul) (`a)) (e_r))) (`a)),Some(axiom_{eqM(mul(a)(e_r))(a)}))
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (33,582409218)
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (32,-1067507299)
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (34,1239008627)
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (35,1504748957)
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (36,-1894614335)
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (37,196610312)
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (38,-2049397340)
+2020.06.01 11:13:33 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (39,-1868334166)
+2020.06.01 11:13:34 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (40,1011113928)
+2020.06.01 11:13:34 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (41,1556388466)
+2020.06.01 11:13:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (42,28730805)
+2020.06.01 11:13:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (43,-562361997)
+2020.06.01 11:13:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (44,195170091)
+2020.06.01 11:13:35 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.LocalTangentProver], id: (45,-1009347893)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (47,-1443981304)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (48,477758527)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (49,1967517295)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (46,716335463)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (50,1877106105)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (51,1373449068)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (52,712638463)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (53,1566861503)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (54,-1538889905)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (55,-192252963)
+2020.06.01 11:13:37 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (56,330115061)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (57,-194082296)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (58,-906358245)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.TermData.TermResult], id: (59,-455204436)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (61,1119989600)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (66,-908372917)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (65,-2047979757)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (66,-158523216)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (67,-1655716563)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (63,-1642221559)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (64,-107280071)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (63,1210115581)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (64,-669779743)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (65,-1863261042)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (64,-666452859)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (69,-1744532124)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (69,-729345871)
+2020.06.01 11:13:38 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (65,419025409)
+2020.06.01 11:13:38 [INFO] provingground.learning.HoTTBot.$anonfun:143:20 - Success: Vector((((eqM) (e_l)) (e_r),1.0,[(((((axiom_{(eqM(a)(b) \to (eqM(b)(c) \to eqM(a)(c)))}) (e_l)) (((mul) (e_l)) (e_r))) (e_r)) ((((axiom_{(eqM(a)(b) \to eqM(b)(a))}) (((mul) (e_l)) (e_r))) (e_l)) ((axiom_{eqM(mul(a)(e_r))(a)}) (e_l)))) ((axiom_{eqM(mul(e_l)(a))(a)}) (e_r)) : 0.001024170092306373]))

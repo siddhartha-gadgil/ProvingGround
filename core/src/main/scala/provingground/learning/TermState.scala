@@ -145,6 +145,10 @@ case class TermState(
   lazy val pfDist: FD[Term] =
     terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
 
+  lazy val lemmas : Vector[(Typ[Term], Option[Term], Double)]  = thmsByPf.pmf.map{
+    case Weighted(x, q) => (x , pfMap.get(x).flatMap(_.headOption),  - (thmsBySt(x) / (q * math.log(q))))
+  }.sortBy(_._3).reverse
+
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
     val x =
       nextVar(typ, context.variables)

@@ -79,6 +79,11 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  val finalStateToLemma: SimpleBot[FinalState, Lemmas] = 
+    MicroBot.simple(
+      (fs) => Lemmas(fs.ts.lemmas)
+    )
+
   lazy val lptToTermResult: SimpleBot[LocalTangentProver, TermResult] = {
     val response: Unit => LocalTangentProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
