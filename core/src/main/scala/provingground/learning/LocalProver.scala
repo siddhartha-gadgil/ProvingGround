@@ -418,6 +418,15 @@ trait LocalProverStep {
           decay
         )
       }
+
+  lazy val enhancedEquationNodes : Task[Set[EquationNode]] = 
+      for {
+      eqs <- equationNodes
+      ns <-nextState
+    } yield { 
+        def additional = ns.allTyps.flatMap(DE.formalTypEquations(_))
+          eqs union additional 
+      }
       
   lazy val expressionEval: Task[ExpressionEval] =
     if (stateFromEquation)

@@ -16,7 +16,10 @@ import Utils.logger
 case class QueryProver(lp: LocalProver)
 
 object QueryProver {
-  implicit val qc : QueryFromPosts[QueryProver,HoTTMessages.Weight :: LocalProver :: HNil] =
+  implicit val qc: QueryFromPosts[
+    QueryProver,
+    HoTTMessages.Weight :: LocalProver :: HNil
+  ] =
     QueryFromPosts
       .empty[QueryProver]
       .addCons((lp: LocalProver) => Some(QueryProver(lp)))
@@ -25,8 +28,11 @@ object QueryProver {
 
 case class QueryInitState(init: TermState)
 
-object QueryInitState{
-  implicit val qc : QueryFromPosts[QueryInitState,HoTTMessages.InitState :: LocalProver :: HNil]  =
+object QueryInitState {
+  implicit val qc: QueryFromPosts[
+    QueryInitState,
+    HoTTMessages.InitState :: LocalProver :: HNil
+  ] =
     QueryFromPosts
       .empty[QueryInitState]
       .addCons((lp: LocalProver) => Some(QueryInitState(lp.initState)))
@@ -35,8 +41,11 @@ object QueryInitState{
 
 case class QueryBaseState(init: TermState)
 
-object QueryBaseState{
-  implicit val qc : QueryFromPosts[QueryBaseState,HoTTMessages.InitState :: LocalTangentProver :: LocalProver :: HNil] =
+object QueryBaseState {
+  implicit val qc: QueryFromPosts[
+    QueryBaseState,
+    HoTTMessages.InitState :: LocalTangentProver :: LocalProver :: HNil
+  ] =
     QueryFromPosts
       .empty[QueryBaseState]
       .addCons((lp: LocalProver) => Some(QueryBaseState(lp.initState)))
@@ -60,8 +69,9 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val lpToBigExpEv: MicroHoTTBoTT[LocalProver, ExpressionEval, Set[Equation]] = {
-    val response: Set[Equation] => LocalProver => Future[ExpressionEval] = 
+  lazy val lpToBigExpEv
+      : MicroHoTTBoTT[LocalProver, ExpressionEval, Set[Equation]] = {
+    val response: Set[Equation] => LocalProver => Future[ExpressionEval] =
       (adEqs) => lp => lp.bigExpressionEval(adEqs).runToFuture
     MicroBot(response)
   }
@@ -77,8 +87,6 @@ object HoTTBot {
       lp => lp.enhancedExpressionEval.runToFuture
     MicroBot(response)
   }
-
-
 
   lazy val lptToExpEv: SimpleBot[LocalTangentProver, ExpressionEval] = {
     val response: Unit => LocalTangentProver => Future[ExpressionEval] = (_) =>
@@ -104,21 +112,23 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  val finalStateToLemma: SimpleBot[FinalState, Lemmas] = 
+  val finalStateToLemma: SimpleBot[FinalState, Lemmas] =
     MicroBot.simple(
       (fs) => Lemmas(fs.ts.lemmas)
     )
 
-  val finalStateToNewLemmas: MicroHoTTBoTT[FinalState, Lemmas, QueryBaseState] = {
-    val response : QueryBaseState => FinalState => Future[Lemmas] = 
-      (qinit) => (fs) => 
-        Future{
-          val proved = qinit.init.terms.map(_.typ).support
-          Lemmas(fs.ts.lemmas.filterNot{
-            case (tp, _, _) => proved.contains(tp)
-          })
-        }
-    MicroBot(response) 
+  val finalStateToNewLemmas
+      : MicroHoTTBoTT[FinalState, Lemmas, QueryBaseState] = {
+    val response: QueryBaseState => FinalState => Future[Lemmas] =
+      (qinit) =>
+        (fs) =>
+          Future {
+            val proved = qinit.init.terms.map(_.typ).support
+            Lemmas(fs.ts.lemmas.filterNot {
+              case (tp, _, _) => proved.contains(tp)
+            })
+          }
+    MicroBot(response)
   }
 
   lazy val lptToTermResult: SimpleBot[LocalTangentProver, TermResult] = {
@@ -167,12 +177,11 @@ object HoTTBot {
 
   lazy val updateTerms: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
-        val allTerms = fs.ts.terms.support union (fs.ts.typs.support.map(t => t : Term))
-        web.addTerms(allTerms)
-        web.updateDerived()
-      }
-    
-  
+      val allTerms = fs.ts.terms.support union (fs.ts.typs.support
+        .map(t => t: Term))
+      web.addTerms(allTerms)
+      web.updateDerived()
+    }
 
   lazy val reportSuccesses: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
@@ -190,8 +199,7 @@ object HoTTBot {
 
   lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
     MicroBot.simple(
-      (ev: ExpressionEval) =>
-       FinalState(ev.finalTermState())
+      (ev: ExpressionEval) => FinalState(ev.finalTermState())
     )
 
   lazy val instanceToGoal: MicroBot[Instance, Option[
@@ -285,7 +293,34 @@ object HoTTBot {
         }
     )
 
-  
+  lazy val eqnsToExpEv: MicroHoTTBoTT[
+    GeneratedEquationNodes,
+    ExpressionEval,
+    Set[EquationNode] :: QueryProver :: HNil
+  ] = {
+    val response
+        : Set[EquationNode] :: QueryProver :: HNil => GeneratedEquationNodes => Future[
+          ExpressionEval
+        ] = {
+      case eqns :: qlp :: HNil =>
+        eqs =>
+          val neqs = eqs.eqn.map(eq => TermData.isleNormalize(eq))
+          import qlp.lp
+          Future(
+            ExpressionEval.fromInitEqs(
+              lp.initState,
+              Equation.group(eqns union (neqs)),
+              lp.tg,
+              lp.maxRatio,
+              lp.scale,
+              lp.smoothing,
+              lp.exponent,
+              lp.decay
+            )
+          )
+    }
+    MicroBot(response)
+  }
 
   lazy val termResultToChomp: MicroBot[
     TermData.TermResult,
@@ -333,11 +368,12 @@ object HoTTBot {
     )
   }
 
-  lazy val deducedEquations: MiniBot[Proved, 
-    Either[Contradicted, Proved]
-  , HoTTPostWeb, GatherMapPost[PropagateProof] :: GatherMapPost[
-    Decided
-  ] :: Set[HoTT.Term] :: HNil, ID] = {
+  lazy val deducedEquations
+      : MiniBot[Proved, Either[Contradicted, Proved], HoTTPostWeb, GatherMapPost[
+        PropagateProof
+      ] :: GatherMapPost[
+        Decided
+      ] :: Set[HoTT.Term] :: HNil, ID] = {
     val response
         : GatherMapPost[PropagateProof] :: GatherMapPost[Decided] :: Set[
           Term
@@ -479,6 +515,43 @@ object HoTTBot {
             }
           }
     MiniBot[Lemmas, WithWeight[UseLemma], HoTTPostWeb, Unit, ID](response)
+  }
+
+  def lemmasTangentEquations(
+      scale: Double = 1.0,
+      power: Double = 1.0
+  ): MicroHoTTBoTT[Lemmas, GeneratedEquationNodes, QueryProver] = {
+    val response: QueryProver => Lemmas => Future[GeneratedEquationNodes] =
+      qp =>
+        lemmas => {
+          val l = lemmas.lemmas.map {
+            case (tp, pfOpt, p) => (tp, pfOpt, math.pow(p, power))
+          }
+          val sc = scale / l.map(_._3).sum
+          val useLemmas = l.map {
+            case (tp, pfOpt, w) => (UseLemma(tp, pfOpt), w * sc)
+          }
+          val tangProvers = useLemmas.map {
+            case (lem, w) => qp.lp.sharpen(w).tangentProver(lem.proof)
+          }
+          val eqGps =
+            tangProvers.map(
+              tlp =>
+                tlp.flatMap(
+                  lp =>
+                    lp.enhancedEquationNodes.onErrorRecover {
+                      case _: TimeoutException =>
+                        Set.empty[EquationNode]
+                    }
+                )
+            )
+          val allEqs = Task
+            .gather(eqGps)
+            .map(_.fold(Set.empty[EquationNode])(_ union _))
+            .map(GeneratedEquationNodes(_))
+          allEqs.runToFuture
+        }
+    MicroBot(response)
   }
 
   def lemmaDistributions(
