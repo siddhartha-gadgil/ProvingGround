@@ -111,7 +111,7 @@ case class TermGenParams(
     sigmaW: Double = 0.05,
     recDefW: Double = 0,
     inducDefW: Double = 0,
-    typAsCodW: Double = 0,
+    typAsCodW: Double = 0.05,
     targetInducW: Double = 0,
     varWeight: Double = 0.3,
     goalWeight: Double = 0.7,
