@@ -49,7 +49,12 @@ object CzSlOly {
   val ass1 = "ass1" :: a ~>: (b ~>: eqM(mul(mul(a)(b))(b))(a))
   val ass2 = "ass2" :: a ~>: (b ~>: eqM(mul(a)(mul(a)(b)))(b))
 
-  val termState : TermState = TermState(FiniteDistribution.unif(mul, eqM, m, n, mn, ass1, ass2, sym, leftMul, rightMul, trans), FiniteDistribution.unif(M)) 
+  val termState: TermState = TermState(
+    FiniteDistribution
+      .unif(mul, eqM, m, n, mn, ass1, ass2, sym, leftMul, rightMul, trans),
+    FiniteDistribution.unif(M),
+    goals = FiniteDistribution.unif(eqM(mul(m)(n))(mul(n)(m)))
+  )
 
-  val localProver : LocalProver = LocalProver(termState, TermGenParams()).noIsles.sharpen(10) 
+  val localProver: LocalProver = LocalProver(termState, TermGenParams()).noIsles
 }
