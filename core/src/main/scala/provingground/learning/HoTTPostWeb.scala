@@ -47,6 +47,11 @@ class HoTTPostWeb {
     extraTerms ++= terms
   }
 
+  def getProofs(tps: Vector[Typ[Term]]) = 
+    tps.map{
+      typ => typ -> terms.filter(_.typ == typ)
+    }.filter(_._2.nonEmpty)
+
   val polyBuffer =
     PostBuffer.build[FunctionForGoal, ID]() ::
       PostBuffer.build[FromAll, ID]() ::
