@@ -742,6 +742,18 @@ case class LocalTangentProver(
       limit
     )
 
+  def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
+    mfd.varDist(initState, genMaxDepth, halted())(rv, cutoff).map(_._1)
+
+  def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
+    mfd
+      .nodeDist(initState, genMaxDepth, halted())(
+        node,
+        cutoff,
+        Expression.Coeff(node)
+      )
+      .map(_._1)
+
   lazy val tripleT: Task[
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
   ] =

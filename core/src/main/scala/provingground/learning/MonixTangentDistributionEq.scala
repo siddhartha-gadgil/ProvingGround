@@ -69,7 +69,7 @@ case class MonixTangentFiniteDistributionEq[State](
     * @tparam Y values of the corresponding random variable
     * @return distribution corresponding to the `output` random variable
     */
-  def nodeDist[Y](initState: State, maxDepth: Option[Int], halted: => Boolean, memo: EqDistMemo[State])(
+  def nodeDist[Y](initState: State, maxDepth: Option[Int], halted: => Boolean, memo: EqDistMemo[State] = EqDistMemo.empty[State])(
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
