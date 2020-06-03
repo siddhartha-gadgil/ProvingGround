@@ -56,5 +56,5 @@ object CzSlOly {
     goals = FiniteDistribution.unif(eqM(mul(m)(n))(mul(n)(m)))
   )
 
-  val localProver: LocalProver = LocalProver(termState, TermGenParams()).noIsles
+  val localProver: LocalProver = LocalProver(termState, TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1)).noIsles
 }
