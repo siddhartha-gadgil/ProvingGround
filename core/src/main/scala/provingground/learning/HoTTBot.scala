@@ -179,6 +179,9 @@ object HoTTBot {
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       val allTerms = fs.ts.terms.support union (fs.ts.typs.support
         .map(t => t: Term))
+      allTerms
+        .filter(isVar(_))
+        .foreach(t => logger.error(s"variable $t considered term"))
       web.addTerms(allTerms)
       web.updateDerived()
     }
@@ -289,6 +292,22 @@ object HoTTBot {
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => {
           val neqs = eqs.eqn.map(eq => TermData.isleNormalize(eq))
+          eqs.eqn.collect {
+            case eq @ EquationNode(
+                  Expression.FinalVal(
+                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                  ), _
+                ) if isVar(x) =>
+              eq
+          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
+          (neqs -- eqs.eqn).collect {
+            case eq @ EquationNode(
+                  Expression.FinalVal(
+                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                  ), _
+                ) if isVar(x) =>
+              eq
+          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
           web.addEqns(neqs)
         }
     )
@@ -540,7 +559,8 @@ object HoTTBot {
                 tlp.flatMap(
                   lp =>
                     lp.enhancedEquationNodes.onErrorRecover {
-                      case _: TimeoutException =>
+                      case te : TimeoutException =>
+                        logger.error(te)
                         Set.empty[EquationNode]
                     }
                 )
