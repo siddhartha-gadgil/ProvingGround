@@ -419,12 +419,40 @@ trait LocalProverStep {
         )
       }
 
+  import Utils._, scribe._
+
   lazy val enhancedEquationNodes : Task[Set[EquationNode]] = 
       for {
       eqs <- equationNodes
       ns <-nextState
     } yield { 
-        def additional = ns.allTyps.flatMap(DE.formalTypEquations(_))
+        def additional = ns.allTyps.flatMap{typ => 
+          val eqs = DE.formalTypEquations(typ)
+          eqs.collect {
+            case eq @ EquationNode(
+                  Expression.FinalVal(
+                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                  ), _
+                ) if isVar(x) =>
+              eq
+          }.foreach(eqq => logger.error(s"formal equations for $typ ; bad equation: $eqq"))
+          eqs}
+        additional.collect {
+            case eq @ EquationNode(
+                  Expression.FinalVal(
+                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                  ), _
+                ) if isVar(x) =>
+              eq
+          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
+          eqs.collect {
+            case eq @ EquationNode(
+                  Expression.FinalVal(
+                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                  ), _
+                ) if isVar(x) =>
+              eq
+          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
           eqs union additional 
       }
       
