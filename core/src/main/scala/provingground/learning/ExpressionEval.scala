@@ -12,6 +12,13 @@ TermGeneratorNodes.{_}
 
 import annotation.tailrec
 import spire.util.Opt
+import provingground.learning.Expr.Const
+import provingground.learning.Expr.At
+import provingground.learning.Expr.Prod
+import provingground.learning.Expr.Plus
+import provingground.learning.Expr.Quot
+import provingground.learning.Expr.Logm
+import provingground.learning.Expr.Expon
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -96,10 +103,9 @@ object ExpressionEval {
         val base = sd.value(initialState)(rv)(el)
         if (base > 0) Some(base)
         else if (rv == Goals) Some(0.5) // just a quick-fix
-        else
-           if (isIsleVar(elem))
+        else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
-           else Some(0)       // else throw new Exception(s"no initial value for $elem")
+        else Some(0)                              // else throw new Exception(s"no initial value for $elem")
       case IsleScale(_, _) => Some((1.0 - tg.varWeight))
       case _               => None
     }
@@ -164,7 +170,8 @@ object ExpressionEval {
   ): Map[Expression, Double] = {
     init ++ equations
       .map(eq => eq.lhs -> stabRecExp(init, eq.rhs, init.get(eq.lhs), exponent))
-      .filter(_._2 != 0).toMap
+      .filter(_._2 != 0)
+      .toMap
   }
 
   /**
@@ -467,6 +474,121 @@ object ExpressionEval {
       case Vector() => ev
       case xs :+ y  => export(ev.relVariable(y), xs)
     }
+
+}
+
+sealed trait Expr extends Any
+
+object Expr {
+  case class Const(value: Double) extends AnyVal with Expr
+
+  case class At(index: Int) extends AnyVal with Expr
+
+  case class Prod(x: Expr, y: Expr) extends Expr
+
+  case class Plus(x: Expr, y: Expr) extends Expr
+
+  case class Quot(x: Expr, y: Expr) extends Expr
+
+  case class Logm(x: Expr) extends Expr
+
+  case class Expon(x: Expr) extends Expr
+}
+
+class ExprCalc(ev: ExpressionEval) {
+  import ev._, Expr._
+  def simplify(exp: Expression): Expr =
+    init
+      .get(exp)
+      .map(Const(_))
+      .orElse(
+        indexMap.get(exp).map(At(_))
+      )
+      .getOrElse(
+        exp match {
+          case Sum(a, b)     => Plus(simplify(a), simplify(b))
+          case Log(a)        => Logm(simplify(a))
+          case Exp(a)        => Expon(simplify(a))
+          case Product(x, y) => Prod(simplify(x), simplify(y))
+          case Literal(x)    => Const(x)
+          case Quotient(x, y) =>
+            if (simplify(y) != Const(0))
+              Quot(simplify(x), simplify(y))
+            else simplify(x)
+          case _ => Const(0)
+        }
+      )
+
+  def evaluate(exp: Expr, current: Vector[Double]): Double = exp match {
+    case Const(value) => value
+    case At(index)    => current(index)
+    case Prod(x, y)   => evaluate(x, current) * evaluate(y, current)
+    case Plus(x, y)   => evaluate(x, current) + evaluate(y, current)
+    case Quot(x, y) =>
+      val d = evaluate(y, current)
+      if (d == 0) evaluate(x, current) else evaluate(x, current) / d
+    case Logm(x)  => math.log(evaluate(x, current))
+    case Expon(x) => math.exp(evaluate(x, current))
+  }
+
+  lazy val rhsExprs: Vector[Expr] = equationVec.map(eq => simplify(eq.rhs))
+
+  def nextVec(v: Vector[Double], exponent: Double): Vector[Double] =
+    rhsExprs.zipWithIndex.map {
+      case (exp, j) =>
+        val y = evaluate(exp, v)
+        val z = v(j)
+        if (z > 0) math.pow(z, 1 - exponent) * math.pow(y, exponent) else y
+    }
+
+  def equalSupport(v: Vector[Double], w: Vector[Double]) = {
+    require(v.size == w.size)
+    v.zip(w).forall { case (x, y) => (x == 0 && y == 0) || (x != 0 && y != 0) }
+  }
+
+  def ratioBounded(
+      v: Vector[Double],
+      w: Vector[Double],
+      bound: Double = maxRatio
+  ) = {
+    equalSupport(v, w) &&
+    v.zip(w).forall {
+      case (x, y) =>
+        require(x >= 0)
+        require(y >= 0)
+        x == 0 || y == 0 || ((x / y) <= bound && y / x <= bound)
+    }
+  }
+
+  @tailrec
+  final def stableVec(
+      initVec: Vector[Double],
+      exponent: Double = 0.5,
+      decay: Double = 1,
+      maxTime: Option[Long]
+  ): Vector[Double] =
+    if (maxTime.map(limit => limit < 0).getOrElse(false)) initVec
+    else {
+      val startTime = System.currentTimeMillis()
+      val newVec    = nextVec(initVec, exponent)
+      if (ratioBounded(initVec, newVec))
+        newVec
+      else {
+        val usedTime = System.currentTimeMillis() - startTime
+        stableVec(
+          newVec,
+          exponent * decay,
+          decay,
+          maxTime.map(t => t - usedTime)
+        )
+      }
+    }
+
+  lazy val finalVec : Vector[Double] = stableVec(Vector.fill(equationVec.size)(0.0), exponent, decay, maxTime)
+
+  lazy val finalMap = finalVec.zipWithIndex.map{
+    case (x, j) => equationVec(j).lhs -> x
+  }.toMap ++ init
 }
 
 trait ExpressionEval { self =>
@@ -575,11 +697,21 @@ trait ExpressionEval { self =>
     .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
 
+  lazy val equationVec: Vector[Equation] = equations.toVector
+
+  lazy val indexMap = equationVec
+    .map(_.lhs)
+    .zipWithIndex
+    .toMap
+
+  lazy val exprCalc = new ExprCalc(this)
+
   /**
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    stableMap(init, equations, maxRatio, exponent, decay, maxTime)
+    exprCalc.finalMap
+    // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
@@ -1054,9 +1186,10 @@ trait ExpressionEval { self =>
       )
     }
 
-    lazy val typGradGeneratorsTask: Map[Typ[Term],Task[Vector[(Term, Double)]]] = 
-      finalTypSet.map{
-        typ => typ -> expressionGeneratorsTask(FinalVal(Elem(typ, Typs))).memoize
+    lazy val typGradGeneratorsTask
+        : Map[Typ[Term], Task[Vector[(Term, Double)]]] =
+      finalTypSet.map { typ =>
+        typ -> expressionGeneratorsTask(FinalVal(Elem(typ, Typs))).memoize
       }.toMap
 
     // Jets rewritten as maps of expression
