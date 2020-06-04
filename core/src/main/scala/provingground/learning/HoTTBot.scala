@@ -292,22 +292,28 @@ object HoTTBot {
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => {
           val neqs = eqs.eqn.map(eq => TermData.isleNormalize(eq))
-          eqs.eqn.collect {
-            case eq @ EquationNode(
-                  Expression.FinalVal(
-                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
-                  ), _
-                ) if isVar(x) =>
-              eq
-          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
-          (neqs -- eqs.eqn).collect {
-            case eq @ EquationNode(
-                  Expression.FinalVal(
-                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
-                  ), _
-                ) if isVar(x) =>
-              eq
-          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
+          eqs.eqn
+            .collect {
+              case eq @ EquationNode(
+                    Expression.FinalVal(
+                      GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                    ),
+                    _
+                  ) if isVar(x) =>
+                eq
+            }
+            .foreach(eqq => logger.error(s"Bad equation: $eqq"))
+          (neqs -- eqs.eqn)
+            .collect {
+              case eq @ EquationNode(
+                    Expression.FinalVal(
+                      GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                    ),
+                    _
+                  ) if isVar(x) =>
+                eq
+            }
+            .foreach(eqq => logger.error(s"Bad equation: $eqq"))
           web.addEqns(neqs)
         }
     )
@@ -559,7 +565,7 @@ object HoTTBot {
                 tlp.flatMap(
                   lp =>
                     lp.enhancedEquationNodes.onErrorRecover {
-                      case te : TimeoutException =>
+                      case te: TimeoutException =>
                         logger.error(te)
                         Set.empty[EquationNode]
                     }
@@ -571,6 +577,50 @@ object HoTTBot {
             .map(GeneratedEquationNodes(_))
           allEqs.runToFuture
         }
+    MicroBot(response)
+  }
+
+  def lemmasBigTangentEquations(
+      scale: Double = 1.0,
+      power: Double = 1.0
+  ): MicroHoTTBoTT[Lemmas, GeneratedEquationNodes, QueryProver :: Set[
+    EquationNode
+  ] :: FinalState :: HNil] = {
+    val response
+        : QueryProver :: Set[EquationNode] :: FinalState :: HNil => Lemmas => Future[
+          GeneratedEquationNodes
+        ] = {
+      case qp :: baseEqs :: fs :: HNil =>
+        lemmas => {
+          val l = lemmas.lemmas.map {
+            case (tp, pfOpt, p) => (tp, pfOpt, math.pow(p, power))
+          }
+          val sc = scale / l.map(_._3).sum
+          val useLemmas = l.map {
+            case (tp, pfOpt, w) => (UseLemma(tp, pfOpt), w * sc)
+          }
+          val tangProvers = useLemmas.map {
+            case (lem, w) => qp.lp.sharpen(w).tangentProver(lem.proof).map(_.copy(initEquations = baseEqs, initState = fs.ts))
+          }
+          val eqGps =
+            tangProvers.map(
+              tlp =>
+                tlp.flatMap(
+                  lp =>
+                    lp.enhancedEquationNodes.onErrorRecover {
+                      case te: TimeoutException =>
+                        logger.error(te)
+                        Set.empty[EquationNode]
+                    }
+                )
+            )
+          val allEqs = Task
+            .gather(eqGps)
+            .map(_.fold(Set.empty[EquationNode])(_ union _))
+            .map(GeneratedEquationNodes(_))
+          allEqs.runToFuture
+        }
+    }
     MicroBot(response)
   }
 
