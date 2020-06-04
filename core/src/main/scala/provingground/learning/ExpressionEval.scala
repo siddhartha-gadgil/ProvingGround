@@ -12,13 +12,13 @@ TermGeneratorNodes.{_}
 
 import annotation.tailrec
 import spire.util.Opt
-import provingground.learning.Expr.Const
-import provingground.learning.Expr.At
-import provingground.learning.Expr.Prod
-import provingground.learning.Expr.Plus
-import provingground.learning.Expr.Quot
-import provingground.learning.Expr.Logm
-import provingground.learning.Expr.Expon
+import provingground.learning.Exprsn.Const
+import provingground.learning.Exprsn.At
+import provingground.learning.Exprsn.Prod
+import provingground.learning.Exprsn.Plus
+import provingground.learning.Exprsn.Quot
+import provingground.learning.Exprsn.Logm
+import provingground.learning.Exprsn.Expon
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -477,27 +477,27 @@ object ExpressionEval {
 
 }
 
-sealed trait Expr extends Any
+sealed trait Exprsn extends Any
 
-object Expr {
-  case class Const(value: Double) extends AnyVal with Expr
+object Exprsn {
+  case class Const(value: Double) extends AnyVal with Exprsn
 
-  case class At(index: Int) extends AnyVal with Expr
+  case class At(index: Int) extends AnyVal with Exprsn
 
-  case class Prod(x: Expr, y: Expr) extends Expr
+  case class Prod(x: Exprsn, y: Exprsn) extends Exprsn
 
-  case class Plus(x: Expr, y: Expr) extends Expr
+  case class Plus(x: Exprsn, y: Exprsn) extends Exprsn
 
-  case class Quot(x: Expr, y: Expr) extends Expr
+  case class Quot(x: Exprsn, y: Exprsn) extends Exprsn
 
-  case class Logm(x: Expr) extends Expr
+  case class Logm(x: Exprsn) extends Exprsn
 
-  case class Expon(x: Expr) extends Expr
+  case class Expon(x: Exprsn) extends Exprsn
 }
 
 class ExprCalc(ev: ExpressionEval) {
-  import ev._, Expr._
-  def simplify(exp: Expression): Expr =
+  import ev._, Exprsn._
+  def simplify(exp: Expression): Exprsn =
     init
       .get(exp)
       .map(Const(_))
@@ -519,7 +519,7 @@ class ExprCalc(ev: ExpressionEval) {
         }
       )
 
-  def evaluate(exp: Expr, current: Vector[Double]): Double = exp match {
+  def evaluate(exp: Exprsn, current: Vector[Double]): Double = exp match {
     case Const(value) => value
     case At(index)    => current(index)
     case Prod(x, y)   => evaluate(x, current) * evaluate(y, current)
@@ -531,7 +531,7 @@ class ExprCalc(ev: ExpressionEval) {
     case Expon(x) => math.exp(evaluate(x, current))
   }
 
-  lazy val rhsExprs: Vector[Expr] = equationVec.map(eq => simplify(eq.rhs))
+  lazy val rhsExprs: Vector[Exprsn] = equationVec.map(eq => simplify(eq.rhs))
 
   def nextVec(v: Vector[Double], exponent: Double): Vector[Double] =
     rhsExprs.zipWithIndex.map {
@@ -554,8 +554,8 @@ class ExprCalc(ev: ExpressionEval) {
     equalSupport(v, w) &&
     v.zip(w).forall {
       case (x, y) =>
-        require(x >= 0)
-        require(y >= 0)
+        // require(x >= 0)
+        // require(y >= 0)
         x == 0 || y == 0 || ((x / y) <= bound && y / x <= bound)
     }
   }
