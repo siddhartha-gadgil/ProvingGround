@@ -130,7 +130,7 @@ object Unify {
         pprint.log(unifMap)
         throw fa
     }, identity)
-    val lambdaVars = freeVars filter ((x) => !(unifMap.keySet contains x))
+    val lambdaVars = (freeVars filter ((x) => !(unifMap.keySet contains x))).map(y => multisub(y, unifMap))
     import Fold._
     Try(polyLambda(lambdaVars.toList, fn(x))).toOption
   }
