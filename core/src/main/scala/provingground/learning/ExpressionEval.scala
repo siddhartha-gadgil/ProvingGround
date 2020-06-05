@@ -12,13 +12,7 @@ TermGeneratorNodes.{_}
 
 import annotation.tailrec
 import spire.util.Opt
-import provingground.learning.Exprsn.Const
-import provingground.learning.Exprsn.At
-import provingground.learning.Exprsn.Prod
-import provingground.learning.Exprsn.Plus
-import provingground.learning.Exprsn.Quot
-import provingground.learning.Exprsn.Logm
-import provingground.learning.Exprsn.Expon
+import provingground.learning.SumExpr._
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -477,61 +471,44 @@ object ExpressionEval {
 
 }
 
-sealed trait Exprsn extends Any
+case class ProdExpr(constant: Double, indices: Vector[Int]) {
+  def eval(v: Vector[Double]) = indices.map(j => v(j)).fold(constant)(_ * _)
 
-object Exprsn {
-  case class Const(value: Double) extends AnyVal with Exprsn
-
-  case class At(index: Int) extends AnyVal with Exprsn
-
-  case class Prod(x: Exprsn, y: Exprsn) extends Exprsn
-
-  case class Plus(x: Exprsn, y: Exprsn) extends Exprsn
-
-  case class Quot(x: Exprsn, y: Exprsn) extends Exprsn
-
-  case class Logm(x: Exprsn) extends Exprsn
-
-  case class Expon(x: Exprsn) extends Exprsn
+  def *(that: ProdExpr) =
+    ProdExpr(constant * that.constant, indices ++ that.indices)
 }
 
+case class SumExpr(terms: Vector[ProdExpr]) {
+  def eval(v: Vector[Double]) = terms.map(_.eval(v)).sum
+}
+
+object SumExpr {}
+
 class ExprCalc(ev: ExpressionEval) {
-  import ev._, Exprsn._
-  def simplify(exp: Expression): Exprsn =
+  import ev._, SumExpr._
+  def getProd(exp: Expression): ProdExpr =
     init
       .get(exp)
-      .map(Const(_))
+      .map(c => ProdExpr(c, Vector()))
       .orElse(
-        indexMap.get(exp).map(At(_))
+        indexMap.get(exp).map(j => ProdExpr(1, Vector(j)))
       )
       .getOrElse(
         exp match {
-          case Sum(a, b)     => Plus(simplify(a), simplify(b))
-          case Log(a)        => Logm(simplify(a))
-          case Exp(a)        => Expon(simplify(a))
-          case Product(x, y) => Prod(simplify(x), simplify(y))
-          case Literal(x)    => Const(x)
-          case Quotient(x, y) =>
-            if (simplify(y) != Const(0))
-              Quot(simplify(x), simplify(y))
-            else simplify(x)
-          case _ => Const(0)
+          case Product(x, y) => getProd(x) * getProd(y)
+          case _             => throw new Exception(s"cannot decompose $exp as a product")
         }
       )
 
-  def evaluate(exp: Exprsn, current: Vector[Double]): Double = exp match {
-    case Const(value) => value
-    case At(index)    => current(index)
-    case Prod(x, y)   => evaluate(x, current) * evaluate(y, current)
-    case Plus(x, y)   => evaluate(x, current) + evaluate(y, current)
-    case Quot(x, y) =>
-      val d = evaluate(y, current)
-      if (d == 0) evaluate(x, current) else evaluate(x, current) / d
-    case Logm(x)  => math.log(evaluate(x, current))
-    case Expon(x) => math.exp(evaluate(x, current))
-  }
+  def simplify(exp: Expression): SumExpr =
+    SumExpr(
+      Expression.sumTerms(exp).map(getProd(_))
+    )
 
-  lazy val rhsExprs: Vector[Exprsn] = equationVec.map(eq => simplify(eq.rhs))
+  def evaluate(exp: SumExpr, current: Vector[Double]): Double =
+    exp.eval(current)
+
+  lazy val rhsExprs: Vector[SumExpr] = equationVec.map(eq => simplify(eq.rhs))
 
   def nextVec(v: Vector[Double], exponent: Double): Vector[Double] =
     rhsExprs.zipWithIndex.map {
@@ -552,10 +529,9 @@ class ExprCalc(ev: ExpressionEval) {
       bound: Double = maxRatio
   ) = {
     equalSupport(v, w) &&
-    v.zip(w).forall {
-      case (x, y) =>
-        // require(x >= 0)
-        // require(y >= 0)
+    v.zip(w).zipWithIndex.forall {
+      case ((x, y), j) =>
+        if (x < 0 || y < 0) Utils.logger.error(s"negative lhs in ${(x, y)} for ${equationVec(j)}")
         x == 0 || y == 0 || ((x / y) <= bound && y / x <= bound)
     }
   }
@@ -584,9 +560,10 @@ class ExprCalc(ev: ExpressionEval) {
       }
     }
 
-  lazy val finalVec : Vector[Double] = stableVec(Vector.fill(equationVec.size)(0.0), exponent, decay, maxTime)
+  lazy val finalVec: Vector[Double] =
+    stableVec(Vector.fill(equationVec.size)(0.0), exponent, decay, maxTime)
 
-  lazy val finalMap = finalVec.zipWithIndex.map{
+  lazy val finalMap = finalVec.zipWithIndex.map {
     case (x, j) => equationVec(j).lhs -> x
   }.toMap ++ init
 }
@@ -710,8 +687,8 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    exprCalc.finalMap
-    // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
+    // exprCalc.finalMap
+    stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
