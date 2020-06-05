@@ -471,11 +471,19 @@ object ExpressionEval {
 
 }
 
-case class ProdExpr(constant: Double, indices: Vector[Int]) {
-  def eval(v: Vector[Double]) = indices.map(j => v(j)).fold(constant)(_ * _)
+case class ProdExpr(constant: Double, indices: Vector[Int], negIndices: Vector[Int]) {
+  def eval(v: Vector[Double]) = (indices.map(j => v(j)) ++ negIndices.map{
+    j => 
+    val y= v(j)
+    if (y == 0) 1 else 1.0/y
+  }
+  ).fold(constant)(_ * _)
 
   def *(that: ProdExpr) =
-    ProdExpr(constant * that.constant, indices ++ that.indices)
+    ProdExpr(constant * that.constant, indices ++ that.indices, negIndices ++ that.negIndices)
+
+  def /(that: ProdExpr) =
+    ProdExpr(constant/that.constant, indices ++ that.negIndices, negIndices ++ that.indices)
 }
 
 case class SumExpr(terms: Vector[ProdExpr]) {
@@ -489,14 +497,20 @@ class ExprCalc(ev: ExpressionEval) {
   def getProd(exp: Expression): ProdExpr =
     init
       .get(exp)
-      .map(c => ProdExpr(c, Vector()))
+      .map(c => ProdExpr(c, Vector(), Vector()))
       .orElse(
-        indexMap.get(exp).map(j => ProdExpr(1, Vector(j)))
+        indexMap.get(exp).map(j => ProdExpr(1, Vector(j), Vector()))
       )
       .getOrElse(
         exp match {
+          case cf @ Coeff(_) => ProdExpr(cf.get(tg.nodeCoeffSeq).getOrElse(0), Vector(), Vector())
           case Product(x, y) => getProd(x) * getProd(y)
-          case _             => throw new Exception(s"cannot decompose $exp as a product")
+          case Quotient(x, y) => getProd(x) / getProd(y)
+          case Literal(value) => ProdExpr(value, Vector(), Vector())
+          case InitialVal(variable) => ProdExpr(0, Vector(), Vector())          
+          case _             => 
+            Utils.logger.error(s"cannot decompose $exp as a product")
+            ProdExpr(0, Vector(), Vector())
         }
       )
 
@@ -510,13 +524,15 @@ class ExprCalc(ev: ExpressionEval) {
 
   lazy val rhsExprs: Vector[SumExpr] = equationVec.map(eq => simplify(eq.rhs))
 
-  def nextVec(v: Vector[Double], exponent: Double): Vector[Double] =
+  def nextVec(v: Vector[Double], exponent: Double): Vector[Double] = {
+    pprint.log(exponent)
     rhsExprs.zipWithIndex.map {
       case (exp, j) =>
         val y = evaluate(exp, v)
         val z = v(j)
         if (z > 0) math.pow(z, 1 - exponent) * math.pow(y, exponent) else y
     }
+  }
 
   def equalSupport(v: Vector[Double], w: Vector[Double]) = {
     require(v.size == w.size)
@@ -540,7 +556,7 @@ class ExprCalc(ev: ExpressionEval) {
   final def stableVec(
       initVec: Vector[Double],
       exponent: Double = 0.5,
-      decay: Double = 1,
+      decay: Double,
       maxTime: Option[Long]
   ): Vector[Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) initVec
@@ -687,8 +703,8 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    // exprCalc.finalMap
-    stableMap(init, equations, maxRatio, exponent, decay, maxTime)
+    exprCalc.finalMap
+    // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
