@@ -509,7 +509,7 @@ class ExprCalc(ev: ExpressionEval) {
           case Literal(value) => ProdExpr(value, Vector(), Vector())
           case InitialVal(variable) => ProdExpr(0, Vector(), Vector())          
           case _             => 
-            // Utils.logger.error(s"cannot decompose $exp as a product")
+            Utils.logger.error(s"cannot decompose $exp as a product")
             ProdExpr(0, Vector(), Vector())
         }
       )

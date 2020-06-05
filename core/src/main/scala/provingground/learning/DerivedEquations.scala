@@ -267,6 +267,10 @@ class DerivedEquations(
               FinalVal(Event(Terms, Sort.Restrict(FuncOpt)))
           ),
           EquationNode(
+            FinalVal(Event(Terms, Sort.Restrict(FuncOpt))),
+            finalProb(fn, Terms)
+          ),
+          EquationNode(
             lhs,
             Coeff(applnByArgNode) * finalProb(a, Terms) * finalProb(
               f,
@@ -297,6 +301,10 @@ class DerivedEquations(
                 finalProb(f, TypFamilies),
                 finalProb(fn, Terms) /
                   FinalVal(Event(Terms, Sort.Restrict(TypFamilyOpt)))
+              ),
+              EquationNode(
+                FinalVal(Event(Terms, Sort.Restrict(TypFamilyOpt))),
+                finalProb(fn, Terms)
               )
             )
         }
@@ -611,6 +619,10 @@ class DerivedEquations(
             finalProb(f, Funcs),
             finalProb(fn, Terms) /
               FinalVal(Event(Terms, Sort.Restrict(FuncOpt)))
+          ),
+          EquationNode(
+            FinalVal(Event(Terms, Sort.Restrict(FuncOpt))),
+            finalProb(fn, Terms)
           )
         )
         val typFamilySet: Set[EquationNode] = TypFamilyOpt(fn).toSet.flatMap {
@@ -627,6 +639,10 @@ class DerivedEquations(
                 finalProb(f, TypFamilies),
                 finalProb(fn, Terms) /
                   FinalVal(Event(Terms, Sort.Restrict(TypFamilyOpt)))
+              ),
+              EquationNode(
+                FinalVal(Event(Terms, Sort.Restrict(TypFamilyOpt))),
+                finalProb(fn, Terms)
               )
             )
         }

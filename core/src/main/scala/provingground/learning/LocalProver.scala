@@ -411,7 +411,7 @@ trait LocalProverStep {
       val additional = ns.allTyps.flatMap { typ =>
         val eqs = DE.formalTypEquations(typ)
         Expression.rhsOrphans(eqs).foreach {
-          case (exp, eqq) => logger.error(s"for type: $typ\n$exp\n orphan in generated $eqq")
+          case (exp, eqq) => logger.error(s"for type: $typ\n$exp\n orphan in formal $eqq")
         }
         eqs
       }
