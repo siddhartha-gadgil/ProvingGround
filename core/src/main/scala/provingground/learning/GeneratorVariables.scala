@@ -264,6 +264,15 @@ object Expression {
     case _                        => Vector()
   }
 
+  def rhsOrphans(eqs: Set[EquationNode]) = {
+    val lhsTerms = eqs.map(_.lhs)
+    for {
+      eqq <- eqs
+      fvar <- varFactors(eqq.rhs)
+      if (!lhsTerms.contains(FinalVal(fvar)))
+    } yield (FinalVal(fvar): Expression, eqq)
+  }
+
   def coeffFactor(exp: Expression): Option[Coeff[_]] = exp match {
     case cf: Coeff[_]  => Some(cf)
     case Product(x, y) => coeffFactor(x) orElse (coeffFactor(y))

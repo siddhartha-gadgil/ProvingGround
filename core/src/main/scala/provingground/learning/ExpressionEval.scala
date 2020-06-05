@@ -509,7 +509,7 @@ class ExprCalc(ev: ExpressionEval) {
           case Literal(value) => ProdExpr(value, Vector(), Vector())
           case InitialVal(variable) => ProdExpr(0, Vector(), Vector())          
           case _             => 
-            Utils.logger.error(s"cannot decompose $exp as a product")
+            // Utils.logger.error(s"cannot decompose $exp as a product")
             ProdExpr(0, Vector(), Vector())
         }
       )
@@ -525,7 +525,7 @@ class ExprCalc(ev: ExpressionEval) {
   lazy val rhsExprs: Vector[SumExpr] = equationVec.map(eq => simplify(eq.rhs))
 
   def nextVec(v: Vector[Double], exponent: Double): Vector[Double] = {
-    pprint.log(exponent)
+    // pprint.log(exponent)
     rhsExprs.zipWithIndex.map {
       case (exp, j) =>
         val y = evaluate(exp, v)

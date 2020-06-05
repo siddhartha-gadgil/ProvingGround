@@ -387,75 +387,95 @@ trait LocalProverStep {
     Equation.group(eqs)
   }.memoize
 
-  def bigExpressionEval(additional: Set[Equation]) : Task[ExpressionEval] = 
+  def bigExpressionEval(additional: Set[Equation]): Task[ExpressionEval] =
     equations.map { eqs =>
-        ExpressionEval.fromInitEqs(
-          initState,
-          Equation.merge(eqs, additional) ,
-          tg,
-          maxRatio,
-          scale,
-          smoothing,
-          exponent,
-          decay
-        )
-      }
-
-  lazy val enhancedExpressionEval : Task[ExpressionEval] = 
-    for {
-      eqs <- equationNodes
-      ns <-nextState
-    } yield { 
-        def additional = ns.allTyps.flatMap(DE.formalTypEquations(_))
-        ExpressionEval.fromInitEqs(
-          initState,
-          Equation.group(eqs union additional) ,
-          tg,
-          maxRatio,
-          scale,
-          smoothing,
-          exponent,
-          decay
-        )
-      }
+      ExpressionEval.fromInitEqs(
+        initState,
+        Equation.merge(eqs, additional),
+        tg,
+        maxRatio,
+        scale,
+        smoothing,
+        exponent,
+        decay
+      )
+    }
 
   import Utils._, scribe._
 
-  lazy val enhancedEquationNodes : Task[Set[EquationNode]] = 
-      for {
+  lazy val enhancedExpressionEval: Task[ExpressionEval] =
+    for {
       eqs <- equationNodes
-      ns <-nextState
-    } yield { 
-        def additional = ns.allTyps.flatMap{typ => 
-          val eqs = DE.formalTypEquations(typ)
-          eqs.collect {
-            case eq @ EquationNode(
-                  Expression.FinalVal(
-                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
-                  ), _
-                ) if isVar(x) =>
-              eq
-          }.foreach(eqq => logger.error(s"formal equations for $typ ; bad equation: $eqq"))
-          eqs}
-        additional.collect {
-            case eq @ EquationNode(
-                  Expression.FinalVal(
-                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
-                  ), _
-                ) if isVar(x) =>
-              eq
-          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
-          eqs.collect {
-            case eq @ EquationNode(
-                  Expression.FinalVal(
-                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
-                  ), _
-                ) if isVar(x) =>
-              eq
-          }.foreach(eqq => logger.error(s"Bad equation: $eqq"))
-          eqs union additional 
+      ns  <- nextState
+    } yield {
+      val additional = ns.allTyps.flatMap { typ =>
+        val eqs = DE.formalTypEquations(typ)
+        Expression.rhsOrphans(eqs).foreach {
+          case (exp, eqq) => logger.error(s"for type: $typ\n$exp\n orphan in generated $eqq")
+        }
+        eqs
       }
-      
+      // Expression.rhsOrphans(eqs).foreach {
+      //   case (exp, eqq) => logger.error(s"$exp orphan in generated $eqq")
+      // }
+      // Expression.rhsOrphans(additional).foreach {
+      //   case (exp, eqq) => logger.error(s"$exp orphan in formal $eqq")
+      // }
+      ExpressionEval.fromInitEqs(
+        initState,
+        Equation.group(eqs union additional),
+        tg,
+        maxRatio,
+        scale,
+        smoothing,
+        exponent,
+        decay
+      )
+    }
+
+  lazy val enhancedEquationNodes: Task[Set[EquationNode]] =
+    for {
+      eqs <- equationNodes
+      ns  <- nextState
+    } yield {
+      def additional = ns.allTyps.flatMap { typ =>
+        val eqs = DE.formalTypEquations(typ)
+        eqs
+          .collect {
+            case eq @ EquationNode(
+                  Expression.FinalVal(
+                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                  ),
+                  _
+                ) if isVar(x) =>
+              eq
+          }
+          .foreach(
+            eqq =>
+              logger.error(s"formal equations for $typ ; bad equation: $eqq")
+          )
+        eqs
+      }
+      additional
+        .collect {
+          case eq @ EquationNode(
+                Expression.FinalVal(
+                  GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                ),
+                _
+              ) if isVar(x) =>
+            eq
+        }
+        .foreach(eqq => logger.error(s"Bad equation: $eqq"))
+      Expression.rhsOrphans(eqs).foreach {
+        case (exp, eqq) => logger.error(s"$exp orphan in generated $eqq")
+      }
+      Expression.rhsOrphans(additional).foreach {
+        case (exp, eqq) => logger.error(s"$exp orphan in formal $eqq")
+      }
+      eqs union additional
+    }
+
   lazy val expressionEval: Task[ExpressionEval] =
     if (stateFromEquation)
       equations.map { eqs =>
@@ -469,7 +489,7 @@ trait LocalProverStep {
           exponent,
           decay
         )
-      } else { 
+      } else {
       val base = for {
         fs  <- nextState
         eqs <- equations
