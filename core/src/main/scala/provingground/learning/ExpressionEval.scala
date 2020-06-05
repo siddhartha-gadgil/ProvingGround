@@ -519,16 +519,27 @@ class ExprCalc(ev: ExpressionEval) {
       Expression.sumTerms(exp).map(getProd(_))
     )
 
-  def evaluate(exp: SumExpr, current: Vector[Double]): Double =
-    exp.eval(current)
-
   lazy val rhsExprs: Vector[SumExpr] = equationVec.map(eq => simplify(eq.rhs))
+
+  lazy val termIndices : Vector[Int] = equationVec.zipWithIndex.collect{
+    case (Equation(FinalVal(Elem(_, Terms)), _), j) => j
+  }
+
+  lazy val typIndices : Vector[Int] = equationVec.zipWithIndex.collect{
+    case (Equation(FinalVal(Elem(_, Typs)), _), j) => j
+  }
+
+  def restrict(v: Vector[Double], indices: Vector[Int]) : Vector[Double] = {
+    val base = indices.map{j => v(j)}
+    val total = base.sum
+    if (total == 0) base else base.map(_ /total)
+  }
 
   def nextVec(v: Vector[Double], exponent: Double): Vector[Double] = {
     // pprint.log(exponent)
     rhsExprs.zipWithIndex.map {
       case (exp, j) =>
-        val y = evaluate(exp, v)
+        val y = exp.eval(v)
         val z = v(j)
         if (z > 0) math.pow(z, 1 - exponent) * math.pow(y, exponent) else y
     }
@@ -544,12 +555,18 @@ class ExprCalc(ev: ExpressionEval) {
       w: Vector[Double],
       bound: Double = maxRatio
   ) = {
-    equalSupport(v, w) &&
     v.zip(w).zipWithIndex.forall {
       case ((x, y), j) =>
         if (x < 0 || y < 0) Utils.logger.error(s"negative lhs in ${(x, y)} for ${equationVec(j)}")
         x == 0 || y == 0 || ((x / y) <= bound && y / x <= bound)
     }
+  }
+
+  def normalizedBounded(v: Vector[Double], w : Vector[Double]) = {
+    equalSupport(v, w) &&
+    ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
+    ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
+
   }
 
   @tailrec
@@ -563,7 +580,7 @@ class ExprCalc(ev: ExpressionEval) {
     else {
       val startTime = System.currentTimeMillis()
       val newVec    = nextVec(initVec, exponent)
-      if (ratioBounded(initVec, newVec))
+      if (normalizedBounded(initVec, newVec))
         newVec
       else {
         val usedTime = System.currentTimeMillis() - startTime
