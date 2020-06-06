@@ -574,9 +574,13 @@ class ExprCalc(ev: ExpressionEval) {
       initVec: Vector[Double],
       exponent: Double = 0.5,
       decay: Double,
-      maxTime: Option[Long]
+      maxTime: Option[Long],
+      steps: Long
   ): Vector[Double] =
-    if (maxTime.map(limit => limit < 0).getOrElse(false)) initVec
+    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
+      Utils.logger.error(s"Timeout for stable vector after $steps steps")
+      initVec
+    }
     else {
       val startTime = System.currentTimeMillis()
       val newVec    = nextVec(initVec, exponent)
@@ -588,13 +592,14 @@ class ExprCalc(ev: ExpressionEval) {
           newVec,
           exponent * decay,
           decay,
-          maxTime.map(t => t - usedTime)
+          maxTime.map(t => t - usedTime),
+          steps + 1
         )
       }
     }
 
   lazy val finalVec: Vector[Double] =
-    stableVec(Vector.fill(equationVec.size)(0.0), exponent, decay, maxTime)
+    stableVec(Vector.fill(equationVec.size)(0.0), exponent, decay, maxTime, 0L)
 
   lazy val finalMap = finalVec.zipWithIndex.map {
     case (x, j) => equationVec(j).lhs -> x

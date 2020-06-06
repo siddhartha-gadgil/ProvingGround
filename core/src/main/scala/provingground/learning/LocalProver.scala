@@ -52,7 +52,8 @@ case class LocalProver(
     relativeEval: Boolean = false,
     stateFromEquation: Boolean = false,
     exponent: Double = 0.5,
-    decay: Double = 1
+    decay: Double = 1,
+    maxTime: Option[Long] = None
 ) extends LocalProverStep {
   // Convenience for generation
 
@@ -315,6 +316,7 @@ trait LocalProverStep {
   val exponent: Double
   val decay: Double
   val stateFromEquation: Boolean
+  val maxTime: Option[Long]
 
   var isHalted: Boolean = false
 
@@ -397,7 +399,8 @@ trait LocalProverStep {
         scale,
         smoothing,
         exponent,
-        decay
+        decay,
+        maxTime
       )
     }
 
@@ -429,7 +432,8 @@ trait LocalProverStep {
         scale,
         smoothing,
         exponent,
-        decay
+        decay,
+        maxTime
       )
     }
 
@@ -487,7 +491,8 @@ trait LocalProverStep {
           scale,
           smoothing,
           exponent,
-          decay
+          decay,
+          maxTime
         )
       } else {
       val base = for {
@@ -629,7 +634,11 @@ trait LocalProverStep {
         hW,
         klW,
         smoothing,
-        relativeEval
+        relativeEval,
+        stateFromEquation,
+        exponent,
+        decay,
+        maxTime
       )
 
   def distTangentProver(
@@ -655,7 +664,12 @@ trait LocalProverStep {
         maxDepth,
         hW,
         klW,
-        smoothing
+        smoothing,
+        relativeEval,
+        stateFromEquation,
+        exponent,
+        decay,
+        maxTime
       )
 
   def tangentExpressionEval(
@@ -716,7 +730,12 @@ trait LocalProverStep {
             maxDepth,
             hW,
             klW,
-            smoothing
+            smoothing,
+        relativeEval,
+        stateFromEquation,
+        exponent,
+        decay,
+        maxTime
           )
       }
 
@@ -765,7 +784,8 @@ case class LocalTangentProver(
     relativeEval: Boolean = false,
     stateFromEquation: Boolean = false,
     exponent: Double = 0.5,
-    decay: Double = 1
+    decay: Double = 1,
+    maxTime: Option[Long]
 ) extends LocalProverStep {
 
   def withCutoff(ctf: Double): LocalTangentProver = this.copy(cutoff = ctf)
