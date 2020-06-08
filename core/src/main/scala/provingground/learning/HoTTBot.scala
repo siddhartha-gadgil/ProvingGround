@@ -194,6 +194,15 @@ object HoTTBot {
       }
     }
 
+  def reportProofs(results: Vector[Typ[Term]]): TypedPostResponse[FinalState, HoTTPostWeb, ID] =
+    Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
+      val termsSet = fs.ts.terms.support
+      val pfs = results.map(typ => typ -> termsSet.filter(_.typ == typ)).filter(_._2.nonEmpty)
+        val view = s"Results: ${pfs.size}\n${pfs.map{case (tp, ps) => s"Results $tp; proofs: ${pfs.mkString(", ")}"}.mkString("\n")}"
+        logger.info(view)
+        Utils.report(view)      
+    }
+
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
     MicroBot.simple(
       (ev: ExpressionEval) =>
