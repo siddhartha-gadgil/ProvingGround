@@ -203,7 +203,7 @@ object HoTTBot {
         .map(typ => typ -> termsSet.filter(_.typ == typ))
         .filter(_._2.nonEmpty)
       val view = s"Results: ${pfs.size}\n${pfs
-        .map { case (tp, ps) => s"Results $tp; proofs: ${pfs.mkString(", ")}" }
+        .map { case (tp, ps) => s"Lemma: $tp; proofs: ${pfs.mkString(", ")}" }
         .mkString("\n")}"
       logger.info(view)
       Utils.report(view)
@@ -300,6 +300,15 @@ object HoTTBot {
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
+    )
+
+  lazy val expnEqnUpdate : HoTTBot = 
+    Callback.simple(
+      (web: HoTTPostWeb) => 
+        (ev: ExpressionEval) => 
+          {val neqs = ev.equations.flatMap(eqq => Equation.split(eqq).map(TermData.isleNormalize(_)))
+          web.addEqns(neqs)
+          }
     )
 
   lazy val eqnUpdate: HoTTBot =
