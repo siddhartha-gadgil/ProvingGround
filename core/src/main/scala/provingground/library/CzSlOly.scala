@@ -51,7 +51,7 @@ object CzSlOly {
 
   val termState: TermState = TermState(
     FiniteDistribution
-      .unif(mul, eqM, m, n, mn, ass1, ass2, sym, leftMul, rightMul, trans),
+      .unif(mul, eqM, m, n, mn, ass1, ass2, sym, leftMul, rightMul, trans, refl),
     FiniteDistribution.unif(M),
     goals = FiniteDistribution.unif(eqM(mul(m)(n))(mul(n)(m)))
   )

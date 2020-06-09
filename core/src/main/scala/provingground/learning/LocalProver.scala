@@ -472,7 +472,7 @@ trait LocalProverStep {
         }
         .foreach(eqq => logger.error(s"Bad equation: $eqq"))
       Expression.rhsOrphans(eqs).foreach {
-        case (exp, eqq) => logger.error(s"$exp orphan in generated $eqq")
+        case (exp, eqq) => logger.debug(s"$exp orphan in generated $eqq")
       }
       Expression.rhsOrphans(additional).foreach {
         case (exp, eqq) => logger.error(s"$exp orphan in formal $eqq")
@@ -876,6 +876,6 @@ case class LocalTangentProver(
     for {
       terms <- tripleT.map(_._2)
       typs  <- tripleTypT.map(_._2)
-    } yield terms ++ typs
+    } yield terms union typs union initEquations
 
 }

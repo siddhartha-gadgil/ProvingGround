@@ -471,19 +471,30 @@ object ExpressionEval {
 
 }
 
-case class ProdExpr(constant: Double, indices: Vector[Int], negIndices: Vector[Int]) {
-  def eval(v: Vector[Double]) = (indices.map(j => v(j)) ++ negIndices.map{
-    j => 
-    val y= v(j)
-    if (y == 0) 1 else 1.0/y
-  }
-  ).fold(constant)(_ * _)
+case class ProdExpr(
+    constant: Double,
+    indices: Vector[Int],
+    negIndices: Vector[Int]
+) {
+  def eval(v: Vector[Double]) =
+    (indices.map(j => v(j)) ++ negIndices.map { j =>
+      val y = v(j)
+      if (y == 0) 1 else 1.0 / y
+    }).fold(constant)(_ * _)
 
   def *(that: ProdExpr) =
-    ProdExpr(constant * that.constant, indices ++ that.indices, negIndices ++ that.negIndices)
+    ProdExpr(
+      constant * that.constant,
+      indices ++ that.indices,
+      negIndices ++ that.negIndices
+    )
 
   def /(that: ProdExpr) =
-    ProdExpr(constant/that.constant, indices ++ that.negIndices, negIndices ++ that.indices)
+    ProdExpr(
+      constant / that.constant,
+      indices ++ that.negIndices,
+      negIndices ++ that.indices
+    )
 }
 
 case class SumExpr(terms: Vector[ProdExpr]) {
@@ -503,13 +514,17 @@ class ExprCalc(ev: ExpressionEval) {
       )
       .getOrElse(
         exp match {
-          case cf @ Coeff(_) => ProdExpr(cf.get(tg.nodeCoeffSeq).getOrElse(0), Vector(), Vector())
-          case Product(x, y) => getProd(x) * getProd(y)
-          case Quotient(x, y) => getProd(x) / getProd(y)
-          case Literal(value) => ProdExpr(value, Vector(), Vector())
-          case InitialVal(variable) => ProdExpr(0, Vector(), Vector())          
-          case _             => 
-            Utils.logger.error(s"cannot decompose $exp as a product")
+          case cf @ Coeff(_) =>
+            ProdExpr(cf.get(tg.nodeCoeffSeq).getOrElse(0), Vector(), Vector())
+          case Product(x, y)        => getProd(x) * getProd(y)
+          case Quotient(x, y)       => getProd(x) / getProd(y)
+          case Literal(value)       => ProdExpr(value, Vector(), Vector())
+          case InitialVal(variable) => ProdExpr(0, Vector(), Vector())
+          case _ =>
+            Utils.logger.debug(
+              s"cannot decompose $exp as a product, though it is in the rhs of ${equations
+                .find(eqq => (Expression.atoms(eqq.rhs).contains(exp)))}"
+            )
             ProdExpr(0, Vector(), Vector())
         }
       )
@@ -521,18 +536,20 @@ class ExprCalc(ev: ExpressionEval) {
 
   lazy val rhsExprs: Vector[SumExpr] = equationVec.map(eq => simplify(eq.rhs))
 
-  lazy val termIndices : Vector[Int] = equationVec.zipWithIndex.collect{
+  lazy val termIndices: Vector[Int] = equationVec.zipWithIndex.collect {
     case (Equation(FinalVal(Elem(_, Terms)), _), j) => j
   }
 
-  lazy val typIndices : Vector[Int] = equationVec.zipWithIndex.collect{
+  lazy val typIndices: Vector[Int] = equationVec.zipWithIndex.collect {
     case (Equation(FinalVal(Elem(_, Typs)), _), j) => j
   }
 
-  def restrict(v: Vector[Double], indices: Vector[Int]) : Vector[Double] = {
-    val base = indices.map{j => v(j)}
+  def restrict(v: Vector[Double], indices: Vector[Int]): Vector[Double] = {
+    val base = indices.map { j =>
+      v(j)
+    }
     val total = base.sum
-    if (total == 0) base else base.map(_ /total)
+    if (total == 0) base else base.map(_ / total)
   }
 
   def nextVec(v: Vector[Double], exponent: Double): Vector[Double] = {
@@ -557,12 +574,13 @@ class ExprCalc(ev: ExpressionEval) {
   ) = {
     v.zip(w).zipWithIndex.forall {
       case ((x, y), j) =>
-        if (x < 0 || y < 0) Utils.logger.error(s"negative lhs in ${(x, y)} for ${equationVec(j)}")
+        if (x < 0 || y < 0)
+          Utils.logger.error(s"negative lhs in ${(x, y)} for ${equationVec(j)}")
         x == 0 || y == 0 || ((x / y) <= bound && y / x <= bound)
     }
   }
 
-  def normalizedBounded(v: Vector[Double], w : Vector[Double]) = {
+  def normalizedBounded(v: Vector[Double], w: Vector[Double]) = {
     equalSupport(v, w) &&
     ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
     ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
@@ -580,8 +598,7 @@ class ExprCalc(ev: ExpressionEval) {
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
       Utils.logger.error(s"Timeout for stable vector after $steps steps")
       initVec
-    }
-    else {
+    } else {
       if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newVec    = nextVec(initVec, exponent)
@@ -727,7 +744,7 @@ trait ExpressionEval { self =>
     */
   lazy val finalDist: Map[Expression, Double] =
     exprCalc.finalMap
-    // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
+  // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
 
