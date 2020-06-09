@@ -302,7 +302,7 @@ object HoTTBot {
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
     )
 
-  lazy val expnEqnUpdate : HoTTBot = 
+  lazy val expnEqnUpdate : TypedPostResponse[ExpressionEval, HoTTPostWeb, ID] = 
     Callback.simple(
       (web: HoTTPostWeb) => 
         (ev: ExpressionEval) => 
