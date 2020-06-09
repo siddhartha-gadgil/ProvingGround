@@ -3,6 +3,9 @@ import provingground._, HoTT._
 
 import GeneratorVariables._, Expression._, TermRandomVars._, GeneratorNode._,
 TermGeneratorNodes._
+import provingground.learning.Sort.All
+import provingground.learning.Sort.Filter
+import provingground.learning.Sort.Restrict
 
 class DerivedEquations(
     tg: TermGeneratorNodes[TermState] = TermGeneratorNodes.Base
@@ -129,6 +132,63 @@ class DerivedEquations(
     else Set.empty[EquationNode]
 
   import tg._
+
+  def initEquationOpt[Y](
+      x: Term,
+      rv: RandomVar[Y],
+      sort: Sort[Term, Y]
+  ): Option[EquationNode] = sort match {
+    case All() => None
+    case Filter(pred) =>
+      if (pred(x))
+        Some(
+          EquationNode(
+            finalProb(x, rv),
+            Coeff(Init(rv)) * finalProb(x, Terms)
+          )
+        )
+      else None
+    case Restrict(optMap) =>
+      optMap(x).map(
+        y =>
+          EquationNode(
+            finalProb(y, rv),
+            Coeff(Init(rv)) * finalProb(x, Terms)
+          )
+      )
+  }
+
+  def allInitEquations(xs: Set[Term]) : Set[EquationNode] =
+    xs.flatMap(x => initEquationOpt(x, Funcs, Sort.Restrict(FuncOpt)))
+      .union(
+        xs.flatMap(
+          x => initEquationOpt(x, TypFamilies, Sort.Restrict(TypFamilyOpt))
+        )
+      )
+      .union(
+        xs.flatMap(
+          x =>
+            initEquationOpt(
+              x,
+              termsWithTyp(x.typ),
+              Sort.Filter[Term](WithTyp(x.typ))
+            )
+        )
+      )
+      .union(
+        xs.flatMap(
+          x =>
+            ExstFunc
+              .opt(x)
+              .map { fn =>
+                val rv = funcsWithDomain(fn.dom)
+                EquationNode(
+                  finalProb(fn, rv),
+                  Coeff(Init(rv)) * finalProb(x, Terms)
+                )
+              }
+        )
+      )
 
   def applnFlip(eqn: EquationNode): Option[EquationNode] =
     (coeffFactor(eqn.rhs), varFactors(eqn.rhs)) match {
@@ -418,7 +478,10 @@ class DerivedEquations(
           .map(_.mapVars(InIsle.variableMap(boat, isle)))
         (isleIn
           .union(isleEqs)
-          .union(initInIsle) + bridgeEq) union (formalTypEquations(pd.domain, ctx))
+          .union(initInIsle) + bridgeEq) union (formalTypEquations(
+          pd.domain,
+          ctx
+        ))
       case pd: FuncTyp[u, v] =>
         val coeff = Coeff(tg.piNode)
         val boat  = nextVar(pd.dom, ctx.variables)
@@ -467,7 +530,10 @@ class DerivedEquations(
           .map(_.mapVars(InIsle.variableMap(boat, isle)))
         (isleIn
           .union(isleEqs)
-          .union(initInIsle) + bridgeEq) union formalTypEquations(pd.domain, ctx)
+          .union(initInIsle) + bridgeEq) union formalTypEquations(
+          pd.domain,
+          ctx
+        )
 
       case pd: SigmaTyp[u, v] =>
         val coeff = Coeff(tg.sigmaNode)
@@ -706,7 +772,10 @@ class DerivedEquations(
           .map(_.mapVars(InIsle.variableMap(boat, isle)))
         (isleIn
           .union(isleEqs)
-          .union(initInIsle) + bridgeEq) union (formalTypEquations(pd.domain, ctx))
+          .union(initInIsle) + bridgeEq) union (formalTypEquations(
+          pd.domain,
+          ctx
+        ))
       case pd: FuncTyp[u, v] =>
         val coeff = Coeff(tg.piNode)
         val boat  = nextVar(pd.dom, ctx.variables)
@@ -755,7 +824,10 @@ class DerivedEquations(
           .map(_.mapVars(InIsle.variableMap(boat, isle)))
         (isleIn
           .union(isleEqs)
-          .union(initInIsle) + bridgeEq) union formalTypEquations(pd.domain, ctx)
+          .union(initInIsle) + bridgeEq) union formalTypEquations(
+          pd.domain,
+          ctx
+        )
 
       case pd: SigmaTyp[u, v] =>
         val coeff = Coeff(tg.sigmaNode)

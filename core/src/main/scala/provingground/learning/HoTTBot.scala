@@ -194,13 +194,19 @@ object HoTTBot {
       }
     }
 
-  def reportProofs(results: Vector[Typ[Term]]): TypedPostResponse[FinalState, HoTTPostWeb, ID] =
+  def reportProofs(
+      results: Vector[Typ[Term]]
+  ): TypedPostResponse[FinalState, HoTTPostWeb, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       val termsSet = fs.ts.terms.support
-      val pfs = results.map(typ => typ -> termsSet.filter(_.typ == typ)).filter(_._2.nonEmpty)
-        val view = s"Results: ${pfs.size}\n${pfs.map{case (tp, ps) => s"Results $tp; proofs: ${pfs.mkString(", ")}"}.mkString("\n")}"
-        logger.info(view)
-        Utils.report(view)      
+      val pfs = results
+        .map(typ => typ -> termsSet.filter(_.typ == typ))
+        .filter(_._2.nonEmpty)
+      val view = s"Results: ${pfs.size}\n${pfs
+        .map { case (tp, ps) => s"Results $tp; proofs: ${pfs.mkString(", ")}" }
+        .mkString("\n")}"
+      logger.info(view)
+      Utils.report(view)
     }
 
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
@@ -608,8 +614,18 @@ object HoTTBot {
           val useLemmas = l.map {
             case (tp, pfOpt, w) => (UseLemma(tp, pfOpt), w * sc)
           }
+          val initRestrictEquations = DE.allInitEquations(fs.ts.terms.support)
           val tangProvers = useLemmas.map {
-            case (lem, w) => qp.lp.sharpen(w).tangentProver(lem.proof).map(_.copy(initEquations = baseEqs, initState = fs.ts))
+            case (lem, w) =>
+              qp.lp
+                .sharpen(w)
+                .tangentProver(lem.proof)
+                .map(
+                  _.copy(
+                    initEquations = baseEqs union initRestrictEquations,
+                    initState = fs.ts
+                  )
+                )
           }
           val eqGps =
             tangProvers.map(
