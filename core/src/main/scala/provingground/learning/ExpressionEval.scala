@@ -582,6 +582,7 @@ class ExprCalc(ev: ExpressionEval) {
       initVec
     }
     else {
+      if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newVec    = nextVec(initVec, exponent)
       if (normalizedBounded(initVec, newVec))

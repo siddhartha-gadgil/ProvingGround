@@ -619,7 +619,7 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
   ) =
     EquationNode(lhs, rhs.useBoat(boat, island))
 
-  override def toString: String = s"($lhs =) $rhs"
+  override def toString: String = s"($lhs) = $rhs"
 
   def mapVars(f: VariableMap) =
     EquationNode(lhs.mapVars(f), rhs.mapVars(f))
