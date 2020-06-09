@@ -609,7 +609,7 @@ object HoTTBot {
             case (tp, pfOpt, w) => (UseLemma(tp, pfOpt), w * sc)
           }
           val tangProvers = useLemmas.map {
-            case (lem, w) => qp.lp.sharpen(w).tangentProver(lem.proof).map(_.copy(initState = fs.ts))
+            case (lem, w) => qp.lp.sharpen(w).tangentProver(lem.proof).map(_.copy(initEquations = baseEqs, initState = fs.ts))
           }
           val eqGps =
             tangProvers.map(
