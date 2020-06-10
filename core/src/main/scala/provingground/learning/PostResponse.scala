@@ -9,6 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.SeqView
 import scala.util._
 import scala.reflect.runtime.universe._
+import Utils.logger
 
 
 
@@ -33,7 +34,9 @@ object PostResponse {
       implicit qp: Postable[Q, W, ID]
   ): Option[TypedPostResponse[Q, W, ID]] = response match {
     case r: TypedPostResponse[p, W, ID] =>
-      if (qp.tag.tpe =:= r.pw.tag.tpe) Some(r.asInstanceOf[TypedPostResponse[Q, W, ID]])
+      if (qp.tag.tpe =:= r.pw.tag.tpe) {
+        // logger.info(s"triggered response with type ${r.pw.tag}")
+        Some(r.asInstanceOf[TypedPostResponse[Q, W, ID]])}
       else None
   }
 
@@ -169,6 +172,7 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
+      logger.info(s"triggered callback for type ${pw.tag}")
       val auxFuture = lv.getAt(web, id, predicate)
       val task = auxFuture.flatMap { auxs =>
         Future.sequence(auxs.map(aux => update(web)(aux)(content))).map(_ => Vector.empty[PostData[_, W, ID]])
@@ -207,6 +211,7 @@ object TypedPostResponse {
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
+      logger.info(s"triggered response of type ${qw.tag} to posts of type ${pw.tag}")
       val auxFuture = lv.getAt(web, id, predicate(content)) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
@@ -296,6 +301,7 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
         content: P,
         id: ID
     ): Future[Vector[PostData[_, W, ID]]] = {
+      logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
       val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
       val taskNest =
         auxFuture.map{
