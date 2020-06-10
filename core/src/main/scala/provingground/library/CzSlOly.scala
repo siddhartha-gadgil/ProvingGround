@@ -51,10 +51,46 @@ object CzSlOly {
 
   val termState: TermState = TermState(
     FiniteDistribution
-      .unif(mul, eqM, m, n, mn, ass1, ass2, sym, leftMul, rightMul, trans, refl),
+      .unif(
+        mul,
+        eqM,
+        m,
+        n,
+        mn,
+        ass1,
+        ass2,
+        sym,
+        leftMul,
+        rightMul,
+        trans,
+        refl
+      ),
     FiniteDistribution.unif(M),
     goals = FiniteDistribution.unif(eqM(mul(m)(n))(mul(n)(m)))
   )
 
-  val localProver: LocalProver = LocalProver(termState, TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1), maxTime = Some(500000L)).noIsles
+  val tautGen: TermState = TermState(
+    FiniteDistribution
+      .unif(mul, m, n, mn, sym, trans, refl),
+    FiniteDistribution.unif(M)
+  )
+
+  val localProver: LocalProver = LocalProver(
+    termState,
+    TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
+    maxTime = Some(500000L)
+  ).noIsles
+
+  import HoTTBot._
+
+  val bots: Vector[HoTTBot] = Vector(
+    expEvToFinalState,
+    finalStateFilteredLemmas(tautGen),
+    eqnsToExpEv,
+    lemmasBigTangentEquations(0.05),
+    eqnUpdate,
+    updateTerms,
+    reportProofs(results),
+    expnEqnUpdate
+  )
 }

@@ -796,7 +796,7 @@ trait ExpressionEval { self =>
   lazy val finalTerms: FD[HoTT.Term] =
     FD {
       finalDist.collect {
-        case (FinalVal(Elem(t: Term, Terms)), w) => Weighted(t, w)
+        case (FinalVal(Elem(t: Term, Terms)), w) if w > 0 => Weighted(t, w)
       }
     }.safeNormalized
 

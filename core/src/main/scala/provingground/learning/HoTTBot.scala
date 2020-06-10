@@ -131,6 +131,47 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  def tautologyTerms(
+      tautGen: TermState,
+      eqs: Set[Equation],
+      tg: TermGenParams = TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
+      maxRatio: Double = 1.5,
+      maxTime: Option[Long] = Some(60000L)
+  ): Set[Term] = {
+    val expEv = ExpressionEval.fromInitEqs(
+      tautGen,
+      equationsS = eqs,
+      tgS = tg,
+      maxRatioS = maxRatio,
+      maxTimeS = maxTime
+    )
+    expEv.finalTerms.support
+  }
+
+  def finalStateFilteredLemmas(
+      tautGen: TermState,
+      tg: TermGenParams = TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
+      maxRatio: Double = 1.5,
+      maxTime: Option[Long] = Some(60000L)
+  ): MicroHoTTBoTT[FinalState, Lemmas, Set[Equation] :: QueryBaseState :: HNil] = {
+    val response
+        : Set[Equation] :: QueryBaseState :: HNil => FinalState => Future[
+          Lemmas
+        ] = {
+      case (eqns :: qinit :: HNil) =>
+        (fs) =>
+          Future {
+            val proved =
+              (tautologyTerms(tautGen, eqns, tg, maxRatio, maxTime) union
+                qinit.init.terms.support).map(_.typ)
+            Lemmas(fs.ts.lemmas.filterNot {
+              case (tp, _, _) => proved.contains(tp)
+            })
+          }
+    }
+    MicroBot(response)
+  }
+
   lazy val lptToTermResult: SimpleBot[LocalTangentProver, TermResult] = {
     val response: Unit => LocalTangentProver => Future[TermResult] = (_) =>
       lp => termData(lp).runToFuture
@@ -155,7 +196,7 @@ object HoTTBot {
         else
           Some(fs.successes.map {
             case (tp, _, pf) =>
-               Proved(tp, Some(pf), Context.Empty)
+              Proved(tp, Some(pf), Context.Empty)
           }.toSet)
     )
 
@@ -302,13 +343,15 @@ object HoTTBot {
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
     )
 
-  lazy val expnEqnUpdate : TypedPostResponse[ExpressionEval, HoTTPostWeb, ID] = 
+  lazy val expnEqnUpdate: TypedPostResponse[ExpressionEval, HoTTPostWeb, ID] =
     Callback.simple(
-      (web: HoTTPostWeb) => 
-        (ev: ExpressionEval) => 
-          {val neqs = ev.equations.flatMap(eqq => Equation.split(eqq).map(TermData.isleNormalize(_)))
+      (web: HoTTPostWeb) =>
+        (ev: ExpressionEval) => {
+          val neqs = ev.equations.flatMap(
+            eqq => Equation.split(eqq).map(TermData.isleNormalize(_))
+          )
           web.addEqns(neqs)
-          }
+        }
     )
 
   lazy val eqnUpdate: HoTTBot =
