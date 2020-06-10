@@ -517,7 +517,7 @@ trait LocalProverStep {
       else base
     }.memoize
 
-  lazy val successes = nextState.map(_.successes)
+  lazy val successes : Task[Vector[(HoTT.Typ[HoTT.Term], Double, Term)]] = nextState.map(_.successes)
 
   lazy val lemmas: Task[Vector[(Typ[Term], Double)]] =
     (for {

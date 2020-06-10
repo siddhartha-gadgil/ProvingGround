@@ -153,9 +153,9 @@ object HoTTBot {
       (fs: FinalState) =>
         if (fs.successes.isEmpty) None
         else
-          Some(fs.successes.flatMap {
-            case (tp, _, pfs) =>
-              pfs.supp.map(pf => Proved(tp, Some(pf), Context.Empty))
+          Some(fs.successes.map {
+            case (tp, _, pf) =>
+               Proved(tp, Some(pf), Context.Empty)
           }.toSet)
     )
 
@@ -164,12 +164,12 @@ object HoTTBot {
       (_) =>
         (fs) =>
           Future {
-            (fs.successes.flatMap {
-              case (tp, _, pfs) =>
-                pfs.supp.map(pf => Proved(tp, Some(pf), Context.Empty))
-            } ++ fs.ts.successes.flatMap {
-              case (tp, _, pfs) =>
-                pfs.supp.map(pf => Proved(tp, Some(pf), fs.ts.context))
+            (fs.successes.map {
+              case (tp, _, pf) =>
+                Proved(tp, Some(pf), Context.Empty)
+            } ++ fs.ts.successes.map {
+              case (tp, _, pf) =>
+                Proved(tp, Some(pf), fs.ts.context)
             }).distinct
           }
     MiniBot(response)

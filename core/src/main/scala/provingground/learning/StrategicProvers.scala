@@ -23,7 +23,7 @@ import scala.util.Success
 
 object StrategicProvers {
   type Successes =
-    Vector[(HoTT.Typ[HoTT.Term], Double, FiniteDistribution[HoTT.Term])]
+    Vector[(HoTT.Typ[HoTT.Term], Double, Term)]
 
   type SeekResult = (
       Successes,
@@ -33,7 +33,7 @@ object StrategicProvers {
 
   def formal(sc: Successes): Set[EquationNode] = {
     val termsGroups = sc.toSet
-    val terms       = termsGroups.map(_._3).flatMap(_.support)
+    val terms       = termsGroups.map(_._3)
     terms.flatMap(t => DE.formalEquations(t))
   }
 
