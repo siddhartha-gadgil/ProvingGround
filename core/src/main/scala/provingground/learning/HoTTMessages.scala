@@ -133,8 +133,12 @@ object HoTTMessages {
   )
 
   case class UsedLemmas(
-      lemmas: Vector[(Typ[Term], Option[Term], Double)]
-  )
+      lemmas: Vector[(Typ[Term], Double)]
+  ){
+    def weight(typ: Typ[Term]) : Double = lemmas.find(_._1 == typ).map(_._2).getOrElse(0.0)
+
+    val support = lemmas.map(_._1).toSet
+  }
 
   /**
     * instruction to use a lemma - could be as a tangent or mixing in to generators

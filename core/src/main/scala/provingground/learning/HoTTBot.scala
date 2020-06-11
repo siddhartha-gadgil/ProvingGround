@@ -649,6 +649,13 @@ object HoTTBot {
     MicroBot(response)
   }
 
+  def usedLemmas(decay: Double = 0.5, cutoff: Double = 0.04)(v: Vector[UsedLemmas]): Set[HoTT.Typ[HoTT.Term]] = {
+    val allLemmas = v.flatMap(_.support).toSet
+    val l = v.length
+    def hasLargeWeight(typ: Typ[Term]) = (0 until(l)).exists(j => v(j).weight(typ) * math.pow(decay, j) > cutoff)
+    allLemmas.filter(hasLargeWeight(_))
+  }
+
   def lemmasBigTangentEquations(
       scale: Double = 1.0,
       power: Double = 1.0,
@@ -693,6 +700,9 @@ object HoTTBot {
             )
             expEv.finalTermState()
           }
+          val usedLemmas = UsedLemmas(useLemmas.map{
+            case (lem, w) => (lem.lemma, w)
+          })
           val tangProvers = useLemmas.map {
             case (lem, w) =>
               qp.lp
