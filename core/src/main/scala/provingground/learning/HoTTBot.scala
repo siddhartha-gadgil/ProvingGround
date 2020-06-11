@@ -244,9 +244,11 @@ object HoTTBot {
         .map(typ => typ -> termsSet.filter(_.typ == typ))
         .filter(_._2.nonEmpty)
       val view = s"Results: ${pfs.size}\n${pfs
-        .map { case (tp, ps) => 
-          val best =  ps.maxBy(t => fs.ts.terms(t))
-           s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}" }
+        .map {
+          case (tp, ps) =>
+            val best = ps.maxBy(t => fs.ts.terms(t))
+            s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}"
+        }
         .mkString("\n")}"
       logger.info(view)
       Utils.report(view)
@@ -649,58 +651,72 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  def usedLemmas(decay: Double = 0.5, cutoff: Double = 0.04)(v: Vector[UsedLemmas]): Set[HoTT.Typ[HoTT.Term]] = {
+  def avoidLemmas(decay: Double = 0.5, cutoff: Double = 0.04)(
+      v: Vector[UsedLemmas]
+  ): Set[HoTT.Typ[HoTT.Term]] = {
     val allLemmas = v.flatMap(_.support).toSet
-    val l = v.length
-    def hasLargeWeight(typ: Typ[Term]) = (0 until(l)).exists(j => v(j).weight(typ) * math.pow(decay, j) > cutoff)
+    val l         = v.length
+    def hasLargeWeight(typ: Typ[Term]) =
+      (0 until (l)).exists(j => v(j).weight(typ) * math.pow(decay, j) > cutoff)
     allLemmas.filter(hasLargeWeight(_))
   }
 
   def lemmasBigTangentEquations(
       scale: Double = 1.0,
       power: Double = 1.0,
-      lemmaMix: Double = 0
-  ): MicroHoTTBoTT[Lemmas, GeneratedEquationNodes, QueryProver :: Set[
+      lemmaMix: Double = 0,
+      decay: Double = 0.5,
+      cutoff: Double = 0.04
+  ): MicroHoTTBoTT[Lemmas, UsedLemmas :: GeneratedEquationNodes :: HNil, QueryProver :: Set[
     EquationNode
-  ] :: FinalState :: HNil] = {
+  ] :: FinalState :: PreviousPosts[UsedLemmas] :: HNil] = {
     val response
-        : QueryProver :: Set[EquationNode] :: FinalState :: HNil => Lemmas => Future[
-          GeneratedEquationNodes
+        : QueryProver :: Set[EquationNode] :: FinalState :: PreviousPosts[
+          UsedLemmas
+        ] :: HNil => Lemmas => Future[
+          UsedLemmas :: GeneratedEquationNodes :: HNil
         ] = {
-      case qp :: baseEqs :: fs :: HNil =>
+      case qp :: baseEqs :: fs :: ul :: HNil =>
         lemmas => {
-          val l = lemmas.lemmas.map {
-            case (tp, pfOpt, p) => (tp, pfOpt, math.pow(p, power))
-          }
+          val exclude = avoidLemmas(decay, cutoff)(ul.contents)
+          val l0 =
+            for {
+              (tp, pfOpt, p) <- lemmas.lemmas
+            } yield (tp, pfOpt, math.pow(p, power))
+          val l = l0.filterNot{case (tp, _, _) => exclude.contains(tp)}
           val ltot = l.map(_._3).sum
-          val sc = scale / ltot
+          val l0tot = l0.map(_._3).sum
+          val sc   = scale / ltot
           val useLemmas = l.map {
             case (tp, pfOpt, w) => (UseLemma(tp, pfOpt), w * sc)
           }
           val initRestrictEquations = DE.allInitEquations(fs.ts.terms.support)
-          val evolvedState = if (lemmaMix == 0) fs.ts else {
-            import qp.lp
-            val baseDist = lp.initState.terms
-            val lemPfDist = FiniteDistribution(
-              l.map{
-                case (typ, pfOpt, p) => Weighted(pfOpt.getOrElse("pf" :: typ), p /ltot)
-              }
-            )
-            val tdist = (baseDist * (1.0 - lemmaMix) ++ (lemPfDist * lemmaMix))
-            val baseState = lp.initState
-            val expEv = ExpressionEval.fromInitEqs(
-              baseState.copy(terms = tdist),
-              Equation.group(baseEqs),
-              lp.tg,
-              lp.maxRatio,
-              lp.scale,
-              lp.smoothing,
-              lp.exponent,
-              lp.decay
-            )
-            expEv.finalTermState()
-          }
-          val usedLemmas = UsedLemmas(useLemmas.map{
+          val evolvedState =
+            if (lemmaMix == 0) fs.ts
+            else {
+              import qp.lp
+              val baseDist = lp.initState.terms
+              val lemPfDist = FiniteDistribution(
+                l0.map {
+                  case (typ, pfOpt, p) =>
+                    Weighted(pfOpt.getOrElse("pf" :: typ), p / l0tot)
+                }
+              )
+              val tdist     = (baseDist * (1.0 - lemmaMix) ++ (lemPfDist * lemmaMix))
+              val baseState = lp.initState
+              val expEv = ExpressionEval.fromInitEqs(
+                baseState.copy(terms = tdist),
+                Equation.group(baseEqs),
+                lp.tg,
+                lp.maxRatio,
+                lp.scale,
+                lp.smoothing,
+                lp.exponent,
+                lp.decay
+              )
+              expEv.finalTermState()
+            }
+          val usedLemmas = UsedLemmas(useLemmas.map {
             case (lem, w) => (lem.lemma, w)
           })
           val tangProvers = useLemmas.map {
@@ -731,7 +747,7 @@ object HoTTBot {
             .gather(eqGps)
             .map(_.fold(Set.empty[EquationNode])(_ union _))
             .map(GeneratedEquationNodes(_))
-          allEqs.runToFuture
+          allEqs.runToFuture.map(aEq => usedLemmas :: aEq :: HNil)
         }
     }
     MicroBot(response)
