@@ -244,7 +244,9 @@ object HoTTBot {
         .map(typ => typ -> termsSet.filter(_.typ == typ))
         .filter(_._2.nonEmpty)
       val view = s"Results: ${pfs.size}\n${pfs
-        .map { case (tp, ps) => s"Lemma: $tp; proofs: ${pfs.mkString(", ")}" }
+        .map { case (tp, ps) => 
+          val best =  ps.maxBy(t => fs.ts.terms(t))
+           s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}" }
         .mkString("\n")}"
       logger.info(view)
       Utils.report(view)

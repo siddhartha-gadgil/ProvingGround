@@ -132,6 +132,10 @@ object HoTTMessages {
       lemmas: Vector[(Typ[Term], Option[Term], Double)]
   )
 
+  case class UsedLemmas(
+      lemmas: Vector[(Typ[Term], Option[Term], Double)]
+  )
+
   /**
     * instruction to use a lemma - could be as a tangent or mixing in to generators
     * if mixing in just call `ConsiderTerms`

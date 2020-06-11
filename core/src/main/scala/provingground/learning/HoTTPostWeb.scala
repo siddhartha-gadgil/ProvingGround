@@ -82,6 +82,7 @@ class HoTTPostWeb {
     PostBuffer.build[OptimalInitial, ID]() ::
     PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
     PostBuffer.build[FromAny, ID]() ::
+    PostBuffer.build[UsedLemmas, ID]() ::
     PostBuffer.build[ConsiderInductiveTypes, ID]() :: HNil
 
   def snapShot : WebState[HoTTPostWeb,HoTTPostWeb.ID] = HoTTPostWeb.history.snapShot(this)
@@ -99,7 +100,7 @@ object HoTTPostWeb {
 
   val polyImpl2 = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer2)
 
-  implicit val (b28 :: b27 :: b26 :: b25 :: b24 :: b23:: HNil) = polyImpl2
+  implicit val (b29 :: b28 :: b27 :: b26 :: b25 :: b24 :: b23:: HNil) = polyImpl2
 
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =

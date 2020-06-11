@@ -71,20 +71,20 @@ trait PostHistory[W, ID] {
   def previousAnswers[Q](
       web: W,
       id: ID
-  )(implicit qw: Postable[Q, W, ID]): Set[Q] =
+  )(implicit qw: Postable[Q, W, ID]): Vector[Q] =
     findPost(web, id)
       .map {
         case (pd, preds) =>
-          val head = pd.getOpt[Q].toSet
-          val tail = preds.flatMap(pid => previousAnswers(web, pid))
-          tail union head  
+          val head = pd.getOpt[Q].toVector
+          val tail = preds.toVector.flatMap(pid => previousAnswers(web, pid))
+          head ++ tail  
       }
       .orElse(
         redirects(web)
           .get(id)
-          .map(ids => ids.flatMap(rid => previousAnswers(web, rid)))
+          .map(ids => ids.toVector.flatMap(rid => previousAnswers(web, rid)))
       )
-      .getOrElse(Set())
+      .getOrElse(Vector())
 }
 
 object PostHistory {
