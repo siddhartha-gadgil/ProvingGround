@@ -87,7 +87,7 @@ object CzSlOly {
     expEvToFinalState,
     finalStateFilteredLemmas(tautGen),
     eqnsToExpEv,
-    lemmasBigTangentEquations(0.05),
+    lemmasBigTangentEquations(scale = 0.1, power = 0.4, lemmaMix = 0.3),
     eqnUpdate,
     updateTerms,
     reportProofs(results),
