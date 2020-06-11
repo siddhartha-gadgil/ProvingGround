@@ -649,7 +649,8 @@ object HoTTBot {
 
   def lemmasBigTangentEquations(
       scale: Double = 1.0,
-      power: Double = 1.0
+      power: Double = 1.0,
+      lemmaMix: Double = 0
   ): MicroHoTTBoTT[Lemmas, GeneratedEquationNodes, QueryProver :: Set[
     EquationNode
   ] :: FinalState :: HNil] = {
@@ -662,11 +663,34 @@ object HoTTBot {
           val l = lemmas.lemmas.map {
             case (tp, pfOpt, p) => (tp, pfOpt, math.pow(p, power))
           }
-          val sc = scale / l.map(_._3).sum
+          val ltot = l.map(_._3).sum
+          val sc = scale / ltot
           val useLemmas = l.map {
             case (tp, pfOpt, w) => (UseLemma(tp, pfOpt), w * sc)
           }
           val initRestrictEquations = DE.allInitEquations(fs.ts.terms.support)
+          val evolvedState = if (lemmaMix == 0) fs.ts else {
+            import qp.lp
+            val baseDist = lp.initState.terms
+            val lemPfDist = FiniteDistribution(
+              l.map{
+                case (typ, pfOpt, p) => Weighted(pfOpt.getOrElse("pf" :: typ), p /ltot)
+              }
+            )
+            val tdist = (baseDist * (1.0 - lemmaMix) ++ (lemPfDist * lemmaMix))
+            val baseState = lp.initState
+            val expEv = ExpressionEval.fromInitEqs(
+              baseState.copy(terms = tdist),
+              Equation.group(baseEqs),
+              lp.tg,
+              lp.maxRatio,
+              lp.scale,
+              lp.smoothing,
+              lp.exponent,
+              lp.decay
+            )
+            expEv.finalTermState()
+          }
           val tangProvers = useLemmas.map {
             case (lem, w) =>
               qp.lp
@@ -675,7 +699,7 @@ object HoTTBot {
                 .map(
                   _.copy(
                     initEquations = baseEqs union initRestrictEquations,
-                    initState = fs.ts
+                    initState = evolvedState
                   )
                 )
           }
