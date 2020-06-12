@@ -740,6 +740,10 @@ object HoTTBot {
                       case te: TimeoutException =>
                         logger.error(te)
                         Set.empty[EquationNode]
+                      case te => 
+                        logger.error(s"Serious error")
+                        logger.error(te)
+                        Set.empty[EquationNode]
                     }
                 )
             )
