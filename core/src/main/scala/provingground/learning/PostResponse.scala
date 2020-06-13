@@ -321,6 +321,49 @@ case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predi
     }
 }
 
+/**
+  * Bot responding to a post returning a vector of posts for  
+  * each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made 
+  * but posts are in the future : this works if branches are known in advance but each branch calculation is expensive.
+  *
+  * @param responses the responses of the bot
+  * @param predicate the condition the post must satisfy to trigger the bot
+  * @param pw postability of the post type
+  * @param qw postability of the response post type
+  * @param lv queryability of the other arguments
+  */
+case class DualMiniBot[P, Q, W, V, ID](responses: V => P => Vector[Future[Q]], predicate: V => Boolean = (_: V) => true)(
+      implicit pw: Postable[P, W, ID],
+      qw: Postable[Q, W, ID],
+      lv: LocalQueryable[V, W, ID],
+      dg: DataGetter[Q, W, ID]
+  ) extends TypedPostResponse[P, W, ID] {
+
+    def post(
+        web: W,
+        content: P,
+        id: ID
+    ): Future[Vector[PostData[_, W, ID]]] = {
+      logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
+      val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
+      val taskNest =
+        auxFuture.flatMap{
+          (auxs => 
+            Future.sequence(auxs.flatMap{
+              aux => 
+                val newPostsFuture = responses(aux)(content)
+                val newPostsData = newPostsFuture.map(cF => cF.flatMap{c => 
+                    val idNewF = qw.post(c, web, Set(id))
+                    idNewF.map(idNew => PostData.get(c, idNew))
+                  }
+                )
+                newPostsData})
+            )
+        }
+      taskNest
+    }
+}
+
 import Postable.ec, TypedPostResponse.MicroBot
 
 case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vector()){
