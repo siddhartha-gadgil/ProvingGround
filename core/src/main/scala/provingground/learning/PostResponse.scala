@@ -277,90 +277,117 @@ object TypedPostResponse {
      (_ : Unit) => (p: P) => Future(func(p))
     )
   }
-}
 
-/**
-  * Bot responding to a post returning a vector of posts for  
-  * each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made 
-  *
-  * @param responses the responses of the bot
-  * @param predicate the condition the post must satisfy to trigger the bot
-  * @param pw postability of the post type
-  * @param qw postability of the response post type
-  * @param lv queryability of the other arguments
-  */
-case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean = (_: V) => true)(
-      implicit pw: Postable[P, W, ID],
-      qw: Postable[Q, W, ID],
-      lv: LocalQueryable[V, W, ID],
-      dg: DataGetter[Q, W, ID]
-  ) extends TypedPostResponse[P, W, ID] {
 
-    def post(
-        web: W,
-        content: P,
-        id: ID
-    ): Future[Vector[PostData[_, W, ID]]] = {
-      logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
-      val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
-      val taskNest =
-        auxFuture.map{
-          (auxs => 
-            auxs.map{
-              aux => 
-                val newPostsFuture = responses(aux)(content)
-                newPostsFuture.flatMap{newPosts => // extra nesting for multiple posts
-                  Future.sequence(newPosts.map{newPost =>
-                    val idNewFuture = qw.post(newPost, web, Set(id))
-                    idNewFuture.map(idNew => PostData.get(newPost, idNew))}
-                  )}
-            })
-        }
-      val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten))
-      task
-    }
-}
+  /**
+    * Bot responding to a post returning a vector of posts for  
+    * each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made 
+    *
+    * @param responses the responses of the bot
+    * @param predicate the condition the post must satisfy to trigger the bot
+    * @param pw postability of the post type
+    * @param qw postability of the response post type
+    * @param lv queryability of the other arguments
+    */
+  case class MiniBot[P, Q, W, V, ID](responses: V => P => Future[Vector[Q]], predicate: V => Boolean = (_: V) => true)(
+        implicit pw: Postable[P, W, ID],
+        qw: Postable[Q, W, ID],
+        lv: LocalQueryable[V, W, ID],
+        dg: DataGetter[Q, W, ID]
+    ) extends TypedPostResponse[P, W, ID] {
 
-/**
-  * Bot responding to a post returning a vector of posts for  
-  * each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made 
-  * but posts are in the future : this works if branches are known in advance but each branch calculation is expensive.
-  *
-  * @param responses the responses of the bot
-  * @param predicate the condition the post must satisfy to trigger the bot
-  * @param pw postability of the post type
-  * @param qw postability of the response post type
-  * @param lv queryability of the other arguments
-  */
-case class DualMiniBot[P, Q, W, V, ID](responses: V => P => Vector[Future[Q]], predicate: V => Boolean = (_: V) => true)(
-      implicit pw: Postable[P, W, ID],
-      qw: Postable[Q, W, ID],
-      lv: LocalQueryable[V, W, ID],
-      dg: DataGetter[Q, W, ID]
-  ) extends TypedPostResponse[P, W, ID] {
+      def post(
+          web: W,
+          content: P,
+          id: ID
+      ): Future[Vector[PostData[_, W, ID]]] = {
+        logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
+        val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
+        val taskNest =
+          auxFuture.map{
+            (auxs => 
+              auxs.map{
+                aux => 
+                  val newPostsFuture = responses(aux)(content)
+                  newPostsFuture.flatMap{newPosts => // extra nesting for multiple posts
+                    Future.sequence(newPosts.map{newPost =>
+                      val idNewFuture = qw.post(newPost, web, Set(id))
+                      idNewFuture.map(idNew => PostData.get(newPost, idNew))}
+                    )}
+              })
+          }
+        val task = taskNest.flatMap(st => Future.sequence(st).map(_.flatten))
+        task
+      }
+  }
 
-    def post(
-        web: W,
-        content: P,
-        id: ID
-    ): Future[Vector[PostData[_, W, ID]]] = {
-      logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
-      val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
-      val taskNest =
-        auxFuture.flatMap{
-          (auxs => 
-            Future.sequence(auxs.flatMap{
-              aux => 
-                val newPostsFuture = responses(aux)(content)
-                val newPostsData = newPostsFuture.map(cF => cF.flatMap{c => 
-                    val idNewF = qw.post(c, web, Set(id))
-                    idNewF.map(idNew => PostData.get(c, idNew))
-                  }
-                )
-                newPostsData})
-            )
-        }
-      taskNest
+  /**
+    * Bot responding to a post returning a vector of posts for  
+    * each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made 
+    * but posts are in the future : this works if branches are known in advance but each branch calculation is expensive.
+    *
+    * @param responses the responses of the bot
+    * @param predicate the condition the post must satisfy to trigger the bot
+    * @param pw postability of the post type
+    * @param qw postability of the response post type
+    * @param lv queryability of the other arguments
+    */
+  case class DualMiniBot[P, Q, W, V, ID](responses: V => P => Vector[Future[Q]], predicate: V => Boolean = (_: V) => true)(
+        implicit pw: Postable[P, W, ID],
+        qw: Postable[Q, W, ID],
+        lv: LocalQueryable[V, W, ID],
+        dg: DataGetter[Q, W, ID]
+    ) extends TypedPostResponse[P, W, ID] {
+
+      def post(
+          web: W,
+          content: P,
+          id: ID
+      ): Future[Vector[PostData[_, W, ID]]] = {
+        logger.info(s"triggered (multiple) responses of type ${qw.tag} to posts of type ${pw.tag}")
+        val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
+        val taskNest =
+          auxFuture.flatMap{
+            (auxs => 
+              Future.sequence(auxs.flatMap{
+                aux => 
+                  val newPostsFuture = responses(aux)(content)
+                  val newPostsData = newPostsFuture.map(cF => cF.flatMap{c => 
+                      val idNewF = qw.post(c, web, Set(id))
+                      idNewF.map(idNew => PostData.get(c, idNew))
+                    }
+                  )
+                  newPostsData})
+              )
+          }
+        taskNest
+      }
+  }
+
+  case class ComposedResponse[P, Q, W, ID](first: TypedPostResponse[P, W, ID], 
+    second: TypedPostResponse[Q, W, ID])(implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) extends TypedPostResponse[P, W, ID]{
+    def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]] = {
+      val firstPosts = first.post(web, content, id)
+      val secondPosts = firstPosts.flatMap(pds => 
+        Future.sequence(pds.flatMap(pd => pd.getOpt[Q].map(q => second.post(web, q, pd.id)))))
+      secondPosts.map(_.flatten)}
+  }
+
+  case class ReduceResponse[P, Q, R, W, ID](first: TypedPostResponse[P, W, ID], reduce: Vector[Q] => R)(
+    implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID], rw: Postable[R, W, ID], dgr: DataGetter[R, W, ID]) extends TypedPostResponse[P, W, ID]{
+      def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]] = {
+              val firstPosts = first.post(web, content, id)
+              val qPairsF = firstPosts.map(pds => pds.flatMap(pd => pd.getOpt[Q].map(q => q -> pd.id)))
+              val finalData = qPairsF.flatMap{
+                case qPair =>
+                      val preds = qPair.map(_._2)
+                      val qs = qPair.map(_._1)
+                      val result = reduce(qs)
+                      rw.post(result, web, preds.toSet).map(
+                        id => Vector(PostData.get(result, id))
+                      )
+              }
+        finalData}
     }
 }
 
