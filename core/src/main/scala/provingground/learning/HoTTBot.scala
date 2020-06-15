@@ -824,19 +824,19 @@ object HoTTBot {
 
 
   lazy val tangentEquations: DualMiniBot[
-    TangentLemmas,
+    TangentBaseState,
     GeneratedEquationNodes,
     HoTTPostWeb,
-    TangentBaseState :: LocalProver :: Set[EquationNode] :: HNil,
+    TangentLemmas :: LocalProver :: Set[EquationNode] :: HNil,
     ID
   ] = {
-    val responses: TangentBaseState :: LocalProver :: Set[
+    val responses: TangentLemmas :: LocalProver :: Set[
       EquationNode
-    ] :: HNil => TangentLemmas => Vector[
+    ] :: HNil => TangentBaseState => Vector[
       Future[GeneratedEquationNodes]
     ] = {
-      case tbs :: lp :: eqns :: HNil =>
-        tl =>
+      case tl :: lp :: eqns :: HNil =>
+        tbs =>
           (
               tl.lemmas.map {
                 case (tp, pfOpt, w) =>
