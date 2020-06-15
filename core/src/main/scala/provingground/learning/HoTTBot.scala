@@ -661,15 +661,133 @@ object HoTTBot {
     allLemmas.filter(hasLargeWeight(_))
   }
 
+  def baseMixinLemmas(power: Double = 1.0): SimpleBot[Lemmas, BaseMixinLemmas] =
+    MicroBot.simple(
+      lem => {
+        val powerSum =
+          lem.lemmas.map { case (_, _, p) => math.pow(p, power) }.sum
+        val flattened = lem.lemmas.map {
+          case (tp, pfOpt, p) => (tp, pfOpt, math.pow(p, power) / powerSum)
+        }
+        BaseMixinLemmas(flattened)
+      }
+    )
+
+  def tangentLemmas(
+      scale: Double = 1.0,
+      decay: Double = 0.5,
+      cutoff: Double = 0.04,
+      power: Double = 1
+  ): MicroHoTTBoTT[Lemmas, TangentLemmas, PreviousPosts[UsedLemmas]] = {
+    val response: PreviousPosts[UsedLemmas] => Lemmas => Future[TangentLemmas] =
+      (ul) =>
+        (lem) =>
+          Future {
+            val exclude = avoidLemmas(decay, cutoff)(ul.contents)
+            val l =
+              for {
+                (tp, pfOpt, p) <- lem.lemmas
+
+              } yield (tp, pfOpt, math.pow(p, power))
+            val ltot = l.map(_._3).sum
+            val sc   = scale / ltot
+            val tangentLemmas = l.map {
+              case (tp, pfOpt, w) => (tp, pfOpt, w * sc)
+            }
+            TangentLemmas(tangentLemmas)
+          }
+    MicroBot(response)
+  }
+
+  def baseState(
+      initialState: TermState,
+      equations: Set[Equation],
+      tg: TermGenParams,
+      maxRatio: Double = 1.01,
+      scale: Double = 1.0,
+      smooth: Option[Double] = None,
+      exponent: Double = 0.5,
+      decay: Double = 1,
+      maxTime: Option[Long] = None
+  ) = {
+    val expEv = ExpressionEval.fromInitEqs(
+      initialState,
+      equations,
+      tg,
+      maxRatio,
+      scale,
+      smooth,
+      exponent,
+      decay,
+      maxTime
+    )
+
+    expEv.finalTermState()
+  }
+
+  def baseStateFromLp(
+      lemmaMix: Double,
+      lemmaWeight: Double = 0.5,
+      cutoffScale: Double = 1.0,
+      tgOpt: Option[TermGenParams] = None,
+      depthOpt: Option[Int] = None
+  ): MicroHoTTBoTT[
+    BaseMixinLemmas,
+    TangentBaseState,
+    LocalProver :: GeneratedEquationNodes :: HNil
+  ] = {
+    val response
+        : LocalProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Future[
+          TangentBaseState
+        ] = {
+      case lp :: eqns :: HNil =>
+        lems =>
+          Future {
+            val lemPfDist = FiniteDistribution(
+              lems.lemmas.map {
+                case (typ, pfOpt, p) =>
+                  Weighted(pfOpt.getOrElse("pf" :: typ), p)
+              }
+            )
+            val baseDist = lp.initState.terms
+            val tdist    = (baseDist * (1.0 - lemmaMix) ++ (lemPfDist * lemmaMix))
+            val bs       = lp.initState.copy(terms = tdist)
+            val fs = baseState(
+              bs,
+              Equation.group(eqns.eqn),
+              lp.tg,
+              lp.maxRatio,
+              lp.scale,
+              lp.smoothing,
+              lp.exponent,
+              lp.decay,
+              lp.maxTime
+            )
+            TangentBaseState(
+              fs,
+              lemmaWeight,
+              cutoffScale,
+              tgOpt,
+              depthOpt
+            )
+          }
+    }
+    MicroBot(response)
+  }
+
   def lemmasBigTangentEquations(
       scale: Double = 1.0,
       power: Double = 1.0,
       lemmaMix: Double = 0,
       decay: Double = 0.5,
       cutoff: Double = 0.04
-  ): MicroHoTTBoTT[Lemmas, UsedLemmas :: GeneratedEquationNodes :: HNil, QueryProver :: Set[
-    EquationNode
-  ] :: FinalState :: PreviousPosts[UsedLemmas] :: HNil] = {
+  ): MicroHoTTBoTT[
+    Lemmas,
+    UsedLemmas :: GeneratedEquationNodes :: HNil,
+    QueryProver :: Set[
+      EquationNode
+    ] :: FinalState :: PreviousPosts[UsedLemmas] :: HNil
+  ] = {
     val response
         : QueryProver :: Set[EquationNode] :: FinalState :: PreviousPosts[
           UsedLemmas
@@ -683,10 +801,10 @@ object HoTTBot {
             for {
               (tp, pfOpt, p) <- lemmas.lemmas
             } yield (tp, pfOpt, math.pow(p, power))
-          val l = l0.filterNot{case (tp, _, _) => exclude.contains(tp)}
-          val ltot = l.map(_._3).sum
+          val l     = l0.filterNot { case (tp, _, _) => exclude.contains(tp) }
+          val ltot  = l.map(_._3).sum
           val l0tot = l0.map(_._3).sum
-          val sc   = scale / ltot
+          val sc    = scale / ltot
           val useLemmas = l.map {
             case (tp, pfOpt, w) => (UseLemma(tp, pfOpt), w * sc)
           }
@@ -740,7 +858,7 @@ object HoTTBot {
                       case te: TimeoutException =>
                         logger.error(te)
                         Set.empty[EquationNode]
-                      case te => 
+                      case te =>
                         logger.error(s"Serious error")
                         logger.error(te)
                         Set.empty[EquationNode]

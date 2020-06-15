@@ -73,6 +73,21 @@ object HoTTMessages {
       weight: Double
   )
 
+  case class TangentBaseState(
+    ts: TermState,
+    lemmaWeight: Double = 0.5,
+    cutoffScale: Double = 1.0,
+    tgOpt: Option[TermGenParams] = None,
+    depthOpt : Option[Int] = None
+  )
+
+  case class SpecialInitState(
+    ts: TermState,
+    cutoffScale: Double = 1.0,
+    tgOpt: Option[TermGenParams] = None,
+    depthOpt : Option[Int] = None
+  )
+
   /**
     * terms to use for proving, possibly the axioms etc not used in generating types.
     *
@@ -114,6 +129,8 @@ object HoTTMessages {
     */
   case class GeneratedEquationNodes(eqn: Set[EquationNode])
 
+  case object EquationsCompleted
+
   /**
     * instruction to seek lemmas
     *
@@ -139,6 +156,14 @@ object HoTTMessages {
 
     val support = lemmas.map(_._1).toSet
   }
+
+  case class TangentLemmas(
+      lemmas: Vector[(Typ[Term], Option[Term], Double)]
+  )
+
+  case class BaseMixinLemmas(
+      lemmas: Vector[(Typ[Term], Option[Term], Double)]
+  )
 
   /**
     * instruction to use a lemma - could be as a tangent or mixing in to generators
