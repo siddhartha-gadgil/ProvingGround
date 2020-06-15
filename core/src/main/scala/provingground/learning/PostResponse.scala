@@ -237,6 +237,17 @@ object TypedPostResponse {
       val task = taskNest.flatMap(st => Future.sequence(st))
       task
     }
+
+    def triggerWith[R](implicit rw: Postable[R, W, ID], pq: LocalQueryable[P, W, ID]) = 
+      {implicit val lpv : LocalQueryable[P:: V :: HNil, W, ID] = LocalQueryable.hconsQueryable(implicitly, implicitly)
+        MicroBot[R, Q, W, P :: V :: HNil, ID](
+        {
+          case p :: v :: HNil =>
+            _ : R =>
+              response(v)(p)
+        }
+      )
+      }
   }
 
   /**

@@ -780,7 +780,7 @@ case class LocalTangentProver(
     maxDepth: Int = 10,
     hW: Double = 1,
     klW: Double = 1,
-    val smoothing: Option[Double] = None,
+    smoothing: Option[Double] = None,
     relativeEval: Boolean = false,
     stateFromEquation: Boolean = false,
     exponent: Double = 0.5,

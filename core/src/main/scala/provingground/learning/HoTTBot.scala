@@ -734,15 +734,16 @@ object HoTTBot {
   ): MicroHoTTBoTT[
     BaseMixinLemmas,
     TangentBaseState,
-    LocalProver :: GeneratedEquationNodes :: HNil
+    QueryProver :: GeneratedEquationNodes :: HNil
   ] = {
     val response
-        : LocalProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Future[
+        : QueryProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Future[
           TangentBaseState
         ] = {
-      case lp :: eqns :: HNil =>
+      case qp :: eqns :: HNil =>
         lems =>
           Future {
+            import qp.lp
             val lemPfDist = FiniteDistribution(
               lems.lemmas.map {
                 case (typ, pfOpt, p) =>
@@ -765,7 +766,6 @@ object HoTTBot {
             )
             TangentBaseState(
               fs,
-              lemmaWeight,
               cutoffScale,
               tgOpt,
               depthOpt
@@ -773,6 +773,116 @@ object HoTTBot {
           }
     }
     MicroBot(response)
+  }
+
+  lazy val baseStateFromSpecialInit: DualMiniBot[
+    BaseMixinLemmas,
+    TangentBaseState,
+    HoTTPostWeb,
+    PreviousPosts[SpecialInitState] :: QueryProver :: GeneratedEquationNodes :: HNil,
+    ID
+  ] = {
+    val response
+        : PreviousPosts[SpecialInitState] :: QueryProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Vector[Future[
+          TangentBaseState
+        ]] = {
+      case psps :: qp :: eqns :: HNil =>
+        lems =>
+          psps.contents.map (ps =>
+          Future {
+            import qp.lp
+            val lemPfDist = FiniteDistribution(
+              lems.lemmas.map {
+                case (typ, pfOpt, p) =>
+                  Weighted(pfOpt.getOrElse("pf" :: typ), p)
+              }
+            )
+            val baseDist = ps.ts.terms
+            val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
+            val bs       = ps.ts.copy(terms = tdist)
+            val fs = baseState(
+              bs,
+              Equation.group(eqns.eqn),
+              ps.tgOpt.getOrElse(lp.tg),
+              lp.maxRatio,
+              lp.scale,
+              lp.smoothing,
+              lp.exponent,
+              lp.decay,
+              lp.maxTime
+            )
+            TangentBaseState(
+              fs,
+              ps.cutoffScale,
+              ps.tgOpt,
+              ps.depthOpt
+            )
+          })
+    }
+    DualMiniBot(response)
+  }
+
+
+  lazy val tangentEquations: DualMiniBot[
+    TangentLemmas,
+    GeneratedEquationNodes,
+    HoTTPostWeb,
+    PreviousPosts[TangentBaseState] :: LocalProver :: Set[EquationNode] :: HNil,
+    ID
+  ] = {
+    val responses: PreviousPosts[TangentBaseState] :: LocalProver :: Set[
+      EquationNode
+    ] :: HNil => TangentLemmas => Vector[
+      Future[GeneratedEquationNodes]
+    ] = {
+      case ptbs :: lp :: eqns :: HNil =>
+        tl =>
+          ptbs.contents.flatMap(
+            tbs =>
+              tl.lemmas.map {
+                case (tp, pfOpt, w) =>
+                  val pf        = pfOpt.getOrElse("lemma" :: tp)
+                  val tangState = tbs.ts.tangent(pf)
+                  val lpt =
+                    LocalTangentProver(
+                      tbs.ts,
+                      eqns,
+                      tangState,
+                      tbs.tgOpt.getOrElse(lp.tg),
+                      lp.cutoff * tbs.cutoffScale * w,
+                      tbs.depthOpt.orElse(lp.genMaxDepth),
+                      lp.limit,
+                      lp.maxRatio,
+                      lp.scale,
+                      lp.steps,
+                      lp.maxDepth,
+                      lp.hW,
+                      lp.klW,
+                      lp.smoothing,
+                      lp.relativeEval,
+                      lp.stateFromEquation,
+                      lp.exponent,
+                      lp.decay,
+                      lp.maxTime
+                    )
+                  lpt.enhancedEquationNodes
+                    .onErrorRecover {
+                      case te: TimeoutException =>
+                        logger.error(te)
+                        Set.empty[EquationNode]
+                      case te =>
+                        logger.error(s"Serious error")
+                        logger.error(te)
+                        Set.empty[EquationNode]
+                    }
+                    .map(GeneratedEquationNodes(_))
+                    .runToFuture
+              }
+          )
+
+    }
+
+    DualMiniBot(responses)
   }
 
   def lemmasBigTangentEquations(

@@ -75,7 +75,6 @@ object HoTTMessages {
 
   case class TangentBaseState(
     ts: TermState,
-    lemmaWeight: Double = 0.5,
     cutoffScale: Double = 1.0,
     tgOpt: Option[TermGenParams] = None,
     depthOpt : Option[Int] = None
@@ -83,6 +82,7 @@ object HoTTMessages {
 
   case class SpecialInitState(
     ts: TermState,
+    lemmaMix: Double = 0.5,
     cutoffScale: Double = 1.0,
     tgOpt: Option[TermGenParams] = None,
     depthOpt : Option[Int] = None
