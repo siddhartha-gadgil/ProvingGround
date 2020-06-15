@@ -9,7 +9,7 @@ import provingground.learning.TypedPostResponse.MicroBot
   */
 trait Postable[P, W, ID] {
   def post(content: P, web: W, pred: Set[ID]): Future[ID]
-  val tag: TypeTag[P]
+  implicit val tag: TypeTag[P]
 }
 
 trait BiPostable[P, W, ID] extends Postable[P, W, ID] {

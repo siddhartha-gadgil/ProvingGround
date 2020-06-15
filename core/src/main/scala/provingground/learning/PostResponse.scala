@@ -210,9 +210,9 @@ object TypedPostResponse {
     * @param lv queryability of the other arguments
     */ 
   case class MicroBot[P, Q, W, V, ID](response: V => P => Future[Q], predicate: P => V => Boolean = (_: P) => (_ : V) => true)(
-      implicit pw: Postable[P, W, ID],
-      qw: Postable[Q, W, ID],
-      lv: LocalQueryable[V, W, ID],
+      implicit val ppw: Postable[P, W, ID],
+      val qw: Postable[Q, W, ID],
+      val lv: LocalQueryable[V, W, ID],
       val dg: DataGetter[Q, W, ID]
   ) extends TypedPostResponse[P, W, ID] {
 
@@ -248,6 +248,19 @@ object TypedPostResponse {
         }
       )
       }
+    
+    def ::[QQ : TypeTag, VV: TypeTag](that : MicroBot[P, QQ, W, VV, ID])(implicit qqw: Postable[QQ, W, ID], dgqq : DataGetter[QQ, W, ID],
+      nilGetter: Postable[HNil, W, ID]) : MicroBot[P,Q :: QQ :: HNil,W,V :: VV :: HNil,ID] = 
+      {
+        import that.{dg, lv => tlv, ppw}
+        import qw.tag
+
+        MicroBot[P, Q :: QQ :: HNil, W, V :: VV:: HNil, ID]{
+        case v :: vv :: HNil => p =>
+            response(v)(p).flatMap(r1 =>
+             that.response(vv)(p).map(r2 => r1 :: r2 :: HNil) )             
+          }
+        }
   }
 
   /**

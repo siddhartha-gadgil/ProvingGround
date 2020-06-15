@@ -827,18 +827,17 @@ object HoTTBot {
     TangentLemmas,
     GeneratedEquationNodes,
     HoTTPostWeb,
-    PreviousPosts[TangentBaseState] :: LocalProver :: Set[EquationNode] :: HNil,
+    TangentBaseState :: LocalProver :: Set[EquationNode] :: HNil,
     ID
   ] = {
-    val responses: PreviousPosts[TangentBaseState] :: LocalProver :: Set[
+    val responses: TangentBaseState :: LocalProver :: Set[
       EquationNode
     ] :: HNil => TangentLemmas => Vector[
       Future[GeneratedEquationNodes]
     ] = {
-      case ptbs :: lp :: eqns :: HNil =>
+      case tbs :: lp :: eqns :: HNil =>
         tl =>
-          ptbs.contents.flatMap(
-            tbs =>
+          (
               tl.lemmas.map {
                 case (tp, pfOpt, w) =>
                   val pf        = pfOpt.getOrElse("lemma" :: tp)
