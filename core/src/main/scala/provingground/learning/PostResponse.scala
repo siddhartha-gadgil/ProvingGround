@@ -149,6 +149,16 @@ sealed abstract class TypedPostResponse[P, W, ID](
 
   // the posts in response to a given one, may be none
   def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]]
+
+  def >>[Q](that: TypedPostResponse[Q, W, ID])(implicit qw: Postable[Q, W, ID], dg: DataGetter[Q, W, ID]) =
+    TypedPostResponse.ComposedResponse(this, that)
+
+  def &&(that: TypedPostResponse[P, W, ID]) = TypedPostResponse.ConcurrentResponse(this, that)
+
+  def reduce[Q, R](reduction: Vector[Q] => R)(
+    implicit qw: Postable[Q, W, ID],
+      rw : Postable[R, W, ID],
+      dgr: DataGetter[R, W, ID]) = TypedPostResponse.ReducedResponse(this, reduction)
 }
 
 object TypedPostResponse {
@@ -348,17 +358,25 @@ object TypedPostResponse {
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.flatMap{
-            (auxs => 
+            {auxs => 
+              var remaining = auxs.size
+            Utils.logger.info(s"launching ${auxs.size} responses  of type ${qw.tag}")
               Future.sequence(auxs.flatMap{
                 aux => 
                   val newPostsFuture = responses(aux)(content)
                   val newPostsData = newPostsFuture.map(cF => cF.flatMap{c => 
                       val idNewF = qw.post(c, web, Set(id))
-                      idNewF.map(idNew => PostData.get(c, idNew))
+                      idNewF.map(idNew => PostData.get(c, idNew)).andThen{
+                        case Success(_) => remaining = remaining - 1
+                          Utils.logger.info(s"remaining $remaining responses of type ${qw.tag}") 
+                        case Failure(exception) => 
+                          Utils.logger.error(s"response failed with error")
+                          Utils.logger.error(exception)
+                      }
                     }
                   )
                   newPostsData})
-              )
+                  }
           }
         taskNest
       }
@@ -373,7 +391,15 @@ object TypedPostResponse {
       secondPosts.map(_.flatten)}
   }
 
-  case class ReduceResponse[P, Q, R, W, ID](first: TypedPostResponse[P, W, ID], reduce: Vector[Q] => R)(
+  case class ConcurrentResponse[P, W, ID](first: TypedPostResponse[P, W, ID], second: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) extends TypedPostResponse[P, W, ID]{
+    def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]] =
+      for {
+        r1 <- first.post(web, content, id)
+        r2 <- second.post(web, content, id)
+      }  yield r1 ++ r2
+  }
+
+  case class ReducedResponse[P, Q, R, W, ID](first: TypedPostResponse[P, W, ID], reduce: Vector[Q] => R)(
     implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID], rw: Postable[R, W, ID], dgr: DataGetter[R, W, ID]) extends TypedPostResponse[P, W, ID]{
       def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]] = {
               val firstPosts = first.post(web, content, id)
@@ -399,10 +425,6 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
 
   def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
     Future.sequence(apexPosts.flatMap{pd =>
-      // pprint.log(pd) 
-      // pprint.log(pd.getOpt[P])
-      // pprint.log(pd.pw.tag)
-      // pprint.log(pw.tag)
       pd.getOpt[P].map{content => (pd, content, pd.id)}
     }.map{
       case (pd, content, id) => bot.post(web, content, id).map{w => if (w.isEmpty) Vector(pd) else w}
