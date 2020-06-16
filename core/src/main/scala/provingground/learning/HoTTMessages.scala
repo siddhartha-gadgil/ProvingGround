@@ -74,18 +74,24 @@ object HoTTMessages {
   )
 
   case class TangentBaseState(
-    ts: TermState,
-    cutoffScale: Double = 1.0,
-    tgOpt: Option[TermGenParams] = None,
-    depthOpt : Option[Int] = None
+      ts: TermState,
+      cutoffScale: Double = 1.0,
+      tgOpt: Option[TermGenParams] = None,
+      depthOpt: Option[Int] = None
   )
 
+  case object TangentBaseCompleted
+
   case class SpecialInitState(
-    ts: TermState,
-    lemmaMix: Double = 0.5,
-    cutoffScale: Double = 1.0,
-    tgOpt: Option[TermGenParams] = None,
-    depthOpt : Option[Int] = None
+      ts: TermState,
+      lemmaMix: Double = 0.5,
+      cutoffScale: Double = 1.0,
+      tgOpt: Option[TermGenParams] = None,
+      depthOpt: Option[Int] = None
+  )
+
+  case class TautologyInitState(
+      tautGen: TermState
   )
 
   /**
@@ -151,8 +157,9 @@ object HoTTMessages {
 
   case class UsedLemmas(
       lemmas: Vector[(Typ[Term], Double)]
-  ){
-    def weight(typ: Typ[Term]) : Double = lemmas.find(_._1 == typ).map(_._2).getOrElse(0.0)
+  ) {
+    def weight(typ: Typ[Term]): Double =
+      lemmas.find(_._1 == typ).map(_._2).getOrElse(0.0)
 
     val support = lemmas.map(_._1).toSet
   }

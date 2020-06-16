@@ -149,25 +149,32 @@ object HoTTBot {
   }
 
   def finalStateFilteredLemmas(
-      tautGen: TermState,
       tg: TermGenParams = TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
       maxRatio: Double = 1.5,
       maxTime: Option[Long] = Some(60000L)
-  ): MicroHoTTBoTT[FinalState, Lemmas, Set[Equation] :: QueryBaseState :: HNil] = {
+  ): MicroHoTTBoTT[FinalState, Lemmas, PreviousPosts[TautologyInitState] :: Set[
+    Equation
+  ] :: QueryBaseState :: HNil] = {
     val response
-        : Set[Equation] :: QueryBaseState :: HNil => FinalState => Future[
+        : PreviousPosts[TautologyInitState] :: Set[Equation] :: QueryBaseState :: HNil => FinalState => Future[
           Lemmas
         ] = {
-      case (eqns :: qinit :: HNil) =>
-        (fs) =>
-          Future {
+      case (tauts :: eqns :: qinit :: HNil) =>
+        (fs) => {
+          val tautTerms = Future
+            .sequence(tauts.contents.map { t =>
+              Future(tautologyTerms(t.tautGen, eqns, tg, maxRatio, maxTime))
+            })
+            .map(v => v.fold(Set.empty[Term])(_ union _))
+          tautTerms.map { tt =>
             val proved =
-              (tautologyTerms(tautGen, eqns, tg, maxRatio, maxTime) union
+              (tt union
                 qinit.init.terms.support).map(_.typ)
             Lemmas(fs.ts.lemmas.filterNot {
               case (tp, _, _) => proved.contains(tp)
             })
           }
+        }
     }
     MicroBot(response)
   }
@@ -783,45 +790,58 @@ object HoTTBot {
     ID
   ] = {
     val response
-        : PreviousPosts[SpecialInitState] :: QueryProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Vector[Future[
-          TangentBaseState
-        ]] = {
+        : PreviousPosts[SpecialInitState] :: QueryProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Vector[
+          Future[
+            TangentBaseState
+          ]
+        ] = {
       case psps :: qp :: eqns :: HNil =>
         lems =>
-          psps.contents.map (ps =>
-          Future {
-            import qp.lp
-            val lemPfDist = FiniteDistribution(
-              lems.lemmas.map {
-                case (typ, pfOpt, p) =>
-                  Weighted(pfOpt.getOrElse("pf" :: typ), p)
+          psps.contents.map(
+            ps =>
+              Future {
+                import qp.lp
+                val lemPfDist = FiniteDistribution(
+                  lems.lemmas.map {
+                    case (typ, pfOpt, p) =>
+                      Weighted(pfOpt.getOrElse("pf" :: typ), p)
+                  }
+                )
+                val baseDist = ps.ts.terms
+                val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
+                val bs       = ps.ts.copy(terms = tdist)
+                val fs = baseState(
+                  bs,
+                  Equation.group(eqns.eqn),
+                  ps.tgOpt.getOrElse(lp.tg),
+                  lp.maxRatio,
+                  lp.scale,
+                  lp.smoothing,
+                  lp.exponent,
+                  lp.decay,
+                  lp.maxTime
+                )
+                TangentBaseState(
+                  fs,
+                  ps.cutoffScale,
+                  ps.tgOpt,
+                  ps.depthOpt
+                )
               }
-            )
-            val baseDist = ps.ts.terms
-            val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
-            val bs       = ps.ts.copy(terms = tdist)
-            val fs = baseState(
-              bs,
-              Equation.group(eqns.eqn),
-              ps.tgOpt.getOrElse(lp.tg),
-              lp.maxRatio,
-              lp.scale,
-              lp.smoothing,
-              lp.exponent,
-              lp.decay,
-              lp.maxTime
-            )
-            TangentBaseState(
-              fs,
-              ps.cutoffScale,
-              ps.tgOpt,
-              ps.depthOpt
-            )
-          })
+          )
     }
     DualMiniBot(response)
   }
 
+  def cappedBaseState(
+      lemmaMix: Double,
+      lemmaWeight: Double = 0.5,
+      cutoffScale: Double = 1.0,
+      tgOpt: Option[TermGenParams] = None,
+      depthOpt: Option[Int] = None
+  ): HoTTBot =
+    (baseStateFromLp(lemmaMix, lemmaWeight, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
+      .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   lazy val tangentEquations: DualMiniBot[
     TangentBaseState,
@@ -838,51 +858,59 @@ object HoTTBot {
       case tl :: lp :: eqns :: HNil =>
         tbs =>
           (
-              tl.lemmas.map {
-                case (tp, pfOpt, w) =>
-                  val pf        = pfOpt.getOrElse("lemma" :: tp)
-                  val tangState = tbs.ts.tangent(pf)
-                  val lpt =
-                    LocalTangentProver(
-                      tbs.ts,
-                      eqns,
-                      tangState,
-                      tbs.tgOpt.getOrElse(lp.tg),
-                      lp.cutoff * tbs.cutoffScale * w,
-                      tbs.depthOpt.orElse(lp.genMaxDepth),
-                      lp.limit,
-                      lp.maxRatio,
-                      lp.scale,
-                      lp.steps,
-                      lp.maxDepth,
-                      lp.hW,
-                      lp.klW,
-                      lp.smoothing,
-                      lp.relativeEval,
-                      lp.stateFromEquation,
-                      lp.exponent,
-                      lp.decay,
-                      lp.maxTime
-                    )
-                  lpt.enhancedEquationNodes
-                    .onErrorRecover {
-                      case te: TimeoutException =>
-                        logger.error(te)
-                        Set.empty[EquationNode]
-                      case te =>
-                        logger.error(s"Serious error")
-                        logger.error(te)
-                        Set.empty[EquationNode]
-                    }
-                    .map(GeneratedEquationNodes(_))
-                    .runToFuture
-              }
+            tl.lemmas.map {
+              case (tp, pfOpt, w) =>
+                val pf        = pfOpt.getOrElse("lemma" :: tp)
+                val tangState = tbs.ts.tangent(pf)
+                val lpt =
+                  LocalTangentProver(
+                    tbs.ts,
+                    eqns,
+                    tangState,
+                    tbs.tgOpt.getOrElse(lp.tg),
+                    lp.cutoff * tbs.cutoffScale * w,
+                    tbs.depthOpt.orElse(lp.genMaxDepth),
+                    lp.limit,
+                    lp.maxRatio,
+                    lp.scale,
+                    lp.steps,
+                    lp.maxDepth,
+                    lp.hW,
+                    lp.klW,
+                    lp.smoothing,
+                    lp.relativeEval,
+                    lp.stateFromEquation,
+                    lp.exponent,
+                    lp.decay,
+                    lp.maxTime
+                  )
+                lpt.enhancedEquationNodes
+                  .onErrorRecover {
+                    case te: TimeoutException =>
+                      logger.error(te)
+                      Set.empty[EquationNode]
+                    case te =>
+                      logger.error(s"Serious error")
+                      logger.error(te)
+                      Set.empty[EquationNode]
+                  }
+                  .map(GeneratedEquationNodes(_))
+                  .runToFuture
+            }
           )
 
     }
 
     DualMiniBot(responses)
   }
+
+  lazy val cappedTangentEquations =
+    tangentEquations.reduce(
+      (v: Vector[GeneratedEquationNodes]) => {
+        val all = v.map(_.eqn).fold(Set.empty[EquationNode])(_ union _)
+        GeneratedEquationNodes(all) :: EquationsCompleted :: HNil
+      }
+    )
 
   def lemmasBigTangentEquations(
       scale: Double = 1.0,

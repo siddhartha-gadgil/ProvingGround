@@ -35,22 +35,27 @@ class HoTTPostWeb {
     equationNodes ++= eqs
   }
 
-  def typs = terms.collect{case t : Typ[u] => t: Typ[Term]} union terms.map(_.typ)
+  def typs =
+    terms.collect { case t: Typ[u] => t: Typ[Term] } union terms.map(_.typ)
 
   def derivedEquations = {
-    terms.flatMap(DE.formalEquations(_)) union (typs.flatMap(DE.formalTypEquations(_)))
+    terms.flatMap(DE.formalEquations(_)) union (typs.flatMap(
+      DE.formalTypEquations(_)
+    ))
   }
 
   def updateDerived() = addEqns(derivedEquations)
 
-  def addTerms(terms: Set[Term]) : Unit = {
+  def addTerms(terms: Set[Term]): Unit = {
     extraTerms ++= terms
   }
 
-  def getProofs(tps: Vector[Typ[Term]]) = 
-    tps.map{
-      typ => typ -> terms.filter(_.typ == typ)
-    }.filter(_._2.nonEmpty)
+  def getProofs(tps: Vector[Typ[Term]]) =
+    tps
+      .map { typ =>
+        typ -> terms.filter(_.typ == typ)
+      }
+      .filter(_._2.nonEmpty)
 
   val polyBuffer =
     PostBuffer.build[FunctionForGoal, ID]() ::
@@ -76,21 +81,24 @@ class HoTTPostWeb {
       PostDiscarder.build[Unit, ID]((0, 0)) ::
       PostDiscarder.build[HNil, ID]((0, 0)) :: HNil
 
-  val polyBuffer2 = 
+  val polyBuffer2 =
     ErasablePostBuffer.build[RepresentationMap, ID]() ::
-    PostBuffer.build[ExstInducDefn, ID]() ::
-    PostBuffer.build[OptimalInitial, ID]() ::
-    PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
-    PostBuffer.build[FromAny, ID]() ::
-    PostBuffer.build[UsedLemmas, ID]() ::
-    ErasablePostBuffer.build[TangentBaseState, ID]() ::
-    PostBuffer.build[SpecialInitState, ID]() ::
-    PostBuffer.build[TangentLemmas, ID]() ::
-    PostBuffer.build[BaseMixinLemmas, ID]() ::
-    PostBuffer.build[EquationsCompleted.type, ID]() ::
-    PostBuffer.build[ConsiderInductiveTypes, ID]() :: HNil
+      PostBuffer.build[ExstInducDefn, ID]() ::
+      PostBuffer.build[OptimalInitial, ID]() ::
+      PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
+      PostBuffer.build[FromAny, ID]() ::
+      PostBuffer.build[UsedLemmas, ID]() ::
+      ErasablePostBuffer.build[TangentBaseState, ID]() ::
+      PostBuffer.build[SpecialInitState, ID]() ::
+      PostBuffer.build[TangentLemmas, ID]() ::
+      PostBuffer.build[BaseMixinLemmas, ID]() ::
+      PostBuffer.build[EquationsCompleted.type, ID]() ::
+      PostBuffer.build[TangentBaseCompleted.type, ID]() ::
+      PostBuffer.build[TautologyInitState, ID]() ::
+      PostBuffer.build[ConsiderInductiveTypes, ID]() :: HNil
 
-  def snapShot : WebState[HoTTPostWeb,HoTTPostWeb.ID] = HoTTPostWeb.history.snapShot(this)
+  def snapShot: WebState[HoTTPostWeb, HoTTPostWeb.ID] =
+    HoTTPostWeb.history.snapShot(this)
 }
 
 object HoTTPostWeb {
@@ -105,9 +113,8 @@ object HoTTPostWeb {
 
   val polyImpl2 = BuildPostable.get((w: HoTTPostWeb) => w.polyBuffer2)
 
-  implicit val (b34 :: b33 :: b32 :: b31:: b30 :: b29 :: b28 :: b27 :: 
-    b26 :: b25 :: b24 :: b23:: HNil) = polyImpl2
-
+  implicit val (b36 :: b35 :: b34 :: b33 :: b32 :: b31 :: b30 :: b29 :: b28 :: b27 ::
+    b26 :: b25 :: b24 :: b23 :: HNil) = polyImpl2
 
   implicit val history: PostHistory[HoTTPostWeb, ID] =
     HistoryGetter.get((w: HoTTPostWeb) => w.polyBuffer :: w.polyBuffer2)

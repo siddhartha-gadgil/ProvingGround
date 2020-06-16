@@ -83,9 +83,9 @@ object CzSlOly {
 
   import HoTTBot._
 
-  val bots: Vector[HoTTBot] = Vector(
+  val bots0: Vector[HoTTBot] = Vector(
     expEvToFinalState,
-    finalStateFilteredLemmas(tautGen),
+    finalStateFilteredLemmas(), // needed argument tautGen
     eqnsToExpEv,
     lemmasBigTangentEquations(scale = 0.1, power = 0.4, lemmaMix = 0.3),
     eqnUpdate,
