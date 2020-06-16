@@ -85,7 +85,7 @@ object HoTTMessages {
   case class SpecialInitState(
       ts: TermState,
       lemmaMix: Double = 0.5,
-      cutoffScale: Double = 1.0,
+      cutoffScale: Double = 1.0, // lower the cutoff by this
       tgOpt: Option[TermGenParams] = None,
       depthOpt: Option[Int] = None
   )

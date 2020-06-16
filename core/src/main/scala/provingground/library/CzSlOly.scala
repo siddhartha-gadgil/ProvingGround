@@ -1,6 +1,8 @@
 package provingground.library
 
 import provingground._, interface._, HoTT._, learning._
+import provingground.learning.HoTTMessages._
+import monix.execution.Scheduler.Implicits.global
 
 object CzSlOly {
   val M = "M" :: Type
@@ -54,7 +56,6 @@ object CzSlOly {
     Unify.appln(trans, "lemma" :: results(4)).get.typ
   )
 
-
   val termState: TermState = TermState(
     FiniteDistribution
       .unif(
@@ -81,6 +82,17 @@ object CzSlOly {
     FiniteDistribution.unif(M)
   )
 
+  val transitivtyInit = SpecialInitState(
+    TermState(
+      FiniteDistribution
+        .unif(trans),
+      FiniteDistribution.unif()
+    ),
+    cutoffScale = 10,
+    tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.4)),
+    depthOpt = Some(2)
+  )
+
   val localProver: LocalProver = LocalProver(
     termState,
     TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
@@ -89,6 +101,7 @@ object CzSlOly {
 
   import HoTTBot._
 
+  // Old style, kept for debugging
   val bots0: Vector[HoTTBot] = Vector(
     expEvToFinalState,
     finalStateFilteredLemmas(), // needed argument tautGen
@@ -99,4 +112,32 @@ object CzSlOly {
     reportProofs(results),
     expnEqnUpdate
   )
+
+  val bots: Vector[HoTTBot] = Vector(
+    expEvToFinalState,
+    finalStateFilteredLemmas(),
+    tangentLemmas(power = 0.7) :: baseMixinLemmas(0.3),
+    cappedBaseState(0.3),
+    cappedTangentEquations,
+    eqnsToExpEv.triggerWith[EquationsCompleted.type],
+    eqnUpdate,
+    updateTerms,
+    expnEqnUpdate,
+    reportProofs(results),
+    reportMixinLemmas(results),
+    reportTangentLemmas(results),
+    reportTangentBaseTerms(steps)
+  )
+
+  val web = new HoTTPostWeb()
+  val ws  = WebState[HoTTPostWeb, HoTTPostWeb.ID](web)
+
+  lazy val sessF = 
+    for {
+      ws1 <- ws.post(TautologyInitState(tautGen), Set())
+      ws2 <- ws1.postApex(transitivtyInit)
+      ws3 <- ws2.postApex(localProver)
+      ws4 <- ws3.act(lpToEnhancedExpEv)
+      ws5 <- ws4.act(expnEqnUpdate)
+    } yield HoTTWebSession.launch(ws5, bots)
 }

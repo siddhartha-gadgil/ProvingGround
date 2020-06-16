@@ -404,6 +404,17 @@ object TypedPostResponse {
           }
         taskNest
       }
+
+    def triggerWith[R](implicit rw: Postable[R, W, ID], pq: LocalQueryable[P, W, ID]) = 
+      {implicit val lpv : LocalQueryable[P:: V :: HNil, W, ID] = LocalQueryable.hconsQueryable(implicitly, implicitly)
+        DualMiniBot[R, Q, W, P :: V :: HNil, ID](
+        {
+          case p :: v :: HNil =>
+            _ : R =>
+              responses(v)(p)
+        }
+      )
+      }
   }
 
   case class ComposedResponse[P, Q, W, ID](first: TypedPostResponse[P, W, ID], 

@@ -777,7 +777,6 @@ object HoTTBot {
 
   def baseStateFromLp(
       lemmaMix: Double,
-      lemmaWeight: Double = 0.5,
       cutoffScale: Double = 1.0,
       tgOpt: Option[TermGenParams] = None,
       depthOpt: Option[Int] = None
@@ -878,12 +877,11 @@ object HoTTBot {
 
   def cappedBaseState(
       lemmaMix: Double,
-      lemmaWeight: Double = 0.5,
       cutoffScale: Double = 1.0,
       tgOpt: Option[TermGenParams] = None,
       depthOpt: Option[Int] = None
   ): HoTTBot =
-    (baseStateFromLp(lemmaMix, lemmaWeight, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
+    (baseStateFromLp(lemmaMix,  cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   lazy val tangentEquations: DualMiniBot[
@@ -911,7 +909,7 @@ object HoTTBot {
                     eqns,
                     tangState,
                     tbs.tgOpt.getOrElse(lp.tg),
-                    lp.cutoff * tbs.cutoffScale * w,
+                    (lp.cutoff / tbs.cutoffScale) * w,
                     tbs.depthOpt.orElse(lp.genMaxDepth),
                     lp.limit,
                     lp.maxRatio,
@@ -948,7 +946,7 @@ object HoTTBot {
   }
 
   lazy val cappedTangentEquations =
-    tangentEquations.reduce(
+    tangentEquations.triggerWith[TangentBaseCompleted.type].reduce(
       (v: Vector[GeneratedEquationNodes]) => {
         val all = v.map(_.eqn).fold(Set.empty[EquationNode])(_ union _)
         GeneratedEquationNodes(all) :: EquationsCompleted :: HNil
