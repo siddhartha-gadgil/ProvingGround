@@ -93,6 +93,22 @@ object CzSlOly {
     depthOpt = Some(2)
   )
 
+  val mulInit = SpecialInitState(
+    TermState(
+      FiniteDistribution
+        .unif(
+          m,
+          n,
+          mn,
+          leftMul,
+          rightMul
+        ),
+      FiniteDistribution.unif(M)
+    ),
+    tgOpt = Some(TermGenParams.zero.copy(appW = 0.2)),
+    cutoffScale = 3
+  )
+
   val localProver: LocalProver = LocalProver(
     termState,
     TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1),
@@ -132,12 +148,13 @@ object CzSlOly {
   val web = new HoTTPostWeb()
   val ws  = WebState[HoTTPostWeb, HoTTPostWeb.ID](web)
 
-  lazy val sessF = 
+  lazy val sessF =
     for {
       ws1 <- ws.post(TautologyInitState(tautGen), Set())
       ws2 <- ws1.postApex(transitivtyInit)
-      ws3 <- ws2.postApex(localProver)
-      ws4 <- ws3.act(lpToEnhancedExpEv)
-      ws5 <- ws4.act(expnEqnUpdate)
+      ws3 <- ws2.postApex(mulInit)
+      ws4 <- ws3.postApex(localProver)
+      ws5 <- ws4.act(lpToEnhancedExpEv)
+      ws6 <- ws5.act(expnEqnUpdate)
     } yield HoTTWebSession.launch(ws5, bots)
 }
