@@ -49,6 +49,12 @@ object CzSlOly {
   val ass1 = "ass1" :: a ~>: (b ~>: eqM(mul(mul(a)(b))(b))(a))
   val ass2 = "ass2" :: a ~>: (b ~>: eqM(mul(a)(mul(a)(b)))(b))
 
+  val steps = Vector(
+    Unify.appln(trans, "lemma" :: results(3)).get.typ,
+    Unify.appln(trans, "lemma" :: results(4)).get.typ
+  )
+
+
   val termState: TermState = TermState(
     FiniteDistribution
       .unif(

@@ -261,6 +261,49 @@ object HoTTBot {
       Utils.report(view)
     }
 
+  def reportTangentLemmas(
+      results: Vector[Typ[Term]]
+  ): TypedPostResponse[TangentLemmas, HoTTPostWeb, ID] =
+    Callback.simple { (web: HoTTPostWeb) => (ls: TangentLemmas) =>
+      val tls = results
+        .flatMap(typ => ls.lemmas.find(_._1 == typ).map(typ -> _._3))
+      val view = s"Tangent lemmas: ${tls.size}\n${tls
+        .mkString("\n")}"
+      logger.info(view)
+      Utils.report(view)
+    }
+
+  def reportMixinLemmas(
+      results: Vector[Typ[Term]]
+  ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
+    Callback.simple { (web: HoTTPostWeb) => (ls: BaseMixinLemmas ) =>
+      val tls = results
+        .flatMap(typ => ls.lemmas.find(_._1 == typ).map(typ -> _._3))
+      val view = s"Base mixin lemmas: ${tls.size}\n${tls
+        .mkString("\n")}"
+      logger.info(view)
+      Utils.report(view)
+    }
+
+  def reportTangentBaseTerms(
+      steps: Vector[Typ[Term]]
+  ): TypedPostResponse[TangentBaseState, HoTTPostWeb, ID] =
+    Callback.simple { (web: HoTTPostWeb) => (fs: TangentBaseState ) =>
+      val termsSet = fs.ts.terms.support
+      val pfs = steps
+        .map(typ => typ -> termsSet.filter(_.typ == typ))
+        .filter(_._2.nonEmpty)
+      val view = s"Terms in base: ${pfs.size}\n${pfs
+        .map {
+          case (tp, ps) =>
+            val best = ps.maxBy(t => fs.ts.terms(t))
+            s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
+        }
+        .mkString("\n")}"
+      logger.info(view)
+      Utils.report(view)
+    }
+
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
     MicroBot.simple(
       (ev: ExpressionEval) =>
