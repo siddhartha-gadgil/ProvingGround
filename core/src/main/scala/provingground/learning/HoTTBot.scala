@@ -783,10 +783,10 @@ object HoTTBot {
   ): MicroHoTTBoTT[
     BaseMixinLemmas,
     TangentBaseState,
-    QueryProver :: GeneratedEquationNodes :: HNil
+    QueryProver :: Set[Equation] :: HNil
   ] = {
     val response
-        : QueryProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Future[
+        : QueryProver :: Set[Equation] :: HNil => BaseMixinLemmas => Future[
           TangentBaseState
         ] = {
       case qp :: eqns :: HNil =>
@@ -804,7 +804,7 @@ object HoTTBot {
             val bs       = lp.initState.copy(terms = tdist)
             val fs = baseState(
               bs,
-              Equation.group(eqns.eqn),
+              eqns,
               lp.tg,
               lp.maxRatio,
               lp.scale,
@@ -828,11 +828,11 @@ object HoTTBot {
     BaseMixinLemmas,
     TangentBaseState,
     HoTTPostWeb,
-    PreviousPosts[SpecialInitState] :: QueryProver :: GeneratedEquationNodes :: HNil,
+    PreviousPosts[SpecialInitState] :: QueryProver :: Set[Equation] :: HNil,
     ID
   ] = {
     val response
-        : PreviousPosts[SpecialInitState] :: QueryProver :: GeneratedEquationNodes :: HNil => BaseMixinLemmas => Vector[
+        : PreviousPosts[SpecialInitState] :: QueryProver :: Set[Equation] :: HNil => BaseMixinLemmas => Vector[
           Future[
             TangentBaseState
           ]
@@ -854,7 +854,7 @@ object HoTTBot {
                 val bs       = ps.ts.copy(terms = tdist)
                 val fs = baseState(
                   bs,
-                  Equation.group(eqns.eqn),
+                  eqns,
                   ps.tgOpt.getOrElse(lp.tg),
                   lp.maxRatio,
                   lp.scale,
