@@ -960,7 +960,8 @@ object HoTTBot {
                 lpt.enhancedEquationNodes
                   .onErrorRecover {
                     case te: TimeoutException =>
-                      logger.error(te)
+                      logger.error(te.getMessage())
+                      logger.debug(te)
                       Set.empty[EquationNode]
                     case te =>
                       logger.error(s"Serious error")
