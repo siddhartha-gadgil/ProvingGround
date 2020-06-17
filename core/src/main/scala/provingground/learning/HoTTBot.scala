@@ -869,7 +869,9 @@ object HoTTBot {
     ] = {
       case psps :: qp :: eqns :: HNil =>
         lems =>
-          psps.contents.map(
+          { logger.info(s"previous special init states are ${psps.contents.size}")
+            logger.debug(psps.contents.mkString("\n"))
+            psps.contents.map(
             ps =>
               Future {
                 import qp.lp
@@ -900,7 +902,7 @@ object HoTTBot {
                   ps.depthOpt
                 )
               }
-          )
+          )}
     }
     DualMiniBot(response)
   }

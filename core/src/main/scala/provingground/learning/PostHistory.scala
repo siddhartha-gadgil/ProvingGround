@@ -84,7 +84,7 @@ trait PostHistory[W, ID] {
           .get(id)
           .map(ids => ids.toVector.flatMap(rid => previousAnswers(web, rid)))
       )
-      .getOrElse(Vector())
+      .getOrElse(Vector()).distinct
 }
 
 object PostHistory {
