@@ -455,7 +455,7 @@ object TypedPostResponse {
 import Postable.ec, TypedPostResponse.MicroBot
 
 case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vector()){
-  def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID]) : Future[WebState[W, ID]] = 
+  def post[P](content: P, predecessors: Set[ID])(implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]) : Future[WebState[W, ID]] = 
     pw.post(content, web ,predecessors).map{id => WebState(web, PostData.get(content, id) +: apexPosts )} 
 
   def act[P](bot: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) = 
@@ -469,6 +469,10 @@ case class WebState[W, ID](web: W, apexPosts: Vector[PostData[_, W, ID]] = Vecto
     Future.sequence(apexPosts.map(pd => post(content, Set(pd.id)))).map{
       v => WebState(v.head.web, v.map(_.apexPosts).reduce(_ ++ _))
     }
+
+  def postLast[P](content: P)(implicit pw: Postable[P, W, ID], dg: DataGetter[P, W, ID]) : Future[WebState[W,ID]] = 
+   pw.post(content, web , apexPosts.map(_.id).toSet).map{id => WebState(web, Vector(PostData.get(content, id)))} 
+
 
   def queryApex[Q](predicate: Q => Boolean = (_: Q) => true)(implicit lp: LocalQueryable[Q, W, ID]) =
     Future.sequence(apexPosts.map{

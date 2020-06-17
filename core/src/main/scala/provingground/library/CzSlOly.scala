@@ -151,9 +151,9 @@ object CzSlOly {
   lazy val sessF =
     for {
       ws1 <- ws.post(TautologyInitState(tautGen), Set())
-      ws2 <- ws1.postApex(transitivtyInit)
-      ws3 <- ws2.postApex(mulInit)
-      ws4 <- ws3.postApex(localProver)
+      ws2 <- ws1.postLast(transitivtyInit)
+      ws3 <- ws2.postLast(mulInit)
+      ws4 <- ws3.postLast(localProver)
       ws5 <- ws4.act(lpToEnhancedExpEv)
       ws6 <- ws5.act(expnEqnUpdate)
     } yield HoTTWebSession.launch(ws5, bots)
