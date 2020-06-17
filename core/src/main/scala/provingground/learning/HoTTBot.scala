@@ -276,7 +276,7 @@ object HoTTBot {
   def reportMixinLemmas(
       results: Vector[Typ[Term]]
   ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
-    Callback.simple { (web: HoTTPostWeb) => (ls: BaseMixinLemmas ) =>
+    Callback.simple { (web: HoTTPostWeb) => (ls: BaseMixinLemmas) =>
       val tls = results
         .flatMap(typ => ls.lemmas.find(_._1 == typ).map(typ -> _._3))
       val view = s"Base mixin lemmas: ${tls.size}\n${tls
@@ -288,7 +288,7 @@ object HoTTBot {
   def reportTangentBaseTerms(
       steps: Vector[Typ[Term]]
   ): TypedPostResponse[TangentBaseState, HoTTPostWeb, ID] =
-    Callback.simple { (web: HoTTPostWeb) => (fs: TangentBaseState ) =>
+    Callback.simple { (web: HoTTPostWeb) => (fs: TangentBaseState) =>
       val termsSet = fs.ts.terms.support
       val pfs = steps
         .map(typ => typ -> termsSet.filter(_.typ == typ))
@@ -303,6 +303,35 @@ object HoTTBot {
       logger.info(view)
       Utils.report(view)
     }
+
+  def reportBaseTangentPairs(
+      results: Vector[Typ[Term]],
+      steps: Vector[Typ[Term]]
+  ): HoTTBot = {
+    val update = (_: HoTTPostWeb) =>
+      (ls: TangentLemmas) =>
+        (fs: TangentBaseState) =>
+          Future {
+            val tls = results
+              .flatMap(typ => ls.lemmas.find(_._1 == typ).map(typ -> _._3))
+            val view1 = s"Tangent lemmas (used with base below): ${tls.size}\n${tls
+              .mkString("\n")}"
+            val termsSet = fs.ts.terms.support
+            val pfs = steps
+              .map(typ => typ -> termsSet.filter(_.typ == typ))
+              .filter(_._2.nonEmpty)
+            val view2 = s"Terms in base (used with tangents above): ${pfs.size}\n${pfs
+              .map {
+                case (tp, ps) =>
+                  val best = ps.maxBy(t => fs.ts.terms(t))
+                  s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
+              }
+              .mkString("\n")}"
+            logger.info(view1 + "\n" + view2 + "\n\n")
+            Utils.report(view1 + "\n" + view2 + "\n\n")
+          }
+    Callback(update)
+  }
 
   lazy val expEvToEqns: SimpleBot[ExpressionEval, GeneratedEquationNodes] =
     MicroBot.simple(
@@ -831,12 +860,13 @@ object HoTTBot {
     PreviousPosts[SpecialInitState] :: QueryProver :: Set[Equation] :: HNil,
     ID
   ] = {
-    val response
-        : PreviousPosts[SpecialInitState] :: QueryProver :: Set[Equation] :: HNil => BaseMixinLemmas => Vector[
-          Future[
-            TangentBaseState
-          ]
-        ] = {
+    val response: PreviousPosts[SpecialInitState] :: QueryProver :: Set[
+      Equation
+    ] :: HNil => BaseMixinLemmas => Vector[
+      Future[
+        TangentBaseState
+      ]
+    ] = {
       case psps :: qp :: eqns :: HNil =>
         lems =>
           psps.contents.map(
@@ -881,7 +911,7 @@ object HoTTBot {
       tgOpt: Option[TermGenParams] = None,
       depthOpt: Option[Int] = None
   ): HoTTBot =
-    (baseStateFromLp(lemmaMix,  cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
+    (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
   lazy val tangentEquations: DualMiniBot[
@@ -946,12 +976,14 @@ object HoTTBot {
   }
 
   lazy val cappedTangentEquations =
-    tangentEquations.triggerWith[TangentBaseCompleted.type].reduce(
-      (v: Vector[GeneratedEquationNodes]) => {
-        val all = v.map(_.eqn).fold(Set.empty[EquationNode])(_ union _)
-        GeneratedEquationNodes(all) :: EquationsCompleted :: HNil
-      }
-    )
+    tangentEquations
+      .triggerWith[TangentBaseCompleted.type]
+      .reduce(
+        (v: Vector[GeneratedEquationNodes]) => {
+          val all = v.map(_.eqn).fold(Set.empty[EquationNode])(_ union _)
+          GeneratedEquationNodes(all) :: EquationsCompleted :: HNil
+        }
+      )
 
   def lemmasBigTangentEquations(
       scale: Double = 1.0,
