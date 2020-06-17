@@ -53,7 +53,9 @@ object CzSlOly {
 
   val steps = Vector(
     Unify.appln(trans, "lemma" :: results(3)).get.typ,
-    Unify.appln(trans, "lemma" :: results(4)).get.typ
+    Unify.appln(trans, "lemma" :: results(4)).get.typ,
+    leftMul(mn).typ,
+    rightMul(n).typ
   )
 
   val termState: TermState = TermState(
@@ -142,7 +144,8 @@ object CzSlOly {
     reportProofs(results),
     reportMixinLemmas(results),
     reportTangentLemmas(results),
-    reportTangentBaseTerms(steps)
+    reportTangentBaseTerms(steps),
+    reportBaseTangentPairs(results, steps)
   )
 
   val web = new HoTTPostWeb()
