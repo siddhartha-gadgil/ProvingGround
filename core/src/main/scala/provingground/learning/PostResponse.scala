@@ -382,12 +382,13 @@ object TypedPostResponse {
         val auxFuture = lv.getAt(web, id, predicate) // auxiliary data from queries
         val taskNest =
           auxFuture.flatMap{
-            {auxs => 
-              var remaining = auxs.size
-            Utils.logger.info(s"launching ${auxs.size} responses  of type ${qw.tag}")
+            {auxs =>              
+              Utils.logger.info(s"launching ${auxs.size} branches")
               Future.sequence(auxs.flatMap{
                 aux => 
                   val newPostsFuture = responses(aux)(content)
+                   var remaining = newPostsFuture.size
+                  Utils.logger.info(s"launching ${remaining} responses  of type ${qw.tag} in branch")
                   val newPostsData = newPostsFuture.map(cF => cF.flatMap{c => 
                       val idNewF = qw.post(c, web, Set(id))
                       idNewF.map(idNew => PostData.get(c, idNew)).andThen{

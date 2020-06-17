@@ -88,8 +88,8 @@ object CzSlOly {
         .unif(trans),
       FiniteDistribution.unif()
     ),
-    cutoffScale = 10,
-    tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.4)),
+    cutoffScale = 5,
+    tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.2)),
     depthOpt = Some(2)
   )
 
@@ -106,7 +106,7 @@ object CzSlOly {
       FiniteDistribution.unif(M)
     ),
     tgOpt = Some(TermGenParams.zero.copy(appW = 0.2)),
-    cutoffScale = 3
+    cutoffScale = 1
   )
 
   val localProver: LocalProver = LocalProver(
