@@ -249,7 +249,7 @@ object TypedPostResponse {
       )
       }
     
-    def ::[QQ : TypeTag, VV: TypeTag](that : MicroBot[P, QQ, W, VV, ID])(implicit qqw: Postable[QQ, W, ID], dgqq : DataGetter[QQ, W, ID],
+    def :+[QQ : TypeTag, VV: TypeTag](that : MicroBot[P, QQ, W, VV, ID])(implicit qqw: Postable[QQ, W, ID], dgqq : DataGetter[QQ, W, ID],
       nilGetter: Postable[HNil, W, ID]) : MicroBot[P,Q :: QQ :: HNil,W,V :: VV :: HNil,ID] = 
       {
         import that.{dg, lv => tlv, ppw}
