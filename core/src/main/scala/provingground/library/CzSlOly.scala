@@ -139,7 +139,7 @@ object CzSlOly {
     finalStateFilteredLemmas(),
     lemBot,
     cappedBaseState(0.3),
-    cappedTangentEquations,
+    cappedForkedTangentEquations,
     eqnsToExpEv.triggerWith[EquationsCompleted.type],
     eqnUpdate,
     updateTerms,

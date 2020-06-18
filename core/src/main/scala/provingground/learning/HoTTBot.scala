@@ -427,7 +427,8 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val eqnSimpleUpdate : Callback[GeneratedEquationNodes,HoTTPostWeb,Unit,ID] =
+  lazy val eqnSimpleUpdate
+      : Callback[GeneratedEquationNodes, HoTTPostWeb, Unit, ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
@@ -444,7 +445,7 @@ object HoTTBot {
         }
     )
 
-  lazy val eqnUpdate : Callback[GeneratedEquationNodes,HoTTPostWeb,Unit,ID] =
+  lazy val eqnUpdate: Callback[GeneratedEquationNodes, HoTTPostWeb, Unit, ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => {
@@ -574,7 +575,7 @@ object HoTTBot {
     MiniBot(response)
   }
 
-  lazy val termsFromProofs : Callback[Proved,HoTTPostWeb,Unit,ID] =
+  lazy val termsFromProofs: Callback[Proved, HoTTPostWeb, Unit, ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
         (pf: Proved) => pf.proofOpt.foreach(t => web.addTerms(Set(t)))
@@ -929,6 +930,122 @@ object HoTTBot {
     (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
+  def tangentEquations(
+      results: Vector[Typ[Term]],
+      steps: Vector[Typ[Term]]
+  ): MicroHoTTBoTT[
+    TangentBaseCompleted.type,
+    GeneratedEquationNodes,
+    Collated[TangentBaseState] :: TangentLemmas :: QueryProver :: Set[
+      EquationNode
+    ] :: HNil
+  ] = {
+    val response
+        : Collated[TangentBaseState] :: TangentLemmas :: QueryProver :: Set[
+          EquationNode
+        ] :: HNil => TangentBaseCompleted.type => Future[
+          GeneratedEquationNodes
+        ] = {
+      case ctbs :: tl :: qp :: eqns :: HNil =>
+        (_) => {
+          import qp.lp
+
+          logger.info(
+            s"generating equations with ${ctbs.contents.size} base states and ${tl.lemmas.size} lemmas (before pruning)"
+          )
+          val tls = results
+            .flatMap(typ => tl.lemmas.find(_._1 == typ).map(typ -> _._3))
+          val view1 =
+            s"Tangent lemmas (used with bases below): ${tls.size}\n${tls
+              .mkString("\n")}"
+          logger.info(view1)
+          ctbs.contents.foreach { fs =>
+            val termsSet = fs.ts.terms.support
+            val pfs = steps
+              .map(typ => typ -> termsSet.filter(_.typ == typ))
+              .filter(_._2.nonEmpty)
+            val view2 =
+              s"Terms in base (used with tangents above): ${pfs.size}\n${pfs
+                .map {
+                  case (tp, ps) =>
+                    val best = ps.maxBy(t => fs.ts.terms(t))
+                    s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
+                }
+                .mkString("\n")}"
+            logger.info(view2)
+          }
+
+          val provers =
+            ctbs.contents
+              .flatMap { tbs =>
+                tl.lemmas.map {
+                  case (tp, pfOpt, w) =>
+                    val pf        = pfOpt.getOrElse("lemma" :: tp)
+                    val tangState = tbs.ts.tangent(pf)
+                    val lpt =
+                      LocalTangentProver(
+                        tbs.ts,
+                        eqns,
+                        tangState,
+                        tbs.tgOpt.getOrElse(lp.tg),
+                        (lp.cutoff / tbs.cutoffScale) * w,
+                        tbs.depthOpt.orElse(lp.genMaxDepth),
+                        lp.limit,
+                        lp.maxRatio,
+                        lp.scale,
+                        lp.steps,
+                        lp.maxDepth,
+                        lp.hW,
+                        lp.klW,
+                        lp.smoothing,
+                        lp.relativeEval,
+                        lp.stateFromEquation,
+                        lp.exponent,
+                        lp.decay,
+                        lp.maxTime
+                      )
+                    lpt
+                }
+
+              }
+              .filter(_.cutoff < 1)
+
+          var remaining = provers.size
+          logger.info(s"${provers.size} tangent provers after filtering")
+          val equationsTasks =
+            provers.map { lpt =>
+              lpt.enhancedEquationNodes
+                .map { eqns =>
+                  logger.info(s"obtained ${eqns.size} equation nodes")
+                  remaining = remaining - 1
+                  logger.info(s"provers still running: $remaining")
+                  eqns
+                }
+                .onErrorRecover {
+                  case te: TimeoutException =>
+                    logger.error(te.getMessage())
+                    logger.debug(te)
+                    remaining = remaining - 1
+                    logger.info(s"provers still running: $remaining")
+                    Set.empty[EquationNode]
+                  case te =>
+                    logger.error(s"Serious error")
+                    logger.error(te)
+                    remaining = remaining - 1
+                    logger.info(s"provers still running: $remaining")
+                    Set.empty[EquationNode]
+                }
+            }
+          val allTask = Task
+            .gatherUnordered(equationsTasks)
+            .map(_.fold(Set.empty)(_ union _))
+            .map(GeneratedEquationNodes(_))
+          allTask.runToFuture
+        }
+    }
+    MicroBot(response)
+  }
+
   lazy val forkedTangentEquations: DualMiniBot[
     TangentBaseState,
     GeneratedEquationNodes,
@@ -991,7 +1108,7 @@ object HoTTBot {
     DualMiniBot(responses)
   }
 
-  lazy val cappedTangentEquations =
+  lazy val cappedForkedTangentEquations =
     forkedTangentEquations
       .triggerWith[TangentBaseCompleted.type]
       .reduce(

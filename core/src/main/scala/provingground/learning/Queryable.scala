@@ -183,6 +183,8 @@ trait FallBackLookups {
 
 }
 
+case class Collated[P](contents: Vector[P])
+
 object LocalQueryable extends FallBackLookups {
 
   /**
@@ -279,6 +281,16 @@ object LocalQueryable extends FallBackLookups {
       def getAt(web: W, id: ID, predicate: PreviousPosts[P] => Boolean): Future[Vector[PreviousPosts[P]]] = 
         Future(Vector(PreviousPosts(ph.previousAnswers[P](web, id))))
     }
+
+  implicit def collatedQuery[P, W, ID](
+    implicit pq : LocalQueryable[P, W, ID]) = 
+      new LocalQueryable[Collated[P], W, ID] {
+        def getAt(web: W, id: ID, predicate: Collated[P] => Boolean): Future[Vector[Collated[P]]] = {
+          val all = pq.getAt(web, id, (x: P) => predicate(Collated(Vector(x))))
+          all.map(v => Vector(Collated(v)))
+        }
+      }
+  
 
   /**
     * query a conjunction of two queryable types
