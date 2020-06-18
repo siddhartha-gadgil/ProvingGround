@@ -132,10 +132,12 @@ object CzSlOly {
     expnEqnUpdate
   )
 
+  val lemBot = tangentLemmas(power = 0.7) :+ baseMixinLemmas(0.3)
+
   val bots: Vector[HoTTBot] = Vector(
     expEvToFinalState,
     finalStateFilteredLemmas(),
-    tangentLemmas(power = 0.7) :+ baseMixinLemmas(0.3),
+    lemBot,
     cappedBaseState(0.3),
     cappedTangentEquations,
     eqnsToExpEv.triggerWith[EquationsCompleted.type],

@@ -18,7 +18,7 @@ case class QueryProver(lp: LocalProver)
 object QueryProver {
   implicit val qc: QueryFromPosts[
     QueryProver,
-    HoTTMessages.Weight :: LocalProver :: HNil
+    Weight :: LocalProver :: HNil
   ] =
     QueryFromPosts
       .empty[QueryProver]
@@ -31,7 +31,7 @@ case class QueryInitState(init: TermState)
 object QueryInitState {
   implicit val qc: QueryFromPosts[
     QueryInitState,
-    HoTTMessages.InitState :: LocalProver :: HNil
+    InitState :: LocalProver :: HNil
   ] =
     QueryFromPosts
       .empty[QueryInitState]
@@ -44,7 +44,7 @@ case class QueryBaseState(init: TermState)
 object QueryBaseState {
   implicit val qc: QueryFromPosts[
     QueryBaseState,
-    HoTTMessages.InitState :: LocalTangentProver :: LocalProver :: HNil
+    InitState :: LocalTangentProver :: LocalProver :: HNil
   ] =
     QueryFromPosts
       .empty[QueryBaseState]
@@ -307,26 +307,33 @@ object HoTTBot {
   def reportBaseTangentPairs(
       results: Vector[Typ[Term]],
       steps: Vector[Typ[Term]]
-  ): HoTTBot = {
+  ): Callback[
+    TangentBaseState,
+    HoTTPostWeb,
+    TangentLemmas,
+    ID
+  ] = {
     val update = (_: HoTTPostWeb) =>
       (ls: TangentLemmas) =>
         (fs: TangentBaseState) =>
           Future {
             val tls = results
               .flatMap(typ => ls.lemmas.find(_._1 == typ).map(typ -> _._3))
-            val view1 = s"Tangent lemmas (used with base below): ${tls.size}\n${tls
-              .mkString("\n")}"
+            val view1 =
+              s"Tangent lemmas (used with base below): ${tls.size}\n${tls
+                .mkString("\n")}"
             val termsSet = fs.ts.terms.support
             val pfs = steps
               .map(typ => typ -> termsSet.filter(_.typ == typ))
               .filter(_._2.nonEmpty)
-            val view2 = s"Terms in base (used with tangents above): ${pfs.size}\n${pfs
-              .map {
-                case (tp, ps) =>
-                  val best = ps.maxBy(t => fs.ts.terms(t))
-                  s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
-              }
-              .mkString("\n")}"
+            val view2 =
+              s"Terms in base (used with tangents above): ${pfs.size}\n${pfs
+                .map {
+                  case (tp, ps) =>
+                    val best = ps.maxBy(t => fs.ts.terms(t))
+                    s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
+                }
+                .mkString("\n")}"
             logger.info(view1 + "\n" + view2 + "\n\n")
             Utils.report(view1 + "\n" + view2 + "\n\n")
           }
@@ -420,7 +427,7 @@ object HoTTBot {
     MicroBot(response)
   }
 
-  lazy val eqnSimpleUpdate: HoTTBot =
+  lazy val eqnSimpleUpdate : Callback[GeneratedEquationNodes,HoTTPostWeb,Unit,ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => web.addEqns(eqs.eqn)
@@ -437,7 +444,7 @@ object HoTTBot {
         }
     )
 
-  lazy val eqnUpdate: HoTTBot =
+  lazy val eqnUpdate : Callback[GeneratedEquationNodes,HoTTPostWeb,Unit,ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => {
@@ -567,7 +574,7 @@ object HoTTBot {
     MiniBot(response)
   }
 
-  lazy val termsFromProofs: HoTTBot =
+  lazy val termsFromProofs : Callback[Proved,HoTTPostWeb,Unit,ID] =
     Callback.simple(
       (web: HoTTPostWeb) =>
         (pf: Proved) => pf.proofOpt.foreach(t => web.addTerms(Set(t)))
@@ -757,8 +764,12 @@ object HoTTBot {
       decay: Double = 0.5,
       cutoff: Double = 0.04,
       power: Double = 1
-  ): MicroHoTTBoTT[Lemmas, UsedLemmas :: TangentLemmas :: HNil, PreviousPosts[UsedLemmas]] = {
-    val response: PreviousPosts[UsedLemmas] => Lemmas => Future[UsedLemmas :: TangentLemmas :: HNil] =
+  ): MicroHoTTBoTT[Lemmas, UsedLemmas :: TangentLemmas :: HNil, PreviousPosts[
+    UsedLemmas
+  ]] = {
+    val response: PreviousPosts[UsedLemmas] => Lemmas => Future[
+      UsedLemmas :: TangentLemmas :: HNil
+    ] =
       (ul) =>
         (lem) =>
           Future {
@@ -773,7 +784,7 @@ object HoTTBot {
             val tangLemmas = l.map {
               case (tp, pfOpt, w) => (tp, pfOpt, w * sc)
             }
-            val used = tangLemmas.map{case (tp, _, p) => tp -> p}
+            val used = tangLemmas.map { case (tp, _, p) => tp -> p }
             UsedLemmas(used) :: TangentLemmas(tangLemmas) :: HNil
           }
     MicroBot(response)
@@ -869,10 +880,10 @@ object HoTTBot {
       ]
     ] = {
       case psps :: qp :: eqns :: HNil =>
-        lems =>
-          { logger.info(s"previous special init states are ${psps.contents.size}")
-            logger.debug(psps.contents.mkString("\n"))
-            psps.contents.map(
+        lems => {
+          logger.info(s"previous special init states are ${psps.contents.size}")
+          logger.debug(psps.contents.mkString("\n"))
+          psps.contents.map(
             ps =>
               Future {
                 import qp.lp
@@ -903,7 +914,8 @@ object HoTTBot {
                   ps.depthOpt
                 )
               }
-          )}
+          )
+        }
     }
     DualMiniBot(response)
   }
@@ -913,11 +925,11 @@ object HoTTBot {
       cutoffScale: Double = 1.0,
       tgOpt: Option[TermGenParams] = None,
       depthOpt: Option[Int] = None
-  ): HoTTBot =
+  ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
     (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
-  lazy val tangentEquations: DualMiniBot[
+  lazy val forkedTangentEquations: DualMiniBot[
     TangentBaseState,
     GeneratedEquationNodes,
     HoTTPostWeb,
@@ -980,7 +992,7 @@ object HoTTBot {
   }
 
   lazy val cappedTangentEquations =
-    tangentEquations
+    forkedTangentEquations
       .triggerWith[TangentBaseCompleted.type]
       .reduce(
         (v: Vector[GeneratedEquationNodes]) => {
@@ -1485,13 +1497,13 @@ class HoTTWebSession(
   def postLocalProverFuture(
       lp: LocalProver,
       pred: Set[ID] = Set()
-  ): Future[PostData[_, HoTTPostWeb, HoTTPostWeb.ID]] =
+  ): Future[PostData[_, HoTTPostWeb, ID]] =
     post(lp, pred)
 
   def postLP(
       lp: LocalProver,
       pred: Set[ID] = Set()
-  ): Future[PostData[_, HoTTPostWeb, HoTTPostWeb.ID]] =
+  ): Future[PostData[_, HoTTPostWeb, ID]] =
     postLocalProverFuture(lp, pred)
 }
 

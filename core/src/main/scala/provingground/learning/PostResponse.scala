@@ -159,6 +159,9 @@ sealed abstract class TypedPostResponse[P, W, ID](
     implicit qw: Postable[Q, W, ID],
       rw : Postable[R, W, ID],
       dgr: DataGetter[R, W, ID]) = TypedPostResponse.ReducedResponse(this, reduction)
+
+  def andThen[Q, V](second: TypedPostResponse.Callback[Q, W, V, ID])(implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) =
+    TypedPostResponse.AndThen(this, second)
 }
 
 object TypedPostResponse {
@@ -426,6 +429,16 @@ object TypedPostResponse {
         Future.sequence(pds.flatMap(pd => pd.getOpt[Q].map(q => second.post(web, q, pd.id)))))
       secondPosts.map(_.flatten)}
   }
+
+  case class AndThen[P, Q, V, W, ID](first: TypedPostResponse[P, W, ID], 
+    second: Callback[Q, W, V, ID])(implicit pw: Postable[P, W, ID], qw: Postable[Q, W, ID]) extends TypedPostResponse[P, W, ID]{
+    def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]] = {
+      val firstPosts = first.post(web, content, id)
+      val secondPosts = firstPosts.flatMap(pds => 
+        Future.sequence(pds.flatMap(pd => pd.getOpt[Q].map(q => second.post(web, q, pd.id)))))
+      firstPosts}
+  }
+
 
   case class ConcurrentResponse[P, W, ID](first: TypedPostResponse[P, W, ID], second: TypedPostResponse[P, W, ID])(implicit pw: Postable[P, W, ID]) extends TypedPostResponse[P, W, ID]{
     def post(web: W, content: P, id: ID): Future[Vector[PostData[_, W, ID]]] =
