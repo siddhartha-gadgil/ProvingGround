@@ -757,8 +757,8 @@ object HoTTBot {
       decay: Double = 0.5,
       cutoff: Double = 0.04,
       power: Double = 1
-  ): MicroHoTTBoTT[Lemmas, TangentLemmas, PreviousPosts[UsedLemmas]] = {
-    val response: PreviousPosts[UsedLemmas] => Lemmas => Future[TangentLemmas] =
+  ): MicroHoTTBoTT[Lemmas, UsedLemmas :: TangentLemmas :: HNil, PreviousPosts[UsedLemmas]] = {
+    val response: PreviousPosts[UsedLemmas] => Lemmas => Future[UsedLemmas :: TangentLemmas :: HNil] =
       (ul) =>
         (lem) =>
           Future {
@@ -770,10 +770,11 @@ object HoTTBot {
               } yield (tp, pfOpt, math.pow(p, power))
             val ltot = l.map(_._3).sum
             val sc   = scale / ltot
-            val tangentLemmas = l.map {
+            val tangLemmas = l.map {
               case (tp, pfOpt, w) => (tp, pfOpt, w * sc)
             }
-            TangentLemmas(tangentLemmas)
+            val used = tangLemmas.map{case (tp, _, p) => tp -> p}
+            UsedLemmas(used) :: TangentLemmas(tangLemmas) :: HNil
           }
     MicroBot(response)
   }
