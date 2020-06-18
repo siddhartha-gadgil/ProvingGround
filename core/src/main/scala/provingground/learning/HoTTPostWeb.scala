@@ -99,6 +99,8 @@ class HoTTPostWeb {
 
   def snapShot: WebState[HoTTPostWeb, HoTTPostWeb.ID] =
     HoTTPostWeb.history.snapShot(this)
+
+  def summary = HoTTPostWeb.history.summary(this)
 }
 
 object HoTTPostWeb {
