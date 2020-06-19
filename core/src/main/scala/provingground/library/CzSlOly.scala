@@ -88,7 +88,7 @@ object CzSlOly {
   val transitivtyInit = SpecialInitState(
     TermState(
       FiniteDistribution
-        .unif(trans),
+        .unif(trans, sym),
       FiniteDistribution.unif()
     ),
     baseCutoff = math.pow(10, -3),

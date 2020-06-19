@@ -922,6 +922,39 @@ object HoTTBot {
     DualMiniBot(response)
   }
 
+  // temporary, for testing
+  def appEquations(cutoff: Double) : MicroHoTTBoTT[TangentBaseState, GeneratedEquationNodes, TangentLemmas] =
+    {
+      val response : TangentLemmas => TangentBaseState => Future[GeneratedEquationNodes] =
+        (tl) =>
+          (tb) =>
+            Future{
+              val lemPfDist = FiniteDistribution(tl.lemmas.map{case (t, pfOpt, p) => Weighted(pfOpt.getOrElse("lemma" :: t), p)})
+              val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
+              logger.info(s"function domains: ${funcs.support.map(_.dom)}")
+              logger.info(s"lemma-proof types: ${lemPfDist.support.map(_.typ)}")
+              val eqs = SimpleEquations.allAppEquations(funcs, lemPfDist, cutoff)
+              GeneratedEquationNodes(eqs.toSet)
+            }
+
+    MicroBot(response)
+    }
+  
+  def unAppEquations(cutoff: Double) : MicroHoTTBoTT[TangentBaseState, GeneratedEquationNodes, TangentLemmas] =
+    {
+      val response : TangentLemmas => TangentBaseState => Future[GeneratedEquationNodes] =
+        (tl) =>
+          (tb) =>
+            {
+              val lemPfDist = FiniteDistribution(tl.lemmas.map{case (t, pfOpt, p) => Weighted(pfOpt.getOrElse("lemma" :: t), p)})
+              val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
+              val eqsFut = SimpleEquations.unAppEquations (funcs, lemPfDist, cutoff)
+              eqsFut.map(eqs => GeneratedEquationNodes(eqs))
+            }
+
+    MicroBot(response)
+    }
+
   def cappedBaseState(
       lemmaMix: Double,
       cutoffScale: Double = 1.0,
