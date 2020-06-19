@@ -91,7 +91,7 @@ object CzSlOly {
         .unif(trans),
       FiniteDistribution.unif()
     ),
-    cutoffScale = 5,
+    cutoffScale = 0.05, // temporarily disable
     tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.2)),
     depthOpt = Some(2)
   )
@@ -109,7 +109,8 @@ object CzSlOly {
       FiniteDistribution.unif(M)
     ),
     tgOpt = Some(TermGenParams.zero.copy(appW = 0.2)),
-    cutoffScale = 1
+    depthOpt = Some(2),
+    cutoffScale = 0.5
   )
 
   val localProver: LocalProver = LocalProver(
@@ -132,12 +133,14 @@ object CzSlOly {
     expnEqnUpdate
   )
 
-  val lemBot = tangentLemmas(scale = 0.1, cutoff = 0.007, power = 0.7) :+ baseMixinLemmas(0.3)
+  val lemRefine = tangentLemmas(scale = 0.1, cutoff = 0.007, power = 0.7) :+ baseMixinLemmas(0.3)
+  val expFS = expEvToFinalState.andThen(updateTerms).andThen(reportProofs(results))
+  val tangEq = tangentEquations(results, steps)
 
   val bots: Vector[HoTTBot] = Vector(
     expEvToFinalState,
     finalStateFilteredLemmas(),
-    lemBot,
+    lemRefine,
     cappedBaseState(0.3),
     cappedForkedTangentEquations,
     eqnsToExpEv.triggerWith[EquationsCompleted.type],
@@ -154,7 +157,7 @@ object CzSlOly {
   val web = new HoTTPostWeb()
   val ws  = WebState[HoTTPostWeb, HoTTPostWeb.ID](web)
 
-  lazy val sessF =
+  lazy val wsF =
     for {
       ws1 <- ws.post(TautologyInitState(tautGen), Set())
       ws2 <- ws1.postLast(transitivtyInit)
@@ -162,5 +165,11 @@ object CzSlOly {
       ws4 <- ws3.postLast(localProver)
       ws5 <- ws4.act(lpToEnhancedExpEv)
       ws6 <- ws5.act(expnEqnUpdate)
-    } yield HoTTWebSession.launch(ws5, bots)
+      ws7 <- ws6.act(expFS)
+      ws8 <- ws7.act(finalStateFilteredLemmas())
+      ws9 <- ws8.act(lemRefine)
+      ws10 <- ws9.act(cappedBaseState(0.3))
+    } yield ws10
+
+    lazy val sessF = wsF.map(ws => HoTTWebSession.launch(ws, bots))
 }

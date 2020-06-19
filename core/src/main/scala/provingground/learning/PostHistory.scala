@@ -22,7 +22,7 @@ trait PostHistory[W, ID] {
 
   def summary(web: W) = {
     allPosts(web).toVector.flatMap(pd => findPost(web, pd.id)).map {
-      case (pd, preds) => (pd, pd.pw.tag.toString(), preds)
+      case (pd, preds) => (pd.id, pd.pw.tag.toString(), preds)
     }
   }
 

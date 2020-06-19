@@ -223,7 +223,7 @@ object HoTTBot {
     MiniBot(response)
   }
 
-  lazy val updateTerms: TypedPostResponse[FinalState, HoTTPostWeb, ID] =
+  lazy val updateTerms :  Callback[FinalState,HoTTPostWeb,Unit,ID]  =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       val allTerms = fs.ts.terms.support union (fs.ts.typs.support
         .map(t => t: Term))
@@ -244,7 +244,7 @@ object HoTTBot {
 
   def reportProofs(
       results: Vector[Typ[Term]]
-  ): TypedPostResponse[FinalState, HoTTPostWeb, ID] =
+  ):  Callback[FinalState,HoTTPostWeb,Unit,ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       val termsSet = fs.ts.terms.support
       val pfs = results
@@ -775,6 +775,7 @@ object HoTTBot {
         (lem) =>
           Future {
             val exclude = avoidLemmas(decay, cutoff)(ul.contents)
+            logger.info(s"excluded lemmas:\n${exclude.mkString("\n")}")
             val l =
               for {
                 (tp, pfOpt, p) <- lem.lemmas
