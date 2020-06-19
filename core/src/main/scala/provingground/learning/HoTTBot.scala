@@ -476,7 +476,7 @@ object HoTTBot {
         }
     )
 
-  lazy val eqnsToExpEv: MicroHoTTBoTT[
+  def eqnsToExpEv(tgOpt : Option[TermGenParams] = None): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
     Set[EquationNode] :: QueryProver :: HNil
@@ -493,7 +493,7 @@ object HoTTBot {
             ExpressionEval.fromInitEqs(
               lp.initState,
               Equation.group(eqns union (neqs)),
-              lp.tg,
+              tgOpt.getOrElse(lp.tg),
               lp.maxRatio,
               lp.scale,
               lp.smoothing,
@@ -988,6 +988,48 @@ object HoTTBot {
   ): TypedPostResponse[BaseMixinLemmas, HoTTPostWeb, ID] =
     (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
+
+  def reportBaseTangents(
+      results: Vector[Typ[Term]],
+      steps: Vector[Typ[Term]]
+  ): Callback[TangentBaseCompleted.type, HoTTPostWeb, Collated[
+    TangentBaseState
+  ] :: TangentLemmas :: HNil, ID] = {
+    val response: HoTTPostWeb => Collated[
+      TangentBaseState
+    ] :: TangentLemmas :: HNil => TangentBaseCompleted.type => Future[Unit] =
+      (_) => {
+        case ctbs :: tl :: HNil =>
+          (_) =>
+            Future {
+              logger.info(
+                s"generating equations with ${ctbs.contents.size} base states and ${tl.lemmas.size} lemmas (before pruning)"
+              )
+              val tls = results
+                .flatMap(typ => tl.lemmas.find(_._1 == typ).map(typ -> _._3))
+              val view1 =
+                s"Tangent lemmas (used with bases below): ${tls.size}\n${tls
+                  .mkString("\n")}"
+              logger.info(view1)
+              ctbs.contents.foreach { fs =>
+                val termsSet = fs.ts.terms.support
+                val pfs = steps
+                  .map(typ => typ -> termsSet.filter(_.typ == typ))
+                  .filter(_._2.nonEmpty)
+                val view2 =
+                  s"Terms in base (used with tangents above): ${pfs.size}\n${pfs
+                    .map {
+                      case (tp, ps) =>
+                        val best = ps.maxBy(t => fs.ts.terms(t))
+                        s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
+                    }
+                    .mkString("\n")}"
+                logger.info(view2)
+              }
+            }
+      }
+    Callback(response)
+  }
 
   def tangentEquations(
       results: Vector[Typ[Term]],

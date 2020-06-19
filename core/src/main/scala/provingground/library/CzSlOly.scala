@@ -127,7 +127,7 @@ object CzSlOly {
   val bots0: Vector[HoTTBot] = Vector(
     expEvToFinalState,
     finalStateFilteredLemmas(), // needed argument tautGen
-    eqnsToExpEv,
+    eqnsToExpEv(),
     lemmasBigTangentEquations(scale = 0.1, power = 0.4, lemmaMix = 0.3),
     eqnUpdate,
     updateTerms,
@@ -144,16 +144,18 @@ object CzSlOly {
     finalStateFilteredLemmas(),
     lemRefine,
     cappedBaseState(0.3),
-    cappedForkedTangentEquations,
-    eqnsToExpEv.triggerWith[EquationsCompleted.type],
+    unAppEquations(math.pow(10, -4)),
+    // cappedForkedTangentEquations,
+    eqnsToExpEv(Some(TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05))),
+    // eqnsToExpEv.triggerWith[EquationsCompleted.type],
     eqnUpdate,
     updateTerms,
     expnEqnUpdate,
     reportProofs(results),
-    reportMixinLemmas(results),
-    reportTangentLemmas(results),
-    reportTangentBaseTerms(steps),
-    reportBaseTangentPairs(results, steps)
+    // reportMixinLemmas(results),
+    // reportTangentLemmas(results),
+    // reportTangentBaseTerms(steps),
+    reportBaseTangents(results, steps)
   )
 
   val web = new HoTTPostWeb()
