@@ -57,6 +57,16 @@ case class TermState(
       context
     )
 
+  def purge(epsilon: Double) =
+    TermState(
+      terms.purge(epsilon).safeNormalized,
+      typs.purge(epsilon).safeNormalized,
+      vars,
+      inds,
+      goals,
+      context
+    )
+
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
   lazy val allTyps = terms.support.map(_.typ) union typs.support

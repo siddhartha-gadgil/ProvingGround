@@ -91,6 +91,7 @@ object CzSlOly {
         .unif(trans),
       FiniteDistribution.unif()
     ),
+    baseCutoff = math.pow(10, -3),
     cutoffScale = 0.05, // temporarily disable
     tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.2)),
     depthOpt = Some(2)
@@ -109,6 +110,7 @@ object CzSlOly {
       FiniteDistribution.unif(M)
     ),
     tgOpt = Some(TermGenParams.zero.copy(appW = 0.2)),
+    baseCutoff = math.pow(10, -3),
     depthOpt = Some(2),
     cutoffScale = 0.5
   )
