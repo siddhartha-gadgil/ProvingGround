@@ -12,6 +12,7 @@ import scala.collection.SeqView
 import scala.reflect.runtime.universe._
 import HoTTMessages._
 import Utils.logger
+import scala.concurrent._, duration._
 
 case class QueryProver(lp: LocalProver)
 
@@ -976,6 +977,38 @@ object HoTTBot {
               .map(_.flatten)
           eqsFut.map(eqs => GeneratedEquationNodes(eqs))
         }
+    }
+    MicroBot(response)
+  }
+
+  def timedUnAppEquations(
+      cutoff: Double,
+      minTime: FiniteDuration,
+      cutoffScale: Double = 2
+  ): MicroHoTTBoTT[TangentBaseCompleted.type, GeneratedEquationNodes, Collated[
+    TangentBaseState
+  ] :: TangentLemmas :: HNil] = {
+    val response
+        : Collated[TangentBaseState] :: TangentLemmas :: HNil => TangentBaseCompleted.type => Future[
+          GeneratedEquationNodes
+        ] = {
+      case tbss :: tl :: HNil =>
+        (_) => {
+          val eqsFut =
+            Task.gatherUnordered(tbss.contents.toSet.map { (tb: TangentBaseState) =>
+                {
+                  val lemPfDist = FiniteDistribution(tl.lemmas.map {
+                    case (t, pfOpt, p) =>
+                      Weighted(pfOpt.getOrElse("lemma" :: t), p)
+                  })
+                  val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
+                  SimpleEquations.timedUnAppEquations(funcs, lemPfDist, cutoff, minTime, cutoffScale)
+
+                }
+              })
+              .map(_.flatten)
+          eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet))
+        }.runToFuture
     }
     MicroBot(response)
   }

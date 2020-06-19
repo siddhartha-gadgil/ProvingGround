@@ -89,7 +89,7 @@ object CzSlOly {
     TermState(
       FiniteDistribution
         .unif(trans, sym),
-      FiniteDistribution.unif()
+      FiniteDistribution.unif(M)
     ),
     baseCutoff = math.pow(10, -3),
     cutoffScale = 0.05, // temporarily disable
