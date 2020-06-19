@@ -141,7 +141,7 @@ object CzSlOly {
 
   val bots: Vector[HoTTBot] = Vector(
     expEvToFinalState,
-    finalStateFilteredLemmas(),
+    finalStateFilteredLemmas(tg= TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)),
     lemRefine,
     cappedBaseState(0.3),
     unAppEquations(math.pow(10, -4)),
