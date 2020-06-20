@@ -73,7 +73,7 @@ object SimpleEquations {
               .appln(fn.func, x)
               .toSet
               .flatMap(
-                (z: Term) => DE.formalEquations(z)
+                (z: Term) => DE.formalEquations(z) union(DE.formalTypEquations(z.typ))
               )
           }
       }

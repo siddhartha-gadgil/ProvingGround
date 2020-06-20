@@ -244,18 +244,19 @@ object HoTTBot {
     }
 
   def reportProofs(
-      results: Vector[Typ[Term]]
+      results: Vector[Typ[Term]],
+      text: String = "Results"
   ): Callback[FinalState, HoTTPostWeb, Unit, ID] =
     Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
       val termsSet = fs.ts.terms.support
       val pfs = results
         .map(typ => typ -> termsSet.filter(_.typ == typ))
         .filter(_._2.nonEmpty)
-      val view = s"Results: ${pfs.size}\n${pfs
+      val view = s"$text: ${pfs.size}\n${pfs
         .map {
           case (tp, ps) =>
             val best = ps.maxBy(t => fs.ts.terms(t))
-            s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}"
+            s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}; statement weight ${fs.ts.typs(tp)}"
         }
         .mkString("\n")}"
       logger.info(view)
@@ -477,7 +478,7 @@ object HoTTBot {
         }
     )
 
-  def eqnsToExpEv(tgOpt : Option[TermGenParams] = None): MicroHoTTBoTT[
+  def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
     Set[EquationNode] :: QueryProver :: HNil
@@ -995,16 +996,24 @@ object HoTTBot {
       case tbss :: tl :: HNil =>
         (_) => {
           val eqsFut =
-            Task.gatherUnordered(tbss.contents.toSet.map { (tb: TangentBaseState) =>
-                {
-                  val lemPfDist = FiniteDistribution(tl.lemmas.map {
-                    case (t, pfOpt, p) =>
-                      Weighted(pfOpt.getOrElse("lemma" :: t), p)
-                  })
-                  val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
-                  SimpleEquations.timedUnAppEquations(funcs, lemPfDist, cutoff, minTime, cutoffScale)
+            Task
+              .gatherUnordered(tbss.contents.toSet.map {
+                (tb: TangentBaseState) =>
+                  {
+                    val lemPfDist = FiniteDistribution(tl.lemmas.map {
+                      case (t, pfOpt, p) =>
+                        Weighted(pfOpt.getOrElse("lemma" :: t), p)
+                    })
+                    val funcs = tb.ts.terms.condMap(ExstFunc.opt).safeNormalized
+                    SimpleEquations.timedUnAppEquations(
+                      funcs,
+                      lemPfDist,
+                      cutoff,
+                      minTime,
+                      cutoffScale
+                    )
 
-                }
+                  }
               })
               .map(_.flatten)
           eqsFut.map(eqs => GeneratedEquationNodes(eqs.toSet))
@@ -1024,7 +1033,8 @@ object HoTTBot {
 
   def reportBaseTangents(
       results: Vector[Typ[Term]],
-      steps: Vector[Typ[Term]]
+      steps: Vector[Typ[Term]],
+      inferTriples: Vector[(Typ[Term], Typ[Term], Typ[Term])]
   ): Callback[TangentBaseCompleted.type, HoTTPostWeb, Collated[
     TangentBaseState
   ] :: TangentLemmas :: HNil, ID] = {
@@ -1046,11 +1056,11 @@ object HoTTBot {
               logger.info(view1)
               ctbs.contents.foreach { fs =>
                 val termsSet = fs.ts.terms.support
-                val pfs = steps
+                val basePfs = steps
                   .map(typ => typ -> termsSet.filter(_.typ == typ))
                   .filter(_._2.nonEmpty)
                 val view2 =
-                  s"Terms in base (used with tangents above): ${pfs.size}\n${pfs
+                  s"Terms in base (used with tangents above): ${basePfs.size}\n${basePfs
                     .map {
                       case (tp, ps) =>
                         val best = ps.maxBy(t => fs.ts.terms(t))
@@ -1058,6 +1068,19 @@ object HoTTBot {
                     }
                     .mkString("\n")}"
                 logger.info(view2)
+                logger.info(
+                  "Inference by unified applications, triples and weights (for this base state)"
+                )
+                inferTriples.foreach {
+                  case (f, x, fx) =>
+                    val p = tls.find(_._1 == f).map(_._2).getOrElse(0.0)
+                    val q = basePfs
+                      .find(_._1 == f)
+                      .map(_._2)
+                      .map(s => s.map(fs.ts.terms(_)).sum)
+                      .getOrElse(0.0)
+                    logger.info(s"($f, $x, $fx), ($p, $q, ${p * q})")
+                }
               }
             }
       }

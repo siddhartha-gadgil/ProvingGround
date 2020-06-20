@@ -51,12 +51,18 @@ object CzSlOly {
   val ass1 = "ass1" :: a ~>: (b ~>: eqM(mul(mul(a)(b))(b))(a))
   val ass2 = "ass2" :: a ~>: (b ~>: eqM(mul(a)(mul(a)(b)))(b))
 
-  val steps : Vector[Typ[Term]] = Vector(
+  val steps: Vector[Typ[Term]] = Vector(
     trans.typ,
     Unify.appln(trans, "lemma" :: results(3)).get.typ,
-    Unify.appln(trans, "lemma" :: results(4)).get.typ,
     leftMul(mn).typ,
-    rightMul(n).typ
+    rightMul(m).typ
+  )
+
+  val inferTriples = Vector(
+    (trans.typ, results(3), steps(1)),
+    (steps(1), results(4), results(6)),
+    (steps(2), results(1), results(4)),
+    (steps(3), results(6), results(7))
   )
 
   val termState: TermState = TermState(
@@ -135,27 +141,36 @@ object CzSlOly {
     expnEqnUpdate
   )
 
-  val lemRefine = tangentLemmas(scale = 0.1, cutoff = 0.007, power = 0.7) :+ baseMixinLemmas(0.3)
-  val expFS = expEvToFinalState.andThen(updateTerms).andThen(reportProofs(results))
+  val lemRefine = tangentLemmas(scale = 0.1, cutoff = 0.007, power = 0.7) :+ baseMixinLemmas(
+    0.3
+  )
+  val expFS =
+    expEvToFinalState.andThen(updateTerms).andThen(reportProofs(results))
   val tangEq = tangentEquations(results, steps)
 
   val bots: Vector[HoTTBot] = Vector(
     expEvToFinalState,
-    finalStateFilteredLemmas(tg= TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)),
+    finalStateFilteredLemmas(
+      tg = TermGenParams.zero
+        .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)
+    ),
     lemRefine,
     cappedBaseState(0.3),
     unAppEquations(math.pow(10, -4)),
     // cappedForkedTangentEquations,
-    eqnsToExpEv(Some(TermGenParams.zero.copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05))),
+    eqnsToExpEv(
+      Some(
+        TermGenParams.zero
+          .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)
+      )
+    ),
     // eqnsToExpEv.triggerWith[EquationsCompleted.type],
     eqnUpdate,
     updateTerms,
     expnEqnUpdate,
     reportProofs(results),
-    // reportMixinLemmas(results),
-    // reportTangentLemmas(results),
-    // reportTangentBaseTerms(steps),
-    reportBaseTangents(results, steps)
+    reportProofs(steps, "Steps (in final state)"),
+    reportBaseTangents(results, steps, inferTriples)
   )
 
   val web = new HoTTPostWeb()
@@ -163,17 +178,17 @@ object CzSlOly {
 
   lazy val wsF =
     for {
-      ws1 <- ws.post(TautologyInitState(tautGen), Set())
-      ws2 <- ws1.postLast(transitivtyInit)
-      ws3 <- ws2.postLast(mulInit)
-      ws4 <- ws3.postLast(localProver)
-      ws5 <- ws4.act(lpToEnhancedExpEv)
-      ws6 <- ws5.act(expnEqnUpdate)
-      ws7 <- ws6.act(expFS)
-      ws8 <- ws7.act(finalStateFilteredLemmas())
-      ws9 <- ws8.act(lemRefine)
+      ws1  <- ws.post(TautologyInitState(tautGen), Set())
+      ws2  <- ws1.postLast(transitivtyInit)
+      ws3  <- ws2.postLast(mulInit)
+      ws4  <- ws3.postLast(localProver)
+      ws5  <- ws4.act(lpToEnhancedExpEv)
+      ws6  <- ws5.act(expnEqnUpdate)
+      ws7  <- ws6.act(expFS)
+      ws8  <- ws7.act(finalStateFilteredLemmas())
+      ws9  <- ws8.act(lemRefine)
       ws10 <- ws9.act(cappedBaseState(0.3))
     } yield ws10
 
-    lazy val sessF = wsF.map(ws => HoTTWebSession.launch(ws, bots))
+  lazy val sessF = wsF.map(ws => HoTTWebSession.launch(ws, bots))
 }
