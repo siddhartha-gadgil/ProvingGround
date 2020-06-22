@@ -1,0 +1,2 @@
+2020.06.22 09:40:00 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TautologyInitState], id: (1,-384837536), content:
+TautologyInitState(TermState([m : 0.14285714285714285, sym : 0.14285714285714285, ((mul) (m)) (n) : 0.14285714285714285, refl : 0.14285714285714285, mul : 0.14285714285714285, n : 0.14285714285714285, trans : 0.14285714285714285],[M : 1.0],Vector(),[],[],Empty))
