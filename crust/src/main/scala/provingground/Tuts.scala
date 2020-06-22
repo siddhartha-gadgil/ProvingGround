@@ -5,7 +5,7 @@ import ammonite.ops._
 object Tuts {
   implicit val wd: Path = pwd
 
-  def tutdir : Path = pwd / 'mantle / 'src / 'main / 'tut
+  def tutdir : Path = pwd / "mantle" / "src" / "main" / "tut"
 
   def gitHash: String =
     read(resource / "gitlog.txt") 
