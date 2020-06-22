@@ -210,7 +210,7 @@ object HoTTPost {
           index: ID
       ): Option[(PostData[_, HoTTPost, ID], Set[ID])] = findInWeb(web, index)
 
-      def allPosts(web: HoTTPost): SeqView[PostData[_, HoTTPost, ID], Seq[_]] =
+      def allPosts(web: HoTTPost): View[PostData[_, HoTTPost, ID]] =
         web.webBuffers.view.flatMap(_.data)
 
       def redirects(web: HoTTPost): Map[ID, Set[ID]] = Map()
@@ -380,7 +380,7 @@ object HoTTPost {
       (lp) =>
         (lm) =>
           Future.sequence(lm.lemmas.map {
-            case (tp, w) =>
+            case (tp, _, w) =>
               lp.tangentProver("lemma" :: tp).map(_.sharpen(w)).runToFuture : Future[LocalTangentProver]
           })
     new MiniBot[Lemmas, LocalTangentProver, HoTTPost, LocalProver, ID](

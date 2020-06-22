@@ -5,7 +5,7 @@ package provingground.learning
 import monix.execution.Scheduler.Implicits.global
 import shapeless._
 import scala.concurrent.Future
-import scala.collection.SeqView
+import scala.collection.View
 import scala.reflect.runtime.universe._
 import provingground.learning.QueryFromPosts.CaseCons
 import provingground.learning.QueryFromPosts.ModCons
@@ -77,12 +77,12 @@ object Queryable {
   implicit def allView[P, W, ID](
       implicit pw: Postable[P, W, ID],
       ph: PostHistory[W, ID]
-  ): Queryable[SeqView[P, Seq[_]], W] =
-    new Queryable[SeqView[P, Seq[_]], W] {
+  ): Queryable[View[P], W] =
+    new Queryable[View[P], W] {
       def get(
           web: W,
-          predicate: SeqView[P, Seq[_]] => Boolean
-      ): Future[SeqView[P, Seq[_]]] =
+          predicate: View[P] => Boolean
+      ): Future[View[P]] =
         Future {
           ph.allPosts(web).filter(_.pw.tag.tpe =:=  pw.tag.tpe).map { _.asInstanceOf[P] }
         }

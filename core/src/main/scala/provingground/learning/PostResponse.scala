@@ -6,7 +6,7 @@ import monix.execution.Scheduler.Implicits.global
 import shapeless._
 import scala.concurrent.Future
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.SeqView
+import scala.collection.View
 import scala.util._
 import scala.reflect.runtime.universe._
 import Utils.logger

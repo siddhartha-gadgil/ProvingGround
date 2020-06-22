@@ -8,7 +8,7 @@ import monix.execution.Scheduler.Implicits.{global => monixglobal}
 import scala.concurrent._
 import TermData._
 import shapeless._
-import scala.collection.SeqView
+import scala.collection.View
 import scala.reflect.runtime.universe._
 import HoTTMessages._
 import provingground.induction.ExstInducDefn

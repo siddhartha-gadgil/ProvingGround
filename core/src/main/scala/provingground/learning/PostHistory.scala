@@ -1,5 +1,5 @@
 package provingground.learning
-import scala.collection.SeqView
+import scala.collection.View
 import shapeless._
 import scala.reflect.runtime.universe._
 trait PostHistory[W, ID] {
@@ -10,7 +10,7 @@ trait PostHistory[W, ID] {
     findPost(web, index).map(_._2).getOrElse(Set())
 
   // all posts as a view
-  def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]]
+  def allPosts(web: W): View[PostData[_, W, ID]]
 
   def apexPosts(web: W): Vector[PostData[_, W, ID]] = { // very inefficient since a lot of stuff is recomputed, should override if efficiency mattersI
     val v = allPosts(web).toVector
@@ -101,7 +101,7 @@ object PostHistory {
   case class Empty[W, ID]() extends PostHistory[W, ID] {
     def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] =
       None
-    def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]] = Seq().view
+    def allPosts(web: W): View[PostData[_, W, ID]] = Seq().view
     def redirects(web: W): Map[ID, Set[ID]]                   = Map()
   }
 
@@ -109,7 +109,7 @@ object PostHistory {
       extends PostHistory[W, ID] {
     def findPost(web: W, index: ID): Option[(PostData[_, W, ID], Set[ID])] =
       first.findPost(web, index).orElse(second.findPost(web, index))
-    def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]] =
+    def allPosts(web: W): View[PostData[_, W, ID]] =
       first.allPosts(web) ++ second.allPosts(web)
     def redirects(web: W): Map[ID, Set[ID]] =
       first.redirects(web) ++ second.redirects(web)
@@ -157,7 +157,7 @@ object HistoryGetter {
               web: W,
               index: ID
           ): Option[(PostData[_, W, ID], Set[ID])] = buffer(web).find(index)
-          def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]] =
+          def allPosts(web: W): View[PostData[_, W, ID]] =
             buffer(web).bufferData.view
           def redirects(web: W): Map[ID, Set[ID]] = Map()
         }
@@ -175,7 +175,7 @@ object HistoryGetter {
               web: W,
               index: ID
           ): Option[(PostData[_, W, ID], Set[ID])] = buffer(web).find(index)
-          def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]] =
+          def allPosts(web: W): View[PostData[_, W, ID]] =
             buffer(web).bufferData.view
           def redirects(web: W): Map[ID, Set[ID]] = buffer(web).redirects
         }
@@ -191,7 +191,7 @@ object HistoryGetter {
               web: W,
               index: ID
           ): Option[(PostData[_, W, ID], Set[ID])]                  = None
-          def allPosts(web: W): SeqView[PostData[_, W, ID], Seq[_]] = Seq().view
+          def allPosts(web: W): View[PostData[_, W, ID]] = Seq().view
           def redirects(web: W): Map[ID, Set[ID]]                   = Map()
         }
     }
