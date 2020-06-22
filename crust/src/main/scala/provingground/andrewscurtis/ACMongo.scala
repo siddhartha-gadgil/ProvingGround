@@ -243,8 +243,8 @@ object ACMongo extends ACWriter {
 
     emptyFut map
       ((check) =>
-        if (check) actorsDB.foreach(_.insert(init))
-        else actorsDB.foreach(_.update(selector, modifier)))
+        if (check) actorsDB.foreach(_.insert(ordered = false).one(init))
+        else actorsDB.foreach(_.update(ordered = false).one(selector, modifier)))
   }
 
   /**

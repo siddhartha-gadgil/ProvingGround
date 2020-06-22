@@ -204,6 +204,7 @@ object IndexedConstructorSeqMap {
                                                                    RD] =
       IndexedRecursiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, RD](
         data(X),
+        cons,
         defn,
         tail.recDefn(X),
         (x: Term) =>
@@ -234,6 +235,7 @@ object IndexedConstructorSeqMap {
                                                                       ID] =
       IndexedInductiveDefinition.DataCons[H, F, Cod, Index, IF, IDF, IDFT, ID](
         inducData(fibre),
+        cons,
         inducDefn,
         tail.inducDefn(fibre),
         (x) =>
@@ -589,7 +591,6 @@ object IndexedConstructorSeqDom {
       def subst(a: IndexedConstructorSeqDom[SS, H, F, Index, Intros])(
           x: Term,
           y: Term) = {
-        // pprint.log(s"substitution for indexed inductive type definition ${a.W}")
         a.subs(x, y)
       }
     }

@@ -6,6 +6,7 @@ import provingground.learning.GeneratorNode.{Map => GMap, _}
 import scala.language.higherKinds
 import scala.util._
 import spire.util.Opt
+import provingground.learning.Expression.Exp
 
 /**
   * resolving a general specification of a recursive generative model as finite distributions, depending on truncation;
@@ -19,8 +20,6 @@ case class GeneratorVariables[State](
     nodeCoeffSeq: NodeCoeffSeq[State, Double],
     state: State
 )(implicit sd: StateDistribution[State, FD]) {
-
-//  pprint.log(s"Generating variables from $state")
 
   def varSupport[Y](rv: RandomVar[Y]): Set[Y] =
     StateDistribution.value(state)(rv).support
@@ -135,7 +134,7 @@ object GeneratorVariables {
       val fd1 = StateDistribution.value(state)(base1)
       val fd2 = StateDistribution.value(state)(base2)
       fd1.zip(fd2).filter(sort.pred).total
-    case isle: InIsle[y, State, o, boat] =>
+    case isle: InIsle[y, yy, State, o, boat] =>
       val x = variableValue(isle.isle.finalMap(isle.boat, state))
       x(isle.isleVar)
   }
@@ -172,11 +171,23 @@ object GeneratorVariables {
     override def toString = s"{($base1, $base2) \u2208 $sort}"
   }
 
-  case class InIsle[Y, State, O, Boat](
+  case class InIsle[Y, YY, State, O, Boat](
       isleVar: Variable[Y],
       boat: Boat,
-      isle: Island[Y, State, O, Boat]
+      isle: Island[YY, State, O, Boat]
   ) extends Variable[Y]
+
+  object InIsle {
+    def variableMap[YY, State, O, Boat](
+        boat: Boat,
+        isle: Island[YY, State, O, Boat]
+    ): Expression.VariableMap =
+      new Expression.VariableMap {
+        def apply[Y](
+            arg: GeneratorVariables.Variable[Y]
+        ): GeneratorVariables.Variable[Y] = InIsle(arg, boat, isle)
+      }
+  }
 
   case class NodeCoeff[RDom <: HList, Y](
       nodeFamily: GeneratorNodeFamily[RDom, Y]
@@ -190,13 +201,13 @@ import GeneratorVariables._, Expression._
 import Expression._
 
 sealed trait Expression {
-  def mapVars(f: Variable[_] => Variable[_]): Expression
+  def mapVars(f: VariableMap): Expression
 
   def useBoat[Y, State, O, Boat](
       boat: Boat,
       island: Island[Y, State, O, Boat]
   ): Expression =
-    mapVars(InIsle(_, boat, island))
+    mapVars(InIsle.variableMap(boat, island))
 
   def +(that: Expression): Sum = Sum(this, that)
 
@@ -216,6 +227,10 @@ sealed trait Expression {
 }
 
 object Expression {
+  trait VariableMap {
+    def apply[Y](arg: Variable[Y]): Variable[Y]
+  }
+
   def varVals(expr: Expression): Set[VarVal[_]] = expr match {
     case value: VarVal[_] => Set(value)
     case Log(exp)         => varVals(exp)
@@ -224,7 +239,7 @@ object Expression {
     case Product(x, y)    => varVals(x) union (varVals(y))
     case Literal(_)       => Set()
     case Quotient(x, y)   => varVals(x) union (varVals(y))
-    case Coeff(_)      => Set()
+    case Coeff(_)         => Set()
     case IsleScale(_, _)  => Set()
   }
 
@@ -236,7 +251,7 @@ object Expression {
     case Product(x, y)        => atoms(x) union (atoms(y))
     case Literal(_)           => Set()
     case Quotient(x, y)       => atoms(x) union (atoms(y))
-    case coeff @ Coeff(_)  => Set(coeff)
+    case coeff @ Coeff(_)     => Set(coeff)
     case sc @ IsleScale(_, _) => Set(sc)
   }
 
@@ -251,13 +266,29 @@ object Expression {
     case _                        => Vector()
   }
 
+  def allVarFactors(exp: Expression): Vector[Variable[_]] = exp match {
+    case FinalVal(v: Variable[_]) => Vector(v)
+    case Product(x, y)            => allVarFactors(x) ++ allVarFactors(y)
+    case Quotient(x, y)           => allVarFactors(x) ++ allVarFactors(y)
+    case _                        => Vector()
+  }
+
+  def rhsOrphans(eqs: Set[EquationNode]) = {
+    val lhsTerms = eqs.map(_.lhs)
+    for {
+      eqq  <- eqs
+      fvar <- allVarFactors(eqq.rhs)
+      if (!lhsTerms.contains(FinalVal(fvar)))
+    } yield (FinalVal(fvar): Expression, eqq)
+  }
+
   def coeffFactor(exp: Expression): Option[Coeff[_]] = exp match {
     case cf: Coeff[_]  => Some(cf)
     case Product(x, y) => coeffFactor(x) orElse (coeffFactor(y))
     case _             => None
   }
 
-  def coefficients(exp: Expression) : Set[Coeff[_]] = exp match {
+  def coefficients(exp: Expression): Set[Coeff[_]] = exp match {
     case value: VarVal[_] => Set()
     case Log(exp)         => coefficients(exp)
     case Exp(x)           => coefficients(x)
@@ -265,15 +296,15 @@ object Expression {
     case Product(x, y)    => coefficients(x) union (coefficients(y))
     case Literal(_)       => Set()
     case Quotient(x, y)   => coefficients(x) union (coefficients(y))
-    case cf @ Coeff(_)      => Set(cf)
+    case cf @ Coeff(_)    => Set(cf)
     case IsleScale(_, _)  => Set()
   }
 
-  def variance(v: Vector[Expression]) : Expression = 
+  def variance(v: Vector[Expression]): Expression =
     if (v.isEmpty) Literal(0)
     else {
-      val mean = v.reduce(Sum(_,_)) / v.size
-      v.map(x => (x - mean) * (x - mean) : Expression).reduce(Sum(_, _)) / v.size
+      val mean = v.reduce(Sum(_, _)) / v.size
+      v.map(x => (x - mean) * (x - mean): Expression).reduce(Sum(_, _)) / v.size
     }
 
   def h[A](pDist: Map[A, Expression]): Expression =
@@ -286,49 +317,51 @@ object Expression {
   ): Expression =
     pDist
       .map {
-        case (a, p) => 
+        case (a, p) =>
           val q = smoothing.map(c => qDist(a) + Literal(c)).getOrElse(qDist(a))
           p * Log(p / q)
       }
       .reduce[Expression](_ + _)
 
-  def unknownsCost[A](pDist: Map[A, Expression], smoothing: Option[Double]) : Option[Expression] = 
-      smoothing.map{
-        q => 
-        pDist
-      .map {
-        case (a, p) => 
-          p * Log(p / q)
-      }
-      .reduce[Expression](_ + _)
-      }
+  def unknownsCost[A](
+      pDist: Map[A, Expression],
+      smoothing: Option[Double]
+  ): Option[Expression] =
+    smoothing.map { q =>
+      pDist
+        .map {
+          case (a, p) =>
+            p * Log(p / q)
+        }
+        .reduce[Expression](_ + _)
+    }
 
   sealed trait VarVal[+Y] extends Expression {
     val variable: Variable[Y]
   }
 
   case class FinalVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
-    def mapVars(f: Variable[_] => Variable[_]): Expression =
+    def mapVars(f: VariableMap): Expression =
       FinalVal(f(variable))
 
     override def toString: String = s"P\u2081($variable)"
   }
 
   case class InitialVal[+Y](variable: Variable[Y]) extends VarVal[Y] {
-    def mapVars(f: Variable[_] => Variable[_]): Expression =
+    def mapVars(f: VariableMap): Expression =
       InitialVal(f(variable))
 
     override def toString: String = s"P\u2080($variable)"
   }
 
   case class Log(exp: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Expression = Log(exp.mapVars(f))
+    def mapVars(f: VariableMap): Expression = Log(exp.mapVars(f))
 
     override def toString = s"log($exp)"
   }
 
   case class Exp(exp: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Expression = Exp(exp.mapVars(f))
+    def mapVars(f: VariableMap): Expression = Exp(exp.mapVars(f))
 
     override def toString = s"exp($exp)"
   }
@@ -338,36 +371,43 @@ object Expression {
   def inverseSigmoid(y: Expression) = Log(y / (Literal(1) - y))
 
   case class Sum(x: Expression, y: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Sum =
+    def mapVars(f: VariableMap): Sum =
       Sum(x.mapVars(f), y.mapVars(f))
 
     override def toString = s"($x) + ($y)"
   }
 
   case class Product(x: Expression, y: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Product =
+    def mapVars(f: VariableMap): Product =
       Product(x.mapVars(f), y.mapVars(f))
 
     override def toString = s"($x) * ($y)"
   }
 
   case class Literal(value: Double) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Literal = this
+    def mapVars(f: VariableMap): Literal = this
 
     override def toString: String = value.toString
   }
 
   case class Quotient(x: Expression, y: Expression) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Quotient =
+    def mapVars(f: VariableMap): Quotient =
       Quotient(x.mapVars(f), y.mapVars(f))
 
     override def toString = s"($x) / ($y)"
   }
 
-  case class Coeff[Y](node: GeneratorNode[Y])
-      extends Expression {
-    val rv = node.output
-    def mapVars(f: Variable[_] => Variable[_]): Coeff[Y] = this
+  object Coeff {
+    def get[Y](node: GeneratorNode[Y]): Coeff[_] =
+      node match {
+        case tc: ThenCondition[_, _] => get(tc.gen)
+        case g                       => Coeff(g)
+      }
+  }
+
+  case class Coeff[Y](node: GeneratorNode[Y]) extends Expression {
+    val rv                                = node.output
+    def mapVars(f: VariableMap): Coeff[Y] = this
 
     def expand: RandomVarFamily[_ <: HList, Y] = rv match {
       case RandomVar.AtCoord(family, _) => family
@@ -405,76 +445,86 @@ object Expression {
     def get[State, V](seq: NodeCoeffSeq[State, V]): Option[V] =
       seq.find(expand).flatMap(getFromCoeffs)
 
-    def sameFamilyFromCoeffs[State, V, RDom<: HList, YY](that : Coeff[YY], nodeCoeffs: NodeCoeffs[State, V, RDom, Y]) : Boolean =
-        (nodeCoeffs, rv, that.rv) match {
-          case (NodeCoeffs.Target(_), _, _) => false
-          case (
-              cons: NodeCoeffs.Cons[State, V, RDom, Y],
-              RandomVar.AtCoord(family, arg),
-              RandomVar.AtCoord(family1, arg1)
-              ) if family1 == family =>
-            cons.headGen match {
-              case fmly: GeneratorNodeFamily.Pi[u, v] =>
-                if (
-                  Try(fmly.nodes(arg.asInstanceOf[u])).toOption == Some(node) &&
-                  Try(fmly.nodes(arg1.asInstanceOf[u])).toOption == Some(that.node)
-                  )
-                  true
-                else sameFamilyFromCoeffs(that, cons.tail)
-              case fmly: GeneratorNodeFamily.PiOpt[u, v] =>
-                if (Try(fmly.nodesOpt(arg.asInstanceOf[u])).toOption.flatten == Some(
-                      node
-                    ) &&
-                    Try(fmly.nodesOpt(arg1.asInstanceOf[u])).toOption.flatten == Some(
-                      that.node)
-                    )
-                  true
-                else sameFamilyFromCoeffs(that, cons.tail)
-              case _ => this == that
-            }
-  
-          case (cons: NodeCoeffs.Cons[State, V, RDom, Y], _, _) =>
-            if (cons.headGen == node) node == that.node 
-            else sameFamilyFromCoeffs(that, cons.tail)
-        }
-      
-    def sameFamily[State, V, YY](that: Coeff[YY], seq: NodeCoeffSeq[State, V]): Boolean =
+    def sameFamilyFromCoeffs[State, V, RDom <: HList, YY](
+        that: Coeff[YY],
+        nodeCoeffs: NodeCoeffs[State, V, RDom, Y]
+    ): Boolean =
+      (nodeCoeffs, rv, that.rv) match {
+        case (NodeCoeffs.Target(_), _, _) => false
+        case (
+            cons: NodeCoeffs.Cons[State, V, RDom, Y],
+            RandomVar.AtCoord(family, arg),
+            RandomVar.AtCoord(family1, arg1)
+            ) if family1 == family =>
+          cons.headGen match {
+            case fmly: GeneratorNodeFamily.Pi[u, v] =>
+              if (Try(fmly.nodes(arg.asInstanceOf[u])).toOption == Some(node) &&
+                  Try(fmly.nodes(arg1.asInstanceOf[u])).toOption == Some(
+                    that.node
+                  ))
+                true
+              else sameFamilyFromCoeffs(that, cons.tail)
+            case fmly: GeneratorNodeFamily.PiOpt[u, v] =>
+              if (Try(fmly.nodesOpt(arg.asInstanceOf[u])).toOption.flatten == Some(
+                    node
+                  ) &&
+                  Try(fmly.nodesOpt(arg1.asInstanceOf[u])).toOption.flatten == Some(
+                    that.node
+                  ))
+                true
+              else sameFamilyFromCoeffs(that, cons.tail)
+            case _ => this == that
+          }
+
+        case (cons: NodeCoeffs.Cons[State, V, RDom, Y], _, _) =>
+          if (cons.headGen == node) node == that.node
+          else sameFamilyFromCoeffs(that, cons.tail)
+      }
+
+    def sameFamily[State, V, YY](
+        that: Coeff[YY],
+        seq: NodeCoeffSeq[State, V]
+    ): Boolean =
       seq.find(expand).map(sameFamilyFromCoeffs(that, _)).getOrElse(false)
   }
 
   case class IsleScale[Boat, Y](boat: Boat, elem: Elem[Y]) extends Expression {
-    def mapVars(f: Variable[_] => Variable[_]): Expression = this
+    def mapVars(f: VariableMap): Expression = this
   }
 
   import spire.algebra._, spire.implicits._
 
-  implicit lazy val field : Field[Expression] = new Field[Expression]{
-  // Members declared in algebra.ring.AdditiveGroup
-  def negate(x: Expression): Expression = x * -1
-  
-  // Members declared in algebra.ring.AdditiveMonoid
-  def zero: Expression = Literal(0)
-  
-  // Members declared in algebra.ring.AdditiveSemigroup
-  def plus(x: Expression,y: Expression): Expression = Sum(x, y)
-  
-  // Members declared in spire.algebra.GCDRing
-  def gcd(a: Expression,b: Expression)(implicit ev: spire.algebra.Eq[Expression]): Expression = one
-  def lcm(a: Expression,b: Expression)(implicit ev: spire.algebra.Eq[Expression]): Expression = a * b
-  
-  // Members declared in algebra.ring.MultiplicativeGroup
-  def div(x: Expression,y: Expression): Expression = x / y
-  
-  // Members declared in algebra.ring.MultiplicativeMonoid
-  def one: Expression = Literal(1)
-  
-  // Members declared in algebra.ring.MultiplicativeSemigroup
-  def times(x: Expression,y: Expression): Expression = x * y
+  implicit lazy val field: Field[Expression] = new Field[Expression] {
+    // Members declared in algebra.ring.AdditiveGroup
+    def negate(x: Expression): Expression = x * -1
+
+    // Members declared in algebra.ring.AdditiveMonoid
+    def zero: Expression = Literal(0)
+
+    // Members declared in algebra.ring.AdditiveSemigroup
+    def plus(x: Expression, y: Expression): Expression = Sum(x, y)
+
+    // Members declared in spire.algebra.GCDRing
+    def gcd(a: Expression, b: Expression)(
+        implicit ev: spire.algebra.Eq[Expression]
+    ): Expression = one
+    def lcm(a: Expression, b: Expression)(
+        implicit ev: spire.algebra.Eq[Expression]
+    ): Expression = a * b
+
+    // Members declared in algebra.ring.MultiplicativeGroup
+    def div(x: Expression, y: Expression): Expression = x / y
+
+    // Members declared in algebra.ring.MultiplicativeMonoid
+    def one: Expression = Literal(1)
+
+    // Members declared in algebra.ring.MultiplicativeSemigroup
+    def times(x: Expression, y: Expression): Expression = x * y
   }
 
-  implicit lazy val nroot: NRoot[Expression] = 
-    new NRoot[Expression]{
-      def nroot(a: Expression, n: Int) = Exp(Log(a) * (1.0/n))
+  implicit lazy val nroot: NRoot[Expression] =
+    new NRoot[Expression] {
+      def nroot(a: Expression, n: Int) = Exp(Log(a) * (1.0 / n))
 
       def fpow(a: Expression, b: Expression): Expression = Exp(Log(a) * b)
     }
@@ -482,14 +532,14 @@ object Expression {
 }
 
 case class Equation(lhs: Expression, rhs: Expression) {
-  def mapVars(f: Variable[_] => Variable[_]) =
+  def mapVars(f: VariableMap) =
     Equation(lhs.mapVars(f), rhs.mapVars(f))
 
   def useBoat[Y, State, Boat, O](
       boat: Boat,
       island: Island[Y, State, O, Boat]
   ): Equation =
-    mapVars(InIsle(_, boat, island))
+    mapVars(InIsle.variableMap(boat, island))
 
   def squareError(epsilon: Double): Expression =
     ((lhs - rhs) / (lhs + rhs + Literal(epsilon))).square
@@ -527,22 +577,35 @@ object EquationNode {
       .groupBy(_._1)
       .view.mapValues(s => s.toVector.map(_._2).flatten).toMap
 
-  def forwardMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Set[GeneratorVariables.Variable[_]]] =
-    {
-      val bm = backMap(eqs)
-      val keys = bm.values.toSet.flatten.flatten
-      keys.map{v : Variable[_] => v -> bm.keySet.filter(w => bm(w).flatten.contains(v : Variable[_]))}.toMap
-    }
-      
-  def forwardCoeffMap(eqs: Set[EquationNode]) : Map[GeneratorVariables.Variable[Any],Vector[(Expression.Coeff[_], GeneratorVariables.Variable[_])]] =
-  {
-    val bcm = backCoeffMap(eqs)
-    val keys = bcm.values.toSet.flatten.flatMap(_._2.toSet)
-    keys.map{v : Variable[_] => 
-      v -> bcm.keys.toVector.flatMap(w => bcm(w).collect{case (c : Coeff[_], ts) if ts.contains(v) => (c , w ) : (Coeff[_], Variable[_]) }.toVector  ) 
+  def forwardMap(
+      eqs: Set[EquationNode]
+  ): Map[GeneratorVariables.Variable[Any], Set[
+    GeneratorVariables.Variable[_]
+  ]] = {
+    val bm   = backMap(eqs)
+    val keys = bm.values.toSet.flatten.flatten
+    keys.map { v: Variable[_] =>
+      v -> bm.keySet.filter(w => bm(w).flatten.contains(v: Variable[_]))
     }.toMap
   }
 
+  def forwardCoeffMap(
+      eqs: Set[EquationNode]
+  ): Map[GeneratorVariables.Variable[Any], Vector[
+    (Expression.Coeff[_], GeneratorVariables.Variable[_])
+  ]] = {
+    val bcm  = backCoeffMap(eqs)
+    val keys = bcm.values.toSet.flatten.flatMap(_._2.toSet)
+    keys.map { v: Variable[_] =>
+      v -> bcm.keys.toVector.flatMap(
+        w =>
+          bcm(w).collect {
+            case (c: Coeff[_], ts) if ts.contains(v) =>
+              (c, w): (Coeff[_], Variable[_])
+          }.toVector
+      )
+    }.toMap
+  }
 
 }
 
@@ -556,9 +619,9 @@ case class EquationNode(lhs: Expression, rhs: Expression) {
   ) =
     EquationNode(lhs, rhs.useBoat(boat, island))
 
-  override def toString: String = s"($lhs =) $rhs"
+  override def toString: String = s"($lhs) = $rhs"
 
-  def mapVars(f: Variable[_] => Variable[_]) =
+  def mapVars(f: VariableMap) =
     EquationNode(lhs.mapVars(f), rhs.mapVars(f))
 }
 

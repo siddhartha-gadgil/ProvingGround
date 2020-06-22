@@ -18,7 +18,7 @@ case class TFData(
     inFinalPairEvent: Map[Variable[_], Set[(Variable[_], Variable[_])]],
     equations: Set[Equation]) {
 
-  def map(f: Variable[_] => Variable[_]): TFData = {
+  def map(f: VariableMap): TFData = {
     TFData(
       vars.map {
         case (FinalVal(variable), p)   => FinalVal(f(variable))    -> p
@@ -34,7 +34,7 @@ case class TFData(
               }): VarVal[_]
         )),
       inFinalEvent.map {
-        case (e, s) => (f(e) -> s.map(f))
+        case (e, s) => (f(e) -> s.map{ case x => f(x)})
       },
       inFinalPairEvent.map {
         case (e, s) => f(e) -> s.map { case (a, b) => (f(a), f(b)) }
@@ -69,8 +69,6 @@ case class GeneratorTF[State](
     varWeight: Double,
     initState: State,
     finalState: State)(implicit sd: StateDistribution[State, FD]) {
-  // pprint.log(initState)
-  // pprint.log(finalState)
 
   lazy val initVars: Set[Variable[_]] =
     GeneratorVariables(nodeCoeffSeq, initState).allVars
@@ -190,7 +188,6 @@ case class GeneratorTF[State](
     ncs match {
       case NodeCoeffSeq.Empty()          => Set() -> TFData.empty
       case NodeCoeffSeq.Cons(head, tail) =>
-        // pprint.log(head.output)
         (
           nodeCoeffsEquations(head)._1 union nodeCoeffSeqEquations(tail)._1,
           nodeCoeffsEquations(head)._2 ++ nodeCoeffSeqEquations(tail)._2
@@ -202,12 +199,10 @@ case class GeneratorTF[State](
     : (Set[Equation], TFData) =
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
-        // pprint.log(nodeCoeffs.output)
         val (terms, data) = nodeCoeffsEquationTerms(nodeCoeffs, HNil)
         Equation.group(terms) -> data
       case fmly =>
         val eqns = finalElemIndices(nodeCoeffs.output).flatMap { x =>
-          // pprint.log(x)
           val (terms, _) = nodeCoeffsEquationTerms(nodeCoeffs, x)
           Equation.group(terms)
         }
@@ -226,7 +221,6 @@ case class GeneratorTF[State](
       case bc: NodeCoeffs.Cons[State, Double, Dom, Y] =>
         val (hts, hes) = bc.headGen match {
           case gen: GeneratorNode[Y] =>
-            // pprint.log(gen)
             nodeEquationTerms(gen)
           case pf: GeneratorNodeFamily.Pi[Dom, Y] =>
             nodeEquationTerms(pf.nodes(x))
@@ -267,7 +261,6 @@ case class GeneratorTF[State](
       node: GeneratorNode[Y]): (Set[EquationNode], TFData) =
     nodeMap.getOrElse(
       node, {
-//        pprint.log(node)
         val result = node match {
           case Init(input) =>
             val eqTerms =
@@ -323,7 +316,6 @@ case class GeneratorTF[State](
           case FlatMap(baseInput, fiberNode, output) =>
             val eqTerms: Set[EquationNode] = for {
               (x, p) <- finalProbs(baseInput)
-              // _ = pprint.log(s"$fiberNode($x) = ${fiberNode(x)}")
               eqT <- nodeEquationTerms(fiberNode(x))._1
             } yield eqT * p
             val allData: Set[TFData] = for {
@@ -335,7 +327,6 @@ case class GeneratorTF[State](
             val eqTerms: Set[EquationNode] = for {
               (x, p)                   <- finalProbs(baseInput)
               (node: GeneratorNode[Y]) <- fiberNodeOpt(x).toSet
-              // _ = pprint.log(s"$fiberNodeOpt($x) = Some($node)")
               eqT <- nodeEquationTerms(node)._1
             } yield eqT * p
             val allData: Set[TFData] = for {
@@ -362,15 +353,9 @@ case class GeneratorTF[State](
               for {
                 (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
                 d2 = finalProbs(fiberVar(z)) // distribution of the fiber at `z`
-//            _  = pprint.log(z)
-//            _  = pprint.log(fiberVar(z))
                 d = pmf1.zip(d2).map {
                   case ((x1, p1), (x2, p2)) =>
                     Try((f(x1, x2), p1 * p2)).fold(fa => {
-                      // pprint.log(x1)
-                      // pprint.log(x2)
-                      // pprint.log(f)
-                      // pprint.log(node)
                       throw fa
                     }, fb => fb)
                 }
@@ -415,7 +400,7 @@ case class GeneratorTF[State](
                 GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
               GeneratorTF.gset += isleEq
               val isleData: TFData =
-                isleEq.tfData.map((x) => InIsle(x, boat, isle))
+                isleEq.tfData.map(InIsle.variableMap(boat, isle))
               val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
               val eqTerms =
                 for {
@@ -430,10 +415,7 @@ case class GeneratorTF[State](
             }
 
         }
-//        pprint.log(node)
-//        pprint.log(result)
         nodeMap += node -> result
-        // pprint.log(nodeMap.size)
         result
       }
     )
@@ -442,7 +424,6 @@ case class GeneratorTF[State](
       node: GeneratorNode[Y]): Task[(Set[EquationNode], TFData)] =
     if (nodeMap.keySet.contains(node)) Task.now(nodeMap(node))
     else {
-      //        pprint.log(node)
       val resultTask = node match {
         case Init(input) =>
           Task {
@@ -569,15 +550,9 @@ case class GeneratorTF[State](
               for {
                 (z, pmf1) <- byBase // `z` is in the base, `pmf1` is all terms above `z`
                 d2 = finalProbs(fiberVar(z)) // distribution of the fiber at `z`
-                //            _  = pprint.log(z)
-                //            _  = pprint.log(fiberVar(z))
                 d = pmf1.zip(d2).map {
                   case ((x1, p1), (x2, p2)) =>
                     Try((f(x1, x2), p1 * p2)).fold(fa => {
-                      // pprint.log(x1)
-                      // pprint.log(x2)
-                      // pprint.log(f)
-                      // pprint.log(node)
                       throw fa
                     }, fb => fb)
                 }
@@ -626,7 +601,7 @@ case class GeneratorTF[State](
                 GeneratorTF.gset.find(_ == isleEqNew).getOrElse(isleEqNew)
               GeneratorTF.gset += isleEq
               val isleData: TFData =
-                isleEq.tfData.map((x) => InIsle(x, boat, isle))
+                isleEq.tfData.map(InIsle.variableMap(boat, isle))
               val isleFinalProb = isleEq.finalProbs(isle.islandOutput(boat))
               val eqTerms =
                 for {
@@ -691,7 +666,6 @@ case class GeneratorTF[State](
     : Task[(Set[Equation], TFData)] =
     nodeCoeffs.output match {
       case _: RandomVar[Y] =>
-        // pprint.log(nodeCoeffs.output)
         nodeCoeffsEquationTermsTask(nodeCoeffs, HNil).map {
           case (terms, data) =>
             Equation.group(terms) -> data

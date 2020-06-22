@@ -130,7 +130,7 @@ object Unify {
         pprint.log(unifMap)
         throw fa
     }, identity)
-    val lambdaVars = freeVars filter ((x) => !(unifMap.keySet contains x))
+    val lambdaVars = (freeVars filter ((x) => !(unifMap.keySet contains x))).map(y => multisub(y, unifMap))
     import Fold._
     Try(polyLambda(lambdaVars.toList, fn(x))).toOption
   }
@@ -178,7 +178,6 @@ object Unify {
     unify(func.typ, codomain, (t) => freeVars.contains(t)).map{
       unifMap => 
         val value = multisub(func, unifMap)
-        // pprint.log(unifMap.keySet -- freeVars.toSet)
         val exVars = extraVars(freeVars, unifMap)
         polyLambda(exVars.reverse.toList, value)
     }.orElse{
@@ -194,7 +193,6 @@ object Unify {
                 unify(fn.dom, pd.domain, (t) => freeVars.contains(t)).flatMap{unifMap => 
                   val variable = multisub(pd.variable, unifMap)
                   val value = multisub(pd.value, unifMap)
-                  // pprint.log(unifMap.keySet -- freeVars.toSet)
                   val exVars = extraVars(freeVars, unifMap)
                   val target = value.replace(variable, l.variable)
                   targetCodomain(value, target, exVars).map{t => lambda(variable)(t)} 

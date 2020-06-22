@@ -100,6 +100,9 @@ object TermPack {
 
   implicit val travNamed: Traverse[Named] = traversePair[S, Id]
 
+  implicit val travNumbered: Traverse[Numbered] = traversePair[N, Id]
+
+
   val termToMsg: Translator.OrElse[Term, upack.Msg] =
     toMsg(universe)("U") ||
       toMsg(formalAppln)("Ap") ||
@@ -118,6 +121,8 @@ object TermPack {
       toMsg(indRecFunc)("IRec") ||
       toMsg(recFunc)("Rec") ||
       toMsg(inducFunc)("Ind") ||
+      toMsg(numberedSymbolic("$"))("Sy$") ||
+      toMsg(numberedSymbolic("@"))("Sy@") ||
       toMsg(hashSymbolic)("Sym") ||
       toMsg(mereWitness)("Witness") ||
       toMsg(firstIncl)("i1") ||
@@ -332,6 +337,14 @@ object TermPack {
           // println(s"result: $res")
           res
       } ||
+       msgToBuild[Term, Numbered]("Sy$") {
+        case (num, tp: Typ[u]) => ("$" + HoTT.getName(num)) :: tp
+        case (x, y)             => unmatched(x, y)
+      }(travNumbered, implicitly[MsgFunc[Numbered]]) ||
+      msgToBuild[Term, Numbered]("Sy@") {
+        case (num, tp: Typ[u]) => ("@" + HoTT.getName(num)) :: tp
+        case (x, y)             => unmatched(x, y)
+      }(travNumbered, implicitly[MsgFunc[Numbered]]) ||
       msgToBuild[Term, Named]("Sym") {
         case (name, tp: Typ[u]) => deHash(name) :: tp
         case (x, y)             => unmatched(x, y)

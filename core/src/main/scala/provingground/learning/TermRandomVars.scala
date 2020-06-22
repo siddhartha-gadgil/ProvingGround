@@ -90,6 +90,68 @@ object TermRandomVars {
     */
   case object Typs extends RandomVar[Typ[Term]]
 
+    /**
+    * distribution of functions : as existentials (wrapping terms), not as terms
+    */
+  case object Funcs extends RandomVar[ExstFunc]
+
+  /**
+    * family of distributions of terms with specified type
+    */
+  case object TermsWithTyp
+      extends RandomVar.SimpleFamily[Typ[Term], Term](
+        Typs,
+        (typ: Typ[Term]) => Sort.Filter[Term](WithTyp(typ))
+      )
+
+  /**
+    * distribution of terms with a specific type
+    *
+    * @param typ the type
+    * @return distribution at type
+    */
+  def termsWithTyp(typ: Typ[Term]): RandomVar[Term] =
+    RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
+  /**
+    * Wrapper for terms with type family to allow equality and  `toString` to work.
+    */
+  case object TermsWithTypFn extends (Typ[Term] => RandomVar[Term]) {
+    def apply(typ: Typ[Term]) = RandomVar.AtCoord(TermsWithTyp, typ :: HNil)
+
+    override def toString = "TermsWithTyp"
+  }
+
+  /**
+    * distribution of type families
+    */
+  case object TypFamilies extends RandomVar[ExstFunc]
+
+  val typFamilySort: Sort[Term, ExstFunc] =
+    Sort.Restrict[Term, ExstFunc](TypFamilyOpt)
+
+  /**
+    * distribution of types and type families
+    */
+  case object TypsAndFamilies extends RandomVar[Term] {
+    lazy val fromTyp: Map[Typ[Term], Term] =
+      Map[Typ[Term], Term](Idty(), Typs, TypsAndFamilies)
+
+    lazy val fromFamilies: Map[ExstFunc, Term] =
+      Map[ExstFunc, Term](ExstFunc.GetFunc, TypFamilies, TypsAndFamilies)
+  }
+
+  /**
+    * distribution of types to target for generating terms; either a generated type or a goal.
+    */
+  case object TargetTyps extends RandomVar[Typ[Term]] {
+    def fromGoal: Map[Typ[Term], Typ[Term]] = Map(Idty(), Goals, TargetTyps)
+
+    def fromTyp: Map[Typ[Term], Typ[Term]] = Map(Idty(), Typs, TargetTyps)
+
+    def fromNegTyp: Map[Typ[Term], Typ[Term]] = Map(negate, Typs, TargetTyps)
+  }
+
   case object IsleDomains extends RandomVar[Typ[Term]]
 
   val typSort: Sort[Term, Typ[Term]] = Sort.Restrict[Term, Typ[Term]](TypOpt)
@@ -296,7 +358,9 @@ object TermRandomVars {
       case Restrict(optMap) =>
         val newOptMap = optMap match {
           case TypOpt  => TypOpt.asInstanceOf[U => Option[V]]
+          case TypAsTermOpt  => TypAsTermOpt.asInstanceOf[U => Option[V]]
           case FuncOpt => FuncOpt.asInstanceOf[U => Option[V]]
+          case TypFamilyOpt  => TypFamilyOpt.asInstanceOf[U => Option[V]]
           case FuncWithDom(typ) =>
             FuncWithDom(typ.replace(x, y)).asInstanceOf[U => Option[V]]
           case _ =>
@@ -329,19 +393,19 @@ object TermRandomVars {
 
   }
 
-  def variableSubs(
+  def variableSubs[Y](
       x: Term,
       y: Term
-  )(v: Variable[_]): Variable[_] = (v: Variable[Any]) match {
+  )(v: Variable[Y]): Variable[Y] = (v: Variable[Y]) match {
     case Elem(element, randomVar) =>
       Elem(valueSubs(x, y)(element), randomVarSubs(x, y)(randomVar))
     case ev: Event[a, b] =>
       val newBase             = randomVarSubs(x, y)(ev.base)
       val newSort: Sort[a, b] = sortSubs(x, y)(ev.sort)
       Event(newBase, newSort)
-    case inIsleFull: InIsle[c, _, d, _] =>
+    case inIsleFull: InIsle[c, cc, _, d, _] =>
       val inIsleTry =
-        Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+        Try(inIsleFull.asInstanceOf[InIsle[c, cc, TermState, d, Term]])
       inIsleTry.fold(
         fa => inIsleFull,
         inIsle => {
@@ -361,16 +425,16 @@ object TermRandomVars {
       )
   }
 
-  def isleNormalizeVars(
-      v: GeneratorVariables.Variable[_],
+  def isleNormalizeVars[Y](
+      v: GeneratorVariables.Variable[Y],
       vars: Vector[Term]
-  ): GeneratorVariables.Variable[_] =
+  ): GeneratorVariables.Variable[Y] =
     v match {
       case Elem(element, randomVar) => v
       case Event(base, sort)        => v
-      case inIsleFull: InIsle[c, _, d, _] =>
+      case inIsleFull: InIsle[c, Y, _, d, _] =>
         val inIsleTry =
-          Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+          Try(inIsleFull.asInstanceOf[InIsle[c, Y, TermState, d, Term]])
         inIsleTry.fold(
           fa => inIsleFull,
           inIsle => {
@@ -389,7 +453,7 @@ object TermRandomVars {
   import Expression._
 
   def expressionMapVars(
-      fn: Variable[_] => Variable[_]
+      fn: VariableMap
   )(exp: Expression): Expression = exp match {
     case FinalVal(variable)   => FinalVal(fn(variable))
     case InitialVal(variable) => InitialVal(fn(variable))
@@ -459,21 +523,28 @@ object TermRandomVars {
         )
     }
 
-  def isleNormalizeVarExp(
-      v: GeneratorVariables.Variable[_],
+  def isleNormalizeVarExp[Y](
+      v: GeneratorVariables.Variable[Y],
       rhs: Expression,
       vars: Vector[Term]
-  ): (GeneratorVariables.Variable[_], Expression) =
+  ): (GeneratorVariables.Variable[Y], Expression) =
     v match {
       case Elem(element, randomVar) =>
-        val fn = v => TermRandomVars.isleNormalizeVars(v,Vector())
+        val fn = 
+          new Expression.VariableMap {
+            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
+          }
+        // (v: GeneratorVariables.Variable[Y])  => TermRandomVars.isleNormalizeVars(v,Vector())
         v -> expressionMapVars(fn)(rhs)
       case Event(base, sort) =>
-        val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
+        val fn = 
+          new Expression.VariableMap {
+            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
+          }
         v -> expressionMapVars(fn)(rhs)
-      case inIsleFull: InIsle[c, _, d, _] =>
+      case inIsleFull: InIsle[c, cc, _, d, _] =>
         val inIsleTry =
-          Try(inIsleFull.asInstanceOf[InIsle[c, TermState, d, Term]])
+          Try(inIsleFull.asInstanceOf[InIsle[c, cc, TermState, d, Term]])
         inIsleTry.fold(
           fa => inIsleFull -> rhs,
           inIsle => {
@@ -489,12 +560,18 @@ object TermRandomVars {
           }
         )
       case PairEvent(base1, base2, sort) =>
-      val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
+      val fn = 
+          new Expression.VariableMap {
+            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
+          }
       v -> expressionMapVars(fn)(rhs)
     }
 
   def isleNormalize(eq: EquationNode, varWeight: Double = 0.3): EquationNode = {
-    val fn = v => TermRandomVars.isleNormalizeVars(v, Vector())
+    val fn = 
+          new Expression.VariableMap {
+            def apply[Y](arg: GeneratorVariables.Variable[Y]): GeneratorVariables.Variable[Y] = TermRandomVars.isleNormalizeVars(arg,Vector())
+          }
     eq.lhs match {
       case InitialVal(variable) =>
         val (newVar, newRhs) = isleNormalizeVarExp(variable, eq.rhs, Vector())

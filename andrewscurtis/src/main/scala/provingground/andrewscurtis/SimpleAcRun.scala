@@ -65,7 +65,7 @@ object SimpleAcRun {
       (p) => {
         val query = BSONDocument("id" -> p.id)
         val entry = BSONDocument("id" -> p.id, "path" -> write(p.pickle))
-        coll(database).update(query, entry, upsert = true)
+        coll(database).update(ordered= false).one(query, entry, upsert = true)
       }
 
     implicit def mongoRead(implicit database: DefaultDB): Future[List[Path]] = {

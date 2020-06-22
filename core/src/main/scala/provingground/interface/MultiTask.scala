@@ -11,7 +11,7 @@ case class MultiTask(jobs: Map[String, String => Task[String]])
   def apply(inp: String): Task[String] = {
     val obj: ujson.Obj = ujson.read(inp).obj
     val jobName        = obj("job").str
-    pprint.log(s"received job request $jobName")
+    scribe.info(s"received job request $jobName")
     val job: String => Task[String] = jobs.getOrElse(
       jobName,
       (_) =>
@@ -20,7 +20,7 @@ case class MultiTask(jobs: Map[String, String => Task[String]])
     val data = ujson.write(obj("data"))
     job(data).materialize.map {
       case Success(result: String) =>
-        pprint.log(s"completed job $jobName")
+        scribe.info(s"completed job $jobName")
         ujson.write(
           ujson.Obj("job"     -> ujson.Str(jobName),
                     "data"    -> ujson.Str(data),
@@ -28,7 +28,7 @@ case class MultiTask(jobs: Map[String, String => Task[String]])
                     "success" -> ujson.Bool(true))
         )
       case Failure(err: Throwable) =>
-        pprint.log(s"failed job $jobName")
+        scribe.error(s"failed job $jobName")
         ujson.write(
           ujson.Obj("job"     -> ujson.Str(jobName),
                     "data"    -> ujson.Str(data),

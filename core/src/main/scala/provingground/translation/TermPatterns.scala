@@ -143,6 +143,10 @@ object TermPatterns {
     case rf: RecFunc[u, v] => (rf.dom, (rf.codom, rf.defnData))
   }
 
+  val introRecFunc = Pattern.partial[Term, VIIV]{
+    case rf: RecFunc[u, v] => (rf.intros, (rf.dom, (rf.codom, rf.defnData)))
+  } 
+
   def recFuncApplied(inds: (Typ[Term] => Option[ConstructorSeqTL[_, _, _]])) =
     Pattern[Term, Id] {
       case rf: RecFunc[u, v] =>
@@ -158,6 +162,11 @@ object TermPatterns {
       (rf.domW, (rf.index, (rf.dom, (rf.codom, rf.defnData))))
   }
 
+  val introIndRecFunc = Pattern.partial[Term, VIVIIV] {
+    case rf: IndRecFunc[u, v, w] =>
+      (rf.intros, (rf.domW, (rf.index, (rf.dom, (rf.codom, rf.defnData)))))
+  }
+
   /**
     * matches inductively defined function, returns domain, codomain and definition data
     */
@@ -166,12 +175,21 @@ object TermPatterns {
       val fmly: Term = rf.depcodom match {
         case t: Term => t
         case s =>
-          // pprint.log(s)
           val x = rf.dom.Var
-          // pprint.log(rf.depcodom(x))
           x :-> rf.depcodom(x)
       }
       (rf.dom, (fmly, rf.defnData))
+  }
+
+  val introInducFunc = Pattern.partial[Term, VIIV] {
+    case rf: InducFuncLike[u, v] =>
+      val fmly: Term = rf.depcodom match {
+        case t: Term => t
+        case s =>
+          val x = rf.dom.Var
+          x :-> rf.depcodom(x)
+      }
+      (rf.intros, (rf.dom, (fmly, rf.defnData)))
   }
 
   def inducFuncApplied(
@@ -200,6 +218,17 @@ object TermPatterns {
       //     x :-> rf.depcodom(x)
       // }
       (rf.domW, (rf.index, (rf.dom, (rf.codXs, rf.defnData))))
+  }
+
+  val introIndInducFunc = Pattern.partial[Term, VIVIIV] {
+    case rf: IndInducFuncLike[u, v, w, z] =>
+      // val fmly: Term = rf.depcodom match {
+      //   case t: Term => t
+      //   case _ =>
+      //     val x = rf.dom.Var
+      //     x :-> rf.depcodom(x)
+      // }
+      (rf.intros, (rf.domW, (rf.index, (rf.dom, (rf.codXs, rf.defnData)))))
   }
 
   /**
@@ -316,6 +345,17 @@ object TermPatterns {
       }
     case _ => None
   }(namedTrav)
+
+  def numberedSymbolic(prefix: String) = Pattern[Term, Numbered] {
+    case sym: Symbolic with Term =>
+      outerSym(sym).name match {
+        case Name(name) if (name.startsWith(prefix)) && (sym == outerSym(sym)) =>
+            Some((nameCard(name.drop(prefix.length())) , sym.typ))
+          
+        case _ => None
+      }
+    case _ => None
+  }(numberedTrav)
 
   val hashSymbolic = Pattern[Term, Named] {
     case sym: Symbolic with Term =>

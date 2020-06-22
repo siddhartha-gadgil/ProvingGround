@@ -69,7 +69,7 @@ case class MonixTangentFiniteDistributionEq[State](
     * @tparam Y values of the corresponding random variable
     * @return distribution corresponding to the `output` random variable
     */
-  def nodeDist[Y](initState: State, maxDepth: Option[Int], halted: => Boolean, memo: EqDistMemo[State])(
+  def nodeDist[Y](initState: State, maxDepth: Option[Int], halted: => Boolean, memo: EqDistMemo[State] = EqDistMemo.empty[State])(
       generatorNode: GeneratorNode[Y],
       epsilon: Double,
       coeff: Expression
@@ -677,7 +677,7 @@ case class MonixTangentFiniteDistributionEq[State](
             isleOut
               .map {
                 case (fd, eqs, rm) =>
-                  val isleEqs = eqs.map(_.mapVars((x) => InIsle(x, boat, isle)))
+                  val isleEqs = eqs.map(_.mapVars(InIsle.variableMap(boat, isle)))
                   val bridgeEqs = fd.support.map { x =>
                     EquationNode(
                       finalProb(export(boat, x), isle.output),
@@ -704,7 +704,6 @@ case class MonixTangentFiniteDistributionEq[State](
                         rhs
                       )
                     }
-                  // pprint.log(isleIn.size)
                   (
                     fd.map(export(boat, _))
                       .purge(epsilon),

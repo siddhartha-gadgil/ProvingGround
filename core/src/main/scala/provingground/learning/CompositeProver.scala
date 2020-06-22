@@ -418,7 +418,7 @@ object TermProver extends CompositeProver[TermResult] {
       lp,
       typ,
       tp =>
-        lp.varDist(TermGeneratorNodes.termsWithTyp(tp))
+        lp.varDist(TermRandomVars.termsWithTyp(tp))
           .map(_.pmf.map {
             case Weighted(x, p) => Weighted(x, math.pow(p, 1.0 / flatten))
           }),

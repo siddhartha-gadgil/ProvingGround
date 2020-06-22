@@ -1,5 +1,5 @@
 package provingground.learning
-import provingground._
+import provingground._, interface._
 import HoTT._
 import monix.eval.Task
 
@@ -15,6 +15,19 @@ import EntropyAtomWeight._
 import scalahott.NatRing
 import monix.tail.Iterant
 import provingground.learning.TypSolver.LookupSolver
+import upickle.default._, scala.concurrent.duration._
+
+object LocalProver {
+  implicit def finDurRW: ReadWriter[FiniteDuration] =
+    readwriter[ujson.Value].bimap(
+      dur => ujson.Num(dur.toMillis),
+      js => FiniteDuration(ujson.read(js).num.toLong, MILLISECONDS)
+    )
+
+  import TermJson._, TermGenParams._
+
+  implicit val lpRW: ReadWriter[LocalProver] = macroRW
+}
 
 /**
   * Collect local/generative/tactical proving;
@@ -39,7 +52,8 @@ case class LocalProver(
     relativeEval: Boolean = false,
     stateFromEquation: Boolean = false,
     exponent: Double = 0.5,
-    decay: Double = 1
+    decay: Double = 1,
+    maxTime: Option[Long] = None
 ) extends LocalProverStep {
   // Convenience for generation
 
@@ -53,6 +67,15 @@ case class LocalProver(
   def withParams(p: TermGenParams): LocalProver = this.copy(tg = p)
 
   def withInit(ts: TermState): LocalProver = this.copy(initState = ts)
+
+  override def addVar(term: Term, weight: Double): LocalProver = {
+    val td      = initState.terms * (1 - weight) + (term, weight)
+    val allVars = term +: initState.vars
+    val ctx     = initState.context.addVariable(term)
+    val ts =
+      initState.copy(terms = td.safeNormalized, vars = allVars, context = ctx)
+    withInit(ts)
+  }
 
   def addTerms(terms: (Term, Double)*): LocalProver = {
     val total = terms.map(_._2).sum
@@ -292,6 +315,8 @@ trait LocalProverStep {
   val relativeEval: Boolean
   val exponent: Double
   val decay: Double
+  val stateFromEquation: Boolean
+  val maxTime: Option[Long]
 
   var isHalted: Boolean = false
 
@@ -364,30 +389,135 @@ trait LocalProverStep {
     Equation.group(eqs)
   }.memoize
 
-  lazy val expressionEval: Task[ExpressionEval] = {
-    val base = for {
-      fs  <- nextState
-      eqs <- equations
-    } yield
-      ExpressionEval.fromStates(
+  def bigExpressionEval(additional: Set[Equation]): Task[ExpressionEval] =
+    equations.map { eqs =>
+      ExpressionEval.fromInitEqs(
         initState,
-        fs,
-        eqs,
+        Equation.merge(eqs, additional),
         tg,
         maxRatio,
         scale,
         smoothing,
         exponent,
-        decay
+        decay,
+        maxTime
       )
-    if (relativeEval)
-      if (initState.vars.isEmpty)
-        base.map(_.generateTyps)
-      else base.map(ev => ExpressionEval.export(ev, initState.vars))
-    else base
-  }.memoize
+    }
 
-  lazy val successes = nextState.map(_.successes)
+  import Utils._, scribe._
+
+  lazy val enhancedExpressionEval: Task[ExpressionEval] =
+    for {
+      eqs <- equationNodes
+      ns  <- nextState
+    } yield {
+      val additional = ns.allTyps.flatMap { typ =>
+        val eqs = DE.formalTypEquations(typ)
+        Expression.rhsOrphans(eqs).foreach {
+          case (exp, eqq) => logger.error(s"for type: $typ\n$exp\n orphan in formal $eqq")
+        }
+        eqs
+      }
+      // Expression.rhsOrphans(eqs).foreach {
+      //   case (exp, eqq) => logger.error(s"$exp orphan in generated $eqq")
+      // }
+      // Expression.rhsOrphans(additional).foreach {
+      //   case (exp, eqq) => logger.error(s"$exp orphan in formal $eqq")
+      // }
+      ExpressionEval.fromInitEqs(
+        initState,
+        Equation.group(eqs union additional),
+        tg,
+        maxRatio,
+        scale,
+        smoothing,
+        exponent,
+        decay,
+        maxTime
+      )
+    }
+
+  lazy val enhancedEquationNodes: Task[Set[EquationNode]] =
+    for {
+      eqs <- equationNodes
+      ns  <- nextState
+    } yield {
+      def additional = ns.allTyps.flatMap { typ =>
+        val eqs = DE.formalTypEquations(typ)
+        eqs
+          .collect {
+            case eq @ EquationNode(
+                  Expression.FinalVal(
+                    GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                  ),
+                  _
+                ) if isVar(x) =>
+              eq
+          }
+          .foreach(
+            eqq =>
+              logger.error(s"formal equations for $typ ; bad equation: $eqq")
+          )
+        eqs
+      }
+      additional
+        .collect {
+          case eq @ EquationNode(
+                Expression.FinalVal(
+                  GeneratorVariables.Elem(x: Term, TermRandomVars.Terms)
+                ),
+                _
+              ) if isVar(x) =>
+            eq
+        }
+        .foreach(eqq => logger.error(s"Bad equation: $eqq"))
+      Expression.rhsOrphans(eqs).foreach {
+        case (exp, eqq) => logger.debug(s"$exp orphan in generated $eqq")
+      }
+      Expression.rhsOrphans(additional).foreach {
+        case (exp, eqq) => logger.error(s"$exp orphan in formal $eqq")
+      }
+      eqs union additional
+    }
+
+  lazy val expressionEval: Task[ExpressionEval] =
+    if (stateFromEquation)
+      equations.map { eqs =>
+        ExpressionEval.fromInitEqs(
+          initState,
+          eqs,
+          tg,
+          maxRatio,
+          scale,
+          smoothing,
+          exponent,
+          decay,
+          maxTime
+        )
+      } else {
+      val base = for {
+        fs  <- nextState
+        eqs <- equations
+      } yield
+        ExpressionEval.fromStates(
+          initState,
+          fs,
+          eqs,
+          tg,
+          maxRatio,
+          scale,
+          smoothing,
+          exponent,
+          decay
+        )
+      if (relativeEval)
+        if (initState.vars.isEmpty)
+          base.map(_.generateTyps)
+        else base.map(ev => ExpressionEval.export(ev, initState.vars))
+      else base
+    }.memoize
+
+  lazy val successes : Task[Vector[(HoTT.Typ[HoTT.Term], Double, Term)]] = nextState.map(_.successes)
 
   lazy val lemmas: Task[Vector[(Typ[Term], Double)]] =
     (for {
@@ -504,7 +634,11 @@ trait LocalProverStep {
         hW,
         klW,
         smoothing,
-        relativeEval
+        relativeEval,
+        stateFromEquation,
+        exponent,
+        decay,
+        maxTime
       )
 
   def distTangentProver(
@@ -530,7 +664,12 @@ trait LocalProverStep {
         maxDepth,
         hW,
         klW,
-        smoothing
+        smoothing,
+        relativeEval,
+        stateFromEquation,
+        exponent,
+        decay,
+        maxTime
       )
 
   def tangentExpressionEval(
@@ -591,13 +730,27 @@ trait LocalProverStep {
             maxDepth,
             hW,
             klW,
-            smoothing
+            smoothing,
+        relativeEval,
+        stateFromEquation,
+        exponent,
+        decay,
+        maxTime
           )
       }
 
   def splitLemmaProvers(scale: Double = 1): Task[Vector[LocalTangentProver]] =
     lemmas.flatMap { v =>
-      val pfs = v.map { case (tp, w) => ("proof" :: tp, w) }
+      val pfs = v.map { case (tp, w) => ("proof" :: tp, w * scale) }
+      splitTangentProvers(pfs)
+    }
+
+  def scaledSplitLemmaProvers(
+      scale: Double = 1.0
+  ): Task[Vector[LocalTangentProver]] =
+    lemmas.flatMap { v =>
+      val sc  = scale / v.map(_._2).sum
+      val pfs = v.map { case (tp, w) => ("proof" :: tp, w * sc) }
       splitTangentProvers(pfs)
     }
 
@@ -607,6 +760,11 @@ trait LocalProverStep {
     )
 }
 
+object LocalTangentProver {
+  import TermJson._, TermGenParams._
+
+  implicit val lpRW: ReadWriter[LocalProver] = macroRW
+}
 case class LocalTangentProver(
     initState: TermState =
       TermState(FiniteDistribution.empty, FiniteDistribution.empty),
@@ -622,11 +780,12 @@ case class LocalTangentProver(
     maxDepth: Int = 10,
     hW: Double = 1,
     klW: Double = 1,
-    val smoothing: Option[Double] = None,
+    smoothing: Option[Double] = None,
     relativeEval: Boolean = false,
     stateFromEquation: Boolean = false,
     exponent: Double = 0.5,
-    decay: Double = 1
+    decay: Double = 1,
+    maxTime: Option[Long]
 ) extends LocalProverStep {
 
   def withCutoff(ctf: Double): LocalTangentProver = this.copy(cutoff = ctf)
@@ -650,6 +809,18 @@ case class LocalTangentProver(
       initEquations,
       limit
     )
+
+  def varDist[Y](rv: RandomVar[Y]): Task[FiniteDistribution[Y]] =
+    mfd.varDist(initState, genMaxDepth, halted())(rv, cutoff).map(_._1)
+
+  def nodeDist[Y](node: GeneratorNode[Y]): Task[FiniteDistribution[Y]] =
+    mfd
+      .nodeDist(initState, genMaxDepth, halted())(
+        node,
+        cutoff,
+        Expression.Coeff(node)
+      )
+      .map(_._1)
 
   lazy val tripleT: Task[
     (FiniteDistribution[Term], Set[EquationNode], EqDistMemo[TermState])
@@ -705,6 +876,6 @@ case class LocalTangentProver(
     for {
       terms <- tripleT.map(_._2)
       typs  <- tripleTypT.map(_._2)
-    } yield terms ++ typs
+    } yield terms union typs union initEquations
 
 }

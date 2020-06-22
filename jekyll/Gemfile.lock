@@ -215,7 +215,7 @@ GEM
     pathutil (0.16.1)
       forwardable-extended (~> 2.6)
     public_suffix (2.0.5)
-    rake (11.2.2)
+    rake (>= 12.3.3)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 1.9.24, < 2)
@@ -249,7 +249,7 @@ DEPENDENCIES
   github-pages (= 183)
   jekyll-paginate
   json
-  rake
+  rake (>= 12.3.3)
 
 BUNDLED WITH
    1.15.4

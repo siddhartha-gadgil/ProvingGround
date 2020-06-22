@@ -1,0 +1,32 @@
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (n)) (((mul) (m)) (((mul) (m)) (n))) ∈ Terms) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (m)) (((mul) (((mul) (m)) (n))) (n)) ∈ Terms) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (m)) (((mul) (m)) (((mul) (m)) (n))) ∈ Terms) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) ∈ Funcs) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (((mul) (m)) (((mul) (m)) (n)))) (n) ∈ Terms) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((((trans) (n)) (((mul) (((mul) (m)) (n))) (n))) (m)) ∈ Funcs) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (((mul) (((mul) (m)) (n))) (n))) (m)) ∈ Funcs) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((((trans) (((mul) (m)) (n))) (((mul) (m)) (((mul) (m)) (n)))) (n)) ∈ Funcs) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((trans) (((mul) (((mul) (m)) (n))) (n)) ∈ Terms) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((((trans) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) ∈ Funcs) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((((trans) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m) ∈ Terms) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (((mul) (m)) (n))) (((mul) (m)) (((mul) (m)) (n)))) ∈ Funcs) as a product
+2020.06.09 16:58:20 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (n)) (((mul) (((mul) (m)) (n))) (n))) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((((trans) (m)) (((mul) (m)) (((mul) (m)) (n)))) (n)) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((trans) (((mul) (m)) (((mul) (m)) (n)))) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((((trans) (m)) (((mul) (((mul) (m)) (n))) (n))) (m) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (((mul) (m)) (n))) (((mul) (m)) (((mul) (m)) (n))) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((((trans) (m)) (((mul) (((mul) (m)) (n))) (n))) (m)) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (((mul) (m)) (((mul) (m)) (n)))) (n)) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((((trans) (n)) (((mul) (((mul) (m)) (n))) (n))) (m) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (n)) (((mul) (((mul) (m)) (n))) (n)) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((trans) (((mul) (((mul) (m)) (n))) (n))) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (m)) (((mul) (((mul) (m)) (n))) (n))) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap((((trans) (n)) (((mul) (m)) (((mul) (m)) (n)))) (n)) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((((trans) (((mul) (m)) (n))) (((mul) (m)) (((mul) (m)) (n)))) (n) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((((trans) (n)) (((mul) (m)) (((mul) (m)) (n)))) (n) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(((trans) (((mul) (((mul) (m)) (n))) (n))) (m) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((trans) (((mul) (m)) (((mul) (m)) (n))) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁((((trans) (m)) (((mul) (m)) (((mul) (m)) (n)))) (n) ∈ Terms) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (m)) (((mul) (m)) (((mul) (m)) (n)))) ∈ Funcs) as a product
+2020.06.09 16:58:21 [ERROR] provingground.learning.ExprCalc.getProd:512:31 - cannot decompose P₁(Wrap(((trans) (n)) (((mul) (m)) (((mul) (m)) (n)))) ∈ Funcs) as a product

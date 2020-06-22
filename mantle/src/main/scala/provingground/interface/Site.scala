@@ -317,7 +317,6 @@ object Site {
           val jsArr = ujson.read(read(resource / "posts-list.json"))
           jsArr.arr.toVector.map {
             (js) =>
-              // pprint.log(js)
               val name        = js.obj("name").str
               val dateString  = js.obj("date").str
               val title       = js.obj("title").str

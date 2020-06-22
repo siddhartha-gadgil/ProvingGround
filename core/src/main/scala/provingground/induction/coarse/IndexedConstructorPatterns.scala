@@ -762,6 +762,7 @@ F <: Term with Subs[F]](val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
         RecursiveDefinition.DataCons[Total, C, cons.pattern.RecDataType](
           data(X),
           defn,
+          cons.cons,
           tail.recDefn(X))
 
       type RecType = Func[cons.pattern.RecDataType, tail.RecType]
@@ -783,6 +784,7 @@ F <: Term with Subs[F]](val typFmlyPtn: FmlyPtn[H, C, F]) { outer =>
       def inducDefn(fibre: Func[Total, Typ[C]]) = {
         InductiveDefinition.DataCons[Total, C, cons.pattern.InducDataType](
           inducData(fibre),
+          cons.cons,
           inducDefn,
           tail.inducDefn(fibre))
       }

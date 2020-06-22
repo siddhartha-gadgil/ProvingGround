@@ -44,6 +44,11 @@ object TermGenParams {
     )
   }
 
+  import upickle.default._
+
+  implicit val termGenParamsRW: ReadWriter[TermGenParams] =
+    readwriter[ujson.Value].bimap(_.toJson, fromJson(_))
+
   lazy val rnd = new scala.util.Random
 
   def randomScale(
@@ -82,9 +87,6 @@ object TermGenParams {
 
   def apple(w: Double = 0.1) = zero.copy(appW = w, unAppW = w)
 
-  implicit def rw: RW[TermGenParams] =
-    readwriter[ujson.Value].bimap(_.toJson, fromJson)
-
 }
 
 case class TermGenParamsNodes(tg: TermGenParams)
@@ -109,7 +111,7 @@ case class TermGenParams(
     sigmaW: Double = 0.05,
     recDefW: Double = 0,
     inducDefW: Double = 0,
-    typAsCodW: Double = 0,
+    typAsCodW: Double = 0.05,
     targetInducW: Double = 0,
     varWeight: Double = 0.3,
     goalWeight: Double = 0.7,
@@ -347,6 +349,9 @@ trait EvolvedStateLike {
     init.goals.support.intersect(result.terms.support.map(_.typ))
 
   val foundGoal: Boolean = goalsAttained.nonEmpty
+
+  def goalNewThmsBySt(goalW: Double) =
+    (result.typs ++ result.goals).filter(typ => result.terms.map(_.typ)(typ) > 0 && init.terms.map(_.typ)(typ) == 0).flatten.safeNormalized
 }
 
 case class EvolvedState(

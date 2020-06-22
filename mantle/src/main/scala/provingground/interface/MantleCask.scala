@@ -150,7 +150,6 @@ val proverHTML =
   @cask.get("/resources", subpath = true)
   def public(request: cask.Request) = {
     val segs = request.remainingPathSegments
-    // pprint.log(segs)
     getResource(segs)
   }
 
@@ -247,6 +246,15 @@ object MantleCask extends cask.Main {
   override def allRoutes: Seq[Routes] = Seq(MantleRoutes, LeanRoutes)
   override def port = Try(sys.env("PROVINGGROUND_PORT").toInt).getOrElse(8080)
   override def host = Try(sys.env("IP")).getOrElse("localhost")
+}
+
+object ReplCask{
+  import MantleCask._
+  import io.undertow.Undertow
+  lazy val server = Undertow.builder
+      .addHttpListener(port, host)
+      .setHandler(defaultHandler)
+      .build
 }
 
 import monix.eval._

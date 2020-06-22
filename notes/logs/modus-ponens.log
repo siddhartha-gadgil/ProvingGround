@@ -1,0 +1,56 @@
+2020.05.26 10:06:38 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-187642928), content:
+LocalProver(TermState([𝒰 _0 : 1.0],[𝒰 _0 : 1.0],Vector(),[],[(`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 10:06:38 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (2,260968439), content:
+SeekGoal((`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))),Empty,Set())
+2020.05.26 10:06:38 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (3,420220985), content:
+SeekGoal(`B,AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b),Set())
+2020.05.26 10:07:53 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-187642928), content:
+LocalProver(TermState([𝒰 _0 : 1.0],[𝒰 _0 : 1.0],Vector(),[],[(`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 10:07:53 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (2,260968439), content:
+SeekGoal((`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))),Empty,Set())
+2020.05.26 10:07:53 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (3,-1034795342), content:
+SeekGoal(`B,AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b),Set())
+2020.05.26 10:10:22 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-187642928), content:
+LocalProver(TermState([𝒰 _0 : 1.0],[𝒰 _0 : 1.0],Vector(),[],[(`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 10:10:22 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (2,260968439), content:
+SeekGoal((`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))),Empty,Set())
+2020.05.26 10:10:22 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (3,2128529211), content:
+SeekGoal(`B,AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b),Set())
+2020.05.26 10:14:06 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-187642928), content:
+LocalProver(TermState([𝒰 _0 : 1.0],[𝒰 _0 : 1.0],Vector(),[],[(`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 10:14:06 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (2,260968439), content:
+SeekGoal((`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))),Empty,Set())
+2020.05.26 10:14:06 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (3,-1995696147), content:
+SeekGoal(`B,AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b),Set())
+2020.05.26 10:16:12 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-187642928), content:
+LocalProver(TermState([𝒰 _0 : 1.0],[𝒰 _0 : 1.0],Vector(),[],[(`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 10:16:12 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (2,260968439), content:
+SeekGoal((`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))),Empty,Set())
+2020.05.26 10:16:12 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (3,-424370462), content:
+SeekGoal(`B,AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b),Set())
+2020.05.26 10:16:12 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (4,-602798898), content:
+LocalProver(TermState([$b : 0.3, 𝒰 _0 : 0.24009999999999995, $a : 0.21000000000000002, `B : 0.14700000000000002, `A : 0.1029],[𝒰 _0 : 1.0],Vector($b, $a, `B, `A),[],[`B : 0.7, (`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))) : 0.30000000000000004],AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b)),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 10:16:12 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (5,159414260)
+2020.05.26 10:16:12 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (6,-1306168695)
+2020.05.26 10:16:12 [INFO] provingground.learning.HoTTBot.$anonfun:86:20 - Success: Vector(((``A : 𝒰 _0 ) ~> ((``B : 𝒰 _0 ) ~> ((`$a : ``A ) ~> ((`$b : (``A) → (``B) ) ~> (``B)))),0.7,[(``A :  𝒰 _0) ↦ ((``B :  𝒰 _0) ↦ ((``$a :  ``A) ↦ ((```$b :  (``A) → (``B)) ↦ ((```$b) (``$a))))) : 0.20000000000000007]))
+2020.05.26 13:50:27 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (1,-566414952), content:
+LocalProver(TermState([𝒰 _0 : 1.0],[𝒰 _0 : 1.0],Vector(),[],[],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 13:50:27 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (2,260968439), content:
+SeekGoal((`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))),Empty,Set())
+2020.05.26 13:50:46 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (3,347758919), content:
+SeekGoal(`B,AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b),Set())
+2020.05.26 13:50:46 [INFO] provingground.learning.HoTTBot.scribeLog:739:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SeekGoal], id: (3,347758919)
+2020.05.26 13:50:46 [INFO] provingground.learning.HoTTBot.scribeLog:739:16 - Post; tag: TypeTag[Unit], id: (0,0)
+2020.05.26 13:50:46 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (4,-187642928), content:
+LocalProver(TermState([𝒰 _0 : 1.0],[𝒰 _0 : 1.0],Vector(),[],[(`A : 𝒰 _0 ) ~> ((`B : 𝒰 _0 ) ~> ((`A) → (((`A) → (`B)) → (`B)))) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 13:50:46 [INFO] provingground.learning.HoTTBot.scribeLog:739:16 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (4,-187642928)
+2020.05.26 13:50:46 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (5,-416389956), content:
+LocalProver(TermState([$b : 0.3, 𝒰 _0 : 0.24009999999999995, $a : 0.21000000000000002, `B : 0.14700000000000002, `A : 0.1029],[𝒰 _0 : 1.0],Vector($b, $a, `B, `A),[],[`B : 1.0],AppendVariable(AppendVariable(AppendVariable(AppendVariable(Empty,`A),`B),$a),$b)),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0)
+2020.05.26 13:50:46 [INFO] provingground.learning.HoTTBot.scribeLog:739:16 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (5,-416389956)
+2020.05.26 13:50:46 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (7,831469523)
+2020.05.26 13:50:46 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (6,159414260)
+2020.05.26 13:50:46 [INFO] provingground.learning.HoTTBot.scribeLog:739:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (7,831469523)
+2020.05.26 13:50:47 [INFO] provingground.learning.HoTTBot.scribeLog:739:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (6,159414260)
+2020.05.26 13:50:46 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (8,322694652)
+2020.05.26 13:50:46 [INFO] provingground.learning.HoTTBot.scribeLog:739:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (8,322694652)
+2020.05.26 13:50:47 [INFO] provingground.learning.HoTTBot.$anonfun:86:20 - Success: Vector(((``A : 𝒰 _0 ) ~> ((``B : 𝒰 _0 ) ~> ((`$a : ``A ) ~> ((`$b : (``A) → (``B) ) ~> (``B)))),1.0,[(``A :  𝒰 _0) ↦ ((``B :  𝒰 _0) ↦ ((``$a :  ``A) ↦ ((```$b :  (``A) → (``B)) ↦ ((```$b) (``$a))))) : 0.2]))

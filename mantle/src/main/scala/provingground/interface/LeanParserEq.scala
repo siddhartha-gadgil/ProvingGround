@@ -60,7 +60,7 @@ class LeanParserEq(
       val tailVar = if (depth == 1) AtomVar(y) else FuncFoldVar(y, depth - 1)
       val eq = EquationNode(
         FinalVal(Elem(result, FuncFoldVar(fn, depth))),
-        coeff * FinalVal(Elem(x, TermGeneratorNodes.termsWithTyp(x.typ))) * FinalVal(
+        coeff * FinalVal(Elem(x, TermRandomVars.termsWithTyp(x.typ))) * FinalVal(
           Elem(result, tailVar)
         )
       )
@@ -289,7 +289,6 @@ class LeanParserEq(
         recAppEq(name, args, exp, vars)
 
       case App(f, a) =>
-        // pprint.log(s"Applying $f to $a")
         for {
           // pair <- Task.parZip2(
           //   parseEq(f, vars)
@@ -306,16 +305,14 @@ class LeanParserEq(
             .getOrElse(
               throw new ApplnParseException(f, a, funcEqs._1, argEqs._1, vars)
             )
-          // _ = pprint.log(s"got result for $f($a)")
           eq = EquationNode(
             FinalVal(Elem(res, Terms)),
             Coeff(tg.applnNode) * FinalVal(
-              Elem(funcEqs._1, TermGeneratorNodes.termsWithTyp(funcEqs._1.typ))
+              Elem(funcEqs._1, TermRandomVars.termsWithTyp(funcEqs._1.typ))
             ) * FinalVal(Elem(argEqs._1, Terms))
           )
         } yield res -> (funcEqs._2.union(argEqs._2) + eq)
       case Lam(domain, body) =>
-        // pprint.log(s"lambda $domain, $body")
         for {
           domTermEq <- parseEq(domain.ty, vars)
             .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -327,7 +324,7 @@ class LeanParserEq(
           val isle    = tg.lambdaIsle(domTyp)
           val coeff   = Coeff(tg.lambdaIsle(domTyp))
           val eqs     = valueEq._2
-          val isleEqs = eqs.map(_.mapVars((t) => InIsle(t, x, isle)))
+          val isleEqs = eqs.map(_.mapVars(InIsle.variableMap(x, isle)))
           val initVarElems = eqs
             .flatMap { (eq) =>
               Expression.varVals(eq.rhs)
@@ -367,7 +364,6 @@ class LeanParserEq(
           }
         }
       case Pi(domain, body) =>
-        // pprint.log(s"pi $domain, $body")
         for {
           domTermEq <- parseEq(domain.ty, vars)
             .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -382,7 +378,7 @@ class LeanParserEq(
           val isle    = tg.piIsle(domTyp)
           val coeff   = Coeff(tg.lambdaIsle(domTyp))
           val eqs     = valueEq._2
-          val isleEqs = eqs.map(_.mapVars((t) => InIsle(t, x, isle)))
+          val isleEqs = eqs.map(_.mapVars(InIsle.variableMap(x, isle)))
           val initVarElems = eqs
             .flatMap { (eq) =>
               Expression.varVals(eq.rhs)
@@ -410,7 +406,6 @@ class LeanParserEq(
           else (x.typ ->: cod)                               -> allEqs
         }
       case Let(domain, value, body) =>
-        // pprint.log(s"let $domain, $value, $body")
         for {
           domTermEq <- parseEq(domain.ty, vars)
             .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -425,7 +420,11 @@ class LeanParserEq(
               v: GeneratorVariables.Variable[_]
           ): GeneratorVariables.Variable[_] =
             if (v == Elem(x, Terms)) Elem(valueTermEq._1, Terms) else v
-          val expEqs = bodyTermEq._2.map(eq => eq.mapVars(fn))
+          val m : Expression.VariableMap = new Expression.VariableMap {
+            def apply[Y](v: GeneratorVariables.Variable[Y]) : GeneratorVariables.Variable[Y] = 
+              if (v == Elem(x, Terms)) Elem(valueTermEq._1.asInstanceOf[Y], Terms.asInstanceOf[RandomVar[Y]]) else v
+          }
+          val expEqs = bodyTermEq._2.map(eq => eq.mapVars(m))
           bodyTermEq._1.replace(x, valueTermEq._1) -> (expEqs union valueTermEq._2 union domTermEq._2)
         }
       case e => Task.raiseError(UnParsedException(e))

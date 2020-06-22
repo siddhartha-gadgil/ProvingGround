@@ -11,6 +11,7 @@ import org.deeplearning4j.models.sequencevectors.sequence._
 import scala.jdk.CollectionConverters._
 import org.deeplearning4j.models.sequencevectors.iterators._
 import org.deeplearning4j.models.word2vec.wordstore.inmemory.AbstractCache
+import HoTTMessages._
 
 case class IntElem(n: Int) extends SequenceElement() {
   def getLabel() = n.toString
@@ -120,7 +121,7 @@ object RepresentationLearner {
     new RepresentationLearner(paths, vectorLength, minWordFrequency, batchSize)
   }
 
-  import TypedPostResponse._
+  import TypedPostResponse._, HoTTPostWeb._
 
     def eqnsToRep(numPaths: Int,
       length: Int,
@@ -129,13 +130,13 @@ object RepresentationLearner {
       vectorLength: Int = 150,
       minWordFrequency: Int = 5,
       batchSize: Int = 250
-  ) : PostResponse[HoTTPost, HoTTPost.ID] = 
+  ) : PostResponse[HoTTPostWeb, HoTTPostWeb.ID] = 
     MicroBot.simple[
-      Set[EquationNode], 
-      Map[GeneratorVariables.Variable[_], Vector[Double]],  
-      HoTTPost, 
-      HoTTPost.ID](
-    (eqs: Set[EquationNode]) => 
-      equationNodesSampled(eqs, numPaths, length, coeffWeights, backWeight, vectorLength, minWordFrequency, batchSize).vectorMap
+      GeneratedEquationNodes, 
+      RepresentationMap,  
+      HoTTPostWeb, 
+      HoTTPostWeb.ID](
+    (eqs: GeneratedEquationNodes) => 
+       RepresentationMap(equationNodesSampled(eqs.eqn, numPaths, length, coeffWeights, backWeight, vectorLength, minWordFrequency, batchSize).vectorMap)
   )
 }

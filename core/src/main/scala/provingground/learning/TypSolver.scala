@@ -1,5 +1,6 @@
 package provingground.learning
 import provingground._, HoTT._
+import scalahott._, NatRing._
 
 trait TypSolver extends (Typ[Term] => Option[Term]) {
   val solve: Typ[Term] => Option[Term]
@@ -44,7 +45,7 @@ object TypSolver {
     }
   }
 
-  import scalahott._, NatRing._
+  
   case object LeqNatSolver extends TypSolver {
     val solve = {
       case NatRing.LEQ(a, b) => NatRing.findLEQ(a, b)

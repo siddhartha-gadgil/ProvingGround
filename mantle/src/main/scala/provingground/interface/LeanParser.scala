@@ -79,10 +79,8 @@ object LeanParser {
   def getRec(ind: TermIndMod, argsFmlyTerm: Vector[Term]): Task[Term] =
     ind match {
       case smp: SimpleIndMod =>
-        // pprint.log(s"Getting rec using simple IndMod ${ind.name}")
         getRecSimple(smp, Task.pure(argsFmlyTerm))
       case indInd: IndexedIndMod =>
-        // pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
         getRecIndexed(indInd, Task.pure(argsFmlyTerm))
     }
 
@@ -92,10 +90,8 @@ object LeanParser {
   ): Task[ExstInducDefn] =
     ind match {
       case smp: SimpleIndMod =>
-        // pprint.log(s"Getting rec using simple IndMod ${ind.name}")
         getSimpleExstInduc(smp, Task.pure(argsFmlyTerm))
       case indInd: IndexedIndMod =>
-        // pprint.log(s"Getting rec using indexed IndMod ${ind.name}")
         getIndexedExstInduc(indInd, Task.pure(argsFmlyTerm))
     }
 
@@ -431,19 +427,10 @@ class LeanParser(
         _.enableAutoCancelableRunLoops
       )
       recFnT = getRec(indMod, argsFmlyTerm)
-      // _      = pprint.log(s"$vars")
       vec <- parseVec(xs, vars).executeWithOptions(
         _.enableAutoCancelableRunLoops
       )
       vecInter = indMod.interleaveData(vec)
-      // _ = pprint.log(s"${vec.map(_.fansi)}")
-      // _ = if (vec != vecInter) {
-      //   pprint.log(s"$vecInter replaces $vec")
-      //   println(vecInter.map(_.fansi))
-      //   println(vec.map(_.fansi))
-      //   println(vecInter.map(_.typ.fansi))
-      //   println(vec.map(_.typ.fansi))
-      // }
       recFn <- recFnT
       resT = Task(foldFuncLean(recFn, vecInter)).onErrorRecoverWith {
         case err: ApplnFailException =>
@@ -508,20 +495,13 @@ class LeanParser(
 
   def parse(exp: Expr, vars: Vector[Term] = Vector()): Task[Term] = {
     val memParsed = parseMemo.get(exp -> vars)
-    // memParsed.foreach((t) => pprint.log(s"have a memo: $t"))
     memParsed.map(Task.pure).getOrElse {
       parseWork += exp
       log(ParseWork(exp))
-
-      // pprint.log(s"Parsing $exp")
-      // pprint.log(s"$parseWork")
       val resTask: Task[Term] = exp match {
         case Const(name, _) =>
-          // pprint.log(s"Seeking constant: $name")
-          // pprint.log(s"${defnMap.get(name).map(_.fansi)}")
           getNamed(name)
             .orElse {
-              // pprint.log(s"deffromMod $name")
               defFromMod(name)
             }
             .getOrElse(
@@ -536,7 +516,6 @@ class LeanParser(
           recApp(name, args, exp, vars)
 
         case App(f, a) =>
-          // pprint.log(s"Applying $f to $a")
           for {
             func <- parse(f, vars)
               .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -544,10 +523,8 @@ class LeanParser(
               .executeWithOptions(_.enableAutoCancelableRunLoops)
             res = Try(applyFuncLean(func, arg))
               .getOrElse(throw new ApplnParseException(f, a, func, arg, vars))
-            // _ = pprint.log(s"got result for $f($a)")
           } yield res
         case Lam(domain, body) =>
-          // pprint.log(s"lambda $domain, $body")
           for {
             domTerm <- parse(domain.ty, vars)
               .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -572,7 +549,6 @@ class LeanParser(
                 }, res => res)
             }
         case Pi(domain, body) =>
-          // pprint.log(s"pi $domain, $body")
           for {
             domTerm <- parse(domain.ty, vars)
               .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -587,7 +563,6 @@ class LeanParser(
             if (LeanInterface.usesVar(body, 0)) piDefn(x)(cod)
             else x.typ ->: cod
         case Let(domain, value, body) =>
-          // pprint.log(s"let $domain, $value, $body")
           for {
             domTerm <- parse(domain.ty, vars)
               .executeWithOptions(_.enableAutoCancelableRunLoops)
@@ -606,11 +581,6 @@ class LeanParser(
         _ = {
           parseWork -= exp
           log(Parsed(exp))
-          // if (!isUniv(res)) parseMemo += (exp, vars) -> res
-          // pprint.log(s"parsed $exp")
-          // if (isPropFmly(res.typ))
-          //   pprint.log(
-          //     s"\n\nWitness: ${res.fansi}\n\nprop: ${res.typ.fansi}\n\n")
         }
       } yield res
       // if (isPropFmly(res.typ)) "_" :: (res.typ) else res

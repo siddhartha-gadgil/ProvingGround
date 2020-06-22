@@ -5,7 +5,7 @@ import mill.scalalib.scalafmt._
 import define.{Sources, Task}
 // import ammonite.ops._
 import os._
-import $ivy.`org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r`
+import $ivy.`org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r`
 
 
 trait MetalsModule extends ScalaModule{
@@ -57,6 +57,7 @@ val commonLibs = List(
   ivy"org.typelevel::cats-core::2.1.0",
   ivy"io.monix::monix::3.1.0",
   ivy"com.lihaoyi::pprint::0.5.8",
+  ivy"com.outr::scribe::2.7.8",
   // ivy"com.lihaoyi::sourcecode::0.1.4"//,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
@@ -221,11 +222,11 @@ val mantleLibs = List(
   // ivy"org.platanios::tensorflow:0.4.1;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:2.1.1",
   ivy"com.lihaoyi::os-lib:0.6.3",
-  ivy"org.eclipse.jgit:org.eclipse.jgit:3.5.0.201409260305-r",
-  ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta6",
-  ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta6",
-  ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta6",
-    ivy"org.nd4j:nd4j-native-platform:1.0.0-beta6",
+  ivy"org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r",
+  ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
+  ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
+  ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
+  ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7",
   ivy"org.mongodb.scala::mongo-scala-driver:2.8.0"
 )
 
@@ -410,9 +411,9 @@ object experiments extends CommonModule{
 object deepwalk extends JvmModule{
   override def ivyDeps =
     super.ivyDeps() ++ Agg(
-      ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta",
-      ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta",
-      ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta",
-      ivy"org.nd4j:nd4j-native-platform:1.0.0-beta"
+      ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
+      ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
+      ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
+      ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7"
     )
 }

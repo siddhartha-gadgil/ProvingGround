@@ -395,7 +395,7 @@ object InteractiveProver {
                   (_, _, s) =>
                     div(
                       h5(`class` := "text-danger")("Parsing failure"),
-                      div(s.traced.trace)
+                      div(s.trace().msg)
                   ),
                   (ctx, _) => {
                     context = ctx

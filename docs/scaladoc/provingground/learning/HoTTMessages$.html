@@ -1,0 +1,2186 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      
+      <link href="../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.min.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="../../lib/jquery.mousewheel.min.js"></script>
+      <script type="text/javascript" src="../../lib/index.js"></script>
+      <script type="text/javascript" src="../../index.js"></script>
+      <script type="text/javascript" src="../../lib/scheduler.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../lib/diagrams.js" id="diagrams-js"></script>
+      <script type="text/javascript">
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '../../';
+      </script>
+    
+        </head>
+        <body>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
+    </div>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="../../index.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../../index.html"><span class="name">root</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="_root_.provingground" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="provingground"></a><a id="provingground:provingground"></a>
+      <span class="permalink">
+      <a href="../../provingground/index.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="This is work towards automated theorem proving based on learning, using homotopy type theory (HoTT) as foundations and natural language processing." href="../index.html"><span class="name">provingground</span></a>
+      </span>
+      
+      <p class="shortcomment cmt">This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><div class="fullcomment"><div class="comment cmt"><p>This is work towards automated theorem proving based on learning, using
+homotopy type theory (HoTT) as foundations and natural language processing.</p><p>The implementation of homotopy type theory is split into:</p><ul><li>the object <a href="../HoTT$.html" class="extype" name="provingground.HoTT">HoTT</a> with terms, types, functions and dependent functions, pairs etc</li><li>the package <a href="../induction/index.html" class="extype" name="provingground.induction">induction</a> with general inductive types and recursion/induction on these.</li></ul><p>The <a href="index.html" class="extype" name="provingground.learning">learning</a> package has the code for learning.</p><p>Scala code, including the <code><code>spire</code></code> library, is integrated with homotopy type theory
+in the <a href="../scalahott/index.html" class="extype" name="provingground.scalahott">scalahott</a> package</p><p>We have implemented a functor based approach to translation in the <a href="../translation/index.html" class="extype" name="provingground.translation">translation</a>
+package, used for <code><code>nlp</code></code> as well as <code><code>serialization</code></code> and <code><code>parsing</code></code>.</p><p>The <a href="../library/index.html" class="extype" name="provingground.library">library</a> package is contains basic structures implemented in HoTT.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="provingground.learning" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="learning"></a><a id="learning:learning"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/index.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="index.html"><span class="name">learning</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="provingground">provingground</a></dd></dl></div>
+    </li><li class="current-entities indented2">
+                        <a class="object" href="AdjDiffbleFunction$.html" title=""></a>
+                        <a class="trait" href="AdjDiffbleFunction.html" title=""></a>
+                        <a href="AdjDiffbleFunction.html" title="">AdjDiffbleFunction</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="AnswerFromPost.html" title="Looking up an answer to a query for U from posts of type P meant for querying for the latest post etc."></a>
+                        <a href="AnswerFromPost.html" title="Looking up an answer to a query for U from posts of type P meant for querying for the latest post etc.">AnswerFromPost</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ApplnInverse$.html" title=""></a>
+                        <a class="trait" href="ApplnInverse.html" title="inverses under application with an without unification"></a>
+                        <a href="ApplnInverse.html" title="inverses under application with an without unification">ApplnInverse</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BackPaths.html" title=""></a>
+                        <a href="BackPaths.html" title="">BackPaths</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BasicDeducer.html" title=""></a>
+                        <a href="BasicDeducer.html" title="">BasicDeducer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="BiPostable.html" title=""></a>
+                        <a href="BiPostable.html" title="">BiPostable</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BufferedRun.html" title=""></a>
+                        <a href="BufferedRun.html" title="">BufferedRun</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="BuffersJson$.html" title=""></a>
+                        <a class="trait" href="BuffersJson.html" title=""></a>
+                        <a href="BuffersJson.html" title="">BuffersJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="BuildPostable$.html" title=""></a>
+                        <a class="trait" href="BuildPostable.html" title="typeclass for building HLists of postables (and other things) based on HLists of buffers, but formally just returns object of type P"></a>
+                        <a href="BuildPostable.html" title="typeclass for building HLists of postables (and other things) based on HLists of buffers, but formally just returns object of type P">BuildPostable</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="BuildQuery$.html" title=""></a>
+                        <a class="trait" href="BuildQuery.html" title=""></a>
+                        <a href="BuildQuery.html" title="">BuildQuery</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Collections$.html" title=""></a>
+                        <a href="Collections$.html" title="">Collections</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="CompositeProver.html" title=""></a>
+                        <a href="CompositeProver.html" title="">CompositeProver</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Conditioning$.html" title=""></a>
+                        <a class="trait" href="Conditioning.html" title="typeclass for being able to condition"></a>
+                        <a href="Conditioning.html" title="typeclass for being able to condition">Conditioning</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ContextExport$.html" title=""></a>
+                        <a class="trait" href="ContextExport.html" title="changes in the distribution-like object other than those induced by object level map while exporting from an island typically a change in context for variables representing terms in a context"></a>
+                        <a href="ContextExport.html" title="changes in the distribution-like object other than those induced by object level map while exporting from an island typically a change in context for variables representing terms in a context">ContextExport</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="CounterGlobalID.html" title="allows posting globally and keeps count without stroing anything"></a>
+                        <a href="CounterGlobalID.html" title="allows posting globally and keeps count without stroing anything">CounterGlobalID</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="DE$.html" title=""></a>
+                        <a href="DE$.html" title="">DE</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="DataGetter$.html" title=""></a>
+                        <a class="trait" href="DataGetter.html" title=""></a>
+                        <a href="DataGetter.html" title="">DataGetter</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Deducer$.html" title="Generating terms from given ones using the main HoTT operations, and the adjoint of this generation."></a>
+                        <a class="class" href="Deducer.html" title=""></a>
+                        <a href="Deducer.html" title="">Deducer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="DeducerBuffer.html" title=""></a>
+                        <a href="DeducerBuffer.html" title="">DeducerBuffer</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="DeducerSource$.html" title=""></a>
+                        <a class="class" href="DeducerSource.html" title=""></a>
+                        <a href="DeducerSource.html" title="">DeducerSource</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="DerivedEquations.html" title=""></a>
+                        <a href="DerivedEquations.html" title="">DerivedEquations</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="DiffbleFunction$.html" title=""></a>
+                        <a class="trait" href="DiffbleFunction.html" title=""></a>
+                        <a href="DiffbleFunction.html" title="">DiffbleFunction</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="DistributionState$.html" title=""></a>
+                        <a class="trait" href="DistributionState.html" title="typeclass for providing distributions from a state and modifying a state from distributions"></a>
+                        <a href="DistributionState.html" title="typeclass for providing distributions from a state and modifying a state from distributions">DistributionState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="DistributionStateEvolver.html" title=""></a>
+                        <a href="DistributionStateEvolver.html" title="">DistributionStateEvolver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EgUnif.html" title=""></a>
+                        <a href="EgUnif.html" title="">EgUnif</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Empty$.html" title=""></a>
+                        <a class="trait" href="Empty.html" title=""></a>
+                        <a href="Empty.html" title="">Empty</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="EntropyAtomWeight$.html" title=""></a>
+                        <a class="class" href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy"></a>
+                        <a href="EntropyAtomWeight.html" title="Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy">EntropyAtomWeight</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="EqDistMemo$.html" title=""></a>
+                        <a class="class" href="EqDistMemo.html" title=""></a>
+                        <a href="EqDistMemo.html" title="">EqDistMemo</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Equation$.html" title=""></a>
+                        <a class="class" href="Equation.html" title=""></a>
+                        <a href="Equation.html" title="">Equation</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="EquationNode$.html" title=""></a>
+                        <a class="class" href="EquationNode.html" title=""></a>
+                        <a href="EquationNode.html" title="">EquationNode</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ErasablePostBuffer$.html" title=""></a>
+                        <a class="trait" href="ErasablePostBuffer.html" title=""></a>
+                        <a href="ErasablePostBuffer.html" title="">ErasablePostBuffer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ErasableWebBuffer.html" title=""></a>
+                        <a href="ErasableWebBuffer.html" title="">ErasableWebBuffer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="EvolvedEquations.html" title=""></a>
+                        <a href="EvolvedEquations.html" title="">EvolvedEquations</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="EvolvedState.html" title=""></a>
+                        <a href="EvolvedState.html" title="">EvolvedState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="EvolvedStateLike.html" title=""></a>
+                        <a href="EvolvedStateLike.html" title="">EvolvedStateLike</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="EvolverEquations$.html" title=""></a>
+                        <a class="class" href="EvolverEquations.html" title="variables for probabilities and equations for consistency"></a>
+                        <a href="EvolverEquations.html" title="variables for probabilities and equations for consistency">EvolverEquations</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="EvolverSupport.html" title="Support of the final distribution of an evolver, i.e., a generative model for terms"></a>
+                        <a href="EvolverSupport.html" title="Support of the final distribution of an evolver, i.e., a generative model for terms">EvolverSupport</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="EvolverVariables$.html" title=""></a>
+                        <a class="trait" href="EvolverVariables.html" title="Variables in an evolver; not all need to be used in a give case"></a>
+                        <a href="EvolverVariables.html" title="Variables in an evolver; not all need to be used in a give case">EvolverVariables</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Expression$.html" title=""></a>
+                        <a class="trait" href="Expression.html" title=""></a>
+                        <a href="Expression.html" title="">Expression</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ExpressionEval$.html" title="Working with expressions built from initial and final values of random variables, including in islands, given equations satisfied by these"></a>
+                        <a class="trait" href="ExpressionEval.html" title=""></a>
+                        <a href="ExpressionEval.html" title="">ExpressionEval</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="FallBackLookups.html" title=""></a>
+                        <a href="FallBackLookups.html" title="">FallBackLookups</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FieldGramSchmidt$.html" title=""></a>
+                        <a href="FieldGramSchmidt$.html" title="">FieldGramSchmidt</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FineDeducer$.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
+                        <a class="class" href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution."></a>
+                        <a href="FineDeducer.html" title="A refined deducer, i.e., evolution of terms and derivatives of evolution.">FineDeducer</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FineDeducerStep$.html" title=""></a>
+                        <a class="class" href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task"></a>
+                        <a href="FineDeducerStep.html" title="Monad based step for deducer, to be used, for example, with Monix Task">FineDeducerStep</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="FineEvolver.html" title="A refined evolver, i.e., evolution of terms and subclasses such as types."></a>
+                        <a href="FineEvolver.html" title="A refined evolver, i.e., evolution of terms and subclasses such as types.">FineEvolver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FineProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives."></a>
+                        <a href="FineProverTasks$.html" title="A collection of functions to build provers; some are abstract methods for exploring, searching etc., while others generate terms and types, sometimes as derivatives.">FineProverTasks</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="FiniteDistributionLearner$.html" title="A combinator for learning systems with state finite distributions on vertices."></a>
+                        <a href="FiniteDistributionLearner$.html" title="A combinator for learning systems with state finite distributions on vertices.">FiniteDistributionLearner</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ForceDirected.html" title=""></a>
+                        <a href="ForceDirected.html" title="">ForceDirected</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ForceDirectedVectors.html" title=""></a>
+                        <a href="ForceDirectedVectors.html" title="">ForceDirectedVectors</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GatherMapPost.html" title=""></a>
+                        <a href="GatherMapPost.html" title="">GatherMapPost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GatherPost.html" title=""></a>
+                        <a href="GatherPost.html" title="">GatherPost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GenMonixFiniteDistribution.html" title=""></a>
+                        <a href="GenMonixFiniteDistribution.html" title="">GenMonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GenMonixFiniteDistributionEq.html" title=""></a>
+                        <a href="GenMonixFiniteDistributionEq.html" title="">GenMonixFiniteDistributionEq</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GenTruncatedFiniteDistribution.html" title=""></a>
+                        <a href="GenTruncatedFiniteDistribution.html" title="">GenTruncatedFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorData.html" title=""></a>
+                        <a href="GeneratorData.html" title="">GeneratorData</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="GeneratorEquations.html" title=""></a>
+                        <a href="GeneratorEquations.html" title="">GeneratorEquations</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorNode$.html" title=""></a>
+                        <a class="trait" href="GeneratorNode.html" title="A formal node for describing recursive generation."></a>
+                        <a href="GeneratorNode.html" title="A formal node for describing recursive generation.">GeneratorNode</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorNodeFamily$.html" title=""></a>
+                        <a class="trait" href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case."></a>
+                        <a href="GeneratorNodeFamily.html" title="Family of (recursive) generation functions, either a function giving a family or a single {{GeneratorNode}}, which is the interesting case.">GeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorTF$.html" title=""></a>
+                        <a class="class" href="GeneratorTF.html" title=""></a>
+                        <a href="GeneratorTF.html" title="">GeneratorTF</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GeneratorVariables$.html" title=""></a>
+                        <a class="class" href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="GeneratorVariables.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">GeneratorVariables</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form"></a>
+                        <a href="GeometricDistribution$.html" title="An example, the geometric distribution in an abstract form">GeometricDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="GlobalID.html" title=""></a>
+                        <a href="GlobalID.html" title="">GlobalID</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="GlobalPost.html" title="Allows posting any content, typically just returns an ID to be used by something else."></a>
+                        <a href="GlobalPost.html" title="Allows posting any content, typically just returns an ID to be used by something else.">GlobalPost</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="GlobalProver$.html" title=""></a>
+                        <a class="trait" href="GlobalProver.html" title=""></a>
+                        <a href="GlobalProver.html" title="">GlobalProver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="GramSchmidt$.html" title=""></a>
+                        <a href="GramSchmidt$.html" title="">GramSchmidt</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="HistoryGetter$.html" title=""></a>
+                        <a class="trait" href="HistoryGetter.html" title=""></a>
+                        <a href="HistoryGetter.html" title="">HistoryGetter</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTTBot$.html" title=""></a>
+                        <a href="HoTTBot$.html" title="">HoTTBot</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="" title="Messages to be posted for autonomous/interactive running."></a>
+                        <a href="" title="Messages to be posted for autonomous/interactive running.">HoTTMessages</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="HoTTPost$.html" title=""></a>
+                        <a class="class" href="HoTTPost.html" title=""></a>
+                        <a href="HoTTPost.html" title="">HoTTPost</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="HoTTPostWeb$.html" title=""></a>
+                        <a class="class" href="HoTTPostWeb.html" title="Better building of post webs, without depending on separate lists for implicits and history (history to be done)."></a>
+                        <a href="HoTTPostWeb.html" title="Better building of post webs, without depending on separate lists for implicits and history (history to be done).">HoTTPostWeb</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="HoTTWebSession$.html" title=""></a>
+                        <a class="class" href="HoTTWebSession.html" title=""></a>
+                        <a href="HoTTWebSession.html" title="">HoTTWebSession</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="HoTTgen$.html" title=""></a>
+                        <a href="HoTTgen$.html" title="">HoTTgen</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Hub$.html" title=""></a>
+                        <a href="Hub$.html" title="">Hub</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="IntElem.html" title=""></a>
+                        <a href="IntElem.html" title="">IntElem</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="IterantRunner$.html" title=""></a>
+                        <a class="trait" href="IterantRunner.html" title=""></a>
+                        <a href="IterantRunner.html" title="">IterantRunner</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="IterateDyn$.html" title=""></a>
+                        <a href="IterateDyn$.html" title="">IterateDyn</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="LatestAnswer.html" title="Queries answered by taking the latest out of possibly many choices of posts to be looked up and transformed."></a>
+                        <a href="LatestAnswer.html" title="Queries answered by taking the latest out of possibly many choices of posts to be looked up and transformed.">LatestAnswer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="LemmaWeigths$.html" title=""></a>
+                        <a href="LemmaWeigths$.html" title="">LemmaWeigths</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="LocalProver$.html" title=""></a>
+                        <a class="class" href="LocalProver.html" title="Collect local/generative/tactical proving; this includes configuration and learning but excludes strategy and attention."></a>
+                        <a href="LocalProver.html" title="Collect local/generative/tactical proving; this includes configuration and learning but excludes strategy and attention.">LocalProver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="LocalProverStep.html" title=""></a>
+                        <a href="LocalProverStep.html" title="">LocalProverStep</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="LocalQueryable$.html" title=""></a>
+                        <a class="trait" href="LocalQueryable.html" title="Typeclass for being able to query W for a vector of elements of type Q at an index"></a>
+                        <a href="LocalQueryable.html" title="Typeclass for being able to query W for a vector of elements of type Q at an index">LocalQueryable</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="LocalTangentProver$.html" title=""></a>
+                        <a class="class" href="LocalTangentProver.html" title=""></a>
+                        <a href="LocalTangentProver.html" title="">LocalTangentProver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MapVS$.html" title=""></a>
+                        <a href="MapVS$.html" title="">MapVS</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MemoState$.html" title=""></a>
+                        <a class="class" href="MemoState.html" title=""></a>
+                        <a href="MemoState.html" title="">MemoState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="MiniBot.html" title="Bot responding to a post returning a vector of posts for each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made"></a>
+                        <a href="MiniBot.html" title="Bot responding to a post returning a vector of posts for each value of the auxiliary queryable - so even if the auxiliary has a single response, many posts are made">MiniBot</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonixFieldGramSchmidt$.html" title=""></a>
+                        <a href="MonixFieldGramSchmidt$.html" title="">MonixFieldGramSchmidt</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixFiniteDistributionEq$.html" title=""></a>
+                        <a class="class" href="MonixFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixFiniteDistributionEq</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonixGramSchmidt$.html" title=""></a>
+                        <a href="MonixGramSchmidt$.html" title="">MonixGramSchmidt</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed."></a>
+                        <a href="MonixProverTasks$.html" title="A drop-in replacement for FineProverTasks to test the abstract generators approach; since testing is the goal redundancies and some comments have been removed.">MonixProverTasks</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixSamples$.html" title=""></a>
+                        <a class="trait" href="MonixSamples.html" title=""></a>
+                        <a href="MonixSamples.html" title="">MonixSamples</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixTangentFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixTangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixTangentFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MonixTangentFiniteDistributionEq$.html" title=""></a>
+                        <a class="class" href="MonixTangentFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="MonixTangentFiniteDistributionEq.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">MonixTangentFiniteDistributionEq</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="NextSample.html" title=""></a>
+                        <a href="NextSample.html" title="">NextSample</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="NodeCoeffSeq$.html" title=""></a>
+                        <a class="trait" href="NodeCoeffSeq.html" title=""></a>
+                        <a href="NodeCoeffSeq.html" title="">NodeCoeffSeq</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="NodeCoeffs$.html" title=""></a>
+                        <a class="trait" href="NodeCoeffs.html" title=""></a>
+                        <a href="NodeCoeffs.html" title="">NodeCoeffs</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="PickledTermPopulation$.html" title=""></a>
+                        <a class="class" href="PickledTermPopulation.html" title=""></a>
+                        <a href="PickledTermPopulation.html" title="">PickledTermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="PostBuffer$.html" title=""></a>
+                        <a class="trait" href="PostBuffer.html" title="A buffer for storing posts, extending GlobalPost which supplies an ID"></a>
+                        <a href="PostBuffer.html" title="A buffer for storing posts, extending GlobalPost which supplies an ID">PostBuffer</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="PostData$.html" title=""></a>
+                        <a class="class" href="PostData.html" title="Data for a post, including the implicit saying it is postable"></a>
+                        <a href="PostData.html" title="Data for a post, including the implicit saying it is postable">PostData</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="PostDiscarder$.html" title=""></a>
+                        <a class="trait" href="PostDiscarder.html" title=""></a>
+                        <a href="PostDiscarder.html" title="">PostDiscarder</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="PostHistory$.html" title=""></a>
+                        <a class="trait" href="PostHistory.html" title=""></a>
+                        <a href="PostHistory.html" title="">PostHistory</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="PostMaps$.html" title=""></a>
+                        <a class="trait" href="PostMaps.html" title=""></a>
+                        <a href="PostMaps.html" title="">PostMaps</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="PostResponse$.html" title=""></a>
+                        <a class="trait" href="PostResponse.html" title="Response to a post, generating one or more posts or just a callback; this exists mainly for nicer type collections."></a>
+                        <a href="PostResponse.html" title="Response to a post, generating one or more posts or just a callback; this exists mainly for nicer type collections.">PostResponse</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Postable$.html" title=""></a>
+                        <a class="trait" href="Postable.html" title="Typeclass for being able to post with content type P in W"></a>
+                        <a href="Postable.html" title="Typeclass for being able to post with content type P in W">Postable</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="PreviousPost.html" title=""></a>
+                        <a href="PreviousPost.html" title="">PreviousPost</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ProofEntropies$.html" title=""></a>
+                        <a class="class" href="ProofEntropies.html" title=""></a>
+                        <a href="ProofEntropies.html" title="">ProofEntropies</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="ProverTasks$.html" title=""></a>
+                        <a href="ProverTasks$.html" title="">ProverTasks</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="QueryFromPosts$.html" title=""></a>
+                        <a class="trait" href="QueryFromPosts.html" title=""></a>
+                        <a href="QueryFromPosts.html" title="">QueryFromPosts</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="QueryImplicit.html" title=""></a>
+                        <a href="QueryImplicit.html" title="">QueryImplicit</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="QueryImplicitWrap.html" title="Have a wrapper type T for the query and make the companion object extend this class, giving query-from-posts as input (whose type should be deducable)"></a>
+                        <a href="QueryImplicitWrap.html" title="Have a wrapper type T for the query and make the companion object extend this class, giving query-from-posts as input (whose type should be deducable)">QueryImplicitWrap</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="QueryOptions$.html" title=""></a>
+                        <a class="class" href="QueryOptions.html" title=""></a>
+                        <a href="QueryOptions.html" title="">QueryOptions</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="QueryProver$.html" title=""></a>
+                        <a class="class" href="QueryProver.html" title=""></a>
+                        <a href="QueryProver.html" title="">QueryProver</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Queryable$.html" title=""></a>
+                        <a class="trait" href="Queryable.html" title="Typeclass for being able to query W for type Q"></a>
+                        <a href="Queryable.html" title="Typeclass for being able to query W for type Q">Queryable</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="RandomVar$.html" title=""></a>
+                        <a class="class" href="RandomVar.html" title="A formal Random Variable up to equality of distribution."></a>
+                        <a href="RandomVar.html" title="A formal Random Variable up to equality of distribution.">RandomVar</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="RandomVarFamily$.html" title=""></a>
+                        <a class="class" href="RandomVarFamily.html" title="A formal family of Random Variables up to equality of distribution."></a>
+                        <a href="RandomVarFamily.html" title="A formal family of Random Variables up to equality of distribution.">RandomVarFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="RandomVarList$.html" title=""></a>
+                        <a class="trait" href="RandomVarList.html" title="List of random variables, e.g."></a>
+                        <a href="RandomVarList.html" title="List of random variables, e.g.">RandomVarList</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RandomVarMemo.html" title=""></a>
+                        <a href="RandomVarMemo.html" title="">RandomVarMemo</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RandomVarValues.html" title=""></a>
+                        <a href="RandomVarValues.html" title="">RandomVarValues</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RandomVector.html" title="distributions of vectors from a base distribution"></a>
+                        <a href="RandomVector.html" title="distributions of vectors from a base distribution">RandomVector</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RecursiveGeneratorNode.html" title=""></a>
+                        <a href="RecursiveGeneratorNode.html" title="">RecursiveGeneratorNode</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="RecursiveGeneratorNodeFamily.html" title=""></a>
+                        <a href="RecursiveGeneratorNodeFamily.html" title="">RecursiveGeneratorNodeFamily</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Representation$.html" title=""></a>
+                        <a class="class" href="Representation.html" title=""></a>
+                        <a href="Representation.html" title="">Representation</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="RepresentationLearner$.html" title=""></a>
+                        <a class="class" href="RepresentationLearner.html" title=""></a>
+                        <a href="RepresentationLearner.html" title="">RepresentationLearner</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Samples$.html" title=""></a>
+                        <a class="trait" href="Samples.html" title=""></a>
+                        <a href="Samples.html" title="">Samples</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="SimpleDataGetter.html" title=""></a>
+                        <a href="SimpleDataGetter.html" title="">SimpleDataGetter</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="SimpleSession.html" title="A simple session to post stuff, call responses and if these responses generate posts, recursively call itself for them."></a>
+                        <a href="SimpleSession.html" title="A simple session to post stuff, call responses and if these responses generate posts, recursively call itself for them.">SimpleSession</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="SnapShot.html" title=""></a>
+                        <a href="SnapShot.html" title="">SnapShot</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="SomePost.html" title="Wrapper to query for all posts, even after the query position or in a different thread"></a>
+                        <a href="SomePost.html" title="Wrapper to query for all posts, even after the query position or in a different thread">SomePost</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="Sort$.html" title=""></a>
+                        <a class="trait" href="Sort.html" title="A sort, i.e."></a>
+                        <a href="Sort.html" title="A sort, i.e.">Sort</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="SortList$.html" title=""></a>
+                        <a class="trait" href="SortList.html" title="List of Sorts, used as domains for families."></a>
+                        <a href="SortList.html" title="List of Sorts, used as domains for families.">SortList</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="SpireGradient$.html" title=""></a>
+                        <a class="class" href="SpireGradient.html" title=""></a>
+                        <a href="SpireGradient.html" title="">SpireGradient</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="SplitPost$.html" title=""></a>
+                        <a class="class" href="SplitPost.html" title="Wrapper for post content that should be posted, with the previous elements of the same type also posted, in general with transformations (e.g."></a>
+                        <a href="SplitPost.html" title="Wrapper for post content that should be posted, with the previous elements of the same type also posted, in general with transformations (e.g.">SplitPost</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="StateDistribution$.html" title=""></a>
+                        <a class="trait" href="StateDistribution.html" title="typeclass for providing distributions from a state"></a>
+                        <a href="StateDistribution.html" title="typeclass for providing distributions from a state">StateDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="StateEvolver.html" title=""></a>
+                        <a href="StateEvolver.html" title="">StateEvolver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="StochasticLang.html" title=""></a>
+                        <a href="StochasticLang.html" title="">StochasticLang</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="StrategicProvers$.html" title=""></a>
+                        <a href="StrategicProvers$.html" title="">StrategicProvers</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="Support.html" title=""></a>
+                        <a href="Support.html" title="">Support</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TFData$.html" title=""></a>
+                        <a class="class" href="TFData.html" title=""></a>
+                        <a href="TFData.html" title="">TFData</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TFDist$.html" title=""></a>
+                        <a class="class" href="TFDist.html" title=""></a>
+                        <a href="TFDist.html" title="">TFDist</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TFEg.html" title=""></a>
+                        <a href="TFEg.html" title="">TFEg</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="TangSamples.html" title=""></a>
+                        <a href="TangSamples.html" title="">TangSamples</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TangVec$.html" title=""></a>
+                        <a class="class" href="TangVec.html" title=""></a>
+                        <a href="TangVec.html" title="">TangVec</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TangentFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="TangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="TangentFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TangentFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermBucket$.html" title=""></a>
+                        <a class="class" href="TermBucket.html" title=""></a>
+                        <a href="TermBucket.html" title="">TermBucket</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermData$.html" title=""></a>
+                        <a href="TermData$.html" title="">TermData</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="TermEvolution.html" title=""></a>
+                        <a href="TermEvolution.html" title="">TermEvolution</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermEvolutionStep$.html" title=""></a>
+                        <a class="class" href="TermEvolutionStep.html" title=""></a>
+                        <a href="TermEvolutionStep.html" title="">TermEvolutionStep</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermEvolver$.html" title=""></a>
+                        <a class="class" href="TermEvolver.html" title=""></a>
+                        <a href="TermEvolver.html" title="">TermEvolver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermGenCost.html" title=""></a>
+                        <a href="TermGenCost.html" title="">TermGenCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermGenEqCost.html" title=""></a>
+                        <a href="TermGenEqCost.html" title="">TermGenEqCost</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermGenJson$.html" title=""></a>
+                        <a href="TermGenJson$.html" title="">TermGenJson</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGenParams$.html" title=""></a>
+                        <a class="class" href="TermGenParams.html" title=""></a>
+                        <a href="TermGenParams.html" title="">TermGenParams</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermGenParamsNodes.html" title=""></a>
+                        <a href="TermGenParamsNodes.html" title="">TermGenParamsNodes</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermGeneratorNodes$.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
+                        <a class="class" href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc."></a>
+                        <a href="TermGeneratorNodes.html" title="Combining terms and subclasses to get terms, types, functions etc; these are abstract specifications, to be used for generating distributions, obtaining equations etc.">TermGeneratorNodes</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermLearner.html" title="Adding equations from a simple generative model to EvolverEquations"></a>
+                        <a href="TermLearner.html" title="Adding equations from a simple generative model to EvolverEquations">TermLearner</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TermPopulation.html" title=""></a>
+                        <a href="TermPopulation.html" title="">TermPopulation</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermProver$.html" title=""></a>
+                        <a href="TermProver$.html" title="">TermProver</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TermRandomVars$.html" title=""></a>
+                        <a href="TermRandomVars$.html" title="">TermRandomVars</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TermState$.html" title=""></a>
+                        <a class="class" href="TermState.html" title="A state, typically the initial state, for generating terms, types etc"></a>
+                        <a href="TermState.html" title="A state, typically the initial state, for generating terms, types etc">TermState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="TestCustomQuery$.html" title=""></a>
+                        <a href="TestCustomQuery$.html" title="">TestCustomQuery</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging"></a>
+                        <a href="TheoremFeedback.html" title="feedback based on the term-type map as well as ensuring total weight of theorems is not  small; various steps are explicit for exploration and debugging">TheoremFeedback</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ThmEntropies.html" title=""></a>
+                        <a href="ThmEntropies.html" title="">ThmEntropies</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TruncDistVal$.html" title=""></a>
+                        <a class="class" href="TruncDistVal.html" title=""></a>
+                        <a href="TruncDistVal.html" title="">TruncDistVal</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Truncate$.html" title=""></a>
+                        <a href="Truncate$.html" title="">Truncate</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TruncatedDistribution$.html" title=""></a>
+                        <a class="trait" href="TruncatedDistribution.html" title=""></a>
+                        <a href="TruncatedDistribution.html" title="">TruncatedDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TruncatedDistributionDomain.html" title=""></a>
+                        <a href="TruncatedDistributionDomain.html" title="">TruncatedDistributionDomain</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TruncatedDistributionExprPatterns.html" title=""></a>
+                        <a href="TruncatedDistributionExprPatterns.html" title="">TruncatedDistributionExprPatterns</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="TruncatedDistributionLang.html" title=""></a>
+                        <a href="TruncatedDistributionLang.html" title="">TruncatedDistributionLang</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TruncatedFiniteDistribution$.html" title=""></a>
+                        <a class="class" href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double"></a>
+                        <a href="TruncatedFiniteDistribution.html" title="resolving a general specification of a recursive generative model as finite distributions, depending on truncation; the coefficients of the various generator nodes should be Double">TruncatedFiniteDistribution</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TypSolver$.html" title=""></a>
+                        <a class="trait" href="TypSolver.html" title=""></a>
+                        <a href="TypSolver.html" title="">TypSolver</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="TypedPostResponse$.html" title=""></a>
+                        <a class="class" href="TypedPostResponse.html" title="Post response with type P of post as a type parameter"></a>
+                        <a href="TypedPostResponse.html" title="Post response with type P of post as a type parameter">TypedPostResponse</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Unify$.html" title=""></a>
+                        <a href="Unify$.html" title="">Unify</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="VarValueSet.html" title=""></a>
+                        <a href="VarValueSet.html" title="">VarValueSet</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="WebBuffer.html" title=""></a>
+                        <a href="WebBuffer.html" title="">WebBuffer</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="WebState.html" title=""></a>
+                        <a href="WebState.html" title="">WebState</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="WeightVect$.html" title=""></a>
+                        <a class="class" href="WeightVect.html" title=""></a>
+                        <a href="WeightVect.html" title="">WeightVect</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="WeightedBackPaths.html" title=""></a>
+                        <a href="WeightedBackPaths.html" title="">WeightedBackPaths</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="WeightedBiPaths.html" title=""></a>
+                        <a href="WeightedBiPaths.html" title="">WeightedBiPaths</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="WeightedTermBucket$.html" title=""></a>
+                        <a class="class" href="WeightedTermBucket.html" title=""></a>
+                        <a href="WeightedTermBucket.html" title="">WeightedTermBucket</a>
+                      </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="object value">
+      <div id="definition">
+        <div class="big-circle object">o</div>
+        <p id="owner"><a href="../index.html" class="extype" name="provingground">provingground</a>.<a href="index.html" class="extype" name="provingground.learning">learning</a></p>
+        <h1>HoTTMessages<span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        <h3><span class="morelinks"></span></h3>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">HoTTMessages</span>
+      </span>
+      </h4>
+
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Messages to be posted for autonomous/interactive running.
+These can be posted by a user, rule-based bot or a deep-learning system;
+from the point of view of deep learning, these are moves.</p><p>Some messages are instructions for what to do next; some report results
+and some provide data for use in the future.</p><p>Some types like <code>LocalProver</code>, <code>ExpressionEval</code>, <code>TermGenParams</code> etc can be posted in their raw form.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">
+            Linear Supertypes
+          </span>
+          <div class="superTypes hiddenContent"><a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block diagram-container" id="content-diagram-container">
+                <span class="toggle diagram-link">
+                  Content Hierarchy
+                </span>
+                <div class="diagram" id="content-diagram"><svg class="package-diagram" id="graph1" viewBox="0.00 0.00 1025.50 94.00" height="94pt" width="1026pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 90)" class="graph" id="page0,1_graph0"><polygon points="-4,4 -4,-90 1021.5,-90 1021.5,4 -4,4" stroke="transparent" fill="#ffffff"></polygon><!-- node0 --><g class="node class" id="graph1_0"><g id="a_class|graph1_0"><a xlink:title="provingground.learning.HoTTMessages.FromAny" xlink:href="HoTTMessages$$FromAny.html#inheritance-diagram"><path d="M73.6667,-25C73.6667,-25 8.3333,-25 8.3333,-25 4.1667,-25 0,-20.8333 0,-16.6667 0,-16.6667 0,-8.3333 0,-8.3333 0,-4.1667 4.1667,0 8.3333,0 8.3333,0 73.6667,0 73.6667,0 77.8333,0 82,-4.1667 82,-8.3333 82,-8.3333 82,-16.6667 82,-16.6667 82,-20.8333 77.8333,-25 73.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="31" text-anchor="start">FromAny</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="provingground.learning.HoTTMessages.FromAll" xlink:href="HoTTMessages$$FromAll.html#inheritance-diagram"><path d="M167.6667,-25C167.6667,-25 108.3333,-25 108.3333,-25 104.1667,-25 100,-20.8333 100,-16.6667 100,-16.6667 100,-8.3333 100,-8.3333 100,-4.1667 104.1667,0 108.3333,0 108.3333,0 167.6667,0 167.6667,0 171.8333,0 176,-4.1667 176,-8.3333 176,-8.3333 176,-16.6667 176,-16.6667 176,-20.8333 171.8333,-25 167.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="110" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="131" text-anchor="start">FromAll</text></a></g></g><!-- node2 --><g class="node class" id="graph1_2"><g id="a_class|graph1_2"><a xlink:title="provingground.learning.HoTTMessages.Contradicted" xlink:href="HoTTMessages$$Contradicted.html#inheritance-diagram"><path d="M517.1667,-25C517.1667,-25 434.8333,-25 434.8333,-25 430.6667,-25 426.5,-20.8333 426.5,-16.6667 426.5,-16.6667 426.5,-8.3333 426.5,-8.3333 426.5,-4.1667 430.6667,0 434.8333,0 434.8333,0 517.1667,0 517.1667,0 521.3333,0 525.5,-4.1667 525.5,-8.3333 525.5,-8.3333 525.5,-16.6667 525.5,-16.6667 525.5,-20.8333 521.3333,-25 517.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="437" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="458" text-anchor="start">Contradicted</text></a></g></g><!-- node3 --><g class="node class" id="graph1_3"><g id="a_class|graph1_3"><a xlink:title="provingground.learning.HoTTMessages.Contradicts" xlink:href="HoTTMessages$$Contradicts.html#inheritance-diagram"><path d="M279.1667,-25C279.1667,-25 202.8333,-25 202.8333,-25 198.6667,-25 194.5,-20.8333 194.5,-16.6667 194.5,-16.6667 194.5,-8.3333 194.5,-8.3333 194.5,-4.1667 198.6667,0 202.8333,0 202.8333,0 279.1667,0 279.1667,0 283.3333,0 287.5,-4.1667 287.5,-8.3333 287.5,-8.3333 287.5,-16.6667 287.5,-16.6667 287.5,-20.8333 283.3333,-25 279.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="205" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="226" text-anchor="start">Contradicts</text></a></g></g><!-- node4 --><g class="node class" id="graph1_4"><g id="a_class|graph1_4"><a xlink:title="provingground.learning.HoTTMessages.Consequence" xlink:href="HoTTMessages$$Consequence.html#inheritance-diagram"><path d="M399.6667,-25C399.6667,-25 314.3333,-25 314.3333,-25 310.1667,-25 306,-20.8333 306,-16.6667 306,-16.6667 306,-8.3333 306,-8.3333 306,-4.1667 310.1667,0 314.3333,0 314.3333,0 399.6667,0 399.6667,0 403.8333,0 408,-4.1667 408,-8.3333 408,-8.3333 408,-16.6667 408,-16.6667 408,-20.8333 403.8333,-25 399.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="316" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="337" text-anchor="start">Consequence</text></a></g></g><!-- node5 --><g class="node trait" id="graph1_5"><g id="a_trait|graph1_5"><a xlink:title="provingground.learning.HoTTMessages.PropagateProof" xlink:href="HoTTMessages$$PropagateProof.html#inheritance-diagram"><path d="M237.1667,-86C237.1667,-86 142.8333,-86 142.8333,-86 138.6667,-86 134.5,-81.8333 134.5,-77.6667 134.5,-77.6667 134.5,-69.3333 134.5,-69.3333 134.5,-65.1667 138.6667,-61 142.8333,-61 142.8333,-61 237.1667,-61 237.1667,-61 241.3333,-61 245.5,-65.1667 245.5,-69.3333 245.5,-69.3333 245.5,-77.6667 245.5,-77.6667 245.5,-81.8333 241.3333,-86 237.1667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="145" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="166" text-anchor="start">PropagateProof</text></a></g></g><!-- node5&#45;&gt;node0 --><g class="edge inheritance" id="graph1_5_0"><g id="a_inheritance|graph1_5_0"><a xlink:title="FromAny is a subtype of PropagateProof"><path d="M152.6096,-58.1925C127.5839,-47.9471 95.0553,-34.63 71.5781,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="151.7207,-60.4759 159.1271,-60.8608 153.5772,-55.9412 151.7207,-60.4759" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5&#45;&gt;node1 --><g class="edge inheritance" id="graph1_5_1"><g id="a_inheritance|graph1_5_1"><a xlink:title="FromAll is a subtype of PropagateProof"><path d="M174.5673,-55.3963C166.2598,-45.6509 156.2178,-33.8708 148.7606,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="172.8199,-57.123 179.2256,-60.8608 176.5489,-53.9442 172.8199,-57.123" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5&#45;&gt;node3 --><g class="edge inheritance" id="graph1_5_3"><g id="a_inheritance|graph1_5_3"><a xlink:title="Contradicts is a subtype of PropagateProof"><path d="M205.1359,-55.3963C213.2837,-45.6509 223.1326,-33.8708 230.4463,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="203.1776,-53.9189 200.5672,-60.8608 206.9368,-57.0619 203.1776,-53.9189" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node5&#45;&gt;node4 --><g class="edge inheritance" id="graph1_5_4"><g id="a_inheritance|graph1_5_4"><a xlink:title="Consequence is a subtype of PropagateProof"><path d="M231.193,-58.4534C259.335,-48.174 296.1905,-34.7118 322.7279,-25.0185" stroke="#d4d4d4" fill="none"></path><polygon points="230.337,-56.1577 224.6025,-60.8608 232.0182,-60.7603 230.337,-56.1577" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node6 --><g class="node class" id="graph1_6"><g id="a_class|graph1_6"><a xlink:title="provingground.learning.HoTTMessages.Proved" xlink:href="HoTTMessages$$Proved.html#inheritance-diagram"><path d="M610.1667,-25C610.1667,-25 551.8333,-25 551.8333,-25 547.6667,-25 543.5,-20.8333 543.5,-16.6667 543.5,-16.6667 543.5,-8.3333 543.5,-8.3333 543.5,-4.1667 547.6667,0 551.8333,0 551.8333,0 610.1667,0 610.1667,0 614.3333,0 618.5,-4.1667 618.5,-8.3333 618.5,-8.3333 618.5,-16.6667 618.5,-16.6667 618.5,-20.8333 614.3333,-25 610.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="554" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="575" text-anchor="start">Proved</text></a></g></g><!-- node7 --><g class="node trait" id="graph1_7"><g id="a_trait|graph1_7"><a xlink:title="provingground.learning.HoTTMessages.Decided" xlink:href="HoTTMessages$$Decided.html#inheritance-diagram"><path d="M558.6667,-86C558.6667,-86 497.3333,-86 497.3333,-86 493.1667,-86 489,-81.8333 489,-77.6667 489,-77.6667 489,-69.3333 489,-69.3333 489,-65.1667 493.1667,-61 497.3333,-61 497.3333,-61 558.6667,-61 558.6667,-61 562.8333,-61 567,-65.1667 567,-69.3333 567,-69.3333 567,-77.6667 567,-77.6667 567,-81.8333 562.8333,-86 558.6667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="499" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="520" text-anchor="start">Decided</text></a></g></g><!-- node7&#45;&gt;node2 --><g class="edge inheritance" id="graph1_7_2"><g id="a_inheritance|graph1_7_2"><a xlink:title="Contradicted is a subtype of Decided"><path d="M512.5673,-55.3963C504.2598,-45.6509 494.2178,-33.8708 486.7606,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="510.8199,-57.123 517.2256,-60.8608 514.5489,-53.9442 510.8199,-57.123" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node7&#45;&gt;node6 --><g class="edge inheritance" id="graph1_7_6"><g id="a_inheritance|graph1_7_6"><a xlink:title="Proved is a subtype of Decided"><path d="M543.7295,-55.3963C552.1968,-45.6509 562.4319,-33.8708 570.0324,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="541.7233,-53.9697 538.9816,-60.8608 545.4222,-57.1835 541.7233,-53.9697" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node8 --><g class="node class" id="graph1_8"><g id="a_class|graph1_8"><a xlink:title="provingground.learning.HoTTMessages.ResolveGoal" xlink:href="HoTTMessages$$ResolveGoal.html#inheritance-diagram"><path d="M725.6667,-25C725.6667,-25 644.3333,-25 644.3333,-25 640.1667,-25 636,-20.8333 636,-16.6667 636,-16.6667 636,-8.3333 636,-8.3333 636,-4.1667 640.1667,0 644.3333,0 644.3333,0 725.6667,0 725.6667,0 729.8333,0 734,-4.1667 734,-8.3333 734,-8.3333 734,-16.6667 734,-16.6667 734,-20.8333 729.8333,-25 725.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="646" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="667" text-anchor="start">ResolveGoal</text></a></g></g><!-- node9 --><g class="node class" id="graph1_9"><g id="a_class|graph1_9"><a xlink:title="provingground.learning.HoTTMessages.SeekEventualCodomain" xlink:href="HoTTMessages$$SeekEventualCodomain.html#inheritance-diagram"><path d="M887.6667,-25C887.6667,-25 760.3333,-25 760.3333,-25 756.1667,-25 752,-20.8333 752,-16.6667 752,-16.6667 752,-8.3333 752,-8.3333 752,-4.1667 756.1667,0 760.3333,0 760.3333,0 887.6667,0 887.6667,0 891.8333,0 896,-4.1667 896,-8.3333 896,-8.3333 896,-16.6667 896,-16.6667 896,-20.8333 891.8333,-25 887.6667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="762" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="783" text-anchor="start">SeekEventualCodomain</text></a></g></g><!-- node10 --><g class="node class" id="graph1_10"><g id="a_class|graph1_10"><a xlink:title="provingground.learning.HoTTMessages.SeekInduction" xlink:href="HoTTMessages$$SeekInduction.html#inheritance-diagram"><path d="M1009.1667,-25C1009.1667,-25 922.8333,-25 922.8333,-25 918.6667,-25 914.5,-20.8333 914.5,-16.6667 914.5,-16.6667 914.5,-8.3333 914.5,-8.3333 914.5,-4.1667 918.6667,0 922.8333,0 922.8333,0 1009.1667,0 1009.1667,0 1013.3333,0 1017.5,-4.1667 1017.5,-8.3333 1017.5,-8.3333 1017.5,-16.6667 1017.5,-16.6667 1017.5,-20.8333 1013.3333,-25 1009.1667,-25" stroke="#418565" fill="#418565"></path><image xlink:href="../../lib/class_diagram.png" y="-19.5" x="925" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-10.1" x="946" text-anchor="start">SeekInduction</text></a></g></g><!-- node11 --><g class="node trait" id="graph1_11"><g id="a_trait|graph1_11"><a xlink:title="provingground.learning.HoTTMessages.ReasonBackward" xlink:href="HoTTMessages$$ReasonBackward.html#inheritance-diagram"><path d="M874.1667,-86C874.1667,-86 773.8333,-86 773.8333,-86 769.6667,-86 765.5,-81.8333 765.5,-77.6667 765.5,-77.6667 765.5,-69.3333 765.5,-69.3333 765.5,-65.1667 769.6667,-61 773.8333,-61 773.8333,-61 874.1667,-61 874.1667,-61 878.3333,-61 882.5,-65.1667 882.5,-69.3333 882.5,-69.3333 882.5,-77.6667 882.5,-77.6667 882.5,-81.8333 878.3333,-86 874.1667,-86" stroke="#2e6d82" fill="#2e6d82"></path><image xlink:href="../../lib/trait_diagram.png" y="-80.5" x="776" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="8.00" font-family="Source Code Pro" y="-71.1" x="797" text-anchor="start">ReasonBackward</text></a></g></g><!-- node11&#45;&gt;node8 --><g class="edge inheritance" id="graph1_11_8"><g id="a_inheritance|graph1_11_8"><a xlink:title="ResolveGoal is a subtype of ReasonBackward"><path d="M788.5444,-57.9403C765.3616,-47.7666 735.4673,-34.6475 713.764,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="787.8046,-60.2912 795.1991,-60.8608 789.7737,-55.8042 787.8046,-60.2912" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node11&#45;&gt;node9 --><g class="edge inheritance" id="graph1_11_9"><g id="a_inheritance|graph1_11_9"><a xlink:title="SeekEventualCodomain is a subtype of ReasonBackward"><path d="M824,-53.7386C824,-44.3393 824,-33.3803 824,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="821.5501,-53.8607 824,-60.8608 826.4501,-53.8608 821.5501,-53.8607" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node11&#45;&gt;node10 --><g class="edge inheritance" id="graph1_11_10"><g id="a_inheritance|graph1_11_10"><a xlink:title="SeekInduction is a subtype of ReasonBackward"><path d="M859.9163,-58.0712C883.6417,-47.8793 914.3484,-34.6884 936.6152,-25.123" stroke="#d4d4d4" fill="none"></path><polygon points="858.8871,-55.8467 853.4225,-60.8608 860.8212,-60.3489 858.8871,-55.8467" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div id="diagram-controls" class="hiddenContent">
+                  <button id="diagram-zoom-out" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button id="diagram-zoom-in" class="diagram-btn"><i class="material-icons"></i></button>
+                  <button title="Toggle full-screen" id="diagram-fs" class="diagram-btn to-full"><i class="material-icons"></i></button>
+                </div>
+              </div></div>
+        
+
+      <div id="mbrsel">
+        <div class="toggle"></div>
+        <div id="memberfilter">
+          <i class="material-icons arrow"></i>
+          <span class="input">
+            <input id="mbrsel-input" placeholder="Filter all members" type="text" accesskey="/" />
+          </span>
+          <i class="clear material-icons"></i>
+        </div>
+        <div id="filterby">
+          <div id="order">
+            <span class="filtertype">Ordering</span>
+            <ol>
+              
+              <li class="alpha in"><span>Alphabetic</span></li>
+              <li class="inherit out"><span>By Inheritance</span></li>
+            </ol>
+          </div>
+          <div class="ancestors">
+                  <span class="filtertype">Inherited<br />
+                  </span>
+                  <ol id="linearization">
+                    <li class="in" name="provingground.learning.HoTTMessages"><span>HoTTMessages</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  </ol>
+                </div><div class="ancestors">
+              <span class="filtertype"></span>
+              <ol>
+                <li class="hideall out"><span>Hide All</span></li>
+                <li class="showall in"><span>Show All</span></li>
+              </ol>
+            </div>
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="provingground.learning.HoTTMessages.AddVariable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AddVariableextendsProductwithSerializable"></a><a id="AddVariable:AddVariable"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$AddVariable.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$AddVariable.html"><span class="name">AddVariable</span></a><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.ChompResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ChompResultextendsProductwithSerializable"></a><a id="ChompResult:ChompResult"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$ChompResult.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="result of goal chomping" href="HoTTMessages$$ChompResult.html"><span class="name">ChompResult</span></a><span class="params">(<span name="successes">successes: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="StrategicProvers$.html#Successes=Vector[(provingground.HoTT.Typ[provingground.HoTT.Term],Double,provingground.FiniteDistribution[provingground.HoTT.Term])]" class="extmbr" name="provingground.learning.StrategicProvers.Successes">Successes</a>]</span>, <span name="failures">failures: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="eqns">eqns: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="EquationNode.html" class="extype" name="provingground.learning.EquationNode">EquationNode</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">result of goal chomping
+</p><div class="fullcomment"><div class="comment cmt"><p>result of goal chomping
+</p></div><dl class="paramcmts block"><dt class="param">successes</dt><dd class="cmt"><p>results proved</p></dd><dt class="param">failures</dt><dd class="cmt"><p>results neither proved nor disproved</p></dd><dt class="param">eqns</dt><dd class="cmt"><p>equations contributed as a by-product</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.Consequence" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ConsequenceextendsHoTTMessages.PropagateProofwithProductwithSerializable"></a><a id="Consequence:Consequence"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Consequence.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Consequence.html"><span class="name">Consequence</span></a><span class="params">(<span name="premise">premise: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="conclusion">conclusion: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="proofMapOpt">proofMapOpt: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>)</span><span class="result"> extends <a href="HoTTMessages$$PropagateProof.html" class="extype" name="provingground.learning.HoTTMessages.PropagateProof">PropagateProof</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.ConsiderInductiveTypes" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ConsiderInductiveTypesextendsProductwithSerializable"></a><a id="ConsiderInductiveTypes:ConsiderInductiveTypes"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$ConsiderInductiveTypes.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="introduce inductive types" href="HoTTMessages$$ConsiderInductiveTypes.html"><span class="name">ConsiderInductiveTypes</span></a><span class="params">(<span name="inducs">inducs: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../induction/ExstInducDefn.html" class="extype" name="provingground.induction.ExstInducDefn">ExstInducDefn</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">introduce inductive types
+</p><div class="fullcomment"><div class="comment cmt"><p>introduce inductive types
+</p></div><dl class="paramcmts block"><dt class="param">inducs</dt><dd class="cmt"><p>distribution on inductive types introduced</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.ConsiderTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ConsiderTermsextendsProductwithSerializable"></a><a id="ConsiderTerms:ConsiderTerms"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$ConsiderTerms.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="terms to use for proving, possibly the axioms etc not used in generating types." href="HoTTMessages$$ConsiderTerms.html"><span class="name">ConsiderTerms</span></a><span class="params">(<span name="terms">terms: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">terms to use for proving, possibly the axioms etc not used in generating types.</p><div class="fullcomment"><div class="comment cmt"><p>terms to use for proving, possibly the axioms etc not used in generating types.
+</p></div><dl class="paramcmts block"><dt class="param">terms</dt><dd class="cmt"><p>the term distribution to use</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.Contradicted" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContradictedextendsHoTTMessages.DecidedwithProductwithSerializable"></a><a id="Contradicted:Contradicted"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Contradicted.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Contradicted.html"><span class="name">Contradicted</span></a><span class="params">(<span name="statement">statement: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="contraOpt">contraOpt: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>)</span><span class="result"> extends <a href="HoTTMessages$$Decided.html" class="extype" name="provingground.learning.HoTTMessages.Decided">Decided</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.Contradicts" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContradictsextendsHoTTMessages.PropagateProofwithProductwithSerializable"></a><a id="Contradicts:Contradicts"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Contradicts.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Contradicts.html"><span class="name">Contradicts</span></a><span class="params">(<span name="premise">premise: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="conclusion">conclusion: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="contraMapOpt">contraMapOpt: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>)</span><span class="result"> extends <a href="HoTTMessages$$PropagateProof.html" class="extype" name="provingground.learning.HoTTMessages.PropagateProof">PropagateProof</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.Decided" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DecidedextendsAnyRef"></a><a id="Decided:Decided"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Decided.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Decided.html"><span class="name">Decided</span></a><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.FinalState" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FinalStateextendsProductwithSerializable"></a><a id="FinalState:FinalState"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$FinalState.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="result of evolution, say of a local-prover; could be just from equations" href="HoTTMessages$$FinalState.html"><span class="name">FinalState</span></a><span class="params">(<span name="ts">ts: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">result of evolution, say of a local-prover; could be just from equations
+</p><div class="fullcomment"><div class="comment cmt"><p>result of evolution, say of a local-prover; could be just from equations
+</p></div><dl class="paramcmts block"><dt class="param">ts</dt><dd class="cmt"><p>the evolved state</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.FromAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FromAllextendsHoTTMessages.PropagateProofwithProductwithSerializable"></a><a id="FromAll:FromAll"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$FromAll.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$FromAll.html"><span class="name">FromAll</span></a><span class="params">(<span name="typs">typs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="conclusion">conclusion: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="proofOpt">proofOpt: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>, <span name="forConsequences">forConsequences: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result"> extends <a href="HoTTMessages$$PropagateProof.html" class="extype" name="provingground.learning.HoTTMessages.PropagateProof">PropagateProof</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.FromAny" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FromAnyextendsHoTTMessages.PropagateProofwithProductwithSerializable"></a><a id="FromAny:FromAny"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$FromAny.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$FromAny.html"><span class="name">FromAny</span></a><span class="params">(<span name="typs">typs: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="conclusion">conclusion: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="exhaustive">exhaustive: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="proofsOpt">proofsOpt: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$ExstFunc.html" class="extype" name="provingground.HoTT.ExstFunc">ExstFunc</a>]]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>, <span name="forConsequences">forConsequences: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result"> extends <a href="HoTTMessages$$PropagateProof.html" class="extype" name="provingground.learning.HoTTMessages.PropagateProof">PropagateProof</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.FunctionForGoal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FunctionForGoalextendsProductwithSerializable"></a><a id="FunctionForGoal:FunctionForGoal"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$FunctionForGoal.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$FunctionForGoal.html"><span class="name">FunctionForGoal</span></a><span class="params">(<span name="fn">fn: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>, <span name="forConsequences">forConsequences: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Set()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.GeneratedEquationNodes" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="GeneratedEquationNodesextendsProductwithSerializable"></a><a id="GeneratedEquationNodes:GeneratedEquationNodes"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$GeneratedEquationNodes.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="Result of generation and normalization" href="HoTTMessages$$GeneratedEquationNodes.html"><span class="name">GeneratedEquationNodes</span></a><span class="params">(<span name="eqn">eqn: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="EquationNode.html" class="extype" name="provingground.learning.EquationNode">EquationNode</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Result of generation and normalization
+</p><div class="fullcomment"><div class="comment cmt"><p>Result of generation and normalization
+</p></div><dl class="paramcmts block"><dt class="param">eqn</dt><dd class="cmt"><p>resulting equation nodes to use</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.HaltIf" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HaltIfextendsProductwithSerializable"></a><a id="HaltIf:HaltIf"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$HaltIf.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$HaltIf.html"><span class="name">HaltIf</span></a><span class="params">(<span name="condition">condition: (<span class="extype" name="scala.Unit">Unit</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.InitState" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="InitStateextendsProductwithSerializable"></a><a id="InitState:InitState"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$InitState.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="an initial term state from which to evolve, perhaps just to generate types" href="HoTTMessages$$InitState.html"><span class="name">InitState</span></a><span class="params">(<span name="ts">ts: <a href="TermState.html" class="extype" name="provingground.learning.TermState">TermState</a></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">an initial term state from which to evolve, perhaps just to generate types
+</p><div class="fullcomment"><div class="comment cmt"><p>an initial term state from which to evolve, perhaps just to generate types
+</p></div><dl class="paramcmts block"><dt class="param">ts</dt><dd class="cmt"><p>the term-state</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.Instance" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InstanceextendsProductwithSerializable"></a><a id="Instance:Instance"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Instance.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Instance.html"><span class="name">Instance</span></a><span class="params">(<span name="term">term: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.IntermediateStatements" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="IntermediateStatementsextendsProductwithSerializable"></a><a id="IntermediateStatements:IntermediateStatements"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$IntermediateStatements.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="Given a type, a lemma is the type of an ingredient of the generating set, ideally not easily inhabited." href="HoTTMessages$$IntermediateStatements.html"><span class="name">IntermediateStatements</span></a><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="lemmas">lemmas: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Given a type, a lemma is the type of an ingredient of the generating set, ideally not easily inhabited.</p><div class="fullcomment"><div class="comment cmt"><p>Given a type, a lemma is the type of an ingredient of the generating set, ideally not easily inhabited.
+These are candidate lemmas
+</p></div><dl class="paramcmts block"><dt class="param">typ</dt><dd class="cmt"><p>the goal</p></dd><dt class="param">lemmas</dt><dd class="cmt"><p>candidate lemmas</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.Lemmas" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LemmasextendsProductwithSerializable"></a><a id="Lemmas:Lemmas"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Lemmas.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="lemmas that have been identified based on non-triviality (and possibly goals) from a final state." href="HoTTMessages$$Lemmas.html"><span class="name">Lemmas</span></a><span class="params">(<span name="lemmas">lemmas: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[(<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <span class="extype" name="scala.Double">Double</span>)]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">lemmas that have been identified based on non-triviality (and possibly goals) from a final state.</p><div class="fullcomment"><div class="comment cmt"><p>lemmas that have been identified based on non-triviality (and possibly goals) from a final state.
+</p></div><dl class="paramcmts block"><dt class="param">lemmas</dt><dd class="cmt"><p>the lemmas with weights</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.ModifyParams" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ModifyParamsextendsAnyRef"></a><a id="ModifyParams:ModifyParams"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$ModifyParams.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="modifying parameters, for instance excluding islands, strengthening backward reasoning etc for serialization, inherit from this class" href="HoTTMessages$$ModifyParams.html"><span class="name">ModifyParams</span></a><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">modifying parameters, for instance excluding islands, strengthening backward reasoning etc
+for serialization, inherit from this class
+</p>
+    </li><li name="provingground.learning.HoTTMessages.NarrowOptimizeGenerators" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NarrowOptimizeGeneratorsextendsProductwithSerializable"></a><a id="NarrowOptimizeGenerators:NarrowOptimizeGenerators"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$NarrowOptimizeGenerators.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$NarrowOptimizeGenerators.html"><span class="name">NarrowOptimizeGenerators</span></a><span class="params">(<span name="hW">hW: <span class="extype" name="scala.Double">Double</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span></span>, <span name="smoothing">smoothing: <span class="extype" name="scala.Double">Double</span></span>, <span name="decay">decay: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.OptimalInitial" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OptimalInitialextendsProductwithSerializable"></a><a id="OptimalInitial:OptimalInitial"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$OptimalInitial.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$OptimalInitial.html"><span class="name">OptimalInitial</span></a><span class="params">(<span name="lp">lp: <a href="LocalProver.html" class="extype" name="provingground.learning.LocalProver">LocalProver</a></span>, <span name="hW">hW: <span class="extype" name="scala.Double">Double</span></span>, <span name="klW">klW: <span class="extype" name="scala.Double">Double</span></span>, <span name="smoothing">smoothing: <span class="extype" name="scala.Double">Double</span></span>, <span name="decay">decay: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.OptimizeGenerators" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OptimizeGeneratorsextendsProductwithSerializable"></a><a id="OptimizeGenerators:OptimizeGenerators"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$OptimizeGenerators.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$OptimizeGenerators.html"><span class="name">OptimizeGenerators</span></a><span class="params">(<span name="decay">decay: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.PropagateProof" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="PropagateProofextendsAnyRef"></a><a id="PropagateProof:PropagateProof"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$PropagateProof.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$PropagateProof.html"><span class="name">PropagateProof</span></a><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.Proved" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProvedextendsHoTTMessages.DecidedwithProductwithSerializable"></a><a id="Proved:Proved"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Proved.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Proved.html"><span class="name">Proved</span></a><span class="params">(<span name="statement">statement: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="proofOpt">proofOpt: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>)</span><span class="result"> extends <a href="HoTTMessages$$Decided.html" class="extype" name="provingground.learning.HoTTMessages.Decided">Decided</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.ReasonBackward" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ReasonBackwardextendsAnyRef"></a><a id="ReasonBackward:ReasonBackward"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$ReasonBackward.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="instruction to generate subgoals from a given goal, using a function with eventual codomain, induction etc" href="HoTTMessages$$ReasonBackward.html"><span class="name">ReasonBackward</span></a><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">instruction to generate subgoals from a given goal, using a function with eventual codomain, induction etc</p>
+    </li><li name="provingground.learning.HoTTMessages.RelatedStatements" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RelatedStatementsextendsProductwithSerializable"></a><a id="RelatedStatements:RelatedStatements"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$RelatedStatements.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="Other types that are likely to have common ingredients in proofs" href="HoTTMessages$$RelatedStatements.html"><span class="name">RelatedStatements</span></a><span class="params">(<span name="typ">typ: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="related">related: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Other types that are likely to have common ingredients in proofs
+</p><div class="fullcomment"><div class="comment cmt"><p>Other types that are likely to have common ingredients in proofs
+</p></div><dl class="paramcmts block"><dt class="param">typ</dt><dd class="cmt"><p>the original type</p></dd><dt class="param">related</dt><dd class="cmt"><p>types related</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.RepresentationMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RepresentationMapextendsProductwithSerializable"></a><a id="RepresentationMap:RepresentationMap"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$RepresentationMap.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$RepresentationMap.html"><span class="name">RepresentationMap</span></a><span class="params">(<span name="rep">rep: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="GeneratorVariables$$Variable.html" class="extype" name="provingground.learning.GeneratorVariables.Variable">Variable</a>[_], <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<span class="extype" name="scala.Double">Double</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.ResolveGoal" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ResolveGoalextendsHoTTMessages.ReasonBackwardwithProductwithSerializable"></a><a id="ResolveGoal:ResolveGoal"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$ResolveGoal.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="backward reasoning for special types - products, co-products, Sigma-types and Pi-types; respond with seeking instantiations and adding variables for the last two cases." href="HoTTMessages$$ResolveGoal.html"><span class="name">ResolveGoal</span></a><span class="params">(<span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="HoTTMessages$$ReasonBackward.html" class="extype" name="provingground.learning.HoTTMessages.ReasonBackward">ReasonBackward</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">backward reasoning for special types - products, co-products, Sigma-types and Pi-types;
+respond with seeking instantiations and adding variables for the last two cases.</p><div class="fullcomment"><div class="comment cmt"><p>backward reasoning for special types - products, co-products, Sigma-types and Pi-types;
+respond with seeking instantiations and adding variables for the last two cases.
+</p></div><dl class="paramcmts block"><dt class="param">goal</dt><dd class="cmt"><p>type to resolve</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.SeekEventualCodomain" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekEventualCodomainextendsHoTTMessages.ReasonBackwardwithProductwithSerializable"></a><a id="SeekEventualCodomain:SeekEventualCodomain"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekEventualCodomain.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$SeekEventualCodomain.html"><span class="name">SeekEventualCodomain</span></a><span class="params">(<span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="HoTTMessages$$ReasonBackward.html" class="extype" name="provingground.learning.HoTTMessages.ReasonBackward">ReasonBackward</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.SeekGoal" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SeekGoalextendsProductwithSerializable"></a><a id="SeekGoal:SeekGoal"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekGoal.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="A goal to seek, often derived from others; if the others are solved or negated, we stop seeking" href="HoTTMessages$$SeekGoal.html"><span class="name">SeekGoal</span></a><span class="params">(<span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="context">context: <a href="../Context.html" class="extype" name="provingground.Context">Context</a></span>, <span name="forConsequences">forConsequences: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]] = <span class="symbol"><span class="name"><a href="../../scala/index.html">Set()</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">A goal to seek, often derived from others; if the others are solved or negated, we stop seeking
+</p><div class="fullcomment"><div class="comment cmt"><p>A goal to seek, often derived from others; if the others are solved or negated, we stop seeking
+</p></div><dl class="paramcmts block"><dt class="param">goal</dt><dd class="cmt"><p>the goal</p></dd><dt class="param">forConsequences</dt><dd class="cmt"><p>the consequences for which we seek this, if any; if empty these have no effect</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.SeekGoals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SeekGoalsextendsProductwithSerializable"></a><a id="SeekGoals:SeekGoals"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekGoals.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="goals to seek, through whatever means" href="HoTTMessages$$SeekGoals.html"><span class="name">SeekGoals</span></a><span class="params">(<span name="goals">goals: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">goals to seek, through whatever means
+</p><div class="fullcomment"><div class="comment cmt"><p>goals to seek, through whatever means
+</p></div><dl class="paramcmts block"><dt class="param">goals</dt><dd class="cmt"><p>the goals</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.SeekInduction" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekInductionextendsHoTTMessages.ReasonBackwardwithProductwithSerializable"></a><a id="SeekInduction:SeekInduction"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekInduction.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$SeekInduction.html"><span class="name">SeekInduction</span></a><span class="params">(<span name="goal">goal: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <a href="HoTTMessages$$ReasonBackward.html" class="extype" name="provingground.learning.HoTTMessages.ReasonBackward">ReasonBackward</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.SeekInstances" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SeekInstancesextendsAnyRef"></a><a id="SeekInstances:SeekInstances"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekInstances.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$SeekInstances.html"><span class="name">SeekInstances</span></a><span class="result"> extends <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.SeekLemmas" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SeekLemmasextendsProductwithSerializable"></a><a id="SeekLemmas:SeekLemmas"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekLemmas.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="instruction to seek lemmas" href="HoTTMessages$$SeekLemmas.html"><span class="name">SeekLemmas</span></a><span class="params">(<span name="weightPower">weightPower: <span class="extype" name="scala.Double">Double</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">instruction to seek lemmas
+</p><div class="fullcomment"><div class="comment cmt"><p>instruction to seek lemmas
+</p></div><dl class="paramcmts block"><dt class="param">weightPower</dt><dd class="cmt"><p>power to flatten distributions</p></dd><dt class="param">scale</dt><dd class="cmt"><p>scale?</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.SplitFocus" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SplitFocusextendsProductwithSerializable"></a><a id="SplitFocus:SplitFocus"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SplitFocus.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$SplitFocus.html"><span class="name">SplitFocus</span></a><span class="params">(<span name="number">number: <span class="extype" name="scala.Int">Int</span></span>, <span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.TangentWithTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TangentWithTermextendsProductwithSerializable"></a><a id="TangentWithTerm:TangentWithTerm"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$TangentWithTerm.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="proceed by tangent evolution, perhaps from a lemma" href="HoTTMessages$$TangentWithTerm.html"><span class="name">TangentWithTerm</span></a><span class="params">(<span name="term">term: <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">proceed by tangent evolution, perhaps from a lemma
+</p><div class="fullcomment"><div class="comment cmt"><p>proceed by tangent evolution, perhaps from a lemma
+</p></div><dl class="paramcmts block"><dt class="param">term</dt><dd class="cmt"><p>tangent direction</p></dd><dt class="param">weight</dt><dd class="cmt"><p>weight</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.TimeLimit" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TimeLimitextendsProductwithSerializable"></a><a id="TimeLimit:TimeLimit"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$TimeLimit.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$TimeLimit.html"><span class="name">TimeLimit</span></a><span class="params">(<span name="duration">duration: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.UseLemma" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="UseLemmaextendsProductwithSerializable"></a><a id="UseLemma:UseLemma"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$UseLemma.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="instruction to use a lemma - could be as a tangent or mixing in to generators if mixing in just call ConsiderTerms" href="HoTTMessages$$UseLemma.html"><span class="name">UseLemma</span></a><span class="params">(<span name="lemma">lemma: <a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>, <span name="proofOpt">proofOpt: <span class="extype" name="scala.Option">Option</span>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">instruction to use a lemma - could be as a tangent or mixing in to generators
+if mixing in just call <code>ConsiderTerms</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>instruction to use a lemma - could be as a tangent or mixing in to generators
+if mixing in just call <code>ConsiderTerms</code>
+</p></div><dl class="paramcmts block"><dt class="param">lemma</dt><dd class="cmt"><p>lemma statement</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.UseLemmaDistribution" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="UseLemmaDistributionextendsProductwithSerializable"></a><a id="UseLemmaDistribution:UseLemmaDistribution"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$UseLemmaDistribution.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="instruction to use a distribution of lemmas - could be as a tangent or mixing in to generators if mixing in just call ConsiderTerms" href="HoTTMessages$$UseLemmaDistribution.html"><span class="name">UseLemmaDistribution</span></a><span class="params">(<span name="lemmas">lemmas: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>, <span name="proofOptMap">proofOptMap: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<a href="../HoTT$$Typ.html" class="extype" name="provingground.HoTT.Typ">Typ</a>[<a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>], <a href="../HoTT$$Term.html" class="extype" name="provingground.HoTT.Term">Term</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">instruction to use a distribution of lemmas - could be as a tangent or mixing in to generators
+if mixing in just call <code>ConsiderTerms</code>
+</p><div class="fullcomment"><div class="comment cmt"><p>instruction to use a distribution of lemmas - could be as a tangent or mixing in to generators
+if mixing in just call <code>ConsiderTerms</code>
+</p></div><dl class="paramcmts block"><dt class="param">lemmas</dt><dd class="cmt"><p>statement of lemmas</p></dd><dt class="param">proofOptMap</dt><dd class="cmt"><p>optional proofs</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages.Weight" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WeightextendsProductwithSerializable"></a><a id="Weight:Weight"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Weight.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Weight.html"><span class="name">Weight</span></a><span class="params">(<span name="scale">scale: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.WithWeight" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WithWeight[A]=provingground.learning.HoTTMessages.Weight::A::shapeless.HNil"></a><a id="WithWeight[A]:WithWeight[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#WithWeight[A]=provingground.learning.HoTTMessages.Weight::A::shapeless.HNil" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">WithWeight</span><span class="tparams">[<span name="A">A</span>]</span><span class="result alias"> = <span class="extype" name="shapeless.::">::</span>[<a href="HoTTMessages$$Weight.html" class="extype" name="provingground.learning.HoTTMessages.Weight">Weight</a>, <span class="extype" name="shapeless.::">::</span>[<span class="extype" name="provingground.learning.HoTTMessages.WithWeight.A">A</span>, <span class="extype" name="shapeless.HNil">HNil</span>]]</span>
+      </span>
+      
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members">
+              <h3>Value Members</h3>
+              <ol>
+                <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#!=(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html###():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#==(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#asInstanceOf[T0]:T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a><a id="clone():AnyRef"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#clone():Object" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages#derivedProofs" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="derivedProofs(props:Set[provingground.learning.HoTTMessages.PropagateProof],decisions:Set[provingground.learning.HoTTMessages.Decided]):Set[provingground.learning.HoTTMessages.Decided]"></a><a id="derivedProofs(Set[PropagateProof],Set[Decided]):Set[Decided]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#derivedProofs(props:Set[provingground.learning.HoTTMessages.PropagateProof],decisions:Set[provingground.learning.HoTTMessages.Decided]):Set[provingground.learning.HoTTMessages.Decided]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">derivedProofs</span><span class="params">(<span name="props">props: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="HoTTMessages$$PropagateProof.html" class="extype" name="provingground.learning.HoTTMessages.PropagateProof">PropagateProof</a>]</span>, <span name="decisions">decisions: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="HoTTMessages$$Decided.html" class="extype" name="provingground.learning.HoTTMessages.Decided">Decided</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="HoTTMessages$$Decided.html" class="extype" name="provingground.learning.HoTTMessages.Decided">Decided</a>]</span>
+      </span>
+      
+      
+    </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#equals(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#finalize():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#getClass():Class[_]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#isInstanceOf[T0]:Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#notify():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#notifyAll():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages#propagateProofs" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="propagateProofs(props:Set[provingground.learning.HoTTMessages.PropagateProof],decisions:Set[provingground.learning.HoTTMessages.Decided]):Set[provingground.learning.HoTTMessages.Decided]"></a><a id="propagateProofs(Set[PropagateProof],Set[Decided]):Set[Decided]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#propagateProofs(props:Set[provingground.learning.HoTTMessages.PropagateProof],decisions:Set[provingground.learning.HoTTMessages.Decided]):Set[provingground.learning.HoTTMessages.Decided]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">propagateProofs</span><span class="params">(<span name="props">props: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="HoTTMessages$$PropagateProof.html" class="extype" name="provingground.learning.HoTTMessages.PropagateProof">PropagateProof</a>]</span>, <span name="decisions">decisions: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="HoTTMessages$$Decided.html" class="extype" name="provingground.learning.HoTTMessages.Decided">Decided</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="HoTTMessages$$Decided.html" class="extype" name="provingground.learning.HoTTMessages.Decided">Decided</a>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#toString():String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#wait():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#wait(x$1:Long):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages#withWeight" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="withWeight[A](value:A,weight:Double):provingground.learning.HoTTMessages.WithWeight[A]"></a><a id="withWeight[A](A,Double):WithWeight[A]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#withWeight[A](value:A,weight:Double):provingground.learning.HoTTMessages.WithWeight[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withWeight</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="provingground.learning.HoTTMessages.withWeight.A">A</span></span>, <span name="weight">weight: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="#WithWeight[A]=provingground.learning.HoTTMessages.Weight::A::shapeless.HNil" class="extmbr" name="provingground.learning.HoTTMessages.WithWeight">WithWeight</a>[<span class="extype" name="provingground.learning.HoTTMessages.withWeight.A">A</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">convenient posting with weight preceding posts, say for lemmas with weight
+</p><div class="fullcomment"><div class="comment cmt"><p>convenient posting with weight preceding posts, say for lemmas with weight
+</p></div><dl class="paramcmts block"><dt class="param">value</dt><dd class="cmt"><p>the stuff to post</p></dd><dt class="param">weight</dt><dd class="cmt"><p>the weight</p></dd><dt>returns</dt><dd class="cmt"><p>return ID after posting stuff</p></dd></dl></div>
+    </li><li name="provingground.learning.HoTTMessages#withWeightFD" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="withWeightFD[A](fd:provingground.FiniteDistribution[A]):Vector[provingground.learning.HoTTMessages.WithWeight[A]]"></a><a id="withWeightFD[A](FiniteDistribution[A]):Vector[WithWeight[A]]"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$.html#withWeightFD[A](fd:provingground.FiniteDistribution[A]):Vector[provingground.learning.HoTTMessages.WithWeight[A]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withWeightFD</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="fd">fd: <a href="../FiniteDistribution.html" class="extype" name="provingground.FiniteDistribution">FiniteDistribution</a>[<span class="extype" name="provingground.learning.HoTTMessages.withWeightFD.A">A</span>]</span>)</span><span class="result">: <a href="../../scala/index.html#Vector[+A]=scala.collection.immutable.Vector[A]" class="extmbr" name="scala.Vector">Vector</a>[<a href="#WithWeight[A]=provingground.learning.HoTTMessages.Weight::A::shapeless.HNil" class="extmbr" name="provingground.learning.HoTTMessages.WithWeight">WithWeight</a>[<span class="extype" name="provingground.learning.HoTTMessages.withWeightFD.A">A</span>]]</span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.Decided" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Decided"></a><a id="Decided:Decided"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$Decided$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$Decided$.html"><span class="name">Decided</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.FromAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FromAll"></a><a id="FromAll:FromAll"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$FromAll$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$FromAll$.html"><span class="name">FromAll</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.GenerateTerms" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GenerateTerms"></a><a id="GenerateTerms:GenerateTerms"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$GenerateTerms$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$GenerateTerms$.html"><span class="name">GenerateTerms</span></a><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.GenerateTypes" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GenerateTypes"></a><a id="GenerateTypes:GenerateTypes"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$GenerateTypes$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$GenerateTypes$.html"><span class="name">GenerateTypes</span></a><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.PropagateProof" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PropagateProof"></a><a id="PropagateProof:PropagateProof"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$PropagateProof$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$PropagateProof$.html"><span class="name">PropagateProof</span></a>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.SeekGoal" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekGoal"></a><a id="SeekGoal:SeekGoal"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekGoal$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$SeekGoal$.html"><span class="name">SeekGoal</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="provingground.learning.HoTTMessages.SeekInstances" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeekInstances"></a><a id="SeekInstances:SeekInstances"></a>
+      <span class="permalink">
+      <a href="../../provingground/learning/HoTTMessages$$SeekInstances$.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="HoTTMessages$$SeekInstances$.html"><span class="name">SeekInstances</span></a>
+      </span>
+      
+      
+    </li>
+              </ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <a href="../../scala/index.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+    </body>
+          </div>
+        </div>
+      </div>
+    </body>
+      </html>

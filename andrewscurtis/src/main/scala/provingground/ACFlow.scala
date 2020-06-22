@@ -13,7 +13,7 @@ import ACElem._
 object ACFlow {
   implicit val system = Hub.system
 
-  implicit val mat = ActorMaterializer()
+  // implicit val mat = ActorMaterializer()
 
   //  type Snap = SnapShot[(FiniteDistribution[AtomicMove], FiniteDistribution[Moves]), Param]
 
@@ -25,7 +25,10 @@ object ACFlow {
     */
   val src = Src.actorRef[SnapShot[(FiniteDistribution[AtomicMove],
                                    FiniteDistribution[Moves]),
-                                  Param]](100, OverflowStrategy.dropHead)
+                                  Param]](
+                                    {case (_: Any) => CompletionStrategy.immediately} :  PartialFunction[Any, CompletionStrategy],
+                                    {case m: Any => new Exception(m.toString) : Throwable} : PartialFunction[Any, Throwable],
+                                    100, OverflowStrategy.dropHead)
 
   /**
     * Flow extracting actor names and number of loops from snapshot.

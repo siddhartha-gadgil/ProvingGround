@@ -57,9 +57,21 @@ case class TermState(
       context
     )
 
+  def purge(epsilon: Double) =
+    TermState(
+      terms.purge(epsilon).safeNormalized,
+      typs.purge(epsilon).safeNormalized,
+      vars,
+      inds,
+      goals,
+      context
+    )
+
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
-  // pprint.log(context.variables)
+  lazy val allTyps = terms.support.map(_.typ) union typs.support
+
+  lazy val extraTyps = terms.support.map(_.typ) -- typs.support
 
   lazy val thmsByPf: FD[Typ[Term]] =
     terms
@@ -67,18 +79,26 @@ case class TermState(
       .flatten
       .filter((t) => typs(t) + goals(t) > 0)
       .safeNormalized
+
   lazy val thmsBySt: FD[Typ[Term]] =
     typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
 
   def goalThmsBySt(goalW: Double) =
     (typs ++ goals).filter(terms.map(_.typ)(_) > 0).flatten.safeNormalized
 
-  lazy val successes: Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] =
+  lazy val successes: Vector[(HoTT.Typ[HoTT.Term], Double, Term)] =
     goals.filter(goal => terms.map(_.typ)(goal) > 0).pmf.map {
+      case Weighted(goal, p) =>
+        (goal, p, terms.support.filter(_.typ == goal).maxBy(terms(_)))
+    }
+
+  lazy val contradicted: Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] =
+    goals.filter(goal => terms.map(_.typ)(negate(goal)) > 0).pmf.map {
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 
-  lazy val successTerms: Set[Term] = successes.map(_._3.support).toSet.flatten
+  lazy val successTerms: Set[Term] =
+    terms.support.filter(t => successes.map(_._1).toSet.contains(t.typ))
 
   def isProd(typ: Typ[Term]) = typ match {
     case _: ProdTyp[u, v] => true
@@ -135,6 +155,18 @@ case class TermState(
 
   lazy val pfDist: FD[Term] =
     terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
+
+  lazy val lemmas: Vector[(Typ[Term], Option[Term], Double)] = thmsByPf.pmf
+    .map {
+      case Weighted(x, q) =>
+        (
+          x,
+          pfMap.get(x).map(v => v.maxBy(pf => terms(pf))),
+          -(thmsBySt(x) / (q * math.log(q)))
+        )
+    }
+    .sortBy(_._3)
+    .reverse
 
   def addVar(typ: Typ[Term], varWeight: Double): (TermState, Term) = {
     val x =
@@ -288,6 +320,11 @@ object TermState {
     val inds = FD.empty[ExstInducDefn] //InducJson.jsToFD(context.inducStruct)(obj("inductive-structures"))
     TermState(terms, typs, vars, inds, goals, context)
   }
+
+  import upickle.default._
+
+  implicit val termStateRW: ReadWriter[TermState] =
+    readwriter[ujson.Value].bimap(_.json, fromJson(_))
 
   /**
     * finite distributions on terms etc
