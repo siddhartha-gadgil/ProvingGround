@@ -135,6 +135,8 @@ object SimpleEquations {
         case (t, result) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
+          if (t > minTime) Utils.logger.info(s"ran for time ${t.toSeconds}, exceeding time limit, with cutoff ${cutoff}")
+          if (pmin * qmin > cutoff) Utils.logger.info(s"all pairs considered with cutoff $cutoff")
           ((t < minTime) && (pmin * qmin < cutoff), result) // ensuring not all pairs already used
       }
       .flatMap {
@@ -146,7 +148,8 @@ object SimpleEquations {
             minTime,
             cutoffScale
           )
-        case (b, result) => Task.now(result)
+        case (b, result) => 
+            Task.now(result)
       }
 
 }
