@@ -1074,11 +1074,7 @@ object HoTTBot {
                 inferTriples.foreach {
                   case (f, x, fx) =>
                     val p = fs.ts.terms.map(_.typ)(f)
-                    val q = basePfs
-                      .find(_._1 == f)
-                      .map(_._2)
-                      .map(s => s.map(fs.ts.terms(_)).sum)
-                      .getOrElse(0.0)
+                    val q = tls.find(_._1 == x).map(_._2).getOrElse(0.0)
                     logger.info(s"($f, $x, $fx), ($p, $q, ${p * q})")
                 }
               }
