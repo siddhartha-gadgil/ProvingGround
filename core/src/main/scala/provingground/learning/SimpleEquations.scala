@@ -72,9 +72,29 @@ object SimpleEquations {
             Unify
               .appln(fn.func, x)
               .toSet
-              .flatMap(
-                (z: Term) => (DE.formalEquations(z) union(DE.formalTypEquations(z.typ)))
-              )
+              .flatMap { (z: Term) =>
+                val appEquations: Set[EquationNode] =
+                  Set(
+                    EquationNode(
+                      finalProb(z, Terms),
+                      Coeff(unifApplnNode) * finalProb(fn, Funcs) * finalProb(
+                        x,
+                        Terms
+                      )
+                    ),
+                    EquationNode(
+                      finalProb(fn, Funcs),
+                      finalProb(fn.func, Terms) /
+                        FinalVal(Event(Terms, Sort.Restrict(FuncOpt)))
+                    ),
+                    EquationNode(
+                      FinalVal(Event(Terms, Sort.Restrict(FuncOpt))),
+                      finalProb(fn.func, Terms)
+                    )
+                  )
+                appEquations union (DE.formalEquations(z) union (DE
+                  .formalTypEquations(z.typ)))
+              }
           }
       }
       .map(_.flatten)
@@ -103,22 +123,30 @@ object SimpleEquations {
       }
       .map(_.flatten.toSet)
 
-
   def timedUnAppEquations(
       funcs: FiniteDistribution[ExstFunc],
       args: FiniteDistribution[Term],
       cutoff: Double,
       minTime: FiniteDuration,
       cutoffScale: Double = 2
-  ) : Task[Set[EquationNode]] =
-      taskUnAppEquations(funcs, args, cutoff).timed.map{
-          case (t, result) =>
-            val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min 
-            val qmin = args.pmf.map(_.weight).filter(_ > 0).min 
-            ((t < minTime) && (pmin * qmin < cutoff), result) // ensuring not all pairs already used
-      }.flatMap{
-          case (b, result)  if b => timedUnAppEquations(funcs, args, cutoff / cutoffScale, minTime, cutoffScale)
-          case (b, result)  => Task.now(result)
+  ): Task[Set[EquationNode]] =
+    taskUnAppEquations(funcs, args, cutoff).timed
+      .map {
+        case (t, result) =>
+          val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
+          val qmin = args.pmf.map(_.weight).filter(_ > 0).min
+          ((t < minTime) && (pmin * qmin < cutoff), result) // ensuring not all pairs already used
+      }
+      .flatMap {
+        case (b, result) if b =>
+          timedUnAppEquations(
+            funcs,
+            args,
+            cutoff / cutoffScale,
+            minTime,
+            cutoffScale
+          )
+        case (b, result) => Task.now(result)
       }
 
 }

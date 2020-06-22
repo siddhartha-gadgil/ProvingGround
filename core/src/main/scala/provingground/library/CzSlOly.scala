@@ -93,13 +93,12 @@ object CzSlOly {
 
   val transitivtyInit = SpecialInitState(
     TermState(
-      FiniteDistribution
-        .unif(trans, sym),
+      FiniteDistribution(trans -> 0.9, sym -> 0.1),
       FiniteDistribution.unif(M)
     ),
     baseCutoff = math.pow(10, -3),
     cutoffScale = 0.05, // temporarily disable
-    tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.2)),
+    tgOpt = Some(TermGenParams.zero.copy(unAppW = 0.4)),
     depthOpt = Some(2)
   )
 
@@ -115,7 +114,7 @@ object CzSlOly {
         ),
       FiniteDistribution.unif(M)
     ),
-    tgOpt = Some(TermGenParams.zero.copy(appW = 0.2)),
+    tgOpt = Some(TermGenParams.zero.copy(appW = 0.4)),
     baseCutoff = math.pow(10, -3),
     depthOpt = Some(2),
     cutoffScale = 0.5
