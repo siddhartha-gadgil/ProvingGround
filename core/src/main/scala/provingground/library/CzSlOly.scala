@@ -155,7 +155,7 @@ object CzSlOly {
     ),
     lemRefine,
     cappedBaseState(0.3),
-    unAppEquations(math.pow(10, -4)),
+    unAppEquations(math.pow(10, -6)),
     // cappedForkedTangentEquations,
     eqnsToExpEv(
       Some(

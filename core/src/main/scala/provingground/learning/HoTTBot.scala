@@ -1068,15 +1068,13 @@ object HoTTBot {
                     }
                     .mkString("\n")}"
                 logger.info(view2)
-                logger.info(
-                  "Inference by unified applications, triples and weights (for this base state)"
-                )
-                inferTriples.foreach {
+                val view3 = inferTriples.map {
                   case (f, x, fx) =>
                     val p = fs.ts.terms.map(_.typ)(f)
                     val q = tls.find(_._1 == x).map(_._2).getOrElse(0.0)
-                    logger.info(s"($f, $x, $fx), ($p, $q, ${p * q})")
+                    s"($p, $q, ${p * q}) for ($f, $x, $fx)"
                 }
+                logger.info(view3.mkString("Inference by unified applications, triples and weights (for this base state)\n","\n", "\n"))
               }
             }
       }
