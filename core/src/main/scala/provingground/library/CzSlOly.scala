@@ -154,7 +154,7 @@ object CzSlOly {
         .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)
     ),
     lemRefine,
-    cappedBaseState(0.3),
+    cappedSpecialBaseState,
     unAppEquations(math.pow(10, -6)),
     // cappedForkedTangentEquations,
     eqnsToExpEv(
