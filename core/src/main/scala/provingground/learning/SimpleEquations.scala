@@ -90,7 +90,11 @@ object SimpleEquations {
                     EquationNode(
                       FinalVal(Event(Terms, Sort.Restrict(FuncOpt))),
                       finalProb(fn.func, Terms)
-                    )
+                    ),
+                    EquationNode(finalProb(fn.func, Terms),
+                      Coeff(Init(Terms)) * InitialVal(Elem(fn.func, Terms))),
+                    EquationNode(finalProb(x, Terms),
+                      Coeff(Init(Terms)) * InitialVal(Elem(x, Terms)))  
                   )
                 appEquations union (DE.formalEquations(z) union (DE
                   .formalTypEquations(z.typ)))
