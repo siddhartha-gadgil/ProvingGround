@@ -3,6 +3,7 @@ package provingground.library
 import provingground._, interface._, HoTT._, learning._
 import provingground.learning.HoTTMessages._
 import monix.execution.Scheduler.Implicits.global
+import scala.concurrent._, duration._
 
 object CzSlOly {
   val M = "M" :: Type
@@ -155,7 +156,8 @@ object CzSlOly {
     ),
     lemRefine,
     cappedSpecialBaseState,
-    unAppEquations(math.pow(10, -6)),
+    timedUnAppEquations(math.pow(10, -6), 2.minutes, 4),
+    // unAppEquations(math.pow(10, -6)),
     // cappedForkedTangentEquations,
     eqnsToExpEv(
       Some(
@@ -163,7 +165,6 @@ object CzSlOly {
           .copy(appW = 0.1, unAppW = 0.1, piW = 0.05, lmW = 0.05)
       )
     ),
-    // eqnsToExpEv.triggerWith[EquationsCompleted.type],
     eqnUpdate,
     updateTerms,
     expnEqnUpdate,
