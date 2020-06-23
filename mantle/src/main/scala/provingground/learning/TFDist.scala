@@ -1,5 +1,5 @@
 package provingground.learning
-/*
+
 import org.platanios.tensorflow.api
 import provingground._
 import org.platanios.tensorflow.api._
@@ -10,7 +10,7 @@ case class TFDist[A](pmfMap: Map[A, Output[Double]]) {
   def ++(that: TFDist[A]): TFDist[A] = TFDist.fromVec(pmfVec ++ that.pmfVec)
 
   def *(sc: Output[Double]): TFDist[A] =
-    TFDist(pmfMap.view.mapValues(w => tf.multiply(w, sc)))
+    TFDist(pmfMap.view.mapValues(w => tf.multiply(w, sc)).toMap)
 
   def map[B](f: A => B): TFDist[B] =
     TFDist.fromVec(
@@ -47,9 +47,9 @@ case class TFDist[A](pmfMap: Map[A, Output[Double]]) {
 object TFDist {
   def fromVec[A](v: Vector[(A, Output[Double])]): TFDist[A] = {
     val pmfMapVec: Map[A, Vector[Output[Double]]] =
-      v.groupBy(_._1).view.mapValues((v) => v.map(_._2))
+      v.groupBy(_._1).view.mapValues((v) => v.map(_._2)).toMap
     val pmfMap: Map[A, Output[Double]] = pmfMapVec.view.mapValues(v =>
-      v.reduce[Output[Double]] { case (x, y) => tf.add(x, y) })
+      v.reduce[Output[Double]] { case (x, y) => tf.add(x, y) }).toMap
     TFDist(pmfMap)
   }
 
@@ -179,4 +179,3 @@ case class EgUnif(n: Int) {
 
 
 }
-*/
