@@ -551,6 +551,21 @@ case class Equation(lhs: Expression, rhs: Expression) {
 }
 
 object EquationNode {
+  def traceBack(
+      eqs: Set[EquationNode],
+      exp: Expression,
+      depth: Int
+  ): (Vector[EquationNode], Vector[Expression]) =
+    if (depth < 1) (Vector(), Vector(exp))
+    else {
+      val top       = eqs.filter(_.lhs == exp).toVector
+      val offspring = top.map(_.rhs).flatMap(Expression.varVals(_))
+      val desc      = offspring.map(x => traceBack(eqs, x, depth - 1))
+      val descEqs   = desc.flatMap(v => v._1).distinct
+      val descExp   = desc.flatMap(_._2).distinct
+      ((top ++ descEqs).distinct, (exp +: descExp).distinct)
+    }
+
   def backMap(eqs: Set[EquationNode]): Map[GeneratorVariables.Variable[_], Set[
     Set[GeneratorVariables.Variable[_]]
   ]] =

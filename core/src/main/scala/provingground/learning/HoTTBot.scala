@@ -13,6 +13,7 @@ import scala.reflect.runtime.universe._
 import HoTTMessages._
 import Utils.logger
 import scala.concurrent._, duration._
+import provingground.learning.Expression.FinalVal
 
 case class QueryProver(lp: LocalProver)
 
@@ -54,7 +55,9 @@ object QueryBaseState {
       .addCons((s: InitState) => Some(QueryBaseState(s.ts)))
 }
 
-case class QueryEquations(equations: Set[Equation])
+case class QueryEquations(equations: Set[Equation]){
+  lazy val nodes : Set[EquationNode] = equations.flatMap(Equation.split(_))
+}
 
 object QueryEquations {
   implicit val lqe
@@ -1104,18 +1107,40 @@ object HoTTBot {
     (baseStateFromLp(lemmaMix, cutoffScale, tgOpt, depthOpt) && baseStateFromSpecialInit)
       .reduce((v: Vector[TangentBaseState]) => TangentBaseCompleted)
 
+  def proofEquationLHS(eqns: Set[EquationNode], tp: Typ[Term]) : Set[Expression] = {
+    import GeneratorVariables._, Expression._
+    eqns.collect{
+      case eq@ EquationNode(FinalVal(Elem(x: Term, TermRandomVars.Terms)), _) if x.typ == tp => eq.lhs
+    }
+  }
+
+  def proofTrace(eqns: Set[EquationNode], tp: Typ[Term], depth: Int) :  (Vector[EquationNode], Vector[Expression]) = 
+    {val pair = proofEquationLHS(eqns, tp).toVector.map(
+      exp => EquationNode.traceBack(eqns, exp, depth)
+    )
+    (pair.flatMap(_._1), pair.flatMap(_._2))
+  }
+
+  def elemVals(elems: Vector[Expression], ts: TermState) = {
+    import GeneratorVariables._, TermRandomVars.{Terms, Typs}
+    elems.collect{
+      case exp @ FinalVal(Elem(x: Term, Terms)) => exp -> ts.terms(x)
+      case exp @ FinalVal(Elem(x: Typ[Term], Typs)) => exp -> ts.typs(x)
+    }
+  }
+
   def reportBaseTangents(
       results: Vector[Typ[Term]],
       steps: Vector[Typ[Term]],
       inferTriples: Vector[(Typ[Term], Typ[Term], Typ[Term])]
-  ): Callback[TangentBaseCompleted.type, HoTTPostWeb, Collated[
+  ): Callback[TangentBaseCompleted.type, HoTTPostWeb, QueryEquations :: Collated[
     TangentBaseState
   ] :: TangentLemmas :: HNil, ID] = {
-    val response: HoTTPostWeb => Collated[
+    val response: HoTTPostWeb => QueryEquations :: Collated[
       TangentBaseState
     ] :: TangentLemmas :: HNil => TangentBaseCompleted.type => Future[Unit] =
       (_) => {
-        case ctbs :: tl :: HNil =>
+        case qe :: ctbs :: tl :: HNil =>
           (_) =>
             Future {
               logger.info(
@@ -1162,6 +1187,22 @@ object HoTTBot {
                 logger.info(
                   view4.mkString(
                     "Inference by unified applications, triples and weights (for this base state)\n",
+                    "\n",
+                    "\n"
+                  )
+                )
+                val traceViews = steps.map{
+                  tp => 
+                    val (eqns, terms) = proofTrace(qe.nodes, tp, 4)
+                    val eqV = eqns.mkString("Traced back equations", "\n", "\n")
+                    val termsWeights = elemVals(terms, fs.ts)
+                    val tV =
+                      termsWeights.map{case (exp, p) => s"$exp -> $p"}.mkString("Weights of terms and types", "\n", "\n")
+                    s"Lemma: $tp\n$eqV$tV"
+                }
+                logger.info(
+                  traceViews.mkString(
+                    "Tracing back equations and values for steps",
                     "\n",
                     "\n"
                   )
