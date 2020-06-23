@@ -1016,10 +1016,8 @@ trait ExpressionEval { self =>
         case InitialVal(variable) => variable
       }
       .flatMap(x => elemContext(x).map(y => x -> y))
-      .groupBy(_._2)
-      .view.mapValues { s =>
-        s.map { case (x, _) => InitialVal(x): Expression }
-      }.toMap
+      .groupMap(_._2)
+      { case (x, _) => InitialVal(x): Expression }
 
   lazy val finalVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
@@ -1027,10 +1025,7 @@ trait ExpressionEval { self =>
         case FinalVal(variable) => variable
       }
       .flatMap(x => elemContext(x).map(y => x -> y))
-      .groupBy(_._2)
-      .view.mapValues { s =>
-        s.map { case (x, _) => FinalVal(x): Expression }
-      }.toMap
+      .groupMap(_._2){ case (x, _) => FinalVal(x): Expression }
 
   def expressionGroup(exp: Expression): Option[Set[Expression]] = exp match {
     case InitialVal(variable) =>

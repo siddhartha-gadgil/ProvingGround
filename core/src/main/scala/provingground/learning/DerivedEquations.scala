@@ -40,8 +40,7 @@ class DerivedEquations(
         case FinalVal(InIsle(variable, boat, isle)) =>
           ((boat, isle), FinalVal(variable): VarVal[_])
       }
-      .groupBy(_._1)
-      .view.mapValues(s => s.map(_._2))
+      .groupMap(_._1)(_._2)
       .toSet
     val innerEqs = inner.flatMap {
       case ((boat, isle), s) =>
@@ -78,8 +77,7 @@ class DerivedEquations(
           )
       }
       .flatten
-      .groupBy(_._1)
-      .view.mapValues(s => s.map(_._2))
+      .groupMap(_._1)(_._2)
       .toSet
     val innerEqs = inner.flatMap {
       case ((boat, isle), s) =>

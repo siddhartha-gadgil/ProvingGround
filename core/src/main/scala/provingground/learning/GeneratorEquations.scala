@@ -65,7 +65,7 @@ case class GeneratorEquations[State](
       case e @ Elem(element, RandomVar.AtCoord(family, fullArg))
           if family == rvF =>
         fullArg -> FinalVal(e)
-    }).groupBy(_._1).view.mapValues(s => s.map(_._2)).toMap
+    }).groupMap(_._1)(_._2)
 
   def finalElemIndices[Dom <: HList, Y](
       rvF: RandomVarFamily[Dom, Y]): Set[Dom] =

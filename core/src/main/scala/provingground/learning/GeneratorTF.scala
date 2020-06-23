@@ -149,7 +149,7 @@ case class GeneratorTF[State](
       case e @ Elem(element, RandomVar.AtCoord(family, fullArg))
           if family == rvF =>
         fullArg -> FinalVal(e)
-    }).groupBy(_._1).view.mapValues(s => s.map(_._2)).toMap
+    }).groupMap(_._1)(_._2)
 
   def finalElemIndices[Dom <: HList, Y](
       rvF: RandomVarFamily[Dom, Y]): Set[Dom] =
@@ -700,8 +700,7 @@ case class GeneratorTF[State](
     .collect {
       case p @ GeneratorVariables.Elem(_, randomVar) => randomVar -> p
     }
-    .groupBy(_._1)
-    .view.mapValues(v => v.map { case (_, x) => FinalVal(x) : Expression }).toMap
+    .groupMap(_._1){ case (_, x) => FinalVal(x) : Expression }
 
   lazy val finalProbTotals: Set[Expression] =
     finalProbVars.view.mapValues(_.reduce(_ + _)).values.toSet
