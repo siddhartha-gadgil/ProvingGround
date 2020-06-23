@@ -807,7 +807,7 @@ object HoTTBot {
   ) = {
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      equations,
+      equations union(Equation.group(DE.termStateInit(initialState))),
       tg,
       maxRatio,
       scale,
