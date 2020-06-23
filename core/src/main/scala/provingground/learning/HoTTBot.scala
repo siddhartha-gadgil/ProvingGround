@@ -14,6 +14,7 @@ import HoTTMessages._
 import Utils.logger
 import scala.concurrent._, duration._
 import provingground.learning.Expression.FinalVal
+import scala.math.Ordering.Double.TotalOrdering
 
 case class QueryProver(lp: LocalProver)
 

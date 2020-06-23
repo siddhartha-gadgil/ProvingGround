@@ -6,6 +6,7 @@ import spire.implicits._
 import monix.eval._
 
 import scala.concurrent.duration._
+import scala.math.Ordering.Double.TotalOrdering
 
 /**
   * Spire gradient learning for tradeoff between generation entropy and theorem-proof relative entropy

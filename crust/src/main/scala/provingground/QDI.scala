@@ -19,6 +19,7 @@ import scala.annotation._
 import StringParse._
 
 import com.github.nscala_time.time.Imports._
+import scala.math.Ordering.Double.TotalOrdering
 
 // object AmmRepl extends App {
 //   amm()

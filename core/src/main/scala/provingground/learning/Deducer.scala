@@ -20,6 +20,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.language.existentials
 
+import scala.math.Ordering.Double.TotalOrdering
+
+
 /**
   * Generating terms from given ones using the main HoTT operations, and the adjoint of this generation.
   * This is viewed as deduction.

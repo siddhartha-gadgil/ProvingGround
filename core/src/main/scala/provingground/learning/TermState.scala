@@ -10,6 +10,7 @@ import GeneratorNode._
 import TermRandomVars._
 
 import TermGeneratorNodes._
+import scala.math.Ordering.Double.TotalOrdering
 
 /**
   * A state, typically the initial state, for generating terms, types etc
