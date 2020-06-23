@@ -141,7 +141,7 @@ object CzSlOly {
     expnEqnUpdate
   )
 
-  val lemRefine = tangentLemmas(scale = 0.1, cutoff = 0.007, power = 0.7) :+ baseMixinLemmas(
+  val lemRefine = tangentLemmas(scale = 0.1, cutoff = 0.07, power = 0.7) :+ baseMixinLemmas(
     0.3
   )
   val expFS =
