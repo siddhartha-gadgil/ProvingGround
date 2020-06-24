@@ -63,7 +63,7 @@ class HoTTPostWeb {
       PostBuffer.build[Consequence, ID]() ::
       PostBuffer.build[UseLemma, ID]() ::
       PostBuffer.build[UseLemmaDistribution, ID]() ::
-      PostBuffer.build[Lemmas, ID]() ::
+      ErasablePostBuffer.build[Lemmas, ID]() ::
       PostBuffer.build[SeekGoal, ID]() ::
       PostBuffer.build[Instance, ID]() ::
       PostBuffer.build[SeekInstances, ID]() ::
@@ -87,11 +87,11 @@ class HoTTPostWeb {
       PostBuffer.build[OptimalInitial, ID]() ::
       PostBuffer.build[NarrowOptimizeGenerators, ID]() ::
       PostBuffer.build[FromAny, ID]() ::
-      PostBuffer.build[UsedLemmas, ID]() ::
+      ErasablePostBuffer.build[UsedLemmas, ID]() ::
       ErasablePostBuffer.build[TangentBaseState, ID]() ::
       PostBuffer.build[SpecialInitState, ID]() ::
-      PostBuffer.build[TangentLemmas, ID]() ::
-      PostBuffer.build[BaseMixinLemmas, ID]() ::
+      ErasablePostBuffer.build[TangentLemmas, ID]() ::
+      ErasablePostBuffer.build[BaseMixinLemmas, ID]() ::
       PostBuffer.build[EquationsCompleted.type, ID]() ::
       PostBuffer.build[TangentBaseCompleted.type, ID]() ::
       PostBuffer.build[TautologyInitState, ID]() ::
