@@ -77,7 +77,7 @@ object QueryEquations {
               (_) => true
             )
             .map(
-              v => v.flatMap(gp => gp.contents.flatMap(_.eqn))
+              v => v.flatMap(gp => gp.contents.flatMap(_.eqn)).map(TermData.isleNormalize(_))
             )
         val gatheredExpEv =
           LocalQueryable
@@ -90,7 +90,7 @@ object QueryEquations {
               v =>
                 v.flatMap(
                   gp =>
-                    gp.contents.flatMap(_.equations).flatMap(Equation.split(_))
+                    gp.contents.flatMap(_.equations).flatMap(Equation.split(_)).map(TermData.isleNormalize(_))
                 )
             )
         for {
