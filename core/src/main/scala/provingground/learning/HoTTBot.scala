@@ -206,20 +206,25 @@ object HoTTBot {
       fs: FinalState
   ): Vector[(Typ[Term], Option[Term], Double)] = {
     if (previous.size > 1) {
-      val earlierTyps = previous.last.ts.terms.support.map(_.typ)
+      val earliestTyps = previous.last.ts.terms.support.map(_.typ)
       val pfMap: scala.collection.immutable.Map[Typ[Term], Set[Term]] =
         fs.ts.terms.support
-          .filterNot(t => earlierTyps.contains(t.typ))
+          .filterNot(t => earliestTyps.contains(t.typ))
           .groupBy(_.typ)
+      logger.info(s"New lemmas: ${pfMap.size}")
+      logger.info(s"Theorem numbers: ${previous.map(fs => fs.ts.terms.map(_.typ).support.size)}")
       val thmsByPf: FiniteDistribution[Typ[Term]] = fs.ts.terms
         .map(_.typ)
-        .filter(tp => !earlierTyps.contains(tp))
+        .filter(tp => !earliestTyps.contains(tp))
         .safeNormalized
       pfMap.toVector.map {
         case (tp, terms) =>
           (tp, Some(terms.maxBy(fs.ts.terms(_))), thmsByPf(tp))
       }
-    } else Vector()
+    } else {
+      logger.info("New lemmas : none as there were no previous states")
+      Vector()
+    }
   }
 
   def finalStateFilteredLemmas(
