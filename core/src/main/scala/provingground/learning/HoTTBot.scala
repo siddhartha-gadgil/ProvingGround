@@ -77,7 +77,9 @@ object QueryEquations {
               (_) => true
             )
             .map(
-              v => v.flatMap(gp => gp.contents.flatMap(_.eqn)).map(TermData.isleNormalize(_))
+              v =>
+                v.flatMap(gp => gp.contents.flatMap(_.eqn))
+                  .map(TermData.isleNormalize(_))
             )
         val gatheredExpEv =
           LocalQueryable
@@ -90,7 +92,10 @@ object QueryEquations {
               v =>
                 v.flatMap(
                   gp =>
-                    gp.contents.flatMap(_.equations).flatMap(Equation.split(_)).map(TermData.isleNormalize(_))
+                    gp.contents
+                      .flatMap(_.equations)
+                      .flatMap(Equation.split(_))
+                      .map(TermData.isleNormalize(_))
                 )
             )
         for {
@@ -356,7 +361,8 @@ object HoTTBot {
                     val best = ps.maxBy(t => fs.ts.terms(t))
                     s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}; statement weight ${fs.ts.typs(tp)}"
                     if (fs.ts.typs(tp) == 0) {
-                      val (eqns, terms) = proofTrace(qe.nodes, tp, 4)
+                      import GeneratorVariables._, Expression._
+                      val (eqns, terms) = EquationNode.traceBack(qe.nodes, FinalVal(Elem(tp, TermRandomVars.Typs)), 4)
                       val eqV           = eqns.mkString("Traced back equations:\n", "\n", "\n")
                       val termsWeights  = elemVals(terms, fs.ts)
                       val tV =
@@ -1241,9 +1247,11 @@ object HoTTBot {
                   )
                 )
                 val traceViews = steps.map { tp =>
-                  val (eqns, terms) = proofTrace(qe.nodes union(DE.termStateInit(fs.ts)), tp, 4)
-                  val eqV           = eqns.mkString("Traced back equations:\n", "\n", "\n")
-                  val termsWeights  = elemVals(terms, fs.ts)
+                  val (eqns, terms) =
+                    proofTrace(qe.nodes union (DE.termStateInit(fs.ts)), tp, 4)
+                  val eqV =
+                    eqns.mkString("Traced back equations:\n", "\n", "\n")
+                  val termsWeights = elemVals(terms, fs.ts)
                   val tV =
                     termsWeights
                       .map { case (exp, p) => s"$exp -> $p" }
