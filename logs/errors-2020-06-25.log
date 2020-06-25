@@ -1,3 +1,5 @@
 2020.06.25 09:20:25 [ERROR] provingground.learning.ExprCalc.stableVec:599:25 - Timeout for stable vector after 7418 steps
 2020.06.25 10:11:27 [ERROR] provingground.learning.ExprCalc.stableVec:599:25 - Timeout for stable vector after 5701 steps
 2020.06.25 11:26:59 [ERROR] provingground.learning.ExprCalc.stableVec:599:25 - Timeout for stable vector after 5653 steps
+2020.06.25 13:32:41 [ERROR] provingground.learning.ExprCalc.stableVec:607:25 - Timeout for stable vector after 5636 steps
+2020.06.25 13:32:41 [ERROR] provingground.learning.ExpressionEval.GenerateTyps.finalTyps:343:27 - NaN for some types before normalizing
