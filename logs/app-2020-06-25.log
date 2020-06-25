@@ -1035,3 +1035,443 @@ provingground.learning.ExpressionEval$$anon$2@3c42724b
 2020.06.25 08:59:40 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 42902 steps
 2020.06.25 08:59:47 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43002 steps
 2020.06.25 08:59:54 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43102 steps
+2020.06.25 09:00:01 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43202 steps
+2020.06.25 09:00:08 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43302 steps
+2020.06.25 09:00:16 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43402 steps
+2020.06.25 09:00:23 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43502 steps
+2020.06.25 09:00:30 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43602 steps
+2020.06.25 09:00:38 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43702 steps
+2020.06.25 09:00:45 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43802 steps
+2020.06.25 09:00:52 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 43902 steps
+2020.06.25 09:00:59 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44002 steps
+2020.06.25 09:01:07 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44102 steps
+2020.06.25 09:01:14 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44202 steps
+2020.06.25 09:01:21 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44302 steps
+2020.06.25 09:01:28 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44402 steps
+2020.06.25 09:01:36 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44502 steps
+2020.06.25 09:01:43 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44602 steps
+2020.06.25 09:01:50 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44702 steps
+2020.06.25 09:01:57 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44802 steps
+2020.06.25 09:02:04 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 44902 steps
+2020.06.25 09:02:11 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45002 steps
+2020.06.25 09:02:19 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45102 steps
+2020.06.25 09:02:26 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45202 steps
+2020.06.25 09:02:33 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45302 steps
+2020.06.25 09:02:40 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45402 steps
+2020.06.25 09:02:47 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45502 steps
+2020.06.25 09:02:54 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45602 steps
+2020.06.25 09:03:02 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45702 steps
+2020.06.25 09:03:09 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45802 steps
+2020.06.25 09:03:16 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 45902 steps
+2020.06.25 09:03:23 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46002 steps
+2020.06.25 09:03:30 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46102 steps
+2020.06.25 09:03:38 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46202 steps
+2020.06.25 09:03:45 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46302 steps
+2020.06.25 09:03:52 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46402 steps
+2020.06.25 09:03:59 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46502 steps
+2020.06.25 09:04:06 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46602 steps
+2020.06.25 09:04:14 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46702 steps
+2020.06.25 09:04:21 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46802 steps
+2020.06.25 09:04:28 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 46902 steps
+2020.06.25 09:04:35 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47002 steps
+2020.06.25 09:04:42 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47102 steps
+2020.06.25 09:04:49 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47202 steps
+2020.06.25 09:04:56 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47302 steps
+2020.06.25 09:05:03 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47402 steps
+2020.06.25 09:05:10 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47502 steps
+2020.06.25 09:05:17 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47602 steps
+2020.06.25 09:05:25 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47702 steps
+2020.06.25 09:05:32 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47802 steps
+2020.06.25 09:05:39 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 47902 steps
+2020.06.25 09:05:46 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48002 steps
+2020.06.25 09:05:54 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48102 steps
+2020.06.25 09:06:01 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48202 steps
+2020.06.25 09:06:08 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48302 steps
+2020.06.25 09:06:16 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48402 steps
+2020.06.25 09:06:23 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48502 steps
+2020.06.25 09:06:30 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48602 steps
+2020.06.25 09:06:37 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48702 steps
+2020.06.25 09:06:45 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48802 steps
+2020.06.25 09:06:52 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 48902 steps
+2020.06.25 09:06:59 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 49002 steps
+2020.06.25 09:07:06 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 49102 steps
+2020.06.25 09:07:13 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 49202 steps
+2020.06.25 09:07:20 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 49302 steps
+2020.06.25 09:07:28 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 49402 steps
+2020.06.25 09:10:45 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TautologyInitState], id: (1,-384837536), content:
+TautologyInitState(TermState([m : 0.14285714285714285, sym : 0.14285714285714285, ((mul) (m)) (n) : 0.14285714285714285, refl : 0.14285714285714285, mul : 0.14285714285714285, n : 0.14285714285714285, trans : 0.14285714285714285],[M : 1.0],Vector(),[],[],Empty))
+2020.06.25 09:10:45 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SpecialInitState], id: (2,1588327529), content:
+SpecialInitState(TermState([trans : 0.9, sym : 0.1],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.05,Some(TermGenParams(0.0,0.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2))
+2020.06.25 09:10:45 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.SpecialInitState], id: (3,246182078), content:
+SpecialInitState(TermState([left-multiply : 0.2, right-multiply : 0.2, ((mul) (m)) (n) : 0.2, m : 0.2, n : 0.2],[M : 1.0],Vector(),[],[],Empty),0.001,0.5,0.5,Some(TermGenParams(0.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>)),Some(2))
+2020.06.25 09:10:45 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.LocalProver], id: (4,582823858), content:
+LocalProver(TermState([m : 0.08333333333333333, left-multiply : 0.08333333333333333, eqM : 0.08333333333333333, mul : 0.08333333333333333, n : 0.08333333333333333, trans : 0.08333333333333333, sym : 0.08333333333333333, ass1 : 0.08333333333333333, right-multiply : 0.08333333333333333, ass2 : 0.08333333333333333, refl : 0.08333333333333333, ((mul) (m)) (n) : 0.08333333333333333],[M : 1.0],Vector(),[],[((eqM) (((mul) (m)) (n))) (((mul) (n)) (m)) : 1.0],Empty),TermGenParams(0.1,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.7,0.5,0.0,0.0,0.0,<function1>),1.0E-4,None,12 minutes,1.01,1.0,10000,10,1.0,1.0,None,false,false,0.5,1.0,Some(500000))
+2020.06.25 09:10:45 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.LocalProver]
+2020.06.25 09:10:59 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (5,712500644), content:
+provingground.learning.ExpressionEval$$anon$2@2a77e5a4
+2020.06.25 09:10:59 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.ExpressionEval]
+2020.06.25 09:10:59 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.06.25 09:10:59 [INFO] provingground.learning.HoTTBot.expEvToFinalState:472:26 - computing final state
+2020.06.25 09:11:00 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2 steps
+2020.06.25 09:11:01 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (6,-1664112044)
+2020.06.25 09:11:01 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.25 09:11:00 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.25 09:11:01 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.25 09:11:03 [INFO] provingground.learning.HoTTBot.$anonfun:376:26 - Results: 3
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.666676177661691E-4; statement weight 4.922526522818089E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.6875890673843706E-4; statement weight 3.283350224245018E-7
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.6875890673843706E-4; statement weight 2.901648730630753E-7
+2020.06.25 09:11:03 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2 steps
+2020.06.25 09:11:05 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (7,1645406931)
+2020.06.25 09:11:05 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[(provingground.learning.HoTTMessages.UsedLemmas :: provingground.learning.HoTTMessages.TangentLemmas :: shapeless.HNil) :: provingground.learning.HoTTMessages.BaseMixinLemmas :: shapeless.HNil] to posts of type TypeTag[provingground.learning.HoTTMessages.Lemmas]
+2020.06.25 09:11:05 [INFO] provingground.learning.HoTTBot.$anonfun:902:24 - excluded lemmas:
+
+2020.06.25 09:11:05 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.UsedLemmas], id: (8,-1445828818)
+2020.06.25 09:11:05 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentLemmas], id: (9,-962844701)
+2020.06.25 09:11:05 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (10,1833728595)
+2020.06.25 09:11:05 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas]
+2020.06.25 09:11:06 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2 steps
+2020.06.25 09:11:08 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (11,368099790)
+2020.06.25 09:11:08 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.post:384:20 - triggered (multiple) responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] to posts of type TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas]
+2020.06.25 09:11:08 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.taskNest:389:32 - launching 1 branches
+2020.06.25 09:11:08 [INFO] provingground.learning.HoTTBot.$anonfun:1009:22 - previous special init states are 2
+2020.06.25 09:11:08 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun:394:36 - launching 2 responses  of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState] in branch
+2020.06.25 09:11:09 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2 steps
+2020.06.25 09:11:09 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2 steps
+2020.06.25 09:11:09 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (12,412426767)
+2020.06.25 09:11:09 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.06.25 09:11:10 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (13,-2086306360)
+2020.06.25 09:11:10 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.06.25 09:11:10 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (14,-1666923435), content:
+TangentBaseCompleted
+2020.06.25 09:11:10 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.06.25 09:11:10 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.06.25 09:11:13 [INFO] provingground.learning.HoTTBot.$anonfun:1205:26 - generating equations with 3 base states and 18 lemmas (before pruning)
+2020.06.25 09:11:13 [INFO] provingground.learning.HoTTBot.$anonfun:1213:26 - Tangent lemmas (used with bases below): 3
+(((eqM) (((mul) (((mul) (m)) (n))) (n))) (m),0.040700000848968604)
+(((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n),0.001214698356305945)
+(((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)),0.001114032298292804)
+2020.06.25 09:11:13 [INFO] provingground.learning.HoTTBot.$anonfun:1227:28 - Terms in base (used with tangents above): 3
+Type: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best term: trans with weight 0.053326178457998585
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 0.002437424090839206
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 0.002437424090839206
+2020.06.25 09:11:13 [INFO] provingground.learning.HoTTBot.$anonfun:1239:28 - Lemmas in base for mixin (used with tangents above): 3
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.050046293108537594
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.011126917673166644
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.010695179485308265
+2020.06.25 09:11:13 [INFO] provingground.learning.HoTTBot.$anonfun:1246:28 - Inference by unified applications, triples and weights (for this base state)
+(0.053326178457998585, 0.0, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 0.0, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.002437424090839206, 0.040700000848968604, 9.920316256645221E-5) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.002437424090839206, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.06.25 09:11:14 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:143:54 - all pairs considered with cutoff 1.0E-6
+2020.06.25 09:11:14 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:143:54 - all pairs considered with cutoff 1.0E-6
+2020.06.25 09:11:17 [INFO] provingground.learning.HoTTBot.$anonfun:1265:28 - Tracing back equations and values for steps
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c))))))
+Traced back equations:
+(P₁(trans ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(trans ∈ Terms))
+Weights of terms and types:
+P₁(trans ∈ Terms) -> 0.053326178457998585
+
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm)))
+Traced back equations:
+
+Weights of terms and types:
+
+
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c)))))
+Traced back equations:
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(((mul) (m)) (n) ∈ Terms))) * (P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(left-multiply) ∈ Funcs))) * (P₁(((mul) (m)) (n) ∈ Terms))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((left-multiply) (((mul) (m)) (n)) ∈ Terms))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(left-multiply) ∈ Funcs))) * (P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap((mul) (m)) ∈ Funcs))) * (P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap((mul) (m)) ∈ Funcs))) * (P₁(n ∈ Terms))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(n ∈ Terms))) * (P₁(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(((mul) (m)) (n) ∈ Terms))
+(P₁(Wrap((mul) (m)) ∈ Funcs)) = (P₁((mul) (m) ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁(Wrap((mul) (m)) ∈ Funcs)) = (Coeff(Init(Funcs))) * (P₀(Wrap((mul) (m)) ∈ Funcs))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(mul) ∈ Funcs))) * (P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁((mul) (m) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((mul) (m) ∈ Terms))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(m ∈ Terms))) * (P₁(Wrap(mul) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(mul) ∈ Funcs))) * (P₁(m ∈ Terms))
+(P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(n ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(n ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(n ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(n ∈ Terms))
+(P₁(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁((mul) (m) ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (Coeff(Init(AtCoord(FuncsWithDomain,M :: HNil)))) * (P₀(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (Coeff(Init(AtCoord(FuncsWithDomain,M :: HNil)))) * (P₀(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁(left-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(left-multiply ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(left-multiply ∈ Terms))
+(P₁(Wrap(left-multiply) ∈ Funcs)) = (Coeff(Init(Funcs))) * (P₀(Wrap(left-multiply) ∈ Funcs))
+(P₁(Wrap(left-multiply) ∈ Funcs)) = (P₁(left-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(((mul) (m)) (n) ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil)))
+Weights of terms and types:
+P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms) -> 0.002437424090839206
+P₁(((mul) (m)) (n) ∈ Terms) -> 0.053326178457998585
+P₁((mul) (m) ∈ Terms) -> 0.001286599861208855
+P₁(m ∈ Terms) -> 0.053326178457998585
+P₁(n ∈ Terms) -> 0.053326178457998585
+P₁(left-multiply ∈ Terms) -> 0.053326178457998585
+
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m)))))
+Traced back equations:
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(m ∈ Terms))) * (P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(right-multiply) ∈ Funcs))) * (P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(right-multiply) ∈ Funcs))) * (P₁(m ∈ Terms))
+(P₁((right-multiply) (m) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((right-multiply) (m) ∈ Terms))
+(P₁(m ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(m ∈ Terms))
+(P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (Coeff(Init(AtCoord(FuncsWithDomain,M :: HNil)))) * (P₀(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁(right-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(right-multiply ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(right-multiply ∈ Terms))
+(P₁(Wrap(right-multiply) ∈ Funcs)) = (Coeff(Init(Funcs))) * (P₀(Wrap(right-multiply) ∈ Funcs))
+(P₁(Wrap(right-multiply) ∈ Funcs)) = (P₁(right-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(m ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+Weights of terms and types:
+P₁((right-multiply) (m) ∈ Terms) -> 0.002437424090839206
+P₁(m ∈ Terms) -> 0.053326178457998585
+P₁(right-multiply ∈ Terms) -> 0.053326178457998585
+
+
+2020.06.25 09:11:17 [INFO] provingground.learning.HoTTBot.$anonfun:1227:28 - Terms in base (used with tangents above): 2
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 0.016270597645731934
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 0.016270597645731934
+2020.06.25 09:11:17 [INFO] provingground.learning.HoTTBot.$anonfun:1239:28 - Lemmas in base for mixin (used with tangents above): 3
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.08055093331491427
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.017883196935657784
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.01723230794846274
+2020.06.25 09:11:17 [INFO] provingground.learning.HoTTBot.$anonfun:1246:28 - Inference by unified applications, triples and weights (for this base state)
+(0.0, 0.0, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 0.0, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.016270597645731934, 0.040700000848968604, 6.622133379945163E-4) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.016270597645731934, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.06.25 09:11:19 [INFO] provingground.learning.HoTTBot.$anonfun:1265:28 - Tracing back equations and values for steps
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c))))))
+Traced back equations:
+(P₁(trans ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(trans ∈ Terms))
+Weights of terms and types:
+P₁(trans ∈ Terms) -> 0.0
+
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm)))
+Traced back equations:
+
+Weights of terms and types:
+
+
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c)))))
+Traced back equations:
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(((mul) (m)) (n) ∈ Terms))) * (P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(left-multiply) ∈ Funcs))) * (P₁(((mul) (m)) (n) ∈ Terms))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((left-multiply) (((mul) (m)) (n)) ∈ Terms))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(left-multiply) ∈ Funcs))) * (P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap((mul) (m)) ∈ Funcs))) * (P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap((mul) (m)) ∈ Funcs))) * (P₁(n ∈ Terms))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(n ∈ Terms))) * (P₁(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(((mul) (m)) (n) ∈ Terms))
+(P₁(Wrap((mul) (m)) ∈ Funcs)) = (P₁((mul) (m) ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(mul) ∈ Funcs))) * (P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁((mul) (m) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((mul) (m) ∈ Terms))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(m ∈ Terms))) * (P₁(Wrap(mul) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(mul) ∈ Funcs))) * (P₁(m ∈ Terms))
+(P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(n ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(n ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(n ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(n ∈ Terms))
+(P₁(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁((mul) (m) ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (Coeff(Init(AtCoord(FuncsWithDomain,M :: HNil)))) * (P₀(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁(left-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(left-multiply ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(left-multiply ∈ Terms))
+(P₁(Wrap(left-multiply) ∈ Funcs)) = (Coeff(Init(Funcs))) * (P₀(Wrap(left-multiply) ∈ Funcs))
+(P₁(Wrap(left-multiply) ∈ Funcs)) = (P₁(left-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(((mul) (m)) (n) ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil)))
+Weights of terms and types:
+P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms) -> 0.016270597645731934
+P₁(((mul) (m)) (n) ∈ Terms) -> 0.08837517523251155
+P₁((mul) (m) ∈ Terms) -> 0.0
+P₁(m ∈ Terms) -> 0.08837517523251155
+P₁(n ∈ Terms) -> 0.08837517523251155
+P₁(left-multiply ∈ Terms) -> 0.08837517523251155
+
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m)))))
+Traced back equations:
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(m ∈ Terms))) * (P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(right-multiply) ∈ Funcs))) * (P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(right-multiply) ∈ Funcs))) * (P₁(m ∈ Terms))
+(P₁((right-multiply) (m) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((right-multiply) (m) ∈ Terms))
+(P₁(m ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(m ∈ Terms))
+(P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (Coeff(Init(AtCoord(FuncsWithDomain,M :: HNil)))) * (P₀(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁(right-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(right-multiply ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(right-multiply ∈ Terms))
+(P₁(Wrap(right-multiply) ∈ Funcs)) = (Coeff(Init(Funcs))) * (P₀(Wrap(right-multiply) ∈ Funcs))
+(P₁(Wrap(right-multiply) ∈ Funcs)) = (P₁(right-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(m ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+Weights of terms and types:
+P₁((right-multiply) (m) ∈ Terms) -> 0.016270597645731934
+P₁(m ∈ Terms) -> 0.08837517523251155
+P₁(right-multiply ∈ Terms) -> 0.08837517523251155
+
+
+2020.06.25 09:11:19 [INFO] provingground.learning.HoTTBot.$anonfun:1227:28 - Terms in base (used with tangents above): 1
+Type: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best term: trans with weight 0.45000000000000007
+2020.06.25 09:11:19 [INFO] provingground.learning.HoTTBot.$anonfun:1239:28 - Lemmas in base for mixin (used with tangents above): 3
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.09114656135389602
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.0202355433962171
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.019499036808838258
+2020.06.25 09:11:19 [INFO] provingground.learning.HoTTBot.$anonfun:1246:28 - Inference by unified applications, triples and weights (for this base state)
+(0.45000000000000007, 0.0, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 0.0, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.0, 0.040700000848968604, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.0, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.06.25 09:11:19 [INFO] provingground.learning.HoTTBot.$anonfun:1265:28 - Tracing back equations and values for steps
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c))))))
+Traced back equations:
+(P₁(trans ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(trans ∈ Terms))
+Weights of terms and types:
+P₁(trans ∈ Terms) -> 0.45000000000000007
+
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm)))
+Traced back equations:
+
+Weights of terms and types:
+
+
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c)))))
+Traced back equations:
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(((mul) (m)) (n) ∈ Terms))) * (P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(left-multiply) ∈ Funcs))) * (P₁(((mul) (m)) (n) ∈ Terms))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((left-multiply) (((mul) (m)) (n)) ∈ Terms))
+(P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(left-multiply) ∈ Funcs))) * (P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap((mul) (m)) ∈ Funcs))) * (P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap((mul) (m)) ∈ Funcs))) * (P₁(n ∈ Terms))
+(P₁(((mul) (m)) (n) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(n ∈ Terms))) * (P₁(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁(((mul) (m)) (n) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(((mul) (m)) (n) ∈ Terms))
+(P₁(Wrap((mul) (m)) ∈ Funcs)) = (P₁((mul) (m) ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(mul) ∈ Funcs))) * (P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁((mul) (m) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((mul) (m) ∈ Terms))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(m ∈ Terms))) * (P₁(Wrap(mul) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((mul) (m) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(mul) ∈ Funcs))) * (P₁(m ∈ Terms))
+(P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(n ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(n ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(n ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁(n ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(n ∈ Terms))
+(P₁(Wrap((mul) (m)) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁((mul) (m) ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(Wrap(left-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁(left-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(left-multiply ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(left-multiply ∈ Terms))
+(P₁(Wrap(left-multiply) ∈ Funcs)) = (Coeff(Init(Funcs))) * (P₀(Wrap(left-multiply) ∈ Funcs))
+(P₁(Wrap(left-multiply) ∈ Funcs)) = (P₁(left-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(((mul) (m)) (n) ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(((mul) (m)) (n) ∈ AtCoord(TermsWithTyp,M :: HNil)))
+Weights of terms and types:
+P₁((left-multiply) (((mul) (m)) (n)) ∈ Terms) -> 0.0
+P₁(((mul) (m)) (n) ∈ Terms) -> 0.0
+P₁((mul) (m) ∈ Terms) -> 0.0
+P₁(m ∈ Terms) -> 0.0
+P₁(n ∈ Terms) -> 0.0
+P₁(left-multiply ∈ Terms) -> 0.0
+
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m)))))
+Traced back equations:
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(FiberProductMap(typeOf(_),FuncsWithDomain,FlipAppn,Terms,Terms))) * (P₁(m ∈ Terms))) * (P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil)))
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(FiberProductMap(domOf,TermsWithTyp,Appln,Funcs,Terms))) * (P₁(Wrap(right-multiply) ∈ Funcs))) * (P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+(P₁((right-multiply) (m) ∈ Terms)) = ((Coeff(ZipMapOpt(UnifApplnOpt,Funcs,Terms,Terms))) * (P₁(Wrap(right-multiply) ∈ Funcs))) * (P₁(m ∈ Terms))
+(P₁((right-multiply) (m) ∈ Terms)) = (Coeff(Init(Terms))) * (P₀((right-multiply) (m) ∈ Terms))
+(P₁(m ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(m ∈ Terms))
+(P₁(Wrap(right-multiply) ∈ AtCoord(FuncsWithDomain,M :: HNil))) = (P₁(right-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncWithDom(M))}))
+(P₁(right-multiply ∈ Terms)) = (Coeff(Init(Terms))) * (P₀(right-multiply ∈ Terms))
+(P₁(Wrap(right-multiply) ∈ Funcs)) = (Coeff(Init(Funcs))) * (P₀(Wrap(right-multiply) ∈ Funcs))
+(P₁(Wrap(right-multiply) ∈ Funcs)) = (P₁(right-multiply ∈ Terms)) / (P₁({Terms ∈ Restrict(FuncOpt)}))
+(P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil))) = (P₁(m ∈ Terms)) / (P₁({Terms ∈ Filter(WithTyp(typ))}))
+(P₁(m ∈ AtCoord(TermsWithTyp,M :: HNil))) = (Coeff(Init(AtCoord(TermsWithTyp,M :: HNil)))) * (P₀(m ∈ AtCoord(TermsWithTyp,M :: HNil)))
+Weights of terms and types:
+P₁((right-multiply) (m) ∈ Terms) -> 0.0
+P₁(m ∈ Terms) -> 0.0
+P₁(right-multiply ∈ Terms) -> 0.0
+
+
+2020.06.25 09:11:29 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:143:54 - all pairs considered with cutoff 1.52587890625E-11
+2020.06.25 09:11:31 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (15,-2035321527)
+2020.06.25 09:11:31 [INFO] provingground.learning.HoTTBot.scribeLog:1940:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (15,-2035321527)
+2020.06.25 09:11:31 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.06.25 09:11:31 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.06.25 09:12:05 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (16,1171346948), content:
+provingground.learning.ExpressionEval$$anon$2@45d15604
+2020.06.25 09:12:05 [INFO] provingground.learning.HoTTBot.scribeLog:1940:16 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (16,1171346948)
+2020.06.25 09:12:05 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.06.25 09:12:05 [INFO] provingground.learning.HoTTBot.expEvToFinalState:472:26 - computing final state
+2020.06.25 09:12:05 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.ExpressionEval]
+2020.06.25 09:12:07 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2 steps
+2020.06.25 09:12:15 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 102 steps
+2020.06.25 09:12:21 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 202 steps
+2020.06.25 09:12:28 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 302 steps
+2020.06.25 09:12:34 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 402 steps
+2020.06.25 09:12:41 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 502 steps
+2020.06.25 09:12:47 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 602 steps
+2020.06.25 09:12:54 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 702 steps
+2020.06.25 09:13:01 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 802 steps
+2020.06.25 09:13:07 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 902 steps
+2020.06.25 09:13:14 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1002 steps
+2020.06.25 09:13:21 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1102 steps
+2020.06.25 09:13:28 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1202 steps
+2020.06.25 09:13:34 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1302 steps
+2020.06.25 09:13:41 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1402 steps
+2020.06.25 09:13:48 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1502 steps
+2020.06.25 09:13:54 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1602 steps
+2020.06.25 09:14:01 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1702 steps
+2020.06.25 09:14:08 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1802 steps
+2020.06.25 09:14:15 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 1902 steps
+2020.06.25 09:14:21 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2002 steps
+2020.06.25 09:14:28 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2102 steps
+2020.06.25 09:14:35 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2202 steps
+2020.06.25 09:14:41 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2302 steps
+2020.06.25 09:14:48 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2402 steps
+2020.06.25 09:14:55 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2502 steps
+2020.06.25 09:15:01 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2602 steps
+2020.06.25 09:15:08 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2702 steps
+2020.06.25 09:15:15 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2802 steps
+2020.06.25 09:15:22 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 2902 steps
+2020.06.25 09:15:28 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3002 steps
+2020.06.25 09:15:35 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3102 steps
+2020.06.25 09:15:42 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3202 steps
+2020.06.25 09:15:48 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3302 steps
+2020.06.25 09:15:55 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3402 steps
+2020.06.25 09:16:02 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3502 steps
+2020.06.25 09:16:09 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3602 steps
+2020.06.25 09:16:15 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3702 steps
+2020.06.25 09:16:22 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3802 steps
+2020.06.25 09:16:29 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 3902 steps
+2020.06.25 09:16:35 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4002 steps
+2020.06.25 09:16:42 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4102 steps
+2020.06.25 09:16:49 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4202 steps
+2020.06.25 09:16:56 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4302 steps
+2020.06.25 09:17:02 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4402 steps
+2020.06.25 09:17:09 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4502 steps
+2020.06.25 09:17:16 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4602 steps
+2020.06.25 09:17:23 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4702 steps
+2020.06.25 09:17:29 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4802 steps
+2020.06.25 09:17:36 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 4902 steps
+2020.06.25 09:17:43 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5002 steps
+2020.06.25 09:17:50 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5102 steps
+2020.06.25 09:17:56 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5202 steps
+2020.06.25 09:18:03 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5302 steps
+2020.06.25 09:18:10 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5402 steps
+2020.06.25 09:18:16 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5502 steps
+2020.06.25 09:18:23 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5602 steps
+2020.06.25 09:18:30 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5702 steps
+2020.06.25 09:18:37 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5802 steps
+2020.06.25 09:18:43 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 5902 steps
+2020.06.25 09:18:50 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6002 steps
+2020.06.25 09:18:57 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6102 steps
+2020.06.25 09:19:03 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6202 steps
+2020.06.25 09:19:10 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6302 steps
+2020.06.25 09:19:17 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6402 steps
+2020.06.25 09:19:23 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6502 steps
+2020.06.25 09:19:30 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6602 steps
+2020.06.25 09:19:37 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6702 steps
+2020.06.25 09:19:43 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6802 steps
+2020.06.25 09:19:50 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 6902 steps
+2020.06.25 09:19:57 [INFO] provingground.learning.ExprCalc.stableVec:602:46 - completed 7002 steps
