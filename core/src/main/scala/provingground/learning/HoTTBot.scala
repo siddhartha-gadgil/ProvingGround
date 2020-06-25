@@ -621,7 +621,8 @@ object HoTTBot {
               lp.scale,
               lp.smoothing,
               lp.exponent,
-              lp.decay
+              lp.decay,
+              lp.maxTime
             )
           )
     }
