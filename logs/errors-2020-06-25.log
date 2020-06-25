@@ -97,3 +97,109 @@
 2020.06.25 16:18:01 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.0037892274394858184 and 0.009128457267225925 with exponent 0.5 is not a number
 2020.06.25 16:26:17 [ERROR] provingground.learning.ExprCalc.stableVec:630:25 - Timeout for stable vector after 5388 steps
 2020.06.25 16:26:17 [ERROR] provingground.learning.ExpressionEval.GenerateTyps.finalTyps:343:27 - NaN for some types before normalizing
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(-0
+.7,Vector(),Vector()), ProdExpr(1.0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(-0.7, 1.0, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((((IsleScale(@a,@a ∈ Terms)) * (-1.0)) + (1.0)) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+28537178E-4 with exponent 0.5 is not a number
+2020.06.25 16:18:00 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.0011266852500898456 and 1.64508393
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(%boat,%boat ∈ Terms)) * (-1.0))) + ((IsleScale(@a,@a ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+2020.06.25 16:18:00 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.003364307125357128 and 0.005465468
+685582884 with exponent 0.5 is not a number
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(@a,@a ∈ Terms)) * (-1.0))) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+83016496 with exponent 0.5 is not a number
+2020.06.25 16:18:00 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.0036522038798460447 and 0.00442378
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(@a,@a ∈ Terms)) * (-1.0))) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(-0
+2020.06.25 16:18:00 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.0036522038798460447 and 0.00442378
+506568271 with exponent 0.5 is not a number
+.7,Vector(),Vector()), ProdExpr(1.0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(-0.7, 1.0, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((((IsleScale(@a,@a ∈ Terms)) * (-1.0)) + (1.0)) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(-0
+.7,Vector(),Vector()), ProdExpr(1.0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(-0.7, 1.0, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((((IsleScale(@a,@a ∈ Terms)) * (-1.0)) + (1.0)) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr
+(1.0,Vector(),Vector())), values Vector(1.0, -0.7, -0.7, -0.7, 1.0)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((((1.0) + ((IsleScale(@a,@a ∈ Terms)) * (-1.0))) + ((IsleScale(%boat,%boat ∈ Terms)) * 
+(-1.0))) + (((IsleScale(%boat,%boat ∈ Terms)) * (-1.0)) + (1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(@a,@a ∈ Terms)) * (-1.0))) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(InIsle(@b ∈ Te
+rms,@b,Island(Typs,Typs,AddVar,Pi,EnterIsle)),@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(%boat,%boat ∈ Ter
+ms)) * (-1.0))) + ((IsleScale(@b,@b ∈ Terms)) * (-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(@a,@a ∈ Terms)) * (-1.0))) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(-0
+.7,Vector(),Vector()), ProdExpr(1.0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(-0.7, 1.0, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((((IsleScale(@a,@a ∈ Terms)) * (-1.0)) + (1.0)) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(0.
+7,Vector(13480),Vector())), values Vector(-0.0699999999999999)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(InIsle(@a ∈ Te
+rms,@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)),@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((IsleScale(%boat,@a ∈ Terms)) * (P₀(In
+Isle(@a ∈ Terms,@a,Island(Typs  ,Typs,AddVar,Pi,EnterIsle)))))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(0.
+75,Vector(1170),Vector())), values Vector(-0.29999999999999993)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₁(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((Coeff(Init(Terms))) * (P₀(InIsle(@a ∈ Terms,@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)))
+))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(-0
+.7,Vector(),Vector()), ProdExpr(1.0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(-0.7, 1.0, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((((IsleScale(@a,@a ∈ Terms)) * (-1.0)) + (1.0)) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(%boat,%boat ∈ Terms)) * (-1.0))) + ((IsleScale(@a,@a ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(0.
+75,Vector(17021),Vector())), values Vector(-0.29999999999999993)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₁(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((Coeff(Init(Terms))) * (P₀(InIsle(@a ∈ Terms,@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)))
+))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(0.
+7,Vector(13480),Vector())), values Vector(-0.0699999999999999)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(InIsle(@a ∈ Te
+rms,@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)),@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == ((IsleScale(%boat,@a ∈ Terms)) * (P₀(In
+Isle(@a ∈ Terms,@a,Island(Typs,Typs,AddVar,Pi,EnterIsle)))))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(@a,@a ∈ Terms)) * (-1.0))) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(1.
+0,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector()), ProdExpr(-0.7,Vector(),Vector())), values Vector(1.0, -0.7, -0.7)
+2020.06.25 16:51:22 [ERROR] provingground.learning.ExprCalc.nextVec:592:29 - Equation with negative value: (P₀(InIsle(@a ∈ Terms,@a,
+Island(Typs,Typs,AddVar,Pi,EnterIsle)))) == (((1.0) + ((IsleScale(@a,@a ∈ Terms)) * (-1.0))) + ((IsleScale(%boat,%boat ∈ Terms)) * (
+-1.0)))
+2020.06.25 16:51:22 [ERROR] provingground.learning.SumExpr.eval:526:25 - Negative value for expression with terms Vector(ProdExpr(0.
+75,Vector(8109),Vector())), values Vector(-0.29999999999999993)

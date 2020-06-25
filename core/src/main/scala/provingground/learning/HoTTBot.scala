@@ -56,7 +56,8 @@ object QueryBaseState {
 }
 
 case class QueryEquations(equations: Set[Equation]) {
-  lazy val nodes: Set[EquationNode] = equations.flatMap(Equation.split(_))
+  lazy val nodes: Set[EquationNode] =
+    equations.flatMap(Equation.split(_)).map(TermData.isleNormalize(_))
 }
 
 object QueryEquations {
@@ -359,7 +360,8 @@ object HoTTBot {
                 .map {
                   case (tp, ps) =>
                     val best = ps.maxBy(t => fs.ts.terms(t))
-                    val output = s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}; statement weight ${fs.ts.typs(tp)}"
+                    val output = s"Lemma: $tp; best proof: ${best} with weight ${fs.ts
+                      .terms(best)}; statement weight ${fs.ts.typs(tp)}"
                     if (fs.ts.typs(tp) == 0) {
                       import GeneratorVariables._, Expression._
                       val (eqns, terms) = EquationNode.traceBack(qe.nodes, FinalVal(Elem(tp, TermRandomVars.Typs)), 4)
