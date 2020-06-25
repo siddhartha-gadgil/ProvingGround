@@ -359,7 +359,7 @@ object HoTTBot {
                 .map {
                   case (tp, ps) =>
                     val best = ps.maxBy(t => fs.ts.terms(t))
-                    s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}; statement weight ${fs.ts.typs(tp)}"
+                    val output = s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}; statement weight ${fs.ts.typs(tp)}"
                     if (fs.ts.typs(tp) == 0) {
                       import GeneratorVariables._, Expression._
                       val (eqns, terms) = EquationNode.traceBack(qe.nodes, FinalVal(Elem(tp, TermRandomVars.Typs)), 4)
@@ -369,8 +369,8 @@ object HoTTBot {
                         termsWeights
                           .map { case (exp, p) => s"$exp -> $p" }
                           .mkString("Weights of terms and types:\n", "\n", "\n")
-                      s"Vanising Lemma: $tp\n$eqV$tV"
-                    }
+                      s"$output\nVanising Lemma: $tp\n$eqV$tV"
+                    } else output
                 }
                 .mkString("\n")}"
               logger.info(view)
