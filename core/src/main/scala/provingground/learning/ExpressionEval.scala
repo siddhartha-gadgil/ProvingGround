@@ -332,14 +332,20 @@ object ExpressionEval {
     * [[ExpressionEval]] where the type distribution is generated from the equations
     */
   trait GenerateTyps extends ExpressionEval { self =>
-    lazy val finalTyps =
-      FD {
+    lazy val finalTyps = {
+      val base = FD {
         finalDist.collect {
-          case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => 
-          if (w.isNaN()) Utils.logger.error(s"NaN for value at type $typ")
-          Weighted(typ, w)
+          case (FinalVal(Elem(typ: Typ[Term], Typs)), w) =>
+            Weighted(typ, w)
         }
-      }.safeNormalized
+      }
+      if (base.pmf.exists(_.weight.isNaN))
+        Utils.logger.error(s"NaN for some types before normalizing")
+      if (base.pmf.forall(_.weight.isNaN))
+        Utils.logger.error(s"NaN for all types before normalizing")
+
+      base.safeNormalized
+    }
 
     override def generateTyps: ExpressionEval = self
 
