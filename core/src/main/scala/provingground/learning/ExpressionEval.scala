@@ -519,6 +519,7 @@ case class SumExpr(terms: Vector[ProdExpr]) {
   def eval(v: Vector[Double]): Double = {
     val subTerms = terms.map(_.eval(v))
     val result   = subTerms.sum
+    if (result < 0) Utils.logger.error(s"Negative value for expression with terms $terms, values $subTerms")
     if (result.isNaN() && !subTerms.exists(_.isNaN()))
       Utils.logger.error(s"the sum of $subTerms is not a number")
     result
@@ -581,6 +582,7 @@ class ExprCalc(ev: ExpressionEval) {
     rhsExprs.zipWithIndex.map {
       case (exp, j) =>
         val y = exp.eval(v)
+        if (y < 0) Utils.logger.error(s"Equation with negative value: ${equationVec(j)}")
         val z = v(j)
         if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
