@@ -490,13 +490,16 @@ case class ProdExpr(
       if (y == 0) 1.0
       else {
         val rec = 1.0 / y
-        if (rec.isNaN() && !y.isNaN) Utils.logger.error(s"the reciprocal of $y is not a number")
+        if (rec.isNaN() && !y.isNaN)
+          Utils.logger.error(s"the reciprocal of $y is not a number")
         rec
       }
     })
     val result = subTerms.fold(constant)(_ * _)
-    if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN()) 
-      Utils.logger.error(s"the product of $subTerms  and constant $constant is not a number")
+    if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN())
+      Utils.logger.error(
+        s"the product of $subTerms  and constant $constant is not a number"
+      )
     result
   }
 
@@ -519,7 +522,10 @@ case class SumExpr(terms: Vector[ProdExpr]) {
   def eval(v: Vector[Double]): Double = {
     val subTerms = terms.map(_.eval(v))
     val result   = subTerms.sum
-    if (result < 0) Utils.logger.error(s"Negative value for expression with terms $terms, values $subTerms")
+    if (result < 0)
+      Utils.logger.error(
+        s"Negative value for expression with terms $terms, values $subTerms"
+      )
     if (result.isNaN() && !subTerms.exists(_.isNaN()))
       Utils.logger.error(s"the sum of $subTerms is not a number")
     result
@@ -582,13 +588,15 @@ class ExprCalc(ev: ExpressionEval) {
     rhsExprs.zipWithIndex.map {
       case (exp, j) =>
         val y = exp.eval(v)
-        if (y < 0) Utils.logger.error(s"Equation with negative value: ${equationVec(j)}")
+        if (y < 0)
+          Utils.logger.error(s"Equation with negative value: ${equationVec(j)}")
         val z = v(j)
         if (z > 0) {
           val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
           if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
             Utils.logger.error(
-              s"Geometric mean of $y and $z with exponent $exponent is not a number"
+              s"Geometric mean of $y and $z with exponent $exponent is not a number\nEquation with negative value: ${scala.util
+                .Try(equationVec(j))}"
             )
           gm
         } else y
