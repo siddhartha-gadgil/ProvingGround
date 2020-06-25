@@ -335,7 +335,9 @@ object ExpressionEval {
     lazy val finalTyps =
       FD {
         finalDist.collect {
-          case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => Weighted(typ, w)
+          case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => 
+          if (w.isNaN()) Utils.logger.error(s"NaN for value at type $typ")
+          Weighted(typ, w)
         }
       }.safeNormalized
 
