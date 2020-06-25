@@ -156,7 +156,7 @@ object CzSlOly {
     ),
     lemRefine,
     cappedSpecialBaseState,
-    timedUnAppEquations(math.pow(10, -6), 2.minutes, 4),
+    timedUnAppEquations(math.pow(10, -3), 2.minutes, 5),
     // unAppEquations(math.pow(10, -6)),
     // cappedForkedTangentEquations,
     eqnsToExpEv(

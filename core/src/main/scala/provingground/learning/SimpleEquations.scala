@@ -173,8 +173,11 @@ object SimpleEquations {
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
           if (t > minTime)
             Utils.logger.info(
-              s"ran for time ${t.toSeconds}, exceeding time limit, with cutoff ${cutoff}"
-            )
+              s"ran for time ${t.toSeconds}, exceeding time limit $minTime, with cutoff ${cutoff}"
+            ) else 
+            Utils.logger.info(
+              s"ran for time ${t.toSeconds}, less than the time limit $minTime, with cutoff ${cutoff}; running again"
+            ) 
           if (pmin * qmin > cutoff)
             Utils.logger.info(s"all pairs considered with cutoff $cutoff")
           ((t < minTime) && (pmin * qmin < cutoff), result) // ensuring not all pairs already used
