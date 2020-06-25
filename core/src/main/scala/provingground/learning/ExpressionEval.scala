@@ -484,11 +484,21 @@ case class ProdExpr(
     indices: Vector[Int],
     negIndices: Vector[Int]
 ) {
-  def eval(v: Vector[Double]) =
-    (indices.map(j => v(j)) ++ negIndices.map { j =>
+  def eval(v: Vector[Double]): Double = {
+    val subTerms = (indices.map(j => v(j)) ++ negIndices.map { j =>
       val y = v(j)
-      if (y == 0) 1.0 else 1.0 / y
-    }).fold(constant)(_ * _)
+      if (y == 0) 1.0
+      else {
+        val rec = 1.0 / y
+        if (rec.isNaN() && !y.isNaN) Utils.logger.error(s"the reciprocal of $y is not a number")
+        rec
+      }
+    })
+    val result = subTerms.fold(constant)(_ * _)
+    if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN()) 
+      Utils.logger.error(s"the product of $subTerms  and constant $constant is not a number")
+    result
+  }
 
   def *(that: ProdExpr) =
     ProdExpr(
@@ -506,7 +516,13 @@ case class ProdExpr(
 }
 
 case class SumExpr(terms: Vector[ProdExpr]) {
-  def eval(v: Vector[Double]) = terms.map(_.eval(v)).sum
+  def eval(v: Vector[Double]): Double = {
+    val subTerms = terms.map(_.eval(v))
+    val result   = subTerms.sum
+    if (result.isNaN() && !subTerms.exists(_.isNaN()))
+      Utils.logger.error(s"the sum of $subTerms is not a number")
+    result
+  }
 }
 
 object SumExpr {}
@@ -566,7 +582,14 @@ class ExprCalc(ev: ExpressionEval) {
       case (exp, j) =>
         val y = exp.eval(v)
         val z = v(j)
-        if (z > 0) math.pow(z, 1 - exponent) * math.pow(y, exponent) else y
+        if (z > 0) {
+          val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
+          if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
+            Utils.logger.error(
+              s"Geometric mean of $y and $z with exponent $exponent is not a number"
+            )
+          gm
+        } else y
     }
   }
 
