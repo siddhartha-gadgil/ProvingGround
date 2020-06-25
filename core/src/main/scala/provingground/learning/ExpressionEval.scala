@@ -487,7 +487,7 @@ case class ProdExpr(
   def eval(v: Vector[Double]) =
     (indices.map(j => v(j)) ++ negIndices.map { j =>
       val y = v(j)
-      if (y == 0) 1 else 1.0 / y
+      if (y == 0) 1.0 else 1.0 / y
     }).fold(constant)(_ * _)
 
   def *(that: ProdExpr) =
