@@ -95,3 +95,5 @@
 2020.06.25 16:18:01 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.008739473147478954 and 0.0033135444805822705 with exponent 0.5 is not a number
 2020.06.25 16:18:01 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.16892647878792255 and 0.3328073535634554 with exponent 0.5 is not a number
 2020.06.25 16:18:01 [ERROR] provingground.learning.ExprCalc.nextVec:588:31 - Geometric mean of -0.0037892274394858184 and 0.009128457267225925 with exponent 0.5 is not a number
+2020.06.25 16:26:17 [ERROR] provingground.learning.ExprCalc.stableVec:630:25 - Timeout for stable vector after 5388 steps
+2020.06.25 16:26:17 [ERROR] provingground.learning.ExpressionEval.GenerateTyps.finalTyps:343:27 - NaN for some types before normalizing
