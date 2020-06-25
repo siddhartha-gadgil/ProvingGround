@@ -468,7 +468,10 @@ object HoTTBot {
 
   lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
     MicroBot.simple(
-      (ev: ExpressionEval) => FinalState(ev.finalTermState())
+      (ev: ExpressionEval) => {
+        Utils.logger.info("computing final state")
+        FinalState(ev.finalTermState())
+      }
     )
 
   lazy val instanceToGoal: MicroBot[Instance, Option[

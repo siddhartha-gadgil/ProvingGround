@@ -599,7 +599,7 @@ class ExprCalc(ev: ExpressionEval) {
       Utils.logger.error(s"Timeout for stable vector after $steps steps")
       initVec
     } else {
-      // if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
+      if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newVec    = nextVec(initVec, exponent)
       if (normalizedBounded(initVec, newVec))
