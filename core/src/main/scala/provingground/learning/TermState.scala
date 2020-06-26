@@ -380,11 +380,10 @@ object TermState {
       )(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): FD[T] =
         (randomVarFmly, fullArg) match {
           case (TermsWithTyp, typ :: HNil) =>
-            state.termWithTyps(typ).asInstanceOf[FD[T]]
+            state.termWithTyps.get(typ).map(_.asInstanceOf[FD[T]]).getOrElse(FD.empty[T])
           case (FuncsWithDomain, typ :: HNil) =>
             state
-              .funcsWithDoms(typ)
-              .asInstanceOf[FD[T]]
+              .funcsWithDoms.get(typ).map(_.asInstanceOf[FD[T]]).getOrElse(FD.empty[T])
           case (FuncForCod, cod :: HNil) =>
             state.terms
               .condMap(Unify.targetCodomain(_, cod))
