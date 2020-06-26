@@ -3388,3 +3388,19 @@ Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); 
 2020.06.26 18:50:08 [INFO] provingground.learning.HoTTBot.baseState:934:16 - Computing base state
 2020.06.26 18:50:48 [INFO] provingground.learning.ExpressionEval.initMap:118:24 - Computing initial map with 192236 atoms
 2020.06.26 18:50:48 [INFO] provingground.learning.ExpressionEval.initMap:118:24 - Computing initial map with 192236 atoms
+2020.06.26 19:08:53 [INFO] provingground.learning.ExpressionEval.initMap:120:24 - Computed initial values
+2020.06.26 19:08:53 [INFO] provingground.learning.ExpressionEval.initMap:122:24 - Computed vector for map, size 32627
+2020.06.26 19:08:53 [INFO] provingground.learning.ExpressionEval.initMap:123:24 - Zero initial values are 147166
+2020.06.26 19:08:53 [INFO] provingground.learning.ExpressionEval.initMap:125:24 - Computed map
+2020.06.26 19:08:53 [INFO] provingground.learning.HoTTBot.baseState:946:16 - Computed expression evaluator
+2020.06.26 19:08:53 [INFO] provingground.learning.ExprCalc.finalVec:674:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.06.26 19:08:53 [INFO] provingground.learning.ExprCalc.finalVec:675:22 - Number of equations: 139082
+2020.06.26 19:09:10 [INFO] provingground.learning.ExprCalc.stableVec:656:46 - completed 2 steps
+2020.06.26 19:16:33 [INFO] provingground.learning.ExpressionEval.initMap:120:24 - Computed initial values
+2020.06.26 19:16:33 [INFO] provingground.learning.ExpressionEval.initMap:122:24 - Computed vector for map, size 33238
+2020.06.26 19:16:33 [INFO] provingground.learning.ExpressionEval.initMap:123:24 - Zero initial values are 147165
+2020.06.26 19:16:33 [INFO] provingground.learning.ExpressionEval.initMap:125:24 - Computed map
+2020.06.26 19:16:33 [INFO] provingground.learning.HoTTBot.baseState:946:16 - Computed expression evaluator
+2020.06.26 19:16:33 [INFO] provingground.learning.ExprCalc.finalVec:674:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.06.26 19:16:33 [INFO] provingground.learning.ExprCalc.finalVec:675:22 - Number of equations: 139082
+2020.06.26 19:16:51 [INFO] provingground.learning.ExprCalc.stableVec:656:46 - completed 2 steps
