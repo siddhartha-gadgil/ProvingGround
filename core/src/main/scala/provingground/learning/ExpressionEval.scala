@@ -94,10 +94,11 @@ object ExpressionEval {
   ): Option[Double] =
     exp match {
       case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq)
-      case InitialVal(elem @ Elem(el, rv)) =>
-        val base = sd.value(initialState)(rv)(el)
+      case InitialVal(elem : Elem[y]) =>
+        import elem._
+        val base = sd.value(initialState)(randomVar)(element)
         if (base > 0) Some(base)
-        else if (rv == Goals) Some(0.5) // just a quick-fix
+        else if (randomVar == Goals) Some(0.5) // just a quick-fix
         else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
         else Some(0)                              // else throw new Exception(s"no initial value for $elem")
