@@ -922,7 +922,7 @@ object HoTTBot {
 
   def baseState(
       initialState: TermState,
-      equations: Set[Equation],
+      equationNodes: Set[EquationNode],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
       scale: Double = 1.0,
@@ -934,7 +934,7 @@ object HoTTBot {
     logger.info("Computing base state")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      equations union (Equation.group(DE.termStateInit(initialState))),
+      Equation.group(equationNodes union (DE.termStateInit(initialState).map(TermData.isleNormalize(_)))),
       tg,
       maxRatio,
       scale,
@@ -976,7 +976,7 @@ object HoTTBot {
             val bs       = lp.initState.copy(terms = tdist)
             val fs = baseState(
               bs,
-              eqns.equations,
+              eqns.nodes,
               lp.tg,
               lp.maxRatio,
               lp.scale,
@@ -1013,8 +1013,8 @@ object HoTTBot {
         lems => {
           logger.info(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
-          val neqs = eqns.equations
-          logger.info(s"Using ${neqs.size} equations for base states")
+          val neqs = eqns.nodes
+          logger.info(s"Using ${neqs.size} equation nodes for base states")
           psps.contents.map(
             ps =>
               Future {

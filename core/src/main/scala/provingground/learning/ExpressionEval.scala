@@ -113,10 +113,12 @@ object ExpressionEval {
       tg: TermGenParams,
       initialState: TermState
   ): Map[Expression, Double] =
-    (for {
+    {Utils.logger.info(s"Computing initial map with ${atoms.size} atoms")
+      (for {
       exp   <- atoms
       value <- initVal(exp, tg, initialState)
     } yield exp -> value).toMap
+  }
 
   /**
     * Recursively calculate or update the value on expression, given initial values.
