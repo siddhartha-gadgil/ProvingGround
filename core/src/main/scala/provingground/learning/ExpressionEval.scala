@@ -113,11 +113,20 @@ object ExpressionEval {
       tg: TermGenParams,
       initialState: TermState
   ): Map[Expression, Double] =
-    {Utils.logger.info(s"Computing initial map with ${atoms.size} atoms")
-      (for {
-      exp   <- atoms
-      value <- initVal(exp, tg, initialState)
-    } yield exp -> value).toMap
+    {val atomVec = atoms.toVector
+      Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
+      val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
+      Utils.logger.info("Computed initial values")
+      val expMapVec = valueVec.zipWithIndex.collect{case (Some(x), n) if x > 0 => (atomVec(n), x)}
+      Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
+      Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+      val result = expMapVec.toMap
+      Utils.logger.info("Computed map")
+    //   (for {
+    //   exp   <- atoms
+    //   value <- initVal(exp, tg, initialState)
+    // } yield exp -> value).toMap
+      result
   }
 
   /**
