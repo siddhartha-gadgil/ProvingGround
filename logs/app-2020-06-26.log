@@ -3404,3 +3404,53 @@ Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); 
 2020.06.26 19:16:33 [INFO] provingground.learning.ExprCalc.finalVec:674:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
 2020.06.26 19:16:33 [INFO] provingground.learning.ExprCalc.finalVec:675:22 - Number of equations: 139082
 2020.06.26 19:16:51 [INFO] provingground.learning.ExprCalc.stableVec:656:46 - completed 2 steps
+2020.06.26 19:27:03 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (32,-1545273815)
+2020.06.26 19:27:03 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.06.26 19:32:05 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (33,-399369272)
+2020.06.26 19:32:05 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.06.26 19:32:05 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (34,-1666923435), content:
+TangentBaseCompleted
+2020.06.26 19:32:05 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.06.26 19:32:05 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.06.26 19:32:05 [INFO] provingground.learning.HoTTBot.scribeLog:1947:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (34,-1666923435)
+2020.06.26 19:32:08 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.06.26 19:32:09 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 2, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.06.26 19:32:09 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.06.26 19:32:12 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.06.26 19:32:13 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 5, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.06.26 19:32:16 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 4, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.06.26 19:32:17 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 3, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.06.26 19:32:21 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 4, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.06.26 19:32:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 8, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.06.26 19:32:32 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 10, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.06.26 19:32:45 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 19, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.06.26 19:32:52 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 19, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.06.26 19:33:11 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 25, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.06.26 19:33:27 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 35, less than the time limit 2 minutes, with cutoff 1.2800000000000004E-8; running again
+2020.06.26 19:34:02 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 34, less than the time limit 2 minutes, with cutoff 2.5600000000000007E-9; running again
+2020.06.26 19:34:20 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 68, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.06.26 19:34:57 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 55, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
+2020.06.26 19:36:12 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 75, less than the time limit 2 minutes, with cutoff 1.0240000000000002E-10; running again
+2020.06.26 19:36:39 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:175:30 - ran for time 139, exceeding time limit 2 minutes, with cutoff 1.2800000000000004E-8
+2020.06.26 19:36:52 [INFO] provingground.learning.HoTTBot.$anonfun:1212:26 - generating equations with 2 base states and 1761 lemmas (before pruning)
+2020.06.26 19:36:52 [INFO] provingground.learning.HoTTBot.$anonfun:1220:26 - Tangent lemmas (used with bases below): 5
+(((eqM) (((mul) (((mul) (m)) (n))) (n))) (m),1.031861835475635E-4)
+(((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n),1.8497314736437831E-6)
+(((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))),2.7373671690571002E-5)
+(((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)),4.0732789685401076E-6)
+(((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)),1.6723367373034909E-6)
+2020.06.26 19:36:52 [INFO] provingground.learning.HoTTBot.$anonfun:1234:28 - Terms in base (used with tangents above): 2
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 0.047369483536245226
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 0.047369480555772954
+2020.06.26 19:36:52 [INFO] provingground.learning.HoTTBot.$anonfun:1246:28 - Lemmas in base for mixin (used with tangents above): 1
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.0019245101372386065
+2020.06.26 19:36:52 [INFO] provingground.learning.HoTTBot.$anonfun:1253:28 - Inference by unified applications, triples and weights (for this base state)
+(0.0, 2.7373671690571002E-5, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 4.0732789685401076E-6, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.047369483536245226, 1.031861835475635E-4, 4.8878762227242875E-6) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.047369480555772954, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.06.26 19:37:05 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 52, less than the time limit 2 minutes, with cutoff 2.0480000000000003E-11; running again
+2020.06.26 19:37:54 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 48, less than the time limit 2 minutes, with cutoff 4.096E-12; running again
+2020.06.26 19:38:43 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 49, less than the time limit 2 minutes, with cutoff 8.192000000000001E-13; running again
+2020.06.26 19:39:34 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 50, less than the time limit 2 minutes, with cutoff 1.6384E-13; running again
