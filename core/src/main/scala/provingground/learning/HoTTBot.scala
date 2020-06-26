@@ -58,6 +58,8 @@ object QueryBaseState {
 case class QueryEquations(equations: Set[Equation]) {
   lazy val nodes: Set[EquationNode] =
     equations.flatMap(Equation.split(_)).map(TermData.isleNormalize(_))
+
+  lazy val isleNormalized: Set[Equation] = Equation.group(nodes)
 }
 
 object QueryEquations {
@@ -929,6 +931,7 @@ object HoTTBot {
       decay: Double = 1,
       maxTime: Option[Long] = None
   ) = {
+    logger.info("Computing base state")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
       equations union (Equation.group(DE.termStateInit(initialState))),
@@ -940,7 +943,7 @@ object HoTTBot {
       decay,
       maxTime
     )
-
+    logger.info("Computed expression evaluator")
     expEv.finalTermState()
   }
 
@@ -1010,6 +1013,8 @@ object HoTTBot {
         lems => {
           logger.info(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
+          val neqs = eqns.equations
+          logger.info(s"Using ${neqs.size} equations for base states")
           psps.contents.map(
             ps =>
               Future {
@@ -1025,7 +1030,7 @@ object HoTTBot {
                 val bs       = ps.ts.copy(terms = tdist)
                 val fs = baseState(
                   bs,
-                  eqns.equations,
+                  neqs,
                   ps.tgOpt.getOrElse(lp.tg),
                   lp.maxRatio,
                   lp.scale,

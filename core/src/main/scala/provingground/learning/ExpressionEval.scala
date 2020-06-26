@@ -13,6 +13,7 @@ TermGeneratorNodes.{_}
 import annotation.tailrec
 import spire.util.Opt
 import provingground.learning.SumExpr._
+import fastparse.internal.Util
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -657,8 +658,11 @@ class ExprCalc(ev: ExpressionEval) {
       }
     }
 
-  lazy val finalVec: Vector[Double] =
+  lazy val finalVec: Vector[Double] = {
+    Utils.logger.info(s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay")
+    Utils.logger.info(s"Number of equations: ${equationVec.size}")
     stableVec(Vector.fill(equationVec.size)(0.0), exponent, decay, maxTime, 0L)
+  }
 
   lazy val finalMap = finalVec.zipWithIndex.map {
     case (x, j) => equationVec(j).lhs -> x
