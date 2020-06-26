@@ -3719,3 +3719,31 @@ P₁(m ∈ Terms) -> 0.0
 P₁(right-multiply ∈ Terms) -> 0.0
 
 
+2020.06.26 20:03:49 [INFO] provingground.learning.ExpressionEval.initMap:118:24 - Computing initial map with 284118 atoms
+2020.06.26 20:03:51 [INFO] provingground.learning.ExpressionEval.initMap:120:24 - Computed initial values
+2020.06.26 20:03:51 [INFO] provingground.learning.ExpressionEval.initMap:122:24 - Computed vector for map, size 41175
+2020.06.26 20:03:51 [INFO] provingground.learning.ExpressionEval.initMap:123:24 - Zero initial values are 219955
+2020.06.26 20:03:51 [INFO] provingground.learning.ExpressionEval.initMap:125:24 - Computed map
+2020.06.26 20:03:51 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (36,926850121), content:
+provingground.learning.ExpressionEval$$anon$2@373e9c49
+2020.06.26 20:03:51 [INFO] provingground.learning.HoTTBot.scribeLog:1947:16 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (36,926850121)
+2020.06.26 20:03:51 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.06.26 20:03:51 [INFO] provingground.learning.HoTTBot.expEvToFinalState:476:26 - computing final state
+2020.06.26 20:03:51 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.ExpressionEval]
+2020.06.26 20:03:51 [INFO] provingground.learning.ExprCalc.finalVec:674:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.06.26 20:03:51 [INFO] provingground.learning.ExprCalc.finalVec:675:22 - Number of equations: 203617
+2020.06.26 20:04:31 [INFO] provingground.learning.ExprCalc.stableVec:656:46 - completed 2 steps
+2020.06.26 20:05:51 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (37,-1266504678)
+2020.06.26 20:05:51 [INFO] provingground.learning.HoTTBot.scribeLog:1947:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (37,-1266504678)
+2020.06.26 20:05:51 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.26 20:05:51 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.26 20:05:51 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.26 20:05:51 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.26 20:11:38 [INFO] provingground.learning.ExpressionEval.initMap:118:24 - Computing initial map with 528300 atoms
+2020.06.26 20:11:42 [INFO] provingground.learning.ExpressionEval.initMap:120:24 - Computed initial values
+2020.06.26 20:11:42 [INFO] provingground.learning.ExpressionEval.initMap:122:24 - Computed vector for map, size 99116
+2020.06.26 20:11:42 [INFO] provingground.learning.ExpressionEval.initMap:123:24 - Zero initial values are 406185
+2020.06.26 20:11:43 [INFO] provingground.learning.ExpressionEval.initMap:125:24 - Computed map
+2020.06.26 20:11:43 [INFO] provingground.learning.ExprCalc.finalVec:674:22 - Computing final vector, with maximum time Some(60000), exponent: 0.5, decay: 1.0
+2020.06.26 20:11:43 [INFO] provingground.learning.ExprCalc.finalVec:675:22 - Number of equations: 378001
+2020.06.26 20:13:47 [ERROR] provingground.learning.ExprCalc.stableVec:653:25 - Timeout for stable vector after 1 steps
