@@ -3747,3 +3747,14 @@ provingground.learning.ExpressionEval$$anon$2@373e9c49
 2020.06.26 20:11:43 [INFO] provingground.learning.ExprCalc.finalVec:674:22 - Computing final vector, with maximum time Some(60000), exponent: 0.5, decay: 1.0
 2020.06.26 20:11:43 [INFO] provingground.learning.ExprCalc.finalVec:675:22 - Number of equations: 378001
 2020.06.26 20:13:47 [ERROR] provingground.learning.ExprCalc.stableVec:653:25 - Timeout for stable vector after 1 steps
+2020.06.26 20:26:19 [INFO] provingground.learning.HoTTBot.$anonfun:380:26 - Results: 5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.560071236854836E-4; statement weight 1.866788491064455E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.56980854044862E-4; statement weight 5.988912352559179E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 3.6252666175752003E-6; statement weight 6.116408622211975E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.5896830958884466E-7; statement weight 2.2187224122726392E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.56980854044862E-4; statement weight 5.185575079731098E-8
+2020.06.26 20:26:27 [INFO] provingground.learning.HoTTBot.$anonfun:380:26 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.05648147284200195; statement weight 5.948830632514585E-12
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$rmdgox :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$rmdgox)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.114927491802034E-8; statement weight 2.227353857864949E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005966699838754043; statement weight 4.516927492557045E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.005944091318820483; statement weight 4.493309113555786E-13
