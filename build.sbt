@@ -10,6 +10,8 @@ scalaVersion in ThisBuild := scalaV
 
 resolvers += Resolver.sonatypeRepo("releases")
 
+resolvers in ThisBuild += Resolver.sonatypeRepo("snapshots")
+
 // addCompilerPlugin("io.tryp" % "splain" % "0.2.7" cross CrossVersion.patch)
 
 libraryDependencies += compilerPlugin(
@@ -35,7 +37,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "com.lihaoyi"   %%% "fansi"         % "0.2.8",
     "com.lihaoyi"   %%% "upickle"       % "0.9.8",
     "com.lihaoyi" %%% "fastparse" % "2.2.3",
-    "com.chuusai"   %%% "shapeless"     % "2.3.2",
+    "com.chuusai"   %%% "shapeless"     % "2.4.0-M1",
     "org.typelevel" %%% "cats-core"     % "2.1.0",
     "io.monix"      %%% "monix"         % "3.1.0",
     "org.scalameta" %%% "scalameta"     % "4.3.0",
@@ -43,7 +45,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
     "com.lihaoyi" %%% "pprint"      % "0.5.8",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
-    "com.lihaoyi"   %%% "sourcecode"    % "0.1.4"
+    "com.lihaoyi"   %%% "sourcecode"    % "0.2.1"
   ),
   scalacOptions in Compile ++= Seq("-unchecked",
                                    "-deprecation",
@@ -64,7 +66,7 @@ assemblyMergeStrategy in assembly := {
 lazy val jvmSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
-    "com.lihaoyi" %% "os-lib" % "0.2.5",
+    "com.lihaoyi" %% "os-lib" % "0.7.0",
     "com.github.nscala-time" %% "nscala-time"   % "2.22.0",
     "org.mongodb.scala" %% "mongo-scala-driver" % "2.8.0",
     "org.reactivemongo"      %% "reactivemongo" % "0.20.1",

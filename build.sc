@@ -60,12 +60,12 @@ val commonLibs = List(
   ivy"com.lihaoyi::fansi::0.2.8",
   ivy"com.lihaoyi::upickle::0.9.8",
   ivy"com.lihaoyi::fastparse::2.2.3",
-  ivy"com.chuusai::shapeless::2.3.3",
+  ivy"com.chuusai::shapeless::2.4.0-M1",
   ivy"org.typelevel::cats-core::2.1.0",
   ivy"io.monix::monix::3.1.0",
   ivy"com.lihaoyi::pprint::0.5.8",
-  ivy"com.outr::scribe::2.7.8"
-  // ivy"com.lihaoyi::sourcecode::0.1.4"//,
+  ivy"com.outr::scribe::2.7.8",
+  ivy"com.lihaoyi::sourcecode::0.2.1"//,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
 
@@ -238,7 +238,7 @@ val mantleLibs = List(
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
   ivy"org.scalameta::mdoc:2.1.1",
-  ivy"com.lihaoyi::os-lib:0.6.3",
+  ivy"com.lihaoyi::os-lib:0.7.0",
   ivy"org.eclipse.jgit:org.eclipse.jgit:5.6.0.201912101111-r",
   ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
   ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
