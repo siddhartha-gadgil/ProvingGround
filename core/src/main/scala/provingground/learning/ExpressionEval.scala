@@ -13,6 +13,7 @@ TermGeneratorNodes.{_}
 import annotation.tailrec
 import spire.util.Opt
 import provingground.learning.SumExpr._
+import fastparse.internal.Util
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -93,10 +94,11 @@ object ExpressionEval {
   ): Option[Double] =
     exp match {
       case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq)
-      case InitialVal(elem @ Elem(el, rv)) =>
-        val base = sd.value(initialState)(rv)(el)
+      case InitialVal(elem : Elem[y]) =>
+        import elem._
+        val base = sd.value(initialState)(randomVar)(element)
         if (base > 0) Some(base)
-        else if (rv == Goals) Some(0.5) // just a quick-fix
+        else if (randomVar == Goals) Some(0.5) // just a quick-fix
         else if (isIsleVar(elem))
           Some(tg.varWeight / (1 - tg.varWeight)) // for the case of variables in islands
         else Some(0)                              // else throw new Exception(s"no initial value for $elem")
@@ -112,10 +114,21 @@ object ExpressionEval {
       tg: TermGenParams,
       initialState: TermState
   ): Map[Expression, Double] =
-    (for {
-      exp   <- atoms
-      value <- initVal(exp, tg, initialState)
-    } yield exp -> value).toMap
+    {val atomVec = atoms.toVector
+      Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
+      val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
+      Utils.logger.info("Computed initial values")
+      val expMapVec = valueVec.zipWithIndex.collect{case (Some(x), n) if x > 0 => (atomVec(n), x)}
+      Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
+      Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+      val result = expMapVec.toMap
+      Utils.logger.info("Computed map")
+    //   (for {
+    //   exp   <- atoms
+    //   value <- initVal(exp, tg, initialState)
+    // } yield exp -> value).toMap
+      result
+  }
 
   /**
     * Recursively calculate or update the value on expression, given initial values.
@@ -332,12 +345,20 @@ object ExpressionEval {
     * [[ExpressionEval]] where the type distribution is generated from the equations
     */
   trait GenerateTyps extends ExpressionEval { self =>
-    lazy val finalTyps =
-      FD {
+    lazy val finalTyps = {
+      val base = FD {
         finalDist.collect {
-          case (FinalVal(Elem(typ: Typ[Term], Typs)), w) => Weighted(typ, w)
+          case (FinalVal(Elem(typ: Typ[Term], Typs)), w) =>
+            Weighted(typ, w)
         }
-      }.safeNormalized
+      }
+      if (base.pmf.exists(_.weight.isNaN))
+        Utils.logger.error(s"NaN for some types before normalizing")
+      if (base.pmf.forall(_.weight.isNaN))
+        Utils.logger.error(s"NaN for all types before normalizing")
+
+      base.safeNormalized
+    }
 
     override def generateTyps: ExpressionEval = self
 
@@ -476,11 +497,24 @@ case class ProdExpr(
     indices: Vector[Int],
     negIndices: Vector[Int]
 ) {
-  def eval(v: Vector[Double]) =
-    (indices.map(j => v(j)) ++ negIndices.map { j =>
+  def eval(v: Vector[Double]): Double = {
+    val subTerms = (indices.map(j => v(j)) ++ negIndices.map { j =>
       val y = v(j)
-      if (y == 0) 1 else 1.0 / y
-    }).fold(constant)(_ * _)
+      if (y == 0) 1.0
+      else {
+        val rec = 1.0 / y
+        if (rec.isNaN() && !y.isNaN)
+          Utils.logger.error(s"the reciprocal of $y is not a number")
+        rec
+      }
+    })
+    val result = subTerms.fold(constant)(_ * _)
+    if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN())
+      Utils.logger.error(
+        s"the product of $subTerms  and constant $constant is not a number"
+      )
+    result
+  }
 
   def *(that: ProdExpr) =
     ProdExpr(
@@ -498,7 +532,17 @@ case class ProdExpr(
 }
 
 case class SumExpr(terms: Vector[ProdExpr]) {
-  def eval(v: Vector[Double]) = terms.map(_.eval(v)).sum
+  def eval(v: Vector[Double]): Double = {
+    val subTerms = terms.map(_.eval(v))
+    val result   = subTerms.sum
+    // if (result < 0)
+    //   Utils.logger.error(
+    //     s"Negative value for expression with terms $terms, values $subTerms"
+    //   )
+    if (result.isNaN() && !subTerms.exists(_.isNaN()))
+      Utils.logger.error(s"the sum of $subTerms is not a number")
+    result
+  }
 }
 
 object SumExpr {}
@@ -557,8 +601,18 @@ class ExprCalc(ev: ExpressionEval) {
     rhsExprs.zipWithIndex.map {
       case (exp, j) =>
         val y = exp.eval(v)
+        // if (y < 0)
+        //   Utils.logger.error(s"Equation with negative value: ${equationVec(j)}")
         val z = v(j)
-        if (z > 0) math.pow(z, 1 - exponent) * math.pow(y, exponent) else y
+        if (z > 0) {
+          val gm = math.pow(z, 1 - exponent) * math.pow(y, exponent)
+          if (gm.isNaN() && (!y.isNaN() & !z.isNaN()))
+            Utils.logger.error(
+              s"Geometric mean of $y and $z with exponent $exponent is not a number\nEquation with negative value: ${scala.util
+                .Try(equationVec(j))}"
+            )
+          gm
+        } else y
     }
   }
 
@@ -599,7 +653,7 @@ class ExprCalc(ev: ExpressionEval) {
       Utils.logger.error(s"Timeout for stable vector after $steps steps")
       initVec
     } else {
-      // if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
+      if (steps % 100 == 2) Utils.logger.info(s"completed $steps steps")
       val startTime = System.currentTimeMillis()
       val newVec    = nextVec(initVec, exponent)
       if (normalizedBounded(initVec, newVec))
@@ -616,8 +670,11 @@ class ExprCalc(ev: ExpressionEval) {
       }
     }
 
-  lazy val finalVec: Vector[Double] =
+  lazy val finalVec: Vector[Double] = {
+    Utils.logger.info(s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay")
+    Utils.logger.info(s"Number of equations: ${equationVec.size}")
     stableVec(Vector.fill(equationVec.size)(0.0), exponent, decay, maxTime, 0L)
+  }
 
   lazy val finalMap = finalVec.zipWithIndex.map {
     case (x, j) => equationVec(j).lhs -> x

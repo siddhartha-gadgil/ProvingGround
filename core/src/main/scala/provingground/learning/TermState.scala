@@ -70,7 +70,30 @@ case class TermState(
 
   def withTyps(fd: FD[Typ[Term]]): TermState = this.copy(typs = fd)
 
-  lazy val allTyps = terms.support.map(_.typ) union typs.support
+  lazy val funcDist = terms.condMap(FuncOpt)
+
+  lazy val typFamilyDist = terms.condMap(TypFamilyOpt)
+
+  lazy val typOrFamilyDist = terms.conditioned(isTypFamily)
+
+  lazy val termTyps = terms.support.map(_.typ)
+
+  lazy val termWithTyps = termTyps
+    .map(
+      typ => (typ: Typ[Term]) -> (terms.conditioned(_.typ == typ): FD[Term])
+    )
+    .toMap
+
+  lazy val funcsWithDoms = termTyps
+    .map(
+      typ =>
+        (typ: Typ[Term]) -> (terms
+          .condMap(FuncOpt)
+          .conditioned(_.dom == typ): FD[ExstFunc])
+    )
+    .toMap
+
+  lazy val allTyps = termTyps union typs.support
 
   lazy val extraTyps = terms.support.map(_.typ) -- typs.support
 
@@ -337,20 +360,19 @@ object TermState {
 
       def value[T](state: TermState)(randomVar: RandomVar[T]): FD[T] =
         randomVar match {
-          case Terms      => state.terms.map(x => x: T)
-          case Typs       => state.typs.map(x => x: T)
-          case TargetTyps => state.typs.map(x => x: T)
-          case Funcs      => state.terms.condMap(FuncOpt).map(x => x: T)
+          case Terms      => state.terms.asInstanceOf[FD[T]]
+          case Typs       => state.typs.asInstanceOf[FD[T]]
+          case TargetTyps => state.typs.asInstanceOf[FD[T]]
+          case Funcs      => state.funcDist.asInstanceOf[FD[T]]
           case TypFamilies =>
-            state.terms
-              .condMap(TypFamilyOpt)
-              .map(x => x: T)
+            state.typFamilyDist
+              .asInstanceOf[FD[T]]
           case TypsAndFamilies =>
-            state.terms.conditioned(isTypFamily).map(x => x: T)
-          case InducDefns                   => state.inds.map(x => x: T)
-          case InducStrucs                  => state.inds.map(_.ind).map(x => x: T)
-          case Goals                        => state.goals.map(x => x: T)
-          case IsleDomains                  => state.typs.map(x => x: T)
+            state.typFamilyDist.asInstanceOf[FD[T]]
+          case InducDefns                   => state.inds.asInstanceOf[FD[T]]
+          case InducStrucs                  => state.inds.map(_.ind).asInstanceOf[FD[T]]
+          case Goals                        => state.goals.asInstanceOf[FD[T]]
+          case IsleDomains                  => state.typs.asInstanceOf[FD[T]]
           case RandomVar.AtCoord(fmly, arg) => valueAt(state)(fmly, arg)
         }
 
@@ -359,14 +381,14 @@ object TermState {
       )(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): FD[T] =
         (randomVarFmly, fullArg) match {
           case (TermsWithTyp, typ :: HNil) =>
-            state.terms.conditioned(_.typ == typ).map(x => x: T)
+            state.termWithTyps.get(typ).map(_.asInstanceOf[FD[T]]).getOrElse(FD.empty[T])
           case (FuncsWithDomain, typ :: HNil) =>
-            state.terms
-              .condMap(FuncOpt)
-              .conditioned(_.dom == typ)
-              .map(x => x: T)
+            state
+              .funcsWithDoms.get(typ).map(_.asInstanceOf[FD[T]]).getOrElse(FD.empty[T])
           case (FuncForCod, cod :: HNil) =>
-            state.terms.condMap(Unify.targetCodomain(_, cod)).map(x => x: T)
+            state.terms
+              .condMap(Unify.targetCodomain(_, cod))
+              .asInstanceOf[FD[T]]
           case _ =>
             throw new IllegalArgumentException(
               s"cannot find valueAt of TermState for $randomVarFmly at $fullArg"

@@ -91,10 +91,14 @@ object SimpleEquations {
                       FinalVal(Event(Terms, Sort.Restrict(FuncOpt))),
                       finalProb(fn.func, Terms)
                     ),
-                    EquationNode(finalProb(fn.func, Terms),
-                      Coeff(Init(Terms)) * InitialVal(Elem(fn.func, Terms))),
-                    EquationNode(finalProb(x, Terms),
-                      Coeff(Init(Terms)) * InitialVal(Elem(x, Terms)))  
+                    EquationNode(
+                      finalProb(fn.func, Terms),
+                      Coeff(Init(Terms)) * InitialVal(Elem(fn.func, Terms))
+                    ),
+                    EquationNode(
+                      finalProb(x, Terms),
+                      Coeff(Init(Terms)) * InitialVal(Elem(x, Terms))
+                    )
                   )
                 appEquations union (DE.formalEquations(z) union (DE
                   .formalTypEquations(z.typ)))
@@ -120,9 +124,37 @@ object SimpleEquations {
             Unify
               .appln(fn.func, x)
               .toSet
-              .flatMap(
-                (z: Term) => DE.formalEquations(z)
-              )
+              .flatMap { (z: Term) =>
+                val appEquations: Set[EquationNode] =
+                  Set(
+                    EquationNode(
+                      finalProb(z, Terms),
+                      Coeff(unifApplnNode) * finalProb(fn, Funcs) * finalProb(
+                        x,
+                        Terms
+                      )
+                    ),
+                    EquationNode(
+                      finalProb(fn, Funcs),
+                      finalProb(fn.func, Terms) /
+                        FinalVal(Event(Terms, Sort.Restrict(FuncOpt)))
+                    ),
+                    EquationNode(
+                      FinalVal(Event(Terms, Sort.Restrict(FuncOpt))),
+                      finalProb(fn.func, Terms)
+                    ),
+                    EquationNode(
+                      finalProb(fn.func, Terms),
+                      Coeff(Init(Terms)) * InitialVal(Elem(fn.func, Terms))
+                    ),
+                    EquationNode(
+                      finalProb(x, Terms),
+                      Coeff(Init(Terms)) * InitialVal(Elem(x, Terms))
+                    )
+                  )
+                appEquations union (DE.formalEquations(z) union (DE
+                  .formalTypEquations(z.typ)))
+              }
           }
       }
       .map(_.flatten.toSet)
@@ -139,8 +171,15 @@ object SimpleEquations {
         case (t, result) =>
           val pmin = funcs.pmf.map(_.weight).filter(_ > 0).min
           val qmin = args.pmf.map(_.weight).filter(_ > 0).min
-          if (t > minTime) Utils.logger.info(s"ran for time ${t.toSeconds}, exceeding time limit, with cutoff ${cutoff}")
-          if (pmin * qmin > cutoff) Utils.logger.info(s"all pairs considered with cutoff $cutoff")
+          if (t > minTime)
+            Utils.logger.info(
+              s"ran for time ${t.toSeconds}, exceeding time limit $minTime, with cutoff ${cutoff}"
+            ) else 
+            Utils.logger.info(
+              s"ran for time ${t.toSeconds}, less than the time limit $minTime, with cutoff ${cutoff}; running again"
+            ) 
+          if (pmin * qmin > cutoff)
+            Utils.logger.info(s"all pairs considered with cutoff $cutoff")
           ((t < minTime) && (pmin * qmin < cutoff), result) // ensuring not all pairs already used
       }
       .flatMap {
@@ -152,8 +191,8 @@ object SimpleEquations {
             minTime,
             cutoffScale
           )
-        case (b, result) => 
-            Task.now(result)
+        case (b, result) =>
+          Task.now(result)
       }
 
 }

@@ -243,6 +243,19 @@ object Expression {
     case IsleScale(_, _)  => Set()
   }
 
+  def varValsNum(expr: Expression): Set[VarVal[_]] = expr match {
+    case value: VarVal[_] => Set(value)
+    case Log(exp)         => varValsNum(exp)
+    case Exp(x)           => varValsNum(x)
+    case Sum(x, y)        => varValsNum(x) union (varValsNum(y))
+    case Product(x, y)    => varValsNum(x) union (varValsNum(y))
+    case Literal(_)       => Set()
+    case Quotient(x, y)   => varValsNum(x)
+    case Coeff(_)         => Set()
+    case IsleScale(_, _)  => Set()
+  }
+
+
   def atoms(expr: Expression): Set[Expression] = expr match {
     case value: VarVal[_]     => Set(value)
     case Log(exp)             => atoms(exp)
@@ -559,7 +572,7 @@ object EquationNode {
     if (depth < 1) (Vector(), Vector(exp))
     else {
       val top       = eqs.filter(_.lhs == exp).toVector
-      val offspring = top.map(_.rhs).flatMap(Expression.varVals(_))
+      val offspring = top.map(_.rhs).flatMap(Expression.varValsNum(_))
       val desc      = offspring.map(x => traceBack(eqs, x, depth - 1))
       val descEqs   = desc.flatMap(v => v._1).distinct
       val descExp   = desc.flatMap(_._2).distinct

@@ -57,7 +57,10 @@ object QueryBaseState {
 }
 
 case class QueryEquations(equations: Set[Equation]) {
-  lazy val nodes: Set[EquationNode] = equations.flatMap(Equation.split(_))
+  lazy val nodes: Set[EquationNode] =
+    equations.flatMap(Equation.split(_)).map(TermData.isleNormalize(_))
+
+  lazy val isleNormalized: Set[Equation] = Equation.group(nodes)
 }
 
 object QueryEquations {
@@ -78,7 +81,9 @@ object QueryEquations {
               (_) => true
             )
             .map(
-              v => v.flatMap(gp => gp.contents.flatMap(_.eqn))
+              v =>
+                v.flatMap(gp => gp.contents.flatMap(_.eqn))
+                  .map(TermData.isleNormalize(_))
             )
         val gatheredExpEv =
           LocalQueryable
@@ -91,7 +96,10 @@ object QueryEquations {
               v =>
                 v.flatMap(
                   gp =>
-                    gp.contents.flatMap(_.equations).flatMap(Equation.split(_))
+                    gp.contents
+                      .flatMap(_.equations)
+                      .flatMap(Equation.split(_))
+                      .map(TermData.isleNormalize(_))
                 )
             )
         for {
@@ -207,20 +215,27 @@ object HoTTBot {
       fs: FinalState
   ): Vector[(Typ[Term], Option[Term], Double)] = {
     if (previous.size > 1) {
-      val earlierTyps = previous.last.ts.terms.support.map(_.typ)
+      val earliestTyps = previous.last.ts.terms.support.map(_.typ)
       val pfMap: scala.collection.immutable.Map[Typ[Term], Set[Term]] =
         fs.ts.terms.support
-          .filterNot(t => earlierTyps.contains(t.typ))
+          .filterNot(t => earliestTyps.contains(t.typ))
           .groupBy(_.typ)
+      logger.info(s"New lemmas: ${pfMap.size}")
+      logger.info(
+        s"Theorem numbers: ${previous.map(fs => fs.ts.terms.map(_.typ).support.size)}"
+      )
       val thmsByPf: FiniteDistribution[Typ[Term]] = fs.ts.terms
         .map(_.typ)
-        .filter(tp => !earlierTyps.contains(tp))
+        .filter(tp => !earliestTyps.contains(tp))
         .safeNormalized
       pfMap.toVector.map {
         case (tp, terms) =>
           (tp, Some(terms.maxBy(fs.ts.terms(_))), thmsByPf(tp))
       }
-    } else Vector()
+    } else {
+      logger.info("New lemmas : none as there were no previous states")
+      Vector()
+    }
   }
 
   def finalStateFilteredLemmas(
@@ -249,9 +264,12 @@ object HoTTBot {
             val proved =
               (tt union
                 qinit.init.terms.support).map(_.typ)
-            Lemmas((fs.ts.lemmas ++ newLemmas(prevFS.contents, fs)).filterNot {
-              case (tp, _, _) => proved.contains(tp)
-            })
+            Lemmas(
+              (fs.ts.lemmas // ++ newLemmas(prevFS.contents, fs)
+              ).filterNot {
+                case (tp, _, _) => proved.contains(tp)
+              }
+            )
           }
         }
     }
@@ -324,22 +342,49 @@ object HoTTBot {
   def reportProofs(
       results: Vector[Typ[Term]],
       text: String = "Results"
-  ): Callback[FinalState, HoTTPostWeb, Unit, ID] =
-    Callback.simple { (web: HoTTPostWeb) => (fs: FinalState) =>
-      val termsSet = fs.ts.terms.support
-      val pfs = results
-        .map(typ => typ -> termsSet.filter(_.typ == typ))
-        .filter(_._2.nonEmpty)
-      val view = s"$text: ${pfs.size}\n${pfs
-        .map {
-          case (tp, ps) =>
-            val best = ps.maxBy(t => fs.ts.terms(t))
-            s"Lemma: $tp; best proof: ${best} with weight ${fs.ts.terms(best)}; statement weight ${fs.ts.typs(tp)}"
-        }
-        .mkString("\n")}"
-      logger.info(view)
-      Utils.report(view)
+  ): Callback[
+    FinalState,
+    HoTTPostWeb,
+    QueryEquations,
+    ID
+  ] = {
+    val response: HoTTPostWeb => QueryEquations => FinalState => Future[
+      Unit
+    ] = { (web: HoTTPostWeb) =>
+      {
+        case qe =>
+          (fs: FinalState) =>
+            Future {
+              val termsSet = fs.ts.terms.support
+              val pfs = results
+                .map(typ => typ -> termsSet.filter(_.typ == typ))
+                .filter(_._2.nonEmpty)
+              val view = s"$text: ${pfs.size}\n${pfs
+                .map {
+                  case (tp, ps) =>
+                    val best = ps.maxBy(t => fs.ts.terms(t))
+                    val output = s"Lemma: $tp; best proof: ${best} with weight ${fs.ts
+                      .terms(best)}; statement weight ${fs.ts.typs(tp)}"
+                    if (fs.ts.typs(tp) == 0) {
+                      import GeneratorVariables._, Expression._
+                      val (eqns, terms) = EquationNode.traceBack(qe.nodes, FinalVal(Elem(tp, TermRandomVars.Typs)), 4)
+                      val eqV           = eqns.mkString("Traced back equations:\n", "\n", "\n")
+                      val termsWeights  = elemVals(terms, fs.ts)
+                      val tV =
+                        termsWeights
+                          .map { case (exp, p) => s"$exp -> $p" }
+                          .mkString("Weights of terms and types:\n", "\n", "\n")
+                      s"$output\nVanising Lemma: $tp\n$eqV$tV"
+                    } else output
+                }
+                .mkString("\n")}"
+              logger.info(view)
+              Utils.report(view)
+            }
+      }
     }
+    Callback(response)
+  }
 
   def reportTangentLemmas(
       results: Vector[Typ[Term]]
@@ -428,7 +473,10 @@ object HoTTBot {
 
   lazy val expEvToFinalState: SimpleBot[ExpressionEval, FinalState] =
     MicroBot.simple(
-      (ev: ExpressionEval) => FinalState(ev.finalTermState())
+      (ev: ExpressionEval) => {
+        Utils.logger.info("computing final state")
+        FinalState(ev.finalTermState())
+      }
     )
 
   lazy val instanceToGoal: MicroBot[Instance, Option[
@@ -559,10 +607,10 @@ object HoTTBot {
   def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
-    Set[EquationNode] :: QueryProver :: HNil
+    QueryEquations :: QueryProver :: HNil
   ] = {
     val response
-        : Set[EquationNode] :: QueryProver :: HNil => GeneratedEquationNodes => Future[
+        : QueryEquations :: QueryProver :: HNil => GeneratedEquationNodes => Future[
           ExpressionEval
         ] = {
       case eqns :: qlp :: HNil =>
@@ -572,13 +620,14 @@ object HoTTBot {
           Future(
             ExpressionEval.fromInitEqs(
               lp.initState,
-              Equation.group(eqns union (neqs)),
+              Equation.group(eqns.nodes union (neqs)),
               tgOpt.getOrElse(lp.tg),
               lp.maxRatio,
               lp.scale,
               lp.smoothing,
               lp.exponent,
-              lp.decay
+              lp.decay,
+              lp.maxTime
             )
           )
     }
@@ -874,7 +923,7 @@ object HoTTBot {
 
   def baseState(
       initialState: TermState,
-      equations: Set[Equation],
+      equationNodes: Set[EquationNode],
       tg: TermGenParams,
       maxRatio: Double = 1.01,
       scale: Double = 1.0,
@@ -883,9 +932,10 @@ object HoTTBot {
       decay: Double = 1,
       maxTime: Option[Long] = None
   ) = {
+    logger.info("Computing base state")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      equations union (Equation.group(DE.termStateInit(initialState))),
+      Equation.group(equationNodes union (DE.termStateInit(initialState).map(TermData.isleNormalize(_)))),
       tg,
       maxRatio,
       scale,
@@ -894,7 +944,7 @@ object HoTTBot {
       decay,
       maxTime
     )
-
+    logger.info("Computed expression evaluator")
     expEv.finalTermState()
   }
 
@@ -927,7 +977,7 @@ object HoTTBot {
             val bs       = lp.initState.copy(terms = tdist)
             val fs = baseState(
               bs,
-              eqns.equations,
+              eqns.nodes,
               lp.tg,
               lp.maxRatio,
               lp.scale,
@@ -964,6 +1014,8 @@ object HoTTBot {
         lems => {
           logger.info(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
+          val neqs = eqns.nodes
+          logger.info(s"Using ${neqs.size} equation nodes for base states")
           psps.contents.map(
             ps =>
               Future {
@@ -979,7 +1031,7 @@ object HoTTBot {
                 val bs       = ps.ts.copy(terms = tdist)
                 val fs = baseState(
                   bs,
-                  eqns.equations,
+                  neqs,
                   ps.tgOpt.getOrElse(lp.tg),
                   lp.maxRatio,
                   lp.scale,
@@ -1207,18 +1259,20 @@ object HoTTBot {
                   )
                 )
                 val traceViews = steps.map { tp =>
-                  val (eqns, terms) = proofTrace(qe.nodes, tp, 4)
-                  val eqV           = eqns.mkString("Traced back equations", "\n", "\n")
-                  val termsWeights  = elemVals(terms, fs.ts)
+                  val (eqns, terms) =
+                    proofTrace(qe.nodes union (DE.termStateInit(fs.ts)), tp, 4)
+                  val eqV =
+                    eqns.mkString("Traced back equations:\n", "\n", "\n")
+                  val termsWeights = elemVals(terms, fs.ts)
                   val tV =
                     termsWeights
                       .map { case (exp, p) => s"$exp -> $p" }
-                      .mkString("Weights of terms and types", "\n", "\n")
+                      .mkString("Weights of terms and types:\n", "\n", "\n")
                   s"Lemma: $tp\n$eqV$tV"
                 }
                 logger.info(
                   traceViews.mkString(
-                    "Tracing back equations and values for steps",
+                    "Tracing back equations and values for steps\n",
                     "\n",
                     "\n"
                   )
