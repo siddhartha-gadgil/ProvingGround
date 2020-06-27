@@ -42,12 +42,19 @@ lazy val commonSettings = baseSettings ++ Seq(
     "io.monix"      %%% "monix"         % "3.1.0",
     "org.scalameta" %%% "scalameta"     % "4.3.0",
     "com.outr" %%% "scribe" % "2.7.8",
-    // "org.scala-lang.modules" %%% "scala-parallel-collections" % "0.2.0",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
     "com.lihaoyi" %%% "pprint"      % "0.5.8",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.lihaoyi"   %%% "sourcecode"    % "0.2.1"
   ),
+  libraryDependencies ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, major)) if major <= 12 =>
+      Seq()
+    case _ =>
+      Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0")
+  }
+}
   scalacOptions in Compile ++= Seq("-unchecked",
                                    "-deprecation",
                                    "-feature",

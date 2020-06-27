@@ -14,6 +14,8 @@ import annotation.tailrec
 import spire.util.Opt
 import provingground.learning.SumExpr._
 import fastparse.internal.Util
+import scala.collection.parallel.CollectionConverters._
+import scala.collection.parallel.immutable._
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,

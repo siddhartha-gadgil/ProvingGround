@@ -65,6 +65,7 @@ val commonLibs = List(
   ivy"io.monix::monix::3.1.0",
   ivy"com.lihaoyi::pprint::0.5.8",
   ivy"com.outr::scribe::2.7.8",
+  ivy"org.scala-lang.modules::scala-parallel-collections:0.2.0",
   ivy"com.lihaoyi::sourcecode::0.2.1"//,
   // ivy"com.geirsson::scalafmt-core::1.6.0-RC1"
 )
