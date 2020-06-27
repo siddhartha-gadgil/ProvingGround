@@ -42,6 +42,7 @@ lazy val commonSettings = baseSettings ++ Seq(
     "io.monix"      %%% "monix"         % "3.1.0",
     "org.scalameta" %%% "scalameta"     % "4.3.0",
     "com.outr" %%% "scribe" % "2.7.8",
+    // "org.scala-lang.modules" %%% "scala-parallel-collections" % "0.2.0",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
     "com.lihaoyi" %%% "pprint"      % "0.5.8",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
@@ -73,8 +74,8 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka"      %% "akka-actor"    % akkaV,
     "com.typesafe.akka"      %% "akka-slf4j"    % akkaV,
     // "de.heikoseeberger"      %% "akka-sse"      % "2.0.0",
-    "org.scalactic" %% "scalactic" % "3.1.0",
-    "org.scalatest" %% "scalatest" % "3.1.0" % "test",
+    "org.scalactic" %% "scalactic" % "3.2.0",
+    "org.scalatest" %% "scalatest" % "3.2.0" % "test",
     "com.lihaoyi" %% "cask" % "0.5.2",
 //    "ch.qos.logback" % "logback-classic" % "1.0.9",
     "com.typesafe" % "config" % "1.3.0",
@@ -125,7 +126,7 @@ lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.full,
     "com.lihaoyi"         %% "ammonite-ops"    % ammV,
-    "com.lihaoyi"   %% "upickle"       % "0.7.1",
+    "com.lihaoyi"   %% "upickle"       % "0.9.8",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",
     "com.google.protobuf" % "protobuf-java"    % "2.6.1",
@@ -162,9 +163,9 @@ lazy val client = project
     // resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.2",
-      "com.lihaoyi"  %%% "scalatags"   % "0.6.7",
-      "com.lihaoyi"  %%% "upickle"     % "0.6.6",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.7",
+      "com.lihaoyi"  %%% "scalatags"   % "0.9.1",
+      "com.lihaoyi"  %%% "upickle"     % "0.9.8",
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       // "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
@@ -198,10 +199,10 @@ lazy val server = (project in file("server"))
     // compile in Compile <<= (compile in Compile) dependsOn scalaJSPipeline,
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-http"       % "10.1.1",
-      "com.vmunier"       %% "scalajs-scripts" % "1.1.0",
+      "com.vmunier"       %% "scalajs-scripts" % "1.1.4",
       "com.typesafe.akka" %% "akka-actor"  % akkaV,
       "com.typesafe.akka" %% "akka-stream" % akkaV,
-      "com.github.scopt"  %% "scopt"       % "3.5.0"
+      "com.github.scopt"  %% "scopt"       % "3.7.1"
     )
     // ,
     // resources in Compile += (fastOptJS in (client, Compile)).value.data
