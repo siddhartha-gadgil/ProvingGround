@@ -17,6 +17,8 @@ import andrewscurtis._
 import SimpleAcEvolution._
 
 import upickle.default._
+import scala.math.Ordering.Double.TotalOrdering
+
 
 object AndrewsCurtisJS {
   def readPath(s: String) = read[PickledPath](s).unpickle
