@@ -156,7 +156,7 @@ val jvmLibs = List(
   ivy"com.typesafe.akka::akka-http-spray-json:10.1.11",
   ivy"org.slf4j:slf4j-api:1.7.30",
   ivy"org.slf4j:slf4j-simple:1.7.30",
-  ivy"com.github.scopt::scopt:3.7.1",
+  ivy"com.github.scopt::scopt:4.0.0-RC2",
   ivy"com.atlassian.commonmark:commonmark:0.13.1",
   ivy"org.apache.logging.log4j:log4j-core:2.13.0",
   ivy"org.platanios::tensorflow:0.5.1-SNAPSHOT;classifier=linux-cpu-x86_64",
@@ -213,7 +213,7 @@ object trepplein extends SbtModule with PublishModule {
   def scalaVersion = scalaV
   override def ivyDeps =
     Agg(
-      ivy"com.github.scopt::scopt:3.7.1"
+      ivy"com.github.scopt::scopt:4.0.0-RC2"
     )
 
   def name = "trepplein"
@@ -254,8 +254,8 @@ def glog = {
   val builder = new FileRepositoryBuilder()
   val repo    = builder.findGitDir(new File(".")).readEnvironment().build()
   val git     = new api.Git(repo)
-  import scala.collection.JavaConversions._
-  git.log().call().head
+  import scala.jdk.CollectionConverters._
+  git.log().call().asScala.head
 }
 
 def gitlog() = {
