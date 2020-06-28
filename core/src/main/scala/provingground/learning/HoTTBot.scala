@@ -1280,11 +1280,19 @@ object HoTTBot {
                           .map { exp =>
                             s"$exp -> ${ev.finalDist(exp)}"
                           }
-                          .mkString("Weights of expressions in final distribution:\n", "\n", "\n")
-                      s"Lemma: $tp\n$eqV$tV"
+                          .mkString(
+                            "Weights of expressions in final distribution:\n",
+                            "\n",
+                            "\n"
+                          )
+                      val expTrace = proofEquationLHS(
+                        ev.equations.flatMap(Equation.split(_)),
+                        tp
+                      ).map(pf => ev.exprCalc.trackOutput(pf)).mkString("\n")
+                      s"Lemma: $tp\n$eqV$tV\n$expTrace"
 
                     }
-                    .getOrElse("No expression-evalation traceback data")
+                    .getOrElse("No expression-evaluation traceback data")
 
                 // val (eqns, terms) =
                 //   proofTrace(qe.nodes union (DE.termStateInit(fs.ts)), tp, 4)

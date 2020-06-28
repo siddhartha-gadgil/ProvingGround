@@ -753,6 +753,26 @@ class ExprCalc(ev: ExpressionEval) {
     }
     finalVec.zipWithIndex.map(fn).toMap ++ init
   }
+
+  def track(exp: Expression) : Option[(Double, SumExpr, Double, Vector[Double])] = 
+     equationVec.zipWithIndex.find(_._1.lhs == exp).map{
+       case (_, j) =>
+          (finalVec(j),
+          rhsExprs(j),
+          rhsExprs(j).eval(finalVec),
+          rhsExprs(j).terms.map(_.eval(finalVec))
+          )
+     }
+
+  def trackOutput(exp: Expression) : String = 
+     track(exp).map{
+       case (value, rhs, rhsValue, rhsTermsValue) => 
+       s""""final value: $value
+       |rhs expression: $rhs
+       |rhs final value: $rhsValue
+       |rhs term values: $rhsTermsValue
+       |""".stripMargin
+     }.getOrElse("No equation with lhs $exp")
 }
 
 trait ExpressionEval { self =>
