@@ -935,7 +935,11 @@ object HoTTBot {
     logger.info("Computing base state")
     val expEv = ExpressionEval.fromInitEqs(
       initialState,
-      Equation.group(equationNodes union (DE.termStateInit(initialState).map(TermData.isleNormalize(_)))),
+      Equation.group(
+        equationNodes union (DE
+          .termStateInit(initialState)
+          .map(TermData.isleNormalize(_)))
+      ),
       tg,
       maxRatio,
       scale,
@@ -945,7 +949,7 @@ object HoTTBot {
       maxTime
     )
     logger.info("Computed expression evaluator")
-    expEv.finalTermState()
+    (expEv.finalTermState(), expEv)
   }
 
   def baseStateFromLp(
@@ -985,7 +989,7 @@ object HoTTBot {
               lp.exponent,
               lp.decay,
               lp.maxTime
-            )
+            )._1
             TangentBaseState(
               fs,
               cutoffScale,
@@ -1029,7 +1033,7 @@ object HoTTBot {
                 val baseDist = ps.ts.terms
                 val tdist    = (baseDist * (1.0 - ps.lemmaMix) ++ (lemPfDist * ps.lemmaMix))
                 val bs       = ps.ts.copy(terms = tdist)
-                val fs = baseState(
+                val (fs, expEv) = baseState(
                   bs,
                   neqs,
                   ps.tgOpt.getOrElse(lp.tg),
@@ -1044,7 +1048,8 @@ object HoTTBot {
                   fs.purge(ps.baseCutoff),
                   ps.cutoffScale,
                   ps.tgOpt,
-                  ps.depthOpt
+                  ps.depthOpt,
+                  Some(expEv)
                 )
               }
           )
@@ -1259,16 +1264,38 @@ object HoTTBot {
                   )
                 )
                 val traceViews = steps.map { tp =>
-                  val (eqns, terms) =
-                    proofTrace(qe.nodes union (DE.termStateInit(fs.ts)), tp, 4)
-                  val eqV =
-                    eqns.mkString("Traced back equations:\n", "\n", "\n")
-                  val termsWeights = elemVals(terms, fs.ts)
-                  val tV =
-                    termsWeights
-                      .map { case (exp, p) => s"$exp -> $p" }
-                      .mkString("Weights of terms and types:\n", "\n", "\n")
-                  s"Lemma: $tp\n$eqV$tV"
+                  fs.evOpt
+                    .map { ev =>
+                      val (eqns, terms) =
+                        proofTrace(
+                          ev.equations.flatMap(Equation.split(_)),
+                          tp,
+                          4
+                        )
+                      val eqV =
+                        eqns.mkString("Traced back equations:\n", "\n", "\n")
+                      val termsWeights = elemVals(terms, fs.ts)
+                      val tV =
+                        terms
+                          .map { exp =>
+                            s"$exp -> ${ev.finalDist(exp)}"
+                          }
+                          .mkString("Weights of expressions in final distribution:\n", "\n", "\n")
+                      s"Lemma: $tp\n$eqV$tV"
+
+                    }
+                    .getOrElse("No expression-evalation traceback data")
+
+                // val (eqns, terms) =
+                //   proofTrace(qe.nodes union (DE.termStateInit(fs.ts)), tp, 4)
+                // val eqV =
+                //   eqns.mkString("Traced back equations:\n", "\n", "\n")
+                // val termsWeights = elemVals(terms, fs.ts)
+                // val tV =
+                //   termsWeights
+                //     .map { case (exp, p) => s"$exp -> $p" }
+                //     .mkString("Weights of terms and types:\n", "\n", "\n")
+                // s"Lemma: $tp\n$eqV$tV"
                 }
                 logger.info(
                   traceViews.mkString(

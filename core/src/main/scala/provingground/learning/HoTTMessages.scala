@@ -77,7 +77,8 @@ object HoTTMessages {
       ts: TermState,
       cutoffScale: Double = 1.0,
       tgOpt: Option[TermGenParams] = None,
-      depthOpt: Option[Int] = None
+      depthOpt: Option[Int] = None,
+      evOpt: Option[ExpressionEval] = None
   )
 
   case object TangentBaseCompleted
