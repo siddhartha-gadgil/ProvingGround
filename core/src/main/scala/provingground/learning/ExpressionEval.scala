@@ -18,7 +18,6 @@ import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
 import scala.math.Ordering.Double.TotalOrdering
 
-
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
   * given equations satisfied by these
@@ -98,7 +97,7 @@ object ExpressionEval {
   ): Option[Double] =
     exp match {
       case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq)
-      case InitialVal(elem : Elem[y]) =>
+      case InitialVal(elem: Elem[y]) =>
         import elem._
         val base = sd.value(initialState)(randomVar)(element)
         if (base > 0) Some(base)
@@ -117,21 +116,23 @@ object ExpressionEval {
       atoms: Set[Expression],
       tg: TermGenParams,
       initialState: TermState
-  ): Map[Expression, Double] =
-    {val atomVec = atoms.toVector
-      Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
-      val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
-      Utils.logger.info("Computed initial values")
-      val expMapVec = valueVec.zipWithIndex.collect{case (Some(x), n) if x > 0 => (atomVec(n), x)}
-      Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
-      Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
-      val result = expMapVec.toMap
-      Utils.logger.info("Computed map")
+  ): Map[Expression, Double] = {
+    val atomVec = atoms.toVector
+    Utils.logger.info(s"Computing initial map with ${atomVec.size} atoms")
+    val valueVec = atomVec.map(exp => initVal(exp, tg, initialState))
+    Utils.logger.info("Computed initial values")
+    val expMapVec = valueVec.zipWithIndex.collect {
+      case (Some(x), n) if x > 0 => (atomVec(n), x)
+    }
+    Utils.logger.info(s"Computed vector for map, size ${expMapVec.size}")
+    Utils.logger.info(s"Zero initial values are ${valueVec.count(_.isEmpty)}")
+    val result = expMapVec.toMap
+    Utils.logger.info("Computed map")
     //   (for {
     //   exp   <- atoms
     //   value <- initVal(exp, tg, initialState)
     // } yield exp -> value).toMap
-      result
+    result
   }
 
   /**
@@ -582,23 +583,27 @@ class ExprCalc(ev: ExpressionEval) {
       Expression.sumTerms(exp).map(getProd(_))
     )
 
-  lazy val rhsExprs: ParVector[SumExpr] = equationVec.map(eq => simplify(eq.rhs))
+  lazy val rhsExprs: ParVector[SumExpr] =
+    equationVec.map(eq => simplify(eq.rhs))
 
   lazy val termIndices: ParVector[Int] = {
-    val pfn : PartialFunction[(Equation, Int), Int] = {
-    case (Equation(FinalVal(Elem(_, Terms)), _), j) => j
-  }
-      equationVec.zipWithIndex.collect(pfn)
-  }
-  
-
-  lazy val typIndices: ParVector[Int] = {val pfn : PartialFunction[(Equation, Int), Int] = {
-    case (Equation(FinalVal(Elem(_, Typs)), _), j) => j
-  }
-      equationVec.zipWithIndex.collect(pfn)
+    val pfn: PartialFunction[(Equation, Int), Int] = {
+      case (Equation(FinalVal(Elem(_, Terms)), _), j) => j
+    }
+    equationVec.zipWithIndex.collect(pfn)
   }
 
-  def restrict(v: ParVector[Double], indices: ParVector[Int]): ParVector[Double] = {
+  lazy val typIndices: ParVector[Int] = {
+    val pfn: PartialFunction[(Equation, Int), Int] = {
+      case (Equation(FinalVal(Elem(_, Typs)), _), j) => j
+    }
+    equationVec.zipWithIndex.collect(pfn)
+  }
+
+  def restrict(
+      v: ParVector[Double],
+      indices: ParVector[Int]
+  ): ParVector[Double] = {
     val base = indices.map { j =>
       v(j)
     }
@@ -608,7 +613,7 @@ class ExprCalc(ev: ExpressionEval) {
 
   def nextVec(v: ParVector[Double], exponent: Double): ParVector[Double] = {
     // pprint.log(exponent)
-    val fn : ((SumExpr, Int)) => Double =  {
+    val fn: ((SumExpr, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         // if (y < 0)
@@ -623,6 +628,16 @@ class ExprCalc(ev: ExpressionEval) {
             )
           gm
         } else y
+    }
+    rhsExprs.zipWithIndex.map(fn)
+  }
+
+  def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
+    val fn: ((SumExpr, Int)) => Double = {
+      case (exp, j) =>
+        val y = exp.eval(v)
+        val z = v(j)
+        if (z > 0) z else y
     }
     rhsExprs.zipWithIndex.map(fn)
   }
@@ -682,18 +697,59 @@ class ExprCalc(ev: ExpressionEval) {
       }
     }
 
+  @tailrec
+  final def stableSupportVec(
+      initVec: ParVector[Double],
+      maxTime: Option[Long],
+      steps: Long
+  ): ParVector[Double] =
+    if (maxTime.map(limit => limit < 0).getOrElse(false)) {
+      Utils.logger.error(
+        s"Timeout for stable support vector after $steps steps"
+      )
+      initVec
+    } else {
+      if (steps % 100 == 2)
+        Utils.logger.info(
+          s"completed $steps steps without stable support, support size : ${initVec
+            .count(_ > 0)}"
+        )
+      val startTime = System.currentTimeMillis()
+      val newVec    = simpleNextVec(initVec)
+      if ((0 until (initVec.size)).forall(
+            n => (initVec(n) != 0) || (newVec(n) == 0)
+          ))
+        newVec
+      else {
+        val usedTime = System.currentTimeMillis() - startTime
+        stableSupportVec(
+          newVec,
+          maxTime.map(t => t - usedTime),
+          steps + 1
+        )
+      }
+    }
+
   lazy val finalVec: ParVector[Double] = {
-    Utils.logger.info(s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay")
+    Utils.logger.info(
+      s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
+    )
     Utils.logger.info(s"Number of equations: ${equationVec.size}")
-    stableVec(ParVector.fill(equationVec.size)(0.0), exponent, decay, maxTime, 0L)
+    stableVec(
+      ParVector.fill(equationVec.size)(0.0),
+      exponent,
+      decay,
+      maxTime,
+      0L
+    )
   }
 
   lazy val finalMap = {
-    val fn : ((Double, Int)) => (Expression, Double) = {
-    case (x, j) => equationVec(j).lhs -> x
+    val fn: ((Double, Int)) => (Expression, Double) = {
+      case (x, j) => equationVec(j).lhs -> x
+    }
+    finalVec.zipWithIndex.map(fn).toMap ++ init
   }
-    finalVec.zipWithIndex.map(fn) .toMap ++ init
-}
 }
 
 trait ExpressionEval { self =>
@@ -1088,8 +1144,7 @@ trait ExpressionEval { self =>
         case InitialVal(variable) => variable
       }
       .flatMap(x => elemContext(x).map(y => x -> y))
-      .groupMap(_._2)
-      { case (x, _) => InitialVal(x): Expression }
+      .groupMap(_._2) { case (x, _) => InitialVal(x): Expression }
 
   lazy val finalVarGroups: Map[(RandomVar[_], Vector[_]), Set[Expression]] =
     atoms
@@ -1097,7 +1152,7 @@ trait ExpressionEval { self =>
         case FinalVal(variable) => variable
       }
       .flatMap(x => elemContext(x).map(y => x -> y))
-      .groupMap(_._2){ case (x, _) => FinalVal(x): Expression }
+      .groupMap(_._2) { case (x, _) => FinalVal(x): Expression }
 
   def expressionGroup(exp: Expression): Option[Set[Expression]] = exp match {
     case InitialVal(variable) =>
@@ -1352,7 +1407,9 @@ trait ExpressionEval { self =>
     .filter(typ => thmSet.contains(typ))
     .safeNormalized
     .toMap
-    .view.mapValues(Literal).toMap
+    .view
+    .mapValues(Literal)
+    .toMap
 
   def proofExpression(typ: Typ[Term]): Expression =
     finalTermSet
