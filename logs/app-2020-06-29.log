@@ -558,4 +558,251 @@ Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); 
 2020.06.29 09:59:02 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
 2020.06.29 09:59:02 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
 2020.06.29 09:59:02 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
-2020.06.29 09:59:02 [INFO] provi
+2020.06.29 09:59:02 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:03 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:03 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:03 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:03 [INFO] provingground.learning.ExprCalc.finalVec:750:22 - Obtained vector with stable support
+2020.06.29 09:59:03 [INFO] provingground.learning.ExprCalc.stableVec:687:46 - completed 2 steps
+2020.06.29 09:59:20 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (22,-387333688)
+2020.06.29 09:59:20 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 1 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.06.29 09:59:20 [INFO] provingground.learning.HoTTBot.baseState:935:16 - Computing base state
+2020.06.29 09:59:25 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 48587 atoms
+2020.06.29 09:59:40 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.06.29 09:59:40 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 7544
+2020.06.29 09:59:40 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 38697
+2020.06.29 09:59:40 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.06.29 09:59:40 [INFO] provingground.learning.HoTTBot.baseState:951:16 - Computed expression evaluator
+2020.06.29 09:59:40 [INFO] provingground.learning.ExprCalc.finalVec:744:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.06.29 09:59:40 [INFO] provingground.learning.ExprCalc.finalVec:747:22 - Number of equations: 36994
+2020.06.29 09:59:40 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:40 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.stableSupportVec:717:26 - completed 2 steps without stable support, support size : 3149
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:41 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 36994 expressions
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.finalVec:750:22 - Obtained vector with stable support
+2020.06.29 09:59:42 [INFO] provingground.learning.ExprCalc.stableVec:687:46 - completed 2 steps
+2020.06.29 10:00:02 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseState], id: (23,-559578554)
+2020.06.29 10:00:02 [INFO] provingground.learning.TypedPostResponse.DualMiniBot.$anonfun.applyOrElse:399:44 - remaining 0 responses of type TypeTag[provingground.learning.HoTTMessages.TangentBaseState]
+2020.06.29 10:00:02 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (24,-1666923435), content:
+TangentBaseCompleted
+2020.06.29 10:00:02 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes] to posts of type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.06.29 10:00:02 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type]
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.$anonfun:1218:26 - generating equations with 2 base states and 294 lemmas (before pruning)
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.$anonfun:1226:26 - Tangent lemmas (used with bases below): 5
+(((eqM) (((mul) (((mul) (m)) (n))) (n))) (m),0.001902284697497497)
+(((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n),3.4141706227365586E-5)
+(((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))),5.049840276399408E-4)
+(((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)),7.517476110444384E-5)
+(((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)),3.086539794772463E-5)
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.$anonfun:1240:28 - Terms in base (used with tangents above): 2
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best term: (left-multiply) (((mul) (m)) (n)) with weight 0.038259229375268905
+Type: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best term: (right-multiply) (m) with weight 0.03825921964765306
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.$anonfun:1252:28 - Lemmas in base for mixin (used with tangents above): 5
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best term: ((ass1) (m)) (n) with weight 0.0061364847281943895
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best term: ((ass2) (((mul) (m)) (n))) (n) with weight 0.0012146924424890281
+Type: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best term: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 0.00339375402748934
+Type: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best term: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 0.0015002501641395618
+Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best term: ((ass1) (((mul) (m)) (n))) (m) with weight 0.0011693874930947673
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.$anonfun:1259:28 - Inference by unified applications, triples and weights (for this base state)
+(0.0, 5.049840276399408E-4, 0.0) for ((`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))), (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))))
+(0.0, 7.517476110444384E-5, 0.0) for ((`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)))
+(0.038259229375268905, 0.001902284697497497, 7.277994657862076E-5) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))), ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m), ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)))
+(0.03825921964765306, 0.0, 0.0) for ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))), ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)), ((eqM) (((mul) (n)) (m))) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m)))
+
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.scribeLog:1983:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.TangentBaseCompleted.type], id: (24,-1666923435)
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.scribeLog:1983:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.BaseMixinLemmas], id: (21,996085819)
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.scribeLog:1983:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.Lemmas], id: (18,160356347)
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.scribeLog:1983:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (17,1452491071)
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.scribeLog:1983:16 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (16,1992878039)
+2020.06.29 10:00:22 [INFO] provingground.learning.HoTTBot.scribeLog:1983:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (15,-359946535)
+2020.06.29 10:00:23 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.06.29 10:00:23 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 0.001; running again
+2020.06.29 10:00:23 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.06.29 10:00:23 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 0, less than the time limit 2 minutes, with cutoff 2.0E-4; running again
+2020.06.29 10:00:23 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.06.29 10:00:25 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 4.0E-5; running again
+2020.06.29 10:00:26 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 1, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.06.29 10:00:30 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 4, less than the time limit 2 minutes, with cutoff 8.000000000000001E-6; running again
+2020.06.29 10:00:30 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 3, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.06.29 10:00:39 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 8, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.06.29 10:00:44 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 13, less than the time limit 2 minutes, with cutoff 1.6000000000000004E-6; running again
+2020.06.29 10:00:46 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 7, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.06.29 10:00:53 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 7, less than the time limit 2 minutes, with cutoff 1.2800000000000004E-8; running again
+2020.06.29 10:01:00 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 6, less than the time limit 2 minutes, with cutoff 2.5600000000000007E-9; running again
+2020.06.29 10:01:00 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 16, less than the time limit 2 minutes, with cutoff 3.2000000000000006E-7; running again
+2020.06.29 10:01:16 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 15, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
+2020.06.29 10:01:22 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 6, less than the time limit 2 minutes, with cutoff 1.0240000000000002E-10; running again
+2020.06.29 10:01:28 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 27, less than the time limit 2 minutes, with cutoff 6.400000000000002E-8; running again
+2020.06.29 10:01:28 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 6, less than the time limit 2 minutes, with cutoff 2.0480000000000003E-11; running again
+2020.06.29 10:01:44 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 15, less than the time limit 2 minutes, with cutoff 4.096E-12; running again
+2020.06.29 10:01:50 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 6, less than the time limit 2 minutes, with cutoff 8.192000000000001E-13; running again
+2020.06.29 10:01:50 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:182:30 - all pairs considered with cutoff 8.192000000000001E-13
+2020.06.29 10:01:53 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 24, less than the time limit 2 minutes, with cutoff 1.2800000000000004E-8; running again
+2020.06.29 10:02:11 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 17, less than the time limit 2 minutes, with cutoff 2.5600000000000007E-9; running again
+2020.06.29 10:02:29 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 18, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
+2020.06.29 10:02:47 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 18, less than the time limit 2 minutes, with cutoff 1.0240000000000002E-10; running again
+2020.06.29 10:03:06 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 18, less than the time limit 2 minutes, with cutoff 2.0480000000000003E-11; running again
+2020.06.29 10:03:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 18, less than the time limit 2 minutes, with cutoff 4.096E-12; running again
+2020.06.29 10:03:42 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 18, less than the time limit 2 minutes, with cutoff 8.192000000000001E-13; running again
+2020.06.29 10:03:42 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:182:30 - all pairs considered with cutoff 8.192000000000001E-13
+2020.06.29 10:03:42 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (25,529795951)
+2020.06.29 10:03:42 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.06.29 10:03:42 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.06.29 10:07:49 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 80063 atoms
+2020.06.29 10:07:51 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.06.29 10:07:51 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 8809
+2020.06.29 10:07:51 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 62879
+2020.06.29 10:07:51 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.06.29 10:07:51 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.ExpressionEval], id: (26,1520827171), content:
+provingground.learning.ExpressionEval$$anon$2@5aa5fb23
+2020.06.29 10:07:51 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.06.29 10:07:51 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.ExpressionEval]
+2020.06.29 10:08:00 [INFO] provingground.learning.HoTTBot.expEvToFinalState:477:26 - computing final state
+2020.06.29 10:08:00 [INFO] provingground.learning.ExprCalc.finalVec:744:22 - Computing final vector, with maximum time Some(500000), exponent: 0.5, decay: 1.0
+2020.06.29 10:08:00 [INFO] provingground.learning.ExprCalc.finalVec:747:22 - Number of equations: 58934
+2020.06.29 10:08:00 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:00 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.stableSupportVec:717:26 - completed 2 steps without stable support, support size : 4298
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:06 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:08 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:09 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:10 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:11 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:08:12 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 58934 expressions
+2020.06.29 10:08:13 [INFO] provingground.learning.ExprCalc.finalVec:750:22 - Obtained vector with stable support
+2020.06.29 10:08:13 [INFO] provingground.learning.ExprCalc.stableVec:687:46 - completed 2 steps
+2020.06.29 10:08:34 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.FinalState], id: (27,-123261745)
+2020.06.29 10:08:34 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.29 10:08:34 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.29 10:08:34 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.29 10:08:34 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.06.29 10:10:15 [INFO] provingground.learning.HoTTBot.$anonfun:381:26 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proof: trans with weight 0.056487601019626174; statement weight 5.948780842314806E-12
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); best proof: (`$slehwn :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$slehwn)) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.116520328721141E-8; statement weight 2.2316384449537635E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c))))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.00596756836011005; statement weight 4.5191850527441166E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-multiply) (m) with weight 0.005944953712429624; statement weight 4.4955499461356484E-13
+2020.06.29 10:11:53 [INFO] provingground.learning.HoTTBot.$anonfun:381:26 - Results: 5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.560671187033645E-4; statement weight 1.8671986552819867E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weight 2.570411996246284E-4; statement weight 5.990984858055124E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 3.6262503674813976E-6; statement weight 6.118530099381221E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.5902614449922404E-7; statement weight 2.2197708162085344E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weight 2.570411996246284E-4; statement weight 5.187385120221475E-8
+2020.06.29 10:13:18 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 357463 atoms
+2020.06.29 10:13:18 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.06.29 10:13:18 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 67225
+2020.06.29 10:13:18 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 276715
+2020.06.29 10:13:18 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.06.29 10:13:18 [INFO] provingground.learning.ExprCalc.finalVec:744:22 - Computing final vector, with maximum time Some(60000), exponent: 0.5, decay: 1.0
+2020.06.29 10:13:18 [INFO] provingground.learning.ExprCalc.finalVec:747:22 - Number of equations: 261121
+2020.06.29 10:13:18 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:13:18 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:13:28 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 261121 expressions
+2020.06.29 10:13:29 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:13:29 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:13:29 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 261121 expressions
+2020.06.29 10:13:31 [INFO] provingground.learning.ExprCalc.stableSupportVec:717:26 - completed 2 steps without stable support, support size : 21902
+2020.06.29 10:13:31 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:13:31 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:13:31 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 261121 expressions
+2020.06.29 10:13:32 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:13:32 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:13:32 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 261121 expressions
+2020.06.29 10:13:35 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:13:35 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:13:35 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 261121 expressions
+2020.06.29 10:13:36 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:13:36 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 - Computing new vector: defined function
+2020.06.29 10:13:36 [INFO] provingground.learning.ExprCalc.simpleNextVec:645:22 - Mapping 261121 expressions
+2020.06.29 10:13:37 [INFO] provingground.learning.ExprCalc.simpleNextVec:636:22 - Computing new vector
+2020.06.29 10:13:37 [INFO] provingground.learning.ExprCalc.simpleNextVec:643:22 -
