@@ -1049,7 +1049,8 @@ object HoTTBot {
                   ps.cutoffScale,
                   ps.tgOpt,
                   ps.depthOpt,
-                  Some(expEv)
+                  Some(expEv),
+                  Some(ps)
                 )
               }
           )
@@ -1238,6 +1239,9 @@ object HoTTBot {
                     }
                     .mkString("\n")}"
                 logger.info(view2)
+                fs.initOpt.foreach { init =>
+                  Utils.logger.info(s"Initial state for mixin: $init")
+                }
                 val baseLemmas = results
                   .map(typ => typ -> termsSet.filter(_.typ == typ))
                   .filter(_._2.nonEmpty)
@@ -1264,32 +1268,51 @@ object HoTTBot {
                   )
                 )
                 val traceViews = steps.map { tp =>
+                  Utils.logger.info(s"tracing back type $tp")
                   fs.evOpt
                     .map { ev =>
-                      Utils.logger.info("Have expression-eval data, tracing back")
+                      Utils.logger.info(
+                        "Have expression-eval data, tracing back"
+                      )
+                      val nodes = ev.equations.flatMap(Equation.split(_))
+
+                      val pfEquations = proofEquationLHS(
+                        nodes,
+                        tp
+                      )
+                      Utils.logger.info(
+                        s"Proof equations (for $tp): ${pfEquations.mkString("\n", "\n", "\n")}"
+                      )
+
                       val (eqns, terms) =
                         proofTrace(
-                          ev.equations.flatMap(Equation.split(_)),
+                          nodes,
                           tp,
                           4
                         )
+                      Utils.logger.info(s"Trace back equations (for $tp): ${eqns
+                        .mkString("\n", "\n", "\n")} and terms: $terms")
                       val eqV =
                         eqns.mkString("Traced back equations:\n", "\n", "\n")
-                      val termsWeights = elemVals(terms, fs.ts)
+                      // val termsWeights = elemVals(terms, fs.ts)
+                      val fDist = ev.finalDist
+                      Utils.logger.info(
+                        s"Using final distribution, size: ${fDist.size}"
+                      )
                       val tV =
                         terms
                           .map { exp =>
-                            s"$exp -> ${ev.finalDist(exp)}"
+                            s"$exp -> ${fDist(exp)}"
                           }
                           .mkString(
                             "Weights of expressions in final distribution:\n",
                             "\n",
                             "\n"
                           )
-                      val expTrace = proofEquationLHS(
-                        ev.equations.flatMap(Equation.split(_)),
-                        tp
-                      ).map(pf => ev.exprCalc.trackOutput(pf)).mkString("\n")
+                      Utils.logger.info(s"$tV")
+                      val expTrace = pfEquations
+                        .map(pf => ev.exprCalc.trackOutput(pf))
+                        .mkString("\n")
                       s"Lemma: $tp\n$eqV$tV\n$expTrace"
 
                     }

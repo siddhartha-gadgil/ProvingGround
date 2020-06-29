@@ -720,15 +720,14 @@ class ExprCalc(ev: ExpressionEval) {
         )
       val startTime = System.currentTimeMillis()
       val newVec    = simpleNextVec(initVec)
-      // Utils.logger.info(
-      //   s"computed newvec, sizes: ${newVec.size} and ${initVec.size}"
-      // )
       val check = (0 until (initVec.size)).forall(
         n => (initVec(n) != 0) || (newVec(n) == 0)
       )
-      // Utils.logger.info(s"check: $check")
       if (check)
-        newVec
+        {
+          Utils.logger.info(s"stable support with support size ${newVec.count(_ != 0)}")
+          newVec
+        }
       else {
         // Utils.logger.info("recursive call for stable support vector")
         val usedTime = System.currentTimeMillis() - startTime
