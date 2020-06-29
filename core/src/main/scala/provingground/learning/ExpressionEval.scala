@@ -754,10 +754,11 @@ class ExprCalc(ev: ExpressionEval) {
     finalVec.zipWithIndex.map(fn).toMap ++ init
   }
 
-  def track(exp: Expression) : Option[(Double, SumExpr, Double, Vector[Double])] = 
+  def track(exp: Expression) : Option[(Int, Double, SumExpr, Double, Vector[Double])] = 
      equationVec.zipWithIndex.find(_._1.lhs == exp).map{
        case (_, j) =>
-          (finalVec(j),
+          (j,
+          finalVec(j),
           rhsExprs(j),
           rhsExprs(j).eval(finalVec),
           rhsExprs(j).terms.map(_.eval(finalVec))
@@ -766,8 +767,9 @@ class ExprCalc(ev: ExpressionEval) {
 
   def trackOutput(exp: Expression) : String = 
      track(exp).map{
-       case (value, rhs, rhsValue, rhsTermsValue) => 
-       s""""final value: $value
+       case (j, value, rhs, rhsValue, rhsTermsValue) => 
+       s""""For expression: $exp, equation index $j
+       |final value: $value
        |rhs expression: $rhs
        |rhs final value: $rhsValue
        |rhs term values: $rhsTermsValue
