@@ -633,16 +633,16 @@ class ExprCalc(ev: ExpressionEval) {
   }
 
   def simpleNextVec(v: Vector[Double]): Vector[Double] = {
-    Utils.logger.info("Computing new vector")
+    // Utils.logger.info("Computing new vector")
     val fn: ((SumExpr, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         val z = v(j)
         if (z > 0) z else y
     }
-    Utils.logger.info("Computing new vector: defined function")
+    // Utils.logger.info("Computing new vector: defined function")
     val z = rhsExprs.zipWithIndex
-    Utils.logger.info(s"Mapping ${z.size} expressions")
+    // Utils.logger.info(s"Mapping ${z.size} expressions")
     z.map(fn)
   }
 

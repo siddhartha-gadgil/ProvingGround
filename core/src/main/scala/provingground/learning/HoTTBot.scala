@@ -1266,6 +1266,7 @@ object HoTTBot {
                 val traceViews = steps.map { tp =>
                   fs.evOpt
                     .map { ev =>
+                      Utils.logger.info("Have expression-eval data, tracing back")
                       val (eqns, terms) =
                         proofTrace(
                           ev.equations.flatMap(Equation.split(_)),
