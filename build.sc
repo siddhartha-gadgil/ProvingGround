@@ -49,7 +49,7 @@ trait MetalsModule extends ScalaModule {
   }
 }
 
-val scalaV = "2.13.3"
+val scalaV = "2.13.1"
 
 val ammV = "1.8.2"
 
