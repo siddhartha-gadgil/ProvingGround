@@ -502,7 +502,7 @@ case class ProdExpr(
     indices: Vector[Int],
     negIndices: Vector[Int]
 ) {
-  def eval(v: ParVector[Double]): Double = {
+  def eval(v: Vector[Double]): Double = {
     val subTerms = (indices.map(j => v(j)) ++ negIndices.map { j =>
       val y = v(j)
       if (y == 0) 1.0
@@ -537,7 +537,7 @@ case class ProdExpr(
 }
 
 case class SumExpr(terms: Vector[ProdExpr]) {
-  def eval(v: ParVector[Double]): Double = {
+  def eval(v: Vector[Double]): Double = {
     val subTerms = terms.map(_.eval(v))
     val result   = subTerms.sum
     // if (result < 0)
@@ -583,17 +583,17 @@ class ExprCalc(ev: ExpressionEval) {
       Expression.sumTerms(exp).map(getProd(_))
     )
 
-  lazy val rhsExprs: ParVector[SumExpr] =
+  lazy val rhsExprs: Vector[SumExpr] =
     equationVec.map(eq => simplify(eq.rhs))
 
-  lazy val termIndices: ParVector[Int] = {
+  lazy val termIndices: Vector[Int] = {
     val pfn: PartialFunction[(Equation, Int), Int] = {
       case (Equation(FinalVal(Elem(_, Terms)), _), j) => j
     }
     equationVec.zipWithIndex.collect(pfn)
   }
 
-  lazy val typIndices: ParVector[Int] = {
+  lazy val typIndices: Vector[Int] = {
     val pfn: PartialFunction[(Equation, Int), Int] = {
       case (Equation(FinalVal(Elem(_, Typs)), _), j) => j
     }
@@ -601,9 +601,9 @@ class ExprCalc(ev: ExpressionEval) {
   }
 
   def restrict(
-      v: ParVector[Double],
-      indices: ParVector[Int]
-  ): ParVector[Double] = {
+      v: Vector[Double],
+      indices: Vector[Int]
+  ): Vector[Double] = {
     val base = indices.map { j =>
       v(j)
     }
@@ -611,7 +611,7 @@ class ExprCalc(ev: ExpressionEval) {
     if (total == 0) base else base.map(_ / total)
   }
 
-  def nextVec(v: ParVector[Double], exponent: Double): ParVector[Double] = {
+  def nextVec(v: Vector[Double], exponent: Double): Vector[Double] = {
     // pprint.log(exponent)
     val fn: ((SumExpr, Int)) => Double = {
       case (exp, j) =>
@@ -632,24 +632,28 @@ class ExprCalc(ev: ExpressionEval) {
     rhsExprs.zipWithIndex.map(fn)
   }
 
-  def simpleNextVec(v: ParVector[Double]): ParVector[Double] = {
+  def simpleNextVec(v: Vector[Double]): Vector[Double] = {
+    Utils.logger.info("Computing new vector")
     val fn: ((SumExpr, Int)) => Double = {
       case (exp, j) =>
         val y = exp.eval(v)
         val z = v(j)
         if (z > 0) z else y
     }
-    rhsExprs.zipWithIndex.map(fn)
+    Utils.logger.info("Computing new vector: defined function")
+    val z = rhsExprs.zipWithIndex
+    Utils.logger.info(s"Mapping ${z.size} expressions")
+    z.map(fn)
   }
 
-  def equalSupport(v: ParVector[Double], w: ParVector[Double]) = {
+  def equalSupport(v: Vector[Double], w: Vector[Double]) = {
     require(v.size == w.size)
     v.zip(w).forall { case (x, y) => (x == 0 && y == 0) || (x != 0 && y != 0) }
   }
 
   def ratioBounded(
-      v: ParVector[Double],
-      w: ParVector[Double],
+      v: Vector[Double],
+      w: Vector[Double],
       bound: Double = maxRatio
   ) = {
     val condition: (((Double, Double), Int)) => Boolean = {
@@ -661,7 +665,7 @@ class ExprCalc(ev: ExpressionEval) {
     v.zip(w).zipWithIndex.forall(condition)
   }
 
-  def normalizedBounded(v: ParVector[Double], w: ParVector[Double]) = {
+  def normalizedBounded(v: Vector[Double], w: Vector[Double]) = {
     equalSupport(v, w) &&
     ratioBounded(restrict(v, termIndices), restrict(w, termIndices)) &&
     ratioBounded(restrict(v, typIndices), restrict(w, typIndices))
@@ -670,12 +674,12 @@ class ExprCalc(ev: ExpressionEval) {
 
   @tailrec
   final def stableVec(
-      initVec: ParVector[Double],
+      initVec: Vector[Double],
       exponent: Double = 0.5,
       decay: Double,
       maxTime: Option[Long],
       steps: Long
-  ): ParVector[Double] =
+  ): Vector[Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
       Utils.logger.error(s"Timeout for stable vector after $steps steps")
       initVec
@@ -699,10 +703,10 @@ class ExprCalc(ev: ExpressionEval) {
 
   @tailrec
   final def stableSupportVec(
-      initVec: ParVector[Double],
+      initVec: Vector[Double],
       maxTime: Option[Long],
       steps: Long
-  ): ParVector[Double] =
+  ): Vector[Double] =
     if (maxTime.map(limit => limit < 0).getOrElse(false)) {
       Utils.logger.error(
         s"Timeout for stable support vector after $steps steps"
@@ -716,11 +720,17 @@ class ExprCalc(ev: ExpressionEval) {
         )
       val startTime = System.currentTimeMillis()
       val newVec    = simpleNextVec(initVec)
-      if ((0 until (initVec.size)).forall(
-            n => (initVec(n) != 0) || (newVec(n) == 0)
-          ))
+      // Utils.logger.info(
+      //   s"computed newvec, sizes: ${newVec.size} and ${initVec.size}"
+      // )
+      val check = (0 until (initVec.size)).forall(
+        n => (initVec(n) != 0) || (newVec(n) == 0)
+      )
+      // Utils.logger.info(s"check: $check")
+      if (check)
         newVec
       else {
+        // Utils.logger.info("recursive call for stable support vector")
         val usedTime = System.currentTimeMillis() - startTime
         stableSupportVec(
           newVec,
@@ -730,13 +740,13 @@ class ExprCalc(ev: ExpressionEval) {
       }
     }
 
-  lazy val finalVec: ParVector[Double] = {
+  lazy val finalVec: Vector[Double] = {
     Utils.logger.info(
       s"Computing final vector, with maximum time $maxTime, exponent: $exponent, decay: $decay"
     )
     Utils.logger.info(s"Number of equations: ${equationVec.size}")
     val stableSupport =
-      stableSupportVec(ParVector.fill(equationVec.size)(0.0), maxTime, 0L)
+      stableSupportVec(Vector.fill(equationVec.size)(0.0), maxTime, 0L)
     Utils.logger.info("Obtained vector with stable support")
     stableVec(
       stableSupport,
@@ -754,27 +764,32 @@ class ExprCalc(ev: ExpressionEval) {
     finalVec.zipWithIndex.map(fn).toMap ++ init
   }
 
-  def track(exp: Expression) : Option[(Int, Double, SumExpr, Double, Vector[Double])] = 
-     equationVec.zipWithIndex.find(_._1.lhs == exp).map{
-       case (_, j) =>
-          (j,
+  def track(
+      exp: Expression
+  ): Option[(Int, Double, SumExpr, Double, Vector[Double])] =
+    equationVec.zipWithIndex.find(_._1.lhs == exp).map {
+      case (_, j) =>
+        (
+          j,
           finalVec(j),
           rhsExprs(j),
           rhsExprs(j).eval(finalVec),
           rhsExprs(j).terms.map(_.eval(finalVec))
-          )
-     }
+        )
+    }
 
-  def trackOutput(exp: Expression) : String = 
-     track(exp).map{
-       case (j, value, rhs, rhsValue, rhsTermsValue) => 
-       s""""For expression: $exp, equation index $j
+  def trackOutput(exp: Expression): String =
+    track(exp)
+      .map {
+        case (j, value, rhs, rhsValue, rhsTermsValue) =>
+          s""""For expression: $exp, equation index $j
        |final value: $value
        |rhs expression: $rhs
        |rhs final value: $rhsValue
        |rhs term values: $rhsTermsValue
        |""".stripMargin
-     }.getOrElse("No equation with lhs $exp")
+      }
+      .getOrElse("No equation with lhs $exp")
 }
 
 trait ExpressionEval { self =>
@@ -883,7 +898,7 @@ trait ExpressionEval { self =>
     .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
 
-  lazy val equationVec: ParVector[Equation] = equations.toVector.par
+  lazy val equationVec: Vector[Equation] = equations.toVector//.par
 
   lazy val indexMap = equationVec
     .map(_.lhs)
@@ -896,7 +911,7 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    exprCalc.finalMap.seq
+    exprCalc.finalMap//.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
