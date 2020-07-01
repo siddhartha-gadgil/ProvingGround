@@ -244,7 +244,7 @@ val mantleLibs = List(
   ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
   ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
   ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
-  ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7",
+  // ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7",
   ivy"org.mongodb.scala::mongo-scala-driver:2.8.0"
 )
 
@@ -436,6 +436,6 @@ object deepwalk extends JvmModule {
       ivy"org.deeplearning4j:deeplearning4j-core:1.0.0-beta7",
       ivy"org.deeplearning4j:deeplearning4j-nlp:1.0.0-beta7",
       ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
-      ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7"
+      // ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7"
     )
 }
