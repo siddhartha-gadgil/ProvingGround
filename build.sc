@@ -276,6 +276,14 @@ object mantle extends CommonModule with SbtModule with PGPublish {
       super.ivyDeps() ++ Agg(mantleLibs: _*)
     }
 
+  override def unmanagedClasspath = 
+      T{
+        import coursier._
+        val files = Fetch().addDependencies(dep"org.nd4j:nd4j-native-platform:1.0.0-beta7").run()
+        val pathRefs = files.map(f => PathRef(Path(f)))
+        Agg(pathRefs : _*)
+      }
+
   override def resources: Sources = T.sources {
     def base: Seq[Path] = super.resources().map(_.path)
 
@@ -438,4 +446,12 @@ object deepwalk extends JvmModule {
       ivy"org.deeplearning4j:deeplearning4j-graph:1.0.0-beta7",
       // ivy"org.nd4j:nd4j-native-platform:1.0.0-beta7"
     )
+
+    override def unmanagedClasspath = 
+      T{
+        import coursier._
+        val files = Fetch().addDependencies(dep"org.nd4j:nd4j-native-platform:1.0.0-beta7").run()
+        val pathRefs = files.map(f => PathRef(Path(f)))
+        Agg(pathRefs : _*)
+      }
 }
