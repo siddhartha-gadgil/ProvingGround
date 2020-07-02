@@ -502,6 +502,8 @@ case class ProdExpr(
     indices: Vector[Int],
     negIndices: Vector[Int]
 ) {
+  val isConstant = indices.isEmpty
+
   def eval(v: Vector[Double]): Double = {
     val subTerms = (indices.map(j => v(j)) ++ negIndices.map { j =>
       val y = v(j)
@@ -513,7 +515,7 @@ case class ProdExpr(
         rec
       }
     })
-    val result = subTerms.fold(constant)(_ * _)
+    val result = subTerms.product * constant
     if (result.isNaN() && !subTerms.exists(_.isNaN()) && !constant.isNaN())
       Utils.logger.error(
         s"the product of $subTerms  and constant $constant is not a number"
@@ -537,6 +539,10 @@ case class ProdExpr(
 }
 
 case class SumExpr(terms: Vector[ProdExpr]) {
+  val constantTerm : Double = terms.filter(_.isConstant).map(_.constant).sum
+  val indices : Vector[Int] = terms.flatMap(_.indices).distinct
+  val hasConstant : Boolean = terms.exists(_.isConstant)
+
   def eval(v: Vector[Double]): Double = {
     val subTerms = terms.map(_.eval(v))
     val result   = subTerms.sum
@@ -599,6 +605,15 @@ class ExprCalc(ev: ExpressionEval) {
     }
     equationVec.zipWithIndex.collect(pfn)
   }
+
+  def proofData(typ: Typ[Term]) : Vector[(Int, Equation)] = 
+    equationVec.zipWithIndex.collect{
+      case (eq @ Equation(FinalVal(Elem(t: Term, Terms)), rhs), j) if t.typ == typ => (j, eq)
+    }
+
+  def traceIndices(j: Int, depth: Int): Vector[Int] = 
+    if (depth < 1) Vector(j)
+    else j +: rhsExprs(j).indices.flatMap(traceIndices(_, depth - 1))
 
   def restrict(
       v: Vector[Double],
