@@ -3,6 +3,7 @@ import sbt.Project.projectToRef
 val scalaV = "2.13.1"
 
 val ammV = "2.0.4"
+val upickleV = "0.9.9"
 
 
 scalaVersion in ThisBuild := scalaV
@@ -34,16 +35,16 @@ lazy val commonSettings = baseSettings ++ Seq(
     "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.1.2",
      "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
     "org.typelevel" %%% "spire"         % "0.17.0-M1",
-    "com.lihaoyi"   %%% "fansi"         % "0.2.8",
-    "com.lihaoyi"   %%% "upickle"       % "0.9.8",
-    "com.lihaoyi" %%% "fastparse" % "2.2.3",
+    "com.lihaoyi"   %%% "fansi"         % "0.2.9",
+    "com.lihaoyi"   %%% "upickle"       % upickleV,
+    "com.lihaoyi"   %%% "fastparse"     % "2.3.0",
     "com.chuusai"   %%% "shapeless"     % "2.4.0-M1",
     "org.typelevel" %%% "cats-core"     % "2.1.0",
-    "io.monix"      %%% "monix"         % "3.1.0",
-    "org.scalameta" %%% "scalameta"     % "4.3.0",
-    "com.outr" %%% "scribe" % "2.7.8",
+    "io.monix"      %%% "monix"         % "3.2.2",
+    "org.scalameta" %%% "scalameta"     % "4.3.10",
+    "com.outr"      %%% "scribe"        % "2.7.10",
     // "com.geirsson"  %%% "scalafmt-core" % "1.6.0-RC1",
-    "com.lihaoyi" %%% "pprint"      % "0.5.8",
+    "com.lihaoyi"   %%% "pprint"        % "0.5.9",
     // "com.lihaoyi"   % "ammonite"       % ammV cross CrossVersion.full,
     "com.lihaoyi"   %%% "sourcecode"    % "0.2.1"
   ),
@@ -93,7 +94,7 @@ lazy val jvmSettings = Seq(
     "com.typesafe.akka" %% "akka-http"   % "10.1.11",
     // "com.typesafe.akka" %% "akka-http" % akkaV,
     "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.11",
-//    "com.lihaoyi" %% "upickle" % "0.3.4",
+//    "com.lihaoyi" %% "upickle" % upickleV,
 //    "com.lihaoyi" %% "ammonite-ops" % ammV,
 //    "com.lihaoyi" %% "ammonite-shell" % ammV,
     // "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
@@ -133,7 +134,7 @@ lazy val nlpSettings = Seq(
   libraryDependencies ++= Seq(
     "com.lihaoyi"         % "ammonite"         % ammV % "test" cross CrossVersion.full,
     "com.lihaoyi"         %% "ammonite-ops"    % ammV,
-    "com.lihaoyi"   %% "upickle"       % "0.9.8",
+    "com.lihaoyi"         %% "upickle"         % upickleV,
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0",
     "edu.stanford.nlp"    % "stanford-corenlp" % "3.7.0" classifier "models",
     "com.google.protobuf" % "protobuf-java"    % "2.6.1",
@@ -151,7 +152,7 @@ lazy val acSettings = Seq(
 
 lazy val nfSettings = Seq(
   name := "NormalForm",
-  libraryDependencies ++= Seq("org.typelevel" %% "spire" % "0.17.0-M1"),
+  libraryDependencies ++= Seq("org.typelevel" %%% "spire" % "0.17.0-M1"),
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
   initialCommands in console := """import provingground.normalform._ ; import provingground.normalform.NormalForm._"""
 )
@@ -172,7 +173,7 @@ lazy val client = project
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.7",
       "com.lihaoyi"  %%% "scalatags"   % "0.9.1",
-      "com.lihaoyi"  %%% "upickle"     % "0.9.8",
+      "com.lihaoyi"  %%% "upickle"     % upickleV,
       // "com.github.karasiq" %%% "scalajs-marked" % "1.0.2",
       // "com.scalawarrior" %%% "scalajs-ace" % "0.0.4" //,
       //  "com.github.kindlychung" % "sjs-katex" % "0.1"
@@ -186,7 +187,7 @@ lazy val core = (sbtcrossproject.crossProject(JSPlatform, JVMPlatform).crossType
   .settings(name := "ProvingGround-Core")
   .settings(
     libraryDependencies ++= Seq(
-//      "com.lihaoyi" %%% "upickle" % "0.3.4"
+//      "com.lihaoyi" %%% "upickle" % upickleV
     ))
   // .jsConfigure(_ enablePlugins ScalaJSWeb)
 //  .jsSettings(sourceMapsBase := baseDirectory.value / "..")
