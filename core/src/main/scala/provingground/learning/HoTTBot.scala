@@ -1304,7 +1304,7 @@ object HoTTBot {
                                 .map(_._1)
                                 .flatMap(j => calc.traceIndices(j, depth))
                               Utils.logger.info(
-                                s"The traced back indices for $typ, step ${1 + j}, for base with $initString with depth $depth are ${backIndices
+                                s"The traced back indices for $typ, step ${1 + j}, for base with $initString with depth $depth are ${backIndices.size}, namely ${backIndices
                                   .mkString(", ")}"
                               )
 
