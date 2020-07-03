@@ -48,13 +48,13 @@ lazy val commonSettings = baseSettings ++ Seq(
     "com.lihaoyi"   %%% "sourcecode"    % "0.2.1"
   ),
   libraryDependencies ++= {
-  CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, major)) if major <= 12 =>
-      Seq()
-    case _ =>
-      Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0")
-  }
-}
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, major)) if major <= 12 =>
+        Seq()
+      case _ =>
+        Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0")
+    }
+  },
   scalacOptions in Compile ++= Seq("-unchecked",
                                    "-deprecation",
                                    "-feature",
