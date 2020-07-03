@@ -17,6 +17,7 @@ import fastparse.internal.Util
 import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.immutable._
 import scala.math.Ordering.Double.TotalOrdering
+import scala.tools.nsc.settings.Final
 
 /**
   * Working with expressions built from initial and final values of random variables, including in islands,
@@ -778,6 +779,20 @@ class ExprCalc(ev: ExpressionEval) {
       0L
     )
   }
+
+  lazy val finalTerms = 
+    FD(
+      equationVec.map(_.lhs).zip(finalVec).collect{
+        case (FinalVal(Elem(x: Term, Terms)), p) => Weighted(x, p)
+      }
+    ).safeNormalized
+
+  lazy val finalTyps = 
+    FD(
+      equationVec.map(_.lhs).zip(finalVec).collect{
+        case (FinalVal(Elem(x: Typ[Term], Typs)), p) => Weighted(x, p)
+      }
+    ).safeNormalized
 
   lazy val finalMap = {
     val fn: ((Double, Int)) => (Expression, Double) = {

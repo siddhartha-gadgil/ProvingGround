@@ -1046,7 +1046,9 @@ object HoTTBot {
                   lp.maxTime
                 )
                 TangentBaseState(
-                  fs.purge(ps.baseCutoff),
+                  fs
+                  // .purge(ps.baseCutoff)
+                  ,
                   ps.cutoffScale,
                   ps.tgOpt,
                   ps.depthOpt,
