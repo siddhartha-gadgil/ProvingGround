@@ -1204,7 +1204,8 @@ object HoTTBot {
       results: Vector[Typ[Term]],
       steps: Vector[Typ[Term]],
       inferTriples: Vector[(Typ[Term], Typ[Term], Typ[Term])],
-      depth: Int = 4
+      depth: Int = 4,
+      verbose: Boolean = true
   ): Callback[
     TangentBaseCompleted.type,
     HoTTPostWeb,
@@ -1237,7 +1238,6 @@ object HoTTBot {
                   logger.info(
                     s"Details for base state: $initString\nInitial state (optional): ${tbs.initOpt}"
                   )
-                  // Future {
                   val termsSet = tbs.ts.terms.support
                   val basePfs = steps
                     .map(typ => typ -> termsSet.filter(_.typ == typ))
@@ -1276,8 +1276,7 @@ object HoTTBot {
                       "\n"
                     )
                   logger.info(view4)
-                  // }
-                  Future {
+                  if (verbose) Future {
                     tbs.evOpt.map { ev =>
                       logger.info(
                         s"Extracting data from expression-evaluator for $initString"
@@ -1313,35 +1312,15 @@ object HoTTBot {
                               backIndices.foreach { i =>
                                 Utils.logger.info(
                                   s"""|Details for index $i, traced back for $typ, step ${1 + j}, for base with $initString with depth $depth
-                                                    |Equation: ${ev.equationVec(i)}
-                                                    |Rhs-expression: ${calc.rhsExprs(i)}
+                                                    |Equation: ${ev.equationVec(
+                                       i
+                                     )}
+                                                    |Rhs-expression: ${calc
+                                       .rhsExprs(i)}
                                                     |Value: ${calc.finalVec(i)}
                                                     |--------------""".stripMargin
                                 )
                               }
-
-                              // Future(
-                              //   Utils.logger.info(
-                              //     s"The traced back equations for $typ, step ${1 + j}, for base with $initString with depth $depth are:\n${backIndices
-                              //       .map(j => ev.equationVec(j))
-                              //       .mkString("\n")}"
-                              //   )
-                              // )
-                              // Future(
-                              //   Utils.logger.info(
-                              //     s"The traced back rhs expressions for $typ, step ${1 + j}, for base with $initString with depth $depth are:\n${backIndices
-                              //       .map(j => j -> calc.rhsExprs(j))
-                              //       .mkString("\n")}"
-                              //   )
-                              // )
-                              // Future(
-                              //   Utils.logger.info(
-                              //     s"The traced back values for $typ, step ${1 + j}, for base with $initString with depth $depth are:\n${backIndices
-                              //       .map(j => j -> calc.finalVec(j))
-                              //       .mkString("\n")}"
-                              //   )
-                              // )
-
                             }
                           }
                       }
