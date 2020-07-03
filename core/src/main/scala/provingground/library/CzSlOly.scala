@@ -115,7 +115,7 @@ object CzSlOly {
         ),
       FiniteDistribution.unif(M)
     ),
-    tgOpt = Some(TermGenParams.zero.copy(appW = 0.4)),
+    tgOpt = Some(TermGenParams.zero.copy(appW = 0.3, unAppW = 0.3)),
     baseCutoff = math.pow(10, -3),
     depthOpt = Some(2),
     cutoffScale = 0.5
