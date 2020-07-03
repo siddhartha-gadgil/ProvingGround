@@ -170,7 +170,7 @@ object CzSlOly {
     expnEqnUpdate,
     reportProofs(results),
     reportProofs(steps, "Steps (in final state)"),
-    reportBaseTangents(results, steps, inferTriples)
+    reportBaseTangentsCalc(results, steps, inferTriples)
   )
 
   val web = new HoTTPostWeb()
@@ -187,7 +187,7 @@ object CzSlOly {
       ws7  <- ws6.act(expFS)
       ws8  <- ws7.act(finalStateFilteredLemmas())
       ws9  <- ws8.act(lemRefine)
-      ws10 <- ws9.act(cappedBaseState(0.3))
+      ws10 <- ws9.act(cappedSpecialBaseState)
     } yield ws10
 
   lazy val sessF = wsF.map(ws => HoTTWebSession.launch(ws, bots))

@@ -15,6 +15,7 @@ import Utils.logger
 import scala.concurrent._, duration._
 import provingground.learning.Expression.FinalVal
 import scala.math.Ordering.Double.TotalOrdering
+import fastparse.internal.Util
 
 case class QueryProver(lp: LocalProver)
 
@@ -1195,6 +1196,139 @@ object HoTTBot {
       case exp @ FinalVal(Elem(x: Term, Terms))     => exp -> ts.terms(x)
       case exp @ FinalVal(Elem(x: Typ[Term], Typs)) => exp -> ts.typs(x)
     }
+  }
+
+  def reportBaseTangentsCalc(
+      results: Vector[Typ[Term]],
+      steps: Vector[Typ[Term]],
+      inferTriples: Vector[(Typ[Term], Typ[Term], Typ[Term])],
+      depth: Int = 4
+  ): Callback[
+    TangentBaseCompleted.type,
+    HoTTPostWeb,
+    Collated[
+      TangentBaseState
+    ] :: TangentLemmas :: HNil,
+    ID
+  ] = {
+    val response: HoTTPostWeb => Collated[
+      TangentBaseState
+    ] :: TangentLemmas :: HNil => TangentBaseCompleted.type => Future[Unit] = {
+      (_) =>
+        {
+          case ctbs :: tl :: HNil =>
+            (_) =>
+              Future {
+                logger.info(
+                  s"generating equations with ${ctbs.contents.size} base states and ${tl.lemmas.size} lemmas (before pruning)"
+                )
+                val tls = results
+                  .flatMap(typ => tl.lemmas.find(_._1 == typ).map(typ -> _._3))
+                val view1 =
+                  s"Tangent lemmas (used with bases below): ${tls.size}\n${tls
+                    .mkString("\n")}"
+                ctbs.contents.foreach { tbs =>
+                  val initString: String = tbs.initOpt
+                    .map(_.ts.terms.supp)
+                    .map(terms => s"initial terms ${terms.mkString(", ")}")
+                    .getOrElse(s"no initial state recorded")
+                  logger.info(
+                    s"Details for base state: $initString\nInitial state (optional): ${tbs.initOpt}"
+                  )
+                  // Future {
+                  val termsSet = tbs.ts.terms.support
+                  val basePfs = steps
+                    .map(typ => typ -> termsSet.filter(_.typ == typ))
+                    .filter(_._2.nonEmpty)
+                  val view2 =
+                    s"Terms in base (used with tangents above) with $initString: ${basePfs.size}\n${basePfs
+                      .map {
+                        case (tp, ps) =>
+                          val best = ps.maxBy(t => tbs.ts.terms(t))
+                          s"Type: $tp; best term: ${best} with weight ${tbs.ts.terms(best)}"
+                      }
+                      .mkString("\n")}"
+                  logger.info(view2)
+                  val baseLemmas = results
+                    .map(typ => typ -> termsSet.filter(_.typ == typ))
+                    .filter(_._2.nonEmpty)
+                  val view3 =
+                    s"Lemmas in base state with $initString for mixin (used with tangents above): ${baseLemmas.size}\n${baseLemmas
+                      .map {
+                        case (tp, ps) =>
+                          val best = ps.maxBy(t => tbs.ts.terms(t))
+                          s"Type: $tp; best term: ${best} with weight ${tbs.ts.terms(best)}"
+                      }
+                      .mkString("\n")}"
+                  logger.info(view3)
+                  val view4 = inferTriples
+                    .map {
+                      case (f, x, fx) =>
+                        val p = tbs.ts.terms.map(_.typ)(f)
+                        val q = tls.find(_._1 == x).map(_._2).getOrElse(0.0)
+                        s"($p, $q, ${p * q}) for ($f, $x, $fx)"
+                    }
+                    .mkString(
+                      s"Inference by unified applications, triples and weight for base state with $initString\n",
+                      "\n",
+                      "\n"
+                    )
+                  logger.info(view4)
+                  // }
+                  Future {
+                    tbs.evOpt.map { ev =>
+                      logger.info(
+                        s"Extracting data from expression-evaluator for $initString"
+                      )
+                      val calc = ev.exprCalc
+                      logger.info(
+                        s"Using expression-calculator for $initString"
+                      )
+                      tl.lemmas.foreach { lemma =>
+                        val typ = lemma._1
+                        Future {
+                          logger.info(
+                            s"Tracing back $typ for base state with $initString"
+                          )
+                          val pfData = calc.proofData(typ)
+                          Utils.logger.info(
+                            s"""|
+                                |Located proof data for $typ for base state $initString
+                                |Equations: 
+                                |  ${pfData.map(_._2).mkString("\n")}
+                                |Indices:${pfData.map(_._1).mkString(", ")}
+                                |""".stripMargin
+                          )
+                          Future {
+                            val backIndices = pfData
+                              .map(_._1)
+                              .flatMap(j => calc.traceIndices(j, depth))
+                            Utils.logger.info(
+                              s"The traced back indices for $typ for base with $initString with depth $depth are ${backIndices
+                                .mkString(", ")}"
+                            )
+                            Future(Utils.logger.info(
+                              s"The traced back equations for $typ for base with $initString with depth $depth are ${backIndices.map(j => ev.equationVec(j))
+                                .mkString("\n")}"
+                            ))
+                            Future(Utils.logger.info(
+                              s"The traced back rhs expressions for $typ for base with $initString with depth $depth are ${backIndices.map(j => j -> calc.rhsExprs(j))
+                                .mkString("\n")}"
+                            ))
+                            Future(Utils.logger.info(
+                              s"The traced back values for $typ for base with $initString with depth $depth are ${backIndices.map(j => j -> calc.finalVec(j))
+                                .mkString("\n")}"
+                            ))
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+        }
+    }
+    Callback(response)
   }
 
   def reportBaseTangents(
