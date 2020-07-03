@@ -1284,43 +1284,64 @@ object HoTTBot {
                       logger.info(
                         s"Using expression-calculator for $initString"
                       )
-                      tl.lemmas.foreach { lemma =>
-                        val typ = lemma._1
-                        Future {
-                          logger.info(
-                            s"Tracing back $typ for base state with $initString"
-                          )
-                          val pfData = calc.proofData(typ)
-                          Utils.logger.info(
-                            s"""|
-                                |Located proof data for $typ for base state $initString
+                      steps.zipWithIndex.foreach {
+                        case (typ, j) =>
+                          Future {
+                            logger.info(
+                              s"Tracing back $typ, step ${1 + j}, for base state with $initString"
+                            )
+                            val pfData = calc.proofData(typ)
+                            Utils.logger.info(
+                              s"""|
+                                |Located proof data for $typ, step ${1 + j}, for base state $initString
                                 |Equations: 
                                 |  ${pfData.map(_._2).mkString("\n")}
                                 |Indices:${pfData.map(_._1).mkString(", ")}
                                 |""".stripMargin
-                          )
-                          Future {
-                            val backIndices = pfData
-                              .map(_._1)
-                              .flatMap(j => calc.traceIndices(j, depth))
-                            Utils.logger.info(
-                              s"The traced back indices for $typ for base with $initString with depth $depth are ${backIndices
-                                .mkString(", ")}"
                             )
-                            Future(Utils.logger.info(
-                              s"The traced back equations for $typ for base with $initString with depth $depth are ${backIndices.map(j => ev.equationVec(j))
-                                .mkString("\n")}"
-                            ))
-                            Future(Utils.logger.info(
-                              s"The traced back rhs expressions for $typ for base with $initString with depth $depth are ${backIndices.map(j => j -> calc.rhsExprs(j))
-                                .mkString("\n")}"
-                            ))
-                            Future(Utils.logger.info(
-                              s"The traced back values for $typ for base with $initString with depth $depth are ${backIndices.map(j => j -> calc.finalVec(j))
-                                .mkString("\n")}"
-                            ))
+                            Future {
+                              val backIndices = pfData
+                                .map(_._1)
+                                .flatMap(j => calc.traceIndices(j, depth))
+                              Utils.logger.info(
+                                s"The traced back indices for $typ, step ${1 + j}, for base with $initString with depth $depth are ${backIndices
+                                  .mkString(", ")}"
+                              )
+
+                              backIndices.foreach { i =>
+                                Utils.logger.info(
+                                  s"""|Details for index $i, traced back for $typ, step ${1 + j}, for base with $initString with depth $depth
+                                                    |Equation: ${ev.equationVec(i)}
+                                                    |Rhs-expression: ${calc.rhsExprs(i)}
+                                                    |Value: ${calc.finalVec(i)}
+                                                    |--------------""".stripMargin
+                                )
+                              }
+
+                              // Future(
+                              //   Utils.logger.info(
+                              //     s"The traced back equations for $typ, step ${1 + j}, for base with $initString with depth $depth are:\n${backIndices
+                              //       .map(j => ev.equationVec(j))
+                              //       .mkString("\n")}"
+                              //   )
+                              // )
+                              // Future(
+                              //   Utils.logger.info(
+                              //     s"The traced back rhs expressions for $typ, step ${1 + j}, for base with $initString with depth $depth are:\n${backIndices
+                              //       .map(j => j -> calc.rhsExprs(j))
+                              //       .mkString("\n")}"
+                              //   )
+                              // )
+                              // Future(
+                              //   Utils.logger.info(
+                              //     s"The traced back values for $typ, step ${1 + j}, for base with $initString with depth $depth are:\n${backIndices
+                              //       .map(j => j -> calc.finalVec(j))
+                              //       .mkString("\n")}"
+                              //   )
+                              // )
+
+                            }
                           }
-                        }
                       }
                     }
                   }

@@ -523,6 +523,12 @@ case class ProdExpr(
     result
   }
 
+  val numView = indices.map{j => s"X($j)"}.mkString(" * ")
+  val denView = if (negIndices.isEmpty) "" else negIndices.map{j => s"X($j)"}.mkString("/("," * ",")")
+
+  override def toString() = 
+    s"($constant * $numView $denView)"
+
   def *(that: ProdExpr) =
     ProdExpr(
       constant * that.constant,
@@ -554,6 +560,8 @@ case class SumExpr(terms: Vector[ProdExpr]) {
       Utils.logger.error(s"the sum of $subTerms is not a number")
     result
   }
+
+  override def toString() = terms.mkString(" + ")
 }
 
 object SumExpr {}
