@@ -56,7 +56,8 @@ object CzSlOly {
     trans.typ,
     Unify.appln(trans, "lemma" :: results(3)).get.typ,
     leftMul(mn).typ,
-    rightMul(m).typ
+    rightMul(m).typ,
+    Unify.appln(trans, "lemma" :: results(7)).get.typ
   )
 
   val inferTriples = Vector(
@@ -170,7 +171,7 @@ object CzSlOly {
     expnEqnUpdate,
     reportProofs(results),
     reportProofs(steps, "Steps (in final state)"),
-    reportBaseTangentsCalc(results, steps, inferTriples)
+    reportBaseTangentsCalc(results, steps, inferTriples, verbose = false)
   )
 
   val web = new HoTTPostWeb()
