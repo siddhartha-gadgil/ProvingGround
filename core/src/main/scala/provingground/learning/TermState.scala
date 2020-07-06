@@ -115,6 +115,8 @@ case class TermState(
   lazy val thmsBySt: FD[Typ[Term]] =
     typs.filter(termTypsSet.contains(_)).flatten.safeNormalized
 
+  lazy val thmsByStMap = thmsBySt.toMap
+
   def goalThmsBySt(goalW: Double) =
     (typs ++ goals).filter(termTypsSet.contains(_)).flatten.safeNormalized
 
@@ -140,7 +142,9 @@ case class TermState(
   lazy val unknownStatements: FD[Typ[Term]] =
     typs
       .filter(
-        typ => !termTypsSet.contains(typ) && !termTypsSet.contains(negate(typ))  && !isProd(typ)
+        typ =>
+          !termTypsSet.contains(typ) && !termTypsSet
+            .contains(negate(typ)) && !isProd(typ)
       )
       .safeNormalized
 
@@ -149,7 +153,9 @@ case class TermState(
 
   lazy val remainingGoals: FD[Typ[Term]] =
     goals
-      .filter(typ => !termTypsSet.contains(typ) && !termTypsSet.contains(negate(typ)))
+      .filter(
+        typ => !termTypsSet.contains(typ) && !termTypsSet.contains(negate(typ))
+      )
       .safeNormalized
 
   def subGoalsFromFunc(f: Term): FD[Typ[Term]] = f match {
@@ -178,9 +184,9 @@ case class TermState(
     } yield (x, p, q, h)).sortBy(_._4).reverse
 
   lazy val pfSet: Vector[Term] =
-    terms.flatten.supp.filter(t => typSet.contains(t.typ) )
+    terms.flatten.supp.filter(t => typSet.contains(t.typ))
 
-    lazy val fullPfSet: Vector[(Term, Term)] =
+  lazy val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 
   lazy val pfMap: scala.collection.immutable.Map[Typ[Term], Vector[Term]] =
@@ -189,13 +195,21 @@ case class TermState(
   lazy val pfDist: FD[Term] =
     terms.flatten.filter(t => typSet.contains(t.typ)).safeNormalized
 
+  lazy val bestProofs =
+    pfDist.pmf
+      .groupBy(_.elem.typ: Typ[Term])
+      .view
+      .filterKeys(termTypsSet.contains(_))
+      .mapValues(_.maxBy(_.weight).elem)
+      .toMap
+
   lazy val lemmas: Vector[(Typ[Term], Option[Term], Double)] = thmsByPf.pmf
     .map {
       case Weighted(x, q) =>
         (
           x,
-          pfMap.get(x).map(v => v.maxBy(pf => terms(pf))),
-          -(thmsBySt(x) / (q * math.log(q)))
+          bestProofs.get(x),
+          -(thmsByStMap(x) / (q * math.log(q)))
         )
     }
     .sortBy(_._3)
@@ -390,10 +404,15 @@ object TermState {
       )(randomVarFmly: RandomVarFamily[Dom, T], fullArg: Dom): FD[T] =
         (randomVarFmly, fullArg) match {
           case (TermsWithTyp, typ :: HNil) =>
-            state.termWithTyps.get(typ).map(_.asInstanceOf[FD[T]]).getOrElse(FD.empty[T])
+            state.termWithTyps
+              .get(typ)
+              .map(_.asInstanceOf[FD[T]])
+              .getOrElse(FD.empty[T])
           case (FuncsWithDomain, typ :: HNil) =>
-            state
-              .funcsWithDoms.get(typ).map(_.asInstanceOf[FD[T]]).getOrElse(FD.empty[T])
+            state.funcsWithDoms
+              .get(typ)
+              .map(_.asInstanceOf[FD[T]])
+              .getOrElse(FD.empty[T])
           case (FuncForCod, cod :: HNil) =>
             state.terms
               .condMap(Unify.targetCodomain(_, cod))

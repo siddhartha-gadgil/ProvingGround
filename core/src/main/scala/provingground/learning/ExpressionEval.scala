@@ -99,7 +99,7 @@ object ExpressionEval {
       case cf @ Coeff(_) => cf.get(tg.nodeCoeffSeq)
       case InitialVal(elem: Elem[y]) =>
         import elem._
-        val base = sd.value(initialState)(randomVar)(element)
+        val base = sd.value(initialState)(randomVar)(element) // FIXME: use a map here and the initialState directly
         if (base > 0) Some(base)
         else if (randomVar == Goals) Some(0.5) // just a quick-fix
         else if (isIsleVar(elem))

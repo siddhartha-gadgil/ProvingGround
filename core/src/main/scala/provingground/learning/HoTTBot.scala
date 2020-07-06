@@ -387,6 +387,43 @@ object HoTTBot {
     Callback(response)
   }
 
+    def reportProofsSimple(
+      results: Vector[Typ[Term]],
+      text: String = "Results"
+  ): Callback[
+    FinalState,
+    HoTTPostWeb,
+    Unit,
+    ID
+  ] = {
+    val response: HoTTPostWeb => Unit => FinalState => Future[
+      Unit
+    ] = { (web: HoTTPostWeb) =>
+      {
+        case _ =>
+          (fs: FinalState) =>
+            Future {
+              val termsSet = fs.ts.terms.support
+              val pfs = results
+                .map(typ => typ -> termsSet.filter(_.typ == typ))
+                .filter(_._2.nonEmpty)
+              val view = s"$text: ${pfs.size}\n${pfs
+                .map {
+                  case (tp, ps) =>
+                    val best = ps.maxBy(t => fs.ts.terms(t))
+                    s"Lemma: $tp; best proof: ${best} with weight ${fs.ts
+                      .terms(best)}; statement weight ${fs.ts.typs(tp)}"
+                }
+                .mkString("\n")}"
+              logger.info(view)
+              Utils.report(view)
+            }
+      }
+    }
+    Callback(response)
+  }
+
+
   def reportTangentLemmas(
       results: Vector[Typ[Term]]
   ): TypedPostResponse[TangentLemmas, HoTTPostWeb, ID] =
@@ -1333,150 +1370,6 @@ object HoTTBot {
     Callback(response)
   }
 
-  def reportBaseTangents(
-      results: Vector[Typ[Term]],
-      steps: Vector[Typ[Term]],
-      inferTriples: Vector[(Typ[Term], Typ[Term], Typ[Term])]
-  ): Callback[
-    TangentBaseCompleted.type,
-    HoTTPostWeb,
-    QueryEquations :: Collated[
-      TangentBaseState
-    ] :: TangentLemmas :: HNil,
-    ID
-  ] = {
-    val response: HoTTPostWeb => QueryEquations :: Collated[
-      TangentBaseState
-    ] :: TangentLemmas :: HNil => TangentBaseCompleted.type => Future[Unit] =
-      (_) => {
-        case qe :: ctbs :: tl :: HNil =>
-          (_) =>
-            Future {
-              logger.info(
-                s"generating equations with ${ctbs.contents.size} base states and ${tl.lemmas.size} lemmas (before pruning)"
-              )
-              val tls = results
-                .flatMap(typ => tl.lemmas.find(_._1 == typ).map(typ -> _._3))
-              val view1 =
-                s"Tangent lemmas (used with bases below): ${tls.size}\n${tls
-                  .mkString("\n")}"
-              logger.info(view1)
-              ctbs.contents.foreach { fs =>
-                val termsSet = fs.ts.terms.support
-                val basePfs = steps
-                  .map(typ => typ -> termsSet.filter(_.typ == typ))
-                  .filter(_._2.nonEmpty)
-                val view2 =
-                  s"Terms in base (used with tangents above): ${basePfs.size}\n${basePfs
-                    .map {
-                      case (tp, ps) =>
-                        val best = ps.maxBy(t => fs.ts.terms(t))
-                        s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
-                    }
-                    .mkString("\n")}"
-                logger.info(view2)
-                fs.initOpt.foreach { init =>
-                  Utils.logger.info(s"Initial state for mixin: $init")
-                }
-                val baseLemmas = results
-                  .map(typ => typ -> termsSet.filter(_.typ == typ))
-                  .filter(_._2.nonEmpty)
-                val view3 =
-                  s"Lemmas in base for mixin (used with tangents above): ${baseLemmas.size}\n${baseLemmas
-                    .map {
-                      case (tp, ps) =>
-                        val best = ps.maxBy(t => fs.ts.terms(t))
-                        s"Type: $tp; best term: ${best} with weight ${fs.ts.terms(best)}"
-                    }
-                    .mkString("\n")}"
-                logger.info(view3)
-                val view4 = inferTriples.map {
-                  case (f, x, fx) =>
-                    val p = fs.ts.terms.map(_.typ)(f)
-                    val q = tls.find(_._1 == x).map(_._2).getOrElse(0.0)
-                    s"($p, $q, ${p * q}) for ($f, $x, $fx)"
-                }
-                logger.info(
-                  view4.mkString(
-                    "Inference by unified applications, triples and weights (for this base state)\n",
-                    "\n",
-                    "\n"
-                  )
-                )
-                val traceViews = steps.map { tp =>
-                  Utils.logger.info(s"tracing back type $tp")
-                  fs.evOpt
-                    .map { ev =>
-                      Utils.logger.info(
-                        "Have expression-eval data, tracing back"
-                      )
-                      val nodes = ev.equations.flatMap(Equation.split(_))
-
-                      val pfEquations = proofEquationLHS(
-                        nodes,
-                        tp
-                      )
-                      Utils.logger.info(
-                        s"Proof equations (for $tp): ${pfEquations.mkString("\n", "\n", "\n")}"
-                      )
-
-                      val (eqns, terms) =
-                        proofTrace(
-                          nodes,
-                          tp,
-                          4
-                        )
-                      Utils.logger.info(s"Trace back equations (for $tp): ${eqns
-                        .mkString("\n", "\n", "\n")} and terms: $terms")
-                      val eqV =
-                        eqns.mkString("Traced back equations:\n", "\n", "\n")
-                      // val termsWeights = elemVals(terms, fs.ts)
-                      val fDist = ev.finalDist
-                      Utils.logger.info(
-                        s"Using final distribution, size: ${fDist.size}"
-                      )
-                      val tV =
-                        terms
-                          .map { exp =>
-                            s"$exp -> ${fDist(exp)}"
-                          }
-                          .mkString(
-                            "Weights of expressions in final distribution:\n",
-                            "\n",
-                            "\n"
-                          )
-                      Utils.logger.info(s"$tV")
-                      val expTrace = pfEquations
-                        .map(pf => ev.exprCalc.trackOutput(pf))
-                        .mkString("\n")
-                      s"Lemma: $tp\n$eqV$tV\n$expTrace"
-
-                    }
-                    .getOrElse("No expression-evaluation traceback data")
-
-                // val (eqns, terms) =
-                //   proofTrace(qe.nodes union (DE.termStateInit(fs.ts)), tp, 4)
-                // val eqV =
-                //   eqns.mkString("Traced back equations:\n", "\n", "\n")
-                // val termsWeights = elemVals(terms, fs.ts)
-                // val tV =
-                //   termsWeights
-                //     .map { case (exp, p) => s"$exp -> $p" }
-                //     .mkString("Weights of terms and types:\n", "\n", "\n")
-                // s"Lemma: $tp\n$eqV$tV"
-                }
-                logger.info(
-                  traceViews.mkString(
-                    "Tracing back equations and values for steps\n",
-                    "\n",
-                    "\n"
-                  )
-                )
-              }
-            }
-      }
-    Callback(response)
-  }
 
   def tangentEquations(
       results: Vector[Typ[Term]],

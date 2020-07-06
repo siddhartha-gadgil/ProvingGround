@@ -114,10 +114,11 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   def norm: Double = (pmf map (_.weight.abs)).sum
 
   def flatten: FiniteDistribution[T] =
-    FiniteDistribution(Weighted.flatten(pmf))
+    FiniteDistribution(toMap.map{case (x, w) => Weighted(x, w)}.toVector)
 
-  def toMap: Map[T, Double] =
-    Weighted.flatten(pmf).map { case Weighted(x, p) => x -> p }.toMap
+  def toMap: Map[T, Double] = 
+      pmf.groupMapReduce(_.elem)(_.weight)(_ + _)      
+    // Weighted.flatten(pmf).map { case Weighted(x, p) => x -> p }.toMap
 
   def restrict(s: Set[T]) : FiniteDistribution[T] = 
       FiniteDistribution(pmf.filter{case Weighted(x, _) => s.contains(x)})
@@ -237,8 +238,10 @@ case class FiniteDistribution[T](pmf: Vector[Weighted[T]])
   /**
     * normalize if possible, otherwise empty.
     */
-  def safeNormalized: FiniteDistribution[T] =
-    if (total == 0) FiniteDistribution.empty[T] else *(1 / total)
+  def safeNormalized: FiniteDistribution[T] = {
+    val t = total
+    if (t == 0) FiniteDistribution.empty[T] else *(1 / t)
+  }
 
   import FiniteDistribution.random
 
