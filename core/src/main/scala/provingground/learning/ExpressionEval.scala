@@ -261,10 +261,11 @@ object ExpressionEval {
     * @param equations the equations
     * @return set of expressions
     */
-  def eqAtoms(equations: Set[Equation]) =
-    equations
-      .map(_.lhs)
-      .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
+  def eqAtoms(equations: Set[Equation]): Set[Expression] =
+    Expression.allAtoms(equations.map(_.rhs), equations.map(_.lhs))
+  // equations
+  //   .map(_.lhs)
+  //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
 
   /**
     * builds an [[ExpressionEval]] given states, equations and parameters, say as the result of a local prover
@@ -452,9 +453,12 @@ object ExpressionEval {
     * @return set of variable values
     */
   def values(eqs: Set[Equation]): Set[Expression] =
-    eqs
-      .flatMap(eq => Set(eq.lhs, eq.rhs))
-      .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
+    // eqs
+    //   .flatMap(eq => Set(eq.lhs, eq.rhs))
+    //   .flatMap(exp => Expression.varVals(exp)
+    Expression
+      .allVarVals(eqs.map(_.rhs), eqs.map(_.lhs))
+      .map(t => t: Expression)
 
   /**
     * extract terms from equations
@@ -463,9 +467,8 @@ object ExpressionEval {
     * @return set of terms
     */
   def terms(eqs: Set[EquationNode]): Set[Term] =
-    eqs
-      .flatMap(eq => Set(eq.lhs, eq.rhs))
-      .flatMap(exp => Expression.varVals(exp))
+    Expression
+      .allVarVals(eqs.map(_.rhs), eqs.map(_.lhs))
       .map(_.variable)
       .collect { case Elem(t: Term, _) => t }
 
@@ -476,9 +479,8 @@ object ExpressionEval {
     * @return set of types
     */
   def typs(eqs: Set[EquationNode]): Set[Typ[Term]] =
-    eqs
-      .flatMap(eq => Set(eq.lhs, eq.rhs))
-      .flatMap(exp => Expression.varVals(exp))
+    Expression
+      .allVarVals(eqs.map(_.rhs), eqs.map(_.lhs))
       .map(_.variable)
       .collect { case Elem(t: Typ[u], _) => t }
 
@@ -523,10 +525,21 @@ case class ProdExpr(
     result
   }
 
-  val numView = indices.map{j => s"X($j)"}.mkString(" * ")
-  val denView = if (negIndices.isEmpty) "" else negIndices.map{j => s"X($j)"}.mkString("/("," * ",")")
+  val numView = indices
+    .map { j =>
+      s"X($j)"
+    }
+    .mkString(" * ")
+  val denView =
+    if (negIndices.isEmpty) ""
+    else
+      negIndices
+        .map { j =>
+          s"X($j)"
+        }
+        .mkString("/(", " * ", ")")
 
-  override def toString() = 
+  override def toString() =
     s"($constant * $numView $denView)"
 
   def *(that: ProdExpr) =
@@ -545,9 +558,9 @@ case class ProdExpr(
 }
 
 case class SumExpr(terms: Vector[ProdExpr]) {
-  val constantTerm : Double = terms.filter(_.isConstant).map(_.constant).sum
-  val indices : Vector[Int] = terms.flatMap(_.indices).distinct
-  val hasConstant : Boolean = terms.exists(_.isConstant)
+  val constantTerm: Double = terms.filter(_.isConstant).map(_.constant).sum
+  val indices: Vector[Int] = terms.flatMap(_.indices).distinct
+  val hasConstant: Boolean = terms.exists(_.isConstant)
 
   def eval(v: Vector[Double]): Double = {
     val subTerms = terms.map(_.eval(v))
@@ -614,12 +627,14 @@ class ExprCalc(ev: ExpressionEval) {
     equationVec.zipWithIndex.collect(pfn)
   }
 
-  def proofData(typ: Typ[Term]) : Vector[(Int, Equation)] = 
-    equationVec.zipWithIndex.collect{
-      case (eq @ Equation(FinalVal(Elem(t: Term, Terms)), rhs), j) if t.typ == typ => (j, eq)
+  def proofData(typ: Typ[Term]): Vector[(Int, Equation)] =
+    equationVec.zipWithIndex.collect {
+      case (eq @ Equation(FinalVal(Elem(t: Term, Terms)), rhs), j)
+          if t.typ == typ =>
+        (j, eq)
     }
 
-  def traceIndices(j: Int, depth: Int): Vector[Int] = 
+  def traceIndices(j: Int, depth: Int): Vector[Int] =
     if (depth < 1) Vector(j)
     else j +: rhsExprs(j).indices.flatMap(traceIndices(_, depth - 1))
 
@@ -746,12 +761,12 @@ class ExprCalc(ev: ExpressionEval) {
       val check = (0 until (initVec.size)).forall(
         n => (initVec(n) != 0) || (newVec(n) == 0)
       )
-      if (check)
-        {
-          Utils.logger.info(s"stable support with support size ${newVec.count(_ != 0)}")
-          newVec
-        }
-      else {
+      if (check) {
+        Utils.logger.info(
+          s"stable support with support size ${newVec.count(_ != 0)}"
+        )
+        newVec
+      } else {
         // Utils.logger.info("recursive call for stable support vector")
         val usedTime = System.currentTimeMillis() - startTime
         stableSupportVec(
@@ -779,16 +794,16 @@ class ExprCalc(ev: ExpressionEval) {
     )
   }
 
-  lazy val finalTerms = 
+  lazy val finalTerms =
     FD(
-      equationVec.map(_.lhs).zip(finalVec).collect{
+      equationVec.map(_.lhs).zip(finalVec).collect {
         case (FinalVal(Elem(x: Term, Terms)), p) => Weighted(x, p)
       }
     ).safeNormalized
 
-  lazy val finalTyps = 
+  lazy val finalTyps =
     FD(
-      equationVec.map(_.lhs).zip(finalVec).collect{
+      equationVec.map(_.lhs).zip(finalVec).collect {
         case (FinalVal(Elem(x: Typ[Term], Typs)), p) => Weighted(x, p)
       }
     ).safeNormalized
@@ -929,12 +944,14 @@ trait ExpressionEval { self =>
   /**
     * the atomic expressions in the equations
     */
-  lazy val atoms: Set[Expression] = equations
-    .map(_.lhs)
-    .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
+  lazy val atoms: Set[Expression] =
+    Expression.allAtoms(equations.map(_.rhs), equations.map(_.lhs))
+  // equations
+  //   .map(_.lhs)
+  //   .union(equations.flatMap(eq => Expression.atoms(eq.rhs)))
   // val init: Map[Expression, Double] = initMap(eqAtoms(equations), tg, initialState)
 
-  lazy val equationVec: Vector[Equation] = equations.toVector//.par
+  lazy val equationVec: Vector[Equation] = equations.toVector //.par
 
   lazy val indexMap = equationVec
     .map(_.lhs)
@@ -947,7 +964,7 @@ trait ExpressionEval { self =>
     * The final distributions, obtained from the initial one by finding an almost solution.
     */
   lazy val finalDist: Map[Expression, Double] =
-    exprCalc.finalMap//.seq
+    exprCalc.finalMap //.seq
   // stableMap(init, equations, maxRatio, exponent, decay, maxTime)
 
   lazy val keys: Vector[Expression] = finalDist.keys.toVector
@@ -965,11 +982,14 @@ trait ExpressionEval { self =>
   /**
     * Terms in the initial distributions, used to calculate total weights of functions etc
     */
-  lazy val initTerms: Vector[Term] = (equations
-    .map(_.rhs)
-    .flatMap(Expression.atoms(_)) union init.keySet).collect {
-    case InitialVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
-  }.toVector
+  lazy val initTerms: Vector[Term] =
+    (Expression.allAtoms(equations.map(_.rhs), equations.map(_.lhs))
+    // equations
+    // .map(_.rhs)
+    // .flatMap(Expression.atoms(_)
+      union init.keySet).collect {
+      case InitialVal(el @ Elem(t: Term, Terms)) if !isleVar(el) => t
+    }.toVector
 
   /**
     * Terms in the final (i.e. evolved) distribution
@@ -1050,13 +1070,16 @@ trait ExpressionEval { self =>
         )
       )
     }
-    lazy val initVarElems = equations
-      .flatMap { (eq) =>
-        Expression.varVals(eq.rhs)
-      }
-      .collect {
-        case InitialVal(Elem(el, rv)) => Elem(el, rv)
-      }
+    lazy val initVarElems =
+      // equations
+      //   .flatMap { (eq) =>
+      //     Expression.varVals(eq.rhs)
+      //   }
+      Expression
+        .allVarVals(equations.map(_.rhs), Set())
+        .collect {
+          case InitialVal(Elem(el, rv)) => Elem(el, rv)
+        }
     val isleIn: Set[EquationNode] =
       initVarElems.map { el =>
         val rhs =
@@ -1099,13 +1122,16 @@ trait ExpressionEval { self =>
         )
       )
     }
-    val initVarElems = equations
-      .flatMap { (eq) =>
-        Expression.varVals(eq.rhs)
-      }
-      .collect {
-        case InitialVal(Elem(el, rv)) => Elem(el, rv)
-      }
+    val initVarElems =
+      // equations
+      //   .flatMap { (eq) =>
+      //     Expression.varVals(eq.rhs)
+      //   }
+      Expression
+        .allVarVals(equations.map(_.rhs), Set())
+        .collect {
+          case InitialVal(Elem(el, rv)) => Elem(el, rv)
+        }
     val isleIn: Set[EquationNode] =
       initVarElems.map { el =>
         val rhs =
@@ -1148,13 +1174,16 @@ trait ExpressionEval { self =>
         )
       )
     }
-    val initVarElems = equations
-      .flatMap { (eq) =>
-        Expression.varVals(eq.rhs)
-      }
-      .collect {
-        case InitialVal(Elem(el, rv)) => Elem(el, rv)
-      }
+    val initVarElems =
+      // equations
+      //   .flatMap { (eq) =>
+      //     Expression.varVals(eq.rhs)
+      //   }
+      Expression
+        .allVarVals(equations.map(_.rhs), Set())
+        .collect {
+          case InitialVal(Elem(el, rv)) => Elem(el, rv)
+        }
     val isleIn: Set[EquationNode] =
       initVarElems.map { el =>
         val rhs =
@@ -1252,9 +1281,12 @@ trait ExpressionEval { self =>
     * Vector of all variables. This is frozen so that their indices can be used.
     */
   lazy val valueVars: Vector[Expression] =
-    equations
-      .flatMap(eq => Set(eq.lhs, eq.rhs))
-      .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
+    // equations
+    //   .flatMap(eq => Set(eq.lhs, eq.rhs))
+    //   .flatMap(exp => Expression.varVals(exp).map(t => t: Expression))
+    Expression
+      .allVarVals(equations.map(_.rhs), equations.map(_.lhs))
+      .map(t => t: Expression)
       .toVector
 
   lazy val coefficients: Vector[Coeff[_]] =

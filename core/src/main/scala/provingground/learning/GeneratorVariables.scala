@@ -292,8 +292,13 @@ object Expression {
     if (exps.isEmpty) accumAtoms 
     else {
       val newAccum = accumAtoms union (exps.flatMap(atomLeaves(_)))
-      val newExps = exps.flatMap(atomLeaves(_)) -- newAccum
+      val newExps = exps.flatMap(offsprings(_)) -- newAccum
       allAtoms(newExps, newAccum)
+    }
+
+  def allVarVals(exps: Set[Expression], accumAtoms: Set[Expression]) : Set[VarVal[_]]
+    = allAtoms(exps, accumAtoms).collect{
+      case value : VarVal[_] => value 
     }
 
   def sumTerms(exp: Expression): Vector[Expression] = exp match {
