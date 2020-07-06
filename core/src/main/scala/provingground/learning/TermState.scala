@@ -97,27 +97,35 @@ case class TermState(
 
   lazy val extraTyps = terms.support.map(_.typ) -- typs.support
 
+  lazy val termSet = terms.support
+
+  lazy val typSet = typs.support
+
+  lazy val termTypsSet = termSet.map(_.typ)
+
+  lazy val goalSet = goals.support
+
   lazy val thmsByPf: FD[Typ[Term]] =
     terms
       .map(_.typ)
       .flatten
-      .filter((t) => typs(t) + goals(t) > 0)
+      .filter((t) => (typSet.contains(t)) || goalSet.contains(t))
       .safeNormalized
 
   lazy val thmsBySt: FD[Typ[Term]] =
-    typs.filter(thmsByPf(_) > 0).flatten.safeNormalized
+    typs.filter(termTypsSet.contains(_)).flatten.safeNormalized
 
   def goalThmsBySt(goalW: Double) =
-    (typs ++ goals).filter(terms.map(_.typ)(_) > 0).flatten.safeNormalized
+    (typs ++ goals).filter(termTypsSet.contains(_)).flatten.safeNormalized
 
   lazy val successes: Vector[(HoTT.Typ[HoTT.Term], Double, Term)] =
-    goals.filter(goal => terms.map(_.typ)(goal) > 0).pmf.map {
+    goals.filter(goal => termTypsSet.contains(goal)).pmf.map {
       case Weighted(goal, p) =>
         (goal, p, terms.support.filter(_.typ == goal).maxBy(terms(_)))
     }
 
   lazy val contradicted: Vector[(HoTT.Typ[HoTT.Term], Double, FD[HoTT.Term])] =
-    goals.filter(goal => terms.map(_.typ)(negate(goal)) > 0).pmf.map {
+    goals.filter(goal => termTypsSet.contains(negate(goal))).pmf.map {
       case Weighted(goal, p) => (goal, p, terms.filter(_.typ == goal))
     }
 
@@ -132,7 +140,7 @@ case class TermState(
   lazy val unknownStatements: FD[Typ[Term]] =
     typs
       .filter(
-        typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0 && !isProd(typ)
+        typ => !termTypsSet.contains(typ) && !termTypsSet.contains(negate(typ))  && !isProd(typ)
       )
       .safeNormalized
 
@@ -141,7 +149,7 @@ case class TermState(
 
   lazy val remainingGoals: FD[Typ[Term]] =
     goals
-      .filter(typ => thmsByPf(typ) == 0 && thmsByPf(negate(typ)) == 0)
+      .filter(typ => !termTypsSet.contains(typ) && !termTypsSet.contains(negate(typ)))
       .safeNormalized
 
   def subGoalsFromFunc(f: Term): FD[Typ[Term]] = f match {
@@ -170,15 +178,16 @@ case class TermState(
     } yield (x, p, q, h)).sortBy(_._4).reverse
 
   lazy val pfSet: Vector[Term] =
-    terms.flatten.supp.filter(t => thmsBySt(t.typ) > 0)
-  lazy val fullPfSet: Vector[(Term, Term)] =
+    terms.flatten.supp.filter(t => typSet.contains(t.typ) )
+
+    lazy val fullPfSet: Vector[(Term, Term)] =
     pfSet.flatMap(pf => partialLambdaClosures(vars)(pf).map((pf, _)))
 
   lazy val pfMap: scala.collection.immutable.Map[Typ[Term], Vector[Term]] =
     pfSet.groupBy(_.typ: Typ[Term])
 
   lazy val pfDist: FD[Term] =
-    terms.flatten.filter(t => thmsBySt(t.typ) > 0).safeNormalized
+    terms.flatten.filter(t => typSet.contains(t.typ)).safeNormalized
 
   lazy val lemmas: Vector[(Typ[Term], Option[Term], Double)] = thmsByPf.pmf
     .map {
