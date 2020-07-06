@@ -615,7 +615,7 @@ object HoTTBot {
     Callback.simple(
       (web: HoTTPostWeb) =>
         (eqs: GeneratedEquationNodes) => {
-          val neqs = eqs.eqn.map(eq => TermData.isleNormalize(eq))
+          val neqs = eqs.normalized
           eqs.eqn
             .collect {
               case eq @ EquationNode(
@@ -653,7 +653,7 @@ object HoTTBot {
         ] = {
       case eqns :: qlp :: HNil =>
         eqs =>
-          val neqs = eqs.eqn.map(eq => TermData.isleNormalize(eq))
+          val neqs = eqs.normalized
           import qlp.lp
           Future(
             ExpressionEval.fromInitEqs(

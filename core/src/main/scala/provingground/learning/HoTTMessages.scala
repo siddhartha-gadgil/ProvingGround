@@ -136,7 +136,9 @@ object HoTTMessages {
     *
     * @param eqn resulting equation nodes to use
     */
-  case class GeneratedEquationNodes(eqn: Set[EquationNode])
+  case class GeneratedEquationNodes(eqn: Set[EquationNode]){
+    lazy val normalized = eqn.map(TermData.isleNormalize(_))
+  }
 
   case object EquationsCompleted
 
