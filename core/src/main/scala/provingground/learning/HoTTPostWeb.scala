@@ -44,7 +44,7 @@ class HoTTPostWeb {
     ))
   }
 
-  def updateDerived() = addEqns(derivedEquations)
+  def updateDerived() = addEqns(derivedEquations.map(TermData.isleNormalize(_)))
 
   def addTerms(terms: Set[Term]): Unit = {
     extraTerms ++= terms

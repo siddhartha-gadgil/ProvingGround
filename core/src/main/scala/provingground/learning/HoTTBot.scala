@@ -645,10 +645,10 @@ object HoTTBot {
   def eqnsToExpEv(tgOpt: Option[TermGenParams] = None): MicroHoTTBoTT[
     GeneratedEquationNodes,
     ExpressionEval,
-    QueryEquations :: QueryProver :: HNil
+    Set[EquationNode] :: QueryProver :: HNil
   ] = {
     val response
-        : QueryEquations :: QueryProver :: HNil => GeneratedEquationNodes => Future[
+        : Set[EquationNode] :: QueryProver :: HNil => GeneratedEquationNodes => Future[
           ExpressionEval
         ] = {
       case eqns :: qlp :: HNil =>
@@ -658,7 +658,7 @@ object HoTTBot {
           Future(
             ExpressionEval.fromInitEqs(
               lp.initState,
-              Equation.group(eqns.nodes union (neqs)),
+              Equation.group(eqns union (neqs)),
               tgOpt.getOrElse(lp.tg),
               lp.maxRatio,
               lp.scale,

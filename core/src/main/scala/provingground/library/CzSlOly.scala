@@ -154,7 +154,7 @@ object CzSlOly {
     ),
     eqnUpdate,
     updateTerms,
-    expnEqnUpdate,
+    // expnEqnUpdate,
     reportProofsSimple(results),
     reportProofsSimple(steps, "Steps (in final state)"),
     reportBaseTangentsCalc(results, steps, inferTriples, verbose = false)
