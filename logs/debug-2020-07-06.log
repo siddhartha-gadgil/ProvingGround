@@ -446,3 +446,7 @@ Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); b
 2020.07.06 07:42:54 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 99, less than the time limit 2 minutes, with cutoff 2.5600000000000007E-9; running again
 2020.07.06 07:44:24 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 89, less than the time limit 2 minutes, with cutoff 5.120000000000001E-10; running again
 2020.07.06 07:47:00 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:175:30 - ran for time 156, exceeding time limit 2 minutes, with cutoff 1.0240000000000002E-10
+2020.07.06 07:47:10 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (34,-1217611885)
+2020.07.06 07:47:10 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provingground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.06 07:47:10 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.06 08:26:51 [INFO] provingground.learning.HoTTBot.scribeLog:2143:16 - Post; tag: TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes], id: (34,-1217611885)
