@@ -255,7 +255,6 @@ object Expression {
     case IsleScale(_, _)  => Set()
   }
 
-
   def atoms(expr: Expression): Set[Expression] = expr match {
     case value: VarVal[_]     => Set(value)
     case Log(exp)             => atoms(exp)
@@ -267,6 +266,35 @@ object Expression {
     case coeff @ Coeff(_)     => Set(coeff)
     case sc @ IsleScale(_, _) => Set(sc)
   }
+
+  def offsprings(expr: Expression): Set[Expression] =
+    expr match {
+      case value: VarVal[_]     => Set()
+      case Log(exp)             => Set(exp)
+      case Exp(x)               => Set(x)
+      case Sum(x, y)            => Set(x, y)
+      case Product(x, y)        => Set(x, y)
+      case Literal(_)           => Set()
+      case Quotient(x, y)       => Set(x, y)
+      case coeff @ Coeff(_)     => Set()
+      case sc @ IsleScale(_, _) => Set()
+    }
+
+  def atomLeaves(expr: Expression): Option[Expression] = expr match {
+    case value: VarVal[_]     => Some(value)
+    case coeff @ Coeff(_)     => Some(coeff)
+    case sc @ IsleScale(_, _) => Some(sc)
+    case _                    => None
+  }
+
+  @annotation.tailrec
+  def allAtoms(exps: Set[Expression], accumAtoms: Set[Expression]) : Set[Expression] =
+    if (exps.isEmpty) accumAtoms 
+    else {
+      val newAccum = accumAtoms union (exps.flatMap(atomLeaves(_)))
+      val newExps = exps.flatMap(atomLeaves(_)) -- newAccum
+      allAtoms(newExps, newAccum)
+    }
 
   def sumTerms(exp: Expression): Vector[Expression] = exp match {
     case Sum(a, b) => sumTerms(a) ++ sumTerms(b)
@@ -588,7 +616,9 @@ object EquationNode {
           (v: Variable[_]) -> varFactors(rhs).toSet
       }
       .groupBy(_._1)
-      .view.mapValues(s => s.map(_._2)).toMap
+      .view
+      .mapValues(s => s.map(_._2))
+      .toMap
 
   def backCoeffMap(
       eqs: Set[EquationNode]
@@ -603,7 +633,9 @@ object EquationNode {
           )
       }
       .groupBy(_._1)
-      .view.mapValues(s => s.toVector.map(_._2).flatten).toMap
+      .view
+      .mapValues(s => s.toVector.map(_._2).flatten)
+      .toMap
 
   def forwardMap(
       eqs: Set[EquationNode]
