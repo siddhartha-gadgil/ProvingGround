@@ -899,3 +899,80 @@ Type: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); b
 2020.07.06 12:16:02 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 110, less than the time limit 2 minutes, with cutoff 1.0240000000000002E-10; running again
 2020.07.06 12:17:50 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:178:30 - ran for time 107, less than the time limit 2 minutes, with cutoff 2.0480000000000003E-11; running again
 2020.07.06 12:19:53 [INFO] provingground.learning.SimpleEquations.timedUnAppEquations:175:30 - ran for time 122, exceeding time limit 2 minutes, with cutoff 4.096E-12
+2020.07.06 12:20:03 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.H$
+TTMessages.GeneratedEquationNodes], id: (34,77229601)
+2020.07.06 12:20:03 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provi$
+gground.learning.ExpressionEval] to posts of type TypeTag[provingground.learning.HoTTMessages.GeneratedEquationNodes]
+2020.07.06 12:20:03 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provi
+ngground.learning.HoTTMessages.GeneratedEquationNodes]
+Started [cpu] profiling
+2020.07.06 12:48:11 [INFO] provingground.learning.ExpressionEval.initMap:121:22 - Computing initial map with 318537 atoms
+2020.07.06 12:48:13 [INFO] provingground.learning.ExpressionEval.initMap:123:22 - Computed initial values
+2020.07.06 12:48:13 [INFO] provingground.learning.ExpressionEval.initMap:127:22 - Computed vector for map, size 40713
+2020.07.06 12:48:13 [INFO] provingground.learning.ExpressionEval.initMap:128:22 - Zero initial values are 242978
+2020.07.06 12:48:13 [INFO] provingground.learning.ExpressionEval.initMap:130:22 - Computed map
+2020.07.06 12:48:13 [INFO] provingground.learning.PostBuffer.$anon.post:244:22 - Post; tag: TypeTag[provingground.learning.Expressio
+nEval], id: (35,1652175143), content:
+provingground.learning.ExpressionEval$$anon$2@627a3127
+2020.07.06 12:48:13 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provin
+gground.learning.HoTTMessages.FinalState] to posts of type TypeTag[provingground.learning.ExpressionEval]
+2020.07.06 12:48:13 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provi
+ngground.learning.ExpressionEval]
+2020.07.06 12:48:58 [INFO] provingground.learning.HoTTBot.expEvToFinalState:478:26 - computing final state
+2020.07.06 12:48:58 [INFO] provingground.learning.ExprCalc.finalVec:781:22 - Computing final vector, with maximum time Some(500000),
+ exponent: 0.5, decay: 1.0
+2020.07.06 12:48:58 [INFO] provingground.learning.ExprCalc.finalVec:784:22 - Number of equations: 226042
+2020.07.06 12:49:24 [INFO] provingground.learning.ExprCalc.stableSupportVec:755:26 - completed 2 steps without stable support, suppo
+rt size : 8525
+2020.07.06 12:49:52 [INFO] provingground.learning.ExprCalc.stableSupportVec:765:26 - stable support with support size 177655
+2020.07.06 12:49:52 [INFO] provingground.learning.ExprCalc.finalVec:787:22 - Obtained vector with stable support
+2020.07.06 12:49:55 [INFO] provingground.learning.ExprCalc.stableVec:725:46 - completed 2 steps
+2020.07.06 12:51:08 [INFO] provingground.learning.ErasablePostBuffer.$anon.post:85:22 - Post; tag: TypeTag[provingground.learning.Ho
+TTMessages.FinalState], id: (36,-596343344)
+2020.07.06 12:51:08 [INFO] provingground.learning.TypedPostResponse.MicroBot.post:227:18 - triggered response of type TypeTag[provi$
+gground.learning.HoTTMessages.Lemmas] to posts of type TypeTag[provingground.learning.HoTTMessages.FinalState]
+2020.07.06 12:51:08 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provi
+ngground.learning.HoTTMessages.FinalState]
+2020.07.06 12:51:08 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provi
+ngground.learning.HoTTMessages.FinalState]
+2020.07.06 12:51:08 [INFO] provingground.learning.TypedPostResponse.Callback.post:188:18 - triggered callback for type TypeTag[provi
+ngground.learning.HoTTMessages.FinalState]
+2020.07.06 13:01:39 [INFO] provingground.learning.HoTTBot.$anonfun:382:26 - Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proo   $
+f: trans with weight 0.05648644896234414; statement weight 5.948982592004533E-12
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); be $
+st proof: (`$ipkttuy :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$ipkttuy)) ((((sym) ( $
+((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.1149210312987255E-
+8; statement weight 2.2274421997833093E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c) $
+)))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005967128611011862; statement weight 4.517118824230575E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-mul $
+tiply) (m) with weight 0.00594451972488434; statement weight 4.4934994687815435E-13
+Steps (in final state): 4
+Lemma: (`a : M ) ~> ((`b : M ) ~> ((`c : M ) ~> ((((eqM) (`a)) (`b)) → ((((eqM) (`b)) (`c)) → (((eqM) (`a)) (`c)))))); best proo   $
+f: trans with weight 0.05648644896234414; statement weight 5.948982592004533E-12
+Lemma: (`$afm : M ) ~> ((((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$afm)) → (((eqM) (n)) (`$afm))); be $
+st proof: (`$ipkttuy :  M) ↦ (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (`$ipkttuy)) ((((sym) ( $
+((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)))) with weight 5.1149210312987255E-
+8; statement weight 2.2274421997833093E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (((mul) (m)) (n))) (`b))) (((mul) (((mul) (m)) (n))) (`c) $
+)))); best proof: (left-multiply) (((mul) (m)) (n)) with weight 0.005967128611011862; statement weight 4.517118824230575E-13
+Lemma: (`b : M ) ~> ((`c : M ) ~> ((((eqM) (`b)) (`c)) → (((eqM) (((mul) (`b)) (m))) (((mul) (`c)) (m))))); best proof: (right-mul $
+tiply) (m) with weight 0.00594451972488434; statement weight 4.4934994687815435E-13
+2020.07.06 13:11:57 [INFO] provingground.learning.HoTTBot.$anonfun:382:26 - Results: 6
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (n))) (m); best proof: ((ass1) (m)) (n) with weight 2.560153469112725E-4; statement weight 
+1.8667394769968098E-5
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n); best proof: ((ass2) (((mul) (m)) (n))) (n) with weig
+ht 2.5698905414181484E-4; statement weight 5.988419974495003E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))); best proof: (((sym) (((mul) (((mul) (m)) (n))) (((mu
+l) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mul) (m)) (n))) (n)) with weight 3.6253221916758874E-6; statement weight 6.11590384518
+1513E-8
+Lemma: ((eqM) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (((mul) (((mul) (m)) (n))) (m)); best proof: ((((left-mul
+tiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n)) with weight 1.5898654483428077E-7; statement weig
+ht 2.218415664124498E-10
+Lemma: ((eqM) (((mul) (((mul) (((mul) (m)) (n))) (m))) (m))) (((mul) (m)) (n)); best proof: ((ass1) (((mul) (m)) (n))) (m) with weig
+ht 2.5698905414181484E-4; statement weight 5.18514926798107E-8
+Lemma: ((eqM) (n)) (((mul) (((mul) (m)) (n))) (m)); best proof: (((((trans) (n)) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n)
+)) (n)))) (((mul) (((mul) (m)) (n))) (m))) ((((sym) (((mul) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n)))) (n)) (((ass2) (((mu
+l) (m)) (n))) (n)))) (((((left-multiply) (((mul) (m)) (n))) (((mul) (((mul) (m)) (n))) (n))) (m)) (((ass1) (m)) (n))) with weight 3.
+936401556870104E-15; statement weight 1.906479392367656E-5
