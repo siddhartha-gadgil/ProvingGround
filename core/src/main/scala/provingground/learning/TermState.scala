@@ -94,14 +94,23 @@ case class TermState(
     )
     .toMap
 
-  lazy val termsWithTypsMap = termTyps
-    .map(
-      typ =>
-        (typ: Typ[Term]) -> (terms.conditioned(_.typ == typ): FD[Term]).toMap
-    )
-    .toMap
+  lazy val termsWithTypsMap =
+    termDistMap.groupBy(_._1.typ: Typ[Term]).map {
+      case (typ, m) =>
+        val total = m.values.sum
+        typ -> m.map { case (x, p) => (x, p / total) }
+    }
+  // termTyps
+  //   .map(
+  //     typ =>
+  //       (typ: Typ[Term]) -> (terms.conditioned(_.typ == typ): FD[Term]).toMap
+  //   )
+  //   .toMap
 
-  lazy val funcsWithDoms = termTyps
+  lazy val domTotals = funcDistMap.groupMapReduce(_._1.dom)(_._2)(_ + _)
+
+  lazy val funcsWithDoms =
+  termTyps
     .map(
       typ =>
         (typ: Typ[Term]) -> (terms
@@ -110,14 +119,20 @@ case class TermState(
     )
     .toMap
 
-  lazy val funcsWithDomsMap = termTyps
-    .map(
-      typ =>
-        (typ: Typ[Term]) -> (terms
-          .condMap(FuncOpt)
-          .conditioned(_.dom == typ): FD[ExstFunc]).toMap
-    )
-    .toMap
+  lazy val funcsWithDomsMap = 
+  funcDistMap.groupBy(_._1.dom: Typ[Term]).map {
+      case (typ, m) =>
+        val total = m.values.sum
+        typ -> m.map { case (x, p) => (x, p / total) }
+    }
+  // termTyps
+  //   .map(
+  //     typ =>
+  //       (typ: Typ[Term]) -> (terms
+  //         .condMap(FuncOpt)
+  //         .conditioned(_.dom == typ): FD[ExstFunc]).toMap
+  //   )
+  //   .toMap
 
   lazy val allTyps = termTyps union typs.support
 
@@ -142,6 +157,8 @@ case class TermState(
     typs.filter(termTypsSet.contains(_)).flatten.safeNormalized
 
   lazy val thmsByStMap = thmsBySt.toMap
+
+  lazy val thmsByPfMap = thmsByPf.pmf.map { case Weighted(x, p) => (x, p) }.toMap
 
   def goalThmsBySt(goalW: Double) =
     (typs ++ goals).filter(termTypsSet.contains(_)).flatten.safeNormalized
@@ -396,7 +413,7 @@ case class TermState(
             termsWithTypsMap.get(typ).map(_.getOrElse(x, 0.0)).getOrElse(0.0)
           case (x: ExstFunc, FuncsWithDomain, (typ: Typ[u]) :: HNil) =>
             funcsWithDomsMap.get(typ).map(_.getOrElse(x, 0.0)).getOrElse(0.0)
-          case (x: Term, FuncForCod, (cod : Typ[u]) :: HNil) =>
+          case (x: Term, FuncForCod, (cod: Typ[u]) :: HNil) =>
             terms
               .condMap(Unify.targetCodomain(_, cod))(x)
           case _ =>
