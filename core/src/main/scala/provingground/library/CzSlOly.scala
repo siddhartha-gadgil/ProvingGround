@@ -64,7 +64,9 @@ object CzSlOly {
     (trans.typ, results(3), steps(1)),
     (steps(1), results(4), results(6)),
     (steps(2), results(1), results(4)),
-    (steps(3), results(6), results(7))
+    (steps(3), results(6), results(7)),
+    (steps(4), results(5), results(8)),
+    (sym, results(8), results(0))
   )
 
   val termState: TermState = TermState(
