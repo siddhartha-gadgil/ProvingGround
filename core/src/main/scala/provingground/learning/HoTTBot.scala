@@ -1043,20 +1043,20 @@ object HoTTBot {
     BaseMixinLemmas,
     TangentBaseState,
     HoTTPostWeb,
-    PreviousPosts[SpecialInitState] :: QueryProver :: QueryEquations :: HNil,
+    PreviousPosts[SpecialInitState] :: QueryProver :: Set[EquationNode] :: HNil,
     ID
   ] = {
     val response
-        : PreviousPosts[SpecialInitState] :: QueryProver :: QueryEquations :: HNil => BaseMixinLemmas => Vector[
+        : PreviousPosts[SpecialInitState] :: QueryProver :: Set[EquationNode] :: HNil => BaseMixinLemmas => Vector[
           Future[
             TangentBaseState
           ]
         ] = {
-      case psps :: qp :: eqns :: HNil =>
+      case psps :: qp :: neqs :: HNil =>
         lems => {
           logger.info(s"previous special init states are ${psps.contents.size}")
           logger.debug(psps.contents.mkString("\n"))
-          val neqs = eqns.nodes
+          // val neqs = eqns.nodes
           logger.info(s"Using ${neqs.size} equation nodes for base states")
           psps.contents.map(
             ps =>
