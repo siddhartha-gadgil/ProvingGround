@@ -12,6 +12,7 @@ import math._
 import scala.concurrent._, duration._
 
 import translation.FansiShow._
+import scala.math.Ordering.Double.TotalOrdering
 
 /**
   * A drop-in replacement for [[FineProverTasks]] to test the abstract generators approach;

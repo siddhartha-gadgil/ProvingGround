@@ -12,6 +12,7 @@ import math._
 import scala.concurrent._, duration._
 
 import translation.FansiShow._
+import scala.math.Ordering.Double.TotalOrdering
 
 object ProverTasks {
 

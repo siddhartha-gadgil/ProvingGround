@@ -9,6 +9,7 @@ import monix.eval._
 
 import DE._
 import scala.concurrent._, duration._
+import scala.math.Ordering.Double.TotalOrdering
 
 object SimpleEquations {
   def groupTerms(

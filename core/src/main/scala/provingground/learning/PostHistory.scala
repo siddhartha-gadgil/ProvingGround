@@ -33,7 +33,7 @@ trait PostHistory[W, ID] {
       (pd.pw.tag: TypeTag[_], pd.id, findPost(web, pd.id).map(_._2))
     }.toVector
 
-  def history(web: W, id: ID): Stream[PostData[_, W, ID]] = {
+  def history(web: W, id: ID): LazyList[PostData[_, W, ID]] = {
     val next: (
         (Set[PostData[_, W, ID]], Set[ID])
     ) => (Set[PostData[_, W, ID]], Set[ID]) = {
@@ -41,7 +41,7 @@ trait PostHistory[W, ID] {
         val pairs = indices.map(findPost(web, _)).flatten
         (pairs.map(_._1), pairs.flatMap(_._2))
     }
-    def stream: Stream[(Set[PostData[_, W, ID]], Set[ID])] =
+    def stream: LazyList[(Set[PostData[_, W, ID]], Set[ID])] =
       ((Set.empty[PostData[_, W, (ID)]], Set(id))) #:: stream.map(next)
     stream.flatMap(_._1)
   }
